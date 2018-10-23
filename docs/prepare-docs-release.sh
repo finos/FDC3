@@ -1,6 +1,7 @@
 #!/bin/bash
 
-THEME_GIT_REPO="https://github.com/maoo/fdc3-pages-layout.git"
+# TODO - replace with https://github.com/fdc3/FDC3.git before PR gets merged
+THEME_GIT_REPO="https://github.com/maoo/FDC3.git"
 
 PACKAGE_VERSION=$(cat package.json \
   | grep version \
@@ -19,7 +20,8 @@ echo "---\nflag: tags\n---" > ${PACKAGE_VERSION}.md
 echo "Updated _config.yml folder with version '$PACKAGE_VERSION'"
 
 # Pulling theme layout and assets
-git clone $THEME_GIT_REPO /tmp/theme-repo
+git clone --single-branch -b common-docs-layout $THEME_GIT_REPO /tmp/theme-repo
+# TODO - remove when merged to master
 cp -rf /tmp/theme-repo/docs/theme/{_layouts,assets} docs/
 echo "Copied common _layouts and assets folders into docs/"
 

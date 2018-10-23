@@ -35,6 +35,33 @@ All the following block in `.travis.yml`:
       branch: branch
 ```
 
+## Configure semantic release
+
+Define the following elements in your `package.json` file.
+
+```
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/git",
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "docs/CHANGELOG.md.new"
+        }
+      ],
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      "@semantic-release/github"
+    ]
+  }
+```
+
 ## Using a custom domain
 
 You can specify the custom domain you want to use for the documentation site publishing by defining a `docs/CNAME` file with the name of the domain, ie `fdc3-api.finos.org`.
