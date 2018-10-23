@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+  </head>
+
+  <body>
+    <ul class="nav nav-fill">
+      <li class="nav-item">
+        <a class="nav-link" href="https://fdc3-app-directory.finos.org">API</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://fdc3-app-directory.finos.org">App Directory</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://context-data.finos.org">Context Data</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://fdc3-intents.finos.org">Intents</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://fdc3-use-cases.finos.org">Use Case</a>
+      </li>
+    </ul>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap container" class="outer">
+      <div class="row">
+        <div class="col-3 left-column">
+          <div class="column-menu">
+            <p class="column-title"><a href="https://finos.org/fdc3" target="_blank"><img src="https://www.finos.org/hs-fs/hubfs/FINOS/website/pages/programs/fdc3-logo.png" alt="FDC3 logo"/></a></p>
+            <div class="column-icons">
+              {% for social_icon in site.social_icons %}
+                <a href="{{ social_icon.link_url }}" target="_blank">
+                  <img src="{{ social_icon.image_url }}"/></a>
+              {% endfor %}
+            </div>
+            <ul class="column-menu">
+                <li>
+                  <a href="/CHANGELOG.html" target="{{ link.target }}">
+                    What's new in {{ site.version }}
+                  </a>
+                </li>
+                {% for link in site.links %}
+                  <li>
+                    <a href="{{ link.url }}" target="{{ link.target }}">
+                      {{ link.name }}
+                    </a>
+                  </li>
+                {% endfor %}
+                </ul>
+            </ul>
+          </div>
+          <div class="column-footer">
+            <a href="finos.org" target="_blank"><img src="https://www.finos.org/hs-fs/hubfs/sofin%20assets/SOFIN%20LOGOS/FINOS_Icon_Wordmark_White.png" alt="FINOS logo"/></a>
+            <p>Release: {{ site.version }}</p>
+            <a class="btn btn-primary" data-toggle="collapse" href="#collapseOldReleases" role="button" aria-expanded="false" aria-controls="collapseExample">
+              previous releases
+            </a>
+            <div class="collapse" id="collapseOldReleases">
+              <ul class="old-releases">
+                {% for page in site.pages %}
+                    {% if page.flag == 'tags' %}
+                      <li><a href="/tags/{{ page.name | remove: '.md'  }}">{{ page.name | remove: '.md' }}</a></li>
+                    {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-9 main_content">
+          <section id="main_content" class="inner">
+            {{ content }}
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER  -->
+    <!-- <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        {% if site.github.is_project_page %}
+        <p class="copyright">{{ site.title | default: site.github.repository_name }} maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></p>
+        {% endif %}
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div> -->
+
+    {% if site.google_analytics %}
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', '{{ site.google_analytics }}', 'auto');
+        ga('send', 'pageview');
+      </script>
+    {% endif %}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>
