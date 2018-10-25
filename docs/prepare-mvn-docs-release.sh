@@ -3,11 +3,7 @@
 # TODO - replace with https://github.com/fdc3/FDC3.git before PR gets merged
 THEME_GIT_REPO="https://github.com/maoo/FDC3.git"
 
-# PACKAGE_VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version |grep -Ev '(^\[|Download\w+:)')
-
 PACKAGE_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
-
-# GH_REPO="$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.scm.url |grep -Ev '(^\[|Download\w+:)').git"
 
 GH_REPO="$(mvn -q -Dexec.executable=echo -Dexec.args='${project.scm.url}' --non-recursive exec:exec).git"
 
@@ -22,7 +18,6 @@ echo "Updated _config.yml folder with version '$PACKAGE_VERSION'"
 
 # Pulling theme layout and assets
 git clone --single-branch -b common-docs-layout $THEME_GIT_REPO /tmp/theme-repo
-# TODO - remove when merged to master
 cp -rf /tmp/theme-repo/docs/theme/{_layouts,assets} docs/
 echo "Copied common _layouts and assets folders into docs/"
 
