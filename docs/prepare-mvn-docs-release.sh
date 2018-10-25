@@ -22,10 +22,15 @@ echo "Copied common _layouts and assets folders into docs/"
 # Pulling contents from gh-pages branch
 git clone $GH_REPO gh-pages-docs
 cd gh-pages-docs
-git checkout gh-pages
+if [ `git branch --list gh-pages` ]; then
+	git checkout gh-pages
+	echo "Cloned gh-pages branch"
+else
+    rm -rf *
+    echo "no gh-pages branch found, this is the first doc deployment"
+fi
 rm -rf .git
 cd ..
-echo "Cloned gh-pages branch"
 
 # TODO - need to figure out how to integrate CHANGELOG in a Maven build
 #
