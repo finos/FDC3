@@ -3,12 +3,19 @@
 # TODO - replace with https://github.com/fdc3/FDC3.git before PR gets merged
 THEME_GIT_REPO="https://github.com/maoo/FDC3.git"
 
-PACKAGE_VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version |grep -Ev '(^\[|Download\w+:)')
+# PACKAGE_VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version |grep -Ev '(^\[|Download\w+:)')
 
-GH_REPO="$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.scm.url |grep -Ev '(^\[|Download\w+:)').git"
+PACKAGE_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+
+# GH_REPO="$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.scm.url |grep -Ev '(^\[|Download\w+:)').git"
+
+GH_REPO="$(mvn -q -Dexec.executable=echo -Dexec.args='${project.scm.url}' --non-recursive exec:exec).git"
 
 # Copying images in docs/ folder and patching release version
-cp -Rf images/ docs/
+if [ -d "images/" ]; then
+	cp -Rf images/ docs/
+fi
+
 sed -i "s/\[\[tag\]\]/$PACKAGE_VERSION/g" docs/_config.yml
 echo "---\nflag: tags\n---" > ${PACKAGE_VERSION}.md
 echo "Updated _config.yml folder with version '$PACKAGE_VERSION'"
@@ -22,7 +29,9 @@ echo "Copied common _layouts and assets folders into docs/"
 # Pulling contents from gh-pages branch
 git clone $GH_REPO gh-pages-docs
 cd gh-pages-docs
-if [ `git branch --list gh-pages` ]; then
+echo "Branches"
+echo "$(git branch -r --list | grep gh-pages)"
+if [[ `git branch -r --list | grep gh-pages` ]]; then
 	git checkout gh-pages
 	echo "Cloned gh-pages branch"
 else
