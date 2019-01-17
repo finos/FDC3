@@ -24,7 +24,7 @@ const siteConfig = {
   title: 'Test Site', // Title for your website.
   tagline: 'A website for testing',
   url: 'https://rikoe.github.io',
-  baseUrl: '/FDC3',
+  baseUrl: '/FDC3/',
   // For publishing to GitHub pages
   projectName: 'FDC3',
   organizationName: 'rikoe',
