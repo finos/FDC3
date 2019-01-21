@@ -1,10 +1,20 @@
 {
   "docs": {
-    "Docusaurus": ["doc1"],
-    "First Category": ["doc2"],
-    "Second Category": ["doc3"]
+    "Getting Started": ["fdc3-intro", "fdc3-charter"],
+    "API": ["api-intro", "api-spec",
+      {
+        "type": "subcategory",
+        "label": "API Reference",
+        "ids": [
+          "api-findIntent"
+        ]
+      }],
+    "Context Data": ["context-intro", "context-spec"],
+    "App Directory": ["appd-intro", "appd-discovery", "appd-use", "appd-spec"],
+    "Intents": ["intents-intro", "intents-spec"],
+    "Use Cases": []
   },
-  "docs-other": {
-    "First Category": ["doc4", "doc5"]
+  "tutorial": {
+    "Part 1": ["tutorial"]
   }
 }

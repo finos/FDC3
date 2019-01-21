@@ -21,8 +21,8 @@ const users = [
 ];
 
 const siteConfig = {
-  title: 'Test Site', // Title for your website.
-  tagline: 'A website for testing',
+  title: 'FDC3', // Title for your website.
+  tagline: 'Open standards for the financial desktop',
   url: 'https://rikoe.github.io',
   baseUrl: '/FDC3/',
   // For publishing to GitHub pages
@@ -30,9 +30,10 @@ const siteConfig = {
   organizationName: 'rikoe',
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'doc1', label: 'Docs'},
-    {doc: 'doc4', label: 'API'},
-    {page: 'help', label: 'Help'},
+    {doc: 'fdc3-intro', label: 'Docs'},    
+    {doc: 'tutorial', label: 'Tutorial'},
+    {page: 'help', label: 'Community'},
+    {page: 'help', label: 'About'},
     {blog: true, label: 'Blog'},
   ],
 
@@ -40,13 +41,13 @@ const siteConfig = {
   users,
 
   /* path to images for header/footer */
-  headerIcon: 'img/docusaurus.svg',
-  footerIcon: 'img/docusaurus.svg',
-  favicon: 'img/favicon.png',
+  headerIcon: 'img/finos-white.png',
+  footerIcon: 'img/finos.png',
+  favicon: 'img/favicon/favicon.ico',
 
   /* Colors for website */
   colors: {
-    primaryColor: '#2E8555',
+    primaryColor: '#00b5e2',
     secondaryColor: '#205C3B',
   },
 
