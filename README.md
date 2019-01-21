@@ -1,5 +1,7 @@
 # Example Single FDC3 Repository and Website
 
+[![Build Status](https://travis-ci.com/rikoe/FDC3.svg?branch=master)](https://travis-ci.com/rikoe/FDC3)
+
 Website: https://rikoe.github.io/FDC3
 
 This repository demonstrates using [Docusaurus](https://docusaurus.io) to author and host the FDC3 website and documentation, based on markdown files.
@@ -23,7 +25,7 @@ This repository demonstrates using [Docusaurus](https://docusaurus.io) to author
 - [ ] Tutorial content
 - [ ] Finalise styling and assets
 - [ ] Present to PMC
-- [ ] Setup CI
+- [x] Setup CI
 
 ## Developer Information
 
@@ -93,6 +95,10 @@ To publish the website, follow this steps:
    ```
 
 This will publish to the `gh-pages` branch of the repository, which will automatically be hosted on GitHub Pages.
+
+### Continuous Integration
+
+The CI build is hosted on Travis CI at https://travis-ci.com/rikoe/FDC3. When new changes are committed to `master`, Travis will automatically deploy an updated version of the website to GitHub Pages.
 
 > For full documentation about publishing Docusaurus websites, see [Publishing your site](https://docusaurus.io/docs/en/publishing).
 
