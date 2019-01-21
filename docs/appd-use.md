@@ -1,6 +1,7 @@
 ---
 id: appd-use
 sidebar_label: App Directory Use
+title: App Directory Use
 hide_title: true
 ---
 

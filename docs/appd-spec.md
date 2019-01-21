@@ -1,6 +1,7 @@
 ---
 id: appd-spec
 sidebar_label: App Directory Specification
+title: App Directory Specification
 hide_title: true
 ---
 
