@@ -60,13 +60,14 @@ class HomeSplash extends React.Component {
 
     return (
       <SplashContainer>
-        <Logo img_src={`${baseUrl}img/docusaurus.svg`} />
+        {/* <Logo img_src={`${baseUrl}img/docusaurus.svg`} /> */}
         <div className="inner">
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
-            <Button href="#try">Try It Out</Button>
-            <Button href={docUrl('doc1.html')}>Example Link</Button>
-            <Button href={docUrl('doc2.html')}>Example Link 2</Button>
+            <Button href={docUrl('fdc3-intro')}>Get Started</Button>
+            {/* <Button href="#try">Get Started</Button> */}
+            <Button href="https://github.com/FDC3/FDC3">GitHub</Button>
+            {/* <Button href={docUrl('doc2.html')}>Example Link 2</Button> */}
           </PromoSection>
         </div>
       </SplashContainer>
@@ -96,8 +97,8 @@ class Index extends React.Component {
       <div
         className="productShowcaseSection paddingBottom"
         style={{textAlign: 'center'}}>
-        <h2>Feature Callout</h2>
-        <MarkdownBlock>These are features of this project</MarkdownBlock>
+        <h2>Use Cases</h2>
+        <MarkdownBlock>Identify requirements for workflows across the financial desktop.</MarkdownBlock>
       </div>
     );
 
@@ -142,19 +143,31 @@ class Index extends React.Component {
     );
 
     const Features = () => (
-      <Block layout="fourColumn">
+      <Block background="light" layout="fourColumn">
         {[
           {
-            content: 'This is the content of my feature',
-            image: `${baseUrl}img/docusaurus.svg`,
+            content: 'A standard API spec creates consistent developer interfaces for working with FDC3.',
+            image: `${baseUrl}img/feature-api.svg`,
             imageAlign: 'top',
-            title: 'Feature One',
+            title: 'API',
           },
           {
-            content: 'The content of my second feature',
-            image: `${baseUrl}img/docusaurus.svg`,
+            content: 'Share context between apps to eliminate re-keying, streamline workflow and surface intelligence.',
+            image: `${baseUrl}img/feature-context.svg`,
             imageAlign: 'top',
-            title: 'Feature Two',
+            title: 'Context Data',
+          },
+          {
+            content: 'Provide secure, trusted identity, and intuitive service discovery using standardized app directories.',
+            image: `${baseUrl}img/feature-appd.svg`,
+            imageAlign: 'top',
+            title: 'App Directory',
+          },
+          {
+            content: 'Use standardized intents to tell other apps to take an action such as showing a chart or news.',
+            image: `${baseUrl}img/feature-intents.svg`,
+            imageAlign: 'top',
+            title: 'Intents',
           },
         ]}
       </Block>
@@ -195,10 +208,10 @@ class Index extends React.Component {
         <div className="mainContainer">
           <Features />
           <FeatureCallout />
-          <LearnHow />
+          {/* <LearnHow />
           <TryOut />
           <Description />
-          <Showcase />
+          <Showcase /> */}
         </div>
       </div>
     );

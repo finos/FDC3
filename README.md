@@ -8,10 +8,18 @@ This repository demonstrates using [Docusaurus](https://docusaurus.io) to author
 
 - [x] Try out Docusaurus
 - [x] Host on GitHub Pages
-- [ ] Attempt to apply styling and assets from https://fdc3.finos.org to this website
-- [ ] Copy content from other FDC3 repositories into this single repository, to try and achieve a unified structure with an overview, that distinguishes clearly between specifications, examples and usage documentation
+- [x] Attempt to apply styling and assets from https://fdc3.finos.org to this website
+- [x] Copy docs from other FDC3 repositories into this single repository
+- [ ] Copy code/examples from other FDC3 repositories
+- [ ] Add docs from use cases
 - [ ] Apply versioning
-- [ ] Add documentation content
+- [ ] About page
+- [ ] Community page
+- [ ] Extra documentation content
+- [ ] Tutorial content
+- [ ] Finalise styling and assets
+- [ ] Present to PMC
+- [ ] Setup CI
 
 ## Developer Information
 
