@@ -1,6 +1,7 @@
 ---
 id: appd-intro
 sidebar_label: App Directory Overview
+title: App Directory Overview
 hide_title: true
 ---
 

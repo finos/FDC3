@@ -1,6 +1,7 @@
 ---
 id: api-intro
 sidebar_label: API Overview
+title: API Overview
 hide_title: true
 ---
 # API Overview

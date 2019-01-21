@@ -1,6 +1,7 @@
 ---
 id: appd-discovery
 sidebar_label: App Directory Discovery
+title: App Directory Discovery
 hide_title: true
 ---
 

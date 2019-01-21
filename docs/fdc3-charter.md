@@ -1,6 +1,7 @@
 ---
 id: fdc3-charter
 sidebar_label: Charter
+title: FDC3 Charter
 hide_title: true
 ---
 
