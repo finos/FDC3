@@ -146,29 +146,31 @@ class Index extends React.Component {
       <Block background="light" layout="fourColumn">
         {[
           {
-            content: 'A standard API spec creates consistent developer interfaces for working with FDC3.',
+            content: 'Create a consistent developer experience by adhering to the [API](docs/api-intro) standard',
             image: `${baseUrl}img/feature-api.svg`,
             imageAlign: 'top',
             title: 'API',
           },
           {
-            content: 'Share context between apps to eliminate re-keying, streamline workflow and surface intelligence.',
+            content: 'Use [standardized verbs](docs/intents-intro) to instruct other apps to take an action',
+            image: `${baseUrl}img/feature-intents.svg`,
+            imageAlign: 'top',
+            title: 'Intents',
+          },
+          {
+            content: 'Share [context](docs/context-intro) between apps to eliminate re-keying and streamline workflow',
             image: `${baseUrl}img/feature-context.svg`,
             imageAlign: 'top',
             title: 'Context Data',
           },
           {
-            content: 'Provide secure, trusted identity, and intuitive service discovery using standardized app directories.',
+            content: 'Discover trusted apps that can take part in a FDC3 workflow using an [App directory](docs/appd-intro).',
             image: `${baseUrl}img/feature-appd.svg`,
             imageAlign: 'top',
             title: 'App Directory',
-          },
-          {
-            content: 'Use standardized intents to tell other apps to take an action such as showing a chart or news.',
-            image: `${baseUrl}img/feature-intents.svg`,
-            imageAlign: 'top',
-            title: 'Intents',
-          },
+            link: `${baseUrl}/appd-intro`
+          }
+          
         ]}
       </Block>
     );
