@@ -11,7 +11,7 @@ FDC3 Intents specifications, schemas, and examples
 
 * Extending APIs from one App to another is powerful...
 * However, it requires building to a specific API ahead of time
-* Using a standard language for interaction between applications using verbs (Intents) and [context] (context-intro.md) let us create workflows on the fly
+* Using a standard language for interaction between applications using verbs and [context](context-intro.md) let us create workflows on the fly
 
 FDC3 Intents define a standard set of verbs that can be used to put together common cross-application workflows on the financial desktop.
 * Applications register the intents & context combinations they support in the [App directory](appd-intro)
@@ -20,7 +20,7 @@ FDC3 Intents define a standard set of verbs that can be used to put together com
 * FDC3 Standard intents are a limited set, organizations can create their own intents
 
 ## Using Intents
-Combined with [Context Data](context-intro.md) and [App Directory](appd-intro.md) standards, Intents enable rich service discovery on the the desktop. For example:
+Combined with [Context Data](context-intro.md) and [App Directory](appd-intro.md) standards, Intents enable rich service discovery on the desktop. For example:
 
 ### Directing to a market data platform to show a chart
 ```javascript
