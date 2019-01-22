@@ -1,8 +1,7 @@
 # Example Single FDC3 Repository and Website
 
 [![Build Status](https://travis-ci.com/rikoe/FDC3.svg?branch=master)](https://travis-ci.com/rikoe/FDC3)
-
-Website: https://rikoe.github.io/FDC3
+[![FINOS - Incubating](https://cdn.rawgit.com/finos/contrib-toolbox/master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 
 This repository demonstrates using [Docusaurus](https://docusaurus.io) to author and host the FDC3 website and documentation, based on markdown files.
 
