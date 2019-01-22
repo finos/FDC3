@@ -1,0 +1,36 @@
+{
+    "intents": [
+        {
+            "name": "StartCall",
+            "displayName": "Call" 
+        },
+        {
+            "name": "StartChat",
+            "displayName": "Chat"
+        },
+        {
+            "name": "ViewChart",
+            "displayName": "Chart"
+        },
+        {
+            "name": "ViewContact",
+            "displayName": "View"
+        },
+        {
+            "name": "ViewQuote",
+            "displayName": "Quote"
+        },
+        {
+            "name": "ViewNews",
+            "displayName": "News"
+        },
+        {
+            "name": "ViewInstrument",
+            "displayName": "Details"
+        },
+        {
+            "name": "ViewAnalysis",
+            "displayName": "Analyze"
+        }
+    ]
+}
