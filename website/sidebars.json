@@ -12,7 +12,30 @@
     "Context Data": ["context-intro", "context-spec"],
     "App Directory": ["appd-intro", "appd-discovery", "appd-use", "appd-spec"],
     "Intents": ["intents-intro", "intents-spec"],
-    "Use Cases": []
+    "Use Cases": [
+      "use-cases/use-cases-intro",
+      {
+        "type": "subcategory",
+        "label": "Accepted",
+        "ids": [
+          "use-cases/use-case-1"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "In Review",
+        "ids": [
+          "use-cases/use-case-6"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Rejected",
+        "ids": [
+          "use-cases/use-case-7"
+        ]
+      }
+    ]
   },
   "tutorial": {
     "Part 1": ["tutorial"]
