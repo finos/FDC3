@@ -64,13 +64,18 @@ root-directory
    ```
    cd website
    ```
+   
+2. Install pre-requisites (first time only)
+  ```
+   yarn
+   ```
 
-2. Run the local web server: 
+3. Run the local web server: 
    ```
    yarn start
    ```
 
-3. Navigate to the website: http://localhost:3000
+4. Navigate to the website: http://localhost:3000
 
 ### Publishing to GitHub Pages
 
