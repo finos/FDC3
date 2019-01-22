@@ -13,7 +13,7 @@ This repository demonstrates using [Docusaurus](https://docusaurus.io) to author
 - [x] Copy docs from other FDC3 repositories into this single repository
 - [x] Setup CI
 - [ ] Copy code/examples from other FDC3 repositories
-- [ ] Add docs from use cases
+- [x] Add docs from use cases
 - [ ] Integrate OpenAPI docs for app directory (redoc?)
 - [ ] Integrate generated TS docs for API
 - [ ] API reference
