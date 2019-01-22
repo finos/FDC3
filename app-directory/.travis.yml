@@ -1,0 +1,63 @@
+#
+#
+#
+#  Copyright (C) 2018 IHS Markit.
+#  All Rights Reserved
+#
+#
+#  NOTICE:  All information contained herein is, and remains
+#  the property of IHS Markit and its suppliers,
+#  if any.  The intellectual and technical concepts contained
+#  herein are proprietary to IHS Markit and its suppliers
+#  and may be covered by U.S. and Foreign Patents, patents in
+#  process, and are protected by trade secret or copyright law.
+#  Dissemination of this information or reproduction of this material
+#  is strictly forbidden unless prior written permission is obtained
+#  from IHS Markit.
+
+
+
+
+#after_success: ./after-success.sh $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST
+
+language: java
+
+install: true
+
+before_install:
+- npm install -g redoc-cli
+
+cache:
+  directories:
+  - $HOME/.m2
+
+script:
+- mvn clean package install
+- redoc-cli bundle --output ./docs/_includes/appd-specification.html specification/appd.yaml
+
+jdk:
+- oraclejdk8
+
+deploy:
+  # TODO - Use Maven Release plugin
+  # - provider: script
+  #   skip_cleanup: true
+  #   script: npm run semantic-release
+  #   on:
+  #     branch: docs-pages
+  - provider: script
+    skip_cleanup: true
+    script: curl https://raw.githubusercontent.com/maoo/FDC3/common-docs-layout/docs/prepare-mvn-docs-release.sh | bash
+    on:
+      branch: master
+  - provider: pages
+    skip-cleanup: true
+    github-token: $GH_TOKEN
+    email: $GITHUB_EMAIL
+    name: $GITHUB_USERNAME
+    verbose: true
+    keep-history: true
+    local-dir: gh-pages-docs
+    target_branch: gh-pages
+    on:
+      branch: master

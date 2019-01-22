@@ -16,13 +16,13 @@ This repository demonstrates using [Docusaurus](https://docusaurus.io) to author
 - [x] Add docs from use cases
 - [ ] Integrate OpenAPI docs for app directory (redoc?)
 - [ ] Integrate generated TS docs for API
-- [ ] API reference
+- [ ] API reference (postponing)
 - [ ] Intent reference
 - [ ] Versioning
 - [ ] About page
 - [ ] Community page
 - [ ] Extra documentation content
-- [ ] Tutorial content
+- [ ] Tutorial content (after 1.0)
 - [ ] FINOS/Working group info
 - [ ] Finalise styling and assets
 - [ ] GitHub README must adhere to FINOS standard
