@@ -14,4 +14,5 @@ enum OpenError {
   ResolverUnavailable = "ResolverUnavailable"
 }
 ```
-**See also** [`open`](open)
+## See also
+* [`open`](open)

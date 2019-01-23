@@ -13,4 +13,5 @@ interface IntentMetadata {
   displayName: string;
 }
 ```
-**See also** [`AppIntent`](AppIntent)
+## See also
+* [`AppIntent`](AppIntent)

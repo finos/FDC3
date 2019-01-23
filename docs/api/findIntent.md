@@ -26,4 +26,5 @@ This can be used to raise the intent against a specific app.
    // raise the intent against a particular app
    await agent.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
    ```
-   **See also** [`RaiseError`](RaiseError)
+   ## See also
+   * [`RaiseError`](RaiseError)

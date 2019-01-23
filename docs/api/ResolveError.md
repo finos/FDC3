@@ -14,4 +14,6 @@ enum ResolveError {
   ResolverTimeout = "ResolverTimeout"
 }
 ```
-**See also** [`findIntent`](findIntent), [`findIntentsByContext`](findIntentsByContext)
+## See also
+* [`findIntent`](findIntent)
+* [`findIntentsByContext`](findIntentsByContext)
