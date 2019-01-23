@@ -1,11 +1,11 @@
 ---
-id: api-OpenError
+id: OpenError
 sidebar_label: OpenError
 title: OpenError
 hide_title: true
 ---
 # `OpenError`
-Contains constants representing the errors that can be encountered when calling the [open](api-open) method.
+Contains constants representing the errors that can be encountered when calling the [`open`](open) method.
 ```
 enum OpenError {
   AppNotFound = "AppNotFound",
@@ -14,4 +14,4 @@ enum OpenError {
   ResolverUnavailable = "ResolverUnavailable"
 }
 ```
-**See also** [open](api-open)
+**See also** [`open`](open)

@@ -1,5 +1,5 @@
 ---
-id: api-findIntent
+id: findIntent
 sidebar_label: findIntent
 title: findIntent
 hide_title: true
@@ -12,7 +12,7 @@ A promise resolving to the intent, its metadata and metadata about the apps that
 This can be used to raise the intent against a specific app.
  
  
- If the resolution fails, the promise will return an `Error` with a string from the `ResolveError` enumeration.
+ If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
    
   ```javascript
    // I know 'StartChat' exists as a concept, and want to know more about it ...
@@ -26,3 +26,4 @@ This can be used to raise the intent against a specific app.
    // raise the intent against a particular app
    await agent.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
    ```
+   **See also** [`RaiseError`](RaiseError)
