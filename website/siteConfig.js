@@ -31,10 +31,10 @@ const siteConfig = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     {doc: 'fdc3-intro', label: 'Docs'},    
-    {doc: 'tutorial', label: 'Tutorial'},
+    {doc: 'use-cases/use-cases-intro', label: 'Use Cases'},
     {page: 'help', label: 'Community'},
     {page: 'help', label: 'About'},
-    {blog: true, label: 'Blog'},
+    {blog: true, label: 'News'},
   ],
 
   // If you have users set above, you add it here:
