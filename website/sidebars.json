@@ -6,6 +6,11 @@
         "type": "subcategory",
         "label": "API Reference",
         "ids": [
+          "api-Context",
+          "api-OpenError",
+          "api-ResolveError",
+          "api-IntentMetadata",
+          "api-AppIntent",
           "api-findIntent"
         ]
       }],
