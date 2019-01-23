@@ -1,5 +1,5 @@
 ---
-id: api-AppIntent
+id: AppIntent
 sidebar_label: AppIntent
 title: AppIntent
 hide_title: true
@@ -13,4 +13,4 @@ interface AppIntent {
   apps: Array<AppMetadata>;
 }
 ```
-**See also** [IntentMetadata](api-IntentMetadata)
+**See also** [`IntentMetadata`](IntentMetadata)

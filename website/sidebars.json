@@ -1,17 +1,17 @@
 {
   "docs": {
     "Getting Started": ["fdc3-intro", "fdc3-charter"],
-    "API": ["api-intro", "api-spec",
+    "API": ["api/api-intro", "api/spec",
       {
         "type": "subcategory",
         "label": "API Reference",
         "ids": [
-          "api-Context",
-          "api-OpenError",
-          "api-ResolveError",
-          "api-IntentMetadata",
-          "api-AppIntent",
-          "api-findIntent"
+          "api/Context",
+          "api/OpenError",
+          "api/ResolveError",
+          "api/IntentMetadata",
+          "api/AppIntent",
+          "api/findIntent"
         ]
       }],
     "Intents": ["intents-intro", "intents-spec"],
