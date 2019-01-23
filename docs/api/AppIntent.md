@@ -13,4 +13,5 @@ interface AppIntent {
   apps: Array<AppMetadata>;
 }
 ```
-**See also** [`IntentMetadata`](IntentMetadata)
+## See also
+* [`IntentMetadata`](IntentMetadata)

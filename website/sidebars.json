@@ -11,6 +11,9 @@
           "api/ResolveError",
           "api/IntentMetadata",
           "api/AppIntent",
+          "api/AppMetadata",
+          "api/IntentResolution",
+          "api/Listener",
           "api/findIntent"
         ]
       }],
