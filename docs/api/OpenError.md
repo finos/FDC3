@@ -5,8 +5,8 @@ title: OpenError
 hide_title: true
 ---
 # `OpenError`
-Contains constants representing the errors that can be encountered when calling the [`open`](open) method.
-```
+
+```typescript
 enum OpenError {
   AppNotFound = "AppNotFound",
   ErrorOnLaunch = "ErrorOnLaunch",
@@ -14,5 +14,8 @@ enum OpenError {
   ResolverUnavailable = "ResolverUnavailable"
 }
 ```
+
+Contains constants representing the errors that can be encountered when calling the [`open`](DesktopAgent#open) method on the [DesktopAgent](DesktopAgent) object.
+
 ## See also
-* [`open`](open)
+* [`DesktopAgent.open`](DesktopAgent#open)
