@@ -5,9 +5,8 @@ title: Listener
 hide_title: true
 ---
 # `Listener`
-A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](addIntentListener) or [`addContextListener`](addContextListener) methods.
-The `unsubscribe` method on the listener object allows the application to cancel the subscription.
-```
+
+```typescript
 interface Listener {
   /**
    * Unsubscribe the listener object.
@@ -15,6 +14,10 @@ interface Listener {
   unsubscribe();
 }
 ```
+
+A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](DesktopAgent#addintentlistener) or [`addContextListener`](DesktopAgent#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
+The `unsubscribe` method on the listener object allows the application to cancel the subscription.
+
 ## See also
-* [`addIntentListener`](addIntentListener)
-* [`addContextListener`](addContextListener)
+* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+* [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)

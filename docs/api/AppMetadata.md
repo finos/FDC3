@@ -5,9 +5,11 @@ title: AppMetadata
 hide_title: true
 ---
 # `AppMetadata`
-App metadata is Desktop Agent specific - but should always support a name property.
-```
+
+```typescript
 interface AppMetadata {
   name: string;
 }
 ```
+
+App metadata is Desktop Agent specific - but should always support a name property.
