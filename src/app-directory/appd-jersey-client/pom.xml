@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~
+  ~
+  ~  Copyright (C) 2018 IHS Markit.
+  ~  All Rights Reserved
+  ~
+  ~
+  ~  NOTICE:  All information contained herein is, and remains
+  ~  the property of IHS Markit and its suppliers,
+  ~  if any.  The intellectual and technical concepts contained
+  ~  herein are proprietary to IHS Markit and its suppliers
+  ~  and may be covered by U.S. and Foreign Patents, patents in
+  ~  process, and are protected by trade secret or copyright law.
+  ~  Dissemination of this information or reproduction of this material
+  ~  is strictly forbidden unless prior written permission is obtained
+  ~  from IHS Markit.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>appd-api</artifactId>
+        <groupId>org.finos.fdc3.appd</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>appd-jersey-client</artifactId>
+
+
+    <build>
+        <plugins>
+
+
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/../specification/appd.yaml</inputSpec>
+                            <generatorName></generatorName>
+                            <language>java</language>
+                            <library>jersey2</library>
+                            <apiPackage>org.fdc3.appd.server.api</apiPackage>
+                            <modelPackage>org.fdc3.appd.server.model</modelPackage>
+                            <invokerPackage>org.fdc3.appd.server.invoker</invokerPackage>
+
+                            <configOptions>
+                                <sourceFolder>src/gen/java/main</sourceFolder>
+                                <dateLibrary>java8</dateLibrary>
+                            </configOptions>
+
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

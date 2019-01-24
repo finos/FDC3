@@ -1,0 +1,15 @@
+{
+    "appId": "click.to.call",
+    "name": "Click-to-Call",
+    "appType": "Container",
+    "intents": [
+        {
+            "name": "StartCall",
+            "displayName": "Start a call",
+            "contexts": [ "fdc3.contact" ],
+            "customConfig": {
+
+            }
+        }
+    ]
+}
