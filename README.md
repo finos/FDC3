@@ -56,10 +56,14 @@ root-directory
     ├── sidebars.json
     ├── siteConfig.js
     └── static
-├── api
-├── intents   
-├── context
-├── app-directory 
+└── src
+    ├── api
+    ├── app-directory
+    ├── context
+    ├── intents
+└── examples
+    ├── context
+    ├── intents
 ```
 
 ### Running the website locally
