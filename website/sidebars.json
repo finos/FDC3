@@ -1,17 +1,43 @@
 {
   "docs": {
-    "Getting Started": ["fdc3-intro", "fdc3-charter"],
-    "API": ["api-intro", "api-spec",
+    "Getting Started": [
+      "fdc3-intro",
+      "fdc3-charter"
+    ],
+    "API": [
+      "api/api-intro",
+      "api/spec",
       {
         "type": "subcategory",
         "label": "API Reference",
         "ids": [
-          "api-findIntent"
+          "api/Context",
+          "api/OpenError",
+          "api/ResolveError",
+          "api/IntentMetadata",
+          "api/AppIntent",
+          "api/AppMetadata",
+          "api/IntentResolution",
+          "api/Listener",
+          "api/findIntent",
+          "api/DesktopAgent"
         ]
-      }],
-    "Intents": ["intents-intro", "intents-spec"],
-    "Context Data": ["context-intro", "context-spec"],
-    "App Directory": ["appd-intro", "appd-discovery", "appd-use", "appd-spec"],
+      }
+    ],
+    "Intents": [
+      "intents-intro",
+      "intents-spec"
+    ],
+    "Context Data": [
+      "context-intro",
+      "context-spec"
+    ],
+    "App Directory": [
+      "appd-intro",
+      "appd-discovery",
+      "appd-use",
+      "appd-spec"
+    ],
     "Use Cases": [
       "use-cases/use-cases-intro",
       {
@@ -38,6 +64,8 @@
     ]
   },
   "tutorial": {
-    "Part 1": ["tutorial"]
+    "Part 1": [
+      "tutorial"
+    ]
   }
 }

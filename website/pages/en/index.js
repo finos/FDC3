@@ -146,7 +146,7 @@ class Index extends React.Component {
       <Block background="light" layout="fourColumn">
         {[
           {
-            content: 'Create a consistent developer experience by adhering to the [API](docs/api-intro) standard',
+            content: 'Create a consistent developer experience by adhering to the [API](docs/api/api-intro) standard',
             image: `${baseUrl}img/feature-api.svg`,
             imageAlign: 'top',
             title: 'API',
