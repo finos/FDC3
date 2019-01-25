@@ -7,7 +7,7 @@
     "write-translations": "docusaurus-write-translations",
     "version": "docusaurus-version",
     "rename-version": "docusaurus-rename-version",
-    "redoc-appd": "redoc-cli bundle --output pages/en/appd-spec.html ../src/app-directory/specification/appd.yaml"
+    "redoc-appd": "redoc-cli bundle --output pages/appd-spec.html ../src/app-directory/specification/appd.yaml"
   },
   "devDependencies": {
     "docusaurus": "1.6.2",
