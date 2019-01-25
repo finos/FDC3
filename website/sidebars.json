@@ -7,21 +7,14 @@
     ],
     "API": [
       "api/api-intro",
-      "api/spec",
+      "api/api-spec",
       {
         "type": "subcategory",
         "label": "API Reference",
         "ids": [
           "api/DesktopAgent",
           "api/Context",
-          "api/OpenError",
-          "api/ResolveError",
-          "api/IntentMetadata",
-          "api/AppIntent",
-          "api/AppMetadata",
-          "api/IntentResolution",
-          "api/Listener",
-          "api/findIntent"         
+          "api/Errors"
         ]
       }
     ],

@@ -1,5 +1,5 @@
 ---
-id: spec
+id: api-spec
 sidebar_label: API Specification
 title: API Specification
 hide_title: true
