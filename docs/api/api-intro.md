@@ -8,7 +8,7 @@ hide_title: true
 
 API Working Group repository.
 
-See the [specification draft](spec.md) for the current working documentation, and the [FDC3 Confluence page](https://finosfoundation.atlassian.net/wiki/spaces/FDC3) for further information.
+See the [specification draft](api-spec.md) for the current working documentation, and the [FDC3 Confluence page](https://finosfoundation.atlassian.net/wiki/spaces/FDC3) for further information.
 
 ## Development
 
