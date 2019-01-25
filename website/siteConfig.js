@@ -82,6 +82,7 @@ const siteConfig = {
   cleanUrl: true,
 
   wrapPagesHTML: true,
+  docsSideNavCollapsible: true,
 
   // Open Graph and Twitter card images.
   ogImage: 'img/docusaurus.png',

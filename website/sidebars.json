@@ -2,7 +2,8 @@
   "docs": {
     "Getting Started": [
       "fdc3-intro",
-      "fdc3-charter"
+      "fdc3-charter",
+      "why-fdc3"
     ],
     "API": [
       "api/api-intro",
@@ -11,6 +12,7 @@
         "type": "subcategory",
         "label": "API Reference",
         "ids": [
+          "api/DesktopAgent",
           "api/Context",
           "api/OpenError",
           "api/ResolveError",
@@ -19,8 +21,7 @@
           "api/AppMetadata",
           "api/IntentResolution",
           "api/Listener",
-          "api/findIntent",
-          "api/DesktopAgent"
+          "api/findIntent"         
         ]
       }
     ],

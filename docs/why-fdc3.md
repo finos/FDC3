@@ -2,7 +2,6 @@
 id: why-fdc3
 sidebar_label: Why FDC3
 title: Why FDC3
-hide_title: true
 ---
 
 ## Why look for FDC3 enabled applications?
