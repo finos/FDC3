@@ -34,7 +34,7 @@ const siteConfig = {
     {doc: 'use-cases/use-cases-intro', label: 'Use Cases'},
     {page: 'help', label: 'Community'},
     {page: 'help', label: 'About'},
-    {blog: true, label: 'News'},
+    {blog: true, label: 'News'}
   ],
 
   // If you have users set above, you add it here:
@@ -80,6 +80,8 @@ const siteConfig = {
   onPageNav: 'separate',
   // No .html extensions for paths.
   cleanUrl: true,
+
+  wrapPagesHTML: true,
 
   // Open Graph and Twitter card images.
   ogImage: 'img/docusaurus.png',
