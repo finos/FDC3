@@ -11,6 +11,7 @@ A Desktop Agent is a desktop component (or aggregate of components) that serves 
 A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.
 
 ## Methods
+
 ### `open`
 
 ```typescript
@@ -23,17 +24,18 @@ If a [`Context`](Context) object is passed in, this object will be provided to t
 The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
 If opening errors, it returns an `Error` with a string from the [`OpenError`](OpenError) enumeration.
 
-#### Examples
+#### Example
  ```javascript
     //no context
-    agent.open('myApp');
+    await agent.open('myApp');
+    
     //with context
-    agent.open('myApp', context);
+    await agent.open('myApp', context);
 ```
 
 #### See also
 * [`Context`](Context)
-* [`OpenError`](OpenError)
+* [`OpenError`](Errors#OpenError)
 
 ### `findIntent`
 
@@ -48,23 +50,23 @@ A promise resolving to the intent, its metadata and metadata about the apps that
 This can be used to raise the intent against a specific app.
  
  
- If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
+ If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#ResolveError) enumeration.
 
 #### Examples
-  ```javascript
-   // I know 'StartChat' exists as a concept, and want to know more about it ...
-   const appIntent = await agent.findIntent("StartChat");
-   // returns a single AppIntent:
-   // {
-   //     intent: { name: "StartChat", displayName: "Chat" },
-   //     apps: [{ name: "Skype" }, { name: "Symphony" }, { name: "Slack" }]
-   // }
- 
-   // raise the intent against a particular app
-   await agent.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
-   ```
-   #### See also
-   * [`ResolveError`](ResolveError)
+```javascript
+  // I know 'StartChat' exists as a concept, and want to know more about it ...
+  const appIntent = await agent.findIntent("StartChat");
+  // returns a single AppIntent:
+  // {
+  //     intent: { name: "StartChat", displayName: "Chat" },
+  //     apps: [{ name: "Skype" }, { name: "Symphony" }, { name: "Slack" }]
+  // }
+
+  // raise the intent against a particular app
+  await agent.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
+  ```
+#### See also
+* [`ResolveError`](Errors#ResolveError)
 
 ### `findIntentsByContext`
 
@@ -76,7 +78,7 @@ Find all the avalable intents for a particular context.
 _findIntentsByContext_ is effectively granting programmatic access to the Desktop Agent's resolver. 
 A promise resolving to all the intents, their metadata and metadata about the apps that registered it is returned, based on the context types the intents have registered.
  
- If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
+ If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#ResolveError) enumeration.
  
  #### Examples
  ```javascript
@@ -104,7 +106,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
  ```
 
 #### See also
-   * [`ResolveError`](ResolveError)
+   * [`ResolveError`](Errors#resolveerror)
 
 ### `broadcast`
 ```typescript
@@ -134,7 +136,7 @@ const intentR = await agent.findIntents("StartChat", context);
 agent.raiseIntent("StartChat", newContext, intentR.source);
 ```
 #### See also
-* [`IntentMetadata`](IntentMetadata)
+* [`IntentResolution`](#intentresolution)
 
 ### `addIntentListener`
 ```typescript
@@ -142,7 +144,7 @@ agent.raiseIntent("StartChat", newContext, intentR.source);
 ```
  Adds a listener for incoming Intents from the Agent.
 #### See also
-* [`Listener`](Listener)
+* [`Listener`](#listener)
 * [`Context`](Context)
 
 ### `addContextListener`
@@ -152,5 +154,83 @@ agent.raiseIntent("StartChat", newContext, intentR.source);
 Adds a listener for incoming context broadcast from the Desktop Agent.
 
 #### See also
-* [`Listener`](Listener)
+* [`Listener`](#listener)
 * [`Context`](Context)
+
+## Return Types
+
+### `AppIntent`
+
+```typescript
+interface AppIntent {
+  intent: IntentMetadata;
+  apps: Array<AppMetadata>;
+}
+```
+An interface that represents the binding of an intent to apps
+
+#### See also
+* [`IntentMetadata`](#intentmetadata)
+* [`AppMetadata`](#appmetadata)
+
+### `IntentMetadata`
+
+```typescript
+interface IntentMetadata {
+  name: string;
+  displayName: string;
+}
+```
+
+The Interface used to describe an Intent within the platform.
+
+### `AppMetadata`
+
+```typescript
+interface AppMetadata {
+  name: string;
+}
+```
+
+App metadata is Desktop Agent specific - but should always support a name property.
+
+### `IntentResolution`
+
+```typescript
+interface IntentResolution {
+  source: string;
+  data?: object;
+  version: string;
+}
+```
+
+IntentResolution provides a standard format for data returned upon resolving an intent.
+ 
+#### Example
+ ```javascript
+ //resolve a "Chain" type intent
+ var intentR = await agent.raiseIntent("intentName", context);
+ //resolve a "Client-Service" type intent with data response
+ var intentR = await agent.raiseIntent("intentName", context);
+ var dataR = intentR.data;
+ ```
+
+#### See also
+* [`DesktopAgent.raiseIntent`](#raiseintent)
+
+
+### `Listener`
+
+```typescript
+interface Listener {
+  unsubscribe();
+}
+```
+
+A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](DesktopAgent#addintentlistener) or [`addContextListener`](DesktopAgent#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
+The `unsubscribe` method on the listener object allows the application to cancel the subscription.
+
+#### See also
+* [`DesktopAgent.addIntentListener`](#addintentlistener)
+* [`DesktopAgent.addContextListener`](#addcontextlistener)
+
