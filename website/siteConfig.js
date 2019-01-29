@@ -37,6 +37,8 @@ const siteConfig = {
     {blog: true, label: 'News'}
   ],
 
+  twitterUsername: 'fdc3_',
+
   // If you have users set above, you add it here:
   users,
 
