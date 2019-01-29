@@ -90,33 +90,29 @@ class Footer extends React.Component {
           </div>
           <div>
             <h5>More</h5>
-            <a href={`${this.props.config.baseUrl}blog`}>News</a>
-            <a href={this.props.config.repoUrl}>GitHub</a>
-            <a
-              className="github-button"
-              href={this.props.config.repoUrl}
-              data-icon="octicon-star"
-              data-count-href="/rikoe/FDC3/stargazers"
-              data-show-count="true"
-              data-count-aria-label="# stargazers on GitHub"
-              aria-label="Star this project on GitHub">
-              Star
-            </a>
+            <div className="social">
+              <a
+                className="github-button" // part of the https://buttons.github.io/buttons.js script in siteConfig.js
+                href={this.props.config.repoUrl}
+                data-count-href={`${this.props.config.repoUrl}/stargazers`}
+                data-show-count="true"
+                data-count-aria-label="# stargazers on GitHub"
+                aria-label="Star this project on GitHub">
+                {this.props.config.projectName}
+              </a>
+            </div>
+            {this.props.config.twitterUsername && (
+              <div className="social">
+                <a
+                  href={`https://twitter.com/${this.props.config.twitterUsername}`}
+                  className="twitter-follow-button">
+                  Follow @{this.props.config.twitterUsername}
+                </a>
+              </div>
+            )}
           </div>
         </section>
-
-        {/* <a
-          href="https://code.facebook.com/projects/"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="fbOpenSource">
-          <img
-            src={`${this.props.config.baseUrl}img/oss_logo.png`}
-            alt="Facebook Open Source"
-            width="170"
-            height="45"
-          />
-        </a> */}
+        
         <section className="copyright">{this.props.config.copyright}</section>
       </footer>
     );
