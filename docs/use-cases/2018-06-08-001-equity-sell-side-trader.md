@@ -1,7 +1,7 @@
 ---
 id: use-case-1
 title:  "Use Case 1: Equity sell side trader"
-sidebar_label: Use Case 1: Equity sell side trader
+sidebar_label: Equity sell side trader
 layout: use_case
 ---
 

@@ -17,7 +17,7 @@ This repository demonstrates using [Docusaurus](https://docusaurus.io) to author
 - [ ] Integrate OpenAPI docs for app directory (redoc?)
 - [ ] Integrate generated TS docs for API
 - [ ] API reference (postponing)
-- [ ] Intent reference
+- [ ] Intent reference (postponing)
 - [ ] Versioning
 - [ ] About page
 - [ ] Community page
@@ -25,8 +25,8 @@ This repository demonstrates using [Docusaurus](https://docusaurus.io) to author
 - [ ] Tutorial content (after 1.0)
 - [ ] FINOS/Working group info
 - [ ] Finalise styling and assets
-- [ ] GitHub README must adhere to FINOS standard
-- [ ] Present to PMC
+- [x] GitHub README must adhere to FINOS standard
+- [x] Present to PMC
 
 For more detail, see the [FINOS FDC3 1.0 Release Public Launch Documentation Sub-Plan](https://finosfoundation.atlassian.net/wiki/spaces/FDC3/pages/711950361/FDC3+1.0+Release+Public+Launch+Documentation+Sub-Plan).
 

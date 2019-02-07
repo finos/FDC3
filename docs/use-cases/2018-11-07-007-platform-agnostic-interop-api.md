@@ -1,7 +1,7 @@
 ---
 id: use-case-7
 title: Use Case 7: Platform agnostic interop API
-sidebar_label: Use Case 7: Platform agnostic interop API
+sidebar_label: Platform agnostic interop API
 layout: use_case
 ---
 
