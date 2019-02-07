@@ -6,14 +6,11 @@ hide_title: true
 ---
 # API Overview
 
-API Working Group repository.
+FDC3 API standards support the following goals:
+- Create consistent developer interface for working with FDC3 
+- Standardize interfaces for reference implementations
+- Standardize interfaces between Desktop Agents
 
-See the [specification draft](api-spec.md) for the current working documentation, and the [FDC3 Confluence page](https://finosfoundation.atlassian.net/wiki/spaces/FDC3) for further information.
+The role of FDC3 API standards is to establish a baseline interface for interoperability between applications. Because FDC3 is largely an agreement between existing platforms and applications - standards should be optimized for ease of adoption rather than functional completeness. Functionality absent from a FDC3 specification is in no way commentary its importance.
 
-## Development
-
-```
-yarn install
-```
-
-When making changes to the TypeScript interfaces, run `yarn test` to ensure there are no syntax errors, and `yarn run doc` to regenerate the documentation.
+The focus on the API working group has been to create a small but consistent API, the following docs go through the components and API's in detail
