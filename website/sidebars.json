@@ -38,7 +38,9 @@
       "use-cases/use-cases-intro"
     ],
     "Accepted": [
-      "use-cases/use-case-1"
+      "use-cases/use-case-1",
+      "use-cases/use-case-9",
+      "use-cases/use-case-10"
     ],
     "In Review": [
       "use-cases/use-case-6"
