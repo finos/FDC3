@@ -1,9 +1,7 @@
-# Example Single FDC3 Repository and Website
+# Single FDC3 Repository and Website
 
-[![Build Status](https://travis-ci.com/rikoe/FDC3.svg?branch=master)](https://travis-ci.com/rikoe/FDC3)
-[![FINOS - Incubating](https://cdn.rawgit.com/finos/contrib-toolbox/master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
-
-This repository demonstrates using [Docusaurus](https://docusaurus.io) to author and host the FDC3 website and documentation, based on markdown files.
+This repository uses [Docusaurus](https://docusaurus.io) to author and host the FDC3 website and documentation, based on markdown files.
+It is based on all FDC3 content, including source code and examples, being present in the same directory to reduce duplication and increase consistency.
 
 ## Plan
 
@@ -12,21 +10,26 @@ This repository demonstrates using [Docusaurus](https://docusaurus.io) to author
 - [x] Attempt to apply styling and assets from https://fdc3.finos.org to this website
 - [x] Copy docs from other FDC3 repositories into this single repository
 - [x] Setup CI
-- [ ] Copy code/examples from other FDC3 repositories
+- [x] Copy code/examples from other FDC3 repositories
 - [x] Add docs from use cases
-- [ ] Integrate OpenAPI docs for app directory (redoc?)
-- [ ] Integrate generated TS docs for API
-- [ ] API reference (postponing)
-- [ ] Intent reference (postponing)
-- [ ] Versioning
-- [ ] About page
-- [ ] Community page
-- [ ] Extra documentation content
-- [ ] Tutorial content (after 1.0)
-- [ ] FINOS/Working group info
-- [ ] Finalise styling and assets
+- [x] Integrate OpenAPI docs for app directory (Redoc)
 - [x] GitHub README must adhere to FINOS standard
 - [x] Present to PMC
+- [ ] About page (Information about the FDC3 and its mission)
+- [ ] Community page (Information and links to FINOS)
+- [ ] News/blogs area (remove existing sample content, add real content)
+- [ ] Docusaurus website versioning (first version to be 0.9 or 1.0-beta)
+- [ ] Repository versioning instructions (i.e. tags and release notes)
+- [ ] Documentation improvements & extra content
+- [ ] An extra page under the docs for each area with the working group info from the wiki
+- [ ] Finalise styling and assets
+- [ ] Users/members section
+- [ ] FINOS section on landing page (from current fdc3.finos.org)
+- [ ] Identify improvement areas for working groups
+
+## Later
+- [ ] Intent reference
+- [ ] Tutorial content (after 1.0)
 
 For more detail, see the [FINOS FDC3 1.0 Release Public Launch Documentation Sub-Plan](https://finosfoundation.atlassian.net/wiki/spaces/FDC3/pages/711950361/FDC3+1.0+Release+Public+Launch+Documentation+Sub-Plan).
 
@@ -63,7 +66,7 @@ root-directory
     ├── intents
 └── examples
     ├── context
-    ├── intents
+    └── intents
 ```
 
 ### Running the website locally
@@ -87,7 +90,7 @@ root-directory
 
 ### Publishing to GitHub Pages
 
-The following properties were added to `website/siteConfig.js`:
+The following properties were added to `website/siteConfig.js` (amongst others):
 
 ```js
 const siteConfig = {

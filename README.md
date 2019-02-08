@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.com/rikoe/FDC3.svg?branch=master)](https://travis-ci.com/rikoe/FDC3)
 [![FINOS - Incubating](https://cdn.rawgit.com/finos/contrib-toolbox/master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Stack Overflow](https://img.shields.io/badge/stackoverflow-tag-orange.svg)](https://stackoverflow.com/questions/tagged/fdc3)
 
 # FDC3
 
