@@ -16,7 +16,7 @@ const GridBlock = CompLibrary.GridBlock;
 class HomeSplash extends React.Component {
   render() {
     const {siteConfig, language = ''} = this.props;
-    const {baseUrl, docsUrl} = siteConfig;
+    const {baseUrl, docsUrl, repoUrl} = siteConfig;
     const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`;
     const langPart = `${language ? `${language}/` : ''}`;
     const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`;
@@ -65,7 +65,7 @@ class HomeSplash extends React.Component {
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
             <Button href={docUrl('fdc3-intro')}>Get Started</Button>
-            <Button href="https://github.com/rikoe/FDC3">GitHub</Button>
+            <Button href={repoUrl}>GitHub</Button>
           </PromoSection>
         </div>
       </SplashContainer>
