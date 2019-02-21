@@ -28,7 +28,7 @@ const siteConfig = {
   baseUrl: '/',
   // For publishing to GitHub pages
   projectName: 'FDC3',
-  organizationName: 'rikoe',
+  organizationName: 'FDC3',
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     {doc: 'fdc3-intro', label: 'Docs'},    
