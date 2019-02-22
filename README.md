@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/rikoe/FDC3.svg?branch=master)](https://travis-ci.com/rikoe/FDC3)
+[![Build Status](https://travis-ci.com/FDC3/FDC3.svg?branch=master)](https://travis-ci.com/FDC3/FDC3)
 [![FINOS - Incubating](https://cdn.rawgit.com/finos/contrib-toolbox/master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Stack Overflow](https://img.shields.io/badge/stackoverflow-tag-orange.svg)](https://stackoverflow.com/questions/tagged/fdc3)
@@ -18,7 +18,7 @@ Check out how FDC3 is [being used](docs/usage-examples.md).
 
 ## Contributing
 
-1. Fork it (<https://github.com/rikoe/FDC3/fork>)
+1. Fork it (<https://github.com/FDC3/FDC3/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
