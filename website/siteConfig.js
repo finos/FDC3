@@ -99,7 +99,7 @@ const siteConfig = {
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
-  repoUrl: 'https://github.com/rikoe/FDC3'
+  repoUrl: 'https://github.com/FDC3/FDC3'
 };
 
 module.exports = siteConfig;
