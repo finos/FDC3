@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<url> <loc>https://fdc3.finos.org/help</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/en/help" /> </url>
+<url> <loc>https://fdc3.finos.org/index</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/en/index" /> </url>
+<url> <loc>https://fdc3.finos.org/users</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/en/users" /> </url>
+<url> <loc>https://fdc3.finos.org/blog/2017/10/24/new-version-1.0.0</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
+<url> <loc>https://fdc3.finos.org/blog/2017/09/26/adding-rss</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
+<url> <loc>https://fdc3.finos.org/blog/2017/09/25/testing-rss</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
+<url> <loc>https://fdc3.finos.org/blog/2017/04/10/blog-post-two</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
+<url> <loc>https://fdc3.finos.org/blog/2016/03/11/blog-post</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
+<url> <loc>https://fdc3.finos.org/docs/api/api-intro</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/api/api-intro" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/api/api-spec</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/api/api-spec" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/api/Context</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/api/Context" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/api/DesktopAgent</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/api/DesktopAgent" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/api/Errors</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/api/Errors" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/appd-discovery</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/appd-discovery" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/appd-intro</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/appd-intro" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/appd-spec</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/appd-spec" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/appd-use</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/appd-use" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/apps-and-platforms</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/apps-and-platforms" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/context-intro</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/context-intro" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/context-spec</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/context-spec" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/fdc3-charter</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/fdc3-charter" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/fdc3-intro</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/fdc3-intro" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/intents-intro</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/intents-intro" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/intents-spec</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/intents-spec" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/real-world-use-cases</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/real-world-use-cases" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/use-cases/use-case-1</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/use-cases/use-case-1" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/use-cases/use-case-9</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/use-cases/use-case-9" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/use-cases/use-case-10</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/use-cases/use-case-10" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/use-cases/use-case-6</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/use-cases/use-case-6" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/use-cases/use-case-7</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/use-cases/use-case-7" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/use-cases/use-cases-intro</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/use-cases/use-cases-intro" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/why-fdc3</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/why-fdc3" /> </url>
+</urlset>
