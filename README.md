@@ -7,14 +7,8 @@
 
 The mission of the Financial Desktop Connectivity and Collaboration Consortium (FDC3) is to develop specific protocols and taxonomies to advance the ability of desktop applications in financial workflows to interoperate in a plug-and-play fashion and without prior, bi-lateral agreements.
 
-## Installation
-
-FDC3 is a standard and as such has no direct install.
-Check out the [reference implementations](docs/reference-implementations.md) for actual code to install. 
-
-## Usage example
-
-Check out how FDC3 is [being used](docs/usage-examples.md).
+## About this Repository
+FDC3 is a standard.  This repository houses the documentation and specifications for the ratified FDC3 standards.
 
 ## Contributing
 
