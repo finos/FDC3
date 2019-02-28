@@ -4,7 +4,7 @@
         <title>FDC3 Blog</title>
         <link>https://fdc3.finos.org/blog</link>
         <description>The best place to stay up-to-date with the latest FDC3 news and events.</description>
-        <lastBuildDate>Tue, 24 Oct 2017 06:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 26 Sep 2017 06:00:00 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>Feed for Node.js</generator>
         <image>
@@ -13,13 +13,6 @@
             <link>https://fdc3.finos.org/blog</link>
         </image>
         <copyright>Copyright © 2019 FDC3</copyright>
-        <item>
-            <title><![CDATA[New Version 1.0.0]]></title>
-            <link>https://fdc3.finos.org/blog/2017/10/24/new-version-1.0.0.html</link>
-            <guid>https://fdc3.finos.org/blog/2017/10/24/new-version-1.0.0.html</guid>
-            <pubDate>Tue, 24 Oct 2017 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>This blog post will test file name parsing issues when periods are present.</p> ]]></description>
-        </item>
         <item>
             <title><![CDATA[Adding RSS Support]]></title>
             <link>https://fdc3.finos.org/blog/2017/09/26/adding-rss.html</link>
