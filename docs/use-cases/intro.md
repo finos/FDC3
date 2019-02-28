@@ -1,5 +1,5 @@
 ---
-id: use-cases-intro
+id: uc-intro
 title: Use Cases Overview
 hide_title: true
 sidebar_label: Use Cases Overview
