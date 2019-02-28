@@ -34,8 +34,8 @@ const siteConfig = {
     {doc: 'fdc3-intro', label: 'Docs'},    
     {doc: 'use-cases/use-cases-intro', label: 'Use Cases'},
     {page: 'help', label: 'Community'},
-    {page: 'help', label: 'About'},
-    {blog: true, label: 'News'}
+    {page: 'help', label: 'About'}
+   //, {blog: true, label: 'News'}
   ],
 
   twitterUsername: 'fdc3_',
