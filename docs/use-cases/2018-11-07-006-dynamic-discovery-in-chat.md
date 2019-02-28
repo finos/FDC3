@@ -2,9 +2,10 @@
 id: uc-6
 title:  "Use Case 6: Dynamic discovery in chat"
 sidebar_label: 6. Dynamic discovery in chat
-status: IN REVIEW
 layout: use_case
 ---
+
+> **IN REVIEW**
 
 ## Preconditions
 - A running chat application

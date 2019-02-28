@@ -2,9 +2,10 @@
 id: uc-1
 title:  "Use Case 1: Equity sell side trader"
 sidebar_label: 1. Equity sell side trader
-status: ACCEPTED
 layout: use_case
 ---
+
+> **ACCEPTED**
 
 ## Preconditions
 On their desktop, this user has:

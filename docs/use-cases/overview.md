@@ -1,8 +1,8 @@
 ---
-id: uc-intro
+id: overview
 title: Use Cases Overview
 hide_title: true
-sidebar_label: Use Cases Overview
+sidebar_label: Overview
 layout: default
 ---
 

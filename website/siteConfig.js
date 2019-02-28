@@ -32,7 +32,7 @@ const siteConfig = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     {doc: 'fdc3-intro', label: 'Docs'},    
-    {doc: 'use-cases/uc-intro', label: 'Use Cases'},
+    {doc: 'use-cases/overview', label: 'Use Cases'},
     {page: 'get-involved', label: 'Get Involved'},
     {doc: 'why-fdc3', label: 'Why FDC3'}
    //, {blog: true, label: 'News'}

@@ -2,9 +2,10 @@
 id: uc-13
 title:  "Use Case 13: User launches multiple apps from a single container"
 sidebar_label:  13. User launches multiple apps from a single container
-status: ACCEPTED
 layout: use_case
 ---
+
+> **ACCEPTED**
 
 ## Preconditions
 On the desktop the user is running:
