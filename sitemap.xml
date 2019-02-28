@@ -5,7 +5,6 @@
 <url> <loc>https://fdc3.finos.org/users</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/en/users" /> </url>
 <url> <loc>https://fdc3.finos.org/blog/2017/09/26/adding-rss</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
 <url> <loc>https://fdc3.finos.org/blog/2017/09/25/testing-rss</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
-<url> <loc>https://fdc3.finos.org/blog/2017/04/10/blog-post-two</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
 <url> <loc>https://fdc3.finos.org/docs/api/api-intro</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/api/api-intro" /> </url>
 <url> <loc>https://fdc3.finos.org/docs/api/api-spec</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/api/api-spec" /> </url>
 <url> <loc>https://fdc3.finos.org/docs/api/Context</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/api/Context" /> </url>

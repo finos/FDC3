@@ -29,13 +29,5 @@
 <p>This should be truncated.</p>
 ]]></description>
         </item>
-        <item>
-            <title><![CDATA[New Blog Post]]></title>
-            <link>https://fdc3.finos.org/blog/2017/04/10/blog-post-two.html</link>
-            <guid>https://fdc3.finos.org/blog/2017/04/10/blog-post-two.html</guid>
-            <pubDate>Mon, 10 Apr 2017 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus elementum massa eget nulla aliquet sagittis. Proin odio tortor, vulputate ut odio in, ultrices ultricies augue. Cras ornare ultrices lorem malesuada iaculis. Etiam sit amet libero tempor, pulvinar mauris sed, sollicitudin sapien.</p>
-]]></description>
-        </item>
     </channel>
 </rss>
