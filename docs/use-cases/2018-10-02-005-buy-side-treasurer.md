@@ -2,9 +2,10 @@
 id: uc-5
 title:  "Use Case 5: Buy side Treasurer - client rates across providers"
 sidebar_label: 5. Buy side Treasurer - client rates across providers
-status: ACCEPTED
 layout: use_case
 ---
+
+> **ACCEPTED**
 
 ## Preconditions
 

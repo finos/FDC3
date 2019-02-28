@@ -36,20 +36,16 @@
   },
   "use-cases": {
     "Use Cases": [
-      "use-cases/uc-intro"
-    ],
-    "Accepted": [
+      "use-cases/overview",
       "use-cases/uc-1",
       "use-cases/uc-2",
       "use-cases/uc-3",
       "use-cases/uc-4",
       "use-cases/uc-5",
+      "use-cases/uc-6",
       "use-cases/uc-9",
       "use-cases/uc-10",
       "use-cases/uc-13"
-    ],
-    "In Review": [
-      "use-cases/uc-6"
     ]
   }
 }

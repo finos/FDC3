@@ -2,9 +2,10 @@
 id: uc-3
 title:  "Use Case 3: Inhouse Cross Platform Launcher"
 sidebar_label: 3. Inhouse Cross Platform Launcher
-status: ACCEPTED
 layout: use_case
 ---
+
+> **ACCEPTED**
 
 ## Preconditions
 The user wants a single launch pad / toolbar to access my applications and which can also provide the primary UI access point for notifications and alerts.

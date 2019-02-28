@@ -2,9 +2,10 @@
 id: uc-4
 title:  "Use Case 4: Client-side FX Trader Credit Check"
 sidebar_label: 4. Client-side FX Trader Credit Check
-status: ACCEPTED
 layout: use_case
 ---
+
+> **ACCEPTED**
 
 ## Preconditions
 

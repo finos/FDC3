@@ -2,9 +2,10 @@
 id: uc-2
 title:  "Use Case 2: Buy side Portfolio Manager"
 sidebar_label: 2. Buy side Portfolio Manager
-status: ACCEPTED
 layout: use_case
 ---
+
+> **ACCEPTED**
 
 ## Preconditions
 On their desktop, this user has:
