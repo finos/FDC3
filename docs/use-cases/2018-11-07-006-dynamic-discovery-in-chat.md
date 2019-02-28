@@ -1,7 +1,8 @@
 ---
-id: use-case-6
+id: uc-6
 title:  "Use Case 6: Dynamic discovery in chat"
-sidebar_label: Dynamic discovery in chat
+sidebar_label: 6. Dynamic discovery in chat
+status: IN REVIEW
 layout: use_case
 ---
 
