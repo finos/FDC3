@@ -47,17 +47,4 @@
             <uri>http://twitter.com/</uri>
         </author>
     </entry>
-    <entry>
-        <title type="html"><![CDATA[Blog Title]]></title>
-        <id>https://fdc3.finos.org/blog/2016/03/11/blog-post.html</id>
-        <link href="https://fdc3.finos.org/blog/2016/03/11/blog-post.html">
-        </link>
-        <updated>2016-03-11T06:00:00Z</updated>
-        <summary type="html"><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus elementum massa eget nulla aliquet sagittis. Proin odio tortor, vulputate ut odio in, ultrices ultricies augue. Cras ornare ultrices lorem malesuada iaculis. Etiam sit amet libero tempor, pulvinar mauris sed, sollicitudin sapien.</p>
-]]></summary>
-        <author>
-            <name>Blog Author</name>
-            <uri>http://twitter.com/</uri>
-        </author>
-    </entry>
 </feed>
