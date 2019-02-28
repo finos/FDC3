@@ -31,8 +31,8 @@ function Help(props) {
       title: 'Join the community',
     },
     {
-      content: "Find out what's new with this project",
-      title: 'Stay up to date',
+      content: `[Get involved with FDC3. Contribute, add ideas, write code](https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview)`,
+      title: 'Participate in FDC3',
     },
   ];
 
