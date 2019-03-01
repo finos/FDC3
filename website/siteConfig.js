@@ -33,7 +33,7 @@ const siteConfig = {
   headerLinks: [
     {doc: 'fdc3-intro', label: 'Docs'},    
     {doc: 'use-cases/use-cases-intro', label: 'Use Cases'},
-    {page: 'help', label: 'FDC3 Community'},
+    {page: 'get-involved', label: 'Get Involved'},
     {doc: 'why-fdc3', label: 'Why FDC3'}
    //, {blog: true, label: 'News'}
   ],
