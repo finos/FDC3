@@ -3,7 +3,8 @@
     "Getting Started": [
       "fdc3-intro",
       "fdc3-charter",
-      "why-fdc3"
+      "why-fdc3",
+      "fdc3-governance"
     ],
     "API": [
       "api/api-intro",
