@@ -22,7 +22,7 @@ In general, the ratified FDC3 specs represent a lowest common denominator interf
 
 These rules would apply only to standards work within FDC3.  Today, this covers API, App Directory, Context Data, and Intents working groups, it does not apply to the Use Cases working group. 
 
-### Personas:
+## Personas:
 FDC3 implementors generally fall into 2 categories: platform providers, and application providers.  
 A platform provider provides an implementation of the FDC3 API for applications to use. Implicitly, it connects to one or more App Directories.
 
@@ -30,7 +30,7 @@ An application provider is largely a downstream consumer of FDC3 standards.  It 
 
 Depending on persona, implementation compliance with FDC3 will mean different things.  
 
-#### Platform Provider
+### Platform Provider
 To meet the requirements of FDC3, a platform provider would need to support the following:
 
 * Connection to 1 or more App Directories meeting the FDC3 App Directory standards
@@ -39,7 +39,7 @@ To meet the requirements of FDC3, a platform provider would need to support the 
     * Support for Intent and Context resolution using a resolver UI
 * At least one workflow of one of the use cases marked as Accepted by the Use Cases working group SHOULD be satisfied by the implementation.
 
-#### Application Provider
+### Application Provider
 For application providers FDC3 compliance requires:
 * If intents are supported by the application, they SHOULD favor supporting applicable FDC3 defined intents over proprietary ones.  
 * If FDC3 defined intents are supported, they MUST meet the expected context and behavior defined for the intent.  
