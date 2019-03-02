@@ -5,8 +5,6 @@ sidebar_label: 2. Buy side Portfolio Manager
 layout: use_case
 ---
 
-> **ACCEPTED**
-
 ## Preconditions
 On their desktop, this user has:
 - An installed full-service market data terminal with news, quotes, research management, etc. The application is open and FDC3 compatible.

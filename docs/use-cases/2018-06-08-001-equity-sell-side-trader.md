@@ -5,8 +5,6 @@ sidebar_label: 1. Equity sell side trader
 layout: use_case
 ---
 
-> **ACCEPTED**
-
 ## Preconditions
 On their desktop, this user has:
 - Their firm's internal research & analytics platform containing liquidity tools and internal research. The product is running and the liquidity tool is open

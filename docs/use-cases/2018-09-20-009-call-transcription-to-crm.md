@@ -5,8 +5,6 @@ sidebar_label: 9. Call Transcription to CRM
 layout: use_case
 ---
 
-> **ACCEPTED**
-
 ## Overview
 
 Voice calls contain important financial information which is trapped in the audio.  These data are not easily searchable; human notetakers are prone to error; and post hoc call notes may miss crucial elements.

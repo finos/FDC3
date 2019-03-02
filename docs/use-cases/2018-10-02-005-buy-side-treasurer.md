@@ -5,8 +5,6 @@ sidebar_label: 5. Buy side Treasurer - client rates across providers
 layout: use_case
 ---
 
-> **ACCEPTED**
-
 ## Preconditions
 
 - Several trading applications from different providers - all running
