@@ -5,8 +5,6 @@ sidebar_label: 4. Client-side FX Trader Credit Check
 layout: use_case
 ---
 
-> **ACCEPTED**
-
 ## Preconditions
 
 - Running a client in-house proprietary application capable of conducting a user credit check

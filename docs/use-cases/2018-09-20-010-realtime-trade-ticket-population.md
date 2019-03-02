@@ -5,8 +5,6 @@ sidebar_label: 10. Real-Time voice trades -> trade ticket population
 layout: use_case
 ---
 
-> **ACCEPTED**
-
 ## Persona
 - Salesperson / Trader / Broker negotiating a trade via voice (over the phone).
 

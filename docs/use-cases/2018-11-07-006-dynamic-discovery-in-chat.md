@@ -5,8 +5,6 @@ sidebar_label: 6. Dynamic discovery in chat
 layout: use_case
 ---
 
-> **IN REVIEW**
-
 ## Preconditions
 - A running chat application
 - Several installed trading and research apps - some running, some not running
