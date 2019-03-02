@@ -18,6 +18,7 @@
 <url> <loc>https://fdc3.finos.org/docs/context-intro</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/context-intro" /> </url>
 <url> <loc>https://fdc3.finos.org/docs/context-spec</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/context-spec" /> </url>
 <url> <loc>https://fdc3.finos.org/docs/fdc3-charter</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/fdc3-charter" /> </url>
+<url> <loc>https://fdc3.finos.org/docs/fdc3-compliance</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/fdc3-compliance" /> </url>
 <url> <loc>https://fdc3.finos.org/docs/fdc3-intro</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/fdc3-intro" /> </url>
 <url> <loc>https://fdc3.finos.org/docs/intents-intro</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/intents-intro" /> </url>
 <url> <loc>https://fdc3.finos.org/docs/intents-spec</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://fdc3.finos.org/docs/intents-spec" /> </url>
