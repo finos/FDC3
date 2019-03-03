@@ -1,7 +1,7 @@
 ---
 id: appd-spec
 sidebar_label: App Directory Specification
-title: App Directory Specification (Draft)
+title: App Directory Specification
 ---
 ## API
 
