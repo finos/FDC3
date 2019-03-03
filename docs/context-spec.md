@@ -5,7 +5,7 @@ title: Context Data Specification
 hide_title: true
 ---
 
-# Context Data Specification (Draft)
+# Context Data Specification
 
 ## Introduction
 
