@@ -22,20 +22,6 @@ Unlike the other working groups, 'Use Cases' should provide requirements only no
 
 ![Use Cases diagram](assets/use-cases.png)
 
-## Team
-
-### Chairs
-- Saori Fotenos (Refinitiv)
-- Johnatan Teper (JPMC)
-- Katherine Jones (Refinitiv)
-
-### Members
-- Johan Sandersson (Factset)
-- Espen Overbye (OpenFin)
-- Leslie Spiro (Tick42)
-- Cesar Morgadinho (Westpac)
-- David Calrson (Wellington)
-- Tom Schady (Greenkey)
 
 ## Join us
-Join our mailing-lists and bi-weekly meetings on WebEx; check the [Wiki documentation page](https://finosfoundation.atlassian.net/wiki/spaces/FDC3/pages/169738241/Use+Case+Working+Group) for details.
+Join our mailing-lists and bi-weekly meetings on WebEx. Check the [Wiki documentation page](https://finosfoundation.atlassian.net/wiki/spaces/FDC3/pages/169738241/Use+Case+Working+Group) for details.
