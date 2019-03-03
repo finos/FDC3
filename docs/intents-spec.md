@@ -5,7 +5,7 @@ title: Intents Specification
 hide_title: true
 ---
 
-# Intents Specification (Draft)
+# Intents Specification
 
 ## Introduction
 
