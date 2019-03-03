@@ -7,9 +7,8 @@ hide_title: true
 
 # Intents Overview
 
-Extending APIs from one App to another is powerful.   However, it requires bi-lateral agreements where implementors build to specific APIs ahead of time.
+Extending APIs from one application to another is powerful. However, it requires bi-lateral agreements where implementors build to proprietary APIs. A standard language for interaction between applications allows us to create workflows on the fly, so that applications can discover and link to another without any prior knowledge.
 
-Using a standard language for interaction between applications allows us to create workflows on the fly.  So that one application can discover and link to another without any prior knowledge.  
 
 FDC3 Intents define a standard set of verbs that can be used to put together common cross-application workflows on the financial desktop.
 * Applications register the Intents & [Context Data](context-intro) combinations they support in the [App Directory](appd-intro)
