@@ -1,36 +1,34 @@
 ---
-id: use-case-1
+id: uc-1
 title:  "Use Case 1: Equity sell side trader"
-sidebar_label: Equity sell side trader
+sidebar_label: 1. Equity sell side trader
 layout: use_case
 ---
 
+## Preconditions
 On their desktop, this user has:
-- Their firm's proprietary research & analytics platform containing liquidity tools and internal research. The product is running and the liquidity tool is open
+- Their firm's internal research & analytics platform containing liquidity tools and internal research. The product is running and the liquidity tool is open
 - An installed chat application - product is running
-- A third party research & analytics platform with 3 open applications:
+- A third party market data terminal with 3 open applications. These applications are all 'linked' through a channel. 
     - A Watchlist
     - An Order Book
     - An Overview of pricing and fundamental data
-- A third party Charting Application hosted in a web browser
+- A third party Charting Application access via a browser window. This is not open. 
 
 ## Workflow 1
-The user receives a message in the chat application containing an instrument identifier for Tesla. They want to do some analysis on Tesla and so see what applications are available through right clicking on the identifier for Tesla. They have the option to launch an app in their proprietary platform, or in the third party platform.
+The user receives a message in the chat application containing an instrument identifier for Tesla. They want to do some analysis on Tesla and so see what applications are available through right clicking on the identifier for Tesla. A menu will appear within the chat application showing applications that can be launched from the Messenger tool. The menu shows two apps, both for analysis; one in the internal platform, the other in the market data terminal. 
 
 ## Workflow 2
-The user wants to see internally created and shared information on Tesla and so launches a proprietary research app that opens showing internal research published on Tesla.
+The user wants to see his firm's internal research on Tesla and so decides to open the analysis app from his internal platform. The application is launched showing all internal research available for Tesla. 
 
 ## Workflow 3
-The user wants to do further analysis on Tesla and so launches a third party research and analytics platform that opens showing financial statements and calculated financial data (such as market capitalization, P/E ratio, growth rate, earnings margins, etc)  and 3rd party research documents published on Tesla that they are entitled to access.
-
-## Workflow 4
-The user decides that they want to do some technical analysis. The third party platform has an integration with the third party charting application and the user launches the app, which opens in a browser window.
+The user wants to do further analysis on Tesla and so they open (themselves) a new app in the market data terminal that has Tesla's financial statement and other calculated financial data (such as market capitalization, P/E ratio, growth rate, earnings margins, etc). The user sees the third party charting app listed in a menu in the market data terminal and decides to do some technical analysis using that app. They select the chart app, which opens in a browser window. 
 
 ## Workflow 5
-The user wants to see information about another competitive international automobile company such as BMW.  The user changes the selected identifier from Tesla to BMW in one app in the third party platform and the open applications, including the charting application, change to show information on BMW instead of Tesla.
+Having done technical analysis in the Chart app, the user wants to do the same analysis on BMW, and also use the open pricing and fundamental app. The user creates a link between the financial statement app, the pricing data app (both in the market data terminal) and the charting app. The user changes the instrument in the financial statement app and the other applications update to show information on BMW. 
 
 ## Workflow 6
-The user adds BMW and Tesla to a shared group of companies (aka a Watchlist) named "Automotive comparables" to a list within the watchlist.   This group of companies is shared with all applications which use this group for any comparative analytics.
+The user adds BMW and Tesla to a shared group of companies (aka a Watchlist) named "Automotive comparables" to a list within the open Watchlist. All linked applications update with the new companies.
 
 ## Interoperability Points
 - API
