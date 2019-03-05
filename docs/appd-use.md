@@ -13,7 +13,7 @@ information specific to the launching and integration of the application.
 
 
 In the real world the AppD would support many use cases as defined in the
-[FDC3 Use Cases](https://finosfoundation.atlassian.net/wiki/spaces/FDC3/pages/551714819/2.+ACCEPTED+Use+Cases)
+[FDC3 Use Cases](use-cases/use-cases-intro)
 
 The following provides some common use cases and benefits.
 

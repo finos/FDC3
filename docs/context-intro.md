@@ -6,16 +6,11 @@ hide_title: true
 ---
 
 # Context Data Overview
-
-Context data object specifications, schemas, and examples:
-
-* Extending APIs from one App to another is powerful...
-* However, it requires building to a specific API ahead of time
-* Standard context and intent definitions let us create workflows on the fly
+Extending APIs from one application to another is powerful.   However, it requires bi-lateral agreements where implementors build to proprietary APIs.  A standard language for interaction between applications allows us to create workflows on the fly, so that applications can discover and link to another without any prior knowledge.  
 
 FDC3 Context Data defines a standard way to pass common identifiers and data between apps to create a seamless workflow.  FDC3 Context Data is not a symbology solution and is not specifically focused on modeling financial objects.  The focus is on providing a standard payload structure that can be used to establish a lowest common denominator for interoperability.
 
-Context objects are used when [declaring]() and [raising]() intents, and when [broadcasting]() context to other applications.
+Context objects are used when raising [Intents](intents-intro) and when broadcasting context to other applications.
 
 ## Context Object
 
