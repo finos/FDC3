@@ -15,7 +15,7 @@ A Desktop Agent can be connected to one or more App Directories and will use dir
 ### `open`
 
 ```typescript
-  open(name: string, context?: Context): Promise<void>;
+open(name: string, context?: Context): Promise<void>;
 ```
 
 Launches/links to an app by name.
@@ -26,11 +26,11 @@ If opening errors, it returns an `Error` with a string from the [`OpenError`](Op
 
 #### Example
  ```javascript
-    //no context
-    await agent.open('myApp');
-    
-    //with context
-    await agent.open('myApp', context);
+//no context
+await agent.open('myApp');
+
+//with context
+await agent.open('myApp', context);
 ```
 
 #### See also
@@ -54,24 +54,25 @@ This can be used to raise the intent against a specific app.
 
 #### Examples
 ```javascript
-  // I know 'StartChat' exists as a concept, and want to know more about it ...
-  const appIntent = await agent.findIntent("StartChat");
-  // returns a single AppIntent:
-  // {
-  //     intent: { name: "StartChat", displayName: "Chat" },
-  //     apps: [{ name: "Skype" }, { name: "Symphony" }, { name: "Slack" }]
-  // }
+// I know 'StartChat' exists as a concept, and want to know more about it ...
+const appIntent = await agent.findIntent("StartChat");
+// returns a single AppIntent:
+// {
+//     intent: { name: "StartChat", displayName: "Chat" },
+//     apps: [{ name: "Skype" }, { name: "Symphony" }, { name: "Slack" }]
+// }
 
-  // raise the intent against a particular app
-  await agent.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
-  ```
+// raise the intent against a particular app
+await agent.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
+```
+
 #### See also
 * [`ResolveError`](Errors#ResolveError)
 
 ### `findIntentsByContext`
 
 ```typescript
-  findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
+findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
 ```
 
 Find all the avalable intents for a particular context.
@@ -117,7 +118,7 @@ Publishes context to other apps on the desktop.
 
 #### Examples
 ```javascript
- agent.broadcast(context);
+agent.broadcast(context);
 ```
 #### See also
 * [addContextListener](#addcontextlistener)
@@ -125,7 +126,7 @@ Publishes context to other apps on the desktop.
 ### `raiseIntent`
 
 ```typescript
-  raiseIntent(intent: string, context: Context, target?: string): Promise<IntentResolution>;
+raiseIntent(intent: string, context: Context, target?: string): Promise<IntentResolution>;
 ```
 Raises an intent to the desktop agent to resolve.
 #### Examples
@@ -140,7 +141,7 @@ agent.raiseIntent("StartChat", newContext, intentR.source);
 
 ### `addIntentListener`
 ```typescript
-  addIntentListener(intent: string, handler: (context: Context) => void): Listener;
+addIntentListener(intent: string, handler: (context: Context) => void): Listener;
 ```
  Adds a listener for incoming Intents from the Agent.
 #### See also
@@ -149,7 +150,7 @@ agent.raiseIntent("StartChat", newContext, intentR.source);
 
 ### `addContextListener`
 ```typescript
-  addContextListener(handler: (context: Context) => void): Listener;
+addContextListener(handler: (context: Context) => void): Listener;
 ```
 Adds a listener for incoming context broadcast from the Desktop Agent.
 
@@ -207,13 +208,13 @@ interface IntentResolution {
 IntentResolution provides a standard format for data returned upon resolving an intent.
  
 #### Example
- ```javascript
- //resolve a "Chain" type intent
- var intentR = await agent.raiseIntent("intentName", context);
- //resolve a "Client-Service" type intent with data response
- var intentR = await agent.raiseIntent("intentName", context);
- var dataR = intentR.data;
- ```
+```javascript
+//resolve a "Chain" type intent
+var intentR = await agent.raiseIntent("intentName", context);
+//resolve a "Client-Service" type intent with data response
+var intentR = await agent.raiseIntent("intentName", context);
+var dataR = intentR.data;
+```
 
 #### See also
 * [`DesktopAgent.raiseIntent`](#raiseintent)
