@@ -55,18 +55,18 @@
 <p>A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.</p>
 <h2><a class="anchor" aria-hidden="true" id="methods"></a><a href="#methods" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Methods</h2>
 <h3><a class="anchor" aria-hidden="true" id="open"></a><a href="#open" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>open</code></h3>
-<pre><code class="hljs css language-typescript">  open(name: <span class="hljs-built_in">string</span>, context?: Context): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+<pre><code class="hljs css language-typescript">open(name: <span class="hljs-built_in">string</span>, context?: Context): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
 </code></pre>
 <p>Launches/links to an app by name.</p>
 <p>If a <a href="Context"><code>Context</code></a> object is passed in, this object will be provided to the opened application via a contextListener.
 The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
 If opening errors, it returns an <code>Error</code> with a string from the <a href="OpenError"><code>OpenError</code></a> enumeration.</p>
 <h4><a class="anchor" aria-hidden="true" id="example"></a><a href="#example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
-<pre><code class="hljs css language-javascript">   <span class="hljs-comment">//no context</span>
-   <span class="hljs-keyword">await</span> agent.open(<span class="hljs-string">'myApp'</span>);
-   
-   <span class="hljs-comment">//with context</span>
-   <span class="hljs-keyword">await</span> agent.open(<span class="hljs-string">'myApp'</span>, context);
+<pre><code class="hljs css language-javascript"><span class="hljs-comment">//no context</span>
+<span class="hljs-keyword">await</span> agent.open(<span class="hljs-string">'myApp'</span>);
+
+<span class="hljs-comment">//with context</span>
+<span class="hljs-keyword">await</span> agent.open(<span class="hljs-string">'myApp'</span>, context);
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="see-also"></a><a href="#see-also" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
@@ -82,23 +82,23 @@ A promise resolving to the intent, its metadata and metadata about the apps that
 This can be used to raise the intent against a specific app.</p>
 <p>If the resolution fails, the promise will return an <code>Error</code> with a string from the <a href="Errors#ResolveError"><code>ResolveError</code></a> enumeration.</p>
 <h4><a class="anchor" aria-hidden="true" id="examples"></a><a href="#examples" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
-<pre><code class="hljs css language-javascript">  <span class="hljs-comment">// I know 'StartChat' exists as a concept, and want to know more about it ...</span>
-  <span class="hljs-keyword">const</span> appIntent = <span class="hljs-keyword">await</span> agent.findIntent(<span class="hljs-string">"StartChat"</span>);
-  <span class="hljs-comment">// returns a single AppIntent:</span>
-  <span class="hljs-comment">// {</span>
-  <span class="hljs-comment">//     intent: { name: "StartChat", displayName: "Chat" },</span>
-  <span class="hljs-comment">//     apps: [{ name: "Skype" }, { name: "Symphony" }, { name: "Slack" }]</span>
-  <span class="hljs-comment">// }</span>
+<pre><code class="hljs css language-javascript"><span class="hljs-comment">// I know 'StartChat' exists as a concept, and want to know more about it ...</span>
+<span class="hljs-keyword">const</span> appIntent = <span class="hljs-keyword">await</span> agent.findIntent(<span class="hljs-string">"StartChat"</span>);
+<span class="hljs-comment">// returns a single AppIntent:</span>
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//     intent: { name: "StartChat", displayName: "Chat" },</span>
+<span class="hljs-comment">//     apps: [{ name: "Skype" }, { name: "Symphony" }, { name: "Slack" }]</span>
+<span class="hljs-comment">// }</span>
 
-  <span class="hljs-comment">// raise the intent against a particular app</span>
-  <span class="hljs-keyword">await</span> agent.raiseIntent(appIntent.intent.name, context, appIntent.apps[<span class="hljs-number">0</span>].name);
+<span class="hljs-comment">// raise the intent against a particular app</span>
+<span class="hljs-keyword">await</span> agent.raiseIntent(appIntent.intent.name, context, appIntent.apps[<span class="hljs-number">0</span>].name);
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="see-also-1"></a><a href="#see-also-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="Errors#ResolveError"><code>ResolveError</code></a></li>
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="findintentsbycontext"></a><a href="#findintentsbycontext" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>findIntentsByContext</code></h3>
-<pre><code class="hljs css language-typescript">  findIntentsByContext(context: Context): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;AppIntent&gt;&gt;;
+<pre><code class="hljs css language-typescript">findIntentsByContext(context: Context): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;AppIntent&gt;&gt;;
 </code></pre>
 <p>Find all the avalable intents for a particular context.
 <em>findIntentsByContext</em> is effectively granting programmatic access to the Desktop Agent's resolver.
@@ -136,14 +136,14 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 </code></pre>
 <p>Publishes context to other apps on the desktop.</p>
 <h4><a class="anchor" aria-hidden="true" id="examples-2"></a><a href="#examples-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
-<pre><code class="hljs css language-javascript"> agent.broadcast(context);
+<pre><code class="hljs css language-javascript">agent.broadcast(context);
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="see-also-3"></a><a href="#see-also-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="#addcontextlistener">addContextListener</a></li>
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="raiseintent"></a><a href="#raiseintent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>raiseIntent</code></h3>
-<pre><code class="hljs css language-typescript">  raiseIntent(intent: <span class="hljs-built_in">string</span>, context: Context, target?: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
+<pre><code class="hljs css language-typescript">raiseIntent(intent: <span class="hljs-built_in">string</span>, context: Context, target?: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
 </code></pre>
 <p>Raises an intent to the desktop agent to resolve.</p>
 <h4><a class="anchor" aria-hidden="true" id="examples-3"></a><a href="#examples-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
@@ -157,7 +157,7 @@ agent.raiseIntent(<span class="hljs-string">"StartChat"</span>, newContext, inte
 <li><a href="#intentresolution"><code>IntentResolution</code></a></li>
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="addintentlistener"></a><a href="#addintentlistener" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>addIntentListener</code></h3>
-<pre><code class="hljs css language-typescript">  addIntentListener(intent: <span class="hljs-built_in">string</span>, handler: <span class="hljs-function">(<span class="hljs-params">context: Context</span>) =&gt;</span> <span class="hljs-built_in">void</span>): Listener;
+<pre><code class="hljs css language-typescript">addIntentListener(intent: <span class="hljs-built_in">string</span>, handler: <span class="hljs-function">(<span class="hljs-params">context: Context</span>) =&gt;</span> <span class="hljs-built_in">void</span>): Listener;
 </code></pre>
 <p>Adds a listener for incoming Intents from the Agent.</p>
 <h4><a class="anchor" aria-hidden="true" id="see-also-5"></a><a href="#see-also-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
@@ -166,7 +166,7 @@ agent.raiseIntent(<span class="hljs-string">"StartChat"</span>, newContext, inte
 <li><a href="Context"><code>Context</code></a></li>
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="addcontextlistener"></a><a href="#addcontextlistener" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>addContextListener</code></h3>
-<pre><code class="hljs css language-typescript">  addContextListener(handler: <span class="hljs-function">(<span class="hljs-params">context: Context</span>) =&gt;</span> <span class="hljs-built_in">void</span>): Listener;
+<pre><code class="hljs css language-typescript">addContextListener(handler: <span class="hljs-function">(<span class="hljs-params">context: Context</span>) =&gt;</span> <span class="hljs-built_in">void</span>): Listener;
 </code></pre>
 <p>Adds a listener for incoming context broadcast from the Desktop Agent.</p>
 <h4><a class="anchor" aria-hidden="true" id="see-also-6"></a><a href="#see-also-6" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>

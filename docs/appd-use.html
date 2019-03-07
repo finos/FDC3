@@ -51,7 +51,7 @@
               }
             });
         </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="app-directory-use"></a><a href="#app-directory-use" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>App Directory Use</h1>
-<p>An application directory (AppD) provides information about an applications
+<p>An application directory (AppD) provides information about an application's
 identifiers, intents that provide contexts, and location of metadata providing
 information specific to the launching and integration of the application.</p>
 <p>In the real world the AppD would support many use cases as defined in the
@@ -63,27 +63,27 @@ by retrieving all necessary data via a REST call(s) to an AppD service
 and metadata location. As described in the <a href="/AppD_Discovery">AppD Discovery</a>
 section, this call requires an application identifier (<a href="mailto:app1@host.appd.com">app1@host.appd.com</a>),
 which can be used to both locate the AppD service and key to retrieve the
-specific application data.  The resulting application data will contain
-data describing the application and the metadata URI or the actual
-metadata in json format.  If the metadata is a URI, the launcher would
+specific application data. The resulting application data will describe the
+application and the metadata URI or the actual
+metadata in JSON format. If the metadata is a URI, the launcher would
 retrieve the metadata file from the URI.</p>
 <p><img src="/docs/assets/appd_launcher_embedded.png" alt="img"></p>
 <h2><a class="anchor" aria-hidden="true" id="standalone-launcher"></a><a href="#standalone-launcher" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Standalone Launcher</h2>
 <p>In more advanced cases, there could be a need to execute different types
 of desktop applications, such as web browser or general native application
-(exe, binary).  A common approach to support this pattern would be to
+(exe, binary). A common approach to support this pattern would be to
 create a standalone launcher application that has the ability to query
 application data from the AppD and executes the desktop application that
-can run the required application.  This is also convenient if you wanted
+can run the required application. This is also convenient if you wanted
 to display all possible applications to launch in a single view.</p>
 <p><img src="/docs/assets/appd_launcher_standalone.png" alt="img"></p>
 <h2><a class="anchor" aria-hidden="true" id="aggregated-view"></a><a href="#aggregated-view" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Aggregated View</h2>
 <p>There could be many different AppD service instances in the world providing
-application data zoned to the provider or enterprise deployment.  The
+application data zoned to the provider or enterprise deployment. The
 AppD specification allows for unique instances of the service with no
-requirement to aggregate data or define a structured hierarchy.  With this
+requirement to aggregate data or define a structured hierarchy. With this
 said, a launcher might want to construct an aggregated view of applications
-from one or more AppD instances.  In this case, the launcher would be
+from one or more AppD instances. In this case, the launcher would be
 required to retrieve multiple application definitions from one or more
 AppD instances providing a consolidated view of all applications required.
 Today there is no intention to create a single registry of known AppD
@@ -93,20 +93,20 @@ knowledge of the AppD instance location (FQDN).</p>
 <h2><a class="anchor" aria-hidden="true" id="enhancing-controls"></a><a href="#enhancing-controls" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Enhancing controls</h2>
 <p>The AppD API specification defines the optional use of an access token to
 identify the requesting user/launcher and implement authorizations around
-AppD actions can be performed.  Actions are considered standard CRUD operations.
+AppD actions can be performed. Actions are considered standard CRUD operations.
 Again the specification does not define or make mandatory any authorizations
 or roles that a provider or enterprise can define.</p>
 <p>With this said, it is highly recommended that the implementation take advantage
-and utilize an access token to support these controls.  In most cases simple
+and utilize an access token to support these controls. In most cases simple
 use of roles like &quot;admin&quot; and &quot;user&quot; would be adequate to create separation
 between producer and consumer.</p>
 <p>Alternatively a more open approach can be defined, where producers of a new
 definition are automatically set to &quot;owner&quot; of the the definition.</p>
 <p>In more advanced use cases, actual entitlements can be applied to limit
-access to specific applications and associated actions  based on the source
+access to specific applications and associated actions based on the source
 user/launcher identity.</p>
 <p>In all examples, it is up to the implementation to define and engineer the solution
-based on individual requirements.  There are too many variations in approach
+based on individual requirements. There are too many variations in approach
 and technology to define a single specification.</p>
 <h2><a class="anchor" aria-hidden="true" id="reference-implementation"></a><a href="#reference-implementation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Implementation</h2>
 <h3><a class="anchor" aria-hidden="true" id="appd-poc"></a><a href="#appd-poc" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>AppD POC</h3>
