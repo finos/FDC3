@@ -11,7 +11,7 @@ hide_title: true
 
 To interoperate, apps need to exchange commonly recognized context structures that can indicate topic with any number of identifiers or mappings to different systems.
 
-Exchanging context is the most basic entry point to desktop interoperability.  The barriers to adoption for this interaction must be kept as low as possible.
+Exchanging context is the most basic entry point to desktop interoperability. The barriers to adoption for this interaction must be kept as low as possible.
 
 There are two main use case for exchanging context data:
 
@@ -30,12 +30,12 @@ There are two main use case for exchanging context data:
 1. Context data objects are identified and routed according to their type, which is unique.
 2. Any names, identifiers or extra properties are optional.
 3. More complex objects can be composed from simpler objects by defining a new type, e.g a position from an instrument and a holding amount.
-4. If multiple pieces of data needs to be sent, an embbedded array can be used, identified as a collection type, e.g. "contactList" or "portfolio". This allows for extra metadata and data relationships to be expressed.
+4. If multiple pieces of data needs to be sent, an embedded array can be used, identified as a collection type, e.g. "contactList" or "portfolio". This allows for extra metadata and data relationships to be expressed.
 5. There needs to be a way to reference or look up the structure of well-known context types, e.g. from a directory.
 
 ## Other Standard
 
-FDC3 recognizes that there are other object definitions for providing context between applications.  Most, if not all of these definitions though are platform-specific. FDC3, as a rule, sets out to be platform-agnostic and focused on creating bridges between the various walled gardens on the financial desktop.
+FDC3 recognizes that there are other object definitions for providing context between applications. Most, if not all of these definitions though are platform-specific. FDC3, as a rule, sets out to be platform-agnostic and focused on creating bridges between the various walled gardens on the financial desktop.
 
 ## The Context Interface
 
@@ -50,11 +50,11 @@ interface Context {
 }
 ```
 
-### Examples ###
+### Examples
 
 __Note:__ The below examples show how the base context data interface can be used to define specific context data objects. It is not the purpose of the specification at this stage to define standard representations for objects. It establishes the framework in which such definitions could be created.
 
-#### Instrument ####
+#### Instrument
 ```json
 {
     "type" : "fdc3.instrument",
@@ -68,7 +68,7 @@ __Note:__ The below examples show how the base context data interface can be use
     }
 }
 ```
-#### Contact ####
+#### Contact
 ```json
 {
     "type": "fdc3.contact",
@@ -80,7 +80,7 @@ __Note:__ The below examples show how the base context data interface can be use
     }
 }
 ```
-#### Organization ####
+#### Organization
 ```json
 {
     "type": "fdc3.organization",
@@ -91,7 +91,7 @@ __Note:__ The below examples show how the base context data interface can be use
     }
 }
 ```
-#### ContactList ####
+#### ContactList
 ```json
 {
     "type": "fdc3.contactList",
@@ -113,7 +113,7 @@ __Note:__ The below examples show how the base context data interface can be use
     ]
 }
 ```
-#### Position ####
+#### Position
 ```json
 {
     "type": "fdc3.position",
@@ -129,17 +129,17 @@ __Note:__ The below examples show how the base context data interface can be use
 }
 ```
 
-### Namespacing ###
+### Namespacing
 
 All well-known types at FDC3 level should be prefixed with `fdc3`. For private type definitions, or type definitions issued by other organisations, different namespaces can be used, e.g. `blackrock.fund`, etc.
 
-### Versioning ###
+### Versioning
 
 The specification recognises that evolving context data definitions over time, and helping applications to deal with changes to types, are very important.
 
 It may be as simple as adding an optional `$version` property to types, but it could also be a set of guidelines for adding new properties, without removing or changing existing ones. For example, web technologies like REST or GraphQL does not take a particular opinion about versioning.
 
-### Identifiers ###
+### Identifiers
 
 Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifer is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.
 
