@@ -6,9 +6,9 @@ sidebar_label: FDC3 Compliance
 
 
 
-FDC3 standards follow the IETF best practices for Key words to Indicate Requirement levels: [RFC 2119](https://tools.ietf.org/id/draft-faltstrom-uri-11.html#RFC2119).  Documentation should be updated as needed to reflect this.
+FDC3 standards follow the IETF best practices for keywords to Indicate Requirement levels: [RFC 2119](https://tools.ietf.org/id/draft-faltstrom-uri-11.html#RFC2119).  Documentation should be updated as needed to reflect this.
 
-In general, the ratified FDC3 specs represent a lowest common denominator interface for interoperability.  So, unless a particular item in a spec is marked with keywords such as  OPTIONAL,  MAY, SHOULD, or SHOULD NOT, it should be treated as REQUIRED.  SinceFDC3 itself is primarily concerned with establishing the baseline requirements for interoperation, this is consistent with the IETF Guidance:
+In general, the ratified FDC3 specs represent a lowest common denominator interface for interoperability. So, unless a particular item in a spec is marked with keywords such as OPTIONAL, MAY, SHOULD, or SHOULD NOT, it should be treated as REQUIRED.  Since FDC3 itself is primarily concerned with establishing the baseline requirements for interoperation, this is consistent with the IETF Guidance:
 
 >6. **Guidance in the use of these Imperatives**
 >
@@ -20,13 +20,12 @@ In general, the ratified FDC3 specs represent a lowest common denominator interf
 >  on implementors where the method is not required for
 >   interoperability.
 
-These rules would apply only to standards work within FDC3.  Today, this covers API, App Directory, Context Data, and Intents working groups, it does not apply to the Use Cases working group. 
+These rules would apply only to standards work within FDC3. Today, this covers API, App Directory, Context Data, and Intents working groups, it does not apply to the Use Cases working group. 
 
 ## Personas:
-FDC3 implementors generally fall into 2 categories: platform providers, and application providers.  
-A platform provider provides an implementation of the FDC3 API for applications to use. Implicitly, it connects to one or more App Directories.
+FDC3 implementors generally fall into 2 categories: platform providers, and application providers. A platform provider supplies an implementation of the FDC3 API for applications to use. Implicitly, it connects to one or more App Directories.
 
-An application provider is largely a downstream consumer of FDC3 standards.  It MAY use the API, it MAY use Context Data, it MAY use Intents.  Application providers are only required to comply with the standards they make use of.  
+An application provider is largely a downstream consumer of FDC3 standards. It MAY use the API, it MAY use Context Data, it MAY use Intents. Application providers are only required to comply with the standards they make use of.  
 
 Depending on persona, implementation compliance with FDC3 will mean different things.  
 
@@ -34,8 +33,8 @@ Depending on persona, implementation compliance with FDC3 will mean different th
 To meet the requirements of FDC3, a platform provider would need to support the following:
 
 * Connection to 1 or more App Directories meeting the FDC3 App Directory standards
-* Providing an API to all applications running in the context of the platform that meets the FDC3 API standards, including:
-    * Support of FDC3 Context Data and Intents standards
+* Provide an API to all applications running in the context of the platform that meets the FDC3 API standards, including:
+    * Support for FDC3 Context Data and Intents standards
     * Support for Intent and Context resolution using a resolver UI
 * At least one workflow of one of the use cases marked as Accepted by the Use Cases working group SHOULD be satisfied by the implementation.
 
