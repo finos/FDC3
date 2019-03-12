@@ -1,5 +1,5 @@
 ---
-id: version-1.0-beta-uc-9
+id: version-1.0-uc-9
 title: Use Case 9: Call Transcription to CRM
 sidebar_label: 9. Call Transcription to CRM
 layout: use_case

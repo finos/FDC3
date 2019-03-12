@@ -1,5 +1,5 @@
 ---
-id: version-1.0-beta-fdc3-compliance
+id: version-1.0-fdc3-compliance
 title: FDC3 Specification Compliance
 sidebar_label: FDC3 Compliance
 original_id: fdc3-compliance
@@ -23,7 +23,7 @@ In general, the ratified FDC3 specs represent a lowest common denominator interf
 
 These rules would apply only to standards work within FDC3. Today, this covers API, App Directory, Context Data, and Intents working groups, it does not apply to the Use Cases working group. 
 
-## Personas:
+## Personas
 FDC3 implementors generally fall into 2 categories: platform providers, and application providers. A platform provider supplies an implementation of the FDC3 API for applications to use. Implicitly, it connects to one or more App Directories.
 
 An application provider is largely a downstream consumer of FDC3 standards. It MAY use the API, it MAY use Context Data, it MAY use Intents. Application providers are only required to comply with the standards they make use of.  
@@ -49,3 +49,11 @@ For application providers FDC3 compliance requires:
 * If FDC3 defined Context Data is supported, it MUST meet the interface defined for the type of Context Data.  
 * If proprietary Context Data properties are handled, they SHOULD follow any recommended naming conventions in the specification.
 * If Context Data is supported, the application SHOULD use the addContextListener API to set up a handler.
+
+## References
+The following specifications and use cases references apply to the above:
+* [API](api/api-spec)
+* [App Directory](appd-spec)
+* [Context Data](context-spec)
+* [Intents](intents-spec)
+* [Use Cases](use-cases/overview)

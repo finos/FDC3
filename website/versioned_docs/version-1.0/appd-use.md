@@ -1,5 +1,5 @@
 ---
-id: version-1.0-beta-appd-use
+id: version-1.0-appd-use
 sidebar_label: App Directory Use
 title: App Directory Use
 hide_title: true
