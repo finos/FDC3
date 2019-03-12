@@ -24,6 +24,7 @@ This standards group is focused specifically on the desktop.  Activities of the 
 * Defining financial objects - where existing standards are well established
 * Interoperability between mobile apps
 * Interoperability via REST or other client to server communication
+
 Note: While these areas are out of scope, compatibility with Mobile and/or REST are still valid points of consideration for the FDC3.
 
 ## Success Criteria
