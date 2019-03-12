@@ -38,6 +38,8 @@ const siteConfig = {
    //, {blog: true, label: 'News'}
   ],
 
+  defaultVersionShown: '1.0',
+
   twitterUsername: 'fdc3_',
 
   // If you have users set above, you add it here:

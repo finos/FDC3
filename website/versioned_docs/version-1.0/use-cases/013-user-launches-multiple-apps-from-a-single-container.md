@@ -1,5 +1,5 @@
 ---
-id: version-1.0-beta-uc-13
+id: version-1.0-uc-13
 title: Use Case 13: User launches multiple apps from a single container
 sidebar_label: 13. User launches multiple apps from a single container
 layout: use_case

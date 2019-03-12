@@ -1,5 +1,5 @@
 ---
-id: version-1.0-beta-intents-spec
+id: version-1.0-intents-spec
 sidebar_label: Intents Specification
 title: Intents Specification
 hide_title: true
