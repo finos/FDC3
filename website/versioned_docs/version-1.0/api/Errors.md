@@ -1,5 +1,5 @@
 ---
-id: version-1.0-beta-Errors
+id: version-1.0-Errors
 sidebar_label: Errors
 title: Errors
 hide_title: true

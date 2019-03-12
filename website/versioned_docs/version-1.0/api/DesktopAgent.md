@@ -1,5 +1,5 @@
 ---
-id: version-1.0-beta-DesktopAgent
+id: version-1.0-DesktopAgent
 sidebar_label: DesktopAgent
 title: DesktopAgent
 hide_title: true
