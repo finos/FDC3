@@ -18,7 +18,13 @@ class Users extends React.Component {
       return null;
     }
 
-    const editUrl = `${siteConfig.repoUrl}/edit/master/website/siteConfig.js`;
+    const editUrl = `${siteConfig.repoUrl}/edit/master/website/users.json`;
+
+    const membersToShowcase = siteConfig.users.filter(
+      user => user.isMember,
+    );
+    const otherUsersToShowcase = siteConfig.users.filter(user => !user.isMember);
+
     const showcase = siteConfig.users.map(user => (
       <a href={user.infoLink} key={user.infoLink}>
         <img src={user.image} alt={user.caption} title={user.caption} />
@@ -27,14 +33,17 @@ class Users extends React.Component {
 
     return (
       <div className="mainContainer">
-        <Container padding={['bottom', 'top']}>
+        <Container>
           <div className="showcaseSection">
             <div className="prose">
-              <h1>Who is Using This?</h1>
-              <p>This project is used by many folks</p>
+              <h1>Who is Using FDC3?</h1>
+              <p>FDC3 has several industry-leading <a href="https://www.finos.org/become-a-member">member participants.</a></p>
             </div>
             <div className="logos">{showcase}</div>
-            <p>Are you using this project?</p>
+            <div className="prose">
+              <p>FDC3 is also used by financial organizations of all sizes.</p>
+            </div>
+            <p>Are you using FDC3?</p>
             <a href={editUrl} className="button">
               Add your company
             </a>

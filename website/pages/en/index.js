@@ -100,44 +100,24 @@ class Index extends React.Component {
       </div>
     );
 
-    const TryOut = () => (
-      <Block id="try">
-        {[
-          {
-            content: 'Talk about trying this out',
-            image: `${baseUrl}img/docusaurus.svg`,
-            imageAlign: 'left',
-            title: 'Try it Out',
-          },
-        ]}
-      </Block>
-    );
-
-    const Description = () => (
-      <Block background="dark">
-        {[
-          {
-            content:
-              'This is another description of how this project is useful',
-            image: `${baseUrl}img/docusaurus.svg`,
-            imageAlign: 'right',
-            title: 'Description',
-          },
-        ]}
-      </Block>
-    );
-
-    const LearnHow = () => (
-      <Block background="light">
-        {[
-          {
-            content: 'Talk about learning how to use this',
-            image: `${baseUrl}img/docusaurus.svg`,
-            imageAlign: 'right',
-            title: 'Learn How',
-          },
-        ]}
-      </Block>
+    const FinosBanner = () => (
+      // <Block class="finos" background="light">
+      //   {[
+      //     {
+      //       image: `${baseUrl}img/finos_wordmark.svg`,
+      //       imageAlign: 'right',
+      //       title: 'Proud Member of the Fintech Open Source Foundation',
+      //     },
+      //   ]}
+      // </Block>
+      <div id="member" class="container" background='light' align="center" >
+        <h2> Proud member of the <strong>Fintech Open Source Foundation</strong></h2>
+        <div>
+            <a href="https://www.finos.org">
+              <img src={`${baseUrl}img/finos_wordmark.svg`} height='150px' alt="FINOS" title="FINOS"/>
+            </a>
+        </div>
+      </div>
     );
 
     const Features = () => (
@@ -173,7 +153,7 @@ class Index extends React.Component {
       </Block>
     );
 
-    const Showcase = () => {
+    const UserShowcase = () => {
       if ((siteConfig.users || []).length === 0) {
         return null;
       }
@@ -190,12 +170,12 @@ class Index extends React.Component {
 
       return (
         <div className="productShowcaseSection paddingBottom">
-          <h2>Who is Using This?</h2>
-          <p>This project is used by all these people</p>
+          <h2>Who is Using FDC3?</h2>
+          <p>FDC3 is used by several industry-leading organisations...</p>
           <div className="logos">{showcase}</div>
           <div className="more-users">
             <a className="button" href={pageUrl('users.html')}>
-              More {siteConfig.title} Users
+              All {siteConfig.title} Users
             </a>
           </div>
         </div>
@@ -208,10 +188,8 @@ class Index extends React.Component {
         <div className="mainContainer">
           <Features />
           <FeatureCallout />
-          {/* <LearnHow />
-          <TryOut />
-          <Description />
-          <Showcase /> */}
+          <FinosBanner />
+          <UserShowcase />
         </div>
       </div>
     );
