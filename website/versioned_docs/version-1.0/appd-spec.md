@@ -1,5 +1,5 @@
 ---
-id: version-1.0-beta-appd-spec
+id: version-1.0-appd-spec
 sidebar_label: App Directory Specification
 title: App Directory Specification
 original_id: appd-spec

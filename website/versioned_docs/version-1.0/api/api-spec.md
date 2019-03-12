@@ -1,5 +1,5 @@
 ---
-id: version-1.0-beta-api-spec
+id: version-1.0-api-spec
 sidebar_label: API Specification
 title: API Specification
 hide_title: true

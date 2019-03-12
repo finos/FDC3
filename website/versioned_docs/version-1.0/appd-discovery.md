@@ -1,5 +1,5 @@
 ---
-id: version-1.0-beta-appd-discovery
+id: version-1.0-appd-discovery
 sidebar_label: App Directory Discovery
 title: App Directory Discovery
 hide_title: true

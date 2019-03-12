@@ -1,5 +1,5 @@
 ---
-id: version-1.0-beta-context-spec
+id: version-1.0-context-spec
 sidebar_label: Context Data Specification
 title: Context Data Specification
 hide_title: true
