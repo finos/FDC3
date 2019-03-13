@@ -96,7 +96,7 @@ class Index extends React.Component {
         className="productShowcaseSection paddingBottom"
         style={{textAlign: 'center'}}>
         <h2>Use Cases</h2>
-        <MarkdownBlock>Identify requirements for workflows across the financial desktop.</MarkdownBlock>
+        <MarkdownBlock>Document business use cases that drive FDC3 interoperability standards.</MarkdownBlock>
       </div>
     );
 
