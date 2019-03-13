@@ -18,6 +18,44 @@ FDC3 is a standard.  This repository houses the documentation and specifications
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Create a new Pull Request
 
+## Roadmap
+With Productization on track to land at end of Q1, the expectation is that Q2 will be focused on implementations and feedback from those implementations driving further standards.  
+### Target Items for Q2
+#### API
+* Expand the broadcast API or introduce a new channels API to support the context setting use case. 
+* Publish npm package with FDC3 API definitions.
+
+#### App Directory
+* Search capabilities, surfacing other content
+* Manifest format detail (describing the content)
+* Eventing
+
+#### Context Data
+* Pivot to JSON schema for representing type definitions. We have found that TypeScript is too implementation-specific and too restrictive in practice.
+* Use https://quicktype.io/ to generate type definitions from JSON schema for multi-language support.
+* Formalise current example types into official FDC3 types for contact, organisation, instrument etc in conjunction with/based on the Financial Objects program work.
+
+#### Intents
+* Add detailed documentation to each intent - linking to use cases
+* Align closer with Context Data WG
+* Evaluate real use cases, given that we have input from early adapters
+* Extend with new intents, based on above + accepted use cases
+
+#### Use Cases
+* Continue to process new and existing FDC3 Use Cases
+* Assess extending the use cases working group to additional FINOS programs
+
+### Backlog Beyond Q2
+* Define the next set of FDC3 Context Data types in conjunction with/based on Financial 
+* Objects working group work.
+* Work with Financial Objects and other FINOS programs to reach consensus on how to make standardized taxonomies available for consumption, both for viewing/editing and programmatically e.g. for validation. 
+Create comprehensive examples of use cases that show how to use the various FDC3 standards together to enable interoperability.
+* App Directory Identity and authentication
+
+
+
+
+
 ## License
 
 Copyright 2017 FDC3
