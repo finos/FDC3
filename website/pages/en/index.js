@@ -16,10 +16,11 @@ const GridBlock = CompLibrary.GridBlock;
 class HomeSplash extends React.Component {
   render() {
     const {siteConfig, language = ''} = this.props;
-    const {baseUrl, docsUrl, repoUrl} = siteConfig;
+    const {baseUrl, docsUrl, repoUrl, defaultVersionShown} = siteConfig;
     const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`;
     const langPart = `${language ? `${language}/` : ''}`;
-    const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`;
+    const versionPart = `${defaultVersionShown ? `${defaultVersionShown}/` : ''}`;
+    const docUrl = doc => `${baseUrl}${docsPart}${versionPart}${langPart}${doc}`;
 
     const SplashContainer = props => (
       <div className="homeContainer">
@@ -76,7 +77,12 @@ class HomeSplash extends React.Component {
 class Index extends React.Component {
   render() {
     const {config: siteConfig, language = ''} = this.props;
-    const {baseUrl} = siteConfig;
+    const {docsUrl, baseUrl, defaultVersionShown} = siteConfig;
+    const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`;
+    const langPart = `${language ? `${language}/` : ''}`;
+    const versionPart = `${defaultVersionShown ? `${defaultVersionShown}/` : ''}`;
+    const docUrl = doc => `${docsPart}${versionPart}${langPart}${doc}`;
+
 
     const Block = props => (
       <Container
@@ -96,7 +102,7 @@ class Index extends React.Component {
         className="productShowcaseSection paddingBottom"
         style={{textAlign: 'center'}}>
         <h2>Use Cases</h2>
-        <MarkdownBlock>Document business use cases that drive FDC3 interoperability standards.</MarkdownBlock>
+        <MarkdownBlock>{`Document business [use cases](${docUrl('use-cases/overview')}) that drive FDC3 interoperability standards.`}</MarkdownBlock>
       </div>
     );
 
@@ -144,25 +150,25 @@ class Index extends React.Component {
       <Block background="light" layout="fourColumn">
         {[
           {
-            content: 'Create a consistent developer experience by adhering to the [API](docs/api/api-intro) standard',
+            content: `Create a consistent developer experience by adhering to the [API](${docUrl('api/api-intro')}) standard`,
             image: `${baseUrl}img/feature-api.svg`,
             imageAlign: 'top',
             title: 'API',
           },
           {
-            content: 'Use [standardized verbs](docs/intents-intro) to instruct other apps to take an action',
+            content: `Use [standardized verbs](${docUrl('intents-intro')}) to instruct other apps to take an action`,
             image: `${baseUrl}img/feature-intents.svg`,
             imageAlign: 'top',
             title: 'Intents',
           },
           {
-            content: 'Share [context](docs/context-intro) between apps to eliminate re-keying and streamline workflow',
+            content: `Share [context](${docUrl('context-intro')}) between apps to eliminate re-keying and streamline workflow`,
             image: `${baseUrl}img/feature-context.svg`,
             imageAlign: 'top',
             title: 'Context Data',
           },
           {
-            content: 'Discover trusted apps that can take part in a FDC3 workflow using an [App directory](docs/appd-intro).',
+            content: `Discover trusted apps that can take part in a FDC3 workflow using an [App directory](${docUrl('appd-intro')}).`,
             image: `${baseUrl}img/feature-appd.svg`,
             imageAlign: 'top',
             title: 'App Directory',
