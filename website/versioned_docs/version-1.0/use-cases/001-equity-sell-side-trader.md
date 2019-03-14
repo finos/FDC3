@@ -25,10 +25,10 @@ The user wants to see his firm's internal research on Tesla and so decides to op
 ## Workflow 3
 The user wants to do further analysis on Tesla and so they open (themselves) a new app in the market data terminal that has Tesla's financial statement and other calculated financial data (such as market capitalization, P/E ratio, growth rate, earnings margins, etc). The user sees the third party charting app listed in a menu in the market data terminal and decides to do some technical analysis using that app. They select the chart app, which opens in a browser window. 
 
-## Workflow 5
+## Workflow 4
 Having done technical analysis in the Chart app, the user wants to do the same analysis on BMW, and also use the open pricing and fundamental app. The user creates a link between the financial statement app, the pricing data app (both in the market data terminal) and the charting app. The user changes the instrument in the financial statement app and the other applications update to show information on BMW. 
 
-## Workflow 6
+## Workflow 5
 The user adds BMW and Tesla to a shared group of companies (aka a Watchlist) named "Automotive comparables" to a list within the open Watchlist. All linked applications update with the new companies.
 
 ## Interoperability Points
