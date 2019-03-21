@@ -23,8 +23,8 @@ const users = [
 const siteConfig = {
   title: 'FDC3', // Title for your website.
   tagline: 'Open standards for the financial desktop',
-  url: 'https://fdc3.finos.org',
-  cname: 'fdc3.finos.org',
+  url: 'https://fdc3.org',
+  cname: 'fdc3.org',
   baseUrl: '/',
   // For publishing to GitHub pages
   projectName: 'FDC3',
