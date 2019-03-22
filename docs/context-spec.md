@@ -104,7 +104,7 @@ __Note:__ The below examples show how the base context data interface can be use
             }
         },
         {
-            "type" : "$fdc3.contact",
+            "type" : "fdc3.contact",
             "name":"Espen Overbye",
             "id":{
                 "email": "espen@openfin.co"
@@ -137,7 +137,7 @@ All well-known types at FDC3 level should be prefixed with `fdc3`. For private t
 
 The specification recognises that evolving context data definitions over time, and helping applications to deal with changes to types, are very important.
 
-It may be as simple as adding an optional `$version` property to types, but it could also be a set of guidelines for adding new properties, without removing or changing existing ones. For example, web technologies like REST or GraphQL does not take a particular opinion about versioning.
+It may be as simple as adding an optional `$version` property to types, but it could also be a set of guidelines for adding new properties, without removing or changing existing ones. For example, web technologies like REST or GraphQL do not take a particular opinion about versioning.
 
 ### Identifiers
 

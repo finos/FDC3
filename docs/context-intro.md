@@ -15,7 +15,7 @@ Context objects are used when raising [Intents](intents-intro) and when broadcas
 ## Context Object
 
 Context can be summarised as:
-* Having a unique <type_ identifier, used for routing.
+* Having a unique _type_ identifier, used for routing.
 * Optionally providing a name.
 * Optionally providing a map of equivalent identifiers.
 * Any other properties or metadata.
@@ -60,4 +60,4 @@ e.g. as a JSON payload:
     "country": "US"
 }
 ```
- It is important to note that the context data specification allows extra identifiers and properties to be added as needed for each interop use case. In the example above, `country` could represent extra metadata in addition to the agreed instrument representation.
+ It is important to note that the context data specification allows extra identifiers and properties to be added as needed for each interop use case. In the example above, `country` could represent extra data in addition to the agreed instrument representation.
