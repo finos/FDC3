@@ -46,10 +46,9 @@ With Productization on track to land at end of Q1, the expectation is that Q2 wi
 * Assess extending the use cases working group to additional FINOS programs
 
 ### Backlog Beyond Q2
-* Define the next set of FDC3 Context Data types in conjunction with/based on Financial 
-* Objects working group work.
+* Define the next set of FDC3 Context Data types in conjunction with/based on Financial Objects working group work.
 * Work with Financial Objects and other FINOS programs to reach consensus on how to make standardized taxonomies available for consumption, both for viewing/editing and programmatically e.g. for validation. 
-Create comprehensive examples of use cases that show how to use the various FDC3 standards together to enable interoperability.
+* Create comprehensive examples of use cases that show how to use the various FDC3 standards together to enable interoperability.
 * App Directory Identity and authentication
 
 
