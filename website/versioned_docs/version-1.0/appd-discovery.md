@@ -110,7 +110,7 @@ The resulting URI to retrieve application data for "app1" would be "[https://app
 
 ###  Application identifiers, Shrinking the URI and AppdD defaults
 
-Although the concept of fully qualified application IDs are useful in resolving the actual host of the application directory, there is no requirement for an application directory to use this fully qualified application ID as the resolver for a record. An application ID is unique to given application directory, but there is no requirement to use the fully qualified representation when querying an interface. Taking the prior example, the fully qualified application ID "app1@appd.foo.com" is represented as "app1" within the application directory. As a result a launcher can use a shortened URI construct "<https://appd.foo.com/api/appd/v1/app1>" to resolve the application data vs "https://appd.foo.com/api/appd/app1@appd.foo.com".
+Although the concept of fully qualified application IDs are useful in resolving the actual host of the application directory, there is no requirement for an application directory to use this fully qualified application ID as the resolver for a record. An application ID is unique to given application directory, but there is no requirement to use the fully qualified representation when querying an interface. Taking the prior example, the fully qualified application ID "app1@appd.foo.com" is represented as "app1" within the application directory. As a result a launcher can use a shortened URI construct "<https://appd.foo.com/api/appd/v1/app1>" to resolve the application data vs "https://appd.foo.com/api/appd/v1/app1@appd.foo.com".
 
 ### DNS/SRV Records
 
@@ -122,7 +122,7 @@ More specifically, resolution of an AppD service instance (host location) can be
 zone name { _service._proto.name. TTL  class  SRV priority weight port target.}
 ```
 
-- *service*: the symbolic name of the desired service. For AppD service, this mus be identified as "**_appd**"
+- *service*: the symbolic name of the desired service. For AppD service, this must be identified as "**_appd**"
 - *proto*: the transport protocol of the desired service; this is usually either [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) or [UDP](https://en.wikipedia.org/wiki/User_Datagram_Protocol). For AppD service **_tcp** must be used.
 - *name*: the domain name for which this record is valid, ending in a dot. For AppD service,  the name should directly map to the application identifier domain. 
 - *TTL*: standard DNS [time to live](https://en.wikipedia.org/wiki/Time_to_live) field.

@@ -64,8 +64,7 @@ knowledge of the AppD instance location (FQDN).
 ## Enhancing controls
 
 The AppD API specification defines the optional use of an access token to
-identify the requesting user/launcher and implement authorizations around
-AppD actions can be performed. Actions are considered standard CRUD operations.
+identify the requesting user/launcher and implement authorizations around which AppD actions can be performed. Actions are considered standard CRUD operations.
 Again the specification does not define or make mandatory any authorizations
 or roles that a provider or enterprise can define.
 
