@@ -85,7 +85,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
  #### Examples
  ```javascript
  // I have a context object, and I want to know what I can do with it, hence, I look for for intents...
- const appIntents = await agent.findIntentsForContext(context);
+ const appIntents = await agent.findIntentsByContext(context);
  
  // returns for example:
  // [{
