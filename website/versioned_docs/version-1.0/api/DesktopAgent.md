@@ -23,7 +23,7 @@ Launches/links to an app by name.
 
 If a [`Context`](Context) object is passed in, this object will be provided to the opened application via a contextListener.
 The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
-If opening errors, it returns an `Error` with a string from the [`OpenError`](OpenError) enumeration.
+If opening errors, it returns an `Error` with a string from the [`OpenError`](Errors#openerror) enumeration.
 
 #### Example
  ```javascript
@@ -36,7 +36,7 @@ await agent.open('myApp', context);
 
 #### See also
 * [`Context`](Context)
-* [`OpenError`](Errors#OpenError)
+* [`OpenError`](Errors#openerror)
 
 ### `findIntent`
 
@@ -47,11 +47,10 @@ findIntent(intent: string, context?: Context): Promise<AppIntent>;
 Find out more information about a particular intent by passing its name, and optionally its context.
 
 _findIntent_ is effectively granting programmatic access to the Desktop Agent's resolver. 
-A promise resolving to the intent, its metadata and metadata about the apps that registered it is returned.
+It returns a promise resolving to the intent, its metadata and metadata about the apps that are registered to handle it.
 This can be used to raise the intent against a specific app.
  
- 
- If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#ResolveError) enumeration.
+ If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
 
 #### Examples
 ```javascript
@@ -68,7 +67,7 @@ await agent.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
 ```
 
 #### See also
-* [`ResolveError`](Errors#ResolveError)
+* [`ResolveError`](Errors#resolveerror)
 
 ### `findIntentsByContext`
 
@@ -78,16 +77,16 @@ findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
 
 Find all the avalable intents for a particular context.
 _findIntentsByContext_ is effectively granting programmatic access to the Desktop Agent's resolver. 
-A promise resolving to all the intents, their metadata and metadata about the apps that registered it is returned, based on the context types the intents have registered.
+A promise resolving to all the intents, their metadata and metadata about the apps that registered as handlers is returned, based on the context types the intents have registered.
  
- If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#ResolveError) enumeration.
+ If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
  
  #### Examples
  ```javascript
- // I have a context object, and I want to know what I can do with it, hence, I look for for intents...
- const appIntents = await agent.findIntentsForContext(context);
+ // I have a context object, and I want to know what I can do with it, hence, I look for intents...
+ const appIntents = await agent.findIntentsByContext(context);
  
- // returns for example:
+ // returns, for example:
  // [{
  //     intent: { name: "StartCall", displayName: "Call" },
  //     apps: [{ name: "Skype" }]
@@ -229,7 +228,7 @@ interface Listener {
 }
 ```
 
-A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](DesktopAgent#addintentlistener) or [`addContextListener`](DesktopAgent#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
+A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](#addintentlistener) or [`addContextListener`](#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
 The `unsubscribe` method on the listener object allows the application to cancel the subscription.
 
 #### See also
