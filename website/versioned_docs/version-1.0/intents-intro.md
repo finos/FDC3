@@ -20,24 +20,40 @@ FDC3 Intents define a standard set of verbs that can be used to put together com
 ## Using Intents
 Combined with [Context Data](context-intro.md) and [App Directory](appd-intro.md) standards, Intents enable rich service discovery on the desktop. For example:
 
-### Directing a market data platform to show a chart
+### Ask for a chart to be displayed
 ```javascript
-fdc3.open("my-platform","ViewChart",{
- type:"fdc3.instrument",
+const result = await fdc3.raiseIntent("ViewChart", {
+ type: "fdc3.instrument",
  name: "IBM",
- id:{
+ id: {
     ticker:"ibm"
-    }
-  });
+  }
+});
 ```
 
-### Discovering apps that can start a chat
+### Ask a specific application to display a chart
 ```javascript
-fdc3.raiseIntent("StartChat",{
- type:"fdc3.contact",
+const result = await fdc3.raiseIntent("ViewChart", {
+ type: "fdc3.instrument",
+ name: "IBM",
+ id: {
+    ticker:"ibm"
+  }
+}, "market-data-app");
+```
+
+### Find applications that can start a chat
+```javascript
+const intentApps = await fdc3.findIntent("StartChat");
+```
+
+### Find available intents for a contact
+```javascript
+const intentsAndApps = await fdc3.findIntentsByContext({
+ type: "fdc3.contact",
  name: "Nick Kolba",
- id:{
+ id: {
     email:"nick@openfin.co"
-    }
-  });
+  }
+});
 ```
