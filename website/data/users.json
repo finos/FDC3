@@ -59,14 +59,14 @@
         "caption": "Adaptive Financial Consulting",
         "image": "/img/users/adaptive.webp",
         "infoLink": "https://weareadaptive.com/",
-        "pinned": false,
+        "pinned": true,
         "isMember": false
     },    
     {
         "caption": "Citadel",
         "image": "/img/users/Citadel.png",
         "infoLink": "https://www.citadel.com/",
-        "pinned": false,
+        "pinned": true,
         "isMember": false
     }
 ]
