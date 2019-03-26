@@ -26,3 +26,32 @@ header.postHeader:empty + article h1 {
 .imageAlignTop .blockImage {
   max-width: 220px;
 }
+
+.productShowcaseSection .logos img {
+  width: 200px;
+}
+
+.showcaseSection .logos img {
+  width: 250px;
+}
+
+.showcase {
+  align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
+.showcase img {
+  width: 250px;
+  max-height: 150px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.finos {
+  padding-top: 10px;
+  padding-bottom: 40px;
+  text-align: center;
+}
