@@ -1,4 +1,10 @@
-[   
+[   {
+        "caption": "Adaptive Financial Consulting",
+        "image": "/img/users/adaptive.webp",
+        "infoLink": "https://weareadaptive.com/",
+        "pinned": true,
+        "isMember": false
+    },
     {
         "caption": "FactSet",
         "image": "/img/users/FactSet.webp",
@@ -7,16 +13,16 @@
         "isMember": true
     },
     {
-        "caption": "GreenKey",
-        "image": "/img/users/GreenKey.webp",
-        "infoLink": "https://www.greenkey.global/",
+        "caption": "Glue42",
+        "image": "/img/users/GLUE42.webp",
+        "infoLink": "https://glue42.com/",
         "pinned": true,
         "isMember": true
     },
     {
-        "caption": "Glue42",
-        "image": "/img/users/GLUE42.webp",
-        "infoLink": "https://glue42.com/",
+        "caption": "GreenKey",
+        "image": "/img/users/GreenKey.webp",
+        "infoLink": "https://www.greenkey.global/",
         "pinned": true,
         "isMember": true
     },
@@ -54,19 +60,5 @@
         "infoLink": "https://www.scottlogic.com/",
         "pinned": true,
         "isMember": true
-    },
-    {
-        "caption": "Adaptive Financial Consulting",
-        "image": "/img/users/adaptive.webp",
-        "infoLink": "https://weareadaptive.com/",
-        "pinned": true,
-        "isMember": false
-    },    
-    {
-        "caption": "Citadel",
-        "image": "/img/users/Citadel.png",
-        "infoLink": "https://www.citadel.com/",
-        "pinned": true,
-        "isMember": false
     }
 ]
