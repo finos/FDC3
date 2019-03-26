@@ -1,4 +1,5 @@
 type Context = object;
+type ContextHandler = (context: Context) => void;
 
 enum OpenError {
   AppNotFound = "AppNotFound",
@@ -174,4 +175,6 @@ interface DesktopAgent {
    * Adds a listener for incoming context broadcast from the Desktop Agent.
    */
   addContextListener(handler: (context: Context) => void): Listener;
+
+  channels: Channels;
 }
