@@ -162,11 +162,12 @@ class Index extends React.Component {
           <h2>Who is Using FDC3?</h2>
           <p>FDC3 is used by several industry-leading organisations...</p>
           <Showcase users={pinnedUsers} />
-          <div className="more-users">
+          {/* exclude button to users page for now, all users shown on main page */}
+          {/* <div className="more-users">
             <a className="button" href={pageUrl('users.html')}>
               All {siteConfig.title} Users
             </a>
-          </div>
+          </div> */}
         </div>
       );
     };
