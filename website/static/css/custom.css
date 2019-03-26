@@ -46,6 +46,7 @@ header.postHeader:empty + article h1 {
 .showcase img {
   width: 250px;
   max-height: 150px;
+  padding: 5px;
 }
 
 .finos {
