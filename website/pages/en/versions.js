@@ -18,6 +18,7 @@ const versions = require(`${CWD}/versions.json`);
 function Versions(props) {
   const {config: siteConfig} = props;
   const latestVersion = versions[1]; // skip "stable" version to simulate permalinks for latest version
+  const latestGitVersion = latestVersion === "1.0" ? "1.0.0" : latestVersion;
   const pastVersions = versions.filter(version => version !== latestVersion && version !== 'stable');
   const repoUrl = `https://github.com/${siteConfig.organizationName}/${
     siteConfig.projectName
@@ -38,7 +39,7 @@ function Versions(props) {
                   <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${latestVersion}/fdc3-intro`}>Documentation</a>
                 </td>
                 <td>
-                  <a href={`${repoUrl}/releases/tag/v${latestVersion}`}>Release Notes</a>
+                  <a href={`${repoUrl}/releases/tag/v${latestGitVersion}`}>Release Notes</a>
                 </td>
               </tr>
             </tbody>
