@@ -134,4 +134,7 @@ On the financial desktop, applications often want to broadcast context to any nu
 Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (raising UI to pick the desired App for the intent) or by the app launching the intent - in which case the calling App will handle the resolution itself (using the findIntents API below) and then invoke an explicit Intent object.
 
 ## APIs
-The APIs are defined in TypeScript in the [src](/src), with documentation generated in the [docs](/docs) folder.
+The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
+
+[src]: https://github.com/FDC3/FDC3/tree/master/src/api
+[docs]: https://github.com/FDC3/FDC3/tree/master/docs/api

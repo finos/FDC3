@@ -8,7 +8,7 @@
 const React = require('react');
 
 class Footer extends React.Component {
-  docUrl(doc, language) {
+  docUrl(doc, language = '') {
     const baseUrl = this.props.config.baseUrl;
     const docsUrl = this.props.config.docsUrl;
     const defaultVersionShown = this.props.config.defaultVersionShown;
@@ -37,19 +37,19 @@ class Footer extends React.Component {
           </a>
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl('fdc3-intro', this.props.language)}>
+            <a href={this.docUrl('fdc3-intro')}>
               Getting Started
             </a>
-            <a href={this.docUrl('why-fdc3', this.props.language)}>
+            <a href={this.docUrl('why-fdc3')}>
               Why FDC3
             </a>
-            <a href={this.docUrl('api/DesktopAgent', this.props.language)}>
+            <a href={this.docUrl('api/DesktopAgent')}>
               API Reference
             </a>
-            <a href={this.pageUrl('appd-spec', this.props.language)}>
+            <a href={this.pageUrl('appd-spec')}>
               App Directory OpenAPI
             </a>
-            <a href={this.docUrl('use-cases/use-cases-intro.html', this.props.language)}>
+            <a href={this.docUrl('use-cases/overview.html')}>
               Use Cases
             </a>
           </div>
