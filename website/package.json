@@ -10,7 +10,7 @@
     "redoc-appd": "redoc-cli bundle --output pages/appd-spec.html ../src/app-directory/specification/appd.yaml"
   },
   "devDependencies": {
-    "docusaurus": "1.7.2",
+    "docusaurus": "1.7.3",
     "redoc-cli": "0.7.0"
   }
 }

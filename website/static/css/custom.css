@@ -55,3 +55,7 @@ header.postHeader:empty + article h1 {
   padding-bottom: 40px;
   text-align: center;
 }
+
+.userShowcase p {
+  max-width: 60%;
+}
