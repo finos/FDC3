@@ -88,6 +88,89 @@ paths:
   /v1/apps/search:
     get:
       summary: Retrieve a list of applications
+      parameters:
+        - in: query
+          name: appId
+          schema:
+            type: string
+          required: false
+          description: >
+            The unique application identifier located within a specific
+            application directory instance.
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: >
+            The name of the application.
+
+            The name should be unique within an FDC3 App Directory instance. The
+            exception to the uniqueness constraint is that an App Directory can
+            hold definitions for multiple versions of the same app.
+
+            The same appName could occur in other directories. We are not
+            currently specifying app name conventions in the document.
+        - in: query
+          name: manifest
+          schema:
+            type: string
+          required: false
+          description: >
+            URI or full JSON of the application manifest providing all details related to launch
+            and use requirements as described by the vendor.
+
+            The format of this manifest is vendor specific, but can be identified by
+            the manifestType attribute.
+        - in: query
+          name: version
+          schema:
+            type: string
+          required: false
+          description: >-
+            Version of the application. This allows multiple app versions to be
+            defined using the same app name. This can be a triplet but can also
+            include things like 1.2.5 (BETA)
+        - in: query
+          name: title
+          schema:
+            type: string
+          required: false
+          description: >-
+            Optional title for the application, if missing use appName,
+            typically used in a launcher UI.
+        - in: query
+          name: tooltip
+          schema:
+            type: string
+          required: false
+          description: Optional tooltip description e.g. for a launcher
+        - in: query
+          name: description
+          schema:
+            type: string
+          required: false
+          description: >-
+            Description of the application. This will typically be a 1-2
+            paragraph style blurb about the application. Allow mark up language
+        - in: query
+          name: intent_name
+          schema:
+            type: string
+          required: false
+          description: name of intent
+        - in: query
+          name: intent_displayName
+          schema:
+            type: string
+          required: false
+          description: displayName of intent
+        - in: query
+          name: intent_context
+          schema:
+            type: string
+          required: false
+          description: search contexts list
       responses:
         '200':
           description: OK
