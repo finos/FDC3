@@ -52,6 +52,8 @@ interface IntentResolution {
   version: string;
 }
 
+type IntentListenerResponse = Promise<{data:any}> | void;
+
 interface Listener {
   /**
    * Unsubscribe the listener object.
@@ -168,7 +170,7 @@ interface DesktopAgent {
   /**
    * Adds a listener for incoming Intents from the Agent.
    */
-  addIntentListener(intent: string, handler: (context: Context) => void): Listener;
+  addIntentListener(intent: string, handler: (context: Context) => IntentListenerResponse): Listener;
 
   /**
    * Adds a listener for incoming context broadcast from the Desktop Agent.
