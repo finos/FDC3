@@ -6,7 +6,7 @@
 ## Overview
 This project is a POC focused on creation of an Application Directory API as defined through initial proposals and
 ongoing discussions in the Application Directory FDC3 working group.  The purpose of this POC is to:
-* Define an intial interface through an OpenAPI sepcification
+* Define an initial interface through an OpenAPI sepcification
 * Start to ratify schema/models
 * Generate example server stubs for java and nodejs
 * Generate example client binding for java
