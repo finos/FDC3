@@ -6,7 +6,7 @@ sidebar_label: FDC3 Compliance
 
 
 
-FDC3 standards follow the IETF best practices for keywords to Indicate Requirement levels: [RFC 2119](https://tools.ietf.org/id/draft-faltstrom-uri-11.html#RFC2119).  Documentation should be updated as needed to reflect this.
+FDC3 standards follow the IETF best practices for keywords to Indicate Requirement levels: [RFC 2119](https://tools.ietf.org/html/rfc2119).  Documentation should be updated as needed to reflect this.
 
 In general, the ratified FDC3 specs represent a lowest common denominator interface for interoperability. So, unless a particular item in a spec is marked with keywords such as OPTIONAL, MAY, SHOULD, or SHOULD NOT, it should be treated as REQUIRED.  Since FDC3 itself is primarily concerned with establishing the baseline requirements for interoperation, this is consistent with the IETF Guidance:
 
