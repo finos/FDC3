@@ -140,12 +140,13 @@ agent.raiseIntent("StartChat", newContext, intentR.source);
 
 ### `addIntentListener`
 ```typescript
-addIntentListener(intent: string, handler: (context: Context) => void): Listener;
+addIntentListener(intent: string, handler: (context: Context) => IntentListenerResponse): Listener;
 ```
  Adds a listener for incoming Intents from the Agent.
 #### See also
 * [`Listener`](#listener)
 * [`Context`](Context)
+* [`IntentListenerResponse`](#intentlistenerresponse)
 
 ### `addContextListener`
 ```typescript
@@ -213,6 +214,44 @@ var intentR = await agent.raiseIntent("intentName", context);
 //resolve a "Client-Service" type intent with data response
 var intentR = await agent.raiseIntent("intentName", context);
 var dataR = intentR.data;
+```
+
+### `IntentListenerResponse`
+
+```typescript
+type IntentListenerResponse = Promise<{data:any}> | void;
+```
+
+IntentListenerResponse describes the return type of an intent listener handler
+set up with addIntentListener.
+
+It's valid to not return anything at all, for "fire and forget" type intents,
+otherwise the handler must return a Promise that resolves to an object with a
+"data" property in it.
+ 
+#### Example
+```javascript
+// Valid
+agent.addIntentListener("IntentName", (context) => {
+  doSomething();
+});
+agent.addIntentListener("IntentName2", (context) => {
+  return Promise.resolve({
+    data: payload
+  });
+});
+
+// Invalid
+agent.addIntentListener("IntentName", (context) => {
+  return {
+    payload
+  };
+});
+agent.addIntentListener("IntentName", (context) => {
+  return Promise.resolve({
+    some: 'thing'
+  });
+});
 ```
 
 #### See also

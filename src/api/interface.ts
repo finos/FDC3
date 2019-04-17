@@ -52,6 +52,36 @@ interface IntentResolution {
   version: string;
 }
 
+/**
+ * IntentListenerResponse describes the return type of an intent listener handler
+ * set up with addIntentListener.
+ * It's valid to not return anything at all, for "fire and forget" type intents,
+ * otherwise the handler must return a Promise that resolves to an object with a
+ * "data" property in it.
+ * ```javascript
+ * // Valid
+ * agent.addIntentListener("IntentName", (context) => {
+ *   doSomething();
+ * });
+ * agent.addIntentListener("IntentName2", (context) => {
+ *   return Promise.resolve({
+ *     data: payload
+ *   });
+ * });
+ *
+ * // Invalid
+ * agent.addIntentListener("IntentName", (context) => {
+ *   return {
+ *     payload
+ *   };
+ * });
+ * agent.addIntentListener("IntentName", (context) => {
+ *   return Promise.resolve({
+ *     some: 'thing'
+ *   });
+ * });
+ * ```
+ */
 type IntentListenerResponse = Promise<{data:any}> | void;
 
 interface Listener {
