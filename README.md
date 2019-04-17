@@ -8,7 +8,7 @@
 The mission of the Financial Desktop Connectivity and Collaboration Consortium (FDC3) is to develop specific protocols and taxonomies to advance the ability of desktop applications in financial workflows to interoperate in a plug-and-play fashion and without prior, bi-lateral agreements.
 
 ## About this Repository
-FDC3 is a standard.  This repository houses the documentation and specifications for the ratified FDC3 standards.
+FDC3 is a standard.  This repository houses the documentation and specifications for the ratified FDC3 standards. To join Working Groups meetings and Mailing lists where the standard is built, please check the [FDC3 space in the FINOS Wiki](http://wiki.finos.org/fdc3).
 
 ## Contributing
 
@@ -17,6 +17,8 @@ FDC3 is a standard.  This repository houses the documentation and specifications
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Create a new Pull Request
+
+The team will review the PR and decide about merging. Note that you will require a contributor agreement (individual or corporate) before your code can be merge, so please review [FINOS Contribution requirements](.github/CONTRIBUTING.md).
 
 ## Roadmap
 With Productization on track to land at end of Q1, the expectation is that Q2 will be focused on implementations and feedback from those implementations driving further standards.  
@@ -50,7 +52,6 @@ With Productization on track to land at end of Q1, the expectation is that Q2 wi
 * Work with Financial Objects and other FINOS programs to reach consensus on how to make standardized taxonomies available for consumption, both for viewing/editing and programmatically e.g. for validation. 
 * Create comprehensive examples of use cases that show how to use the various FDC3 standards together to enable interoperability.
 * App Directory Identity and authentication
-
 
 
 
