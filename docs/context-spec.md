@@ -154,6 +154,6 @@ The identifier "foo" is proprietary, an application that can use it is free to d
 ```json
 "id": {
     "CUSIP":"037833100",
-    "com.factset.symbology.entity": "000C7F-E"
+    "com.company.foo": "000C7F-E"
 }
 ```
