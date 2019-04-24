@@ -126,11 +126,52 @@ It is expected that App Directories will also curate listed apps and ensure that
 
 Like FDC3 Context Data, the Intent schemas need to be versioned.  Desktop Agents will be responsible to declare which version of the Intent schema they are using.   Applications may also assert a specific version requirement when raising an Intent.  Version negotation may be supported by a given Desktop Agent.
 
-### Send/broadcast context  
-On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features.  
-
-## Resolvers
+### Resolvers
 Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (raising UI to pick the desired App for the intent) or by the app launching the intent - in which case the calling App will handle the resolution itself (using the findIntents API below) and then invoke an explicit Intent object.
+
+## Context Sharing (DRAFT)
+
+> [IMPROVE DESCRIPTION]
+>
+> On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features.
+
+### Setting context
+
+Use existing function:
+
+```ts
+broadcast(context: Context): void;
+```
+
+Context has a type property, which is referenced by the desktop agent for the purposes of the typed listener.
+
+> Proposal: Can we change the name? e.g. `shareContext`/`setContext`.
+>
+> Reason: Broadcast doesn't imply the saving of the value for later `getCurrentValue` call.
+
+### Getting context
+
+Use existing context listener, and introduce a new typed listener for people who require that usage. The primary advantage of the typed context listener is that not all context sharing messages flow to all applications.
+
+For the use case where an application has to read the current context on start-up, we propose a separate single-use function to read the current context value to make the intention clear. If an application would like to retrieve the current value and receive future updates, they can use `getCurrentValue` and `addTypedContextListener` together.
+
+> [API PROPOSAL]
+> 
+> ```ts
+> addContextListener(handler: (context: Context) => void): Listener;
+>
+> addTypedContextListener(type: string, handler: (context: Context) => void): Listener;
+> 
+> getCurrentValue(type: string): Promise<Context>;
+> ```
+
+### Channels (DRAFT)
+
+Channels filter context being shared based on a channel type, e.g. colour.
+
+Channel operations include e.g. joining a channel, channel notifications, leaving a channel, listing available channels .
+
+TBD: Should known channels be declared in the app directory?
 
 ## APIs
 The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
