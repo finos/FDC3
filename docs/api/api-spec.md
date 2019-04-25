@@ -131,19 +131,28 @@ Intents functionality is dependent on resolver functionality to map the intent t
 
 ## Context Sharing (DRAFT)
 
-> [IMPROVE DESCRIPTION]
->
-> On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features.
+On the financial desktop, applications can share related context and state with each other through the context sharing APIs. An application that wants to share context can simply publish a context object without being aware of how or by who the data is consumed.
+
+Applications can listen to all incoming context updates by declaring a generic context listener. If an application wants to be more selective and only wants to be notified of specific types of context, they can declare a typed context listener. The desktop agent will inspect the `type` property of context objects to route context updates only to interested applications. There is no limit to the amount of context listeners a receiving application can declare.
+
+When declaring a listener, a handle is returned that applications can use to unsubscribe from future updates.
+
+Applications that would like to query the current state of the desktop when they start up, can ask the desktop agent for the current value of a particular context type. This will return, asynchronously, the most recent value of that type, or no value, if none has been published for that type. An example of this behaviour would be a charting application that joins a group of trading applications, and would like to initialise itself to the currently selected instrument on the desktop.
 
 ### Setting context
 
-Use existing function:
+Applications use the broadcast operation to publish context data objects to the desktop.
 
 ```ts
-broadcast(context: Context): void;
-```
+const instrument = {
+    type: 'fdc3.instrument',
+    id: {
+        ticker: 'AAPL';
+    }
+};
 
-Context has a type property, which is referenced by the desktop agent for the purposes of the typed listener.
+desktopAgent.broadcast(instrument);
+```
 
 > Proposal: Can we change the name? e.g. `shareContext`/`setContext`.
 >
@@ -151,27 +160,43 @@ Context has a type property, which is referenced by the desktop agent for the pu
 
 ### Getting context
 
-Use existing context listener, and introduce a new typed listener for people who require that usage. The primary advantage of the typed context listener is that not all context sharing messages flow to all applications.
+If an application declares a generic context listener, providing a callback, they will be notified whenever another application invokes the `broadcast` function for any object:
 
-For the use case where an application has to read the current context on start-up, we propose a separate single-use function to read the current context value to make the intention clear. If an application would like to retrieve the current value and receive future updates, they can use `getCurrentValue` and `addTypedContextListener` together.
+```ts
+const listener = desktopAgent.addContextListener(context => {
+    // handle context object
+});
+```
 
-> [API PROPOSAL]
-> 
-> ```ts
-> addContextListener(handler: (context: Context) => void): Listener;
->
-> addTypedContextListener(type: string, handler: (context: Context) => void): Listener;
-> 
-> getCurrentValue(type: string): Promise<Context>;
-> ```
+If an application declares a typed context listener, the callback will only be invoked for context object updates where the type matches:
+
+```ts
+const instrumentListener = desktopAgent.addTypedContextListener('fdc3.instrument', instrument => {
+    // handle instrument object
+});
+```
+
+If an application would like to retrieve the current state of the desktop at startup, they can ask for the current value for a particular type of object:
+
+```ts
+await instrument = desktopAgent.getCurrentValue('fdc3.instrument');
+```
+
+An application can retrieve the current value as well as listen to future updates, where it makes sense to do so.
 
 ### Channels (DRAFT)
 
-Channels filter context being shared based on a channel type, e.g. colour.
+Applications can join channels, e.g. based on color or workspace.
 
-Channel operations include e.g. joining a channel, channel notifications, leaving a channel, listing available channels .
+If an application joins a channel, this filters context updates - applications will only receive updates if they are part of the same channel.
 
-TBD: Should known channels be declared in the app directory?
+> Channel operations could include (TBD):
+> * joining a channel
+> * leaving a channel
+> * listing available channels
+> * channel events
+>
+> Should known channels be declared in the app directory?
 
 ## APIs
 The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
