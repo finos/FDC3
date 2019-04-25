@@ -174,4 +174,15 @@ interface DesktopAgent {
    * Adds a listener for incoming context broadcast from the Desktop Agent.
    */
   addContextListener(handler: (context: Context) => void): Listener;
+
+  /**
+   * Adds a listener for specific context item types broadcast from the Desktop Agent.
+   */
+  addTypedContextListener(type: string, handler: (context: Context) => void): Listener;
+  
+  /**
+   * Retrieves from the channel the current value for the specified context item type, if one is available.
+   * If there is no value for the specified type in the channel store then the promise succeeds with a void payload.
+   */
+  getCurrentValue(type: string): Promise<Context>;
 }
