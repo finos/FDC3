@@ -184,5 +184,5 @@ interface DesktopAgent {
    * Retrieves from the channel the current value for the specified context item type, if one is available.
    * If there is no value for the specified type in the channel store then the promise succeeds with a void payload.
    */
-  getCurrentValue(type: string): Promise<Context>;
+  getCurrentValue(type: string): Promise<Context | void>;
 }
