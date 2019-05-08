@@ -12,7 +12,7 @@ identifiers, intents that provide contexts, and location of metadata providing
 information specific to the launching and integration of the application.
 
 In the real world the AppD would support many use cases as defined in the
-[FDC3 Use Cases](use-cases/use-cases-intro)
+[FDC3 Use Cases](use-cases/overview)
 
 The following provides some common use cases and benefits.
 
