@@ -132,6 +132,46 @@ On the financial desktop, applications often want to broadcast context to any nu
 ## Resolvers
 Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (raising UI to pick the desired App for the intent) or by the app launching the intent - in which case the calling App will handle the resolution itself (using the findIntents API below) and then invoke an explicit Intent object.
 
+## Context channels
+
+The context channel api allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.
+
+There are three types of channels, which are functionally identical, but have different visibility and discoverability semantics.
+
+1. The 'public' or 'desktop' ones, which have a well understood identity.
+2. The 'private' or 'app' ones, which have a transient identity and need to be revealed
+3. The 'global' one which is available to everyone.
+
+Additionally there is a 'default' channel which serves as /dev/null and satisfies a possible requirements that all apps connect to one channel.
+
+To open a desktop channel, one calls
+
+    let c = channels.getDesktopChannels().find(c=>???);
+
+To broadcast one calls
+
+    c.broadcast(context);
+
+To subscribe one calls
+
+    c.addEventListener('broadcast', (c,e)=>{some code})
+
+Private are created as thus:
+
+    let ac = AppChannel.create();
+    let channel_name = ac.id;
+    function_to_send_name_to_other_app(channel_name);
+
+They can only be obtained by name
+
+    let ac AppChannel.wrap("my app", channel_name)
+
+The Global channel is obtained trivially somehow
+
+    let gc = channels.getGlobalChannel();
+
+
+    
 ## APIs
 The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
 
