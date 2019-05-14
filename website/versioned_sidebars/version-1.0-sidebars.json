@@ -1,0 +1,51 @@
+{
+  "version-1.0-docs": {
+    "Getting Started": [
+      "version-1.0-fdc3-intro",
+      "version-1.0-fdc3-charter",
+      "version-1.0-why-fdc3",
+      "version-1.0-fdc3-compliance"
+    ],
+    "API": [
+      "version-1.0-api/api-intro",
+      "version-1.0-api/api-spec",
+      {
+        "type": "subcategory",
+        "label": "API Reference",
+        "ids": [
+          "version-1.0-api/DesktopAgent",
+          "version-1.0-api/Context",
+          "version-1.0-api/Errors"
+        ]
+      }
+    ],
+    "Intents": [
+      "version-1.0-intents-intro",
+      "version-1.0-intents-spec"
+    ],
+    "Context Data": [
+      "version-1.0-context-intro",
+      "version-1.0-context-spec"
+    ],
+    "App Directory": [
+      "version-1.0-appd-intro",
+      "version-1.0-appd-discovery",
+      "version-1.0-appd-use",
+      "version-1.0-appd-spec"
+    ]
+  },
+  "version-1.0-use-cases": {
+    "Use Cases": [
+      "version-1.0-use-cases/overview",
+      "version-1.0-use-cases/uc-1",
+      "version-1.0-use-cases/uc-2",
+      "version-1.0-use-cases/uc-3",
+      "version-1.0-use-cases/uc-4",
+      "version-1.0-use-cases/uc-5",
+      "version-1.0-use-cases/uc-9",
+      "version-1.0-use-cases/uc-10",
+      "version-1.0-use-cases/uc-13",
+      "version-1.0-use-cases/uc-15"
+    ]
+  }
+}

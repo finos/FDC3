@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "examples": "docusaurus-examples",
+    "start": "docusaurus-start",
+    "build": "docusaurus-build",
+    "publish-gh-pages": "docusaurus-publish",
+    "write-translations": "docusaurus-write-translations",
+    "version": "docusaurus-version",
+    "rename-version": "docusaurus-rename-version",
+    "redoc-appd": "redoc-cli bundle --output pages/appd-spec.html ../src/app-directory/specification/appd.yaml"
+  },
+  "devDependencies": {
+    "docusaurus": "1.7.3",
+    "redoc-cli": "0.7.0"
+  }
+}
