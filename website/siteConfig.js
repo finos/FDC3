@@ -13,8 +13,8 @@
 const users = require('./data/users.json');
 
 const siteConfig = {
-  title: 'FDC3', // Title for your website.
-  tagline: 'Open standards for the financial desktop',
+  title: 'FDC3', // Title for your website. THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
+  tagline: 'Open standards for the financial desktop', //THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
   url: 'https://fdc3.finos.org',
   cname: 'fdc3.finos.org',
   baseUrl: '/',
@@ -32,20 +32,20 @@ const siteConfig = {
 
   defaultVersionShown: '1.0',
 
-  twitterUsername: 'fdc3_',
+  twitterUsername: 'FDC3_',
 
   // If you have users set above, you add it here:
   users,
 
   /* path to images for header/footer */
-  headerIcon: 'img/finos-white.png',
-  footerIcon: 'img/finos.png',
-  favicon: 'img/favicon/favicon.ico',
+  headerIcon: 'img/fdc3-icon-2019.svg',   /* change to program/project icon logo */
+  footerIcon: 'img/fdc3-logo-2019.png',  /* change to program/project icon + wordmark logo */
+  favicon: 'img/favicon/favicon.ico',  /* change to program/project favicon logo .ico */
 
   /* Colors for website */
   colors: {
-    primaryColor: '#00b5e2',
-    secondaryColor: '#0086bf'
+    primaryColor: '#018CC1', /* This changes the top FINOS banner & all links - DO NOT CHANGE */
+    secondaryColor: '#0033A0' /* This does net change anything - but keep as the project / program main color */
   },
 
   /* Custom fonts for website */
@@ -63,7 +63,7 @@ const siteConfig = {
   */
 
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
-  copyright: `Copyright © ${new Date().getFullYear()} FDC3`,
+  copyright: `Copyright © ${new Date().getFullYear()} FDC3`,  /* CHANGE THIS TO PROJECT / PROGRAM NAME */
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.
@@ -82,8 +82,8 @@ const siteConfig = {
   docsSideNavCollapsible: true,
 
   // Open Graph and Twitter card images.
-  ogImage: 'img/docusaurus.png',
-  twitterImage: 'img/docusaurus.png',
+  ogImage: 'assets/fdc3-logo.png', /* change to program/project icon + wordmark logo */
+  twitterImage: 'assets/fdc3-logo.png', /* change to program/project icon + wordmark logo */
 
   // Show documentation's last contributor's name.
   // enableUpdateBy: true,
