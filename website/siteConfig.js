@@ -15,9 +15,9 @@ const users = require('./data/users.json');
 const siteConfig = {
   title: 'FDC3', // Title for your website. THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
   tagline: 'Open standards for the financial desktop', //THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
-  url: 'https://grizzwolf.github.io/FDC3',
+  url: 'https://grizzwolf.github.io/FDC3/',
   //cname: 'fdc3.finos.org',
-  baseUrl: '/FDC3',
+  baseUrl: '/FDC3/',
   // For publishing to GitHub pages
   projectName: 'FDC3',
   organizationName: 'grizzwolf',
