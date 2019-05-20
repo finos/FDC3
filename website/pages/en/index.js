@@ -40,7 +40,7 @@ class HomeSplash extends React.Component {
 
     const ProjectTitle = () => (
       <h2 className="projectTitle">
-        {siteConfig.title}
+        {/*siteConfig.title*/}
         <small>{siteConfig.tagline}</small>
       </h2>
     );
@@ -63,14 +63,16 @@ class HomeSplash extends React.Component {
 
     return (
       <SplashContainer>
-        {/* <Logo img_src={`${baseUrl}img/docusaurus.svg`} /> */}
-        <div className="inner">
-          <ProjectTitle siteConfig={siteConfig} />
-          <PromoSection>
-            <Button href={docUrl('fdc3-intro')}>Get Started</Button>
-            <Button href={repoUrl}>GitHub</Button>
-          </PromoSection>
-        </div>
+                {/*<Logo img_src={`${baseUrl}img/docusaurus.svg`} />*/}
+            <div className="inner">
+              <img src="/img/fdc3-logo-2019.png"></img>
+              
+              <ProjectTitle siteConfig={siteConfig} />
+              <PromoSection>
+                <Button href={docUrl('fdc3-intro')}>Get Started</Button>
+                <Button href={repoUrl}>GitHub</Button>
+              </PromoSection>
+            </div>
       </SplashContainer>
     );
   }
@@ -133,18 +135,18 @@ class Index extends React.Component {
     );
 
     const FeatureCallout = () => (
-      <div className="productShowcaseSection paddingBottom" style={{textAlign: 'center'}}>
+      <div className="productShowcaseSection paddingTop paddingBottom" style={{textAlign: 'center'}}>
         <h2>Use Cases</h2>
         <MarkdownBlock>{`Document business [use cases](${docUrl('use-cases/overview')}) that drive FDC3 interoperability standards.`}</MarkdownBlock>
       </div>
     );
 
     const FinosBanner = () => (
-      <div className="finos lightBackground">
-        <h2>Proud member of the Fintech Open Source Foundation</h2>
+      <div className="finos finosBanner">
         <a href="https://www.finos.org">
-          <img src={`${baseUrl}img/finos_wordmark.svg`} height='150px' alt="FINOS" title="FINOS"/>
+          <img id="finosicon" src={`${baseUrl}img/finos_wordmark.svg`} height='150px' alt="FINOS" title="FINOS"/>
         </a>
+        <h2 id="proud">Proud member of the Fintech Open Source Foundation</h2>
       </div>
     );
 
