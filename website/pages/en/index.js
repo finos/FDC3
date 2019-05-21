@@ -141,14 +141,14 @@ class Index extends React.Component {
       </div>
     );
 
-    const FinosBanner = () => (
-      <div className="finos finosBanner">
-        <a href="https://www.finos.org">
-          <img id="finosicon" src={`${baseUrl}img/finos_wordmark.svg`} height='150px' alt="FINOS" title="FINOS"/>
-        </a>
-        <h2 id="proud">Proud member of the Fintech Open Source Foundation</h2>
-      </div>
-    );
+    //const FinosBanner = () => (
+      //<div className="finos finosBanner">
+        //<a href="https://www.finos.org">
+          //<img id="finosicon" src={`${baseUrl}img/finos_wordmark.svg`} height='150px' alt="FINOS" title="FINOS"/>
+        //</a>
+        //<h2 id="proud">Proud member of the Fintech Open Source Foundation</h2>
+      //</div>
+    //);
 
     const UserShowcase = () => {
       if ((siteConfig.users || []).length === 0) {
@@ -182,7 +182,7 @@ class Index extends React.Component {
           <FeatureCallout />
           
           <UserShowcase />
-          <FinosBanner />
+         
         </div>
       </div>
     );
@@ -190,3 +190,5 @@ class Index extends React.Component {
 }
 
 module.exports = Index;
+
+ //<FinosBanner />

@@ -5,6 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+
+
+
+
 const React = require('react');
 
 class Footer extends React.Component {
@@ -26,7 +30,7 @@ class Footer extends React.Component {
   render() {
     return (
       <footer className="nav-footer" id="footer">
-        <section className="sitemap">
+        <section className="sitemap">     
           <a href={this.props.config.baseUrl} className="nav-home">
             {this.props.config.footerIcon && (
               <img
@@ -114,11 +118,21 @@ class Footer extends React.Component {
             )}
           </div>
         </section>
+        <section className="finos finosBanner">
+        <a href="https://www.finos.org">
+          <img id="finosicon" src={`img/finos_wordmark.svg`} height='150px' alt="FINOS" title="FINOS"/>
+        </a>
+        <h2 id="proud">Proud member of the Fintech Open Source Foundation</h2>
+
+        </section>
         
         <section className="copyright">{this.props.config.copyright}</section>
+
       </footer>
     );
   }
 }
+
+
 
 module.exports = Footer;

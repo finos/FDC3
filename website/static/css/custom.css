@@ -144,6 +144,8 @@ body {
 
 .finosBanner {
   background-color: #018CC1; /* DO NOT CHANGE - THIS IS THE FINOS BANNER BACKGROUND - SHOULD STAY FINOS BLUE */
+  margin: 0 auto;
+  padding: 0 0;
 }
 
 .finosBanner h2{
@@ -156,4 +158,12 @@ article iframe {
   margin-left: auto;
   margin-right: auto;
   max-width: 50%;
+}
+
+.nav-footer {
+  background-color: #018CC1;
+}
+
+.sitemap{
+  color: #ffffff;
 }
