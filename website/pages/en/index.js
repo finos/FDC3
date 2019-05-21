@@ -135,7 +135,7 @@ class Index extends React.Component {
     );
 
     const FeatureCallout = () => (
-      <div  className="featureShowcaseSection paddingTop paddingBottom" style={{textAlign: 'center'}}>
+      <div  className="featureShowcaseSection  paddingBottom" style={{textAlign: 'center'}}>
         <h2>Use Cases</h2>
         <MarkdownBlock>{`Document business [use cases](${docUrl('use-cases/overview')}) that drive FDC3 interoperability standards.`}</MarkdownBlock>
       </div>
@@ -160,7 +160,7 @@ class Index extends React.Component {
       const pageUrl = page => baseUrl + (language ? `${language}/` : '') + page;
 
       return (
-        <div className="userShowcase productShowcaseSection paddingBottom">
+        <div className="userShowcase productShowcaseSection paddingTop paddingBottom">
           <h2>Who is Using FDC3?</h2>
           <p>The Financial Desktop Connectivity and Collaboration Consortium (FDC3) was founded in 2017 by <a href="https://openfin.co">OpenFin</a> and contributed to <a href="https://finos.org">FINOS</a>.  The FDC3 standards are created and used by leading organizations across the financial industry.</p>
           <Showcase users={pinnedUsers} />

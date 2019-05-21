@@ -128,13 +128,14 @@ body {
 
 .featureShowcaseSection h2{
   color: #0033A0; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
+  font-size: 30px;
 }
 
 .featureShowcaseSection {
-  background: light; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
+  background-color: #F7F7F7; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
+  padding-top: 10px;
+  padding-bottom: 40px;
 }
-
-
 
 .productShowcaseSection h2{
   color: #0033A0; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
