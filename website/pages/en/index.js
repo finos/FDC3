@@ -102,7 +102,7 @@ class Index extends React.Component {
     );
 
     const Features = () => (
-      <Block background="light" layout="fourColumn">
+      <Block background="white" layout="fourColumn">
         {[
           {
             content: `Create a consistent developer experience by adhering to the [API](${docUrl('api/api-intro')}) standard`,
@@ -135,7 +135,7 @@ class Index extends React.Component {
     );
 
     const FeatureCallout = () => (
-      <div className="productShowcaseSection paddingTop paddingBottom" style={{textAlign: 'center'}}>
+      <div  className="featureShowcaseSection paddingTop paddingBottom" style={{textAlign: 'center'}}>
         <h2>Use Cases</h2>
         <MarkdownBlock>{`Document business [use cases](${docUrl('use-cases/overview')}) that drive FDC3 interoperability standards.`}</MarkdownBlock>
       </div>
@@ -180,8 +180,9 @@ class Index extends React.Component {
         <div className="mainContainer">
           <Features />
           <FeatureCallout />
-          <FinosBanner />
+          
           <UserShowcase />
+          <FinosBanner />
         </div>
       </div>
     );
