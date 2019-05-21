@@ -91,7 +91,7 @@ body {
 }
 
 .homeContainer {
-  background-image: url("img/fdc3-background.png"); /* CHANGE THIS TO BACKGROUND LOGO PNG - THIS IS A SEMI-TRANSPARENT DOUBLE RENDERING OF THE LOGO ICON */
+  background-image: url("../img/fdc3-background.png"); /* CHANGE THIS TO BACKGROUND LOGO PNG - THIS IS A SEMI-TRANSPARENT DOUBLE RENDERING OF THE LOGO ICON */
   background-repeat: no-repeat;
   background-size: cover;
   background-color: #0033A0; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
