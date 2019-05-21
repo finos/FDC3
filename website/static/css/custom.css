@@ -27,6 +27,8 @@ header.postHeader:empty + article h1 {
   max-width: 220px;
 }
 
+
+
 .productShowcaseSection .logos img {
   width: 200px;
 }
@@ -120,9 +122,24 @@ body {
 }
 
 
+.featureShowcaseSection .logos img {
+  width: 200px;
+}
+
+.featureShowcaseSection h2{
+  color: #0033A0; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
+}
+
+.featureShowcaseSection {
+  background: light; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
+}
+
+
+
 .productShowcaseSection h2{
   color: #0033A0; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
 }
+
 
 .finosBanner {
   background-color: #018CC1; /* DO NOT CHANGE - THIS IS THE FINOS BANNER BACKGROUND - SHOULD STAY FINOS BLUE */
