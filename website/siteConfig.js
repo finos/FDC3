@@ -17,7 +17,7 @@ const siteConfig = {
   tagline: 'Open standards for the financial desktop', //THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
   url: 'https://grizzwolf.github.io/FDC3',
   //cname: 'fdc3.finos.org',
-  baseUrl: '/',
+  baseUrl: '/FDC3/',
   // For publishing to GitHub pages
   projectName: 'FDC3',
   organizationName: 'grizzwolf',
