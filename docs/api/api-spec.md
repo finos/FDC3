@@ -138,39 +138,27 @@ The context channel api allows a set of apps to share a stateful piece of data b
 
 There are three types of channels, which are functionally identical, but have different visibility and discoverability semantics.
 
-1. The 'public' or 'desktop' ones, which have a well understood identity.
+1. The 'public' or 'desktop' ones, which have a well understood identity. One is called 'default'.
 2. The 'private' or 'app' ones, which have a transient identity and need to be revealed
-3. The 'global' one which is available to everyone.
 
-Additionally there is a 'default' channel which serves as /dev/null and satisfies a possible requirements that all apps connect to one channel.
+The 'public' channels include a 'default' channel which serves as the backwards compatible layer with the 'send/broadcast context' above. There are some reserved channel names for future use. Currently this is just 'global'.
 
-To open a desktop channel, one calls
+To find a desktop channel, one calls
 
-    let c = channels.getDesktopChannels().find(c=>???);
+    let allChannels = await channels.getDesktopChannels();
+    let myChannel = allChannels.find(c=>???);
 
 To broadcast one calls
 
-    c.broadcast(context);
+    myChannel.broadcast(context);
 
 To subscribe one calls
 
-    c.addEventListener('broadcast', (c,e)=>{some code})
+    myChannel.addEventListener('broadcast', (c,e)=>{some code})
 
-Private are created as thus:
+Private are created and obtained as thus:
 
-    let ac = AppChannel.create();
-    let channel_name = ac.id;
-    function_to_send_name_to_other_app(channel_name);
-
-They can only be obtained by name
-
-    let ac AppChannel.wrap("my app", channel_name)
-
-The Global channel is obtained trivially somehow
-
-    let gc = channels.getGlobalChannel();
-
-
+    let ac = AppChannel.getOrCreate("a-channel-name");
     
 ## APIs
 The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
