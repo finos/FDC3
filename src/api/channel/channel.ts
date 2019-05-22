@@ -1,5 +1,13 @@
 type ChannelId = string;
 
+declare interface ChannelListener{    
+    /**
+     * Remove this event listener
+     * 
+     */
+    removeEventListener(): void;
+}
+
 /**
  * Object representing a context channel.
  * 
@@ -54,23 +62,28 @@ declare class Channel {
      * 
      * The `channel` property within the event will always be this channel instance.
      */
-    public addEventListener(event: 'broadcast', listener: (event: {channel: Channel; context: Context}) => void): void;
-
-    /**
-     * Remove this event listener
-     * 
-     */
-    public removeEventListener(event: 'broadcast', listener: (event: {channel: Channel; context: Context}) => void): void;
+    public addBroadcastListener(listener: (event: {channel: Channel; context: Context}) => void): ChannelListener;
 }
 
 /**
- * All windows will start off in this channel.
- * 
- * Unlike desktop channels, the default channel has no pre-defined name or visual style. It is up to apps to display 
- * this in the channel selector as they see fit - it could be as "default", or "none", or by "leaving" a user channel.
+ * A desktop channel will be global enough to have a presence across many apps. This gives us some hints
+ * to render them in a standard way.
  */
-declare class DefaultChannel extends Channel {
-    type: 'default';
+declare class DesktopChannelVisualIdentity{
+    /**
+     * A user-readable name for this channel, e.g: `"Red"`
+     */
+    name: string;
+
+    /**
+     * The color that should be associated within this channel when displaying this channel in a UI, e.g: `0xFF0000`.
+     */
+    color: number;
+
+    /**
+     * A URL of an image that can be used to display this channel
+     */
+    glyph: string;
 }
 
 /**
@@ -88,31 +101,11 @@ declare class DesktopChannel extends Channel {
     type: 'desktop';
 
     /**
-     * A user-readable name for this channel, e.g: `"Red"`
+     * DesktopChannels may well be selectable by users. Here are the hints on how to see them.
      */
-    name: string;
-
-    /**
-     * The color that should be associated within this channel when displaying this channel in a UI, e.g: `0xFF0000`.
-     */
-    color: number;
-
-    /*
-    //glyph?
-    */
+    visualIdentity: DesktopChannelVisualIdentity;
 }
 
-/**
- * A special channel that receives all broadcasts, from all windows.
- * 
- * NOTE: This re-defines the term "global channel" - what was previously called the "global" channel is now 
- * the "default" channel.
- */
-declare class GlobalChannel extends Channel {
-    type: 'global';
-
-    // No `name` or `color` on the global channel
-}
 
 /**
  * Applications can create custom channels for specialised use-cases. Note that these channels would only be known
@@ -122,30 +115,14 @@ declare class GlobalChannel extends Channel {
  */
 declare class AppChannel extends Channel {
     /**
-     * Registers a new {@link AppChannel}. The service will generate an ID for the channel - the ID will be a
-     * random string, known only to whoever calls this function. The ID's of these channels will be long randomized 
-     * strings.
+     * Returns a channel with the given identity. Either stands up a new channel or returns an existing channel.
      * 
      * It is up to applications to manage how to share knowledge of these custom channels across windows and to manage
-     * channel ownership and lifecycle.
+     * channel ownership and lifecycle. 
+     * @param channelId the identity of this channel
      */
-    public static create(): Promise<AppChannel>;
 
-    /**
-     * Allows other applications to fetch an {@link AppChannel} instance of an existing application channel. This can
-     * be used to allow other windows to connect to an existing channel.
-     * 
-     * The service will allow any window to wrap and these channels, but it is up to the application to decide how to
-     * communicate the existance of these channels.
-     * 
-     * TBD: How to handle wrapping/usage of a channel that doesn't exist.
-     * 
-     * @param uuid The UUID of the application that created the channel
-     * @param channelId The service-defined channel ID, returned via the call to {@link create}
-     */
-    public static wrap(uuid: string, channelId: string): AppChannel;
-
-
+    public static getOrCreate(channelId: ChannelId): Promise<AppChannel>;
     type: 'app';
 
     // Possibly some additional fields, TBD.
