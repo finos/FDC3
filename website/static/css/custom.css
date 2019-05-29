@@ -65,7 +65,7 @@ header.postHeader:empty + article h1 {
 /* CSS added 14 May 2019 */
 
 .navigationSlider .slidingNav ul {
-  background: #018CC1;  /* DO NOT CHANGE - THIS IS THE NAVIGATION BACKGROUND - SHOULD STAY FINOS BLUE */
+  background: #0086bf;  /* DO NOT CHANGE - THIS IS THE NAVIGATION BACKGROUND - SHOULD STAY FINOS BLUE */
   box-sizing: border-box;
   color: #fff;
   display: flex;
@@ -76,7 +76,7 @@ header.postHeader:empty + article h1 {
 }
 
 .navigationSlider .slidingNav ul li a:hover {
-  background: #00B5E2;  /* DO NOT CHANGE - THIS IS THE NAVIGATION BACKGROUND - SHOULD STAY FINOS BLUE */
+  background: #0086bf;  /* DO NOT CHANGE - THIS IS THE NAVIGATION BACKGROUND - SHOULD STAY FINOS BLUE */
 
 }
 
@@ -124,7 +124,7 @@ body {
 }
 
 .blockContent h2{
-  color:  #018CC1;  /* DO NOT CHANGE - THIS IS THE TITLE UNDER THE ICONS IN THE 3RD BLOCK - SHOULD STAY FINOS BLUE */
+  color:  #0086bf;  /* DO NOT CHANGE - THIS IS THE TITLE UNDER THE ICONS IN THE 3RD BLOCK - SHOULD STAY FINOS BLUE */
 }
 
 
@@ -149,7 +149,7 @@ body {
 
 
 .finosBanner {
-  background-color: #018CC1; /* DO NOT CHANGE - THIS IS THE FINOS BANNER BACKGROUND - SHOULD STAY FINOS BLUE */
+  background-color: #0086bf; /* DO NOT CHANGE - THIS IS THE FINOS BANNER BACKGROUND - SHOULD STAY FINOS BLUE */
   margin: 0 auto;
   padding: 0 0;
 }
@@ -168,7 +168,7 @@ article iframe {
 }
 
 .nav-footer {
-  background-color: #018CC1;
+  background-color: #0086bf;
 }
 
 .nav-footer .sitemap{
