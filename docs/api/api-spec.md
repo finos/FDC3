@@ -154,7 +154,7 @@ To broadcast one calls
 
 To subscribe one calls
 
-    myChannel.addEventListener('broadcast', (c,e)=>{some code})
+    let listener = myChannel.addBroadcastListener((c,e)=>{some code});
 
 Private are created and obtained as thus:
 
