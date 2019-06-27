@@ -43,6 +43,7 @@ class HomeSplash extends React.Component {
         {/*siteConfig.title*/}
         <small>{siteConfig.tagline}</small>
       </h2>
+      
     );
 
     const PromoSection = props => (
