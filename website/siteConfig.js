@@ -15,12 +15,12 @@ const users = require('./data/users.json');
 const siteConfig = {
   title: 'FDC3', // Title for your website. THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
   tagline: 'Open standards for the financial desktop', //THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
-  url: 'https://grizzwolf.github.io/FDC3',
+  url: 'https://fdc3.finos.org',
   //cname: 'fdc3.finos.org',
   baseUrl: '/FDC3/',
   // For publishing to GitHub pages
   projectName: 'FDC3',
-  organizationName: 'grizzwolf',
+  organizationName: 'FDC3',
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     {doc: 'fdc3-intro', label: 'Docs'},    
@@ -94,7 +94,7 @@ const siteConfig = {
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
-  repoUrl: 'https://github.com/grizzwolf/FDC3'
+  repoUrl: 'https://github.com/FDC3/FDC3'
 };
 
 module.exports = siteConfig;
