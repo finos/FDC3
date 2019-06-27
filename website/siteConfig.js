@@ -39,7 +39,7 @@ const siteConfig = {
 
   /* path to images for header/footer */
   headerIcon: 'img/fdc3-icon-2019.svg',   /* change to program/project icon logo */
-  footerIcon: 'img/fdc3-logo-2019.png',  /* change to program/project icon + wordmark logo */
+  footerIcon: 'img/fdc3-icon-2019.svg',  /* change to program/project icon + wordmark logo */
   favicon: 'img/favicon/favicon.ico',  /* change to program/project favicon logo .ico */
 
   /* Colors for website */
