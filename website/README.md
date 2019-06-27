@@ -188,6 +188,32 @@ For more information about the navigation bar, click [here](https://docusaurus.i
 
 For more information about custom pages, click [here](https://docusaurus.io/docs/en/custom-pages).
 
+## Custom CSS & Design Changes
+
+1. Changing logos for the Header and Footer and Favicon are done in website/siteConfig.js file in the /* path to images for header/footer */ section
+
+Note: make sure that you add your new logos to the website/static/img folder first.
+
+2. Change the main logo in the "SplashContainer" area of website/index.js file.
+
+Note: make sure that you add your new logos to the website/static/img folder first.
+
+3. Change the background color and the background transparent image in the website/static/css/custom.css file.
+
+Go to the section labeled: .homeContainer 
+
+Change "background-image" - and insert your new background image file. Note - make sure you add your new background transparent image file to the website/static/img folder first.
+
+Change "background-color" to your Project's main color (FDC3 is #0033A0)
+
+4. Change the .svg icons in the "gridBlock" (examples on FDC3 - the 4 .svg icons for API / Intents / Context Data / App Director) - you have to open the actual .svg files in the website/static/img folder with a program like Adobe Illustrator. Change the color of the entire file to your Project's main color (FDC3 is #0033A0) - and then save the file. The icon will change color. (NOote - If there is a way to change the .svg's using CSS, have not been able to do so yet. It should be possible.)
+
+5. Change the section header titles (example for FDC3: Use Cases & Who is Usind FDC3) by changing the website/static/css/custom.css file. Change the <h2> tags for .featureShowcaseSection h2 and .productShowcaseSection h2 to your Project's color (FDC3 is #0033A0).
+
+6. Interior Introduction Page - Change logo by on this page (example for FDC3: docs/fdc3-intro.md) by changing the "![FDC3](assets/fdc3-logo.png)" to the new logo name.
+
+Note: make sure that you add your new logo to the docs/assets folder first - this is a separate image repository from the "website" part.
+
 # Full Documentation
 
 Full documentation can be found on the [website](https://docusaurus.io/).
