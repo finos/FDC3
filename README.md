@@ -8,9 +8,15 @@
 The mission of the Financial Desktop Connectivity and Collaboration Consortium (FDC3) is to develop specific protocols and taxonomies to advance the ability of desktop applications in financial workflows to interoperate in a plug-and-play fashion and without prior, bi-lateral agreements.
 
 ## About this Repository
-FDC3 is a standard.  This repository houses the documentation and specifications for the ratified FDC3 standards. To join Working Groups meetings and Mailing lists where the standard is built, please check the [FDC3 space in the FINOS Wiki](http://wiki.finos.org/fdc3).
+FDC3 is a standard.  This repository houses the documentation and specifications for the ratified FDC3 standards. 
+
+## Using the standard
+Check out [the documentation website](https://fdc3.finos.org) for the different components of the standard, an overview of [common use cases](https://fdc3.finos.org/docs/use-cases/overview), developer [API docs](https://fdc3.finos.org/docs/api/api-intro) and [standard compliance information](https://fdc3.finos.org/docs/fdc3-compliance).
+
+Latest version of the standard is [1.0](https://fdc3.finos.org/docs/1.0/fdc3-intro). See [all available versions](https://fdc3.finos.org/versions).
 
 ## Contributing
+To join Working Groups meetings and Mailing lists where the standard is built, please check the [FDC3 space in the FINOS Wiki](http://wiki.finos.org/fdc3). If you'd like to contribute code to this repository:
 
 1. Fork it (<https://github.com/FDC3/FDC3/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
@@ -18,7 +24,9 @@ FDC3 is a standard.  This repository houses the documentation and specifications
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Create a new Pull Request
 
-The team will review the PR and decide about merging. Note that you will require a contributor agreement (individual or corporate) before your code can be merge, so please review [FINOS Contribution requirements](.github/CONTRIBUTING.md).
+The team will review the PR and decide about merging. 
+
+Note that you will require a contributor agreement (individual or corporate) before your code can be merge, so please review [FINOS Contribution requirements](.github/CONTRIBUTING.md).
 
 ## Roadmap
 With Productization on track to land at end of Q1, the expectation is that Q2 will be focused on implementations and feedback from those implementations driving further standards.  
