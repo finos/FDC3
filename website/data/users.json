@@ -6,6 +6,13 @@
         "isMember": false
     },
     {
+        "caption": "Chart IQ",
+        "image": "/img/users/ChartIQ.webp",
+        "infoLink": "https://www.chartiq.com/",
+        "pinned": true,
+        "isMember": true
+    },
+    {
         "caption": "FactSet",
         "image": "/img/users/FactSet.webp",
         "infoLink": "https://www.factset.com/",
@@ -60,5 +67,5 @@
         "infoLink": "https://www.scottlogic.com/",
         "pinned": true,
         "isMember": true
-    }
+    } 
 ]
