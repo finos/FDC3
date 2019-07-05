@@ -1,20 +1,20 @@
 [   {
         "caption": "Adaptive Financial Consulting",
-        "image": "/img/users/adaptive.webp",
+        "image": "img/users/adaptive.webp",
         "infoLink": "https://weareadaptive.com/",
         "pinned": true,
         "isMember": false
     },
     {
         "caption": "Chart IQ",
-        "image": "/img/users/ChartIQ.webp",
+        "image": "img/users/ChartIQ.webp",
         "infoLink": "https://www.chartiq.com/",
         "pinned": true,
         "isMember": true
     },
     {
         "caption": "FactSet",
-        "image": "/img/users/FactSet.webp",
+        "image": "img/users/FactSet.webp",
         "infoLink": "https://www.factset.com/",
         "pinned": true,
         "isMember": true
@@ -28,28 +28,28 @@
     },
     {
         "caption": "GreenKey",
-        "image": "/img/users/GreenKey.webp",
+        "image": "img/users/GreenKey.webp",
         "infoLink": "https://greenkeytech.com/",
         "pinned": true,
         "isMember": true
     },
     {
         "caption": "IHS Markit",
-        "image": "/img/users/IHSMarkit.webp",
+        "image": "img/users/IHSMarkit.webp",
         "infoLink": "https://ihsmarkit.com/",
         "pinned": true,
         "isMember": true
     },
     {
         "caption": "JP Morgan",
-        "image": "/img/users/JPMorgan.webp",
+        "image": "img/users/JPMorgan.webp",
         "infoLink": "https://www.jpmorgan.com/",
         "pinned": true,
         "isMember": true
     },    
     {
         "caption": "OpenFin",
-        "image": "/img/users/Openfin.webp",
+        "image": "img/users/Openfin.webp",
         "infoLink": "https://openfin.co/",
         "pinned": true,
         "isMember": true
