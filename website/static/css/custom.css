@@ -65,7 +65,7 @@ header.postHeader:empty + article h1 {
 /* CSS added 14 May 2019 */
 
 .navigationSlider .slidingNav ul {
-  background: #0086bf;  /* DO NOT CHANGE - THIS IS THE NAVIGATION BACKGROUND - SHOULD STAY FINOS BLUE */
+    /* DO NOT CHANGE - THIS IS THE NAVIGATION BACKGROUND - SHOULD STAY FINOS BLUE */
   box-sizing: border-box;
   color: #fff;
   display: flex;
@@ -76,7 +76,7 @@ header.postHeader:empty + article h1 {
 }
 
 .navigationSlider .slidingNav ul li a:hover {
-  background: #0086bf;  /* DO NOT CHANGE - THIS IS THE NAVIGATION BACKGROUND - SHOULD STAY FINOS BLUE */
+  background: #0033A0;  /* DO NOT CHANGE - THIS IS THE NAVIGATION BACKGROUND - SHOULD STAY FINOS BLUE */
 
 }
 
@@ -100,7 +100,7 @@ body {
   background-image: url("../img/fdc3-background.png"); /* CHANGE THIS TO BACKGROUND LOGO PNG - THIS IS A SEMI-TRANSPARENT DOUBLE RENDERING OF THE LOGO ICON */
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #0033A0; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
+  background-color: #0086BF; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
 }
 
 .homeContainer h2{
@@ -116,7 +116,7 @@ body {
 }
 
 .mainContainer {
-  padding: 0 0;
+  padding: 40 0;
 }
 
 .blockImage img{
@@ -159,7 +159,7 @@ body {
   font-size: 16px;
 }
 
-article p img,
+article p img,FeatureCallout
 article iframe {
   display: block;
   margin-left: auto;
