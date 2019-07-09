@@ -94,7 +94,7 @@ const siteConfig = {
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
-  repoUrl: 'https://grizzwolf.github.io/FDC3/'
+  repoUrl: 'https://fdc3.finos.org/'
 };
 
 module.exports = siteConfig;
