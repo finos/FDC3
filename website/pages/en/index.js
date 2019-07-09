@@ -40,9 +40,10 @@ class HomeSplash extends React.Component {
 
     const ProjectTitle = () => (
       <h2 className="projectTitle">
-        {siteConfig.title}
+        {/*siteConfig.title*/}
         <small>{siteConfig.tagline}</small>
       </h2>
+      
     );
 
     const PromoSection = props => (
@@ -63,14 +64,16 @@ class HomeSplash extends React.Component {
 
     return (
       <SplashContainer>
-        {/* <Logo img_src={`${baseUrl}img/docusaurus.svg`} /> */}
-        <div className="inner">
-          <ProjectTitle siteConfig={siteConfig} />
-          <PromoSection>
-            <Button href={docUrl('fdc3-intro')}>Get Started</Button>
-            <Button href={repoUrl}>GitHub</Button>
-          </PromoSection>
-        </div>
+                {/*<Logo img_src={`${baseUrl}img/docusaurus.svg`} />*/}
+            <div className="inner">
+              <img src="img/fdc3-logo-2019.png"></img>
+              
+              <ProjectTitle siteConfig={siteConfig} />
+              <PromoSection>
+                <Button href={docUrl('fdc3-intro')}>Get Started</Button>
+                <Button href={repoUrl}>GitHub</Button>
+              </PromoSection>
+            </div>
       </SplashContainer>
     );
   }
@@ -100,7 +103,7 @@ class Index extends React.Component {
     );
 
     const Features = () => (
-      <Block background="light" layout="fourColumn">
+      <Block background="white" layout="fourColumn">
         {[
           {
             content: `Create a consistent developer experience by adhering to the [API](${docUrl('api/api-intro')}) standard`,
@@ -133,20 +136,20 @@ class Index extends React.Component {
     );
 
     const FeatureCallout = () => (
-      <div className="productShowcaseSection paddingBottom" style={{textAlign: 'center'}}>
+      <div  className="featureShowcaseSection  paddingBottom" style={{textAlign: 'center'}}>
         <h2>Use Cases</h2>
         <MarkdownBlock>{`Document business [use cases](${docUrl('use-cases/overview')}) that drive FDC3 interoperability standards.`}</MarkdownBlock>
       </div>
     );
 
-    const FinosBanner = () => (
-      <div className="finos lightBackground">
-        <h2>Proud member of the Fintech Open Source Foundation</h2>
-        <a href="https://www.finos.org">
-          <img src={`${baseUrl}img/finos_wordmark.svg`} height='150px' alt="FINOS" title="FINOS"/>
-        </a>
-      </div>
-    );
+    //const FinosBanner = () => (
+      //<div className="finos finosBanner">
+        //<a href="https://www.finos.org">
+          //<img id="finosicon" src={`${baseUrl}img/finos_wordmark.svg`} height='150px' alt="FINOS" title="FINOS"/>
+        //</a>
+        //<h2 id="proud">Proud member of the Fintech Open Source Foundation</h2>
+      //</div>
+    //);
 
     const UserShowcase = () => {
       if ((siteConfig.users || []).length === 0) {
@@ -158,7 +161,7 @@ class Index extends React.Component {
       const pageUrl = page => baseUrl + (language ? `${language}/` : '') + page;
 
       return (
-        <div className="userShowcase productShowcaseSection paddingBottom">
+        <div className="userShowcase productShowcaseSection paddingTop paddingBottom">
           <h2>Who is Using FDC3?</h2>
           <p>The Financial Desktop Connectivity and Collaboration Consortium (FDC3) was founded in 2017 by <a href="https://openfin.co">OpenFin</a> and contributed to <a href="https://finos.org">FINOS</a>.  The FDC3 standards are created and used by leading organizations across the financial industry.</p>
           <Showcase users={pinnedUsers} />
@@ -178,8 +181,9 @@ class Index extends React.Component {
         <div className="mainContainer">
           <Features />
           <FeatureCallout />
-          <FinosBanner />
+          
           <UserShowcase />
+         
         </div>
       </div>
     );
@@ -187,3 +191,5 @@ class Index extends React.Component {
 }
 
 module.exports = Index;
+
+ //<FinosBanner />
