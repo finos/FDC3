@@ -6,7 +6,7 @@
     <generator>Feed for Node.js</generator>
     <link rel="alternate" href="https://fdc3.finos.org/blog"/>
     <subtitle>The best place to stay up-to-date with the latest FDC3 news and events.</subtitle>
-    <logo>https://fdc3.finos.org/img/finos-white.png</logo>
+    <logo>https://fdc3.finos.org/img/fdc3-icon-2019.svg</logo>
     <rights>Copyright © 2019 FDC3</rights>
     <entry>
         <title type="html"><![CDATA[Adding RSS Support]]></title>
