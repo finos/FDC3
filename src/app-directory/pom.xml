@@ -34,7 +34,7 @@
 
     <properties>
         <jersey.version>2.26</jersey.version>
-        <jackson.version>2.9.8</jackson.version>
+        <jackson.version>2.9.9</jackson.version>
         <javassist.version>3.22.0-GA</javassist.version>
         <swagger-codegen-maven-plugin-version>2.3.1</swagger-codegen-maven-plugin-version>
         <sonar.skip>false</sonar.skip>
