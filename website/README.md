@@ -214,6 +214,10 @@ Change "background-color" to your Project's main color (FDC3 is #0033A0)
 
 Note: make sure that you add your new logo to the docs/assets folder first - this is a separate image repository from the "website" part.
 
+# users.json
+
+iOS doesn't currently (July 2019) support .webp image files - so use .png - and force the code to use .png as well
+
 # Full Documentation
 
 Full documentation can be found on the [website](https://docusaurus.io/).
