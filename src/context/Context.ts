@@ -1,3 +1,8 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2019 FINOS FDC3 contributors - see NOTICE file
+ */
+
 interface Context {
     /**
      * The type of the context that uniquely identifies it, e.g. "fdc3.instrument"     
