@@ -136,16 +136,16 @@ Intents functionality is dependent on resolver functionality to map the intent t
 
 The context channel api allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.
 
-There are three types of channels, which are functionally identical, but have different visibility and discoverability semantics.
+There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics.
 
-1. The 'public' or 'desktop' ones, which have a well understood identity. One is called 'default'.
-2. The 'private' or 'app' ones, which have a transient identity and need to be revealed
+1. The 'system' ones, which have a well understood identity. One is called 'default'.
+2. The 'app' ones, which have a transient identity and need to be revealed
 
-The 'public' channels include a 'default' channel which serves as the backwards compatible layer with the 'send/broadcast context' above. There are some reserved channel names for future use. Currently this is just 'global'.
+The 'system' channels include a 'default' channel which serves as the backwards compatible layer with the 'send/broadcast context' above. There are some reserved channel names for future use. Currently this is just 'global'.
 
-To find a desktop channel, one calls
+To find a system channel, one calls
 
-    let allChannels = await channels.getDesktopChannels();
+    let allChannels = await channels.getSystemChannels();
     let myChannel = allChannels.find(c=>???);
 
 To broadcast one calls
@@ -156,9 +156,9 @@ To subscribe one calls
 
     let listener = myChannel.addBroadcastListener((c,e)=>{some code});
 
-Private are created and obtained as thus:
+App channels are created and obtained as thus:
 
-    let ac = AppChannel.getOrCreate("a-channel-name");
+    let ac = await channels.getOrCreate("a-channel-name");
     
 ## APIs
 The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
