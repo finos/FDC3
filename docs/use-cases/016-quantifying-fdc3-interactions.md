@@ -38,3 +38,13 @@ NOTES
 - In workflow 3 (but also consequently in 1, 2), we would we want to correlate interactions between applications or instances of applications? If we have more than one chart app open, for example, and context is passed to both or only one of them, would it be required to differentiate between the two cases?
    - Same as above - ideally, we would be able to structure the reporting in such a way the consumer of the data could easily process select the right level of granularity
 
+## Adoption into the FDC3 Standard
+
+| Workflow  #   |   Status Against 1.0 Standard | App Directory   | Context & Intents | API |
+| :---------: |   -----  | ----- | ---------| --------- | 
+| 1  |  New | -  | -  | -  |
+| 2  |  New | -  | -  | -  |
+| 3  |  New |  - |  - | -  |
+
+## Adoption Metrics & Case Studies
+*To be added: quantitative adoption metrics and qualitative measures of impact (case studies)*
