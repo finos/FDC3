@@ -139,16 +139,20 @@ class Index extends React.Component {
     );
 
     const FeatureCallout = () => (
-      <div  className="featureShowcaseSection  paddingBottom" style={{textAlign: 'center'}}>
-        <h2>FDC3 Survey</h2>
+      <div  className="featureShowcaseSection  paddingBottom">
+      <div style={{float:'left',paddingLeft:'9px',paddingRight:'9px',width:'200px'}}>
+        <a href="https://www.surveymonkey.com/r/finosfdc3" target="_blank"><img style={{width:'150px',height:'150px'}} id="fdc3survey" src={`${baseUrl}docs/assets/fdc3-survey-1080.jpeg`} height='300px' alt="FDC3 Survey" title="FDC3 Survey"/></a>
         
-        <p>As we approach the end of the first year of the FDC3 1.0 standards, FINOS would like to get your feedback on how well FDC3</p>
-        <p> - both the project community and the technical standard - </p>
-        <p>is doing addressing the needs of financial organizations, and how we can better help and support both companies adopting FDC,</p>
-        <p>as well as contributors involved in building out and further developing the specification.</p>
-        <h3><a href="https://www.surveymonkey.com/r/finosfdc3">Fill Out The Survey Here</a></h3>
-        <a href="https://www.surveymonkey.com/r/finosfdc3"><img id="fdc3survey" src={`${baseUrl}docs/assets/fdc3-survey-1080.jpeg`} height='300px' alt="FDC3 Survey" title="FDC3 Survey"/></a>
+      </div>
+      <div>
         
+        <p>As we approach the end of the first year of the FDC3 1.0 standards, FINOS would like to get your feedback on how well FDC3
+         - both the project community and the technical standard - 
+        is doing addressing the needs of financial organizations, and how we can better help and support both companies adopting FDC3,
+        as well as contributors involved in building out and further developing the specification.</p>
+        <h3><a href="https://www.surveymonkey.com/r/finosfdc3" target="_blank">Fill Out The Survey Here!</a></h3>
+       </div>
+       
       </div>
     );
 
@@ -190,9 +194,10 @@ class Index extends React.Component {
     return (
       <div>
         <HomeSplash siteConfig={siteConfig} language={language} />
+        <FeatureCallout />
         <div className="mainContainer">
           <Features />
-          <FeatureCallout />
+          
           
           <UserShowcase />
          
