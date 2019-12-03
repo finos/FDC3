@@ -26,7 +26,8 @@ const siteConfig = {
     {doc: 'fdc3-intro', label: 'Docs'},    
     {doc: 'use-cases/overview', label: 'Use Cases'},
     {page: 'get-involved', label: 'Get Involved'},
-    {doc: 'why-fdc3', label: 'Why FDC3'}
+    {doc: 'why-fdc3', label: 'Why FDC3'},
+    {doc: "https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview", label: 'Browse Meeting Minutes'}
    //, {blog: true, label: 'News'}
   ],
 
