@@ -72,6 +72,7 @@ class HomeSplash extends React.Component {
               <PromoSection>
                 <Button href={docUrl('fdc3-intro')}>Get Started</Button>
                 <Button href={repoUrl}>GitHub</Button>
+                <Button href="https://www.surveymonkey.com/r/finosfdc3">FDC3 Survey</Button>
               </PromoSection>
             </div>
       </SplashContainer>
@@ -102,6 +103,8 @@ class Index extends React.Component {
       </Container>
     );
 
+      
+      
     const Features = () => (
       <Block background="white" layout="fourColumn">
         {[
@@ -136,11 +139,24 @@ class Index extends React.Component {
     );
 
     const FeatureCallout = () => (
-      <div  className="featureShowcaseSection  paddingBottom" style={{textAlign: 'center'}}>
-        <h2>Use Cases</h2>
-        <MarkdownBlock>{`Document business [use cases](${docUrl('use-cases/overview')}) that drive FDC3 interoperability standards.`}</MarkdownBlock>
+      <div  className="featureShowcaseSection  paddingBottom">
+      <div style={{float:'left',paddingLeft:'9px',paddingRight:'9px',width:'200px'}}>
+        <a href="https://www.surveymonkey.com/r/finosfdc3" target="_blank"><img style={{width:'150px',height:'150px'}} id="fdc3survey" src={`${baseUrl}docs/assets/fdc3-survey-1080.jpeg`} height='300px' alt="FDC3 Survey" title="FDC3 Survey"/></a>
+        
+      </div>
+      <div>
+        
+        <p>As we approach the end of the first year of the FDC3 1.0 standards, FINOS would like to get your feedback on how well FDC3
+         - both the project community and the technical standard - 
+        is doing addressing the needs of financial organizations, and how we can better help and support both companies adopting FDC3,
+        as well as contributors involved in building out and further developing the specification.</p>
+        <h3><a href="https://www.surveymonkey.com/r/finosfdc3" target="_blank">Fill Out The Survey Here!</a></h3>
+       </div>
+       
       </div>
     );
+
+      //<MarkdownBlock>{`Document business [use cases](${docUrl('use-cases/overview')}) that drive FDC3 interoperability standards.`}</MarkdownBlock>
 
     //const FinosBanner = () => (
       //<div className="finos finosBanner">
@@ -178,9 +194,10 @@ class Index extends React.Component {
     return (
       <div>
         <HomeSplash siteConfig={siteConfig} language={language} />
+        <FeatureCallout />
         <div className="mainContainer">
           <Features />
-          <FeatureCallout />
+          
           
           <UserShowcase />
          
@@ -191,5 +208,7 @@ class Index extends React.Component {
 }
 
 module.exports = Index;
+
+
 
  //<FinosBanner />
