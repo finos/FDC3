@@ -140,16 +140,16 @@ class Index extends React.Component {
 
     const FeatureCallout = () => (
       <div  className="featureShowcaseSection  paddingBottom">
-      <div style={{float:'left',paddingLeft:'9px',paddingRight:'9px',width:'200px'}}>
+      <div class="CTA-image" style={{paddingLeft:'9px',paddingRight:'9px'}}>
         <a href="https://www.surveymonkey.com/r/finosfdc3" target="_blank"><img style={{width:'150px',height:'150px'}} id="fdc3survey" src={`${baseUrl}docs/assets/fdc3-survey-1080.jpeg`} height='300px' alt="FDC3 Survey" title="FDC3 Survey"/></a>
         
       </div>
-      <div>
+      <div class="CTA-text">
         
         <p>As we approach the end of the first year of the FDC3 1.0 standards, FINOS would like to get your feedback on how well FDC3
-         - both the project community and the technical standard - 
-        is doing addressing the needs of financial organizations, and how we can better help and support both companies adopting FDC3,
-        as well as contributors involved in building out and further developing the specification.</p>
+         - both the community and the standard - 
+        is addressing the needs of financial organizations. With your feedback, we can better help and support companies adopting FDC3,
+        as well as contributors to the specification.</p>
         <h3><a href="https://www.surveymonkey.com/r/finosfdc3" target="_blank">Fill Out The Survey Here!</a></h3>
        </div>
        
