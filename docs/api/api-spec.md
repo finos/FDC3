@@ -5,7 +5,7 @@ title: API Specification
 hide_title: true
 ---
 
-# API Specification 
+# API Specification
 
 ## Components
 ### Desktop Agent
@@ -19,6 +19,10 @@ Examples of Desktop Agents include:
 
 Desktop Agents expose an FDC3 standard API to applications they have launched.  When an App is launched by a Desktop Agent and is given access to the Agent's API to interoperate, it is running in that Desktop Agent's *context*. 
 
+#### API Access
+The FDC3 API can be made available to an application through a number of different methods.  In the case of web applications, a Desktop Agent SHOULD provide the FDC3 API via a global accessible as _window.fdc3_. Implementors MAY additionally make the API available through modules, imports, or other means. 
+
+#### Standards vs. Implementation
 ![Desktop Agent - Standards Schematic](assets/api-1.png)
 
 The surface area of FDC3 standardization (shown in *white* above) itself is quite small in comparison to the extent of a typical desktop agent implementation (in *grey*).  
