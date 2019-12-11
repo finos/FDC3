@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/FDC3/FDC3.svg?branch=master)](https://travis-ci.org/FDC3/FDC3)
+[![Build Status](https://travis-ci.org/finos/FDC3.svg?branch=master)](https://travis-ci.org/finos/FDC3)
 [![FINOS - Released](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-released.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Released)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Stack Overflow](https://img.shields.io/badge/stackoverflow-fdc3-orange.svg)](https://stackoverflow.com/questions/tagged/fdc3)
@@ -18,7 +18,7 @@ Latest version of the standard is [1.0](https://fdc3.finos.org/docs/1.0/fdc3-int
 ## Contributing
 To join Working Groups meetings and Mailing lists where the standard is built, please check the [FDC3 space in the FINOS Wiki](http://wiki.finos.org/fdc3). If you'd like to contribute code to this repository:
 
-1. Fork it (<https://github.com/FDC3/FDC3/fork>)
+1. Fork it (<https://github.com/finos/FDC3/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
