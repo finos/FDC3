@@ -138,34 +138,29 @@ class Index extends React.Component {
       </Block>
     );
 
-    const FeatureCallout = () => (
-      <div  className="featureShowcaseSection  paddingBottom">
-      <div class="CTA-image" style={{paddingLeft:'9px',paddingRight:'9px'}}>
-        <a href="https://www.surveymonkey.com/r/finosfdc3" target="_blank"><img style={{width:'150px',height:'150px'}} id="fdc3survey" src={`${baseUrl}docs/assets/fdc3-survey-1080.jpeg`} height='300px' alt="FDC3 Survey" title="FDC3 Survey"/></a>
-        
-      </div>
-      <div class="CTA-text">
-        
-        <p>As we approach the end of the first year of the FDC3 1.0 standards, FINOS would like to get your feedback on how well FDC3
-         - both the community and the standard - 
-        is addressing the needs of financial organizations. With your feedback, we can better help and support companies adopting FDC3,
-        as well as contributors to the specification.</p>
-        <h3><a href="https://www.surveymonkey.com/r/finosfdc3" target="_blank">Fill Out The Survey Here!</a></h3>
-       </div>
-       
+    const SurveyBanner = () => (
+      <div className="surveyBanner">
+        <div className="CTA-image">
+          <a href="https://www.surveymonkey.com/r/finosfdc3" target="_blank"><img style={{width:'150px',height:'150px'}} id="fdc3survey" src={`${baseUrl}docs/assets/fdc3-survey-1080.jpeg`} height='300px' alt="FDC3 Survey" title="FDC3 Survey"/></a>
+          
+        </div>
+        <div class="CTA-text">
+          
+          <p>As we approach the end of the first year of the FDC3 1.0 standards, FINOS would like to get your feedback on how well FDC3
+          - both the community and the standard - 
+          is addressing the needs of financial organizations. With your feedback, we can better help and support companies adopting FDC3,
+          as well as contributors to the specification.</p>
+          <h3><a href="https://www.surveymonkey.com/r/finosfdc3" target="_blank">Fill Out The Survey Here!</a></h3>
+        </div>
       </div>
     );
 
-      //<MarkdownBlock>{`Document business [use cases](${docUrl('use-cases/overview')}) that drive FDC3 interoperability standards.`}</MarkdownBlock>
-
-    //const FinosBanner = () => (
-      //<div className="finos finosBanner">
-        //<a href="https://www.finos.org">
-          //<img id="finosicon" src={`${baseUrl}img/finos_wordmark.svg`} height='150px' alt="FINOS" title="FINOS"/>
-        //</a>
-        //<h2 id="proud">Proud member of the Fintech Open Source Foundation</h2>
-      //</div>
-    //);
+    const FeatureCallout = () => (
+      <div  className="featureShowcaseSection  paddingBottom" style={{textAlign: 'center'}}>
+        <h2>Use Cases</h2>
+        <MarkdownBlock>{`Document business [use cases](${docUrl('use-cases/overview')}) that drive FDC3 interoperability standards.`}</MarkdownBlock>
+      </div>
+    );
 
     const UserShowcase = () => {
       if ((siteConfig.users || []).length === 0) {
@@ -194,13 +189,11 @@ class Index extends React.Component {
     return (
       <div>
         <HomeSplash siteConfig={siteConfig} language={language} />
-        <FeatureCallout />
+        <SurveyBanner />
         <div className="mainContainer">
           <Features />
-          
-          
+          <FeatureCallout />
           <UserShowcase />
-         
         </div>
       </div>
     );
