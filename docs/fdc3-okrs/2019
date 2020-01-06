@@ -1,0 +1,26 @@
+2019 Objectives & Key Results
+---
+id: fdc3-okrs-2019
+sidebar_label: OKRs | 2019
+title: 2019 OKRs | FINOS FDC3 
+---
+
+## 2019 FDC3 OKRs 
+
+Objective #1: Demonstrate business transformation with significant adoption of FDC3 in 2019
+* KR #1: Demonstrate business transformation, as measured by qualitative metrics (5 testimonials from adopters) and quantitative metrics (50,000 completed interop workflows)
+* KR #2: Survey of FDC3 participants showing
+** 100% of contributing participants adopted FDC3 in production or in flight on adoption
+** Over 50% of all participants with adoption or in flight
+ 
+Objective #2: Ensure a sustainable level of engagement with the community
+* KR #1: 0 unplanned meeting cancelations in Q4
+* KR #2: All WG chairs communicate with their WG at least once a week through email, GitHub, or confluence
+* KR #3: PRs and issues being filed for all WGs between meetings
+
+### 2019 FDC3 *UCWG* OKRs
+Objective #1: Advance business transformation by connecting the financial desktop app ecosystem with streamlined user workflows
+* KR #1: Document new 10 cross-app financial workflows  => 1 new use case
+* KR #2: 70% of workflows implemented or accepted onto the roadmap of standards  =>  6.5% complete, 63.5% remaining
+* KR #3: Demonstrate business transformation, as measured by qualitative metrics (5 testimonials from adopters)  =>
+* KR #4: Demonstrate business transformation, as measured by quantitative metrics (50,000 completed interop workflows)  =>
