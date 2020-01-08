@@ -108,7 +108,7 @@ declare class SystemChannel extends Channel {
  * windows/applications.
  */
 declare class AppChannel extends Channel {
-
+    type: 'app';
 
     // Possibly some additional fields, TBD.
 }
@@ -147,6 +147,5 @@ declare module channels {
      * @param channelId the identity of this channel
      */
 
-    public static getOrCreate(channelId: ChannelId): Promise<AppChannel>;
-    type: 'app';
+    function getOrCreate(channelId: ChannelId): Promise<AppChannel>;
 }
