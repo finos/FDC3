@@ -64,7 +64,7 @@
 <li>The FX Trader clicks button to book a trade in the third-party trading app (e.g. Autobahn FX)</li>
 <li>The trading app executes an interop action to the client in-house proprietary credit check application to check the trader's credit limit. If this check indicates the limit has been reached, the trading app presents a rejection dialog as a standard error dialog box with an informational message which may be a standard message (e.g. &quot;Credit Limit Reached&quot;) or may include an interop link/action (provided by the credit check application) to resolve the limit breach.</li>
 </ol>
-<p><img src="/docs/assets/uc4.png" alt="Use Case 4 Workflow"></p>
+<p><img src="../assets/uc4.png" alt="Use Case 4 Workflow"></p>
 <h2><a class="anchor" aria-hidden="true" id="required-features"></a><a href="#required-features" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Required Features</h2>
 <ul>
 <li>Point-to-point RPC invocation.  Current FDC3 API proposal doesn't define response message for &quot;open&quot; and &quot;send&quot; methods as they both returns <code>Promise&lt;void&gt;</code>:</li>
