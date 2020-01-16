@@ -134,9 +134,9 @@ Intents functionality is dependent on resolver functionality to map the intent t
 
 ## Context channels
 
-The context channel api allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.
+Context channels allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.  Use cases for channels include color linking between applications to automate the sharing of context and topic based pub/sub such as theme.
 
-There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics.
+There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics.  
 
 1. The 'system' ones, which have a well understood identity. One is called 'default'.
 2. The 'app' ones, which have a transient identity and need to be revealed
@@ -145,20 +145,38 @@ The 'system' channels include a 'default' channel which serves as the backwards 
 
 To find a system channel, one calls
 
-    let allChannels = await channels.getSystemChannels();
-    let myChannel = allChannels.find(c=>???);
+```javascript
+    //returns an array of channels
+    let allChannels = await fdc3.getSystemChannels(); 
+    let redChannel = allChannels.find(c=>{return c.id === "red";});
+```
 
-To broadcast one calls
+To join a channel. one calls
 
-    myChannel.broadcast(context);
+```javascript
+    fdc3.joinChannel(redChannel.id);
+```
 
-To subscribe one calls
+Calling _fdc3.broadcast_ will now route context to the joined channel.
 
-    let listener = myChannel.addBroadcastListener((c,e)=>{some code});
+To broadcast to a specific channel one calls
 
-App channels are created and obtained as thus:
+```javascript
+    fdc3.broadcastToChannel(context, redChannel.id);
+```
 
-    let ac = await channels.getOrCreate("a-channel-name");
+To listen to a channel one calls
+
+```javascript
+    let listener = fdc3.addChannelListener((e)=>{some code},channelId);
+```
+
+App channels are registered as thus:
+
+```javascript
+    let ac = await fdc3.registerChannel("a-channel-id");
+```
+ 
     
 ## APIs
 The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
