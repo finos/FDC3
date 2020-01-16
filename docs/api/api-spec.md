@@ -143,6 +143,17 @@ There are two types of channels, which are functionally identical, but have diff
 
 The 'system' channels include a 'default' channel which serves as the backwards compatible layer with the 'send/broadcast context' above. There are some reserved channel names for future use. Currently this is just 'global'.
 
+### Joining Channels
+Apps can join channels.  An app can only be joined to one channel at a time.  When an app joins a channel it will automatically recieve the current context for that channel, except if the channel joined is the 'default'.
+
+When an app is joined to a channel, calls to fdc3.broadcast and listeners added through fdc3.addContextListener will be routed to that channel.  If an app is not explicitly joined to a channel, it is on the 'default' channel.  It is up to the desktop agent to determine the behavior of the 'default' channel, and if context is automaticaly broadcast over it or not.
+
+It is possible that a call to join a channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.  
+
+### Direct Listening and Broadcast on Channels
+While joining channels automates a lot of the channel behavior for an app, it has the limitation in that an app can belong to only one channel at a time.  Listening and Broadcasting to channels using the _Channel.addBroadcastListener_ and the _Channel.broadcast_ APIs provides an app with fine-grained controls for specific channels.  This is especially useful for working with dynamic _App Channels_.
+
+### Examples
 To find a system channel, one calls
 
 ```javascript
@@ -159,24 +170,20 @@ To join a channel. one calls
 
 Calling _fdc3.broadcast_ will now route context to the joined channel.
 
-To broadcast to a specific channel one calls
+To get (or create) a channel reference, then interact with it
 
 ```javascript
-    fdc3.broadcastToChannel(context, redChannel.id);
+    const appChannel = await fdc3.getOrCreateChannel("appChannel");
+    //get the current context of the channel
+    let current = await appChannel.getCurrentContext();
+    //add a listener
+    appChannel.addBroadcastListener((event)=>{...});
+    //broadcast to the channel
+    appChannel.broadcast(context);
+
 ```
 
-To listen to a channel one calls
 
-```javascript
-    let listener = fdc3.addChannelListener((e)=>{some code},channelId);
-```
-
-App channels are registered as thus:
-
-```javascript
-    let ac = await fdc3.registerChannel("a-channel-id");
-```
- 
     
 ## APIs
 The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
