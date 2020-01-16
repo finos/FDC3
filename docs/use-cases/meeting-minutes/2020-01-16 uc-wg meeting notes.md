@@ -48,4 +48,5 @@
 ## Action Items
 - [ ] review and clean up governance docs 
 - [ ] action items on confluence to be closed or migrated to github
+- [ ] goals and roadmaps to be reviewed offline
 - [ ] JT to try creating a use case issue template 
