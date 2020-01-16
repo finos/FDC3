@@ -87,6 +87,10 @@ declare class Channel {
    */
   public readonly type: string;
 
+  /**
+   * Channels may be visualized and selectable by users. DisplayMetaData may be used to provide hints on how to see them.
+   */
+  displayMetadata: DisplayMetadata;
 }
 
 /**
@@ -111,25 +115,6 @@ declare interface DisplayMetadata{
   glyph?: string;
 }
 
-/**
-* User-facing channels, to display within a colour picker or channel selector component.
-* 
-* This list of channels should be considered fixed by applications - the service will own the list of user channels,
-* making the same list of channels available to all applications, and this list will not change over the lifecycle of
-* the service.
-* 
-* We do not intend to support creation of 'user' channels at runtime, as this then adds considerable complexity when
-* implementing a channel selector component (must now support events, 'create channel' UI, reflowing of channel 
-* list, etc).
-*/
-declare class SystemChannel extends Channel {
-  type: 'system';
-
-  /**
-   * SystemChannels may well be selectable by users. Here are the hints on how to see them.
-   */
-  displayMetadata: DisplayMetadata;
-}
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -250,43 +235,23 @@ interface DesktopAgent {
   /**
    * Retrieves a list of the System channels available for the app to join
    */
-  getSystemChannels(): Promise<Array<SystemChannel>>;
+  getSystemChannels(): Promise<Array<Channel>>;
 
   /**
    * Joins the app to the specified channel
    * An app can only be joined to one channel at a time
    * rejects with error if the channel is unavailable or the join request is denied
    */
-  joinChannel(channel: string) : Promise<void>;
-
-  
+  joinChannel(channelId: string) : Promise<void>;
 
   /**
-   * Broadcasts a context specifically to a channel
-   * Channel may be system or app type
-   * An app is not required to be a member of the channel they broadcast to, 
-   * but the desktop agent may reject their broadcast
-   * rejects with error if the broadcast was denied for the channel, channel does not exist, etc
+   * Returns a channel with the given identity. Either stands up a new channel or returns an existing channel.
+   * 
+   * It is up to applications to manage how to share knowledge of these custom channels across windows and to manage
+   * channel ownership and lifecycle. 
+   * @param channelId the identity of this channel
    */
-  broadcastToChannel(context: Context, channel: string): Promise<void>;
+  getOrCreateChannel(channelId: string): Promise<Channel>;
 
 
-  /**
-   * Adds a listener specific to a channel - System or App
-   * rejects with error if the broadcast was denied for the channel, channel does not exist, etc
-   */
-  addChannelListener(channel: string, handler: (context: Context) => void): Listener;
-
-  /**
-   * Creates an App type channel.  
-   * rejects with error if the channel already exists or if the app is denied creating a channel
-   */
-  registerChannel(channel: string): Promise<void>;
-
-  /**
-   * Returns the current context for a channel
-   * if no channel is specified, will return current context for the joined channel for the app
-   */
-  getCurrentContext(channel?: string): Promise<Context|null>;
-}
 

@@ -12,6 +12,21 @@ A Desktop Agent can be connected to one or more App Directories and will use dir
 
 ## Methods
 
+### `broadcast`
+```typescript
+broadcast(context: Context): void;
+```
+
+Publishes context to other apps on the desktop.
+
+#### Examples
+```javascript
+fdc3.broadcast(context);
+```
+#### See also
+* [addContextListener](#addcontextlistener)
+
+
 ### `open`
 
 ```typescript
@@ -108,19 +123,6 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 #### See also
    * [`ResolveError`](Errors#resolveerror)
 
-### `broadcast`
-```typescript
-broadcast(context: Context): void;
-```
-
-Publishes context to other apps on the desktop.
-
-#### Examples
-```javascript
-agent.broadcast(context);
-```
-#### See also
-* [addContextListener](#addcontextlistener)
 
 ### `raiseIntent`
 
@@ -137,6 +139,64 @@ agent.raiseIntent("StartChat", newContext, intentR.source);
 ```
 #### See also
 * [`IntentResolution`](#intentresolution)
+
+
+
+
+### `getOrCreateChannel`
+```typescript
+getOrCreateChannel(channelId: string): Promise<Channel>;
+```
+Returns a Channel object for the specified channel, creating it (as an _App_ channel) - if it does not exist.
+
+#### Examples
+```javascript
+
+try {
+  let myChannel = await fdc3.getOrCreateChannel("myChannel");
+  myChannel.addContextListener(listener);
+}
+catch (err){
+  //app could not register the channel
+}
+
+```
+#### See also
+*[`Channel`](#Channel)
+
+
+### `getSystemChannels`
+```typescript
+getSystemChannels() : Promise<Array<Channel>>;
+```
+Retrieves a list of the System channels available for the app to join
+
+#### See also
+*[`Channel`](#Channel)
+
+### `joinChannel`
+```typescript
+joinChannel(channelId: string) : Promise<void>;
+```
+Joins the app to the specified channel.
+If an app is joined to a channel, all _fdc3.broadcast_ calls will go to the channel, and all listeners assigned via _fdc3.addContextListener_ will listen on the channel.
+An app can only be joined to one channel at a time.
+Rejects with error if the channel is unavailable or the join request is denied.
+
+#### Examples
+```javascript
+  //get all system channels
+  const channels = await fdc3.getSystemChannels();
+
+  //create UI to pick from the system channels
+
+  //join the channel on selection
+  fdc3.joinChannel(selectedChannel.id);
+
+```
+#### See also
+*[`getSystemChannels`](#getSystemChannels)
+
 
 ### `addIntentListener`
 ```typescript
@@ -156,6 +216,9 @@ Adds a listener for incoming context broadcast from the Desktop Agent.
 #### See also
 * [`Listener`](#listener)
 * [`Context`](Context)
+
+
+
 
 ## Return Types
 
@@ -234,3 +297,37 @@ The `unsubscribe` method on the listener object allows the application to cancel
 * [`DesktopAgent.addIntentListener`](#addintentlistener)
 * [`DesktopAgent.addContextListener`](#addcontextlistener)
 
+### `Channel`
+```typescript
+ Channel {
+  id: string;
+  type: string;
+  displayMetadata: DisplayMetadata;
+  broadcast(context: Context): Promise<void>;
+  getCurrentContext(): Promise<Context|null>;
+  addBroadcastListener(listener: (event: {channel: Channel; context: Context}) => void): DesktopAgent.Listener;
+}
+```
+Object representing a context channel.
+* __id__ uniquely identifies the channel. It is either assigned by the desktop agent (system channel) or defined by an application (app channel)
+* __type__ may be _system_ or _app_
+* __dispalyMetadata__   DisplayMetaData can be used to provide display hints for channels intended to be visualized and selectable by end users.
+* __broadcast__  Broadcasts a context on the channel. This function can be used without first joining the channel, allowing applications to broadcast on channels that they aren't a member of. 
+* __getCurrentContext__ Returns the last context that was broadcast on the channel. If no context has been set on the channel, this will return `null`. 
+* __addBroadcastListener__  Event that is fired whenever a window broadcasts on this channel. The `channel` property within the event will always be this channel instance.
+
+#### See also
+[`DisplayMetadata`](#DisplayMetadata)
+
+### `DisplayMetadata`
+```typescript
+DisplayMetadata{
+  name?: string;
+  color?: string;
+  glyph?: string;
+}
+```
+A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI.  A common use case is for color linking.
+* __name__ The display name for the channel
+* __color__ A name, hex, rgba, etc that should be associated within this channel when displaying this channel in a UI
+* __glyph__  A URL of an image that can be used to display this channel
