@@ -20,7 +20,8 @@ enum ResolveError {
 
 enum ChannelError {
   NoChannelFound = "NoChannelFound",
-  AccessDenied = "AccessDenied"
+  AccessDenied = "AccessDenied",
+  CreationFailed = "CreationFailed"
 }
 
 /**
@@ -102,6 +103,7 @@ declare class Channel {
    * 
    * This broadcast will be received by all windows that are members of this channel, *except* for the window that
    * makes the broadcast. This matches the behaviour of the top-level FDC3 `broadcast` function.
+   * `Error` with a string from the `ChannelError` enumeration.
    */
   public broadcast(context: Context): Promise<void>;
 
@@ -116,6 +118,7 @@ declare class Channel {
    * object.
    * 
    * NOTE: Only non-default channels are stateful, for the default channel this method will always return `null`.
+   * `Error` with a string from the `ChannelError` enumeration.
    */
   public getCurrentContext(): Promise<Context|null>;
 
@@ -123,6 +126,7 @@ declare class Channel {
    * Event that is fired whenever a window broadcasts on this channel.
    * 
    * The `channel` property within the event will always be this channel instance.
+   * `Error` with a string from the `ChannelError` enumeration.
    */
   public addBroadcastListener(listener: (event: {channel: Channel; context: Context}) => void): Listener;
 }
@@ -268,7 +272,6 @@ interface DesktopAgent {
 
   /**
    * Retrieves a list of the System channels available for the app to join
-   * * `Error` with a string from the `ChannelError` enumeration.
    */
   getSystemChannels(): Promise<Array<Channel>>;
 
