@@ -91,8 +91,9 @@ declare class Channel {
 
   /**
    * Channels may be visualized and selectable by users. DisplayMetaData may be used to provide hints on how to see them.
+   * For app channels, displayMetadata would typically not be present
    */
-  displayMetadata: DisplayMetadata;
+  displayMetadata?: DisplayMetadata;
 
    /**
    * Broadcasts the given context on this channel. This is equivalent to joining the channel and then calling the 

@@ -304,7 +304,7 @@ The `unsubscribe` method on the listener object allows the application to cancel
  Channel {
   id: string;
   type: string;
-  displayMetadata: DisplayMetadata;
+  displayMetadata?: DisplayMetadata;
   broadcast(context: Context): Promise<void>;
   getCurrentContext(): Promise<Context|null>;
   addBroadcastListener(listener: (event: {channel: Channel; context: Context}) => void): DesktopAgent.Listener;
