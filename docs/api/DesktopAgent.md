@@ -148,6 +148,7 @@ agent.raiseIntent("StartChat", newContext, intentR.source);
 getOrCreateChannel(channelId: string): Promise<Channel>;
 ```
 Returns a Channel object for the specified channel, creating it (as an _App_ channel) - if it does not exist.
+ `Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration if channel could not be created or access was denied.
 
 #### Examples
 ```javascript
@@ -162,7 +163,7 @@ catch (err){
 
 ```
 #### See also
-*[`Channel`](#Channel)
+*[`Channel`](#channel)
 
 
 ### `getSystemChannels`
@@ -172,7 +173,7 @@ getSystemChannels() : Promise<Array<Channel>>;
 Retrieves a list of the System channels available for the app to join
 
 #### See also
-*[`Channel`](#Channel)
+*[`Channel`](#channel)
 
 ### `joinChannel`
 ```typescript
@@ -182,6 +183,7 @@ Joins the app to the specified channel.
 If an app is joined to a channel, all _fdc3.broadcast_ calls will go to the channel, and all listeners assigned via _fdc3.addContextListener_ will listen on the channel.
 An app can only be joined to one channel at a time.
 Rejects with error if the channel is unavailable or the join request is denied.
+ `Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration.
 
 #### Examples
 ```javascript
@@ -312,9 +314,9 @@ Object representing a context channel.
 * __id__ uniquely identifies the channel. It is either assigned by the desktop agent (system channel) or defined by an application (app channel)
 * __type__ may be _system_ or _app_
 * __dispalyMetadata__   DisplayMetaData can be used to provide display hints for channels intended to be visualized and selectable by end users.
-* __broadcast__  Broadcasts a context on the channel. This function can be used without first joining the channel, allowing applications to broadcast on channels that they aren't a member of. 
-* __getCurrentContext__ Returns the last context that was broadcast on the channel. If no context has been set on the channel, this will return `null`. 
-* __addBroadcastListener__  Event that is fired whenever a window broadcasts on this channel. The `channel` property within the event will always be this channel instance.
+* __broadcast__  Broadcasts a context on the channel. This function can be used without first joining the channel, allowing applications to broadcast on channels that they aren't a member of.  `Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration.
+* __getCurrentContext__ Returns the last context that was broadcast on the channel. If no context has been set on the channel, this will return `null`.  `Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration.
+* __addBroadcastListener__  Event that is fired whenever a window broadcasts on this channel. The `channel` property within the event will always be this channel instance.  `Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration.
 
 #### See also
 [`DisplayMetadata`](#DisplayMetadata)
