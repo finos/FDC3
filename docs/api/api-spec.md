@@ -106,7 +106,7 @@ catch (er){
 ```
 
 ##### Upgrading to a Remote API Connection
-There are a wide range of workflows where decoupled intents and/or context passing do not provide rich enough interactivity and applications are better off exposing proprietary APIs.  In these cases, an App can use the *source* propoerty on the resolution of an intent to connect directly to another App and from there, call remote APIs using the methods available in the Desktop Agent context for the App.  For example: 
+There are a wide range of workflows where decoupled intents and/or context passing do not provide rich enough interactivity and applications are better off exposing proprietary APIs.  In these cases, an App can use the *source* property on the resolution of an intent to connect directly to another App and from there, call remote APIs using the methods available in the Desktop Agent context for the App.  For example: 
 
 ```javascript
     let chart = await agent.raiseIntent('ViewChart');
@@ -120,7 +120,7 @@ There are a wide range of workflows where decoupled intents and/or context passi
 Applications need to let the system know the Intents they can support.  Typically, this is done via registration with the App Directory.  It is also possible for Intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  While, dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
 
 #### Compliance with Intent Standards
-Intents represent a contract with expected behavior if an app asserts that it supports the intent.  Where this contract is enforcable by schema (for example, return object types),the FDC3 API implementation should enforce compliance and return an error if the interface is not met.  
+Intents represent a contract with expected behavior if an app asserts that it supports the intent.  Where this contract is enforceable by schema (for example, return object types), the FDC3 API implementation should enforce compliance and return an error if the interface is not met.  
 
 It is expected that App Directories will also curate listed apps and ensure that they are complying with declared intents.
 
@@ -132,5 +132,36 @@ On the financial desktop, applications often want to broadcast context to any nu
 ## Resolvers
 Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (raising UI to pick the desired App for the intent) or by the app launching the intent - in which case the calling App will handle the resolution itself (using the findIntents API below) and then invoke an explicit Intent object.
 
+## Context channels
+
+The context channel api allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.
+
+There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics.
+
+1. The 'system' ones, which have a well understood identity. One is called 'default'.
+2. The 'app' ones, which have a transient identity and need to be revealed
+
+The 'system' channels include a 'default' channel which serves as the backwards compatible layer with the 'send/broadcast context' above. There are some reserved channel names for future use. Currently this is just 'global'.
+
+To find a system channel, one calls
+
+    let allChannels = await channels.getSystemChannels();
+    let myChannel = allChannels.find(c=>???);
+
+To broadcast one calls
+
+    myChannel.broadcast(context);
+
+To subscribe one calls
+
+    let listener = myChannel.addBroadcastListener((c,e)=>{some code});
+
+App channels are created and obtained as thus:
+
+    let ac = await channels.getOrCreate("a-channel-name");
+    
 ## APIs
-The APIs are defined in TypeScript in the [src](/src), with documentation generated in the [docs](/docs) folder.
+The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
+
+[src]: https://github.com/finos/FDC3/tree/master/src/api
+[docs]: https://github.com/finos/FDC3/tree/master/docs/api

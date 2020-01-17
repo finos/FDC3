@@ -1,3 +1,8 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2019 FINOS FDC3 contributors - see NOTICE file
+ */
+
 type Context = object;
 
 enum OpenError {
@@ -122,7 +127,7 @@ interface DesktopAgent {
    *
    * ```javascript
    * // I have a context object, and I want to know what I can do with it, hence, I look for for intents...
-   * const appIntents = await agent.findIntentsForContext(context);
+   * const appIntents = await agent.findIntentsByContext(context);
    * 
    * // returns for example:
    * // [{

@@ -9,20 +9,12 @@
 // site configuration options.
 
 // List of projects/orgs using your project for the users page.
-const users = [
-  {
-    caption: 'User1',
-    // You will need to prepend the image path with your baseUrl
-    // if it is not '/', like: '/test-site/img/docusaurus.svg'.
-    image: '/img/docusaurus.svg',
-    infoLink: 'https://www.facebook.com',
-    pinned: true,
-  },
-];
+
+const users = require('./data/users.json');
 
 const siteConfig = {
-  title: 'FDC3', // Title for your website.
-  tagline: 'Open standards for the financial desktop',
+  title: 'FDC3', // Title for your website. THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
+  tagline: 'Open standards for the financial desktop', //THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
   url: 'https://fdc3.finos.org',
   cname: 'fdc3.finos.org',
   baseUrl: '/',
@@ -31,27 +23,31 @@ const siteConfig = {
   organizationName: 'FDC3',
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'fdc3-intro', label: 'Docs'},    
+    
+    {doc: 'fdc3-intro', label: 'Docs'},   
     {doc: 'use-cases/overview', label: 'Use Cases'},
     {page: 'get-involved', label: 'Get Involved'},
     {doc: 'why-fdc3', label: 'Why FDC3'}
    //, {blog: true, label: 'News'}
   ],
 
-  twitterUsername: 'fdc3_',
+  defaultVersionShown: '1.0',
+
+  twitterUsername: 'FDC3_',
 
   // If you have users set above, you add it here:
   users,
 
   /* path to images for header/footer */
-  headerIcon: 'img/finos-white.png',
-  footerIcon: 'img/finos.png',
-  favicon: 'img/favicon/favicon.ico',
+  headerIcon: 'img/fdc3-icon-2019.svg',   /* change to program/project icon logo */
+  footerIcon: 'img/fdc3-icon-2019.svg',  /* change to program/project icon + wordmark logo */
+  favicon: 'img/favicon/favicon.ico',  /* change to program/project favicon logo .ico */
 
   /* Colors for website */
   colors: {
-    primaryColor: '#00b5e2',
-    secondaryColor: '#205C3B',
+    primaryColor: '#0086bf', /* This changes the top FINOS banner & all links - DO NOT CHANGE */
+    secondaryColor: '#0033A0' /* This does net change anything - but keep as the project / program main color */
+  
   },
 
   /* Custom fonts for website */
@@ -69,7 +65,7 @@ const siteConfig = {
   */
 
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
-  copyright: `Copyright © ${new Date().getFullYear()} FDC3`,
+  copyright: `Copyright © ${new Date().getFullYear()} FDC3`,  /* CHANGE THIS TO PROJECT / PROGRAM NAME */
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.
@@ -88,8 +84,8 @@ const siteConfig = {
   docsSideNavCollapsible: true,
 
   // Open Graph and Twitter card images.
-  ogImage: 'img/docusaurus.png',
-  twitterImage: 'img/docusaurus.png',
+  ogImage: 'assets/fdc3-logo.png', /* change to program/project icon + wordmark logo */
+  twitterImage: 'assets/fdc3-logo.png', /* change to program/project icon + wordmark logo */
 
   // Show documentation's last contributor's name.
   // enableUpdateBy: true,
@@ -99,7 +95,7 @@ const siteConfig = {
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
-  repoUrl: 'https://github.com/FDC3/FDC3'
+  repoUrl: 'https://github.com/finos/FDC3'
 };
 
 module.exports = siteConfig;
