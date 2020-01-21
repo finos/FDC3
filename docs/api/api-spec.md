@@ -159,8 +159,9 @@ To find a system channel, one calls
 ```javascript
     //returns an array of channels
     let allChannels = await fdc3.getSystemChannels(); 
-    let redChannel = allChannels.find(c=>{return c.id === "red";});
+    let redChannel = allChannels.find(c => c.id === 'red');
 ```
+#### Joining channels
 
 To join a channel. one calls
 
@@ -170,14 +171,18 @@ To join a channel. one calls
 
 Calling _fdc3.broadcast_ will now route context to the joined channel.
 
+#### App Channels
+
+App channels are topics dynamically created by applications connected via FDC3. For example, an app may create a channel to broadcast to others data or status specific to that app.
+
 To get (or create) a channel reference, then interact with it
 
 ```javascript
-    const appChannel = await fdc3.getOrCreateChannel("appChannel");
+    const appChannel = await fdc3.getOrCreateChannel('my_custom_channel');
     //get the current context of the channel
     let current = await appChannel.getCurrentContext();
     //add a listener
-    appChannel.addBroadcastListener((event)=>{...});
+    appChannel.addBroadcastListener(event => {...});
     //broadcast to the channel
     appChannel.broadcast(context);
 
