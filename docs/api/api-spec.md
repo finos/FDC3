@@ -138,31 +138,61 @@ Intents functionality is dependent on resolver functionality to map the intent t
 
 ## Context channels
 
-The context channel api allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.
+Context channels allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.  Use cases for channels include color linking between applications to automate the sharing of context and topic based pub/sub such as theme.
 
-There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics.
+There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics.  
 
 1. The 'system' ones, which have a well understood identity. One is called 'default'.
 2. The 'app' ones, which have a transient identity and need to be revealed
 
 The 'system' channels include a 'default' channel which serves as the backwards compatible layer with the 'send/broadcast context' above. There are some reserved channel names for future use. Currently this is just 'global'.
 
+### Joining Channels
+Apps can join channels.  An app can only be joined to one channel at a time.  When an app joins a channel it will automatically recieve the current context for that channel, except if the channel joined is the 'default'.
+
+When an app is joined to a channel, calls to fdc3.broadcast and listeners added through fdc3.addContextListener will be routed to that channel.  If an app is not explicitly joined to a channel, it is on the 'default' channel.  It is up to the desktop agent to determine the behavior of the 'default' channel, and if context is automaticaly broadcast over it or not.
+
+It is possible that a call to join a channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.  
+
+### Direct Listening and Broadcast on Channels
+While joining channels automates a lot of the channel behavior for an app, it has the limitation in that an app can belong to only one channel at a time.  Listening and Broadcasting to channels using the _Channel.addBroadcastListener_ and the _Channel.broadcast_ APIs provides an app with fine-grained controls for specific channels.  This is especially useful for working with dynamic _App Channels_.
+
+### Examples
 To find a system channel, one calls
 
-    let allChannels = await channels.getSystemChannels();
-    let myChannel = allChannels.find(c=>???);
+```javascript
+    //returns an array of channels
+    let allChannels = await fdc3.getSystemChannels(); 
+    let redChannel = allChannels.find(c => c.id === 'red');
+```
+#### Joining channels
 
-To broadcast one calls
+To join a channel. one calls
 
-    myChannel.broadcast(context);
+```javascript
+    fdc3.joinChannel(redChannel.id);
+```
 
-To subscribe one calls
+Calling _fdc3.broadcast_ will now route context to the joined channel.
 
-    let listener = myChannel.addBroadcastListener((c,e)=>{some code});
+#### App Channels
 
-App channels are created and obtained as thus:
+App channels are topics dynamically created by applications connected via FDC3. For example, an app may create a channel to broadcast to others data or status specific to that app.
 
-    let ac = await channels.getOrCreate("a-channel-name");
+To get (or create) a channel reference, then interact with it
+
+```javascript
+    const appChannel = await fdc3.getOrCreateChannel('my_custom_channel');
+    //get the current context of the channel
+    let current = await appChannel.getCurrentContext();
+    //add a listener
+    appChannel.addBroadcastListener(event => {...});
+    //broadcast to the channel
+    appChannel.broadcast(context);
+
+```
+
+
     
 ## APIs
 The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.

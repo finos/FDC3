@@ -37,3 +37,14 @@ Contains constants representing the errors that can be encountered when calling 
 #### See also
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
+
+## `ChannelError`
+
+```typescript
+enum ChannelError {
+  NoChannelFound = "NoChannelFound",
+  AccessDenied = "AccessDenied",
+  CreationFailed = "CreationFailed"
+}
+```
+Contains constants representing the errors that can be encountered when calling channels using the [`joinChannel`](DesktopAgent#joinchannel) or [`getOrCreateChannel`](DesktopAgent#getorcreatechannel) methods, or the [`getCurrentContext`](DesktopAgent#channel), [`broadcast`](DesktopAgent#channel) or [`addBroadcastListener`](DesktopAgent#channel) methods on the Channel object.
