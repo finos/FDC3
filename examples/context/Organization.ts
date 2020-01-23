@@ -9,5 +9,6 @@ interface Organization extends Context {
     id: {
         LEI?: string;
         PERMID?: string;
+        FDS_ID?: string;
     }
 }
