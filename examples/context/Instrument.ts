@@ -15,5 +15,6 @@ interface Instrument extends Context {
         BBG?: string;
         PERMID?: string;
         FIGI?: string;
+        FDS_ID?: string;
     }
 }

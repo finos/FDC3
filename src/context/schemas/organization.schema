@@ -10,7 +10,7 @@
       "properties": {
         "LEI": { "type": "string" },
         "PERMID": { "type": "string" },
-        "FDSID": { "type": "string" }
+        "FDS_ID": { "type": "string" }
       }
     }
   },
