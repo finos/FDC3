@@ -96,6 +96,14 @@ declare class Channel {
   displayMetadata?: DisplayMetadata;
 
    /**
+   * Joins the app to the channel
+   * An app can only be joined to one channel at a time
+   * rejects with error if the channel is unavailable or the join request is denied
+   * `Error` with a string from the `ChannelError` enumeration.
+   */
+  public join() : Promise<void>;
+
+   /**
    * Broadcasts the given context on this channel. This is equivalent to joining the channel and then calling the 
    * top-level FDC3 `broadcast` function.
    * 
@@ -130,6 +138,8 @@ declare class Channel {
    * `Error` with a string from the `ChannelError` enumeration.
    */
   public addBroadcastListener(listener: (event: {channel: Channel; context: Context}) => void): Listener;
+
+  
 }
 
 /**
@@ -276,13 +286,6 @@ interface DesktopAgent {
    */
   getSystemChannels(): Promise<Array<Channel>>;
 
-  /**
-   * Joins the app to the specified channel
-   * An app can only be joined to one channel at a time
-   * rejects with error if the channel is unavailable or the join request is denied
-   * `Error` with a string from the `ChannelError` enumeration.
-   */
-  joinChannel(channelId: string) : Promise<void>;
 
   /**
    * Returns a channel with the given identity. Either stands up a new channel or returns an existing channel.

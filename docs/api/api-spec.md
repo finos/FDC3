@@ -170,10 +170,14 @@ To find a system channel, one calls
 To join a channel. one calls
 
 ```javascript
-    fdc3.joinChannel(redChannel.id);
+    redChannel.join();
+
+    //join the 'default' channel to effectively reset channel membership
+    const defaultChannel = await fdc3.getOrCreateChannel('default');
+    defaultChannel.join();
 ```
 
-Calling _fdc3.broadcast_ will now route context to the joined channel.
+Calling _fdc3.broadcast_ will now route context to the `red` channel.
 
 #### App Channels
 
