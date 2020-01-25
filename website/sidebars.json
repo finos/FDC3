@@ -14,7 +14,11 @@
         "label": "API Reference",
         "ids": [
           "api/DesktopAgent",
+          "api/Channel",
+          "api/Listener",
+          "api/DisplayMetadata",
           "api/Context",
+          "api/ContextHandler",
           "api/Errors"
         ]
       }
