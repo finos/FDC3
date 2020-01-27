@@ -83,7 +83,7 @@ Raising an Intent will return a Promise-type object that will resolve/reject bas
 ##### Resolution Object
 If the raising of the intent resolves (or rejects), a standard object will be passed into the resolver function with the following format:
 
-```javascript
+```js
 {
     source: String;
     data?: Object; 
@@ -96,11 +96,11 @@ If the raising of the intent resolves (or rejects), a standard object will be pa
 
 For example
 
-```javascript
+```js
 try {
-    let result = await agent.raiseIntent('StageOrder');
-    if (result.data){
-        let orderId = result.data.id;
+    const result = await fdc3.raiseIntent('StageOrder');
+    if (result.data) {
+        const orderId = result.data.id;
     }
 }
 catch (er){
@@ -112,11 +112,11 @@ catch (er){
 ##### Upgrading to a Remote API Connection
 There are a wide range of workflows where decoupled intents and/or context passing do not provide rich enough interactivity and applications are better off exposing proprietary APIs.  In these cases, an App can use the *source* property on the resolution of an intent to connect directly to another App and from there, call remote APIs using the methods available in the Desktop Agent context for the App.  For example: 
 
-```javascript
-    let chart = await agent.raiseIntent('ViewChart');
-     //construct an OpenFin wrapper for the App
-    let chartApp = fin.Application.wrap(chart.source);
-    //do some OpenFin specific stuff
+```js
+const chart = await fdc3.raiseIntent('ViewChart');
+// construct an OpenFin wrapper for the App
+const chartApp = fin.Application.wrap(chart.source);
+// do some OpenFin-specific stuff
 ```
 ![Upgrading Connection to Remote API](assets/api-3.png)
 
@@ -160,17 +160,17 @@ While joining channels automates a lot of the channel behavior for an app, it ha
 ### Examples
 To find a system channel, one calls
 
-```javascript
-    //returns an array of channels
-    let allChannels = await fdc3.getSystemChannels(); 
-    let redChannel = allChannels.find(c => c.id === 'red');
+```js
+// returns an array of channels
+const allChannels = await fdc3.getSystemChannels(); 
+const redChannel = allChannels.find(c => c.id === 'red');
 ```
 #### Joining channels
 
 To join a channel. one calls
 
-```javascript
-    fdc3.joinChannel(redChannel.id);
+```js
+fdc3.joinChannel(redChannel.id);
 ```
 
 Calling _fdc3.broadcast_ will now route context to the joined channel.
@@ -181,19 +181,17 @@ App channels are topics dynamically created by applications connected via FDC3. 
 
 To get (or create) a channel reference, then interact with it
 
-```javascript
-    const appChannel = await fdc3.getOrCreateChannel('my_custom_channel');
-    //get the current context of the channel
-    let current = await appChannel.getCurrentContext();
-    //add a listener
-    appChannel.addBroadcastListener(event => {...});
-    //broadcast to the channel
-    appChannel.broadcast(context);
+```js
+const appChannel = await fdc3.getOrCreateChannel('my_custom_channel');
+// get the current context of the channel
+const current = await appChannel.getCurrentContext();
+// add a listener
+appChannel.addContextListener(context => {...});
+// broadcast to the channel
+appChannel.broadcast(context);
 
 ```
 
-
-    
 ## APIs
 The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
 
