@@ -22,7 +22,7 @@ Intent:
         type: string
       description: The contexts the intent accepts. This will
         typically be a set of namespaced context types, e.g. 
-        "org.symphony.contact"
+        "fdc3.contact"
     customConfig:
         type: object
         description: Custom configuration for the intent
