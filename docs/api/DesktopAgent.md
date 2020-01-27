@@ -254,10 +254,20 @@ The Interface used to describe an Intent within the platform.
 ```typescript
 interface AppMetadata {
   name: string;
+  title?: string;
+  tooltip?: string;
+  description?: string;
+  icons?: Array<string>;
+  images?: Array<string>;
 }
 ```
 
-App metadata is Desktop Agent specific - but should always support a name property.
+App metadata is provided by the FDC3 App Directory that the desktop agent connects to. 
+
+It always includes at least a `name` property, which can be used with [`open`](#open) and [`raiseIntent`](#raiseIntent).
+
+Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu.
+This includes a title, description, tooltip and icon and image URLs.
 
 ### `IntentResolution`
 
