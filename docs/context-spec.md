@@ -85,34 +85,34 @@ The following are standard FDC3 context types.
 
 - __fdc3.contact__
     - A person contact that can be engaged with through email, calling, messaging, CMS, etc.  As opposed to a person entity that relates to news, financial data, etc.
-    - [fo spec](https://fo.finos.org/docs/objects/contact)
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/contact)
     - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/contact.schema)
 - __fd3.contactList__
     - A collection of contacts.
-    - [fo spec](https://fo.finos.org/docs/objects/contactlist)
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/contactlist)
     - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/contactList.schema)
 - __fdc3.country__
     - A standard country entity.
-    - [fo spec](https://fo.finos.org/docs/objects/country)
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/country)
     - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/country.schema)
 - __fdc3.instrument__
     - A financial instrument from any asset class.
-    - [fo spec](https://fo.finos.org/docs/objects/instrument)
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrument)
     - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/instrument.schema)
 - __fdc3.instrumentList__
     - A collection of instruments.
-    - [fo spec](https://fo.finos.org/docs/objects/instrumentList)
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrumentList)
     - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/instrumentList.schema)
 - __fdd3.organization__
     - A standard organization entity.
-    - [fo spec](https://fo.finos.org/docs/objects/organization)
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/organization)
     - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/organization.schema)
 - __fdc3.portfolio__
     - A collection of positions.
-    - [fo spec](https://fo.finos.org/docs/objects/portfolio)
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/portfolio)
     - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/portfolio.schema)
 - __fdc3.position__
-    - [fo spec](https://fo.finos.org/docs/objects/position)
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/position)
     - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/position.schema)
 
 __Note:__ The below examples show how the base context data interface can be used to define specific context data objects. It is not the purpose of the specification at this stage to define standard representations for objects. It establishes the framework in which such definitions could be created.
