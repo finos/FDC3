@@ -125,7 +125,7 @@ declare class Channel {
    * 
    * `Error` with a string from the `ChannelError` enumeration.
    */
-  public broadcast(context: Context): Promise<void>;
+  public broadcast(context: Context): void;
 
   /**
    * Returns the last context that was broadcast on this channel. All channels initially have no context, until a 
