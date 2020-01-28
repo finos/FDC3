@@ -15,7 +15,7 @@ class Channel {
   displayMetadata?: DisplayMetadata;
 
   // methods
-  broadcast(context: Context): Promise<void>;
+  broadcast(context: Context): void;
   getCurrentContext(contextType?: string): Promise<Context|null>;
   addContextListener(handler: ContextHandler): Listener;
   addContextListener(contextType: string, handler: ContextHandler): Listener;
@@ -69,12 +69,12 @@ DisplayMetadata can be used to provide display hints for channels intended to be
 ### `broadcast`
 
 ```typescript
-public broadcast(context: Context): Promise<void>;
+public broadcast(context: Context): void;
 ```
 
 Broadcasts a context on the channel. This function can be used without first joining the channel, allowing applications to broadcast on channels that they aren't a member of.
 
-If broadcasting fails, the promise will return an `Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration.
+If the broadcast is denied by the channel or the channel is not available, the method will return an `Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration.
 
 #### Example
 
@@ -87,7 +87,7 @@ const instrument = {
 };
 
 try {
-    await channel.broadcast(instrument);
+    channel.broadcast(instrument);
 } catch (err: ChannelError) {
     // handler errror
 }
