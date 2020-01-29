@@ -1,0 +1,98 @@
+<html>
+
+<head>
+<title>
+FDC3 Receive
+</title>
+
+<script language="javascript">
+
+<!-- Check if FDC3 is avaialable -->
+
+function fdc3Init(callback){
+  let fdc3Tries = 10; //lets not check forever...
+  const onFDC3Ready = () => {
+    if (window.fdc3) {
+        callback.call(this);
+    }
+    else {
+      if (fdc3Tries > 0){
+        fdc3Tries--;
+        window.setTimeout(onFDC3Ready,100);
+      }
+    }
+  };
+  onFDC3Ready();
+}
+	
+<!-- Enable Functionality when FDC3 is available -->
+  
+document.addEventListener("DOMContentLoaded",() => {
+  fdc3Init(function(){
+    enablePage();
+  });
+});
+	
+<!-- Various poor examples of FDC3 functionality -->
+
+function enablePage(){
+
+	console.log('FDC3 is available');
+	
+	if(window.fin){
+		fin.desktop.Application.getCurrent().getInfo((info) => {document.getElementById('providerDetails').innerHTML = 'Available - ' + info.manifest.startup_app.name})
+	} else {
+		document.getElementById('providerDetails').innerHTML = 'Available - Not specified';
+	}
+	
+	document.getElementById('btnClearContext').disabled = false;
+    document.getElementById('txtContextData').disabled = false;
+	
+	fdc3.addContextListener(function(ctx){ 
+		document.getElementById('txtContextData').value = JSON.stringify(ctx) + '\n-----------\n' + document.getElementById('txtContextData').value;
+	});
+	
+}
+
+</script>
+
+<style>
+
+textarea {width:400px;height:100px;} 
+
+select {width:238px;height:24px;} 
+
+.ctxInput {width:241px;height:24px;} 
+
+.urlInput {width:400px;height:24px;} 
+
+.header {width:200px;height:40px;font-weight:700;}
+
+</style>
+
+</head>
+
+<body>
+
+<table border="1">
+
+<tr>
+<td class="header">FDC3 Provider Service:</td>
+<td><span id="providerDetails">FDC3 Not Available</span></td>
+</tr>
+
+<tr>
+<td colspan="3"><hr></td>
+</tr>
+
+<tr>
+<td class="header">Context:</td>
+<td><textarea id="txtContextData" disabled></textarea></td>
+<td><input type="button" value="Clear" id="btnClearContext" onClick="document.getElementById('txtContextData').value='';" disabled></td>
+</tr>
+
+</table>
+
+</body>
+
+</html>
