@@ -1,0 +1,22 @@
+{
+	"startup_app": {
+		"name": "FDC3 Preload 0.2.2",
+		"url": "https://donbasuno.github.io/FDC3/toolbox/fdc3_explained.html",
+		"uuid": "fdc3_explained_app_preload",
+		"autoShow": true,
+		"defaultCentered": true,
+		"saveWindowState": false,
+		"defaultHeight": 778,
+		"defaultWidth": 728,
+		"preloadScripts": [{"url":"https://cdn.openfin.co/services/openfin/fdc3/0.2.2/openfin-fdc3.js", "mandatory": true}]
+	},
+	"runtime": {
+		"arguments": "--enable-crash-reporting",
+		"version": "stable"
+	},
+	"services": [
+		{
+			"name": "fdc3"
+		}
+	]
+}
