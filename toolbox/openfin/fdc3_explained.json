@@ -1,0 +1,23 @@
+{
+	"startup_app": {
+		"name": "FDC3 Explained",
+		"url": "http://imdemopcb02.pc.factset.com:8001/fdc3/fdc3_explained.html",
+		"uuid": "fdc3_explained_app",
+		"autoShow": true,
+		"defaultCentered": true,
+		"saveWindowState": false,
+		"defaultHeight": 745,
+		"defaultWidth": 720,
+		"preloadScripts": [{"url":"https://cdn.openfin.co/services/openfin/fdc3/0.2.0/openfin-fdc3.js", "mandatory": true}]
+	},
+	"runtime": {
+		"arguments": "--enable-crash-reporting",
+		"version": "stable"
+	},
+	"services": [
+		{
+			"name": "fdc3",
+			"manifestUrl": "https://cdn.openfin.co/demos/fdc3/provider.json"
+		}
+	]
+}
