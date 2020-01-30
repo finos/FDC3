@@ -1,7 +1,7 @@
 {
 	"startup_app": {
 		"name": "FDC3 Explained",
-		"url": "http://imdemopcb02.pc.factset.com:8001/fdc3/fdc3_explained.html",
+		"url": "https://raw.githubusercontent.com/donbasuno/FDC3/master/toolbox/fdc3_explained.html",
 		"uuid": "fdc3_explained_app",
 		"autoShow": true,
 		"defaultCentered": true,
