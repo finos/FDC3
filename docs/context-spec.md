@@ -13,7 +13,7 @@ To interoperate, apps need to exchange commonly recognized context structures th
 
 Exchanging context is the most basic entry point to desktop interoperability. The barriers to adoption for this interaction must be kept as low as possible.
 
-There are two main use case for exchanging context data:
+There are two main use cases for exchanging context data:
 
 * __Transmitting reference data between applications.__
   The source application will send as many known identifiers as possible, and the target application will try to match the entity based on the identifiers. It may then choose to map to its own internal domain representation for rendering purposes.
@@ -30,10 +30,10 @@ There are two main use case for exchanging context data:
 1. Context data objects are identified and routed according to their type, which is unique.
 2. Any names, identifiers or extra properties are optional.
 3. More complex objects can be composed from simpler objects by defining a new type, e.g a position from an instrument and a holding amount.
-4. If multiple pieces of data needs to be sent, an embedded array can be used, identified as a collection type, e.g. "contactList" or "portfolio". This allows for extra metadata and data relationships to be expressed.
+4. If multiple pieces of data need to be sent, an embedded array can be used, identified as a collection type, e.g. "contactList" or "portfolio". This allows for additional metadata and data relationships to be expressed.
 5. There needs to be a way to reference or look up the structure of well-known context types, e.g. from a directory.
 
-## Other Standard
+## Other Standards
 
 FDC3 recognizes that there are other object definitions for providing context between applications. Most, if not all of these definitions though are platform-specific. FDC3, as a rule, sets out to be platform-agnostic and focused on creating bridges between the various walled gardens on the financial desktop.
 
@@ -49,86 +49,6 @@ interface Context {
     [x: string]: any;
 }
 ```
-
-### Examples
-
-__Note:__ The below examples show how the base context data interface can be used to define specific context data objects. It is not the purpose of the specification at this stage to define standard representations for objects. It establishes the framework in which such definitions could be created.
-
-#### Instrument
-```json
-{
-    "type" : "fdc3.instrument",
-    "name" : "Apple",
-    "id" : 
-    {  
-        "ticker" : "aapl",
-        "ISIN" : "US0378331005",
-        "CUSIP" : "037833100",
-        "FIGI" : "BBG000B9XRY4",
-    }
-}
-```
-#### Contact
-```json
-{
-    "type": "fdc3.contact",
-    "name": "Nick Kolba",
-    "id":{
-        "email": "nick@openfin.co",
-        "twitter": "nkolba",
-        "phone": "9171234567"
-    }
-}
-```
-#### Organization
-```json
-{
-    "type": "fdc3.organization",
-    "name": "IBM",
-    "id": {
-        "PERMID" : "4295904307",
-        "LEI" : "VGRQXHF3J8VDLUA7XE92"
-    }
-}
-```
-#### ContactList
-```json
-{
-    "type": "fdc3.contactList",
-    "contacts": [
-        {
-            "type" : "fdc3.contact",
-            "name":"Nick Kolba",
-            "id":{
-                "email": "nick@openfin.co"
-            }
-        },
-        {
-            "type" : "fdc3.contact",
-            "name":"Espen Overbye",
-            "id":{
-                "email": "espen@openfin.co"
-            }
-        }
-    ]
-}
-```
-#### Position
-```json
-{
-    "type": "fdc3.position",
-    "instrument": {
-        "type" : "fdc3.instrument",
-        "name" : "Apple",
-        "id" : 
-        {
-            "ISIN" : "US0378331005"
-        }
-    },
-    "holding": 500
-}
-```
-
 ### Namespacing
 
 All well-known types at FDC3 level should be prefixed with `fdc3`. For private type definitions, or type definitions issued by other organisations, different namespaces can be used, e.g. `blackrock.fund`, etc.
@@ -157,3 +77,195 @@ The identifier "foo" is proprietary, an application that can use it is free to d
     "com.company.foo": "000C7F-E"
 }
 ```
+
+## Standard Context Types
+
+The following are standard FDC3 context types. 
+ __Note:__ The specification for these types are shared with the [FINOS Financial Objects](https://fo.finos.org) definitions, JSON schemas are hosted with FDC3.
+
+- __fdc3.contact__
+    - A person contact that can be engaged with through email, calling, messaging, CMS, etc.  As opposed to a person entity that relates to news, financial data, etc.
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/contact)
+    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/contact.schema)
+- __fd3.contactList__
+    - A collection of contacts.
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/contactlist)
+    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/contactList.schema)
+- __fdc3.country__
+    - A standard country entity.
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/country)
+    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/country.schema)
+- __fdc3.instrument__
+    - A financial instrument from any asset class.
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrument)
+    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/instrument.schema)
+- __fdc3.instrumentList__
+    - A collection of instruments.
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrumentList)
+    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/instrumentList.schema)
+- __fdd3.organization__
+    - A standard organization entity.
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/organization)
+    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/organization.schema)
+- __fdc3.portfolio__
+    - A collection of positions.
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/portfolio)
+    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/portfolio.schema)
+- __fdc3.position__
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/position)
+    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/position.schema)
+
+__Note:__ The below examples show how the base context data interface can be used to define specific context data objects. It is not the purpose of the specification at this stage to define standard representations for objects. It establishes the framework in which such definitions could be created.
+
+### Examples
+
+#### Contact
+```json
+{
+    "type": "fdc3.contact",
+    "name": "John Smith",
+    "id":{
+        "email": "john.smith@company.com",
+    }
+}
+```
+
+#### ContactList
+```json
+{
+    "type": "fdc3.contactList",
+    "name": "client list",
+    "contacts":[
+        {
+            "type":"fdc3.contact",
+            "name":"joe",
+            "id":{
+                "email": "joe@company1.com",
+            }
+        },
+        {
+            "type":"fdc3.contact",
+            "name":"jane",
+            "id":{
+                "email": "jane@company2.com",
+            }
+        }
+    ]
+}
+```
+
+#### Country
+```json
+{
+    "type":"fdc3.country",
+    "name":"the USA",
+    "id":{
+        "ISOALPHA2":"US",
+        "ISOALPHA3":"USA"
+    }
+}
+```
+
+#### Instrument
+```json
+{
+    "type" : "fdc3.instrument",
+    "name" : "Apple",
+    "id" : 
+    {  
+        "ticker" : "aapl",
+        "ISIN" : "US0378331005",
+        "CUSIP" : "037833100",
+        "FIGI" : "BBG000B9XRY4",
+    }
+}
+```
+
+#### InstrumentList
+```json
+{
+    "type" : "fdc3.instrumentList",
+    "name" : "my portfolio",
+    "instruments" : [
+        {  
+            "type" : "fdc3.instrument",
+            "name" : "Apple",
+            "id": {
+               "ticker" : "aapl"
+            }
+        },
+        {  
+            "type" : "fdc3.instrument",
+            "name" : "International Business Machines",
+            "id": {
+               "ticker" : "ibm"
+            }
+        }
+    ]
+}
+```
+
+#### Organization
+```json
+{
+    "type": "fdc3.organization",
+    "name": "IBM",
+    "id": {
+        "PERMID" : "4295904307",
+        "LEI" : "VGRQXHF3J8VDLUA7XE92"
+    }
+}
+```
+
+#### Portfolio
+```json
+{
+    "type":"fdc3.portfolio"
+    "name":"my portfolio",
+    "positions":[
+        {
+            "type": "fdc3.position",
+            "instrument": {
+                "type" : "fdc3.instrument",
+                "name" : "Apple",
+                "id" : 
+                {
+                    "ISIN" : "US0378331005"
+                }
+            },
+            "holding": 500
+        },
+         {
+            "type": "fdc3.position",
+            "instrument": {
+                "type" : "fdc3.instrument",
+                "name" : "IBM",
+                "id" : 
+                {
+                    "ISIN" : "US4592001014"
+                }
+            },
+            "holding": 1000
+        }
+    ]
+}
+```
+
+
+#### Position
+```json
+{
+    "type": "fdc3.position",
+    "instrument": {
+        "type" : "fdc3.instrument",
+        "name" : "Apple",
+        "id" : 
+        {
+            "ISIN" : "US0378331005"
+        }
+    },
+    "holding": 500
+}
+```
+
+
