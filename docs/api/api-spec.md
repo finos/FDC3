@@ -150,9 +150,35 @@ The 'system' channels include a 'default' channel which serves as the backwards 
 ### Joining Channels
 Apps can join channels.  An app can only be joined to one channel at a time.  When an app joins a channel it will automatically recieve the current context for that channel, except if the channel joined is the 'default'.
 
-When an app is joined to a channel, calls to fdc3.broadcast and listeners added through fdc3.addContextListener will be routed to that channel.  If an app is not explicitly joined to a channel, it is on the 'default' channel.  It is up to the desktop agent to determine the behavior of the 'default' channel, and if context is automaticaly broadcast over it or not.
+When an app is joined to a channel, calls to fdc3.broadcast and listeners added through fdc3.addContextListener will be routed to that channel.  If an app is not explicitly joined to a channel, it is on the 'default' channel.  
+The `default` channel has special behavior that makes it different from other channels.  See a detailed description [below](#default-channel-behavior).
 
 It is possible that a call to join a channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.  
+
+### *default* Channel Behavior
+Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  Always, there SHOULD be a clear UX indicator of what channel an app is joined to. 
+
+The one exception is the `default` channel.  Because apps are automatically added to the `default` channel, the message routing behavior is different in order to prevent poor user experiences from unexpected context behavior.  The behavior for the `default` channel is:
+
+- All broadcasts (`fdc3.broadcast` when the app is on default, or `default.broadcast`) update the `default` context
+- `fdc3.addContextListener` will NOT receive context events when the app is joined to the `default` channel
+- Explicit listening on the `default` channel through `default.addContextListener` and calling `default.getCurrentContext` will return context updates for the channel.
+
+#### Examples
+
+An app gets the current context of the `default` as a fallback if no other context is set.
+
+```js
+let dChan = await fdc3.getOrCreateChannel("default");
+let ctx = await dChan.getCurrentContext("fdc3.instrument");
+```
+
+An wants to respond to all context changes, whether on a joined channel or the `default` channel.
+
+```js
+let dChan = await fdc3.getOrCreateChannel("default");
+let listener = dChan.addContextListener(contextListener);
+```
 
 ### Direct Listening and Broadcast on Channels
 While joining channels automates a lot of the channel behavior for an app, it has the limitation in that an app can belong to only one channel at a time.  Listening and Broadcasting to channels using the _Channel.addBroadcastListener_ and the _Channel.broadcast_ APIs provides an app with fine-grained controls for specific channels.  This is especially useful for working with dynamic _App Channels_.
