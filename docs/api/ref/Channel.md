@@ -8,7 +8,6 @@ hide_title: true
 
 ```ts
 class Channel {
-
   // properties
   id: string;
   type: string;
@@ -74,7 +73,7 @@ public broadcast(context: Context): void;
 
 Broadcasts a context on the channel. This function can be used without first joining the channel, allowing applications to broadcast on channels that they aren't a member of.
 
-If the broadcast is denied by the channel or the channel is not available, the method will return an `Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration.
+If the broadcast is denied by the channel or the channel is not available, the method will return an `Error` with a string from the [`ChannelError`](ChannelError) enumeration.
 
 #### Example
 
@@ -94,7 +93,7 @@ try {
 ```
 
 #### See also
-* [`ChannelError`](Errors#channelerror)
+* [`ChannelError`](ChannelError)
 * [`getCurrentContext`](#getcurrentcontext)
 * [`addContextListener`](#addcontextlistener)
 
@@ -110,7 +109,7 @@ Optionally a _context type_ can be provided, in which case the current context o
 
 Desktop agent implementations may decide to record most recent contexts by type, in which case it will be possible to get the most recent context of each type, but this is not necessarily guaranteed.
 
-If getting the current context fails, the promise will return an `Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration.
+If getting the current context fails, the promise will return an `Error` with a string from the [`ChannelError`](ChannelError) enumeration.
 
 #### Examples
 
@@ -135,7 +134,7 @@ try {
 ```
 
 #### See also
-* [`ChannelError`](Errors#channelerror)
+* [`ChannelError`](ChannelError)
 * [`broadcast`](#broadcast)
 * [`addContextListener`](#addcontextlistener)
 

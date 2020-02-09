@@ -7,19 +7,37 @@
       "fdc3-compliance"
     ],
     "API": [
-      "api/api-intro",
-      "api/api-spec",
+      "api/overview",
+      "api/spec",
       {
         "type": "subcategory",
-        "label": "API Reference",
+        "label": "Interfaces",
         "ids": [
-          "api/DesktopAgent",
-          "api/Channel",
-          "api/Listener",
-          "api/DisplayMetadata",
-          "api/Context",
-          "api/ContextHandler",
-          "api/Errors"
+          "api/ref/DesktopAgent",
+          "api/ref/Listener",
+          "api/ref/AppIntent",
+          "api/ref/IntentResolution",
+          "api/ref/AppMetadata",
+          "api/ref/IntentMetadata",
+          "api/ref/DisplayMetadata"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Classes",
+        "ids": [
+          "api/ref/Channel"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Types",
+        "ids": [
+          "api/ref/Context",
+          "api/ref/ContextHandler",
+          "api/ref/OpenError",
+          "api/ref/ResolveError",
+          "api/ref/ChannelError"
         ]
       }
     ],
