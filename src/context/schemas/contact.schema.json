@@ -1,16 +1,15 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/1.0/contact.schema",
+  "$id": "https://fdc3.finos.org/schemas/next/contact.schema.json",
   "type": "object",
-  "allOf": [{ "$ref": "context.schema#/" }],
+  "allOf": [{ "$ref": "context.schema.json#/" }],
   "properties": {
-    "type": { "enum": ["fdc3.contact"] },
+    "type": { "const": "fdc3.contact" },
     "id": {
       "type": "object",
       "properties": {
         "email": { "type": "string" },
-        "twitter": { "type": "string" },
-        "phone": { "type": "string" }
+        "FDS_ID": { "type": "string" }
       }
     }
   },

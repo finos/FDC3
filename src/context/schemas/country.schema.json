@@ -1,10 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/1.0/country.schema",
+  "$id": "https://fdc3.finos.org/schemas/next/country.schema.json",
   "type": "object",
   "allOf": [{ "$ref": "context.schema#/" }],
   "properties": {
-    "type": { "enum": ["fdc3.country"] },
+    "type": { "const": "fdc3.country" },
     "id": {
       "type": "object",
       "properties": {
@@ -13,5 +13,5 @@
       }
     }
   },
-  "required": ["id", "name"]
+  "required": ["id"]
 }
