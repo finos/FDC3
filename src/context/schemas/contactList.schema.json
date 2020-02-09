@@ -1,10 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/1.0/contactList.schema",
+  "$id": "https://fdc3.finos.org/schemas/next/contactList.schema.json",
   "type": "object",
-  "allOf": [{ "$ref": "context.schema#/" }],
+  "allOf": [{ "$ref": "context.schema.json#/" }],
   "properties": {
-    "type": { "enum": ["fdc3.contactList"] },
+    "type": { "const": "fdc3.contactList" },
     "contacts": {
       "type": "array",
       "items": { "$ref": "contact.schema#/" }
