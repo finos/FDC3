@@ -18,7 +18,7 @@ A Desktop Agent can be connected to one or more App Directories and will use dir
 broadcast(context: Context): void;
 ```
 
-Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app has not explicitly joined a channel, it will implicitly be a member of the `default` channel.  The context routing behavior for the `default` channel is different from other channels, and apps that are not explicitly listening to `default` will not automaticaly recieve broadcasts.  See full details [here](/api-spec#default-channel-behavior).
+Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
 
 #### Example
 ```js
@@ -179,7 +179,7 @@ catch (err){
 ```ts
 getSystemChannels() : Promise<Array<Channel>>;
 ```
-Retrieves a list of the System channels available for the app to join.
+Retrieves a list of the System channels available for the app to join.  This should include the 'global' channel.
 
 #### Example
 
@@ -217,6 +217,49 @@ fdc3.joinChannel(selectedChannel.id);
 ```
 #### See also
 * [`getSystemChannels`](#getSystemChannels)
+
+### `leaveCurrentChannel`
+
+```ts
+leaveCurrentChannel() : <void>;
+```
+
+Removes the app from any channel membership.  Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be in a no-op when the app is not on a channel. 
+
+
+#### Examples
+
+```js
+//desktop-agent scope context listener
+fdc3.addContextListener(fdc3Listener);
+
+fdc3.leaveCurrentChannel();
+//the fdc3Listener will now cease recieving context
+
+//listening on a specific channel though, will continue to work
+redChannel.addContextListener(channelListener);
+
+```
+
+
+### `getCurrentChannel`
+
+```ts
+getCurrentChannel() : Promise<Channel>;
+```
+
+Returns the `Channel` object for the current channel membership.  Returns `null` if the app is not joined to a channel. 
+
+
+#### Examples
+
+```js
+//get the current channel membership
+let current = await fdc3.getCurrentChannel();
+```
+
+#### See also
+* [`Channel`](Channel)
 
 ### `addIntentListener`
 
