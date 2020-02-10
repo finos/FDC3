@@ -160,9 +160,9 @@ Joining channels in FDC3 is intended to be a behavior initiated by the end user.
 
 The one exception is the `default` channel.  Because apps are automatically added to the `default` channel, the message routing behavior is different in order to prevent poor user experiences from unexpected context behavior.  The behavior for the `default` channel is:
 
-- All broadcasts (`fdc3.broadcast` when the app is on default, or `default.broadcast`) update the `default` context
+- All broadcasts (`fdc3.broadcast` when the app is on default, or `defaultChannel.broadcast`) update the `default` context
 - `fdc3.addContextListener` will NOT receive context events when the app is joined to the `default` channel
-- Explicit listening on the `default` channel through `default.addContextListener` and calling `default.getCurrentContext` will return context updates for the channel.
+- Explicit listening on the `default` channel through `defaultChannel.addContextListener` and calling `defaultChannel.getCurrentContext` will return context updates for the channel.
 
 #### Examples
 
