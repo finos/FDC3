@@ -18,7 +18,7 @@ A Desktop Agent can be connected to one or more App Directories and will use dir
 broadcast(context: Context): void;
 ```
 
-Publishes context to other apps on the desktop.
+Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app has not explicitly joined a channel, it will implicitly be a member of the `default` channel.  The context routing behavior for the `default` channel is different from other channels, and apps that are not explicitly listening to `default` will not automaticaly recieve broadcasts.  See full details [here](/api-spec#default-channel-behavior).
 
 #### Example
 ```js
