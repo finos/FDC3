@@ -142,27 +142,21 @@ Context channels allows a set of apps to share a stateful piece of data between 
 
 There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics.  
 
-1. The 'system' ones, which have a well understood identity. One is called 'default'.
+1. The 'system' ones, which have a well understood identity. One is called 'global'.
 2. The 'app' ones, which have a transient identity and need to be revealed
 
-The 'system' channels include a 'default' channel which serves as the backwards compatible layer with the 'send/broadcast context' above. There are some reserved channel names for future use. Currently this is just 'global'.
+The 'system' channels include a 'global' channel which serves as the backwards compatible layer with the 'send/broadcast context' behavior in FDC3 1.0.  A desktop agent MAY choose to make membership in the 'global' channel the default state for apps on start up.   
 
 ### Joining Channels
-Apps can join channels.  An app can only be joined to one channel at a time.  When an app joins a channel it will automatically recieve the current context for that channel, except if the channel joined is the 'default'.
+Apps can join channels.  An app can only be joined to one channel at a time.  When an app joins a channel it will automatically recieve the current context for that channel.
 
-When an app is joined to a channel, calls to fdc3.broadcast and listeners added through fdc3.addContextListener will be routed to that channel.  If an app is not explicitly joined to a channel, it is on the 'default' channel.  
-The `default` channel has special behavior that makes it different from other channels.  See a detailed description [below](#default-channel-behavior).
+When an app is joined to a channel, calls to fdc3.broadcast and listeners added through fdc3.addContextListener will be routed to that channel.  If an app is not joined to a channel these methods will be no-ops, but apps can still choose to listen and broadcast to specific channels via the methods on the `Channel` class.  
 
 It is possible that a call to join a channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.  
 
 ### *default* Channel Behavior
 Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  Always, there SHOULD be a clear UX indicator of what channel an app is joined to. 
 
-The one exception is the `default` channel.  Because apps are automatically added to the `default` channel, the message routing behavior is different in order to prevent poor user experiences from unexpected context behavior.  The behavior for the `default` channel is:
-
-- All broadcasts (`fdc3.broadcast` when the app is on default, or `defaultChannel.broadcast`) update the `default` context
-- `fdc3.addContextListener` will NOT receive context events when the app is joined to the `default` channel
-- Explicit listening on the `default` channel through `defaultChannel.addContextListener` and calling `defaultChannel.getCurrentContext` will return context updates for the channel.
 
 #### Examples
 
