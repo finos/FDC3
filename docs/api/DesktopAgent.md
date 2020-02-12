@@ -233,7 +233,7 @@ Removes the app from any channel membership.  Context broadcast and listening th
 //desktop-agent scope context listener
  const fdc3Listener = fdc3.addContextListener(context => {});
 
-fdc3.leaveCurrentChannel();
+await fdc3.leaveCurrentChannel();
 //the fdc3Listener will now cease recieving context
 
 //listening on a specific channel though, will continue to work
