@@ -166,15 +166,15 @@ The 'global' channel should be returned as part of the response from the `fdc3.g
 An app gets the current context of the `global` as a fallback if no other context is set.
 
 ```js
-let gChan = await fdc3.getOrCreateChannel("global");
-let ctx = await gChan.getCurrentContext("fdc3.instrument");
+const globalChannel = await fdc3.getOrCreateChannel("global");
+const context = await globalChannel.getCurrentContext("fdc3.instrument");
 ```
 
 An app wants to respond to all context changes, whether on a joined channel or the `global` channel.
 
 ```js
-let gChan = await fdc3.getOrCreateChannel("global");
-let listener = gChan.addContextListener(contextListener);
+const globalChannel = await fdc3.getOrCreateChannel("global");
+const listener = globalChannel.addContextListener(contextListener);
 ```
 
 ### Direct Listening and Broadcast on Channels

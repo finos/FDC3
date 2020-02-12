@@ -221,7 +221,7 @@ fdc3.joinChannel(selectedChannel.id);
 ### `leaveCurrentChannel`
 
 ```ts
-leaveCurrentChannel() : <void>;
+leaveCurrentChannel() : Promise<void>;
 ```
 
 Removes the app from any channel membership.  Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be in a no-op when the app is not on a channel. 
