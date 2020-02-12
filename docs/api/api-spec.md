@@ -154,24 +154,23 @@ When an app is joined to a channel, calls to fdc3.broadcast and listeners added 
 
 It is possible that a call to join a channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.  
 
-### *default* Channel Behavior
 Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  Always, there SHOULD be a clear UX indicator of what channel an app is joined to. 
 
 
 #### Examples
 
-An app gets the current context of the `default` as a fallback if no other context is set.
+An app gets the current context of the `global` as a fallback if no other context is set.
 
 ```js
-let dChan = await fdc3.getOrCreateChannel("default");
-let ctx = await dChan.getCurrentContext("fdc3.instrument");
+let gChan = await fdc3.getOrCreateChannel("global");
+let ctx = await gChan.getCurrentContext("fdc3.instrument");
 ```
 
-An wants to respond to all context changes, whether on a joined channel or the `default` channel.
+An app wants to respond to all context changes, whether on a joined channel or the `global` channel.
 
 ```js
-let dChan = await fdc3.getOrCreateChannel("default");
-let listener = dChan.addContextListener(contextListener);
+let gChan = await fdc3.getOrCreateChannel("global");
+let listener = gChan.addContextListener(contextListener);
 ```
 
 ### Direct Listening and Broadcast on Channels
