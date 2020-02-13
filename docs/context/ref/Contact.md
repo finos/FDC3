@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `Contact`
 
-A person contact that can be engaged with through email, calling, messaging, CMS, etc. As opposed to a person entity that relates to news, financial data, etc.
+A person contact that can be engaged with through email, calling, messaging, CMS, etc.
 
 ## Type
 
