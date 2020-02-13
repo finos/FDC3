@@ -6,34 +6,32 @@ hide_title: true
 ---
 # `DesktopAgent`
 
+```ts
+interface DesktopAgent {
+  // apps
+  open(name: string, context?: Context): Promise<void>;
+  
+  // intents
+  findIntent(intent: string, context?: Context): Promise<AppIntent>;
+  findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
+  raiseIntent(intent: string, context: Context, target?: string): Promise<IntentResolution>;
+  addIntentListener(intent: string, handler: ContextHandler): Listener;
+  
+  // channels
+  getOrCreateChannel(channelId: string): Promise<Channel>;
+  getSystemChannels(): Promise<Array<Channel>>;
+  joinChannel(channelId: string) : Promise<void>;
+  broadcast(context: Context): void;
+  addContextListener(handler: ContextHandler): Listener;
+  addContextListener(contextType: string, handler: ContextHandler): Listener;
+}
+```
+
 A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain.
 
 A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.
 
 ## Methods
-
-### `broadcast`
-
-```ts
-broadcast(context: Context): void;
-```
-
-Publishes context to other apps on the desktop.
-
-#### Example
-```js
-const instrument = {
-    type: 'fdc3.instrument',
-    id: {
-        ticker: 'AAPL'
-    }
-};
-
-fdc3.broadcast(instrument);
-```
-#### See also
-* [addContextListener](#addcontextlistener)
-
 
 ### `open`
 
@@ -45,7 +43,7 @@ Launches/links to an app by name.
 
 If a [`Context`](Context) object is passed in, this object will be provided to the opened application via a contextListener.
 The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
-If opening errors, it returns an `Error` with a string from the [`OpenError`](Errors#openerror) enumeration.
+If opening errors, it returns an `Error` with a string from the [`OpenError`](OpenError) enumeration.
 
 #### Example
  ```js
@@ -58,7 +56,7 @@ await fdc3.open('myApp', context);
 
 #### See also
 * [`Context`](Context)
-* [`OpenError`](Errors#openerror)
+* [`OpenError`](OpenError)
 
 ### `findIntent`
 
@@ -72,7 +70,7 @@ _findIntent_ is effectively granting programmatic access to the Desktop Agent's 
 It returns a promise resolving to the intent, its metadata and metadata about the apps that are registered to handle it.
 This can be used to raise the intent against a specific app.
  
- If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
+ If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
 
 #### Examples
 ```js
@@ -89,7 +87,7 @@ await fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
 ```
 
 #### See also
-* [`ResolveError`](Errors#resolveerror)
+* [`ResolveError`](ResolveError)
 
 ### `findIntentsByContext`
 
@@ -101,7 +99,7 @@ Find all the avalable intents for a particular context.
 _findIntentsByContext_ is effectively granting programmatic access to the Desktop Agent's resolver. 
 A promise resolving to all the intents, their metadata and metadata about the apps that registered as handlers is returned, based on the context types the intents have registered.
  
- If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
+ If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
  
  #### Example
  ```js
@@ -129,7 +127,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
  ```
 
 #### See also
-   * [`ResolveError`](Errors#resolveerror)
+   * [`ResolveError`](ResolveError)
 
 ### `raiseIntent`
 
@@ -148,75 +146,7 @@ await fdc3.raiseIntent("StartChat", newContext, intentResolution.source);
 ```
 
 #### See also
-* [`IntentResolution`](#intentresolution)
-
-### `getOrCreateChannel`
-
-```ts
-getOrCreateChannel(channelId: string): Promise<Channel>;
-```
-
-Returns a Channel object for the specified channel, creating it (as an _App_ channel) - if it does not exist.
-`Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration if channel could not be created or access was denied.
-
-#### Example
-
-```js
-try {
-  const myChannel = await fdc3.getOrCreateChannel("myChannel");
-  const myChannel.addContextListener(context => {});
-}
-catch (err){
-  //app could not register the channel
-}
-
-```
-
-#### See also
-*  [`Channel`](#channel)
-
-### `getSystemChannels`
-```ts
-getSystemChannels() : Promise<Array<Channel>>;
-```
-Retrieves a list of the System channels available for the app to join.
-
-#### Example
-
-```js
-const systemChannels = await fdc3.getSystemChannels(); 
-const redChannel = systemChannels.find(c => c.id === 'red');
-```
-
-#### See also
-* [`Channel`](#channel)
-
-### `joinChannel`
-
-```ts
-joinChannel(channelId: string) : Promise<void>;
-```
-
-Joins the app to the specified channel.
-If an app is joined to a channel, all _fdc3.broadcast_ calls will go to the channel, and all listeners assigned via _fdc3.addContextListener_ will listen on the channel.
-An app can only be joined to one channel at a time.
-Rejects with error if the channel is unavailable or the join request is denied.
- `Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration.
-
-#### Examples
-
-```js
-// get all system channels
-const channels = await fdc3.getSystemChannels();
-
-// create UI to pick from the system channels
-
-// join the channel on selection
-fdc3.joinChannel(selectedChannel.id);
-
-```
-#### See also
-* [`getSystemChannels`](#getSystemChannels)
+* [`IntentResolution`](IntentResolution)
 
 ### `addIntentListener`
 
@@ -237,102 +167,114 @@ const listener = fdc3.addIntentListener('StartChat', context => {
 * [`Listener`](Listener)
 * [`Context`](Context)
 
-### `addContextListener`
+### `getOrCreateChannel`
 
 ```ts
-addContextListener(handler: ContextHandler): Listener;
-```
-Adds a listener for incoming context broadcast from the Desktop Agent.
-
-#### Examples
-```js
-const listener = fdc3.addContextListener(context => {
-  // context received
-});
+getOrCreateChannel(channelId: string): Promise<Channel>;
 ```
 
-```ts
-addContextListener(contextType: string, handler: ContextHandler): Listener;
-```
-
-Adds a listener for incoming contexts of the specified type from the Desktop Agent.
+Returns a Channel object for the specified channel, creating it (as an _App_ channel) - if it does not exist.
+`Error` with a string from the [`ChannelError`](ChannelError) enumeration if channel could not be created or access was denied.
 
 #### Example
 
 ```js
-const listener = fdc3.addContextListener('fdc3.contact', contact => {
-  // contact received
-});
+try {
+  const myChannel = await fdc3.getOrCreateChannel("myChannel");
+  const myChannel.addContextListener(context => {});
+}
+catch (err){
+  //app could not register the channel
+}
+
+```
+
+#### See also
+*  [`Channel`](Channel)
+
+### `getSystemChannels`
+```ts
+getSystemChannels() : Promise<Array<Channel>>;
+```
+Retrieves a list of the System channels available for the app to join.
+
+#### Example
+
+```js
+const systemChannels = await fdc3.getSystemChannels(); 
+const redChannel = systemChannels.find(c => c.id === 'red');
+```
+
+#### See also
+* [`Channel`](Channel)
+
+### `joinChannel`
+
+```ts
+joinChannel(channelId: string) : Promise<void>;
+```
+
+Joins the app to the specified channel.
+If an app is joined to a channel, all _fdc3.broadcast_ calls will go to the channel, and all listeners assigned via _fdc3.addContextListener_ will listen on the channel.
+An app can only be joined to one channel at a time.
+Rejects with error if the channel is unavailable or the join request is denied.
+ `Error` with a string from the [`ChannelError`](ChannelError) enumeration.
+
+#### Examples
+
+```js
+// get all system channels
+const channels = await fdc3.getSystemChannels();
+
+// create UI to pick from the system channels
+
+// join the channel on selection
+fdc3.joinChannel(selectedChannel.id);
+
+```
+#### See also
+* [`getSystemChannels`](#getSystemChannels)
+
+### `broadcast`
+
+```ts
+broadcast(context: Context): void;
+```
+
+Publishes context to other apps on the desktop.
+
+#### Example
+```js
+const instrument = {
+    type: 'fdc3.instrument',
+    id: {
+        ticker: 'AAPL'
+    }
+};
+
+fdc3.broadcast(instrument);
+```
+#### See also
+* [addContextListener](#addcontextlistener)
+
+### `addContextListener`
+
+```ts
+addContextListener(handler: ContextHandler): Listener;
+addContextListener(contextType: string, handler: ContextHandler): Listener;
+```
+Adds a listener for incoming context broadcast from the Desktop Agent. If the consumer is only interested in
+a context of a particular type, they can use the relevant overload that allows the type to be specified.
+
+#### Examples
+```js
+// any context
+const listener = fdc3.addContextListener(context => { ... });
+
+// listener for a specific type
+const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ... });
 ```
 
 #### See also
 * [`Listener`](Listener)
 * [`Context`](Context)
-
-## Return Types
-
-### `AppIntent`
-
-```ts
-interface AppIntent {
-  intent: IntentMetadata;
-  apps: Array<AppMetadata>;
-}
-```
-An interface that represents the binding of an intent to apps
-
-#### See also
-* [`IntentMetadata`](#intentmetadata)
-* [`AppMetadata`](#appmetadata)
-
-### `IntentMetadata`
-
-```ts
-interface IntentMetadata {
-  name: string;
-  displayName: string;
-}
-```
-
-The Interface used to describe an Intent within the platform.
-
-### `AppMetadata`
-
-```ts
-interface AppMetadata {
-  name: string;
-  title?: string;
-  tooltip?: string;
-  description?: string;
-  icons?: Array<string>;
-  images?: Array<string>;
-}
-```
-
-App metadata is provided by the FDC3 App Directory that the desktop agent connects to. 
-
-It always includes at least a `name` property, which can be used with [`open`](#open) and [`raiseIntent`](#raiseIntent).
-
-Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu.
-This includes a title, description, tooltip and icon and image URLs.
-
-### `IntentResolution`
-
-```ts
-interface IntentResolution {
-  source: string;
-  data?: object;
-  version: string;
-}
-```
-
-IntentResolution provides a standard format for data returned upon resolving an intent.
- 
-#### Example
-```js
-//resolve a "Chain" type intent
-const intentResolution = await fdc3.raiseIntent("intentName", context);
-```
-
-#### See also
-* [`DesktopAgent.raiseIntent`](#raiseintent)
