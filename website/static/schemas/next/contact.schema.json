@@ -8,7 +8,8 @@
     "id": {
       "type": "object",
       "properties": {
-        "email": { "type": "string" }
+        "email": { "type": "string" },
+        "FDS_ID": { "type": "string" }
       }
     }
   },
