@@ -18,31 +18,44 @@ https://fdc3.finos.org/schemas/next/contact.schema.json
 
 ## Details
 
-| Property   | Type    | Required | Value             |
-|------------|---------|----------|-------------------|
-| `type`     | string  | Yes      | `'fdc3.contact'`  |
-| `name`     | string  | No       | `'Jane Doe'`      |
-| `id.email` | string  | Yes      | `'jane@mail.com'` |
+| Property    | Type    | Required | Value             |
+|-------------|---------|----------|-------------------|
+| `type`      | string  | Yes      | `'fdc3.contact'`  |
+| `name`      | string  | No       | `'Jane Doe'`      |
+| `id.email`  | string  | No       | `'jane@mail.com'` |
+| `id.FDS_ID` | string  | No       | `'ABC123-E'`      |
 
 ## Example
 
+{
+    "type": "fdc3.contact",
+    "name": "Jane Doe",
+    "id":{
+        "email": "john.smith@company.com",
+    }
+}
+
 ```js
 const contact = {
-    type: 'fdc3.contact',
+    type: 'fdc3.contact'
+    name: 'Jane Doe',
     id: {
-        email: 'nick@gmail.com'
-    },
-    name: 'Nick Kolba'
+        email: 'jane@mail.com'
+    }
 }
+
 
 fdc3.broadcast(contact)
 ```
 
 ## See Also
 
-Context
+Other Types
 - [ContactList](ContactList)
 
 Intents
 - [StartChat](../../intents/ref/StartChat)
 - [StartCall](../../intents/ref/StartCall)
+
+FINOS Financial Objects
+- [Contact](https://fo.finos.org/docs/objects/contact)
