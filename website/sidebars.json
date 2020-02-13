@@ -42,12 +42,41 @@
       }
     ],
     "Intents": [
-      "intents-intro",
-      "intents-spec"
+      "intents/overview",
+      "intents/spec",
+      {
+        "type": "subcategory",
+        "label": "Reference",
+        "ids": [
+          "intents/ref/StartCall",
+          "intents/ref/StartChat",
+          "intents/ref/ViewChart",
+          "intents/ref/ViewContact",
+          "intents/ref/ViewQuote",
+          "intents/ref/ViewNews",
+          "intents/ref/ViewAnalysis",
+          "intents/ref/ViewInstrument"
+        ]
+      }
     ],
     "Context Data": [
-      "context-intro",
-      "context-spec"
+      "context/overview",
+      "context/spec",
+      {
+        "type": "subcategory",
+        "label": "Reference",
+        "ids": [
+          "context/ref/Context",
+          "context/ref/Contact",
+          "context/ref/ContactList",
+          "context/ref/Instrument",
+          "context/ref/InstrumentList",
+          "context/ref/Organization",
+          "context/ref/Country",
+          "context/ref/Position",
+          "context/ref/Portfolio"
+        ]
+      }
     ],
     "App Directory": [
       "appd-intro",
