@@ -1,5 +1,5 @@
 ---
-id: api-intro
+id: overview
 sidebar_label: API Overview
 title: API Overview
 hide_title: true
