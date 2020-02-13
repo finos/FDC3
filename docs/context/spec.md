@@ -1,5 +1,5 @@
 ---
-id: context-spec
+id: spec
 sidebar_label: Context Data Specification
 title: Context Data Specification
 hide_title: true
@@ -84,7 +84,7 @@ The following are standard FDC3 context types.
  __Note:__ The specification for these types are shared with the [FINOS Financial Objects](https://fo.finos.org) definitions, JSON schemas are hosted with FDC3.
 
 - __fdc3.contact__
-    - A person contact that can be engaged with through email, calling, messaging, CMS, etc.  As opposed to a person entity that relates to news, financial data, etc.
+    - A person contact that can be engaged with through email, calling, messaging, CMS, etc.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/contact)
     - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/contact.schema)
 - __fd3.contactList__
