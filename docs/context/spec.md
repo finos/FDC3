@@ -1,5 +1,5 @@
 ---
-id: context-spec
+id: spec
 sidebar_label: Context Data Specification
 title: Context Data Specification
 hide_title: true
