@@ -8,5 +8,5 @@
     "instrument": { "$ref": "instrument.schema#/" },
     "holding": { "type": "number", "minimum": 0 }
   },
-  "required": ["instrument"]
+  "required": ["instrument","holding"]
 }
