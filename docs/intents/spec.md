@@ -1,5 +1,5 @@
 ---
-id: intents-spec
+id: spec
 sidebar_label: Intents Specification
 title: Intents Specification
 hide_title: true
