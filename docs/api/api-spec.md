@@ -114,9 +114,9 @@ There are a wide range of workflows where decoupled intents and/or context passi
 
 ```js
 const chart = await fdc3.raiseIntent('ViewChart');
-// construct an OpenFin wrapper for the App
+// construct a vendor specific wrapper for the App
 const chartApp = fin.Application.wrap(chart.source);
-// do some OpenFin-specific stuff
+// do some vendor-specific stuff
 ```
 ![Upgrading Connection to Remote API](assets/api-3.png)
 
