@@ -86,34 +86,34 @@ The following are standard FDC3 context types.
 - __fdc3.contact__
     - A person contact that can be engaged with through email, calling, messaging, CMS, etc.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/contact)
-    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/contact.schema)
+    - [schema](/schemas/next/contact.schema.json)
 - __fd3.contactList__
     - A collection of contacts.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/contactlist)
-    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/contactList.schema)
+    - [schema](/schemas/next/contactList.schema.json)
 - __fdc3.country__
     - A standard country entity.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/country)
-    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/country.schema)
+    - [schema](/schemas/next/country.schema.json)
 - __fdc3.instrument__
     - A financial instrument from any asset class.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrument)
-    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/instrument.schema)
+    - [schema](/schemas/next/instrument.schema.json)
 - __fdc3.instrumentList__
     - A collection of instruments.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrumentList)
-    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/instrumentList.schema)
+    - [schema](/schemas/next/instrumentList.schema.json)
 - __fdd3.organization__
     - A standard organization entity.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/organization)
-    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/organization.schema)
+    - [schema](/schemas/next/organization.schema.json)
 - __fdc3.portfolio__
     - A collection of positions.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/portfolio)
-    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/portfolio.schema)
+    - [schema](/schemas/next/portfolio.schema.json)
 - __fdc3.position__
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/position)
-    - [schema](https://github.com/finos/FDC3/blob/master/src/context/schemas/position.schema)
+    - [schema](/schemas/next/position.schema.json)
 
 __Note:__ The below examples show how the base context data interface can be used to define specific context data objects. It is not the purpose of the specification at this stage to define standard representations for objects. It establishes the framework in which such definitions could be created.
 

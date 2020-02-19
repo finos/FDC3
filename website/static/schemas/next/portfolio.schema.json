@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/portfolio.schema",
+  "type": "object",
+  "allOf": [{ "$ref": "context.schema#/" }],
+  "properties": {
+    "type": { "const": "fdc3.portfolio" },
+    "positions": {
+      "type": "array",
+      "items": { "$ref": "position.schema#/" }
+    }
+  },
+  "required": ["positions"]
+}
