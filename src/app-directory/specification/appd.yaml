@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.1.0-alpha
+  version: 1.1.0
   title: Application Directory specification
   description: >
     Application Directory specification providing both interface
@@ -201,45 +201,7 @@ paths:
                 $ref: '#/components/schemas/ErrorDTO'
       tags:
         - Application
-  /v1/search:
-    post:
-      summary: Retrieve a list of applications based on submission of an Applicaiton model.  Depending on implementation, Application
-        attribute values should self describe search format and type (e.g. Regex)
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApplicationSearchResponse'
-        '400':
-          description: Bad request.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        '403':
-          description: >-
-            Forbidden: Certificate authentication is not allowed for the
-            requested user.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        '500':
-          description: 'Server error, see response body for further details.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-      tags:
-        - Application
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Application'
-        required: true
+ 
 servers:
   - url: /appd
 components:
