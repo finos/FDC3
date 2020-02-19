@@ -163,14 +163,14 @@ The 'global' channel should be returned as part of the response from the `fdc3.g
 
 #### Examples
 
-An app gets the current context of the `global` as a fallback if no other context is set.
+An app queries the current context of the `global` channel.
 
 ```js
 const globalChannel = await fdc3.getOrCreateChannel("global");
 const context = await globalChannel.getCurrentContext("fdc3.instrument");
 ```
 
-An app wants to respond to all context changes, whether on a joined channel or the `global` channel.
+An app wants to explicitly receive context events on the `global` channel, regardless of what channel it is currently joined to (if any).
 
 ```js
 const globalChannel = await fdc3.getOrCreateChannel("global");
