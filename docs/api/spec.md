@@ -170,11 +170,20 @@ const globalChannel = await fdc3.getOrCreateChannel("global");
 const context = await globalChannel.getCurrentContext("fdc3.instrument");
 ```
 
-An app wants to explicitly receive context events on the `global` channel, regardless of what channel it is currently joined to (if any).
+An app can explicitly receive context events on the `global` (or any other) channel, regardless of what it is currently joined to.
 
 ```js
-const globalChannel = await fdc3.getOrCreateChannel("global");
-const listener = globalChannel.addContextListener(contextListener);
+// retrieve current fdc3 context
+const context = await fdc3.getCurrentContext("fdc3.instrument")
+// context is null, as not currently joined to a channel
+
+const globalChannel = await fdc3.getSystemChannels.filter(c => c.id === "global")
+const globalContext = await fdc3.getCurrentContext("fdc3.instrument")
+// context is instrument AAPL on the global channel
+
+fdc3.joinChannel('global')
+const context = await fdc3.getCurrentContext('fdc3.instrument')
+// top-level context is now instrument AAPL as well because we have joined the global channel
 ```
 
 ### Direct Listening and Broadcast on Channels
