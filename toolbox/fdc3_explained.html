@@ -9,14 +9,23 @@ FDC3 Explained
 
 <!-- Replace with proper code... -->
 
-var fdc3Available = window.fdc3;
+const onFDC3 = () => {
+	if (!window._fdc3handlersSet && window.fdc3){
+		enablePage();
+        window._fdc3handlersSet = true;
+    }
+};
+   
+window.addEventListener("DOMContentLoaded",function(){
+	onFDC3();
+});
 
-function checkAndEnable(){
+function enablePage(){
 
-if (fdc3Available){
+	console.log('FDC3 is available');
 	
-	document.getElementById('providerDetails').innerHTML = 'OpenFin FDC3 Service 0.2.0';
-	document.getElementById('directoryDetails').innerHTML = 'https://cdn.openfin.co/demos/fdc3/sample-app-directory.json';
+	document.getElementById('providerDetails').innerHTML = 'Available - Not specified';
+	document.getElementById('directoryDetails').innerHTML = 'TBD';
 	
 	populateChannels(['default','red','orange','yellow','green','blue','purple']);
 
@@ -24,8 +33,6 @@ if (fdc3Available){
     document.getElementById('txtBroadcastData').disabled = false;
 	document.getElementById('selBroadcastChannel').disabled = false;
 	
-}
-
 }
 
 function populateChannels(channelArray){
@@ -58,6 +65,17 @@ document.getElementById('selBroadcastChannel').selectedIndex = 0;
 	
 }
 
+function appLoader(){
+	
+var myUrl = document.getElementById('appUrl').value;
+
+if (myUrl.length>0){
+
+	window.open(myUrl);
+	
+	}
+}
+
 </script>
 
 <style>
@@ -70,13 +88,15 @@ select {width:238px;height:24px;}
 
 .ctxInput {width:241px;height:24px;} 
 
+.urlInput {width:400px;height:24px;} 
+
 .header {width:200px;height:40px;font-weight:700;}
 
 </style>
 
 </head>
 
-<body onLoad="checkAndEnable();">
+<body>
 
 <table>
 
@@ -99,6 +119,12 @@ select {width:238px;height:24px;}
 <td class="header">Available Apps:</td>
 <td><textarea disabled></textarea></td>
 <td><input type="button" value="Fetch" disabled></td>
+</tr>
+
+<tr>
+<td class="header">Load App Start Url:</td>
+<td><input type="text" id="appUrl" class="urlInput"></td>
+<td><input type="button" value="Open" onClick="appLoader();"></td>
 </tr>
 
 <tr>
