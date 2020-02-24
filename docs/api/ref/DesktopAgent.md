@@ -11,6 +11,11 @@ interface DesktopAgent {
   // apps
   open(name: string, context?: Context): Promise<void>;
   
+  // context
+  broadcast(context: Context): void;
+  addContextListener(handler: ContextHandler): Listener;
+  addContextListener(contextType: string, handler: ContextHandler): Listener;
+
   // intents
   findIntent(intent: string, context?: Context): Promise<AppIntent>;
   findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
@@ -21,9 +26,8 @@ interface DesktopAgent {
   getOrCreateChannel(channelId: string): Promise<Channel>;
   getSystemChannels(): Promise<Array<Channel>>;
   joinChannel(channelId: string) : Promise<void>;
-  broadcast(context: Context): void;
-  addContextListener(handler: ContextHandler): Listener;
-  addContextListener(contextType: string, handler: ContextHandler): Listener;
+  getCurrentChannel() : Promise<void>;
+  leaveCurrentChannel() : Promise<void>;
 }
 ```
 
