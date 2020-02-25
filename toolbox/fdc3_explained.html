@@ -7,18 +7,33 @@ FDC3 Explained
 
 <script language="javascript">
 
-<!-- Replace with proper code... -->
+<!-- Check if FDC3 is avaialable -->
 
-const onFDC3 = () => {
-	if (!window._fdc3handlersSet && window.fdc3){
-		enablePage();
-        window._fdc3handlersSet = true;
+function fdc3Init(callback){
+  let fdc3Tries = 10; //lets not check forever...
+  const onFDC3Ready = () => {
+    if (window.fdc3) {
+        callback.call(this);
     }
-};
-   
-window.addEventListener("DOMContentLoaded",function(){
-	onFDC3();
+    else {
+      if (fdc3Tries > 0){
+        fdc3Tries--;
+        window.setTimeout(onFDC3Ready,100);
+      }
+    }
+  };
+  onFDC3Ready();
+}
+	
+<!-- Enable Functionality when FDC3 is available -->
+  
+document.addEventListener("DOMContentLoaded",() => {
+  fdc3Init(function(){
+    enablePage();
+  });
 });
+	
+<!-- Various poor examples of FDC3 functionality -->
 
 function enablePage(){
 
@@ -30,7 +45,7 @@ function enablePage(){
 	populateChannels(['default','red','orange','yellow','green','blue','purple']);
 
 	document.getElementById('btnBroadcast').disabled = false;
-    document.getElementById('txtBroadcastData').disabled = false;
+    	document.getElementById('txtBroadcastData').disabled = false;
 	document.getElementById('selBroadcastChannel').disabled = false;
 	
 }
