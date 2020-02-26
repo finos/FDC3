@@ -16,7 +16,7 @@ Examples of Desktop Agents include:
 - Autobahn
 - ChartIQ's Finsemble
 - OpenFin
-- ThomsonReuters Eikon
+- Refinitiv Eikon
 
 Desktop Agents expose an FDC3 standard API to applications they have launched.  When an App is launched by a Desktop Agent and is given access to the Agent's API to interoperate, it is running in that Desktop Agent's *context*. 
 
