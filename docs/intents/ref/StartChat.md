@@ -26,10 +26,10 @@ Initiate a chat with a contact or list of contacts.
 ```js
 const contact = {
     type: 'fdc3.contact',
+    name: 'Jane Doe',
     id: {
-        email: 'nick@gmail.com'
-    },
-    name: 'Nick Kolba'
+        email: 'jane@mail.com'
+    }
 }
 
 fdc3.raiseIntent('StartChat', contact)
