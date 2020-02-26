@@ -52,7 +52,7 @@ const intentsAndApps = await fdc3.findIntentsByContext({
  type: "fdc3.contact",
  name: "Nick Kolba",
  id: {
-    email:"nick@openfin.co"
+    email:"nkolba@gmail.com"
   }
 });
 ```
