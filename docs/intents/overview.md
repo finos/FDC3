@@ -50,9 +50,9 @@ const intentApps = await fdc3.findIntent("StartChat");
 ```javascript
 const intentsAndApps = await fdc3.findIntentsByContext({
  type: "fdc3.contact",
- name: "Nick Kolba",
+ name: "Jane Doe",
  id: {
-    email:"nkolba@gmail.com"
+    email:"jane@doe.com"
   }
 });
 ```
