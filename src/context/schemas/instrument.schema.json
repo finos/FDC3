@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/instrument.schema",
+  "type": "object",
+  "allOf": [{ "$ref": "context.schema#/" }],
+  "properties": {
+    "type": { "const": "fdc3.instrument" },
+    "id": {
+      "type": "object",
+      "properties": {
+        "BBG": { "type": "string" },
+        "CUSIP": { "type": "string" },
+        "FDS_ID": { "type": "string" },
+        "FIGI": { "type": "string" },
+        "ISIN": { "type": "string" },
+        "PERMID": { "type": "string" },
+        "RIC": { "type": "string" },
+        "SEDOL": { "type": "string" },
+        "ticker": { "type": "string" }
+      }
+    }
+  },
+  "required": ["id"]
+}
