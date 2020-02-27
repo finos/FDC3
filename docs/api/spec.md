@@ -19,6 +19,24 @@ Examples of Desktop Agents include:
 
 Desktop Agents expose an FDC3 standard API to applications they have launched.  When an App is launched by a Desktop Agent and is given access to the Agent's API to interoperate, it is running in that Desktop Agent's *context*. 
 
+#### Desktop Agent Implementation
+The FDC3 API specification consists of interfaces.  It is expected that each Desktop Agent will implement these interfaces.  A typical implemention would provide instantiable classes for the following interfaces: 
+
+- `DesktopAgent`
+- `Channel`
+- `Listener`
+
+Other interfaces defined in the spec are not critical to define as concrete types.  Rather, the Desktop Agent should expect to have objects of the interface shape passed into or out of their library.  These interfaces include:
+
+- `Context`
+- `AppIntent`
+- `IntentResolution`
+- `AppMetadata`
+- `IntentMetadata`
+- `DisplayMetadata`
+
+
+
 #### API Access
 The FDC3 API can be made available to an application through a number of different methods.  In the case of web applications, a Desktop Agent SHOULD provide the FDC3 API via a global accessible as _window.fdc3_. Implementors MAY additionally make the API available through modules, imports, or other means. 
 
