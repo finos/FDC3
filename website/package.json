@@ -2,15 +2,22 @@
   "scripts": {
     "examples": "docusaurus-examples",
     "start": "docusaurus-start",
+    "prebuild": "yarn run redoc-appd && yarn run copy-schemas",
     "build": "docusaurus-build",
+    "prepublish-gh-pages": "yarn run redoc-appd && yarn run copy-schemas",
     "publish-gh-pages": "docusaurus-publish",
     "write-translations": "docusaurus-write-translations",
     "version": "docusaurus-version",
     "rename-version": "docusaurus-rename-version",
-    "redoc-appd": "redoc-cli bundle --output pages/appd-spec.html ../src/app-directory/specification/appd.yaml"
+    "redoc-appd": "redoc-cli bundle --output pages/appd-spec.html ../src/app-directory/specification/appd.yaml",
+    "copy-schemas": "copyfiles -f ../src/context/schemas/*.schema.json static/schemas/next"
   },
   "devDependencies": {
-    "docusaurus": "1.7.3",
-    "redoc-cli": "0.7.0"
+    "copyfiles": "2.2.0",
+    "docusaurus": "1.12.0",
+    "redoc-cli": "0.8.5"
+  },
+  "resolutions": {
+    "**/**/underscore.string": "^3.3.5"
   }
 }

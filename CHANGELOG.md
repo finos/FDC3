@@ -30,23 +30,23 @@ Thank you to the following contributors who helped with this release:
 * @saori-tr
 
 ### Added
-* Use Case 15 ([#49](https://github.com/FDC3/FDC3/pull/49))
-* FDC3 Roadmap ([#55](https://github.com/FDC3/FDC3/pull/55))
-* User showcase on website ([#67](https://github.com/FDC3/FDC3/pull/67))
+* Use Case 15 ([#49](https://github.com/finos/FDC3/pull/49))
+* FDC3 Roadmap ([#55](https://github.com/finos/FDC3/pull/55))
+* User showcase on website ([#67](https://github.com/finos/FDC3/pull/67))
 
 ### Changed
-* Use case text on front page of website ([#54](https://github.com/FDC3/FDC3/pull/54))
-* Feature icons on website ([#57](https://github.com/FDC3/FDC3/pull/57))
+* Use case text on front page of website ([#54](https://github.com/finos/FDC3/pull/54))
+* Feature icons on website ([#57](https://github.com/finos/FDC3/pull/57))
 
 ### Fixed
-* General cleanup of spelling, grammar and punctuation ([#34](https://github.com/FDC3/FDC3/pull/34))
-* Remove unnecessary dates from use case file names ([#41](https://github.com/FDC3/FDC3/pull/41))
-* Fix header colouring on responsive website ([#56](https://github.com/FDC3/FDC3/pull/56))
-* Fix workflow numbers in Use Case 1 ([#60](https://github.com/FDC3/FDC3/pull/60))
-* More proofreading changes to existing docs ([62](https://github.com/FDC3/FDC3/pull/62))
-* Fix examples in Intent Overview doc ([#65](https://github.com/FDC3/FDC3/pull/65))
-* Fix errors in DesktopAgent API doc ([#66](https://github.com/FDC3/FDC3/pull/66))
-* Add hyperlink to FDC3 Intro doc ([#69](https://github.com/FDC3/FDC3/pull/69))
+* General cleanup of spelling, grammar and punctuation ([#34](https://github.com/finos/FDC3/pull/34))
+* Remove unnecessary dates from use case file names ([#41](https://github.com/finos/FDC3/pull/41))
+* Fix header colouring on responsive website ([#56](https://github.com/finos/FDC3/pull/56))
+* Fix workflow numbers in Use Case 1 ([#60](https://github.com/finos/FDC3/pull/60))
+* More proofreading changes to existing docs ([62](https://github.com/finos/FDC3/pull/62))
+* Fix examples in Intent Overview doc ([#65](https://github.com/finos/FDC3/pull/65))
+* Fix errors in DesktopAgent API doc ([#66](https://github.com/finos/FDC3/pull/66))
+* Add hyperlink to FDC3 Intro doc ([#69](https://github.com/finos/FDC3/pull/69))
 
 ## [1.0.0-beta] - 2019-03-05
 
@@ -69,6 +69,6 @@ Thank you to the following contributors who helped with this release:
 * Documentation website generated with [Docusaurus](https://docusaurus.io).
 
 
-[Unreleased]: https://github.com/FDC3/FDC3/compare/v1.0.0..HEAD
-[1.0.0]: https://github.com/FDC3/FDC3/compare/v1.0.0..v1.0.0-beta
-[1.0.0-beta]: https://github.com/FDC3/FDC3/releases/tag/v1.0.0-beta
+[Unreleased]: https://github.com/finos/FDC3/compare/v1.0.0..HEAD
+[1.0.0]: https://github.com/finos/FDC3/compare/v1.0.0..v1.0.0-beta
+[1.0.0-beta]: https://github.com/finos/FDC3/releases/tag/v1.0.0-beta
