@@ -7,7 +7,7 @@ hide_title: true
 # `Channel`
 
 ```ts
-class Channel {
+interface Channel {
   // properties
   id: string;
   type: string;
