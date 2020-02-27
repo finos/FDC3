@@ -142,17 +142,49 @@ Context channels allows a set of apps to share a stateful piece of data between 
 
 There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics.  
 
-1. The 'system' ones, which have a well understood identity. One is called 'default'.
+1. The 'system' ones, which have a well understood identity. One is called 'global'.
 2. The 'app' ones, which have a transient identity and need to be revealed
-
-The 'system' channels include a 'default' channel which serves as the backwards compatible layer with the 'send/broadcast context' above. There are some reserved channel names for future use. Currently this is just 'global'.
+ 
 
 ### Joining Channels
-Apps can join channels.  An app can only be joined to one channel at a time.  When an app joins a channel it will automatically recieve the current context for that channel, except if the channel joined is the 'default'.
+Apps can join channels.  An app can only be joined to one channel at a time.  When an app joins a channel it will automatically recieve the current context for that channel.
 
-When an app is joined to a channel, calls to fdc3.broadcast and listeners added through fdc3.addContextListener will be routed to that channel.  If an app is not explicitly joined to a channel, it is on the 'default' channel.  It is up to the desktop agent to determine the behavior of the 'default' channel, and if context is automaticaly broadcast over it or not.
+When an app is joined to a channel, calls to fdc3.broadcast and listeners added through fdc3.addContextListener will be routed to that channel.  If an app is not joined to a channel these methods will be no-ops, but apps can still choose to listen and broadcast to specific channels via the methods on the `Channel` class.  
 
 It is possible that a call to join a channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.  
+
+Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  Always, there SHOULD be a clear UX indicator of what channel an app is joined to. 
+
+### The 'global' Channel
+The 'system' channels include a 'global' channel which serves as the backwards compatible layer with the 'send/broadcast context' behavior in FDC3 1.0.  A desktop agent MAY choose to make membership in the 'global' channel the default state for apps on start up.  
+
+The 'global' channel should be returned as part of the response from the `fdc3.getSystemChannels` call.  Desktop Agents may want to filter out the 'global' option in their UI for system channel pickers.
+
+
+#### Examples
+
+An app queries the current context of the `global` channel.
+
+```js
+const globalChannel = await fdc3.getOrCreateChannel("global");
+const context = await globalChannel.getCurrentContext("fdc3.instrument");
+```
+
+An app can explicitly receive context events on the `global` (or any other) channel, regardless of what it is currently joined to.
+
+```js
+// retrieve current fdc3 context
+const context = await fdc3.getCurrentContext("fdc3.instrument")
+// context is null, as not currently joined to a channel
+
+const globalChannel = await fdc3.getSystemChannels.filter(c => c.id === "global")
+const globalContext = await fdc3.getCurrentContext("fdc3.instrument")
+// context is instrument AAPL on the global channel
+
+fdc3.joinChannel('global')
+const context = await fdc3.getCurrentContext('fdc3.instrument')
+// top-level context is now instrument AAPL as well because we have joined the global channel
+```
 
 ### Direct Listening and Broadcast on Channels
 While joining channels automates a lot of the channel behavior for an app, it has the limitation in that an app can belong to only one channel at a time.  Listening and Broadcasting to channels using the _Channel.addBroadcastListener_ and the _Channel.broadcast_ APIs provides an app with fine-grained controls for specific channels.  This is especially useful for working with dynamic _App Channels_.

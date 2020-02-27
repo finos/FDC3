@@ -11,6 +11,11 @@ interface DesktopAgent {
   // apps
   open(name: string, context?: Context): Promise<void>;
   
+  // context
+  broadcast(context: Context): void;
+  addContextListener(handler: ContextHandler): Listener;
+  addContextListener(contextType: string, handler: ContextHandler): Listener;
+
   // intents
   findIntent(intent: string, context?: Context): Promise<AppIntent>;
   findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
@@ -21,9 +26,8 @@ interface DesktopAgent {
   getOrCreateChannel(channelId: string): Promise<Channel>;
   getSystemChannels(): Promise<Array<Channel>>;
   joinChannel(channelId: string) : Promise<void>;
-  broadcast(context: Context): void;
-  addContextListener(handler: ContextHandler): Listener;
-  addContextListener(contextType: string, handler: ContextHandler): Listener;
+  getCurrentChannel() : Promise<void>;
+  leaveCurrentChannel() : Promise<void>;
 }
 ```
 
@@ -196,7 +200,7 @@ catch (err){
 ```ts
 getSystemChannels() : Promise<Array<Channel>>;
 ```
-Retrieves a list of the System channels available for the app to join.
+Retrieves a list of the System channels available for the app to join.  This should include the 'global' channel.
 
 #### Example
 
@@ -235,13 +239,14 @@ fdc3.joinChannel(selectedChannel.id);
 #### See also
 * [`getSystemChannels`](#getSystemChannels)
 
+
 ### `broadcast`
 
 ```ts
 broadcast(context: Context): void;
 ```
 
-Publishes context to other apps on the desktop.
+Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
 
 #### Example
 ```js
@@ -256,6 +261,52 @@ fdc3.broadcast(instrument);
 ```
 #### See also
 * [addContextListener](#addcontextlistener)
+
+
+
+### `leaveCurrentChannel`
+
+```ts
+leaveCurrentChannel() : Promise<void>;
+```
+
+Removes the app from any channel membership.  Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be in a no-op when the app is not on a channel. 
+
+
+#### Examples
+
+```js
+//desktop-agent scope context listener
+const fdc3Listener = fdc3.addContextListener(context => {});
+
+await fdc3.leaveCurrentChannel();
+//the fdc3Listener will now cease recieving context
+
+//listening on a specific channel though, will continue to work
+redChannel.addContextListener(channelListener);
+
+```
+
+
+### `getCurrentChannel`
+
+```ts
+getCurrentChannel() : Promise<Channel>;
+```
+
+Returns the `Channel` object for the current channel membership.  Returns `null` if the app is not joined to a channel. 
+
+
+#### Examples
+
+```js
+//get the current channel membership
+let current = await fdc3.getCurrentChannel();
+```
+
+#### See also
+* [`Channel`](Channel)
+
 
 ### `addContextListener`
 
