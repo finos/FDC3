@@ -6,7 +6,7 @@
 /**
  * Object representing a context channel.
  */
-declare class Channel {
+interface Channel {
     /**
      * Constant that uniquely identifies this channel.
      */
