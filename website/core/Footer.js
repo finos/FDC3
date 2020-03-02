@@ -69,6 +69,12 @@ class Footer extends React.Component {
               FINOS
             </a>
             <a
+              href="https://www.finos.org/privacy-policy"
+              target="_blank"
+              rel="noreferrer noopener">
+              FINOS Privacy Policy
+            </a>
+            <a
               href="https://finosfoundation.atlassian.net/wiki/spaces/FDC3"
               target="_blank"
               rel="noreferrer noopener">
