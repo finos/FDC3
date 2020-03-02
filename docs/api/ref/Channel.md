@@ -103,11 +103,12 @@ try {
 public getCurrentContext(contextType?: string): Promise<Context|null>;
 ```
 
-Returns the most recent context that was broadcast on the channel. If no context has been set on the channel, this will return `null`.  
+When a _context type_ is provided, the most recent context matching the type will be returned, or `null` if no matching context is found.
 
-Optionally a _context type_ can be provided, in which case the current context of the matching type will be returned (if any). 
+If no _context type_ is provided, the most recent context that was broadcast on the channel - regardless of type - will be returned.  If no context has been set on the channel, it will return `null`.
 
-Desktop agent implementations may decide to record most recent contexts by type, in which case it will be possible to get the most recent context of each type, but this is not necessarily guaranteed.
+It is up to the specific Desktop Agent implementation whether and how recent contexts are stored. For example, an implementation could store context history for a channel in a single array and search through the array for the last context matching a provided type, or context could be maintained as a dictionary keyed by context types. An implementation could also choose not to support context history, in which case this method will return `null` for any context type not matching the type of the most recent context.
+
 
 If getting the current context fails, the promise will return an `Error` with a string from the [`ChannelError`](ChannelError) enumeration.
 
