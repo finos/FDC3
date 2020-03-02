@@ -13,9 +13,10 @@ A Desktop Agent is a desktop component (or aggregate of components) that serves 
 
 Examples of Desktop Agents include:
 
-- OpenFin
 - Autobahn
-- ThomsonReuters Eikon
+- ChartIQ's Finsemble
+- OpenFin
+- Refinitiv Eikon
 
 Desktop Agents expose an FDC3 standard API to applications they have launched.  When an App is launched by a Desktop Agent and is given access to the Agent's API to interoperate, it is running in that Desktop Agent's *context*. 
 
