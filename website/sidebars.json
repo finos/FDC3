@@ -90,7 +90,9 @@
       "use-cases/uc-9",
       "use-cases/uc-10",
       "use-cases/uc-13",
-      "use-cases/uc-15"
+      "use-cases/uc-15",
+      "use-cases/uc-16",
+      "use-cases/uc-17"
     ]
   }
 }
