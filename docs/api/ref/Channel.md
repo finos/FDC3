@@ -65,6 +65,60 @@ DisplayMetadata can be used to provide display hints for channels intended to be
 
 ## Methods
 
+
+### `addContextListener`
+
+```ts
+public addContextListener(handler: ContextHandler): Listener;
+```
+
+Adds a listener for incoming contexts whenever a broadcast happens on the channel.
+
+```ts
+public addContextListener(contextType: string, handler: ContextHandler): Listener;
+```
+
+Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
+
+#### Examples
+
+Add a listener for any context that is broadcast on the channel:
+
+```ts
+const listener = channel.addContextListener(context => {
+    if (context.type === 'fdc3.contact') {
+        // handle the contact
+    } else if (context.type === 'fdc3.instrument') => {
+        // handle the instrument
+    }
+});
+
+// later
+listener.unsubscribe();
+```
+
+Adding listeners for specific types of context that is broadcast on the channel:
+
+```ts
+const contactListener = channel.addContextListener('fdc3.contact', contact => {
+    // handle the contact
+});
+
+const instrumentListener = channel.addContextListener('fdc3.instrument', instrument => {
+    // handle the instrument
+});
+
+// later
+contactListener.unsubscribe();
+instrumentListener.unsubscribe();
+```
+
+#### See also
+* [`Listener`](Listener)
+* [`ContextHandler`](ContextHandler)
+* [`broadcast`](#broadcast)
+* [`getCurrentContext`](#addcontextlistener)
+
 ### `broadcast`
 
 ```typescript
@@ -139,55 +193,3 @@ try {
 * [`broadcast`](#broadcast)
 * [`addContextListener`](#addcontextlistener)
 
-### `addContextListener`
-
-```ts
-public addContextListener(handler: ContextHandler): Listener;
-```
-
-Adds a listener for incoming contexts whenever a broadcast happens on the channel.
-
-```ts
-public addContextListener(contextType: string, handler: ContextHandler): Listener;
-```
-
-Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
-
-#### Examples
-
-Add a listener for any context that is broadcast on the channel:
-
-```ts
-const listener = channel.addContextListener(context => {
-    if (context.type === 'fdc3.contact') {
-        // handle the contact
-    } else if (context.type === 'fdc3.instrument') => {
-        // handle the instrument
-    }
-});
-
-// later
-listener.unsubscribe();
-```
-
-Adding listeners for specific types of context that is broadcast on the channel:
-
-```ts
-const contactListener = channel.addContextListener('fdc3.contact', contact => {
-    // handle the contact
-});
-
-const instrumentListener = channel.addContextListener('fdc3.instrument', instrument => {
-    // handle the instrument
-});
-
-// later
-contactListener.unsubscribe();
-instrumentListener.unsubscribe();
-```
-
-#### See also
-* [`Listener`](Listener)
-* [`ContextHandler`](ContextHandler)
-* [`broadcast`](#broadcast)
-* [`getCurrentContext`](#addcontextlistener)
