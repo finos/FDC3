@@ -37,30 +37,74 @@ A Desktop Agent can be connected to one or more App Directories and will use dir
 
 ## Methods
 
-### `open`
+
+### `addContextListener`
 
 ```ts
-open(name: string, context?: Context): Promise<void>;
+addContextListener(handler: ContextHandler): Listener;
+addContextListener(contextType: string, handler: ContextHandler): Listener;
 ```
+Adds a listener for incoming context broadcast from the Desktop Agent. If the consumer is only interested in
+a context of a particular type, they can use the relevant overload that allows the type to be specified.
 
-Launches/links to an app by name.
+#### Examples
+```js
+// any context
+const listener = fdc3.addContextListener(context => { ... });
 
-If a [`Context`](Context) object is passed in, this object will be provided to the opened application via a contextListener.
-The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
-If opening errors, it returns an `Error` with a string from the [`OpenError`](OpenError) enumeration.
-
-#### Example
- ```js
-// no context
-await fdc3.open('myApp');
-
-// with context
-await fdc3.open('myApp', context);
+// listener for a specific type
+const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ... });
 ```
 
 #### See also
+* [`Listener`](Listener)
 * [`Context`](Context)
-* [`OpenError`](OpenError)
+
+
+
+### `addIntentListener`
+
+```ts
+addIntentListener(intent: string, handler: ContextHandler): Listener;
+```
+ Adds a listener for incoming Intents from the Agent.
+
+#### Examples
+
+```js
+const listener = fdc3.addIntentListener('StartChat', context => {
+  // start chat has been requested by another application
+});
+```
+
+#### See also
+* [`Listener`](Listener)
+* [`Context`](Context)
+
+
+
+### `broadcast`
+
+```ts
+broadcast(context: Context): void;
+```
+
+Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
+
+#### Example
+```js
+const instrument = {
+    type: 'fdc3.instrument',
+    id: {
+        ticker: 'AAPL'
+    }
+};
+
+fdc3.broadcast(instrument);
+```
+#### See also
+* [addContextListener](#addcontextlistener)
+
 
 ### `findIntent`
 
@@ -133,43 +177,28 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 #### See also
    * [`ResolveError`](ResolveError)
 
-### `raiseIntent`
+
+
+### `getCurrentChannel`
 
 ```ts
-raiseIntent(intent: string, context: Context, target?: string): Promise<IntentResolution>;
-```
-Raises an intent to the desktop agent to resolve.
-
-#### Example
-
-```js
-//raise an intent to start a chat with a given contact
-const intentResolution = await fdc3.findIntents("StartChat", context);
-//use the IntentResolution object to target the same chat app with a new context
-await fdc3.raiseIntent("StartChat", newContext, intentResolution.source);
+getCurrentChannel() : Promise<Channel>;
 ```
 
-#### See also
-* [`IntentResolution`](IntentResolution)
+Returns the `Channel` object for the current channel membership.  Returns `null` if the app is not joined to a channel. 
 
-### `addIntentListener`
-
-```ts
-addIntentListener(intent: string, handler: ContextHandler): Listener;
-```
- Adds a listener for incoming Intents from the Agent.
 
 #### Examples
 
 ```js
-const listener = fdc3.addIntentListener('StartChat', context => {
-  // start chat has been requested by another application
-});
+//get the current channel membership
+let current = await fdc3.getCurrentChannel();
 ```
 
 #### See also
-* [`Listener`](Listener)
-* [`Context`](Context)
+* [`Channel`](Channel)
+
+
 
 ### `getOrCreateChannel`
 
@@ -212,6 +241,7 @@ const redChannel = systemChannels.find(c => c.id === 'red');
 #### See also
 * [`Channel`](Channel)
 
+
 ### `joinChannel`
 
 ```ts
@@ -240,29 +270,6 @@ fdc3.joinChannel(selectedChannel.id);
 * [`getSystemChannels`](#getSystemChannels)
 
 
-### `broadcast`
-
-```ts
-broadcast(context: Context): void;
-```
-
-Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
-
-#### Example
-```js
-const instrument = {
-    type: 'fdc3.instrument',
-    id: {
-        ticker: 'AAPL'
-    }
-};
-
-fdc3.broadcast(instrument);
-```
-#### See also
-* [addContextListener](#addcontextlistener)
-
-
 
 ### `leaveCurrentChannel`
 
@@ -288,44 +295,52 @@ redChannel.addContextListener(channelListener);
 ```
 
 
-### `getCurrentChannel`
+
+### `open`
 
 ```ts
-getCurrentChannel() : Promise<Channel>;
+open(name: string, context?: Context): Promise<void>;
 ```
 
-Returns the `Channel` object for the current channel membership.  Returns `null` if the app is not joined to a channel. 
+Launches/links to an app by name.
 
+If a [`Context`](Context) object is passed in, this object will be provided to the opened application via a contextListener.
+The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
+If opening errors, it returns an `Error` with a string from the [`OpenError`](OpenError) enumeration.
 
-#### Examples
+#### Example
+ ```js
+// no context
+await fdc3.open('myApp');
 
-```js
-//get the current channel membership
-let current = await fdc3.getCurrentChannel();
+// with context
+await fdc3.open('myApp', context);
 ```
 
 #### See also
-* [`Channel`](Channel)
-
-
-### `addContextListener`
-
-```ts
-addContextListener(handler: ContextHandler): Listener;
-addContextListener(contextType: string, handler: ContextHandler): Listener;
-```
-Adds a listener for incoming context broadcast from the Desktop Agent. If the consumer is only interested in
-a context of a particular type, they can use the relevant overload that allows the type to be specified.
-
-#### Examples
-```js
-// any context
-const listener = fdc3.addContextListener(context => { ... });
-
-// listener for a specific type
-const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ... });
-```
-
-#### See also
-* [`Listener`](Listener)
 * [`Context`](Context)
+* [`OpenError`](OpenError)
+
+
+
+### `raiseIntent`
+
+```ts
+raiseIntent(intent: string, context: Context, target?: string): Promise<IntentResolution>;
+```
+Raises an intent to the desktop agent to resolve.
+
+#### Example
+
+```js
+//raise an intent to start a chat with a given contact
+const intentResolution = await fdc3.findIntents("StartChat", context);
+//use the IntentResolution object to target the same chat app with a new context
+await fdc3.raiseIntent("StartChat", newContext, intentResolution.source);
+```
+
+#### See also
+* [`IntentResolution`](IntentResolution)
+
+
+
