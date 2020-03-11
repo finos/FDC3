@@ -27,20 +27,12 @@ https://fdc3.finos.org/schemas/next/contact.schema.json
 
 ## Example
 
-{
-    "type": "fdc3.contact",
-    "name": "Jane Doe",
-    "id":{
-        "email": "john.smith@company.com",
-    }
-}
-
 ```js
 const contact = {
     type: 'fdc3.contact'
     name: 'Jane Doe',
     id: {
-        email: 'jane@mail.com'
+        email: 'jane.doe@mail.com'
     }
 }
 
@@ -56,6 +48,7 @@ Other Types
 Intents
 - [StartChat](../../intents/ref/StartChat)
 - [StartCall](../../intents/ref/StartCall)
+- [ViewContact](../../intents/ref/ViewContact)
 
 FINOS Financial Objects
 - [Contact](https://fo.finos.org/docs/objects/contact)
