@@ -14,7 +14,7 @@ Initiate a chat with a contact or list of contacts.
 
 ## Display Name
 
-`Chat`
+`Start a Chat`
 
 ## Possible Contexts
 
@@ -32,7 +32,7 @@ const contact = {
     }
 }
 
-fdc3.raiseIntent('StartChat', contact)
+fdc3.raiseIntent('fdc3.StartChat', contact)
 ```
 
 ## See Also
