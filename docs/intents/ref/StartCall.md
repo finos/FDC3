@@ -32,7 +32,7 @@ const contact = {
     }
 }
 
-fdc3.raiseIntent('fdc3.StartCall', contact)
+fdc3.raiseIntent('StartCall', contact)
 ```
 
 ## See Also

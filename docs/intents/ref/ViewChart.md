@@ -34,7 +34,7 @@ const instrument = {
     }
 }
 
-fdc3.raiseIntent('fdc3.ViewChart', instrument)
+fdc3.raiseIntent('ViewChart', instrument)
 ```
 
 ## See Also

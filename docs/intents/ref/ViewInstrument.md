@@ -32,7 +32,7 @@ const instrument = {
     }
 }
 
-fdc3.raiseIntent('fdc3.ViewInstrument', instrument)
+fdc3.raiseIntent('ViewInstrument', instrument)
 ```
 
 ## See Also

@@ -36,7 +36,7 @@ const instrument = {
     }
 }
 
-fdc3.raiseIntent('fdc3.ViewNews', instrument)
+fdc3.raiseIntent('ViewNews', instrument)
 ```
 
 ## See Also
