@@ -31,7 +31,7 @@ const contact = {
     }
 }
 
-fdc3.raiseIntent('fdc3.ViewContact', contact)
+fdc3.raiseIntent('ViewContact', contact)
 ```
 
 ## See Also
