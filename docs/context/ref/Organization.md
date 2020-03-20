@@ -34,7 +34,7 @@ https://fdc3.finos.org/schemas/next/organization.schema.json
 ## Example
 
 ```js
-const contact = {
+const organization = {
     type: 'fdc3.organization'
     name: 'Cargill, Incorporated',
     id: {
