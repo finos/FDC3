@@ -6,7 +6,12 @@ hide_title: true
 ---
 # `Organization`
 
-An entity that can be used when referencing private companies and other organizations where a specific intrument is not availabe or desired eg CRM and News workflows.
+An entity that can be used when referencing private companies and other organizations where a specific intrument is not availabe or desired e.g. CRM and News workflows.
+
+Notes:
+
+- It is valid to include extra properties and metadata as part of the organization payload, but the minimum requirement
+is for at least one specified identifier to be provided.
 
 ## Type
 
