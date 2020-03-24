@@ -14,7 +14,7 @@ Initiate a chat with a contact or list of contacts.
 
 ## Display Name
 
-`Chat`
+`Start a Chat`
 
 ## Possible Contexts
 

@@ -6,4 +6,38 @@ hide_title: true
 ---
 # `ViewContact`
 
-_TO BE COMPLETED_
+View details for a contact.
+
+## Intent Name
+
+`ViewContact`
+
+## Display Name
+
+`View Contact Details`
+
+## Possible Contexts
+
+* [Contact](../../context/ref/Contact)
+
+## Example
+
+```js
+const contact = {
+    type: 'fdc3.contact',
+    name: 'Jane Doe',
+    id: {
+        email: 'jane@mail.com'
+    }
+}
+
+fdc3.raiseIntent('ViewContact', contact)
+```
+
+## See Also
+
+Context
+- [Contact](../../context/ref/Contact)
+
+Intents
+- [StartChat](StartChat)
