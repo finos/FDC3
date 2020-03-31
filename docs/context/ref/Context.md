@@ -36,30 +36,28 @@ https://fdc3.finos.org/schemas/next/context.schema.json
 
 ### `type` (required)
 
-The type property is the only _required_ part of the FDC3 context data schema, and must be present in all FDC3 contexttypes. 
-The FDC3 [API](../../api/overview) relies on the `type` propertybeing present to route shared context data appropriately.
+The type property is the only _required_ part of the FDC3 context data schema. 
+The FDC3 [API](../../api/overview) relies on the `type` property being present to route shared context data appropriately.
 
-FDC3 [Intents](../../intents/overview) also register the contextdata types they support in an FDC3 [App Directory](../..app-directory/overview), used for intent discovery and routing.
+FDC3 [Intents](../../intents/overview) also register the context data types they support in an FDC3 [App Directory](../..app-directory/overview), used for intent discovery and routing.
 
-Standardised FDC3 context types have well-known `type` propertiesprefixed with the `fdc3` namespace, e.g. `fdc3.instrument`. 
-For non-standard types, e.g. those defined and used by aparticular organisation, the convention is to prefix them with an
+Standardised FDC3 context types have well-known `type` properties prefixed with the `fdc3` namespace, e.g. `fdc3.instrument`. 
+For non-standard types, e.g. those defined and used by a particular organisation, the convention is to prefix them with an
 organization-specific namespace, e.g. `blackrock.fund`.
 
-See the [Context Data Specification](../../context/spec) for moreinformation about context data types.
+See the [Context Data Specification](../../context/spec) for more information about context data types.
 
 ### `name` (optional)
 
-Context data objects may include a name property that can be used  for more information, or display purposes. Some
-derived types may require the name object to mandatory, depending  on use case.
+Context data objects may include a name property that can be used for more information, or display purposes. Some
+derived types may require the name object as mandatory, depending on use case.
 
 ### `id` (optional)
 
 Context data objects may include a set of equivalent key-value pairs that can be used to help applications
-identify and look up the context type they receive in their own domain. The idea behind this design is that applications can provide 
-as many equivalent identifiers to a target application as possible, e.g. an instrument may be represented by an ISIN, CUSIP or Bloomberg identifier.
+identify and look up the context type they receive in their own domain. The idea behind this design is that applications can provide as many equivalent identifiers to a target application as possible, e.g. an instrument may be represented by an ISIN, CUSIP or Bloomberg identifier.
 
-Identifiers do not make sense for all types of data, so the `id` property is therefore optional, but some derived types may choose to require
-at least one identifier.
+Identifiers do not make sense for all types of data, so the `id` property is therefore optional, but some derived types may choose to require at least one identifier.
 
 ## See Also
 
