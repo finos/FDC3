@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `Portfolio`
 
-A financial portfcolio made up of muliple positions (holdings) in several instruments. Contrast this
+A financial portfolio made up of muliple positions (holdings) in several instruments. Contrast this
 with e.g. the [InstrumentList](InstrumentList) type, which is just a list of instruments.
 
 This is a good example of how types can be composed and extended with extra properties to define more complex types.
