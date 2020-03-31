@@ -26,7 +26,7 @@ https://fdc3.finos.org/schemas/next/country.schema.json
 
 ## Details
 
-| Property         | Type    | Required | Value                |
+| Property         | Type    | Required | Example Value        |
 |------------------|---------|----------|----------------------|
 | `type`           | string  | Yes      | `'fdc3.country'`     |
 | `name`           | string  | No       | `'Sweden'`           |

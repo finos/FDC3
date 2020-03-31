@@ -18,7 +18,7 @@ https://fdc3.finos.org/schemas/next/contact.schema.json
 
 ## Details
 
-| Property    | Type    | Required | Value             |
+| Property    | Type    | Required | Example Value     |
 |-------------|---------|----------|-------------------|
 | `type`      | string  | Yes      | `'fdc3.contact'`  |
 | `name`      | string  | No       | `'Jane Doe'`      |
