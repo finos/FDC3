@@ -73,10 +73,10 @@
       }
     ],
     "App Directory": [
-      "appd-intro",
-      "appd-discovery",
-      "appd-use",
-      "appd-spec"
+      "app-directory/overview",
+      "app-directory/discovery",
+      "app-directory/usage",
+      "app-directory/spec"
     ]
   },
   "use-cases": {

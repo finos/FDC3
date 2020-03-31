@@ -50,9 +50,9 @@ For application providers FDC3 compliance requires:
 * If Context Data is supported, the application SHOULD use the addContextListener API to set up a handler.
 
 ## References
-The following specifications and use cases references apply to the above:
-* [API](api/api-spec)
-* [App Directory](appd-spec)
-* [Context Data](context-spec)
-* [Intents](intents-spec)
+The following specifications and use case references apply to the above:
+* [API](api/spec)
+* [App Directory](app-directory/spec)
+* [Context Data](context/spec)
+* [Intents](intents/spec)
 * [Use Cases](use-cases/overview)

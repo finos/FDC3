@@ -1,11 +1,11 @@
 ---
-id: appd-use
-sidebar_label: App Directory Use
-title: App Directory Use
+id: usage
+sidebar_label: App Directory Usage
+title: App Directory Usage
 hide_title: true
 ---
 
-# App Directory Use
+# App Directory Usage
 
 An application directory (AppD) provides information about an application's
 identifiers, intents that provide contexts, and location of metadata providing
