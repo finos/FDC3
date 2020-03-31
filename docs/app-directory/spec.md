@@ -1,5 +1,5 @@
 ---
-id: appd-spec
+id: spec
 sidebar_label: App Directory Specification
 title: App Directory Specification
 ---

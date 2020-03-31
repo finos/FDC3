@@ -8,6 +8,12 @@ hide_title: true
 
 A collection of contacts, e.g. for chatting to or calling multiple contacts.
 
+Notes:
+
+- The contact list schema does not explicitly include identifiers in the `id` section, as there
+is not a common standard for such identifiers. Applications can, however, populate
+this part of the contract with custom identifiers if so desired.
+
 ## Type
 
 `fdc3.contactList`
@@ -18,9 +24,10 @@ https://fdc3.finos.org/schemas/next/contactList.schema.json
 
 ## Details
 
-| Property    | Type      | Required | Value                  |
+| Property    | Type      | Required | Example Value          |
 |-------------|-----------|----------|------------------------|
 | `type`      | string    | Yes      | `'fdc3.contactList'`   |
+| `id`        | object    | No       | `{ customId: '5576' }` |
 | `name`      | string    | No       | `'My address book'`    |
 | `contacts`  | Contact[] | Yes      | `[contact1, contact2]` |
 
