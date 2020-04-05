@@ -33,8 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Publish versioned JSON schemas to FDC3 website ([#170](https://github.com/finos/FDC3/pull/170))
 
 ### Changed
-* Apply FINOS branding, styles and logos to the website ([#96](https://github.com/finos/FDC3/pull/96))
-* Add ChartIQ to "Who is using FDC3?" section on website ([#100](https://github.com/finos/FDC3/pull/100))
 * Expand `AppMetadata` interface with more application properties ([#157](https://github.com/finos/FDC3/pull/157))
 
 ### Fixed
@@ -44,6 +42,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Remove FactSet-specific examples ([#88](https://github.com/finos/FDC3/pull/88))
 * Add Intent Reference and Context Data Reference ([#172](https://github.com/finos/FDC3/pull/172))
 * Fix several typos and broken links
+
+### Website
+* Apply FINOS branding, styles and logos to the website ([#96](https://github.com/finos/FDC3/pull/96))
+* Add ChartIQ to "Who is using FDC3?" section on website ([#100](https://github.com/finos/FDC3/pull/100))
 
 ## [1.0.0] - 2019-03-28
 
