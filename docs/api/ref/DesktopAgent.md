@@ -302,7 +302,9 @@ redChannel.addContextListener(channelListener);
 open(name: string, context?: Context): Promise<void>;
 ```
 
-Launches/links to an app by name.
+Launches/links to an app by name.  
+
+The `open` method differs in use from [`raiseIntent`](#raiseIntent).  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, `open` would be used to an app returned in the search results.  **Note**, if both the intent and target app name are known, it is recommended to instead use `raiseIntent` with a `target` argument. 
 
 If a [`Context`](Context) object is passed in, this object will be provided to the opened application via a contextListener.
 The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
