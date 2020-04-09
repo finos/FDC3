@@ -1,8 +1,9 @@
 ---
-id: overview
+id: version-1.1-overview
 sidebar_label: Intents Overview
 title: Intents Overview
 hide_title: true
+original_id: overview
 ---
 
 # Intents Overview

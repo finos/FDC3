@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/finos/FDC3.svg?branch=master)](https://travis-ci.org/finos/FDC3)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/finos/fdc3)](https://github.com/finos/fdc3/releases/latest)
 [![FINOS - Released](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-released.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Released)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![GitHub](https://img.shields.io/github/license/finos/fdc3)](https://opensource.org/licenses/Apache-2.0
+)
 [![Stack Overflow](https://img.shields.io/badge/stackoverflow-fdc3-orange.svg)](https://stackoverflow.com/questions/tagged/fdc3)
 
 # FDC3
@@ -11,9 +13,9 @@ The mission of the Financial Desktop Connectivity and Collaboration Consortium (
 FDC3 is a standard.  This repository houses the documentation and specifications for the ratified FDC3 standards. 
 
 ## Using the standard
-Check out [the documentation website](https://fdc3.finos.org) for the different components of the standard, an overview of [common use cases](https://fdc3.finos.org/docs/use-cases/overview), developer [API docs](https://fdc3.finos.org/docs/api/api-intro) and [standard compliance information](https://fdc3.finos.org/docs/fdc3-compliance).
+Check out [the documentation website](https://fdc3.finos.org) for the different components of the standard, an overview of [common use cases](https://fdc3.finos.org/docs/1.1/use-cases/overview), developer [API docs](https://fdc3.finos.org/docs/1.1/api/overview) and [standard compliance information](https://fdc3.finos.org/docs/1.1/fdc3-compliance).
 
-Latest version of the standard is [1.0](https://fdc3.finos.org/docs/1.0/fdc3-intro). See [all available versions](https://fdc3.finos.org/versions).
+Latest version of the standard is [1.1](https://fdc3.finos.org/docs/1.1/fdc3-intro). See [all available versions](https://fdc3.finos.org/versions).
 
 ## Contributing
 To join Working Groups meetings and Mailing lists where the standard is built, please check the [FDC3 space in the FINOS Wiki](http://wiki.finos.org/fdc3). If you'd like to contribute code to this repository:
@@ -64,9 +66,6 @@ With Productization on track to land at end of Q1, the expectation is that Q2 wi
 * Work with Financial Objects and other FINOS programs to reach consensus on how to make standardized taxonomies available for consumption, both for viewing/editing and programmatically e.g. for validation. 
 * Create comprehensive examples of use cases that show how to use the various FDC3 standards together to enable interoperability.
 * App Directory Identity and authentication
-
-
-
 
 ## License
 
