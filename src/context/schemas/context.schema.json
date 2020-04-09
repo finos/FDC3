@@ -7,13 +7,14 @@
     "name": { "type": "string" }, 
     "id": {
       "$comment": "Reserved for identifiers",
+      "type": "object",
+      "additionalProperties": { "type": "any" }
+    },
+    "metadata?": {
+      "$comment": "System Metadata",
       "type": "object"
     },
-    "data": {
-      "$comment": "Context metadata",
-      "type": "object"
-    },
-    "additionalProperties": { "type": "string" }
+    "additionalProperties": { "type": "any" }
   },
   "required": ["type"]
 }
