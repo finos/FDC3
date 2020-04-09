@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Context Data Specification · FDC3</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="# Context Data Specification"/><meta name="docsearch:version" content="1.1"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Context Data Specification · FDC3"/><meta property="og:type" content="website"/><meta property="og:url" content="https://fdc3.finos.org/"/><meta property="og:description" content="# Context Data Specification"/><meta property="og:image" content="https://fdc3.finos.org/assets/fdc3-logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://fdc3.finos.org/assets/fdc3-logo.png"/><link rel="shortcut icon" href="/img/favicon/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-89349362-8', 'auto');
+              ga('send', 'pageview');
+            </script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/fdc3-icon-2019.svg" alt="FDC3"/><h2 class="headerTitleWithLogo">FDC3</h2></a><a href="/versions"><h3>1.1</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/1.1/fdc3-intro" target="_self">Docs</a></li><li class=""><a href="/docs/1.1/use-cases/overview" target="_self">Use Cases</a></li><li class=""><a href="/get-involved" target="_self">Get Involved</a></li><li class=""><a href="/docs/1.1/why-fdc3" target="_self">Why FDC3</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="context-data-specification"></a><a href="#context-data-specification" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Context Data Specification</h1>
+<h2><a class="anchor" aria-hidden="true" id="introduction"></a><a href="#introduction" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Introduction</h2>
+<p>To interoperate, apps need to exchange commonly recognized context structures that can indicate topic with any number of identifiers or mappings to different systems.</p>
+<p>Exchanging context is the most basic entry point to desktop interoperability. The barriers to adoption for this interaction must be kept as low as possible.</p>
+<p>There are two main use case for exchanging context data:</p>
+<ul>
+<li><p><strong>Transmitting reference data between applications.</strong>
+The source application will send as many known identifiers as possible, and the target application will try to match the entity based on the identifiers. It may then choose to map to its own internal domain representation for rendering purposes.</p>
+<p>An example of this is sending an instrument or contact, when only an ISIN or email is required to reference the same data in another application.</p></li>
+<li><p><strong>Transferring information between applications.</strong>
+The source application may have data required to compose a workflow with another application, e.g. a list of contacts that have been selected, or a complex object representing an RFQ request.</p>
+<p>In many such cases there isn't any sensible reference identifiers that can be shared, it is instead the data itself being transferred.</p></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="assumptions"></a><a href="#assumptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Assumptions</h2>
+<ol>
+<li>Context data objects are identified and routed according to their type, which is unique.</li>
+<li>Any names, identifiers or extra properties are optional.</li>
+<li>More complex objects can be composed from simpler objects by defining a new type, e.g a position from an instrument and a holding amount.</li>
+<li>If multiple pieces of data needs to be sent, an embedded array can be used, identified as a collection type, e.g. &quot;contactList&quot; or &quot;portfolio&quot;. This allows for extra metadata and data relationships to be expressed.</li>
+<li>There needs to be a way to reference or look up the structure of well-known context types, e.g. from a directory.</li>
+</ol>
+<h2><a class="anchor" aria-hidden="true" id="other-standard"></a><a href="#other-standard" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Other Standard</h2>
+<p>FDC3 recognizes that there are other object definitions for providing context between applications. Most, if not all of these definitions though are platform-specific. FDC3, as a rule, sets out to be platform-agnostic and focused on creating bridges between the various walled gardens on the financial desktop.</p>
+<h2><a class="anchor" aria-hidden="true" id="the-context-interface"></a><a href="#the-context-interface" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The Context Interface</h2>
+<pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> Context {
+    <span class="hljs-keyword">type</span>: <span class="hljs-built_in">string</span>;
+    name?: <span class="hljs-built_in">string</span>;
+    id?: {
+        [x:<span class="hljs-built_in">string</span>]: <span class="hljs-built_in">string</span>;
+    },
+    [x: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">any</span>;
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="examples"></a><a href="#examples" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h3>
+<p><strong>Note:</strong> The below examples show how the base context data interface can be used to define specific context data objects. It is not the purpose of the specification at this stage to define standard representations for objects. It establishes the framework in which such definitions could be created.</p>
+<h4><a class="anchor" aria-hidden="true" id="instrument"></a><a href="#instrument" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Instrument</h4>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"type"</span> : <span class="hljs-string">"fdc3.instrument"</span>,
+    <span class="hljs-attr">"name"</span> : <span class="hljs-string">"Apple"</span>,
+    <span class="hljs-attr">"id"</span> : 
+    {  
+        <span class="hljs-attr">"ticker"</span> : <span class="hljs-string">"aapl"</span>,
+        <span class="hljs-attr">"ISIN"</span> : <span class="hljs-string">"US0378331005"</span>,
+        <span class="hljs-attr">"CUSIP"</span> : <span class="hljs-string">"037833100"</span>,
+        <span class="hljs-attr">"FIGI"</span> : <span class="hljs-string">"BBG000B9XRY4"</span>,
+    }
+}
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="contact"></a><a href="#contact" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contact</h4>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"fdc3.contact"</span>,
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Nick Kolba"</span>,
+    <span class="hljs-attr">"id"</span>:{
+        <span class="hljs-attr">"email"</span>: <span class="hljs-string">"nick@openfin.co"</span>,
+        <span class="hljs-attr">"twitter"</span>: <span class="hljs-string">"nkolba"</span>,
+        <span class="hljs-attr">"phone"</span>: <span class="hljs-string">"9171234567"</span>
+    }
+}
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="organization"></a><a href="#organization" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Organization</h4>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"fdc3.organization"</span>,
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"IBM"</span>,
+    <span class="hljs-attr">"id"</span>: {
+        <span class="hljs-attr">"PERMID"</span> : <span class="hljs-string">"4295904307"</span>,
+        <span class="hljs-attr">"LEI"</span> : <span class="hljs-string">"VGRQXHF3J8VDLUA7XE92"</span>
+    }
+}
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="contactlist"></a><a href="#contactlist" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ContactList</h4>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"fdc3.contactList"</span>,
+    <span class="hljs-attr">"contacts"</span>: [
+        {
+            <span class="hljs-attr">"type"</span> : <span class="hljs-string">"fdc3.contact"</span>,
+            <span class="hljs-attr">"name"</span>:<span class="hljs-string">"Nick Kolba"</span>,
+            <span class="hljs-attr">"id"</span>:{
+                <span class="hljs-attr">"email"</span>: <span class="hljs-string">"nick@openfin.co"</span>
+            }
+        },
+        {
+            <span class="hljs-attr">"type"</span> : <span class="hljs-string">"fdc3.contact"</span>,
+            <span class="hljs-attr">"name"</span>:<span class="hljs-string">"Espen Overbye"</span>,
+            <span class="hljs-attr">"id"</span>:{
+                <span class="hljs-attr">"email"</span>: <span class="hljs-string">"espen@openfin.co"</span>
+            }
+        }
+    ]
+}
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="position"></a><a href="#position" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Position</h4>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"fdc3.position"</span>,
+    <span class="hljs-attr">"instrument"</span>: {
+        <span class="hljs-attr">"type"</span> : <span class="hljs-string">"fdc3.instrument"</span>,
+        <span class="hljs-attr">"name"</span> : <span class="hljs-string">"Apple"</span>,
+        <span class="hljs-attr">"id"</span> : 
+        {
+            <span class="hljs-attr">"ISIN"</span> : <span class="hljs-string">"US0378331005"</span>
+        }
+    },
+    <span class="hljs-attr">"holding"</span>: <span class="hljs-number">500</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="namespacing"></a><a href="#namespacing" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Namespacing</h3>
+<p>All well-known types at FDC3 level should be prefixed with <code>fdc3</code>. For private type definitions, or type definitions issued by other organisations, different namespaces can be used, e.g. <code>blackrock.fund</code>, etc.</p>
+<h3><a class="anchor" aria-hidden="true" id="versioning"></a><a href="#versioning" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Versioning</h3>
+<p>The specification recognises that evolving context data definitions over time, and helping applications to deal with changes to types, are very important.</p>
+<p>It may be as simple as adding an optional <code>$version</code> property to types, but it could also be a set of guidelines for adding new properties, without removing or changing existing ones. For example, web technologies like REST or GraphQL do not take a particular opinion about versioning.</p>
+<h3><a class="anchor" aria-hidden="true" id="identifiers"></a><a href="#identifiers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Identifiers</h3>
+<p>Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifer is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.</p>
+<p>All standard identifier names are reserved names. Applications may use their own identifiers ad hoc. For example:</p>
+<pre><code class="hljs css language-json">"id": {
+    "CUSIP":"037833100",
+    "foo":"bar"
+}
+</code></pre>
+<p>The identifier &quot;foo&quot; is proprietary, an application that can use it is free to do so. However, since multiple applications may want to use the &quot;foo&quot; name and may use it to mean different things, there is a need for applications to ensure that their identifiers use naming conventions that will avoid collision. The recommended approach here is to prefix the identifier name with a namespace. For example:</p>
+<pre><code class="hljs css language-json">"id": {
+    "CUSIP":"037833100",
+    "com.factset.symbology.entity": "000C7F-E"
+}
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#introduction">Introduction</a></li><li><a href="#assumptions">Assumptions</a></li><li><a href="#other-standard">Other Standard</a></li><li><a href="#the-context-interface">The Context Interface</a><ul class="toc-headings"><li><a href="#examples">Examples</a></li><li><a href="#namespacing">Namespacing</a></li><li><a href="#versioning">Versioning</a></li><li><a href="#identifiers">Identifiers</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/fdc3-icon-2019.svg" alt="FDC3"/></a><div><h5>Docs</h5><a href="/docs/1.1/fdc3-intro">Getting Started</a><a href="/docs/1.1/why-fdc3">Why FDC3</a><a href="/docs/1.1/api/ref/DesktopAgent">API Reference</a><a href="/schemas/1.1/app-directory">App Directory Schema</a><a href="/docs/1.1/use-cases/overview">Use Cases</a></div><div><h5>Community</h5><a href="https://www.finos.org/" target="_blank" rel="noreferrer noopener">FINOS</a><a href="https://www.finos.org/privacy-policy" target="_blank" rel="noreferrer noopener">FINOS Privacy Policy</a><a href="https://finosfoundation.atlassian.net/wiki/spaces/FDC3" target="_blank" rel="noreferrer noopener">FDC3 Wiki</a><a href="https://groups.google.com/a/finos.org/forum/#!forum/fdc3" target="_blank" rel="noreferrer noopener">Google Groups</a></div><div><h5>More</h5><div class="social"><a class="github-button" href="https://github.com/finos/FDC3" data-count-href="https://github.com/finos/FDC3/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">FDC3</a></div><div class="social"><a href="https://twitter.com/FDC3_" class="twitter-follow-button">Follow @FDC3_</a></div></div></section><section class="finos finosBanner"><a href="https://www.finos.org"><img id="finosicon" src="https://fdc3.finos.org/img/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS"/><h2 id="proud">Proud member of the Fintech Open Source Foundation</h2></a></section><section class="copyright">Copyright © 2020 FDC3</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>
