@@ -10,10 +10,6 @@
       "type": "object",
       "additionalProperties": { "type": "any" }
     },
-    "metadata?": {
-      "$comment": "System Metadata",
-      "type": "object"
-    },
     "additionalProperties": { "type": "any" }
   },
   "required": ["type"]
