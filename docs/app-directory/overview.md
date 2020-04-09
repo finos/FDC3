@@ -18,7 +18,7 @@ The FDC3 App Directory provides trusted identity for financial desktop apps. Thi
 ## Sections to review
 
 - [Application Directory Discovery](discovery.md) describes how to resolve the location of the Application Directory using an application identifier.
-- [Application Directory Usage](usasge.md) provides a simple view on how application directories can be used.  This also includes links to a reference implementation.
+- [Application Directory Usage](usage.md) provides a simple view on how application directories can be used.  This also includes links to a reference implementation.
 - [Application Directory specification](spec.md) is the interface definition required to support a compatible application directory.
 
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14, [RFC 2119](https://tools.ietf.org/id/draft-faltstrom-uri-11.html#RFC2119) [RFC2119].
