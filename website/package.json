@@ -2,22 +2,29 @@
   "scripts": {
     "examples": "docusaurus-examples",
     "start": "docusaurus-start",
-    "prebuild": "yarn run redoc-appd && yarn run copy-schemas",
+    "prebuild": "yarn run copy-appd && yarn run copy-schemas",
     "build": "docusaurus-build",
     "prepublish-gh-pages": "yarn run redoc-appd && yarn run copy-schemas",
     "publish-gh-pages": "docusaurus-publish",
-    "write-translations": "docusaurus-write-translations",
-    "version": "docusaurus-version",
-    "rename-version": "docusaurus-rename-version",
-    "redoc-appd": "redoc-cli bundle --output pages/appd-spec.html ../src/app-directory/specification/appd.yaml",
-    "copy-schemas": "copyfiles -f ../src/context/schemas/*.schema.json static/schemas/next"
+    "copy-schemas": "cpy ../src/context/schemas/*.schema.json static/schemas/next",
+    "copy-appd": "cpy ../src/app-directory/specification/appd.yaml static/schemas/next --rename app-directory.yaml",
+    "version": "yarn run version:docs && yarn run version:schemas && yarn run version:appd",
+    "version:docs": "docusaurus-version ${VERSION}",
+    "version:schemas": "cpy static/schemas/next/*.schema.json static/schemas/${VERSION} && replace-in-files --string=/schemas/next --replacement=/schemas/${VERSION} static/schemas/${VERSION}/*.schema.json",
+    "version:appd": "cpy static/schemas/next/app-directory.yaml static/schemas/${VERSION} && cpy pages/schemas/next/app-directory.html pages/schemas/${VERSION}",
+    "version:delete": "docusaurus-delete-version ${VERSION}",
+    "postversion:docs": "replace-in-files --string=/schemas/next --replacement=/schemas/${VERSION} versioned_docs/version-${VERSION}/'**/*.md'",
+    "postversion:schemas": "replace-in-files --string=/schemas/next --replacement=/schemas/${VERSION} static/schemas/${VERSION}/*.schema.json",
+    "postversion:appd": "replace-in-files --string='version: next' --replacement='version: '${VERSION} static/schemas/${VERSION}/app-directory.yaml",
+    "postversion:delete": "rimraf static/schemas/${VERSION} && rimraf pages/schemas/${VERSION}",
+    "postversion": "defaultVersionShown: '1.1' replace-json-property sitConfig.js.json"
   },
   "devDependencies": {
-    "copyfiles": "2.2.0",
-    "docusaurus": "1.12.0",
-    "redoc-cli": "0.8.5"
-  },
-  "resolutions": {
-    "**/**/underscore.string": "^3.3.5"
+    "cpy-cli": "3.1.0",
+    "docusaurus": "1.14.4",
+    "docusaurus-delete-version": "0.1.1",
+    "redoc-cli": "0.9.7",
+    "replace-in-files-cli": "0.3.1",
+    "rimraf": "3.0.2"
   }
 }
