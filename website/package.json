@@ -4,7 +4,7 @@
     "start": "docusaurus-start",
     "prebuild": "yarn run copy-appd && yarn run copy-schemas",
     "build": "docusaurus-build",
-    "prepublish-gh-pages": "yarn run redoc-appd && yarn run copy-schemas",
+    "prepublish-gh-pages": "yarn run copy-appd && yarn run copy-schemas",
     "publish-gh-pages": "docusaurus-publish",
     "copy-schemas": "cpy ../src/context/schemas/*.schema.json static/schemas/next",
     "copy-appd": "cpy ../src/app-directory/specification/appd.yaml static/schemas/next --rename app-directory.yaml",
