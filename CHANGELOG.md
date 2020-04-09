@@ -68,7 +68,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Fix errors in DesktopAgent API doc ([#66](https://github.com/finos/FDC3/pull/66))
 * Add hyperlink to FDC3 Intro doc ([#69](https://github.com/finos/FDC3/pull/69))
 
-## [1.0-beta] - 2019-03-05
+## [1.0.0-beta] - 2019-03-05
 ## Added
 * API content from [FDC3/API](https://github.com/FDC3/API).
 * Intent content from [FDC3/Intents](https://github.com/FDC3/Intents).
@@ -80,5 +80,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 [Unreleased]: https://github.com/finos/FDC3/compare/v1.1..HEAD
 [1.1]: https://github.com/finos/FDC3/compare/v1.1..v1.1
-[1.0]: https://github.com/finos/FDC3/compare/v1.0..v1.0-beta
-[1.0-beta]: https://github.com/finos/FDC3/releases/tag/v1.0-beta
+[1.0]: https://github.com/finos/FDC3/compare/v1.0..v1.0.0-beta
+[1.0.0-beta]: https://github.com/finos/FDC3/releases/tag/v1.0.0-beta
