@@ -108,29 +108,29 @@ class Index extends React.Component {
       <Block background="white" layout="fourColumn">
         {[
           {
-            content: `Create a consistent developer experience by adhering to the [API](${docUrl('api/api-intro')}) standard`,
+            content: `Create a consistent developer experience by adhering to the [API](${docUrl('api/overview')}) standard`,
             image: `${baseUrl}img/feature-api.svg`,
             imageAlign: 'top',
             title: 'API',
           },
           {
-            content: `Use [standardized verbs](${docUrl('intents-intro')}) to instruct other apps to take an action`,
+            content: `Use [standardized verbs](${docUrl('intents/overview')}) to instruct other apps to take an action`,
             image: `${baseUrl}img/feature-intents.svg`,
             imageAlign: 'top',
             title: 'Intents',
           },
           {
-            content: `Share [context](${docUrl('context-intro')}) between apps to eliminate re-keying and streamline workflow`,
+            content: `Share [context](${docUrl('context/overview')}) between apps to eliminate re-keying and streamline workflow`,
             image: `${baseUrl}img/feature-context.svg`,
             imageAlign: 'top',
             title: 'Context Data',
           },
           {
-            content: `Discover trusted apps that can take part in a FDC3 workflow using an [App directory](${docUrl('appd-intro')}).`,
+            content: `Discover trusted apps that can take part in a FDC3 workflow using an [App directory](${docUrl('app-directory/overview')}).`,
             image: `${baseUrl}img/feature-appd.svg`,
             imageAlign: 'top',
             title: 'App Directory',
-            link: `${baseUrl}/appd-intro`
+            link: `${baseUrl}/app-directory/overview`
           }
           
         ]}
