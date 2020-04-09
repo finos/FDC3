@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `Organization`
 
-An entity that can be used when referencing private companies and other organizations where a specific intrument is not availabe or desired e.g. CRM and News workflows.
+An entity that can be used when referencing private companies and other organizations where a specific instrument is not available or desired e.g. CRM and News workflows.
 
 Notes:
 
