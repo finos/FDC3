@@ -20,7 +20,7 @@ const siteConfig = {
   baseUrl: '/',
   // For publishing to GitHub pages
   projectName: 'FDC3',
-  organizationName: 'FDC3',
+  organizationName: 'finos',
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     
@@ -31,7 +31,7 @@ const siteConfig = {
    //, {blog: true, label: 'News'}
   ],
 
-  defaultVersionShown: '1.0',
+  defaultVersionShown: '1.1',
 
   twitterUsername: 'FDC3_',
 

@@ -48,6 +48,58 @@ my-docusaurus/
     siteConfig.js
 ```
 
+# Versioning
+
+Docusaurus uses the `docusaurus-version` command to create a snapshot of the documents in the `docs` folder with a particular version number, 
+and places them in the `versioned_docs/version-<version>` folder. It also creates a `versioned_sidebars/version-<version>-sidebars.json` 
+to save the navigation structure at the time the snapshot was taken. 
+
+See https://docusaurus.io/docs/en/versioning for more info.
+
+## Versioning scheme
+
+Since FDC3 is a schema project, we don't follow semver, which is meant for libraries. We use the versioning scheme `<major>.<mninor>`, e.g. `1.1` or `2.3`.
+
+## Create a new version
+
+Since the website also uses some generated and copied static files (like schemas), extra tasks need to be performed as part of creating
+a new version.
+
+To create a new version, use this command:
+```sh
+VERSION=<version> yarn run version
+```
+e.g.
+```sh
+VERSION=1.2 yarn run version
+```
+
+The `VERSION` environment variable and `version` script are used to:
+- Run the `docusaurus-version` command
+- Copy schemas from the `/website/static/schemas/next` (which matches `master`) to `/website/static/schemas/<version>`
+- Copy the app-directory OpenAPI html file from `/website/pages/schemas/next` to `/website/pages/schemas/<version>`
+- Update paths referring to `/schemas/next` to point to `/schemas/<version>`
+- Update the version number in the app directory schema from `version: next` to `version: <version>`
+
+After a new version is created with the script, the following step also needs to be performed:
+1. Change `defaultVersionShown` in `siteConfig.js` to match the latest version (if the new version is now the latest version).
+2. Change `versions.json` to have the version `stable` at the top, followed by the actual version numbers in descending order, e.g. `[stable, 1.3, 1.2, 1.1]`. (Docusaurus will add the new version number at the top of the array.)
+
+These steps are needed because we follow a workaround for an [issue with permanenent versioned URLs](https://github.com/facebook/docusaurus/issues/1312).
+
+## Delete a version
+
+To delete a version, use this command:
+```sh
+VERSION=<version> yarn run version:delete
+```
+e.g.
+```sh
+VERSION=1.2 yarn run version:delete
+```
+
+This will delete all docusaurus and other version-specific folders for the specified version.
+
 # Editing Content
 
 ## Editing an existing docs page

@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `Country`
 
-An entity that can be used when referencing countries that can be used on it's own as well as in other contexts when adding additional attributes e.g. when adding address details to a [Contact](../../context/ref/Contact)
+A country entity.
 
 Notes:
 

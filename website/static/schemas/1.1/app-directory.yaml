@@ -1,0 +1,383 @@
+openapi: 3.0.0
+info:
+  title: FDC3 Application Directory
+  version: 1.1
+  description: >
+    Application Directory specification providing both interface
+    definition and objects necessary to construct an application directory
+    service.
+  x-logo:
+    url: '/img/fdc3-logo-2019-color.png'
+    altText: FDC3 logo
+security:
+- bearerAuth: []
+paths:
+  '/v1/apps/{appId}':
+    get:
+      summary: Retrieve an application defintion
+      parameters:
+        - name: appId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '400':
+          description: Bad request.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: >-
+            Forbidden: Certificate authentication is not allowed for the
+            requested user.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: 'Server error, see response body for further details.'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+      tags:
+        - Application
+  /v1/apps:
+    post:
+      summary: Create a new application definition
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationSearchResponse'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: >-
+            Forbidden: Certificate authentication is not allowed for the
+            requested user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: 'Server error, see response body for further details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+      tags:
+        - Application
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Application'
+        required: true
+  /v1/apps/search:
+    get:
+      summary: Retrieve a list of applications based on parameters provided.  Depending on implementation, parameter
+              values should self describe search format and type (e.g. Regex)
+      parameters:
+        - in: query
+          name: appId
+          schema:
+            type: string
+          required: false
+          description: >
+            The unique application identifier located within a specific
+            application directory instance.
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: >
+            The name of the application.
+
+            The name should be unique within an FDC3 App Directory instance. The
+            exception to the uniqueness constraint is that an App Directory can
+            hold definitions for multiple versions of the same app.
+
+            The same appName could occur in other directories. We are not
+            currently specifying app name conventions in the document.
+        - in: query
+          name: manifest
+          schema:
+            type: string
+          required: false
+          description: >
+            URI or full JSON of the application manifest providing all details related to launch
+            and use requirements as described by the vendor.
+
+            The format of this manifest is vendor specific, but can be identified by
+            the manifestType attribute.
+        - in: query
+          name: version
+          schema:
+            type: string
+          required: false
+          description: >-
+            Version of the application. This allows multiple app versions to be
+            defined using the same app name. This can be a triplet but can also
+            include things like 1.2.5 (BETA)
+        - in: query
+          name: title
+          schema:
+            type: string
+          required: false
+          description: >-
+            Optional title for the application, if missing use appName,
+            typically used in a launcher UI.
+        - in: query
+          name: tooltip
+          schema:
+            type: string
+          required: false
+          description: Optional tooltip description e.g. for a launcher
+        - in: query
+          name: description
+          schema:
+            type: string
+          required: false
+          description: >-
+            Description of the application. This will typically be a 1-2
+            paragraph style blurb about the application. Allow mark up language
+        - in: query
+          name: intent_name
+          schema:
+            type: string
+          required: false
+          description: name of intent
+        - in: query
+          name: intent_displayName
+          schema:
+            type: string
+          required: false
+          description: displayName of intent
+        - in: query
+          name: intent_context
+          schema:
+            type: string
+          required: false
+          description: search contexts list
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationSearchResponse'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: >-
+            Forbidden: Certificate authentication is not allowed for the
+            requested user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: 'Server error, see response body for further details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+      tags:
+        - Application
+ 
+servers:
+  - url: /appd
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+  schemas:
+    ErrorDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    Application:
+      description: >
+        Defines an application retrieved from an FDC3 App Directory, which can
+        then be launched.
+
+        Launching typically means running for a user on a desktop. 
+        The details around 'launching' including who or what might do it, and how the launch action is initiated are
+        discussed elsewhere in the FDC3 App Directory spec.
+      required:
+        - appId
+        - name
+        - manifest
+        - manifestType
+      properties:
+        appId:
+          type: string
+          description: >
+            The unique application identifier located within a specific
+            application directory instance.
+        name:
+          type: string
+          description: >
+            The name of the application.
+
+            The name should be unique within an FDC3 App Directory instance. The
+            exception to the uniqueness constraint is that an App Directory can
+            hold definitions for multiple versions of the same app.
+
+            The same appName could occur in other directories. We are not
+            currently specifying app name conventions in the document.
+        manifest:
+          type: string
+          description: >
+            URI or full JSON of the application manifest providing all details related to launch
+            and use requirements as described by the vendor.
+
+            The format of this manifest is vendor specific, but can be identified by
+            the manifestType attribute.
+        manifestType:
+          type: string
+          description: >
+            The manifest type which relates to the format and structure of the manifest content.
+            The definition is based on the vendor specific format and definition outside of this specification.
+        version:
+          type: string
+          description: >-
+            Version of the application. This allows multiple app versions to be
+            defined using the same app name. This can be a triplet but can also
+            include things like 1.2.5 (BETA)
+        title:
+          type: string
+          description: >-
+            Optional title for the application, if missing use appName,
+            typically used in a launcher UI.
+        tooltip:
+          type: string
+          description: Optional tooltip description e.g. for a launcher
+        description:
+          type: string
+          description: >-
+            Description of the application. This will typically be a 1-2
+            paragraph style blurb about the application. Allow mark up language
+        images:
+          type: array
+          description: >-
+            Array of images to show the user when they are looking at app
+            description. Each image can have an optional description/tooltip
+          items:
+            $ref: '#/components/schemas/AppImage'
+        contactEmail:
+          type: string
+          description: Optional e-mail to receive queries about the application
+        supportEmail:
+          type: string
+          description: Optional e-mail to receive support requests for the application
+        publisher:
+          type: string
+          description: >-
+            The name of the company that owns the application. The publisher has
+            control over their namespace/app/signature.
+        icons:
+          type: array
+          description: >-
+            Holds Icons used for the application, a Launcher may be able to use
+            multiple Icon sizes or there may be a 'button' Icon
+          items:
+            $ref: '#/components/schemas/Icon'
+        customConfig:
+          type: array
+          description: >-
+            An optional set of name value pairs that can be used to deliver
+            custom data from an App Directory to a launcher.
+          items:
+            $ref: '#/components/schemas/NameValuePair'
+        intents:
+          type: array
+          description: >
+            The list of intents implemented by the Application as defined by
+            https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
+          items:
+            $ref: '#/components/schemas/Intent'
+    ApplicationSearchResponse:
+      properties:
+        applications:
+          type: array
+          description: |
+            List of applications
+          items:
+            $ref: '#/components/schemas/Application'
+        message:
+          type: string
+          description: |
+            Response message providing status of query
+    NameValuePair:
+      description: Simple name value pair
+      properties:
+        name:
+          type: string
+          description: name
+        value:
+          type: string
+          description: value
+    Icon:
+      description: Icon holder
+      properties:
+        icon:
+          type: string
+          description: Icon URL
+    AppImage:
+      description: App Image holder
+      properties:
+        url:
+          type: string
+          description: App Image URL
+    Intent:
+      description: >-
+        An intent definition as defined by spec
+        https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The name of the intent to 'launch'. In this case the name of an Intent supported by an Application.
+        displayName:
+          type: string
+          description: An optional display name for the intent that may be used in UI instead of the name.
+        contexts:
+          type: array
+          items:
+            type: string
+          description: >-
+            A comma sepaarted list of the types of contexts the intent offered by the application can process. 
+            where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
+        customConfig:
+          type: object
+          description: >-
+            Custom configuration for the intent that may be required for a
+            particular desktop agent.
