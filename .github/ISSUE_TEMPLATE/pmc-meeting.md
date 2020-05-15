@@ -2,7 +2,7 @@
 name: PMC Meeting
 about: minutes for an FDC3 Product Management Committee meeting
 title: PMC Meeting
-labels: ''
+labels: PMC Meeting
 assignees: ''
 
 ---
