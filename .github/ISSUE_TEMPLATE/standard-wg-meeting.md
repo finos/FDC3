@@ -2,7 +2,7 @@
 name: Standard WG Meeting
 about: minutes for an FDC3 Standard Working Group Meeting
 title: ''
-labels: Standard WG Meeting
+labels: Standard WG Meeting, meeting
 assignees: ''
 
 ---
