@@ -24,22 +24,24 @@ function fdc3Init(callback){
   };
   onFDC3Ready();
 }
-	
-<!-- Enable Functionality when FDC3 is available -->
+
+<!-- Enable application when FDC3 is available -->
   
 document.addEventListener("DOMContentLoaded",() => {
   fdc3Init(function(){
     enablePage();
   });
 });
-	
-<!-- Various poor examples of FDC3 functionality -->
 
 function enablePage(){
 
 	console.log('FDC3 is available');
 	
-	document.getElementById('providerDetails').innerHTML = 'Available - Not specified';
+	if(window.fin){
+		fin.desktop.Application.getCurrent().getInfo((info) => {document.getElementById('providerDetails').innerHTML = 'Available - ' + info.manifest.startup_app.name})
+	} else {
+		document.getElementById('providerDetails').innerHTML = 'Available - Not specified';
+	}
 	document.getElementById('directoryDetails').innerHTML = 'TBD';
 	
 	populateChannels(['default','red','orange','yellow','green','blue','purple']);
@@ -49,6 +51,8 @@ function enablePage(){
 	document.getElementById('selBroadcastChannel').disabled = false;
 	
 }
+	
+<!-- Various poor examples of FDC3 functionality -->
 
 function populateChannels(channelArray){
 
@@ -95,8 +99,6 @@ if (myUrl.length>0){
 
 <style>
 
-body {background-color:#3AB1F9;}
-
 textarea {width:400px;height:100px;} 
 
 select {width:238px;height:24px;} 
@@ -113,7 +115,7 @@ select {width:238px;height:24px;}
 
 <body>
 
-<table>
+<table border="1">
 
 <tr>
 <td class="header">FDC3 Provider Service:</td>
@@ -138,7 +140,7 @@ select {width:238px;height:24px;}
 
 <tr>
 <td class="header">Load App Start Url:</td>
-<td><input type="text" id="appUrl" class="urlInput"></td>
+<td><input type="text" id="appUrl" class="urlInput" value="receive.html"></td>
 <td><input type="button" value="Open" onClick="appLoader();"></td>
 </tr>
 
