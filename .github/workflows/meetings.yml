@@ -49,7 +49,8 @@ env:
 
 jobs:
   submit-meeting-attendance:
-    if: contains(github.event.issue.labels.*.name, 'meeting')
+    # Only run the job if the issue contains a `meeting` label AND either the event is `Issue Closed` OR the label been added/removed is `indexed`
+    if: contains(github.event.issue.labels.*.name, 'meeting') && (github.event.action == 'closed' || github.event.label.name == 'indexed')
     runs-on: ubuntu-latest
     steps:
     - name: Checking out metadata-tool
