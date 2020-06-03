@@ -144,7 +144,9 @@ interface DesktopAgent {
      * It is up to applications to manage how to share knowledge of these custom channels across windows and to manage
      * channel ownership and lifecycle. 
      * 
+     * If `displayMetaData` is specified, the channel is visually selectable by the user
+     * 
      * `Error` with a string from the `ChannelError` enumeration.
      */
-    getOrCreateChannel(channelId: string): Promise<Channel>;
+    getOrCreateChannel(channelId: string, displayMetaData?: DisplayMetaData): Promise<Channel>;
   }
