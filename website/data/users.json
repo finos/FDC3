@@ -20,6 +20,13 @@
         "isMember": true
     },
     {
+        "caption": "Genesis Global",
+        "image": "/img/users/Genesis.png",
+        "infoLink": "https://genesis.global/",
+        "pinned": true,
+        "isMember": true
+    },
+    {
         "caption": "Glue42",
         "image": "/img/users/GLUE42.png",
         "infoLink": "https://glue42.com/",
