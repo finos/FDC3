@@ -7,8 +7,10 @@ FDC3 Explained
 
 <script language="javascript">
 
-<!-- Check if FDC3 is avaialable -->
+<!-- Various global stuff -->
+var channelArray = [];
 
+<!-- Check if FDC3 is avaialable -->
 function fdc3Init(callback){
   let fdc3Tries = 10; //lets not check forever...
   const onFDC3Ready = () => {
@@ -26,17 +28,29 @@ function fdc3Init(callback){
 }
 
 <!-- Enable application when FDC3 is available -->
-  
 document.addEventListener("DOMContentLoaded",() => {
-  fdc3Init(function(){
-    enablePage();
-  });
+
+  fdc3Init(async () => {
+    
+    const systemChannels = await fdc3.getSystemChannels();
+    
+        systemChannels.forEach(channel => {
+                const thisChannel = channel;
+				channelArray.push(channel.id);
+				//alert(channel.id);
+                //createChannelRow(channel);
+                //listeners[channel.id] = channel.addContextListener((context) => {updateChannelRow(thisChannel, context);});
+            });
+			//populateChannels(channelArray);
+			enablePage();
+    });
 });
 
 function enablePage(){
 
 	console.log('FDC3 is available');
 	
+	<!-- Special case for Openfin to read App Name -->
 	if(window.fin){
 		fin.desktop.Application.getCurrent().getInfo((info) => {document.getElementById('providerDetails').innerHTML = 'Available - ' + info.manifest.startup_app.name})
 	} else {
@@ -44,11 +58,12 @@ function enablePage(){
 	}
 	document.getElementById('directoryDetails').innerHTML = 'TBD';
 	
-	populateChannels(['default','red','orange','yellow','green','blue','purple']);
-
+	<!-- enable page obects -->
 	document.getElementById('btnBroadcast').disabled = false;
-    	document.getElementById('txtBroadcastData').disabled = false;
+   	document.getElementById('txtBroadcastData').disabled = false;
 	document.getElementById('selBroadcastChannel').disabled = false;
+	document.getElementById('btnFetchChannels').disabled = false;
+	document.getElementById('txtAvailableChannels').disabled = false;
 	
 }
 	
@@ -58,7 +73,10 @@ function populateChannels(channelArray){
 
 var i;
 var selChannel = document.getElementById('selBroadcastChannel');
+var txtChannels = document.getElementById('txtAvailableChannels');
 var selOption;
+
+txtChannels.value = channelArray;
 
 for (i = 0; i < channelArray.length; i++) {
   selOption = document.createElement("option");
@@ -140,7 +158,7 @@ select {width:238px;height:24px;}
 
 <tr>
 <td class="header">Load App Start Url:</td>
-<td><input type="text" id="appUrl" class="urlInput" value="demoapps/receive.html"></td>
+<td><input type="text" id="appUrl" class="urlInput" value="receive.html"></td>
 <td><input type="button" value="Open" onClick="appLoader();"></td>
 </tr>
 
@@ -150,8 +168,8 @@ select {width:238px;height:24px;}
 
 <tr>
 <td class="header">Available Channels:</td>
-<td><textarea disabled></textarea></td>
-<td><input type="button" value="Fetch" disabled>&nbsp;<input type="button" value="Add" disabled></td>
+<td><textarea disabled id="txtAvailableChannels"></textarea></td>
+<td><input type="button" value="Fetch" id="btnFetchChannels" disabled onClick="populateChannels(channelArray);">&nbsp;<input type="button" value="Add" disabled></td>
 </tr>
 
 <tr>
