@@ -335,10 +335,10 @@ Raises an intent to the desktop agent to resolve.
 #### Example
 
 ```js
-//raise an intent to start a chat with a given contact
-const intentResolution = await fdc3.findIntents("StartChat", context);
-//use the IntentResolution object to target the same chat app with a new context
-await fdc3.raiseIntent("StartChat", newContext, intentResolution.source);
+//Find apps to resolve an intent to start a chat with a given contact
+const appIntent = await fdc3.findIntent("StartChat", context);
+//use the returned AppIntent object to target one of the returned chat apps with the context
+await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
 ```
 
 #### See also
