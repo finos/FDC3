@@ -147,4 +147,11 @@ interface DesktopAgent {
      * `Error` with a string from the `ChannelError` enumeration.
      */
     getOrCreateChannel(channelId: string): Promise<Channel>;
+
+    /**
+     * Returns the `Channel` object for the current channel membership.  
+     * 
+     * Returns `null` if the app is not joined to a channel. 
+     */
+    getCurrentChannel() : Promise<Channel>;
   }
