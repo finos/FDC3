@@ -1,13 +1,13 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/1.1/instrumentList.schema",
+  "$id": "https://fdc3.finos.org/schemas/1.1/instrumentList.schema.json",
   "type": "object",
-  "allOf": [{ "$ref": "context.schema#/" }],
+  "allOf": [{ "$ref": "context.schema.json#/" }],
   "properties": {
     "type": { "const": "fdc3.instrumentList" },
     "instruments": {
       "type": "array",
-      "items": { "$ref": "instrument.schema#/" }
+      "items": { "$ref": "instrument.schema.json#/" }
     }
   },
   "required": ["instruments"]
