@@ -7,7 +7,7 @@
     "type": { "const": "fdc3.contactList" },
     "contacts": {
       "type": "array",
-      "items": { "$ref": "contact.schema#/" }
+      "items": { "$ref": "contact.schema.json#/" }
     }
   },
   "required": ["contacts"]
