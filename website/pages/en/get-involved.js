@@ -20,27 +20,21 @@ function Help(props) {
   const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`;
 
   const supportLinks = [
-    //{
-    //  content: `Learn more using the [documentation on this site.]($///// {docUrl(
-    //    'doc1.html',
-    //  )})`,
-    //  title: 'Browse the FDC3 Wiki',
-    //}
     {
-      content: `The [FDC3 Wiki](https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview) has a ton of information about the day-to-day, week-to-week operations of the team building out the FDC3 standard, including meeting schedules, minutes, roadmaps, and release plans.`,
-      title: `Browse the FDC3 Wiki`,
+      content: `Most FDC3 collaboration take place on the [FDC3 GitHub repository](https://github.com/finos/fdc3]), where you can raise [issues](https://github.com/finos/FDC3/issues), submit [pull requests](https://github.com/finos/FDC3/pulls) and view [meeting minutes](https://github.com/finos/FDC3/issues?q=label%3Ameeting+).`,
+      title: `Collaborate on GitHub`,
     },
     {
-      content: 'Email [fdc3+subscribe@finos.org](mailto:fdc3+subscribe@finos.org) to join the program\'s general mailing list to stay up to date with program activities and focus areas. Additional mailing lists for the program\'s working groups can be found on the [FDC3 Wiki](https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview).',
-      title: 'Subcribe to the FDC3 General Mailing List',
+      title: 'Subcribe to the Mailing List',
+      content: `Email [fdc3+subscribe@finos.org](mailto:fdc3+subscribe@finos.org) to join the project's mailing list, and stay up to date with project activities and focus areas. The mailing list archive can be found [here](https://groups.google.com/a/finos.org/g/fdc3).`,
     },
     {
-      content: `Attending an FDC3 general meeting is a great way to learn about what's going on with the program. Our next meeting is March 5th. [See the meeting call-in information and the full schedule on the FDC3 Wiki.](https://finosfoundation.atlassian.net/wiki/spaces/FDC3/pages/24150019/FDC3+General+Meeting)`,
-      title: 'Attend the Next General Meeting',
+      title: 'Attend a General Meeting',
+      content: `The FDC3 general meeting takes place once a quarter, and is a great way to learn about what's going on with the project. Joining the mailing list should get you an invite, or email [help@finos.org](mailto:help@finos.org).`,
     },
     {
-      content: `E-mail [fdc3@finos.org](mailto:fdc3@finos.org)  to introduce yourself and ask any questions you might have of the program's active participants and contributors.`,
-      title: 'Send an Email to the FDC3 Community' ,
+      title: 'Join the Standards Working Group' ,
+      content: `The standards working group meets once a month for an hour, and it is where we shape the next version of the FDC3 standards. Joining the mailing list should get you an invite, or email [help@finos.org](mailto:help@finos.org).`,
     },
   ];
 
