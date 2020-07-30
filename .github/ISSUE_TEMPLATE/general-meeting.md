@@ -2,7 +2,7 @@
 name: General Meeting
 about: minutes for an FDC3 General Meeting
 title: ''
-labels: meeting, General meeting
+labels: General meeting
 assignees: ''
 
 ---
