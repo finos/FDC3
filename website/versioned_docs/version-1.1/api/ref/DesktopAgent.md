@@ -27,7 +27,7 @@ interface DesktopAgent {
   getOrCreateChannel(channelId: string): Promise<Channel>;
   getSystemChannels(): Promise<Array<Channel>>;
   joinChannel(channelId: string) : Promise<void>;
-  getCurrentChannel() : Promise<void>;
+  getCurrentChannel() : Promise<Channel>;
   leaveCurrentChannel() : Promise<void>;
 }
 ```
