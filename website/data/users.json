@@ -1,55 +1,69 @@
 [   {
         "caption": "Adaptive Financial Consulting",
-        "image": "/img/users/adaptive.webp",
+        "image": "/img/users/adaptive.png",
         "infoLink": "https://weareadaptive.com/",
         "pinned": true,
         "isMember": false
     },
     {
+        "caption": "Finsemble",
+        "image": "/img/users/Finsemble.png",
+        "infoLink": "https://www.finsemble.com/",
+        "pinned": true,
+        "isMember": true
+    },
+    {
         "caption": "FactSet",
-        "image": "/img/users/FactSet.webp",
+        "image": "/img/users/FactSet.png",
         "infoLink": "https://www.factset.com/",
         "pinned": true,
         "isMember": true
     },
     {
+        "caption": "Genesis Global",
+        "image": "/img/users/Genesis.png",
+        "infoLink": "https://genesis.global/",
+        "pinned": true,
+        "isMember": true
+    },
+    {
         "caption": "Glue42",
-        "image": "/img/users/GLUE42.webp",
+        "image": "/img/users/GLUE42.png",
         "infoLink": "https://glue42.com/",
         "pinned": true,
         "isMember": true
     },
     {
         "caption": "GreenKey",
-        "image": "/img/users/GreenKey.webp",
-        "infoLink": "https://www.greenkey.global/",
+        "image": "/img/users/GreenKey.png",
+        "infoLink": "https://greenkeytech.com/",
         "pinned": true,
         "isMember": true
     },
     {
         "caption": "IHS Markit",
-        "image": "/img/users/IHSMarkit.webp",
+        "image": "/img/users/IHSMarkit.png",
         "infoLink": "https://ihsmarkit.com/",
         "pinned": true,
         "isMember": true
     },
     {
         "caption": "JP Morgan",
-        "image": "/img/users/JPMorgan.webp",
+        "image": "/img/users/JPMorgan.png",
         "infoLink": "https://www.jpmorgan.com/",
         "pinned": true,
         "isMember": true
     },    
     {
         "caption": "OpenFin",
-        "image": "/img/users/Openfin.webp",
+        "image": "/img/users/Openfin.png",
         "infoLink": "https://openfin.co/",
         "pinned": true,
         "isMember": true
     },
     {
         "caption": "Refinitv",
-        "image": "/img/users/Refinitiv.webp",
+        "image": "/img/users/Refinitiv.png",
         "infoLink": "https://www.refinitiv.com/",
         "pinned": true,
         "isMember": true
@@ -60,5 +74,5 @@
         "infoLink": "https://www.scottlogic.com/",
         "pinned": true,
         "isMember": true
-    }
+    } 
 ]

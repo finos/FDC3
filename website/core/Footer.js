@@ -5,10 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+
+
+
+
 const React = require('react');
 
 class Footer extends React.Component {
-  docUrl(doc, language) {
+  docUrl(doc, language = '') {
     const baseUrl = this.props.config.baseUrl;
     const docsUrl = this.props.config.docsUrl;
     const defaultVersionShown = this.props.config.defaultVersionShown;
@@ -18,15 +22,19 @@ class Footer extends React.Component {
     return `${baseUrl}${docsPart}${versionPart}${langPart}${doc}`;
   }
 
-  pageUrl(doc, language) {
+  pageUrl(doc, language, path) {
     const baseUrl = this.props.config.baseUrl;
-    return baseUrl + (language ? `${language}/` : '') + doc;
+    const defaultVersionShown = this.props.config.defaultVersionShown;
+    const versionPart = `${defaultVersionShown ? `${defaultVersionShown}/` : ''}`;
+    const langPart = `${language ? `${language}/` : ''}`;
+    const pathPart = `${path ? `${path}/` : ''}`;
+    return `${baseUrl}${pathPart}${versionPart}${langPart}${doc}`;
   }
 
   render() {
     return (
       <footer className="nav-footer" id="footer">
-        <section className="sitemap">
+        <section className="sitemap">     
           <a href={this.props.config.baseUrl} className="nav-home">
             {this.props.config.footerIcon && (
               <img
@@ -37,19 +45,19 @@ class Footer extends React.Component {
           </a>
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl('fdc3-intro', this.props.language)}>
+            <a href={this.docUrl('fdc3-intro')}>
               Getting Started
             </a>
-            <a href={this.docUrl('why-fdc3', this.props.language)}>
+            <a href={this.docUrl('why-fdc3')}>
               Why FDC3
             </a>
-            <a href={this.docUrl('api/DesktopAgent', this.props.language)}>
+            <a href={this.docUrl('api/ref/DesktopAgent')}>
               API Reference
             </a>
-            <a href={this.pageUrl('appd-spec', this.props.language)}>
-              App Directory OpenAPI
+            <a href={this.pageUrl('app-directory','','schemas')}>
+              App Directory Schema
             </a>
-            <a href={this.docUrl('use-cases/use-cases-intro.html', this.props.language)}>
+            <a href={this.docUrl('use-cases/overview')}>
               Use Cases
             </a>
           </div>
@@ -60,6 +68,12 @@ class Footer extends React.Component {
               target="_blank"
               rel="noreferrer noopener">
               FINOS
+            </a>
+            <a
+              href="https://www.finos.org/privacy-policy"
+              target="_blank"
+              rel="noreferrer noopener">
+              FINOS Privacy Policy
             </a>
             <a
               href="https://finosfoundation.atlassian.net/wiki/spaces/FDC3"
@@ -114,11 +128,21 @@ class Footer extends React.Component {
             )}
           </div>
         </section>
+        <section className="finos finosBanner">
+          <a href="https://www.finos.org">
+            <img id="finosicon" src={`https://fdc3.finos.org/img/finos_wordmark.svg`} height='75px' alt="FINOS" title="FINOS"/>
+            <h2 id="proud">Proud member of the Fintech Open Source Foundation</h2>
+          </a>
+
+        </section>
         
         <section className="copyright">{this.props.config.copyright}</section>
+
       </footer>
     );
   }
 }
+
+
 
 module.exports = Footer;

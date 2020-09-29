@@ -30,7 +30,7 @@ For example:
 - entitlements
 - UX of application resolution
 
-Are all areas of functionality that any feature complete desktop agent would implement, but are not currently areas considered for standardization under FDC3.
+Are all areas of functionality that any feature-complete desktop agent would implement, but are not currently areas considered for standardization under FDC3.
 
 #### Inter-Agent Communication
 A goal of FDC3 standards is that applications running in different Desktop Agent contexts on the same desktop would be able to interoperate.  And that one Desktop Agent context would be able to discover and launch an application in another Desktop Application context.  
@@ -39,7 +39,7 @@ A goal of FDC3 standards is that applications running in different Desktop Agent
 
 Desktop Agent interop is supported by common standards for APIs for App discovery and launching.  So, an App in one Desktop Agent context would not need to know a different syntax to call an App in another Desktop Agent context.  
 
-The actual connection protocol between Desktop Agents is not currently in scope for FDC3 standards.  Given that there are a relatively small number of Desktop Agents, and that any given desktop will have a finite and relatively static number of Desktop Agents installed at any given time, the connectivity between different Agents can be adequetly handled for the time being on a case-by-case basis.  
+The actual connection protocol between Desktop Agents is not currently in scope for FDC3 standards.  Given that there are a relatively small number of Desktop Agents, and that any given desktop will have a finite and relatively static number of Desktop Agents installed at any given time, the connectivity between different Agents can be adequately handled for the time being on a case-by-case basis.  
 
 ### Application
 An application is any endpoint on the desktop that is:
@@ -69,12 +69,12 @@ Intents provide a way for an app to request functionality from another app and d
 Raising an Intent will return a Promise-type object that will resolve/reject based on a number of factors.
 
 ##### Resolve
-- Intent was resolved unambigiously and the recieving app was launched successfully.
-- Intent was ambigious, a resolution was chosen by the end user and the chosen application was launched succesfully.
+- Intent was resolved unambiguously and the receiving app was launched successfully.
+- Intent was ambiguous, a resolution was chosen by the end user and the chosen application was launched successfully.
 
 ##### Reject
 - An app matching the intent was not found.
-- A match was found, but the recieving app failed to launch.
+- A match was found, but the receiving app failed to launch.
 - The intent was ambiguous and the resolver experienced an error.
 
 ##### Resolution Object
@@ -107,7 +107,7 @@ catch (er){
 ```
 
 ##### Upgrading to a Remote API Connection
-There are a wide range of workflows where decoupled intents and/or context passing do not provide rich enough interactivity and applications are better off exposing proprietary APIs.  In these cases, an App can use the *source* propoerty on the resolution of an intent to connect directly to another App and from there, call remote APIs using the methods available in the Desktop Agent context for the App.  For example: 
+There are a wide range of workflows where decoupled intents and/or context passing do not provide rich enough interactivity and applications are better off exposing proprietary APIs.  In these cases, an App can use the *source* property on the resolution of an intent to connect directly to another App and from there, call remote APIs using the methods available in the Desktop Agent context for the App.  For example: 
 
 ```javascript
     let chart = await agent.raiseIntent('ViewChart');
@@ -118,14 +118,14 @@ There are a wide range of workflows where decoupled intents and/or context passi
 ![Upgrading Connection to Remote API](assets/api-3.png)
 
 ### Register an Intent
-Applications need to let the system know the Intents they can support.  Typically, this is done via registration with the App Directory.  It is also possible for Intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  While, dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
+Applications need to let the system know the Intents they can support.  Typically, this is done via registration with the App Directory.  It is also possible for Intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  While dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
 
 #### Compliance with Intent Standards
-Intents represent a contract with expected behavior if an app asserts that it supports the intent.  Where this contract is enforcable by schema (for example, return object types),the FDC3 API implementation should enforce compliance and return an error if the interface is not met.  
+Intents represent a contract with expected behavior if an app asserts that it supports the intent.  Where this contract is enforceable by schema (for example, return object types), the FDC3 API implementation should enforce compliance and return an error if the interface is not met.  
 
 It is expected that App Directories will also curate listed apps and ensure that they are complying with declared intents.
 
-Like FDC3 Context Data, the Intent schemas need to be versioned.  Desktop Agents will be responsible to declare which version of the Intent schema they are using.   Applications may also assert a specific version requirement when raising an Intent.  Version negotation may be supported by a given Desktop Agent.
+Like FDC3 Context Data, the Intent schemas need to be versioned.  Desktop Agents will be responsible to declare which version of the Intent schema they are using.   Applications may also assert a specific version requirement when raising an Intent.  Version negotiation may be supported by a given Desktop Agent.
 
 ### Send/broadcast context  
 On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features.  
@@ -134,4 +134,7 @@ On the financial desktop, applications often want to broadcast context to any nu
 Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (raising UI to pick the desired App for the intent) or by the app launching the intent - in which case the calling App will handle the resolution itself (using the findIntents API below) and then invoke an explicit Intent object.
 
 ## APIs
-The APIs are defined in TypeScript in the [src](/src), with documentation generated in the [docs](/docs) folder.
+The APIs are defined in TypeScript in [src], with the documentation generated in the [docs] folder.
+
+[src]: https://github.com/finos/FDC3/tree/master/src/api
+[docs]: https://github.com/finos/FDC3/tree/master/docs/api
