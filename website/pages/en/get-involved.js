@@ -22,14 +22,14 @@ function Help(props) {
   const supportLinks = [
     {
       content: `Most FDC3 collaboration takes place in the [FDC3 GitHub repository](https://github.com/finos/fdc3]), where you can raise [issues](https://github.com/finos/FDC3/issues), submit [pull requests](https://github.com/finos/FDC3/pulls) and view [meeting minutes](https://github.com/finos/FDC3/issues?q=label%3Ameeting+).`,
-      title: `Collaborate on GitHub`,
+      title: `Collaborate with the Community`,
     },
     {
-      title: `Learn more about the Standard`,
+      title: `Learn more about the standard`,
       content: `[Join the FDC3 list](mailto:fdc3+subscribe@finos.org) and check out the [archives](https://groups.google.com/a/finos.org/forum/#!forum/fdc3) to stay up to date with project. You can also join the quarterly [FDC3 general meeting](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22): you can find meeting details in the [FINOS Project calendar](https://calendar.google.com/calendar/u/0/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig@group.calendar.google.com)`,
     },
     {
-      title: `Participate in the Standards ideation` ,
+      title: `Participate in the standard ideation` ,
       content: `The [Standards working group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) meets once a month to shape the next version of the FDC3 standard: you can find meeting details in the [FINOS Project calendar](https://calendar.google.com/calendar/u/0/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig@group.calendar.google.com). If you'd like to formally enroll as a voting Standard participant, see please follow [these instructions](https://github.com/finos/fdc3#participate-in-the-standard-process).`,
     },
     {
