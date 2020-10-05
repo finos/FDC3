@@ -43,7 +43,7 @@ https://fdc3.finos.org/schemas/next/portfolio.schema.json
 ## Example
 
 ```js
-const position = {
+const portfolio = {
     type: 'fdc3.portfolio',
     positions: [
         {
