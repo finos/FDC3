@@ -3,6 +3,8 @@
  * Copyright 2019 FINOS FDC3 contributors - see NOTICE file
  */
 
+import { DesktopAgent } from './api/DesktopAgent';
+
 export * from './api/AppIntent';
 export * from './api/AppMetadata';
 export * from './api/Channel';
@@ -14,8 +16,6 @@ export * from './api/IntentMetadata';
 export * from './api/IntentResolution';
 export * from './api/Listener';
 export * from './context/ContextTypes';
-
-import { DesktopAgent } from './api/DesktopAgent';
 
 declare global {
   interface Window {
