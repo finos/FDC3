@@ -13,8 +13,8 @@
  * var dataR = intentR.data;
  * ```
  */
-interface IntentResolution {
-    source: string;
-    data?: object;
-    version: string;
+export interface IntentResolution {
+  readonly source: string;
+  readonly data?: object;
+  readonly version: string;
 }

@@ -9,5 +9,5 @@
     "instrument": { "$ref": "instrument.schema.json#/" },
     "holding": { "type": "number", "minimum": 0 }
   },
-  "required": ["instrument","holding"]
+  "required": ["instrument", "holding"]
 }
