@@ -6,23 +6,22 @@
 /**
  * App definition as provided by the application directory
  */
-interface AppMetadata {
+export interface AppMetadata {
+  /** The unique app name that can be used with the open and raiseIntent calls. */
+  readonly name: string;
 
-    /** The unique app name that can be used with the open and raiseIntent calls. */
-    name: string;
-  
-    /** A more user-friendly application title that can be used to render UI elements  */
-    title?: string;
-  
-    /**  A tooltip for the application that can be used to render UI elements */
-    tooltip?: string;
-  
-    /** A longer, multi-paragraph description for the application that could include markup */
-    description?: string;
-  
-    /** A list of icon URLs for the application that can be used to render UI elements */
-    icons?: Array<string>;
-  
-    /** A list of image URLs for the application that can be used to render UI elements */
-    images?: Array<string>;
-}  
+  /** A more user-friendly application title that can be used to render UI elements  */
+  readonly title?: string;
+
+  /**  A tooltip for the application that can be used to render UI elements */
+  readonly tooltip?: string;
+
+  /** A longer, multi-paragraph description for the application that could include markup */
+  readonly description?: string;
+
+  /** A list of icon URLs for the application that can be used to render UI elements */
+  readonly icons?: Array<string>;
+
+  /** A list of image URLs for the application that can be used to render UI elements */
+  readonly images?: Array<string>;
+}
