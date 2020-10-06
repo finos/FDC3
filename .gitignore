@@ -1,6 +1,7 @@
+*.log
 .DS_Store
-
 node_modules
+dist
 
 lib/core/metadata.js
 lib/core/MetadataBlog.js
