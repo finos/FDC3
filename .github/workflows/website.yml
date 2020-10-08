@@ -28,10 +28,11 @@ jobs:
         run: yarn build
         working-directory: website
 
-      # - name: Publish
-      #   run: |
-      #     git config --global user.name "${GH_NAME}"
-      #     git config --global user.email "${GH_EMAIL}"
-      #     echo "machine github.com login ${GH_NAME} password ${GH_TOKEN}" > ~/.netrc
-      #     cd website && yarn install && GIT_USER="${GH_NAME}" yarn run publish-gh-pages
-      #   working-directory: website
+      - name: Publish
+        if: (github.event_name == 'push') && (github.ref == 'refs/heads/master')
+        run: |
+          git config --global user.name "${GH_NAME}"
+          git config --global user.email "${GH_EMAIL}"
+          echo "machine github.com login ${GH_NAME} password ${GH_TOKEN}" > ~/.netrc
+          GIT_USER="${GH_NAME}" yarn run publish-gh-pages
+        working-directory: website
