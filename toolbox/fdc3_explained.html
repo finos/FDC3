@@ -51,10 +51,15 @@ function enablePage(){
 	console.log('FDC3 is available');
 	
 	<!-- Special case for Openfin to read App Name -->
-	if(window.fin){
-		fin.desktop.Application.getCurrent().getInfo((info) => {document.getElementById('providerDetails').innerHTML = 'Available - ' + info.manifest.startup_app.name})
+	if (window.FSBL){
+    		window.FSBL.getFSBLInfo().then((info) => {
+        		document.getElementById('providerDetails').innerHTML = 'Available - Finsemble ' + info.FSBLVersion;
+    		});
+	} else if (window.fin){
+    		fin.desktop.Application.getCurrent().getInfo((info) => {
+        		document.getElementById('providerDetails').innerHTML = 'Available - ' + info.manifest.startup_app.name});
 	} else {
-		document.getElementById('providerDetails').innerHTML = 'Available - Not specified';
+    		document.getElementById('providerDetails').innerHTML = 'Available - Not specified';
 	}
 	document.getElementById('directoryDetails').innerHTML = 'TBD';
 	
