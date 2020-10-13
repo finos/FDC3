@@ -1,0 +1,82 @@
+name: docusaurus-website-build
+
+# Only trigger on:
+# - master branch
+# - PR or Pull Request event types
+# - Docusaurus files: this file, docs/** and website/**
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/docusaurus.yml'
+      - 'docs/**'
+      - 'website/**'
+  pull_request:
+    paths:
+      - '.github/workflows/docusaurus.yml'
+      - 'docs/**'
+      - 'website/**'
+
+env:
+# Used by docusaurus publish-site command and comment-on-pr action
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  REPO_NAME: ${{ github.event.repository.name }}
+  PATCH_SCRIPT_URL: https://raw.githubusercontent.com/finos/open-developer-platform/master/scripts/patch-docusaurus-config.sh
+  CONTRIBUTE_SCRIPT_URL: https://raw.githubusercontent.com/finos/open-developer-platform/master/scripts/build-contribute-page.sh
+
+jobs:
+  website-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v1
+    - name: Configure Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+    - name: Install website dependencies
+      run: yarn --cwd website install
+    - name: Patch forked version
+      run: |
+        # Extract GitHub org/user and patch siteConfig.js only if not "finos"
+        REPO="${{ github.repository }}"
+        REPO_ORG=${REPO%"/"*}
+        if [ "$REPO_ORG" != "finos" ]
+        then echo "Repo organization is '$REPO_ORG', patching docusaurus configuration to work on a forked repo" ; curl ${{ env.PATCH_SCRIPT_URL }} |  bash -s -- ${{ env.REPO_NAME }} $REPO_ORG
+        else echo "Skipping patching, as this is the FINOS Organization"
+        fi
+    - name: Build Contributing page
+      run: |
+        curl ${{ env.CONTRIBUTE_SCRIPT_URL }} |  bash -s
+    - name: Build website
+      run: yarn --cwd website build
+    - name: Publish website
+      run: |
+        # Extract GitHub org/user
+        REPO="${{ github.repository }}"
+        GIT_USERNAME=${REPO%/*}
+        # Set git user to finos-admin, if it's a push to a finos repo
+        if [ "$GIT_USERNAME" == "finos" ] && [ "${{github.event_name }}" == "push" ]
+        then GIT_USERNAME="finos-admin"
+        elif [ "$GIT_USERNAME" == "finos" ] && [ "${{github.event_name }}" == "pull_request" ]
+        then echo "Skipping publish, as this is a PR, not a Push event" ; exit 0
+        fi
+        # Configure git client
+        echo "Git repo - $REPO"
+        echo "Git user - $GIT_USERNAME"
+        echo "Event name - ${{github.event_name }}"
+        git config --global user.email "$GIT_USERNAME@users.noreply.github.com"
+        git config --global user.name "$GIT_USERNAME"
+        echo "machine github.com login $GIT_USERNAME password $GITHUB_TOKEN" > ~/.netrc
+        # Run docusaurus-publish
+        GIT_USER=$GIT_USERNAME yarn --cwd website publish-gh-pages
+    # Disabling for now - see https://github.com/finos/FDC3/pull/254#pullrequestreview-506250562
+    # - name: Create comment
+    #   if: github.event_name == 'pull_request'
+    #   uses: peter-evans/create-or-update-comment@v1
+    #   with:
+    #     token: ${{ secrets.GITHUB_TOKEN }}
+    #     issue-number: ${{ github.event.number }}
+    #     body: | 
+    #       Website [preview is available](https://${{ github.actor }}.github.io/${{ env.REPO_NAME }})
