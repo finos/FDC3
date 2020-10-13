@@ -1,5 +1,5 @@
-[![npm-package-build](https://github.com/finos/FDC3/workflows/npm-package-build/badge.svg)](https://github.com/finos/FDC3/actions?query=workflow%3Anpm-package-build)
-[![docusaurus-website-build](https://github.com/finos/FDC3/workflows/docusaurus-website-build/badge.svg)](https://github.com/finos/FDC3/actions?query=workflow%3Adocusaurus-website-build)
+[![npm-build](https://github.com/finos/FDC3/workflows/npm-build/badge.svg)](https://github.com/finos/FDC3/actions?query=workflow%3Anpm-build)
+[![website-build](https://github.com/finos/FDC3/workflows/website-build/badge.svg)](https://github.com/finos/FDC3/actions?query=workflow%3Awebsite-build)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/finos/fdc3)](https://github.com/finos/fdc3/releases/latest)
 [![npm](https://img.shields.io/npm/v/@finos/fdc3)](https://www.npmjs.com/package/@finos/fdc3)
 [![FINOS - Released](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-released.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Released)
