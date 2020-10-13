@@ -47,6 +47,10 @@
       "limit": "10 KB"
     }
   ],
+  "resolutions": {
+    "node-fetch": "^2.6.1",
+    "yargs-parser": "^13.1.2"
+  },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.6.0",
     "husky": "^4.3.0",
