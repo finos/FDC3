@@ -17,14 +17,15 @@
     "postversion:schemas": "replace-in-files --string=/schemas/next --replacement=/schemas/${VERSION} static/schemas/${VERSION}/*.schema.json",
     "postversion:appd": "replace-in-files --string='version: next' --replacement='version: '${VERSION} static/schemas/${VERSION}/app-directory.yaml",
     "postversion:delete": "rimraf static/schemas/${VERSION} && rimraf pages/schemas/${VERSION}",
-    "postversion": "defaultVersionShown: '1.1' replace-json-property sitConfig.js.json"
+    "postversion": "node ./utils/swapVersions.js && replace-json-property ./data/defaultVersion.json defaultVersionShown ${VERSION}"
   },
   "devDependencies": {
-    "cpy-cli": "3.1.0",
+    "cpy-cli": "3.1.1",
     "docusaurus": "1.14.4",
     "docusaurus-delete-version": "0.1.1",
-    "redoc-cli": "0.9.7",
-    "replace-in-files-cli": "0.3.1",
+    "redoc-cli": "0.9.12",
+    "replace-in-files-cli": "1.0.0",
+    "replace-json-property": "1.6.1",
     "rimraf": "3.0.2"
   }
 }
