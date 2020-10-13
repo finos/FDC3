@@ -1,4 +1,4 @@
-name: npm-package-release
+name: npm-release
 on:
   release:
     types: 
