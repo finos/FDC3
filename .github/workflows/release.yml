@@ -2,7 +2,7 @@ name: npm-package-release
 on:
   release:
     types: 
-      - created
+      - published
 
 jobs:
   test:
