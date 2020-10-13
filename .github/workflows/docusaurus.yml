@@ -1,4 +1,4 @@
-name: docusaurus-website-build
+name: website-build
 
 # Only trigger on:
 # - master branch

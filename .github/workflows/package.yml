@@ -1,4 +1,4 @@
-name: npm-package-build
+name: npm-build
 
 # Only trigger on:
 # - master branch
