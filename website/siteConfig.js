@@ -12,7 +12,10 @@
 
 const users = require('./data/users.json');
 
+const defaultVersion = require('./data/defaultVersion.json')
+
 const siteConfig = {
+  ...defaultVersion,
   title: 'FDC3', // Title for your website. THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
   tagline: 'Open standards for the financial desktop', //THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
   url: 'https://fdc3.finos.org',
@@ -30,8 +33,6 @@ const siteConfig = {
     {doc: 'why-fdc3', label: 'Why FDC3'}
    //, {blog: true, label: 'News'}
   ],
-
-  defaultVersionShown: '1.1',
 
   twitterUsername: 'FDC3_',
 
@@ -101,4 +102,4 @@ const siteConfig = {
   gaTrackingId: 'UA-89349362-8'
 };
 
-module.exports = siteConfig;
+module.exports = siteConfig
