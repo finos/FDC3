@@ -16,6 +16,8 @@ export * from './api/IntentMetadata';
 export * from './api/IntentResolution';
 export * from './api/Listener';
 export * from './context/ContextTypes';
+export * from './context/ContextType';
+export * from './intents/Intents';
 
 declare global {
   interface Window {
