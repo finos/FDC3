@@ -26,7 +26,9 @@ interface DesktopAgent {
   getOrCreateChannel(channelId: string): Promise<Channel>;
   getSystemChannels(): Promise<Array<Channel>>;
   joinChannel(channelId: string) : Promise<void>;
+  leaveChannel(channelId: string): Promise<void>;
   getCurrentChannel() : Promise<Channel>;
+  getCurrentChannels(): Promise<Array<Channel>>;
   leaveCurrentChannel() : Promise<void>;
 }
 ```
@@ -89,7 +91,9 @@ const listener = fdc3.addIntentListener('StartChat', context => {
 broadcast(context: Context): void;
 ```
 
-Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
+Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel`s the app is joined to. 
+If the app is not currently joined to any channels, calling `fdc3.broadcast` will have no effect. 
+Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
 
 #### Example
 ```js
@@ -185,7 +189,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 getCurrentChannel() : Promise<Channel>;
 ```
 
-Returns the `Channel` object for the current channel membership.  Returns `null` if the app is not joined to a channel. 
+Returns the `Channel` object for the last joined channel.  Returns `null` if the app is not joined to any channels. Exists for backward compatibility. See [`getCurrentChannels`](#getCurrentChannels)
 
 
 #### Examples
@@ -198,6 +202,25 @@ let current = await fdc3.getCurrentChannel();
 #### See also
 * [`Channel`](Channel)
 
+
+### `getCurrentChannels`
+
+```ts
+getCurrentChannels() : Promise<Array<Channel>>;
+```
+
+Returns an array of `Channel`s that the Desktop Agent has joined.  Returns `null` if the app is not joined to any channels.
+
+
+#### Examples
+
+```js
+//get the current channel membership
+let currentChannels = await fdc3.getCurrentChannels();
+```
+
+#### See also
+* [`Channel`](Channel)
 
 
 ### `getOrCreateChannel`
@@ -250,7 +273,6 @@ joinChannel(channelId: string) : Promise<void>;
 
 Joins the app to the specified channel.
 If an app is joined to a channel, all _fdc3.broadcast_ calls will go to the channel, and all listeners assigned via _fdc3.addContextListener_ will listen on the channel.
-An app can only be joined to one channel at a time.
 Rejects with error if the channel is unavailable or the join request is denied.
  `Error` with a string from the [`ChannelError`](ChannelError) enumeration.
 
@@ -270,6 +292,28 @@ fdc3.joinChannel(selectedChannel.id);
 * [`getSystemChannels`](#getSystemChannels)
 
 
+### `leaveChannel`
+
+```ts
+leaveChannel(channelId: string) : Promise<void>;
+```
+
+Leaves the specified channel. Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be in a no-op when the app is not on any channels.
+Rejects with error if the channel is unavailable or the leave request is denied.
+ `Error` with a string from the [`ChannelError`](ChannelError) enumeration.
+
+#### Examples
+
+```js
+// get all system channels
+const channels = await fdc3.getSystemChannels();
+
+// create UI to pick from the system channels
+
+// leave the channel on deselection
+fdc3.leaveChannel(selectedChannel.id);
+
+```
 
 ### `leaveCurrentChannel`
 
@@ -277,7 +321,7 @@ fdc3.joinChannel(selectedChannel.id);
 leaveCurrentChannel() : Promise<void>;
 ```
 
-Removes the app from any channel membership.  Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be in a no-op when the app is not on a channel. 
+Removes the app from the last joined channel. Exists for backward compatibility. See [`leaveChannel`](#leaveChannel).
 
 
 #### Examples
