@@ -1,13 +1,30 @@
-import { addContextListener, addIntentListener, broadcast, ContextHandler, ContextTypes, DesktopAgent, findIntent, findIntentsByContext, getCurrentChannel, getOrCreateChannel, getSystemChannels, joinChannel, open, raiseIntent } from '../src';
+import {
+  addContextListener,
+  addIntentListener,
+  broadcast,
+  ContextHandler,
+  ContextTypes,
+  DesktopAgent,
+  findIntent,
+  findIntentsByContext,
+  getCurrentChannel,
+  getOrCreateChannel,
+  getSystemChannels,
+  joinChannel,
+  open,
+  raiseIntent,
+} from '../src';
 import * as methods from '../src/methods';
 
 describe('test ES6 module', () => {
   const mocks: Map<string, jest.Mock<any, any>> = new Map();
-  const getMock: (name: string) => jest.Mock<any, any> = (name) => {
+  const getMock: (name: string) => jest.Mock<any, any> = name => {
     const mock = mocks.get(name);
-    if (!mock) { throw new Error('No mock named ' + name); }
+    if (!mock) {
+      throw new Error('No mock named ' + name);
+    }
     return mock;
-  }
+  };
 
   beforeAll(() => {
     const fdc3 = {};
@@ -22,8 +39,11 @@ describe('test ES6 module', () => {
   });
 
   it('open should delegate to window.fdc3.open', () => {
-    const name = "MyApp";
-    const context = { type: ContextTypes.Contact, id: { email: 'test@example.com' } };
+    const name = 'MyApp';
+    const context = {
+      type: ContextTypes.Contact,
+      id: { email: 'test@example.com' },
+    };
 
     open(name, context);
 
@@ -33,10 +53,13 @@ describe('test ES6 module', () => {
   });
 
   it('findIntent should delegate to window.fdc3.findIntent', () => {
-    const intent = "ViewChat";
-    const context = { type: ContextTypes.Contact, id: { email: 'test@example.com' } };
+    const intent = 'ViewChat';
+    const context = {
+      type: ContextTypes.Contact,
+      id: { email: 'test@example.com' },
+    };
 
-    findIntent(intent, context)
+    findIntent(intent, context);
 
     const mock = getMock('findIntent');
     expect(mock.mock.calls.length).toBe(1);
@@ -44,9 +67,12 @@ describe('test ES6 module', () => {
   });
 
   it('findIntentsByContext should delegate to window.fdc3.findIntentsByContext', () => {
-    const context = { type: ContextTypes.Contact, id: { email: 'test@example.com' } };
+    const context = {
+      type: ContextTypes.Contact,
+      id: { email: 'test@example.com' },
+    };
 
-    findIntentsByContext(context)
+    findIntentsByContext(context);
 
     const mock = getMock('findIntentsByContext');
     expect(mock.mock.calls.length).toBe(1);
@@ -83,7 +109,7 @@ describe('test ES6 module', () => {
 
   it('addIntentListener should delegate to window.fdc3.addIntentListener', () => {
     const intent = 'ViewChat';
-    const handler: ContextHandler = _ => { };
+    const handler: ContextHandler = _ => {};
 
     addIntentListener(intent, handler);
 
@@ -94,8 +120,8 @@ describe('test ES6 module', () => {
 
   it('addContextListener should delegate to window.fdc3.addContextListener', () => {
     const type = 'fdc3.instrument';
-    const handler1: ContextHandler = _ => { };
-    const handler2: ContextHandler = _ => { };
+    const handler1: ContextHandler = _ => {};
+    const handler2: ContextHandler = _ => {};
 
     addContextListener(type, handler1);
     addContextListener(handler2);
