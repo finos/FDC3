@@ -122,6 +122,14 @@ export interface DesktopAgent {
   ): Promise<IntentResolution>;
 
   /**
+   * Raises a context to the desktop agent to resolve with one of the possible Intents for that context.
+   * ```javascript
+   * await fdc3.raiseContext(context);
+   * ```
+   */
+  raiseContext(context: Context): Promise<IntentResolution>;
+
+  /**
    * Adds a listener for incoming Intents from the Agent.
    */
   addIntentListener(intent: string, handler: ContextHandler): Listener;

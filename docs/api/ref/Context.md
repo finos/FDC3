@@ -27,6 +27,7 @@ The `type` property of context objects is important for certain FDC3 operations,
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+* [`DesktopAgent.raiseContext`](DesktopAgent#raisecontext)
 * [`Channel.broadcast`](Channel#broadcast)
 * [`Channel.getCurrentContext`](Cahnnel#getCurrentContext)
 * [`Channel.addContextListener`](Cahnnel#addContextListener)
