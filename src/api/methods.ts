@@ -5,7 +5,7 @@ import {
   ContextHandler,
   IntentResolution,
   Listener,
-} from '.';
+} from '..';
 
 export const open: (name: string, context?: Context) => Promise<void> = (
   name,

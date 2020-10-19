@@ -14,7 +14,7 @@ import {
   open,
   raiseIntent,
 } from '../src';
-import * as methods from '../src/methods';
+import * as methods from '../src/api/methods';
 
 describe('test ES6 module', () => {
   const mocks: Map<string, jest.Mock<any, any>> = new Map();
