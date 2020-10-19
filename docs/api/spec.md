@@ -166,9 +166,9 @@ There are two types of channels, which are functionally identical, but have diff
  
 
 ### Joining Channels
-Apps can join channels.  An app can only be joined to one channel at a time.  When an app joins a channel it will automatically recieve the current context for that channel.
+Apps can join channels. When an app joins a channel, it will automatically receive the current context for that channel.
 
-When an app is joined to a channel, calls to fdc3.broadcast and listeners added through fdc3.addContextListener will be routed to that channel.  If an app is not joined to a channel these methods will be no-ops, but apps can still choose to listen and broadcast to specific channels via the methods on the `Channel` class.  
+When an app is joined to a channel, calls to fdc3.broadcast and listeners added through fdc3.addContextListener will be routed to that channel.  If an app is not joined to any channels these methods will be no-ops, but apps can still choose to listen and broadcast to specific channels via the methods on the `Channel` class.  
 
 It is possible that a call to join a channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.  
 
@@ -192,11 +192,11 @@ const context = await globalChannel.getCurrentContext("fdc3.instrument");
 An app can explicitly receive context events on the `global` (or any other) channel, regardless of what it is currently joined to.
 
 ```js
-// check for current fdc3 channel
-let joinedChannel = await fdc3.getCurrentChannel()
-//current channel is null, as the app is not currently joined to a channel
+// check for current fdc3 channels
+let joinedChannels = await fdc3.getCurrentChannels()
+// joinedChannels is null, as the app is not currently joined to any channels
 
-const globalChannel = await fdc3.getSystemChannels.filter(c => c.id === "global")
+const globalChannel = (await fdc3.getSystemChannels).filter(c => c.id === "global")
 const globalContext = await globalChannel.getCurrentContext("fdc3.instrument")
 // context is instrument AAPL on the global channel
 
@@ -223,6 +223,16 @@ To join a channel. one calls
 
 ```js
 fdc3.joinChannel(redChannel.id);
+```
+
+Calling _fdc3.broadcast_ will now route context to the joined channel.
+
+#### Leaving channels
+
+To leave a channel. one calls
+
+```js
+fdc3.leaveChannel(redChannel.id);
 ```
 
 Calling _fdc3.broadcast_ will now route context to the joined channel.

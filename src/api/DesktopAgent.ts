@@ -143,11 +143,17 @@ export interface DesktopAgent {
 
   /**
    * Joins the app to the specified channel.
-   * An app can only be joined to one channel at a time.
    * Rejects with error if the channel is unavailable or the join request is denied.
    * `Error` with a string from the `ChannelError` enumeration.
    */
   joinChannel(channelId: string): Promise<void>;
+
+  /**
+   * Leaves the specified channel.
+   * Rejects with error if the channel is unavailable or the leave request is denied.
+   * `Error` with a string from the `ChannelError` enumeration.
+   */
+  leaveChannel(channelId: string): Promise<void>;
 
   /**
    * Returns a channel with the given identity. Either stands up a new channel or returns an existing channel.
@@ -165,4 +171,12 @@ export interface DesktopAgent {
    * Returns `null` if the app is not joined to a channel.
    */
   getCurrentChannel(): Promise<Channel>;
+
+  /**
+   * Returns an Array of `Channel` objects for the current channel membership.
+   *
+   * Returns `null` if the app is not joined to any channels.
+   */
+  getCurrentChannels(): Promise<Array<Channel>>;
+
 }
