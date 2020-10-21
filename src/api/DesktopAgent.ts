@@ -9,6 +9,7 @@ import { ContextHandler } from './ContextHandler';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
+import { AppMetadata } from './AppMetadata';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -115,12 +116,14 @@ export interface DesktopAgent {
    * const appIntent = await fdc3.findIntent("StartChat", context);
    * //use the returned AppIntent object to target one of the returned chat apps with the context
    * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
+   * //or use one of the AppMetadata objects returned in the AppIntent object's 'apps' array
+   * await fdc3.raiseIntent("StartChat", context, appMetadata);
    * ```
    */
   raiseIntent(
     intent: string,
     context: Context,
-    target?: string
+    target?: string | AppMetadata
   ): Promise<IntentResolution>;
 
   /**
