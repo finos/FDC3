@@ -22,7 +22,7 @@ import { Context } from '../context/ContextTypes';
 
 export interface DesktopAgent {
   /**
-   * Launches an app by name.
+   * Launches an app by target, which can be optionally a string like a name, or an AppMetadata object.
    *
    * If a Context object is passed in, this object will be provided to the opened application via a contextListener.
    * The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
@@ -30,13 +30,15 @@ export interface DesktopAgent {
    * If opening errors, it returns an `Error` with a string from the `OpenError` enumeration.
    *
    *  ```javascript
-   *     //no context
+   *     //no context and string as target
    *     agent.open('myApp');
+   *     //no context and AppMetadata object as target
+   *     agent.open({name: 'myApp', title: 'The title for the application myApp.', description: '...'});
    *     //with context
    *     agent.open('myApp', context);
    * ```
    */
-  open(name: string, context?: Context): Promise<void>;
+  open(target: AppMetadata | string, context?: Context): Promise<void>;
 
   /**
    * Find out more information about a particular intent by passing its name, and optionally its context.
