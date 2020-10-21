@@ -9,6 +9,8 @@ hide_title: true
 ```ts
 interface AppMetadata {
   name: string;
+  appId?: string;
+  version?: string;
   title?: string;
   tooltip?: string;
   description?: string;
@@ -23,6 +25,8 @@ It always includes at least a `name` property, which can be used with [`open`](D
 
 Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu.
 This includes a title, description, tooltip and icon and image URLs.
+
+In situations where a desktop agent connects to multiple app directories or multiple versions of the same app exists in a single app directory, it may be neccessary to specify appId and version to target applications that share the same name. 
 
 #### See also
 * [`AppIntent.apps`](AppIntent)
