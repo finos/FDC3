@@ -10,6 +10,12 @@ export interface AppMetadata {
   /** The unique app name that can be used with the open and raiseIntent calls. */
   readonly name: string;
 
+  /** The unique application identifier located within a specific application directory instance.  */
+  readonly appId?: string;
+
+  /** The Version of the application. */
+  readonly version?: string;
+
   /** A more user-friendly application title that can be used to render UI elements  */
   readonly title?: string;
 
