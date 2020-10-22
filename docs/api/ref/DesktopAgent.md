@@ -209,7 +209,7 @@ let current = await fdc3.getCurrentChannel();
 getCurrentChannels() : Promise<Array<Channel>>;
 ```
 
-Returns an array of `Channel`s that the Desktop Agent has joined.  Returns `null` if the app is not joined to any channels.
+Returns an array of `Channel`s that the Desktop Agent has joined.  Returns an empty array if the app is not joined to any channels.
 
 
 #### Examples

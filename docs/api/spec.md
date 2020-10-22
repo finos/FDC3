@@ -194,15 +194,15 @@ An app can explicitly receive context events on the `global` (or any other) chan
 ```js
 // check for current fdc3 channels
 let joinedChannels = await fdc3.getCurrentChannels()
-// joinedChannels is null, as the app is not currently joined to any channels
+// joinedChannels is an empty array, as the app is not currently joined to any channels
 
 const globalChannel = (await fdc3.getSystemChannels).filter(c => c.id === "global")
 const globalContext = await globalChannel.getCurrentContext("fdc3.instrument")
 // context is instrument AAPL on the global channel
 
 fdc3.joinChannel('global')
-joinedChannel = await fdc3.getCurrentChannel()
-//current channel is now the 'global' channel
+joinedChannels = await fdc3.getCurrentChannels()
+//current channels is now the array ['global']
 
 ```
 
@@ -219,23 +219,21 @@ const redChannel = allChannels.find(c => c.id === 'red');
 ```
 #### Joining channels
 
-To join a channel. one calls
+To join a channel, one calls:
 
 ```js
 fdc3.joinChannel(redChannel.id);
 ```
 
-Calling _fdc3.broadcast_ will now route context to the joined channel.
+Calling _fdc3.broadcast_ will now route context to this channel and any other previously joined channels.
 
 #### Leaving channels
 
-To leave a channel. one calls
+To leave a channel, one calls:
 
 ```js
 fdc3.leaveChannel(redChannel.id);
 ```
-
-Calling _fdc3.broadcast_ will now route context to the joined channel.
 
 #### App Channels
 
