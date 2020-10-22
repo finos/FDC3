@@ -178,5 +178,4 @@ export interface DesktopAgent {
    * Returns `null` if the app is not joined to any channels.
    */
   getCurrentChannels(): Promise<Array<Channel>>;
-
 }
