@@ -16,8 +16,7 @@
     "postversion:docs": "replace-in-files --string=/schemas/next --replacement=/schemas/${VERSION} versioned_docs/version-${VERSION}/'**/*.md'",
     "postversion:schemas": "replace-in-files --string=/schemas/next --replacement=/schemas/${VERSION} static/schemas/${VERSION}/*.schema.json",
     "postversion:appd": "replace-in-files --string='version: next' --replacement='version: '${VERSION} static/schemas/${VERSION}/app-directory.yaml",
-    "postversion:delete": "rimraf static/schemas/${VERSION} && rimraf pages/schemas/${VERSION}",
-    "postversion": "node ./utils/swapVersions.js && replace-json-property ./data/defaultVersion.json defaultVersionShown ${VERSION}"
+    "postversion:delete": "rimraf static/schemas/${VERSION} && rimraf pages/schemas/${VERSION}"
   },
   "devDependencies": {
     "cpy-cli": "3.1.1",
