@@ -6,7 +6,7 @@ This Project Charter establishes the terms under which this FINOS Project will o
 
 1.1.    Purposes. The purposes of this Project are: To develop specific protocols and taxonomies to advance the ability of desktop applications in financial workflows to interoperate in a plug-and-play fashion, without prior bi-lateral agreements.
 
-1.2.    Initial Steering Members. The initial Steering Members of this Project are: OpenFin, J.P. Morgan.
+1.2.    Initial Steering Members. The initial Steering Members of this Project are: OpenFin, J.P. Morgan, FactSet, Citadel, Refinitiv, IHS Markit.
 
 1.3.   Project Initiation.  The Project will become effective upon ratification of this Charter by FINOS and the Joining of 2 Steering Members.  New parties may Join the Project upon Approval of the Steering Members.
 
