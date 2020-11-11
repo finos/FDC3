@@ -3,6 +3,8 @@
  * Copyright 2019 FINOS FDC3 contributors - see NOTICE file
  */
 
+import { Target } from './TargetType';
+
 /**
  * IntentResolution provides a standard format for data returned upon resolving an intent.
  * ```javascript
@@ -14,7 +16,7 @@
  * ```
  */
 export interface IntentResolution {
-  readonly source: string;
+  readonly source: Target;
   readonly data?: object;
   readonly version: string;
 }
