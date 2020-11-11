@@ -39,7 +39,7 @@ export interface DesktopAgent {
    *     agent.open('myApp', context);
    * ```
    */
-  open(target: string | AppMetadata, context?: Context): Promise<void>;
+  open(target: Target, context?: Context): Promise<void>;
 
   /**
    * Find out more information about a particular intent by passing its name, and optionally its context.
