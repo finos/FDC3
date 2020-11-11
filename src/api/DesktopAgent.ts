@@ -9,6 +9,7 @@ import { ContextHandler } from './ContextHandler';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
+import { Target } from './TargetType';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -118,7 +119,7 @@ export interface DesktopAgent {
   raiseIntent(
     intent: string,
     context: Context,
-    target?: string
+    target?: Target
   ): Promise<IntentResolution>;
 
   /**
