@@ -10,7 +10,7 @@ export interface AppMetadata {
   /** The unique app name that can be used with the open and raiseIntent calls. */
   readonly name: string;
 
-  /** The unique application identifier located within a specific application directory instance.  */
+  /** The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root' */
   readonly appId?: string;
 
   /** The Version of the application. */
