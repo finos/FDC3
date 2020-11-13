@@ -9,6 +9,7 @@ import { ContextHandler } from './ContextHandler';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
+import { AppMetadata } from './AppMetadata';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -22,7 +23,7 @@ import { Context } from '../context/ContextTypes';
 
 export interface DesktopAgent {
   /**
-   * Launches an app by name.
+   * Launches an app by target, which can be optionally a string like a name, or an AppMetadata object.
    *
    * If a Context object is passed in, this object will be provided to the opened application via a contextListener.
    * The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
@@ -30,13 +31,15 @@ export interface DesktopAgent {
    * If opening errors, it returns an `Error` with a string from the `OpenError` enumeration.
    *
    *  ```javascript
-   *     //no context
+   *     //no context and string as target
    *     agent.open('myApp');
+   *     //no context and AppMetadata object as target
+   *     agent.open({name: 'myApp', title: 'The title for the application myApp.', description: '...'});
    *     //with context
    *     agent.open('myApp', context);
    * ```
    */
-  open(name: string, context?: Context): Promise<void>;
+  open(target: string | AppMetadata, context?: Context): Promise<void>;
 
   /**
    * Find out more information about a particular intent by passing its name, and optionally its context.
@@ -113,12 +116,14 @@ export interface DesktopAgent {
    * const appIntent = await fdc3.findIntent("StartChat", context);
    * //use the returned AppIntent object to target one of the returned chat apps with the context
    * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
+   * //or use one of the AppMetadata objects returned in the AppIntent object's 'apps' array
+   * await fdc3.raiseIntent("StartChat", context, appMetadata);
    * ```
    */
   raiseIntent(
     intent: string,
     context: Context,
-    target?: string
+    target?: string | AppMetadata
   ): Promise<IntentResolution>;
 
   /**
