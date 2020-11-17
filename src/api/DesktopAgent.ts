@@ -9,6 +9,7 @@ import { ContextHandler } from './ContextHandler';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
+import { AppMetadata } from './AppMetadata';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -124,10 +125,10 @@ export interface DesktopAgent {
   /**
    * Raises a context to the desktop agent to resolve with one of the possible Intents for that context.
    * ```javascript
-   * await fdc3.raiseContext(context);
+   * await fdc3.raiseIntentForContext(context);
    * ```
    */
-  raiseContext(context: Context): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, target?: string | AppMetadata): Promise<IntentResolution>;
 
   /**
    * Adds a listener for incoming Intents from the Agent.
