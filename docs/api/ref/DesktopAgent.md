@@ -20,7 +20,7 @@ interface DesktopAgent {
   findIntent(intent: string, context?: Context): Promise<AppIntent>;
   findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
   raiseIntent(intent: string, context: Context, target?: string): Promise<IntentResolution>;
-  raiseContext(context: Context): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, target?: string | AppMetadata): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: ContextHandler): Listener;
   
   // channels
@@ -342,17 +342,17 @@ const appIntent = await fdc3.findIntent("StartChat", context);
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
 ```
 
-### `raiseContext`
+### `raiseIntentForContext`
 
 ```ts
-raiseContext(context: Context): Promise<IntentResolution>;
+raiseIntentForContext(context: Context, target?: string | AppMetadata): Promise<IntentResolution>;
 ```
-Raises a context to the desktop agent to resolve. Raise context deals with the case where a context can have multiple associated intents. Similar to raiseIntent without a target, it provides the opportunity for Intent and target selection, which can result in a call to raiseIntent with a target under the hood to provide Intent resolution.
+Allows for selection of an intent for a specific context for the desktop agent to resolve. Raising intent for a context deals with the case where a context can have multiple associated intents. Similar to raiseIntent without a target, it provides the opportunity for Intent and target selection, which can result in a call to raiseIntent or raiseIntentForContext with a target under the hood to provide Intent resolution.
 
 #### Example
 
 ```js
-const intentResolution = await fdc3.raiseContext(context);
+const intentResolution = await fdc3.raiseIntentForContext(context);
 ```
 
 

@@ -78,26 +78,26 @@ Examples of End Points include:
 ### Open an Application by Name
 Linking from one application to another is a critical basic workflow that the web revolutionized via the hyperlink.  Supporting semantic addressing of applications across different technologies and platform domains greatly reduces friction in linking different applications into a single workflow.
 
-### Raising Intents or Contexts
+### Raising Intents
 Often, we want to link from one app to another to dynamically create a workflow.  Enabling this without requiring prior knowledge between apps is a key goal of FDC3.
 
-Intents provide a way for an app to request functionality from another app and defer the discovery and launching of the destination app to the Desktop Agent.  There are multiple models for interop that Contexts and Intents can support.
+Intents provide a way for an app to request functionality from another app and defer the discovery and launching of the destination app to the Desktop Agent.  There are multiple models for interop that Intents can support.
 
 - **Chain**:  In this case the workflow is completely handed off from one app to another (similar to linking).   Currently, this is the primary focus in FDC3
 - **Client-Service**: A Client invokes a Service via the Intent, the Service performs some function, then passes the workflow back to the Client.  Typically, there is a data payload type associated with this intent that is published as the standard contract for the intent.
 - **Remote API**: An app wants to remote an entire API that it owns to another App.  In this case, the API for the App cannot be standardized.  However, the FDC3 API can address how an App connects to another App in order to get access to a proprietary API.
 
-A Context can be associated with multiple intents. For example, an instrument could be associated with ViewChart, ViewNews, ViewAnalysis or some other intent. Raising a context provides the opportunity for the system or the user to select the appropriate Intent for the selected Context and resolve that Intent.
+A Context can be associated with multiple intents. For example, an instrument could be associated with ViewChart, ViewNews, ViewAnalysis or some other intent. You can raise an intent for a specific context allowing the system or the user to select the appropriate Intent for the selected Context and resolve that Intent.
 
 #### Intent Resolution
-Raising an Intent or a Context will return a Promise-type object that will resolve/reject based on a number of factors.
+Raising an Intent will return a Promise-type object that will resolve/reject based on a number of factors.
 
 ##### Resolve
 - Intent was resolved unambiguously and the receiving app was launched successfully.
 - Intent was ambiguous, a resolution was chosen by the end user and the chosen application was launched successfully.
 
 ##### Reject
-- No app matching the intent or any possible intents for the specifiec context were not found.
+- No app matching the intent or any possible intents for the specific context were not found.
 - A match was found, but the receiving app failed to launch.
 - The intent was ambiguous and the resolver experienced an error.
 
@@ -131,7 +131,7 @@ catch (er){
 
 ```js
 try {
-    const result = await fdc3.raiseContext(context);
+    const result = await fdc3.raiseIntentForContext(context);
     if (result.data) {
         const orderId = result.data.id;
     }
