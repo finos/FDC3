@@ -170,4 +170,12 @@ export interface DesktopAgent {
    * Returns `null` if the app is not joined to a channel.
    */
   getCurrentChannel(): Promise<Channel>;
+
+  /**
+   * Removes the app from any channel membership.
+   *
+   * Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be
+   * in a no-op when the app is not on a channel.
+   */
+  leaveCurrentChannel(): Promise<void>;
 }

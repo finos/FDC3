@@ -11,6 +11,7 @@ import {
   getOrCreateChannel,
   getSystemChannels,
   joinChannel,
+  leaveCurrentChannel,
   open,
   raiseIntent,
 } from '../src';
@@ -164,6 +165,14 @@ describe('test ES6 module', () => {
     getCurrentChannel();
 
     const mock = getMock('getCurrentChannel');
+    expect(mock.mock.calls.length).toBe(1);
+    expect(mock.mock.calls[0]).toEqual([]);
+  });
+
+  it('leaveCurrentChannel should delegate to window.fdc3.leaveCurrentChannel', () => {
+    leaveCurrentChannel();
+
+    const mock = getMock('leaveCurrentChannel');
     expect(mock.mock.calls.length).toBe(1);
     expect(mock.mock.calls[0]).toEqual([]);
   });
