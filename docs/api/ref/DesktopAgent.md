@@ -91,6 +91,8 @@ broadcast(context: Context): void;
 
 Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
 
+DesktopAgent implementations should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.
+
 #### Example
 ```js
 const instrument = {
@@ -118,7 +120,7 @@ _findIntent_ is effectively granting programmatic access to the Desktop Agent's 
 It returns a promise resolving to the intent, its metadata and metadata about the apps that are registered to handle it.
 This can be used to raise the intent against a specific app.
  
- If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
+If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
 
 #### Examples
 ```js
