@@ -33,8 +33,8 @@ export interface Channel {
    * top-level FDC3 `broadcast` function.
    *
    * Note that this function can be used without first joining the channel, allowing applications to broadcast on
-   * channels that they aren't a member of. 
-   * 
+   * channels that they aren't a member of.
+   *
    * Channel implementations should ensure that context messages broadcast by an application on a channel should 
    * not be delivered back to that same application if they are joined to the channel.
    *
