@@ -21,7 +21,7 @@ function Help(props) {
 
   const supportLinks = [
     {
-      content: `Most FDC3 collaboration takes place in the [FDC3 GitHub repository](https://github.com/finos/fdc3]), where you can raise [issues](https://github.com/finos/FDC3/issues), submit [pull requests](https://github.com/finos/FDC3/pulls) and view [meeting minutes](https://github.com/finos/FDC3/issues?q=label%3Ameeting+).`,
+      content: `Most FDC3 collaboration takes place in the [FDC3 GitHub repository](https://github.com/finos/fdc3), where you can raise [issues](https://github.com/finos/FDC3/issues), submit [pull requests](https://github.com/finos/FDC3/pulls) and view [meeting minutes](https://github.com/finos/FDC3/issues?q=label%3Ameeting+).`,
       title: `Collaborate with the Community`,
     },
     {
@@ -34,8 +34,7 @@ function Help(props) {
     },
     {
       title: `Are you using FDC3?`,
-      content: `If you an existing individual or corporate user of the FDC3 standard, we would love to hear from you: just email the [FDC3 General List](fdc3@finos.org) with details about how you are using the standard. If you'd like to be listed as a standard user in our [homepage](fdc3.finos.org), you can directly [send a pull request to update our website](https://github.com/finos/fdc3/website/data/users.json) or, if listing your logo publicly requires legal evaluation, you can reach out privately to the [FDC3 Product Management Committee](fdc3-private@finos.org).`,
-    },
+      content: `If you are an existing individual or corporate user of the FDC3 standard, we would love to hear from you: just email the [FDC3 General List](fdc3@finos.org) with details about how you are using the standard. If you'd like to be listed as a standard user in our [homepage](https://fdc3.finos.org/), you can directly [send a pull request to update our website](https://github.com/finos/fdc3/blob/master/website/data/users.json) or, if listing your logo publicly requires legal evaluation, you can reach out privately to the [FDC3 Product Management Committee](mailto:fdc3-pmc-private@finos.org).`,
   
   ];
 
