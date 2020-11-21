@@ -128,16 +128,24 @@ catch (er){
 
 ```
 
-##### Upgrading to a Remote API Connection
-There are a wide range of workflows where decoupled intents and/or context passing do not provide rich enough interactivity and applications are better off exposing proprietary APIs.  In these cases, an App can use the *source* property on the resolution of an intent to connect directly to another App and from there, call remote APIs using the methods available in the Desktop Agent context for the App.  For example: 
+##### Upgrading to a Remote API Connection and App Instances
+There are a wide range of workflows where decoupled intents and/or context passing do not provide rich enough interactivity and applications are better off exposing proprietary APIs.  In these cases, an App can use the *source* property available on the resolution of an intent and when recieving context to get a direct reference to the calling app. For example: 
 
 ```js
 const chart = await fdc3.raiseIntent('ViewChart');
-// construct a vendor wrapper for the App
-const chartApp = fin.Application.wrap(chart.source);
-// do some vendor-specific stuff
+
+//get an AppInstance object back from the DesktopAgent
+const instance = await fdc3.getAppInstance(chart.source);
+
+//now you can broadcast new context directly to chart instance
+instance.broadcast(newContext);
+
+//or listen for context changes...
+instance.addContextListener("someContext", handler);
+
 ```
-![Upgrading Connection to Remote API](assets/api-3.png)
+
+
 
 ### Register an Intent
 Applications need to let the system know the Intents they can support.  Typically, this is done via registration with the App Directory.  It is also possible for Intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  While, dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
@@ -154,6 +162,36 @@ On the financial desktop, applications often want to broadcast context to any nu
 
 ## Resolvers
 Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (raising UI to pick the desired App for the intent) or by the app launching the intent - in which case the calling App will handle the resolution itself (using the findIntents API below) and then invoke an explicit Intent object.
+
+## App Instances
+Using FDC3 APIs, an app can get a reference to an instance of another app that it has either raised an intent to or recieved an intent or context from.  The `AppInstance` API allows apps to listen for and broadcast context directly.  
+
+### Broadcasting and Listening for Context
+An AppInstance MUST support both *broadcast* and *addContextListener* methods.  Calling *broadcast* on an AppInstance MUST send the context only *to* that instance.  The *addContextListener* method MUST listen for context events only *from* that instance. 
+
+#### Context Last Value Cache
+As with Channels, Desktop Agents SHOULD maintain a last value cache for an instance's context so that when a subscribing app adds a context listener to an instance, it will recieve the current context.
+
+### Instance Lifecycle
+AppInstances have 3 lifecycle stages.  These can be listened for using the `onStatusChanged` method.  Instance status types are
+
+- **ready**  - indicates that the instance is connected to the desktop agent and ready to send/recieve context
+- **loading** - indicates that the instance is in the process of connecting to the desktop agent
+- **unregistered** - indicates that the instance has disconnected from the desktop agent
+
+The current status of an instance can also be retrieved via the `status` property on the `AppInstance`.
+
+### Using App Instances with Data Intents
+With app instances, data can be provided as the result of an intent. Intents that return data SHOULD be defined as such and specify the context data type they return. The workflow for initializing a data exchange via an intent is as follows:
+
+- A *data subscriber* app raises an intent
+- The intent is resolved and the intentListener handler for the *data provider* app  is called.  
+   - The *data provider* app uses the *source* arg on its intent handler to call `getAppInstance` and get a reference to the *data subscriber* from the Desktop Agent.
+   - The *data provider* can now broadcast a data response to the instance for the *data subscriber* when ready, using the agreed upon context type for the response.  The response will be held in the last value cache by the Desktop Agent until the *data subscriber* has set its listener.
+- The *data subscriber* recieves the Intent Resolution object and uses its *source* property to get an instance of the *data provider* from the Desktop Agent.
+   - The *data subscriber* can now set a contextListener on the *data provider* instance for the agreed upon context return type for the intent.
+   - The *data subscriber* will recieve the initial data response and can recieve updates over the same context listener.
+
 
 ## Context channels
 

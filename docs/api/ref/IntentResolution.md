@@ -24,3 +24,4 @@ const intentResolution = await fdc3.raiseIntent("intentName", context);
 
 #### See also
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+* [`AppInstance`](AppInstance)

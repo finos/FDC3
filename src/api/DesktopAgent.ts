@@ -9,6 +9,7 @@ import { ContextHandler } from './ContextHandler';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
+import {AppInstance} from './AppInstance';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -165,4 +166,38 @@ export interface DesktopAgent {
    * Returns `null` if the app is not joined to a channel.
    */
   getCurrentChannel(): Promise<Channel>;
+
+  /**
+   * Returns the instance of an app for a given identifier
+   * 
+   * An instanceId can be obtained from
+   *  - *source* propery in an IntentResolution
+   * 
+   * For example:
+   * ```javascript
+   *  //get an app instance discovered through intent resolutionn
+   *  const intentRes = await fdc3.raiseIntent("ViewChart", someContext);
+   *  
+   *  const chartApp = await fdc3.getAppInstance(intentRes.source);
+   *  
+   *  //send a new context to the same chart
+   *   chartApp.broadcast(newContext);
+   * 
+   *  //raise a data intent and create a subscription to updates from the data provider
+   *  const intentRes = await fdc3.raiseIntent("GetPrices", someContext);
+   * 
+   *  //get the provider from the resolution object and set handler for future updates
+   *  const priceProvider = await fdc3.getAppInstance(intentRes.source);
+   *  priceProvider.addContextListener("GetPrices", updatePrice);
+   *  
+   *  //handle immediate context data payload (if any)
+   *  if (intentRes.data){
+   *    updatePrice(intentRes.data);
+   *  }
+   * 
+   * 
+   * ```
+   * 
+   */
+  getAppInstance(instanceId : string ) : Promise<AppInstance>;
 }

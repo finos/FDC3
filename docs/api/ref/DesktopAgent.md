@@ -10,6 +10,7 @@ hide_title: true
 interface DesktopAgent {
   // apps
   open(name: string, context?: Context): Promise<void>;
+  getAppInstance(instanceId : string ) : Promise<AppInstance>;
   
   // context
   broadcast(context: Context): void;
@@ -294,7 +295,44 @@ redChannel.addContextListener(channelListener);
 
 ```
 
+### `getAppInstance`
 
+  ```ts
+  getAppInstance(instanceId : string ) : Promise<AppInstance>;
+  ```
+
+ Returns the instance of an app for a given identifier.
+  
+  An instanceId can be obtained from
+- the *source* propery of an [`IntentResolution`](IntentResolution)
+- the *source* arg of a [`ContextHandler`](ContextHandler) 
+  
+#### Examples
+```js
+  //get an app instance discovered through intent resolutionn
+  const intentRes = await fdc3.raiseIntent("ViewChart", someContext);
+   
+  const chartApp = await fdc3.getAppInstance(intentRes.source);
+ 
+  //send a new context to the same chart
+  chartApp.broadcast(newContext);
+
+  //raise a data intent and create a subscription to updates from the data provider
+  const intentRes = await fdc3.raiseIntent("GetPrices", someContext);
+
+  //get the provider from the resolution object and set handler for future updates
+  const priceProvider = await fdc3.getAppInstance(intentRes.source);
+  priceProvider.addContextListener("GetPrices", updatePrice);
+ 
+  //handle immediate context data payload (if any)
+   if (intentRes.data){
+      updatePrice(intentRes.data);
+  } 
+  ```
+  
+  #### See also
+* [`AppInstance`](AppInstance)
+  
 
 ### `open`
 
