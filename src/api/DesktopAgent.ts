@@ -133,7 +133,7 @@ export interface DesktopAgent {
    * await fdc3.raiseIntentForContext(context);
    * ```
    */
-  raiseIntentForContext(context: Context, target?: string | AppMetadata): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, target?: Target): Promise<IntentResolution>;
 
   /**
    * Adds a listener for incoming Intents from the Agent.
