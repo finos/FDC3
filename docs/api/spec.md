@@ -37,9 +37,22 @@ Other interfaces defined in the spec are not critical to define as concrete type
 - `DisplayMetadata`
 
 
-
 #### API Access
 The FDC3 API can be made available to an application through a number of different methods.  In the case of web applications, a Desktop Agent SHOULD provide the FDC3 API via a global accessible as _window.fdc3_. Implementors MAY additionally make the API available through modules, imports, or other means. 
+
+The global `window.fdc3` must only be available after the API is ready to use. To prevent the API from being used before it is ready, implementors SHOULD provide a global `fdc3Ready` event. Here is code demonstrating the use of the FDC3 API and the ready event:
+
+```js
+function fdc3Stuff() {
+  // Make some fdc3 API calls here
+}
+
+if (window.fdc3) {
+  fdc3Stuff();
+} else {
+  window.addEventListener("fdc3Ready", fdc3Stuff);
+}
+```
 
 #### Standards vs. Implementation
 ![Desktop Agent - Standards Schematic](assets/api-1.png)
