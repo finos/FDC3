@@ -115,7 +115,7 @@ Raising an Intent will return a Promise-type object that will resolve/reject bas
 - The intent was ambiguous and the resolver experienced an error.
 
 ##### Resolution Object
-If the raising of the context or intent resolves (or rejects), a standard object will be passed into the resolver function with the following format:
+If the raising of the intent resolves (or rejects), a standard object will be passed into the resolver function with the following format:
 
 ```js
 {
