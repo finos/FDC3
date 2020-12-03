@@ -35,7 +35,7 @@ function Help(props) {
     {
       title: `Are you using FDC3?`,
       content: `If you are an existing individual or corporate user of the FDC3 standard, we would love to hear from you: just email the [FDC3 General List](fdc3@finos.org) with details about how you are using the standard. If you'd like to be listed as a standard user in our [homepage](https://fdc3.finos.org/), you can directly [send a pull request to update our website](https://github.com/finos/fdc3/blob/master/website/data/users.json) or, if listing your logo publicly requires legal evaluation, you can reach out privately to the FDC3 Product Management Committee by sending a note to fdc3-pmc-private@finos.org.`,
-  
+    }
   ];
 
   return (
