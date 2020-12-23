@@ -10,7 +10,7 @@ hide_title: true
 interface AppInstance {
   //properties
   readonly instanceId : string;
-  readonly status : 'ready' | 'loading' | 'unregistered';
+  readonly status : AppInstanceStatus;
   
   //methods
   addContextListener(handler: ContextHandler): Listener;
@@ -18,6 +18,12 @@ interface AppInstance {
   broadcast(context: Context): void;
   onStatusChanged(handler : (newVal : string, oldVal :string) => {}) : void;
 
+}
+
+enum AppInstanceStatus {
+  Ready = 'ready',
+  Loading = 'loading',
+  Unregistered = 'unregistered',
 }
 ```
 
@@ -47,7 +53,7 @@ Uniquely identifies the instance. This identifier is internal to the desktop age
 ### `status`
 
 ```ts
-public readonly status: 'ready' | 'loading' | 'unregistered';
+public readonly status: AppInstanceStatus;
 ```
 
 Represents the lifecycle status of the AppInstance.  
@@ -144,7 +150,7 @@ try {
 ### `onStatusChannged`
 
 ``` typescript
-public onStatusChanged(handler : (newVal : string, oldVal :string) => {}) : void;
+public onStatusChanged(handler : (newVal : AppInstanceStatus, oldVal : AppInstanceStatus) => {}) : void;
 ```
 
 Sets a listener for status change events on an app instance.
@@ -163,13 +169,13 @@ Possible status values are:
 const instance = await fdc3.getAppInstance(source);
 
 // if status is ready, add a context listener
-if (instance.status === 'ready'){
+if (instance.status === AppInstanceStatus.Ready){
     const listener = instance.addContextListener(someContext, myListener);
 }
 
 // listen for status change, if status is unregistered, then unsubscribe the context listener
 instance.onStatusChanged((status) => {
-    if (status === 'unregistered'){
+    if (status === AppInstanceStatus.unregistered){
         listener.unsubscribe();
     }
 });

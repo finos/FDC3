@@ -9,7 +9,7 @@ hide_title: true
 ```ts
 interface DesktopAgent {
   // apps
-  open(name: string, context?: Context): Promise<void>;
+  open(name: string, context?: Context): Promise<AppInstance | null>;
   getAppInstance(instanceId : string ) : Promise<AppInstance>;
   
   // context
@@ -337,10 +337,10 @@ redChannel.addContextListener(channelListener);
 ### `open`
 
 ```ts
-open(name: string, context?: Context): Promise<void>;
+open(name: string, context?: Context): Promise<AppInstance | null>;
 ```
 
-Launches/links to an app by name.  
+Launches/links to an app by name, resolves with an `AppInstance` reference to the launched app.
 
 The `open` method differs in use from [`raiseIntent`](#raiseIntent).  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, `open` would be used to an app returned in the search results.  **Note**, if both the intent and target app name are known, it is recommended to instead use `raiseIntent` with a `target` argument. 
 
@@ -355,10 +355,18 @@ await fdc3.open('myApp');
 
 // with context
 await fdc3.open('myApp', context);
+
+// opening, attaching an instance context handler, and broadcating on the instance
+const instance = await fdc3.open('myApp');
+if (instance !== null){
+  instance.addContextListener('myContextType',handler);
+  instance.broadcast('myContetextType',context);
+}
 ```
 
 #### See also
 * [`Context`](Context)
+* [`AppInstance`](AppInstance)
 * [`OpenError`](OpenError)
 
 

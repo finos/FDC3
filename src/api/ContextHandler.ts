@@ -5,4 +5,4 @@
 
 import { Context } from '../context/ContextTypes';
 
-export type ContextHandler = (context: Context, source? : string) => void;
+export type ContextHandler = (context: Context, source?: string) => void;

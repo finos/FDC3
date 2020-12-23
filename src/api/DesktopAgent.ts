@@ -9,7 +9,7 @@ import { ContextHandler } from './ContextHandler';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
-import {AppInstance} from './AppInstance';
+import { AppInstance } from './AppInstance';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -23,7 +23,7 @@ import {AppInstance} from './AppInstance';
 
 export interface DesktopAgent {
   /**
-   * Launches an app by name.
+   * Launches an app by name.  Resolves with an `AppInstance` reference for the opened app, or `null` if the app name could not be resolved.
    *
    * If a Context object is passed in, this object will be provided to the opened application via a contextListener.
    * The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
@@ -37,7 +37,7 @@ export interface DesktopAgent {
    *     agent.open('myApp', context);
    * ```
    */
-  open(name: string, context?: Context): Promise<void>;
+  open(name: string, context?: Context): Promise<AppInstance | null>;
 
   /**
    * Find out more information about a particular intent by passing its name, and optionally its context.
@@ -169,35 +169,35 @@ export interface DesktopAgent {
 
   /**
    * Returns the instance of an app for a given identifier
-   * 
+   *
    * An instanceId can be obtained from
    *  - *source* propery in an IntentResolution
-   * 
+   *
    * For example:
    * ```javascript
    *  //get an app instance discovered through intent resolutionn
    *  const intentRes = await fdc3.raiseIntent("ViewChart", someContext);
-   *  
+   *
    *  const chartApp = await fdc3.getAppInstance(intentRes.source);
-   *  
+   *
    *  //send a new context to the same chart
    *   chartApp.broadcast(newContext);
-   * 
+   *
    *  //raise a data intent and create a subscription to updates from the data provider
    *  const intentRes = await fdc3.raiseIntent("GetPrices", someContext);
-   * 
+   *
    *  //get the provider from the resolution object and set handler for future updates
    *  const priceProvider = await fdc3.getAppInstance(intentRes.source);
    *  priceProvider.addContextListener("GetPrices", updatePrice);
-   *  
+   *
    *  //handle immediate context data payload (if any)
    *  if (intentRes.data){
    *    updatePrice(intentRes.data);
    *  }
-   * 
-   * 
+   *
+   *
    * ```
-   * 
+   *
    */
-  getAppInstance(instanceId : string ) : Promise<AppInstance>;
+  getAppInstance(instanceId: string): Promise<AppInstance>;
 }
