@@ -10,6 +10,7 @@ import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
 import { AppInstance } from './AppInstance';
+import { Target } from './TargetType';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -31,12 +32,15 @@ export interface DesktopAgent {
    * If opening errors, it returns an `Error` with a string from the `OpenError` enumeration.
    *
    *  ```javascript
-   *     //no context
+   *     //no context and string as target
    *     agent.open('myApp');
+   *     //no context and AppMetadata object as target
+   *     agent.open({name: 'myApp', title: 'The title for the application myApp.', description: '...'});
    *     //with context
    *     agent.open('myApp', context);
    * ```
    */
+
   open(name: string, context?: Context): Promise<AppInstance | null>;
 
   /**
@@ -114,12 +118,14 @@ export interface DesktopAgent {
    * const appIntent = await fdc3.findIntent("StartChat", context);
    * //use the returned AppIntent object to target one of the returned chat apps with the context
    * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
+   * //or use one of the AppMetadata objects returned in the AppIntent object's 'apps' array
+   * await fdc3.raiseIntent("StartChat", context, appMetadata);
    * ```
    */
   raiseIntent(
     intent: string,
     context: Context,
-    target?: string
+    target?: Target
   ): Promise<IntentResolution>;
 
   /**
