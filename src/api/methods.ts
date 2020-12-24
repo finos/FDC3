@@ -6,11 +6,12 @@ import {
   IntentResolution,
   Listener,
 } from '..';
+import { AppInstance } from './AppInstance';
 
-export const open: (name: string, context?: Context) => Promise<void> = (
-  name,
-  context
-) => {
+export const open: (
+  name: string,
+  context?: Context
+) => Promise<AppInstance | null> = (name, context) => {
   return window.fdc3.open(name, context);
 };
 

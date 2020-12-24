@@ -33,7 +33,9 @@ export interface AppInstance {
   /**
    *
    */
-  onStatusChanged(handler: (newVal: AppInstanceStatus, oldVal: AppInstanceStatus) => {}): void;
+  onStatusChanged(
+    handler: (newVal: AppInstanceStatus, oldVal: AppInstanceStatus) => {}
+  ): void;
 }
 
 export enum AppInstanceStatus {
