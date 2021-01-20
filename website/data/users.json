@@ -6,9 +6,9 @@
         "isMember": false
     },
     {
-        "caption": "Chart IQ",
-        "image": "/img/users/ChartIQ.png",
-        "infoLink": "https://www.chartiq.com/",
+        "caption": "Finsemble",
+        "image": "/img/users/Finsemble.png",
+        "infoLink": "https://www.finsemble.com/",
         "pinned": true,
         "isMember": true
     },
@@ -16,6 +16,13 @@
         "caption": "FactSet",
         "image": "/img/users/FactSet.png",
         "infoLink": "https://www.factset.com/",
+        "pinned": true,
+        "isMember": true
+    },
+    {
+        "caption": "Genesis Global",
+        "image": "/img/users/Genesis.png",
+        "infoLink": "https://genesis.global/",
         "pinned": true,
         "isMember": true
     },

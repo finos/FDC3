@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/context.schema.json",
+  "type": "object",
+  "title": "Context",
+  "properties": {
+    "type": { "type": "string" },
+    "name": { "type": "string" },
+    "id": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  },
+  "required": ["type"]
+}

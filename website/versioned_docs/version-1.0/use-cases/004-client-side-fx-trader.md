@@ -22,6 +22,6 @@ original_id: uc-4
 
 - Point-to-point RPC invocation.  Current FDC3 API proposal doesn't define response message for "open" and "send" methods as they both returns `Promise<void>`:
 
-https://github.com/FDC3/FDC3/blob/master/src/api/interface.ts#L66
+https://github.com/finos/FDC3/blob/master/src/api/interface.ts#L66
 
-https://github.com/FDC3/FDC3/blob/master/src/api/interface.ts#L34
+https://github.com/finos/FDC3/blob/master/src/api/interface.ts#L34

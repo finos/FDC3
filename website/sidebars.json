@@ -7,31 +7,76 @@
       "fdc3-compliance"
     ],
     "API": [
-      "api/api-intro",
-      "api/api-spec",
+      "api/overview",
+      "api/spec",
       {
         "type": "subcategory",
-        "label": "API Reference",
+        "label": "Interfaces",
         "ids": [
-          "api/DesktopAgent",
-          "api/Context",
-          "api/Errors"
+          "api/ref/DesktopAgent",
+          "api/ref/Channel",
+          "api/ref/Listener",
+          "api/ref/AppIntent",
+          "api/ref/IntentResolution",
+          "api/ref/AppMetadata",
+          "api/ref/IntentMetadata",
+          "api/ref/DisplayMetadata"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Types",
+        "ids": [
+          "api/ref/Context",
+          "api/ref/ContextHandler",
+          "api/ref/OpenError",
+          "api/ref/ResolveError",
+          "api/ref/ChannelError"
         ]
       }
     ],
     "Intents": [
-      "intents-intro",
-      "intents-spec"
+      "intents/overview",
+      "intents/spec",
+      {
+        "type": "subcategory",
+        "label": "Reference",
+        "ids": [
+          "intents/ref/StartCall",
+          "intents/ref/StartChat",
+          "intents/ref/ViewChart",
+          "intents/ref/ViewContact",
+          "intents/ref/ViewQuote",
+          "intents/ref/ViewNews",
+          "intents/ref/ViewAnalysis",
+          "intents/ref/ViewInstrument"
+        ]
+      }
     ],
     "Context Data": [
-      "context-intro",
-      "context-spec"
+      "context/overview",
+      "context/spec",
+      {
+        "type": "subcategory",
+        "label": "Reference",
+        "ids": [
+          "context/ref/Context",
+          "context/ref/Contact",
+          "context/ref/ContactList",
+          "context/ref/Instrument",
+          "context/ref/InstrumentList",
+          "context/ref/Organization",
+          "context/ref/Country",
+          "context/ref/Position",
+          "context/ref/Portfolio"
+        ]
+      }
     ],
     "App Directory": [
-      "appd-intro",
-      "appd-discovery",
-      "appd-use",
-      "appd-spec"
+      "app-directory/overview",
+      "app-directory/discovery",
+      "app-directory/usage",
+      "app-directory/spec"
     ]
   },
   "use-cases": {
@@ -45,7 +90,9 @@
       "use-cases/uc-9",
       "use-cases/uc-10",
       "use-cases/uc-13",
-      "use-cases/uc-15"
+      "use-cases/uc-15",
+      "use-cases/uc-16",
+      "use-cases/uc-17"
     ]
   }
 }
