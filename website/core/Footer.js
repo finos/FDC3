@@ -22,12 +22,13 @@ class Footer extends React.Component {
     return `${baseUrl}${docsPart}${versionPart}${langPart}${doc}`;
   }
 
-  pageUrl(doc, language) {
+  pageUrl(doc, language, path) {
     const baseUrl = this.props.config.baseUrl;
     const defaultVersionShown = this.props.config.defaultVersionShown;
     const versionPart = `${defaultVersionShown ? `${defaultVersionShown}/` : ''}`;
     const langPart = `${language ? `${language}/` : ''}`;
-    return `${baseUrl}${versionPart}${langPart}${doc}`;
+    const pathPart = `${path ? `${path}/` : ''}`;
+    return `${baseUrl}${pathPart}${versionPart}${langPart}${doc}`;
   }
 
   render() {
@@ -50,13 +51,13 @@ class Footer extends React.Component {
             <a href={this.docUrl('why-fdc3')}>
               Why FDC3
             </a>
-            <a href={this.docUrl('api/DesktopAgent')}>
+            <a href={this.docUrl('api/ref/DesktopAgent')}>
               API Reference
             </a>
-            <a href={this.pageUrl('appd-spec')}>
-              App Directory OpenAPI
+            <a href={this.pageUrl('app-directory','','schemas')}>
+              App Directory Schema
             </a>
-            <a href={this.docUrl('use-cases/overview.html')}>
+            <a href={this.docUrl('use-cases/overview')}>
               Use Cases
             </a>
           </div>
@@ -67,6 +68,12 @@ class Footer extends React.Component {
               target="_blank"
               rel="noreferrer noopener">
               FINOS
+            </a>
+            <a
+              href="https://www.finos.org/privacy-policy"
+              target="_blank"
+              rel="noreferrer noopener">
+              FINOS Privacy Policy
             </a>
             <a
               href="https://finosfoundation.atlassian.net/wiki/spaces/FDC3"

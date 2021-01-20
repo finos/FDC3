@@ -130,6 +130,7 @@ body {
 
 .featureShowcaseSection .logos img {
   width: 200px;
+  
 }
 
 .featureShowcaseSection h2{
@@ -141,6 +142,21 @@ body {
   background-color: #F7F7F7; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
   padding-top: 10px;
   padding-bottom: 40px;
+}
+
+.surveyBanner {
+  background-color: #F7F7F7; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
+  padding-top: 10px;
+  padding-bottom: 40px;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  padding: 20px;
+}
+
+.CTA-image {
+  width: 200px;
+  flex: none;
 }
 
 .productShowcaseSection h2{

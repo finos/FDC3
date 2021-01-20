@@ -12,7 +12,10 @@
 
 const users = require('./data/users.json');
 
+const defaultVersion = require('./data/defaultVersion.json')
+
 const siteConfig = {
+  ...defaultVersion,
   title: 'FDC3', // Title for your website. THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
   tagline: 'Open standards for the financial desktop', //THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
   url: 'https://fdc3.finos.org',
@@ -20,17 +23,16 @@ const siteConfig = {
   baseUrl: '/',
   // For publishing to GitHub pages
   projectName: 'FDC3',
-  organizationName: 'FDC3',
+  organizationName: 'finos',
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'fdc3-intro', label: 'Docs'},    
+    
+    {doc: 'fdc3-intro', label: 'Docs'},   
     {doc: 'use-cases/overview', label: 'Use Cases'},
     {page: 'get-involved', label: 'Get Involved'},
     {doc: 'why-fdc3', label: 'Why FDC3'}
    //, {blog: true, label: 'News'}
   ],
-
-  defaultVersionShown: '1.0',
 
   twitterUsername: 'FDC3_',
 
@@ -94,7 +96,10 @@ const siteConfig = {
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
-  repoUrl: 'https://github.com/FDC3/FDC3'
+  repoUrl: 'https://github.com/finos/FDC3',
+
+  //Google Analytics tracking ID to track page views.
+  gaTrackingId: 'UA-89349362-8'
 };
 
-module.exports = siteConfig;
+module.exports = siteConfig
