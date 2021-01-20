@@ -31,13 +31,11 @@ If you would like to formally enroll as a voting participant to the Standard (as
 The FDC3 **Product** Management Committee, chaired by , is responsible for monitoring the work around the FDC3 Standards Working Group, as well as FDC3-related communications and documentation. 
 For more context see the [FDC3 Archive](https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview).
 
-#### Mailing list
-Get in touch with the FDC3 PMC by sending an email to [fdc3-pmc@finos.org](mailto:fdc3-pmc@finos.org). 
-
-Join the FDC3 PMC Mailing list by sending an email to [fdc3-pmc+subscribe@finos.org](mailto:fdc3-pmc+subscribe@finos.org).
-
 #### Meetings
 The FDC3 Product Management Committee meets every second Friday at 9:30am ET/ 2:30pm GMT. Find the next meeting, including meeting details, on the [FINOS Projects Calendar](https://calendar.google.com/calendar/u/0/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig@group.calendar.google.com&ctz=America/New_York) 
+
+#### Mailing list
+Get in touch with the FDC3 PMC by sending an email to [fdc3-pmc@finos.org](mailto:fdc3-pmc@finos.org). Join the FDC3 PMC Mailing list by sending an email to [fdc3-pmc+subscribe@finos.org](mailto:fdc3-pmc+subscribe@finos.org).
 
 
 ## Using the standard
