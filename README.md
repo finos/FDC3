@@ -18,7 +18,7 @@ FDC3 is a standard.  This repository houses the documentation and specifications
 
 ### FDC3 Standard Working Group
 
-The FDC3 Standard Working Group, chaired by , has the specific purpose of defining and releasing subsequent updates to the standard. For more context, see the [April 2020 announcement](https://groups.google.com/a/finos.org/g/fdc3/c/Jp3Etp42Waw) of the new streamlined approach to FDC3 meetings and working groups.
+The FDC3 Standard Working Group has the specific purpose of defining and releasing subsequent updates to the standard. For more context, see the [April 2020 announcement](https://groups.google.com/a/finos.org/g/fdc3/c/Jp3Etp42Waw) of the new streamlined approach to FDC3 meetings and working groups.
 
 #### Meetings
 The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) meets monthly on the fourth Thursday at 10am ET/ 3pm GMT and has an open participation model. You are welcome to join by subscribing to the [FINOS Project Meetings Calendar](https://calendar.google.com/calendar/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig%40group.calendar.google.com). 
@@ -28,7 +28,7 @@ If you would like to formally enroll as a voting participant to the Standard (as
 
 ### FDC3 Product Management Committee
 
-The FDC3 **Product** Management Committee, chaired by , is responsible for monitoring the work around the FDC3 Standards Working Group, as well as FDC3-related communications and documentation. 
+The FDC3 **Product** Management Committee is responsible for monitoring the work around the FDC3 Standards Working Group, as well as FDC3-related communications and documentation. 
 For more context see the [FDC3 Archive](https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview).
 
 #### Meetings
