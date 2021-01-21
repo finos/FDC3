@@ -41,13 +41,13 @@ Check out [the documentation website](https://fdc3.finos.org) for the different 
 
 Latest version of the standard is [1.1](https://fdc3.finos.org/docs/1.1/fdc3-intro). See [all available versions](https://fdc3.finos.org/versions).
 
+### Using the standard? Let us know!
+If you are an existing individual or corporate user of the FDC3 standard, we would love to hear from you: just email the [FDC3 General List](fdc3@finos.org) with details about how you are using the standard. If you'd like to be listed as a standard user, you can directly [send a pull request to update our website](./website/data/users.json) or, if listing your logo publicly requires legal evaluation, you can reach out privately to the [FDC3 Product Management Committee](fdc3-private@finos.org).
+
 ## Learn more and interact with the Community
 To learn more and ask questions you can subscribe to the [FDC3 General List](fdc3@finos.org) by emailing [fdc3+subscribe@finos.org](mailto:fdc3+subscribe@finos.org). 
 
 Another great way to interact with the standard participants is to attend the quarterly [FDC3 General meeting](https://github.com/finos/FDC3/issues?q=label%3A%22General+Meeting%22): you should receive notifications about upcoming Quarterly meetings if you subscribe to the the FDC3 mailing list, or you can find the next meeting in the [FINOS Project Meetings Calendar](https://calendar.google.com/calendar/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig%40group.calendar.google.com).
-
-## Using the standard? Let us know!
-If you are an existing individual or corporate user of the FDC3 standard, we would love to hear from you: just email the [FDC3 General List](fdc3@finos.org) with details about how you are using the standard. If you'd like to be listed as a standard user, you can directly [send a pull request to update our website](./website/data/users.json) or, if listing your logo publicly requires legal evaluation, you can reach out privately to the [FDC3 Product Management Committee](fdc3-private@finos.org).
 
 ## Contributing code to this repository
 If you'd like to contribute code to this repository:
