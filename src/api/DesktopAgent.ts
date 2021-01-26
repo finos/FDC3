@@ -9,7 +9,7 @@ import { ContextHandler } from './ContextHandler';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
-import { AppMetadata } from './AppMetadata';
+import { Target } from './TargetType';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -39,7 +39,7 @@ export interface DesktopAgent {
    *     agent.open('myApp', context);
    * ```
    */
-  open(target: string | AppMetadata, context?: Context): Promise<void>;
+  open(target: Target, context?: Context): Promise<void>;
 
   /**
    * Find out more information about a particular intent by passing its name, and optionally its context.
@@ -123,7 +123,7 @@ export interface DesktopAgent {
   raiseIntent(
     intent: string,
     context: Context,
-    target?: string | AppMetadata
+    target?: Target
   ): Promise<IntentResolution>;
 
   /**
@@ -169,7 +169,7 @@ export interface DesktopAgent {
    *
    * Returns `null` if the app is not joined to a channel.
    */
-  getCurrentChannel(): Promise<Channel>;
+  getCurrentChannel(): Promise<Channel | null>;
 
   /**
    * Removes the app from any channel membership.
