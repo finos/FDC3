@@ -20,7 +20,10 @@ IntentResolution provides a standard format for data returned upon resolving an 
 ```js
 //resolve a "Chain" type intent
 const intentResolution = await fdc3.raiseIntent("intentName", context);
+
+const intentResolution2 = await fdc3.raiseIntentForContext(context);
 ```
 
 #### See also
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+* [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
