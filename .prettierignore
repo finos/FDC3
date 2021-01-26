@@ -1,2 +1,7 @@
 # ignore markdown files
 *.md
+*.html
+*.yml
+*.yaml
+*.json
+website
