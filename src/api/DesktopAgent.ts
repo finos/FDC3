@@ -9,6 +9,7 @@ import { ContextHandler } from './ContextHandler';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
+import { AppMetadata } from './AppMetadata';
 import { Target } from './TargetType';
 
 /**
@@ -129,6 +130,14 @@ export interface DesktopAgent {
     context: Context,
     target?: Target
   ): Promise<IntentResolution>;
+
+  /**
+   * Raises a context to the desktop agent to resolve with one of the possible Intents for that context.
+   * ```javascript
+   * await fdc3.raiseIntentForContext(context);
+   * ```
+   */
+  raiseIntentForContext(context: Context, target?: Target): Promise<IntentResolution>;
 
   /**
    * Adds a listener for incoming Intents from the Agent.

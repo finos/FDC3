@@ -100,16 +100,18 @@ Intents provide a way for an app to request functionality from another app and d
 - **Client-Service**: A Client invokes a Service via the Intent, the Service performs some function, then passes the workflow back to the Client.  Typically, there is a data payload type associated with this intent that is published as the standard contract for the intent.
 - **Remote API**: An app wants to remote an entire API that it owns to another App.  In this case, the API for the App cannot be standardized.  However, the FDC3 API can address how an App connects to another App in order to get access to a proprietary API.
 
+A Context can be associated with multiple intents. For example, an instrument could be associated with ViewChart, ViewNews, ViewAnalysis or some other intent. You can raise an intent for a specific context allowing the system or the user to select the appropriate Intent for the selected Context and resolve that Intent.
+
 #### Intent Resolution
 Raising an Intent will return a Promise-type object that will resolve/reject based on a number of factors.
 
 ##### Resolve
-- Intent was resolved unambigiously and the recieving app was launched successfully.
-- Intent was ambigious, a resolution was chosen by the end user and the chosen application was launched succesfully.
+- Intent was resolved unambiguously and the receiving app was launched successfully.
+- Intent was ambiguous, a resolution was chosen by the end user and the chosen application was launched successfully.
 
 ##### Reject
-- An app matching the intent was not found.
-- A match was found, but the recieving app failed to launch.
+- No app matching the intent or any possible intents for the specific context were not found.
+- A match was found, but the receiving app failed to launch.
 - The intent was ambiguous and the resolver experienced an error.
 
 ##### Resolution Object
@@ -138,7 +140,18 @@ try {
 catch (er){
     console.log(er.message);
 }
+```
 
+```js
+try {
+    const result = await fdc3.raiseIntentForContext(context);
+    if (result.data) {
+        const orderId = result.data.id;
+    }
+}
+catch (er){
+    console.log(er.message);
+}
 ```
 
 ##### Upgrading to a Remote API Connection
@@ -162,13 +175,13 @@ It is expected that App Directories will also curate listed apps and ensure that
 
 Like FDC3 Context Data, the Intent schemas need to be versioned.  Desktop Agents will be responsible to declare which version of the Intent schema they are using.   Applications may also assert a specific version requirement when raising an Intent.  Version negotation may be supported by a given Desktop Agent.
 
-### Send/broadcast context  
+### Send/broadcast Context  
 On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features.  
 
 ## Resolvers
 Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (raising UI to pick the desired App for the intent) or by the app launching the intent - in which case the calling App will handle the resolution itself (using the findIntents API below) and then invoke an explicit Intent object.
 
-## Context channels
+## Context Channels
 
 Context channels allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.  Use cases for channels include color linking between applications to automate the sharing of context and topic based pub/sub such as theme.
 
