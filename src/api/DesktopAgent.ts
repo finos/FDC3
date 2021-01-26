@@ -103,6 +103,10 @@ export interface DesktopAgent {
 
   /**
    * Publishes context to other apps on the desktop.
+   *
+   * DesktopAgent implementations should ensure that context messages broadcast to a channel
+   * by an application joined to it should not be delivered back to that same application.
+   *
    * ```javascript
    *  agent.broadcast(context);
    * ```
