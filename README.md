@@ -14,6 +14,14 @@ The mission of the Financial Desktop Connectivity and Collaboration Consortium (
 ## About this Repository
 FDC3 is a standard.  This repository houses the documentation and specifications for the ratified FDC3 standards. 
 
+## Using the standard
+Check out [the documentation website](https://fdc3.finos.org) for the different components of the standard, an overview of [common use cases](https://fdc3.finos.org/docs/1.1/use-cases/overview), developer [API docs](https://fdc3.finos.org/docs/1.1/api/overview) and [standard compliance information](https://fdc3.finos.org/docs/1.1/fdc3-compliance). 
+
+Latest version of the standard is [1.1](https://fdc3.finos.org/docs/1.1/fdc3-intro). See [all available versions](https://fdc3.finos.org/versions).
+
+### Using the standard? Let us know!
+If you are an existing individual or corporate user of the FDC3 standard, we would love to hear from you: just email the [FDC3 General List](fdc3@finos.org) with details about how you are using the standard. If you'd like to be listed as a standard user, you can directly [send a pull request to update our website](./website/data/users.json) or, if listing your logo publicly requires legal evaluation, you can reach out privately to the [FDC3 Product Management Committee](fdc3-private@finos.org).
+
 ## Contribute to the FDC3 Standard
 
 ### FDC3 Standard Working Group
@@ -35,14 +43,6 @@ The FDC3 Product Management Committee meets every second Friday at 9:30am ET/ 2:
 
 #### Mailing list
 Get in touch with the FDC3 PMC by sending an email to [fdc3-pmc@finos.org](mailto:fdc3-pmc@finos.org). Join the FDC3 PMC Mailing list by sending an email to [fdc3-pmc+subscribe@finos.org](mailto:fdc3-pmc+subscribe@finos.org).
-
-## Using the standard
-Check out [the documentation website](https://fdc3.finos.org) for the different components of the standard, an overview of [common use cases](https://fdc3.finos.org/docs/1.1/use-cases/overview), developer [API docs](https://fdc3.finos.org/docs/1.1/api/overview) and [standard compliance information](https://fdc3.finos.org/docs/1.1/fdc3-compliance). 
-
-Latest version of the standard is [1.1](https://fdc3.finos.org/docs/1.1/fdc3-intro). See [all available versions](https://fdc3.finos.org/versions).
-
-### Using the standard? Let us know!
-If you are an existing individual or corporate user of the FDC3 standard, we would love to hear from you: just email the [FDC3 General List](fdc3@finos.org) with details about how you are using the standard. If you'd like to be listed as a standard user, you can directly [send a pull request to update our website](./website/data/users.json) or, if listing your logo publicly requires legal evaluation, you can reach out privately to the [FDC3 Product Management Committee](fdc3-private@finos.org).
 
 ## Learn more and interact with the Community
 To learn more and ask questions you can subscribe to the [FDC3 General List](fdc3@finos.org) by emailing [fdc3+subscribe@finos.org](mailto:fdc3+subscribe@finos.org). 
