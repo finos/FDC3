@@ -71,6 +71,6 @@ export const getOrCreateChannel: (
   return window.fdc3.getOrCreateChannel(channelId);
 };
 
-export const getCurrentChannel: () => Promise<Channel> = () => {
+export const getCurrentChannel: () => Promise<Channel | null> = () => {
   return window.fdc3.getCurrentChannel();
 };
