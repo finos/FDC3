@@ -12,10 +12,7 @@
 
 const users = require('./data/users.json');
 
-const defaultVersion = require('./data/defaultVersion.json')
-
 const siteConfig = {
-  ...defaultVersion,
   title: 'FDC3', // Title for your website. THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
   tagline: 'Open standards for the financial desktop', //THIS CHANGES THE TITLE TAGS FOR THE WEBSITE (LOOK IN BROWSER TAB AT TOP)
   url: 'https://fdc3.finos.org',
