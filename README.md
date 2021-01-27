@@ -182,7 +182,7 @@ _NOTE:_ Commits and pull requests to FINOS repositories will only be accepted fr
 
 # License
 
-Copyright 2017 FDC3
+Copyright 2017-2021 FINOS
 
 Distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
