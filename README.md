@@ -117,7 +117,7 @@ You can also join the FDC3 mailing list to receive future updates: send an email
 
 Another great way to interact with the community, is to attend the quarterly [FDC3 General Meeting]: you will receive an invite by signing up to the mailing list, or you can find the meeting in the [FINOS Project Meetings Calendar].
 
-[fdc3@finos.org]: mailto:fdc3+subscribe@finos.org
+[fdc3@finos.org]: mailto:fdc3@finos.org
 [fdc3+subscribe@finos.org]: mailto:fdc3+subscribe@finos.org
 [FDC3 General Meeting]: https://github.com/finos/FDC3/issues?q=label%3A%22General+Meeting%22
 [FINOS Project Meetings Calendar]: https://calendar.google.com/calendar/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig%40group.calendar.google.com
