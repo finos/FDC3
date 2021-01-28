@@ -96,21 +96,24 @@ Often, we want to link from one app to another to dynamically create a workflow.
 
 Intents provide a way for an app to request functionality from another app and defer the discovery and launching of the destination app to the Desktop Agent.  There are multiple models for interop that Intents can support.
 
-- **Chain**:  In this case the workflow is completely handed off from one app to another (similar to linking).   Currently, this is the primary focus in FDC3
-- **Client-Service**: A Client invokes a Service via the Intent, the Service performs some function, then passes the workflow back to the Client.  Typically, there is a data payload type associated with this intent that is published as the standard contract for the intent.
+- **Chain**:  In this case the workflow is completely handed off from one app to another (similar to linking).  Currently, this is the primary focus in FDC3.
+- **Client-Service**: A Client invokes a Service via the Intent, the Service performs some function, then passes the workflow back to the Client. Typically, there is a data payload type associated with this intent that is published as the standard contract for the intent.
 - **Remote API**: An app wants to remote an entire API that it owns to another App.  In this case, the API for the App cannot be standardized.  However, the FDC3 API can address how an App connects to another App in order to get access to a proprietary API.
 
-A Context can be associated with multiple intents. For example, an instrument could be associated with ViewChart, ViewNews, ViewAnalysis or some other intent. You can raise an intent for a specific context allowing the system or the user to select the appropriate Intent for the selected Context and resolve that Intent.
+#### Intents and Context
+When raising an Intent a specific context may be provided. The type of the provided context may determine which applications can resolve the Intent. 
+
+A Context type may also be associated with multiple Intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other Intents. In addition to raising a specific intent, you can raise an Intent for a specific Context allowing the Desktop Agent or the user (if the Intent is ambiguous) to select the appropriate Intent for the selected Context and then to raise that Intent for resolution.
 
 #### Intent Resolution
 Raising an Intent will return a Promise-type object that will resolve/reject based on a number of factors.
 
 ##### Resolve
 - Intent was resolved unambiguously and the receiving app was launched successfully.
-- Intent was ambiguous, a resolution was chosen by the end user and the chosen application was launched successfully.
+- Intent was ambiguous, a resolution was chosen by the end user, and the chosen application was launched successfully.
 
 ##### Reject
-- No app matching the intent or any possible intents for the specific context were not found.
+- No app matching the intent and context (if specified) was found.
 - A match was found, but the receiving app failed to launch.
 - The intent was ambiguous and the resolver experienced an error.
 
@@ -128,7 +131,7 @@ If the raising of the intent resolves (or rejects), a standard object will be pa
 - *data* = return data structure - if one is provided for the given intent
 - *version* = the version number of the Intents schema being used
 
-For example
+For example, to raise a specific Intent:
 
 ```js
 try {
@@ -142,6 +145,7 @@ catch (er){
 }
 ```
 
+or to raise an Intent for a specific context:
 ```js
 try {
     const result = await fdc3.raiseIntentForContext(context);
