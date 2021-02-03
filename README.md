@@ -98,6 +98,12 @@ const channel = await getOrCreateChannel('myChannel')
 channel.broadcast({ ... })
 ```
 
+## Native
+The FDC3 standard does not define wire formats for communication. Hence, for native applications to be FDC3-enabled, they need to make use of a library (e.g. a DLL in .Net or Jar file in Java) that provides them with an implementation of the FDC3 API. FDC3-enabled native applications are therefore specific to particular desktop container frameworks (or other suitable environments) that provide the necessary libraries. 
+
+Despite this limitation, implementing support for FDC3 in a native application can allow it to interact with a wide variety of FDC3-enabled web applications.
+
+
 # Roadmap
 
 - [ ] Publish versioned NPM packages to ease adoption and implementation of FDC3 APIs.
