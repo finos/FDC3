@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+
+body {
+  font-family: "Noto Sans JP",sans-serif;
+  margin:0;
+  padding:0;
+}
+
+.main {
+  margin: 10px 0;
+  padding: 0;
+  display: flex;
+  place-content: center;
+}
+table {
+  border:0;
+}
+tr{
+  border:0;
+}
+td{
+  border:0;
+}
+textarea {
+  width: 400px;
+  height: 100px;
+}
+
+select {
+  width: 238px;
+  height: 24px;
+}
+
+.ctxInput {
+  width: 241px;
+  height: 24px;
+}
+
+.urlInput {
+  width: 400px;
+  height: 24px;
+}
+
+.header {
+  width: 200px;
+  height: 40px;
+  font-weight: 700;
+}
