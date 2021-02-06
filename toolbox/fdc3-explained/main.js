@@ -54,7 +54,7 @@ function displayFDC3Support() {
 
 function getPlatform() {
 
-  // Special case for Openfin to read App Name
+  // TODO: add G42 to vendors
   if (window.FSBL) {
     window.FSBL.getFSBLInfo().then((info) => {
       document.getElementById('providerDetails').innerHTML = "Finsemble Version:" + info.FSBLVersion;
