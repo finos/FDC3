@@ -57,7 +57,7 @@ function getPlatform() {
   // Special case for Openfin to read App Name
   if (window.FSBL) {
     window.FSBL.getFSBLInfo().then((info) => {
-      document.getElementById('providerDetails').innerHTML = info.FSBLVersion;
+      document.getElementById('providerDetails').innerHTML = "Finsemble Version:" + info.FSBLVersion;
     });
   } else if (window.fin) {
     fin.desktop.Application.getCurrent().getInfo((info) => {
