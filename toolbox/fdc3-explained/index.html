@@ -65,12 +65,20 @@
 					<ul id="app-channel-list"></ul>
 				</td>
 				</tr>
-				
-				
+
+
 				<tr>
 					<td class="header">Add App Channel:</td>
 					<td><input id="app-channel"></input></td>
 					<td><Button type="button" onclick="addAppChannel()">Add</Button></td>
+			</tr>
+
+			<tr>
+				<td class="header">Join Channel:</td>
+				<td>Channel: <select class="fdc3-channels" id="join-channel"></select>
+					<Button type="button" onclick="joinChannel()">Join</Button>
+				</td>
+				<td><Button type="button" onclick="fdc3.leaveCurrentChannel()">Leave</Button></td>
 			</tr>
 
 			<tr>
@@ -93,22 +101,35 @@
 			</tr>
 
 			<tr>
+				<td class="header" rowspan="3">Get Context:</td>
+				<td>Channel: <select class="fdc3-channels" id="context-channel" onchange="getContext()" /></td>
+			</tr>
+			
+			<tr>
+				<td>Context Type: <input type="text" id="context-type"></td>
+			</tr>
+			
+			<tr>
+				<td><textarea id="context-result" disabled></textarea></td>
+			</tr>
+
+			<tr>
 				<td colspan="3">
 					<hr>
 				</td>
 			</tr>
 
 			<tr>
-				<td class="header" rowspan="3">Get Context:</td>
-				<td>Channel: <select class="fdc3-channels" id="context-channel" onchange="getContext()" /></td>
+				<td class="header" rowspan="3">Raise Intent:</td>
 			</tr>
 
 			<tr>
-				<td>Context Type: <input type="text" id="context-type"></td>
+				<td>Intent: <input type="text" id="intent"></td>
 			</tr>
 
 			<tr>
-				<td><textarea id="context-result" disabled></textarea></td>
+				<td><textarea id="intent-context"></textarea></td>
+				<td><Button onclick="raiseIntent()">Raise Intent </Button></td>
 			</tr>
 
 		</table>

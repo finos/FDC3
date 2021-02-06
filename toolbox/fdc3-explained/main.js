@@ -52,6 +52,36 @@ function displayFDC3Support() {
 }
 
 
+function getPlatform() {
+
+  // Special case for Openfin to read App Name
+  if (window.FSBL) {
+    window.FSBL.getFSBLInfo().then((info) => {
+      document.getElementById('providerDetails').innerHTML = info.FSBLVersion;
+    });
+  } else if (window.fin) {
+    fin.desktop.Application.getCurrent().getInfo((info) => {
+      document.getElementById('providerDetails').innerHTML = info.manifest.startup_app.name
+    });
+  } else if (window.fdc3) {
+    document.getElementById('providerDetails').innerHTML = "FDC3 Desktop Agent Chrome Extension";
+  }
+  else {
+    return
+  }
+
+}
+
+
+function appLoader() {
+  let myUrl = document.getElementById('appUrl').value;
+
+  if (myUrl.length > 0) {
+    window.open(myUrl);
+  }
+}
+
+
 /**
  *Populate the channel dropdown elements
  * @param {HTMLElement} dropdownElement is a dom selector
@@ -63,7 +93,11 @@ async function populateChannels(dropdownElement) {
   systemChannels.forEach(({ displayMetadata, id, type }, key) => { dropdownElement[key] = new Option(displayMetadata.name, key) });
 }
 
-
+function joinChannel() {
+  let dropdownElement = document.getElementById("join-channel")
+  let channelName = dropdownElement.options[dropdownElement.selectedIndex].text.toLowerCase();
+  fdc3.joinChannel(channelName);
+}
 
 async function broadcastFDC3Context() {
   // get the channel
@@ -117,35 +151,16 @@ async function addAppChannel() {
 }
 
 
+async function raiseIntent() {
+  try {
+    // get the channel
+    let intent = document.getElementById("intent").value;
+    let context = JSON.parse(document.getElementById("intent-context").value);
 
-function getPlatform() {
-
-  // Special case for Openfin to read App Name
-  if (window.FSBL) {
-    window.FSBL.getFSBLInfo().then((info) => {
-      document.getElementById('providerDetails').innerHTML = info.FSBLVersion;
-    });
-  } else if (window.fin) {
-    fin.desktop.Application.getCurrent().getInfo((info) => {
-      document.getElementById('providerDetails').innerHTML = info.manifest.startup_app.name
-    });
-  } else if (window.fdc3) {
-    document.getElementById('providerDetails').innerHTML = "FDC3 Desktop Agent Chrome Extension";
-  }
-  else {
-    return
+    // TODO: add the target param
+    await fdc3.raiseIntent(intent, context)
+  } catch (err) {
+    console.error("intent did not resolve", err)
   }
 
-}
-
-
-function appLoader() {
-
-  let myUrl = document.getElementById('appUrl').value;
-
-  if (myUrl.length > 0) {
-
-    window.open(myUrl);
-
-  }
 }
