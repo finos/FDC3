@@ -17,6 +17,11 @@
 		<table border="1">
 
 			<tr>
+				<td class="header">FDC3 Supported </td>
+				<td><span id="fdc3-support">Checking</span></td>
+			</tr>
+
+			<tr>
 				<td class="header">FDC3 Provider Service:</td>
 				<td><span id="providerDetails">FDC3 Not Available</span></td>
 			</tr>
@@ -27,22 +32,22 @@
 				</td>
 			</tr>
 
-			<!-- <tr>
+			<tr>
 				<td class="header">App Directory:</td>
 				<td><span id="directoryDetails">No Application Directory Connected</span></td>
 				<td><input type="button" value="Connect" disabled></td>
-			</tr> -->
+			</tr>
 
-			<!-- <tr>
+			<tr>
 				<td class="header">Available Apps:</td>
 				<td><textarea disabled></textarea></td>
 				<td><input type="button" value="Fetch" disabled></td>
-			</tr> -->
+			</tr>
 
 			<tr>
 				<td class="header">Load App Start Url:</td>
 				<td><input type="text" id="appUrl" class="urlInput" value="demoapps/receive.html"></td>
-				<td><input type="button" value="Open" onclick="appLoader();"></td>
+				<td><button type="button" onclick="appLoader();">Open</button></td>
 			</tr>
 
 			<tr>
@@ -53,9 +58,19 @@
 
 			<tr>
 				<td class="header">Available Channels:</td>
-				<td><textarea id="txtAvailableChannels"></textarea></td>
-				<td><input type="button" value="Fetch" id="btnFetchChannels" disabled
-						onclick="populateChannels(channelArray);">&nbsp;<input type="button" value="Add"></td>
+				<td>
+					System Channels:
+					<ul id="system-channel-list"></ul>
+					App Channels:
+					<ul id="app-channel-list"></ul>
+				</td>
+				</tr>
+				
+				
+				<tr>
+					<td class="header">Add App Channel:</td>
+					<td><input id="app-channel"></input></td>
+					<td><Button type="button" onclick="addAppChannel()">Add</Button></td>
 			</tr>
 
 			<tr>
@@ -85,12 +100,11 @@
 
 			<tr>
 				<td class="header" rowspan="3">Get Context:</td>
-				<td>Channel: <select class="fdc3-channels" onchange="changeChannel(this); getContext();" /></td>
-				<td rowspan="3"><input type="button" value="Fetch"></td>
+				<td>Channel: <select class="fdc3-channels" id="context-channel" onchange="getContext()" /></td>
 			</tr>
 
 			<tr>
-				<td>Context: <input type="text" class="ctxInput"></td>
+				<td>Context Type: <input type="text" id="context-type"></td>
 			</tr>
 
 			<tr>
