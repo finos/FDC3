@@ -352,10 +352,10 @@ components:
           description: Icon URL
         size:
           type: string
-          description: Icon dimensions formated as "<height>x<width>"
+          description: Icon dimension formatted as "<height>x<width>"
         type:
           type: string
-          description: Image media type. If not present the Desktop agent may use the src file extension
+          description: Image media type. If not present the Desktop Agent may use the src file extension
     AppImage:
       description: App Image holder
       properties:
