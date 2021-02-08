@@ -14,7 +14,7 @@ interface Icon {
 }
 ```
 
-App medata icon's description. 
+App Metadata icon's description. 
 
 Various properties may be used by the Desktop Agent to decide which icon is the most suitable to be used considering the device DPI, bandwith and format support.
 
