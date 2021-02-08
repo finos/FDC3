@@ -57,13 +57,13 @@
 					App Channels:
 					<ul id="app-channel-list"></ul>
 				</td>
-				</tr>
+			</tr>
 
 
-				<tr>
-					<td class="header">Add App Channel:</td>
-					<td><input id="app-channel"></input></td>
-					<td><Button type="button" onclick="addAppChannel()">Add</Button></td>
+			<tr>
+				<td class="header">Add App Channel:</td>
+				<td><input id="app-channel"></input></td>
+				<td><Button type="button" onclick="addAppChannel()">Add</Button></td>
 			</tr>
 
 			<tr>
@@ -82,20 +82,16 @@
 
 			<tr>
 				<td class="header" rowspan="2">Broadcast Context:</td>
-				<td>Channel: <select class="fdc3-channels" id="broadcast-channel"></select>
-				</td>
-				<td rowspan="2"><input type="button" value="Send" id="btnBroadcast" onclick="broadcastFDC3Context();">
-				</td>
 			</tr>
-
 			<tr>
 				<td><textarea id="txtBroadcastData">{"id":{"ISIN":"US0378331005","SEDOL":"2046251","ticker":"AAPL"},"name":"Apple Inc.","type":"fdc3.instrument"}
 </textarea></td>
+<td rowspan="2"><input type="button" value="Send" id="btnBroadcast" onclick="broadcastFDC3Context();">
+</td>
 			</tr>
 
 			<tr>
 				<td class="header" rowspan="3">Get Context:</td>
-				<td>Channel: <select class="fdc3-channels" id="context-channel" onchange="getContext()" /></td>
 			</tr>
 
 			<tr>

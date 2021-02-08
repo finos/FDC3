@@ -1,18 +1,30 @@
+// check for FDC3 support
+function fdc3OnReady(cb) {
+  if (window.fdc3) { cb() }
+  else { window.addEventListener('fdc3Ready', cb) }
+}
+// Wait for the document to load
+function documentLoaded(cb) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', cb)
+  } else { cb() }
+}
 
-const fdc3OnReady = (cb) => window.fdc3 ? cb() : window.addEventListener('fdc3Ready', cb)
+//  document and FDC3 have loaded start the main function
+documentLoaded(() => fdc3OnReady(main))
 
 // use this to keep track of context listener - one per system channel
-let contextListener = {};
+let contextListener = null;
 let appChannels = []
 
-fdc3OnReady(main)
-
 function main() {
-  console.log("FDC3 is ready")
+  console.log("FDC3 is ready and DOM has rendered")
   populateHTML()
   getPlatform()
   displayFDC3Support()
+  getContext()
 }
+
 
 async function populateHTML() {
 
@@ -91,35 +103,24 @@ function joinChannel() {
 }
 
 async function broadcastFDC3Context() {
-  // get the channel
-  let dropdownElement = document.getElementById("broadcast-channel")
-  let channelName = dropdownElement.options[dropdownElement.selectedIndex].text.toLowerCase();
-  let channel = await fdc3.getOrCreateChannel(channelName);
 
   // send the data
   let contextData = document.getElementById('txtBroadcastData').value;
-  channel.broadcast(JSON.parse(contextData));
+  fdc3.broadcast(JSON.parse(contextData));
 }
 
 
 async function getContext(contextType) {
 
-  let dropdownElement = document.getElementById("context-channel")
-  let channelName = dropdownElement.options[dropdownElement.selectedIndex].text.toLowerCase();
-  let channel = await fdc3.getOrCreateChannel(channelName);
-
   let contextResultBox = document.getElementById("context-result");
 
-  // check to see if there is already a context listener for this channel, if so unsubscribe
-  if (contextListener[channelName]) {
-    contextListener[channelName].unsubscribe();
-  }
+  if (contextListener) contextListener.unsubscribe();
 
   // if context type is passed in then only listen on that specific context
   if (contextType) {
-    contextListener[channelName] = channel.addContextListener(contextType, (context) => contextResultBox.value = JSON.stringify(context))
+    contextListener = fdc3.addContextListener(contextType, (context) => contextResultBox.value = JSON.stringify(context))
   } else {
-    contextListener[channelName] = channel.addContextListener(context => contextResultBox.value = JSON.stringify(context));
+    contextListener = fdc3.addContextListener(context => contextResultBox.value = JSON.stringify(context));
   }
 }
 
