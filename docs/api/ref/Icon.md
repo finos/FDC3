@@ -23,12 +23,12 @@ Various properties may be used by the Desktop Agent to decide which icon is the 
 ```js
 "icons": [
   {
-    "src": "icon/lowres.webp",
+    "src": "https://app.foo.icon/app_icons/lowres.webp",
     "size": "48x48",
     "type": "image/webp"
   },
   {
-    "src": "icon/hd_hi.svg",
+    "src": "https://app.foo.icon/app_icons/hd_hi.svg",
     "size": "72x72"
   }
 ]
@@ -38,7 +38,7 @@ Various properties may be used by the Desktop Agent to decide which icon is the 
 
 ### `src`
 
-The url to the icon.
+The fully qualified url to the icon.
 
 ### `size`
 
