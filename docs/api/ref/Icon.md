@@ -16,7 +16,7 @@ interface Icon {
 
 App Metadata icon's description. 
 
-Various properties may be used by the Desktop Agent to decide which icon is the most suitable to be used considering the device DPI, bandwith and format support.
+Various properties may be used by the Desktop Agent to decide which icon is the most suitable to be used considering the application chooser UI, device DPI and formats supported by the system.
 
 #### Example
 
