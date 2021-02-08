@@ -14,7 +14,7 @@ interface AppMetadata {
   title?: string;
   tooltip?: string;
   description?: string;
-  icons?: Array<string>;
+  icons?: Array<Icon>;
   images?: Array<string>;
 }
 ```
@@ -30,3 +30,4 @@ In situations where a desktop agent connects to multiple app directories or mult
 
 #### See also
 * [`AppIntent.apps`](AppIntent)
+* [`Icon`](Icon)
