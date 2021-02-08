@@ -73,15 +73,6 @@ function getPlatform() {
 }
 
 
-function appLoader() {
-  let myUrl = document.getElementById('appUrl').value;
-
-  if (myUrl.length > 0) {
-    window.open(myUrl);
-  }
-}
-
-
 /**
  *Populate the channel dropdown elements
  * @param {HTMLElement} dropdownElement is a dom selector
