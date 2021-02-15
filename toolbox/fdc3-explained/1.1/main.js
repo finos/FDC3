@@ -1,15 +1,27 @@
-
-// check for FDC3 support
-function fdc3OnReady(cb) {
-  if (window.fdc3) { cb() }
-  else { window.addEventListener('fdc3Ready', cb) }
+function fdc3OnReady(callback) {
+  let fdc3Tries = 10; //lets not check forever...
+  const checkFDC3Ready = () => {
+    if (window.fdc3) {
+      callback.call(this);
+    }
+    else {
+      if (fdc3Tries > 0) {
+        fdc3Tries--;
+        window.setTimeout(checkFDC3Ready, 2000);
+      }
+    }
+  };
+  checkFDC3Ready();
 }
+
+
 // Wait for the document to load
 function documentLoaded(cb) {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', cb)
   } else { cb() }
 }
+
 
 //  document and FDC3 have loaded start the main function
 documentLoaded(() => fdc3OnReady(main))
