@@ -31,9 +31,9 @@ function fdc3Init(callback){
 document.addEventListener("DOMContentLoaded",() => {
 
   fdc3Init(async () => {
-    
+
     const systemChannels = await fdc3.getSystemChannels();
-    
+
         systemChannels.forEach(channel => {
                 const thisChannel = channel;
 				channelArray.push(channel.id);
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded",() => {
 function enablePage(){
 
 	console.log('FDC3 is available');
-	
+
 	<!-- Special case for Openfin to read App Name -->
 	if (window.FSBL){
     		window.FSBL.getFSBLInfo().then((info) => {
@@ -62,16 +62,16 @@ function enablePage(){
     		document.getElementById('providerDetails').innerHTML = 'Available - Not specified';
 	}
 	document.getElementById('directoryDetails').innerHTML = 'TBD';
-	
+
 	<!-- enable page obects -->
 	document.getElementById('btnBroadcast').disabled = false;
    	document.getElementById('txtBroadcastData').disabled = false;
 	document.getElementById('selBroadcastChannel').disabled = false;
 	document.getElementById('btnFetchChannels').disabled = false;
 	document.getElementById('txtAvailableChannels').disabled = false;
-	
+
 }
-	
+
 <!-- Various poor examples of FDC3 functionality -->
 
 function populateChannels(channelArray){
@@ -101,20 +101,20 @@ fdc3.broadcast(ctx);
 }
 
 function changeBroadcastChannel(){
-	
+
 alert('Not implemented yet!');
 document.getElementById('selBroadcastChannel').selectedIndex = 0;
-	
+
 }
 
 function appLoader(){
-	
+
 var myUrl = document.getElementById('appUrl').value;
 
 if (myUrl.length>0){
 
 	window.open(myUrl);
-	
+
 	}
 }
 
@@ -122,13 +122,13 @@ if (myUrl.length>0){
 
 <style>
 
-textarea {width:400px;height:100px;} 
+textarea {width:400px;height:100px;}
 
-select {width:238px;height:24px;} 
+select {width:238px;height:24px;}
 
-.ctxInput {width:241px;height:24px;} 
+.ctxInput {width:241px;height:24px;}
 
-.urlInput {width:400px;height:24px;} 
+.urlInput {width:400px;height:24px;}
 
 .header {width:200px;height:40px;font-weight:700;}
 
@@ -143,6 +143,7 @@ select {width:238px;height:24px;}
 <tr>
 <td class="header">FDC3 Provider Service:</td>
 <td><span id="providerDetails">FDC3 Not Available</span></td>
+<td>FDC3 Supported Version: v1.0</td>
 </tr>
 
 <tr>
