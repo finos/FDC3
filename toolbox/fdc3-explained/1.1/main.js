@@ -24,13 +24,13 @@ function documentLoaded(cb) {
   } else { cb() }
 }
 
-
-//  document and FDC3 have loaded start the main function
-documentLoaded(() => fdc3OnReady(main))
-
 // use this to keep track of context listener - one per system channel
 let contextListener = null;
-let appChannels = []
+let appChannels = [];
+
+//  document and FDC3 have loaded start the main function
+documentLoaded(() => fdc3OnReady(main));
+
 
 function main() {
   try {
