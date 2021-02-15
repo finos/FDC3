@@ -5,12 +5,13 @@
 FDC3 Explained v.2
 </title>
 
-<script language="javascript">
+<script type=module>
+import setVersionList from '../versions.js';
 
-<!-- Various global stuff -->
+// <!-- Various global stuff -->
 var channelArray = [];
 
-<!-- Check if FDC3 is avaialable -->
+// <!-- Check if FDC3 is avaialable -->
 function fdc3Init(callback){
   let fdc3Tries = 10; //lets not check forever...
   const onFDC3Ready = () => {
@@ -27,7 +28,7 @@ function fdc3Init(callback){
   onFDC3Ready();
 }
 
-<!-- Enable application when FDC3 is available -->
+// <!-- Enable application when FDC3 is available -->
 document.addEventListener("DOMContentLoaded",() => {
 
   fdc3Init(async () => {
@@ -44,13 +45,16 @@ document.addEventListener("DOMContentLoaded",() => {
 			//populateChannels(channelArray);
 			enablePage();
     });
+
+		 // set the versions of FDC3 Explained in the dropdown
+		 setVersionList()
 });
 
 function enablePage(){
 
 	console.log('FDC3 is available');
 
-	<!-- Special case for Openfin to read App Name -->
+	// <!-- Special case for Openfin to read App Name -->
 	if (window.FSBL){
     		window.FSBL.getFSBLInfo().then((info) => {
         		document.getElementById('providerDetails').innerHTML = 'Available - Finsemble ' + info.FSBLVersion;
@@ -63,7 +67,7 @@ function enablePage(){
 	}
 	document.getElementById('directoryDetails').innerHTML = 'TBD';
 
-	<!-- enable page obects -->
+	// <!-- enable page obects -->
 	document.getElementById('btnBroadcast').disabled = false;
    	document.getElementById('txtBroadcastData').disabled = false;
 	document.getElementById('selBroadcastChannel').disabled = false;
@@ -72,7 +76,7 @@ function enablePage(){
 
 }
 
-<!-- Various poor examples of FDC3 functionality -->
+// <!-- Various poor examples of FDC3 functionality -->
 
 function populateChannels(channelArray){
 
@@ -143,10 +147,16 @@ select {width:238px;height:24px;}
 <tr>
 <td class="header">FDC3 Provider Service:</td>
 <td><span id="providerDetails">FDC3 Not Available</span></td>
+
 <tr>
 	<td class="header">FDC3 Supported Version:</td>
-	<td>1.2 <i>(<a href="../../fdc3_explained.html">other versions</a>)</i></td>
-</tr>
+	<td>1.1 </td>
+	<td>
+		<select id="versions" onchange="window.location.href=`../${this.value}`">
+			<option value="" disabled style="display:none;" selected>Change Version</option>
+		</select>
+	
+	</td>
 </tr>
 
 <tr>

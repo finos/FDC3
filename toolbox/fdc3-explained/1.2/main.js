@@ -1,3 +1,5 @@
+import setVersionList from '../versions.js';
+
 // check for FDC3 support
 function fdc3OnReady(cb) {
   if (window.fdc3) { cb() }
@@ -60,6 +62,9 @@ async function populateHTML() {
         getContext(contextType)
       }
     });
+
+    // set the versions of FDC3 Explained in the dropdown
+    setVersionList()
   } catch (error) {
     console.error("unable to populate the html for the page ", error);
   }

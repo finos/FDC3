@@ -1,3 +1,5 @@
+import setVersionList from '../versions.js';
+
 function fdc3OnReady(callback) {
   let fdc3Tries = 10; //lets not check forever...
   const checkFDC3Ready = () => {
@@ -73,6 +75,9 @@ async function populateHTML() {
         getContext(contextType)
       }
     });
+
+    // set the versions of FDC3 Explained in the dropdown
+    setVersionList()
   } catch (error) {
     console.error("unable to populate the html for the page ", error);
   }
