@@ -8,7 +8,7 @@
 
 <meta charset="UTF-8">
 	<link rel="stylesheet" href="./styles.css">
-	<script src="./main.js"></script>
+	<script type="module" src="./main.js" defer></script>
 
 </head>
 
@@ -32,6 +32,17 @@
 			<tr>
 				<td class="header">FDC3 Provider Service:</td>
 				<td><span id="providerDetails">FDC3 Not Available</span></td>
+			</tr>
+
+			<tr>
+				<td class="header">FDC3 Supported Version:</td>
+				<td>1.1 </td>
+				<td>
+					<select id="versions" onchange="window.location.href=`../${this.value}`">
+						<option value="" disabled style="display:none;" selected>Change Version</option>
+					</select>
+
+				</td>
 			</tr>
 
 			<tr>
@@ -131,6 +142,7 @@
 
 		</table>
 	</div>
+
 
 </body>
 
