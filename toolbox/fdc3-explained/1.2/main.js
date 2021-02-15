@@ -146,9 +146,9 @@ async function getContext(contextType) {
 
     // if context type is passed in then only listen on that specific context
     if (contextType) {
-      contextListener = fdc3.addContextListener(contextType, (context) => contextResultBox.value = JSON.stringify(context))
+      contextListener = fdc3.addContextListener(contextType, (context) => contextResultBox.innerText = JSON.stringify(context, null, 2))
     } else {
-      contextListener = fdc3.addContextListener(context => contextResultBox.value = JSON.stringify(context));
+      contextListener = fdc3.addContextListener(context => contextResultBox.innerText = JSON.stringify(context, null, 2));
     }
   } catch (error) {
     console.error("Unable to add a context listener", error)
