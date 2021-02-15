@@ -1,8 +1,22 @@
-// check for FDC3 support
-function fdc3OnReady(cb) {
-  if (window.fdc3) { cb() }
-  else { window.addEventListener('fdc3Ready', cb) }
+import setVersionList from '../versions.js';
+
+function fdc3OnReady(callback) {
+  let fdc3Tries = 10; //lets not check forever...
+  const checkFDC3Ready = () => {
+    if (window.fdc3) {
+      callback.call(this);
+    }
+    else {
+      if (fdc3Tries > 0) {
+        fdc3Tries--;
+        window.setTimeout(checkFDC3Ready, 2000);
+      }
+    }
+  };
+  checkFDC3Ready();
 }
+
+
 // Wait for the document to load
 function documentLoaded(cb) {
   if (document.readyState === 'loading') {
@@ -10,12 +24,13 @@ function documentLoaded(cb) {
   } else { cb() }
 }
 
-//  document and FDC3 have loaded start the main function
-documentLoaded(() => fdc3OnReady(main))
-
 // use this to keep track of context listener - one per system channel
 let contextListener = null;
-let appChannels = []
+let appChannels = [];
+
+//  document and FDC3 have loaded start the main function
+documentLoaded(() => fdc3OnReady(main));
+
 
 function main() {
   try {
@@ -60,6 +75,9 @@ async function populateHTML() {
         getContext(contextType)
       }
     });
+
+    // set the versions of FDC3 Explained in the dropdown
+    setVersionList()
   } catch (error) {
     console.error("unable to populate the html for the page ", error);
   }
