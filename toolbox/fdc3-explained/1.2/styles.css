@@ -14,6 +14,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   place-content: center;
+  flex-direction: column;
 }
 #logo{
 height:200px;
@@ -66,6 +67,9 @@ textarea:focus {
 }
 table {
   border:0;
+  margin: 0 auto;
+  max-width: 1000px;
+  display: flex;
 }
 tr{
   border:0;

@@ -54,7 +54,7 @@
 			<tr>
 				<td class="header">App Directory:</td>
 				<td><span id="directoryDetails">Not supported yet!</span></td>
-				<td><input type="button" value="Connect" disabled></td>
+				<td><input type="button" value="Connect" class="not-supported" disabled></td>
 			</tr>
 
 			<tr>
@@ -82,15 +82,15 @@
 			<tr>
 				<td class="header">Add App Channel:</td>
 				<td><input id="app-channel"></input></td>
-				<td><Button type="button" onclick="addAppChannel()">Add</Button></td>
+				<td><Button type="button" id="add-app-channel__btn" disabled>Add</Button></td>
 			</tr>
 
 			<tr>
 				<td class="header">Join Channel:</td>
 				<td>Channel: <select class="fdc3-channels" id="join-channel"></select>
-					<Button type="button" onclick="joinChannel()">Join</Button>
+					<Button type="button" id="join-channel__btn" disabled>Join</Button>
 				</td>
-				<td><Button type="button" onclick="fdc3.leaveCurrentChannel()">Leave</Button></td>
+				<td><Button type="button" id="leave-channel__btn" disabled>Leave</Button></td>
 			</tr>
 
 			<tr>
@@ -105,7 +105,7 @@
 			<tr>
 				<td><textarea id="txtBroadcastData">{"id":{"ISIN":"US0378331005","SEDOL":"2046251","ticker":"AAPL"},"name":"Apple Inc.","type":"fdc3.instrument"}
 </textarea></td>
-<td rowspan="2"><input type="button" value="Send" id="btnBroadcast" onclick="broadcastFDC3Context();">
+<td rowspan="2"><Button type="button" id="broadcast__btn" disabled>Send</Button>
 </td>
 			</tr>
 
@@ -137,13 +137,11 @@
 
 			<tr>
 				<td><textarea id="intent-context">{"id":{"ISIN":"US0378331005","SEDOL":"2046251","ticker":"AAPL"},"name":"Apple Inc.","type":"fdc3.instrument"}</textarea></td>
-				<td><Button onclick="raiseIntent()">Raise Intent </Button></td>
+				<td><Button id="raise-intent__btn" disabled>Raise Intent </Button></td>
 			</tr>
 
 		</table>
 	</div>
-
-
 </body>
 
 </html>
