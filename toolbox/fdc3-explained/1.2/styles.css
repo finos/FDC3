@@ -81,6 +81,12 @@ textarea {
 select {
   width: 238px;
   height: 24px;
+  width: 238px;
+  height: 24px;
+  border-radius: 6px;
+  background: #e8f7ff;
+  border: 2px solid rgb(0 0 0 / 0%);
+  box-shadow: #03a9f433 2px 3px 0px 0px;
 }
 
 .ctxInput {
