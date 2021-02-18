@@ -5,13 +5,12 @@
 FDC3 Explained
 </title>
 
-<script type=module>
-import setVersionList from '../versions.js';
+<script language="javascript">
 
-// <!-- Various global stuff -->
+<!-- Various global stuff -->
 var channelArray = [];
 
-// <!-- Check if FDC3 is avaialable -->
+<!-- Check if FDC3 is avaialable -->
 function fdc3Init(callback){
   let fdc3Tries = 10; //lets not check forever...
   const onFDC3Ready = () => {
@@ -28,13 +27,13 @@ function fdc3Init(callback){
   onFDC3Ready();
 }
 
-// <!-- Enable application when FDC3 is available -->
+<!-- Enable application when FDC3 is available -->
 document.addEventListener("DOMContentLoaded",() => {
 
   fdc3Init(async () => {
-
+    
     const systemChannels = await fdc3.getSystemChannels();
-
+    
         systemChannels.forEach(channel => {
                 const thisChannel = channel;
 				channelArray.push(channel.id);
@@ -45,38 +44,35 @@ document.addEventListener("DOMContentLoaded",() => {
 			//populateChannels(channelArray);
 			enablePage();
     });
-
-		 // set the versions of FDC3 Explained in the dropdown
-		 setVersionList()
 });
 
 function enablePage(){
 
 	console.log('FDC3 is available');
-
-	// <!-- Special case for Openfin to read App Name -->
+	
+	<!-- Special case for Openfin to read App Name -->
 	if (window.FSBL){
     		window.FSBL.getFSBLInfo().then((info) => {
         		document.getElementById('providerDetails').innerHTML = 'Available - Finsemble ' + info.FSBLVersion;
     		});
 	} else if (window.fin){
     		fin.desktop.Application.getCurrent().getInfo((info) => {
-        		document.getElementById('providerDetails').innerHTML = 'Available - ' + info.manifest.startup_app.name});
+        		document.getElementById('providerDetails').innerHTML = 'Available - OpenFin ' + info.manifest.startup_app.name});
 	} else {
     		document.getElementById('providerDetails').innerHTML = 'Available - Not specified';
 	}
 	document.getElementById('directoryDetails').innerHTML = 'TBD';
-
-	// <!-- enable page obects -->
+	
+	<!-- enable page obects -->
 	document.getElementById('btnBroadcast').disabled = false;
    	document.getElementById('txtBroadcastData').disabled = false;
 	document.getElementById('selBroadcastChannel').disabled = false;
 	document.getElementById('btnFetchChannels').disabled = false;
 	document.getElementById('txtAvailableChannels').disabled = false;
-
+	
 }
-
-// <!-- Various poor examples of FDC3 functionality -->
+	
+<!-- Various poor examples of FDC3 functionality -->
 
 function populateChannels(channelArray){
 
@@ -105,34 +101,37 @@ fdc3.broadcast(ctx);
 }
 
 function changeBroadcastChannel(){
-
+	
 alert('Not implemented yet!');
 document.getElementById('selBroadcastChannel').selectedIndex = 0;
-
+	
 }
 
-function appLoader(){
-
+function appLoader(loadStyle){
+	
 var myUrl = document.getElementById('appUrl').value;
 
 if (myUrl.length>0){
-
-	window.open(myUrl);
-
+	if (loadStyle.includes("popup")){
+		window.open(myUrl);
+	} else {
+ 		document.location=myUrl;	
 	}
+}
+	
 }
 
 </script>
 
 <style>
 
-textarea {width:400px;height:100px;}
+textarea {width:400px;height:100px;} 
 
-select {width:238px;height:24px;}
+select {width:238px;height:24px;} 
 
-.ctxInput {width:241px;height:24px;}
+.ctxInput {width:241px;height:24px;} 
 
-.urlInput {width:400px;height:24px;}
+.urlInput {width:400px;height:24px;} 
 
 .header {width:200px;height:40px;font-weight:700;}
 
@@ -144,21 +143,11 @@ select {width:238px;height:24px;}
 
 <table border="1">
 <tr>
-<td colspan="3" style="text-align:center;">Back to <a href="../../fdc3_explained.html">main page</a>.</td>
+<td colspan="3" style="text-align:center;">Back to <a href="fdc3_explained.html">main page</a>.</td>
 </tr>
 <tr>
 <td class="header">FDC3 Provider Service:</td>
 <td><span id="providerDetails">FDC3 Not Available</span></td>
-
-<tr>
-	<td class="header">FDC3 Supported Version:</td>
-	<td>1.1 </td>
-	<td>
-		<select id="versions" onchange="window.location.href=`../${this.value}`">
-			<option value="" disabled style="display:none;" selected>Change Version</option>
-		</select>
-	
-	</td>
 </tr>
 
 <tr>
@@ -178,9 +167,9 @@ select {width:238px;height:24px;}
 </tr>
 
 <tr>
-<td class="header">Load App Start Url:</td>
+<td class="header">Load App:</td>
 <td><input type="text" id="appUrl" class="urlInput" value="demoapps/receive.html"></td>
-<td><input type="button" value="Open" onClick="appLoader();"></td>
+<td><input type="button" value="Popup" onClick="appLoader('popup');"><input type="button" value="Load" onClick="appLoader('load');"></td>
 </tr>
 
 <tr>
