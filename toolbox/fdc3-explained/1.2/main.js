@@ -1,3 +1,5 @@
+import setVersionList from '../versions.js';
+
 // check for FDC3 support
 function fdc3OnReady(cb) {
   if (window.fdc3) { cb() }
@@ -10,17 +12,21 @@ function documentLoaded(cb) {
   } else { cb() }
 }
 
-//  document and FDC3 have loaded start the main function
-documentLoaded(() => fdc3OnReady(main))
-
 // use this to keep track of context listener - one per system channel
 let contextListener = null;
-let appChannels = []
+let appChannels = [];
+
+
+
+//  document and FDC3 have loaded start the main function
+documentLoaded(() => fdc3OnReady(main));
+
 
 function main() {
   try {
     console.log("FDC3 is ready and DOM has rendered")
     populateHTML()
+    setUpEventListeners()
     getPlatform()
     displayFDC3Support()
     getContext()
@@ -32,37 +38,62 @@ function main() {
 
 async function populateHTML() {
   try {
-    // populate all the dropdowns for system channels
-    let channelDropdownList = document.querySelectorAll(".fdc3-channels")
-    channelDropdownList.forEach(channelDropdown => populateChannels(channelDropdown))
 
     //populate available channels list with system channels
     let channelList = document.getElementById("system-channel-list");
 
-    const systemChannels = await fdc3.getSystemChannels();
-
-    systemChannels.forEach(({ displayMetadata, id, type }, key) => {
+    const populateChannelsList = (name) => {
       let node = document.createElement("li");
-      let textNode = document.createTextNode(displayMetadata.name);
+      let textNode = document.createTextNode(name);
       node.appendChild(textNode);
       channelList.appendChild(node);
+    }
+
+    const systemChannels = await fdc3.getSystemChannels();
+
+    // for all of the system channels populate dropdowns & lists
+    systemChannels.forEach(({ displayMetadata, id, type }) => {
+      let { name } = displayMetadata;
+      populateChannelsList(name)
+      populateChannelsDropDown(name)
+
     });
 
-    // add an event listener for the contextType input box
-    let contextTypeInput = document.getElementById("context-type");
+    // set the versions of FDC3 Explained in the dropdown
+    setVersionList()
 
-    // Only get context type when the user hits enter
-    contextTypeInput.addEventListener("keyup", function (event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-
-        let contextType = event.target.value;
-        getContext(contextType)
+    // as FDC3 is supported we can enable the buttons again except those that are not yet supported features
+    document.querySelectorAll("button").forEach(button => {
+      if (!button.className.includes("not-supported")) {
+        button.disabled = false
       }
-    });
+    })
   } catch (error) {
     console.error("unable to populate the html for the page ", error);
   }
+
+}
+
+function setUpEventListeners() {
+  document.getElementById("add-app-channel__btn").addEventListener("click", addAppChannel);
+
+  document.getElementById("join-channel__btn").addEventListener("click", joinChannel);
+
+  document.getElementById("leave-channel__btn").addEventListener("click", fdc3.leaveCurrentChannel);
+
+  document.getElementById("broadcast__btn").addEventListener("click", broadcastFDC3Context);
+
+  document.getElementById("raise-intent__btn").addEventListener("click", raiseIntent);
+
+  document.getElementById("context-type").addEventListener("keyup", (event) => {
+  //  we only want to get the context wen the user hits enter
+    if (event.key === "Enter") {
+      event.preventDefault();
+
+      let contextType = event.target.value;
+      getContext(contextType)
+    }
+  });
 
 }
 
@@ -101,18 +132,21 @@ function getPlatform() {
 
 /**
  *Populate the channel dropdown elements
- * @param {HTMLElement} dropdownElement is a dom selector
  */
-async function populateChannels(dropdownElement) {
+function populateChannelsDropDown(newOptionText) {
   try {
 
-    if (!dropdownElement) return new Error("No dropdown element provided")
+    let dropdownElement = document.querySelector(".fdc3-channels")
 
-    const systemChannels = await fdc3.getSystemChannels();
-    systemChannels.forEach(({ displayMetadata, id, type }, key) => { dropdownElement[key] = new Option(displayMetadata.name, key) });
+    if (newOptionText) {
+      dropdownElement.add(new Option(newOptionText))
+    }
+    else {
+      throw new Error("No option provided")
+    }
 
   } catch (error) {
-    console.error("could not find system channels when populating the dropdown", error);
+    console.error("could not add a new channel to the channel dropdown list", error);
   }
 
 }
@@ -146,9 +180,9 @@ async function getContext(contextType) {
 
     // if context type is passed in then only listen on that specific context
     if (contextType) {
-      contextListener = fdc3.addContextListener(contextType, (context) => contextResultBox.value = JSON.stringify(context))
+      contextListener = fdc3.addContextListener(contextType, (context) => contextResultBox.innerText = JSON.stringify(context, null, 2))
     } else {
-      contextListener = fdc3.addContextListener(context => contextResultBox.value = JSON.stringify(context));
+      contextListener = fdc3.addContextListener(context => contextResultBox.innerText = JSON.stringify(context, null, 2));
     }
   } catch (error) {
     console.error("Unable to add a context listener", error)
@@ -160,7 +194,12 @@ async function addAppChannel() {
   try {
     let appChannelName = document.getElementById("app-channel").value;
 
-    if (appChannelName) {
+    if (!appChannelName) throw new Error("no channel name set")
+
+    let appChannelExists = appChannels.find(appChannel => appChannel.id === appChannelName)
+
+
+    if (!appChannelExists) {
       let newAppChannel = await fdc3.getOrCreateChannel(appChannelName)
       appChannels.push(newAppChannel);
 
@@ -170,8 +209,13 @@ async function addAppChannel() {
       node.appendChild(textNode);
       document.getElementById("app-channel-list").appendChild(node);
 
+      //populate the channel list dropdown with new appChannel
+      populateChannelsDropDown(newAppChannel.id)
+
+
+
     } else {
-      throw new Error("no channel name set")
+      throw new Error("app channel already exists")
     }
   } catch (error) {
     console.error("could not add an app channel", error);

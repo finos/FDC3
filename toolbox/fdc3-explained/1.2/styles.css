@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+
+body {
+  font-family: "Noto Sans JP",sans-serif;
+  margin:0;
+  padding:0;
+  background-color: #284B63;
+  color: white;
+}
+
+.main {
+  margin: 10px 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  place-content: center;
+  flex-direction: column;
+}
+#logo{
+height:200px;
+margin-left: 20px;
+}
+button {
+  min-width: 45px;
+  height: 22px;
+  background: rgb(210 236 255);
+  border: 2px solid rgb(0 0 0 / 0%);
+  /* box-shadow: rgb(148 184 208 / 26%) 2px -3px 4px 0px, rgb(0 0 0 / 37%) -3px 3px 7px; */
+  border-radius: 5px;
+  box-shadow: #03a9f433 2px 3px 0px 0px;
+  cursor: pointer;
+  /* transition: box-shadow 3s ease-in-out; */
+}
+button:active {
+  outline: transparent;
+  box-shadow: inset #3c3c3c70 2px 3px 3px 0px, #03a9f433 1px 2px 0px 0px;
+  transform: translateY(2px);
+  transition: ease-out 0.1s;
+}
+button:focus {
+  outline: transparent;
+
+}
+input{
+  background: #55778E;
+  box-shadow: inset -2px -2px 2px 0px rgb(255 255 255 / 12%), inset 2px 3px 6px 2px rgb(0 0 0 / 19%);
+  border-radius: 6px;
+  border: 2px solid transparent;
+}
+input:focus {
+  transition-property: border;
+  transition-duration: 0.8s;
+  border: 2px solid #368cc7;
+  outline: 0;
+}
+ textarea {
+  background: #55778E;
+  box-shadow: inset -3px -5px 5px 1px rgb(255 255 255 / 12%), inset 2px 3px 6px 2px rgb(0 0 0 / 19%);
+  border-radius: 6px;
+  border: 2px solid transparent;
+}
+textarea:focus {
+  transition-property: border;
+  transition-duration: 0.8s;
+  border: 2px solid #368cc7;
+  outline: 0;
+}
+table {
+  border:0;
+  margin: 0 auto;
+  max-width: 1000px;
+  display: flex;
+}
+tr{
+  border:0;
+}
+td{
+  border:0;
+}
+textarea {
+  width: 400px;
+  height: 100px;
+}
+
+select {
+  width: 238px;
+  height: 24px;
+  width: 238px;
+  height: 24px;
+  border-radius: 6px;
+  background: #e8f7ff;
+  border: 2px solid rgb(0 0 0 / 0%);
+  box-shadow: #03a9f433 2px 3px 0px 0px;
+}
+
+.ctxInput {
+  width: 241px;
+  height: 24px;
+}
+
+.urlInput {
+  width: 400px;
+  height: 24px;
+}
+
+.header {
+  width: 200px;
+  height: 40px;
+  font-weight: 700;
+}
+
+#context-result{
+  border: 1px solid white;
+  padding: 17px;
+  color: #9fffa2;
+  font-family: monospace;
+}
