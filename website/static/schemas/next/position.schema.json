@@ -11,7 +11,7 @@
     "holding": { "type": "number" },
     "trades": {
         "type": "array",
-        "items": { "$ref": "trade.schema.json#/" },
+        "items": { "$ref": "trade.schema.json#/" }
     },
     "basis": { "$ref": "valuation.schema.json#/" },
     "current": { "$ref": "valuation.schema.json#/" },
