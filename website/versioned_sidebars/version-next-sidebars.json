@@ -1,0 +1,104 @@
+{
+  "version-next-docs": {
+    "Getting Started": [
+      "version-next-fdc3-intro",
+      "version-next-fdc3-charter",
+      "version-next-why-fdc3",
+      "version-next-fdc3-compliance"
+    ],
+    "API": [
+      "version-next-api/overview",
+      "version-next-api/spec",
+      {
+        "type": "subcategory",
+        "label": "Interfaces",
+        "ids": [
+          "version-next-api/ref/DesktopAgent",
+          "version-next-api/ref/Channel",
+          "version-next-api/ref/Listener",
+          "version-next-api/ref/AppIntent",
+          "version-next-api/ref/IntentResolution",
+          "version-next-api/ref/AppMetadata",
+          "version-next-api/ref/IntentMetadata",
+          "version-next-api/ref/DisplayMetadata"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Types",
+        "ids": [
+          "version-next-api/ref/Context",
+          "version-next-api/ref/ContextHandler",
+          "version-next-api/ref/OpenError",
+          "version-next-api/ref/ResolveError",
+          "version-next-api/ref/ChannelError"
+        ]
+      }
+    ],
+    "Intents": [
+      "version-next-intents/overview",
+      "version-next-intents/spec",
+      {
+        "type": "subcategory",
+        "label": "Reference",
+        "ids": [
+          "version-next-intents/ref/StartCall",
+          "version-next-intents/ref/StartChat",
+          "version-next-intents/ref/ViewChart",
+          "version-next-intents/ref/ViewContact",
+          "version-next-intents/ref/ViewQuote",
+          "version-next-intents/ref/ViewNews",
+          "version-next-intents/ref/ViewAnalysis",
+          "version-next-intents/ref/ViewInstrument"
+        ]
+      }
+    ],
+    "Context Data": [
+      "version-next-context/overview",
+      "version-next-context/spec",
+      {
+        "type": "subcategory",
+        "label": "Reference",
+        "ids": [
+          "version-next-context/ref/Context",
+          "version-next-context/ref/Chart",
+          "version-next-context/ref/Contact",
+          "version-next-context/ref/ContactList",
+          "version-next-context/ref/Country",
+          "version-next-context/ref/Currency",
+          "version-next-context/ref/DateRange",
+          "version-next-context/ref/Indicator",
+          "version-next-context/ref/Instrument",
+          "version-next-context/ref/InstrumentList",
+          "version-next-context/ref/Organization",
+          "version-next-context/ref/Position",
+          "version-next-context/ref/Portfolio",
+          "version-next-context/ref/Trade",
+          "version-next-context/ref/Valuation"
+        ]
+      }
+    ],
+    "App Directory": [
+      "version-next-app-directory/overview",
+      "version-next-app-directory/discovery",
+      "version-next-app-directory/usage",
+      "version-next-app-directory/spec"
+    ]
+  },
+  "version-next-use-cases": {
+    "Use Cases": [
+      "version-next-use-cases/overview",
+      "version-next-use-cases/uc-1",
+      "version-next-use-cases/uc-2",
+      "version-next-use-cases/uc-3",
+      "version-next-use-cases/uc-4",
+      "version-next-use-cases/uc-5",
+      "version-next-use-cases/uc-9",
+      "version-next-use-cases/uc-10",
+      "version-next-use-cases/uc-13",
+      "version-next-use-cases/uc-15",
+      "version-next-use-cases/uc-16",
+      "version-next-use-cases/uc-17"
+    ]
+  }
+}

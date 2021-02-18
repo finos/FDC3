@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/currency.schema.json",
+  "type": "object",
+  "title": "Currency",
+  "allOf": [{ "$ref": "context.schema.json#/" }],
+  "properties": {
+    "type": { "const": "fdc3.currency" },
+    "name": { "type": "string" },
+    "code": { "type": "string" }
+  },
+  "required": ["code"]
+}

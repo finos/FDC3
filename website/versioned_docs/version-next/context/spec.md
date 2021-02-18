@@ -1,8 +1,12 @@
 ---
-id: spec
+id: version-next-spec
 sidebar_label: Context Data Specification
-title: Context Data Specification (next)
+title: Context Data Specification
+hide_title: true
+original_id: spec
 ---
+
+# Context Data Specification
 
 ## Introduction
 
@@ -77,7 +81,7 @@ The identifier "foo" is proprietary, an application that can use it is free to d
 
 ## Standard Context Types
 
-The following are standard FDC3 context types.
+The following are standard FDC3 context types. 
  __Note:__ The specification for these types are shared with the [FINOS Financial Objects](https://fo.finos.org) definitions, JSON schemas are hosted with FDC3.
 
 - __fdc3.chart__
@@ -125,12 +129,9 @@ The following are standard FDC3 context types.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/portfolio)
     - [schema](/schemas/next/portfolio.schema.json)
 - __fdc3.position__
-    - An amount of a security, asset, or property that is owned (or sold short) by some individual or other entity
+    - An instrument and a holding in that instrument.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/position)
     - [schema](/schemas/next/position.schema.json)
-- __fdc3.nothing__
-    - Explicit representation of a lack of context
-    - [schema](/schemas/next/nothing.schema.json)
 - __fdc3.trade__
     - A trade expresses a holding's duration, value and location.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/trade)
@@ -267,8 +268,8 @@ __Note:__ The below examples show how the base context data interface can be use
 {
     "type" : "fdc3.instrument",
     "name" : "Apple",
-    "id" :
-    {
+    "id" : 
+    {  
         "ticker" : "aapl",
         "ISIN" : "US0378331005",
         "CUSIP" : "037833100",
@@ -283,14 +284,14 @@ __Note:__ The below examples show how the base context data interface can be use
     "type" : "fdc3.instrumentList",
     "name" : "my portfolio",
     "instruments" : [
-        {
+        {  
             "type" : "fdc3.instrument",
             "name" : "Apple",
             "id": {
                "ticker" : "aapl"
             }
         },
-        {
+        {  
             "type" : "fdc3.instrument",
             "name" : "International Business Machines",
             "id": {
@@ -316,7 +317,7 @@ __Note:__ The below examples show how the base context data interface can be use
 #### Portfolio
 ```json
 {
-    "type":"fdc3.portfolio",
+    "type":"fdc3.portfolio"
     "name":"my portfolio",
     "positions":[
         {
@@ -324,7 +325,7 @@ __Note:__ The below examples show how the base context data interface can be use
             "instrument": {
                 "type" : "fdc3.instrument",
                 "name" : "Apple",
-                "id" :
+                "id" : 
                 {
                     "ISIN" : "US0378331005"
                 }
@@ -336,7 +337,7 @@ __Note:__ The below examples show how the base context data interface can be use
             "instrument": {
                 "type" : "fdc3.instrument",
                 "name" : "IBM",
-                "id" :
+                "id" : 
                 {
                     "ISIN" : "US4592001014"
                 }
@@ -355,19 +356,12 @@ __Note:__ The below examples show how the base context data interface can be use
     "instrument": {
         "type" : "fdc3.instrument",
         "name" : "Apple",
-        "id" :
+        "id" : 
         {
             "ISIN" : "US0378331005"
         }
     },
     "holding": 500
-}
-```
-
-#### Nothing
-```json
-{
-    "type": "fdc3.nothing"
 }
 ```
 

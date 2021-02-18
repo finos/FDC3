@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/dateRange.schema.json",
+  "type": "object",
+  "title": "DateRange",
+  "allOf": [{ "$ref": "context.schema.json#/" }],
+  "properties": {
+    "type": { "const": "fdc3.dateRange" },
+    "starttime": { 
+      "type": "string",
+      "pattern": "\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d\\.\\d\\d\\dZ",
+      "format": "date"
+    },
+    "endtime": { 
+      "type": "string",
+      "pattern": "\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d\\.\\d\\d\\dZ",
+      "format": "date"
+    }
+  },
+  "required": []
+}

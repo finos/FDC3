@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/chart.schema.json",
+  "type": "object",
+  "title": "Chart",
+  "allOf": [{ "$ref": "context.schema.json#/" }],
+  "properties": {
+    "type": { "const": "fdc3.chart" },
+    "instruments": {
+      "type": "array",
+      "items": { "$ref": "instrument.schema.json#/" }
+    },
+    "range": { "$ref": "dateRange.schema.json#/" },
+    "style": { "type": "string" },
+    "indicators": {
+      "type": "array",
+      "items": { "$ref": "indicator.schema.json#/" }
+    }
+  },
+  "required": ["instruments"]
+}

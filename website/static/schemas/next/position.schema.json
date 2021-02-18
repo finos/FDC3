@@ -6,8 +6,17 @@
   "allOf": [{ "$ref": "context.schema.json#" }],
   "properties": {
     "type": { "const": "fdc3.position" },
-    "instrument": { "$ref": "instrument.schema.json#" },
-    "holding": { "type": "number", "minimum": 0 }
+    "name": { "type": "string" },
+    "instrument": { "$ref": "instrument.schema.json#/" },
+    "holding": { "type": "number" },
+    "trades": {
+        "type": "array",
+        "items": { "$ref": "trade.schema.json#/" },
+    },
+    "basis": { "$ref": "valuation.schema.json#/" },
+    "current": { "$ref": "valuation.schema.json#/" },
+    "gain": { "type": "number" },
+    "restricted": { "type": "number" }
   },
   "required": ["instrument","holding"]
 }

@@ -1,8 +1,9 @@
 ---
-id: Position
+id: version-next-Position
 sidebar_label: Position
 title: Position
 hide_title: true
+original_id: Position
 ---
 # `Position`
 
@@ -49,11 +50,11 @@ https://fdc3.finos.org/schemas/next/position.schema.json
 
 ```js
 const position = {
-    type: "fdc3.position",
+    type: 'fdc3.position',
     instrument: {
-        type: "fdc3.instrument",
+        type: 'fdc3.instrument'
         id: {
-            ticker: "AAPL"
+            ticker: 'AAPL'
         }
     },
     holding: 2000000
@@ -127,7 +128,7 @@ const position = {
     restricted: 0
 }
 
-fdc3.raiseIntent("ViewChart", position)
+fdc3.raiseIntent('ViewChart', position)
 ```
 
 ## See Also
