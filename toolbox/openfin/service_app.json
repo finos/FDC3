@@ -7,8 +7,8 @@
 		"defaultCentered": true,
 		"saveWindowState": false,
 		"defaultHeight": 778,
-		"defaultWidth": 728,
-		"preloadScripts": [{"url":"https://cdn.openfin.co/services/openfin/fdc3/0.2.2/openfin-fdc3.js", "mandatory": true}]
+		"defaultWidth": 970,
+		"preloadScripts": [{"url":"https://cdn.openfin.co/services/openfin/fdc3/0.2.5/openfin-fdc3.js", "mandatory": true}]
 	},
 	"runtime": {
 		"arguments": "--enable-crash-reporting",
