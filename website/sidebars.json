@@ -29,6 +29,7 @@
         "ids": [
           "api/ref/Context",
           "api/ref/ContextHandler",
+          "api/ref/TargetApp",
           "api/ref/OpenError",
           "api/ref/ResolveError",
           "api/ref/ChannelError"

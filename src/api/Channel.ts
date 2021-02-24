@@ -4,7 +4,7 @@
  */
 
 import { Context } from '../context/ContextTypes';
-import { ContextHandler } from './ContextHandler';
+import { ContextHandler } from './Types';
 import { DisplayMetadata } from './DisplayMetadata';
 import { Listener } from './Listener';
 
