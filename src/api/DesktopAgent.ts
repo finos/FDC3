@@ -200,5 +200,5 @@ export interface DesktopAgent {
    * the implemented version of the FDC3 specification and the name of the implementation
    * provider.
    */
-  getInfo(): ImplementationMetadata
+  getInfo(): ImplementationMetadata;
 }

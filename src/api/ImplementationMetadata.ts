@@ -18,13 +18,15 @@ export interface ImplementationMetadata {
   /** The version of the provider of the FDC3 Desktop Agent Implementation (e.g. 5.3.0). */
   readonly providerVersion?: string;
 
-  /** Compare the implemented FDC3 version to the specified version. 
+  /** Compare the implemented FDC3 version to the specified version.
+   *
    * Returns `-1` if the implemented FDC3 version is lower than the specified version,
-   * `1` if the implemented FDC3 version is greater than specified, 0 if the arguments 
+   * `1` if the implemented FDC3 version is greater than specified, 0 if the arguments
    * are equal.
    */
   compareVersion(version: string): number;
 
-  /** Confirm that the supported FDC3 version is at least the specified version or higher. */
+  /** Confirm that the supported FDC3 version is at least the specified version or higher.
+   */
   versionIsAtLeast(version: string): boolean;
 }
