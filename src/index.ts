@@ -15,6 +15,7 @@ export * from './api/Errors';
 export * from './api/IntentMetadata';
 export * from './api/IntentResolution';
 export * from './api/Listener';
+export * from './api/ImplementationMetadata';
 export * from './api/methods';
 export * from './context/ContextType';
 export * from './context/ContextTypes';
