@@ -14,8 +14,9 @@ import {
   leaveCurrentChannel,
   open,
   raiseIntent,
+  raiseIntentForContext,
 } from '../src';
-import * as methods from '../src/api/methods';
+import * as methods from '../src/api/Methods';
 
 declare global {
   namespace jest {
@@ -82,6 +83,12 @@ describe('test ES6 module', () => {
       ).toRejectWithUnavailableError();
     });
 
+    test('raiseIntentForContext should reject', () => {
+      expect(
+        raiseIntentForContext(expect.any(Object))
+      ).toRejectWithUnavailableError();
+    });
+
     test('addIntentListener should throw', () => {
       expect(() =>
         addIntentListener(expect.any(String), expect.any(Function))
@@ -140,13 +147,13 @@ describe('test ES6 module', () => {
     });
 
     it('open should delegate to window.fdc3.open', () => {
-      const name = 'MyApp';
+      const app = 'MyApp';
 
-      open(name, ContactContext);
+      open(app, ContactContext);
 
       const mock = getMock('open');
       expect(mock.mock.calls.length).toBe(1);
-      expect(mock.mock.calls[0]).toEqual([name, ContactContext]);
+      expect(mock.mock.calls[0]).toEqual([app, ContactContext]);
     });
 
     it('findIntent should delegate to window.fdc3.findIntent', () => {
@@ -184,6 +191,16 @@ describe('test ES6 module', () => {
       const mock = getMock('raiseIntent');
       expect(mock.mock.calls.length).toBe(1);
       expect(mock.mock.calls[0]).toEqual([intent, ContactContext, target]);
+    });
+
+    it('raiseIntentForContext should delegate to window.fdc3.raiseIntentForContext', () => {
+      const app = 'MyApp';
+
+      raiseIntentForContext(ContactContext, app);
+
+      const mock = getMock('raiseIntentForContext');
+      expect(mock.mock.calls.length).toBe(1);
+      expect(mock.mock.calls[0]).toEqual([ContactContext, app]);
     });
 
     it('addIntentListener should delegate to window.fdc3.addIntentListener', () => {
