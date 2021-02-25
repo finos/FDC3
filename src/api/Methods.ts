@@ -126,7 +126,11 @@ export const compareVersionNumbers: (a: string, b: string) => number | null = (
   try {
     let aVerArr = a.split('.').map(Number);
     let bVerArr = b.split('.').map(Number);
-    for (let index = 0; index < Math.max(aVerArr.length, bVerArr.length); index++) {
+    for (
+      let index = 0; 
+      index < Math.max(aVerArr.length, bVerArr.length); 
+      index++
+    ) {
       /* If one version number has more digits and the other does not, and they are otherwise equal, 
          assume the longer is greater. E.g. 1.1.1 > 1.1 */
       if (index === aVerArr.length || aVerArr[index] < bVerArr[index]) {
