@@ -7,6 +7,7 @@ import {
   Listener,
   ImplementationMetadata,
 } from '..';
+import { TargetApp } from './Types';
 
 const unavailableError = new Error(
   'FDC3 DesktopAgent not available at `window.fdc3`.'
@@ -23,11 +24,11 @@ const throwIfNoGlobal = (f: () => any) => {
   return f();
 };
 
-export const open: (name: string, context?: Context) => Promise<void> = (
-  name,
+export const open: (app: TargetApp, context?: Context) => Promise<void> = (
+  app,
   context
 ) => {
-  return rejectIfNoGlobal(() => window.fdc3.open(name, context));
+  return rejectIfNoGlobal(() => window.fdc3.open(app, context));
 };
 
 export const findIntent: (
@@ -50,10 +51,17 @@ export const broadcast: (context: Context) => void = context => {
 export const raiseIntent: (
   intent: string,
   context: Context,
-  target?: string
-) => Promise<IntentResolution> = (intent, context, target) => {
+  app?: TargetApp
+) => Promise<IntentResolution> = (intent, context, app) => {
+  return rejectIfNoGlobal(() => window.fdc3.raiseIntent(intent, context, app));
+};
+
+export const raiseIntentForContext: (
+  context: Context,
+  app?: TargetApp
+) => Promise<IntentResolution> = (context, app) => {
   return rejectIfNoGlobal(() =>
-    window.fdc3.raiseIntent(intent, context, target)
+    window.fdc3.raiseIntentForContext(context, app)
   );
 };
 
