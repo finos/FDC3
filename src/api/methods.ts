@@ -105,22 +105,22 @@ export const leaveCurrentChannel: () => Promise<void> = () => {
  * Compare numeric semver version number strings (in the form `1.2.3`).
  *
  * Returns `-1` if the first argument is a lower version number than the second,
- * `1` if the first argument is greater than the second, 0 if the arguments are 
+ * `1` if the first argument is greater than the second, 0 if the arguments are
  * equal and `null` if an error occurred during the comparison.
  *
  * @param a
  * @param b
  */
-export const compareVersionNumbers: (
-  a: string, 
-  b: string
-) => number | null = (a, b) => {
+export const compareVersionNumbers: (a: string, b: string) => number | null = (
+  a,
+  b
+) => {
   try {
     let aVerArr = a.split('.').map(Number);
     let bVerArr = b.split('.').map(Number);
     for (let index = 0; index < Math.max(aVerArr.length, bVerArr.length); index++) {
-      /* if one version number has more digits and the other does not, assume the longer is greater
-         e.g. 1.1.1 > 1.1 */
+      /* If one version number has more digits and the other does not, and they are otherwise equal, 
+         assume the longer is greater. E.g. 1.1.1 > 1.1 */
       if (index === aVerArr.length || aVerArr[index] < bVerArr[index]) {
         return -1;
       } else if (index === bVerArr.length || aVerArr[index] > bVerArr[index]) {
