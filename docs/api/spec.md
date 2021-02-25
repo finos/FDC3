@@ -270,7 +270,7 @@ const appChannel = await fdc3.getOrCreateChannel('my_custom_channel');
 // get the current context of the channel
 const current = await appChannel.getCurrentContext();
 // add a listener
-appChannel.addContextListener(context => {...});
+appChannel.addContextListener(null, context => {...});
 // broadcast to the channel
 appChannel.broadcast(context);
 
