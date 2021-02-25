@@ -112,8 +112,6 @@ if (window.fdc3) {
 }
 ```
 
-[comment]: # (insert instructions for fdc3Ready event use via ES6 syntax here)
-
 ## Native
 The FDC3 standard does not define wire formats for communication. Hence, for native applications to be FDC3-enabled, they need to make use of a library (e.g. a DLL in .Net or Jar file in Java) that provides them with an implementation of the FDC3 API. FDC3-enabled native applications are therefore specific to particular desktop container frameworks (or other suitable environments) that provide the necessary libraries. 
 
