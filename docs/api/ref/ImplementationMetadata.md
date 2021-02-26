@@ -11,12 +11,10 @@ public interface ImplementationMetadata {
   fdc3Version: string;
   provider: string;
   providerVersion?: string;
-  compareVersion(version: string): number;
-  versionIsAtLeast(version: string): boolean;
 }
 ```
 
-Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification
+Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification and the name of the provider of the implementation.
 
 #### See also
 * [`DesktopAgent.getInfo`](DesktopAgent#getInfo)
