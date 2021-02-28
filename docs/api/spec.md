@@ -182,6 +182,19 @@ Like FDC3 Context Data, the Intent schemas need to be versioned.  Desktop Agents
 ### Send/broadcast Context  
 On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features. However, a Desktop Agent should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.
 
+### Retrieve Metadata about the Desktop Agent implementation
+From version 1.2 of the FDC3 specification, it is possible to retrieve information about the  version of the FDC3 specification supported by a Desktop Agent implementation and the name of the implementation provider. This metadata can be used to vary the behavior of an application based on the version supported by the Desktop Agent, e.g.:
+
+```js
+import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
+
+if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), "1.2")) {
+  await fdc3.raiseIntentForContext(context);
+} else {
+  await fdc3.raiseIntent("ViewChart", context);
+}
+```
+
 ## Resolvers
 Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (raising UI to pick the desired App for the intent) or by the app launching the intent - in which case the calling App will handle the resolution itself (using the findIntents API below) and then invoke an explicit Intent object.
 

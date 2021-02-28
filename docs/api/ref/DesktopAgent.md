@@ -29,6 +29,9 @@ interface DesktopAgent {
   joinChannel(channelId: string) : Promise<void>;
   getCurrentChannel() : Promise<Channel | null>;
   leaveCurrentChannel() : Promise<void>;
+
+  //implementation info
+  getInfo(): ImplementationMetadata;
 }
 ```
 
@@ -411,3 +414,28 @@ const intentResolution = await fdc3.raiseIntentForContext(context);
 * [`TargetApp`](TargetApp)
 * [`IntentResolution`](IntentResolution)
 * [`ResolveError`](ResolveError)
+
+### `getInfo`
+
+```ts
+getInfo(): ImplementationMetadata;
+```
+
+Retrieves information about the FDC3 Desktop Agent implementation, such as the implemented version of the FDC3 specification and the name of the implementation provider.
+
+Returns an `ImplementationMetadata` object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.
+
+#### Example
+
+```js
+import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
+
+if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), "1.2")) {
+  await fdc3.raiseIntentForContext(context);
+} else {
+  await fdc3.raiseIntent("ViewChart", context);
+}
+```
+
+#### See also
+* [`ImplementationMetadata`](ImplementationMetada)
