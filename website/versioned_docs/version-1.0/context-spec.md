@@ -1,12 +1,9 @@
 ---
 id: version-1.0-context-spec
 sidebar_label: Context Data Specification
-title: Context Data Specification
-hide_title: true
+title: Context Data Specification 1.0
 original_id: context-spec
 ---
-
-# Context Data Specification
 
 ## Introduction
 
@@ -60,8 +57,8 @@ __Note:__ The below examples show how the base context data interface can be use
 {
     "type" : "fdc3.instrument",
     "name" : "Apple",
-    "id" : 
-    {  
+    "id" :
+    {
         "ticker" : "aapl",
         "ISIN" : "US0378331005",
         "CUSIP" : "037833100",
@@ -121,7 +118,7 @@ __Note:__ The below examples show how the base context data interface can be use
     "instrument": {
         "type" : "fdc3.instrument",
         "name" : "Apple",
-        "id" : 
+        "id" :
         {
             "ISIN" : "US0378331005"
         }
