@@ -70,14 +70,14 @@
   <span class="hljs-comment">// context</span>
   broadcast(context: Context): <span class="hljs-built_in">void</span>;
   addContextListener(handler: ContextHandler): Listener;
-  addContextListener(contextType: <span class="hljs-built_in">string</span>, handler: ContextHandler): Listener;
+  addContextListener(contextType: <span class="hljs-built_in">string</span>, <span class="hljs-attr">handler</span>: ContextHandler): Listener;
 
   <span class="hljs-comment">// intents</span>
   findIntent(intent: <span class="hljs-built_in">string</span>, context?: Context): <span class="hljs-built_in">Promise</span>&lt;AppIntent&gt;;
   findIntentsByContext(context: Context): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;AppIntent&gt;&gt;;
-  raiseIntent(intent: <span class="hljs-built_in">string</span>, context: Context, app?: TargetApp): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
+  raiseIntent(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">context</span>: Context, app?: TargetApp): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
   raiseIntentForContext(context: Context, app?: TargetApp): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
-  addIntentListener(intent: <span class="hljs-built_in">string</span>, handler: ContextHandler): Listener;
+  addIntentListener(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">handler</span>: ContextHandler): Listener;
 
   <span class="hljs-comment">// channels</span>
   getOrCreateChannel(channelId: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">Promise</span>&lt;Channel&gt;;
@@ -101,13 +101,13 @@
 <span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.fdc3) {
   fdc3Stuff();
 } <span class="hljs-keyword">else</span> {
-  <span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">"fdc3Ready"</span>, fdc3Stuff);
+  <span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&quot;fdc3Ready&quot;</span>, fdc3Stuff);
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="methods"></a><a href="#methods" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Methods</h2>
 <h3><a class="anchor" aria-hidden="true" id="addcontextlistener"></a><a href="#addcontextlistener" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>addContextListener</code></h3>
 <pre><code class="hljs css language-ts">addContextListener(handler: ContextHandler): Listener;
-addContextListener(contextType: <span class="hljs-built_in">string</span>, handler: ContextHandler): Listener;
+addContextListener(contextType: <span class="hljs-built_in">string</span>, <span class="hljs-attr">handler</span>: ContextHandler): Listener;
 </code></pre>
 <p>Adds a listener for incoming context broadcast from the Desktop Agent. If the consumer is only interested in
 a context of a particular type, they can use the relevant overload that allows the type to be specified.</p>
@@ -116,7 +116,7 @@ a context of a particular type, they can use the relevant overload that allows t
 <span class="hljs-keyword">const</span> listener = fdc3.addContextListener(<span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> { ... });
 
 <span class="hljs-comment">// listener for a specific type</span>
-<span class="hljs-keyword">const</span> contactListener = fdc3.addContextListener(<span class="hljs-string">'fdc3.contact'</span>, contact =&gt; { ... });
+<span class="hljs-keyword">const</span> contactListener = fdc3.addContextListener(<span class="hljs-string">&#x27;fdc3.contact&#x27;</span>, <span class="hljs-function"><span class="hljs-params">contact</span> =&gt;</span> { ... });
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="see-also"></a><a href="#see-also" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
@@ -124,11 +124,11 @@ a context of a particular type, they can use the relevant overload that allows t
 <li><a href="Context"><code>Context</code></a></li>
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="addintentlistener"></a><a href="#addintentlistener" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>addIntentListener</code></h3>
-<pre><code class="hljs css language-ts">addIntentListener(intent: <span class="hljs-built_in">string</span>, handler: ContextHandler): Listener;
+<pre><code class="hljs css language-ts">addIntentListener(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">handler</span>: ContextHandler): Listener;
 </code></pre>
 <p>Adds a listener for incoming Intents from the Agent.</p>
 <h4><a class="anchor" aria-hidden="true" id="examples-1"></a><a href="#examples-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> listener = fdc3.addIntentListener(<span class="hljs-string">'StartChat'</span>, context =&gt; {
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> listener = fdc3.addIntentListener(<span class="hljs-string">&#x27;StartChat&#x27;</span>, <span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> {
   <span class="hljs-comment">// start chat has been requested by another application</span>
 });
 </code></pre>
@@ -144,9 +144,9 @@ a context of a particular type, they can use the relevant overload that allows t
 <p>DesktopAgent implementations should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.</p>
 <h4><a class="anchor" aria-hidden="true" id="example"></a><a href="#example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
 <pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> instrument = {
-    <span class="hljs-attr">type</span>: <span class="hljs-string">'fdc3.instrument'</span>,
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;fdc3.instrument&#x27;</span>,
     <span class="hljs-attr">id</span>: {
-        <span class="hljs-attr">ticker</span>: <span class="hljs-string">'AAPL'</span>
+        <span class="hljs-attr">ticker</span>: <span class="hljs-string">&#x27;AAPL&#x27;</span>
     }
 };
 
@@ -165,12 +165,12 @@ It returns a promise resolving to the intent, its metadata and metadata about th
 This can be used to raise the intent against a specific app.</p>
 <p>If the resolution fails, the promise will return an <code>Error</code> with a string from the <a href="ResolveError"><code>ResolveError</code></a> enumeration.</p>
 <h4><a class="anchor" aria-hidden="true" id="examples-2"></a><a href="#examples-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
-<pre><code class="hljs css language-js"><span class="hljs-comment">// I know 'StartChat' exists as a concept, and want to know more about it ...</span>
-<span class="hljs-keyword">const</span> appIntent = <span class="hljs-keyword">await</span> fdc3.findIntent(<span class="hljs-string">"StartChat"</span>);
+<pre><code class="hljs css language-js"><span class="hljs-comment">// I know &#x27;StartChat&#x27; exists as a concept, and want to know more about it ...</span>
+<span class="hljs-keyword">const</span> appIntent = <span class="hljs-keyword">await</span> fdc3.findIntent(<span class="hljs-string">&quot;StartChat&quot;</span>);
 <span class="hljs-comment">// returns a single AppIntent:</span>
 <span class="hljs-comment">// {</span>
-<span class="hljs-comment">//     intent: { name: "StartChat", displayName: "Chat" },</span>
-<span class="hljs-comment">//     apps: [{ name: "Skype" }, { name: "Symphony" }, { name: "Slack" }]</span>
+<span class="hljs-comment">//     intent: { name: &quot;StartChat&quot;, displayName: &quot;Chat&quot; },</span>
+<span class="hljs-comment">//     apps: [{ name: &quot;Skype&quot; }, { name: &quot;Symphony&quot; }, { name: &quot;Slack&quot; }]</span>
 <span class="hljs-comment">// }</span>
 
 <span class="hljs-comment">// raise the intent against a particular app</span>
@@ -193,12 +193,12 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 
 <span class="hljs-comment">// returns, for example:</span>
 <span class="hljs-comment">// [{</span>
-<span class="hljs-comment">//     intent: { name: "StartCall", displayName: "Call" },</span>
-<span class="hljs-comment">//     apps: [{ name: "Skype" }]</span>
+<span class="hljs-comment">//     intent: { name: &quot;StartCall&quot;, displayName: &quot;Call&quot; },</span>
+<span class="hljs-comment">//     apps: [{ name: &quot;Skype&quot; }]</span>
 <span class="hljs-comment">// },</span>
 <span class="hljs-comment">// {</span>
-<span class="hljs-comment">//     intent: { name: "StartChat", displayName: "Chat" },</span>
-<span class="hljs-comment">//     apps: [{ name: "Skype" }, { name: "Symphony" }, { name: "Slack" }]</span>
+<span class="hljs-comment">//     intent: { name: &quot;StartChat&quot;, displayName: &quot;Chat&quot; },</span>
+<span class="hljs-comment">//     apps: [{ name: &quot;Skype&quot; }, { name: &quot;Symphony&quot; }, { name: &quot;Slack&quot; }]</span>
 <span class="hljs-comment">// }];</span>
 
 <span class="hljs-comment">// select a particular intent to raise</span>
@@ -233,7 +233,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 <code>Error</code> with a string from the <a href="ChannelError"><code>ChannelError</code></a> enumeration if channel could not be created or access was denied.</p>
 <h4><a class="anchor" aria-hidden="true" id="example-2"></a><a href="#example-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
 <pre><code class="hljs css language-js"><span class="hljs-keyword">try</span> {
-  <span class="hljs-keyword">const</span> myChannel = <span class="hljs-keyword">await</span> fdc3.getOrCreateChannel(<span class="hljs-string">"myChannel"</span>);
+  <span class="hljs-keyword">const</span> myChannel = <span class="hljs-keyword">await</span> fdc3.getOrCreateChannel(<span class="hljs-string">&quot;myChannel&quot;</span>);
   <span class="hljs-keyword">const</span> myChannel.addContextListener(<span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> {});
 }
 <span class="hljs-keyword">catch</span> (err){
@@ -251,7 +251,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 <p>Retrieves a list of the System channels available for the app to join.  This should include the 'global' channel.</p>
 <h4><a class="anchor" aria-hidden="true" id="example-3"></a><a href="#example-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
 <pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> systemChannels = <span class="hljs-keyword">await</span> fdc3.getSystemChannels();
-<span class="hljs-keyword">const</span> redChannel = systemChannels.find(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> c.id === <span class="hljs-string">'red'</span>);
+<span class="hljs-keyword">const</span> redChannel = systemChannels.find(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> c.id === <span class="hljs-string">&#x27;red&#x27;</span>);
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="see-also-7"></a><a href="#see-also-7" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
@@ -305,17 +305,17 @@ The Context argument is functionally equivalent to opening the target app with n
 <p>If opening errors, it returns an <code>Error</code> with a string from the <a href="OpenError"><code>OpenError</code></a> enumeration.</p>
 <h4><a class="anchor" aria-hidden="true" id="example-4"></a><a href="#example-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// no context</span>
-<span class="hljs-keyword">await</span> fdc3.open(<span class="hljs-string">'myApp'</span>);
+<span class="hljs-keyword">await</span> fdc3.open(<span class="hljs-string">&#x27;myApp&#x27;</span>);
 
 <span class="hljs-comment">// no context, with AppMetadata object as target</span>
 <span class="hljs-keyword">await</span> fdc3.open({
- <span class="hljs-attr">name</span>: <span class="hljs-string">'myApp'</span>,
- <span class="hljs-attr">title</span>: <span class="hljs-string">'The title for the application myApp.'</span>,
- <span class="hljs-attr">description</span>: <span class="hljs-string">'...'</span>
+ <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;myApp&#x27;</span>,
+ <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;The title for the application myApp.&#x27;</span>,
+ <span class="hljs-attr">description</span>: <span class="hljs-string">&#x27;...&#x27;</span>
 });
 
 <span class="hljs-comment">// with context</span>
-<span class="hljs-keyword">await</span> fdc3.open(<span class="hljs-string">'myApp'</span>, context);
+<span class="hljs-keyword">await</span> fdc3.open(<span class="hljs-string">&#x27;myApp&#x27;</span>, context);
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="see-also-9"></a><a href="#see-also-9" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
@@ -323,7 +323,7 @@ The Context argument is functionally equivalent to opening the target app with n
 <li><a href="OpenError"><code>OpenError</code></a></li>
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="raiseintent"></a><a href="#raiseintent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>raiseIntent</code></h3>
-<pre><code class="hljs css language-ts">raiseIntent(intent: <span class="hljs-built_in">string</span>, context: Context, app?: TargetApp): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
+<pre><code class="hljs css language-ts">raiseIntent(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">context</span>: Context, app?: TargetApp): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
 </code></pre>
 <p>Raises a specific intent against a target app.</p>
 <p>The desktop agent will resolve the correct app to target based on the provided intent name and context data.</p>
@@ -333,13 +333,13 @@ Alternatively, the specific app to target can also be provided (if known).</p>
 <p>If a target app for the intent cannot be found with the criteria provided, an <code>Error</code> with a string from the <a href="ResolveError"><code>ResolveError</code></a> enumeration is returned.</p>
 <h4><a class="anchor" aria-hidden="true" id="example-5"></a><a href="#example-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// find apps to resolve an intent to start a chat with a given contact</span>
-<span class="hljs-keyword">const</span> appIntent = <span class="hljs-keyword">await</span> fdc3.findIntent(<span class="hljs-string">"StartChat"</span>, context);
+<span class="hljs-keyword">const</span> appIntent = <span class="hljs-keyword">await</span> fdc3.findIntent(<span class="hljs-string">&quot;StartChat&quot;</span>, context);
 
 <span class="hljs-comment">// use the name of one of the associated apps returned by findIntent as the specific intent target</span>
-<span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">"StartChat"</span>, context, appIntent.apps[<span class="hljs-number">0</span>].name);
+<span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&quot;StartChat&quot;</span>, context, appIntent.apps[<span class="hljs-number">0</span>].name);
 
 <span class="hljs-comment">// or use the metadata of the app to fully describe the target app for the intent</span>
-<span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">"StartChat"</span>, context, appIntent.apps[<span class="hljs-number">0</span>]);
+<span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&quot;StartChat&quot;</span>, context, appIntent.apps[<span class="hljs-number">0</span>]);
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="see-also-10"></a><a href="#see-also-10" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
@@ -373,12 +373,12 @@ the desktop agent has the opportunity to provide the user with a richer selectio
 <p>Retrieves information about the FDC3 Desktop Agent implementation, such as the implemented version of the FDC3 specification and the name of the implementation provider.</p>
 <p>Returns an <code>ImplementationMetadata</code> object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.</p>
 <h4><a class="anchor" aria-hidden="true" id="example-7"></a><a href="#example-7" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> {compareVersionNumbers, versionIsAtLeast} <span class="hljs-keyword">from</span> <span class="hljs-string">'@finos/fdc3'</span>;
+<pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> {compareVersionNumbers, versionIsAtLeast} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@finos/fdc3&#x27;</span>;
 
-<span class="hljs-keyword">if</span> (fdc3.getInfo &amp;&amp; versionIsAtLeast(fdc3.getInfo(), <span class="hljs-string">"1.2"</span>)) {
+<span class="hljs-keyword">if</span> (fdc3.getInfo &amp;&amp; versionIsAtLeast(fdc3.getInfo(), <span class="hljs-string">&quot;1.2&quot;</span>)) {
   <span class="hljs-keyword">await</span> fdc3.raiseIntentForContext(context);
 } <span class="hljs-keyword">else</span> {
-  <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">"ViewChart"</span>, context);
+  <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&quot;ViewChart&quot;</span>, context);
 }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="see-also-12"></a><a href="#see-also-12" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>

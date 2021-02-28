@@ -87,7 +87,7 @@ The source application may have data required to compose a workflow with another
 <p>FDC3 recognizes that there are other object definitions for providing context between applications. Most, if not all of these definitions though are platform-specific. FDC3, as a rule, sets out to be platform-agnostic and focused on creating bridges between the various walled gardens on the financial desktop.</p>
 <h2><a class="anchor" aria-hidden="true" id="the-context-interface"></a><a href="#the-context-interface" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The Context Interface</h2>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> Context {
-    <span class="hljs-keyword">type</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">type</span>: <span class="hljs-built_in">string</span>;
     name?: <span class="hljs-built_in">string</span>;
     id?: {
         [x:<span class="hljs-built_in">string</span>]: <span class="hljs-built_in">string</span>;
@@ -103,15 +103,15 @@ The source application may have data required to compose a workflow with another
 <h3><a class="anchor" aria-hidden="true" id="identifiers"></a><a href="#identifiers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Identifiers</h3>
 <p>Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifer is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.</p>
 <p>All standard identifier names are reserved names. Applications may use their own identifiers ad hoc. For example:</p>
-<pre><code class="hljs css language-json">"id": {
-    "CUSIP":"037833100",
-    "foo":"bar"
+<pre><code class="hljs css language-json">&quot;id&quot;: {
+    &quot;CUSIP&quot;:&quot;037833100&quot;,
+    &quot;foo&quot;:&quot;bar&quot;
 }
 </code></pre>
 <p>The identifier &quot;foo&quot; is proprietary, an application that can use it is free to do so. However, since multiple applications may want to use the &quot;foo&quot; name and may use it to mean different things, there is a need for applications to ensure that their identifiers use naming conventions that will avoid collision. The recommended approach here is to prefix the identifier name with a namespace. For example:</p>
-<pre><code class="hljs css language-json">"id": {
-    "CUSIP":"037833100",
-    "com.company.foo": "000C7F-E"
+<pre><code class="hljs css language-json">&quot;id&quot;: {
+    &quot;CUSIP&quot;:&quot;037833100&quot;,
+    &quot;com.company.foo&quot;: &quot;000C7F-E&quot;
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="standard-context-types"></a><a href="#standard-context-types" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Standard Context Types</h2>
@@ -170,30 +170,30 @@ The source application may have data required to compose a workflow with another
 <h3><a class="anchor" aria-hidden="true" id="examples"></a><a href="#examples" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h3>
 <h4><a class="anchor" aria-hidden="true" id="contact"></a><a href="#contact" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contact</h4>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"fdc3.contact"</span>,
-    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"John Smith"</span>,
-    <span class="hljs-attr">"id"</span>:{
-        <span class="hljs-attr">"email"</span>: <span class="hljs-string">"john.smith@company.com"</span>,
+    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;fdc3.contact&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;John Smith&quot;</span>,
+    <span class="hljs-attr">&quot;id&quot;</span>:{
+        <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;john.smith@company.com&quot;</span>,
     }
 }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="contactlist"></a><a href="#contactlist" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ContactList</h4>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"fdc3.contactList"</span>,
-    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"client list"</span>,
-    <span class="hljs-attr">"contacts"</span>:[
+    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;fdc3.contactList&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;client list&quot;</span>,
+    <span class="hljs-attr">&quot;contacts&quot;</span>:[
         {
-            <span class="hljs-attr">"type"</span>:<span class="hljs-string">"fdc3.contact"</span>,
-            <span class="hljs-attr">"name"</span>:<span class="hljs-string">"joe"</span>,
-            <span class="hljs-attr">"id"</span>:{
-                <span class="hljs-attr">"email"</span>: <span class="hljs-string">"joe@company1.com"</span>,
+            <span class="hljs-attr">&quot;type&quot;</span>:<span class="hljs-string">&quot;fdc3.contact&quot;</span>,
+            <span class="hljs-attr">&quot;name&quot;</span>:<span class="hljs-string">&quot;joe&quot;</span>,
+            <span class="hljs-attr">&quot;id&quot;</span>:{
+                <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;joe@company1.com&quot;</span>,
             }
         },
         {
-            <span class="hljs-attr">"type"</span>:<span class="hljs-string">"fdc3.contact"</span>,
-            <span class="hljs-attr">"name"</span>:<span class="hljs-string">"jane"</span>,
-            <span class="hljs-attr">"id"</span>:{
-                <span class="hljs-attr">"email"</span>: <span class="hljs-string">"jane@company2.com"</span>,
+            <span class="hljs-attr">&quot;type&quot;</span>:<span class="hljs-string">&quot;fdc3.contact&quot;</span>,
+            <span class="hljs-attr">&quot;name&quot;</span>:<span class="hljs-string">&quot;jane&quot;</span>,
+            <span class="hljs-attr">&quot;id&quot;</span>:{
+                <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;jane@company2.com&quot;</span>,
             }
         }
     ]
@@ -201,44 +201,44 @@ The source application may have data required to compose a workflow with another
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="country"></a><a href="#country" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Country</h4>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"type"</span>:<span class="hljs-string">"fdc3.country"</span>,
-    <span class="hljs-attr">"name"</span>:<span class="hljs-string">"the USA"</span>,
-    <span class="hljs-attr">"id"</span>:{
-        <span class="hljs-attr">"ISOALPHA2"</span>:<span class="hljs-string">"US"</span>,
-        <span class="hljs-attr">"ISOALPHA3"</span>:<span class="hljs-string">"USA"</span>
+    <span class="hljs-attr">&quot;type&quot;</span>:<span class="hljs-string">&quot;fdc3.country&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>:<span class="hljs-string">&quot;the USA&quot;</span>,
+    <span class="hljs-attr">&quot;id&quot;</span>:{
+        <span class="hljs-attr">&quot;ISOALPHA2&quot;</span>:<span class="hljs-string">&quot;US&quot;</span>,
+        <span class="hljs-attr">&quot;ISOALPHA3&quot;</span>:<span class="hljs-string">&quot;USA&quot;</span>
     }
 }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="instrument"></a><a href="#instrument" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Instrument</h4>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"type"</span> : <span class="hljs-string">"fdc3.instrument"</span>,
-    <span class="hljs-attr">"name"</span> : <span class="hljs-string">"Apple"</span>,
-    <span class="hljs-attr">"id"</span> : 
+    <span class="hljs-attr">&quot;type&quot;</span> : <span class="hljs-string">&quot;fdc3.instrument&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span> : <span class="hljs-string">&quot;Apple&quot;</span>,
+    <span class="hljs-attr">&quot;id&quot;</span> : 
     {  
-        <span class="hljs-attr">"ticker"</span> : <span class="hljs-string">"aapl"</span>,
-        <span class="hljs-attr">"ISIN"</span> : <span class="hljs-string">"US0378331005"</span>,
-        <span class="hljs-attr">"CUSIP"</span> : <span class="hljs-string">"037833100"</span>,
-        <span class="hljs-attr">"FIGI"</span> : <span class="hljs-string">"BBG000B9XRY4"</span>,
+        <span class="hljs-attr">&quot;ticker&quot;</span> : <span class="hljs-string">&quot;aapl&quot;</span>,
+        <span class="hljs-attr">&quot;ISIN&quot;</span> : <span class="hljs-string">&quot;US0378331005&quot;</span>,
+        <span class="hljs-attr">&quot;CUSIP&quot;</span> : <span class="hljs-string">&quot;037833100&quot;</span>,
+        <span class="hljs-attr">&quot;FIGI&quot;</span> : <span class="hljs-string">&quot;BBG000B9XRY4&quot;</span>,
     }
 }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="instrumentlist"></a><a href="#instrumentlist" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>InstrumentList</h4>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"type"</span> : <span class="hljs-string">"fdc3.instrumentList"</span>,
-    <span class="hljs-attr">"name"</span> : <span class="hljs-string">"my portfolio"</span>,
-    <span class="hljs-attr">"instruments"</span> : [
+    <span class="hljs-attr">&quot;type&quot;</span> : <span class="hljs-string">&quot;fdc3.instrumentList&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span> : <span class="hljs-string">&quot;my portfolio&quot;</span>,
+    <span class="hljs-attr">&quot;instruments&quot;</span> : [
         {  
-            <span class="hljs-attr">"type"</span> : <span class="hljs-string">"fdc3.instrument"</span>,
-            <span class="hljs-attr">"name"</span> : <span class="hljs-string">"Apple"</span>,
-            <span class="hljs-attr">"id"</span>: {
-               <span class="hljs-attr">"ticker"</span> : <span class="hljs-string">"aapl"</span>
+            <span class="hljs-attr">&quot;type&quot;</span> : <span class="hljs-string">&quot;fdc3.instrument&quot;</span>,
+            <span class="hljs-attr">&quot;name&quot;</span> : <span class="hljs-string">&quot;Apple&quot;</span>,
+            <span class="hljs-attr">&quot;id&quot;</span>: {
+               <span class="hljs-attr">&quot;ticker&quot;</span> : <span class="hljs-string">&quot;aapl&quot;</span>
             }
         },
         {  
-            <span class="hljs-attr">"type"</span> : <span class="hljs-string">"fdc3.instrument"</span>,
-            <span class="hljs-attr">"name"</span> : <span class="hljs-string">"International Business Machines"</span>,
-            <span class="hljs-attr">"id"</span>: {
-               <span class="hljs-attr">"ticker"</span> : <span class="hljs-string">"ibm"</span>
+            <span class="hljs-attr">&quot;type&quot;</span> : <span class="hljs-string">&quot;fdc3.instrument&quot;</span>,
+            <span class="hljs-attr">&quot;name&quot;</span> : <span class="hljs-string">&quot;International Business Machines&quot;</span>,
+            <span class="hljs-attr">&quot;id&quot;</span>: {
+               <span class="hljs-attr">&quot;ticker&quot;</span> : <span class="hljs-string">&quot;ibm&quot;</span>
             }
         }
     ]
@@ -246,58 +246,58 @@ The source application may have data required to compose a workflow with another
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="organization"></a><a href="#organization" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Organization</h4>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"fdc3.organization"</span>,
-    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"IBM"</span>,
-    <span class="hljs-attr">"id"</span>: {
-        <span class="hljs-attr">"PERMID"</span> : <span class="hljs-string">"4295904307"</span>,
-        <span class="hljs-attr">"LEI"</span> : <span class="hljs-string">"VGRQXHF3J8VDLUA7XE92"</span>
+    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;fdc3.organization&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;IBM&quot;</span>,
+    <span class="hljs-attr">&quot;id&quot;</span>: {
+        <span class="hljs-attr">&quot;PERMID&quot;</span> : <span class="hljs-string">&quot;4295904307&quot;</span>,
+        <span class="hljs-attr">&quot;LEI&quot;</span> : <span class="hljs-string">&quot;VGRQXHF3J8VDLUA7XE92&quot;</span>
     }
 }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="portfolio"></a><a href="#portfolio" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Portfolio</h4>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"type"</span>:<span class="hljs-string">"fdc3.portfolio"</span>
-    <span class="hljs-string">"name"</span>:<span class="hljs-string">"my portfolio"</span>,
-    <span class="hljs-attr">"positions"</span>:[
+    <span class="hljs-attr">&quot;type&quot;</span>:<span class="hljs-string">&quot;fdc3.portfolio&quot;</span>
+    <span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;my portfolio&quot;</span>,
+    <span class="hljs-attr">&quot;positions&quot;</span>:[
         {
-            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"fdc3.position"</span>,
-            <span class="hljs-attr">"instrument"</span>: {
-                <span class="hljs-attr">"type"</span> : <span class="hljs-string">"fdc3.instrument"</span>,
-                <span class="hljs-attr">"name"</span> : <span class="hljs-string">"Apple"</span>,
-                <span class="hljs-attr">"id"</span> : 
+            <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;fdc3.position&quot;</span>,
+            <span class="hljs-attr">&quot;instrument&quot;</span>: {
+                <span class="hljs-attr">&quot;type&quot;</span> : <span class="hljs-string">&quot;fdc3.instrument&quot;</span>,
+                <span class="hljs-attr">&quot;name&quot;</span> : <span class="hljs-string">&quot;Apple&quot;</span>,
+                <span class="hljs-attr">&quot;id&quot;</span> : 
                 {
-                    <span class="hljs-attr">"ISIN"</span> : <span class="hljs-string">"US0378331005"</span>
+                    <span class="hljs-attr">&quot;ISIN&quot;</span> : <span class="hljs-string">&quot;US0378331005&quot;</span>
                 }
             },
-            <span class="hljs-attr">"holding"</span>: <span class="hljs-number">500</span>
+            <span class="hljs-attr">&quot;holding&quot;</span>: <span class="hljs-number">500</span>
         },
          {
-            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"fdc3.position"</span>,
-            <span class="hljs-attr">"instrument"</span>: {
-                <span class="hljs-attr">"type"</span> : <span class="hljs-string">"fdc3.instrument"</span>,
-                <span class="hljs-attr">"name"</span> : <span class="hljs-string">"IBM"</span>,
-                <span class="hljs-attr">"id"</span> : 
+            <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;fdc3.position&quot;</span>,
+            <span class="hljs-attr">&quot;instrument&quot;</span>: {
+                <span class="hljs-attr">&quot;type&quot;</span> : <span class="hljs-string">&quot;fdc3.instrument&quot;</span>,
+                <span class="hljs-attr">&quot;name&quot;</span> : <span class="hljs-string">&quot;IBM&quot;</span>,
+                <span class="hljs-attr">&quot;id&quot;</span> : 
                 {
-                    <span class="hljs-attr">"ISIN"</span> : <span class="hljs-string">"US4592001014"</span>
+                    <span class="hljs-attr">&quot;ISIN&quot;</span> : <span class="hljs-string">&quot;US4592001014&quot;</span>
                 }
             },
-            <span class="hljs-attr">"holding"</span>: <span class="hljs-number">1000</span>
+            <span class="hljs-attr">&quot;holding&quot;</span>: <span class="hljs-number">1000</span>
         }
     ]
 }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="position"></a><a href="#position" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Position</h4>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"fdc3.position"</span>,
-    <span class="hljs-attr">"instrument"</span>: {
-        <span class="hljs-attr">"type"</span> : <span class="hljs-string">"fdc3.instrument"</span>,
-        <span class="hljs-attr">"name"</span> : <span class="hljs-string">"Apple"</span>,
-        <span class="hljs-attr">"id"</span> : 
+    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;fdc3.position&quot;</span>,
+    <span class="hljs-attr">&quot;instrument&quot;</span>: {
+        <span class="hljs-attr">&quot;type&quot;</span> : <span class="hljs-string">&quot;fdc3.instrument&quot;</span>,
+        <span class="hljs-attr">&quot;name&quot;</span> : <span class="hljs-string">&quot;Apple&quot;</span>,
+        <span class="hljs-attr">&quot;id&quot;</span> : 
         {
-            <span class="hljs-attr">"ISIN"</span> : <span class="hljs-string">"US0378331005"</span>
+            <span class="hljs-attr">&quot;ISIN&quot;</span> : <span class="hljs-string">&quot;US0378331005&quot;</span>
         }
     },
-    <span class="hljs-attr">"holding"</span>: <span class="hljs-number">500</span>
+    <span class="hljs-attr">&quot;holding&quot;</span>: <span class="hljs-number">500</span>
 }
 </code></pre>
 </span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/context/overview"><span class="arrow-prev">← </span><span>Context Data Overview</span></a><a class="docs-next button" href="/docs/context/ref/Context"><span>Context</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#introduction">Introduction</a></li><li><a href="#assumptions">Assumptions</a></li><li><a href="#other-standards">Other Standards</a></li><li><a href="#the-context-interface">The Context Interface</a><ul class="toc-headings"><li><a href="#namespacing">Namespacing</a></li><li><a href="#versioning">Versioning</a></li><li><a href="#identifiers">Identifiers</a></li></ul></li><li><a href="#standard-context-types">Standard Context Types</a><ul class="toc-headings"><li><a href="#examples">Examples</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/fdc3-icon-2019.svg" alt="FDC3"/></a><div><h5>Docs</h5><a href="/docs/fdc3-intro">Getting Started</a><a href="/docs/why-fdc3">Why FDC3</a><a href="/docs/api/ref/DesktopAgent">API Reference</a><a href="/schemas/1.1/app-directory">App Directory Schema</a><a href="/docs/use-cases/overview">Use Cases</a></div><div><h5>Community</h5><a href="https://www.finos.org/" target="_blank" rel="noreferrer noopener">FINOS</a><a href="https://www.finos.org/privacy-policy" target="_blank" rel="noreferrer noopener">FINOS Privacy Policy</a><a href="https://finosfoundation.atlassian.net/wiki/spaces/FDC3" target="_blank" rel="noreferrer noopener">FDC3 Wiki</a><a href="https://groups.google.com/a/finos.org/forum/#!forum/fdc3" target="_blank" rel="noreferrer noopener">Google Groups</a></div><div><h5>More</h5><div class="social"><a class="github-button" href="https://github.com/finos/FDC3" data-count-href="https://github.com/finos/FDC3/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">FDC3</a></div><div class="social"><a href="https://twitter.com/FDC3_" class="twitter-follow-button">Follow @FDC3_</a></div></div></section><section class="finos finosBanner"><a href="https://www.finos.org"><img id="finosicon" src="https://fdc3.finos.org/img/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS"/><h2 id="proud">Proud member of the Fintech Open Source Foundation</h2></a></section><section class="copyright">Copyright © 2021 FDC3</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

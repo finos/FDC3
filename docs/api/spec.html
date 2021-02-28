@@ -160,7 +160,7 @@
 </ul>
 <p>For example</p>
 <pre><code class="hljs css language-js"><span class="hljs-keyword">try</span> {
-    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">'StageOrder'</span>);
+    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&#x27;StageOrder&#x27;</span>);
     <span class="hljs-keyword">if</span> (result.data) {
         <span class="hljs-keyword">const</span> orderId = result.data.id;
     }
@@ -172,7 +172,7 @@
 </code></pre>
 <h5><a class="anchor" aria-hidden="true" id="upgrading-to-a-remote-api-connection"></a><a href="#upgrading-to-a-remote-api-connection" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Upgrading to a Remote API Connection</h5>
 <p>There are a wide range of workflows where decoupled intents and/or context passing do not provide rich enough interactivity and applications are better off exposing proprietary APIs.  In these cases, an App can use the <em>source</em> property on the resolution of an intent to connect directly to another App and from there, call remote APIs using the methods available in the Desktop Agent context for the App.  For example:</p>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> chart = <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">'ViewChart'</span>);
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> chart = <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&#x27;ViewChart&#x27;</span>);
 <span class="hljs-comment">// construct a vendor wrapper for the App</span>
 <span class="hljs-keyword">const</span> chartApp = fin.Application.wrap(chart.source);
 <span class="hljs-comment">// do some vendor-specific stuff</span>
@@ -205,20 +205,20 @@
 <p>The 'global' channel should be returned as part of the response from the <code>fdc3.getSystemChannels</code> call.  Desktop Agents may want to filter out the 'global' option in their UI for system channel pickers.</p>
 <h4><a class="anchor" aria-hidden="true" id="examples"></a><a href="#examples" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
 <p>An app queries the current context of the <code>global</code> channel.</p>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> globalChannel = <span class="hljs-keyword">await</span> fdc3.getOrCreateChannel(<span class="hljs-string">"global"</span>);
-<span class="hljs-keyword">const</span> context = <span class="hljs-keyword">await</span> globalChannel.getCurrentContext(<span class="hljs-string">"fdc3.instrument"</span>);
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> globalChannel = <span class="hljs-keyword">await</span> fdc3.getOrCreateChannel(<span class="hljs-string">&quot;global&quot;</span>);
+<span class="hljs-keyword">const</span> context = <span class="hljs-keyword">await</span> globalChannel.getCurrentContext(<span class="hljs-string">&quot;fdc3.instrument&quot;</span>);
 </code></pre>
 <p>An app can explicitly receive context events on the <code>global</code> (or any other) channel, regardless of what it is currently joined to.</p>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// retrieve current fdc3 context</span>
-<span class="hljs-keyword">const</span> context = <span class="hljs-keyword">await</span> fdc3.getCurrentContext(<span class="hljs-string">"fdc3.instrument"</span>)
+<span class="hljs-keyword">const</span> context = <span class="hljs-keyword">await</span> fdc3.getCurrentContext(<span class="hljs-string">&quot;fdc3.instrument&quot;</span>)
 <span class="hljs-comment">// context is null, as not currently joined to a channel</span>
 
-<span class="hljs-keyword">const</span> globalChannel = <span class="hljs-keyword">await</span> fdc3.getSystemChannels.filter(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> c.id === <span class="hljs-string">"global"</span>)
-<span class="hljs-keyword">const</span> globalContext = <span class="hljs-keyword">await</span> fdc3.getCurrentContext(<span class="hljs-string">"fdc3.instrument"</span>)
+<span class="hljs-keyword">const</span> globalChannel = <span class="hljs-keyword">await</span> fdc3.getSystemChannels.filter(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> c.id === <span class="hljs-string">&quot;global&quot;</span>)
+<span class="hljs-keyword">const</span> globalContext = <span class="hljs-keyword">await</span> fdc3.getCurrentContext(<span class="hljs-string">&quot;fdc3.instrument&quot;</span>)
 <span class="hljs-comment">// context is instrument AAPL on the global channel</span>
 
-fdc3.joinChannel(<span class="hljs-string">'global'</span>)
-<span class="hljs-keyword">const</span> context = <span class="hljs-keyword">await</span> fdc3.getCurrentContext(<span class="hljs-string">'fdc3.instrument'</span>)
+fdc3.joinChannel(<span class="hljs-string">&#x27;global&#x27;</span>)
+<span class="hljs-keyword">const</span> context = <span class="hljs-keyword">await</span> fdc3.getCurrentContext(<span class="hljs-string">&#x27;fdc3.instrument&#x27;</span>)
 <span class="hljs-comment">// top-level context is now instrument AAPL as well because we have joined the global channel</span>
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="direct-listening-and-broadcast-on-channels"></a><a href="#direct-listening-and-broadcast-on-channels" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Direct Listening and Broadcast on Channels</h3>
@@ -227,7 +227,7 @@ fdc3.joinChannel(<span class="hljs-string">'global'</span>)
 <p>To find a system channel, one calls</p>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// returns an array of channels</span>
 <span class="hljs-keyword">const</span> allChannels = <span class="hljs-keyword">await</span> fdc3.getSystemChannels(); 
-<span class="hljs-keyword">const</span> redChannel = allChannels.find(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> c.id === <span class="hljs-string">'red'</span>);
+<span class="hljs-keyword">const</span> redChannel = allChannels.find(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> c.id === <span class="hljs-string">&#x27;red&#x27;</span>);
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="joining-channels-1"></a><a href="#joining-channels-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Joining channels</h4>
 <p>To join a channel. one calls</p>
@@ -237,7 +237,7 @@ fdc3.joinChannel(<span class="hljs-string">'global'</span>)
 <h4><a class="anchor" aria-hidden="true" id="app-channels"></a><a href="#app-channels" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>App Channels</h4>
 <p>App channels are topics dynamically created by applications connected via FDC3. For example, an app may create a channel to broadcast to others data or status specific to that app.</p>
 <p>To get (or create) a channel reference, then interact with it</p>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> appChannel = <span class="hljs-keyword">await</span> fdc3.getOrCreateChannel(<span class="hljs-string">'my_custom_channel'</span>);
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> appChannel = <span class="hljs-keyword">await</span> fdc3.getOrCreateChannel(<span class="hljs-string">&#x27;my_custom_channel&#x27;</span>);
 <span class="hljs-comment">// get the current context of the channel</span>
 <span class="hljs-keyword">const</span> current = <span class="hljs-keyword">await</span> appChannel.getCurrentContext();
 <span class="hljs-comment">// add a listener</span>
