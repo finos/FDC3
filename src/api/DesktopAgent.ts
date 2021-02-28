@@ -9,6 +9,7 @@ import { ContextHandler, TargetApp } from './Types';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
+import { ImplementationMetadata } from './ImplementationMetadata';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -192,4 +193,11 @@ export interface DesktopAgent {
    * in a no-op when the app is not on a channel.
    */
   leaveCurrentChannel(): Promise<void>;
+
+  /**
+   * Retrieves information about the FDC3 Desktop Agent implementation, such as
+   * the implemented version of the FDC3 specification and the name of the implementation
+   * provider.
+   */
+  getInfo(): ImplementationMetadata;
 }
