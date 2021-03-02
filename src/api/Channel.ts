@@ -4,7 +4,7 @@
  */
 
 import { Context } from '../context/ContextTypes';
-import { ContextHandler } from './ContextHandler';
+import { ContextHandler } from './Types';
 import { DisplayMetadata } from './DisplayMetadata';
 import { Listener } from './Listener';
 
@@ -34,6 +34,9 @@ export interface Channel {
    *
    * Note that this function can be used without first joining the channel, allowing applications to broadcast on
    * channels that they aren't a member of.
+   *
+   * Channel implementations should ensure that context messages broadcast by an application on a channel should
+   * not be delivered back to that same application if they are joined to the channel.
    *
    * `Error` with a string from the `ChannelError` enumeration.
    */

@@ -6,6 +6,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+* [API] New raiseIntentForContext method (#268)
+* [API] Add fdc3Ready event to API specification (#269)
+* [API] Add optional appId and version properties to AppMetadata (#273)
+* [API] Define new Target type for use with open and raiseIntent (#279)
+* [Package] Build and publish an npm package for FDC3 (#252)
+* [Package] Add enums for intents and context types (#264)
+* [Package] Add ES6 module support to FDC3 API package (#266)
+
+### Changed
+* [API] Allow AppMetadata to be passed in as a target argument (#272)
+* [API] Reject/throw as appropriate in ES6 exported methods if window.fdc3 is not available (#277)
+* [API] Clarify docs for broadcast functions to prevent message loops (#285)
+* [Website] Add Genesis logo (#209)
+* [Website] Change ChartIQ logo to Cosaic after rebrand (#225)
+* [Website] Update "Get Involved" with standards governance info (#228, #249, #300, #286)
+
+### Fixed
+* [API] Missing/wrong type signature for getCurrentChannel (#222)
+* [API] Support nullable return type for getCurrentChannel (#282)
+* [API] Implement missing leaveCurrentChannel method (#283)
+* [Schemas] Correct invalid schema references (#224)
+* [Docs] Fix raiseIntent examples (#211)
+* [Docs] Fix Portfolio context data example (#251)
+
+### Technical
+* [Readme] Fix AppDirectory Readme (#274)
+* [Readme] Update main Readme (#275)
+* [GitHub] Remove FINOS SVG from project root (#204)
+* [GitHub] Switch builds from Travis to GitHub workflows (#239, #252, #253, #254)
+* [GitHub] Meeting workflows and templates (#292, #293)
+* [Security] Upgrade dependencies to address security vulnerabilities (#207, #226, #232, #235, #238, #258, #259, #260, #289, #290, #295, #297)
+
 ## [1.1] - 2020-04-09
 ### Added
 * JSON Schema definitions for agreed context types ([#119](https://github.com/finos/FDC3/pull/119)):
@@ -79,6 +112,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 [Unreleased]: https://github.com/finos/FDC3/compare/v1.1..HEAD
-[1.1]: https://github.com/finos/FDC3/compare/v1.1..v1.1
+[1.1]: https://github.com/finos/FDC3/compare/v1.1..v1.0
 [1.0]: https://github.com/finos/FDC3/compare/v1.0..v1.0.0-beta
 [1.0.0-beta]: https://github.com/finos/FDC3/releases/tag/v1.0.0-beta

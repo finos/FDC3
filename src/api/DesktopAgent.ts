@@ -5,11 +5,11 @@
 
 import { AppIntent } from './AppIntent';
 import { Channel } from './Channel';
-import { ContextHandler } from './ContextHandler';
+import { ContextHandler, TargetApp } from './Types';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
-import { Target } from './TargetType';
+import { ImplementationMetadata } from './ImplementationMetadata';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -39,7 +39,7 @@ export interface DesktopAgent {
    *     agent.open('myApp', context);
    * ```
    */
-  open(target: Target, context?: Context): Promise<void>;
+  open(app: TargetApp, context?: Context): Promise<void>;
 
   /**
    * Find out more information about a particular intent by passing its name, and optionally its context.
@@ -103,6 +103,10 @@ export interface DesktopAgent {
 
   /**
    * Publishes context to other apps on the desktop.
+   *
+   * DesktopAgent implementations should ensure that context messages broadcast to a channel
+   * by an application joined to it should not be delivered back to that same application.
+   *
    * ```javascript
    *  agent.broadcast(context);
    * ```
@@ -123,7 +127,18 @@ export interface DesktopAgent {
   raiseIntent(
     intent: string,
     context: Context,
-    target?: Target
+    app?: TargetApp
+  ): Promise<IntentResolution>;
+
+  /**
+   * Raises a context to the desktop agent to resolve with one of the possible Intents for that context.
+   * ```javascript
+   * await fdc3.raiseIntentForContext(context);
+   * ```
+   */
+  raiseIntentForContext(
+    context: Context,
+    app?: TargetApp
   ): Promise<IntentResolution>;
 
   /**
@@ -169,5 +184,20 @@ export interface DesktopAgent {
    *
    * Returns `null` if the app is not joined to a channel.
    */
-  getCurrentChannel(): Promise<Channel>;
+  getCurrentChannel(): Promise<Channel | null>;
+
+  /**
+   * Removes the app from any channel membership.
+   *
+   * Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be
+   * in a no-op when the app is not on a channel.
+   */
+  leaveCurrentChannel(): Promise<void>;
+
+  /**
+   * Retrieves information about the FDC3 Desktop Agent implementation, such as
+   * the implemented version of the FDC3 specification and the name of the implementation
+   * provider.
+   */
+  getInfo(): ImplementationMetadata;
 }

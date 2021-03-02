@@ -9,8 +9,8 @@ hide_title: true
 ```ts
 interface DesktopAgent {
   // apps
-  open(name: string, context?: Context): Promise<void>;
-  
+  open(app: TargetApp, context?: Context): Promise<void>;
+
   // context
   broadcast(context: Context): void;
   addContextListener(handler: ContextHandler): Listener;
@@ -19,15 +19,19 @@ interface DesktopAgent {
   // intents
   findIntent(intent: string, context?: Context): Promise<AppIntent>;
   findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
-  raiseIntent(intent: string, context: Context, target?: string): Promise<IntentResolution>;
+  raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: ContextHandler): Listener;
-  
+
   // channels
   getOrCreateChannel(channelId: string): Promise<Channel>;
   getSystemChannels(): Promise<Array<Channel>>;
   joinChannel(channelId: string) : Promise<void>;
-  getCurrentChannel() : Promise<Channel>;
+  getCurrentChannel() : Promise<Channel | null>;
   leaveCurrentChannel() : Promise<void>;
+
+  //implementation info
+  getInfo(): ImplementationMetadata;
 }
 ```
 
@@ -35,6 +39,21 @@ A Desktop Agent is a desktop component (or aggregate of components) that serves 
 
 A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.
 
+The Desktop Agent is the root of the FDC3 API can be made available to an application through a number of different methods.  In the case of web applications, a Desktop Agent SHOULD provide the FDC3 API via a global accessible as _window.fdc3_. Implementors MAY additionally make the API available through modules, imports, or other means. 
+
+The global `window.fdc3` must only be available after the API is ready to use. To prevent the API from being used before it is ready, implementors SHOULD provide a global `fdc3Ready` event. Here is code demonstrating the use of the FDC3 API and the ready event:
+
+```js
+function fdc3Stuff() {
+  // Make some fdc3 API calls here
+}
+
+if (window.fdc3) {
+  fdc3Stuff();
+} else {
+  window.addEventListener("fdc3Ready", fdc3Stuff);
+}
+```
 ## Methods
 
 
@@ -91,6 +110,8 @@ broadcast(context: Context): void;
 
 Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
 
+DesktopAgent implementations should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.
+
 #### Example
 ```js
 const instrument = {
@@ -114,11 +135,11 @@ findIntent(intent: string, context?: Context): Promise<AppIntent>;
 
 Find out more information about a particular intent by passing its name, and optionally its context.
 
-_findIntent_ is effectively granting programmatic access to the Desktop Agent's resolver. 
+_findIntent_ is effectively granting programmatic access to the Desktop Agent's resolver.
 It returns a promise resolving to the intent, its metadata and metadata about the apps that are registered to handle it.
 This can be used to raise the intent against a specific app.
- 
- If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
+
+If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
 
 #### Examples
 ```js
@@ -144,16 +165,16 @@ findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
 ```
 
 Find all the avalable intents for a particular context.
-_findIntentsByContext_ is effectively granting programmatic access to the Desktop Agent's resolver. 
+_findIntentsByContext_ is effectively granting programmatic access to the Desktop Agent's resolver.
 A promise resolving to all the intents, their metadata and metadata about the apps that registered as handlers is returned, based on the context types the intents have registered.
- 
+
  If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
- 
+
  #### Example
  ```js
  // I have a context object, and I want to know what I can do with it, hence, I look for intents...
  const appIntents = await fdc3.findIntentsByContext(context);
- 
+
  // returns, for example:
  // [{
  //     intent: { name: "StartCall", displayName: "Call" },
@@ -163,13 +184,13 @@ A promise resolving to all the intents, their metadata and metadata about the ap
  //     intent: { name: "StartChat", displayName: "Chat" },
  //     apps: [{ name: "Skype" }, { name: "Symphony" }, { name: "Slack" }]
  // }];
- 
+
  // select a particular intent to raise
  const startChat = appIntents[1];
- 
+
  // target a particular app
  const selectedApp = startChat.apps[0];
- 
+
  // raise the intent, passing the given context, targeting the app
  await fdc3.raiseIntent(startChat.intent.name, context, selectedApp.name);
  ```
@@ -182,23 +203,21 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 ### `getCurrentChannel`
 
 ```ts
-getCurrentChannel() : Promise<Channel>;
+getCurrentChannel() : Promise<Channel | null>;
 ```
 
-Returns the `Channel` object for the current channel membership.  Returns `null` if the app is not joined to a channel. 
+Returns the `Channel` object for the current channel membership.  Returns `null` if the app is not joined to a channel.
 
 
 #### Examples
 
 ```js
-//get the current channel membership
+// get the current channel membership
 let current = await fdc3.getCurrentChannel();
 ```
 
 #### See also
 * [`Channel`](Channel)
-
-
 
 ### `getOrCreateChannel`
 
@@ -234,7 +253,7 @@ Retrieves a list of the System channels available for the app to join.  This sho
 #### Example
 
 ```js
-const systemChannels = await fdc3.getSystemChannels(); 
+const systemChannels = await fdc3.getSystemChannels();
 const redChannel = systemChannels.find(c => c.id === 'red');
 ```
 
@@ -277,7 +296,7 @@ fdc3.joinChannel(selectedChannel.id);
 leaveCurrentChannel() : Promise<void>;
 ```
 
-Removes the app from any channel membership.  Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be in a no-op when the app is not on a channel. 
+Removes the app from any channel membership.  Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be in a no-op when the app is not on a channel.
 
 
 #### Examples
@@ -299,21 +318,31 @@ redChannel.addContextListener(channelListener);
 ### `open`
 
 ```ts
-open(name: string, context?: Context): Promise<void>;
+open(app: TargetApp, context?: Context): Promise<void>;
 ```
 
-Launches/links to an app by name.  
+Launches an app with target information, which can be either be a string like a name, or an [`AppMetadata`](AppMetadata) object.
 
-The `open` method differs in use from [`raiseIntent`](#raiseIntent).  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, `open` would be used to an app returned in the search results.  **Note**, if both the intent and target app name are known, it is recommended to instead use `raiseIntent` with a `target` argument. 
+The `open` method differs in use from [`raiseIntent`](#raiseIntent).  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, `open` would be used to an app returned in the search results.
+
+**Note**, if both the intent and target app name are known, it is recommended to instead use [`raiseIntent`](#raiseIntent) with the `app` argument.
 
 If a [`Context`](Context) object is passed in, this object will be provided to the opened application via a contextListener.
 The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
+
 If opening errors, it returns an `Error` with a string from the [`OpenError`](OpenError) enumeration.
 
 #### Example
  ```js
 // no context
 await fdc3.open('myApp');
+
+// no context, with AppMetadata object as target
+await fdc3.open({
+  name: 'myApp',
+  title: 'The title for the application myApp.',
+  description: '...'
+});
 
 // with context
 await fdc3.open('myApp', context);
@@ -323,26 +352,90 @@ await fdc3.open('myApp', context);
 * [`Context`](Context)
 * [`OpenError`](OpenError)
 
-
-
 ### `raiseIntent`
 
 ```ts
-raiseIntent(intent: string, context: Context, target?: string): Promise<IntentResolution>;
+raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
 ```
-Raises an intent to the desktop agent to resolve.
+Raises a specific intent against a target app.
+
+The desktop agent will resolve the correct app to target based on the provided intent name and context data.
+
+If multiple matching apps are found, the user may be presented with an app picker.
+Alternatively, the specific app to target can also be provided (if known).
+
+Returns an `IntentResolution` object with a handle to the app that responded to the intent.
+
+If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](ResolveError) enumeration is returned.
 
 #### Example
 
 ```js
-//Find apps to resolve an intent to start a chat with a given contact
+// find apps to resolve an intent to start a chat with a given contact
 const appIntent = await fdc3.findIntent("StartChat", context);
-//use the returned AppIntent object to target one of the returned chat apps with the context
+
+// use the name of one of the associated apps returned by findIntent as the specific intent target
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
+
+// or use the metadata of the app to fully describe the target app for the intent
+await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
+```
+#### See also
+* [`Context`](Context)
+* [`TargetApp`](TargetApp)
+* [`IntentResolution`](IntentResolution)
+* [`ResolveError`](ResolveError)
+
+### `raiseIntentForContext`
+
+```ts
+raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
+```
+
+Finds and raises an intent against a target app based purely on context data.
+
+The desktop agent will resolve the correct app to target based on the provided context.
+
+This is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case
+the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose the intent and target app.
+
+Returns an `IntentResolution` object with a handle to the app that responded to the selected intent.
+
+If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](ResolveError) enumeration is returned.
+
+#### Example
+
+```js
+const intentResolution = await fdc3.raiseIntentForContext(context);
 ```
 
 #### See also
+* [`Context`](Context)
+* [`TargetApp`](TargetApp)
 * [`IntentResolution`](IntentResolution)
+* [`ResolveError`](ResolveError)
 
+### `getInfo`
 
+```ts
+getInfo(): ImplementationMetadata;
+```
 
+Retrieves information about the FDC3 Desktop Agent implementation, such as the implemented version of the FDC3 specification and the name of the implementation provider.
+
+Returns an `ImplementationMetadata` object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.
+
+#### Example
+
+```js
+import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
+
+if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), "1.2")) {
+  await fdc3.raiseIntentForContext(context);
+} else {
+  await fdc3.raiseIntent("ViewChart", context);
+}
+```
+
+#### See also
+* [`ImplementationMetadata`](ImplementationMetada)
