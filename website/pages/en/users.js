@@ -43,10 +43,13 @@ class Users extends React.Component {
             </div>
             <Showcase users={membersToShowcase} />
             {/* <div className="logos">{showcase}</div> */}
-            <div className="prose paddingTop">
-              <p>FDC3 is also used by financial organizations of all sizes.</p>
-            </div>
-            <Showcase users={othersToShowcase} />
+            {othersToShowcase.length > 0 ?
+            <div>
+              <div className="prose paddingTop">
+                <p>FDC3 is also used by financial organizations of all sizes.</p>
+              </div>
+              <Showcase users={othersToShowcase} />
+            </div> : null}
             <p>Are you using FDC3?</p>
             <a href={editUrl} className="button">
               Add your company

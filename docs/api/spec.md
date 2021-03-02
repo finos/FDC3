@@ -96,20 +96,25 @@ Often, we want to link from one app to another to dynamically create a workflow.
 
 Intents provide a way for an app to request functionality from another app and defer the discovery and launching of the destination app to the Desktop Agent.  There are multiple models for interop that Intents can support.
 
-- **Chain**:  In this case the workflow is completely handed off from one app to another (similar to linking).   Currently, this is the primary focus in FDC3
-- **Client-Service**: A Client invokes a Service via the Intent, the Service performs some function, then passes the workflow back to the Client.  Typically, there is a data payload type associated with this intent that is published as the standard contract for the intent.
+- **Chain**:  In this case the workflow is completely handed off from one app to another (similar to linking).  Currently, this is the primary focus in FDC3.
+- **Client-Service**: A Client invokes a Service via the Intent, the Service performs some function, then passes the workflow back to the Client. Typically, there is a data payload type associated with this intent that is published as the standard contract for the intent.
 - **Remote API**: An app wants to remote an entire API that it owns to another App.  In this case, the API for the App cannot be standardized.  However, the FDC3 API can address how an App connects to another App in order to get access to a proprietary API.
+
+#### Intents and Context
+When raising an Intent a specific context may be provided. The type of the provided context may determine which applications can resolve the Intent. 
+
+A Context type may also be associated with multiple Intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other Intents. In addition to raising a specific intent, you can raise an Intent for a specific Context allowing the Desktop Agent or the user (if the Intent is ambiguous) to select the appropriate Intent for the selected Context and then to raise that Intent for resolution.
 
 #### Intent Resolution
 Raising an Intent will return a Promise-type object that will resolve/reject based on a number of factors.
 
 ##### Resolve
-- Intent was resolved unambigiously and the recieving app was launched successfully.
-- Intent was ambigious, a resolution was chosen by the end user and the chosen application was launched succesfully.
+- Intent was resolved unambiguously and the receiving app was launched successfully.
+- Intent was ambiguous, a resolution was chosen by the end user, and the chosen application was launched successfully.
 
 ##### Reject
-- An app matching the intent was not found.
-- A match was found, but the recieving app failed to launch.
+- No app matching the intent and context (if specified) was found.
+- A match was found, but the receiving app failed to launch.
 - The intent was ambiguous and the resolver experienced an error.
 
 ##### Resolution Object
@@ -126,7 +131,7 @@ If the raising of the intent resolves (or rejects), a standard object will be pa
 - *data* = return data structure - if one is provided for the given intent
 - *version* = the version number of the Intents schema being used
 
-For example
+For example, to raise a specific Intent:
 
 ```js
 try {
@@ -138,7 +143,19 @@ try {
 catch (er){
     console.log(er.message);
 }
+```
 
+or to raise an Intent for a specific context:
+```js
+try {
+    const result = await fdc3.raiseIntentForContext(context);
+    if (result.data) {
+        const orderId = result.data.id;
+    }
+}
+catch (er){
+    console.log(er.message);
+}
 ```
 
 ##### Upgrading to a Remote API Connection
@@ -162,13 +179,26 @@ It is expected that App Directories will also curate listed apps and ensure that
 
 Like FDC3 Context Data, the Intent schemas need to be versioned.  Desktop Agents will be responsible to declare which version of the Intent schema they are using.   Applications may also assert a specific version requirement when raising an Intent.  Version negotation may be supported by a given Desktop Agent.
 
-### Send/broadcast context  
-On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features.  
+### Send/broadcast Context  
+On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features. However, a Desktop Agent should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.
+
+### Retrieve Metadata about the Desktop Agent implementation
+From version 1.2 of the FDC3 specification, it is possible to retrieve information about the  version of the FDC3 specification supported by a Desktop Agent implementation and the name of the implementation provider. This metadata can be used to vary the behavior of an application based on the version supported by the Desktop Agent, e.g.:
+
+```js
+import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
+
+if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), "1.2")) {
+  await fdc3.raiseIntentForContext(context);
+} else {
+  await fdc3.raiseIntent("ViewChart", context);
+}
+```
 
 ## Resolvers
 Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (raising UI to pick the desired App for the intent) or by the app launching the intent - in which case the calling App will handle the resolution itself (using the findIntents API below) and then invoke an explicit Intent object.
 
-## Context channels
+## Context Channels
 
 Context channels allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.  Use cases for channels include color linking between applications to automate the sharing of context and topic based pub/sub such as theme.
 
@@ -181,7 +211,7 @@ There are two types of channels, which are functionally identical, but have diff
 ### Joining Channels
 Apps can join channels.  An app can only be joined to one channel at a time.  When an app joins a channel it will automatically recieve the current context for that channel.
 
-When an app is joined to a channel, calls to fdc3.broadcast and listeners added through fdc3.addContextListener will be routed to that channel.  If an app is not joined to a channel these methods will be no-ops, but apps can still choose to listen and broadcast to specific channels via the methods on the `Channel` class.  
+When an app is joined to a channel, calls to fdc3.broadcast and listeners added through fdc3.addContextListener will be routed to that channel.  If an app is not joined to a channel these methods will be no-ops, but apps can still choose to listen and broadcast to specific channels via the methods on the `Channel` class.
 
 It is possible that a call to join a channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.  
 
@@ -239,6 +269,8 @@ fdc3.joinChannel(redChannel.id);
 ```
 
 Calling _fdc3.broadcast_ will now route context to the joined channel.
+
+Channel implementations should ensure that context messages broadcast by an application on a channel should not be delivered back to that same application if they are joined to the channel.
 
 #### App Channels
 

@@ -8,19 +8,21 @@ hide_title: true
 
 ```ts
 interface IntentResolution {
-  source: string;
+  source: TargetApp;
   data?: object;
   version: string;
 }
 ```
 
 IntentResolution provides a standard format for data returned upon resolving an intent.
- 
+
 #### Example
 ```js
-//resolve a "Chain" type intent
+// resolve a "Chain" type intent
 const intentResolution = await fdc3.raiseIntent("intentName", context);
 ```
 
 #### See also
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+* [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
+* [`TargetApp`](TargetApp)

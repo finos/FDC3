@@ -3,7 +3,7 @@
         "image": "/img/users/adaptive.png",
         "infoLink": "https://weareadaptive.com/",
         "pinned": true,
-        "isMember": false
+        "isMember": true
     },
     {
         "caption": "Finsemble",

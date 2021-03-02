@@ -20,7 +20,8 @@
           "api/ref/IntentResolution",
           "api/ref/AppMetadata",
           "api/ref/IntentMetadata",
-          "api/ref/DisplayMetadata"
+          "api/ref/DisplayMetadata",
+          "api/ref/ImplementationMetadata"
         ]
       },
       {
@@ -29,6 +30,7 @@
         "ids": [
           "api/ref/Context",
           "api/ref/ContextHandler",
+          "api/ref/TargetApp",
           "api/ref/OpenError",
           "api/ref/ResolveError",
           "api/ref/ChannelError"

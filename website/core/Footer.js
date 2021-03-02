@@ -5,11 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-
-
-
-
 const React = require('react');
+
+const versions = require(`${process.cwd()}/versions.json`);
+const latestVersion = versions[0];
 
 class Footer extends React.Component {
   docUrl(doc, language = '') {
@@ -54,7 +53,7 @@ class Footer extends React.Component {
             <a href={this.docUrl('api/ref/DesktopAgent')}>
               API Reference
             </a>
-            <a href={this.pageUrl('app-directory','','schemas')}>
+            <a href={this.pageUrl('app-directory','',`schemas/${latestVersion}`)}>
               App Directory Schema
             </a>
             <a href={this.docUrl('use-cases/overview')}>

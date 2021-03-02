@@ -129,6 +129,8 @@ Broadcasts a context on the channel. This function can be used without first joi
 
 If the broadcast is denied by the channel or the channel is not available, the method will return an `Error` with a string from the [`ChannelError`](ChannelError) enumeration.
 
+Channel implementations should ensure that context messages broadcast by an application on a channel should not be delivered back to that same application if they are joined to the channel.
+
 #### Example
 
 ```javascript
