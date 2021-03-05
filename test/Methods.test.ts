@@ -276,37 +276,33 @@ describe('test ES6 module', () => {
 });
 
 describe('test version comparison functions', () => {
-  
-  beforeAll(() => {
-    
-  });
-
-  afterAll(() => {
-    
-  });
-
   test('compareVersionNumbers', () => {
-    expect(methods.compareVersionNumbers("1.1","1.2")).toBe(-1);
-    expect(methods.compareVersionNumbers("1.2","1.1")).toBe(1);
-    expect(methods.compareVersionNumbers("1.2","1.2")).toBe(0);
-    expect(methods.compareVersionNumbers("1.1.1","1.2")).toBe(-1);
-    expect(methods.compareVersionNumbers("1.1.1","1.1")).toBe(1);
-    expect(methods.compareVersionNumbers("1.1","1.1.1")).toBe(-1);
-    expect(methods.compareVersionNumbers("1.1.1","1.1.1")).toBe(0);
+    expect(methods.compareVersionNumbers('1.1', '1.2')).toBe(-1);
+    expect(methods.compareVersionNumbers('1.2', '1.1')).toBe(1);
+    expect(methods.compareVersionNumbers('1.2', '1.2')).toBe(0);
+    expect(methods.compareVersionNumbers('1.1.1', '1.2')).toBe(-1);
+    expect(methods.compareVersionNumbers('1.1.1', '1.1')).toBe(1);
+    expect(methods.compareVersionNumbers('1.1', '1.1.1')).toBe(-1);
+    expect(methods.compareVersionNumbers('1.1.1', '1.1.1')).toBe(0);
   });
 
   test('versionIsAtLeast', () => {
-    const metaOneTwo: ImplementationMetadata = {fdc3Version: "1.2", provider: "test"};
-    expect(methods.versionIsAtLeast(metaOneTwo,"1.1")).toBe(true);
-    expect(methods.versionIsAtLeast(metaOneTwo,"1.2")).toBe(true);
-    expect(methods.versionIsAtLeast(metaOneTwo,"1.2.1")).toBe(false);
-    expect(methods.versionIsAtLeast(metaOneTwo,"2.0")).toBe(false);
-    
-    const metaOneTwoOne: ImplementationMetadata = {fdc3Version: "1.2.1", provider: "test"};
-    expect(methods.versionIsAtLeast(metaOneTwoOne,"1.1")).toBe(true);
-    expect(methods.versionIsAtLeast(metaOneTwoOne,"1.2")).toBe(true);
-    expect(methods.versionIsAtLeast(metaOneTwoOne,"1.2.1")).toBe(true);
-    expect(methods.versionIsAtLeast(metaOneTwoOne,"2.0")).toBe(false);
-    
+    const metaOneTwo: ImplementationMetadata = {
+      fdc3Version: '1.2',
+      provider: 'test',
+    };
+    expect(methods.versionIsAtLeast(metaOneTwo, '1.1')).toBe(true);
+    expect(methods.versionIsAtLeast(metaOneTwo, '1.2')).toBe(true);
+    expect(methods.versionIsAtLeast(metaOneTwo, '1.2.1')).toBe(false);
+    expect(methods.versionIsAtLeast(metaOneTwo, '2.0')).toBe(false);
+
+    const metaOneTwoOne: ImplementationMetadata = {
+      fdc3Version: '1.2.1',
+      provider: 'test',
+    };
+    expect(methods.versionIsAtLeast(metaOneTwoOne, '1.1')).toBe(true);
+    expect(methods.versionIsAtLeast(metaOneTwoOne, '1.2')).toBe(true);
+    expect(methods.versionIsAtLeast(metaOneTwoOne, '1.2.1')).toBe(true);
+    expect(methods.versionIsAtLeast(metaOneTwoOne, '2.0')).toBe(false);
   });
 });
