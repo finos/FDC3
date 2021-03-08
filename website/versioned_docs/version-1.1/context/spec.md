@@ -1,12 +1,9 @@
 ---
 id: version-1.1-spec
 sidebar_label: Context Data Specification
-title: Context Data Specification
-hide_title: true
+title: Context Data Specification 1.1
 original_id: spec
 ---
-
-# Context Data Specification
 
 ## Introduction
 
@@ -81,7 +78,7 @@ The identifier "foo" is proprietary, an application that can use it is free to d
 
 ## Standard Context Types
 
-The following are standard FDC3 context types. 
+The following are standard FDC3 context types.
  __Note:__ The specification for these types are shared with the [FINOS Financial Objects](https://fo.finos.org) definitions, JSON schemas are hosted with FDC3.
 
 - __fdc3.contact__
@@ -172,8 +169,8 @@ __Note:__ The below examples show how the base context data interface can be use
 {
     "type" : "fdc3.instrument",
     "name" : "Apple",
-    "id" : 
-    {  
+    "id" :
+    {
         "ticker" : "aapl",
         "ISIN" : "US0378331005",
         "CUSIP" : "037833100",
@@ -188,14 +185,14 @@ __Note:__ The below examples show how the base context data interface can be use
     "type" : "fdc3.instrumentList",
     "name" : "my portfolio",
     "instruments" : [
-        {  
+        {
             "type" : "fdc3.instrument",
             "name" : "Apple",
             "id": {
                "ticker" : "aapl"
             }
         },
-        {  
+        {
             "type" : "fdc3.instrument",
             "name" : "International Business Machines",
             "id": {
@@ -229,7 +226,7 @@ __Note:__ The below examples show how the base context data interface can be use
             "instrument": {
                 "type" : "fdc3.instrument",
                 "name" : "Apple",
-                "id" : 
+                "id" :
                 {
                     "ISIN" : "US0378331005"
                 }
@@ -241,7 +238,7 @@ __Note:__ The below examples show how the base context data interface can be use
             "instrument": {
                 "type" : "fdc3.instrument",
                 "name" : "IBM",
-                "id" : 
+                "id" :
                 {
                     "ISIN" : "US4592001014"
                 }
@@ -260,7 +257,7 @@ __Note:__ The below examples show how the base context data interface can be use
     "instrument": {
         "type" : "fdc3.instrument",
         "name" : "Apple",
-        "id" : 
+        "id" :
         {
             "ISIN" : "US0378331005"
         }
