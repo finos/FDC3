@@ -132,7 +132,9 @@ Another great way to interact with the community, is to attend the quarterly [FD
 
 If you are an existing individual or corporate user of the FDC3 standard, we would love to hear from you: just email [fdc3@finos.org] with details about how you are using the standard.
 
-If you'd like to be listed as a user of the standard, you can directly [send a pull request to update the website] or, if listing your logo publicly requires legal evaluation, you can reach out privately to the [FDC3 Product Management Committee](mailto:fdc3-pmc-private@finos.org).
+If you'd like to be listed as a user of the standard, you can directly send a pull request to update the website: upload your logo to [this folder](https://github.com/finos/FDC3/tree/master/website/static/img/users) and update [this file](https://github.com/finos/FDC3/edit/master/website/data/users.json) with your company's details. If listing your logo publicly requires legal evaluation, you can reach out privately to the [FDC3 Product Management Committee](mailto:fdc3-pmc-private@finos.org).
+
+ 
 
 ## The Standard Working Group
 
