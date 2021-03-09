@@ -208,11 +208,13 @@ Context channels allows a set of apps to share a stateful piece of data between 
 
 There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics.
 
-1. The 'system' ones, which have a well understood identity. One is called 'global'.
+1. The 'system' channels, which have a well understood identity.
 
-    > **Deprecation notice:** In future versions of FDC3, there won't be a `global` channel, see [below](#the-global-channel).
+    > **Deprecation notice:** Earlier versions of FDC3 include the concept of a 'global' system channel
+    for backwards compatibility with FDC3 1.0. In future, there won't be a 'global' channel
+    (see [below](#the-global-channel) for more detail).
 
-2. The 'app' ones, which have a transient identity and need to be revealed
+2. The 'app' channels, which have a transient identity and need to be revealed
 
 
 ### Joining Channels
@@ -240,7 +242,7 @@ The 'system' channels include a 'global' channel which serves as the backwards c
 The 'global' channel should be returned as part of the response from the `fdc3.getSystemChannels` call.  Desktop Agents may want to filter out the 'global' option in their UI for system channel pickers.
 
 
-#### Examples
+### Examples
 
 An app queries the current context of the `red` channel.
 
