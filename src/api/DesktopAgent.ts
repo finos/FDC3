@@ -154,7 +154,10 @@ export interface DesktopAgent {
   /**
    * Adds a listener for the broadcast of a specific type of context object.
    */
-  addContextListener(contextType: string | null, handler: ContextHandler): Listener;
+  addContextListener(
+    contextType: string | null,
+    handler: ContextHandler
+  ): Listener;
 
   /**
    * Retrieves a list of the System channels available for the app to join
