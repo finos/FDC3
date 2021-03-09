@@ -16,8 +16,11 @@ interface Channel {
   // methods
   broadcast(context: Context): void;
   getCurrentContext(contextType?: string): Promise<Context|null>;
-  addContextListener(handler: ContextHandler): Listener;
-  addContextListener(contextType: string, handler: ContextHandler): Listener;
+  addContextListener(contextType: string | null, handler: ContextHandler): Listener;
+  /**
+   * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
+   */
+  addContextListener(handler: ContextHandler): Listener;  
 }
 ```
 
@@ -67,25 +70,26 @@ DisplayMetadata can be used to provide display hints for channels intended to be
 
 
 ### `addContextListener`
+```ts
+public addContextListener(contextType: string | null, handler: ContextHandler): Listener;
+```
+Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
 
 ```ts
+/**
+ * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
+ */
 public addContextListener(handler: ContextHandler): Listener;
 ```
-
 Adds a listener for incoming contexts whenever a broadcast happens on the channel.
 
-```ts
-public addContextListener(contextType: string, handler: ContextHandler): Listener;
-```
-
-Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
 
 #### Examples
 
 Add a listener for any context that is broadcast on the channel:
 
 ```ts
-const listener = channel.addContextListener(context => {
+const listener = channel.addContextListener(null, context => {
     if (context.type === 'fdc3.contact') {
         // handle the contact
     } else if (context.type === 'fdc3.instrument') => {
@@ -117,7 +121,7 @@ instrumentListener.unsubscribe();
 * [`Listener`](Listener)
 * [`ContextHandler`](ContextHandler)
 * [`broadcast`](#broadcast)
-* [`getCurrentContext`](#addcontextlistener)
+* [`getCurrentContext`](#getcurrentcontext)
 
 ### `broadcast`
 

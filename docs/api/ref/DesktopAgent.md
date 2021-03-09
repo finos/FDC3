@@ -13,8 +13,11 @@ interface DesktopAgent {
 
   // context
   broadcast(context: Context): void;
+  addContextListener(contextType: string | null, handler: ContextHandler): Listener;
+  /**
+   * @deprecated 'Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
+   */
   addContextListener(handler: ContextHandler): Listener;
-  addContextListener(contextType: string, handler: ContextHandler): Listener;
 
   // intents
   findIntent(intent: string, context?: Context): Promise<AppIntent>;
@@ -60,8 +63,11 @@ if (window.fdc3) {
 ### `addContextListener`
 
 ```ts
+addContextListener(contextType: string | null, handler: ContextHandler): Listener;
+/**
+ * @deprecated 'Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
+ */
 addContextListener(handler: ContextHandler): Listener;
-addContextListener(contextType: string, handler: ContextHandler): Listener;
 ```
 Adds a listener for incoming context broadcast from the Desktop Agent. If the consumer is only interested in
 a context of a particular type, they can use the relevant overload that allows the type to be specified.
@@ -69,7 +75,7 @@ a context of a particular type, they can use the relevant overload that allows t
 #### Examples
 ```js
 // any context
-const listener = fdc3.addContextListener(context => { ... });
+const listener = fdc3.addContextListener(null, context => { ... });
 
 // listener for a specific type
 const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ... });
@@ -233,7 +239,7 @@ Returns a Channel object for the specified channel, creating it (as an _App_ cha
 ```js
 try {
   const myChannel = await fdc3.getOrCreateChannel("myChannel");
-  const myChannel.addContextListener(context => {});
+  const myChannel.addContextListener(null, context => {});
 }
 catch (err){
   //app could not register the channel
@@ -303,13 +309,13 @@ Removes the app from any channel membership.  Context broadcast and listening th
 
 ```js
 //desktop-agent scope context listener
-const fdc3Listener = fdc3.addContextListener(context => {});
+const fdc3Listener = fdc3.addContextListener(null, context => {});
 
 await fdc3.leaveCurrentChannel();
 //the fdc3Listener will now cease recieving context
 
 //listening on a specific channel though, will continue to work
-redChannel.addContextListener(channelListener);
+redChannel.addContextListener(null, channelListener);
 
 ```
 
