@@ -47,7 +47,7 @@ function fdc3Stuff() {
 if (window.fdc3) {
   fdc3Stuff();
 } else {
-  window.addEventListener("fdc3Ready", fdc3Stuff);
+  window.addEventListener('fdc3Ready', fdc3Stuff);
 }
 ```
 
@@ -115,6 +115,15 @@ Raising an Intent will return a Promise-type object that will resolve/reject bas
 - The intent was ambiguous and the resolver experienced an error.
 
 ##### Resolution Object
+
+> **Deprecation notice**
+>
+> It is not currently possible to provide a value for the `data` property described below,
+as intent listeners don't currently offer a way to return values.
+>
+> Future versions of FDC3 plan to remove the optional `data` property from the intent resolution object,
+and include a more robust mechanism for intents that need to return data back to the caller.
+
 If the raising of the intent resolves (or rejects), a standard object will be passed into the resolver function with the following format:
 
 ```js
@@ -128,14 +137,12 @@ If the raising of the intent resolves (or rejects), a standard object will be pa
 - *data* = return data structure - if one is provided for the given intent
 - *version* = the version number of the Intents schema being used
 
+
 For example, to raise a specific Intent:
 
 ```js
 try {
     const result = await fdc3.raiseIntent('StageOrder');
-    if (result.data) {
-        const orderId = result.data.id;
-    }
 }
 catch (er){
     console.log(er.message);
@@ -185,10 +192,10 @@ From version 1.2 of the FDC3 specification, it is possible to retrieve informati
 ```js
 import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
 
-if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), "1.2")) {
+if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), '1.2')) {
   await fdc3.raiseIntentForContext(context);
 } else {
-  await fdc3.raiseIntent("ViewChart", context);
+  await fdc3.raiseIntent('ViewChart', context);
 }
 ```
 
@@ -201,8 +208,13 @@ Context channels allows a set of apps to share a stateful piece of data between 
 
 There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics.
 
-1. The 'system' ones, which have a well understood identity. One is called 'global'.
-2. The 'app' ones, which have a transient identity and need to be revealed
+1. The 'system' channels, which have a well understood identity.
+
+    > **Deprecation notice:** Earlier versions of FDC3 include the concept of a 'global' system channel
+    for backwards compatibility with FDC3 1.0. In future, there won't be a 'global' channel
+    (see [below](#the-global-channel) for more detail).
+
+2. The 'app' channels, which have a transient identity and need to be revealed
 
 
 ### Joining Channels
@@ -215,34 +227,44 @@ It is possible that a call to join a channel could be rejected.  If for example,
 Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  Always, there SHOULD be a clear UX indicator of what channel an app is joined to.
 
 ### The 'global' Channel
+
+> **Deprecation notice**
+>
+> The global channel, which exists only for backward compatibility with FDC3 1.0,
+will be removed in a future version of the FDC3 API Specification.
+>
+> Instead of relying on being joined to a 'default' channel by the desktop agent on startup,
+an app or system channel should be joined explicitly through the relevant APIs,
+or through a channel selection UI.
+
 The 'system' channels include a 'global' channel which serves as the backwards compatible layer with the 'send/broadcast context' behavior in FDC3 1.0.  A desktop agent MAY choose to make membership in the 'global' channel the default state for apps on start up.
 
 The 'global' channel should be returned as part of the response from the `fdc3.getSystemChannels` call.  Desktop Agents may want to filter out the 'global' option in their UI for system channel pickers.
 
 
-#### Examples
+### Examples
 
-An app queries the current context of the `global` channel.
+An app queries the current context of the `red` channel.
 
 ```js
-const globalChannel = await fdc3.getOrCreateChannel("global");
-const context = await globalChannel.getCurrentContext("fdc3.instrument");
+const redChannel = await fdc3.getOrCreateChannel('red');
+const context = await redChannel.getCurrentContext('fdc3.instrument');
 ```
 
-An app can explicitly receive context events on the `global` (or any other) channel, regardless of what it is currently joined to.
+An app can still explicitly receive context events on any channel, regardless of the channel it is currently joined to.
 
 ```js
 // check for current fdc3 channel
 let joinedChannel = await fdc3.getCurrentChannel()
 //current channel is null, as the app is not currently joined to a channel
 
-const globalChannel = await fdc3.getSystemChannels.filter(c => c.id === "global")
-const globalContext = await globalChannel.getCurrentContext("fdc3.instrument")
+const redChannel = await fdc3.getSystemChannels.filter(c => c.id === 'red')
+const context = await redChannel.getCurrentContext('fdc3.instrument')
 // context is instrument AAPL on the global channel
 
-fdc3.joinChannel('global')
+fdc3.joinChannel('blue')
 joinedChannel = await fdc3.getCurrentChannel()
-//current channel is now the 'global' channel
+//current channel is now the 'blue' channel
 
 ```
 
