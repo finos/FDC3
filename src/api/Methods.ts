@@ -5,6 +5,7 @@ import {
   ContextHandler,
   IntentResolution,
   Listener,
+  ImplementationMetadata,
 } from '..';
 import { TargetApp } from './Types';
 
@@ -106,4 +107,58 @@ export const getCurrentChannel: () => Promise<Channel | null> = () => {
 
 export const leaveCurrentChannel: () => Promise<void> = () => {
   return rejectIfNoGlobal(() => window.fdc3.leaveCurrentChannel());
+};
+
+/**
+ * Compare numeric semver version number strings (in the form `1.2.3`).
+ *
+ * Returns `-1` if the first argument is a lower version number than the second,
+ * `1` if the first argument is greater than the second, 0 if the arguments are
+ * equal and `null` if an error occurred during the comparison.
+ *
+ * @param a
+ * @param b
+ */
+export const compareVersionNumbers: (a: string, b: string) => number | null = (
+  a,
+  b
+) => {
+  try {
+    let aVerArr = a.split('.').map(Number);
+    let bVerArr = b.split('.').map(Number);
+    for (
+      let index = 0;
+      index < Math.max(aVerArr.length, bVerArr.length);
+      index++
+    ) {
+      /* If one version number has more digits and the other does not, and they are otherwise equal, 
+         assume the longer is greater. E.g. 1.1.1 > 1.1 */
+      if (index === aVerArr.length || aVerArr[index] < bVerArr[index]) {
+        return -1;
+      } else if (index === bVerArr.length || aVerArr[index] > bVerArr[index]) {
+        return 1;
+      }
+    }
+    return 0;
+  } catch (e) {
+    console.error('Failed to compare version strings', e);
+    return null;
+  }
+};
+
+/**
+ * Check if the FDC3 version in an ImplementationMetadata object is greater than
+ * or equal to the supplied numeric semver version number string (in the form `1.2.3`).
+ *
+ * Returns a boolean or null if an error occurred while comparing the version numbers.
+ *
+ * @param metadata
+ * @param version
+ */
+export const versionIsAtLeast: (
+  metadata: ImplementationMetadata,
+  version: string
+) => boolean | null = (metadata, version) => {
+  let comparison = compareVersionNumbers(metadata.fdc3Version, version);
+  return comparison === null ? null : comparison >= 0 ? true : false;
 };

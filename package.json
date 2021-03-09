@@ -21,7 +21,7 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
-    "test": "tsdx test",
+    "test": "tsdx test --verbose",
     "lint": "tsdx lint src/api test",
     "prepare": "tsdx build",
     "size": "size-limit",
@@ -53,7 +53,8 @@
   ],
   "resolutions": {
     "node-fetch": "^2.6.1",
-    "yargs-parser": "^13.1.2"
+    "yargs-parser": "^13.1.2",
+    "node-notifier": "^8.0.1"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.6.0",

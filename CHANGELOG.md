@@ -8,9 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 * [API] New raiseIntentForContext method (#268)
-* [API] Add fdc3Ready event to API specification (#269)
+* [API] Add fdc3Ready event to API specification (#269, #327)
 * [API] Add optional appId and version properties to AppMetadata (#273)
-* [API] Define new Target type for use with open and raiseIntent (#279)
+* [API] Define new TargetApp type for use with open and raiseIntent (#279, #315)
+* [API] New getInfo method with method data about implementation (#324)
 * [Package] Build and publish an npm package for FDC3 (#252)
 * [Package] Add enums for intents and context types (#264)
 * [Package] Add ES6 module support to FDC3 API package (#266)
@@ -18,9 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 * [API] Allow AppMetadata to be passed in as a target argument (#272)
 * [API] Reject/throw as appropriate in ES6 exported methods if window.fdc3 is not available (#277)
-* [API] Clarify docs for broadcast functions to prevent message loops (#285)
-* [Website] Add Genesis logo (#209)
-* [Website] Change ChartIQ logo to Cosaic after rebrand (#225)
+* [API] API specification clarifications around intents/context and loops when broadcasting (#285, #307, 310)
+* [Website] Add/update participant logos (#209, #225, #320)
 * [Website] Update "Get Involved" with standards governance info (#228, #249, #300, #286)
 
 ### Fixed
@@ -33,7 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Technical
 * [Readme] Fix AppDirectory Readme (#274)
-* [Readme] Update main Readme (#275)
+* [Readme] Update main Readme (#275, #318)
 * [GitHub] Remove FINOS SVG from project root (#204)
 * [GitHub] Switch builds from Travis to GitHub workflows (#239, #252, #253, #254)
 * [GitHub] Meeting workflows and templates (#292, #293)

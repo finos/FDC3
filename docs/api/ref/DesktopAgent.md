@@ -32,6 +32,9 @@ interface DesktopAgent {
   joinChannel(channelId: string) : Promise<void>;
   getCurrentChannel() : Promise<Channel | null>;
   leaveCurrentChannel() : Promise<void>;
+
+  //implementation info
+  getInfo(): ImplementationMetadata;
 }
 ```
 
@@ -39,6 +42,21 @@ A Desktop Agent is a desktop component (or aggregate of components) that serves 
 
 A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.
 
+The Desktop Agent is the root of the FDC3 API can be made available to an application through a number of different methods.  In the case of web applications, a Desktop Agent SHOULD provide the FDC3 API via a global accessible as _window.fdc3_. Implementors MAY additionally make the API available through modules, imports, or other means. 
+
+The global `window.fdc3` must only be available after the API is ready to use. To prevent the API from being used before it is ready, implementors SHOULD provide a global `fdc3Ready` event. Here is code demonstrating the use of the FDC3 API and the ready event:
+
+```js
+function fdc3Stuff() {
+  // Make some fdc3 API calls here
+}
+
+if (window.fdc3) {
+  fdc3Stuff();
+} else {
+  window.addEventListener("fdc3Ready", fdc3Stuff);
+}
+```
 ## Methods
 
 
@@ -402,3 +420,28 @@ const intentResolution = await fdc3.raiseIntentForContext(context);
 * [`TargetApp`](TargetApp)
 * [`IntentResolution`](IntentResolution)
 * [`ResolveError`](ResolveError)
+
+### `getInfo`
+
+```ts
+getInfo(): ImplementationMetadata;
+```
+
+Retrieves information about the FDC3 Desktop Agent implementation, such as the implemented version of the FDC3 specification and the name of the implementation provider.
+
+Returns an `ImplementationMetadata` object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.
+
+#### Example
+
+```js
+import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
+
+if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), "1.2")) {
+  await fdc3.raiseIntentForContext(context);
+} else {
+  await fdc3.raiseIntent("ViewChart", context);
+}
+```
+
+#### See also
+* [`ImplementationMetadata`](ImplementationMetada)
