@@ -1,10 +1,6 @@
 ---
-id: fdc3-compliance
-title: FDC3 Specification Compliance 
-sidebar_label: FDC3 Compliance
+title: FDC3 Compliance
 ---
-
-
 
 FDC3 standards follow the IETF best practices for keywords to Indicate Requirement levels: [RFC 2119](https://tools.ietf.org/html/rfc2119).  Documentation should be updated as needed to reflect this.
 
@@ -20,14 +16,14 @@ In general, the ratified FDC3 specs represent a lowest common denominator interf
 >  on implementors where the method is not required for
 >   interoperability.
 
-These rules would apply only to standards work within FDC3. Today, this covers API, App Directory, Context Data, and Intents working groups, it does not apply to the Use Cases working group. 
+These rules would apply only to standards work within FDC3. Today, this covers API, App Directory, Context Data, and Intents working groups, it does not apply to the Use Cases working group.
 
 ## Personas
 FDC3 implementors generally fall into 2 categories: platform providers, and application providers. A platform provider supplies an implementation of the FDC3 API for applications to use. Implicitly, it connects to one or more App Directories.
 
-An application provider is largely a downstream consumer of FDC3 standards. It MAY use the API, it MAY use Context Data, it MAY use Intents. Application providers are only required to comply with the standards they make use of.  
+An application provider is largely a downstream consumer of FDC3 standards. It MAY use the API, it MAY use Context Data, it MAY use Intents. Application providers are only required to comply with the standards they make use of.
 
-Depending on persona, implementation compliance with FDC3 will mean different things.  
+Depending on persona, implementation compliance with FDC3 will mean different things.
 
 ### Platform Provider
 To meet the requirements of FDC3, a platform provider would need to support the following:
@@ -40,12 +36,12 @@ To meet the requirements of FDC3, a platform provider would need to support the 
 
 ### Application Provider
 For application providers FDC3 compliance requires:
-* If intents are supported by the application, they SHOULD favor supporting applicable FDC3 defined intents over proprietary ones.  
-* If FDC3 defined intents are supported, they MUST meet the expected context and behavior defined for the intent.  
+* If intents are supported by the application, they SHOULD favor supporting applicable FDC3 defined intents over proprietary ones.
+* If FDC3 defined intents are supported, they MUST meet the expected context and behavior defined for the intent.
 * If proprietary intents are handled, those intents SHOULD follow the recommended naming conventions in the specification.
 * If intents are supported, the application SHOULD use the addIntentListener API to set up a handler.
-* If Context Data is supported by the application, they SHOULD favor supporting applicable FDC3 defined Context Data over proprietary ones.  
-* If FDC3 defined Context Data is supported, it MUST meet the interface defined for the type of Context Data.  
+* If Context Data is supported by the application, they SHOULD favor supporting applicable FDC3 defined Context Data over proprietary ones.
+* If FDC3 defined Context Data is supported, it MUST meet the interface defined for the type of Context Data.
 * If proprietary Context Data properties are handled, they SHOULD follow any recommended naming conventions in the specification.
 * If Context Data is supported, the application SHOULD use the addContextListener API to set up a handler.
 

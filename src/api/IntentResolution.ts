@@ -17,6 +17,9 @@ import { TargetApp } from './Types';
  */
 export interface IntentResolution {
   readonly source: TargetApp;
+  /**
+   * @deprecated not assignable from intent listeners
+   */
   readonly data?: object;
   readonly version: string;
 }
