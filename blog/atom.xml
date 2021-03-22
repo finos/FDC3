@@ -16,7 +16,6 @@
         <summary type="html"><![CDATA[<p>This is a test post.</p> <p>A whole bunch of other information.</p> ]]></summary>
         <author>
             <name>Eric Nakagawa</name>
-            <email/>
             <uri>http://twitter.com/ericnakagawa</uri>
         </author>
     </entry>
@@ -30,7 +29,6 @@
 ]]></summary>
         <author>
             <name>Eric Nakagawa</name>
-            <email/>
             <uri>http://twitter.com/ericnakagawa</uri>
         </author>
     </entry>
