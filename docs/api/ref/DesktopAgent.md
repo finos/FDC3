@@ -6,6 +6,12 @@ hide_title: true
 ---
 # `DesktopAgent`
 
+An FDC3 Desktop Agent is a desktop component (or aggregate of components) that serves as an orchestrator for applications in its domain.
+
+A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.
+
+It is expected that the `DesktopAgent` interface is made availabe via the [`window.fdc3`](Globals#windowfdc3-object) global object, and that the [`fdc3Ready`](Globals#fdc3ready-event) event fires when it is ready to be used.
+
 ```ts
 interface DesktopAgent {
   // apps
@@ -38,27 +44,7 @@ interface DesktopAgent {
 }
 ```
 
-A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain.
-
-A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.
-
-The Desktop Agent is the root of the FDC3 API can be made available to an application through a number of different methods.  In the case of web applications, a Desktop Agent SHOULD provide the FDC3 API via a global accessible as _window.fdc3_. Implementors MAY additionally make the API available through modules, imports, or other means. 
-
-The global `window.fdc3` must only be available after the API is ready to use. To prevent the API from being used before it is ready, implementors SHOULD provide a global `fdc3Ready` event. Here is code demonstrating the use of the FDC3 API and the ready event:
-
-```js
-function fdc3Stuff() {
-  // Make some fdc3 API calls here
-}
-
-if (window.fdc3) {
-  fdc3Stuff();
-} else {
-  window.addEventListener("fdc3Ready", fdc3Stuff);
-}
-```
 ## Methods
-
 
 ### `addContextListener`
 
@@ -83,7 +69,7 @@ const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ...
 
 #### See also
 * [`Listener`](Listener)
-* [`Context`](Context)
+* [`Context`](Types#context)
 
 
 
@@ -104,7 +90,7 @@ const listener = fdc3.addIntentListener('StartChat', context => {
 
 #### See also
 * [`Listener`](Listener)
-* [`Context`](Context)
+* [`Context`](Types#context)
 
 
 
@@ -162,7 +148,7 @@ await fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
 ```
 
 #### See also
-* [`ResolveError`](ResolveError)
+* [`ResolveError`](Errors#resolveerror)
 
 ### `findIntentsByContext`
 
@@ -202,7 +188,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
  ```
 
 #### See also
-   * [`ResolveError`](ResolveError)
+   * [`ResolveError`](Errors#resolveerror)
 
 
 
@@ -224,6 +210,33 @@ let current = await fdc3.getCurrentChannel();
 
 #### See also
 * [`Channel`](Channel)
+
+
+
+### `getInfo`
+
+```ts
+getInfo(): ImplementationMetadata;
+```
+
+Retrieves information about the FDC3 Desktop Agent implementation, such as the implemented version of the FDC3 specification and the name of the implementation provider.
+
+Returns an [`ImplementationMetadata`](Metadata#implementationmetadata) object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.
+
+#### Example
+
+```js
+import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
+
+if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), "1.2")) {
+  await fdc3.raiseIntentForContext(context);
+} else {
+  await fdc3.raiseIntent("ViewChart", context);
+}
+```
+
+#### See also
+* [`ImplementationMetadata`](Metadata#implementationmetadata)
 
 ### `getOrCreateChannel`
 
@@ -277,7 +290,7 @@ Joins the app to the specified channel.
 If an app is joined to a channel, all _fdc3.broadcast_ calls will go to the channel, and all listeners assigned via _fdc3.addContextListener_ will listen on the channel.
 An app can only be joined to one channel at a time.
 Rejects with error if the channel is unavailable or the join request is denied.
- `Error` with a string from the [`ChannelError`](ChannelError) enumeration.
+ `Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration.
 
 #### Examples
 
@@ -327,16 +340,16 @@ redChannel.addContextListener(null, channelListener);
 open(app: TargetApp, context?: Context): Promise<void>;
 ```
 
-Launches an app with target information, which can be either be a string like a name, or an [`AppMetadata`](AppMetadata) object.
+Launches an app with target information, which can be either be a string like a name, or an [`AppMetadata`](Metadata#appmetadata) object.
 
 The `open` method differs in use from [`raiseIntent`](#raiseIntent).  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, `open` would be used to an app returned in the search results.
 
 **Note**, if both the intent and target app name are known, it is recommended to instead use [`raiseIntent`](#raiseIntent) with the `app` argument.
 
-If a [`Context`](Context) object is passed in, this object will be provided to the opened application via a contextListener.
+If a [`Context`](Types#context) object is passed in, this object will be provided to the opened application via a contextListener.
 The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
 
-If opening errors, it returns an `Error` with a string from the [`OpenError`](OpenError) enumeration.
+If opening errors, it returns an `Error` with a string from the [`OpenError`](Errors#openerror) enumeration.
 
 #### Example
  ```js
@@ -355,8 +368,8 @@ await fdc3.open('myApp', context);
 ```
 
 #### See also
-* [`Context`](Context)
-* [`OpenError`](OpenError)
+* [`Context`](Types#context)
+* [`OpenError`](Errors#openerror)
 
 ### `raiseIntent`
 
@@ -372,7 +385,7 @@ Alternatively, the specific app to target can also be provided (if known).
 
 Returns an `IntentResolution` object with a handle to the app that responded to the intent.
 
-If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](ResolveError) enumeration is returned.
+If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolverrror) enumeration is returned.
 
 #### Example
 
@@ -387,10 +400,10 @@ await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 ```
 #### See also
-* [`Context`](Context)
-* [`TargetApp`](TargetApp)
-* [`IntentResolution`](IntentResolution)
-* [`ResolveError`](ResolveError)
+* [`Context`](Types#context)
+* [`TargetApp`](Types#targetapp)
+* [`IntentResolution`](Metadata#intentresolution)
+* [`ResolveError`](Errors#resolveerror)
 
 ### `raiseIntentForContext`
 
@@ -407,7 +420,7 @@ the desktop agent has the opportunity to provide the user with a richer selectio
 
 Returns an `IntentResolution` object with a handle to the app that responded to the selected intent.
 
-If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](ResolveError) enumeration is returned.
+If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned.
 
 #### Example
 
@@ -416,32 +429,7 @@ const intentResolution = await fdc3.raiseIntentForContext(context);
 ```
 
 #### See also
-* [`Context`](Context)
-* [`TargetApp`](TargetApp)
-* [`IntentResolution`](IntentResolution)
-* [`ResolveError`](ResolveError)
-
-### `getInfo`
-
-```ts
-getInfo(): ImplementationMetadata;
-```
-
-Retrieves information about the FDC3 Desktop Agent implementation, such as the implemented version of the FDC3 specification and the name of the implementation provider.
-
-Returns an `ImplementationMetadata` object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.
-
-#### Example
-
-```js
-import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
-
-if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), "1.2")) {
-  await fdc3.raiseIntentForContext(context);
-} else {
-  await fdc3.raiseIntent("ViewChart", context);
-}
-```
-
-#### See also
-* [`ImplementationMetadata`](ImplementationMetada)
+* [`Context`](Types#context)
+* [`TargetApp`](Types#targetapp)
+* [`IntentResolution`](Metadata#intentresolution)
+* [`ResolveError`](Errors#resolveerror)
