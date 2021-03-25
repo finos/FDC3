@@ -148,13 +148,17 @@ export interface DesktopAgent {
 
   /**
    * Adds a listener for incoming context broadcast from the Desktop Agent.
+   * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
    */
   addContextListener(handler: ContextHandler): Listener;
 
   /**
    * Adds a listener for the broadcast of a specific type of context object.
    */
-  addContextListener(contextType: string, handler: ContextHandler): Listener;
+  addContextListener(
+    contextType: string | null,
+    handler: ContextHandler
+  ): Listener;
 
   /**
    * Retrieves a list of the System channels available for the app to join

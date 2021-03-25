@@ -7,6 +7,7 @@
 [![Stack Overflow](https://img.shields.io/badge/stackoverflow-fdc3-orange.svg)](https://stackoverflow.com/questions/tagged/fdc3)
 [![npm-build](https://github.com/finos/FDC3/workflows/npm-build/badge.svg)](https://github.com/finos/FDC3/actions?query=workflow%3Anpm-build)
 [![website-build](https://github.com/finos/FDC3/workflows/website-build/badge.svg)](https://github.com/finos/FDC3/actions?query=workflow%3Awebsite-build)
+[![Slack](https://img.shields.io/badge/slack-@finos/fdc3-green.svg?logo=slack)](https://finos-lf.slack.com/messages/fdc3/)
 
 FDC3 aims to provide an open standard for interoperability on the financial desktop. This includes standardized verbs to invoke actions between applications (called "intents"), a standardized data format, an OpenAPI app directory standard, and standardized API operations.
 
@@ -118,10 +119,11 @@ Despite this limitation, implementing support for FDC3 in a native application c
 
 ## Learn more and interact with the community
 
-If you have any questions, or would like to find out more, please send an email to [fdc3@finos.org].
-You can also join the FDC3 mailing list to receive future updates: send an email to [fdc3+subscribe@finos.org].
+The fastest and more interactive way to connect and ask questions to the FDC3 community is to join the [#fdc3 channel on the FINOS slack](https://finos-lf.slack.com/messages/fdc3/). 
 
-Another great way to interact with the community, is to attend the quarterly [FDC3 General Meeting]: you will receive an invite by signing up to the mailing list, or you can find the meeting in the [FINOS Project Meetings Calendar].
+If you'd like to receive official updates, and/or you don't have access to Slack, please send an email to [fdc3@finos.org]. You can join the list by sending an email to [fdc3+subscribe@finos.org]. 
+
+Finally, another great way to interact with the community, is to attend the quarterly [FDC3 General Meeting]: you will receive an invite by signing up to the mailing list, or you can find the meeting in the [FINOS Project Meetings Calendar].
 
 [fdc3@finos.org]: mailto:fdc3@finos.org
 [fdc3+subscribe@finos.org]: mailto:fdc3+subscribe@finos.org
