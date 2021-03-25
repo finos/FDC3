@@ -15,9 +15,16 @@ about: Track FDC3 General meeting agenda and attendance
 ## Date
 DD MMM yyyy - 10am EST
 
-## Untracked attendees
-- Fullname, Affiliation, (optional) GitHub username
-- ...
+### WebEx info
+- [Meeting Link](https://finos.webex.com/finos/j.php?MTID=m3015a7e4a511656ceafebda5eadcbe6d)
+- Meeting number: 403 028 328
+
+*More ways to join*
+- Join by video system: dial 173.243.2.68 and enter your meeting number
+- Join by phone
+   - +1-415-655-0003 US Toll
+   - +44-20319-88141 UK Toll
+- Access code: 403 028 328
 
 ## Meeting notices
 - FINOS **Project leads** are responsible for observing the FINOS guidelines for [running project meetings](https://github.com/finos/community/blob/master/governance/Meeting-Procedures.md#run-the-meeting). Project maintainers can find additional resources in the [FINOS Maintainers Cheatsheet](https://odp.finos.org/docs/finos-maintainers-cheatsheet/).
@@ -44,13 +51,6 @@ DD MMM yyyy - 10am EST
 ## Action Items
 - [ ] ...
 
-### WebEx info
-- [Meeting Link](https://finos.webex.com/finos/j.php?MTID=m3015a7e4a511656ceafebda5eadcbe6d)
-- Meeting number: 403 028 328
-
-*More ways to join*
-- Join by video system: dial 173.243.2.68 and enter your meeting number
-- Join by phone
-   - +1-415-655-0003 US Toll
-   - +44-20319-88141 UK Toll
-- Access code: 403 028 328
+## Untracked attendees
+- Fullname, Affiliation, (optional) GitHub username
+- ...
