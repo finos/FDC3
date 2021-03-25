@@ -15,9 +15,14 @@ about: Track PMC meeting agenda and attendance
 ## Date
 Friday DD MMM yyyy - 9am EST
 
-## Untracked attendees
-- Fullname, Affiliation, (optional) GitHub username
-- ...
+### WebEx info
+- [Meeting Link](https://finos.webex.com/finos/j.php?MTID=mb24e0868b724abcfa92221ca14207e14)
+Description:FDC3 PMC Meeting
+Meeting number: 663 444 364
+Dial in: 
++1.415.655.0003 USA Toll
++44-20319-88141 UK Toll
+Access code: 663 444 364
 
 ## Meeting notices
 - FINOS **Project leads** are responsible for observing the FINOS guidelines for [running project meetings](https://github.com/finos/community/blob/master/governance/Meeting-Procedures.md#run-the-meeting). Project maintainers can find additional resources in the [FINOS Maintainers Cheatsheet](https://odp.finos.org/docs/finos-maintainers-cheatsheet/).
@@ -46,12 +51,7 @@ Friday DD MMM yyyy - 9am EST
 ## Action Items
 - [ ] ...
 
+## Untracked attendees
+- Fullname, Affiliation, (optional) GitHub username
+- ...
 
-### WebEx info
-- [Meeting Link](https://finos.webex.com/finos/j.php?MTID=mb24e0868b724abcfa92221ca14207e14)
-Description:FDC3 PMC Meeting
-Meeting number: 663 444 364
-Dial in: 
-+1.415.655.0003 USA Toll
-+44-20319-88141 UK Toll
-Access code: 663 444 364
