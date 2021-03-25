@@ -2,7 +2,6 @@
 id: spec
 sidebar_label: Context Data Specification
 title: Context Data Specification (next)
-hide_title: true
 ---
 
 ## Introduction

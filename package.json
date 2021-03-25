@@ -21,11 +21,9 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
-    "test": "tsdx test",
+    "test": "tsdx test --verbose",
     "lint": "tsdx lint src/api test",
     "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why",
     "typegen": "cd src/context && quicktype -s schema --src-urls schemas.json -o ContextTypes.ts"
   },
   "peerDependencies": {},
@@ -41,26 +39,14 @@
     "trailingComma": "es5",
     "endOfLine": "auto"
   },
-  "size-limit": [
-    {
-      "path": "dist/fdc3.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/fdc3.esm.js",
-      "limit": "10 KB"
-    }
-  ],
   "resolutions": {
     "node-fetch": "^2.6.1",
     "yargs-parser": "^13.1.2",
     "node-notifier": "^8.0.1"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^4.6.0",
     "husky": "^4.3.0",
     "quicktype": "^15.0.258",
-    "size-limit": "^4.6.0",
     "tsdx": "^0.14.1",
     "tslib": "^2.0.1",
     "typescript": "^4.0.3"

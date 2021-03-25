@@ -20,8 +20,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * [API] Allow AppMetadata to be passed in as a target argument (#272)
 * [API] Reject/throw as appropriate in ES6 exported methods if window.fdc3 is not available (#277)
 * [API] API specification clarifications around intents/context and loops when broadcasting (#285, #307, 310)
-* [Website] Add/update participant logos (#209, #225, #320)
+* [API] `addContextListener(type, handler)` now accepts null for type, deprecate `addContextListener(handler)` (#329)
+* [API] Deprecate 'global' channel and `IntentResolution.data` (#341)
+* [Website] Add/update participant logos (#209, #225, #320, #335)
 * [Website] Update "Get Involved" with standards governance info (#228, #249, #300, #286)
+* [Docs] Add standard version number to specification files (#331)
 
 ### Fixed
 * [API] Missing/wrong type signature for getCurrentChannel (#222)
@@ -33,11 +36,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Technical
 * [Readme] Fix AppDirectory Readme (#274)
-* [Readme] Update main Readme (#275, #318)
+* [Readme] Update main Readme (#275, #318, #338)
 * [GitHub] Remove FINOS SVG from project root (#204)
 * [GitHub] Switch builds from Travis to GitHub workflows (#239, #252, #253, #254)
 * [GitHub] Meeting workflows and templates (#292, #293)
-* [Security] Upgrade dependencies to address security vulnerabilities (#207, #226, #232, #235, #238, #258, #259, #260, #289, #290, #295, #297)
+* [Security] Upgrade dependencies to address security vulnerabilities (#207, #226, #232, #235, #238, #258, #259, #260, #289, #290, #295, #297, #330, #333, #334, #339, #340)
 
 ## [1.1] - 2020-04-09
 ### Added

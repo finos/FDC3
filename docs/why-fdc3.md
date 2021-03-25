@@ -4,7 +4,7 @@ sidebar_label: Why FDC3
 title: Why FDC3
 ---
 
-## Why look for FDC3 enabled applications?
+## Why look for FDC3-enabled applications?
 
 You want your business to move fast and use best of breed applications. Application integration has traditionally been a time consuming and costly exercise, meaning that once a set of applications supporting a workflow was established, changing parts of the workflow without very good reason was a no-go. The main goal of FDC3 is to standardize how applications communicate, without having defined inter-application workflows prior to being deployed. Applications that are FDC3 enabled can take part in a workflow on the desktop without any coding or manual integration, allowing you to replace one application with another application serving the same functions to the desktop (in FDC3 terms - supporting the same Intents and Context)
 
