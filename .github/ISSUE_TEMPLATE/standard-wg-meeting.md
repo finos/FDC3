@@ -15,9 +15,19 @@ about: Track Standard Working Group meeting agenda and attendance
 ## Date
 Thursday DD MMM yyyy - 10am EST
 
-## Untracked attendees
-- Fullname, Affiliation, (optional) GitHub username
-- ...
+### WebEx info
+- [Meeting Link](https://finos.webex.com/finos/j.php?MTID=ma4b1de1b9f691d89e4b2ff380ec9687c)
+Meeting number: 665 568 411
+
+*More ways to join*
+- Join by video system: 
+   - Dial 665568411@finos.webex.com
+   - You can also dial 173.243.2.68 and enter your meeting number
+- Join by phone
+   - +1-415-655-0003 US Toll
+   - +44-20319-88141 UK Toll
+- Access code: 665 568 411
+
 ## Meeting notices
 - FINOS **Project leads** are responsible for observing the FINOS guidelines for [running project meetings](https://github.com/finos/community/blob/master/governance/Meeting-Procedures.md#run-the-meeting). Project maintainers can find additional resources in the [FINOS Maintainers Cheatsheet](https://odp.finos.org/docs/finos-maintainers-cheatsheet/).
 
@@ -45,16 +55,6 @@ Thursday DD MMM yyyy - 10am EST
 ## Action Items
 - [ ] ...
 
-
-### WebEx info
-- [Meeting Link](https://finos.webex.com/finos/j.php?MTID=ma4b1de1b9f691d89e4b2ff380ec9687c)
-Meeting number: 665 568 411
-
-*More ways to join*
-- Join by video system: 
-   - Dial 665568411@finos.webex.com
-   - You can also dial 173.243.2.68 and enter your meeting number
-- Join by phone
-   - +1-415-655-0003 US Toll
-   - +44-20319-88141 UK Toll
-- Access code: 665 568 411
+## Untracked attendees
+- Fullname, Affiliation, (optional) GitHub username
+- ...
