@@ -55,8 +55,15 @@ jobs:
   package-release:
     if: ${{ github.event_name == 'push' }}
     needs: package-build
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Use Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
 
       - name: Publish to NPM
         uses: JS-DevTools/npm-publish@v1
