@@ -53,7 +53,8 @@ jobs:
         run: yarn build
 
       - name: Publish to NPM
-      - uses: JS-DevTools/npm-publish@v1
+        if: ${{ github.event_name == 'push' }}
+        uses: JS-DevTools/npm-publish@v1
         with:
           registry: https://registry.npmjs.org/
           access: public
@@ -62,7 +63,8 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to GitHub
-      - uses: JS-DevTools/npm-publish@v1
+        if: ${{ github.event_name == 'push' }}
+        uses: JS-DevTools/npm-publish@v1
         with:
           registry: https://npm.pkg.github.com
           access: public
