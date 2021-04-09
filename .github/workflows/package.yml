@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - master
+      - release/**
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
       - 'docs/**'
@@ -15,6 +16,7 @@ on:
   pull_request:
     branches:
       - master
+      - release/*
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
       - 'docs/**'
@@ -49,3 +51,37 @@ jobs:
 
       - name: Build
         run: yarn build
+
+  package-release:
+    if: ${{ github.event_name == 'push' }}
+    needs: package-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Use Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Publish to NPM
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          registry: https://registry.npmjs.org/
+          access: public
+          dry-run: false
+          check-version: true
+          token: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to GitHub
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          registry: https://npm.pkg.github.com
+          access: public
+          dry-run: false
+          check-version: true
+          token: ${{ secrets.GITHUB_TOKEN }}
