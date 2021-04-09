@@ -7,7 +7,6 @@ import {
   DesktopAgent,
   findIntent,
   findIntentsByContext,
-  getCurrentChannel,
   getOrCreateChannel,
   getSystemChannels,
   joinChannel,
@@ -16,155 +15,222 @@ import {
 } from '../src';
 import * as methods from '../src/api/methods';
 
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toRejectWithUnavailableError: () => CustomMatcherResult;
+      toThrowUnavailableError: () => CustomMatcherResult;
+    }
+  }
+}
+
+const UnavailableError = new Error(
+  'FDC3 DesktopAgent not available at `window.fdc3`.'
+);
+
+const ContactContext = {
+  type: ContextTypes.Contact,
+  id: { email: 'test@example.com' },
+};
+
+expect.extend({
+  toRejectWithUnavailableError(received) {
+    expect(received).rejects.toEqual(UnavailableError);
+    return { pass: true } as jest.CustomMatcherResult;
+  },
+  toThrowUnavailableError(received) {
+    expect(received).toThrowError(UnavailableError);
+    return { pass: true } as jest.CustomMatcherResult;
+  },
+});
+
 describe('test ES6 module', () => {
-  const mocks: Map<string, jest.Mock<any, any>> = new Map();
-  const getMock: (name: string) => jest.Mock<any, any> = name => {
-    const mock = mocks.get(name);
-    if (!mock) {
-      throw new Error('No mock named ' + name);
-    }
-    return mock;
-  };
+  describe('without `window.fdc3` global', () => {
+    let originalFdc3: DesktopAgent;
+    beforeAll(() => {
+      originalFdc3 = window.fdc3;
+      window.fdc3 = (undefined as unknown) as DesktopAgent;
+    });
 
-  beforeAll(() => {
-    const fdc3 = {};
+    afterAll(() => {
+      window.fdc3 = originalFdc3;
+    });
 
-    for (const method of Object.keys(methods)) {
-      const mock = jest.fn();
-      mocks.set(method, mock);
-      Object.defineProperty(fdc3, method, { value: mock });
-    }
+    test('open should reject', () => {
+      expect(open(expect.any(String))).toRejectWithUnavailableError();
+    });
 
-    window.fdc3 = fdc3 as DesktopAgent;
+    test('findIntent should reject', () => {
+      expect(findIntent(expect.any(String))).toRejectWithUnavailableError();
+    });
+
+    test('findIntentsByContext should reject', () => {
+      expect(
+        findIntentsByContext(expect.any(Object))
+      ).toRejectWithUnavailableError();
+    });
+
+    test('broadcast should throw', () => {
+      expect(() => broadcast(expect.any(Object))).toThrowUnavailableError();
+    });
+
+    test('raiseIntent should reject', () => {
+      expect(
+        raiseIntent(expect.any(String), expect.any(Object))
+      ).toRejectWithUnavailableError();
+    });
+
+    test('addIntentListener should throw', () => {
+      expect(() =>
+        addIntentListener(expect.any(String), expect.any(Function))
+      ).toThrowUnavailableError();
+    });
+
+    test('addContextListener should throw', () => {
+      expect(() =>
+        addContextListener(expect.any(Object))
+      ).toThrowUnavailableError();
+
+      expect(() =>
+        addContextListener(expect.any(String), expect.any(Object))
+      ).toThrowUnavailableError();
+    });
+
+    test('getSystemChannels should reject', () => {
+      expect(getSystemChannels()).toRejectWithUnavailableError();
+    });
+
+    test('joinChannel should reject', () => {
+      expect(joinChannel(expect.any(String))).toRejectWithUnavailableError();
+    });
+
+    test('getOrCreateChannel should reject', () => {
+      expect(
+        getOrCreateChannel(expect.any(String))
+      ).toRejectWithUnavailableError();
+    });
   });
 
-  it('open should delegate to window.fdc3.open', () => {
-    const name = 'MyApp';
-    const context = {
-      type: ContextTypes.Contact,
-      id: { email: 'test@example.com' },
+  describe('with `window.fdc3` global', () => {
+    const mocks: Map<string, jest.Mock<any, any>> = new Map();
+    const getMock: (name: string) => jest.Mock<any, any> = name => {
+      const mock = mocks.get(name);
+      if (!mock) {
+        throw new Error('No mock named ' + name);
+      }
+      return mock;
     };
 
-    open(name, context);
+    beforeAll(() => {
+      const fdc3 = {};
 
-    const mock = getMock('open');
-    expect(mock.mock.calls.length).toBe(1);
-    expect(mock.mock.calls[0]).toEqual([name, context]);
-  });
+      for (const method of Object.keys(methods)) {
+        const mock = jest.fn();
+        mocks.set(method, mock);
+        Object.defineProperty(fdc3, method, { value: mock });
+      }
 
-  it('findIntent should delegate to window.fdc3.findIntent', () => {
-    const intent = 'ViewChat';
-    const context = {
-      type: ContextTypes.Contact,
-      id: { email: 'test@example.com' },
-    };
+      window.fdc3 = fdc3 as DesktopAgent;
+    });
 
-    findIntent(intent, context);
+    it('open should delegate to window.fdc3.open', () => {
+      const name = 'MyApp';
 
-    const mock = getMock('findIntent');
-    expect(mock.mock.calls.length).toBe(1);
-    expect(mock.mock.calls[0]).toEqual([intent, context]);
-  });
+      open(name, ContactContext);
 
-  it('findIntentsByContext should delegate to window.fdc3.findIntentsByContext', () => {
-    const context = {
-      type: ContextTypes.Contact,
-      id: { email: 'test@example.com' },
-    };
+      const mock = getMock('open');
+      expect(mock.mock.calls.length).toBe(1);
+      expect(mock.mock.calls[0]).toEqual([name, ContactContext]);
+    });
 
-    findIntentsByContext(context);
+    it('findIntent should delegate to window.fdc3.findIntent', () => {
+      const intent = 'ViewChat';
 
-    const mock = getMock('findIntentsByContext');
-    expect(mock.mock.calls.length).toBe(1);
-    expect(mock.mock.calls[0]).toEqual([context]);
-  });
+      findIntent(intent, ContactContext);
 
-  it('broadcast should delegate to window.fdc3.broadcast', () => {
-    const context = {
-      type: ContextTypes.Contact,
-      id: { email: 'test@example.com' },
-    };
+      const mock = getMock('findIntent');
+      expect(mock.mock.calls.length).toBe(1);
+      expect(mock.mock.calls[0]).toEqual([intent, ContactContext]);
+    });
 
-    broadcast(context);
+    it('findIntentsByContext should delegate to window.fdc3.findIntentsByContext', () => {
+      findIntentsByContext(ContactContext);
 
-    const mock = getMock('broadcast');
-    expect(mock.mock.calls.length).toBe(1);
-    expect(mock.mock.calls[0]).toEqual([context]);
-  });
+      const mock = getMock('findIntentsByContext');
+      expect(mock.mock.calls.length).toBe(1);
+      expect(mock.mock.calls[0]).toEqual([ContactContext]);
+    });
 
-  it('raiseIntent should delegate to window.fdc3.raiseIntent', () => {
-    const intent = 'ViewChat';
-    const context = {
-      type: ContextTypes.Contact,
-      id: { email: 'test@example.com' },
-    };
-    const target = 'MyApp';
+    it('broadcast should delegate to window.fdc3.broadcast', () => {
+      broadcast(ContactContext);
 
-    raiseIntent(intent, context, target);
+      const mock = getMock('broadcast');
+      expect(mock.mock.calls.length).toBe(1);
+      expect(mock.mock.calls[0]).toEqual([ContactContext]);
+    });
 
-    const mock = getMock('raiseIntent');
-    expect(mock.mock.calls.length).toBe(1);
-    expect(mock.mock.calls[0]).toEqual([intent, context, target]);
-  });
+    it('raiseIntent should delegate to window.fdc3.raiseIntent', () => {
+      const intent = 'ViewChat';
+      const target = 'MyApp';
 
-  it('addIntentListener should delegate to window.fdc3.addIntentListener', () => {
-    const intent = 'ViewChat';
-    const handler: ContextHandler = _ => {};
+      raiseIntent(intent, ContactContext, target);
 
-    addIntentListener(intent, handler);
+      const mock = getMock('raiseIntent');
+      expect(mock.mock.calls.length).toBe(1);
+      expect(mock.mock.calls[0]).toEqual([intent, ContactContext, target]);
+    });
 
-    const mock = getMock('addIntentListener');
-    expect(mock.mock.calls.length).toBe(1);
-    expect(mock.mock.calls[0]).toEqual([intent, handler]);
-  });
+    it('addIntentListener should delegate to window.fdc3.addIntentListener', () => {
+      const intent = 'ViewChat';
+      const handler: ContextHandler = _ => {};
 
-  it('addContextListener should delegate to window.fdc3.addContextListener', () => {
-    const type = 'fdc3.instrument';
-    const handler1: ContextHandler = _ => {};
-    const handler2: ContextHandler = _ => {};
+      addIntentListener(intent, handler);
 
-    addContextListener(type, handler1);
-    addContextListener(handler2);
+      const mock = getMock('addIntentListener');
+      expect(mock.mock.calls.length).toBe(1);
+      expect(mock.mock.calls[0]).toEqual([intent, handler]);
+    });
 
-    const mock = getMock('addContextListener');
-    expect(mock.mock.calls.length).toBe(2);
-    expect(mock.mock.calls[0]).toEqual([type, handler1]);
-    expect(mock.mock.calls[1]).toEqual([handler2]);
-  });
+    it('addContextListener should delegate to window.fdc3.addContextListener', () => {
+      const type = 'fdc3.instrument';
+      const handler1: ContextHandler = _ => {};
+      const handler2: ContextHandler = _ => {};
 
-  it('getSystemChannels should delegate to window.fdc3.getSystemChannels', () => {
-    getSystemChannels();
+      addContextListener(type, handler1);
+      addContextListener(handler2);
 
-    const mock = getMock('getSystemChannels');
-    expect(mock.mock.calls.length).toBe(1);
-    expect(mock.mock.calls[0]).toEqual([]);
-  });
+      const mock = getMock('addContextListener');
+      expect(mock.mock.calls.length).toBe(2);
+      expect(mock.mock.calls[0]).toEqual([type, handler1]);
+      expect(mock.mock.calls[1]).toEqual([handler2]);
+    });
 
-  it('joinChannel should delegate to window.fdc3.joinChannel', () => {
-    const channelId = 'channel';
+    it('getSystemChannels should delegate to window.fdc3.getSystemChannels', () => {
+      getSystemChannels();
 
-    joinChannel(channelId);
+      const mock = getMock('getSystemChannels');
+      expect(mock.mock.calls.length).toBe(1);
+      expect(mock.mock.calls[0]).toEqual([]);
+    });
 
-    const mock = getMock('joinChannel');
-    expect(mock.mock.calls.length).toBe(1);
-    expect(mock.mock.calls[0]).toEqual([channelId]);
-  });
+    it('joinChannel should delegate to window.fdc3.joinChannel', () => {
+      const channelId = 'channel';
 
-  it('getOrCreateChannel should delegate to window.fdc3.getOrCreateChannel', () => {
-    const channelId = 'channel';
+      joinChannel(channelId);
 
-    getOrCreateChannel(channelId);
+      const mock = getMock('joinChannel');
+      expect(mock.mock.calls.length).toBe(1);
+      expect(mock.mock.calls[0]).toEqual([channelId]);
+    });
 
-    const mock = getMock('getOrCreateChannel');
-    expect(mock.mock.calls.length).toBe(1);
-    expect(mock.mock.calls[0]).toEqual([channelId]);
-  });
+    it('getOrCreateChannel should delegate to window.fdc3.getOrCreateChannel', () => {
+      const channelId = 'channel';
 
-  it('getCurrentChannel should delegate to window.fdc3.getCurrentChannel', () => {
-    getCurrentChannel();
+      getOrCreateChannel(channelId);
 
-    const mock = getMock('getCurrentChannel');
-    expect(mock.mock.calls.length).toBe(1);
-    expect(mock.mock.calls[0]).toEqual([]);
+      const mock = getMock('getOrCreateChannel');
+      expect(mock.mock.calls.length).toBe(1);
+      expect(mock.mock.calls[0]).toEqual([channelId]);
+    });
   });
 });
