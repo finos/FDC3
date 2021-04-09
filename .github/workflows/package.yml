@@ -52,8 +52,13 @@ jobs:
       - name: Build
         run: yarn build
 
+  package-release:
+    if: ${{ github.event_name == 'push' }}
+    needs: package-build
+    runs-on: ${{ matrix.os }}
+    steps:
+
       - name: Publish to NPM
-        if: ${{ github.event_name == 'push' }}
         uses: JS-DevTools/npm-publish@v1
         with:
           registry: https://registry.npmjs.org/
@@ -63,7 +68,6 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to GitHub
-        if: ${{ github.event_name == 'push' }}
         uses: JS-DevTools/npm-publish@v1
         with:
           registry: https://npm.pkg.github.com
