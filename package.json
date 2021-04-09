@@ -41,8 +41,9 @@
   },
   "resolutions": {
     "node-fetch": "^2.6.1",
+    "node-notifier": "^8.0.1",
     "yargs-parser": "^13.1.2",
-    "node-notifier": "^8.0.1"
+    "y18n": "^4.0.1"
   },
   "devDependencies": {
     "husky": "^4.3.0",
