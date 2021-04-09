@@ -70,7 +70,7 @@ jobs:
         with:
           registry: https://registry.npmjs.org/
           access: public
-          dry-run: true
+          dry-run: false
           check-version: true
           token: ${{ secrets.NPM_TOKEN }}
 
@@ -79,6 +79,6 @@ jobs:
         with:
           registry: https://npm.pkg.github.com
           access: public
-          dry-run: true
+          dry-run: false
           check-version: true
           token: ${{ secrets.GITHUB_TOKEN }}
