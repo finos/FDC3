@@ -51,7 +51,9 @@ export const raiseIntent: (
   context: Context,
   target?: string
 ) => Promise<IntentResolution> = (intent, context, target) => {
-  return rejectIfNoGlobal(() => window.fdc3.raiseIntent(intent, context, target));
+  return rejectIfNoGlobal(() =>
+    window.fdc3.raiseIntent(intent, context, target)
+  );
 };
 
 export const addIntentListener: (
