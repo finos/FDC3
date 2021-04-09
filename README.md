@@ -136,8 +136,6 @@ If you are an existing individual or corporate user of the FDC3 standard, we wou
 
 If you'd like to be listed as a user of the standard, you can directly send a pull request to update the website: upload your logo to [this folder](https://github.com/finos/FDC3/tree/master/website/static/img/users) and update [this file](https://github.com/finos/FDC3/edit/master/website/data/users.json) with your company's details. If listing your logo publicly requires legal evaluation, you can reach out privately to the [FDC3 Product Management Committee](mailto:fdc3-pmc-private@finos.org).
 
- 
-
 ## The Standard Working Group
 
 The [FDC3 Standard Working Group] has the specific purpose of defining and releasing subsequent updates to the standard.
@@ -161,7 +159,6 @@ Please note that standard participants are bound to the provisions in the [FINOS
 ## The Product Management Committee
 
 The [FDC3 Product Management Committee] (PMC) is responsible for co-ordinating the work of the FDC3 Standard Working Group, as well as FDC3-related planning and communications. For more context see the [FDC3 Archive].
-
 
 [FDC3 Product Management Committee]: https://github.com/finos/FDC3/issues?q=label%3A%22PMC+Meeting%22
 [FDC3 Archive]: https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview
