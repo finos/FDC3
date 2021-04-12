@@ -3,16 +3,19 @@ import { TargetApp } from './Types';
 
 const DEFAULT_TIMEOUT = 5000;
 
-const unavailableError = new Error('FDC3 DesktopAgent not available at `window.fdc3`.');
+const UnavailableError = new Error('FDC3 DesktopAgent not available at `window.fdc3`.');
+const TimeoutError = new Error('Timed out waiting for fdc3Ready event.');
+const UnexpectedError = new Error('`fdc3Ready` event fired, but `window.fdc3` not set to DesktopAgent.');
 
-const unavailableAfterReadyError = new Error(
-  'FDC3 DesktopAgent not available at `window.fdc3`, despite `fdc3Ready` event firing.'
-);
+function rejectIfNoGlobal(f: () => Promise<any>) {
+  return window.fdc3 ? f() : Promise.reject(UnavailableError);
+}
 
-function throwIfNoGlobal() {
+function throwIfNoGlobal(f: () => any) {
   if (!window.fdc3) {
-    throw unavailableError;
+    throw UnavailableError;
   }
+  return f();
 }
 
 export const fdc3Ready = async (waitForMs = DEFAULT_TIMEOUT): Promise<void> => {
@@ -22,13 +25,13 @@ export const fdc3Ready = async (waitForMs = DEFAULT_TIMEOUT): Promise<void> => {
       resolve();
     } else {
       // if its not available setup a timeout to return a rejected promise
-      const timeout = setTimeout(() => (window.fdc3 ? resolve() : reject(unavailableError)), waitForMs);
+      const timeout = setTimeout(() => (window.fdc3 ? resolve() : reject(TimeoutError)), waitForMs);
       // listen for the fdc3Ready event
       window.addEventListener(
         'fdc3Ready',
         () => {
           clearTimeout(timeout);
-          window.fdc3 ? resolve() : reject(unavailableAfterReadyError);
+          window.fdc3 ? resolve() : reject(UnexpectedError);
         },
         { once: true }
       );
@@ -36,76 +39,66 @@ export const fdc3Ready = async (waitForMs = DEFAULT_TIMEOUT): Promise<void> => {
   });
 };
 
-export async function open(app: TargetApp, context?: Context): Promise<void> {
-  await fdc3Ready();
-  return window.fdc3.open(app, context);
+export function open(app: TargetApp, context?: Context): Promise<void> {
+  return rejectIfNoGlobal(() => window.fdc3.open(app, context));
 }
 
-export async function findIntent(intent: string, context?: Context): Promise<AppIntent> {
-  await fdc3Ready();
-  return window.fdc3.findIntent(intent, context);
+export function findIntent(intent: string, context?: Context): Promise<AppIntent> {
+  return rejectIfNoGlobal(() => window.fdc3.findIntent(intent, context));
 }
 
-export async function findIntentsByContext(context: Context): Promise<AppIntent[]> {
-  await fdc3Ready();
-  return window.fdc3.findIntentsByContext(context);
+export function findIntentsByContext(context: Context): Promise<AppIntent[]> {
+  return rejectIfNoGlobal(() => window.fdc3.findIntentsByContext(context));
 }
 
 export function broadcast(context: Context): void {
-  // cannot use await fdc3Ready(), will only check window.fdc3 is defined, and throw if it isn't
-  throwIfNoGlobal();
-  window.fdc3.broadcast(context);
+  throwIfNoGlobal(() => window.fdc3.broadcast(context));
 }
 
-export async function raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution> {
-  await fdc3Ready();
-  return window.fdc3.raiseIntent(intent, context, app);
+export function raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution> {
+  return rejectIfNoGlobal(() => window.fdc3.raiseIntent(intent, context, app));
 }
 
-export async function raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution> {
-  await fdc3Ready();
-  return window.fdc3.raiseIntentForContext(context, app);
+export function raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution> {
+  return rejectIfNoGlobal(() => window.fdc3.raiseIntentForContext(context, app));
 }
 
 export function addIntentListener(intent: string, handler: ContextHandler): Listener {
-  // cannot use await fdc3Ready(), will only check window.fdc3 is defined, and throw if it isn't
-  throwIfNoGlobal();
-  return window.fdc3.addIntentListener(intent, handler);
+  return throwIfNoGlobal(() => window.fdc3.addIntentListener(intent, handler));
 }
 
 export function addContextListener(contextTypeOrHandler: string | ContextHandler, handler?: ContextHandler): Listener {
-  // cannot use await fdc3Ready(), will only check window.fdc3 is defined, and throw if it isn't
-  throwIfNoGlobal();
   if (typeof contextTypeOrHandler !== 'function') {
-    return window.fdc3.addContextListener(contextTypeOrHandler as string, handler as ContextHandler);
+    return throwIfNoGlobal(() =>
+      window.fdc3.addContextListener(contextTypeOrHandler as string, handler as ContextHandler)
+    );
   } else {
-    return window.fdc3.addContextListener(contextTypeOrHandler as ContextHandler);
+    return throwIfNoGlobal(() => window.fdc3.addContextListener(contextTypeOrHandler as ContextHandler));
   }
 }
 
-export async function getSystemChannels(): Promise<Channel[]> {
-  await fdc3Ready();
-  return window.fdc3.getSystemChannels();
+export function getSystemChannels(): Promise<Channel[]> {
+  return rejectIfNoGlobal(() => window.fdc3.getSystemChannels());
 }
 
-export async function joinChannel(channelId: string): Promise<void> {
-  await fdc3Ready();
-  return await window.fdc3.joinChannel(channelId);
+export function joinChannel(channelId: string): Promise<void> {
+  return rejectIfNoGlobal(() => window.fdc3.joinChannel(channelId));
 }
 
-export async function getOrCreateChannel(channelId: string): Promise<Channel> {
-  await fdc3Ready();
-  return window.fdc3.getOrCreateChannel(channelId);
+export function getOrCreateChannel(channelId: string): Promise<Channel> {
+  return rejectIfNoGlobal(() => window.fdc3.getOrCreateChannel(channelId));
 }
 
-export async function getCurrentChannel(): Promise<Channel | null> {
-  await fdc3Ready();
-  return await window.fdc3.getCurrentChannel();
+export function getCurrentChannel(): Promise<Channel | null> {
+  return rejectIfNoGlobal(() => window.fdc3.getCurrentChannel());
 }
 
-export async function leaveCurrentChannel(): Promise<void> {
-  await fdc3Ready();
-  return window.fdc3.leaveCurrentChannel();
+export function leaveCurrentChannel(): Promise<void> {
+  return rejectIfNoGlobal(() => window.fdc3.leaveCurrentChannel());
+}
+
+export function getInfo(): ImplementationMetadata {
+  return throwIfNoGlobal(() => window.fdc3.getInfo());
 }
 
 /**

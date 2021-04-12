@@ -53,29 +53,22 @@ The [`@finos/fdc3` npm package](https://www.npmjs.com/package/@finos/fdc3) provi
 ```ts
 import * as fdc3 from '@finos/fdc3'
 
-async function fdc3Action() {
-  // all asynchronous function will implicitly check if window.fdc3 is defined,
-  // and wait for the fdc3Ready event if it isn't (with a default timeout of 5 seconds)
-  await fdc3.raiseIntent('ViewAnalysis', {
-      type: 'fdc3.instrument',
-      id: { ticker: 'AAPL' }
-  })
-}
+await fdc3.raiseIntent('ViewAnalysis', {
+    type: 'fdc3.instrument',
+    id: { ticker: 'AAPL' }
+})
 ```
 
-Alternatively you can also import individual operations directly:
+It also includes a helper function you can use to wait for FDC3 to become available:
 
 ```ts
 import { fdc3Ready, addIntentListener } from '@finos/fdc3'
 
-async function fdc3Action() {
-  // for synchronous functions, like broadcast or adding a listener, it is recommend to wait for fdc3 to be ready yourself,
-  // as the synchronous function can only check if window.fdc3 is defined, and throw if it isn't
-  await fdc3Ready();
-  const listener = addIntentListener('ViewAnalysis', instrument => {
-    console.log('View analysis for ' + instrument.id.ticker);
-  })
-}
+await fdc3Ready();
+
+const listener = addIntentListener('ViewAnalysis', instrument => {
+  // handle intent
+})
 ```
 
 #### See also
