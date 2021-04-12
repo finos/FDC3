@@ -53,24 +53,33 @@ The [`@finos/fdc3` npm package](https://www.npmjs.com/package/@finos/fdc3) provi
 ```ts
 import * as fdc3 from '@finos/fdc3'
 
-const listener = fdc3.addIntentListener('ViewAnalysis', context => {
-  // do something
-})
+async function fdc3Action() {
+  // all asynchronous function will implicitly check if window.fdc3 is defined,
+  // and wait for the fdc3Ready event if it isn't (with a default timeout of 5 seconds)
+  await fdc3.raiseIntent('ViewAnalysis', {
+      type: 'fdc3.instrument',
+      id: { ticker: 'AAPL' }
+  })
+}
 ```
 
 Alternatively you can also import individual operations directly:
 
 ```ts
-import { raiseIntent } from '@finos/fdc3'
+import { fdc3Ready, addIntentListener } from '@finos/fdc3'
 
-await raiseIntent('ViewAnalysis', {
-    type: 'fdc3.instrument',
-    id: { ticker: 'AAPL' }
-})
+async function fdc3Action() {
+  // for synchronous functions, like broadcast or adding a listener, it is recommend to wait for fdc3 to be ready yourself,
+  // as the synchronous function can only check if window.fdc3 is defined, and throw if it isn't
+  await fdc3Ready();
+  const listener = addIntentListener('ViewAnalysis', instrument => {
+    console.log('View analysis for ' + instrument.id.ticker);
+  })
+}
 ```
 
-The npm package will take care of checking for the existence of the global `fdc3` object, and wait for the `fdc3Ready` event, or throw an error if FDC3 is not supported.
-
+#### See also
+* [`fdc3Ready() Function`](ref/Globals#fdc3ready-function)
 
 
 

@@ -38,3 +38,33 @@ if (window.fdc3) {
   window.addEventListener("fdc3Ready", fdc3Action);
 }
 ```
+
+## `fdc3Ready()` Function
+
+If you are using the `@finos/fdc3` NPM package, it includes a wrapper function that automatically waits on the `fdc3Ready` event for you.
+
+It will resolve immediately if the `window.fdc3` global is already defined, or reject with an error if the `fdc3Ready` event doesn't fire after a
+default timeout of 5 seconds.
+
+All asynchronous functions in the package include this call automatically. You can override the amount of milliseconds to wait if you like.
+
+### Example
+
+```ts
+import { fdc3Ready, broadcast } from '@finos/fdc3'
+
+async function fdc3Action() {
+  try {
+    await fdc3Ready(1000); // wait for 1 second
+    fdc3.broadcast({
+      type: 'fdc3.instrument',
+      id: { ticker: 'AAPL' }
+    })
+  } catch (error) {
+    // handle error
+  }
+}
+```
+
+
+
