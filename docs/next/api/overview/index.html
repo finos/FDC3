@@ -99,17 +99,22 @@
 <p>The <a href="https://www.npmjs.com/package/@finos/fdc3"><code>@finos/fdc3</code> npm package</a> provides a wrapper around FDC3, allowing you to use it with ES6 import syntax:</p>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> fdc3 <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@finos/fdc3&#x27;</span>
 
-<span class="hljs-keyword">const</span> listener = fdc3.addIntentListener(<span class="hljs-string">&#x27;ViewAnalysis&#x27;</span>, <span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> {
-  <span class="hljs-comment">// do something</span>
-})
-</code></pre>
-<p>Alternatively you can also import individual operations directly:</p>
-<pre><code class="hljs css language-ts"><span class="hljs-keyword">import</span> { raiseIntent } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@finos/fdc3&#x27;</span>
-
-<span class="hljs-keyword">await</span> raiseIntent(<span class="hljs-string">&#x27;ViewAnalysis&#x27;</span>, {
+<span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&#x27;ViewAnalysis&#x27;</span>, {
     <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;fdc3.instrument&#x27;</span>,
     <span class="hljs-attr">id</span>: { <span class="hljs-attr">ticker</span>: <span class="hljs-string">&#x27;AAPL&#x27;</span> }
 })
 </code></pre>
-<p>The npm package will take care of checking for the existence of the global <code>fdc3</code> object, and wait for the <code>fdc3Ready</code> event, or throw an error if FDC3 is not supported.</p>
+<p>It also includes a helper function you can use to wait for FDC3 to become available:</p>
+<pre><code class="hljs css language-ts"><span class="hljs-keyword">import</span> { fdc3Ready, addIntentListener } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@finos/fdc3&#x27;</span>
+
+<span class="hljs-keyword">await</span> fdc3Ready();
+
+<span class="hljs-keyword">const</span> listener = addIntentListener(<span class="hljs-string">&#x27;ViewAnalysis&#x27;</span>, <span class="hljs-function"><span class="hljs-params">instrument</span> =&gt;</span> {
+  <span class="hljs-comment">// handle intent</span>
+})
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="see-also"></a><a href="#see-also" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="ref/Globals#fdc3ready-function"><code>fdc3Ready() Function</code></a></li>
+</ul>
 </span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/next/fdc3-compliance"><span class="arrow-prev">← </span><span>FDC3 Compliance</span></a><a class="docs-next button" href="/docs/next/api/spec"><span>API Specification</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#key-elements">Key Elements</a></li><li><a href="#usage">Usage</a><ul class="toc-headings"><li><a href="#1-direct-usage">1. Direct Usage</a></li><li><a href="#2-npm-wrapper">2. NPM Wrapper</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/fdc3-icon-2019.svg" alt="FDC3"/></a><div><h5>Docs</h5><a href="/docs/fdc3-intro">Getting Started</a><a href="/docs/why-fdc3">Why FDC3</a><a href="/docs/api/ref/DesktopAgent">API Reference</a><a href="/schemas/1.1/app-directory">App Directory Schema</a><a href="/docs/use-cases/overview">Use Cases</a></div><div><h5>Community</h5><a href="https://www.finos.org/" target="_blank" rel="noreferrer noopener">FINOS</a><a href="https://www.finos.org/privacy-policy" target="_blank" rel="noreferrer noopener">FINOS Privacy Policy</a><a href="https://finosfoundation.atlassian.net/wiki/spaces/FDC3" target="_blank" rel="noreferrer noopener">FDC3 Wiki</a><a href="https://groups.google.com/a/finos.org/forum/#!forum/fdc3" target="_blank" rel="noreferrer noopener">Google Groups</a></div><div><h5>More</h5><div class="social"><a class="github-button" href="https://github.com/finos/FDC3" data-count-href="https://github.com/finos/FDC3/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">FDC3</a></div><div class="social"><a href="https://twitter.com/FDC3_" class="twitter-follow-button">Follow @FDC3_</a></div></div></section><section class="finos finosBanner"><a href="https://www.finos.org"><img id="finosicon" src="https://fdc3.finos.org/img/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS"/><h2 id="proud">Proud member of the Fintech Open Source Foundation</h2></a></section><section class="copyright">Copyright © 2021 FDC3</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>
