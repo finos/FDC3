@@ -124,11 +124,7 @@ export interface DesktopAgent {
    * await fdc3.raiseIntent("StartChat", context, appMetadata);
    * ```
    */
-  raiseIntent(
-    intent: string,
-    context: Context,
-    app?: TargetApp
-  ): Promise<IntentResolution>;
+  raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
 
   /**
    * Raises a context to the desktop agent to resolve with one of the possible Intents for that context.
@@ -136,10 +132,7 @@ export interface DesktopAgent {
    * await fdc3.raiseIntentForContext(context);
    * ```
    */
-  raiseIntentForContext(
-    context: Context,
-    app?: TargetApp
-  ): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
 
   /**
    * Adds a listener for incoming Intents from the Agent.
@@ -155,10 +148,7 @@ export interface DesktopAgent {
   /**
    * Adds a listener for the broadcast of a specific type of context object.
    */
-  addContextListener(
-    contextType: string | null,
-    handler: ContextHandler
-  ): Listener;
+  addContextListener(contextType: string | null, handler: ContextHandler): Listener;
 
   /**
    * Retrieves a list of the System channels available for the app to join

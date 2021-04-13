@@ -37,7 +37,8 @@
     "singleQuote": true,
     "arrowParens": "avoid",
     "trailingComma": "es5",
-    "endOfLine": "auto"
+    "endOfLine": "auto",
+    "printWidth": 120
   },
   "resolutions": {
     "node-fetch": "^2.6.1",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "husky": "^4.3.0",
+    "jest-mock-extended": "^1.0.13",
     "quicktype": "^15.0.258",
     "tsdx": "^0.14.1",
     "tslib": "^2.0.1",
