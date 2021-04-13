@@ -3,37 +3,28 @@ import {
   addContextListener,
   addIntentListener,
   broadcast,
+  compareVersionNumbers,
   ContextHandler,
   ContextTypes,
   DesktopAgent,
+  fdc3Ready,
   findIntent,
   findIntentsByContext,
   getCurrentChannel,
+  getInfo,
   getOrCreateChannel,
   getSystemChannels,
+  ImplementationMetadata,
   joinChannel,
   leaveCurrentChannel,
   open,
-  fdc3Ready,
   raiseIntent,
   raiseIntentForContext,
-  getInfo,
-  ImplementationMetadata,
-  compareVersionNumbers,
   versionIsAtLeast,
 } from '../src';
 
-declare global {
-  namespace jest {
-    interface Matchers<R> {
-      toRejectWithUnavailableError: () => CustomMatcherResult;
-      toThrowUnavailableError: () => CustomMatcherResult;
-    }
-  }
-}
-
 const UnavailableError = new Error('FDC3 DesktopAgent not available at `window.fdc3`.');
-const TimeoutError = new Error('Timed out waiting for fdc3Ready event.');
+const TimeoutError = new Error('Timed out waiting for `fdc3Ready` event.');
 const UnexpectedError = new Error('`fdc3Ready` event fired, but `window.fdc3` not set to DesktopAgent.');
 
 const ContactContext = {
@@ -54,62 +45,62 @@ expect.extend({
 
 describe('test ES6 module', () => {
   describe('without `window.fdc3` global', () => {
-    test('open should reject', () => {
-      expect(open(expect.any(String))).toRejectWithUnavailableError();
+    test('open should reject', async () => {
+      await expect(open(expect.any(String))).rejects.toEqual(UnavailableError);
     });
 
-    test('findIntent should reject', () => {
-      expect(findIntent(expect.any(String))).toRejectWithUnavailableError();
+    test('findIntent should reject', async () => {
+      await expect(findIntent(expect.any(String))).rejects.toEqual(UnavailableError);
     });
 
-    test('findIntentsByContext should reject', () => {
-      expect(findIntentsByContext(expect.any(Object))).toRejectWithUnavailableError();
+    test('findIntentsByContext should reject', async () => {
+      await expect(findIntentsByContext(expect.any(Object))).rejects.toEqual(UnavailableError);
     });
 
-    test('broadcast should throw', () => {
-      expect(() => broadcast(expect.any(Object))).toThrowUnavailableError();
+    test('broadcast should throw', async () => {
+      expect(() => broadcast(expect.any(Object))).toThrowError(UnavailableError);
     });
 
-    test('raiseIntent should reject', () => {
-      expect(raiseIntent(expect.any(String), expect.any(Object))).toRejectWithUnavailableError();
+    test('raiseIntent should reject', async () => {
+      await expect(raiseIntent(expect.any(String), expect.any(Object))).rejects.toEqual(UnavailableError);
     });
 
-    test('raiseIntentForContext should reject', () => {
-      expect(raiseIntentForContext(expect.any(Object))).toRejectWithUnavailableError();
+    test('raiseIntentForContext should reject', async () => {
+      await expect(raiseIntentForContext(expect.any(Object))).rejects.toEqual(UnavailableError);
     });
 
     test('addIntentListener should throw', () => {
-      expect(() => addIntentListener(expect.any(String), expect.any(Function))).toThrowUnavailableError();
+      expect(() => addIntentListener(expect.any(String), expect.any(Function))).toThrowError(UnavailableError);
     });
 
     test('addContextListener should throw', () => {
-      expect(() => addContextListener(expect.any(Object))).toThrowUnavailableError();
+      expect(() => addContextListener(expect.any(Object))).toThrowError(UnavailableError);
 
-      expect(() => addContextListener(expect.any(String), expect.any(Object))).toThrowUnavailableError();
+      expect(() => addContextListener(expect.any(String), expect.any(Object))).toThrowError(UnavailableError);
     });
 
-    test('getSystemChannels should reject', () => {
-      expect(getSystemChannels()).toRejectWithUnavailableError();
+    test('getSystemChannels should reject', async () => {
+      await expect(getSystemChannels()).rejects.toEqual(UnavailableError);
     });
 
-    test('joinChannel should reject', () => {
-      expect(joinChannel(expect.any(String))).toRejectWithUnavailableError();
+    test('joinChannel should reject', async () => {
+      await expect(joinChannel(expect.any(String))).rejects.toEqual(UnavailableError);
     });
 
-    test('getOrCreateChannel should reject', () => {
-      expect(getOrCreateChannel(expect.any(String))).toRejectWithUnavailableError();
+    test('getOrCreateChannel should reject', async () => {
+      await expect(getOrCreateChannel(expect.any(String))).rejects.toEqual(UnavailableError);
     });
 
-    test('getCurrentChannel should reject', () => {
-      expect(getCurrentChannel()).toRejectWithUnavailableError();
+    test('getCurrentChannel should reject', async () => {
+      await expect(getCurrentChannel()).rejects.toEqual(UnavailableError);
     });
 
-    test('leaveCurrentChannel should reject', () => {
-      expect(leaveCurrentChannel()).toRejectWithUnavailableError();
+    test('leaveCurrentChannel should reject', async () => {
+      await expect(leaveCurrentChannel()).rejects.toEqual(UnavailableError);
     });
 
     test('getInfo should throw', () => {
-      expect(() => getInfo()).toThrowUnavailableError();
+      expect(() => getInfo()).toThrowError(UnavailableError);
     });
   });
 
@@ -122,26 +113,26 @@ describe('test ES6 module', () => {
       window.fdc3 = (undefined as unknown) as DesktopAgent;
     });
 
-    test('open should delegate to window.fdc3.open', () => {
+    test('open should delegate to window.fdc3.open', async () => {
       const target = 'MyApp';
 
-      open(target, ContactContext);
+      await open(target, ContactContext);
 
       expect(window.fdc3.open).toHaveBeenCalledTimes(1);
       expect(window.fdc3.open).toHaveBeenCalledWith(target, ContactContext);
     });
 
-    test('findIntent should delegate to window.fdc3.findIntent', () => {
+    test('findIntent should delegate to window.fdc3.findIntent', async () => {
       const intent = 'ViewChart';
 
-      findIntent(intent, ContactContext);
+      await findIntent(intent, ContactContext);
 
       expect(window.fdc3.findIntent).toHaveBeenCalledTimes(1);
       expect(window.fdc3.findIntent).toHaveBeenCalledWith(intent, ContactContext);
     });
 
-    test('findIntentsByContext should delegate to window.fdc3.findIntentsByContext', () => {
-      findIntentsByContext(ContactContext);
+    test('findIntentsByContext should delegate to window.fdc3.findIntentsByContext', async () => {
+      await findIntentsByContext(ContactContext);
 
       expect(window.fdc3.findIntentsByContext).toHaveBeenCalledTimes(1);
       expect(window.fdc3.findIntentsByContext).toHaveBeenCalledWith(ContactContext);
@@ -154,20 +145,20 @@ describe('test ES6 module', () => {
       expect(window.fdc3.broadcast).toHaveBeenCalledWith(ContactContext);
     });
 
-    test('raiseIntent should delegate to window.fdc3.raiseIntent', () => {
+    test('raiseIntent should delegate to window.fdc3.raiseIntent', async () => {
       const intent = 'ViewChart';
       const target = 'MyApp';
 
-      raiseIntent(intent, ContactContext, target);
+      await raiseIntent(intent, ContactContext, target);
 
       expect(window.fdc3.raiseIntent).toHaveBeenCalledTimes(1);
       expect(window.fdc3.raiseIntent).toHaveBeenCalledWith(intent, ContactContext, target);
     });
 
-    test('raiseIntentForContext should delegate to window.fdc3.raiseIntentForContext', () => {
+    test('raiseIntentForContext should delegate to window.fdc3.raiseIntentForContext', async () => {
       const app = 'MyApp';
 
-      raiseIntentForContext(ContactContext, app);
+      await raiseIntentForContext(ContactContext, app);
 
       expect(window.fdc3.raiseIntentForContext).toHaveBeenCalledTimes(1);
       expect(window.fdc3.raiseIntentForContext).toHaveBeenCalledWith(ContactContext, app);
@@ -196,40 +187,40 @@ describe('test ES6 module', () => {
       expect(window.fdc3.addContextListener).toHaveBeenNthCalledWith(2, handler2);
     });
 
-    test('getSystemChannels should delegate to window.fdc3.getSystemChannels', () => {
-      getSystemChannels();
+    test('getSystemChannels should delegate to window.fdc3.getSystemChannels', async () => {
+      await getSystemChannels();
 
       expect(window.fdc3.getSystemChannels).toHaveBeenCalledTimes(1);
       expect(window.fdc3.getSystemChannels).toHaveBeenCalledWith();
     });
 
-    test('joinChannel should delegate to window.fdc3.joinChannel', () => {
+    test('joinChannel should delegate to window.fdc3.joinChannel', async () => {
       const channelId = 'channel';
 
-      joinChannel(channelId);
+      await joinChannel(channelId);
 
       expect(window.fdc3.joinChannel).toHaveBeenCalledTimes(1);
       expect(window.fdc3.joinChannel).toHaveBeenCalledWith(channelId);
     });
 
-    test('getOrCreateChannel should delegate to window.fdc3.getOrCreateChannel', () => {
+    test('getOrCreateChannel should delegate to window.fdc3.getOrCreateChannel', async () => {
       const channelId = 'channel';
 
-      getOrCreateChannel(channelId);
+      await getOrCreateChannel(channelId);
 
       expect(window.fdc3.getOrCreateChannel).toHaveBeenCalledTimes(1);
       expect(window.fdc3.getOrCreateChannel).toHaveBeenCalledWith(channelId);
     });
 
-    test('getCurrentChannel should delegate to window.fdc3.getCurrentChannel', () => {
-      getCurrentChannel();
+    test('getCurrentChannel should delegate to window.fdc3.getCurrentChannel', async () => {
+      await getCurrentChannel();
 
       expect(window.fdc3.getCurrentChannel).toHaveBeenCalledTimes(1);
       expect(window.fdc3.getCurrentChannel).toHaveBeenCalledWith();
     });
 
-    test('leaveCurrentChannel should delegate to window.fdc3.leaveCurrentChannel', () => {
-      leaveCurrentChannel();
+    test('leaveCurrentChannel should delegate to window.fdc3.leaveCurrentChannel', async () => {
+      await leaveCurrentChannel();
 
       expect(window.fdc3.leaveCurrentChannel).toHaveBeenCalledTimes(1);
       expect(window.fdc3.leaveCurrentChannel).toHaveBeenCalledWith();
@@ -260,9 +251,7 @@ describe('test ES6 module', () => {
       window.fdc3 = (undefined as unknown) as DesktopAgent;
     });
 
-    test('resolves immediately if `window.fdc3` is already defined', () => {
-      expect.assertions(4);
-
+    test('resolves immediately if `window.fdc3` is already defined', async () => {
       // set fdc3 object and call fdc3Ready
       window.fdc3 = mock<DesktopAgent>();
       const promise = fdc3Ready();
@@ -270,38 +259,36 @@ describe('test ES6 module', () => {
       expect(setTimeout).not.toHaveBeenCalled();
       expect(clearTimeout).not.toHaveBeenCalled();
       expect(eventListeners).not.toHaveProperty('fdc3Ready');
-      expect(promise).resolves.toBe(undefined);
+      await expect(promise).resolves.toBe(undefined);
     });
 
-    test('waits for specified milliseconds', () => {
-      expect.assertions(3);
+    test('waits for specified milliseconds', async () => {
+      const waitForMs = 1000;
 
-      const promise = fdc3Ready(1000);
+      const promise = fdc3Ready(waitForMs);
 
       expect(setTimeout).toHaveBeenCalledTimes(1);
-      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000);
+      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), waitForMs);
 
-      jest.advanceTimersToNextTimer();
+      jest.advanceTimersByTime(waitForMs);
 
-      expect(promise).rejects.toThrow(UnavailableError);
+      await expect(promise).rejects.toEqual(TimeoutError);
     });
 
-    test('waits for 5000 milliseconds by default', () => {
-      expect.assertions(3);
+    test('waits for 5000 milliseconds by default', async () => {
+      const defaultWaitForMs = 5000;
 
       const promise = fdc3Ready();
 
       expect(setTimeout).toHaveBeenCalledTimes(1);
-      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 5000);
+      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), defaultWaitForMs);
 
-      jest.advanceTimersToNextTimer();
+      jest.advanceTimersByTime(defaultWaitForMs);
 
-      expect(promise).rejects.toThrow(TimeoutError);
+      await expect(promise).rejects.toEqual(TimeoutError);
     });
 
     test('`fdc3Ready` event cancels timeout and rejects if `window.fdc3` is not defined', () => {
-      expect.assertions(5);
-
       const promise = fdc3Ready();
 
       expect(setTimeout).toHaveBeenCalledTimes(1);
@@ -312,12 +299,10 @@ describe('test ES6 module', () => {
       eventListeners['fdc3Ready']();
 
       expect(clearTimeout).toHaveBeenCalledTimes(1);
-      expect(promise).rejects.toThrow(UnexpectedError);
+      return expect(promise).rejects.toEqual(UnexpectedError);
     });
 
-    test('`fdc3Ready` event cancels timeout and resolves if `window.fdc3` is defined', () => {
-      expect.assertions(5);
-
+    test('`fdc3Ready` event cancels timeout and resolves if `window.fdc3` is defined', async () => {
       const promise = fdc3Ready();
 
       expect(setTimeout).toHaveBeenCalledTimes(1);
@@ -329,7 +314,7 @@ describe('test ES6 module', () => {
       eventListeners['fdc3Ready']();
 
       expect(clearTimeout).toHaveBeenCalledTimes(1);
-      expect(promise).resolves.toBe(undefined);
+      await expect(promise).resolves.toBe(undefined);
     });
   });
 });

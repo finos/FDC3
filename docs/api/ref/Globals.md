@@ -52,7 +52,7 @@ import { fdc3Ready, broadcast } from '@finos/fdc3'
 
 async function fdc3Action() {
   try {
-    await fdc3Ready(1000); // wait for 1 second
+    await fdc3Ready(1000); // wait for (at most) 1 second
     broadcast({
       type: 'fdc3.instrument',
       id: { ticker: 'AAPL' }

@@ -4,7 +4,7 @@ import { TargetApp } from './Types';
 const DEFAULT_TIMEOUT = 5000;
 
 const UnavailableError = new Error('FDC3 DesktopAgent not available at `window.fdc3`.');
-const TimeoutError = new Error('Timed out waiting for fdc3Ready event.');
+const TimeoutError = new Error('Timed out waiting for `fdc3Ready` event.');
 const UnexpectedError = new Error('`fdc3Ready` event fired, but `window.fdc3` not set to DesktopAgent.');
 
 function rejectIfNoGlobal(f: () => Promise<any>) {
