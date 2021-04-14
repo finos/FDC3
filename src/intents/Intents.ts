@@ -1,6 +1,6 @@
 export enum Intents {
   StartCall = 'StartCall',
-  StartChart = 'StartChart',
+  StartChat = 'StartChat',
   ViewChart = 'ViewChart',
   ViewContact = 'ViewContact',
   ViewQuote = 'ViewQuote',
