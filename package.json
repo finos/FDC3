@@ -7,9 +7,6 @@
     "type": "git",
     "url": "https://github.com/finos/FDC3.git"
   },
-  "publishConfig": {
-    "tag": "next"
-  },
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
