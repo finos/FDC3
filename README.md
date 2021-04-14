@@ -1,6 +1,6 @@
 # <a href='http://fdc3.finos.org'><img src='./website/static/img/fdc3-logo-2019-color.png' height='150' alt='FDC3 Logo' aria-label='fdc3.finos.org' /></a>
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/finos/fdc3)](https://github.com/finos/fdc3/releases/latest)
+[![Latest Standard](https://img.shields.io/badge/release-1.1-blue)](https://github.com/finos/fdc3/releases/v1.1)
 [![npm](https://img.shields.io/npm/v/@finos/fdc3)](https://www.npmjs.com/package/@finos/fdc3)
 [![FINOS - Released](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-released.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Released)
 [![GitHub](https://img.shields.io/github/license/finos/fdc3)](https://opensource.org/licenses/Apache-2.0)
@@ -100,7 +100,7 @@ channel.broadcast({ ... })
 ```
 
 ## Native
-The FDC3 standard does not define wire formats for communication. Hence, for native applications to be FDC3-enabled, they need to make use of a library (e.g. a DLL in .Net or Jar file in Java) that provides them with an implementation of the FDC3 API. FDC3-enabled native applications are therefore specific to particular desktop container frameworks (or other suitable environments) that provide the necessary libraries. 
+The FDC3 standard does not define wire formats for communication. Hence, for native applications to be FDC3-enabled, they need to make use of a library (e.g. a DLL in .Net or Jar file in Java) that provides them with an implementation of the FDC3 API. FDC3-enabled native applications are therefore specific to particular desktop container frameworks (or other suitable environments) that provide the necessary libraries.
 
 Despite this limitation, implementing support for FDC3 in a native application can allow it to interact with a wide variety of FDC3-enabled web applications.
 
@@ -119,9 +119,9 @@ Despite this limitation, implementing support for FDC3 in a native application c
 
 ## Learn more and interact with the community
 
-The fastest and more interactive way to connect and ask questions to the FDC3 community is to join the [#fdc3 channel on the FINOS slack](https://finos-lf.slack.com/messages/fdc3/). 
+The fastest and more interactive way to connect and ask questions to the FDC3 community is to join the [#fdc3 channel on the FINOS slack](https://finos-lf.slack.com/messages/fdc3/).
 
-If you'd like to receive official updates, and/or you don't have access to Slack, please send an email to [fdc3@finos.org]. You can join the list by sending an email to [fdc3+subscribe@finos.org]. 
+If you'd like to receive official updates, and/or you don't have access to Slack, please send an email to [fdc3@finos.org]. You can join the list by sending an email to [fdc3+subscribe@finos.org].
 
 Finally, another great way to interact with the community, is to attend the quarterly [FDC3 General Meeting]: you will receive an invite by signing up to the mailing list, or you can find the meeting in the [FINOS Project Meetings Calendar].
 
