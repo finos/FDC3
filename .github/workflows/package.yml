@@ -52,36 +52,40 @@ jobs:
       - name: Build
         run: yarn build
 
-  package-release:
+  pacakge-publish:
     if: ${{ github.event_name == 'push' }}
     needs: package-build
+    name: Publish package to ${{ matrix.name }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+       include:
+         - name: NPM
+           registry: https://registry.npmjs.org
+           token-name: NPM_TOKEN
+         - name: GitHub
+           registry: https://npm.pkg.github.com
+           token-name: GITHUB_TOKEN
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
+    - name: Checkout repo
+      uses: actions/checkout@v2
 
-      - name: Use Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
+    - name: Configure Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+        registry-url: ${{ matrix.registry }}
 
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+    - name: Check package version
+      id: check-version
+      uses: PostHog/check-package-version@v2
 
-      - name: Publish to NPM
-        uses: JS-DevTools/npm-publish@v1.4.3
-        with:
-          registry: https://registry.npmjs.org/
-          access: public
-          dry-run: false
-          check-version: true
-          token: ${{ secrets.NPM_TOKEN }}
+    - name: Install dependencies
+      if: steps.check-version.outputs.is-new-version == 'true'
+      uses: bahmutov/npm-install@v1
 
-      - name: Publish to GitHub
-        uses: JS-DevTools/npm-publish@v1.4.3
-        with:
-          registry: https://npm.pkg.github.com
-          access: public
-          dry-run: false
-          check-version: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Publish
+      if: steps.check-version.outputs.is-new-version == 'true'
+      run: yarn publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets[matrix.token-name] }}
