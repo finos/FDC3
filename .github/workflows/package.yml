@@ -80,6 +80,12 @@ jobs:
       id: check-version
       uses: PostHog/check-package-version@v2
 
+    - name: Package version info
+      run: |
+        echo "Committed version: ${{ steps.check-version.outputs.committed-version }}"
+        echo "Published version: ${{ steps.check-version.published-version }}"
+        echo "Is version new: ${{ steps.check-version.outputs.is-new-version }}"
+
     - name: Install dependencies
       if: steps.check-version.outputs.is-new-version == 'true'
       uses: bahmutov/npm-install@v1
