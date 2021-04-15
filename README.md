@@ -164,7 +164,7 @@ The [FDC3 Product Management Committee] (PMC) is responsible for co-ordinating t
 [FDC3 Archive]: https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview
 
 ### Meetings
-The PMC meets every second Friday at 9:30am ET / 2:30pm GMT. Find the next meeting, including meeting details, on the [FINOS Project Meetings Calendar].
+The PMC meets every second Friday at 9am ET / 2pm GMT. Find the next meeting, including meeting details, on the [FINOS Project Meetings Calendar].
 
 ### Mailing list
 You can get in touch with the FDC3 PMC by sending an email to [fdc3-pmc@finos.org]. Join the PMC Mailing list by sending an email to [fdc3-pmc+subscribe@finos.org].
@@ -183,7 +183,7 @@ If you'd like to contribute code to this repository:
 5. Push to the branch (`git push origin feature/fooBar`)
 6. Create a new Pull Request
 
-_NOTE:_ Commits and pull requests to FINOS repositories will only be accepted from those contributors with an active, executed Individual Contributor License Agreement (ICLA) with FINOS OR who are covered under an existing and active Corporate Contribution License Agreement (CCLA) executed with FINOS. Commits from individuals not covered under an ICLA or CCLA will be flagged and blocked by the FINOS Clabot tool. Please note that some CCLAs require individuals/employees to be explicitly named on the CCLA.
+_NOTE:_ Commits and pull requests to FINOS repositories will only be accepted from those contributors with an active, executed Individual Contributor License Agreement (ICLA) with FINOS, _OR_ who are covered under an existing and active Corporate Contribution License Agreement (CCLA) executed with FINOS. Commits from individuals not covered under an ICLA or CCLA will be flagged and blocked by the FINOS `cla-bot` tool. Please note that some CCLAs require individuals/employees to be explicitly named on the CCLA.
 
 *Need an ICLA? Unsure if you are covered under an existing CCLA? Email [help@finos.org](mailto:help@finos.org).*
 
