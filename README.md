@@ -107,7 +107,7 @@ Despite this limitation, implementing support for FDC3 in a native application c
 
 # Roadmap
 
-- [ ] Publish versioned NPM packages to ease adoption and implementation of FDC3 APIs.
+- [x] Publish versioned NPM packages to ease adoption and implementation of FDC3 APIs.
 - [ ] Establish a process to accelerate community-contributed context data definitions.
 - [ ] Release version 1.2 of the standard with expanded API capabilities.
 - [ ] Release version 2.0 of the standard with support for app instances, two-way data flow and joining multiple channels.
