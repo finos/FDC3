@@ -69,7 +69,7 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Publish to NPM
-        uses: JS-DevTools/npm-publish@v1
+        uses: JS-DevTools/npm-publish@v1.4.3
         with:
           registry: https://registry.npmjs.org/
           access: public
@@ -78,7 +78,7 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to GitHub
-        uses: JS-DevTools/npm-publish@v1
+        uses: JS-DevTools/npm-publish@v1.4.3
         with:
           registry: https://npm.pkg.github.com
           access: public
