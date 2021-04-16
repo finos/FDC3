@@ -1,6 +1,6 @@
 # <a href='http://fdc3.finos.org'><img src='./website/static/img/fdc3-logo-2019-color.png' height='150' alt='FDC3 Logo' aria-label='fdc3.finos.org' /></a>
 
-[![Latest Standard](https://img.shields.io/badge/release-1.1-blue)](https://github.com/finos/fdc3/releases/v1.1)
+[![Latest Standard](https://img.shields.io/badge/release-1.2-blue)](https://github.com/finos/fdc3/releases/v1.2)
 [![npm](https://img.shields.io/npm/v/@finos/fdc3)](https://www.npmjs.com/package/@finos/fdc3)
 [![FINOS - Released](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-released.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Released)
 [![GitHub](https://img.shields.io/github/license/finos/fdc3)](https://opensource.org/licenses/Apache-2.0)
@@ -108,8 +108,8 @@ Despite this limitation, implementing support for FDC3 in a native application c
 # Roadmap
 
 - [x] Publish versioned NPM packages to ease adoption and implementation of FDC3 APIs.
+- [x] Release version 1.2 of the standard with expanded API capabilities.
 - [ ] Establish a process to accelerate community-contributed context data definitions.
-- [ ] Release version 1.2 of the standard with expanded API capabilities.
 - [ ] Release version 2.0 of the standard with support for app instances, two-way data flow and joining multiple channels.
 - [ ] Improve the app directory specification, with support for container-agnostic app manifests, and more type metadata around channels and launching apps.
 - [ ] Introduce a hosted app directory example with sample application definitions.

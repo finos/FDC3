@@ -6,7 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [FDC3 Standard 1.2] - 2021-04-16
+## [npm v1.2.0] - 2021-04-19
+
+### Added
+* ES6 functions for `getInfo()` and `raiseIntentForContext()` ([#268](https://github.com/finos/FDC3/pull/268), [#324](https://github.com/finos/FDC3/pull/324))
+* `fdc3Ready()` utility function that wraps checks for the window.fdc3 global object and new `fdc3Ready` event ([#360](https://github.com/finos/FDC3/pull/360))
+* `compareVersionNumbers()` and `versionIsAtLeast()` utility functions to complement `getInfo()` ([#324](https://github.com/finos/FDC3/pull/324))
+
+### Changed
+* `addContextListener(contextType, handler)` now supports passing `null` as the context type ([#329](https://github.com/finos/FDC3/pull/329))
+* All other API type changes and additions from the [FDC3 Standard 1.2](https://github.com/finos/FDC3/releases/tag/v1.2) release
+
+### Deprecated
+* `addContextListener(handler)` ([#329](https://github.com/finos/FDC3/pull/329))
+* `IntentResolution.data` ([#341](https://github.com/finos/FDC3/pull/341))
+
+## [FDC3 Standard 1.2] - 2021-04-19
 ### Added
 * New `raiseIntentForContext()` method ([#268](https://github.com/finos/FDC3/pull/268))
 * New `fdc3Ready` event ([#269](https://github.com/finos/FDC3/pull/269))
@@ -16,10 +31,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * `fdc3.open()` and `fdc3.raiseIntent()` now takes `TargetApp`, which resolves to `string | AppMetadata` ([#272](https://github.com/finos/FDC3/pull/272))
 * `AppMetadata` return type can now optionally include `appId` and `version` ([#273](https://github.com/finos/FDC3/pull/273))
 * `addContextListener(contextType, handler)` now supports passing `null` as the context type ([#329](https://github.com/finos/FDC3/pull/329))
-* **Deprecated**:
-  - `addContextListener(handler)` ([#329](https://github.com/finos/FDC3/pull/329))
-  - `IntentResolution.data` and `'global'` channel concept ([#341](https://github.com/finos/FDC3/pull/341))
-* Simplify API Reference documentation and add Supported Platforms with info about npm package ([#349](https://github.com/finos/FDC3/pull/349))
+* Simplify API reference documentation and add info about supported platforms, including npm package ([#349](https://github.com/finos/FDC3/pull/349))
+
+### Deprecated
+* `addContextListener(handler)` ([#329](https://github.com/finos/FDC3/pull/329))
+* `IntentResolution.data` and `'global'` channel concept ([#341](https://github.com/finos/FDC3/pull/341))
 
 ### Fixed
 * Return type of `getCurrentChannel()` should be `Promise<Channel | null>` ([#282](https://github.com/finos/FDC3/pull/282))
@@ -28,17 +44,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [npm v1.1.1] - 2021-04-15
 ### Fixed
 * `Intents` enum should contain `StartChat` not `StartChart` ([#364](https://github.com/finos/FDC3/pull/364))
-
-## [npm v1.2.0-beta] - 2021-04-14
-### Added
-* ES6 functions for `getInfo()` and `raiseIntentForContext()` ([#268](https://github.com/finos/FDC3/pull/268), [#324](https://github.com/finos/FDC3/pull/324))
-* `fdc3Ready()` utility function that wraps checks for the window.fdc3 global object and new fdc3Ready event
-* `compareVersionNumbers()` and `versionIsAtLeast()` utility functions to complement `getInfo()`
-
-### Changed
-* `addContextListener(contextType, handler)` now supports passing `null` as the context type ([#329](https://github.com/finos/FDC3/pull/329))
-* **Deprecated**: `addContextListener(handler)` ([#329](https://github.com/finos/FDC3/pull/329)) and `IntentResolution.data` ([#341](https://github.com/finos/FDC3/pull/341))
-* Type expansions that form part of [FDC3 Standard 1.2]
 
 ### Fixed
 * Return type of `getCurrentChannel()` should be `Promise<Channel | null>` ([#282](https://github.com/finos/FDC3/pull/282))
@@ -120,7 +125,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Errors in DesktopAgent API Reference ([#66](https://github.com/finos/FDC3/pull/66))
 
 [Unreleased]: https://github.com/finos/FDC3/compare/v1.2..HEAD
-[npm v1.2.0-beta]: https://github.com/finos/FDC3/compare/v1.1.0..v1.2.0-beta
+[npm v1.2.0]: https://github.com/finos/FDC3/compare/v1.1.0..v1.2.0
 [FDC3 Standard 1.2]: https://github.com/finos/FDC3/compare/v1.2..v1.1
 [npm v1.1.1]: https://github.com/finos/FDC3/compare/v1.1.0..v1.1.1
 [npm v1.1.0]: https://github.com/finos/FDC3/compare/v1.1..v1.1.0
