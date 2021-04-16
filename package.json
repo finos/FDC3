@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3",
-  "version": "1.2.0-beta",
+  "version": "1.2.0",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/finos/FDC3.git"
   },
   "publishConfig": {
-    "tag": "next"
+    "tag": "latest"
   },
   "license": "Apache-2.0",
   "main": "dist/index.js",
