@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>DesktopAgent · FDC3</title><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="generator" content="Docusaurus"/><meta name="description" content="# `DesktopAgent`"/><meta name="docsearch:version" content="1.1"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="DesktopAgent · FDC3"/><meta property="og:type" content="website"/><meta property="og:url" content="https://fdc3.finos.org/"/><meta property="og:description" content="# `DesktopAgent`"/><meta property="og:image" content="https://fdc3.finos.org/assets/fdc3-logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://fdc3.finos.org/assets/fdc3-logo.png"/><link rel="shortcut icon" href="/img/favicon/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-89349362-8', 'auto');
+              ga('send', 'pageview');
+            </script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/fdc3-icon-2019.svg" alt="FDC3"/><h2 class="headerTitleWithLogo">FDC3</h2></a><a href="/versions"><h3>1.1</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/1.1/fdc3-intro" target="_self">Docs</a></li><li class=""><a href="/docs/1.1/use-cases/overview" target="_self">Use Cases</a></li><li class=""><a href="/get-involved" target="_self">Get Involved</a></li><li class="siteNavGroupActive"><a href="/docs/1.1/why-fdc3" target="_self">Why FDC3</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Interfaces</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Getting Started<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/1.1/fdc3-intro">Introduction</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/fdc3-charter">Charter</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/why-fdc3">Why FDC3</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/fdc3-compliance">FDC3 Compliance</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">API<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/1.1/api/overview">API Overview</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/api/spec">API Specification</a></li><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">Interfaces</h4><ul><li class="navListItem navListItemActive"><a class="navItem" href="/docs/1.1/api/ref/DesktopAgent">DesktopAgent</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/api/ref/Channel">Channel</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/api/ref/Listener">Listener</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/api/ref/AppIntent">AppIntent</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/api/ref/IntentResolution">IntentResolution</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/api/ref/AppMetadata">AppMetadata</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/api/ref/IntentMetadata">IntentMetadata</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/api/ref/DisplayMetadata">DisplayMetadata</a></li></ul></div><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">Types</h4><ul><li class="navListItem"><a class="navItem" href="/docs/1.1/api/ref/Context">Context</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/api/ref/ContextHandler">ContextHandler</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/api/ref/OpenError">OpenError</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/api/ref/ResolveError">ResolveError</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/api/ref/ChannelError">ChannelError</a></li></ul></div></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Intents<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/1.1/intents/overview">Intents Overview</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/intents/spec">Intents Specification</a></li><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">Reference</h4><ul><li class="navListItem"><a class="navItem" href="/docs/1.1/intents/ref/StartCall">StartCall</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/intents/ref/StartChat">StartChat</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/intents/ref/ViewChart">ViewChart</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/intents/ref/ViewContact">ViewContact</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/intents/ref/ViewQuote">ViewQuote</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/intents/ref/ViewNews">ViewNews</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/intents/ref/ViewAnalysis">ViewAnalysis</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/intents/ref/ViewInstrument">ViewInstrument</a></li></ul></div></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Context Data<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/1.1/context/overview">Context Data Overview</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/context/spec">Context Data Specification</a></li><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">Reference</h4><ul><li class="navListItem"><a class="navItem" href="/docs/1.1/context/ref/Context">Context</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/context/ref/Contact">Contact</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/context/ref/ContactList">ContactList</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/context/ref/Instrument">Instrument</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/context/ref/InstrumentList">InstrumentList</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/context/ref/Organization">Organization</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/context/ref/Country">Country</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/context/ref/Position">Position</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/context/ref/Portfolio">Portfolio</a></li></ul></div></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">App Directory<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/1.1/app-directory/overview">App Directory Overview</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/app-directory/discovery">App Directory Discovery</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/app-directory/usage">App Directory Usage</a></li><li class="navListItem"><a class="navItem" href="/docs/1.1/app-directory/spec">App Directory Specification</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="desktopagent"></a><a href="#desktopagent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>DesktopAgent</code></h1>
+<pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> DesktopAgent {
+  <span class="hljs-comment">// apps</span>
+  open(name: <span class="hljs-built_in">string</span>, context?: Context): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+  
+  <span class="hljs-comment">// context</span>
+  broadcast(context: Context): <span class="hljs-built_in">void</span>;
+  addContextListener(handler: ContextHandler): Listener;
+  addContextListener(contextType: <span class="hljs-built_in">string</span>, <span class="hljs-attr">handler</span>: ContextHandler): Listener;
+
+  <span class="hljs-comment">// intents</span>
+  findIntent(intent: <span class="hljs-built_in">string</span>, context?: Context): <span class="hljs-built_in">Promise</span>&lt;AppIntent&gt;;
+  findIntentsByContext(context: Context): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;AppIntent&gt;&gt;;
+  raiseIntent(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">context</span>: Context, target?: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
+  addIntentListener(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">handler</span>: ContextHandler): Listener;
+  
+  <span class="hljs-comment">// channels</span>
+  getOrCreateChannel(channelId: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">Promise</span>&lt;Channel&gt;;
+  getSystemChannels(): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;Channel&gt;&gt;;
+  joinChannel(channelId: <span class="hljs-built_in">string</span>) : <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+  getCurrentChannel() : <span class="hljs-built_in">Promise</span>&lt;Channel&gt;;
+  leaveCurrentChannel() : <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+}
+</code></pre>
+<p>A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain.</p>
+<p>A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.</p>
+<h2><a class="anchor" aria-hidden="true" id="methods"></a><a href="#methods" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Methods</h2>
+<h3><a class="anchor" aria-hidden="true" id="addcontextlistener"></a><a href="#addcontextlistener" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>addContextListener</code></h3>
+<pre><code class="hljs css language-ts">addContextListener(handler: ContextHandler): Listener;
+addContextListener(contextType: <span class="hljs-built_in">string</span>, <span class="hljs-attr">handler</span>: ContextHandler): Listener;
+</code></pre>
+<p>Adds a listener for incoming context broadcast from the Desktop Agent. If the consumer is only interested in
+a context of a particular type, they can use the relevant overload that allows the type to be specified.</p>
+<h4><a class="anchor" aria-hidden="true" id="examples"></a><a href="#examples" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// any context</span>
+<span class="hljs-keyword">const</span> listener = fdc3.addContextListener(<span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> { ... });
+
+<span class="hljs-comment">// listener for a specific type</span>
+<span class="hljs-keyword">const</span> contactListener = fdc3.addContextListener(<span class="hljs-string">&#x27;fdc3.contact&#x27;</span>, <span class="hljs-function"><span class="hljs-params">contact</span> =&gt;</span> { ... });
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="see-also"></a><a href="#see-also" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="Listener"><code>Listener</code></a></li>
+<li><a href="Context"><code>Context</code></a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="addintentlistener"></a><a href="#addintentlistener" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>addIntentListener</code></h3>
+<pre><code class="hljs css language-ts">addIntentListener(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">handler</span>: ContextHandler): Listener;
+</code></pre>
+<p>Adds a listener for incoming Intents from the Agent.</p>
+<h4><a class="anchor" aria-hidden="true" id="examples-1"></a><a href="#examples-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> listener = fdc3.addIntentListener(<span class="hljs-string">&#x27;StartChat&#x27;</span>, <span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> {
+  <span class="hljs-comment">// start chat has been requested by another application</span>
+});
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="see-also-1"></a><a href="#see-also-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="Listener"><code>Listener</code></a></li>
+<li><a href="Context"><code>Context</code></a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="broadcast"></a><a href="#broadcast" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>broadcast</code></h3>
+<pre><code class="hljs css language-ts">broadcast(context: Context): <span class="hljs-built_in">void</span>;
+</code></pre>
+<p>Publishes context to other apps on the desktop.  Calling <code>broadcast</code> at the <code>DesktopAgent</code> scope will push the context to whatever <code>Channel</code> the app is joined to.  If the app is not currently joined to a channel, calling <code>fdc3.broadcast</code> will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the <code>Channel</code> class.</p>
+<h4><a class="anchor" aria-hidden="true" id="example"></a><a href="#example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> instrument = {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;fdc3.instrument&#x27;</span>,
+    <span class="hljs-attr">id</span>: {
+        <span class="hljs-attr">ticker</span>: <span class="hljs-string">&#x27;AAPL&#x27;</span>
+    }
+};
+
+fdc3.broadcast(instrument);
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="see-also-2"></a><a href="#see-also-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="#addcontextlistener">addContextListener</a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="findintent"></a><a href="#findintent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>findIntent</code></h3>
+<pre><code class="hljs css language-ts">findIntent(intent: <span class="hljs-built_in">string</span>, context?: Context): <span class="hljs-built_in">Promise</span>&lt;AppIntent&gt;;
+</code></pre>
+<p>Find out more information about a particular intent by passing its name, and optionally its context.</p>
+<p><em>findIntent</em> is effectively granting programmatic access to the Desktop Agent's resolver.
+It returns a promise resolving to the intent, its metadata and metadata about the apps that are registered to handle it.
+This can be used to raise the intent against a specific app.</p>
+<p>If the resolution fails, the promise will return an <code>Error</code> with a string from the <a href="ResolveError"><code>ResolveError</code></a> enumeration.</p>
+<h4><a class="anchor" aria-hidden="true" id="examples-2"></a><a href="#examples-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// I know &#x27;StartChat&#x27; exists as a concept, and want to know more about it ...</span>
+<span class="hljs-keyword">const</span> appIntent = <span class="hljs-keyword">await</span> fdc3.findIntent(<span class="hljs-string">&quot;StartChat&quot;</span>);
+<span class="hljs-comment">// returns a single AppIntent:</span>
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//     intent: { name: &quot;StartChat&quot;, displayName: &quot;Chat&quot; },</span>
+<span class="hljs-comment">//     apps: [{ name: &quot;Skype&quot; }, { name: &quot;Symphony&quot; }, { name: &quot;Slack&quot; }]</span>
+<span class="hljs-comment">// }</span>
+
+<span class="hljs-comment">// raise the intent against a particular app</span>
+<span class="hljs-keyword">await</span> fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[<span class="hljs-number">0</span>].name);
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="see-also-3"></a><a href="#see-also-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="ResolveError"><code>ResolveError</code></a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="findintentsbycontext"></a><a href="#findintentsbycontext" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>findIntentsByContext</code></h3>
+<pre><code class="hljs css language-ts">findIntentsByContext(context: Context): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;AppIntent&gt;&gt;;
+</code></pre>
+<p>Find all the avalable intents for a particular context.
+<em>findIntentsByContext</em> is effectively granting programmatic access to the Desktop Agent's resolver.
+A promise resolving to all the intents, their metadata and metadata about the apps that registered as handlers is returned, based on the context types the intents have registered.</p>
+<p>If the resolution fails, the promise will return an <code>Error</code> with a string from the <a href="ResolveError"><code>ResolveError</code></a> enumeration.</p>
+<h4><a class="anchor" aria-hidden="true" id="example-1"></a><a href="#example-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// I have a context object, and I want to know what I can do with it, hence, I look for intents...</span>
+<span class="hljs-keyword">const</span> appIntents = <span class="hljs-keyword">await</span> fdc3.findIntentsByContext(context);
+
+<span class="hljs-comment">// returns, for example:</span>
+<span class="hljs-comment">// [{</span>
+<span class="hljs-comment">//     intent: { name: &quot;StartCall&quot;, displayName: &quot;Call&quot; },</span>
+<span class="hljs-comment">//     apps: [{ name: &quot;Skype&quot; }]</span>
+<span class="hljs-comment">// },</span>
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//     intent: { name: &quot;StartChat&quot;, displayName: &quot;Chat&quot; },</span>
+<span class="hljs-comment">//     apps: [{ name: &quot;Skype&quot; }, { name: &quot;Symphony&quot; }, { name: &quot;Slack&quot; }]</span>
+<span class="hljs-comment">// }];</span>
+
+<span class="hljs-comment">// select a particular intent to raise</span>
+<span class="hljs-keyword">const</span> startChat = appIntents[<span class="hljs-number">1</span>];
+
+<span class="hljs-comment">// target a particular app</span>
+<span class="hljs-keyword">const</span> selectedApp = startChat.apps[<span class="hljs-number">0</span>];
+
+<span class="hljs-comment">// raise the intent, passing the given context, targeting the app</span>
+<span class="hljs-keyword">await</span> fdc3.raiseIntent(startChat.intent.name, context, selectedApp.name);
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="see-also-4"></a><a href="#see-also-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="ResolveError"><code>ResolveError</code></a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="getcurrentchannel"></a><a href="#getcurrentchannel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>getCurrentChannel</code></h3>
+<pre><code class="hljs css language-ts">getCurrentChannel() : <span class="hljs-built_in">Promise</span>&lt;Channel&gt;;
+</code></pre>
+<p>Returns the <code>Channel</code> object for the current channel membership.  Returns <code>null</code> if the app is not joined to a channel.</p>
+<h4><a class="anchor" aria-hidden="true" id="examples-3"></a><a href="#examples-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
+<pre><code class="hljs css language-js"><span class="hljs-comment">//get the current channel membership</span>
+<span class="hljs-keyword">let</span> current = <span class="hljs-keyword">await</span> fdc3.getCurrentChannel();
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="see-also-5"></a><a href="#see-also-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="Channel"><code>Channel</code></a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="getorcreatechannel"></a><a href="#getorcreatechannel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>getOrCreateChannel</code></h3>
+<pre><code class="hljs css language-ts">getOrCreateChannel(channelId: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">Promise</span>&lt;Channel&gt;;
+</code></pre>
+<p>Returns a Channel object for the specified channel, creating it (as an <em>App</em> channel) - if it does not exist.
+<code>Error</code> with a string from the <a href="ChannelError"><code>ChannelError</code></a> enumeration if channel could not be created or access was denied.</p>
+<h4><a class="anchor" aria-hidden="true" id="example-2"></a><a href="#example-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">const</span> myChannel = <span class="hljs-keyword">await</span> fdc3.getOrCreateChannel(<span class="hljs-string">&quot;myChannel&quot;</span>);
+  <span class="hljs-keyword">const</span> myChannel.addContextListener(<span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> {});
+}
+<span class="hljs-keyword">catch</span> (err){
+  <span class="hljs-comment">//app could not register the channel</span>
+}
+
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="see-also-6"></a><a href="#see-also-6" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="Channel"><code>Channel</code></a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="getsystemchannels"></a><a href="#getsystemchannels" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>getSystemChannels</code></h3>
+<pre><code class="hljs css language-ts">getSystemChannels() : <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;Channel&gt;&gt;;
+</code></pre>
+<p>Retrieves a list of the System channels available for the app to join.  This should include the 'global' channel.</p>
+<h4><a class="anchor" aria-hidden="true" id="example-3"></a><a href="#example-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> systemChannels = <span class="hljs-keyword">await</span> fdc3.getSystemChannels(); 
+<span class="hljs-keyword">const</span> redChannel = systemChannels.find(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> c.id === <span class="hljs-string">&#x27;red&#x27;</span>);
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="see-also-7"></a><a href="#see-also-7" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="Channel"><code>Channel</code></a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="joinchannel"></a><a href="#joinchannel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>joinChannel</code></h3>
+<pre><code class="hljs css language-ts">joinChannel(channelId: <span class="hljs-built_in">string</span>) : <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+</code></pre>
+<p>Joins the app to the specified channel.
+If an app is joined to a channel, all <em>fdc3.broadcast</em> calls will go to the channel, and all listeners assigned via <em>fdc3.addContextListener</em> will listen on the channel.
+An app can only be joined to one channel at a time.
+Rejects with error if the channel is unavailable or the join request is denied.
+<code>Error</code> with a string from the <a href="ChannelError"><code>ChannelError</code></a> enumeration.</p>
+<h4><a class="anchor" aria-hidden="true" id="examples-4"></a><a href="#examples-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// get all system channels</span>
+<span class="hljs-keyword">const</span> channels = <span class="hljs-keyword">await</span> fdc3.getSystemChannels();
+
+<span class="hljs-comment">// create UI to pick from the system channels</span>
+
+<span class="hljs-comment">// join the channel on selection</span>
+fdc3.joinChannel(selectedChannel.id);
+
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="see-also-8"></a><a href="#see-also-8" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="#getSystemChannels"><code>getSystemChannels</code></a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="leavecurrentchannel"></a><a href="#leavecurrentchannel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>leaveCurrentChannel</code></h3>
+<pre><code class="hljs css language-ts">leaveCurrentChannel() : <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+</code></pre>
+<p>Removes the app from any channel membership.  Context broadcast and listening through the top-level <code>fdc3.broadcast</code> and <code>fdc3.addContextListener</code> will be in a no-op when the app is not on a channel.</p>
+<h4><a class="anchor" aria-hidden="true" id="examples-5"></a><a href="#examples-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
+<pre><code class="hljs css language-js"><span class="hljs-comment">//desktop-agent scope context listener</span>
+<span class="hljs-keyword">const</span> fdc3Listener = fdc3.addContextListener(<span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> {});
+
+<span class="hljs-keyword">await</span> fdc3.leaveCurrentChannel();
+<span class="hljs-comment">//the fdc3Listener will now cease recieving context</span>
+
+<span class="hljs-comment">//listening on a specific channel though, will continue to work</span>
+redChannel.addContextListener(channelListener);
+
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="open"></a><a href="#open" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>open</code></h3>
+<pre><code class="hljs css language-ts">open(name: <span class="hljs-built_in">string</span>, context?: Context): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+</code></pre>
+<p>Launches/links to an app by name.</p>
+<p>If a <a href="Context"><code>Context</code></a> object is passed in, this object will be provided to the opened application via a contextListener.
+The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
+If opening errors, it returns an <code>Error</code> with a string from the <a href="OpenError"><code>OpenError</code></a> enumeration.</p>
+<h4><a class="anchor" aria-hidden="true" id="example-4"></a><a href="#example-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// no context</span>
+<span class="hljs-keyword">await</span> fdc3.open(<span class="hljs-string">&#x27;myApp&#x27;</span>);
+
+<span class="hljs-comment">// with context</span>
+<span class="hljs-keyword">await</span> fdc3.open(<span class="hljs-string">&#x27;myApp&#x27;</span>, context);
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="see-also-9"></a><a href="#see-also-9" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="Context"><code>Context</code></a></li>
+<li><a href="OpenError"><code>OpenError</code></a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="raiseintent"></a><a href="#raiseintent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>raiseIntent</code></h3>
+<pre><code class="hljs css language-ts">raiseIntent(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">context</span>: Context, target?: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
+</code></pre>
+<p>Raises an intent to the desktop agent to resolve.</p>
+<h4><a class="anchor" aria-hidden="true" id="example-5"></a><a href="#example-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
+<pre><code class="hljs css language-js"><span class="hljs-comment">//raise an intent to start a chat with a given contact</span>
+<span class="hljs-keyword">const</span> intentResolution = <span class="hljs-keyword">await</span> fdc3.findIntents(<span class="hljs-string">&quot;StartChat&quot;</span>, context);
+<span class="hljs-comment">//use the IntentResolution object to target the same chat app with a new context</span>
+<span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&quot;StartChat&quot;</span>, newContext, intentResolution.source);
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="see-also-10"></a><a href="#see-also-10" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="IntentResolution"><code>IntentResolution</code></a></li>
+</ul>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/1.1/api/spec"><span class="arrow-prev">← </span><span>API Specification</span></a><a class="docs-next button" href="/docs/1.1/api/ref/Channel"><span>Channel</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#methods">Methods</a><ul class="toc-headings"><li><a href="#addcontextlistener"><code>addContextListener</code></a></li><li><a href="#addintentlistener"><code>addIntentListener</code></a></li><li><a href="#broadcast"><code>broadcast</code></a></li><li><a href="#findintent"><code>findIntent</code></a></li><li><a href="#findintentsbycontext"><code>findIntentsByContext</code></a></li><li><a href="#getcurrentchannel"><code>getCurrentChannel</code></a></li><li><a href="#getorcreatechannel"><code>getOrCreateChannel</code></a></li><li><a href="#getsystemchannels"><code>getSystemChannels</code></a></li><li><a href="#joinchannel"><code>joinChannel</code></a></li><li><a href="#leavecurrentchannel"><code>leaveCurrentChannel</code></a></li><li><a href="#open"><code>open</code></a></li><li><a href="#raiseintent"><code>raiseIntent</code></a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/fdc3-icon-2019.svg" alt="FDC3"/></a><div><h5>Learn</h5><a href="/docs/fdc3-intro">Getting Started</a><a href="/docs/why-fdc3">Supported Platforms</a><a href="/docs/api/ref/DesktopAgent">API Reference</a><a href="/docs/use-cases/overview">Use Cases</a></div><div><h5>Community</h5><a href="https://www.finos.org/" target="_blank" rel="noreferrer noopener">FINOS</a><a href="https://finos-lf.slack.com/messages/fdc3/" target="_blank" rel="noreferrer noopener">Slack</a><a href="https://stackoverflow.com/questions/tagged/fdc3" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://groups.google.com/a/finos.org/forum/#!forum/fdc3" target="_blank" rel="noreferrer noopener">Google Groups</a></div><div><h5>More</h5><div class="social"><a class="github-button" href="https://github.com/finos/FDC3" data-count-href="https://github.com/finos/FDC3/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">FDC3</a></div><div class="social"><a href="https://twitter.com/FDC3_" class="twitter-follow-button">@FDC3_</a></div></div></section><section class="finos finosBanner"><a href="https://www.finos.org"><img id="finosicon" src="https://fdc3.finos.org/img/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS"/><h2 id="proud">Proud member of the Fintech Open Source Foundation</h2></a></section><section class="copyright">Copyright © 2021 FDC3</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>
