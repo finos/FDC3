@@ -37,6 +37,8 @@ pnpm install @finos/fdc3
 ### Usage
 
 ```javascript
+import * as fdc3 from '@finos/fdc3'
+
 // declare FDC3-compliant data
 const instrument = {
     type: 'fdc3.instrument',
