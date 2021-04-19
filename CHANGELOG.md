@@ -99,7 +99,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [FDC3 Standard 1.0] - 2019-03-28
 ### Added
-* Documentation website (generated with [Docusaurus]) and content from old separate FDC3 repos:
+* Documentation website (generated with [Docusaurus]) and content from old separate FDC3 repos ([#5](https://github.com/finos/FDC3/pull/5)):
   - [FDC3/API](https://github.com/FDC3/API)
   - [FDC3/ContextData](https://github.com/FDC3/ContextData)
   - [FDC3/Intents](https://github.com/FDC3/Intents)

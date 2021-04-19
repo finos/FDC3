@@ -47,7 +47,7 @@ class Footer extends React.Component {
             <a href={this.docUrl('fdc3-intro')}>
               Getting Started
             </a>
-            <a href={this.docUrl('why-fdc3')}>
+            <a href={this.docUrl('supported-platforms')}>
               Supported Platforms
             </a>
             <a href={this.docUrl('api/ref/DesktopAgent')}>
