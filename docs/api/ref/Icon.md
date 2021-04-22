@@ -51,5 +51,5 @@ The media type of the icon. If not provided the Desktop agent may refer to the s
 
 
 #### See also
-* [`AppMetadata`](AppMetadata)
+* [`AppMetadata`](Metadata#appmetadata)
 
