@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - master
+      - release/**
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
       - 'docs/**'
@@ -15,6 +16,7 @@ on:
   pull_request:
     branches:
       - master
+      - release/*
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
       - 'docs/**'
@@ -26,8 +28,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: ['10.x', '12.x', '14.x']
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        node: [14.x]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout repo
@@ -49,3 +51,47 @@ jobs:
 
       - name: Build
         run: yarn build
+
+  pacakge-publish:
+    if: ${{ github.event_name == 'push' }}
+    needs: package-build
+    name: Publish package to ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+       include:
+         - name: NPM
+           registry: https://registry.npmjs.org
+           token-name: NPM_TOKEN
+         - name: GitHub
+           registry: https://npm.pkg.github.com
+           token-name: GITHUB_TOKEN
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+
+    - name: Configure Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+        registry-url: ${{ matrix.registry }}
+
+    - name: Check package version
+      id: check-version
+      uses: PostHog/check-package-version@v2
+
+    - name: Package version info
+      run: |
+        echo "Committed version: ${{ steps.check-version.outputs.committed-version }}"
+        echo "Published version: ${{ steps.check-version.published-version }}"
+        echo "Is version new: ${{ steps.check-version.outputs.is-new-version }}"
+
+    - name: Install dependencies
+      if: steps.check-version.outputs.is-new-version == 'true'
+      uses: bahmutov/npm-install@v1
+
+    - name: Publish
+      if: steps.check-version.outputs.is-new-version == 'true'
+      run: yarn publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets[matrix.token-name] }}

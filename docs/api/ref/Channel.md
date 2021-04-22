@@ -6,6 +6,12 @@ hide_title: true
 ---
 # `Channel`
 
+Represents a context channel that applications can join to share context data.
+
+A channel can be either a well-known "system" channel (retrieved with [`getSystemChannels`](DesktopAgent#getsystemchannels)) or a custom "app" channel (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)).
+
+Channels each have a unique identifier, some display metadata and operations for broadcasting context to other applications, or receiving context from other applications.
+
 ```ts
 interface Channel {
   // properties
@@ -16,20 +22,17 @@ interface Channel {
   // methods
   broadcast(context: Context): void;
   getCurrentContext(contextType?: string): Promise<Context|null>;
+  addContextListener(contextType: string | null, handler: ContextHandler): Listener;
+  /**
+   * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
+   */
   addContextListener(handler: ContextHandler): Listener;
-  addContextListener(contextType: string, handler: ContextHandler): Listener;
 }
 ```
 
-Represents a context channel that applications can join to share context data. 
-
-A channel can be either a well-known "system" channel (retrieved with [`getSystemChannels`](DesktopAgent#getsystemchannels)) or a custom "app" channel (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)).
-
-Channels each have a unique identifier, some display metadata and operations for broadcasting context to other applications, or receiving context from other applications.
-
 #### See also
 
-* [`Context`](Context)
+* [`Context`](Types#context)
 * [`DesktopAgent.getSystemChannels`](DesktopAgent#getsystemchannels)
 * [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
 * [`DesktopAgent.joinChannel`](DesktopAgent#joinchannel)
@@ -61,31 +64,32 @@ public readonly displayMetadata?: DisplayMetadata;
 DisplayMetadata can be used to provide display hints for channels intended to be visualized and selectable by end users.
 
 #### See also
-* [`DisplayMetadata`](DisplayMetadata)
+* [`DisplayMetadata`](Metadata#displaymetadata)
 
 ## Methods
 
 
 ### `addContextListener`
+```ts
+public addContextListener(contextType: string | null, handler: ContextHandler): Listener;
+```
+Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
 
 ```ts
+/**
+ * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
+ */
 public addContextListener(handler: ContextHandler): Listener;
 ```
-
 Adds a listener for incoming contexts whenever a broadcast happens on the channel.
 
-```ts
-public addContextListener(contextType: string, handler: ContextHandler): Listener;
-```
-
-Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
 
 #### Examples
 
 Add a listener for any context that is broadcast on the channel:
 
 ```ts
-const listener = channel.addContextListener(context => {
+const listener = channel.addContextListener(null, context => {
     if (context.type === 'fdc3.contact') {
         // handle the contact
     } else if (context.type === 'fdc3.instrument') => {
@@ -115,9 +119,9 @@ instrumentListener.unsubscribe();
 
 #### See also
 * [`Listener`](Listener)
-* [`ContextHandler`](ContextHandler)
+* [`ContextHandler`](Types#contexthandler)
 * [`broadcast`](#broadcast)
-* [`getCurrentContext`](#addcontextlistener)
+* [`getCurrentContext`](#getcurrentcontext)
 
 ### `broadcast`
 
@@ -149,7 +153,7 @@ try {
 ```
 
 #### See also
-* [`ChannelError`](ChannelError)
+* [`ChannelError`](Errors#channelerror)
 * [`getCurrentContext`](#getcurrentcontext)
 * [`addContextListener`](#addcontextlistener)
 
@@ -191,7 +195,7 @@ try {
 ```
 
 #### See also
-* [`ChannelError`](ChannelError)
+* [`ChannelError`](Errors#channelerror)
 * [`broadcast`](#broadcast)
 * [`addContextListener`](#addcontextlistener)
 

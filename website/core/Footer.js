@@ -33,7 +33,7 @@ class Footer extends React.Component {
   render() {
     return (
       <footer className="nav-footer" id="footer">
-        <section className="sitemap">     
+        <section className="sitemap">
           <a href={this.props.config.baseUrl} className="nav-home">
             {this.props.config.footerIcon && (
               <img
@@ -43,18 +43,15 @@ class Footer extends React.Component {
             )}
           </a>
           <div>
-            <h5>Docs</h5>
+            <h5>Learn</h5>
             <a href={this.docUrl('fdc3-intro')}>
               Getting Started
             </a>
-            <a href={this.docUrl('why-fdc3')}>
-              Why FDC3
+            <a href={this.docUrl('supported-platforms')}>
+              Supported Platforms
             </a>
             <a href={this.docUrl('api/ref/DesktopAgent')}>
               API Reference
-            </a>
-            <a href={this.pageUrl('app-directory','',`schemas/${latestVersion}`)}>
-              App Directory Schema
             </a>
             <a href={this.docUrl('use-cases/overview')}>
               Use Cases
@@ -69,34 +66,27 @@ class Footer extends React.Component {
               FINOS
             </a>
             <a
-              href="https://www.finos.org/privacy-policy"
+              href="https://finos-lf.slack.com/messages/fdc3/"
               target="_blank"
               rel="noreferrer noopener">
-              FINOS Privacy Policy
+              Slack
             </a>
             <a
-              href="https://finosfoundation.atlassian.net/wiki/spaces/FDC3"
+              href="https://stackoverflow.com/questions/tagged/fdc3"
               target="_blank"
               rel="noreferrer noopener">
-              FDC3 Wiki
+              Stack Overflow
             </a>
             <a
               href="https://groups.google.com/a/finos.org/forum/#!forum/fdc3"
               target="_blank"
               rel="noreferrer noopener">
               Google Groups
-            </a>            
+            </a>
             {/* <a href={this.pageUrl('users.html', this.props.language)}>
               User Showcase
-            </a>
-            <a
-              href="http://stackoverflow.com/questions/tagged/"
-              target="_blank"
-              rel="noreferrer noopener">
-              Stack Overflow
-            </a>
-            <a href="https://discordapp.com/">Project Chat</a>
-            <a
+            </a> */}
+            {/* <a
               href="https://twitter.com/"
               target="_blank"
               rel="noreferrer noopener">
@@ -121,7 +111,7 @@ class Footer extends React.Component {
                 <a
                   href={`https://twitter.com/${this.props.config.twitterUsername}`}
                   className="twitter-follow-button">
-                  Follow @{this.props.config.twitterUsername}
+                  @{this.props.config.twitterUsername}
                 </a>
               </div>
             )}
@@ -134,7 +124,7 @@ class Footer extends React.Component {
           </a>
 
         </section>
-        
+
         <section className="copyright">{this.props.config.copyright}</section>
 
       </footer>

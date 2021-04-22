@@ -62,6 +62,13 @@
         "isMember": true
     },
     {
+        "caption": "RBC Capital Markets",
+        "image": "/img/users/RBCCMlogo.png",
+        "infoLink": "https://www.rbccm.com/",
+        "pinned": true,
+        "isMember": true
+    },
+    {
         "caption": "Refinitv",
         "image": "/img/users/Refinitiv.png",
         "infoLink": "https://www.refinitiv.com/",

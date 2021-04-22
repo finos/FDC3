@@ -2,8 +2,9 @@
   "docs": {
     "Getting Started": [
       "fdc3-intro",
-      "fdc3-charter",
+      "supported-platforms",
       "why-fdc3",
+      "fdc3-charter",
       "fdc3-compliance"
     ],
     "API": [
@@ -11,27 +12,15 @@
       "api/spec",
       {
         "type": "subcategory",
-        "label": "Interfaces",
+        "label": "Reference",
         "ids": [
           "api/ref/DesktopAgent",
           "api/ref/Channel",
           "api/ref/Listener",
-          "api/ref/AppIntent",
-          "api/ref/IntentResolution",
-          "api/ref/AppMetadata",
-          "api/ref/IntentMetadata",
-          "api/ref/DisplayMetadata"
-        ]
-      },
-      {
-        "type": "subcategory",
-        "label": "Types",
-        "ids": [
-          "api/ref/Context",
-          "api/ref/ContextHandler",
-          "api/ref/OpenError",
-          "api/ref/ResolveError",
-          "api/ref/ChannelError"
+          "api/ref/Globals",
+          "api/ref/Types",
+          "api/ref/Metadata",
+          "api/ref/Errors"
         ]
       }
     ],

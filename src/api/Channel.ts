@@ -4,7 +4,7 @@
  */
 
 import { Context } from '../context/ContextTypes';
-import { ContextHandler } from './ContextHandler';
+import { ContextHandler } from './Types';
 import { DisplayMetadata } from './DisplayMetadata';
 import { Listener } from './Listener';
 
@@ -61,11 +61,12 @@ export interface Channel {
 
   /**
    * Adds a listener for incoming contexts whenever a broadcast happens on this channel.
+   * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
    */
   addContextListener(handler: ContextHandler): Listener;
 
   /**
    * Adds a listener for incoming contexts of the specified context type whenever a broadcast happens on this channel.
    */
-  addContextListener(contextType: string, handler: ContextHandler): Listener;
+  addContextListener(contextType: string | null, handler: ContextHandler): Listener;
 }
