@@ -3,7 +3,7 @@
  * Copyright 2019 FINOS FDC3 contributors - see NOTICE file
  */
 
-import { Target } from './TargetType';
+import { TargetApp } from './Types';
 
 /**
  * IntentResolution provides a standard format for data returned upon resolving an intent.
@@ -16,7 +16,10 @@ import { Target } from './TargetType';
  * ```
  */
 export interface IntentResolution {
-  readonly source: Target;
+  readonly source: TargetApp;
+  /**
+   * @deprecated not assignable from intent listeners
+   */
   readonly data?: object;
   readonly version: string;
 }

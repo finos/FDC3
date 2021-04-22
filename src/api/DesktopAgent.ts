@@ -5,11 +5,11 @@
 
 import { AppIntent } from './AppIntent';
 import { Channel } from './Channel';
-import { ContextHandler } from './ContextHandler';
+import { ContextHandler, TargetApp } from './Types';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
-import { Target } from './TargetType';
+import { ImplementationMetadata } from './ImplementationMetadata';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -39,7 +39,7 @@ export interface DesktopAgent {
    *     agent.open('myApp', context);
    * ```
    */
-  open(target: Target, context?: Context): Promise<void>;
+  open(app: TargetApp, context?: Context): Promise<void>;
 
   /**
    * Find out more information about a particular intent by passing its name, and optionally its context.
@@ -124,11 +124,7 @@ export interface DesktopAgent {
    * await fdc3.raiseIntent("StartChat", context, appMetadata);
    * ```
    */
-  raiseIntent(
-    intent: string,
-    context: Context,
-    target?: Target
-  ): Promise<IntentResolution>;
+  raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
 
   /**
    * Raises a context to the desktop agent to resolve with one of the possible Intents for that context.
@@ -136,10 +132,7 @@ export interface DesktopAgent {
    * await fdc3.raiseIntentForContext(context);
    * ```
    */
-  raiseIntentForContext(
-    context: Context,
-    target?: Target
-  ): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
 
   /**
    * Adds a listener for incoming Intents from the Agent.
@@ -148,13 +141,14 @@ export interface DesktopAgent {
 
   /**
    * Adds a listener for incoming context broadcast from the Desktop Agent.
+   * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
    */
   addContextListener(handler: ContextHandler): Listener;
 
   /**
    * Adds a listener for the broadcast of a specific type of context object.
    */
-  addContextListener(contextType: string, handler: ContextHandler): Listener;
+  addContextListener(contextType: string | null, handler: ContextHandler): Listener;
 
   /**
    * Retrieves a list of the System channels available for the app to join
@@ -193,4 +187,11 @@ export interface DesktopAgent {
    * in a no-op when the app is not on a channel.
    */
   leaveCurrentChannel(): Promise<void>;
+
+  /**
+   * Retrieves information about the FDC3 Desktop Agent implementation, such as
+   * the implemented version of the FDC3 specification and the name of the implementation
+   * provider.
+   */
+  getInfo(): ImplementationMetadata;
 }

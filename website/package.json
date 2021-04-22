@@ -20,11 +20,16 @@
   },
   "devDependencies": {
     "cpy-cli": "3.1.1",
-    "docusaurus": "1.14.6",
+    "docusaurus": "1.14.7",
     "docusaurus-delete-version": "0.1.1",
     "redoc-cli": "0.10.1",
     "replace-in-files-cli": "1.0.0",
     "replace-json-property": "1.6.3",
     "rimraf": "3.0.2"
+  },
+  "resolutions": {
+    "immer": "^8.0.1",
+    "highlight.js": "^10.4.1",
+    "is-svg": "4.2.2"
   }
 }

@@ -1,16 +1,13 @@
 ---
 id: version-1.0-api-spec
 sidebar_label: API Specification
-title: API Specification
-hide_title: true
+title: API Specification 1.0
 original_id: api-spec
 ---
 
-# API Specification 
-
 ## Components
 ### Desktop Agent
-A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain.  A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.  
+A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain.  A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.
 
 Examples of Desktop Agents include:
 
@@ -18,13 +15,13 @@ Examples of Desktop Agents include:
 - Autobahn
 - ThomsonReuters Eikon
 
-Desktop Agents expose an FDC3 standard API to applications they have launched.  When an App is launched by a Desktop Agent and is given access to the Agent's API to interoperate, it is running in that Desktop Agent's *context*. 
+Desktop Agents expose an FDC3 standard API to applications they have launched.  When an App is launched by a Desktop Agent and is given access to the Agent's API to interoperate, it is running in that Desktop Agent's *context*.
 
 ![Desktop Agent - Standards Schematic](assets/api-1.png)
 
-The surface area of FDC3 standardization (shown in *white* above) itself is quite small in comparison to the extent of a typical desktop agent implementation (in *grey*).  
+The surface area of FDC3 standardization (shown in *white* above) itself is quite small in comparison to the extent of a typical desktop agent implementation (in *grey*).
 
-For example: 
+For example:
 - workspace management
 - user identity and SSO
 - entitlements
@@ -33,13 +30,13 @@ For example:
 Are all areas of functionality that any feature-complete desktop agent would implement, but are not currently areas considered for standardization under FDC3.
 
 #### Inter-Agent Communication
-A goal of FDC3 standards is that applications running in different Desktop Agent contexts on the same desktop would be able to interoperate.  And that one Desktop Agent context would be able to discover and launch an application in another Desktop Application context.  
+A goal of FDC3 standards is that applications running in different Desktop Agent contexts on the same desktop would be able to interoperate.  And that one Desktop Agent context would be able to discover and launch an application in another Desktop Application context.
 
 ![Desktop Agent - Interop](assets/api-2.png)
 
-Desktop Agent interop is supported by common standards for APIs for App discovery and launching.  So, an App in one Desktop Agent context would not need to know a different syntax to call an App in another Desktop Agent context.  
+Desktop Agent interop is supported by common standards for APIs for App discovery and launching.  So, an App in one Desktop Agent context would not need to know a different syntax to call an App in another Desktop Agent context.
 
-The actual connection protocol between Desktop Agents is not currently in scope for FDC3 standards.  Given that there are a relatively small number of Desktop Agents, and that any given desktop will have a finite and relatively static number of Desktop Agents installed at any given time, the connectivity between different Agents can be adequately handled for the time being on a case-by-case basis.  
+The actual connection protocol between Desktop Agents is not currently in scope for FDC3 standards.  Given that there are a relatively small number of Desktop Agents, and that any given desktop will have a finite and relatively static number of Desktop Agents installed at any given time, the connectivity between different Agents can be adequately handled for the time being on a case-by-case basis.
 
 ### Application
 An application is any endpoint on the desktop that is:
@@ -83,7 +80,7 @@ If the raising of the intent resolves (or rejects), a standard object will be pa
 ```javascript
 {
     source: String;
-    data?: Object; 
+    data?: Object;
     version: String;
 }
 ```
@@ -107,7 +104,7 @@ catch (er){
 ```
 
 ##### Upgrading to a Remote API Connection
-There are a wide range of workflows where decoupled intents and/or context passing do not provide rich enough interactivity and applications are better off exposing proprietary APIs.  In these cases, an App can use the *source* property on the resolution of an intent to connect directly to another App and from there, call remote APIs using the methods available in the Desktop Agent context for the App.  For example: 
+There are a wide range of workflows where decoupled intents and/or context passing do not provide rich enough interactivity and applications are better off exposing proprietary APIs.  In these cases, an App can use the *source* property on the resolution of an intent to connect directly to another App and from there, call remote APIs using the methods available in the Desktop Agent context for the App.  For example:
 
 ```javascript
     let chart = await agent.raiseIntent('ViewChart');
@@ -121,14 +118,14 @@ There are a wide range of workflows where decoupled intents and/or context passi
 Applications need to let the system know the Intents they can support.  Typically, this is done via registration with the App Directory.  It is also possible for Intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  While dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
 
 #### Compliance with Intent Standards
-Intents represent a contract with expected behavior if an app asserts that it supports the intent.  Where this contract is enforceable by schema (for example, return object types), the FDC3 API implementation should enforce compliance and return an error if the interface is not met.  
+Intents represent a contract with expected behavior if an app asserts that it supports the intent.  Where this contract is enforceable by schema (for example, return object types), the FDC3 API implementation should enforce compliance and return an error if the interface is not met.
 
 It is expected that App Directories will also curate listed apps and ensure that they are complying with declared intents.
 
 Like FDC3 Context Data, the Intent schemas need to be versioned.  Desktop Agents will be responsible to declare which version of the Intent schema they are using.   Applications may also assert a specific version requirement when raising an Intent.  Version negotiation may be supported by a given Desktop Agent.
 
-### Send/broadcast context  
-On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features.  
+### Send/broadcast context
+On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features.
 
 ## Resolvers
 Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (raising UI to pick the desired App for the intent) or by the app launching the intent - in which case the calling App will handle the resolution itself (using the findIntents API below) and then invoke an explicit Intent object.

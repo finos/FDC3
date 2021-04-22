@@ -1,7 +1,11 @@
-# ignore markdown files
+# ignore files
 *.md
 *.html
 *.yml
 *.yaml
 *.json
+
+# ignore folders
 website
+dist
+src/app-directory/*/target
