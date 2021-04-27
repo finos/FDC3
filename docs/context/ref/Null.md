@@ -1,0 +1,39 @@
+---
+id: Null
+sidebar_label: Null
+title: Null
+hide_title: true
+---
+# `Null`
+
+A type that explicitly represents a lack of context.
+
+Notes:
+
+- Intended to be used in situations where no context is desired. 
+- For example:
+  - Raising an Intent without context (e.g. opening a blank order form, or chat
+    interface without a contact selected).
+  - Resetting context on a channel (e.g. when context is used to set a filter in
+    other applications a null context might release the filter).
+- An explicit representation of a Null context allows apps to declare support for
+  a lack of context, for example in their Intent metadata in an app directory.
+
+## Type
+
+`fdc3.null`
+
+## Schema
+
+https://fdc3.finos.org/schemas/next/null.schema.json
+
+## Example
+
+```js
+const nullContext = {
+    type: 'fdc3.null'
+}
+
+fdc3.joinChannel('groupA')
+fdc3.broadcast(nullContext)
+```
