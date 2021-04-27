@@ -3,12 +3,12 @@
   "$id": "https://fdc3.finos.org/schemas/1.1/contactList.schema.json",
   "type": "object",
   "title": "ContactList",
-  "allOf": [{ "$ref": "context.schema.json#/" }],
+  "allOf": [{ "$ref": "context.schema.json#" }],
   "properties": {
     "type": { "const": "fdc3.contactList" },
     "contacts": {
       "type": "array",
-      "items": { "$ref": "contact.schema.json#/" }
+      "items": { "$ref": "contact.schema.json#" }
     }
   },
   "required": ["contacts"]
