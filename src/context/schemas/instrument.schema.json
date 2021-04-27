@@ -3,7 +3,7 @@
   "$id": "https://fdc3.finos.org/schemas/next/instrument.schema.json",
   "type": "object",
   "title": "Instrument",
-  "allOf": [{ "$ref": "context.schema.json#/" }],
+  "allOf": [{ "$ref": "context.schema.json#" }],
   "properties": {
     "type": { "const": "fdc3.instrument" },
     "id": {

@@ -3,7 +3,7 @@
   "$id": "https://fdc3.finos.org/schemas/next/country.schema.json",
   "type": "object",
   "title": "Country",
-  "allOf": [{ "$ref": "context.schema.json#/" }],
+  "allOf": [{ "$ref": "context.schema.json#" }],
   "properties": {
     "type": { "const": "fdc3.country" },
     "id": {

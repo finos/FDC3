@@ -3,7 +3,7 @@
   "$id": "https://fdc3.finos.org/schemas/1.2/contact.schema.json",
   "type": "object",
   "title": "Contact",
-  "allOf": [{ "$ref": "context.schema.json#/" }],
+  "allOf": [{ "$ref": "context.schema.json#" }],
   "properties": {
     "type": { "const": "fdc3.contact" },
     "id": {
