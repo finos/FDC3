@@ -56,3 +56,21 @@ const intentsAndApps = await fdc3.findIntentsByContext({
   }
 });
 ```
+
+## Using Intents without a context
+As the [Desktop Agent API](api/ref/DesktopAgent) and [App Directory](app-directory/overview) both
+require a context to specified whereever Intents are used, using an Intent without a context is
+achieved through the use of an explcit `null` context type `fdc3.null`. By using an explicit type
+to represent a lack of context we allow applicaitons to declare their support for a lack of 
+context.
+
+```javascript
+const intentsAndApps = await fdc3.findIntentsByContext({
+  type: "fdc3.null",
+});
+
+const result = await fdc3.raiseIntent("StartChat", {
+  type: "fdc3.null"
+});
+```
+
