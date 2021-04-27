@@ -3,12 +3,12 @@
   "$id": "https://fdc3.finos.org/schemas/next/instrumentList.schema.json",
   "type": "object",
   "title": "InstrumentList",
-  "allOf": [{ "$ref": "context.schema.json#/" }],
+  "allOf": [{ "$ref": "context.schema.json#" }],
   "properties": {
     "type": { "const": "fdc3.instrumentList" },
     "instruments": {
       "type": "array",
-      "items": { "$ref": "instrument.schema.json#/" }
+      "items": { "$ref": "instrument.schema.json#" }
     }
   },
   "required": ["instruments"]
