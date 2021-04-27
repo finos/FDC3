@@ -347,9 +347,15 @@ components:
     Icon:
       description: Icon holder
       properties:
-        icon:
+        src:
           type: string
           description: Icon URL
+        size:
+          type: string
+          description: Icon dimension formatted as "<height>x<width>"
+        type:
+          type: string
+          description: Image media type. If not present the Desktop Agent may use the src file extension
     AppImage:
       description: App Image holder
       properties:
