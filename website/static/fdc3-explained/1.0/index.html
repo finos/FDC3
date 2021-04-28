@@ -1,11 +1,11 @@
 <html>
 
 <head>
-<title>
-FDC3 Explained
-</title>
+	<title>
+		FDC3 Explained
+	</title>
 
-<script type=module>
+	<script type=module>
 import setVersionList from '../versions.js';
 
 // <!-- Various global stuff -->
@@ -28,7 +28,7 @@ function fdc3Init(callback){
   onFDC3Ready();
 }
 
-// <!-- Enable application when FDC3 is available -->
+// Enable application when FDC3 is available
 document.addEventListener("DOMContentLoaded",() => {
 
   fdc3Init(async () => {
@@ -46,8 +46,8 @@ document.addEventListener("DOMContentLoaded",() => {
 			enablePage();
     });
 
-		 // set the versions of FDC3 Explained in the dropdown
-		 setVersionList()
+	// set the versions of FDC3 Explained in the dropdown
+	setVersionList()
 });
 
 function enablePage(){
@@ -124,109 +124,133 @@ if (myUrl.length>0){
 
 </script>
 
-<style>
+	<style>
+		textarea {
+			width: 400px;
+			height: 100px;
+		}
 
-textarea {width:400px;height:100px;}
+		select {
+			width: 238px;
+			height: 24px;
+		}
 
-select {width:238px;height:24px;}
+		.ctxInput {
+			width: 241px;
+			height: 24px;
+		}
 
-.ctxInput {width:241px;height:24px;}
+		.urlInput {
+			width: 400px;
+			height: 24px;
+		}
 
-.urlInput {width:400px;height:24px;}
-
-.header {width:200px;height:40px;font-weight:700;}
-
-</style>
+		.header {
+			width: 200px;
+			height: 40px;
+			font-weight: 700;
+		}
+	</style>
 
 </head>
 
 <body>
 
-<table border="1">
-<tr>
-<td colspan="3" style="text-align:center;">Back to <a href="../../fdc3_explained.html">main page</a>.</td>
-</tr>
-<tr>
-<td class="header">FDC3 Provider Service:</td>
-<td><span id="providerDetails">FDC3 Not Available</span></td>
+	<table border="1">
+		<tr>
+			<td colspan="3" style="text-align:center;">Back to <a href="..">main page</a>.</td>
+		</tr>
+		<tr>
+			<td class="header">FDC3 Provider Service:</td>
+			<td><span id="providerDetails">FDC3 Not Available</span></td>
 
-<tr>
-	<td class="header">FDC3 Supported Version:</td>
-	<td>1.1 </td>
-	<td>
-		<select id="versions" onchange="window.location.href=`../${this.value}`">
-			<option value="" disabled style="display:none;" selected>Change Version</option>
-		</select>
-	
-	</td>
-</tr>
+		<tr>
+			<td class="header">FDC3 Supported Version:</td>
+			<td>1.1 </td>
+			<td>
+				<select id="versions" onchange="window.location.href=`../${this.value}`">
+					<option value="" disabled style="display:none;" selected>Change Version</option>
+				</select>
 
-<tr>
-<td colspan="3"><hr></td>
-</tr>
+			</td>
+		</tr>
 
-<tr>
-<td class="header">App Directory:</td>
-<td><span id="directoryDetails">No Application Directory Connected</span></td>
-<td><input type="button" value="Connect" disabled></td>
-</tr>
+		<tr>
+			<td colspan="3">
+				<hr>
+			</td>
+		</tr>
 
-<tr>
-<td class="header">Available Apps:</td>
-<td><textarea disabled></textarea></td>
-<td><input type="button" value="Fetch" disabled></td>
-</tr>
+		<tr>
+			<td class="header">App Directory:</td>
+			<td><span id="directoryDetails">No Application Directory Connected</span></td>
+			<td><input type="button" value="Connect" disabled></td>
+		</tr>
 
-<tr>
-<td class="header">Load App Start Url:</td>
-<td><input type="text" id="appUrl" class="urlInput" value="demoapps/receive.html"></td>
-<td><input type="button" value="Open" onClick="appLoader();"></td>
-</tr>
+		<tr>
+			<td class="header">Available Apps:</td>
+			<td><textarea disabled></textarea></td>
+			<td><input type="button" value="Fetch" disabled></td>
+		</tr>
 
-<tr>
-<td colspan="3"><hr></td>
-</tr>
+		<tr>
+			<td class="header">Load App Start Url:</td>
+			<td><input type="text" id="appUrl" class="urlInput" value="demoapps/receive.html"></td>
+			<td><input type="button" value="Open" onClick="appLoader();"></td>
+		</tr>
 
-<tr>
-<td class="header">Available Channels:</td>
-<td><textarea disabled id="txtAvailableChannels"></textarea></td>
-<td><input type="button" value="Fetch" id="btnFetchChannels" disabled onClick="populateChannels(channelArray);">&nbsp;<input type="button" value="Add" disabled></td>
-</tr>
+		<tr>
+			<td colspan="3">
+				<hr>
+			</td>
+		</tr>
 
-<tr>
-<td colspan="3"><hr></td>
-</tr>
+		<tr>
+			<td class="header">Available Channels:</td>
+			<td><textarea disabled id="txtAvailableChannels"></textarea></td>
+			<td><input type="button" value="Fetch" id="btnFetchChannels" disabled
+					onClick="populateChannels(channelArray);">&nbsp;<input type="button" value="Add" disabled></td>
+		</tr>
 
-<tr>
-<td class="header" rowspan="2">Broadcast Context:</td>
-<td>Channel: <select id="selBroadcastChannel" disabled onChange="changeBroadcastChannel();"></select></td>
-<td rowspan="2"><input type="button" value="Send" id="btnBroadcast" disabled onClick="broadcastFDC3Context();"></td>
-</tr>
+		<tr>
+			<td colspan="3">
+				<hr>
+			</td>
+		</tr>
 
-<tr>
-<td><textarea id="txtBroadcastData" disabled>{"id":{"ISIN":"US0378331005","SEDOL":"2046251","ticker":"AAPL"},"name":"Apple Inc.","type":"fdc3.instrument"}
+		<tr>
+			<td class="header" rowspan="2">Broadcast Context:</td>
+			<td>Channel: <select id="selBroadcastChannel" disabled onChange="changeBroadcastChannel();"></select></td>
+			<td rowspan="2"><input type="button" value="Send" id="btnBroadcast" disabled
+					onClick="broadcastFDC3Context();"></td>
+		</tr>
+
+		<tr>
+			<td><textarea id="txtBroadcastData" disabled>{"id":{"ISIN":"US0378331005","SEDOL":"2046251","ticker":"AAPL"},"name":"Apple Inc.","type":"fdc3.instrument"}
 </textarea></td>
-</tr>
+		</tr>
 
-<tr>
-<td colspan="3"><hr></td>
-</tr>
+		<tr>
+			<td colspan="3">
+				<hr>
+			</td>
+		</tr>
 
-<tr>
-<td class="header" rowspan="3">Get Context:</td>
-<td>Channel: <select disabled></td>
-<td rowspan="3"><input type="button" value="Fetch" disabled></td>
-</tr>
+		<tr>
+			<td class="header" rowspan="3">Get Context:</td>
+			<td>Channel: <select disabled></td>
+			<td rowspan="3"><input type="button" value="Fetch" disabled></td>
+		</tr>
 
-<tr>
-<td>Context: <input type="text" class="ctxInput" disabled></td>
-</tr>
+		<tr>
+			<td>Context: <input type="text" class="ctxInput" disabled></td>
+		</tr>
 
-<tr>
-<td><textarea disabled></textarea></td>
-</tr>
+		<tr>
+			<td><textarea disabled></textarea></td>
+		</tr>
 
-</table>
+	</table>
 
 </body>
 

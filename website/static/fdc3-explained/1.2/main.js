@@ -1,22 +1,10 @@
 import setVersionList from '../versions.js';
 
-function fdc3OnReady(callback) {
-  let fdc3Tries = 10; //lets not check forever...
-  const checkFDC3Ready = () => {
-    if (window.fdc3) {
-      callback.call(this);
-    }
-    else {
-      if (fdc3Tries > 0) {
-        fdc3Tries--;
-        window.setTimeout(checkFDC3Ready, 2000);
-      }
-    }
-  };
-  checkFDC3Ready();
+// check for FDC3 support
+function fdc3OnReady(cb) {
+  if (window.fdc3) { cb() }
+  else { window.addEventListener('fdc3Ready', cb) }
 }
-
-
 // Wait for the document to load
 function documentLoaded(cb) {
   if (document.readyState === 'loading') {
@@ -31,7 +19,11 @@ let appChannels = [];
 
 
 //  document and FDC3 have loaded start the main function
-documentLoaded(() => fdc3OnReady(main));
+documentLoaded(() => {
+  // set the versions of FDC3 Explained in the dropdown
+  setVersionList()
+  fdc3OnReady(main)
+});
 
 
 function main() {
@@ -50,6 +42,9 @@ function main() {
 
 async function populateHTML() {
   try {
+
+    // set the versions of FDC3 Explained in the dropdown
+    setVersionList()
 
     //populate available channels list with system channels
     let channelList = document.getElementById("system-channel-list");
@@ -70,9 +65,6 @@ async function populateHTML() {
       populateChannelsDropDown(name)
 
     });
-
-    // set the versions of FDC3 Explained in the dropdown
-    setVersionList()
 
     // as FDC3 is supported we can enable the buttons again except those that are not yet supported features
     document.querySelectorAll("button").forEach(button => {
@@ -98,16 +90,16 @@ function setUpEventListeners() {
   document.getElementById("raise-intent__btn").addEventListener("click", raiseIntent);
 
   document.getElementById("context-type").addEventListener("keyup", (event) => {
-      //  we only want to get the context wen the user hits enter
-      if (event.key === "Enter") {
-        event.preventDefault();
+  //  we only want to get the context wen the user hits enter
+    if (event.key === "Enter") {
+      event.preventDefault();
 
-        let contextType = event.target.value;
-        getContext(contextType)
-      }
-    });
+      let contextType = event.target.value;
+      getContext(contextType)
+    }
+  });
 
-  }
+}
 
 function displayFDC3Support() {
   try {
@@ -192,9 +184,9 @@ async function getContext(contextType) {
 
     // if context type is passed in then only listen on that specific context
     if (contextType) {
-      contextListener = fdc3.addContextListener(contextType, (context) => contextResultBox.value = JSON.stringify(context))
+      contextListener = fdc3.addContextListener(contextType, (context) => contextResultBox.innerText = JSON.stringify(context, null, 2))
     } else {
-      contextListener = fdc3.addContextListener(context => contextResultBox.value = JSON.stringify(context));
+      contextListener = fdc3.addContextListener(context => contextResultBox.innerText = JSON.stringify(context, null, 2));
     }
   } catch (error) {
     console.error("Unable to add a context listener", error)
