@@ -1,7 +1,7 @@
 ---
 name: General Meeting
 about: minutes for an FDC3 General Meeting
-title: 'Generall Meeting - mmm dd, yyyy'
+title: 'General Meeting - mmm dd, yyyy'
 labels: General meeting, meeting
 assignees: ''
 
