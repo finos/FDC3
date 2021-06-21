@@ -21,7 +21,7 @@ The focus of the FDC3 Standard Working Group has been to create a small but cons
 - [`window.fdc3`](ref/Globals#windowfdc3-object) global object and [`fdc3Ready`](ref/Globals#fdc3ready-event) event, for accessing FDC3 operations globally
 - [`DesktopAgent`](ref/DesktopAgent) interface, which exposes FDC3 operations
 - [`Channel`](ref/Channel) interface, for subscribing to specific context channels
-- [`Listener`](ref/Listener) interface, which allows unsubscribing intent or context listeners
+- [`Listener`](ref/Types#listener) interface, which allows unsubscribing intent or context listeners
 
 ## Usage
 
