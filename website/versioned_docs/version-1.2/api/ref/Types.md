@@ -50,6 +50,30 @@ Used when attaching listeners for context broadcasts and raised intents.
 * [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
 * [`Channel.addContextListener`](Channel#addcontextlistener)
 
+## `Listener`
+
+A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](#addintentlistener) or [`addContextListener`](#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
+
+```typescript
+interface Listener {
+  unsubscribe(): void;
+}
+```
+#### `unsubscribe`
+
+```ts
+unsubscribe(): void;
+```
+
+Allows an application to unsubscribe from listening to intents or context broadcasts.
+
+#### See also
+* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+* [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
+* [`Channel.addContextListener`](Channel#addcontextlistener)
+* [`ContextHandler`](Types#contexthandler)
+
+
 ## `TargetApp`
 
 ```typescript
