@@ -110,11 +110,14 @@ document.getElementById('selBroadcastChannel').selectedIndex = 0;
 function appLoader(){
 	
 var myUrl = document.getElementById('appUrl').value;
+var loadStyle = document.getElementById('radioStartApp').value;
 
 if (myUrl.length>0){
-
+	if (loadStyle.includes("popup"){
 	window.open(myUrl);
-	
+} else {
+ document.location=myUrl;	
+}
 	}
 }
 
@@ -164,7 +167,7 @@ select {width:238px;height:24px;}
 </tr>
 
 <tr>
-<td class="header">Load App Start Url:</td>
+<td class="header">Load App:</td>
 <td><input type="radio" id="radioStartApp" name="radioStartApp" value="popup" checked>Popup&nbsp;&nbsp;&nbsp;<input type="radio" id="radioStartApp" name="radioStartApp" value="window">This window<br/><input type="text" id="appUrl" class="urlInput" value="demoapps/receive.html"></td>
 <td><input type="button" value="Open" onClick="appLoader();"></td>
 </tr>
