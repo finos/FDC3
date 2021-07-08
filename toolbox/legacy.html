@@ -57,7 +57,7 @@ function enablePage(){
     		});
 	} else if (window.fin){
     		fin.desktop.Application.getCurrent().getInfo((info) => {
-        		document.getElementById('providerDetails').innerHTML = 'Available - ' + info.manifest.startup_app.name});
+        		document.getElementById('providerDetails').innerHTML = 'Available - OpenFin ' + info.manifest.startup_app.name});
 	} else {
     		document.getElementById('providerDetails').innerHTML = 'Available - Not specified';
 	}
@@ -165,7 +165,7 @@ select {width:238px;height:24px;}
 
 <tr>
 <td class="header">Load App Start Url:</td>
-<td><input type="text" id="appUrl" class="urlInput" value="demoapps/receive.html"></td>
+<td><input type="radio" id="radioStartApp" name="radioStartApp" value="popup" checked>Popup&nbsp;&nbsp;&nbsp;<input type="radio" id="radioStartApp" name="radioStartApp" value="window">This window<br/><input type="text" id="appUrl" class="urlInput" value="demoapps/receive.html"></td>
 <td><input type="button" value="Open" onClick="appLoader();"></td>
 </tr>
 
