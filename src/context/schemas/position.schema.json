@@ -7,7 +7,7 @@
   "properties": {
     "type": { "const": "fdc3.position" },
     "instrument": { "$ref": "instrument.schema.json#" },
-    "holding": { "type": "number", "minimum": 0 }
+    "holding": { "type": "number" }
   },
   "required": ["instrument", "holding"]
 }
