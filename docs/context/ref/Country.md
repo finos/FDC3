@@ -37,13 +37,12 @@ https://fdc3.finos.org/schemas/next/country.schema.json
 
 ```js
 const country = {
-    type: 'fdc3.country'
+    type: 'fdc3.country',
     name: 'Sweden',
     id: {
         ISOALPHA3: 'SWE'
     }
 }
-
 
 fdc3.broadcast(country)
 ```

@@ -51,7 +51,7 @@ https://fdc3.finos.org/schemas/1.2/instrument.schema.json
 
 ```js
 const instrument = {
-    type: 'fdc3.instrument'
+    type: 'fdc3.instrument',
     name: 'Microsoft',
     id: {
         ticker: 'MSFT',

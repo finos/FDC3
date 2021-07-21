@@ -35,14 +35,13 @@ https://fdc3.finos.org/schemas/next/organization.schema.json
 
 ```js
 const organization = {
-    type: 'fdc3.organization'
+    type: 'fdc3.organization',
     name: 'Cargill, Incorporated',
     id: {
         LEI: 'QXZYQNMR4JZ5RIRN4T31',
         FDS_ID: '00161G-E'
     }
 }
-
 
 fdc3.broadcast(organization)
 ```
