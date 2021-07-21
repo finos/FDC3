@@ -33,6 +33,7 @@ interface Channel {
 #### See also
 
 * [`Context`](Types#context)
+* [`Listener`](Types#listener)
 * [`DesktopAgent.getSystemChannels`](DesktopAgent#getsystemchannels)
 * [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
 * [`DesktopAgent.joinChannel`](DesktopAgent#joinchannel)
@@ -118,7 +119,7 @@ instrumentListener.unsubscribe();
 ```
 
 #### See also
-* [`Listener`](Listener)
+* [`Listener`](Types#listener)
 * [`ContextHandler`](Types#contexthandler)
 * [`broadcast`](#broadcast)
 * [`getCurrentContext`](#getcurrentcontext)
