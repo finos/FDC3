@@ -76,7 +76,7 @@ yarn add @finos/fdc3
 pnpm install @finos/fdc3
 ```
 
-Note that the web application still needs to run in the context of an FDC3 desktop agent to work. For more details, please see the [relevant documentation](https://fdc3.finos.org/docs/installation).
+Note that the web application still needs to run in the context of an FDC3 desktop agent to work. For more details, please see the [relevant documentation](https://fdc3.finos.org/docs/supported-platforms).
 
 ### Usage
 
