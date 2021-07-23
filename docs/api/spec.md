@@ -12,6 +12,7 @@ Examples of Desktop Agents include:
 
 - Autobahn
 - Cosaic's Finsemble
+- Glue42
 - OpenFin
 - Refinitiv Eikon
 
