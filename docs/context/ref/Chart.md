@@ -25,56 +25,56 @@ https://fdc3.finos.org/schemas/next/chart.schema.json
 
 ## Details
 
-| Property       | Type       | Required | Example Value                      |
-|----------------|------------|----------|------------------------------------|
-| `type`         | string     | Yes      | `'fdc3.chart'`                  |
-| `instruments` | Instrument[] | Yes     | `[instrument1, instrument2]`  |
-| `range`       | DateRange  | No        | `dateRange`                      |
-| `style`       | string     | No        | `'line'`                         |
-| `indicators` | Indicator[] | No        | `[indicator1, indicator2]`    |
+| Property       | Type         | Required | Example Value                 |
+|----------------|--------------|----------|-------------------------------|
+| `type`         | string       | Yes      | `'fdc3.chart'`                |
+| `instruments`  | Instrument[] | Yes      | `[instrument1, instrument2]`  |
+| `range`        | DateRange    | No       | `dateRange`                   |
+| `style`        | string       | No       | `'line'`                      |
+| `indicators`   | Indicator[]  | No       | `[indicator1, indicator2]`    |
 
 ## Example
 
 ```js
 const chart = {
-    type: 'fdc3.chart'
+    type: "fdc3.chart",
     instruments: [
-      {
-        type: 'fdc3.instrument',
-        id: {
-          ticker: 'AAPL'
+        {
+            type: "fdc3.instrument",
+            id: {
+                ticker: "AAPL"
+            }
+        },
+        {
+            type: "fdc3.instrument",
+            id: {
+                ticker: "GOOG"
+            }
         }
-      },
-      {
-        type: 'fdc3.instrument',
-        id: {
-          ticker: 'GOOG'
-        }
-      }
     ],
     range: {
-      type: 'fdc3.dateRange',
-      start: '2020-09-01T08:00:00.000Z',
-      end: '2020-10-31T08:00:00.000Z'
+        type: "fdc3.dateRange",
+        starttime: "2020-09-01T08:00:00.000Z",
+        endtime: "2020-10-31T08:00:00.000Z"
     },
-    style: 'line',
+    style: "line",
     indicators: [
-      {
-        type: 'fdc3.indicator',
-        name: 'ma',
-        parameters: {
-          period: 14,
-          type: 'ema'
+        {
+            type: "fdc3.indicator",
+            name: "ma",
+            parameters: {
+                period: 14,
+                type: "ema"
+            }
+        },
+        {
+            type: "fdc3.indicator",
+            name: "volume"
         }
-      },
-      {
-        type: 'fdc3.indicator',
-        name: 'volume'
-      }
     ]
 }
 
-fdc3.raiseIntent('ViewChart', chart)
+fdc3.raiseIntent("ViewChart", chart)
 ```
 
 ## See Also
@@ -86,6 +86,3 @@ Other Types
 
 Intents
 - [ViewChart](../../intents/ref/ViewChart)
-
-FINOS Financial Objects
-- [Chart](https://fo.finos.org/docs/objects/chart)

@@ -21,17 +21,17 @@ https://fdc3.finos.org/schemas/next/dateRange.schema.json
 
 | Property         | Type    | Required | Example Value                   |
 |------------------|---------|----------|---------------------------------|
-| `type`          | string  | Yes      | `'fdc3.dateRange'`            |
-| `starttime`    | string  | No       | `'2020-09-01T08:00:00.000Z'` |
-| `endtime`       | string  | No       | `'2020-10-31T08:00:00.000Z'` |
+| `type`           | string  | Yes      | `'fdc3.dateRange'`              |
+| `starttime`      | string  | No       | `'2020-09-01T08:00:00.000Z'`    |
+| `endtime`        | string  | No       | `'2020-10-31T08:00:00.000Z'`    |
 
 ## Example
 
 ```js
 const dateRange = {
-    type: 'fdc3.dateRange'
-    starttime: '2020-09-01T08:00:00.000Z',
-    endtime: '2020-10-31T08:00:00.000Z'
+    type: "fdc3.dateRange",
+    starttime: "2020-09-01T08:00:00.000Z",
+    endtime: "2020-10-31T08:00:00.000Z"
 }
 
 fdc3.broadcast(dateRange)
@@ -45,6 +45,3 @@ Other Types
 
 Intents
 - [ViewChart](../../intents/ref/ViewChart)
-
-FINOS Financial Objects
-- [Currency](https://fo.finos.org/docs/objects/daterange)

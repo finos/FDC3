@@ -53,6 +53,7 @@ const contacts = {
         },
     ]
 }
+
 fdc3.raiseIntent("StartChat", contacts)
 ```
 

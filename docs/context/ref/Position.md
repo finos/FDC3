@@ -39,11 +39,11 @@ https://fdc3.finos.org/schemas/next/position.schema.json
 | `name`       | string     | No       | `'My Apple shares'`                |
 | `instrument` | Instrument | Yes      | `{ type: 'fdc3.instrument', ... }` |
 | `holding`    | number     | Yes      | `2000000`                          |
-| `trades`    | trade[]     | No       | `[trade1, trade2]`                |
-| `basis`     | valuation   | No       | `{ type: 'fdc3.valuation', ... }`  |
-| `current`   | valuation   | No       | `{ type: 'fdc3.valuation', ... }`  |
-| `gain`      | number      | No       | `8000000`                          |
-| `restricted`  | number      | No       | `4000`                          |
+| `trades`     | trade[]    | No       | `[trade1, trade2]`                 |
+| `basis`      | valuation  | No       | `{ type: 'fdc3.valuation', ... }`  |
+| `current`    | valuation  | No       | `{ type: 'fdc3.valuation', ... }`  |
+| `gain`       | number     | No       | `8000000`                          |
+| `restricted` | number     | No       | `4000`                             |
 
 ## Example
 
@@ -59,68 +59,68 @@ const position = {
     holding: 2000000
     trades: [
         {
-             type: 'fdc3.trade',
+             type: "fdc3.trade",
              tradedaterange: {
-                type: 'fdc3.dateRange',
-                starttime: '2020-09-01T08:00:00.000Z'
+                type: "fdc3.dateRange",
+                starttime: "2020-09-01T08:00:00.000Z"
             },
             settledaterange: {
-                type: 'fdc3.dateRange',
-                starttime: '2020-09-02T08:00:00.000Z'
+                type: "fdc3.dateRange",
+                starttime: "2020-09-02T08:00:00.000Z"
             },
             units: 1000000,
             open: {
-                type: 'fdc3.valuation',
+                type: "fdc3.valuation",
                 price: 20.00,
                 value: 20000000,
                 currency: {
-                    type: 'fdc3.currency',
-                    code: 'USD'
+                    type: "fdc3.currency",
+                    code: "USD"
                 }
             },
-            location: 'XYZ',
-            account: 'cash'
+            location: "XYZ",
+            account: "cash"
         },
         {
-            type: 'fdc3.trade',
+            type: "fdc3.trade",
             tradedaterange: {
-                type: 'fdc3.dateRange',
-                starttime: '2020-09-08T08:00:00.000Z'
+                type: "fdc3.dateRange",
+                starttime: "2020-09-08T08:00:00.000Z"
             },
             settledaterange: {
-                type: 'fdc3.dateRange',
-                starttime: '2020-09-09T08:00:00.000Z'
+                type: "fdc3.dateRange",
+                starttime: "2020-09-09T08:00:00.000Z"
             },
             units: 1000000,
             open: {
-                type: 'fdc3.valuation',
+                type: "fdc3.valuation",
                 price: 22.00,
                 value: 22000000,
                 currency: {
-                    type: 'fdc3.currency',
-                    code: 'USD'
+                    type: "fdc3.currency",
+                    code: "USD"
                 }
             },
-            location: 'XYZ',
-            account: 'cash'
+            location: "XYZ",
+            account: "cash"
         }
     ],
     basis: {
-        type: 'fdc3.valuation',
+        type: "fdc3.valuation",
         price: 21.00,
         value: 42000000,
         currency: {
-           type: 'fdc3.currency',
-           code: 'USD'
+           type: "fdc3.currency",
+           code: "USD"
          }
     },
     current: {
-        type: 'fdc3.valuation',
+        type: "fdc3.valuation",
         price: 25.00,
         value: 50000000,
         currency: {
-            type: 'fdc3.currency',
-            code: 'USD'
+            type: "fdc3.currency",
+            code: "USD"
         }
     },
     gain: 8000000,

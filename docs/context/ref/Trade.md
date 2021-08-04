@@ -27,43 +27,43 @@ https://fdc3.finos.org/schemas/next/position.schema.json
 
 ## Details
 
-| Property            | Type       | Required | Example Value                         |
-|---------------------|------------|----------|---------------------------------------|
-| `type`              | string    | Yes      | `'fdc3.trade'`                       |
-| `id`                | string    | No       | `'aabbcc'`                   |       |
+| Property          | Type       | Required | Example Value                     |
+|-------------------|------------|----------|-----------------------------------|
+| `type`            | string     | Yes      | `'fdc3.trade'`                    |
+| `id`              | string     | No       | `'aabbcc'`                        |
 | `tradedaterange`  | DateRange  | Yes      | `{ type: 'fdc3.dateRange', ... }` |
 | `settledaterange` | DateRange  | No       | `{ type: 'fdc3.dateRange', ... }` |
-| `units`            | number     | Yes      | `500`                                 |
-| `open`             | Valuation  | Yes      | `{ type: 'fdc3.valuation', ... }`  |
-| `close`            | Valuation  | No       | `{ type: 'fdc3.valuation', ... }`  |
-| `location`         | string     | No       | `'XYZ'`                               |
-| `account`          | string     | No       | `cash`                                |
+| `units`           | number     | Yes      | `500`                             |
+| `open`            | Valuation  | Yes      | `{ type: 'fdc3.valuation', ... }` |
+| `close`           | Valuation  | No       | `{ type: 'fdc3.valuation', ... }` |
+| `location`        | string     | No       | `'XYZ'`                           |
+| `account`         | string     | No       | `cash`                            |
 
 ## Example
 
 ```js
 const trade = {
-    type: 'fdc3.trade',
+    type: "fdc3.trade",
     tradedaterange: {
-        type: 'fdc3.dateRange',
-        starttime: '2020-09-01T08:00:00.000Z'
+        type: "fdc3.dateRange",
+        starttime: "2020-09-01T08:00:00.000Z"
     },
     settledaterange: {
-        type: 'fdc3.dateRange',
-        starttime: '2020-09-02T08:00:00.000Z'
+        type: "fdc3.dateRange",
+        starttime: "2020-09-02T08:00:00.000Z"
     },
     units: 1000000,
     open: {
-        type: 'fdc3.valuation',
+        type: "fdc3.valuation",
         price: 20.00,
         value: 20000000,
         currency: {
-            type: 'fdc3.currency',
-            code: 'USD'
+            type: "fdc3.currency",
+            code: "USD"
         }
     },
-    location: 'XYZ',
-    account: 'cash'
+    location: "XYZ",
+    account: "cash"
 }
 
 fdc3.broadcast(trade)

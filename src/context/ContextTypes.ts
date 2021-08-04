@@ -29,88 +29,31 @@ export interface Context {
 }
 
 export interface Chart {
-  indicators?: IndicatorElement[];
-  instruments: InstrumentElement[];
-  range?: DateRangeObject;
+  indicators?: Indicator[];
+  instruments: Instrument[];
+  range?: DateRange;
   style?: string;
   type: string;
   id?: { [key: string]: string };
   name?: string;
 }
 
-export interface IndicatorElement {
-  name: string;
-  parameters?: PurpleParameters;
-  type: string;
-  id?: { [key: string]: string };
-}
-
-export interface PurpleParameters {
-  custom?: PurpleCustom;
-  field?: string;
-  instrument?: InstrumentElement;
-  matype?: string;
-  period?: number;
-}
-
-export interface PurpleCustom {
-  fields?: { [key: string]: any };
-  vendor?: string;
-}
-
-export interface InstrumentElement {
-  id: PurpleID;
-  type: string;
-  name?: string;
-}
-
-export interface PurpleID {
-  BBG?: string;
-  CUSIP?: string;
-  FDS_ID?: string;
-  FIGI?: string;
-  ISIN?: string;
-  PERMID?: string;
-  RIC?: string;
-  SEDOL?: string;
-  ticker?: string;
-}
-
-export interface DateRangeObject {
-  endtime?: Date;
-  starttime?: Date;
-  type: string;
-  id?: { [key: string]: string };
-  name?: string;
-}
-
 export interface Contact {
-  id: FluffyID;
+  id: ContactID;
   type: string;
   name?: string;
 }
 
-export interface FluffyID {
+export interface ContactID {
   email?: string;
   FDS_ID?: string;
 }
 
 export interface ContactList {
-  contacts: ContactElement[];
+  contacts: Contact[];
   type: string;
   id?: { [key: string]: string };
   name?: string;
-}
-
-export interface ContactElement {
-  id: TentacledID;
-  type: string;
-  name?: string;
-}
-
-export interface TentacledID {
-  email?: string;
-  FDS_ID?: string;
 }
 
 export interface Country {
@@ -140,45 +83,44 @@ export interface DateRange {
 }
 
 export interface Indicator {
-  name: string;
-  parameters?: FluffyParameters;
-  type: string;
-  id?: { [key: string]: string };
-}
-
-export interface FluffyParameters {
-  custom?: FluffyCustom;
-  field?: string;
-  instrument?: InstrumentElement;
-  matype?: string;
-  period?: number;
-}
-
-export interface FluffyCustom {
-  fields?: { [key: string]: any };
-  vendor?: string;
-}
-
-export interface Instrument {
-  id: StickyID;
-  type: string;
-  name?: string;
-}
-
-export interface StickyID {
-  BBG?: string;
-  CUSIP?: string;
-  FDS_ID?: string;
-  FIGI?: string;
-  ISIN?: string;
-  PERMID?: string;
-  RIC?: string;
-  SEDOL?: string;
-  ticker?: string;
-}
-
+    name: string;
+    parameters?: IndicatorParameters;
+    type: string;
+    id?: { [key: string]: string };
+  }
+  
+  export interface IndicatorParameters {
+    custom?: IndicatorCustom;
+    field?: string;
+    instrument?: Instrument;
+    matype?: string;
+    period?: number;
+  }
+  
+  export interface IndicatorCustom {
+    fields?: { [key: string]: any };
+    vendor?: string;
+  }
+  
+  export interface Instrument {
+    id: InstrumentID;
+    type: string;
+    name?: string;
+  }
+  
+  export interface InstrumentID {
+    BBG?: string;
+    CUSIP?: string;
+    FDS_ID?: string;
+    FIGI?: string;
+    ISIN?: string;
+    PERMID?: string;
+    RIC?: string;
+    SEDOL?: string;
+    ticker?: string;
+  }
 export interface InstrumentList {
-  instruments: InstrumentElement[];
+  instruments: Instrument[];
   type: string;
   id?: { [key: string]: string };
   name?: string;
@@ -197,82 +139,40 @@ export interface OrganizationID {
 }
 
 export interface Portfolio {
-  positions: PositionElement[];
+  positions: Position[];
   type: string;
   id?: { [key: string]: string };
   name?: string;
-}
-
-export interface PositionElement {
-  basis?: ValuationObject;
-  current?: ValuationObject;
-  gain?: number;
-  holding: number;
-  instrument: InstrumentElement;
-  name?: string;
-  restricted?: number;
-  trades?: TradeElement[];
-  type: string;
-  id?: { [key: string]: string };
-}
-
-export interface ValuationObject {
-  currency?: CurrencyObject;
-  price?: number;
-  type: string;
-  value: number;
-  id?: { [key: string]: string };
-  name?: string;
-}
-
-export interface CurrencyObject {
-  code: string;
-  name?: string;
-  type: string;
-  id?: { [key: string]: string };
-}
-
-export interface TradeElement {
-  account?: string;
-  close?: ValuationObject;
-  location?: string;
-  name?: string;
-  open: ValuationObject;
-  settledaterange?: DateRangeObject;
-  tradedaterange: DateRangeObject;
-  type: string;
-  units: number;
-  id?: { [key: string]: string };
 }
 
 export interface Position {
-  basis?: ValuationObject;
-  current?: ValuationObject;
+  basis?: Valuation;
+  current?: Valuation;
   gain?: number;
   holding: number;
-  instrument: InstrumentElement;
+  instrument: Instrument;
   name?: string;
   restricted?: number;
-  trades?: TradeElement[];
+  trades?: Trade[];
   type: string;
   id?: { [key: string]: string };
 }
 
 export interface Trade {
   account?: string;
-  close?: ValuationObject;
+  close?: Valuation;
   location?: string;
   name?: string;
-  open: ValuationObject;
-  settledaterange?: DateRangeObject;
-  tradedaterange: DateRangeObject;
+  open: Valuation;
+  settledaterange?: DateRange;
+  tradedaterange: DateRange;
   type: string;
   units: number;
   id?: { [key: string]: string };
 }
 
 export interface Valuation {
-  currency?: CurrencyObject;
+  currency?: Currency;
   price?: number;
   type: string;
   value: number;
@@ -562,68 +462,10 @@ const typeMap: any = {
   ),
   Chart: o(
     [
-      { json: 'indicators', js: 'indicators', typ: u(undefined, a(r('IndicatorElement'))) },
-      { json: 'instruments', js: 'instruments', typ: a(r('InstrumentElement')) },
-      { json: 'range', js: 'range', typ: u(undefined, r('DateRangeObject')) },
+      { json: 'indicators', js: 'indicators', typ: u(undefined, a(r('Indicator'))) },
+      { json: 'instruments', js: 'instruments', typ: a(r('Instrument')) },
+      { json: 'range', js: 'range', typ: u(undefined, r('DateRange')) },
       { json: 'style', js: 'style', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  IndicatorElement: o(
-    [
-      { json: 'name', js: 'name', typ: '' },
-      { json: 'parameters', js: 'parameters', typ: u(undefined, r('PurpleParameters')) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-    ],
-    'any'
-  ),
-  PurpleParameters: o(
-    [
-      { json: 'custom', js: 'custom', typ: u(undefined, r('PurpleCustom')) },
-      { json: 'field', js: 'field', typ: u(undefined, '') },
-      { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
-      { json: 'matype', js: 'matype', typ: u(undefined, '') },
-      { json: 'period', js: 'period', typ: u(undefined, 3.14) },
-    ],
-    'any'
-  ),
-  PurpleCustom: o(
-    [
-      { json: 'fields', js: 'fields', typ: u(undefined, m('any')) },
-      { json: 'vendor', js: 'vendor', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  InstrumentElement: o(
-    [
-      { json: 'id', js: 'id', typ: r('PurpleID') },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  PurpleID: o(
-    [
-      { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
-      { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
-      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
-      { json: 'FIGI', js: 'FIGI', typ: u(undefined, '') },
-      { json: 'ISIN', js: 'ISIN', typ: u(undefined, '') },
-      { json: 'PERMID', js: 'PERMID', typ: u(undefined, '') },
-      { json: 'RIC', js: 'RIC', typ: u(undefined, '') },
-      { json: 'SEDOL', js: 'SEDOL', typ: u(undefined, '') },
-      { json: 'ticker', js: 'ticker', typ: u(undefined, '') },
-    ],
-    ''
-  ),
-  DateRangeObject: o(
-    [
-      { json: 'endtime', js: 'endtime', typ: u(undefined, Date) },
-      { json: 'starttime', js: 'starttime', typ: u(undefined, Date) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -632,13 +474,13 @@ const typeMap: any = {
   ),
   Contact: o(
     [
-      { json: 'id', js: 'id', typ: r('FluffyID') },
+      { json: 'id', js: 'id', typ: r('ContactID') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  FluffyID: o(
+  ContactID: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
@@ -647,27 +489,12 @@ const typeMap: any = {
   ),
   ContactList: o(
     [
-      { json: 'contacts', js: 'contacts', typ: a(r('ContactElement')) },
+      { json: 'contacts', js: 'contacts', typ: a(r('Contact')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
-  ),
-  ContactElement: o(
-    [
-      { json: 'id', js: 'id', typ: r('TentacledID') },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  TentacledID: o(
-    [
-      { json: 'email', js: 'email', typ: u(undefined, '') },
-      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
-    ],
-    ''
   ),
   Country: o(
     [
@@ -706,23 +533,23 @@ const typeMap: any = {
   Indicator: o(
     [
       { json: 'name', js: 'name', typ: '' },
-      { json: 'parameters', js: 'parameters', typ: u(undefined, r('FluffyParameters')) },
+      { json: 'parameters', js: 'parameters', typ: u(undefined, r('IndicatorParameters')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('')) },
     ],
     'any'
   ),
-  FluffyParameters: o(
+  IndicatorParameters: o(
     [
-      { json: 'custom', js: 'custom', typ: u(undefined, r('FluffyCustom')) },
+      { json: 'custom', js: 'custom', typ: u(undefined, r('IndicatorCustom')) },
       { json: 'field', js: 'field', typ: u(undefined, '') },
-      { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
+      { json: 'instrument', js: 'instrument', typ: u(undefined, r('Instrument')) },
       { json: 'matype', js: 'matype', typ: u(undefined, '') },
       { json: 'period', js: 'period', typ: u(undefined, 3.14) },
     ],
     'any'
   ),
-  FluffyCustom: o(
+  IndicatorCustom: o(
     [
       { json: 'fields', js: 'fields', typ: u(undefined, m('any')) },
       { json: 'vendor', js: 'vendor', typ: u(undefined, '') },
@@ -731,13 +558,13 @@ const typeMap: any = {
   ),
   Instrument: o(
     [
-      { json: 'id', js: 'id', typ: r('StickyID') },
+      { json: 'id', js: 'id', typ: r('InstrumentID') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  StickyID: o(
+  InstrumentID: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
@@ -753,7 +580,7 @@ const typeMap: any = {
   ),
   InstrumentList: o(
     [
-      { json: 'instruments', js: 'instruments', typ: a(r('InstrumentElement')) },
+      { json: 'instruments', js: 'instruments', typ: a(r('Instrument')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -778,73 +605,23 @@ const typeMap: any = {
   ),
   Portfolio: o(
     [
-      { json: 'positions', js: 'positions', typ: a(r('PositionElement')) },
+      { json: 'positions', js: 'positions', typ: a(r('Position')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  PositionElement: o(
-    [
-      { json: 'basis', js: 'basis', typ: u(undefined, r('ValuationObject')) },
-      { json: 'current', js: 'current', typ: u(undefined, r('ValuationObject')) },
-      { json: 'gain', js: 'gain', typ: u(undefined, 3.14) },
-      { json: 'holding', js: 'holding', typ: 3.14 },
-      { json: 'instrument', js: 'instrument', typ: r('InstrumentElement') },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'restricted', js: 'restricted', typ: u(undefined, 3.14) },
-      { json: 'trades', js: 'trades', typ: u(undefined, a(r('TradeElement'))) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-    ],
-    'any'
-  ),
-  ValuationObject: o(
-    [
-      { json: 'currency', js: 'currency', typ: u(undefined, r('CurrencyObject')) },
-      { json: 'price', js: 'price', typ: u(undefined, 3.14) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'value', js: 'value', typ: 3.14 },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  CurrencyObject: o(
-    [
-      { json: 'code', js: 'code', typ: '' },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-    ],
-    'any'
-  ),
-  TradeElement: o(
-    [
-      { json: 'account', js: 'account', typ: u(undefined, '') },
-      { json: 'close', js: 'close', typ: u(undefined, r('ValuationObject')) },
-      { json: 'location', js: 'location', typ: u(undefined, '') },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'open', js: 'open', typ: r('ValuationObject') },
-      { json: 'settledaterange', js: 'settledaterange', typ: u(undefined, r('DateRangeObject')) },
-      { json: 'tradedaterange', js: 'tradedaterange', typ: r('DateRangeObject') },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'units', js: 'units', typ: 3.14 },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
     ],
     'any'
   ),
   Position: o(
     [
-      { json: 'basis', js: 'basis', typ: u(undefined, r('ValuationObject')) },
-      { json: 'current', js: 'current', typ: u(undefined, r('ValuationObject')) },
+      { json: 'basis', js: 'basis', typ: u(undefined, r('Valuation')) },
+      { json: 'current', js: 'current', typ: u(undefined, r('Valuation')) },
       { json: 'gain', js: 'gain', typ: u(undefined, 3.14) },
       { json: 'holding', js: 'holding', typ: 3.14 },
-      { json: 'instrument', js: 'instrument', typ: r('InstrumentElement') },
+      { json: 'instrument', js: 'instrument', typ: r('Instrument') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'restricted', js: 'restricted', typ: u(undefined, 3.14) },
-      { json: 'trades', js: 'trades', typ: u(undefined, a(r('TradeElement'))) },
+      { json: 'trades', js: 'trades', typ: u(undefined, a(r('Trade'))) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('')) },
     ],
@@ -859,12 +636,12 @@ const typeMap: any = {
   Trade: o(
     [
       { json: 'account', js: 'account', typ: u(undefined, '') },
-      { json: 'close', js: 'close', typ: u(undefined, r('ValuationObject')) },
+      { json: 'close', js: 'close', typ: u(undefined, r('Valuation')) },
       { json: 'location', js: 'location', typ: u(undefined, '') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'open', js: 'open', typ: r('ValuationObject') },
-      { json: 'settledaterange', js: 'settledaterange', typ: u(undefined, r('DateRangeObject')) },
-      { json: 'tradedaterange', js: 'tradedaterange', typ: r('DateRangeObject') },
+      { json: 'open', js: 'open', typ: r('Valuation') },
+      { json: 'settledaterange', js: 'settledaterange', typ: u(undefined, r('DateRange')) },
+      { json: 'tradedaterange', js: 'tradedaterange', typ: r('DateRange') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'units', js: 'units', typ: 3.14 },
       { json: 'id', js: 'id', typ: u(undefined, m('')) },
@@ -873,7 +650,7 @@ const typeMap: any = {
   ),
   Valuation: o(
     [
-      { json: 'currency', js: 'currency', typ: u(undefined, r('CurrencyObject')) },
+      { json: 'currency', js: 'currency', typ: u(undefined, r('Currency')) },
       { json: 'price', js: 'price', typ: u(undefined, 3.14) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'value', js: 'value', typ: 3.14 },

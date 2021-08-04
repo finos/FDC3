@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `Indicator`
 
-An Indicator is a function or transformation performed on data.  It is usually seen plotted on a financial chart.  This context type is a good example of a building block which can be used as a component of another context type, such as [Chart](Chart).
+An Indicator is a function or transformation performed on data and used to measure current conditions as well as to forecast trends.  It is usually seen plotted on a financial chart.  This context type is a good example of a building block which can be used as a component of another context type, such as [Chart](Chart).
 
 Indicators usually utilize some input arguments.  This specification enumerates some of the more common ones.
 
@@ -36,27 +36,27 @@ https://fdc3.finos.org/schemas/next/indicator.schema.json
 
 ## Details
 
-| Property                       | Type      | Required | Example Value        |
-|--------------------------------|-----------|----------|----------------------|
-| `type`                        | string    | Yes      | `'fdc3.indicator'` |
-| `name`                        | string    | Yes      | `'ma'`              |
-| `refid`                       | string    | No      | `'ma-1'`             |
-| `parameters.period`         | number    | No      | `14`                  |
-| `parameters.matype`         | string    | No      | `'ema'`              |
-| `parameters.field`          | string    | No      | `'Close'`            |
-| `parameters.instrument`    | Instrument | No      | `instrument`        |
-| `parameters.custom.vendor` | string     | No      | `vendor1`           |
-| `parameters.custom.fields` | object     | No      | `{'Offset': 2}`    |
+| Property                   | Type       | Required | Example Value      |
+|----------------------------|------------|----------|--------------------|
+| `type`                     | string     | Yes      | `'fdc3.indicator'` |
+| `name`                     | string     | Yes      | `'ma'`             |
+| `refid`                    | string     | No       | `'ma-1'`           |
+| `parameters.period`        | number     | No       | `14`               |
+| `parameters.matype`        | string     | No       | `'ema'`            |
+| `parameters.field`         | string     | No       | `'Close'`          |
+| `parameters.instrument`    | Instrument | No       | `instrument`       |
+| `parameters.custom.vendor` | string     | No       | `vendor1`          |
+| `parameters.custom.fields` | object     | No       | `{'Offset': 2}`    |
 
 ## Example
 
 ```js
 const indicator = {
-    type: 'fdc3.indicator'
-    name: 'ma',
+    type: "fdc3.indicator",
+    name: "ma",
     parameters: {
-      period: 14,
-      matype: 'ema'
+        period: 14,
+        matype: "ema"
     }
 }
 
@@ -71,6 +71,3 @@ Other Types
 
 Intents
 - [ViewChart](../../intents/ref/ViewChart)
-
-FINOS Financial Objects
-- [Currency](https://fo.finos.org/docs/objects/indicator)
