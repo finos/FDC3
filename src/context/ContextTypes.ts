@@ -83,42 +83,42 @@ export interface DateRange {
 }
 
 export interface Indicator {
-    name: string;
-    parameters?: IndicatorParameters;
-    type: string;
-    id?: { [key: string]: string };
-  }
-  
-  export interface IndicatorParameters {
-    custom?: IndicatorCustom;
-    field?: string;
-    instrument?: Instrument;
-    matype?: string;
-    period?: number;
-  }
-  
-  export interface IndicatorCustom {
-    fields?: { [key: string]: any };
-    vendor?: string;
-  }
-  
-  export interface Instrument {
-    id: InstrumentID;
-    type: string;
-    name?: string;
-  }
-  
-  export interface InstrumentID {
-    BBG?: string;
-    CUSIP?: string;
-    FDS_ID?: string;
-    FIGI?: string;
-    ISIN?: string;
-    PERMID?: string;
-    RIC?: string;
-    SEDOL?: string;
-    ticker?: string;
-  }
+  name: string;
+  parameters?: IndicatorParameters;
+  type: string;
+  id?: { [key: string]: string };
+}
+
+export interface IndicatorParameters {
+  custom?: IndicatorCustom;
+  field?: string;
+  instrument?: Instrument;
+  matype?: string;
+  period?: number;
+}
+
+export interface IndicatorCustom {
+  fields?: { [key: string]: any };
+  vendor?: string;
+}
+
+export interface Instrument {
+  id: InstrumentID;
+  type: string;
+  name?: string;
+}
+
+export interface InstrumentID {
+  BBG?: string;
+  CUSIP?: string;
+  FDS_ID?: string;
+  FIGI?: string;
+  ISIN?: string;
+  PERMID?: string;
+  RIC?: string;
+  SEDOL?: string;
+  ticker?: string;
+}
 export interface InstrumentList {
   instruments: Instrument[];
   type: string;
