@@ -39,9 +39,9 @@ https://fdc3.finos.org/schemas/next/position.schema.json
 | `name`       | string     | No       | `'My Apple shares'`                |
 | `instrument` | Instrument | Yes      | `{ type: 'fdc3.instrument', ... }` |
 | `holding`    | number     | Yes      | `2000000`                          |
-| `trades`     | trade[]    | No       | `[trade1, trade2]`                 |
-| `basis`      | valuation  | No       | `{ type: 'fdc3.valuation', ... }`  |
-| `current`    | valuation  | No       | `{ type: 'fdc3.valuation', ... }`  |
+| `trades`     | Trade[]    | No       | `[trade1, trade2]`                 |
+| `basis`      | Valuation  | No       | `{ type: 'fdc3.valuation', ... }`  |
+| `current`    | Valuation  | No       | `{ type: 'fdc3.valuation', ... }`  |
 | `gain`       | number     | No       | `8000000`                          |
 | `restricted` | number     | No       | `4000`                             |
 
