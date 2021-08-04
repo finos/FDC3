@@ -82,7 +82,6 @@ The following are standard FDC3 context types.
 
 - __fdc3.chart__
     - A visualization of data for a financial instrument or a set of instruments.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/chart)
     - [schema](/schemas/next/chart.schema.json)
 - __fdc3.contact__
     - A person contact that can be engaged with through email, calling, messaging, CMS, etc.
@@ -98,15 +97,12 @@ The following are standard FDC3 context types.
     - [schema](/schemas/next/country.schema.json)
 - __fdc3.currency__
     - An entity that can be used when referencing currency.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/currency)
     - [schema](/schemas/next/currency.schema.json)
 - __fdc3.dateRange__
     - A definition of a range of time, consisting of a start and end time..
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/daterange)
     - [schema](/schemas/next/dateRange.schema.json)
 - __fdc3.indicator__
-    - A function or transformation performed on data..
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/indicator)
+    - A function or transformation performed on data and used to measure current conditions as well as to forecast trends.
     - [schema](/schemas/next/indicator.schema.json)
 - __fdc3.instrument__
     - A financial instrument from any asset class.
@@ -125,7 +121,7 @@ The following are standard FDC3 context types.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/portfolio)
     - [schema](/schemas/next/portfolio.schema.json)
 - __fdc3.position__
-    - An amount of a security, asset, or property that is owned (or sold short) by some individual or other entity
+    - An amount of a security, asset, or property that is owned (or sold short) by some individual or other entity.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/position)
     - [schema](/schemas/next/position.schema.json)
 - __fdc3.nothing__
@@ -137,7 +133,6 @@ The following are standard FDC3 context types.
     - [schema](/schemas/next/trade.schema.json)
 - __fdc3.valuation__
     - A valuation expresses a price and value of a holding.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/valuation)
     - [schema](/schemas/next/valuation.schema.json)
 
 __Note:__ The below examples show how the base context data interface can be used to define specific context data objects. It is not the purpose of the specification at this stage to define standard representations for objects. It establishes the framework in which such definitions could be created.
@@ -147,40 +142,40 @@ __Note:__ The below examples show how the base context data interface can be use
 #### Chart
 ```json
 {
-    type: 'fdc3.chart'
-    instruments: [
-      {
-        type: 'fdc3.instrument',
-        id: {
-          ticker: 'AAPL'
+    "type": "fdc3.chart",
+    "instruments": [
+        {
+            "type": "fdc3.instrument",
+            "id": {
+                "ticker": "AAPL"
+            }
+        },
+        {
+            "type": "fdc3.instrument",
+            "id": {
+                "ticker": "GOOG"
+            }
         }
-      },
-      {
-        type: 'fdc3.instrument',
-        id: {
-          ticker: 'GOOG'
-        }
-      }
     ],
-    range: {
-      type: 'fdc3.dateRange',
-      start: '2020-09-01T08:00:00.000Z',
-      end: '2020-10-31T08:00:00.000Z'
+    "range": {
+        "type": "fdc3.dateRange",
+        "start": "2020-09-01T08:00:00.000Z",
+        "end": "2020-10-31T08:00:00.000Z"
     },
-    style: 'line',
-    indicators: [
-      {
-        type: 'fdc3.indicator',
-        name: 'ma',
-        parameters: {
-          period: 14,
-          type: 'ema'
+    "style": "line",
+    "indicators": [
+        {
+            "type": "fdc3.indicator",
+            "name": "ma",
+            "parameters": {
+                "period": 14,
+                "type": "ema"
+            }
+        },
+        {
+            "type": "fdc3.indicator",
+            "name": "volume"
         }
-      },
-      {
-        type: 'fdc3.indicator',
-        name: 'volume'
-      }
     ]
 }
 ```
@@ -235,29 +230,29 @@ __Note:__ The below examples show how the base context data interface can be use
 #### Currency
 ```json
 {
-    type: 'fdc3.currency',
-    name: 'US Dollar',
-    code: 'USD'
+    "type": "fdc3.currency",
+    "name": "US Dollar",
+    "code": "USD"
 }
 ```
 
 #### DateRange
 ```json
 {
-    type: 'fdc3.dateRange'
-    starttime: '2020-09-01T08:00:00.000Z',
-    endtime: '2020-10-31T08:00:00.000Z'
+    "type": "fdc3.dateRange",
+    "starttime": "2020-09-01T08:00:00.000Z",
+    "endtime": "2020-10-31T08:00:00.000Z"
 }
 ```
 
 #### Indicator
 ```json
 {
-    type: 'fdc3.indicator'
-    name: 'ma',
-    parameters: {
-      period: 14,
-      matype: 'ema'
+    "type": "fdc3.indicator",
+    "name": "ma",
+    "parameters": {
+        "period": 14,
+        "matype": "ema"
     }
 }
 ```
@@ -374,39 +369,39 @@ __Note:__ The below examples show how the base context data interface can be use
 #### Trade
 ```json
 {
-    type: 'fdc3.trade',
-    tradedaterange: {
-        type: 'fdc3.dateRange',
-        starttime: '2020-09-01T08:00:00.000Z'
+    "type": "fdc3.trade",
+    "tradedaterange": {
+        "type": "fdc3.dateRange",
+        "starttime": "2020-09-01T08:00:00.000Z"
     },
-    settledaterange: {
-        type: 'fdc3.dateRange',
-        starttime: '2020-09-02T08:00:00.000Z'
+    "settledaterange": {
+        "type": "fdc3.dateRange",
+        "starttime": "2020-09-02T08:00:00.000Z"
     },
-    units: 1000000,
-    open: {
-        type: 'fdc3.valuation',
-        price: 20.00,
-        value: 20000000,
-        currency: {
-            type: 'fdc3.currency',
-            code: 'USD'
+    "units": 1000000,
+    "open": {
+        "type": "fdc3.valuation",
+        "price": 20.00,
+        "value": 20000000,
+        "currency": {
+            "type": "fdc3.currency",
+            "code": "USD"
         }
     },
-    location: 'XYZ',
-    account: 'cash'
+    "location": "XYZ",
+    "account": "cash"
 }
 ```
 
 #### Valuation
 ```json
 {
-    type: 'fdc3.valuation',
-    price: 20.00,
-    value: 20000000,
-    currency: {
-        type: 'fdc3.currency',
-        code: 'USD'
+    "type": "fdc3.valuation",
+    "price": 20.00,
+    "value": 20000000,
+    "currency": {
+        "type": "fdc3.currency",
+        "code": "USD"
     }
 }
 ```
