@@ -405,5 +405,3 @@ __Note:__ The below examples show how the base context data interface can be use
     }
 }
 ```
-
-
