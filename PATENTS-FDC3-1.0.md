@@ -1,6 +1,8 @@
 # FDC3 v. 1.0 Final Specification Agreement 
  
-**The Purpose of this Agreement**.  This Agreement sets forth the terms under which I make certain copyright and patent rights available to you for your Permitted Uses of the Specification.  Capitalized terms are defined in the Agreement’s last section.
+## 1. The Purpose of this Agreement.  
+
+This Agreement sets forth the terms under which I make certain copyright and patent rights available to you for your Permitted Uses of the Specification.  Capitalized terms are defined in the Agreement’s last section.
 
 ## 2. Copyrights.
  
@@ -10,21 +12,29 @@
 
 ## 3. Patents.
  
-**3.1. Patent Non-Assert.**
+### 3.1. Patent Non-Assert.
 
-**3.1.1. The Promise.**  I, on behalf of myself and my successors in interest and assigns, irrevocably promise not to assert my Granted Claims against you for your Permitted Uses, subject to the terms and conditions of Section 3.1.  This is a personal promise directly from me to you, and you acknowledge as a condition of benefiting from it that no rights from me are received from suppliers, distributors, or otherwise in connection with this promise. This promise also applies to your Permitted Uses of any other specifications incorporating all required portions of the Specification.
+#### 3.1.1. The Promise.  
 
-**3.1.2. Termination.**
+I, on behalf of myself and my successors in interest and assigns, irrevocably promise not to assert my Granted Claims against you for your Permitted Uses, subject to the terms and conditions of Section 3.1.  This is a personal promise directly from me to you, and you acknowledge as a condition of benefiting from it that no rights from me are received from suppliers, distributors, or otherwise in connection with this promise. This promise also applies to your Permitted Uses of any other specifications incorporating all required portions of the Specification.
+
+#### 3.1.2. Termination.
 
 **3.1.2.1. As a Result of Claims by You.**  All rights, grants, and promises made by me to you under this Agreement are terminated if you file, maintain, or voluntarily participate in a lawsuit against me or any person or entity asserting that its Permitted Uses infringe any Granted Claims you would have had the right to enforce had you signed this Agreement, unless that suit was in response to a corresponding suit first brought against you.
  
 **3.1.2.2. As a Result of Claims by a Related Entity of Mine.**  If a Related Entity of mine files, maintains, or voluntarily participates in a lawsuit asserting that a Permitted Use infringes any Granted Claims it would have had the right to enforce had it signed this Agreement, then I relinquish any rights, grants, and promises I have received for the Specification from other signatories of this Agreement, unless a) my promise to you was terminated pursuant to section 3.1.2.1, or b) that suit was in response to a corresponding suit first brought by you against the Related Entity.
 
-**3.1.3. Additional Conditions.**  This promise is not an assurance (i) that any of my copyrights or issued patent claims cover an implementation of the Specification or are enforceable or (ii) that an implementation of the Specification would not infringe intellectual property rights of any third party. Notwithstanding the personal nature of my promise, this promise is intended to be binding on any future owner, assignee or exclusive licensee to whom has been given the right to enforce any Granted Claims against third parties.
+#### 3.1.3. Additional Conditions.  
 
-**3.1.4. Bankruptcy.**  Solely for purposes of Section 365(n) of Title 11, United States Bankruptcy Code and any equivalent law in any foreign jurisdiction, this promise will be treated as if it were a license and you may elect to retain your rights under this promise if I (or any owner of any patents or patent applications referenced herein), as a debtor in possession, or a bankruptcy trustee, reject this non-assert.
+This promise is not an assurance (i) that any of my copyrights or issued patent claims cover an implementation of the Specification or are enforceable or (ii) that an implementation of the Specification would not infringe intellectual property rights of any third party. Notwithstanding the personal nature of my promise, this promise is intended to be binding on any future owner, assignee or exclusive licensee to whom has been given the right to enforce any Granted Claims against third parties.
 
-**3.2. Patent License Commitment.**  In addition to rights granted in 3.1, on behalf of me and my successors in interest and assigns, I agree to grant to you a no charge, royalty free license to my Granted Claims on reasonable and non-discriminatory terms, where such license applies only to those Granted Claims infringed by the implementation of the Specification, solely for your Permitted Uses.
+#### 3.1.4. Bankruptcy.
+
+Solely for purposes of Section 365(n) of Title 11, United States Bankruptcy Code and any equivalent law in any foreign jurisdiction, this promise will be treated as if it were a license and you may elect to retain your rights under this promise if I (or any owner of any patents or patent applications referenced herein), as a debtor in possession, or a bankruptcy trustee, reject this non-assert.
+
+### 3.2. Patent License Commitment. 
+
+In addition to rights granted in 3.1, on behalf of me and my successors in interest and assigns, I agree to grant to you a no charge, royalty free license to my Granted Claims on reasonable and non-discriminatory terms, where such license applies only to those Granted Claims infringed by the implementation of the Specification, solely for your Permitted Uses.
 
 ## 4. No Other Rights. 
 
