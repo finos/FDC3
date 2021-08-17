@@ -189,7 +189,7 @@ _NOTE:_ Commits and pull requests to FINOS repositories will only be accepted fr
 
 # License
 
-Copyright 2017-2021 FINOS and FDC3 Contributors
+Copyright 2017-2021 FINOS and FDC3 contributors
 
 Version 1.0 of the FDC3 specification is licensed under the [FDC3 1.0 Final Specification License](PATENTS-FDC3-1.0.md).
 
