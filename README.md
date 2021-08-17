@@ -191,7 +191,7 @@ _NOTE:_ Commits and pull requests to FINOS repositories will only be accepted fr
 
 Copyright 2017-2021 FINOS and FDC3 Contributors
 
-The FDC3 1.0 Specification is licensed under the FDC3 1.0 Final Specification License.
+The FDC3 1.0 Specification is licensed under the [FDC3 1.0 Final Specification License](PATENTS-FDC3-1.0.md).
 
 Subsequent FDC3 specifications and draft specifications are subject to the [FINOS IP Policy](https://www.finos.org/hubfs/FINOS/governance/FINOS%20IP%20Policy.pdf), which authorizes implementation of FDC3 specifications without charge, on a RAND basis. For details of the IP commitments made by contributors to FDC3, please refer to the policy.
 
