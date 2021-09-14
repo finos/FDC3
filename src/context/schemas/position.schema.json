@@ -3,11 +3,12 @@
   "$id": "https://fdc3.finos.org/schemas/next/position.schema.json",
   "type": "object",
   "title": "Position",
-  "allOf": [{ "$ref": "context.schema.json#/" }],
+  "allOf": [{ "$ref": "context.schema.json#" }],
   "properties": {
     "type": { "const": "fdc3.position" },
-    "instrument": { "$ref": "instrument.schema.json#/" },
-    "holding": { "type": "number", "minimum": 0 }
+    "instrument": { "$ref": "instrument.schema.json#" },
+    "holding": { "type": "number" }
   },
   "required": ["instrument", "holding"]
 }
+

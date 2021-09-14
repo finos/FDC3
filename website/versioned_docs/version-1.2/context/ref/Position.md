@@ -48,7 +48,7 @@ https://fdc3.finos.org/schemas/1.2/position.schema.json
 const position = {
     type: 'fdc3.position',
     instrument: {
-        type: 'fdc3.instrument'
+        type: 'fdc3.instrument',
         id: {
             ticker: 'AAPL'
         }

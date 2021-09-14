@@ -49,7 +49,7 @@ const portfolio = {
         {
             type: 'fdc3.position',
             instrument: {
-                type: 'fdc3.instrument'
+                type: 'fdc3.instrument',
                 id: {
                     ticker: 'AAPL'
                 }
@@ -59,7 +59,7 @@ const portfolio = {
         {
             type: 'fdc3.position',
             instrument: {
-                type: 'fdc3.instrument'
+                type: 'fdc3.instrument',
                 id: {
                     ticker: 'MSFT'
                 }
@@ -69,7 +69,7 @@ const portfolio = {
         {
             type: 'fdc3.position',
             instrument: {
-                type: 'fdc3.instrument'
+                type: 'fdc3.instrument',
                 id: {
                     ticker: 'IBM'
                 }
