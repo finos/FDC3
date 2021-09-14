@@ -30,13 +30,12 @@ https://fdc3.finos.org/schemas/1.2/contact.schema.json
 
 ```js
 const contact = {
-    type: 'fdc3.contact'
+    type: 'fdc3.contact',
     name: 'Jane Doe',
     id: {
         email: 'jane.doe@mail.com'
     }
 }
-
 
 fdc3.broadcast(contact)
 ```
