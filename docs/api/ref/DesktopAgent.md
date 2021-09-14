@@ -378,7 +378,7 @@ raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentRe
 ```
 Raises a specific intent against a target app.
 
-The desktop agent will resolve the correct app to target based on the provided intent name and context data type. If you wish to raise an Intent without a context, use the `fdc3.null` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
+The desktop agent will resolve the correct app to target based on the provided intent name and context data type. If you wish to raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
 
 If multiple matching apps are found, the user may be presented with an app picker.
 Alternatively, the specific app to target can also be provided (if known).
@@ -400,7 +400,7 @@ await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 
 //Raise an intent without a context by using the null context type
-await fdc3.raiseIntent("StartChat", {type: "fdc3.null"});
+await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
 ```
 #### See also
 * [`Context`](Types#context)

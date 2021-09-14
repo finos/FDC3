@@ -1,10 +1,10 @@
 ---
-id: Null
-sidebar_label: Null
-title: Null
+id: Nothing
+sidebar_label: Nothing
+title: Nothing
 hide_title: true
 ---
-# `Null`
+# `Nothing`
 
 A type that explicitly represents a lack of context.
 
@@ -21,17 +21,17 @@ Notes:
 
 ## Type
 
-`fdc3.null`
+`fdc3.nothing`
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/null.schema.json
+https://fdc3.finos.org/schemas/next/nothing.schema.json
 
 ## Example
 
 ```js
 const nullContext = {
-    type: 'fdc3.null'
+    type: 'fdc3.nothing'
 }
 
 fdc3.joinChannel('groupA')
