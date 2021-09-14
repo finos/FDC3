@@ -103,7 +103,7 @@ When raising an Intent a specific context may be provided. The type of the provi
 
 A Context type may also be associated with multiple Intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other Intents. In addition to raising a specific intent, you can raise an Intent for a specific Context allowing the Desktop Agent or the user (if the Intent is ambiguous) to select the appropriate Intent for the selected Context and then to raise that Intent for resolution.
 
-To raise an Intent without a context, use the `fdc3.null` context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an Intent listener or in an App Directory).
+To raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an Intent listener or in an App Directory).
 
 #### Intent Resolution
 Raising an Intent will return a Promise-type object that will resolve/reject based on a number of factors.
