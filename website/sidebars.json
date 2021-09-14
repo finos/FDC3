@@ -58,7 +58,7 @@
           "context/ref/Country",
           "context/ref/Position",
           "context/ref/Portfolio",
-          "context/ref/Null"
+          "context/ref/Nothing"
         ]
       }
     ],
