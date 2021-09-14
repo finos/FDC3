@@ -16,7 +16,7 @@ Notes:
     interface without a contact selected).
   - Resetting context on a channel (e.g. when context is used to set a filter in
     other applications a null context might release the filter).
-- An explicit representation of a Null context allows apps to declare support for
+- An explicit representation of a Null or empty context allows apps to declare support for
   a lack of context, for example in their Intent metadata in an app directory.
 
 ## Type
