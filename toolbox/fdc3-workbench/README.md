@@ -3,7 +3,7 @@
 # FDC3 Workbench
 When developing interoperability for your application with other apps on a Financial services desktop, using the [FDC3 standard](https://fdc3.finos.org/docs/fdc3-intro), the first step is often to develop a test harness or workbench tool with which to exchange messaging. The FDC3 Workbench is designed to provide that tooling so that you can focus on implementing FDC3 support in your application.
 
-_Created and contributed to [FDC3](http://fdc3.finos.org) by [Cosaic, Inc.](https://cosaic.io/)._
+_Created and contributed to [FDC3](http://fdc3.finos.org) by [Cosaic, Inc.](https://cosaic.io/) in 2021._
 
 ## Getting Started
 
@@ -21,9 +21,10 @@ _Created and contributed to [FDC3](http://fdc3.finos.org) by [Cosaic, Inc.](http
 
 4. Add the URL http://localhost:3000 to your FDC3-enabled container or desktop agent and ensure it has access to the `window.fdc3` object.
 
-## ToDo
+## TODO
 - Implement a panel for working with [App channels](https://fdc3.finos.org/docs/api/spec#direct-listening-and-broadcast-on-channels).
-
+- Implement `findIntent` in the intents panel with support for a targetted `raiseIntent` using one of the results.
+- Add support for saving context tempaltes across sessions (e.g. via localstorage)
 ## Packages
 
 Core:
