@@ -163,7 +163,19 @@ catch (er){
 }
 ```
 
-##### Upgrading to a Remote API Connection
+#### Resolvers
+Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (raising UI to pick the desired App for the intent) or by the app launching the intent - in which case the calling App will handle the resolution itself (using the findIntents API) and then invoke the Intent on a specific target application, e.g.:
+
+```js
+//Find apps to resolve an intent to start a chat with a given contact
+const appIntent = await fdc3.findIntent("StartChat", context);
+//use the returned AppIntent object to target one of the returned chat apps by name
+await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
+//or by using the full AppMetadata object
+await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
+```
+
+#### Upgrading to a Remote API Connection
 There are a wide range of workflows where decoupled intents and/or context passing do not provide rich enough interactivity and applications are better off exposing proprietary APIs.  In these cases, an App can use the *source* property on the resolution of an intent to connect directly to another App and from there, call remote APIs using the methods available in the Desktop Agent context for the App.  For example:
 
 ```js
@@ -182,8 +194,6 @@ Intents represent a contract with expected behavior if an app asserts that it su
 
 It is expected that App Directories will also curate listed apps and ensure that they are complying with declared intents.
 
-Like FDC3 Context Data, the Intent schemas need to be versioned.  Desktop Agents will be responsible to declare which version of the Intent schema they are using.   Applications may also assert a specific version requirement when raising an Intent.  Version negotation may be supported by a given Desktop Agent.
-
 ### Send/broadcast Context
 On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features. However, a Desktop Agent should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.
 
@@ -199,9 +209,6 @@ if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), '1.2')) {
   await fdc3.raiseIntent('ViewChart', context);
 }
 ```
-
-## Resolvers
-Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (raising UI to pick the desired App for the intent) or by the app launching the intent - in which case the calling App will handle the resolution itself (using the findIntents API below) and then invoke an explicit Intent object.
 
 ## Context Channels
 
