@@ -378,7 +378,7 @@ raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentRe
 ```
 Raises a specific intent for resolution against apps registered with the desktop agent. 
 
-The desktop agent will resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, the user may be presented with an app picker.
+The desktop agent will resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, the user should be presented with a resolver UI allowing them to pick an app.
 Alternatively, the specific app to target can also be provided. A list of valid target applications can be retrieved via [`findIntent`](DesktopAgent#findintent).  
 
 Returns an `IntentResolution` object with details of the app that was selected to respond to the intent.
@@ -389,7 +389,7 @@ If a target app for the intent cannot be found with the criteria provided, an `E
 
 ```js
 // raise an intent for resolution by the desktop agent
-// a resolver UI will be displayed if more than one application can resolve the intent
+// a resolver UI should be displayed if more than one application can resolve the intent
 await fdc3.raiseIntent("StartChat", context);
 
 // or find apps to resolve an intent to start a chat with a given contact
