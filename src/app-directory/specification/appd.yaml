@@ -393,7 +393,7 @@ components:
       type: object
       description: >-
         A mapping from host string to host specific application manifest object or URI
-        providing all details related to launch and use requirements as described by the host..
+        providing all details related to launch and use requirements as described by the host.
       additionalProperties:
         oneOf:
           - type: string   # URI pointing to a JSON containing all host specific properties
