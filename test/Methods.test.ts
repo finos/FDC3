@@ -184,7 +184,7 @@ describe('test ES6 module', () => {
 
       expect(window.fdc3.addContextListener).toHaveBeenCalledTimes(2);
       expect(window.fdc3.addContextListener).toHaveBeenNthCalledWith(1, type, handler1);
-      expect(window.fdc3.addContextListener).toHaveBeenNthCalledWith(2, handler2);
+      expect(window.fdc3.addContextListener).toHaveBeenNthCalledWith(2, null, handler2);
     });
 
     test('getSystemChannels should delegate to window.fdc3.getSystemChannels', async () => {
