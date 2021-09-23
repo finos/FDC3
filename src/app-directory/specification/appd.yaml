@@ -244,7 +244,7 @@ components:
           $ref: '#/components/schemas/Type'
         details:
           description: >-
-            The type specific details of the application. Currently only the browser application type is officially supported.
+            The type specific details of the application. Currently only the "browser" type is standardized.
             Host type applications should use the hostManifests object for all application details.
           oneOf:
             - $ref: '#/components/schemas/BrowserDetails'
