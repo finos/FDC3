@@ -245,7 +245,7 @@ components:
         details:
           description: >-
             The type specific details of the application. Currently only the "browser" type is standardized.
-            Host type applications should use the hostManifests object for all application details.
+            "host" type applications should use the hostManifest's object for all application details.
           oneOf:
             - $ref: '#/components/schemas/BrowserDetails'
         version:
