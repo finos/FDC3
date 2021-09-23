@@ -381,7 +381,7 @@ components:
         - browser
         - host
     BrowserDetails:
-      description: Common properties toq all browser applications.
+      description: Properties common to all browser applications.
       required:
         - url
       properties:
