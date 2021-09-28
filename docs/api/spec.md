@@ -275,7 +275,7 @@ While joining channels automates a lot of the channel behavior for an app, it ha
 ### Broadcasting and listening for multiple context types
 The [Context specification](../../context/spec#assumptions) recommends that complex context objects are defined using simpler context types for particular fields. For example, a `Position` is composed of an `Instrument` and a holding amount. This leads to situations where an application may be able to receive or respond to context objects that are embedded in a more complex type, but not the more complex type itself. For example, a pricing chart might respond to an `Instrument` but doesn't know how to handle a `Position`. 
 
-To facilitate context linking in such situations it is recommended that applications `broadcast` each context type that other apps (listening on a System channel or App channel) may wish to process. Doing so allows applications to filter the context types they receive by adding listeners for specific context types - but requires that the application broadcasting context make multiple broadcast calls in quick succession when sharing its context.
+To facilitate context linking in such situations it is recommended that applications `broadcast` each context type that other apps (listening on a System channel or App channel) may wish to process, starting with the simpler types, followed by the complex type. Doing so allows applications to filter the context types they receive by adding listeners for specific context types - but requires that the application broadcasting context make multiple broadcast calls in quick succession when sharing its context.
 
 
 
