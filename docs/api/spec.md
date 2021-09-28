@@ -272,6 +272,13 @@ joinedChannel = await fdc3.getCurrentChannel()
 ### Direct Listening and Broadcast on Channels
 While joining channels automates a lot of the channel behavior for an app, it has the limitation in that an app can belong to only one channel at a time.  Listening and Broadcasting to channels using the _Channel.addBroadcastListener_ and the _Channel.broadcast_ APIs provides an app with fine-grained controls for specific channels.  This is especially useful for working with dynamic _App Channels_.
 
+### Broadcasting and listening for multiple context types
+The [Context specification](../../context/spec#assumptions) recommends that complex context objects are defined using simpler context types for particular fields. For example, a `Position` is composed of an `Instrument` and a holding amount. This leads to situations where an application may be able to receive or respond to context objects that are embedded in a more complex type, but not the more complex type itself. For example, a pricing chart might respond to an `Instrument` but doesn't know how to handle a `Position`. 
+
+To facilitate context linking in such situations it is recommended that applications `broadcast` each context type that other apps (listening on a System channel or App channel) may wish to process. Doing so allows applications to filter the context types they receive by adding listeners for specific context types - but requires that the application broadcasting context make multiple broadcast calls in quick succession when sharing its context.
+
+
+
 ### Examples
 To find a system channel, one calls
 
@@ -282,7 +289,7 @@ const redChannel = allChannels.find(c => c.id === 'red');
 ```
 #### Joining channels
 
-To join a channel. one calls
+To join a system channel. one calls
 
 ```js
 fdc3.joinChannel(redChannel.id);
