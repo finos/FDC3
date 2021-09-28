@@ -149,7 +149,7 @@ export const App = observer(() => {
 	useEffect(() => {
 		(async () => {
 			try {
-				await fdc3Ready(2000);
+				await fdc3Ready(5000);
 				setFdc3Available(true);
 			} catch (e) {}
 		})();
