@@ -3,6 +3,8 @@
  * Copyright 2019 FINOS FDC3 contributors - see NOTICE file
  */
 
+import { Icon } from './Icon';
+
 /**
  * App definition as provided by the application directory
  */
@@ -26,7 +28,7 @@ export interface AppMetadata {
   readonly description?: string;
 
   /** A list of icon URLs for the application that can be used to render UI elements */
-  readonly icons?: Array<string>;
+  readonly icons?: Array<Icon>;
 
   /** A list of image URLs for the application that can be used to render UI elements */
   readonly images?: Array<string>;

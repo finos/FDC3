@@ -15,8 +15,6 @@ describe('Context types', () => {
   });
 
   it('Convert contact to json', () => {
-    expect(JSON.parse(Convert.contactToJson(contact))).toEqual(
-      JSON.parse(json)
-    );
+    expect(JSON.parse(Convert.contactToJson(contact))).toEqual(JSON.parse(json));
   });
 });

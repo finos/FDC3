@@ -1,11 +1,14 @@
 {
   "name": "@finos/fdc3",
-  "version": "1.1.0-alpha.3",
+  "version": "1.2.0",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
     "type": "git",
     "url": "https://github.com/finos/FDC3.git"
+  },
+  "publishConfig": {
+    "tag": "latest"
   },
   "license": "Apache-2.0",
   "main": "dist/index.js",
@@ -37,15 +40,18 @@
     "singleQuote": true,
     "arrowParens": "avoid",
     "trailingComma": "es5",
-    "endOfLine": "auto"
+    "endOfLine": "auto",
+    "printWidth": 120
   },
   "resolutions": {
     "node-fetch": "^2.6.1",
+    "node-notifier": "^8.0.1",
     "yargs-parser": "^13.1.2",
-    "node-notifier": "^8.0.1"
+    "y18n": "^4.0.1"
   },
   "devDependencies": {
     "husky": "^4.3.0",
+    "jest-mock-extended": "^1.0.13",
     "quicktype": "^15.0.258",
     "tsdx": "^0.14.1",
     "tslib": "^2.0.1",

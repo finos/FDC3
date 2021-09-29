@@ -1,6 +1,6 @@
 # <a href='http://fdc3.finos.org'><img src='./website/static/img/fdc3-logo-2019-color.png' height='150' alt='FDC3 Logo' aria-label='fdc3.finos.org' /></a>
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/finos/fdc3)](https://github.com/finos/fdc3/releases/latest)
+[![Latest Standard](https://img.shields.io/badge/release-1.2-blue)](https://github.com/finos/fdc3/releases/v1.2)
 [![npm](https://img.shields.io/npm/v/@finos/fdc3)](https://www.npmjs.com/package/@finos/fdc3)
 [![FINOS - Released](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-released.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Released)
 [![GitHub](https://img.shields.io/github/license/finos/fdc3)](https://opensource.org/licenses/Apache-2.0)
@@ -76,7 +76,7 @@ yarn add @finos/fdc3
 pnpm install @finos/fdc3
 ```
 
-Note that the web application still needs to run in the context of an FDC3 desktop agent to work. For more details, please see the [relevant documentation](https://fdc3.finos.org/docs/installation).
+Note that the web application still needs to run in the context of an FDC3 desktop agent to work. For more details, please see the [relevant documentation](https://fdc3.finos.org/docs/supported-platforms).
 
 ### Usage
 
@@ -100,16 +100,16 @@ channel.broadcast({ ... })
 ```
 
 ## Native
-The FDC3 standard does not define wire formats for communication. Hence, for native applications to be FDC3-enabled, they need to make use of a library (e.g. a DLL in .Net or Jar file in Java) that provides them with an implementation of the FDC3 API. FDC3-enabled native applications are therefore specific to particular desktop container frameworks (or other suitable environments) that provide the necessary libraries. 
+The FDC3 standard does not define wire formats for communication. Hence, for native applications to be FDC3-enabled, they need to make use of a library (e.g. a DLL in .Net or Jar file in Java) that provides them with an implementation of the FDC3 API. FDC3-enabled native applications are therefore specific to particular desktop container frameworks (or other suitable environments) that provide the necessary libraries.
 
 Despite this limitation, implementing support for FDC3 in a native application can allow it to interact with a wide variety of FDC3-enabled web applications.
 
 
 # Roadmap
 
-- [ ] Publish versioned NPM packages to ease adoption and implementation of FDC3 APIs.
+- [x] Publish versioned NPM packages to ease adoption and implementation of FDC3 APIs.
+- [x] Release version 1.2 of the standard with expanded API capabilities.
 - [ ] Establish a process to accelerate community-contributed context data definitions.
-- [ ] Release version 1.2 of the standard with expanded API capabilities.
 - [ ] Release version 2.0 of the standard with support for app instances, two-way data flow and joining multiple channels.
 - [ ] Improve the app directory specification, with support for container-agnostic app manifests, and more type metadata around channels and launching apps.
 - [ ] Introduce a hosted app directory example with sample application definitions.
@@ -119,9 +119,9 @@ Despite this limitation, implementing support for FDC3 in a native application c
 
 ## Learn more and interact with the community
 
-The fastest and more interactive way to connect and ask questions to the FDC3 community is to join the [#fdc3 channel on the FINOS slack](https://finos-lf.slack.com/messages/fdc3/). 
+The fastest and more interactive way to connect and ask questions to the FDC3 community is to join the [#fdc3 channel on the FINOS slack](https://finos-lf.slack.com/messages/fdc3/).
 
-If you'd like to receive official updates, and/or you don't have access to Slack, please send an email to [fdc3@finos.org]. You can join the list by sending an email to [fdc3+subscribe@finos.org]. 
+If you'd like to receive official updates, and/or you don't have access to Slack, please send an email to [fdc3@finos.org]. You can join the list by sending an email to [fdc3+subscribe@finos.org].
 
 Finally, another great way to interact with the community, is to attend the quarterly [FDC3 General Meeting]: you will receive an invite by signing up to the mailing list, or you can find the meeting in the [FINOS Project Meetings Calendar].
 
@@ -135,8 +135,6 @@ Finally, another great way to interact with the community, is to attend the quar
 If you are an existing individual or corporate user of the FDC3 standard, we would love to hear from you: just email [fdc3@finos.org] with details about how you are using the standard.
 
 If you'd like to be listed as a user of the standard, you can directly send a pull request to update the website: upload your logo to [this folder](https://github.com/finos/FDC3/tree/master/website/static/img/users) and update [this file](https://github.com/finos/FDC3/edit/master/website/data/users.json) with your company's details. If listing your logo publicly requires legal evaluation, you can reach out privately to the [FDC3 Product Management Committee](mailto:fdc3-pmc-private@finos.org).
-
- 
 
 ## The Standard Working Group
 
@@ -155,19 +153,18 @@ please email [fdc3-participants+subscribe@finos.org] making your intent to parti
 Please note that standard participants are bound to the provisions in the [FINOS IP Policy] as described in the [FINOS standards governance].
 
 [fdc3-participants+subscribe@finos.org]: mailto:fdc3-participants+subscribe@finos.org?subject=Please%20enroll%20me%20as%20FDC3%20standard%20participant&amp;cc=fdc3-pmc%40finos.org&amp;body=HI%2C%20my%20name%20is%20%3CFirstName%20LastName%3E%20and%20I%27d%20like%20to%20formally%20participate%20to%20the%20FDC3%20standard%20process.%20I%20plan%20to%20contribute%20as%20%3Cindividual%7Con%20behalf%20of%20organizationName%3E%20and%20I%20have%20reviewed%20the%20policies%20described%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2Fcommunity%2Ftree%2Fmaster%2Fgovernance%2FStandards-Projects%20.%20Thank%20you!
-[FINOS IP Policy]: https://github.com/finos/community/blob/master/governance/IP-Policy.pdf
-[FINOS standards governance]: https://github.com/finos/community/tree/master/governance/Standards-Projects
+[FINOS IP Policy]: https://github.com/finos/community/blob/db11c11b80651b8bc888e7cb1d56d20afdf2a346/governance/IP-Policy.pdf
+[FINOS standards governance]: https://github.com/finos/community/tree/db11c11b80651b8bc888e7cb1d56d20afdf2a346/governance/Standards-Projects
 
 ## The Product Management Committee
 
 The [FDC3 Product Management Committee] (PMC) is responsible for co-ordinating the work of the FDC3 Standard Working Group, as well as FDC3-related planning and communications. For more context see the [FDC3 Archive].
 
-
 [FDC3 Product Management Committee]: https://github.com/finos/FDC3/issues?q=label%3A%22PMC+Meeting%22
 [FDC3 Archive]: https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview
 
 ### Meetings
-The PMC meets every second Friday at 9:30am ET / 2:30pm GMT. Find the next meeting, including meeting details, on the [FINOS Project Meetings Calendar].
+The PMC meets every second Friday at 9am ET / 2pm GMT. Find the next meeting, including meeting details, on the [FINOS Project Meetings Calendar].
 
 ### Mailing list
 You can get in touch with the FDC3 PMC by sending an email to [fdc3-pmc@finos.org]. Join the PMC Mailing list by sending an email to [fdc3-pmc+subscribe@finos.org].
@@ -186,7 +183,7 @@ If you'd like to contribute code to this repository:
 5. Push to the branch (`git push origin feature/fooBar`)
 6. Create a new Pull Request
 
-_NOTE:_ Commits and pull requests to FINOS repositories will only be accepted from those contributors with an active, executed Individual Contributor License Agreement (ICLA) with FINOS OR who are covered under an existing and active Corporate Contribution License Agreement (CCLA) executed with FINOS. Commits from individuals not covered under an ICLA or CCLA will be flagged and blocked by the FINOS Clabot tool. Please note that some CCLAs require individuals/employees to be explicitly named on the CCLA.
+_NOTE:_ Commits and pull requests to FINOS repositories will only be accepted from those contributors with an active, executed Individual Contributor License Agreement (ICLA) with FINOS, _OR_ who are covered under an existing and active Corporate Contribution License Agreement (CCLA) executed with FINOS. Commits from individuals not covered under an ICLA or CCLA will be flagged and blocked by the FINOS `cla-bot` tool. Please note that some CCLAs require individuals/employees to be explicitly named on the CCLA.
 
 *Need an ICLA? Unsure if you are covered under an existing CCLA? Email [help@finos.org](mailto:help@finos.org).*
 
