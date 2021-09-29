@@ -68,8 +68,5 @@ export interface Channel {
   /**
    * Adds a listener for incoming contexts of the specified context type whenever a broadcast happens on this channel.
    */
-  addContextListener(
-    contextType: string | null,
-    handler: ContextHandler
-  ): Listener;
+  addContextListener(contextType: string | null, handler: ContextHandler): Listener;
 }

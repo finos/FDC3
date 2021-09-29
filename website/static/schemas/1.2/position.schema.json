@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/1.2/position.schema.json",
+  "type": "object",
+  "title": "Position",
+  "allOf": [{ "$ref": "context.schema.json#" }],
+  "properties": {
+    "type": { "const": "fdc3.position" },
+    "instrument": { "$ref": "instrument.schema.json#" },
+    "holding": { "type": "number", "minimum": 0 }
+  },
+  "required": ["instrument","holding"]
+}

@@ -11,7 +11,8 @@ A Desktop Agent is a desktop component (or aggregate of components) that serves 
 Examples of Desktop Agents include:
 
 - Autobahn
-- ChartIQ's Finsemble
+- Cosaic's Finsemble
+- Glue42
 - OpenFin
 - Refinitiv Eikon
 
@@ -220,7 +221,7 @@ There are two types of channels, which are functionally identical, but have diff
 ### Joining Channels
 Apps can join channels.  An app can only be joined to one channel at a time.  When an app joins a channel it will automatically recieve the current context for that channel.
 
-When an app is joined to a channel, calls to fdc3.broadcast and listeners added through fdc3.addContextListener will be routed to that channel.  If an app is not joined to a channel these methods will be no-ops, but apps can still choose to listen and broadcast to specific channels via the methods on the `Channel` class.
+When an app is joined to a channel, calls to `fdc3.broadcast` and listeners added through `fdc3.addContextListener` will be routed to that channel. If an app is not joined to a channel `fdc3.broadcast` will be a no-op and handler functions added with `fdc3.addContextListener` will not receive any broadcasts. However, apps can still choose to listen and broadcast to specific channels via the methods on the `Channel` class.
 
 It is possible that a call to join a channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.
 

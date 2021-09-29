@@ -7,16 +7,17 @@ FDC3 API operations make use of several type declarations.
 ## `Context`
 
 ```typescript
-type Context = object;
+interface Context {
+  id?: { [key: string]: string };
+  name?: string;
+  type: string;
+}
 ```
 
-The base object that all contexts should extend.
+The base interface that all contexts should extend: a context data object adhering to the [Context Data Specification](../../context/spec).
 
-The API specification allows this to be any object, but typically this is supposed to be a context data object adhering to the [Context Data Specification](../../context/spec).
+This means that it must at least have a `type` property that indicates what type of data it represents, e.g. `'fdc3.contact'`. The `type` property of context objects is important for certain FDC3 operations, like [`Channel.getCurrentContext`](Channel#getCurrentContext) and [`DesktopAgent.addContextListener`](DesktopAgent#addContextListener), which allows you to filter contexts by their type.
 
-This means that it must at least have a `type` property that indicates what type of data it represents, e.g. `'fdc3.contact'`.
-
-The `type` property of context objects is important for certain FDC3 operations, like [`Channel.getCurrentContext`](Channel#getCurrentContext) and [`DesktopAgent.addContextListener`](DesktopAgent#addContextListener), which allows you to filter contexts by their type.
 
 #### See also
 * [`ContextHandler`](#contexthandler)
@@ -47,6 +48,30 @@ Used when attaching listeners for context broadcasts and raised intents.
 * [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 * [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
 * [`Channel.addContextListener`](Channel#addcontextlistener)
+
+## `Listener`
+
+A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](#addintentlistener) or [`addContextListener`](#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
+
+```typescript
+interface Listener {
+  unsubscribe(): void;
+}
+```
+#### `unsubscribe`
+
+```ts
+unsubscribe(): void;
+```
+
+Allows an application to unsubscribe from listening to intents or context broadcasts.
+
+#### See also
+* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+* [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
+* [`Channel.addContextListener`](Channel#addcontextlistener)
+* [`ContextHandler`](Types#contexthandler)
+
 
 ## `TargetApp`
 

@@ -68,7 +68,7 @@ const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ...
 ```
 
 #### See also
-* [`Listener`](Listener)
+* [`Listener`](Types#listener)
 * [`Context`](Types#context)
 
 
@@ -89,7 +89,7 @@ const listener = fdc3.addIntentListener('StartChat', context => {
 ```
 
 #### See also
-* [`Listener`](Listener)
+* [`Listener`](Types#listener)
 * [`Context`](Types#context)
 
 

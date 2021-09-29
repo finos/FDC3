@@ -20,7 +20,7 @@ The focus of the FDC3 Standard Working Group has been to create a small but cons
 - [`window.fdc3`](ref/Globals#windowfdc3-object) global object and [`fdc3Ready`](ref/Globals#fdc3ready-event) event, for accessing FDC3 operations globally
 - [`DesktopAgent`](ref/DesktopAgent) interface, which exposes FDC3 operations
 - [`Channel`](ref/Channel) interface, for subscribing to specific context channels
-- [`Listener`](ref/Listener) interface, which allows unsubscribing intent or context listeners
+- [`Listener`](ref/Types#listener) interface, which allows unsubscribing intent or context listeners
 
 ## Usage
 
@@ -53,24 +53,26 @@ The [`@finos/fdc3` npm package](https://www.npmjs.com/package/@finos/fdc3) provi
 ```ts
 import * as fdc3 from '@finos/fdc3'
 
-const listener = fdc3.addIntentListener('ViewAnalysis', context => {
-  // do something
-})
-```
-
-Alternatively you can also import individual operations directly:
-
-```ts
-import { raiseIntent } from '@finos/fdc3'
-
-await raiseIntent('ViewAnalysis', {
+await fdc3.raiseIntent('ViewAnalysis', {
     type: 'fdc3.instrument',
     id: { ticker: 'AAPL' }
 })
 ```
 
-The npm package will take care of checking for the existence of the global `fdc3` object, and wait for the `fdc3Ready` event, or throw an error if FDC3 is not supported.
+It also includes a helper function you can use to wait for FDC3 to become available:
 
+```ts
+import { fdc3Ready, addIntentListener } from '@finos/fdc3'
+
+await fdc3Ready();
+
+const listener = addIntentListener('ViewAnalysis', instrument => {
+  // handle intent
+})
+```
+
+#### See also
+* [`fdc3Ready() Function`](ref/Globals#fdc3ready-function)
 
 
 

@@ -8,3 +8,4 @@
 # ignore folders
 website
 dist
+src/app-directory/*/target
