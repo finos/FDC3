@@ -29,10 +29,14 @@ export const codeExamples = {
 		'fdc3.raiseIntent("ViewChart", context);',
 	contextListener:
 		"// any context\n" +
-		"const listener = fdc3.addContextListener(null, context => { ... });\n" +
+		"const listener = fdc3.addContextListener(null, context => {\n" + 
+		"    //add context handling code here\n" + 	
+		"});\n" +
 		"\n" +
 		"// listener for a specific type\n" +
-		"const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ... });",
+		"const contactListener = fdc3.addContextListener('fdc3.contact', contact => {\n" + 
+		"    //add context handling code here\n" + 	
+		"});",
 	intentListener:
 		"const listener = fdc3.addIntentListener('StartChat', context => {\n" +
 		"  // start chat has been requested by another application\n" +
