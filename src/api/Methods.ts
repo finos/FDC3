@@ -71,6 +71,7 @@ export function addContextListener(
   contextTypeOrHandler: string | null | ContextHandler,
   handler?: ContextHandler
 ): Listener {
+  //Handle (deprecated) function signature that allowed contextType argument to be omitted
   if (typeof contextTypeOrHandler !== 'function') {
     return throwIfNoGlobal(() =>
       window.fdc3.addContextListener(contextTypeOrHandler as string, handler as ContextHandler)
