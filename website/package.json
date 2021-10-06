@@ -9,7 +9,7 @@
     "copy-schemas": "cpy ../src/context/schemas/*.schema.json static/schemas/next",
     "copy-appd": "cpy ../src/app-directory/specification/appd.yaml static/schemas/next --rename app-directory.yaml",
     "build-workbench": "cd ../toolbox/fdc3-workbench && yarn install && yarn build",
-    "copy-workbench": "yarn del static/toolbox/fdc3-workbench && yarn build-workbench && cpy ../toolbox/fdc3-workbench/build/** ./static/toolbox/fdc3-workbench",
+    "copy-workbench": "yarn del static/toolbox/fdc3-workbench && yarn build-workbench && cd ../toolbox/fdc3-workbench/build && cpy ** ../../../website/static/toolbox/fdc3-workbench --parents",
     "version": "yarn run version:docs && yarn run version:schemas && yarn run version:appd",
     "version:docs": "docusaurus-version ${VERSION}",
     "version:schemas": "cpy static/schemas/next/*.schema.json static/schemas/${VERSION} && replace-in-files --string=/schemas/next --replacement=/schemas/${VERSION} static/schemas/${VERSION}/*.schema.json",
