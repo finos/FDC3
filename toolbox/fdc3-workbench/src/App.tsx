@@ -245,7 +245,7 @@ export const App = observer(() => {
 						<Link className={classes.link} href="https://www.finos.org/">
 							Fintech Open Source Foundation
 						</Link>{" "}
-						| Copyright © 2021 Cosiac, inc. &amp; Contributors to the FDC3 standards project
+						| Copyright © 2021 Cosaic, inc. &amp; Contributors to the FDC3 standards project
 					</Typography>
 				</Grid>
 			</Grid>
