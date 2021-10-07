@@ -67,13 +67,15 @@ export function addIntentListener(intent: string, handler: ContextHandler): List
   return throwIfNoGlobal(() => window.fdc3.addIntentListener(intent, handler));
 }
 
-export function addContextListener(contextTypeOrHandler: string | ContextHandler, handler?: ContextHandler): Listener {
+export function addContextListener(
+  contextTypeOrHandler: string | null | ContextHandler,
+  handler?: ContextHandler
+): Listener {
+  //Handle (deprecated) function signature that allowed contextType argument to be omitted
   if (typeof contextTypeOrHandler !== 'function') {
-    return throwIfNoGlobal(() =>
-      window.fdc3.addContextListener(contextTypeOrHandler as string, handler as ContextHandler)
-    );
+    return throwIfNoGlobal(() => window.fdc3.addContextListener(contextTypeOrHandler, handler as ContextHandler));
   } else {
-    return throwIfNoGlobal(() => window.fdc3.addContextListener(contextTypeOrHandler as ContextHandler));
+    return throwIfNoGlobal(() => window.fdc3.addContextListener(null, contextTypeOrHandler as ContextHandler));
   }
 }
 
