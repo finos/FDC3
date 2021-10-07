@@ -28,6 +28,11 @@ const mainTheme = createTheme({
 			contrastText: "#fff",
 		},
 	},
+	props: {
+		MuiLink: {
+			underline: "always"
+		}
+	}
 });
 
 mainTheme.typography.h4 = {
