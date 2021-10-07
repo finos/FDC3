@@ -111,6 +111,9 @@ The following are standard FDC3 context types.
 - __fdc3.position__
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/position)
     - [schema](/schemas/next/position.schema.json)
+- __fdc3.nothing
+    - Explicit representation of a lack of context
+    - [schema](/schemas/next/nothing.schema.json)
 
 __Note:__ The below examples show how the base context data interface can be used to define specific context data objects. It is not the purpose of the specification at this stage to define standard representations for objects. It establishes the framework in which such definitions could be created.
 
@@ -262,6 +265,13 @@ __Note:__ The below examples show how the base context data interface can be use
         }
     },
     "holding": 500
+}
+```
+
+#### Nothing
+```json
+{
+    "type": "fdc3.nothing",
 }
 ```
 
