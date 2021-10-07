@@ -122,6 +122,8 @@ export interface DesktopAgent {
    * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
    * //or use one of the AppMetadata objects returned in the AppIntent object's 'apps' array
    * await fdc3.raiseIntent("StartChat", context, appMetadata);
+   * //Raise an intent without a context by using the null context type
+   * await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
    * ```
    */
   raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;

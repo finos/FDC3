@@ -6,6 +6,7 @@ export enum ContextTypes {
   Organization = 'fdc3.organization',
   Portfolio = 'fdc3.portfolio',
   Position = 'fdc3.position',
+  Nothing = 'fdc3.nothing',
 }
 
 export type ContextType = ContextTypes | string;
