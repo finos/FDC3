@@ -7,5 +7,6 @@
   "Country": ["https://fdc3.finos.org/schemas/next/country.schema.json"],
   "Organization": ["https://fdc3.finos.org/schemas/next/organization.schema.json"],
   "Portfolio": ["https://fdc3.finos.org/schemas/next/portfolio.schema.json"],
-  "Position": ["https://fdc3.finos.org/schemas/next/position.schema.json"]
+  "Position": ["https://fdc3.finos.org/schemas/next/position.schema.json"],
+  "Nothing": ["https://fdc3.finos.org/schemas/next/nothing.schema.json"]
 }

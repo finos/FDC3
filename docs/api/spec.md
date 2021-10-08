@@ -36,9 +36,9 @@ Other interfaces defined in the spec are not critical to define as concrete type
 
 
 #### API Access
-The FDC3 API can be made available to an application through a number of different methods.  In the case of web applications, a Desktop Agent SHOULD provide the FDC3 API via a global accessible as _window.fdc3_. Implementors MAY additionally make the API available through modules, imports, or other means.
+The FDC3 API can be made available to an application through a number of different methods.  In the case of web applications, a Desktop Agent MUST provide the FDC3 API via a global accessible as `window.fdc3`. Implementors MAY additionally make the API available through modules, imports, or other means.
 
-The global `window.fdc3` must only be available after the API is ready to use. To prevent the API from being used before it is ready, implementors SHOULD provide a global `fdc3Ready` event. Here is code demonstrating the use of the FDC3 API and the ready event:
+The global `window.fdc3` must only be available after the API is ready to use. To enable applications to avoid using the API before it is ready, implementors MUST provide a global `fdc3Ready` event. Here is code demonstrating the use of the FDC3 API and the ready event:
 
 ```js
 function fdc3Stuff() {
@@ -103,6 +103,8 @@ When raising an Intent a specific context may be provided. The type of the provi
 
 A Context type may also be associated with multiple Intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other Intents. In addition to raising a specific intent, you can raise an Intent for a specific Context allowing the Desktop Agent or the user (if the Intent is ambiguous) to select the appropriate Intent for the selected Context and then to raise that Intent for resolution.
 
+To raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an Intent listener or in an App Directory).
+
 #### Intent Resolution
 Raising an Intent will return a Promise-type object that will resolve/reject based on a number of factors.
 
@@ -143,14 +145,14 @@ For example, to raise a specific Intent:
 
 ```js
 try {
-    const result = await fdc3.raiseIntent('StageOrder');
+    const result = await fdc3.raiseIntent('StageOrder', context);
 }
 catch (er){
     console.log(er.message);
 }
 ```
 
-or to raise an Intent for a specific context:
+or to raise an unspecified Intent for a specific context, where the user will select an intent from a resolver dialog:
 ```js
 try {
     const result = await fdc3.raiseIntentForContext(context);
@@ -226,9 +228,11 @@ There are two types of channels, which are functionally identical, but have diff
 
 
 ### Joining Channels
-Apps can join channels.  An app can only be joined to one channel at a time.  When an app joins a channel it will automatically recieve the current context for that channel.
+Apps can join channels.  An app can only be joined to one channel at a time.  
 
-When an app is joined to a channel, calls to `fdc3.broadcast` and listeners added through `fdc3.addContextListener` will be routed to that channel. If an app is not joined to a channel `fdc3.broadcast` will be a no-op and handler functions added with `fdc3.addContextListener` will not receive any broadcasts. However, apps can still choose to listen and broadcast to specific channels via the methods on the `Channel` class.
+When an app is joined to a channel, calls to `fdc3.broadcast` will be routed to that channel and listeners added through `fdc3.addContextListener` will receive context broadcasts from other apps also joined to that channel. If an app is not joined to a channel `fdc3.broadcast` will be a no-op and handler functions added with `fdc3.addContextListener` will not receive any broadcasts. However, apps can still choose to listen and broadcast to specific channels via the methods on the `Channel` class.
+
+When an app joins a channel, or adds a context listener when already joined to a channel, it will automatically receive the current context for that channel.
 
 It is possible that a call to join a channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.
 
@@ -279,6 +283,13 @@ joinedChannel = await fdc3.getCurrentChannel()
 ### Direct Listening and Broadcast on Channels
 While joining channels automates a lot of the channel behavior for an app, it has the limitation in that an app can belong to only one channel at a time.  Listening and Broadcasting to channels using the _Channel.addBroadcastListener_ and the _Channel.broadcast_ APIs provides an app with fine-grained controls for specific channels.  This is especially useful for working with dynamic _App Channels_.
 
+### Broadcasting and listening for multiple context types
+The [Context specification](../../context/spec#assumptions) recommends that complex context objects are defined using simpler context types for particular fields. For example, a `Position` is composed of an `Instrument` and a holding amount. This leads to situations where an application may be able to receive or respond to context objects that are embedded in a more complex type, but not the more complex type itself. For example, a pricing chart might respond to an `Instrument` but doesn't know how to handle a `Position`. 
+
+To facilitate context linking in such situations it is recommended that applications `broadcast` each context type that other apps (listening on a System channel or App channel) may wish to process, starting with the simpler types, followed by the complex type. Doing so allows applications to filter the context types they receive by adding listeners for specific context types - but requires that the application broadcasting context make multiple broadcast calls in quick succession when sharing its context.
+
+
+
 ### Examples
 To find a system channel, one calls
 
@@ -289,7 +300,7 @@ const redChannel = allChannels.find(c => c.id === 'red');
 ```
 #### Joining channels
 
-To join a channel. one calls
+To join a system channel. one calls
 
 ```js
 fdc3.joinChannel(redChannel.id);

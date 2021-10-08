@@ -32,11 +32,11 @@ export interface DesktopAgent {
    *
    *  ```javascript
    *     //no context and string as target
-   *     agent.open('myApp');
+   *     fdc3.open('myApp');
    *     //no context and AppMetadata object as target
-   *     agent.open({name: 'myApp', title: 'The title for the application myApp.', description: '...'});
+   *     fdc3.open({name: 'myApp', title: 'The title for the application myApp.', description: '...'});
    *     //with context
-   *     agent.open('myApp', context);
+   *     fdc3.open('myApp', context);
    * ```
    */
   open(app: TargetApp, context?: Context): Promise<void>;
@@ -52,7 +52,7 @@ export interface DesktopAgent {
    *
    * ```javascript
    * // I know 'StartChat' exists as a concept, and want to know more about it ...
-   * const appIntent = await agent.findIntent("StartChat");
+   * const appIntent = await fdc3.findIntent("StartChat");
    *
    * // returns a single AppIntent:
    * // {
@@ -61,7 +61,7 @@ export interface DesktopAgent {
    * // }
    *
    * // raise the intent against a particular app
-   * await agent.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
+   * await fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
    * ```
    */
   findIntent(intent: string, context?: Context): Promise<AppIntent>;
@@ -77,7 +77,7 @@ export interface DesktopAgent {
    *
    * ```javascript
    * // I have a context object, and I want to know what I can do with it, hence, I look for for intents...
-   * const appIntents = await agent.findIntentsByContext(context);
+   * const appIntents = await fdc3.findIntentsByContext(context);
    *
    * // returns for example:
    * // [{
@@ -96,19 +96,25 @@ export interface DesktopAgent {
    * const selectedApp = startChat.apps[0];
    *
    * // raise the intent, passing the given context, targeting the app
-   * await agent.raiseIntent(startChat.intent.name, context, selectedApp.name);
+   * await fdc3.raiseIntent(startChat.intent.name, context, selectedApp.name);
    * ```
    */
   findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
 
   /**
-   * Publishes context to other apps on the desktop.
-   *
-   * DesktopAgent implementations should ensure that context messages broadcast to a channel
-   * by an application joined to it should not be delivered back to that same application.
+   * Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
+   * 
+   * DesktopAgent implementations should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.
    *
    * ```javascript
-   *  agent.broadcast(context);
+   * const instrument = {
+   *   type: 'fdc3.instrument',
+   *   id: {
+   *     ticker: 'AAPL'
+   *   }
+   * };
+
+   * fdc3.broadcast(context);
    * ```
    */
   broadcast(context: Context): void;
@@ -133,6 +139,8 @@ export interface DesktopAgent {
    * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
    * // or use one of the AppMetadata objects returned in the AppIntent object's 'apps' array
    * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
+   * //Raise an intent without a context by using the null context type
+   * await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
    * ```
    */
   raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
@@ -170,7 +178,14 @@ export interface DesktopAgent {
   addContextListener(handler: ContextHandler): Listener;
 
   /**
-   * Adds a listener for the broadcast of a specific type of context object.
+   * Adds a listener for incoming context broadcasts from the Desktop Agent. If the consumer is only interested in a context of a particular type, they can they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
+   * Context broadcasts are only received from apps that are joined to the same channel as the listening application, hence, if the application is not currently joined to a channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
+   * ```javascript
+   * // any context
+   * const listener = fdc3.addContextListener(null, context => { ... });
+   * // listener for a specific type
+   * const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ... });
+   * ```
    */
   addContextListener(contextType: string | null, handler: ContextHandler): Listener;
 
@@ -181,34 +196,45 @@ export interface DesktopAgent {
 
   /**
    * Joins the app to the specified channel.
+   * If an app is joined to a channel, all `fdc3.broadcast` calls will go to the channel, and all listeners assigned via `fdc3.addContextListener` will listen on the channel.
+   * If the channel already contains context that would be passed to context listeners assed via `fdc3.addContextListener` then those listeners will be called immediately with that context.
    * An app can only be joined to one channel at a time.
-   * Rejects with error if the channel is unavailable or the join request is denied.
-   * `Error` with a string from the `ChannelError` enumeration.
+   * Rejects with an error if the channel is unavailable or the join request is denied. The error string will be drawn from the `ChannelError` enumeration.
+   * ```javascript
+   *   // get all system channels
+   *   const channels = await fdc3.getSystemChannels();
+   *   // create UI to pick from the system channels
+   *   // join the channel on selection
+   *   fdc3.joinChannel(selectedChannel.id);
+   *  ```
    */
   joinChannel(channelId: string): Promise<void>;
 
   /**
    * Returns a channel with the given identity. Either stands up a new channel or returns an existing channel.
-   *
    * It is up to applications to manage how to share knowledge of these custom channels across windows and to manage
    * channel ownership and lifecycle.
-   *
    * `Error` with a string from the `ChannelError` enumeration.
    */
   getOrCreateChannel(channelId: string): Promise<Channel>;
 
   /**
    * Returns the `Channel` object for the current channel membership.
-   *
    * Returns `null` if the app is not joined to a channel.
    */
   getCurrentChannel(): Promise<Channel | null>;
 
   /**
    * Removes the app from any channel membership.
-   *
-   * Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be
-   * in a no-op when the app is not on a channel.
+   * Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not on a channel.
+   * ```javascript
+   * //desktop-agent scope context listener
+   * const fdc3Listener = fdc3.addContextListener(null, context => {});
+   * await fdc3.leaveCurrentChannel();
+   * //the fdc3Listener will now cease receiving context
+   * //listening on a specific channel though, will continue to work
+   * redChannel.addContextListener(null, channelListener);
+   * ```
    */
   leaveCurrentChannel(): Promise<void>;
 
