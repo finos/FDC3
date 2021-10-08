@@ -140,7 +140,7 @@ export interface DesktopAgent {
   /**
    * Finds and raises an intent against apps registered with the desktop agent based purely on the type of the context data.
    *
-   * The desktop agent will first resolve to a specific intent based on the provided context, displaying a resolver UI if more than one intent is available for specified context. It will then resolve to a specific app to handle the selected intent and specified context.
+   * The desktop agent SHOULD first resolve to a specific intent based on the provided context if more than one intent is available for the specified context. This MAY be achieved by displaying a resolver UI. It SHOULD then resolve to a specific app to handle the selected intent and specified context. 
    * Alternatively, the specific app to target can also be provided, in which case the resolver should only offer intents supported by the specified application.
    *
    * Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.

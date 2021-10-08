@@ -164,7 +164,7 @@ catch (er){
 ```
 
 #### Resolvers
-Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (raising UI to pick the desired App for the intent) or by the app launching the intent - in which case the calling App will handle the resolution itself (using the findIntents API) and then invoke the Intent on a specific target application, e.g.:
+Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (for example, by displaying a resolver UI allowing the user to pick the desired App for the intent) or by the app calling App handling the resolution itself (by using the `findIntents` API) and then invoking the Intent on a specific target application, e.g.:
 
 ```js
 //Find apps to resolve an intent to start a chat with a given contact
