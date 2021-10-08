@@ -30,7 +30,7 @@ const mainTheme = createTheme({
 	},
 	props: {
 		MuiLink: {
-			underline: "always"
+			underline: "hover"
 		}
 	}
 });
