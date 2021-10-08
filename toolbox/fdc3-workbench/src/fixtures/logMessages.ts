@@ -8,6 +8,9 @@ type LogMessages = {
 
 export const getLogMessage = (name: logMessagesName, type: logMessagesType, value: string = ""): string => {
 	const logMessages: LogMessages = {
+		getFdc3: {
+			error: `The FDC3 API is not ready${value ? ` (${value})` : ""}`,
+		},
 		getChannels: {
 			success: `Successfully retrieved System channels`,
 			error: `Failed to retrieve System channels`,

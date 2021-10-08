@@ -158,13 +158,6 @@ export const App = observer(() => {
 				setFdc3Available(true);
 			} catch (e) {}
 		})();
-
-		//check window.fdc3 as the FDC3 import will override fdc3
-		// if (typeof window.fdc3.broadcast != "undefined") {
-		// 	setFdc3Available(true);
-		// } else {
-		// 	window.addEventListener("fdc3Ready", () => {setFdc3Available(true);});
-		// }
 	}, []);
 
 	useEffect(() => {
