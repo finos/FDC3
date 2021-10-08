@@ -55,8 +55,9 @@ addContextListener(contextType: string | null, handler: ContextHandler): Listene
  */
 addContextListener(handler: ContextHandler): Listener;
 ```
-Adds a listener for incoming context broadcast from the Desktop Agent. If the consumer is only interested in
-a context of a particular type, they can use the relevant overload that allows the type to be specified.
+Adds a listener for incoming context broadcasts from the Desktop Agent. If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types. 
+
+Context broadcasts are only received from apps that are joined to the same channel as the listening application, hence, if the application is not currently joined to a channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
 
 #### Examples
 ```js
@@ -104,6 +105,8 @@ Publishes context to other apps on the desktop.  Calling `broadcast` at the `Des
 
 DesktopAgent implementations should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.
 
+If you are working with complex context types composed of other simpler types (as recommend by the [Context specification](../../context/spec#assumptions)) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.
+
 #### Example
 ```js
 const instrument = {
@@ -127,7 +130,7 @@ findIntent(intent: string, context?: Context): Promise<AppIntent>;
 
 Find out more information about a particular intent by passing its name, and optionally its context.
 
-_findIntent_ is effectively granting programmatic access to the Desktop Agent's resolver.
+`findIntent` is effectively granting programmatic access to the Desktop Agent's resolver.
 It returns a promise resolving to the intent, its metadata and metadata about the apps that are registered to handle it.
 This can be used to raise the intent against a specific app.
 
@@ -157,7 +160,7 @@ findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
 ```
 
 Find all the avalable intents for a particular context.
-_findIntentsByContext_ is effectively granting programmatic access to the Desktop Agent's resolver.
+`findIntentsByContext` is effectively granting programmatic access to the Desktop Agent's resolver.
 A promise resolving to all the intents, their metadata and metadata about the apps that registered as handlers is returned, based on the context types the intents have registered.
 
  If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
@@ -287,10 +290,13 @@ joinChannel(channelId: string) : Promise<void>;
 ```
 
 Joins the app to the specified channel.
-If an app is joined to a channel, all _fdc3.broadcast_ calls will go to the channel, and all listeners assigned via _fdc3.addContextListener_ will listen on the channel.
+If an app is joined to a channel, all `fdc3.broadcast` calls will go to the channel, and all listeners assigned via `fdc3.addContextListener` will listen on the channel. 
+
+If the channel already contains context that would be passed to context listeners added via `fdc3.addContextListener` then those listeners will be called immediately with that context.
+
 An app can only be joined to one channel at a time.
-Rejects with error if the channel is unavailable or the join request is denied.
- `Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration.
+
+Rejects with an error if the channel is unavailable or the join request is denied. The error string will be drawn from the [`ChannelError`](Errors#channelerror) enumeration.
 
 #### Examples
 
@@ -315,7 +321,7 @@ fdc3.joinChannel(selectedChannel.id);
 leaveCurrentChannel() : Promise<void>;
 ```
 
-Removes the app from any channel membership.  Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be in a no-op when the app is not on a channel.
+Removes the app from any channel membership.  Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not joined to a channel.
 
 
 #### Examples
@@ -325,7 +331,7 @@ Removes the app from any channel membership.  Context broadcast and listening th
 const fdc3Listener = fdc3.addContextListener(null, context => {});
 
 await fdc3.leaveCurrentChannel();
-//the fdc3Listener will now cease recieving context
+//the fdc3Listener will now cease receiving context
 
 //listening on a specific channel though, will continue to work
 redChannel.addContextListener(null, channelListener);
@@ -381,6 +387,8 @@ Raises a specific intent for resolution against apps registered with the desktop
 The desktop agent will resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, a method for resolving the intent to a target app, such as presenting the user with a resolver UI allowing them to pick an app, SHOULD be provided.
 Alternatively, the specific app to target can also be provided. A list of valid target applications can be retrieved via [`findIntent`](DesktopAgent#findintent).  
 
+If you wish to raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
+
 Returns an `IntentResolution` object with details of the app that was selected to respond to the intent.
 
 If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolverrror) enumeration is returned.
@@ -401,6 +409,9 @@ await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
 
 // or use the metadata of the app to fully describe the target app for the intent
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
+
+//Raise an intent without a context by using the null context type
+await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
 ```
 #### See also
 * [`Context`](Types#context)
