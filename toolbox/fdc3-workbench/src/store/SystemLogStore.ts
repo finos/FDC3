@@ -4,6 +4,7 @@ import { getLogMessage } from "../fixtures/logMessages";
 import snackbarStore from "./SnackbarStore";
 
 export type logMessagesName =
+	| "getFdc3"
 	| "getChannels"
 	| "getCurrentChannel"
 	| "joinChannel"
