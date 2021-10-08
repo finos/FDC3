@@ -378,7 +378,7 @@ raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentRe
 ```
 Raises a specific intent for resolution against apps registered with the desktop agent. 
 
-The desktop agent will resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, the user should be presented with a resolver UI allowing them to pick an app.
+The desktop agent will resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, a method for resolving the intent to a target app, such as presenting the user with a resolver UI allowing them to pick an app, SHOULD be provided.
 Alternatively, the specific app to target can also be provided. A list of valid target applications can be retrieved via [`findIntent`](DesktopAgent#findintent).  
 
 Returns an `IntentResolution` object with details of the app that was selected to respond to the intent.
@@ -389,7 +389,8 @@ If a target app for the intent cannot be found with the criteria provided, an `E
 
 ```js
 // raise an intent for resolution by the desktop agent
-// a resolver UI should be displayed if more than one application can resolve the intent
+// a resolver UI may be displayed, or another method of resolving the intent to a
+   target applied, if more than one application can resolve the intent
 await fdc3.raiseIntent("StartChat", context);
 
 // or find apps to resolve an intent to start a chat with a given contact
@@ -415,8 +416,8 @@ raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResoluti
 
 Finds and raises an intent against apps registered with the desktop agent based purely on the type of the context data.
 
-The desktop agent will first resolve to a specific intent based on the provided context, displaying a resolver UI if more than one intent is available for specified context. It will then resolve to a specific app to handle the selected intent and specified context. 
-Alternatively, the specific app to target can also be provided, in which case the resolver should only offer intents supported by the specified application. 
+The desktop agent SHOULD first resolve to a specific intent based on the provided context if more than one intent is available for the specified context. This MAY be achieved by displaying a resolver UI. It SHOULD then resolve to a specific app to handle the selected intent and specified context. 
+Alternatively, the specific app to target can also be provided, in which case any method of resolution SHOULD only consider intents supported by the specified application. 
 
 Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
 
