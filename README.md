@@ -124,6 +124,9 @@ If you'd like to be listed as a user of the standard, you can directly send a pu
 
 ## Interact with the FDC3 community
 
+### GitHub
+FDC3 activity primarily happens in this [FDC3 GitHub repository](https://github.com/finos/fdc3). [Watch](https://docs.github.com/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/configuring-notifications#configuring-your-watch-settings-for-an-individual-repository) the repository in order to be notified of new Pull Requests and issues.
+
 ### Slack 
 The fastest and more interactive way to connect and ask questions to the FDC3 community is to join the [#fdc3 channel on the FINOS slack](https://finos-lf.slack.com/messages/fdc3/).
 
@@ -132,6 +135,9 @@ If you'd like to receive official updates, and/or you don't have access to Slack
 
 ### Meetings 
 Finally, another great way to interact with the community, is to attend the monthly [FDC3 Standard Working Group Meeting](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) and/or the quarterly [FDC3 General Meeting](https://github.com/finos/FDC3/issues?q=label%3A%22General+Meeting%22): email [help@finos.org](mailto:help@finos.org) to be added to the meeting invite directly, or find the meeting in the [FINOS Community Calendar](https://calendar.google.com/calendar/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig%40group.calendar.google.com).
+
+### Need help?
+Email [fdc3@finos.org](mailto:fdc3@finos.org) if you need help getting started in the FDC3 Community. If you encounter technical difficulties accessing repositories, joining Slack, mailing lists or meetings, please email [help@finos.org](mailto:help@finos.org).
 
 ## Become an FDC3 Participant or Maintainer
 Email [fdc3@finos.org](mailto:fdc3@finos.org) if you would like to become an FDC3 Participant or Maintainer.
