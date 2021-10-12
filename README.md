@@ -118,7 +118,7 @@ Despite this limitation, implementing support for FDC3 in a native application c
 
 If you are an existing individual or corporate user of the FDC3 standard, we would love to hear from you: just email [fdc3@finos.org](mailto:fdc3@finos.org) with details about how you are using the standard.
 
-If you'd like to be listed as a user of the standard, you can directly send a pull request to update the [FDC3 website](https://fdc3.finos.org/): upload your logo to [this folder](https://github.com/finos/FDC3/tree/master/website/static/img/users) and update [this file](https://github.com/finos/FDC3/edit/master/website/data/users.json) with your company's details. If listing your logo publicly requires legal evaluation, you can reach out privately to the [FDC3 Product Management Committee](mailto:fdc3-pmc-private@finos.org).
+If you'd like to be listed as a user of the standard, you can directly send a pull request to update the [FDC3 website](https://fdc3.finos.org/): upload your logo to [this folder](https://github.com/finos/FDC3/tree/master/website/static/img/users) and update [this file](https://github.com/finos/FDC3/edit/master/website/data/users.json) with your company's details. If listing your logo publicly requires legal evaluation, you can reach out **privately** to [FDC3 Maintainers](mailto:fdc3-pmc-private@finos.org).
 
 # Getting Involved
 
@@ -133,8 +133,8 @@ If you'd like to receive official updates, and/or you don't have access to Slack
 ### Meetings 
 Finally, another great way to interact with the community, is to attend the monthly [FDC3 Standard Working Group Meeting](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) and/or the quarterly [FDC3 General Meeting](https://github.com/finos/FDC3/issues?q=label%3A%22General+Meeting%22): email [help@finos.org](mailto:help@finos.org) to be added to the meeting invite directly, or find the meeting in the [FINOS Community Calendar](https://calendar.google.com/calendar/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig%40group.calendar.google.com).
 
-## Become an FDC3 Participant, Maintainer or Editor
-Email [fdc3@finos.org](mailto:fdc3@finos.org) if you would like to become an FDC3 Participant, Maintainer or Editor.
+## Become an FDC3 Participant or Maintainer
+Email [fdc3@finos.org](mailto:fdc3@finos.org) if you would like to become an FDC3 Participant or Maintainer.
 
 ### FDC3 Participants
 FDC3 Participants are those that have make and have made contributions to the FDC3 Standard Working Group. The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the standard. 
@@ -148,14 +148,10 @@ Please note that standard participants are bound to the provisions in the [FINOS
 FDC3 Maintainers are responsible for organizing activities around developing, maintaining, and updating the specification developed by the FDC3 Working Group. Maintainers are also responsible for determining consensus and coordinating appeals, as well as FDC3-related planning and communications. 
 
 #### Mailing list
-You can get in touch with FDC3 Maintainers by sending an email to [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org).
-
-### FDC3 Editors
-<TBD> 
+You can contact FDC3 Maintainers by sending an email to [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org).
 
 # FDC3 Archive
-An archive of FDC3 documentation and meeting notes is available at https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview
-The mailing list archive for fdc3@finos.org is available at https://groups.google.com/a/finos.org/g/fdc3
+An archive of FDC3 documentation and meeting notes is available at https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview. The mailing list archive for fdc3@finos.org is available at https://groups.google.com/a/finos.org/g/fdc3
 
 # Contributing
 
