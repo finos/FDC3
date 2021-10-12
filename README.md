@@ -143,7 +143,7 @@ Email [fdc3@finos.org](mailto:fdc3@finos.org) if you need help getting started i
 Email [fdc3@finos.org](mailto:fdc3@finos.org) if you would like to become an FDC3 Participant or Maintainer.
 
 ### FDC3 Participants
-FDC3 Participants are those that have make and have made contributions to the FDC3 Standard Working Group. The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the standard. 
+FDC3 Participants are those that make and have made contributions to the FDC3 Standard Working Group. The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the standard. 
 
 #### Enrollment
 If you would like to formally enroll as a voting participant to the standard (as described in our standards governance),
