@@ -21,7 +21,7 @@ interface DesktopAgent {
   broadcast(context: Context): void;
   addContextListener(contextType: string | null, handler: ContextHandler): Listener;
   /**
-   * @deprecated 'Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
+   * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
    */
   addContextListener(handler: ContextHandler): Listener;
 
@@ -34,6 +34,10 @@ interface DesktopAgent {
 
   // channels
   getOrCreateChannel(channelId: string): Promise<Channel>;
+  getUserChannels(): Promise<Array<Channel>>;
+  /**
+   * @deprecated Use `getUserChannels()` instead of `getSystemChannels()`
+   */
   getSystemChannels(): Promise<Array<Channel>>;
   joinChannel(channelId: string) : Promise<void>;
   getCurrentChannel() : Promise<Channel | null>;
@@ -57,7 +61,7 @@ addContextListener(handler: ContextHandler): Listener;
 ```
 Adds a listener for incoming context broadcasts from the Desktop Agent. If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types. 
 
-Context broadcasts are only received from apps that are joined to the same channel as the listening application, hence, if the application is not currently joined to a channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
+Context broadcasts are only received from apps that are joined to the same User Channel as the listening application, hence, if the application is not currently joined to a User Channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
 
 #### Examples
 ```js
@@ -101,7 +105,7 @@ const listener = fdc3.addIntentListener('StartChat', context => {
 broadcast(context: Context): void;
 ```
 
-Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
+Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever _User Channel_ the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
 
 DesktopAgent implementations should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.
 
@@ -201,7 +205,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 getCurrentChannel() : Promise<Channel | null>;
 ```
 
-Returns the `Channel` object for the current channel membership.  Returns `null` if the app is not joined to a channel.
+Returns the `Channel` object for the current User Channel membership.  Returns `null` if the app is not joined to a channel.
 
 
 #### Examples
@@ -247,7 +251,7 @@ if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), "1.2")) {
 getOrCreateChannel(channelId: string): Promise<Channel>;
 ```
 
-Returns a Channel object for the specified channel, creating it (as an _App_ channel) - if it does not exist.
+Returns a Channel object for the specified channel, creating it (as an _App Channel_) - if it does not exist.
 `Error` with a string from the [`ChannelError`](ChannelError) enumeration if channel could not be created or access was denied.
 
 #### Example
@@ -255,7 +259,7 @@ Returns a Channel object for the specified channel, creating it (as an _App_ cha
 ```js
 try {
   const myChannel = await fdc3.getOrCreateChannel("myChannel");
-  const myChannel.addContextListener(null, context => {});
+  myChannel.addContextListener(null, context => { /* do something with context */});
 }
 catch (err){
   //app could not register the channel
@@ -266,17 +270,21 @@ catch (err){
 #### See also
 *  [`Channel`](Channel)
 
-### `getSystemChannels`
+### `getUserChannels`
 ```ts
+getUserChannels() : Promise<Array<Channel>>;
+/**
+ * @deprecated Alias to the [`getUserChannels`](#getUserChannels) function provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
+ */
 getSystemChannels() : Promise<Array<Channel>>;
 ```
-Retrieves a list of the System channels available for the app to join.  This should include the 'global' channel.
+Retrieves a list of the User Channels available for the app to join.  This MAY include the deprecated 'global' channel.
 
 #### Example
 
 ```js
-const systemChannels = await fdc3.getSystemChannels();
-const redChannel = systemChannels.find(c => c.id === 'red');
+const userChannels = await fdc3.getUserChannels();
+const redChannel = userChannels.find(c => c.id === 'red');
 ```
 
 #### See also
@@ -301,17 +309,17 @@ Rejects with an error if the channel is unavailable or the join request is denie
 #### Examples
 
 ```js
-// get all system channels
-const channels = await fdc3.getSystemChannels();
+// get all user channels
+const channels = await fdc3.getUserChannels();
 
-// create UI to pick from the system channels
+// create UI to pick from the User channels
 
 // join the channel on selection
 fdc3.joinChannel(selectedChannel.id);
 
 ```
 #### See also
-* [`getSystemChannels`](#getSystemChannels)
+* [`getUserChannels`](#getuserchannels)
 
 
 
@@ -321,7 +329,7 @@ fdc3.joinChannel(selectedChannel.id);
 leaveCurrentChannel() : Promise<void>;
 ```
 
-Removes the app from any channel membership.  Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not joined to a channel.
+Removes the app from any channel membership.  Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not joined to a User Channel.
 
 
 #### Examples

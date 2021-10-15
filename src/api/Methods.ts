@@ -79,8 +79,19 @@ export function addContextListener(
   }
 }
 
+export function getUserChannels(): Promise<Channel[]> {
+  return rejectIfNoGlobal(() => {
+    //fallback to getSystemChannels for FDC3 <2.0 implementations
+    if (window.fdc3.getUserChannels) {
+      return window.fdc3.getUserChannels();
+    } else {
+      return window.fdc3.getSystemChannels();
+    }
+  });
+}
+
 export function getSystemChannels(): Promise<Channel[]> {
-  return rejectIfNoGlobal(() => window.fdc3.getSystemChannels());
+  return getUserChannels();
 }
 
 export function joinChannel(channelId: string): Promise<void> {

@@ -102,7 +102,7 @@ export interface DesktopAgent {
   findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
 
   /**
-   * Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
+   * Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever _User Channel_ the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
    * 
    * DesktopAgent implementations should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.
    *
@@ -172,14 +172,14 @@ export interface DesktopAgent {
   addIntentListener(intent: string, handler: ContextHandler): Listener;
 
   /**
-   * Adds a listener for incoming context broadcast from the Desktop Agent.
+   * Adds a listener for incoming context broadcasts from the Desktop Agent.
    * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
    */
   addContextListener(handler: ContextHandler): Listener;
 
   /**
-   * Adds a listener for incoming context broadcasts from the Desktop Agent. If the consumer is only interested in a context of a particular type, they can they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
-   * Context broadcasts are only received from apps that are joined to the same channel as the listening application, hence, if the application is not currently joined to a channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
+   * Adds a listener for incoming context broadcasts from the Desktop Agent via User channels. If the consumer is only interested in a context of a particular type, they can they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
+   * Context broadcasts are only received from apps that are joined to the same User channel as the listening application, hence, if the application is not currently joined to a channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
    * ```javascript
    * // any context
    * const listener = fdc3.addContextListener(null, context => { ... });
@@ -190,20 +190,25 @@ export interface DesktopAgent {
   addContextListener(contextType: string | null, handler: ContextHandler): Listener;
 
   /**
-   * Retrieves a list of the System channels available for the app to join
+   * Retrieves a list of the User channels available for the app to join.
+   */
+  getUserChannels(): Promise<Array<Channel>>;
+
+  /**
+   * @deprecated Alias to the [`getUserChannels`](#getUserChannels) function provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
    */
   getSystemChannels(): Promise<Array<Channel>>;
 
   /**
-   * Joins the app to the specified channel.
+   * Joins the app to the specified User channel.
    * If an app is joined to a channel, all `fdc3.broadcast` calls will go to the channel, and all listeners assigned via `fdc3.addContextListener` will listen on the channel.
    * If the channel already contains context that would be passed to context listeners assed via `fdc3.addContextListener` then those listeners will be called immediately with that context.
    * An app can only be joined to one channel at a time.
    * Rejects with an error if the channel is unavailable or the join request is denied. The error string will be drawn from the `ChannelError` enumeration.
    * ```javascript
    *   // get all system channels
-   *   const channels = await fdc3.getSystemChannels();
-   *   // create UI to pick from the system channels
+   *   const channels = await fdc3.getUserChannels();
+   *   // create UI to pick from the User channels
    *   // join the channel on selection
    *   fdc3.joinChannel(selectedChannel.id);
    *  ```
@@ -211,7 +216,7 @@ export interface DesktopAgent {
   joinChannel(channelId: string): Promise<void>;
 
   /**
-   * Returns a channel with the given identity. Either stands up a new channel or returns an existing channel.
+   * Returns an App channel with the given identity. Either stands up a new channel or returns an existing channel.
    * It is up to applications to manage how to share knowledge of these custom channels across windows and to manage
    * channel ownership and lifecycle.
    * `Error` with a string from the `ChannelError` enumeration.
@@ -219,13 +224,13 @@ export interface DesktopAgent {
   getOrCreateChannel(channelId: string): Promise<Channel>;
 
   /**
-   * Returns the `Channel` object for the current channel membership.
+   * Returns the `Channel` object for the current User channel membership.
    * Returns `null` if the app is not joined to a channel.
    */
   getCurrentChannel(): Promise<Channel | null>;
 
   /**
-   * Removes the app from any channel membership.
+   * Removes the app from any User channel membership.
    * Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not on a channel.
    * ```javascript
    * //desktop-agent scope context listener

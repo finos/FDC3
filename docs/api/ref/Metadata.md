@@ -64,7 +64,7 @@ A desktop agent (typically for _system_ channels) may want to provide additional
 #### See also
 
 * [`Channel`](Channel)
-* [`DesktopAgent.getSystemChannels`](DesktopAgent#getsystemchannels)
+* [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
 
 ### Properties
 

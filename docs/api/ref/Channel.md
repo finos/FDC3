@@ -8,7 +8,7 @@ hide_title: true
 
 Represents a context channel that applications can join to share context data.
 
-A channel can be either a well-known "system" channel (retrieved with [`getSystemChannels`](DesktopAgent#getsystemchannels)) or a custom "app" channel (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)).
+A channel can be either a "User" channel (retrieved with [`getUserChannels`](DesktopAgent#getuserchannels)) or a custom "App" channel (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)).
 
 Channels each have a unique identifier, some display metadata and operations for broadcasting context to other applications, or receiving context from other applications.
 
@@ -34,7 +34,7 @@ interface Channel {
 
 * [`Context`](Types#context)
 * [`Listener`](Types#listener)
-* [`DesktopAgent.getSystemChannels`](DesktopAgent#getsystemchannels)
+* [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
 * [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
 * [`DesktopAgent.joinChannel`](DesktopAgent#joinchannel)
 
@@ -46,7 +46,7 @@ interface Channel {
 public readonly id: string;
 ```
 
-Uniquely identifies the channel. It is either assigned by the desktop agent (system channel) or defined by an application (app channel).
+Uniquely identifies the channel. It is either assigned by the desktop agent (User Channel) or defined by an application (App Channel).
 
 ### `type`
 
@@ -62,7 +62,7 @@ Can be _system_ or _app_.
 public readonly displayMetadata?: DisplayMetadata;
 ```
 
-DisplayMetadata can be used to provide display hints for channels intended to be visualized and selectable by end users.
+DisplayMetadata can be used to provide display hints for User Channels intended to be visualized and selectable by end users.
 
 #### See also
 * [`DisplayMetadata`](Metadata#displaymetadata)
@@ -130,7 +130,7 @@ instrumentListener.unsubscribe();
 public broadcast(context: Context): void;
 ```
 
-Broadcasts a context on the channel. This function can be used without first joining the channel, allowing applications to broadcast on channels that they aren't a member of.
+Broadcasts a context on the channel. This function can be used without first joining the channel, allowing applications to broadcast on both App Channels and User Channels that they aren't a member of.
 
 If the broadcast is denied by the channel or the channel is not available, the method will return an `Error` with a string from the [`ChannelError`](ChannelError) enumeration.
 

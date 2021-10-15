@@ -24,7 +24,7 @@ export interface Channel {
 
   /**
    * Channels may be visualized and selectable by users. DisplayMetadata may be used to provide hints on how to see them.
-   * For app channels, displayMetadata would typically not be present
+   * For App channels, displayMetadata would typically not be present.
    */
   readonly displayMetadata?: DisplayMetadata;
 
@@ -33,7 +33,7 @@ export interface Channel {
    * top-level FDC3 `broadcast` function.
    *
    * Note that this function can be used without first joining the channel, allowing applications to broadcast on
-   * channels that they aren't a member of.
+   * User channels that they aren't a member of.
    *
    * Channel implementations should ensure that context messages broadcast by an application on a channel should
    * not be delivered back to that same application if they are joined to the channel.
