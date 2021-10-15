@@ -47,6 +47,16 @@ mainTheme.typography.h5 = {
 	fontSize: "16px",
 };
 
+mainTheme.typography.body1 = {
+	fontSize: "1rem",
+    fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+    fontWeight: 400,
+    lineHeight: 1.5,
+    letterSpacing: "0.00938em",
+	marginBlockStart: "10px",
+	marginBlockEnd: "10px",
+};
+
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		"@global": {
@@ -127,6 +137,12 @@ const openAPIDocs = (event: React.MouseEvent<HTMLElement>) => {
 const openSpecAccessDocs = (event: React.MouseEvent<HTMLElement>) => {
 	event.preventDefault();
 	window.open("https://fdc3.finos.org/docs/api/spec#api-access", "FDC3ApiDocs");
+	return false;
+};
+
+const openSupportedPlatformsDocs = (event: React.MouseEvent<HTMLElement>) => {
+	event.preventDefault();
+	window.open("https://fdc3.finos.org/docs/supported-platforms", "FDC3ApiDocs");
 	return false;
 };
 
@@ -218,15 +234,28 @@ export const App = observer(() => {
 									<span className={classes.code}>window.fdc3</span>.
 								</Typography>
 								<Typography variant="body1">
-									See the{" "}
+									For web applications to be FDC3-enabled, they need to run in the context of an 
+									agent that makes the FDC3 API available to the application. This desktop agent is 
+									also responsible for lauching and co-ordinating applications. It could be a browser 
+									extension, web app, or full-fledged desktop container framework.
+								</Typography>
+								<Typography variant="body1">
+									See the FDC3 standard documentation for details on{" "}
+									<Link
+										className={classes.link}
+										href="https://fdc3.finos.org/docs/supported-platforms"
+										onClick={openSupportedPlatformsDocs}
+									>
+									supported platforms
+									</Link>
+									{" "}and{" "}
 									<Link
 										className={classes.link}
 										href="https://fdc3.finos.org/docs/api/spec#api-access"
 										onClick={openSpecAccessDocs}
 									>
-										FDC3 standard documentation
-									</Link>{" "}
-									for more details.
+										accessing the FDC3 API
+									</Link>.
 								</Typography>
 							</Paper>
 						</Grid>
