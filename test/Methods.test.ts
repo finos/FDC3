@@ -13,6 +13,7 @@ import {
   getCurrentChannel,
   getInfo,
   getOrCreateChannel,
+  getUserChannels,
   getSystemChannels,
   ImplementationMetadata,
   joinChannel,
@@ -79,8 +80,8 @@ describe('test ES6 module', () => {
       expect(() => addContextListener(expect.any(String), expect.any(Object))).toThrowError(UnavailableError);
     });
 
-    test('getSystemChannels should reject', async () => {
-      await expect(getSystemChannels()).rejects.toEqual(UnavailableError);
+    test('getUserChannels should reject', async () => {
+      await expect(getUserChannels()).rejects.toEqual(UnavailableError);
     });
 
     test('joinChannel should reject', async () => {
@@ -187,11 +188,18 @@ describe('test ES6 module', () => {
       expect(window.fdc3.addContextListener).toHaveBeenNthCalledWith(2, null, handler2);
     });
 
-    test('getSystemChannels should delegate to window.fdc3.getSystemChannels', async () => {
+    test('getUserChannels should delegate to window.fdc3.getUserChannels', async () => {
+      await getUserChannels();
+
+      expect(window.fdc3.getUserChannels).toHaveBeenCalledTimes(1);
+      expect(window.fdc3.getUserChannels).toHaveBeenCalledWith();
+    });
+
+    test('getSystemChannels should delegate to window.fdc3.getUserChannels', async () => {
       await getSystemChannels();
 
-      expect(window.fdc3.getSystemChannels).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.getSystemChannels).toHaveBeenCalledWith();
+      expect(window.fdc3.getUserChannels).toHaveBeenCalledTimes(2); //was already called in previous test, hence this should be the second call to getUserChannels
+      expect(window.fdc3.getUserChannels).toHaveBeenCalledWith();
     });
 
     test('joinChannel should delegate to window.fdc3.joinChannel', async () => {
