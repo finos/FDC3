@@ -48,9 +48,20 @@ export const Header = (props: { fdc3Available: boolean }) => {
 
 	useEffect(() => {
 		if (props.fdc3Available) {
-			//getInfo is not available in FDC3 < v1.2, check for it before trying to use it
-			if (typeof window.fdc3.getInfo != "undefined") {
-				setAppInfo(fdc3.getInfo());
+			//getInfo is not available in FDC3 < v1.2, handle any errors thrown when trying to use it
+			try {
+				let implInfo = fdc3.getInfo();
+				let displayInfo = {
+					fdc3Version: "not specified", 
+					provider: "not specified", 
+					providerVersion: "not specified"
+				};
+				if (implInfo.fdc3Version) {displayInfo.fdc3Version = implInfo.fdc3Version; } 
+				if (implInfo.provider) {displayInfo.provider = implInfo.provider; } 
+				if (implInfo.providerVersion) {displayInfo.providerVersion = implInfo.providerVersion; } 
+				setAppInfo(displayInfo);
+			} catch (e) {
+				console.error("Failed to retrieve FDC3 implementation info",e);
 			}
 		}
 	}, [props.fdc3Available]);
@@ -71,15 +82,15 @@ export const Header = (props: { fdc3Available: boolean }) => {
 							<tbody>
 								<tr>
 									<th scope="row">FDC3 Version</th>
-									<td>{appInfo?.fdc3Version ? appInfo.fdc3Version : "-"}</td>
+									<td>{appInfo?.fdc3Version ? appInfo.fdc3Version : "unknown"}</td>
 								</tr>
 								<tr>
 									<th scope="row">Provider</th>
-									<td>{appInfo?.provider ? appInfo.provider : "-"}</td>
+									<td>{appInfo?.provider ? appInfo.provider : "unknown"}</td>
 								</tr>
 								<tr>
 									<th scope="row">Provider version</th>
-									<td>{appInfo?.providerVersion ? appInfo.providerVersion : "-"}</td>
+									<td>{appInfo?.providerVersion ? appInfo.providerVersion : "unknown"}</td>
 								</tr>
 							</tbody>
 						</table>
