@@ -237,13 +237,13 @@ There are two types of channels, which are functionally identical, but have diff
 ### Joining Channels
 Apps can join _User Channels_.  An app can only be joined to one channel at a time.  
 
-When an app is joined to a User Channel, calls to `fdc3.broadcast` will be routed to that channel and listeners added through `fdc3.addContextListener` will receive context broadcasts from other apps also joined to that channel. If an app is not joined to a User Channel `fdc3.broadcast` will be a no-op and handler functions added with `fdc3.addContextListener` will not receive any broadcasts. However, apps can still choose to listen and broadcast to specific channels (both User and App channels) via the methods on the `Channel` class.
+When an app is joined to a User channel, calls to `fdc3.broadcast` will be routed to that channel and listeners added through `fdc3.addContextListener` will receive context broadcasts from other apps also joined to that channel. If an app is not joined to a User channel `fdc3.broadcast` will be a no-op and handler functions added with `fdc3.addContextListener` will not receive any broadcasts. However, apps can still choose to listen and broadcast to specific channels (both User and App channels) via the methods on the `Channel` class.
 
-When an app joins a User Channel, or adds a context listener when already joined to a channel, it will automatically receive the current context for that channel.
+When an app joins a User channel, or adds a context listener when already joined to a channel, it will automatically receive the current context for that channel.
 
-It is possible that a call to join a User Channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.
+It is possible that a call to join a User channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.
 
-Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  Always, there SHOULD be a clear UX indicator of what User Channel an app is joined to.
+Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  Always, there SHOULD be a clear UX indicator of what User channel an app is joined to.
 
 ### The 'global' Channel
 
@@ -251,7 +251,7 @@ Joining channels in FDC3 is intended to be a behavior initiated by the end user.
 >
 > The global channel, which exists only for backward compatibility with FDC3 1.0, will be removed in a future version of the FDC3 API Specification.
 >
-> Instead of relying on being joined to a 'default' channel by the desktop agent on startup, a user channel should be joined explicitly through the relevant APIs, or through a channel selection UI.
+> Instead of relying on being joined to a 'default' channel by the desktop agent on startup, a User channel should be joined explicitly through the relevant APIs, or through a channel selection UI.
 
 The User channels MAY include a 'global' channel which serves as the backwards compatible layer with the 'send/broadcast context' behavior in FDC3 1.0.  A desktop agent MAY choose to make membership in the 'global' channel the default state for apps on start up.
 
@@ -287,7 +287,7 @@ joinedChannel = await fdc3.getCurrentChannel();
 ```
 
 ### Direct Listening and Broadcast on Channels
-While joining User Channels automates a lot of the channel behavior for an app, it has the limitation in that an app can belong to only one channel at a time.  Listening and Broadcasting to channels using the _Channel.addBroadcastListener_ and the _Channel.broadcast_ APIs provides an app with fine-grained controls for specific channels.  This is especially useful for working with dynamic _App Channels_.
+While joining User Channels automates a lot of the channel behavior for an app, it has the limitation in that an app can belong to only one channel at a time.  Listening and Broadcasting to channels using the `Channel.addBroadcastListener` and the `Channel.broadcast` APIs provides an app with fine-grained controls for specific channels.  This is especially useful for working with dynamic _App Channels_.
 
 ### Broadcasting and listening for multiple context types
 The [Context specification](../../context/spec#assumptions) recommends that complex context objects are defined using simpler context types for particular fields. For example, a `Position` is composed of an `Instrument` and a holding amount. This leads to situations where an application may be able to receive or respond to context objects that are embedded in a more complex type, but not the more complex type itself. For example, a pricing chart might respond to an `Instrument` but doesn't know how to handle a `Position`. 
@@ -295,7 +295,7 @@ The [Context specification](../../context/spec#assumptions) recommends that comp
 To facilitate context linking in such situations it is recommended that applications `broadcast` each context type that other apps (listening on a User Channel or App Channel) may wish to process, starting with the simpler types, followed by the complex type. Doing so allows applications to filter the context types they receive by adding listeners for specific context types - but requires that the application broadcasting context make multiple broadcast calls in quick succession when sharing its context.
 
 ### Examples
-To find a User Channel, one calls:
+To find a User channel, one calls:
 
 ```js
 // returns an array of channels
@@ -304,13 +304,13 @@ const redChannel = allChannels.find(c => c.id === 'red');
 ```
 #### Joining channels
 
-To join a User Channel, one calls:
+To join a User channel, one calls:
 
 ```js
 fdc3.joinChannel(redChannel.id);
 ```
 
-Calling _fdc3.broadcast_ will now route context to the joined channel.
+Calling `fdc3.broadcast` will now route context to the joined channel.
 
 Channel implementations should ensure that context messages broadcast by an application on a channel should not be delivered back to that same application if they are joined to the channel.
 

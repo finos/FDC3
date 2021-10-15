@@ -273,11 +273,8 @@ catch (err){
 ### `getUserChannels`
 ```ts
 getUserChannels() : Promise<Array<Channel>>;
-/**
- * @deprecated Alias to the [`getUserChannels`](#getUserChannels) function provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
- */
-getSystemChannels() : Promise<Array<Channel>>;
 ```
+
 Retrieves a list of the User Channels available for the app to join.  This MAY include the deprecated 'global' channel.
 
 #### Example
@@ -290,6 +287,17 @@ const redChannel = userChannels.find(c => c.id === 'red');
 #### See also
 * [`Channel`](Channel)
 
+### `getSystemChannels`
+```ts
+/**
+ * @deprecated Use `getUserChannels` instead.
+ */
+getSystemChannels() : Promise<Array<Channel>>;
+```
+
+Alias to the [`getUserChannels`](#getUserChannels) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
+#### See also
+* [`getUserChannels`](#getuserchannels)
 
 ### `joinChannel`
 
@@ -297,7 +305,7 @@ const redChannel = userChannels.find(c => c.id === 'red');
 joinChannel(channelId: string) : Promise<void>;
 ```
 
-Joins the app to the specified channel.
+Joins the app to the specified User channel.
 If an app is joined to a channel, all `fdc3.broadcast` calls will go to the channel, and all listeners assigned via `fdc3.addContextListener` will listen on the channel. 
 
 If the channel already contains context that would be passed to context listeners added via `fdc3.addContextListener` then those listeners will be called immediately with that context.
