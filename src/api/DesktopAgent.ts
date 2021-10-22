@@ -213,7 +213,7 @@ export interface DesktopAgent {
    *   fdc3.joinUserChannel(selectedChannel.id);
    *  ```
    */
-   joinUserChannel(channelId: string): Promise<void>;
+  joinUserChannel(channelId: string): Promise<void>;
 
   /**
    * @deprecated Alias to the `joinUserChannel` function provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
