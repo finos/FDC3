@@ -35,16 +35,22 @@ interface DesktopAgent {
   // channels
   getOrCreateChannel(channelId: string): Promise<Channel>;
   getUserChannels(): Promise<Array<Channel>>;
-  /**
-   * @deprecated Use `getUserChannels()` instead of `getSystemChannels()`
-   */
-  getSystemChannels(): Promise<Array<Channel>>;
-  joinChannel(channelId: string) : Promise<void>;
+  joinUserChannel(channelId: string) : Promise<void>;
   getCurrentChannel() : Promise<Channel | null>;
   leaveCurrentChannel() : Promise<void>;
 
   //implementation info
   getInfo(): ImplementationMetadata;
+
+  /**
+   * @deprecated Use `getUserChannels()` instead of `getSystemChannels()`
+   */
+  getSystemChannels(): Promise<Array<Channel>>;
+  /**
+   * @deprecated Use `joinUserChannel()` instead of `joinChannel()`
+   */
+  joinChannel(channelId: string) : Promise<void>;
+  
 }
 ```
 
@@ -295,14 +301,14 @@ const redChannel = userChannels.find(c => c.id === 'red');
 getSystemChannels() : Promise<Array<Channel>>;
 ```
 
-Alias to the [`getUserChannels`](#getUserChannels) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
+Alias to the [`getUserChannels`](#getuserchannels) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
 #### See also
 * [`getUserChannels`](#getuserchannels)
 
-### `joinChannel`
+### `joinUserChannel`
 
 ```ts
-joinChannel(channelId: string) : Promise<void>;
+joinUserChannel(channelId: string) : Promise<void>;
 ```
 
 Joins the app to the specified User channel.
@@ -323,12 +329,25 @@ const channels = await fdc3.getUserChannels();
 // create UI to pick from the User channels
 
 // join the channel on selection
-fdc3.joinChannel(selectedChannel.id);
+fdc3.joinUserChannel(selectedChannel.id);
 
 ```
 #### See also
 * [`getUserChannels`](#getuserchannels)
 
+
+### `joinChannel`
+
+```ts
+/**
+   * @deprecated Use `joinUserChannel()` instead of `joinChannel()`
+   */
+joinChannel(channelId: string) : Promise<void>;
+```
+Alias to the [`joinUserChannel`](#joinUserChannel) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
+
+#### See also
+* [`joinUserChannel`](#joinuserchannel)
 
 
 ### `leaveCurrentChannel`

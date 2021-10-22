@@ -34,6 +34,6 @@ const nullContext = {
     type: 'fdc3.nothing'
 }
 
-fdc3.joinChannel('groupA')
+fdc3.joinUserChannel('groupA')
 fdc3.broadcast(nullContext)
 ```

@@ -36,7 +36,7 @@ interface Channel {
 * [`Listener`](Types#listener)
 * [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
 * [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
-* [`DesktopAgent.joinChannel`](DesktopAgent#joinchannel)
+* [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
 
 ## Properties
 
