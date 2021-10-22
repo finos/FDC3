@@ -53,7 +53,7 @@ const instrument = {
 const result = await fdc3.raiseIntent('ViewAnalysis', instrument)
 
 // join the red channel and broadcast data to subscribers
-await fdc3.joinChannel('red')
+await fdc3.joinUserChannel('red')
 fdc3.broadcast(instrument)
 
 // set up a listener for incoming data

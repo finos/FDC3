@@ -54,7 +54,7 @@ const instruments = {
     ]
 }
 
-fdc3.joinChannel('global')
+fdc3.joinUserChannel('global')
 fdc3.broadcast(instruments)
 ```
 

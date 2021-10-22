@@ -195,7 +195,7 @@ export interface DesktopAgent {
   getUserChannels(): Promise<Array<Channel>>;
 
   /**
-   * @deprecated Alias to the [`getUserChannels`](#getUserChannels) function provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
+   * @deprecated Alias to the `getUserChannels function provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
    */
   getSystemChannels(): Promise<Array<Channel>>;
 
@@ -210,8 +210,13 @@ export interface DesktopAgent {
    *   const channels = await fdc3.getUserChannels();
    *   // create UI to pick from the User channels
    *   // join the channel on selection
-   *   fdc3.joinChannel(selectedChannel.id);
+   *   fdc3.joinUserChannel(selectedChannel.id);
    *  ```
+   */
+   joinUserChannel(channelId: string): Promise<void>;
+
+  /**
+   * @deprecated Alias to the `joinUserChannel` function provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
    */
   joinChannel(channelId: string): Promise<void>;
 
