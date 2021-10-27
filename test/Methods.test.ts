@@ -17,6 +17,7 @@ import {
   getSystemChannels,
   ImplementationMetadata,
   joinChannel,
+  joinUserChannel,
   leaveCurrentChannel,
   open,
   raiseIntent,
@@ -86,6 +87,10 @@ describe('test ES6 module', () => {
 
     test('joinChannel should reject', async () => {
       await expect(joinChannel(expect.any(String))).rejects.toEqual(UnavailableError);
+    });
+
+    test('joinUserChannel should reject', async () => {
+      await expect(joinUserChannel(expect.any(String))).rejects.toEqual(UnavailableError);
     });
 
     test('getOrCreateChannel should reject', async () => {
@@ -202,13 +207,22 @@ describe('test ES6 module', () => {
       expect(window.fdc3.getUserChannels).toHaveBeenCalledWith();
     });
 
-    test('joinChannel should delegate to window.fdc3.joinChannel', async () => {
+    test('joinChannel should delegate to window.fdc3.joinUserChannel', async () => {
       const channelId = 'channel';
 
       await joinChannel(channelId);
 
-      expect(window.fdc3.joinChannel).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.joinChannel).toHaveBeenCalledWith(channelId);
+      expect(window.fdc3.joinUserChannel).toHaveBeenCalledTimes(1);
+      expect(window.fdc3.joinUserChannel).toHaveBeenCalledWith(channelId);
+    });
+
+    test('joinUserChannel should delegate to window.fdc3.joinUserChannel', async () => {
+      const channelId = 'channel';
+
+      await joinUserChannel(channelId);
+
+      expect(window.fdc3.joinUserChannel).toHaveBeenCalledTimes(2);
+      expect(window.fdc3.joinUserChannel).toHaveBeenCalledWith(channelId);
     });
 
     test('getOrCreateChannel should delegate to window.fdc3.getOrCreateChannel', async () => {
