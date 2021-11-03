@@ -36,7 +36,7 @@ Inspired by [ANSI’s Essential Requirements for Due Process](https://share.ansi
 
 **3.6.	Written procedures.**  This governance document and other materials documenting the specification development process shall be available to any interested person.
 
-## 4.	Specification Development Process.  
+## 4.	Standard Development Process.  
 
 **4.1.	Pre-Draft.**  Any Participant may submit a proposed initial draft document as a candidate Draft Specification of the Working Group.  The Maintainer(s) will designate each submission as a “Pre-Draft” document.
 
