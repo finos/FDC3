@@ -76,6 +76,9 @@ public addContextListener(contextType: string | null, handler: ContextHandler): 
 ```
 Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
 
+If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the [`fdc3.addContextListener`](DesktopAgent#addcontextlistener) function). Apps wishing to access to the current context of the channel should instead call the [`getCurrentContext(contextType)`](#getcurrentcontext) function.
+
+
 ```ts
 /**
  * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
