@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+* Definition of the `icons` property of AppMetadata, based on PWA icon spec ([#319](https://github.com/finos/FDC3/pull/319))
+
+### Changed
+### Deprecated
+### Fixed
+
 ## [npm v1.2.0] - 2021-04-19
 
 ### Added
