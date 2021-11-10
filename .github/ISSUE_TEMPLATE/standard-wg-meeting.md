@@ -45,7 +45,10 @@ Meeting number: 665 568 411
 - [ ] ...
 - [ ] AOB & Adjourn (5mins)
 
-## Decisions Made
+## Minutes
+- ...
+
+### Decisions Made
 - ...
 
 ## Action Items
