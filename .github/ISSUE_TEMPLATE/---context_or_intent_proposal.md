@@ -1,5 +1,5 @@
 ---
-name: "\U0001F680 Context or Intent proposal"
+name: "✉️ Context or Intent proposal"
 about: Propose new contexts and intents to help implement a particular use-case!
 title: ''
 labels: enhancement, Context Data & Intents
