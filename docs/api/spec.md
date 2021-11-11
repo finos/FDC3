@@ -220,10 +220,6 @@ There are two types of channels, which are functionally identical, but have diff
 
 1. The 'system' channels, which have a well understood identity.
 
-    > **Deprecation notice:** Earlier versions of FDC3 include the concept of a 'global' system channel
-    for backwards compatibility with FDC3 1.0. In future, there won't be a 'global' channel
-    (see [below](#the-global-channel) for more detail).
-
 2. The 'app' channels, which have a transient identity and need to be revealed
 
 
@@ -238,46 +234,20 @@ It is possible that a call to join a channel could be rejected.  If for example,
 
 Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  Always, there SHOULD be a clear UX indicator of what channel an app is joined to.
 
-### The 'global' Channel
-
-> **Deprecation notice**
->
-> The global channel, which exists only for backward compatibility with FDC3 1.0,
-will be removed in a future version of the FDC3 API Specification.
->
-> Instead of relying on being joined to a 'default' channel by the desktop agent on startup,
-an app or system channel should be joined explicitly through the relevant APIs,
-or through a channel selection UI.
-
-The 'system' channels include a 'global' channel which serves as the backwards compatible layer with the 'send/broadcast context' behavior in FDC3 1.0.  A desktop agent MAY choose to make membership in the 'global' channel the default state for apps on start up.
-
-The 'global' channel should be returned as part of the response from the `fdc3.getSystemChannels` call.  Desktop Agents may want to filter out the 'global' option in their UI for system channel pickers.
-
-
 ### Examples
-
-An app queries the current context of the `red` channel.
+An app join the red channel and broadcasts its context.
 
 ```js
-const redChannel = await fdc3.getOrCreateChannel('red');
-const context = await redChannel.getCurrentContext('fdc3.instrument');
+await fdc3.joinChannel('red');
+await fdc3.broadcast({type: 'fdc3.instrument', name: "Apple", id: {ticker: "AAPL"}});
 ```
 
-An app can still explicitly receive context events on any channel, regardless of the channel it is currently joined to.
+An app joins the red channel and automatically receives its current context.
 
 ```js
-// check for current fdc3 channel
-let joinedChannel = await fdc3.getCurrentChannel()
-//current channel is null, as the app is not currently joined to a channel
-
-const redChannel = await fdc3.getSystemChannels.filter(c => c.id === 'red')
-const context = await redChannel.getCurrentContext('fdc3.instrument')
-// context is instrument AAPL on the global channel
-
-fdc3.joinChannel('blue')
-joinedChannel = await fdc3.getCurrentChannel()
-//current channel is now the 'blue' channel
-
+const listener = await fdc3.addContextListener(null, context => { ... });
+await fdc3.joinChannel('red');
+//Last context broadcast to the channel is received by the listener
 ```
 
 ### Direct Listening and Broadcast on Channels
@@ -324,8 +294,27 @@ const current = await appChannel.getCurrentContext();
 appChannel.addContextListener(null, context => {...});
 // broadcast to the channel
 appChannel.broadcast(context);
-
 ```
+
+An app can still explicitly receive context events on any channel, regardless of the channel it is currently joined to.
+
+```js
+// check for current fdc3 channel
+let joinedChannel = await fdc3.getCurrentChannel()
+//current channel is null, as the app is not currently joined to a channel
+
+//add a context listener for channels we join
+const listener = await fdc3.addContextListener(null, context => { ... });
+
+//retrieve the red channel and add a listener that is specific to that channel
+const myChannel = await fdc3.getOrCreateChannel('my_custom_channel');
+const myChannelListener = await myChannel.addContextListener(null, context => { ... });
+
+fdc3.joinChannel('blue')
+joinedChannel = await fdc3.getCurrentChannel()
+//current channel is now the 'blue' channel
+```
+if another application broadcasts to "my_custom_channel" (by retrieving it and broadcasting to it via `myChannel.broadcast()`) then the broadcast will be received by the specific listener (`myChannelListener`) but NOT by the listener for joined channels (`listener`).
 
 ## APIs
 The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
