@@ -30,7 +30,7 @@ interface DesktopAgent {
   findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
   raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
   raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
-  addIntentListener(intent: string, handler: ContextHandler): Listener;
+  addIntentListener(intent: string, handler: IntentHandler): Listener;
 
   // channels
   getOrCreateChannel(channelId: string): Promise<Channel>;
@@ -71,27 +71,39 @@ const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ...
 #### See also
 * [`Listener`](Types#listener)
 * [`Context`](Types#context)
+* [`ContextHandler`](Types#contexthandler)
 
 
 
 ### `addIntentListener`
 
 ```ts
-addIntentListener(intent: string, handler: ContextHandler): Listener;
+addIntentListener(intent: string, handler: IntentHandler): Listener;
 ```
- Adds a listener for incoming Intents from the Agent.
+Adds a listener for incoming Intents from the Agent. The handler function may return void or a promise that should resolve to a context object representing any data that should be returned to app that raised the intent. If an error is thrown by the handler function, or the promise returned is rejected, then the Desktop Agent MUST reject the promise returned by the `getData()` function of the `IntentResolution`. 
 
 #### Examples
 
 ```js
+//Handle a raised intent
 const listener = fdc3.addIntentListener('StartChat', context => {
-  // start chat has been requested by another application
+    // start chat has been requested by another application
+    return;
+});
+
+//Handle a raised intent and return Context data via a promise
+fdc3.addIntentListener("trade", (context) => {
+    return new Promise<Context>((resolve) => {
+        // go place trade
+        resolve({result: "trade placed successfully"});
+   });
 });
 ```
 
 #### See also
 * [`Listener`](Types#listener)
 * [`Context`](Types#context)
+* [`IntentHandler`](Types#intenthandler)
 
 
 
@@ -389,7 +401,7 @@ Alternatively, the specific app to target can also be provided. A list of valid 
 
 If you wish to raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
 
-Returns an `IntentResolution` object with details of the app that was selected to respond to the intent.
+Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getData()` function of the IntentResolution object. If an error is thrown by the handler function, or the promise returned is rejected, then the Desktop Agent MUST reject the promise returned by the `getData()` function of the `IntentResolution`. 
 
 If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolverrror) enumeration is returned.
 
@@ -432,7 +444,7 @@ Alternatively, the specific app to target can also be provided, in which case an
 
 Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
 
-Returns an `IntentResolution` object with a handle to the app that responded to the selected intent.
+Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getData()` function of the IntentResolution object. If an error is thrown by the handler function, or the promise returned is rejected, then the Desktop Agent MUST reject the promise returned by the `getData()` function of the `IntentResolution`. 
 
 If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned.
 
