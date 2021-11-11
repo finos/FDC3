@@ -20,6 +20,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Adjusted wording in API spec and documentation to acknowledge the possibility of methods of intent resolution other than a resolver UI ([#461](https://github.com/finos/FDC3/pull/461))
 
 ### Deprecated
+* Removed details of the 'global' channel that was deprecated in FDC3 1.2. ([#XXX](https://github.com/finos/FDC3/pull/XXX))
+
 ### Fixed
 * Removed trailing slashes from schema references (which break refs for schema parsers) ([#374](https://github.com/finos/FDC3/pull/374))
 * Corrected that definition of the `Context` type in documentation ([#406](https://github.com/finos/FDC3/pull/406)])
