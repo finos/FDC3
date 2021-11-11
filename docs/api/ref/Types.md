@@ -41,12 +41,26 @@ type ContextHandler = (context: Context) => void;
 
 Describes a callback that handles a context event.
 
-Used when attaching listeners for context broadcasts and raised intents.
+Used when attaching listeners for context broadcasts.
+
+#### See also
+* [`Context`](#context)
+* [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
+* [`Channel.addContextListener`](Channel#addcontextlistener)
+
+## `IntentHandler`
+
+```typescript
+type IntentHandler = (context: Context) => Promise<Context> | void;
+```
+
+Describes a callback that handles a context event and may return a promise of a Context object to be returned to the application that raised the intent.
+
+Used when attaching listeners for raised intents.
 
 #### See also
 * [`Context`](#context)
 * [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
-* [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
 * [`Channel.addContextListener`](Channel#addcontextlistener)
 
 ## `Listener`

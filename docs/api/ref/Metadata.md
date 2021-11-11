@@ -126,21 +126,44 @@ The Interface used to describe an Intent within the platform.
 
 ```ts
 interface IntentResolution {
-  source: TargetApp;
+/**
+   * The application that resolved the intent.
+   */
+  readonly source: TargetApp;
   /**
-  * @deprecated not assignable from intent listeners
-  */
-  data?: object;
-  version: string;
+   * The version number of the Intents schema being used.
+   */
+  readonly version?: string;
+  /**
+   * Retrieves a promise that will resolve to data returned by the
+   * application that resolves the raised intent. The promise will 
+   * reject if an error is thrown by the intent handler or the promise
+   * returned by the intent handler is reject. If the intent handler 
+   * does not return a promise this function will return null.
+   */
+  getData(): Promise<Context> | null;
 }
 ```
 
 IntentResolution provides a standard format for data returned upon resolving an intent.
 
-#### Example
+#### Examples
 ```js
-// resolve a "Chain" type intent
-const intentResolution = await fdc3.raiseIntent("intentName", context);
+//resolve a "Chain" type intent
+let resolution = await agent.raiseIntent("intentName", context);
+
+//resolve a "Client-Service" type intent with a data response
+let resolution = await agent.raiseIntent("intentName", context);
+try {
+	   const result = await resolution.getData();
+    if (result) {
+        console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+    } else {
+        console.error(`${resolution.source} didn't return data`
+    }
+} catch(error) {
+    console.error(`${resolution.source} returned an error: ${error}`);
+}
 ```
 
 #### See also
