@@ -3,23 +3,44 @@
  * Copyright 2019 FINOS FDC3 contributors - see NOTICE file
  */
 
+import { Context } from '../context/ContextTypes';
 import { TargetApp } from './Types';
 
 /**
  * IntentResolution provides a standard format for data returned upon resolving an intent.
  * ```javascript
  * //resolve a "Chain" type intent
- * var intentR = await agent.raiseIntent("intentName", context);
- * //resolve a "Client-Service" type intent with data response
- * var intentR = await agent.raiseIntent("intentName", context);
- * var dataR = intentR.data;
+ * let resolution = await agent.raiseIntent("intentName", context);
+ *
+ * //resolve a "Client-Service" type intent with a data response
+ * let resolution = await agent.raiseIntent("intentName", context);
+ * try {
+ * 	   const result = await resolution.getData();
+ *     if (result) {
+ *         console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+ *     } else {
+ *         console.error(`${resolution.source} didn't return data`
+ *     }
+ * } catch(error) {
+ *     console.error(`${resolution.source} returned an error: ${error}`);
+ * }
  * ```
  */
 export interface IntentResolution {
+  /**
+   * The application that resolved the intent.
+   */
   readonly source: TargetApp;
   /**
-   * @deprecated not assignable from intent listeners
+   * The version number of the Intents schema being used.
    */
-  readonly data?: object;
-  readonly version: string;
+  readonly version?: string;
+  /**
+   * Retrieves a promise that will resolve to data returned by the
+   * application that resolves the raised intent. The promise MUST
+   * reject with a string from the `DataError` enumeration if an error
+   * is thrown by the intent handler, it rejects the returned promise,
+   * or it does not return a promise.
+   */
+  getData(): Promise<Context>;
 }
