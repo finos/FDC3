@@ -61,12 +61,7 @@ In situations where a desktop agent connects to multiple app directories or mult
 
 A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
 
-#### See also
-
-* [`Channel`](Channel)
-* [`DesktopAgent.getSystemChannels`](DesktopAgent#getsystemchannels)
-
-### Properties
+#### Properties
 
 #### `name`
 
@@ -91,6 +86,11 @@ glyph: string;
 ```
 
 A URL of an image that can be used to display this channel.
+
+#### See also
+
+* [`Channel`](Channel)
+* [`DesktopAgent.getSystemChannels`](DesktopAgent#getsystemchannels)
 
 ## `ImplementationMetadata`
 
