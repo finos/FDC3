@@ -16,6 +16,11 @@ export enum ResolveError {
   ResolverTimeout = 'ResolverTimeout',
 }
 
+export enum DataError {
+  NoDataReturned = 'NoDataReturned',
+  IntentHandlerRejected = 'IntentHandlerRejected',
+}
+
 export enum ChannelError {
   NoChannelFound = 'NoChannelFound',
   AccessDenied = 'AccessDenied',
