@@ -103,9 +103,11 @@ When raising an Intent a specific context may be provided as input. The type of 
 
 A Context type may also be associated with multiple Intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other Intents. In addition to raising a specific intent, you can raise an Intent for a specific Context allowing the Desktop Agent or the user (if the Intent is ambiguous) to select the appropriate Intent for the selected Context and then to raise that Intent for resolution.
 
-To raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an Intent listener or in an App Directory).
+To raise an Intent without a context, use the [`fdc3.nothing`](../context/ref/Nothing) context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an Intent listener or in an App Directory).
 
-An optional context object may also be returned as output by an application resolving an intent. For example, an application resolving a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.  
+An optional context object may also be returned as output by an application hanling an intent. For example, an application handling a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.
+
+An optional output context type is also supported when programmatically resolving an intent via [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext).
 
 #### Intent Resolution
 Raising an Intent will return a Promise-type object that will resolve/reject based on a number of factors.
@@ -180,7 +182,7 @@ try {
 ```
 
 #### Resolvers
-Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (for example, by displaying a resolver UI allowing the user to pick the desired App for the intent) or by the app calling App handling the resolution itself (by using the `findIntents` API) and then invoking the Intent on a specific target application, e.g.:
+Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (for example, by displaying a resolver UI allowing the user to pick the desired App for the intent) or by the app calling App handling the resolution itself (by using the  [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext) API calls) and then invoking the Intent on a specific target application, e.g.:
 
 ```js
 //Find apps to resolve an intent to start a chat with a given contact
@@ -189,6 +191,21 @@ const appIntent = await fdc3.findIntent("StartChat", context);
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
 //or by using the full AppMetadata object
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
+
+//Find apps to resolve an intent and return a specified context type
+const appIntent = await fdc3.findIntent("ViewContact", context, "fdc3.contact");
+try {
+  const resolution = await fdc3.raiseIntent(appIntent.intent, context, appIntent.apps[0].name);
+  const result = await resolution.getData();
+  console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+} catch(error) {
+    console.error(`${resolution.source} returned a data error: ${error}`);
+}
+
+//Find apps that can perform any intent with the specified context
+const appIntents = await fdc3.findIntentByContext(context);
+//use the returned AppIntent array to target one of the returned apps
+await fdc3.raiseIntent(appIntent[0].intent, context, appIntent[0].apps[0]);
 ```
 
 #### Upgrading to a Remote API Connection

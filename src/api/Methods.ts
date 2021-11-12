@@ -52,12 +52,12 @@ export function open(app: TargetApp, context?: Context): Promise<void> {
   return rejectIfNoGlobal(() => window.fdc3.open(app, context));
 }
 
-export function findIntent(intent: string, context?: Context): Promise<AppIntent> {
-  return rejectIfNoGlobal(() => window.fdc3.findIntent(intent, context));
+export function findIntent(intent: string, context?: Context, outputContextType?: string): Promise<AppIntent> {
+  return rejectIfNoGlobal(() => window.fdc3.findIntent(intent, context, outputContextType));
 }
 
-export function findIntentsByContext(context: Context): Promise<AppIntent[]> {
-  return rejectIfNoGlobal(() => window.fdc3.findIntentsByContext(context));
+export function findIntentsByContext(context: Context, outputContextType?: string): Promise<AppIntent[]> {
+  return rejectIfNoGlobal(() => window.fdc3.findIntentsByContext(context, outputContextType));
 }
 
 export function broadcast(context: Context): void {
