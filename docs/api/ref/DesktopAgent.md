@@ -30,7 +30,7 @@ interface DesktopAgent {
   findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
   raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
   raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
-  addIntentListener(intent: string, handler: ContextHandler): Listener;
+  addIntentListener(intent: string, handler: IntentHandler): Listener;
 
   // channels
   getOrCreateChannel(channelId: string): Promise<Channel>;
@@ -71,27 +71,39 @@ const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ...
 #### See also
 * [`Listener`](Types#listener)
 * [`Context`](Types#context)
+* [`ContextHandler`](Types#contexthandler)
 
 
 
 ### `addIntentListener`
 
 ```ts
-addIntentListener(intent: string, handler: ContextHandler): Listener;
+addIntentListener(intent: string, handler: IntentHandler): Listener;
 ```
- Adds a listener for incoming Intents from the Agent.
+ Adds a listener for incoming Intents from the Agent. The handler function may return void or a promise that should resolve to a context object representing any data that should be returned to app that raised the intent. If an error is thrown by the handler function, the promise returned is rejected, or a promise is not returned then the Desktop Agent MUST reject the promise returned by the `getData()` function of the `IntentResolution`.
 
 #### Examples
 
 ```js
+//Handle a raised intent
 const listener = fdc3.addIntentListener('StartChat', context => {
-  // start chat has been requested by another application
+    // start chat has been requested by another application
+    return;
+});
+
+//Handle a raised intent and return Context data via a promise
+fdc3.addIntentListener("CreateOrder", (context) => {
+  return new Promise<Context>((resolve) => {
+    // go create the order
+    resolve({type: "fdc3.order", id: { "orderId": 1234}});
+  });
 });
 ```
 
 #### See also
 * [`Listener`](Types#listener)
 * [`Context`](Types#context)
+* [`IntentHandler`](Types#intenthandler)
 
 
 
@@ -389,7 +401,7 @@ Alternatively, the specific app to target can also be provided. A list of valid 
 
 If you wish to raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
 
-Returns an `IntentResolution` object with details of the app that was selected to respond to the intent.
+Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getData()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or a promse is not returned then the Desktop Agent MUST reject the promise returned by the `getData()` function of the `IntentResolution` with a string from the `DataError` enumeration. 
 
 If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolverrror) enumeration is returned.
 
@@ -398,20 +410,27 @@ If a target app for the intent cannot be found with the criteria provided, an `E
 ```js
 // raise an intent for resolution by the desktop agent
 // a resolver UI may be displayed, or another method of resolving the intent to a
-   target applied, if more than one application can resolve the intent
+// target applied, if more than one application can resolve the intent
 await fdc3.raiseIntent("StartChat", context);
 
 // or find apps to resolve an intent to start a chat with a given contact
 const appIntent = await fdc3.findIntent("StartChat", context);
-
 // use the name of one of the associated apps returned by findIntent as the specific intent target
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
-
 // or use the metadata of the app to fully describe the target app for the intent
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 
 //Raise an intent without a context by using the null context type
 await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
+
+//Raise an intent and retrieve data from the IntentResolution
+let resolution = await agent.raiseIntent("intentName", context);
+try {
+  const result = await resolution.getData();
+  console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+} catch(error) {
+  console.error(`${resolution.source} returned a data error: ${error}`);
+}
 ```
 #### See also
 * [`Context`](Types#context)
@@ -432,7 +451,7 @@ Alternatively, the specific app to target can also be provided, in which case an
 
 Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
 
-Returns an `IntentResolution` object with a handle to the app that responded to the selected intent.
+Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getData()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or a promse is not returned then the Desktop Agent MUST reject the promise returned by the `getData()` function of the `IntentResolution` with a string from the `DataError` enumeration. 
 
 If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned.
 

@@ -5,7 +5,7 @@
 
 import { AppIntent } from './AppIntent';
 import { Channel } from './Channel';
-import { ContextHandler, TargetApp } from './Types';
+import { ContextHandler, IntentHandler, TargetApp } from './Types';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
@@ -122,25 +122,36 @@ export interface DesktopAgent {
   /**
    * Raises a specific intent for resolution against apps registered with the desktop agent.
    *
-   * The desktop agent will resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, the user may be presented with an app picker.
+   * The desktop agent MUST resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, the user MAY be presented with a Resolver UI allowing them to pick one, or another method of Resolution applied to select an app.
    * Alternatively, the specific app to target can also be provided. A list of valid target applications can be retrieved via `findIntent`.
    *
-   * Returns an `IntentResolution` object with details of the app that was selected to respond to the intent.
+   * Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getData()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or no promise is returned then the Desktop Agent MUST reject the promise returned by the `getData()` function of the `IntentResolution` with a string from the `DataError` enumeration.
    *
-   * If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the `ResolveError` enumeration is returned.
+   * If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the `ResolveError` enumeration MUST be returned.
    *
    * ```javascript
    * // raise an intent for resolution by the desktop agent
-   * // a resolver UI will be displayed if more than one application can resolve the intent
+   * // a resolver UI may be displayed if more than one application can resolve the intent
    * await fdc3.raiseIntent("StartChat", context);
+   *
    * // or find apps to resolve an intent to start a chat with a given contact
    * const appIntent = await fdc3.findIntent("StartChat", context);
    * // use the returned AppIntent object to target one of the returned chat apps by name
    * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
    * // or use one of the AppMetadata objects returned in the AppIntent object's 'apps' array
    * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
+   *
    * //Raise an intent without a context by using the null context type
    * await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
+   *
+   * //Raise an intent and retrieve data from the IntentResolution
+   * let resolution = await agent.raiseIntent("intentName", context);
+   * try {
+   * 	   const result = await resolution.getData();
+   *     console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+   * } catch(error) {
+   *     console.error(`${resolution.source} returned a data error: ${error}`);
+   * }
    * ```
    */
   raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
@@ -148,12 +159,12 @@ export interface DesktopAgent {
   /**
    * Finds and raises an intent against apps registered with the desktop agent based purely on the type of the context data.
    *
-   * The desktop agent SHOULD first resolve to a specific intent based on the provided context if more than one intent is available for the specified context. This MAY be achieved by displaying a resolver UI. It SHOULD then resolve to a specific app to handle the selected intent and specified context.
-   * Alternatively, the specific app to target can also be provided, in which case the resolver should only offer intents supported by the specified application.
+   * The desktop agent will first resolve to a specific intent based on the provided context if more than one intent is available for the specified context. This MAY be achieved by displaying a resolver UI. It SHOULD then resolve to a specific app to handle the selected intent and specified context.
+   * Alternatively, the specific app to target can also be provided, in which case the resolver SHOULD only offer intents supported by the specified application.
    *
    * Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
    *
-   * Returns an `IntentResolution` object with a handle to the app that responded to the selected intent.
+   * Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getData()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or no promise is returned then the Desktop Agent MUST reject the promise returned by the `getData()` function of the `IntentResolution` with a string from the `DataError` enumeration.
    *
    * If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the `ResolveError` enumeration is returned.
    *
@@ -167,9 +178,30 @@ export interface DesktopAgent {
   raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
 
   /**
-   * Adds a listener for incoming Intents from the Agent.
+   * Adds a listener for incoming Intents from the Agent. The handler function may
+   * return void or a promise that should resolve to a context object representing
+   * any data that should be returned to app that raised the intent. If an error is
+   * thrown by the handler function, the promise returned is rejected, or a promise
+   * is not returned then the Desktop Agent MUST reject the promise returned by the
+   * `getData()` function of the `IntentResolution`.
+   *
+   * ```javascript
+   * //Handle a raised intent
+   * const listener = fdc3.addIntentListener('StartChat', context => {
+   *     // start chat has been requested by another application
+   *     return;
+   * });
+   *
+   * //Handle a raised intent and return Context data via a promise
+   * fdc3.addIntentListener("CreateOrder", (context) => {
+   *     return new Promise<Context>((resolve) => {
+   *         // go create the order
+   *         resolve({type: "fdc3.order", id: { "orderId": 1234}});
+   *	   });
+   * });
+   * ```
    */
-  addIntentListener(intent: string, handler: ContextHandler): Listener;
+  addIntentListener(intent: string, handler: IntentHandler): Listener;
 
   /**
    * Adds a listener for incoming context broadcast from the Desktop Agent.
