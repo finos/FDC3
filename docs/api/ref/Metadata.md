@@ -155,12 +155,8 @@ let resolution = await agent.raiseIntent("intentName", context);
 //resolve a "Client-Service" type intent with a data response
 let resolution = await agent.raiseIntent("intentName", context);
 try {
-	   const result = await resolution.getData();
-    if (result) {
-        console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
-    } else {
-        console.error(`${resolution.source} didn't return data`
-    }
+	  const result = await resolution.getData();
+    console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
 } catch(error) {
     console.error(`${resolution.source} returned an error: ${error}`);
 }

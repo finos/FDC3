@@ -123,9 +123,9 @@ Raising an Intent will return a Promise-type object that will resolve/reject bas
 
 If the raising of the intent resolves (or rejects), a standard object will be passed into the resolver function with the following format:
 
-```js
-{
-  /**
+```ts
+interface IntentResolution {
+/**
    * The application that resolved the intent.
    */
   readonly source: TargetApp;
@@ -173,13 +173,9 @@ Raise an intent and retrieve data from the IntentResolution:
 let resolution = await agent.raiseIntent("intentName", context);
 try {
     const result = await resolution.getData();
-    if (result) {
-        console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
-    } else {
-        console.error(`${resolution.source} didn't return data`
-    }
+    console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
 } catch(error) {
-    console.error(`${resolution.source} returned an error: ${error}`);
+    console.error(`${resolution.source} returned a data error: ${error}`);
 }
 ```
 

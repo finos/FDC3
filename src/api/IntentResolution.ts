@@ -37,10 +37,10 @@ export interface IntentResolution {
   readonly version?: string;
   /**
    * Retrieves a promise that will resolve to data returned by the
-   * application that resolves the raised intent. The promise will
-   * reject if an error is thrown by the intent handler or the promise
-   * returned by the intent handler is reject. If the intent handler
-   * does not return a promise this function will return null.
+   * application that resolves the raised intent. The promise MUST
+   * reject with a string from the `DataError` enumeration if an error 
+   * is thrown by the intent handler, it rejects the returned promise, 
+   * or it does not return a promise. 
    */
-  getData(): Promise<Context> | null;
+  getData(): Promise<Context>;
 }
