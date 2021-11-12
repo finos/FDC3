@@ -32,4 +32,7 @@ export interface AppMetadata {
 
   /** A list of image URLs for the application that can be used to render UI elements */
   readonly images?: Array<string>;
+
+  /** The type of any Context data returned for any intent specified during resolution */
+  readonly outputContext?: string | null;
 }

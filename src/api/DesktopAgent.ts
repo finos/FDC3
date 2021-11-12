@@ -42,7 +42,7 @@ export interface DesktopAgent {
   open(app: TargetApp, context?: Context): Promise<void>;
 
   /**
-   * Find out more information about a particular intent by passing its name, and optionally its context.
+   * Find out more information about a particular intent by passing its name, and optionally its context and/or a desired output context type.
    *
    * findIntent is effectively granting programmatic access to the Desktop Agent's resolver.
    * A promise resolving to the intent, its metadata and metadata about the apps that registered it is returned.
@@ -51,7 +51,7 @@ export interface DesktopAgent {
    * If the resolution fails, the promise will return an `Error` with a string from the `ResolveError` enumeration.
    *
    * ```javascript
-   * // I know 'StartChat' exists as a concept, and want to know more about it ...
+   * // I know 'StartChat' exists as a concept, and want to know which apps can resolve it ...
    * const appIntent = await fdc3.findIntent("StartChat");
    *
    * // returns a single AppIntent:
@@ -63,11 +63,31 @@ export interface DesktopAgent {
    * // raise the intent against a particular app
    * await fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
    * ```
+   *
+   * An optional input context object and output context type may be specified, which the resolver MUST use to filter the returned applications such that each supports the specified input and output types.
+   *
+   * ```javascript
+   * const appIntent = await fdc3.findIntent("StartChat", contact);
+   *
+   * // returns only apps that support the type of the specified input context:
+   * // {
+   * //     intent: { name: "StartChat", displayName: "Chat" },
+   * //     apps: { name: "Symphony" }]
+   * // }
+   *
+   * const appIntent = await fdc3.findIntent("ViewContact", "fdc3.ContactList");
+   *
+   * // returns only apps that return the specified output Context type:
+   * // {
+   * //     intent: { name: "ViewContact", displayName: "View Contact Details" },
+   * //     apps: { name: "MyCRM", outputContext: "fdc3.ContactList"}]
+   * // }
+   * ```
    */
-  findIntent(intent: string, context?: Context): Promise<AppIntent>;
+  findIntent(intent: string, context?: Context, outputContextType?: string): Promise<AppIntent>;
 
   /**
-   * Find all the avalable intents for a particular context.
+   * Find all the avalable intents for a particular context, and optionally a desired output context type.
    *
    * findIntents is effectively granting programmatic access to the Desktop Agent's resolver.
    * A promise resolving to all the intents, their metadata and metadata about the apps that registered it is returned,
@@ -76,7 +96,7 @@ export interface DesktopAgent {
    * If the resolution fails, the promise will return an `Error` with a string from the `ResolveError` enumeration.
    *
    * ```javascript
-   * // I have a context object, and I want to know what I can do with it, hence, I look for for intents...
+   * // I have a context object, and I want to know what I can do with it, hence, I look for intents and apps to resolve them...
    * const appIntents = await fdc3.findIntentsByContext(context);
    *
    * // returns for example:
@@ -87,19 +107,31 @@ export interface DesktopAgent {
    * // {
    * //     intent: { name: "StartChat", displayName: "Chat" },
    * //     apps: [{ name: "Skype" }, { name: "Symphony" }, { name: "Slack" }]
+   * // },
+   * // {
+   * //     intent: { name: "ViewContact", displayName: "View Contact" },
+   * //     apps: [{ name: "Symphony" }, { name: "MyCRM", outputContext: "fdc3.ContactList"}]
+   * // }];
+   *
+   * // or I look for only intents that are resolved by apps returning a particular context type
+   * const appIntentsForType = await fdc3.findIntentsByContext(context, "fdc3.ContactList");
+   * // returns for example:
+   * // [{
+   * //     intent: { name: "ViewContact", displayName: "View Contacts" },
+   * //     apps: [{ name: "MyCRM", outputContext: "fdc3.ContactList"}]
    * // }];
    *
    * // select a particular intent to raise
-   * const startChat = appIntents[1];
+   * const resolvedIntent = appIntents[0];
    *
    * // target a particular app
-   * const selectedApp = startChat.apps[0];
+   * const selectedApp = resolvedIntent.apps[0];
    *
    * // raise the intent, passing the given context, targeting the app
-   * await fdc3.raiseIntent(startChat.intent.name, context, selectedApp.name);
+   * await fdc3.raiseIntent(resolvedIntent.intent.name, context, selectedApp.name);
    * ```
    */
-  findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
+  findIntentsByContext(context: Context, outputContextType?: string): Promise<Array<AppIntent>>;
 
   /**
    * Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
@@ -122,7 +154,7 @@ export interface DesktopAgent {
   /**
    * Raises a specific intent for resolution against apps registered with the desktop agent.
    *
-   * The desktop agent MUST resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, the user MAY be presented with a Resolver UI allowing them to pick one, or another method of Resolution applied to select an app.
+   * The desktop agent MUST resolve the correct app to target based on the provided intent name and optional context data example. If multiple matching apps are found, the user MAY be presented with a Resolver UI allowing them to pick one, or another method of Resolution applied to select an app.
    * Alternatively, the specific app to target can also be provided. A list of valid target applications can be retrieved via `findIntent`.
    *
    * Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getData()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or no promise is returned then the Desktop Agent MUST reject the promise returned by the `getData()` function of the `IntentResolution` with a string from the `DataError` enumeration.
@@ -157,7 +189,7 @@ export interface DesktopAgent {
   raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
 
   /**
-   * Finds and raises an intent against apps registered with the desktop agent based purely on the type of the context data.
+   * Finds and raises an intent against apps registered with the desktop agent based on the type of the specified context data example.
    *
    * The desktop agent will first resolve to a specific intent based on the provided context if more than one intent is available for the specified context. This MAY be achieved by displaying a resolver UI. It SHOULD then resolve to a specific app to handle the selected intent and specified context.
    * Alternatively, the specific app to target can also be provided, in which case the resolver SHOULD only offer intents supported by the specified application.
@@ -169,8 +201,9 @@ export interface DesktopAgent {
    * If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the `ResolveError` enumeration is returned.
    *
    * ```javascript
-   * // Resolve against all intents registered for the specified context
+   * // Resolve against all intents registered for the type of the specified context
    * await fdc3.raiseIntentForContext(context);
+   *
    * // Resolve against all intents registered by a specific target app for the specified context
    * await fdc3.raiseIntentForContext(context, targetAppMetadata);
    * ```
