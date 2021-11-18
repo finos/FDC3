@@ -45,7 +45,7 @@ enum DataError {
 }
 ```
 
-Contains constants representing the errors that can be encountered when calling the [`getData`](DesktopAgent#findintent) method on the [IntentResolution](Metadata#intentresolution) Object.
+Contains constants representing the errors that can be encountered when calling the [`getResult`](DesktopAgent#findintent) method on the [IntentResolution](Metadata#intentresolution) Object.
 
 #### See also
 * [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)

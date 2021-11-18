@@ -140,7 +140,7 @@ interface IntentResolution {
    * returned by the intent handler is reject. If the intent handler 
    * does not return a promise this function will return null.
    */
-  getData(): Promise<Context> | null;
+  getResult(): Promise<Context> | null;
 }
 ```
 
@@ -172,7 +172,7 @@ Raise an intent and retrieve data from the IntentResolution:
 ```js
 let resolution = await agent.raiseIntent("intentName", context);
 try {
-    const result = await resolution.getData();
+    const result = await resolution.getResult();
     console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
 } catch(error) {
     console.error(`${resolution.source} returned a data error: ${error}`);
