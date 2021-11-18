@@ -307,7 +307,6 @@ try {
 catch (err){
   //app could not register the channel
 }
-
 ```
 
 #### See also

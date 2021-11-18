@@ -1,6 +1,6 @@
 /**
  * SPDX-License-Identifier: Apache-2.0
- * Copyright 2019 FINOS FDC3 contributors - see NOTICE file
+ * Copyright 2019-2021 FINOS FDC3 contributors - see NOTICE file
  */
 
 import { AppIntent } from './AppIntent';
@@ -10,6 +10,7 @@ import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
 import { ImplementationMetadata } from './ImplementationMetadata';
+import { PrivateChannel } from './PrivateChannel';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -276,12 +277,63 @@ export interface DesktopAgent {
   joinChannel(channelId: string): Promise<void>;
 
   /**
-   * Returns a channel with the given identity. Either stands up a new channel or returns an existing channel.
-   * It is up to applications to manage how to share knowledge of these custom channels across windows and to manage
+   * Returns a channel with the given identity. Either stands up a new channel
+   * or returns an existing channel. It is up to applications to manage how to 
+   * share knowledge of these custom channels across windows and to manage
    * channel ownership and lifecycle.
-   * `Error` with a string from the `ChannelError` enumeration.
+   * 
+   * If the Channel cannot be created, the returned promise MUST be rejected with 
+   * an error string from the `ChannelError` enumeration.
+   * 
+   * ```javascript
+   * try {
+   *   const myChannel = await fdc3.getOrCreateChannel("myChannel");
+   *   const myChannel.addContextListener(null, context => {});
+   * }
+   * catch (err){
+   *   //app could not register the channel
+   * }
+   * ```
    */
   getOrCreateChannel(channelId: string): Promise<Channel>;
+
+  /**
+   * Returns a channel with an auto-generated identity that is intended for private
+   * communication between applications. Primarily used to create Channels that
+   * will be returned to other applications via an IntentResolution for a raised
+   * intent. 
+   * 
+   * If the Channel cannot be created, the returned promise MUST be rejected with 
+   * an errpr string from the `ChannelError` enumeration.
+   * 
+   * ```javascript
+   * fdc3.addIntentListener("QuoteStream", async (context) => {
+   * 	const channel: PrivateChannel = await fdc3.createPrivateChannel();
+   * 	const symbol = context.id.ticker;
+   * 
+   * 	// This gets called when the remote side adds a context listener
+   * 	const addContextListener = channel.onAddContextListener((contextType) => {
+   * 		// broadcast price quotes as they come in from our fictional reuters quote feed
+   * 		reuters.onQuote(symbol, (price) => {
+   * 			channel.broadcast({ type: "price", price});
+   * 		})
+   * 	})
+   * 
+   * 	// This gets called when the remote side calls Listener.unsubscribe()
+   * 	const unsubscriberListener = channel.onUnsubscribe((contextType) => {
+   * 		reuters.stop(symbol);
+   * 	})
+   * 
+   * 	// This gets called if the remote side closes
+   * 	const disconnectListener = channel.onDisconnect(() => {
+   * 		reuters.stop(symbol);
+   * 	})
+   * 
+   * 	return channel;
+   * });
+   * ```
+   */
+  createPrivateChannel(): Promise<PrivateChannel>
 
   /**
    * Returns the `Channel` object for the current channel membership.
@@ -292,12 +344,13 @@ export interface DesktopAgent {
   /**
    * Removes the app from any channel membership.
    * Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not on a channel.
+   * 
    * ```javascript
    * //desktop-agent scope context listener
    * const fdc3Listener = fdc3.addContextListener(null, context => {});
    * await fdc3.leaveCurrentChannel();
    * //the fdc3Listener will now cease receiving context
-   * //listening on a specific channel though, will continue to work
+   * //listening on a specific channel, retrieved via fdc3.getOrCreateChannel(), will continue to work:
    * redChannel.addContextListener(null, channelListener);
    * ```
    */
