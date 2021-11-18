@@ -15,7 +15,7 @@ import { TargetApp } from './Types';
  * //resolve a "Client-Service" type intent with a data response
  * let resolution = await agent.raiseIntent("intentName", context);
  * try {
- * 	   const result = await resolution.getData();
+ * 	   const result = await resolution.getResult();
  *     if (result) {
  *         console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
  *     } else {
@@ -42,5 +42,5 @@ export interface IntentResolution {
    * is thrown by the intent handler, it rejects the returned promise,
    * or it does not return a promise.
    */
-  getData(): Promise<Context>;
+  getResult(): Promise<Context>;
 }
