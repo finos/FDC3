@@ -23,4 +23,4 @@ export type ContextHandler = (context: Context) => void;
  * raised the intent.
  * Used when attaching listeners for raised intents.
  */
-export type IntentHandler = (context: Context) => Promise<Context> | void;
+export type IntentHandler = (context: Context) => Promise<Context | PrivateChannel> | void;
