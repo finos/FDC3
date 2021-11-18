@@ -278,13 +278,13 @@ export interface DesktopAgent {
 
   /**
    * Returns a channel with the given identity. Either stands up a new channel
-   * or returns an existing channel. It is up to applications to manage how to 
+   * or returns an existing channel. It is up to applications to manage how to
    * share knowledge of these custom channels across windows and to manage
    * channel ownership and lifecycle.
-   * 
-   * If the Channel cannot be created, the returned promise MUST be rejected with 
+   *
+   * If the Channel cannot be created, the returned promise MUST be rejected with
    * an error string from the `ChannelError` enumeration.
-   * 
+   *
    * ```javascript
    * try {
    *   const myChannel = await fdc3.getOrCreateChannel("myChannel");
@@ -301,16 +301,16 @@ export interface DesktopAgent {
    * Returns a channel with an auto-generated identity that is intended for private
    * communication between applications. Primarily used to create Channels that
    * will be returned to other applications via an IntentResolution for a raised
-   * intent. 
-   * 
-   * If the Channel cannot be created, the returned promise MUST be rejected with 
+   * intent.
+   *
+   * If the Channel cannot be created, the returned promise MUST be rejected with
    * an errpr string from the `ChannelError` enumeration.
-   * 
+   *
    * ```javascript
    * fdc3.addIntentListener("QuoteStream", async (context) => {
    * 	const channel: PrivateChannel = await fdc3.createPrivateChannel();
    * 	const symbol = context.id.ticker;
-   * 
+   *
    * 	// This gets called when the remote side adds a context listener
    * 	const addContextListener = channel.onAddContextListener((contextType) => {
    * 		// broadcast price quotes as they come in from our fictional reuters quote feed
@@ -318,22 +318,22 @@ export interface DesktopAgent {
    * 			channel.broadcast({ type: "price", price});
    * 		})
    * 	})
-   * 
+   *
    * 	// This gets called when the remote side calls Listener.unsubscribe()
    * 	const unsubscriberListener = channel.onUnsubscribe((contextType) => {
    * 		reuters.stop(symbol);
    * 	})
-   * 
+   *
    * 	// This gets called if the remote side closes
    * 	const disconnectListener = channel.onDisconnect(() => {
    * 		reuters.stop(symbol);
    * 	})
-   * 
+   *
    * 	return channel;
    * });
    * ```
    */
-  createPrivateChannel(): Promise<PrivateChannel>
+  createPrivateChannel(): Promise<PrivateChannel>;
 
   /**
    * Returns the `Channel` object for the current channel membership.
@@ -344,7 +344,7 @@ export interface DesktopAgent {
   /**
    * Removes the app from any channel membership.
    * Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not on a channel.
-   * 
+   *
    * ```javascript
    * //desktop-agent scope context listener
    * const fdc3Listener = fdc3.addContextListener(null, context => {});

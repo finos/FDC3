@@ -43,7 +43,7 @@ export interface IntentResolution {
    * is thrown by the intent handler, it rejects the returned promise,
    * or it does not return a promise.
    */
-   getData(): Promise<Context>;
+  getData(): Promise<Context>;
 
   /**
    * Retrieves a promise that will resolve to data returned by the
@@ -54,13 +54,13 @@ export interface IntentResolution {
    */
   getData(): Promise<Context>;
 
-	/**
-   * Retrieves a promise that will resolve to a `Channel` established 
+  /**
+   * Retrieves a promise that will resolve to a `Channel` established
    * and returned by the app resolving the intent. The `Channel` returned
-   * will often be of the `PrivateChannel` type. The client can then 
-   * `addContextListener()` on that channel to, for example, receive a stream 
-   * of data.  The promise MUST reject with a string from the `DataError` 
-   * enumeration if an error is thrown by the intent handler, it rejects the 
+   * will often be of the `PrivateChannel` type. The client can then
+   * `addContextListener()` on that channel to, for example, receive a stream
+   * of data.  The promise MUST reject with a string from the `DataError`
+   * enumeration if an error is thrown by the intent handler, it rejects the
    * returned promise, or it does not return a promise of a Channel object.
    */
   getChannel(): Promise<Channel>;
