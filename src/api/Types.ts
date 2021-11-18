@@ -5,6 +5,7 @@
 
 import { AppMetadata } from '..';
 import { Context } from '../context/ContextTypes';
+import { PrivateChannel } from './PrivateChannel';
 
 /**
  * Operations that target apps (like open or raiseIntent) can identify
