@@ -157,7 +157,7 @@ export interface DesktopAgent {
    * The desktop agent MUST resolve the correct app to target based on the provided intent name and optional context data example. If multiple matching apps are found, the user MAY be presented with a Resolver UI allowing them to pick one, or another method of Resolution applied to select an app.
    * Alternatively, the specific app to target can also be provided. A list of valid target applications can be retrieved via `findIntent`.
    *
-   * Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getData()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or no promise is returned then the Desktop Agent MUST reject the promise returned by the `getData()` function of the `IntentResolution` with a string from the `DataError` enumeration.
+   * Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getResult()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or no promise is returned then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution` with a string from the `DataError` enumeration.
    *
    * If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the `ResolveError` enumeration MUST be returned.
    *
@@ -179,7 +179,7 @@ export interface DesktopAgent {
    * //Raise an intent and retrieve data from the IntentResolution
    * let resolution = await agent.raiseIntent("intentName", context);
    * try {
-   * 	   const result = await resolution.getData();
+   * 	   const result = await resolution.getResult();
    *     console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
    * } catch(error) {
    *     console.error(`${resolution.source} returned a data error: ${error}`);
@@ -196,7 +196,7 @@ export interface DesktopAgent {
    *
    * Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
    *
-   * Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getData()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or no promise is returned then the Desktop Agent MUST reject the promise returned by the `getData()` function of the `IntentResolution` with a string from the `DataError` enumeration.
+   * Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getResult()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or no promise is returned then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution` with a string from the `DataError` enumeration.
    *
    * If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the `ResolveError` enumeration is returned.
    *
@@ -216,7 +216,7 @@ export interface DesktopAgent {
    * any data that should be returned to app that raised the intent. If an error is
    * thrown by the handler function, the promise returned is rejected, or a promise
    * is not returned then the Desktop Agent MUST reject the promise returned by the
-   * `getData()` function of the `IntentResolution`.
+   * `getResult()` function of the `IntentResolution`.
    *
    * ```javascript
    * //Handle a raised intent
