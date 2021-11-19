@@ -134,13 +134,20 @@ interface IntentResolution {
    */
   readonly version?: string;
   /**
-   * Retrieves a promise that will resolve to data returned by the
-   * application that resolves the raised intent. The promise will 
-   * reject if an error is thrown by the intent handler or the promise
-   * returned by the intent handler is reject. If the intent handler 
-   * does not return a promise this function will return null.
+   * Retrieves a promise that will resolve to either `Context` data returned 
+   * by the application that resolves the raised intent or a `Channel` 
+   * established and returned by the app resolving the intent. 
+   * 
+   * A `Channel` returned will often be of the `PrivateChannel` type. The 
+   * client can then `addContextListener()` on that channel to, for example, 
+   * receive a stream of data.
+   * 
+   * The promise MUST reject with a string from the `ResultError` enumeration 
+   * if an error is thrown by the intent handler, it rejects the returned 
+   * promise, it does not return a promise or the promise resolves to an
+   * object of an invalid type.
    */
-  getResult(): Promise<Context> | null;
+   getResult(): Promise<IntentResult>;
 }
 ```
 
@@ -151,11 +158,17 @@ IntentResolution provides a standard format for data returned upon resolving an 
 //resolve a "Chain" type intent
 let resolution = await agent.raiseIntent("intentName", context);
 
-//resolve a "Client-Service" type intent with a data response
+//resolve a "Client-Service" type intent with a data or channel response
 let resolution = await agent.raiseIntent("intentName", context);
 try {
 	  const result = await resolution.getResult();
-    console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+    if (result && result.broadcast) { //detect whether the result is Context or a Channel
+        console.log(`${resolution.source} returned a channel with id ${result.id}`);
+    } else if (){
+        console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);
+    } else {
+        console.error(`${resolution.source} didn't return anything`
+    }
 } catch(error) {
     console.error(`${resolution.source} returned an error: ${error}`);
 }
