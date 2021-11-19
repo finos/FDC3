@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added advice on how to `broadcast` complex context types, composed of other types, so that other apps can listen for both the complex type and simpler constituent types ([#464](https://github.com/finos/FDC3/pull/464))
 * Added the ability to return data from an intent, via the addition of an IntentHandler type and a `getResult()` to IntentResolution, both of which return a Promise of a Context object. ([#495](https://github.com/finos/FDC3/pull/495))
 * Added a field to specify the Context type that intent can return to the AppD Application schema and extended the findIntent API calls to be able to use it for resolution. ([#499](https://github.com/finos/FDC3/pull/499))
+* Added the ability to return a Channel from an intent (via the `IntentResult` type), resolver support for intents that return Channels and the concept of PrivateChannels. ([#508](https://github.com/finos/FDC3/pull/508))
 ### Changed
 * Consolidated `Listener` documentation with other types ([#404](https://github.com/finos/FDC3/pull/404))
 * Updated definition of the `Position` context type to support negative (short) positions ([#419](https://github.com/finos/FDC3/pull/419))
