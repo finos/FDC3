@@ -37,18 +37,18 @@ export interface IntentResolution {
    */
   readonly version?: string;
   /**
-   * Retrieves a promise that will resolve to either `Context` data returned 
-   * by the application that resolves the raised intent or a `Channel` 
-   * established and returned by the app resolving the intent. 
-   * 
-   * A `Channel` returned will often be of the `PrivateChannel` type. The 
-   * client can then `addContextListener()` on that channel to, for example, 
+   * Retrieves a promise that will resolve to either `Context` data returned
+   * by the application that resolves the raised intent or a `Channel`
+   * established and returned by the app resolving the intent.
+   *
+   * A `Channel` returned will often be of the `PrivateChannel` type. The
+   * client can then `addContextListener()` on that channel to, for example,
    * receive a stream of data.
-   * 
-   * The promise MUST reject with a string from the `DataError` enumeration 
-   * if an error is thrown by the intent handler, it rejects the returned 
+   *
+   * The promise MUST reject with a string from the `ResultError` enumeration
+   * if an error is thrown by the intent handler, it rejects the returned
    * promise, it does not return a promise or the promise resolves to an
    * object of an invalid type.
    */
-   getResult(): Promise<IntentResult>;
+  getResult(): Promise<IntentResult>;
 }

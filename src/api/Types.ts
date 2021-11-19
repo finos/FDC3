@@ -24,8 +24,8 @@ export type ContextHandler = (context: Context) => void;
 export type IntentResult = Context | Channel;
 /**
  * Describes a callback that handles a context event and may return a
- * promise of a Context object to be returned to the application that
- * raised the intent.
+ * promise of a Context or Channel object to be returned to the
+ * application that raised the intent.
  * Used when attaching listeners for raised intents.
  */
 export type IntentHandler = (context: Context) => Promise<IntentResult> | void;

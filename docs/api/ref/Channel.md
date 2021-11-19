@@ -54,7 +54,7 @@ Uniquely identifies the channel. It is either assigned by the desktop agent (sys
 public readonly type: string;
 ```
 
-Can be _system_ or _app_.
+Can be _system_,  _app_ or _private_.
 
 ### `displayMetadata`
 

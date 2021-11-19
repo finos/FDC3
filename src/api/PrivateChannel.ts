@@ -40,7 +40,7 @@ export interface PrivateChannel extends Channel {
   onUnsubscribe(handler: (contextType?: string) => void): Listener;
 
   /**
-   * Adds a listener that will be called when the remote aoo terminates, for example
+   * Adds a listener that will be called when the remote app terminates, for example
    * when its window is closed or because disconnect was called. This is in addition
    * to calls that will be made to an onUnsubscribe listeners.
    */

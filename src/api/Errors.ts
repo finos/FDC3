@@ -16,8 +16,8 @@ export enum ResolveError {
   ResolverTimeout = 'ResolverTimeout',
 }
 
-export enum DataError {
-  NoDataReturned = 'NoDataReturned',
+export enum ResultError {
+  NoResultReturned = 'NoResultReturned',
   IntentHandlerRejected = 'IntentHandlerRejected',
 }
 

@@ -36,11 +36,11 @@ Contains constants representing the errors that can be encountered when calling 
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
 
-## `DataError`
+## `ResultError`
 
 ```typescript
-enum DataError {
-  NoDataReturned = 'NoDataReturned',
+enum ResultError {
+  NoResultReturned = 'NoResultReturned',
   IntentHandlerRejected = 'IntentHandlerRejected',
 }
 ```

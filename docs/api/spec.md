@@ -23,6 +23,7 @@ The FDC3 API specification consists of interfaces.  It is expected that each Des
 
 - `DesktopAgent`
 - `Channel`
+- `PrivateChannel`
 - `Listener`
 
 Other interfaces defined in the spec are not critical to define as concrete types.  Rather, the Desktop Agent should expect to have objects of the interface shape passed into or out of their library.  These interfaces include:
@@ -105,7 +106,9 @@ A Context type may also be associated with multiple Intents. For example, an `fd
 
 To raise an Intent without a context, use the [`fdc3.nothing`](../context/ref/Nothing) context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an Intent listener or in an App Directory).
 
-An optional context object may also be returned as output by an application hanling an intent. For example, an application handling a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.
+An optional `IntentResult` may also be returned as output by an application handling an intent. Results maybe either a single context object or a channel, that may be used to send a stream of responses. The `PrivateChannel` type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
+
+For example, an application handling a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.
 
 An optional output context type is also supported when programmatically resolving an intent via [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext).
 
@@ -136,13 +139,20 @@ interface IntentResolution {
    */
   readonly version?: string;
   /**
-   * Retrieves a promise that will resolve to data returned by the
-   * application that resolves the raised intent. The promise will 
-   * reject if an error is thrown by the intent handler or the promise
-   * returned by the intent handler is reject. If the intent handler 
-   * does not return a promise this function will return null.
+   * Retrieves a promise that will resolve to either `Context` data returned 
+   * by the application that resolves the raised intent or a `Channel` 
+   * established and returned by the app resolving the intent. 
+   * 
+   * A `Channel` returned will often be of the `PrivateChannel` type. The 
+   * client can then `addContextListener()` on that channel to, for example, 
+   * receive a stream of data.
+   * 
+   * The promise MUST reject with a string from the `ResultError` enumeration 
+   * if an error is thrown by the intent handler, it rejects the returned 
+   * promise, it does not return a promise or the promise resolves to an
+   * object of an invalid type.
    */
-  getResult(): Promise<Context> | null;
+   getResult(): Promise<IntentResult>;
 }
 ```
 
@@ -170,14 +180,20 @@ catch (er){
 }
 ```
 
-Raise an intent and retrieve data from the IntentResolution:
+Raise an intent and retrieve either data or a channel from the IntentResolution:
 ```js
 let resolution = await agent.raiseIntent("intentName", context);
 try {
-    const result = await resolution.getResult();
-    console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+  const result = await resolution.getResult();
+  if (result && result.broadcast) { //detect whether the result is Context or a Channel
+    console.log(`${resolution.source} returned a channel with id ${result.id}`);
+  } else if (){
+    console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);
+  } else {
+    console.error(`${resolution.source} didn't return anything`
+  }
 } catch(error) {
-    console.error(`${resolution.source} returned a data error: ${error}`);
+  console.error(`${resolution.source} returned a data error: ${error}`);
 }
 ```
 
@@ -228,7 +244,9 @@ Intents represent a contract with expected behavior if an app asserts that it su
 It is expected that App Directories will also curate listed apps and ensure that they are complying with declared intents.
 
 ### Send/broadcast Context
-On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features. However, a Desktop Agent should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.
+On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features. However, a Desktop Agent SHOULD ensure that context messages broadcast to a channel by an application joined to it are not delivered back to that same application.
+
+In some cases, application want to communicate with a single application or service and to prevent other applications from participating in the communication. For single transactions, this can be implemented via a raised intent, which will be delivered to single application that can, optionally, respond with data. Alternatively, it may instead respond with a `Channel` or `PrivateChannel` over which a stream of responses or a dialog can be supported.
 
 ### Retrieve Metadata about the Desktop Agent implementation
 From version 1.2 of the FDC3 specification, it is possible to retrieve information about the  version of the FDC3 specification supported by a Desktop Agent implementation and the name of the implementation provider. This metadata can be used to vary the behavior of an application based on the version supported by the Desktop Agent, e.g.:
@@ -247,7 +265,7 @@ if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), '1.2')) {
 
 Context channels allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.  Use cases for channels include color linking between applications to automate the sharing of context and topic based pub/sub such as theme.
 
-There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics.
+There are three types of channels, which have different visibility and discoverability semantics:
 
 1. The 'system' channels, which have a well understood identity.
 
@@ -256,6 +274,8 @@ There are two types of channels, which are functionally identical, but have diff
     (see [below](#the-global-channel) for more detail).
 
 2. The 'app' channels, which have a transient identity and need to be revealed
+
+3. 'private' channels, which support private communication between two parties, have a transient and auto-generated identity and can only be retrieved via a raised intent.
 
 
 ### Joining Channels
@@ -319,8 +339,6 @@ The [Context specification](../../context/spec#assumptions) recommends that comp
 
 To facilitate context linking in such situations it is recommended that applications `broadcast` each context type that other apps (listening on a System channel or App channel) may wish to process, starting with the simpler types, followed by the complex type. Doing so allows applications to filter the context types they receive by adding listeners for specific context types - but requires that the application broadcasting context make multiple broadcast calls in quick succession when sharing its context.
 
-
-
 ### Examples
 To find a system channel, one calls
 
@@ -329,7 +347,7 @@ To find a system channel, one calls
 const allChannels = await fdc3.getSystemChannels();
 const redChannel = allChannels.find(c => c.id === 'red');
 ```
-#### Joining channels
+### Joining channels
 
 To join a system channel. one calls
 
@@ -341,7 +359,7 @@ Calling _fdc3.broadcast_ will now route context to the joined channel.
 
 Channel implementations should ensure that context messages broadcast by an application on a channel should not be delivered back to that same application if they are joined to the channel.
 
-#### App Channels
+### App Channels
 
 App channels are topics dynamically created by applications connected via FDC3. For example, an app may create a channel to broadcast to others data or status specific to that app.
 
@@ -357,6 +375,17 @@ appChannel.addContextListener(null, context => {...});
 appChannel.broadcast(context);
 
 ```
+
+### Private Channels
+
+Private Channels are created to support the return of a stream of responses from a raised intent, or  private dialog between two applications. 
+
+It is intended that Desktop Agent implementations:
+ * - SHOULD restrict external apps from listening or publishing on this channel.
+ * - MUST prevent private channels from being retrieved via fdc3.getOrCreateChannel.
+ * - MUST provide the `id` value for the channel as required by the Channel interface.
+
+The `PrivateChannel` type also supports synchronisation of data transmitted over returned channels. They do so by extending the Channel interface with event handlers which provide information on the connection state of both parties, ensuring that desktop agents do not need to queue or retain messages that are broadcast before a context listener is added and that applications are able to stop broadcasting messages when the other party has disconnected.
 
 ## APIs
 The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
