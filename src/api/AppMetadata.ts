@@ -33,6 +33,6 @@ export interface AppMetadata {
   /** A list of image URLs for the application that can be used to render UI elements */
   readonly images?: Array<string>;
 
-  /** The type of any Context data returned for any intent specified during resolution */
-  readonly outputContext?: string | null;
+  /** The type of output returned for any intent specified during resolution. May express a particular context type (e.g. "fdc3.instrument"), channel (e.g. "channel") or a channel that will receive a specified type (e.g. "channel<fdc3.instrument>"). */
+  readonly output?: string | null;
 }

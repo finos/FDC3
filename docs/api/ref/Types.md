@@ -70,7 +70,7 @@ Used when attaching listeners for raised intents.
 type IntentResult = Context | Channel;
 ```
 
-Describes results that an Intent handler may optionally return that should be communicated back to the app that raised the intent, via the `IntentResolution`. 
+Describes results that an Intent handler may optionally return that should be communicated back to the app that raised the intent, via the [`IntentResolution`](Metadata#intentresolution). 
 
 Represented as a union type in Typescript, however, this type may be rendered as an interface in other languages that both the Context and Channel types implement, allowing either to be returned by an intent handler.
 
