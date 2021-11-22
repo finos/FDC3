@@ -34,5 +34,5 @@ export interface AppMetadata {
   readonly images?: Array<string>;
 
   /** The type of output returned for any intent specified during resolution. May express a particular context type (e.g. "fdc3.instrument"), channel (e.g. "channel") or a channel that will receive a specified type (e.g. "channel<fdc3.instrument>"). */
-  readonly output?: string | null;
+  readonly resultType?: string | null;
 }

@@ -41,11 +41,11 @@ interface AppMetadata {
   readonly icons?: Array<Icon>;
   /** A list of image URLs for the application that can be used to render UI elements */
   readonly images?: Array<string>;
-  /** The type of output returned for any intent specified during resolution. 
+  /** The type of result returned for any intent specified during resolution. 
    * May express a particular context type (e.g. "fdc3.instrument"), channel 
    * (e.g. "channel") or a channel that will receive a specified type 
    * (e.g. "channel<fdc3.instrument>"). */
-  readonly output?: string | null;
+  readonly resultType?: string | null;
 }
 ```
 
