@@ -25,29 +25,53 @@ For each intent, it reference the applications that support that intent.
 
 ```ts
 interface AppMetadata {
-  name: string;
-  appId?: string;
-  version?: string;
-  title?: string;
-  tooltip?: string;
-  description?: string;
-  icons?: Array<Icon>;
-  images?: Array<string>;
+  /** The unique app name that can be used with the open and raiseIntent calls. */
+  readonly name: string;
+
+  /** The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root' */
+  readonly appId?: string;
+
+  /** The Version of the application. */
+  readonly version?: string;
+
+  /** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/
+  readonly instanceId?: string;
+
+  /** An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set. */
+  readonly instanceMetadata?: Record<string, any>;
+
+  /** A more user-friendly application title that can be used to render UI elements  */
+  readonly title?: string;
+
+  /**  A tooltip for the application that can be used to render UI elements */
+  readonly tooltip?: string;
+
+  /** A longer, multi-paragraph description for the application that could include markup */
+  readonly description?: string;
+
+  /** A list of icon URLs for the application that can be used to render UI elements */
+  readonly icons?: Array<Icon>;
+
+  /** A list of image URLs for the application that can be used to render UI elements */
+  readonly images?: Array<string>;
 }
 ```
 
-App metadata is provided by the FDC3 App Directory that the desktop agent connects to.
+Describes an application, or instance of an application, using metadata that is usually  provided by an FDC3 App Directory that the desktop agent connects to.
 
-It always includes at least a `name` property, which can be used with [`open`](DesktopAgent#open) and [`raiseIntent`](DesktopAgent#raiseIntent).
+Will always includes at least a `name` property, which can be used with [`open`](DesktopAgent#open) and [`raiseIntent`](DesktopAgent#raiseIntent). If the `instanceId` filed is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.
 
-Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu.
-This includes a title, description, tooltip and icon and image URLs.
+Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu. This includes a title, description, tooltip and icon and image URLs.
 
 In situations where a desktop agent connects to multiple app directories or multiple versions of the same app exists in a single app directory, it may be neccessary to specify appId and version to target applications that share the same name.
+
+`AppMetadata`
 
 #### See also
 * [`AppIntent.apps`](AppIntent)
 * [`Icon`](Icon)
+* [`DesktopAgent.findIntent`](DesktopAgent#findintent)
+* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 
 ## `DisplayMetadata`
 
@@ -126,21 +150,39 @@ The Interface used to describe an Intent within the platform.
 
 ```ts
 interface IntentResolution {
-  source: TargetApp;
+  /** 
+   * Metadata about the app instance that was selected (or started) to resolve the intent.
+   * `source.instanceId` MUST be set, indicating the specific app instance that 
+   * received the intent.
+   */
+  readonly source: AppMetadata;
   /**
-  * @deprecated not assignable from intent listeners
-  */
-  data?: object;
-  version: string;
+   * @deprecated not assignable from intent listeners
+   */
+  readonly data?: object;
+  /**
+   * The version number of the Intents schema being used.
+   */
+  readonly version: string;
 }
 ```
 
 IntentResolution provides a standard format for data returned upon resolving an intent.
 
-#### Example
+#### Examples
 ```js
 // resolve a "Chain" type intent
-const intentResolution = await fdc3.raiseIntent("intentName", context);
+let resolution = await fdc3.raiseIntent("intentName", context);
+
+// Use metadata about the resolving app instance to target a further intent
+try {
+  const resolution = await fdc3.raiseIntent('StageOrder', context);
+  ...
+
+  //some time later
+  await agent.raiseIntent("UpdateOrder", context, resolution.source);
+}
+catch (err) { ... }
 ```
 
 #### See also
