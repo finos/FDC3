@@ -109,7 +109,7 @@ To raise an Intent without a context, use the `fdc3.nothing` context type. This 
 Raising an Intent will return a Promise-type object that will resolve/reject based on a number of factors.
 
 ##### Resolve
-- Intent was resolved unambiguously and the receiving app was launched successfully.
+- Intent was resolved unambiguously and the receiving app was launched successfully (if necessary).
 - Intent was ambiguous, a resolution was chosen by the end user, and the chosen application was launched successfully.
 
 ##### Reject

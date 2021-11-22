@@ -16,6 +16,7 @@ It is expected that the `DesktopAgent` interface is made availabe via the [`wind
 interface DesktopAgent {
   // apps
   open(app: TargetApp, context?: Context): Promise<void>;
+  findInstances(app: TargetApp): Promise<Array<AppMetadata>>;
 
   // context
   broadcast(context: Context): void;
@@ -120,6 +121,27 @@ fdc3.broadcast(instrument);
 ```
 #### See also
 * [addContextListener](#addcontextlistener)
+
+### `findInstances`
+
+```ts
+findInstances(app: TargetApp): Promise<Array<AppMetadata>>;
+```
+
+Find all the available instances for a particular application.
+
+If there are no instances of the specified application the returned promise should resolve to an empty array.
+
+If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
+
+### Example
+```js
+// Retrieve a list of instances of an application
+let instances = await fdc3.findInstances({name: "MyApp"});
+
+// Target a raised intent at a specific instance
+let resolution = fdc3.raiseIntent("ViewInstrument", context, instances[0]);
+```
 
 
 ### `findIntent`

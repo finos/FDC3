@@ -91,7 +91,7 @@ export interface DesktopAgent {
   findIntent(intent: string, context?: Context): Promise<AppIntent>;
 
   /**
-   * Find all the avalable intents for a particular context.
+   * Find all the available intents for a particular context.
    *
    * findIntents is effectively granting programmatic access to the Desktop Agent's resolver.
    * A promise resolving to all the intents, their metadata and metadata about the apps and app instance that registered it is returned, based on the context types the intents have registered.
@@ -130,6 +130,24 @@ export interface DesktopAgent {
    * ```
    */
   findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
+
+  /**
+   * Find all the available instances for a particular application.
+   *
+   * If there are no instances of the specified application the returned promise should resolve to an empty array.
+   *
+   * If the request fails for another reason, the promise will return an `Error` with a string from the `ResolveError` enumeration.
+   *
+   * ```javascript
+   * // Retrieve a list of instances of an application
+   * let instances = await fdc3.findInstances({name: "MyApp"});
+   *
+   * // Target a raised intent at a specific instance
+   * let resolution = fdc3.raiseIntent("ViewInstrument", context, instances[0]);
+   * ```
+   * @param app
+   */
+  findInstances(app: TargetApp): Promise<Array<AppMetadata>>;
 
   /**
    * Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
