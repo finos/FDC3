@@ -26,8 +26,8 @@ interface DesktopAgent {
   addContextListener(handler: ContextHandler): Listener;
 
   // intents
-  findIntent(intent: string, context?: Context, outputContextType?: string): Promise<AppIntent>;
-  findIntentsByContext(context: Context, outputContextType?: string): Promise<Array<AppIntent>>;
+  findIntent(intent: string, context?: Context, resultContextType?: string): Promise<AppIntent>;
+  findIntentsByContext(context: Context, resultContextType?: string): Promise<Array<AppIntent>>;
   raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
   raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: IntentHandler): Listener;
@@ -80,7 +80,9 @@ const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ...
 ```ts
 addIntentListener(intent: string, handler: IntentHandler): Listener;
 ```
- Adds a listener for incoming Intents from the Agent. The handler function may return void or a promise that should resolve to a context object representing any data that should be returned to app that raised the intent. If an error is thrown by the handler function, the promise returned is rejected, or a promise is not returned then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution`.
+Adds a listener for incoming Intents from the Desktop Agent. The handler function may return void or a promise that resolves to a context object (data that should be returned to app that raised the intent).
+
+The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.
 
 #### Examples
 
@@ -137,10 +139,10 @@ fdc3.broadcast(instrument);
 ### `findIntent`
 
 ```ts
-findIntent(intent: string, context?: Context, outputContextType?: string): Promise<AppIntent>;
+findIntent(intent: string, context?: Context, resultContextType?: string): Promise<AppIntent>;
 ```
 
-Find out more information about a particular intent by passing its name, and optionally its context and/or a desired output context type.
+Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result context type.
 
 `findIntent` is effectively granting programmatic access to the Desktop Agent's resolver.
 It returns a promise resolving to the intent, its metadata and metadata about the apps that are registered to handle it.
@@ -163,7 +165,7 @@ const appIntent = await fdc3.findIntent("StartChat");
 await fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
 ```
 
-An optional input context object and/or output context type may be specified, which the resolver MUST use to filter the returned applications such that each supports the specified input and output types.
+An optional input context object and/or result context type may be specified, which the resolver MUST use to filter the returned applications such that each supports the specified input and result types.
 ```js
 const appIntent = await fdc3.findIntent("StartChat", contact);
 
@@ -174,10 +176,10 @@ const appIntent = await fdc3.findIntent("StartChat", contact);
 // }
 
 const appIntent = await fdc3.findIntent("ViewContact", "fdc3.ContactList");
-// returns only apps that return the specified output Context type:
+// returns only apps that return the specified result Context type:
 // {
 //     intent: { name: "ViewContact", displayName: "View Contact Details" },
-//     apps: { name: "MyCRM", outputContext: "fdc3.ContactList"}]
+//     apps: { name: "MyCRM", resultContext: "fdc3.ContactList"}]
 // }
 ```
 
@@ -187,10 +189,10 @@ const appIntent = await fdc3.findIntent("ViewContact", "fdc3.ContactList");
 ### `findIntentsByContext`
 
 ```ts
-findIntentsByContext(context: Context, outputContextType?: string): Promise<Array<AppIntent>>;
+findIntentsByContext(context: Context, resultContextType?: string): Promise<Array<AppIntent>>;
 ```
 
-Find all the avalable intents for a particular context, and optionally a desired output context type.
+Find all the avalable intents for a particular context, and optionally a desired result context type.
 
 `findIntentsByContext` is effectively granting programmatic access to the Desktop Agent's resolver.
 A promise resolving to all the intents, their metadata and metadata about the apps that registered as handlers is returned, based on the context types the intents have registered.
@@ -214,7 +216,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 // },
 // {
 //     intent: { name: "ViewContact", displayName: "View Contact" },
-//     apps: [{ name: "Symphony" }, { name: "MyCRM", outputContext: "fdc3.ContactList"}]
+//     apps: [{ name: "Symphony" }, { name: "MyCRM", resultContext: "fdc3.ContactList"}]
 // }];
 ```
 
@@ -224,7 +226,7 @@ const appIntentsForType = await fdc3.findIntentsByContext(context, "fdc3.Contact
 // returns for example:
 // [{
 //     intent: { name: "ViewContact", displayName: "View Contacts" },
-//     apps: [{ name: "MyCRM", outputContext: "fdc3.ContactList"}]
+//     apps: [{ name: "MyCRM", resultContext: "fdc3.ContactList"}]
 // }];
  
 // select a particular intent to raise
@@ -436,7 +438,7 @@ Alternatively, the specific app to target can also be provided. A list of valid 
 
 If you wish to raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
 
-Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getResult()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or a promse is not returned then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution` with a string from the `DataError` enumeration. 
+Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getResult()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or a promse is not returned then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution` with a string from the `ResultError` enumeration. 
 
 If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolverrror) enumeration is returned.
 
@@ -486,7 +488,7 @@ Alternatively, the specific app to target can also be provided, in which case an
 
 Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
 
-Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getResult()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or a promse is not returned then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution` with a string from the `DataError` enumeration. 
+Returns an `IntentResolution` object, see [`raiseIntent()`](#raiseintent) for details.
 
 If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned.
 
@@ -501,6 +503,7 @@ await fdc3.raiseIntentForContext(context, targetAppMetadata);
 ```
 
 #### See also
+* [`raiseIntent()`](#raiseintent)
 * [`Context`](Types#context)
 * [`TargetApp`](Types#targetapp)
 * [`IntentResolution`](Metadata#intentresolution)
