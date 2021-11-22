@@ -382,10 +382,10 @@ components:
           description: >-
             A comma separated list of the types of contexts the intent offered by the application can process. 
             where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
-        outputContext:
+        resultContext:
           type: string
           description: >-
-            The type of context return by the application when resolving this intent. E.g. "fdc3.instrument"
+            The type of context returned by the application, if any, when resolving this intent. E.g. "fdc3.instrument"
         customConfig:
           type: object
           description: >-

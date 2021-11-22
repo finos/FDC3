@@ -42,7 +42,7 @@ export interface DesktopAgent {
   open(app: TargetApp, context?: Context): Promise<void>;
 
   /**
-   * Find out more information about a particular intent by passing its name, and optionally its context and/or a desired output context type.
+   * Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result context type.
    *
    * findIntent is effectively granting programmatic access to the Desktop Agent's resolver.
    * A promise resolving to the intent, its metadata and metadata about the apps that registered it is returned.
@@ -64,7 +64,7 @@ export interface DesktopAgent {
    * await fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
    * ```
    *
-   * An optional input context object and output context type may be specified, which the resolver MUST use to filter the returned applications such that each supports the specified input and output types.
+   * An optional input context object and result context type may be specified, which the resolver MUST use to filter the returned applications such that each supports the specified input and result types.
    *
    * ```javascript
    * const appIntent = await fdc3.findIntent("StartChat", contact);
@@ -77,17 +77,17 @@ export interface DesktopAgent {
    *
    * const appIntent = await fdc3.findIntent("ViewContact", "fdc3.ContactList");
    *
-   * // returns only apps that return the specified output Context type:
+   * // returns only apps that return the specified result Context type:
    * // {
    * //     intent: { name: "ViewContact", displayName: "View Contact Details" },
-   * //     apps: { name: "MyCRM", outputContext: "fdc3.ContactList"}]
+   * //     apps: { name: "MyCRM", resultContext: "fdc3.ContactList"}]
    * // }
    * ```
    */
-  findIntent(intent: string, context?: Context, outputContextType?: string): Promise<AppIntent>;
+  findIntent(intent: string, context?: Context, resultContextType?: string): Promise<AppIntent>;
 
   /**
-   * Find all the avalable intents for a particular context, and optionally a desired output context type.
+   * Find all the avalable intents for a particular context, and optionally a desired result context type.
    *
    * findIntents is effectively granting programmatic access to the Desktop Agent's resolver.
    * A promise resolving to all the intents, their metadata and metadata about the apps that registered it is returned,
@@ -110,7 +110,7 @@ export interface DesktopAgent {
    * // },
    * // {
    * //     intent: { name: "ViewContact", displayName: "View Contact" },
-   * //     apps: [{ name: "Symphony" }, { name: "MyCRM", outputContext: "fdc3.ContactList"}]
+   * //     apps: [{ name: "Symphony" }, { name: "MyCRM", resultContext: "fdc3.ContactList"}]
    * // }];
    *
    * // or I look for only intents that are resolved by apps returning a particular context type
@@ -118,7 +118,7 @@ export interface DesktopAgent {
    * // returns for example:
    * // [{
    * //     intent: { name: "ViewContact", displayName: "View Contacts" },
-   * //     apps: [{ name: "MyCRM", outputContext: "fdc3.ContactList"}]
+   * //     apps: [{ name: "MyCRM", resultContext: "fdc3.ContactList"}]
    * // }];
    *
    * // select a particular intent to raise
@@ -131,7 +131,7 @@ export interface DesktopAgent {
    * await fdc3.raiseIntent(resolvedIntent.intent.name, context, selectedApp.name);
    * ```
    */
-  findIntentsByContext(context: Context, outputContextType?: string): Promise<Array<AppIntent>>;
+  findIntentsByContext(context: Context, resultContextType?: string): Promise<Array<AppIntent>>;
 
   /**
    * Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
@@ -157,7 +157,9 @@ export interface DesktopAgent {
    * The desktop agent MUST resolve the correct app to target based on the provided intent name and optional context data example. If multiple matching apps are found, the user MAY be presented with a Resolver UI allowing them to pick one, or another method of Resolution applied to select an app.
    * Alternatively, the specific app to target can also be provided. A list of valid target applications can be retrieved via `findIntent`.
    *
-   * Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getResult()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or no promise is returned then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution` with a string from the `DataError` enumeration.
+   * Returns an `IntentResolution` object with details of the app that was selected to respond to the intent.
+   *
+   * Issuing apps may optionally wait on the promise that is returned by the `getResult()` member of the IntentResolution. This promise will resolve when the _receiving app's_ intent handler function returns and resolves a promise. The Desktop Agent resolves the issuing app's promise with the Context object that is provided as resolution within the receiving app. The Desktop Agent MUST reject the issuing app's promise, with a string from the `ResultError` enumeration, if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.
    *
    * If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the `ResolveError` enumeration MUST be returned.
    *
@@ -196,7 +198,7 @@ export interface DesktopAgent {
    *
    * Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
    *
-   * Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getResult()` function of the IntentResolution object. If an error is thrown by the handler function, the promise returned is rejected, or no promise is returned then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution` with a string from the `DataError` enumeration.
+   * Returns an `IntentResolution` object, see `raiseIntent()` for details.
    *
    * If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the `ResolveError` enumeration is returned.
    *
@@ -211,12 +213,14 @@ export interface DesktopAgent {
   raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
 
   /**
-   * Adds a listener for incoming Intents from the Agent. The handler function may
-   * return void or a promise that should resolve to a context object representing
-   * any data that should be returned to app that raised the intent. If an error is
-   * thrown by the handler function, the promise returned is rejected, or a promise
-   * is not returned then the Desktop Agent MUST reject the promise returned by the
-   * `getResult()` function of the `IntentResolution`.
+   * Adds a listener for incoming Intents from the Desktop Agent. The handler function
+   * may return void or a promise that resolves to a context object (data that should
+   * be returned to app that raised the intent).
+   *
+   * The Desktop Agent MUST reject the promise returned by the `getResult()` function of
+   * `IntentResolution` if: (1) the intent handling function's returned promise rejects,
+   * (2) the intent handling function doesn't return a promise, or (3) the returned promise
+   * resolves to an invalid type.
    *
    * ```javascript
    * //Handle a raised intent

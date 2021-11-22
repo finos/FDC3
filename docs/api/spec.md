@@ -105,9 +105,9 @@ A Context type may also be associated with multiple Intents. For example, an `fd
 
 To raise an Intent without a context, use the [`fdc3.nothing`](../context/ref/Nothing) context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an Intent listener or in an App Directory).
 
-An optional context object may also be returned as output by an application hanling an intent. For example, an application handling a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.
+An optional context object may also be returned as a result by an application handling an intent. For example, an application handling a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.
 
-An optional output context type is also supported when programmatically resolving an intent via [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext).
+An optional result context type is also supported when programmatically resolving an intent via [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext).
 
 #### Intent Resolution
 Raising an Intent will return a Promise-type object that will resolve/reject based on a number of factors.
@@ -182,7 +182,7 @@ try {
 ```
 
 #### Resolvers
-Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (for example, by displaying a resolver UI allowing the user to pick the desired App for the intent) or by the app calling App handling the resolution itself (by using the  [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext) API calls) and then invoking the Intent on a specific target application, e.g.:
+Successful delivery of an intent depends first upon the Desktop Agent's ability to "resolve the intent" (i.e. map the intent to a specific App instance). Desktop Agents may resolve intents by any methodology. A common methodology is to display a UI that allows the user to pick the desired App for a given intent. Alternatively, the intent issuing app may proactively handle resolution by calling [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext) and then raising the Intent with a specific target application, e.g.:
 
 ```js
 //Find apps to resolve an intent to start a chat with a given contact
