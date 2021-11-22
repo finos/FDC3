@@ -27,11 +27,11 @@ export interface DesktopAgent {
    * Launches an app by target, which can be optionally a string like a name, or an AppMetadata object.
    *
    * The `open` method differs in use from `raiseIntent`.  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, `open` would be used to open an app returned in the search results.
-   * 
+   *
    * **Note**, if both the intent and target app name are known, it is recommended to instead use [`raiseIntent`](#raiseIntent) with the `target` argument.
-   * 
+   *
    * If a Context object is passed in, this object will be provided to the opened application via a contextListener. The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
-   * 
+   *
    * Returns an `AppMetadata` object with the `instanceId` field set identifying the instance of the application opened by this call.
    *
    * If opening errors, it returns an `Error` with a string from the `OpenError` enumeration.
@@ -42,7 +42,7 @@ export interface DesktopAgent {
    * //Open an app without context, using an AppMetadataobject to specify the target
    * let appMetadata = {name: 'myApp', appId: 'myApp-v1.0.1', version: '1.0.1'};
    * let instanceMetadata = await fdc3.open(appMetadata);
-   * //Open an app with context 
+   * //Open an app with context
    * let instanceMetadata = await fdc3.open(appMetadata, context);
    * ```
    */
@@ -65,25 +65,25 @@ export interface DesktopAgent {
    * // {
    * //     intent: { name: "StartChat", displayName: "Chat" },
    * //   apps: [
-   * //    { name: "Skype" }, 
-   * //    { name: "Symphony" }, 
+   * //    { name: "Skype" },
+   * //    { name: "Symphony" },
    * //    { name: "Slack" }
    * //   ]
    * // }
    *
    * // raise the intent against a particular app
    * await fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
-   * 
+   *
    * //later, we want to raise 'StartChat' intent again
    * const appIntent = await fdc3.findIntent("StartChat");
-   * // returns an AppIntent, but with multiple options for resolution, 
+   * // returns an AppIntent, but with multiple options for resolution,
    * // which includes an existing instance of an application:
    * // {
    * //   intent: { name: "StartChat", displayName: "Chat" },
    * //   apps: [
-   * //    { name: "Skype" }, 
-   * //    { name: "Symphony" }, 
-   * //    { name: "Symphony", instanceId: "93d2fe3e-a66c-41e1-b80b-246b87120859" }, 
+   * //    { name: "Skype" },
+   * //    { name: "Symphony" },
+   * //    { name: "Symphony", instanceId: "93d2fe3e-a66c-41e1-b80b-246b87120859" },
    * //    { name: "Slack" }
    * //   ]
    * ```
@@ -111,9 +111,9 @@ export interface DesktopAgent {
    * //   {
    * //     intent: { name: "StartChat", displayName: "Chat" },
    * //     apps: [
-   * //       { name: "Skype" }, 
-   * //       { name: "Symphony" }, 
-   * //       { name: "Symphony", instanceId: "93d2fe3e-a66c-41e1-b80b-246b87120859" }, 
+   * //       { name: "Skype" },
+   * //       { name: "Symphony" },
+   * //       { name: "Symphony", instanceId: "93d2fe3e-a66c-41e1-b80b-246b87120859" },
    * //       { name: "Slack" }
    * //     ]
    * //   }

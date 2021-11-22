@@ -13,17 +13,17 @@ import { AppMetadata } from './AppMetadata';
  * //resolve a "Client-Service" type intent with data response
  * let resolution = await agent.raiseIntent("intentName", context);
  * var dataR = intentR.data;
- * 
+ *
  * // Use metadata about the resolving app instance to target a further intent
  * await agent.raiseIntent("intentName", context, resolution.source);
- * 
+ *
  * ```
  */
 export interface IntentResolution {
-  /** 
+  /**
    * Metadata about the app instance that was selected (or started) to resolve the intent.
-   * `source.instanceId` MUST be set, indicating the specific app instance that 
-   * received the intent. 
+   * `source.instanceId` MUST be set, indicating the specific app instance that
+   * received the intent.
    */
   readonly source: AppMetadata;
   /**
