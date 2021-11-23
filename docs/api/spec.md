@@ -162,8 +162,8 @@ or to raise an unspecified Intent for a specific context, where the user will se
 ```js
 try {
   const resolution = await fdc3.raiseIntentForContext(context);
-  if (result.data) {
-    const orderId = result.data.id;
+  if (resolution.data) {
+    const orderId = resolution.data.id;
   }
 }
 catch (err){ ... }
