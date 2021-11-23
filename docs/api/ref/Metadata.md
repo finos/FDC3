@@ -59,7 +59,7 @@ interface AppMetadata {
 
 Describes an application, or instance of an application, using metadata that is usually  provided by an FDC3 App Directory that the desktop agent connects to.
 
-Will always includes at least a `name` property, which can be used with [`open`](DesktopAgent#open) and [`raiseIntent`](DesktopAgent#raiseIntent). If the `instanceId` filed is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.
+Will always includes at least a `name` property, which can be used with [`open`](DesktopAgent#open) and [`raiseIntent`](DesktopAgent#raiseIntent). If the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.
 
 Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu. This includes a title, description, tooltip and icon and image URLs.
 

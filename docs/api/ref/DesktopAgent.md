@@ -15,7 +15,7 @@ It is expected that the `DesktopAgent` interface is made availabe via the [`wind
 ```ts
 interface DesktopAgent {
   // apps
-  open(app: TargetApp, context?: Context): Promise<void>;
+  open(app: TargetApp, context?: Context): Promise<AppMetadata>;
   findInstances(app: TargetApp): Promise<Array<AppMetadata>>;
 
   // context
@@ -397,7 +397,7 @@ Launches an app with target information, which can be either be a string like a 
 
 The `open` method differs in use from [`raiseIntent`](#raiseIntent).  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, `open` would be used to open an app returned in the search results.
 
-**Note**, if both the intent and target app name are known, it is recommended to instead use [`raiseIntent`](#raiseIntent) with the `target` argument.
+**Note**, if the intent, context and target app name are all known, it is recommended to instead use [`raiseIntent`](#raiseIntent) with the `target` argument.
 
 If a [`Context`](Types#context) object is passed in, this object will be provided to the opened application via a contextListener. The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
 
@@ -438,7 +438,7 @@ If you wish to raise an Intent without a context, use the `fdc3.nothing` context
 
 Returns an `IntentResolution` object with details of the app instance that was selected (or started) to respond to the intent.
 
-If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolverrror) enumeration is returned.
+If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolverrror) enumeration is returned. If a specific target `app` parameter was set, but either the app or app instance is not available then the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` errors MUST be returned. 
 
 #### Example
 
@@ -478,7 +478,7 @@ Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and 
 
 Returns an `IntentResolution` object with a handle to the app that responded to the selected intent.
 
-If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned.
+If a target app or intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned. If a specific target `app` parameter was set, but either the app or app instance is not available then the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` errors MUST be returned. 
 
 #### Example
 
