@@ -236,7 +236,9 @@ When an app joins a channel, or adds a context listener when already joined to a
 
 It is possible that a call to join a channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.
 
-Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  Always, there SHOULD be a clear UX indicator of what channel an app is joined to.
+Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app. To support programmatic management of joined channels and the implementation of channel selector UIs other than those provided outside of the app, Desktop Agent implementations SHOULD provide [`fdc3.joinChannel()`](ref/DesktopAgent#joinchannel), [`fdc3.getCurrentChannel()](ref/DesktopAgent#getcurrentchannel) and [`fdc3.leaveCurrentChannel()`](ref/DesktopAgent#leavecurrentchannel) functions as defined in the [Desktop Agent API reference](ref/DesktopAgent). 
+
+Always, there SHOULD be a clear UX indicator of what channel an app is joined to.
 
 ### The 'global' Channel
 
