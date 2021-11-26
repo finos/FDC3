@@ -35,27 +35,25 @@ https://fdc3.finos.org/schemas/next/contactList.schema.json
 
 ```js
 const contacts = {
-    type: 'fdc3.contactList',
+    type: "fdc3.contactList",
     contacts: [
         {
-            type: 'fdc3.contact',
-            name: 'Jane Doe',
+            type: "fdc3.contact",
+            name: "Jane Doe",
             id: {
-                email: 'jane.doe@mail.com'
+                email: "jane.doe@mail.com"
             }
         },
         {
-            type: 'fdc3.contact',
-            name: 'John Doe',
+            type: "fdc3.contact",
+            name: "John Doe",
             id: {
-                email: 'john.doe@mail.com'
+                email: "john.doe@mail.com"
             }
         },
     ]
 }
-
-
-fdc3.raiseIntent('StartChat', contacts)
+fdc3.raiseIntent("StartChat", contacts)
 ```
 
 ## See Also
