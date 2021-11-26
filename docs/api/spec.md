@@ -205,7 +205,7 @@ From version 1.2 of the FDC3 specification, it is possible to retrieve informati
 ```js
 import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
 
-if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), '1.2')) {
+if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), '1.2')) {
   await fdc3.raiseIntentForContext(context);
 } else {
   await fdc3.raiseIntent('ViewChart', context);
@@ -321,9 +321,9 @@ const appChannel = await fdc3.getOrCreateChannel('my_custom_channel');
 // get the current context of the channel
 const current = await appChannel.getCurrentContext();
 // add a listener
-appChannel.addContextListener(null, context => {...});
+await appChannel.addContextListener(null, context => {...});
 // broadcast to the channel
-appChannel.broadcast(context);
+await appChannel.broadcast(context);
 
 ```
 
