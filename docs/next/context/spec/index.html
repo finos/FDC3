@@ -144,7 +144,7 @@ The source application may have data required to compose a workflow with another
 <li><strong>fdc3.instrumentList</strong>
 <ul>
 <li>A collection of instruments.</li>
-<li><a href="https://fo.finos.org/docs/objects/instrumentList">Financial Objects Specification</a></li>
+<li><a href="https://fo.finos.org/docs/objects/instrumentlist">Financial Objects Specification</a></li>
 <li><a href="/schemas/next/instrumentList.schema.json">schema</a></li>
 </ul></li>
 <li><strong>fdd3.organization</strong>
@@ -161,6 +161,7 @@ The source application may have data required to compose a workflow with another
 </ul></li>
 <li><strong>fdc3.position</strong>
 <ul>
+<li>An amount of a security, asset, or property that is owned (or sold short) by some individual or other entity</li>
 <li><a href="https://fo.finos.org/docs/objects/position">Financial Objects Specification</a></li>
 <li><a href="/schemas/next/position.schema.json">schema</a></li>
 </ul></li>
@@ -260,8 +261,8 @@ The source application may have data required to compose a workflow with another
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="portfolio"></a><a href="#portfolio" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Portfolio</h4>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">&quot;type&quot;</span>:<span class="hljs-string">&quot;fdc3.portfolio&quot;</span>
-    <span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;my portfolio&quot;</span>,
+    <span class="hljs-attr">&quot;type&quot;</span>:<span class="hljs-string">&quot;fdc3.portfolio&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>:<span class="hljs-string">&quot;my portfolio&quot;</span>,
     <span class="hljs-attr">&quot;positions&quot;</span>:[
         {
             <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;fdc3.position&quot;</span>,
