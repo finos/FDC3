@@ -37,7 +37,7 @@ function Help(props) {
       [FDC3 General Meeting](https://github.com/finos/FDC3/issues?q=label%3A%22General+Meeting%22): 
       you can find meeting details in the 
       [FINOS Project Calendar](https://calendar.google.com/calendar/u/0/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig@group.calendar.google.com).
-      \n Take the FINOS <a href="https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop" target="_blank">Training</a>.`,
+      \n Take the free FDC3 <a href="https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop" target="_blank">Training</a>.`,
     },
     {
       title: `Participate in the Standard's ideation` ,
