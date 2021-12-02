@@ -7,14 +7,14 @@
   "properties": {
     "type": { "const": "fdc3.position" },
     "name": { "type": "string" },
-    "instrument": { "$ref": "instrument.schema.json#/" },
+    "instrument": { "$ref": "instrument.schema.json#" },
     "holding": { "type": "number" },
     "trades": {
         "type": "array",
-        "items": { "$ref": "trade.schema.json#/" }
+        "items": { "$ref": "trade.schema.json#" }
     },
-    "basis": { "$ref": "valuation.schema.json#/" },
-    "current": { "$ref": "valuation.schema.json#/" },
+    "basis": { "$ref": "valuation.schema.json#" },
+    "current": { "$ref": "valuation.schema.json#" },
     "gain": { "type": "number" },
     "restricted": { "type": "number" }
   },

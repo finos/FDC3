@@ -3,12 +3,12 @@
   "$id": "https://fdc3.finos.org/schemas/next/valuation.schema.json",
   "type": "object",
   "title": "Valuation",
-  "allOf": [{ "$ref": "context.schema.json#/" }],
+  "allOf": [{ "$ref": "context.schema.json#" }],
   "properties": {
     "type": { "const": "fdc3.valuation" },
     "price": { "type": "number" },
     "value": { "type": "number" },
-    "currency": { "$ref": "currency.schema.json#/" }
+    "currency": { "$ref": "currency.schema.json#" }
   },
   "required": ["value"]
 }

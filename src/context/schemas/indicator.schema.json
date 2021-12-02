@@ -3,7 +3,7 @@
   "$id": "https://fdc3.finos.org/schemas/next/indicator.schema.json",
   "type": "object",
   "title": "Indicator",
-  "allOf": [{ "$ref": "context.schema.json#/" }],
+  "allOf": [{ "$ref": "context.schema.json#" }],
   "properties": {
     "type": { "const": "fdc3.indicator" },
     "name": { "type": "string" },
@@ -13,7 +13,7 @@
         "period": { "type": "number" },
         "matype": { "type": "string" },
         "field": { "type": "string" },
-        "instrument": { "$ref": "instrument.schema.json#/" },
+        "instrument": { "$ref": "instrument.schema.json#" },
         "custom": {
           "type": "object",
           "properties": {

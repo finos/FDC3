@@ -31,7 +31,7 @@ https://fdc3.finos.org/schemas/next/currency.schema.json
 const currency = {
     type: "fdc3.currency",
     name: "US Dollar",
-    code: "USD"
+    ISOCODE: "USD"
 }
 
 fdc3.broadcast(currency)

@@ -7,8 +7,8 @@
   "properties": {
     "type": { "const": "fdc3.trade" },
     "name": { "type": "string" },
-    "tradedaterange": { "$ref": "dateRange.schema.json#/" },
-    "settledaterange": { "$ref": "dateRange.schema.json#/" },
+    "tradedaterange": { "$ref": "dateRange.schema.json#" },
+    "settledaterange": { "$ref": "dateRange.schema.json#" },
     "units": { "type": "number" },
     "open": { "$ref": "valuation.schema.json#/" },
     "close": { "$ref": "valuation.schema.json#/" },
