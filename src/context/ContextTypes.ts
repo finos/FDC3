@@ -300,7 +300,7 @@ export class Convert {
   }
 
   public static toTrade(json: string): Trade {
-    return cast(JSON.parse(json), r("Trade"));
+    return cast(JSON.parse(json), r('Trade'));
   }
 
   public static tradeToJson(value: Trade): string {
@@ -627,12 +627,7 @@ const typeMap: any = {
     ],
     'any'
   ),
-  Nothing: o(
-    [
-      { json: 'type', js: 'type', typ: '' }
-    ], 
-    'any'
-  ),
+  Nothing: o([{ json: 'type', js: 'type', typ: '' }], 'any'),
   Trade: o(
     [
       { json: 'account', js: 'account', typ: u(undefined, '') },
