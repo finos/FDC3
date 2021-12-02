@@ -96,10 +96,10 @@ The following are standard FDC3 context types.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/country)
     - [schema](/schemas/next/country.schema.json)
 - __fdc3.currency__
-    - An entity that can be used when referencing currency.
+    - A standard currency entity, defined by a code confirming to ISO 4217.
     - [schema](/schemas/next/currency.schema.json)
 - __fdc3.dateRange__
-    - A definition of a range of time, consisting of a start and end time..
+    - A definition of a range of time, consisting of a start and end time.
     - [schema](/schemas/next/dateRange.schema.json)
 - __fdc3.indicator__
     - A function or transformation performed on data and used to measure current conditions as well as to forecast trends.
@@ -232,7 +232,7 @@ __Note:__ The below examples show how the base context data interface can be use
 {
     "type": "fdc3.currency",
     "name": "US Dollar",
-    "code": "USD"
+    "ISOCODE": "USD"
 }
 ```
 

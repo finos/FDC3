@@ -7,7 +7,7 @@
   "properties": {
     "type": { "const": "fdc3.currency" },
     "name": { "type": "string" },
-    "code": { "type": "string" }
+    "ISOCODE": { "type": "string" }
   },
   "required": ["code"]
 }

@@ -68,7 +68,7 @@ export interface CountryID {
 }
 
 export interface Currency {
-  code: string;
+  ISOCODE: string;
   name?: string;
   type: string;
   id?: { [key: string]: string };
@@ -513,7 +513,7 @@ const typeMap: any = {
   ),
   Currency: o(
     [
-      { json: 'code', js: 'code', typ: '' },
+      { json: 'ISOCODE', js: 'code', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('')) },

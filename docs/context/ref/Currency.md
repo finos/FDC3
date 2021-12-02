@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `Currency`
 
-An entity that can be used when referencing currency that can be used on its own as well as in other contexts when adding additional attributes e.g. when adding details to a Valuation.
+An entity that can be used when referencing currency that can be used on its own as well as in other contexts when adding additional attributes e.g. when adding details to a Valuation. The currency code used to identify the currency should conform to ISO 4217.
 
 ## Type
 
@@ -22,7 +22,7 @@ https://fdc3.finos.org/schemas/next/currency.schema.json
 |------------------|---------|----------|----------------------|
 | `type`           | string  | Yes      | `'fdc3.currency'`    |
 | `name`           | string  | No       | `'US Dollar'`        |
-| `code`           | string  | Yes      | `'USD'`              |
+| `ISOCODE`        | string  | Yes      | `'USD'`              |
 
 
 ## Example
