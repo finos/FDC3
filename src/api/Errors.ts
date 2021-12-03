@@ -13,6 +13,7 @@ export enum OpenError {
 export enum ResolveError {
   NoAppsFound = 'NoAppsFound',
   ResolverUnavailable = 'ResolverUnavailable',
+  UserCancelled = 'UserCancelledResolution',
   ResolverTimeout = 'ResolverTimeout',
 }
 
