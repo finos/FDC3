@@ -163,7 +163,7 @@ Find all the avalable intents for a particular context.
 `findIntentsByContext` is effectively granting programmatic access to the Desktop Agent's resolver.
 A promise resolving to all the intents, their metadata and metadata about the apps that registered as handlers is returned, based on the context types the intents have registered.
 
- If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
+If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
 
  #### Example
  ```js
@@ -391,7 +391,7 @@ If you wish to raise an Intent without a context, use the `fdc3.nothing` context
 
 Returns an `IntentResolution` object with details of the app that was selected to respond to the intent.
 
-If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolverrror) enumeration is returned.
+If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned.
 
 #### Example
 
@@ -434,7 +434,7 @@ Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and 
 
 Returns an `IntentResolution` object with a handle to the app that responded to the selected intent.
 
-If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned.
+If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned.
 
 #### Example
 

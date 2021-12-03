@@ -23,10 +23,11 @@ Contains constants representing the errors that can be encountered when calling 
 ## `ResolveError`
 
 ```typescript
-enum ResolveError {
-  NoAppsFound = "NoAppsFound",
-  ResolverUnavailable = "ResolverUnavailable",
-  ResolverTimeout = "ResolverTimeout"
+export enum ResolveError {
+  NoAppsFound = 'NoAppsFound',
+  ResolverUnavailable = 'ResolverUnavailable',
+  UserCancelled = 'UserCancelledResolution',
+  ResolverTimeout = 'ResolverTimeout',
 }
 ```
 
