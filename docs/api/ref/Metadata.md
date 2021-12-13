@@ -142,7 +142,7 @@ interface IntentResolution {
    * the promise returned by the `getResult()` function of the 
    * `IntentResolution` with a string from the `DataError` enumeration.
    */
-  getResult(): Promise<Context> | null;
+  getResult(): Promise<Context>;
 }
 ```
 
