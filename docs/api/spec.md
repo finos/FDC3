@@ -237,7 +237,7 @@ There are two types of channels, which are functionally identical, but have diff
     * are interacted with via the [Channel API](ref/Channel) (accessed via the desktop agent [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API call)
 
 ### Joining Channels
-Apps can join _User channels_.  An app can only be joined to one channel at a time.  
+Apps can join _User channels_.  An app can only be joined to one User channel at a time.  
 
 When an app is joined to a User channel, calls to `fdc3.broadcast` will be routed to that channel and listeners added through `fdc3.addContextListener` will receive context broadcasts from other apps also joined to that channel. If an app is not joined to a User channel `fdc3.broadcast` will be a no-op and handler functions added with `fdc3.addContextListener` will not receive any broadcasts. However, apps can still choose to listen and broadcast to specific channels (both User and App channels) via the methods on the `Channel` class.
 
@@ -245,7 +245,7 @@ When an app joins a User channel, or adds a context listener when already joined
 
 It is possible that a call to join a User channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.
 
-Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  Always, there SHOULD be a clear UX indicator of what User channel an app is joined to.
+Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  There SHOULD always be a clear UX indicator of what User channel an app is joined to.
 
 ### The 'global' Channel
 
@@ -276,7 +276,7 @@ An app can still explicitly receive context events on any channel, regardless of
 let joinedChannel = await fdc3.getCurrentChannel();
 // current channel is null, as the app is not currently joined to a user channel
 
-const redChannel = await fdc3.getUserChannels.filter(c => c.id === 'red');
+const redChannel = (await fdc3.getUserChannels).find(c => c.id === 'red');
 const context = await redChannel.getCurrentContext('fdc3.instrument');
 // context is instrument AAPL on the global channel
 
@@ -289,7 +289,7 @@ joinedChannel = await fdc3.getCurrentChannel();
 ```
 
 ### Direct Listening and Broadcast on Channels
-While joining User channels automates a lot of the channel behavior for an app, it has the limitation in that an app can belong to only one channel at a time.  Listening and Broadcasting to channels using the [`Channel.addContextListener`](ref/Channel#addcontextlistener) and the [`Channel.broadcast`](ref/Channel#broadcast) APIs provides an app with fine-grained controls for specific channels.  This is especially useful for working with dynamic _App Channels_.
+While joining User channels automates a lot of the channel behavior for an app, it has the limitation that an app can belong to only one channel at a time.  Listening and Broadcasting to channels using the [`Channel.addContextListener`](ref/Channel#addcontextlistener) and the [`Channel.broadcast`](ref/Channel#broadcast) APIs provides an app with fine-grained controls for specific channels.  This is especially useful for working with dynamic _App Channels_.
 
 ### Broadcasting and listening for multiple context types
 The [Context specification](../../context/spec#assumptions) recommends that complex context objects are defined using simpler context types for particular fields. For example, a `Position` is composed of an `Instrument` and a holding amount. This leads to situations where an application may be able to receive or respond to context objects that are embedded in a more complex type, but not the more complex type itself. For example, a pricing chart might respond to an `Instrument` but doesn't know how to handle a `Position`. 
