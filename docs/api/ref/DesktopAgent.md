@@ -95,7 +95,7 @@ const listener = fdc3.addIntentListener('StartChat', context => {
 fdc3.addIntentListener("CreateOrder", (context) => {
   return new Promise<Context>((resolve) => {
     // go create the order
-    resolve({type: "fdc3.order", id: { "orderId": 1234}});
+    resolve({type: "fdc3.order", id: { "orderId": 1234 }});
   });
 });
 ```
