@@ -86,6 +86,10 @@ class Footer extends React.Component {
               rel="noreferrer noopener">
               Google Groups
             </a>
+            <a
+              href="/docs/next/trademarks">
+                Trademarks
+            </a>
             {/* <a href={this.pageUrl('users.html', this.props.language)}>
               User Showcase
             </a> */}
