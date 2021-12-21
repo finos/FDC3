@@ -392,8 +392,9 @@ components:
     HostManifest:
       type: object
       description: >-
-        A mapping from host string to host specific application manifest object or URI
-        providing all details related to launch and use requirements as described by the host.
+        A mapping from host string to a host-specific application manifest object or URI
+        from which that manifest can be retrieved. The manifest should provide all details required to
+        launch and use the application within the specified host.
       additionalProperties:
         oneOf:
           - type: string   # URI pointing to a JSON containing all host specific properties
