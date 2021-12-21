@@ -129,17 +129,27 @@ and include a more robust mechanism for intents that need to return data back to
 
 If the raising of the intent resolves (or rejects), a standard object will be passed into the resolver function with the following format:
 
-```js
-{
-    source: String;
-    data?: Object;
-    version: String;
+```ts
+interface IntentResolution {
+  /**
+   * The application that resolved the intent.
+   */
+  readonly source: TargetApp;
+  /**
+   * The intent that was raised. May be used to determine which intent the user
+   * chose in response to `fdc3.raiseIntentForContext()`.
+   */
+  readonly intent: string;
+  /**
+   * @deprecated not assignable from intent listeners
+   */
+  readonly data?: object;
+  /**
+   * The version number of the Intents schema being used.
+   */
+  readonly version?: string;
 }
 ```
-- *source* = identifier for the Application resolving the intent (null if the intent could not be resolved)
-- *data* = return data structure - if one is provided for the given intent
-- *version* = the version number of the Intents schema being used
-
 
 For example, to raise a specific Intent:
 
@@ -147,8 +157,8 @@ For example, to raise a specific Intent:
 try {
     const result = await fdc3.raiseIntent('StageOrder', context);
 }
-catch (er){
-    console.log(er.message);
+catch (err){
+    console.log(err.message);
 }
 ```
 
@@ -156,12 +166,13 @@ or to raise an unspecified Intent for a specific context, where the user will se
 ```js
 try {
     const result = await fdc3.raiseIntentForContext(context);
+    console.log(`User raised intent: ${result.intent}`)
     if (result.data) {
         const orderId = result.data.id;
     }
 }
-catch (er){
-    console.log(er.message);
+catch (err){
+    console.log(err.message);
 }
 ```
 
