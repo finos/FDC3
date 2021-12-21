@@ -129,17 +129,27 @@ and include a more robust mechanism for intents that need to return data back to
 
 If the raising of the intent resolves (or rejects), a standard object will be passed into the resolver function with the following format:
 
-```js
-{
-    source: String;
-    data?: Object;
-    version: String;
+```ts
+interface IntentResolution {
+  /**
+   * The application that resolved the intent.
+   */
+  readonly source: TargetApp;
+  /**
+   * The intent that was raised. May be used to determine which intent the user
+   * chose in response to `fdc3.raiseIntentForContext()`.
+   */
+  readonly intent: string;
+  /**
+   * @deprecated not assignable from intent listeners
+   */
+  readonly data?: object;
+  /**
+   * The version number of the Intents schema being used.
+   */
+  readonly version?: string;
 }
 ```
-- *source* = identifier for the Application resolving the intent (null if the intent could not be resolved)
-- *data* = return data structure - if one is provided for the given intent
-- *version* = the version number of the Intents schema being used
-
 
 For example, to raise a specific Intent:
 
@@ -147,8 +157,8 @@ For example, to raise a specific Intent:
 try {
     const result = await fdc3.raiseIntent('StageOrder', context);
 }
-catch (er){
-    console.log(er.message);
+catch (err){
+    console.log(err.message);
 }
 ```
 
@@ -156,12 +166,13 @@ or to raise an unspecified Intent for a specific context, where the user will se
 ```js
 try {
     const result = await fdc3.raiseIntentForContext(context);
+    console.log(`User raised intent: ${result.intent}`)
     if (result.data) {
         const orderId = result.data.id;
     }
 }
-catch (er){
-    console.log(er.message);
+catch (err){
+    console.log(err.message);
 }
 ```
 
@@ -200,12 +211,12 @@ It is expected that App Directories will also curate listed apps and ensure that
 On the financial desktop, applications often want to broadcast context to any number of applications.  Context sharing needs to support concepts of different groupings of applications as well as data privacy concerns.  Each Desktop Agent will have its own rules for supporting these features. However, a Desktop Agent should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.
 
 ### Retrieve Metadata about the Desktop Agent implementation
-From version 1.2 of the FDC3 specification, it is possible to retrieve information about the  version of the FDC3 specification supported by a Desktop Agent implementation and the name of the implementation provider. This metadata can be used to vary the behavior of an application based on the version supported by the Desktop Agent, e.g.:
+From version 1.2 of the FDC3 specification, Desktop Agent implementations MUST provide a `fdc3.getInfo()` function to allow apps to retrieve information about the version of the FDC3 specification supported by a Desktop Agent implementation and the name of the implementation provider. This metadata can be used to vary the behavior of an application based on the version supported by the Desktop Agent, e.g.:
 
 ```js
 import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
 
-if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), '1.2')) {
+if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), '1.2')) {
   await fdc3.raiseIntentForContext(context);
 } else {
   await fdc3.raiseIntent('ViewChart', context);
@@ -321,9 +332,9 @@ const appChannel = await fdc3.getOrCreateChannel('my_custom_channel');
 // get the current context of the channel
 const current = await appChannel.getCurrentContext();
 // add a listener
-appChannel.addContextListener(null, context => {...});
+await appChannel.addContextListener(null, context => {...});
 // broadcast to the channel
-appChannel.broadcast(context);
+await appChannel.broadcast(context);
 
 ```
 
