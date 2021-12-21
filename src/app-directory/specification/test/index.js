@@ -1,7 +1,7 @@
 const SwaggerParser = require('@apidevtools/swagger-parser');
 const { Validator } = require('jsonschema');
 const assert = require('assert');
-const exampleApplication = require('../examples/application/fdc3-tradingview-chart-orig');
+const exampleApplication = require('../examples/application/fdc3-workbench');
 
 (async () => {
     try {
@@ -17,9 +17,8 @@ const exampleApplication = require('../examples/application/fdc3-tradingview-cha
 
         assert(validatorResult.valid, `The example application definition does not comply with the Application schema: ${validatorResult.errors}`);
 
-        console.log('Successfully validated the specification and example application definition!');
-    }
-    catch (error) {
+        console.log('Successfully validated the specification and the example application definition!');
+    } catch (error) {
         console.log(error.message || error);
     }
 })();

@@ -1,9 +1,9 @@
 module.exports = {
-    appId: 'fdc3-tradingview-chart-orig',
-    name: 'FDC3 TradingView Chart (orig)',
+    appId: 'fdc3-workbench',
+    name: 'FDC3 Workbench',
     type: 'browser',
     details: {
-        url: 'https://appd.kolbito.com/demos/tradingview-chart/index.html'
+        url: 'https://fdc3.finos.org/toolbox/fdc3-workbench/'
     },
     hostManifests: {
         Glue42: {
@@ -22,17 +22,8 @@ module.exports = {
                 }
             },
             customProperties: {
-                folder: 'FDC3 Orig'
+                folder: 'FDC3 Toolbox'
             }
         }
-    },
-    intents: [
-        {
-            name: 'fdc3.ViewChart',
-            displayName: 'View Chart',
-            contexts: [
-                'fdc3.instrument'
-            ]
-        }
-    ]
+    }
 };
