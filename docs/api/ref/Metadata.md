@@ -15,7 +15,7 @@ interface AppIntent {
 An interface that represents the binding of an intent to apps, returned as part of intent disocvery.
 For each intent, it reference the applications that support that intent.
 
-#### See also
+### See also
 * [`AppMetadata`](AppMetadata)
 * [`IntentMetadata`](IntentMetadata)
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
@@ -45,7 +45,7 @@ This includes a title, description, tooltip and icon and image URLs.
 
 In situations where a desktop agent connects to multiple app directories or multiple versions of the same app exists in a single app directory, it may be neccessary to specify appId and version to target applications that share the same name.
 
-#### See also
+### See also
 * [`AppIntent.apps`](AppIntent)
 * [`Icon`](Icon)
 
@@ -60,11 +60,6 @@ In situations where a desktop agent connects to multiple app directories or mult
 ```
 
 A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
-
-#### See also
-
-* [`Channel`](Channel)
-* [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
 
 ### Properties
 
@@ -92,6 +87,11 @@ glyph: string;
 
 A URL of an image that can be used to display this channel.
 
+### See also
+
+* [`Channel`](Channel)
+* [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
+
 ## `ImplementationMetadata`
 
 ```typescript
@@ -104,7 +104,7 @@ public interface ImplementationMetadata {
 
 Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification and the name of the provider of the implementation.
 
-#### See also
+### See also
 * [`DesktopAgent.getInfo`](DesktopAgent#getInfo)
 
 ## `IntentMetadata`
@@ -119,7 +119,7 @@ interface IntentMetadata {
 The Interface used to describe an Intent within the platform.
 
 
-#### See also
+### See also
 * [`AppIntent.intent`](AppIntent)
 
 ## `IntentResolution`
@@ -137,13 +137,13 @@ interface IntentResolution {
 
 IntentResolution provides a standard format for data returned upon resolving an intent.
 
-#### Example
+### Example
 ```js
 // resolve a "Chain" type intent
 const intentResolution = await fdc3.raiseIntent("intentName", context);
 ```
 
-#### See also
+### See also
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 * [`TargetApp`](TargetApp)
