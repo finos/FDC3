@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Updated copyright notices ([#467](https://github.com/finos/FDC3/pull/467))
 * Adjusted wording in API spec and documentation to acknowledge the possibility of methods of intent resolution other than a resolver UI ([#461](https://github.com/finos/FDC3/pull/461))
 * Replaced 'System channels' with 'User channels' throughout the spec, documentation, API and methods.ts. Clarified spec and documentation where it is referring to User channels vs. App channels. Added support to methods.ts for automatic fallback to `getSystemChannels` if `getUserChannels` doesn't exist. ([#470](https://github.com/finos/FDC3/pull/479))
+* Moved the Icon type definition into the Types documentation page for consistency with other types. ([#493](https://github.com/finos/FDC3/pull/493)
 
 ### Deprecated
 ### Fixed
