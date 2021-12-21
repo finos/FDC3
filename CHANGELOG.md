@@ -12,10 +12,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * ES6 functions for `getInfo()` and `raiseIntentForContext()` ([#268](https://github.com/finos/FDC3/pull/268), [#324](https://github.com/finos/FDC3/pull/324))
 * `fdc3Ready()` utility function that wraps checks for the window.fdc3 global object and new `fdc3Ready` event ([#360](https://github.com/finos/FDC3/pull/360))
 * `compareVersionNumbers()` and `versionIsAtLeast()` utility functions to complement `getInfo()` ([#324](https://github.com/finos/FDC3/pull/324))
+* An example application definition ([#437](https://github.com/finos/FDC3/pull/437)
+* A test environment for the app directory specification and the example application definition ([#437](https://github.com/finos/FDC3/pull/437)
 
 ### Changed
 * `addContextListener(contextType, handler)` now supports passing `null` as the context type ([#329](https://github.com/finos/FDC3/pull/329))
 * All other API type changes and additions from the [FDC3 Standard 1.2](https://github.com/finos/FDC3/releases/tag/v1.2) release
+* The Application schema by removing the `manifestType` and `manifest` properties, introducing new `type` (required), `details` and `hostManifests` properties ([#437](https://github.com/finos/FDC3/pull/437)
 
 ### Deprecated
 * `addContextListener(handler)` ([#329](https://github.com/finos/FDC3/pull/329))
