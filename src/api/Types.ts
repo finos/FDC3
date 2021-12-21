@@ -20,7 +20,10 @@ export type ContextHandler = (context: Context) => void;
 /**
  * Describes a callback that handles a context event and may return a
  * promise of a Context object to be returned to the application that
- * raised the intent. Any response other than Promise indicates that the handler does not return data (which will result in the Desktop Agent rejecting the IntentResolution.getData() promise with the appropriate error message).
+ * raised the intent. Any response other than Promise indicates that
+ * the handler does not return data (which will result in the Desktop
+ * Agent rejecting the IntentResolution.getData() promise with the
+ * appropriate error message).
  * Used when attaching listeners for raised intents.
  */
 export type IntentHandler = (context: Context) => Promise<Context> | void;
