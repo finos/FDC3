@@ -227,17 +227,32 @@ if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), '1.2')) {
 
 Context channels allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.  Use cases for channels include color linking between applications to automate the sharing of context and topic based pub/sub such as theme.
 
-There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics.
+There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics:
 
-1. The 'system' channels, which have a well understood identity.
+1. **System channels**, which: 
+    * facilitate the creation of user-controlled context links between applications (often via the selection of a color channel),
+    * are created and named by the desktop agent,
+    * are discoverable (via the [`getSystemChannels()`](ref/DesktopAgent#getsystemchannels) API call),
+    * can be 'joined' (via the [`joinChannel()`](ref/DesktopAgent#joinchannel) API call).
 
-2. The 'app' channels, which have a transient identity and need to be revealed
+    > **Note:** Earlier versions of FDC3 included the concept of a 'global' system channel
+    which was deprecated in FDC3 1.2 and removed in FDC 2.0.
+
+2. **App channels**, which: 
+    * facilitate developer controlled messaging between applications,
+    * are created and named by applications (via the [`getOrCreateChannel()`](ref/DesktopAgent#getorcreatechannel) API call),
+    * are not discoverable,
+    * are interacted with via the [Channel API](ref/Channel) (accessed via the desktop agent [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API call)
 
 
-### Joining Channels
-Apps can join channels.  An app can only be joined to one channel at a time.  
+Channels are interacted with via `broadcast` and `addContextListener` functions, allowing an application to send and receive Context objects via the channel. For System channels, these functions are provided on the Desktop Agent, e.g. [`fdc3.broadcast(context)`](ref/DesktopAgent#broadcast), and apply to channels joined via [`fdc3.joinChannel`](ref/DesktopAgent#joinchannel). For App channels, a channel object must be retrieved, via [`fdc3.getOrCreateChannel(channelName)`](ref/DesktopAgent#getorcreatechannel), which provides the functions, e.g. [`myChannel.broadcast(context)`](ref/Channel#broadcast).
 
-When an app is joined to a channel, calls to `fdc3.broadcast` will be routed to that channel and listeners added through `fdc3.addContextListener` will receive context broadcasts from other apps also joined to that channel. If an app is not joined to a channel `fdc3.broadcast` will be a no-op and handler functions added with `fdc3.addContextListener` will not receive any broadcasts. However, apps can still choose to listen and broadcast to specific channels via the methods on the `Channel` class.
+Channel implementations should ensure that context messages broadcast by an application on a channel are not  delivered back to that same application if they are also listening on the channel.
+
+### Joining System Channels
+Apps can join _System channels_.  An app can only be joined to one channel at a time.  
+
+When an app is joined to a channel, calls to [`fdc3.broadcast`](ref/DesktopAgent#broadcast) will be routed to that channel and listeners added through [`fdc3.addContextListener`](ref/DesktopAgent#addcontextlistener) will receive context broadcasts from other apps also joined to that channel. If an app is not joined to a channel [`fdc3.broadcast`](ref/DesktopAgent#broadcast) will be a no-op and handler functions added with [`fdc3.addContextListener`](ref/DesktopAgent#addcontextlistener) will not receive any broadcasts. However, apps can still choose to listen and broadcast to specific channels via the methods on the [`Channel`](ref/Channel) class.
 
 When an app joins a channel, or adds a context listener when already joined to a channel, it will automatically receive the current context for that channel.
 
@@ -245,57 +260,69 @@ It is possible that a call to join a channel could be rejected.  If for example,
 
 Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  Always, there SHOULD be a clear UX indicator of what channel an app is joined to.
 
-### Examples
-An app join the red channel and broadcasts its context.
+#### Examples
+
+An app joins a system channel by name and can send and receive context:
 
 ```js
-await fdc3.joinChannel('red');
-await fdc3.broadcast({type: 'fdc3.instrument', name: "Apple", id: {ticker: "AAPL"}});
+//retrieve a list of system channels
+const systemChannels = await fdc3.getSystemChannels();
+
+//join a channel from the list returned
+await fdc3.joinChannel(systemChannels[0].id);
+
+//add a Context listener, which will receive the current context immediately
+const instrumentListener = fdc3.addContextListener('fdc3.instrument', (context) => {
+    //do something with context
+});
+
+//broadcast your context
+fdc3.broadcast({type: 'fdc3.instrument', id: {ticker: 'MSFT'}});
+
+//some time later
+instrumentListener.unsubscribe();
 ```
 
-An app joins the red channel and automatically receives its current context.
+Many Desktop Agents will provide a user interface for joining applications to channels, hence, it is not necessary to explicitly join the channel:
 
 ```js
-const listener = await fdc3.addContextListener(null, context => { ... });
-await fdc3.joinChannel('red');
-//Last context broadcast to the channel is received by the listener
+//add a Context listener without joining a channel first, 
+//The listener will receive the current context when the user joins the app to a channel
+const instrumentListener = fdc3.addContextListener('fdc3.instrument', (context) => {
+    //do something with context
+});
+
+//broadcast your context to the channel the user has joined you to
+//If not currently joined to a channel this will be ignored
+fdc3.broadcast({type: 'fdc3.instrument', id: {ticker: 'MSFT'}});
 ```
 
-### Direct Listening and Broadcast on Channels
-While joining channels automates a lot of the channel behavior for an app, it has the limitation in that an app can belong to only one channel at a time.  Listening and Broadcasting to channels using the _Channel.addBroadcastListener_ and the _Channel.broadcast_ APIs provides an app with fine-grained controls for specific channels.  This is especially useful for working with dynamic _App Channels_.
-
-### Broadcasting and listening for multiple context types
-The [Context specification](../../context/spec#assumptions) recommends that complex context objects are defined using simpler context types for particular fields. For example, a `Position` is composed of an `Instrument` and a holding amount. This leads to situations where an application may be able to receive or respond to context objects that are embedded in a more complex type, but not the more complex type itself. For example, a pricing chart might respond to an `Instrument` but doesn't know how to handle a `Position`. 
-
-To facilitate context linking in such situations it is recommended that applications `broadcast` each context type that other apps (listening on a System channel or App channel) may wish to process, starting with the simpler types, followed by the complex type. Doing so allows applications to filter the context types they receive by adding listeners for specific context types - but requires that the application broadcasting context make multiple broadcast calls in quick succession when sharing its context.
-
-
-
-### Examples
-To find a system channel, one calls
-
-```js
-// returns an array of channels
-const allChannels = await fdc3.getSystemChannels();
-const redChannel = allChannels.find(c => c.id === 'red');
-```
-#### Joining channels
-
-To join a system channel. one calls
-
-```js
-fdc3.joinChannel(redChannel.id);
-```
-
-Calling _fdc3.broadcast_ will now route context to the joined channel.
-
-Channel implementations should ensure that context messages broadcast by an application on a channel should not be delivered back to that same application if they are joined to the channel.
-
-#### App Channels
+### Direct Listening and Broadcast on App Channels
+While joining system channels automates a lot of the channel behavior for an app, it has the limitation in that an app can belong to only one channel at a time.  Listening and Broadcasting to channels using the [`Channel.addContextListener`](ref/Channel#addcontextlistener) and the [`Channel.broadcast`](ref/Channel#broadcast) APIs provides an app with fine-grained controls for specific channels and is used for working with dynamic _App Channels_. 
 
 App channels are topics dynamically created by applications connected via FDC3. For example, an app may create a channel to broadcast to others data or status specific to that app.
 
-To get (or create) a channel reference, then interact with it
+The current context of a System Channel is automatically received when the channel is joined or a context listener added (when already joined to a channel, however, when working with the Channel API, the current context of the Channel is retrieved manually via [`Channel.getCurrentContext`](ref/Channel#getcurrentcontext) (returning either the last context broadcast or the last context of a specified type).
+
+#### Examples
+
+An app can send and receive context events on any number of channels, without joining them, by retrieving their `Channel` objects:
+
+```js
+const myChannel = await fdc3.getOrCreateChannel('myChannel');
+
+//broadcast your context
+myChannel.broadcast({type: 'fdc3.instrument', id: {ticker: 'MSFT'}});
+
+//listen for broadcasts
+const instrumentListener = myChannel.addContextListener('fdc3.instrument', (context) => {
+    //do something with context
+});
+//some time later
+instrumentListener.unsubscribe();
+```
+
+An app queries the current context of an App channel (as current context is not automatically received on adding the listener):
 
 ```js
 const appChannel = await fdc3.getOrCreateChannel('my_custom_channel');
@@ -304,7 +331,7 @@ const current = await appChannel.getCurrentContext();
 // add a listener
 await appChannel.addContextListener(null, context => {...});
 // broadcast to the channel
-appChannel.broadcast(context);
+await appChannel.broadcast(context);
 ```
 
 An app can still explicitly receive context events on any channel, regardless of the channel it is currently joined to.
@@ -327,6 +354,11 @@ joinedChannel = await fdc3.getCurrentChannel()
 ```
 
 if another application broadcasts to "my_custom_channel" (by retrieving it and broadcasting to it via `myChannel.broadcast()`) then the broadcast will be received by the specific listener (`myChannelListener`) but NOT by the listener for joined channels (`listener`).
+
+### Broadcasting and listening for multiple context types
+The [Context specification](../../context/spec#assumptions) recommends that complex context objects are defined using simpler context types for particular fields. For example, a `Position` is composed of an `Instrument` and a holding amount. This leads to situations where an application may be able to receive or respond to context objects that are embedded in a more complex type, but not the more complex type itself. For example, a pricing chart might respond to an `Instrument` but doesn't know how to handle a `Position`. 
+
+To facilitate context linking in such situations it is recommended that applications `broadcast` each context type that other apps (listening on a System channel or App channel) may wish to process, starting with the simpler types, followed by the complex type. Doing so allows applications to filter the context types they receive by adding listeners for specific context types - but requires that the application broadcasting context make multiple broadcast calls in quick succession when sharing its context.
 
 ## APIs
 The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
