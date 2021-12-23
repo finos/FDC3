@@ -255,9 +255,8 @@ and include a more robust mechanism for intents that need to return data back to
 <li>can be 'joined' (via the <a href="ref/DesktopAgent#joinchannel"><code>joinChannel()</code></a> API call).</li>
 </ul>
 <blockquote>
-<p><strong>Deprecation notice:</strong> Earlier versions of FDC3 include the concept of a 'global' system channel
-for backwards compatibility with FDC3 1.0. In future, there won't be a 'global' channel
-(see <a href="#the-global-channel">below</a> for more detail).</p>
+<p><strong>Note:</strong> Earlier versions of FDC3 included the concept of a 'global' system channel
+which was deprecated in FDC3 1.2 and removed in FDC 2.0.</p>
 </blockquote></li>
 <li><p><strong>App channels</strong>, which:</p>
 <ul>
@@ -275,17 +274,6 @@ for backwards compatibility with FDC3 1.0. In future, there won't be a 'global' 
 <p>When an app joins a channel, or adds a context listener when already joined to a channel, it will automatically receive the current context for that channel.</p>
 <p>It is possible that a call to join a channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.</p>
 <p>Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  Always, there SHOULD be a clear UX indicator of what channel an app is joined to.</p>
-<h4><a class="anchor" aria-hidden="true" id="the-global-channel"></a><a href="#the-global-channel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The 'global' Channel</h4>
-<blockquote>
-<p><strong>Deprecation notice</strong></p>
-<p>The global channel, which exists only for backward compatibility with FDC3 1.0,
-will be removed in a future version of the FDC3 API Specification.</p>
-<p>Instead of relying on being joined to a 'default' channel by the desktop agent on startup,
-an app or system channel should be joined explicitly through the relevant APIs,
-or through a channel selection UI.</p>
-</blockquote>
-<p>The 'system' channels include a 'global' channel which serves as the backwards compatible layer with the 'send/broadcast context' behavior in FDC3 1.0.  A desktop agent MAY choose to make membership in the 'global' channel the default state for apps on start up.</p>
-<p>The 'global' channel should be returned as part of the response from the <a href="ref/DesktopAgent#getsystemchannels"><code>getSystemChannels()</code></a> call.  Desktop Agents may want to filter out the 'global' option in their UI for system channel pickers.</p>
 <h4><a class="anchor" aria-hidden="true" id="examples"></a><a href="#examples" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
 <p>An app joins a system channel by name and can send and receive context:</p>
 <pre><code class="hljs css language-js"><span class="hljs-comment">//retrieve a list of system channels</span>
@@ -294,13 +282,13 @@ or through a channel selection UI.</p>
 <span class="hljs-comment">//join a channel from the list returned</span>
 <span class="hljs-keyword">await</span> fdc3.joinChannel(systemChannels[<span class="hljs-number">0</span>].id);
 
-<span class="hljs-comment">//broadcast your context</span>
-fdc3.broadcast({<span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;fdc3.instrument&#x27;</span>, <span class="hljs-attr">id</span>: {<span class="hljs-attr">ticker</span>: <span class="hljs-string">&#x27;MSFT&#x27;</span>}});
-
 <span class="hljs-comment">//add a Context listener, which will receive the current context immediately</span>
 <span class="hljs-keyword">const</span> instrumentListener = fdc3.addContextListener(<span class="hljs-string">&#x27;fdc3.instrument&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">context</span>) =&gt;</span> {
     <span class="hljs-comment">//do something with context</span>
 });
+
+<span class="hljs-comment">//broadcast your context</span>
+fdc3.broadcast({<span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;fdc3.instrument&#x27;</span>, <span class="hljs-attr">id</span>: {<span class="hljs-attr">ticker</span>: <span class="hljs-string">&#x27;MSFT&#x27;</span>}});
 
 <span class="hljs-comment">//some time later</span>
 instrumentListener.unsubscribe();
@@ -343,6 +331,23 @@ instrumentListener.unsubscribe();
 <span class="hljs-comment">// broadcast to the channel</span>
 <span class="hljs-keyword">await</span> appChannel.broadcast(context);
 </code></pre>
+<p>An app can still explicitly receive context events on any channel, regardless of the channel it is currently joined to.</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// check for current fdc3 channel</span>
+<span class="hljs-keyword">let</span> joinedChannel = <span class="hljs-keyword">await</span> fdc3.getCurrentChannel()
+<span class="hljs-comment">//current channel is null, as the app is not currently joined to a channel</span>
+
+<span class="hljs-comment">//add a context listener for channels we join</span>
+<span class="hljs-keyword">const</span> listener = <span class="hljs-keyword">await</span> fdc3.addContextListener(<span class="hljs-literal">null</span>, <span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> { ... });
+
+<span class="hljs-comment">//retrieve an App channel and add a listener that is specific to that channel</span>
+<span class="hljs-keyword">const</span> myChannel = <span class="hljs-keyword">await</span> fdc3.getOrCreateChannel(<span class="hljs-string">&#x27;my_custom_channel&#x27;</span>);
+<span class="hljs-keyword">const</span> myChannelListener = <span class="hljs-keyword">await</span> myChannel.addContextListener(<span class="hljs-literal">null</span>, <span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> { ... });
+
+fdc3.joinChannel(<span class="hljs-string">&#x27;blue&#x27;</span>)
+joinedChannel = <span class="hljs-keyword">await</span> fdc3.getCurrentChannel()
+<span class="hljs-comment">//current channel is now the &#x27;blue&#x27; channel</span>
+</code></pre>
+<p>if another application broadcasts to &quot;my_custom_channel&quot; (by retrieving it and broadcasting to it via <code>myChannel.broadcast()</code>) then the broadcast will be received by the specific listener (<code>myChannelListener</code>) but NOT by the listener for joined channels (<code>listener</code>).</p>
 <h3><a class="anchor" aria-hidden="true" id="broadcasting-and-listening-for-multiple-context-types"></a><a href="#broadcasting-and-listening-for-multiple-context-types" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Broadcasting and listening for multiple context types</h3>
 <p>The <a href="../../context/spec#assumptions">Context specification</a> recommends that complex context objects are defined using simpler context types for particular fields. For example, a <code>Position</code> is composed of an <code>Instrument</code> and a holding amount. This leads to situations where an application may be able to receive or respond to context objects that are embedded in a more complex type, but not the more complex type itself. For example, a pricing chart might respond to an <code>Instrument</code> but doesn't know how to handle a <code>Position</code>.</p>
 <p>To facilitate context linking in such situations it is recommended that applications <code>broadcast</code> each context type that other apps (listening on a System channel or App channel) may wish to process, starting with the simpler types, followed by the complex type. Doing so allows applications to filter the context types they receive by adding listeners for specific context types - but requires that the application broadcasting context make multiple broadcast calls in quick succession when sharing its context.</p>
