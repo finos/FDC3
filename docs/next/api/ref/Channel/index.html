@@ -112,6 +112,7 @@
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">public</span> addContextListener(contextType: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>, <span class="hljs-attr">handler</span>: ContextHandler): <span class="hljs-built_in">Promise</span>&lt;Listener&gt;;
 </code></pre>
 <p>Adds a listener for incoming contexts of the specified <em>context type</em> whenever a broadcast happens on this channel.</p>
+<p>If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the <a href="DesktopAgent#addcontextlistener"><code>fdc3.addContextListener</code></a> function). Apps wishing to access to the current context of the channel should instead call the <a href="#getcurrentcontext"><code>getCurrentContext(contextType)</code></a> function.</p>
 <pre><code class="hljs css language-ts"><span class="hljs-comment">/**
  * <span class="hljs-doctag">@deprecated </span>Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
  */</span>
