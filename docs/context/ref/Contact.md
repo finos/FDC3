@@ -29,10 +29,10 @@ https://fdc3.finos.org/schemas/next/contact.schema.json
 
 ```js
 const contact = {
-    type: 'fdc3.contact',
-    name: 'Jane Doe',
+    type: "fdc3.contact",
+    name: "Jane Doe",
     id: {
-        email: 'jane.doe@mail.com'
+        email: "jane.doe@mail.com"
     }
 }
 

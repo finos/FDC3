@@ -20,13 +20,13 @@ interface Channel {
   displayMetadata?: DisplayMetadata;
 
   // methods
-  broadcast(context: Context): void;
+  broadcast(context: Context): Promise<void>;
   getCurrentContext(contextType?: string): Promise<Context|null>;
-  addContextListener(contextType: string | null, handler: ContextHandler): Listener;
+  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
   /**
    * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
    */
-  addContextListener(handler: ContextHandler): Listener;
+  addContextListener(handler: ContextHandler): Promise<Listener>;
 }
 ```
 
@@ -72,7 +72,7 @@ DisplayMetadata can be used to provide display hints for channels intended to be
 
 ### `addContextListener`
 ```ts
-public addContextListener(contextType: string | null, handler: ContextHandler): Listener;
+public addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 ```
 Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
 
@@ -83,7 +83,7 @@ If, when this function is called, the channel already contains context that woul
 /**
  * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
  */
-public addContextListener(handler: ContextHandler): Listener;
+public addContextListener(handler: ContextHandler): Promise<Listener>;
 ```
 Adds a listener for incoming contexts whenever a broadcast happens on the channel.
 
@@ -93,7 +93,7 @@ Adds a listener for incoming contexts whenever a broadcast happens on the channe
 Add a listener for any context that is broadcast on the channel:
 
 ```ts
-const listener = channel.addContextListener(null, context => {
+const listener = await channel.addContextListener(null, context => {
     if (context.type === 'fdc3.contact') {
         // handle the contact
     } else if (context.type === 'fdc3.instrument') => {
@@ -108,11 +108,11 @@ listener.unsubscribe();
 Adding listeners for specific types of context that is broadcast on the channel:
 
 ```ts
-const contactListener = channel.addContextListener('fdc3.contact', contact => {
+const contactListener = await channel.addContextListener('fdc3.contact', contact => {
     // handle the contact
 });
 
-const instrumentListener = channel.addContextListener('fdc3.instrument', instrument => {
+const instrumentListener = await channel.addContextListener('fdc3.instrument', instrument => {
     // handle the instrument
 });
 
@@ -130,7 +130,7 @@ instrumentListener.unsubscribe();
 ### `broadcast`
 
 ```typescript
-public broadcast(context: Context): void;
+public broadcast(context: Context): Promise<void>;
 ```
 
 Broadcasts a context on the channel. This function can be used without first joining the channel, allowing applications to broadcast on channels that they aren't a member of.
