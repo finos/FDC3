@@ -98,7 +98,7 @@ The following are standard FDC3 context types.
     - [schema](/schemas/next/instrument.schema.json)
 - __fdc3.instrumentList__
     - A collection of instruments.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrumentList)
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrumentlist)
     - [schema](/schemas/next/instrumentList.schema.json)
 - __fdd3.organization__
     - A standard organization entity.
@@ -109,6 +109,7 @@ The following are standard FDC3 context types.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/portfolio)
     - [schema](/schemas/next/portfolio.schema.json)
 - __fdc3.position__
+    - An amount of a security, asset, or property that is owned (or sold short) by some individual or other entity
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/position)
     - [schema](/schemas/next/position.schema.json)
 - __fdc3.nothing
@@ -220,7 +221,7 @@ __Note:__ The below examples show how the base context data interface can be use
 #### Portfolio
 ```json
 {
-    "type":"fdc3.portfolio"
+    "type":"fdc3.portfolio",
     "name":"my portfolio",
     "positions":[
         {

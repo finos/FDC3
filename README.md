@@ -21,7 +21,7 @@ The standard currently consists of four specifications:
 The specifications are informed by agreed [business use cases](https://fdc3.finos.org/docs/use-cases/overview),
 and implemented and used by leading [financial industry participants](https://fdc3.finos.org/users).
 
-See https://fdc3.finos.org for more information, including on [compliance] and the [FDC3 charter], as well as a comprehensive [API Reference].
+See https://fdc3.finos.org for more information, including on [compliance] and the [FDC3 charter], as well as a comprehensive [API Reference]. You can also take the free [FDC3 Training](https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop) for an introduction to FDC3's core concepts and usage.
 
 [FDC3 Charter]: https://fdc3.finos.org/docs/fdc3-charter
 [Compliance]: https://fdc3.finos.org/docs/fdc3-compliance
@@ -178,8 +178,10 @@ _NOTE:_ Commits and pull requests to FINOS repositories will only be accepted fr
 
 # License
 
-Copyright 2017-2021 FINOS
+Copyright 2017-2021 FINOS and FDC3 Participants
 
-Distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+Version 1.0 of the FDC3 specification is licensed under the [FDC3 1.0 Final Specification License](PATENTS-FDC3-1.0.md).
 
-SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0)
+Subsequent FDC3 specifications and draft specifications are subject to the [FINOS IP Policy](https://www.finos.org/hubfs/FINOS/governance/FINOS%20IP%20Policy.pdf), which authorizes implementation of FDC3 specifications without charge, on a RAND basis, subject to the terms of the policy. For details of the IP commitments made by contributors to FDC3, please refer to the policy.
+
+Reference implementations and other software contained in FDC3 repositories is licensed under the [Apache License, Version 2.0](LICENSE) unless otherwise noted. SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0).
