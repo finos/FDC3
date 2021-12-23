@@ -272,7 +272,7 @@ catch (err){
 ```ts
 getSystemChannels() : Promise<Array<Channel>>;
 ```
-Retrieves a list of the System channels available for the app to join.  This should include the 'global' channel.
+Retrieves a list of the System channels available for the app to join.
 
 #### Example
 
