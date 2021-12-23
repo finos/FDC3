@@ -58,7 +58,7 @@ See https://docusaurus.io/docs/en/versioning for more info.
 
 ## Versioning scheme
 
-Since FDC3 is a schema project, we don't follow semver, which is meant for libraries. We use the versioning scheme `<major>.<mninor>`, e.g. `1.1` or `2.3`.
+Since FDC3 is a schema project, we don't follow semver, which is meant for libraries. We use the versioning scheme `<major>.<minor>`, e.g. `1.1` or `2.3`.
 
 ## Create a new version
 

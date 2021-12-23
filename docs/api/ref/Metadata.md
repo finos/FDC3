@@ -61,12 +61,7 @@ In situations where a desktop agent connects to multiple app directories or mult
 
 A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
 
-#### See also
-
-* [`Channel`](Channel)
-* [`DesktopAgent.getSystemChannels`](DesktopAgent#getsystemchannels)
-
-### Properties
+#### Properties
 
 #### `name`
 
@@ -91,6 +86,11 @@ glyph: string;
 ```
 
 A URL of an image that can be used to display this channel.
+
+#### See also
+
+* [`Channel`](Channel)
+* [`DesktopAgent.getSystemChannels`](DesktopAgent#getsystemchannels)
 
 ## `ImplementationMetadata`
 
@@ -126,12 +126,23 @@ The Interface used to describe an Intent within the platform.
 
 ```ts
 interface IntentResolution {
-  source: TargetApp;
   /**
-  * @deprecated not assignable from intent listeners
-  */
-  data?: object;
-  version: string;
+   * The application that resolved the intent.
+   */
+  readonly source: TargetApp;
+  /**
+   * The intent that was raised. May be used to determine which intent the user
+   * chose in response to `fdc3.raiseIntentForContext()`.
+   */
+  readonly intent: string;
+  /**
+   * @deprecated not assignable from intent listeners
+   */
+  readonly data?: object;
+  /**
+   * The version number of the Intents schema being used.
+   */
+  readonly version?: string;
 }
 ```
 
