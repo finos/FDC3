@@ -12,60 +12,50 @@
 
 </head>
 
-<body>
+<body class="body">
 	<div class="main">
+		<a href="../"><img id="logo" src="../logo.svg"></a>
 		<table border="1">
 
 			<tr>
-				<td colspan="3" style="text-align:center;">Back to <a href="..">main page</a>.</td>
-			</tr>
-			<tr>
-				<td colspan="3">
-					<hr>
-				</td>
-			</tr>
-			<tr>
 				<td class="header">FDC3 Supported </td>
-				<td><span id="fdc3-support">Checking</span></td>
+				<td><span id="fdc3-support">Checking...</span></td>
 			</tr>
 
 			<tr>
-				<td class="header">FDC3 Provider Service:</td>
-				<td><span id="providerDetails">FDC3 Not Available</span></td>
+				<td class="header">FDC3 Provider:</td>
+				<td><span id="providerDetails">None</span></td>
 			</tr>
 
 			<tr>
-				<td class="header">FDC3 Supported Version:</td>
-				<td>1.1 </td>
+				<td class="header">FDC3 Version:</td>
 				<td>
-					<select id="versions" onchange="window.location.href=`../${this.value}`">
-						<option value="" disabled style="display:none;" selected>Change Version</option>
-					</select>
-
+          <select id="versions" onchange="window.location.href=`../${this.value}`">
+            <option value="1.0">1.0</option>
+            <option value="1.1">1.1</option>
+            <option value="1.2" selected>1.2</option>
+          </select>
 				</td>
 			</tr>
 
 			<tr>
-				<td colspan="3">
-					<hr>
-				</td>
+				<td colspan="3"><hr/></td>
 			</tr>
 
 			<tr>
 				<td class="header">App Directory:</td>
 				<td><span id="directoryDetails">Not supported yet!</span></td>
-				<td><input type="button" value="Connect" class="not-supported" disabled></td>
+				<td><Button class="not-supported" type="button" disabled>Connect</Button></td>
 			</tr>
 
 			<tr>
 				<td class="header">Available Apps:</td>
 				<td><textarea disabled></textarea></td>
-				<td><input type="button" value="Fetch" disabled></td>
+				<td><Button class="not-supported" type="button" disabled>Fetch</Button></td>
 			</tr>
+
 			<tr>
-				<td colspan="3">
-					<hr>
-				</td>
+				<td colspan="3"><hr/></td>
 			</tr>
 
 			<tr>
@@ -77,7 +67,6 @@
 					<ul id="app-channel-list"></ul>
 				</td>
 			</tr>
-
 
 			<tr>
 				<td class="header">Add App Channel:</td>
@@ -94,19 +83,25 @@
 			</tr>
 
 			<tr>
-				<td colspan="3">
-					<hr>
-				</td>
+				<td colspan="3"><hr/></td>
 			</tr>
 
 			<tr>
 				<td class="header" rowspan="2">Broadcast Context:</td>
 			</tr>
 			<tr>
-				<td><textarea id="txtBroadcastData">{"id":{"ISIN":"US0378331005","SEDOL":"2046251","ticker":"AAPL"},"name":"Apple Inc.","type":"fdc3.instrument"}
-</textarea></td>
-<td rowspan="2"><Button type="button" id="broadcast__btn" disabled>Send</Button>
-</td>
+				<td>
+          <textarea id="txtBroadcastData">{
+  "type":"fdc3.instrument",
+  "id": {
+    "ISIN":"US0378331005",
+    "SEDOL":"2046251",
+    "ticker":"AAPL"
+  },
+  "name":"Apple Inc."
+}</textarea>
+        </td>
+        <td rowspan="2"><Button type="button" id="broadcast__btn" disabled>Send</Button></td>
 			</tr>
 
 			<tr>
@@ -118,12 +113,16 @@
 			</tr>
 
 			<tr>
-				<td><textarea id="context-result" disabled></textarea></td>
+				<td>
+					<div id="context-result">
+						<i>Context result will appear here.</i>
+					</div>
+				</td>
 			</tr>
 
 			<tr>
 				<td colspan="3">
-					<hr>
+					<hr/>
 				</td>
 			</tr>
 
@@ -136,7 +135,17 @@
 			</tr>
 
 			<tr>
-				<td><textarea id="intent-context">{"id":{"ISIN":"US0378331005","SEDOL":"2046251","ticker":"AAPL"},"name":"Apple Inc.","type":"fdc3.instrument"}</textarea></td>
+				<td>
+          <textarea id="intent-context">{
+  "type":"fdc3.instrument",
+  "id": {
+    "ISIN":"US0378331005",
+    "SEDOL":"2046251",
+    "ticker":"AAPL"
+  },
+  "name":"Apple Inc."
+}</textarea>
+        </td>
 				<td><Button id="raise-intent__btn" disabled>Raise Intent </Button></td>
 			</tr>
 
