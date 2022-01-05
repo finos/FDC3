@@ -7,8 +7,6 @@ assignees: ''
 
 ---
 
-##  Question
-
 ### Question Area
 [ ] App Directory
 [ ] API
