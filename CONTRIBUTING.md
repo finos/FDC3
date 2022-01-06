@@ -105,3 +105,6 @@ The next section contains more information on the workflow followed for Pull Req
 - Pull requests can be closed by the author without merging.
 
 - Pull requests may be closed by a Maintainer if the decision is made that it is not going to be merged.
+
+## 5. Adoption of Contributions.
+Contributions merged into the master branch of the FDC3 repository will form part of the next pre-draft of the FDC3 Standard (as defined by the [FDC3 Governance document](./GOVERNANCE.md)), which must be approved by the Standard Working Group voting participants before it is accepted as a draft and subsequently released as the next version of the Standard.
