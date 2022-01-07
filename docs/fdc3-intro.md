@@ -1,5 +1,5 @@
 ---
-title: Welcome to FDC3
+title: Welcome to FDC3 2.0 (pre-draft)
 sidebar_label: Introduction
 ---
 
@@ -11,10 +11,15 @@ This includes standardized verbs to invoke actions between applications (called 
 
 ## Motivation
 
-FDC3 codifies standard patterns that application developers have been using for cross-application workflows between web and native applications
-in the financial industry.
+FDC3 codifies standard patterns that application developers have been using for cross-application workflows between web and native applications in the financial industry.
 
 For more information, see [Why FDC3](why-fdc3).
+
+## Versioning
+This Standard defines FDC3 Version 2.0 (predraft). The differences between this version and earlier ones can be found in the [Changelog](https://github.com/finos/FDC3/blob/master/CHANGELOG.md). 
+
+For more details on FDC3's versioning, deprecation and experimental features policies see the [Compliance page](./fdc3-compliance#versioning).
+
 ## Specifications
 
 The standard currently consists of four complementary specifications:
@@ -28,6 +33,7 @@ The standard currently consists of four complementary specifications:
 
 From its inception, the standards have been informed by real-world [business use cases](use-cases/overview), which you can view on this website,
 and form an important part of FDC3.
+
 ## Who is using FDC3?
 
 FDC3 was launched in October 2017 by [OpenFin](http://www.openfin.co) in collaboration with [major industry participants](/users). It includes representatives from over 40 major banks, buy-side firms, consultancies and financial services platforms.
