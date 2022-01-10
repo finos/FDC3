@@ -229,7 +229,7 @@ Context channels allows a set of apps to share a stateful piece of data between 
 
 There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics:
 
-1. **System channels**, which: 
+1. **_System channels_**, which: 
     * facilitate the creation of user-controlled context links between applications (often via the selection of a color channel),
     * are created and named by the desktop agent,
     * are discoverable (via the [`getSystemChannels()`](ref/DesktopAgent#getsystemchannels) API call),
@@ -238,7 +238,7 @@ There are two types of channels, which are functionally identical, but have diff
     > **Note:** Earlier versions of FDC3 included the concept of a 'global' system channel
     which was deprecated in FDC3 1.2 and removed in FDC 2.0.
 
-2. **App channels**, which: 
+2. **_App channels_**, which: 
     * facilitate developer controlled messaging between applications,
     * are created and named by applications (via the [`getOrCreateChannel()`](ref/DesktopAgent#getorcreatechannel) API call),
     * are not discoverable,
