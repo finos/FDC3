@@ -7,20 +7,20 @@ For the purposes of this Standard, the following definitions apply. Other terms 
 
 
 - **App Directory**: A repository of application metadata supporting discovery, for example via name or intent, and retrieval of metadata necessary to launch an application.
-- **application**: Any endpoint on the desktop that is registered with/known by a Desktop Agent, launchable by a Desktop Agent, addressable by a Desktop Agent or otherwise able to interact with the Desktop Agent.
 - **app**: Shorthand for application.
+- **application**: Any endpoint on the desktop that is registered with/known by a Desktop Agent, launchable by a Desktop Agent, addressable by a Desktop Agent or otherwise able to interact with the Desktop Agent.
 - **application, hybrid**: Any web application running within the context of a standalone native application that embeds a web view, typically based on Chromium.
 - **application, native**: A non-web-based application; i.e., one that runs outside the context of web browser, web view or web container. A user-written program—typically implemented in a language such as C++, C#, Java, or Python, rather than JavaScript or TypeScript.
 - **application, web**: An application written in TypeScript or JavaScript, HTML and CSS, which runs within the context of a web browser or a web container.
 - **application provider**: A downstream consumer of FDC3 Standards that can understand and use the FDC3 API (supplied by a Platform Provider), Context Data, and/or Intents.
 - **Channel**: A grouping of apps for the purposes of sharing stateful pieces of data. A secondary interface of the FDC3 API.
 - **context channels**: A mechanism to allow sets of apps to share stateful pieces of data among themselves, and to be alerted when that data changes.
+- **context**: Shorthand for context data.
 - **context data**: Objects encoding common identifiers and data in a standardized format that can be passed between apps via Context Channels or used in conjunction with Intents to invoke actions creating a seamless cross-application workflow. Diverse Context Data types are created to encode different types of data, each having their own _type_ field and unique set of data fields. 
-- **context**: Shorthand for Context Data.
 - **Desktop Agent**: A desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain. The primary interface of the FDC3 API.
 - **FDC3 API**: A baseline, consistent developer interface for interoperability between applications.
-- **interoperability**: the ability of software applications to exchange and make use of information and invoke specified acitons.
 - **interop**: Shorthand for interoperability.
+- **interoperability**: the ability of software applications to exchange and make use of information and invoke specified acitons.
 - **intent**: A verb, with a pre-agreed meaning (expected behavior), used to invoke an action between applications. A set of such verbs can, in conjunction with Context Data acting as nouns, be used to put together common cross-application workflows on the financial desktop.
 - **Listener**: API interface which allows unsubscribing from Intents or Context Channels.
 - **raising an intent**: The act of requesting, via the FDC3 API/Desktop Agent that a specified action be performed by another application, using specified Context Data as input.
