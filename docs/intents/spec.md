@@ -6,7 +6,7 @@ title: Intents Specification (next)
 
 ## Introduction
 
-FDC3 [Intents](intents-intro) define a standard set of nouns and verbs that can be used to put together common cross-application workflows on the financial desktop.
+FDC3 [Intents](intents-intro) define a standard set of verbs that, in conjunction with Context data acting as nouns, can be used to put together common cross-application workflows on the financial desktop.
 
 ### Naming Syntax
 * Intent names should be free of non-alphanumeric characters.
