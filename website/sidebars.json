@@ -39,7 +39,8 @@
           "intents/ref/ViewQuote",
           "intents/ref/ViewNews",
           "intents/ref/ViewAnalysis",
-          "intents/ref/ViewInstrument"
+          "intents/ref/ViewInstrument",
+          "intents/ref/ViewHoldings"
         ]
       }
     ],
