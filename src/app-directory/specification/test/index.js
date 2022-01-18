@@ -1,7 +1,7 @@
 const SwaggerParser = require('@apidevtools/swagger-parser');
 const { Validator } = require('jsonschema');
 const assert = require('assert');
-const exampleApplication = require('../examples/application/fdc3-workbench');
+const exampleApplication = require('../examples/application/fdc3-workbench.json');
 
 (async () => {
   try {
