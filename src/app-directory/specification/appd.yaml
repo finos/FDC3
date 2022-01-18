@@ -116,17 +116,6 @@ paths:
             The same appName could occur in other directories. We are not
             currently specifying app name conventions in the document.
         - in: query
-          name: manifest
-          schema:
-            type: string
-          required: false
-          description: >
-            URI or full JSON of the application manifest providing all details related to launch
-            and use requirements as described by the vendor.
-
-            The format of this manifest is vendor specific, but can be identified by
-            the manifestType attribute.
-        - in: query
           name: version
           schema:
             type: string
@@ -204,7 +193,7 @@ paths:
                 $ref: '#/components/schemas/ErrorDTO'
       tags:
         - Application
- 
+
 servers:
   - url: /appd
 components:
@@ -227,14 +216,13 @@ components:
         Defines an application retrieved from an FDC3 App Directory, which can
         then be launched.
 
-        Launching typically means running for a user on a desktop. 
+        Launching typically means running for a user on a desktop.
         The details around 'launching' including who or what might do it, and how the launch action is initiated are
         discussed elsewhere in the FDC3 App Directory spec.
-      required:
+      required:            # details are not required as the host type applications use the hostsManifests mapping instead
         - appId
         - name
-        - manifest
-        - manifestType
+        - type
       properties:
         appId:
           type: string
@@ -252,19 +240,14 @@ components:
 
             The same appName could occur in other directories. We are not
             currently specifying app name conventions in the document.
-        manifest:
-          type: string
-          description: >
-            URI or full JSON of the application manifest providing all details related to launch
-            and use requirements as described by the vendor.
-
-            The format of this manifest is vendor specific, but can be identified by
-            the manifestType attribute.
-        manifestType:
-          type: string
-          description: >
-            The manifest type which relates to the format and structure of the manifest content.
-            The definition is based on the vendor specific format and definition outside of this specification.
+        type:
+          $ref: '#/components/schemas/Type'
+        details:
+          description: >-
+            The type specific details of the application. Currently only the "browser" type is standardized.
+            "host" type applications should use the hostManifest's object for all application details.
+          oneOf:
+            - $ref: '#/components/schemas/BrowserDetails'
         version:
           type: string
           description: >-
@@ -323,6 +306,8 @@ components:
             https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
           items:
             $ref: '#/components/schemas/Intent'
+        hostManifests:
+          $ref: '#/components/schemas/HostManifest'
     ApplicationSearchResponse:
       properties:
         applications:
@@ -380,10 +365,37 @@ components:
           items:
             type: string
           description: >-
-            A comma sepaarted list of the types of contexts the intent offered by the application can process. 
+            A comma separated list of context-types that the application's intent(s) can process.
             where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
         customConfig:
           type: object
           description: >-
             Custom configuration for the intent that may be required for a
             particular desktop agent.
+    Type:
+      type: string
+      description: >-
+        Enumeration describing the supported application types. Currently only the browser application type is officially supported.
+        The host application type allows for host specific application types (e.g. exe, workspaces, citrix, etc.).
+      enum:
+        - browser
+        - host
+    BrowserDetails:
+      description: Properties common to all browser applications.
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          description: Application URL.
+      additionalProperties: false
+    HostManifest:
+      type: object
+      description: >-
+        A mapping from host string to a host-specific application manifest object or URI
+        from which that manifest can be retrieved. The manifest should provide all details required to
+        launch and use the application within the specified host.
+      additionalProperties:
+        oneOf:
+          - type: string   # URI pointing to a JSON containing all host specific properties
+          - type: object   # object containing all host specific properties
