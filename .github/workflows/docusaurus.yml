@@ -20,7 +20,7 @@ on:
       - 'docs/**'
       - 'website/**'
       - 'toolbox/**'
-      - 'src/app-directory/specification/**
+      - 'src/app-directory/specification/**'
       - 'src/context/schemas/**'
 
 env:
