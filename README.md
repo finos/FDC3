@@ -156,7 +156,7 @@ Upon enrollment as an [FDC3 voting participant](https://github.com/orgs/finos/te
 FDC3 Editors are responsible for ensuring that the contents of the document accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines. The appointment of an Editor is approved by the FDC3 Standards Working Group Participants.
 
 ### FDC3 Maintainers
-FDC3 maintainers are responsible for organizing activities around developing, maintaining, and updating the specification developed by the FDC3 Standard Working Group. Maintainers are also responsible for determining consensus and coordinating appeals, as well as FDC3-related planning and communications. The appointment of an Editor is approved by the FDC3 Standards Working Group Participants.
+FDC3 Maintainers are responsible for organizing activities around developing, maintaining, and updating the specification developed by the FDC3 Standard Working Group. Maintainers are also responsible for determining consensus and coordinating appeals, as well as FDC3-related planning and communications. The appointment of a Maintainer is approved by the FDC3 Standards Working Group Participants.
 
 #### Mailing list
 You can contact the FDC3 maintainers by sending an email to [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org).
