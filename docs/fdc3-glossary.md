@@ -20,7 +20,7 @@ For the purposes of this Standard, the following definitions apply. Other terms 
 - **Desktop Agent**: A desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain. The primary interface of the FDC3 API.
 - **FDC3 API**: A baseline, consistent developer interface for interoperability between applications.
 - **interop**: Shorthand for interoperability.
-- **interoperability**: the ability of software applications to exchange and make use of information and invoke specified acitons.
+- **interoperability**: the ability of software applications to exchange and make use of information and invoke specified actions.
 - **intent**: A verb, with a pre-agreed meaning (expected behavior), used to invoke an action between applications. A set of such verbs can, in conjunction with Context Data acting as nouns, be used to put together common cross-application workflows on the financial desktop.
 - **Listener**: API interface which allows unsubscribing from Intents or Context Channels.
 - **raising an intent**: The act of requesting, via the FDC3 API/Desktop Agent that a specified action be performed by another application, using specified context data as input.

@@ -28,8 +28,8 @@ Intents shoulde be:
     * Granular enough that Intent handlers can communicate key functional differences
 
 ### Namespaces ###
-All standard Intent names are reserved. Applications may use their own intents ad hoc.
-However, there is a need for applications to ensure that their Intents avoid collision. The recommended approach here is to use the app name as the noun. For example, the ‘myChart’ App may expose the ‘ViewChart’ intent and the ‘myChart.Foo’ proprietary intent.
+All standard intent names are reserved. Applications may use their own intents ad hoc.
+However, there is a need for applications to ensure that their intents avoid collision. The recommended approach here is to use the app name as the noun. For example, the ‘myChart’ App may expose the ‘ViewChart’ intent and the ‘myChart.Foo’ proprietary intent.
 
 ## Initial Set of Standard Intents ##
 
@@ -49,7 +49,7 @@ However, there is a need for applications to ensure that their Intents avoid col
   * Expected context: Instrument
   * Expected behavior: display pricing for an instrument
 ### ViewNews
-  * Expected context: Instrument, Contact, Organisation, etc.
+  * Expected context: Instrument, Contact, Organization, etc.
   * Expected behavior: display news for a given context
 ### ViewInstrument
   * Expected context: Instrument
