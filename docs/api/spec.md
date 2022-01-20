@@ -99,9 +99,9 @@ Intents provide a way for an app to request functionality from another app and d
 - **Remote API**: An app wants to remote an entire API that it owns to another App.  In this case, the API for the App cannot be standardized.  However, the FDC3 API can address how an App connects to another App in order to get access to a proprietary API.
 
 #### Intents and Context
-When raising an Intent a specific context may be provided. The type of the provided context may determine which applications can resolve the intent.
+When raising an intent a specific context may be provided. The type of the provided context may determine which applications can resolve the intent.
 
-A context type may also be associated with multiple intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other Intents. In addition to raising a specific intent, you can raise an intent for a specific context allowing the Desktop Agent or the user (if the intent is ambiguous) to select the appropriate intent for the selected context and then to raise that intent for resolution.
+A context type may also be associated with multiple intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other intents. In addition to raising a specific intent, you can raise an intent for a specific context allowing the Desktop Agent or the user (if the intent is ambiguous) to select the appropriate intent for the selected context and then to raise that intent for resolution.
 
 To raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an intent listener or in an App Directory).
 
@@ -177,7 +177,7 @@ catch (err){
 ```
 
 #### Resolvers
-Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (for example, by displaying a resolver UI allowing the user to pick the desired App for the intent) or by the app calling App handling the resolution itself (by using the `findIntents` API) and then invoking the intent on a specific target application, e.g.:
+Intent functionality is dependent on resolver functionality to map the intent to a specific app.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (for example, by displaying a resolver UI allowing the user to pick the desired app for the intent) or by the app handling the resolution itself (by using the `findIntents` API) and then invoking the intent on a specific target application, e.g.:
 
 ```js
 //Find apps to resolve an intent to start a chat with a given contact
@@ -200,7 +200,7 @@ const chartApp = fin.Application.wrap(chart.source);
 ![Upgrading Connection to Remote API](assets/api-3.png)
 
 ### Register an Intent
-Applications need to let the system know the intents they can support.  Typically, this is done via registration with the App Directory.  It is also possible for intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  While, dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
+Applications need to let the system know the intents they can support.  Typically, this is done via registration with the App Directory.  It is also possible for intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  While dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
 
 #### Compliance with Intent Standards
 Intents represent a contract with expected behavior if an app asserts that it supports the intent.  Where this contract is enforceable by schema (for example, return object types), the FDC3 API implementation should enforce compliance and return an error if the interface is not met.
