@@ -45,17 +45,17 @@ https://fdc3.finos.org/schemas/next/position.schema.json
 
 ```js
 const position = {
-    type: 'fdc3.position',
+    type: "fdc3.position",
     instrument: {
-        type: 'fdc3.instrument',
+        type: "fdc3.instrument",
         id: {
-            ticker: 'AAPL'
+            ticker: "AAPL"
         }
     },
     holding: 2000000
 }
 
-fdc3.raiseIntent('ViewChart', position)
+fdc3.raiseIntent("ViewChart", position)
 ```
 
 ## See Also
