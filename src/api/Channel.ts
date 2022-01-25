@@ -41,7 +41,7 @@ export interface Channel {
    *
    * `Error` with a string from the `ChannelError` enumeration.
    */
-  broadcast(context: Context): void;
+  broadcast(context: Context): Promise<void>;
 
   /**
    * Returns the last context that was broadcast on this channel. All channels initially have no context, until a
@@ -64,10 +64,10 @@ export interface Channel {
    * Adds a listener for incoming contexts whenever a broadcast happens on this channel.
    * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
    */
-  addContextListener(handler: ContextHandler): Listener;
+  addContextListener(handler: ContextHandler): Promise<Listener>;
 
   /**
    * Adds a listener for incoming contexts of the specified context type whenever a broadcast happens on this channel.
    */
-  addContextListener(contextType: string | null, handler: ContextHandler): Listener;
+  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 }

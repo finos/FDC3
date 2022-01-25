@@ -27,6 +27,7 @@ const siteConfig = {
     {doc: 'fdc3-intro', label: 'Docs'},   
     {doc: 'use-cases/overview', label: 'Use Cases'},
     {page: 'get-involved', label: 'Get Involved'},
+    {href: 'https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop', label: 'Training', external: true},
     {doc: 'why-fdc3', label: 'Why FDC3'}
    //, {blog: true, label: 'News'}
   ],
