@@ -1,5 +1,5 @@
 ---
-title: Welcome to FDC3
+title: Welcome to FDC3 2.0 (pre-draft)
 sidebar_label: Introduction
 ---
 
@@ -14,6 +14,12 @@ This includes standardized verbs to invoke actions between applications ("intent
 FDC3 codifies standard patterns that application developers have been using for cross-application workflows between web and native applications in the financial industry.
 
 For more information, see [Why FDC3](why-fdc3).
+
+## Versioning
+This Standard defines FDC3 Version 2.0 (predraft). The differences between this version and earlier ones can be found in the [Changelog](https://github.com/finos/FDC3/blob/master/CHANGELOG.md). 
+
+For more details on FDC3's versioning, deprecation and experimental features policies see the [Compliance page](./fdc3-compliance#versioning).
+
 ## Specifications
 
 The Standard currently consists of four complementary specifications:
@@ -35,7 +41,9 @@ FDC3 was launched in October 2017 by [OpenFin](http://www.openfin.co) in collabo
 
 FDC3 is hosted within, and governed by the policies of, the [Fintech Open Source Foundation](http://finos.org/) (FINOS). FINOS is an independent nonprofit organization focused on promoting open innovation within financial services.
 
-See the [FDC3 Charter](fdc3-charter#licensing) for details of how deliverables are licensed.
+- See the [FDC3 Governance document](https://github.com/finos/FDC3/blob/master/GOVERNANCE.md) for details of how FDC3 is governed.
+- See the [FDC3 Contribution Guide](https://github.com/finos/FDC3/blob/master/CONTRIBUTING.md) for details of how to contribute to FDC3.
+- See the [FDC3 Charter](fdc3-charter#licensing) for details of how deliverables are licensed.
 
 ## Where should I go next?
 
