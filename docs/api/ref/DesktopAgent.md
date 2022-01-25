@@ -18,19 +18,19 @@ interface DesktopAgent {
   open(app: TargetApp, context?: Context): Promise<void>;
 
   // context
-  broadcast(context: Context): void;
-  addContextListener(contextType: string | null, handler: ContextHandler): Listener;
+  broadcast(context: Context): Promise<void>;
+  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
   /**
    * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
    */
-  addContextListener(handler: ContextHandler): Listener;
+  addContextListener(handler: ContextHandler): Promise<Listener>;
 
   // intents
   findIntent(intent: string, context?: Context): Promise<AppIntent>;
   findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
   raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
   raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
-  addIntentListener(intent: string, handler: ContextHandler): Listener;
+  addIntentListener(intent: string, handler: ContextHandler): Promise<Listener>;
 
   // channels
   getOrCreateChannel(channelId: string): Promise<Channel>;
@@ -40,7 +40,7 @@ interface DesktopAgent {
   leaveCurrentChannel() : Promise<void>;
 
   //implementation info
-  getInfo(): ImplementationMetadata;
+  getInfo(): Promise<ImplementationMetadata>;
 
   /**
    * @deprecated Use `getUserChannels()` instead of `getSystemChannels()`
@@ -50,7 +50,6 @@ interface DesktopAgent {
    * @deprecated Use `joinUserChannel()` instead of `joinChannel()`
    */
   joinChannel(channelId: string) : Promise<void>;
-  
 }
 ```
 
@@ -59,11 +58,11 @@ interface DesktopAgent {
 ### `addContextListener`
 
 ```ts
-addContextListener(contextType: string | null, handler: ContextHandler): Listener;
+addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 /**
  * @deprecated 'Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
  */
-addContextListener(handler: ContextHandler): Listener;
+addContextListener(handler: ContextHandler): Promise<Listener>;
 ```
 Adds a listener for incoming context broadcasts from the Desktop Agent. If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types. 
 
@@ -72,10 +71,10 @@ Context broadcasts are only received from apps that are joined to the same User 
 #### Examples
 ```js
 // any context
-const listener = fdc3.addContextListener(null, context => { ... });
+const listener = await fdc3.addContextListener(null, context => { ... });
 
 // listener for a specific type
-const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ... });
+const contactListener = await fdc3.addContextListener('fdc3.contact', contact => { ... });
 ```
 
 #### See also
@@ -87,14 +86,14 @@ const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ...
 ### `addIntentListener`
 
 ```ts
-addIntentListener(intent: string, handler: ContextHandler): Listener;
+addIntentListener(intent: string, handler: ContextHandler): Promise<Listener>;
 ```
  Adds a listener for incoming Intents from the Agent.
 
 #### Examples
 
 ```js
-const listener = fdc3.addIntentListener('StartChat', context => {
+const listener = await fdc3.addIntentListener('StartChat', context => {
   // start chat has been requested by another application
 });
 ```
@@ -108,12 +107,12 @@ const listener = fdc3.addIntentListener('StartChat', context => {
 ### `broadcast`
 
 ```ts
-broadcast(context: Context): void;
+broadcast(context: Context): Promise<void>;
 ```
 
 Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever _User Channel_ the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
 
-DesktopAgent implementations should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.
+DesktopAgent implementations should ensure that context messages broadcast to a channel by an application joined to it are not delivered back to that same application.
 
 If you are working with complex context types composed of other simpler types (as recommend by the [Context specification](../../context/spec#assumptions)) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.
 
@@ -229,7 +228,7 @@ let current = await fdc3.getCurrentChannel();
 ### `getInfo`
 
 ```ts
-getInfo(): ImplementationMetadata;
+getInfo(): Promise<ImplementationMetadata>;
 ```
 
 Retrieves information about the FDC3 Desktop Agent implementation, such as the implemented version of the FDC3 specification and the name of the implementation provider.
@@ -241,7 +240,7 @@ Returns an [`ImplementationMetadata`](Metadata#implementationmetadata) object.  
 ```js
 import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
 
-if (fdc3.getInfo && versionIsAtLeast(fdc3.getInfo(), "1.2")) {
+if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
   await fdc3.raiseIntentForContext(context);
 } else {
   await fdc3.raiseIntent("ViewChart", context);
@@ -281,7 +280,7 @@ catch (err){
 getUserChannels() : Promise<Array<Channel>>;
 ```
 
-Retrieves a list of the User Channels available for the app to join.  This MAY include the deprecated 'global' channel.
+Retrieves a list of the User Channels available for the app to join. 
 
 #### Example
 

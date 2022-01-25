@@ -32,6 +32,7 @@ For platform providers FDC3 compliance requires:
 * An API implementation that meets the FDC3 API standards MUST be provided to all applications running in the context of the platform, including:
     * Support for FDC3 Context Data and Intents standards
     * Support for Intent and Context resolution using a resolver UI
+    * Support for retrieving information about the version of the FDC3 specification supported by a Desktop Agent implementation and the name of the implementation provider
 * In the case of web applications, a Desktop Agent MUST provide the FDC3 API via a global accessible as `window.fdc3`.
 * At least one workflow of one of the use cases marked as Accepted by the Use Cases working group SHOULD be satisfied by the implementation.
 
@@ -46,10 +47,16 @@ For application providers FDC3 compliance requires:
 * If proprietary Context Data properties are handled, they SHOULD follow any recommended naming conventions in the specification.
 * If Context Data is supported, the application SHOULD use the addContextListener API to set up a handler.
 
-## References
-The following specifications and use case references apply to the above:
-* [API](api/spec)
-* [App Directory](app-directory/spec)
-* [Context Data](context/spec)
-* [Intents](intents/spec)
-* [Use Cases](use-cases/overview)
+## Versioning
+Typically, a Standard that has marketplace relevance is revised from time to time, to correct errors and/or to add functionality to support new use cases. Hence, there exist multiple versions of the standard. As FDC3 is a standards project, we don't follow semver, which is meant for libraries. We use the versioning scheme `<major>.<minor>`, e.g. `1.1` or `2.3`.
+
+## Deprecation Policy
+Over time, it is not uncommon for certain things in a standard to be marked for removal in a future version, possibly being replaced by an alternative. That is, they are deprecated. Often, they are retained in the standard because of their widespread use, but their use in new projects is discouraged.
+
+FDC3 adopts the following deprecation policy:
+
+1. A feature can be deprecated by any major or minor version. Newly deprecated features will be described in the [Changelog](https://github.com/finos/FDC3/blob/master/CHANGELOG.md).
+2. A feature shall only be removed by a major version. Newly removed features will be described in the [Changelog](https://github.com/finos/FDC3/blob/master/CHANGELOG.md).
+3. Deprecated features are clearly marked with an `@deprecated` tag and comment in both the documentation and jsDocs applied to the TypeScript sources.
+4. Where possible, changes to the behavior of an existing feature should be avoided; consider deprecating it and replacing it with something with a different name/syntax.
+5. Breaking changes should only be made in a major version of the Standard.
