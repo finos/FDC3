@@ -37,24 +37,24 @@ https://fdc3.finos.org/schemas/next/instrumentList.schema.json
 
 ```js
 const instruments = {
-    type: 'fdc3.instrumentList',
+    type: "fdc3.instrumentList",
     instruments: [
         {
-            type: 'fdc3.instrument',
+            type: "fdc3.instrument",
             id: {
-                ticker: 'AAPL'
+                ticker: "AAPL"
             }
         },
         {
-            type: 'fdc3.instrument',
+            type: "fdc3.instrument",
             id: {
-                ticker: 'MSFT'
+                ticker: "MSFT"
             }
         },
     ]
 }
 
-fdc3.joinChannel('global')
+fdc3.joinChannel('red')
 fdc3.broadcast(instruments)
 ```
 
