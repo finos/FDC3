@@ -12,6 +12,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added [**FDC3 Workbench**](https://fdc3.finos.org/toolbox/fdc3-workbench/), an FDC3 API developer application ([#457](https://github.com/finos/FDC3/pull/457))
 * Added advice on how to `broadcast` complex context types, composed of other types, so that other apps can listen for both the complex type and simpler constituent types ([#464](https://github.com/finos/FDC3/pull/464))
 * Added error `UserCancelled` to the `ResolveError` enumeration to be used when user closes the resolver UI or otherwise cancels resolution of a raised intent ([#XXX](https://github.com/finos/FDC3/pull/XXX))
+* Added a References and Bibliography section to the Standard's documentation to hold links to 'normative references' and other documentation that is useful for understanding the standard ([#530](https://github.com/finos/FDC3/pull/530))
+* `IntentResolution` now requires the name of the intent raised to included, allowing it to be used to determine the intent raised via `fdc3.raiseIntentForContext()`. ([#507](https://github.com/finos/FDC3/pull/507))
+* A Trademarks page was added to acknowledge trademarks used within the Standard not owned by FINOS or the Linux Foundation ([#534](https://github.com/finos/FDC3/pull/534))
+* Added details of FDC3's existing versioning and deprecation policies to the FDC3 compliance page ([#539](https://github.com/finos/FDC3/pull/539))
 
 ### Changed
 * Consolidated `Listener` documentation with other types ([#404](https://github.com/finos/FDC3/pull/404))
@@ -20,8 +24,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Updated copyright notices ([#467](https://github.com/finos/FDC3/pull/467))
 * Adjusted wording in API spec and documentation to acknowledge the possibility of methods of intent resolution other than a resolver UI ([#461](https://github.com/finos/FDC3/pull/461))
 * Moved the Icon type definition into the Types documentation page for consistency with other types. ([#493](https://github.com/finos/FDC3/pull/493)
+* All DesktopAgent and Channel API functions are now async for consistency, changing the return type of the `broadcast`, `addIntentListener`, `addContextListener` and `getInfo` functions ([#516](https://github.com/finos/FDC3/pull/516))
 
 ### Deprecated
+* Removed details of the 'global' channel that was deprecated in FDC3 1.2. ([#496](https://github.com/finos/FDC3/pull/496))
+
 ### Fixed
 * Removed trailing slashes from schema references (which break refs for schema parsers) ([#374](https://github.com/finos/FDC3/pull/374))
 * Corrected that definition of the `Context` type in documentation ([#406](https://github.com/finos/FDC3/pull/406)])
@@ -31,7 +38,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Clarified existing behavior of `joinChannel` and `addIntentListener` when joining a channel ([#454](https://github.com/finos/FDC3/pull/454))
 * Clarified numerous aspects of the existing `raiseIntent` behavior in the spec and documentation ([#461](https://github.com/finos/FDC3/pull/461))
 * Updated Methods.ts to support the updated signature for `addContextListener` introduced in FDC3 1.2 ([#462](https://github.com/finos/FDC3/pull/462))
-
+* Clarified the description of the addContextListener functions from the Desktop Agent and Channel APIs in spec and docs. ([#492](https://github.com/finos/FDC3/pull/492))
+* Clarified that implementing `fdc3.getInfo()` is required for compliance with the FDC3 standard ([#515](https://github.com/finos/FDC3/pull/515))
 
 ## [npm v1.2.0] - 2021-04-19
 
@@ -39,10 +47,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * ES6 functions for `getInfo()` and `raiseIntentForContext()` ([#268](https://github.com/finos/FDC3/pull/268), [#324](https://github.com/finos/FDC3/pull/324))
 * `fdc3Ready()` utility function that wraps checks for the window.fdc3 global object and new `fdc3Ready` event ([#360](https://github.com/finos/FDC3/pull/360))
 * `compareVersionNumbers()` and `versionIsAtLeast()` utility functions to complement `getInfo()` ([#324](https://github.com/finos/FDC3/pull/324))
+* An example application definition ([#437](https://github.com/finos/FDC3/pull/437)
+* A test environment for the app directory specification and the example application definition ([#437](https://github.com/finos/FDC3/pull/437)
 
 ### Changed
 * `addContextListener(contextType, handler)` now supports passing `null` as the context type ([#329](https://github.com/finos/FDC3/pull/329))
 * All other API type changes and additions from the [FDC3 Standard 1.2](https://github.com/finos/FDC3/releases/tag/v1.2) release
+* The Application schema by removing the `manifestType` and `manifest` properties, introducing new `type` (required), `details` and `hostManifests` properties ([#437](https://github.com/finos/FDC3/pull/437)
 
 ### Deprecated
 * `addContextListener(handler)` ([#329](https://github.com/finos/FDC3/pull/329))
