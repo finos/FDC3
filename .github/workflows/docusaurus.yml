@@ -12,12 +12,16 @@ on:
       - '.github/workflows/docusaurus.yml'
       - 'docs/**'
       - 'website/**'
+      - 'src/app-directory/specification/**'
+      - 'src/context/schemas/**'
   pull_request:
     paths:
       - '.github/workflows/docusaurus.yml'
       - 'docs/**'
       - 'website/**'
       - 'toolbox/**'
+      - 'src/app-directory/specification/**'
+      - 'src/context/schemas/**'
 
 env:
 # Used by docusaurus publish-site command and comment-on-pr action
