@@ -44,42 +44,41 @@ https://fdc3.finos.org/schemas/next/portfolio.schema.json
 
 ```js
 const portfolio = {
-    type: 'fdc3.portfolio',
+    type: "fdc3.portfolio",
     positions: [
         {
-            type: 'fdc3.position',
+            type: "fdc3.position",
             instrument: {
-                type: 'fdc3.instrument',
+                type: "fdc3.instrument",
                 id: {
-                    ticker: 'AAPL'
+                    ticker: "AAPL"
                 }
             },
             holding: 2000000
         },
         {
-            type: 'fdc3.position',
+            type: "fdc3.position",
             instrument: {
-                type: 'fdc3.instrument',
+                type: "fdc3.instrument",
                 id: {
-                    ticker: 'MSFT'
+                    ticker: "MSFT"
                 }
             },
             holding: 1500000
         },
         {
-            type: 'fdc3.position',
+            type: "fdc3.position",
             instrument: {
-                type: 'fdc3.instrument',
+                type: "fdc3.instrument",
                 id: {
-                    ticker: 'IBM'
+                    ticker: "IBM"
                 }
             },
             holding: 3000000
         }
     ]
 }
-
-fdc3.raiseIntent('ViewAnalysis', portfolio)
+fdc3.raiseIntent("ViewAnalysis", portfolio)
 ```
 
 ## See Also

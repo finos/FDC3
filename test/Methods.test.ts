@@ -57,8 +57,8 @@ describe('test ES6 module', () => {
       await expect(findIntentsByContext(expect.any(Object))).rejects.toEqual(UnavailableError);
     });
 
-    test('broadcast should throw', async () => {
-      expect(() => broadcast(expect.any(Object))).toThrowError(UnavailableError);
+    test('broadcast should reject', async () => {
+      await expect(broadcast(expect.any(Object))).rejects.toEqual(UnavailableError);
     });
 
     test('raiseIntent should reject', async () => {
@@ -69,14 +69,14 @@ describe('test ES6 module', () => {
       await expect(raiseIntentForContext(expect.any(Object))).rejects.toEqual(UnavailableError);
     });
 
-    test('addIntentListener should throw', () => {
-      expect(() => addIntentListener(expect.any(String), expect.any(Function))).toThrowError(UnavailableError);
+    test('addIntentListener should reject', async () => {
+      await expect(addIntentListener(expect.any(String), expect.any(Function))).rejects.toEqual(UnavailableError);
     });
 
-    test('addContextListener should throw', () => {
-      expect(() => addContextListener(expect.any(Object))).toThrowError(UnavailableError);
+    test('addContextListener should reject', async () => {
+      await expect(addContextListener(expect.any(Object))).rejects.toEqual(UnavailableError);
 
-      expect(() => addContextListener(expect.any(String), expect.any(Object))).toThrowError(UnavailableError);
+      await expect(addContextListener(expect.any(String), expect.any(Object))).rejects.toEqual(UnavailableError);
     });
 
     test('getSystemChannels should reject', async () => {
@@ -99,8 +99,8 @@ describe('test ES6 module', () => {
       await expect(leaveCurrentChannel()).rejects.toEqual(UnavailableError);
     });
 
-    test('getInfo should throw', () => {
-      expect(() => getInfo()).toThrowError(UnavailableError);
+    test('getInfo should reject', async () => {
+      await expect(() => getInfo()).rejects.toEqual(UnavailableError);
     });
   });
 
@@ -154,8 +154,8 @@ describe('test ES6 module', () => {
       expect(window.fdc3.findIntentsByContext).toHaveBeenLastCalledWith(ContactContext, ContextTypes.Contact);
     });
 
-    test('broadcast should delegate to window.fdc3.broadcast', () => {
-      broadcast(ContactContext);
+    test('broadcast should delegate to window.fdc3.broadcast', async () => {
+      await broadcast(ContactContext);
 
       expect(window.fdc3.broadcast).toHaveBeenCalledTimes(1);
       expect(window.fdc3.broadcast).toHaveBeenCalledWith(ContactContext);
@@ -180,23 +180,23 @@ describe('test ES6 module', () => {
       expect(window.fdc3.raiseIntentForContext).toHaveBeenCalledWith(ContactContext, app);
     });
 
-    test('addIntentListener should delegate to window.fdc3.addIntentListener', () => {
+    test('addIntentListener should delegate to window.fdc3.addIntentListener', async () => {
       const intent = 'ViewChart';
       const handler: ContextHandler = _ => {};
 
-      addIntentListener(intent, handler);
+      await addIntentListener(intent, handler);
 
       expect(window.fdc3.addIntentListener).toHaveBeenCalledTimes(1);
       expect(window.fdc3.addIntentListener).toHaveBeenCalledWith(intent, handler);
     });
 
-    test('addContextListener should delegate to window.fdc3.addContextListener', () => {
+    test('addContextListener should delegate to window.fdc3.addContextListener', async () => {
       const type = 'fdc3.instrument';
       const handler1: ContextHandler = _ => {};
       const handler2: ContextHandler = _ => {};
 
-      addContextListener(type, handler1);
-      addContextListener(handler2);
+      await addContextListener(type, handler1);
+      await addContextListener(handler2);
 
       expect(window.fdc3.addContextListener).toHaveBeenCalledTimes(2);
       expect(window.fdc3.addContextListener).toHaveBeenNthCalledWith(1, type, handler1);
@@ -242,8 +242,8 @@ describe('test ES6 module', () => {
       expect(window.fdc3.leaveCurrentChannel).toHaveBeenCalledWith();
     });
 
-    test('getInfo should delegate to window.fdc3.getInfo', () => {
-      getInfo();
+    test('getInfo should delegate to window.fdc3.getInfo', async () => {
+      await getInfo();
 
       expect(window.fdc3.getInfo).toHaveBeenCalledTimes(1);
       expect(window.fdc3.getInfo).toHaveBeenCalledWith();

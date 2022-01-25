@@ -125,10 +125,16 @@ The Interface used to describe an Intent within the platform.
 
 ```ts
 interface IntentResolution {
+
 /**
    * The application that resolved the intent.
    */
   readonly source: TargetApp;
+  /**
+   * The intent that was raised. May be used to determine which intent the user
+   * chose in response to `fdc3.raiseIntentForContext()`.
+   */
+  readonly intent: string;
   /**
    * The version number of the Intents schema being used.
    */

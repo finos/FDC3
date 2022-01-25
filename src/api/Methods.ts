@@ -20,13 +20,21 @@ function rejectIfNoGlobal(f: () => Promise<any>) {
   return window.fdc3 ? f() : Promise.reject(UnavailableError);
 }
 
-function throwIfNoGlobal(f: () => any) {
-  if (!window.fdc3) {
-    throw UnavailableError;
-  }
-  return f();
-}
-
+/**
+ * Utility function that returns a promise that will resolve immeadiately
+ * if the desktop agent API is found at `window.fdc3`. If the API is found,
+ * the promise will resolve when the `fdc3Ready` event is received or if it
+ * is found at the end of the specified timeout. If the API is not found, it
+ * will reject with an error.
+ *
+ * ```javascript
+ * await fdc3Ready();
+ * const intentListener = await addIntentListener("ViewChart", intentHandlerFn);
+ * ```
+ *
+ * @param waitForMs The number of milliseconds to wait for the FDC3 API to be
+ * ready. Defaults to 5 seconds.
+ */
 export const fdc3Ready = async (waitForMs = DEFAULT_TIMEOUT): Promise<void> => {
   return new Promise((resolve, reject) => {
     // if the global is already available resolve immediately
@@ -60,8 +68,8 @@ export function findIntentsByContext(context: Context, resultContextType?: strin
   return rejectIfNoGlobal(() => window.fdc3.findIntentsByContext(context, resultContextType));
 }
 
-export function broadcast(context: Context): void {
-  throwIfNoGlobal(() => window.fdc3.broadcast(context));
+export function broadcast(context: Context): Promise<void> {
+  return rejectIfNoGlobal(() => window.fdc3.broadcast(context));
 }
 
 export function raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution> {
@@ -72,19 +80,19 @@ export function raiseIntentForContext(context: Context, app?: TargetApp): Promis
   return rejectIfNoGlobal(() => window.fdc3.raiseIntentForContext(context, app));
 }
 
-export function addIntentListener(intent: string, handler: IntentHandler): Listener {
-  return throwIfNoGlobal(() => window.fdc3.addIntentListener(intent, handler));
+export function addIntentListener(intent: string, handler: IntentHandler): Promise<Listener> {
+  return rejectIfNoGlobal(() => window.fdc3.addIntentListener(intent, handler));
 }
 
 export function addContextListener(
   contextTypeOrHandler: string | null | ContextHandler,
   handler?: ContextHandler
-): Listener {
+): Promise<Listener> {
   //Handle (deprecated) function signature that allowed contextType argument to be omitted
   if (typeof contextTypeOrHandler !== 'function') {
-    return throwIfNoGlobal(() => window.fdc3.addContextListener(contextTypeOrHandler, handler as ContextHandler));
+    return rejectIfNoGlobal(() => window.fdc3.addContextListener(contextTypeOrHandler, handler as ContextHandler));
   } else {
-    return throwIfNoGlobal(() => window.fdc3.addContextListener(null, contextTypeOrHandler as ContextHandler));
+    return rejectIfNoGlobal(() => window.fdc3.addContextListener(null, contextTypeOrHandler as ContextHandler));
   }
 }
 
@@ -108,8 +116,8 @@ export function leaveCurrentChannel(): Promise<void> {
   return rejectIfNoGlobal(() => window.fdc3.leaveCurrentChannel());
 }
 
-export function getInfo(): ImplementationMetadata {
-  return throwIfNoGlobal(() => window.fdc3.getInfo());
+export function getInfo(): Promise<ImplementationMetadata> {
+  return rejectIfNoGlobal(() => window.fdc3.getInfo());
 }
 
 /**
