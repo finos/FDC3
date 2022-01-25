@@ -66,7 +66,7 @@ import { fdc3Ready, addIntentListener } from '@finos/fdc3'
 
 await fdc3Ready();
 
-const listener = addIntentListener('ViewAnalysis', instrument => {
+const listener = await addIntentListener('ViewAnalysis', instrument => {
   // handle intent
 })
 ```

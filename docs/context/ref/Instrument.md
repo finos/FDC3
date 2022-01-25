@@ -34,32 +34,32 @@ https://fdc3.finos.org/schemas/next/instrument.schema.json
 
 | Property    | Type    | Required | Example Value       |
 |-------------|---------|----------|---------------------|
-| `type`      | string  | Yes      | `'fdc3.instrument'` |
-| `name`      | string  | No       | `'Microsoft'`       |
-| `id.ticker` | string  | No       | `'MSFT'`            |
-| `id.BBG`    | string  | No       | `'MSFT:US'`         |
-| `id.CUSIP`  | string  | No       | `'594918104'`       |
-| `id.FDS_ID` | string  | No       | `'P8R3C2-R'`        |
-| `id.FIGI`   | string  | No       | `'BBG000BPH459'`    |
-| `id.ISIN`   | string  | No       | `'US5949181045'`    |
-| `id.PERMID` | string  | No       | `'4295907168'`      |
-| `id.RIC`    | string  | No       | `'MSFT.OQ'`         |
-| `id.SEDOL`  | string  | No       | `'2588173'`         |
+| `type`      | string  | Yes      | `"fdc3.instrument"` |
+| `name`      | string  | No       | `"Microsoft"`       |
+| `id.ticker` | string  | No       | `"MSFT"`            |
+| `id.BBG`    | string  | No       | `"MSFT:US"`         |
+| `id.CUSIP`  | string  | No       | `"594918104"`       |
+| `id.FDS_ID` | string  | No       | `"P8R3C2-R"`        |
+| `id.FIGI`   | string  | No       | `"BBG000BPH459"`    |
+| `id.ISIN`   | string  | No       | `"US5949181045"`    |
+| `id.PERMID` | string  | No       | `"4295907168"`      |
+| `id.RIC`    | string  | No       | `"MSFT.OQ"`         |
+| `id.SEDOL`  | string  | No       | `"2588173"`         |
 
 ## Example
 
 ```js
 const instrument = {
-    type: 'fdc3.instrument',
-    name: 'Microsoft',
+    type: "fdc3.instrument",
+    name: "Microsoft",
     id: {
-        ticker: 'MSFT',
-        RIC: 'MSFT.OQ',
-        ISIN: 'US5949181045'
+        ticker: "MSFT",
+        RIC: "MSFT.OQ",
+        ISIN: "US5949181045"
     }
 }
 
-fdc3.joinChannel('global')
+fdc3.joinChannel('red')
 fdc3.broadcast(instrument)
 ```
 
