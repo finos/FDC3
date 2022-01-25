@@ -1,21 +1,25 @@
 ---
-title: Welcome to FDC3
+title: Welcome to FDC3 2.0 (pre-draft)
 sidebar_label: Introduction
 ---
 
-FDC3 aims to provide an **open standard for interoperability** between applications on the financial desktop.
+The mission of the Financial Desktop Connectivity and Collaboration Consortium (FDC3) is to develop specific protocols and taxonomies to advance the ability of desktop applications in financial workflows to interoperate in a plug-and-play fashion, without prior bi-lateral agreements.
+
+FDC3 provides an **open standard for interoperability** between applications on the financial desktop.
 
 This includes standardized verbs to invoke actions between applications (called "intents"), a standardized data format, a REST-based app directory standard, and standardized API operations.
 
 ## Motivation
 
-FDC3 codifies standard patterns that application developers have been using for cross-application workflows between web and native applications
-in the financial industry.
-
-According to the [FDC3 Charter](fdc3-charter):
-> The mission of FDC3 is to develop specific protocols and taxonomies to advance the ability of desktop applications in financial workflows to interoperate in a plug-and-play fashion, without prior bi-lateral agreements.
+FDC3 codifies standard patterns that application developers have been using for cross-application workflows between web and native applications in the financial industry.
 
 For more information, see [Why FDC3](why-fdc3).
+
+## Versioning
+This Standard defines FDC3 Version 2.0 (predraft). The differences between this version and earlier ones can be found in the [Changelog](https://github.com/finos/FDC3/blob/master/CHANGELOG.md). 
+
+For more details on FDC3's versioning, deprecation and experimental features policies see the [Compliance page](./fdc3-compliance#versioning).
+
 ## Specifications
 
 The standard currently consists of four complementary specifications:
@@ -29,6 +33,7 @@ The standard currently consists of four complementary specifications:
 
 From its inception, the standards have been informed by real-world [business use cases](use-cases/overview), which you can view on this website,
 and form an important part of FDC3.
+
 ## Who is using FDC3?
 
 FDC3 was launched in October 2017 by [OpenFin](http://www.openfin.co) in collaboration with [major industry participants](/users). It includes representatives from over 40 major banks, buy-side firms, consultancies and financial services platforms.
@@ -37,7 +42,9 @@ FDC3 was launched in October 2017 by [OpenFin](http://www.openfin.co) in collabo
 
 FDC3 is hosted within, and governed by the policies of, the [Fintech Open Source Foundation](http://finos.org/) (FINOS). FINOS is an independent nonprofit organization focused on promoting open innovation within financial services.
 
-FDC3 uses the Apache 2.0 open source license for all deliverables.
+- See the [FDC3 Governance document](https://github.com/finos/FDC3/blob/master/GOVERNANCE.md) for details of how FDC3 is governed.
+- See the [FDC3 Contribution Guide](https://github.com/finos/FDC3/blob/master/CONTRIBUTING.md) for details of how to contribute to FDC3.
+- See the [FDC3 Charter](fdc3-charter#licensing) for details of how deliverables are licensed.
 
 ## Where should I go next?
 
