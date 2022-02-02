@@ -27,7 +27,7 @@ Your appD is the one place to collect all the information about apps. The more a
 
 #### Human readable
 
-AppD has two types of users. One is the desktop agent, but the other is humans administrating and using the smart desktop at your organization. Hence, an appD contains information about apps in both machine- and human-readable forms. For example, it includes both a unique identifiers for apps that are used to refer to them in code and human-friendly app names, icons, descriptions and tooltips necessary to populate a launcher menu or app catalog user interface for your users. 
+AppD has two types of users. One is the desktop agent, but the other is humans administrating and using the smart desktop at your organization. Hence, an appD contains information about apps in both machine- and human-readable forms. For example, it includes both unique identifiers for apps that are used to refer to them in code and human-friendly app names, icons, descriptions and tooltips necessary to populate a launcher menu or app catalog user interface for your users. 
 
 
 #### Apps are discoverable
@@ -39,7 +39,7 @@ An appD makes it possible to discover info about apps that reside on various dom
 
 #### Updating apps
 
-Typically, software evolves over time. The app versions you are running today will not be the same ones you need tomorrow. Therefore, you will need to upgrade apps periodically. Very few people look forward to upgrading, but appD and web deployment can make it easier for you. To roll out a new version of your  app, either update the existing entry for it in appD or add a new entry for that version (allowing users to select the version they will use).
+Typically, software evolves over time. The app versions you are running today will not be the same ones you need tomorrow. Therefore, you will need to upgrade apps periodically. Very few people look forward to upgrading, but appD and web deployment can make it easier for you. To roll out a new version of your app, either update the existing entry for it in appD or add a new entry for that version (allowing users to select the version they will use).
 
 
 #### Agent-agnostic
