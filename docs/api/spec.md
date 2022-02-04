@@ -99,7 +99,7 @@ Intents provide a way for an app to request functionality from another app and d
 - **Remote API**: An app wants to remote an entire API that it owns to another App.  In this case, the API for the App cannot be standardized.  However, the FDC3 API can address how an App connects to another App in order to get access to a proprietary API.
 
 #### Intents and Context
-When raising an intent a specific context may be provided as input. The type of the provided context may determine which applications can resolve the Intent.
+When raising an intent a specific context may be provided as input. The type of the provided context may determine which applications can resolve the intent.
 
 A context type may also be associated with multiple intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other intents. In addition to raising a specific intent, you can raise an intent for a specific context allowing the Desktop Agent or the user (if the intent is ambiguous) to select the appropriate intent for the selected context and then to raise that intent for resolution.
 
@@ -141,11 +141,11 @@ interface IntentResolution {
    */
   readonly version?: string;
   /**
-   * Retrieves a promise that will resolve to data returned by the
-   * application that resolves the raised intent. If an error is thrown by the handler function, 
-   * the promise returned is rejected, or no promise is returned then the Desktop Agent 
-   * MUST reject the promise returned by the `getResult()` function of the `IntentResolution` 
-   * with a string from the `DataError` enumeration.
+   * Retrieves a promise that will resolve to data returned by the application that 
+   * resolves the raised intent. If an error occurs (i.e. an error is thrown by the handler 
+   * function, the promise returned is rejected, or no promise is returned) then the Desktop 
+   * Agent MUST reject the promise returned by the `getResult()` function of the 
+   * `IntentResolution` with a string from the `DataError` enumeration.
    */
   getResult(): Promise<Context>;
 }
