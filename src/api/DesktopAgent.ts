@@ -229,9 +229,9 @@ export interface DesktopAgent {
   /**
    * Adds a listener for incoming Intents from the Agent. The handler function may
    * return void or a promise that should resolve to a context object representing
-   * any data that should be returned to app that raised the intent. If an error occurs 
-   * (i.e. an error is thrown by the handler function, the promise returned is rejected, or 
-   * a promise is not returned) then the Desktop Agent MUST reject the promise returned 
+   * any data that should be returned to app that raised the intent. If an error occurs
+   * (i.e. an error is thrown by the handler function, the promise returned is rejected, or
+   * a promise is not returned) then the Desktop Agent MUST reject the promise returned
    * by the `getResult()` function of the `IntentResolution`.
    *
    * ```javascript
