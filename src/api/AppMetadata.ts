@@ -6,7 +6,13 @@
 import { Icon } from './Icon';
 
 /**
- * App definition as provided by the application directory
+ * Describes an application, or instance of an application, using metadata that is usually  provided by an FDC3 App Directory that the desktop agent connects to.
+ *
+ * Will always include at least a `name` property, which can be used with [`open`](DesktopAgent#open) and [`raiseIntent`](DesktopAgent#raiseIntent). If the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.
+ *
+ * Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu. This includes a title, description, tooltip and icon and image URLs.
+ *
+ * In situations where a desktop agent connects to multiple app directories or multiple versions of the same app exists in a single app directory, it may be neccessary to specify appId and version to target applications that share the same name.
  */
 export interface AppMetadata {
   /** The unique app name that can be used with the open and raiseIntent calls. */
@@ -17,6 +23,12 @@ export interface AppMetadata {
 
   /** The Version of the application. */
   readonly version?: string;
+
+  /** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/
+  readonly instanceId?: string;
+
+  /** An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set. */
+  readonly instanceMetadata?: Record<string, any>;
 
   /** A more user-friendly application title that can be used to render UI elements  */
   readonly title?: string;

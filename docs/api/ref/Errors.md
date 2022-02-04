@@ -23,18 +23,23 @@ Contains constants representing the errors that can be encountered when calling 
 ## `ResolveError`
 
 ```typescript
-enum ResolveError {
-  NoAppsFound = "NoAppsFound",
-  ResolverUnavailable = "ResolverUnavailable",
-  ResolverTimeout = "ResolverTimeout"
+export enum ResolveError {
+  NoAppsFound = 'NoAppsFound',
+  ResolverUnavailable = 'ResolverUnavailable',
+  UserCancelled = 'UserCancelledResolution',
+  ResolverTimeout = 'ResolverTimeout',
+  TargetAppUnavailable = 'TargetAppUnavailable',
+  TargetInstanceUnavailable = 'TargetInstanceUnavailable'
 }
 ```
 
-Contains constants representing the errors that can be encountered when calling the [`findIntent`](DesktopAgent#findintent) or [`findIntentsByContext`](DesktopAgent#findintentsbycontext) methods on the [DesktopAgent](DesktopAgent).
+Contains constants representing the errors that can be encountered when calling the [`findIntent`](DesktopAgent#findintent), [`findIntentsByContext`](DesktopAgent#findintentsbycontext), [`raiseIntent`](DesktopAgent#raiseintent) or [`raiseIntentForContext`](DesktopAgent#raiseintentforcontext) methods on the [DesktopAgent](DesktopAgent).
 
 #### See also
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
+* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+* [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 
 ## `DataError`
 
