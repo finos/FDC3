@@ -2,13 +2,13 @@
 title: Supported Platforms
 ---
 
-As an open standard, FDC3 can be implemented on any platform and in any language.
+FDC3 is platform- and programming language-independent. An FDC3-capable platform requires a Desktop Agent that supports the FDC3 standard, and that agent is responsible for coordinating application interactions.
 
-All that is required is a "desktop agent" that supports the FDC3 standard, which is responsible for co-ordinating application interactions.
+There are two main categories of platform: web and native, both of which are described below. There exists a third category, hybrid, where a web application runs within the context of a standalone native application via a web view.
 
 ## Web
 
-For web applications to be FDC3-enabled, they need to run in the context of an agent that makes the FDC3 API available to the application. This desktop agent is also responsible for lauching and co-ordinating applications. It could be a browser extension, web app, or full-fledged desktop container framework.
+For a web application to be FDC3-enabled, it needs to run in the context of an environment or **_Platform Provider_** that makes the FDC3 API available to the application. This environment could be a browser extension, a web or native app, or fully-fledged desktop container framework.
 
 ### Installation
 
@@ -64,6 +64,14 @@ For details about the available API operations, see the [API Referennce](api/ref
 
 ## Native
 
-The FDC3 standard does not define wire formats for communication. Hence, for native applications to be FDC3-enabled, they need to make use of a library (e.g. a DLL in .Net or JAR file in Java) that provides them with an implementation of the FDC3 API. FDC3-enabled native applications are therefore specific to particular desktop container frameworks (or other suitable environments) that provide the necessary libraries.
+The FDC3 standard does not define wire formats for communication, nor does it define language specific API bindings, other than JavaScript and TypeScript. Hence, for a native application to be FDC3-enabled, it needs to make use of a shared library (such as a .NET DLL or JAR file) that provides it with an implementation of the FDC3 API. Therefore, an FDC3-enabled native application is currently specific to a particular desktop container framework (or other suitable environment) that provides the necessary library.
 
 Despite this limitation, implementing support for FDC3 in a native application can allow it to interact with a wide variety of FDC3-enabled web applications.
+
+## Hybrid
+In a hybrid application, a standalone native application incorporates a web view, within which a web application runs. This may be considered a special case of the web platform where all platform-provider requirements for web applications must be satisfied, but it is the responsibility of the associated native application, rather than a platform provider, to ensure they are fulfilled. This may be achieved, for example, by injecting an implementation of the DesktopAgent API and ensuring that it is accessible at the usual location, `window.fdc3`.
+
+## Compliance
+Support for each platform is optional and compliance with the FDC3 standard should be assessed for each platform implemented independently of any other, with the exception of ensuring that where applications running on multiple platforms are used together, communication between them still complies with the standard.
+
+The web API binding is expressed using TypeScript syntax that defines the API interface (for both TypeScript and JavaScript). Adherence to the specific binding is required for web application platforms. No specific API binding for native platforms is currently expressed in the standard. Hence, native applications may be implemented with any programming language binding that supports the constructs required by the API specification, until such time that the FDC3 standard introduces an appropriate language-specific binding.

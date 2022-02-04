@@ -14,6 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added the ability to return data from an intent, via the addition of an IntentHandler type and a `getResult()` to IntentResolution, both of which return a Promise of a Context object. ([#495](https://github.com/finos/FDC3/pull/495))
 * Added a field to specify the Context type that intent can return to the AppD Application schema and extended the findIntent API calls to be able to use it for resolution. ([#499](https://github.com/finos/FDC3/pull/499))
 * Added the ability to return a Channel from an intent (via the `IntentResult` type), resolver support for intents that return Channels and the concept of PrivateChannels. ([#508](https://github.com/finos/FDC3/pull/508))
+* Added error `UserCancelled` to the `ResolveError` enumeration to be used when user closes the resolver UI or otherwise cancels resolution of a raised intent ([#522 ](https://github.com/finos/FDC3/pull/522))
+* Added an `instanceId` (and optional `instanceMetadata`) field to `AppMetadata` allowing it to refer to specific app instances and thereby supporting targetting of intents to specific app instances. Also added a `findInstanes()` function to the desktop agent. ([#509]((https://github.com/finos/FDC3/pull/509))
 * Added a References and Bibliography section to the Standard's documentation to hold links to 'normative references' and other documentation that is useful for understanding the standard ([#530](https://github.com/finos/FDC3/pull/530))
 * `IntentResolution` now requires the name of the intent raised to included, allowing it to be used to determine the intent raised via `fdc3.raiseIntentForContext()`. ([#507](https://github.com/finos/FDC3/pull/507))
 * A Trademarks page was added to acknowledge trademarks used within the Standard not owned by FINOS or the Linux Foundation ([#534](https://github.com/finos/FDC3/pull/534))
@@ -26,6 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Updated copyright notices ([#467](https://github.com/finos/FDC3/pull/467))
 * Adjusted wording in API spec and documentation to acknowledge the possibility of methods of intent resolution other than a resolver UI ([#461](https://github.com/finos/FDC3/pull/461))
 * Moved the Icon type definition into the Types documentation page for consistency with other types. ([#493](https://github.com/finos/FDC3/pull/493)
+* The `fdc3.joinChannel()`, `fdc3.getCurrentChannel()` and `fdc3.leaveCurrentChannel()` functions have been made optional for FDC3 API compliance, but are recommended through the application of the SHOULD keyword. ([#512](https://github.com/finos/FDC3/pull/512)) 
 * All DesktopAgent and Channel API functions are now async for consistency, changing the return type of the `broadcast`, `addIntentListener`, `addContextListener` and `getInfo` functions ([#516](https://github.com/finos/FDC3/pull/516))
 
 ### Deprecated
