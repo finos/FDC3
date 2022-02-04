@@ -92,24 +92,24 @@ Linking from one application to another is a critical basic workflow that the we
 ### Raising Intents
 Often, we want to link from one app to another to dynamically create a workflow.  Enabling this without requiring prior knowledge between apps is a key goal of FDC3.
 
-Intents provide a way for an app to request functionality from another app and defer the discovery and launching of the destination app to the Desktop Agent.  There are multiple models for interop that Intents can support.
+Intents provide a way for an app to request functionality from another app and defer the discovery and launching of the destination app to the Desktop Agent.  There are multiple models for interop that intents can support.
 
 - **Chain**:  In this case the workflow is completely handed off from one app to another (similar to linking).  Currently, this is the primary focus in FDC3.
 - **Client-Service**: A Client invokes a Service via the Intent, the Service performs some function, then passes the workflow back to the Client. Typically, there is a data payload type associated with this intent that is published as the standard contract for the intent.
 - **Remote API**: An app wants to remote an entire API that it owns to another App.  In this case, the API for the App cannot be standardized.  However, the FDC3 API can address how an App connects to another App in order to get access to a proprietary API.
 
 #### Intents and Context
-When raising an Intent a specific context may be provided. The type of the provided context may determine which applications can resolve the Intent.
+When raising an intent a specific context may be provided. The type of the provided context may determine which applications can resolve the intent.
 
-A Context type may also be associated with multiple Intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other Intents. In addition to raising a specific intent, you can raise an Intent for a specific Context allowing the Desktop Agent or the user (if the Intent is ambiguous) to select the appropriate Intent for the selected Context and then to raise that Intent for resolution.
+A context type may also be associated with multiple intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other intents. In addition to raising a specific intent, you can raise an intent for a specific context allowing the Desktop Agent or the user (if the intent is ambiguous) to select the appropriate intent for the selected context and then to raise that intent for resolution.
 
-To raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an Intent listener or in an App Directory).
+To raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an intent listener or in an App Directory).
 
 #### Intent Resolution
-Raising an Intent will return a Promise-type object that will resolve/reject based on a number of factors.
+Raising an intent will return a Promise-type object that will resolve/reject based on a number of factors.
 
 ##### Resolve
-- Intent was resolved unambiguously and the receiving app was launched successfully.
+- Intent was resolved unambiguously and the receiving app was launched successfully (if necessary).
 - Intent was ambiguous, a resolution was chosen by the end user, and the chosen application was launched successfully.
 
 ##### Reject
@@ -131,10 +131,12 @@ If the raising of the intent resolves (or rejects), a standard object will be pa
 
 ```ts
 interface IntentResolution {
-  /**
-   * The application that resolved the intent.
+  /** 
+   * Metadata about the app instance that was selected (or started) to resolve the intent.
+   * `source.instanceId` MUST be set, indicating the specific app instance that 
+   * received the intent.
    */
-  readonly source: TargetApp;
+  readonly source: AppMetadata;
   /**
    * The intent that was raised. May be used to determine which intent the user
    * chose in response to `fdc3.raiseIntentForContext()`.
@@ -151,40 +153,46 @@ interface IntentResolution {
 }
 ```
 
-For example, to raise a specific Intent:
+For example, to raise a specific intent:
 
 ```js
 try {
-    const result = await fdc3.raiseIntent('StageOrder', context);
+  const resolution = await fdc3.raiseIntent('StageOrder', context);
 }
-catch (err){
-    console.log(err.message);
-}
+catch (err){ ... }
 ```
 
-or to raise an unspecified Intent for a specific context, where the user will select an intent from a resolver dialog:
+or to raise an unspecified intent for a specific context, where the user will select an intent from a resolver dialog:
 ```js
 try {
-    const result = await fdc3.raiseIntentForContext(context);
-    console.log(`User raised intent: ${result.intent}`)
-    if (result.data) {
-        const orderId = result.data.id;
-    }
+  const resolution = await fdc3.raiseIntentForContext(context);
+  if (resolution.data) {
+    const orderId = resolution.data.id;
+  }
 }
-catch (err){
-    console.log(err.message);
+catch (err){ ... }
+```
+
+Use metadata about the resolving app instance to target a further intent
+```js
+try {
+  const resolution = await fdc3.raiseIntent('StageOrder', context);
+  ...
+
+  //some time later
+  await agent.raiseIntent("UpdateOrder", context, resolution.source);
 }
+catch (err) { ... }
 ```
 
 #### Resolvers
-Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (for example, by displaying a resolver UI allowing the user to pick the desired App for the intent) or by the app calling App handling the resolution itself (by using the `findIntents` API) and then invoking the Intent on a specific target application, e.g.:
+Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (for example, by displaying a resolver UI allowing the user to pick the desired app or app instance for the intent) or by the app handling the resolution itself (by using the `findIntents` API and specifying a target app or app instance when invoking the Intent), e.g.:
 
 ```js
-//Find apps to resolve an intent to start a chat with a given contact
+// Find apps to resolve an intent to start a chat with a given contact
 const appIntent = await fdc3.findIntent("StartChat", context);
-//use the returned AppIntent object to target one of the returned chat apps by name
-await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
-//or by using the full AppMetadata object
+// use the returned AppIntent object to target one of the returned 
+// chat apps or app instances using the AppMetadata object
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 ```
 
@@ -200,7 +208,7 @@ const chartApp = fin.Application.wrap(chart.source);
 ![Upgrading Connection to Remote API](assets/api-3.png)
 
 ### Register an Intent
-Applications need to let the system know the Intents they can support.  Typically, this is done via registration with the App Directory.  It is also possible for Intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  While, dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
+Applications need to let the system know the intents they can support.  Typically, this is done via registration with the App Directory.  It is also possible for intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  While dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
 
 #### Compliance with Intent Standards
 Intents represent a contract with expected behavior if an app asserts that it supports the intent.  Where this contract is enforceable by schema (for example, return object types), the FDC3 API implementation should enforce compliance and return an error if the interface is not met.
@@ -229,7 +237,7 @@ Context channels allows a set of apps to share a stateful piece of data between 
 
 There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics:
 
-1. **System channels**, which: 
+1. **_System channels_**, which: 
     * facilitate the creation of user-controlled context links between applications (often via the selection of a color channel),
     * are created and named by the desktop agent,
     * are discoverable (via the [`getSystemChannels()`](ref/DesktopAgent#getsystemchannels) API call),
@@ -238,7 +246,7 @@ There are two types of channels, which are functionally identical, but have diff
     > **Note:** Earlier versions of FDC3 included the concept of a 'global' system channel
     which was deprecated in FDC3 1.2 and removed in FDC 2.0.
 
-2. **App channels**, which: 
+2. **_App channels_**, which: 
     * facilitate developer controlled messaging between applications,
     * are created and named by applications (via the [`getOrCreateChannel()`](ref/DesktopAgent#getorcreatechannel) API call),
     * are not discoverable,
@@ -258,7 +266,9 @@ When an app joins a channel, or adds a context listener when already joined to a
 
 It is possible that a call to join a channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.
 
-Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app.  Always, there SHOULD be a clear UX indicator of what channel an app is joined to.
+Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app. To support programmatic management of joined channels and the implementation of channel selector UIs other than those provided outside of the app, Desktop Agent implementations MAY provide [`fdc3.joinChannel()`](ref/DesktopAgent#joinchannel), [`fdc3.getCurrentChannel()](ref/DesktopAgent#getcurrentchannel) and [`fdc3.leaveCurrentChannel()`](ref/DesktopAgent#leavecurrentchannel) functions and if they do, MUST do so as defined in the [Desktop Agent API reference](ref/DesktopAgent). 
+
+There SHOULD always be a clear UX indicator of what channel an app is joined to.
 
 #### Examples
 

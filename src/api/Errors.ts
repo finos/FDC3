@@ -15,6 +15,8 @@ export enum ResolveError {
   ResolverUnavailable = 'ResolverUnavailable',
   UserCancelled = 'UserCancelledResolution',
   ResolverTimeout = 'ResolverTimeout',
+  TargetAppUnavailable = 'TargetAppUnavailable',
+  TargetInstanceUnavailable = 'TargetInstanceUnavailable',
 }
 
 export enum ChannelError {
