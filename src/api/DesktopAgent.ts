@@ -244,7 +244,8 @@ export interface DesktopAgent {
   getSystemChannels(): Promise<Array<Channel>>;
 
   /**
-   * Joins the app to the specified channel.
+   * Optional function that joins the app to the specified channel. In most cases, applications SHOULD be joined to channels via UX provided to the application by the desktop agent, rather than calling this function directly.
+   *
    * If an app is joined to a channel, all `fdc3.broadcast` calls will go to the channel, and all listeners assigned via `fdc3.addContextListener` will listen on the channel.
    * If the channel already contains context that would be passed to context listeners assed via `fdc3.addContextListener` then those listeners will be called immediately with that context.
    * An app can only be joined to one channel at a time.
@@ -268,13 +269,15 @@ export interface DesktopAgent {
   getOrCreateChannel(channelId: string): Promise<Channel>;
 
   /**
-   * Returns the `Channel` object for the current channel membership.
+   * Optional function that returns the `Channel` object for the current channel membership. In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
+   *
    * Returns `null` if the app is not joined to a channel.
    */
   getCurrentChannel(): Promise<Channel | null>;
 
   /**
-   * Removes the app from any channel membership.
+   * Optional function that removes the app from any channel membership. In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
+   *
    * Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not on a channel.
    * ```javascript
    * //desktop-agent scope context listener

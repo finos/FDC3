@@ -36,6 +36,7 @@ interface DesktopAgent {
   // channels
   getOrCreateChannel(channelId: string): Promise<Channel>;
   getSystemChannels(): Promise<Array<Channel>>;
+  // optional channel management functions
   joinChannel(channelId: string) : Promise<void>;
   getCurrentChannel() : Promise<Channel | null>;
   leaveCurrentChannel() : Promise<void>;
@@ -250,7 +251,9 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 getCurrentChannel() : Promise<Channel | null>;
 ```
 
-Returns the `Channel` object for the current channel membership.  Returns `null` if the app is not joined to a channel.
+Optional function that returns the `Channel` object for the current channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly. 
+
+Returns `null` if the app is not joined to a channel.
 
 
 #### Examples
@@ -338,7 +341,8 @@ const redChannel = systemChannels.find(c => c.id === 'red');
 joinChannel(channelId: string) : Promise<void>;
 ```
 
-Joins the app to the specified channel.
+Optional function that joins the app to the specified channel. In most cases, applications SHOULD be joined to channels via UX provided to the application by the desktop agent, rather than calling this function directly.
+
 If an app is joined to a channel, all `fdc3.broadcast` calls will go to the channel, and all listeners assigned via `fdc3.addContextListener` will listen on the channel. 
 
 If the channel already contains context that would be passed to context listeners added via `fdc3.addContextListener` then those listeners will be called immediately with that context.
@@ -370,8 +374,9 @@ fdc3.joinChannel(selectedChannel.id);
 leaveCurrentChannel() : Promise<void>;
 ```
 
-Removes the app from any channel membership.  Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not joined to a channel.
+Optional function that removes the app from any channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
 
+Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not joined to a channel.
 
 #### Examples
 
