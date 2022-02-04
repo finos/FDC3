@@ -109,7 +109,7 @@ To raise an intent without a context, use the `fdc3.nothing` context type. This 
 Raising an intent will return a Promise-type object that will resolve/reject based on a number of factors.
 
 ##### Resolve
-- Intent was resolved unambiguously and the receiving app was launched successfully.
+- Intent was resolved unambiguously and the receiving app was launched successfully (if necessary).
 - Intent was ambiguous, a resolution was chosen by the end user, and the chosen application was launched successfully.
 
 ##### Reject
@@ -131,10 +131,12 @@ If the raising of the intent resolves (or rejects), a standard object will be pa
 
 ```ts
 interface IntentResolution {
-  /**
-   * The application that resolved the intent.
+  /** 
+   * Metadata about the app instance that was selected (or started) to resolve the intent.
+   * `source.instanceId` MUST be set, indicating the specific app instance that 
+   * received the intent.
    */
-  readonly source: TargetApp;
+  readonly source: AppMetadata;
   /**
    * The intent that was raised. May be used to determine which intent the user
    * chose in response to `fdc3.raiseIntentForContext()`.
@@ -155,36 +157,42 @@ For example, to raise a specific intent:
 
 ```js
 try {
-    const result = await fdc3.raiseIntent('StageOrder', context);
+  const resolution = await fdc3.raiseIntent('StageOrder', context);
 }
-catch (err){
-    console.log(err.message);
-}
+catch (err){ ... }
 ```
 
 or to raise an unspecified intent for a specific context, where the user will select an intent from a resolver dialog:
 ```js
 try {
-    const result = await fdc3.raiseIntentForContext(context);
-    console.log(`User raised intent: ${result.intent}`)
-    if (result.data) {
-        const orderId = result.data.id;
-    }
+  const resolution = await fdc3.raiseIntentForContext(context);
+  if (resolution.data) {
+    const orderId = resolution.data.id;
+  }
 }
-catch (err){
-    console.log(err.message);
+catch (err){ ... }
+```
+
+Use metadata about the resolving app instance to target a further intent
+```js
+try {
+  const resolution = await fdc3.raiseIntent('StageOrder', context);
+  ...
+
+  //some time later
+  await agent.raiseIntent("UpdateOrder", context, resolution.source);
 }
+catch (err) { ... }
 ```
 
 #### Resolvers
-Intent functionality is dependent on resolver functionality to map the intent to a specific app.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (for example, by displaying a resolver UI allowing the user to pick the desired app for the intent) or by the app handling the resolution itself (by using the `findIntents` API) and then invoking the intent on a specific target application, e.g.:
+Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (for example, by displaying a resolver UI allowing the user to pick the desired app or app instance for the intent) or by the app handling the resolution itself (by using the `findIntents` API and specifying a target app or app instance when invoking the Intent), e.g.:
 
 ```js
-//Find apps to resolve an intent to start a chat with a given contact
+// Find apps to resolve an intent to start a chat with a given contact
 const appIntent = await fdc3.findIntent("StartChat", context);
-//use the returned AppIntent object to target one of the returned chat apps by name
-await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
-//or by using the full AppMetadata object
+// use the returned AppIntent object to target one of the returned 
+// chat apps or app instances using the AppMetadata object
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 ```
 
