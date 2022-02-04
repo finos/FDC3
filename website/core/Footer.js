@@ -56,6 +56,9 @@ class Footer extends React.Component {
             <a href={this.docUrl('use-cases/overview')}>
               Use Cases
             </a>
+            <a href="https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop" target="_blank">
+              Training
+            </a>
           </div>
           <div>
             <h5>Community</h5>
@@ -82,6 +85,10 @@ class Footer extends React.Component {
               target="_blank"
               rel="noreferrer noopener">
               Google Groups
+            </a>
+            <a
+              href="/docs/next/trademarks">
+                Trademarks
             </a>
             {/* <a href={this.pageUrl('users.html', this.props.language)}>
               User Showcase

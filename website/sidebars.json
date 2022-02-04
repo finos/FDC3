@@ -5,7 +5,9 @@
       "supported-platforms",
       "why-fdc3",
       "fdc3-charter",
-      "fdc3-compliance"
+      "fdc3-compliance",
+      "fdc3-glossary",
+      "references"
     ],
     "API": [
       "api/overview",

@@ -58,7 +58,8 @@ const instrument = {
         ISIN: "US5949181045"
     }
 }
-fdc3.joinChannel("global")
+
+fdc3.joinChannel('red')
 fdc3.broadcast(instrument)
 ```
 
