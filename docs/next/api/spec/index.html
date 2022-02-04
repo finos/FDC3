@@ -151,7 +151,7 @@
 <p>Raising an intent will return a Promise-type object that will resolve/reject based on a number of factors.</p>
 <h5><a class="anchor" aria-hidden="true" id="resolve"></a><a href="#resolve" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Resolve</h5>
 <ul>
-<li>Intent was resolved unambiguously and the receiving app was launched successfully.</li>
+<li>Intent was resolved unambiguously and the receiving app was launched successfully (if necessary).</li>
 <li>Intent was ambiguous, a resolution was chosen by the end user, and the chosen application was launched successfully.</li>
 </ul>
 <h5><a class="anchor" aria-hidden="true" id="reject"></a><a href="#reject" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reject</h5>
@@ -170,10 +170,12 @@ and include a more robust mechanism for intents that need to return data back to
 </blockquote>
 <p>If the raising of the intent resolves (or rejects), a standard object will be passed into the resolver function with the following format:</p>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> IntentResolution {
-  <span class="hljs-comment">/**
-   * The application that resolved the intent.
+  <span class="hljs-comment">/** 
+   * Metadata about the app instance that was selected (or started) to resolve the intent.
+   * `source.instanceId` MUST be set, indicating the specific app instance that 
+   * received the intent.
    */</span>
-  <span class="hljs-keyword">readonly</span> source: TargetApp;
+  <span class="hljs-keyword">readonly</span> source: AppMetadata;
   <span class="hljs-comment">/**
    * The intent that was raised. May be used to determine which intent the user
    * chose in response to `fdc3.raiseIntentForContext()`.
@@ -191,31 +193,35 @@ and include a more robust mechanism for intents that need to return data back to
 </code></pre>
 <p>For example, to raise a specific intent:</p>
 <pre><code class="hljs css language-js"><span class="hljs-keyword">try</span> {
-    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&#x27;StageOrder&#x27;</span>, context);
+  <span class="hljs-keyword">const</span> resolution = <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&#x27;StageOrder&#x27;</span>, context);
 }
-<span class="hljs-keyword">catch</span> (err){
-    <span class="hljs-built_in">console</span>.log(err.message);
-}
+<span class="hljs-keyword">catch</span> (err){ ... }
 </code></pre>
 <p>or to raise an unspecified intent for a specific context, where the user will select an intent from a resolver dialog:</p>
 <pre><code class="hljs css language-js"><span class="hljs-keyword">try</span> {
-    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> fdc3.raiseIntentForContext(context);
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`User raised intent: <span class="hljs-subst">${result.intent}</span>`</span>)
-    <span class="hljs-keyword">if</span> (result.data) {
-        <span class="hljs-keyword">const</span> orderId = result.data.id;
-    }
+  <span class="hljs-keyword">const</span> resolution = <span class="hljs-keyword">await</span> fdc3.raiseIntentForContext(context);
+  <span class="hljs-keyword">if</span> (resolution.data) {
+    <span class="hljs-keyword">const</span> orderId = resolution.data.id;
+  }
 }
-<span class="hljs-keyword">catch</span> (err){
-    <span class="hljs-built_in">console</span>.log(err.message);
+<span class="hljs-keyword">catch</span> (err){ ... }
+</code></pre>
+<p>Use metadata about the resolving app instance to target a further intent</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">const</span> resolution = <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&#x27;StageOrder&#x27;</span>, context);
+  ...
+
+  <span class="hljs-comment">//some time later</span>
+  <span class="hljs-keyword">await</span> agent.raiseIntent(<span class="hljs-string">&quot;UpdateOrder&quot;</span>, context, resolution.source);
 }
+<span class="hljs-keyword">catch</span> (err) { ... }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="resolvers"></a><a href="#resolvers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Resolvers</h4>
-<p>Intent functionality is dependent on resolver functionality to map the intent to a specific app.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (for example, by displaying a resolver UI allowing the user to pick the desired app for the intent) or by the app handling the resolution itself (by using the <code>findIntents</code> API) and then invoking the intent on a specific target application, e.g.:</p>
-<pre><code class="hljs css language-js"><span class="hljs-comment">//Find apps to resolve an intent to start a chat with a given contact</span>
+<p>Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (for example, by displaying a resolver UI allowing the user to pick the desired app or app instance for the intent) or by the app handling the resolution itself (by using the <code>findIntents</code> API and specifying a target app or app instance when invoking the Intent), e.g.:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// Find apps to resolve an intent to start a chat with a given contact</span>
 <span class="hljs-keyword">const</span> appIntent = <span class="hljs-keyword">await</span> fdc3.findIntent(<span class="hljs-string">&quot;StartChat&quot;</span>, context);
-<span class="hljs-comment">//use the returned AppIntent object to target one of the returned chat apps by name</span>
-<span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&quot;StartChat&quot;</span>, context, appIntent.apps[<span class="hljs-number">0</span>].name);
-<span class="hljs-comment">//or by using the full AppMetadata object</span>
+<span class="hljs-comment">// use the returned AppIntent object to target one of the returned </span>
+<span class="hljs-comment">// chat apps or app instances using the AppMetadata object</span>
 <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&quot;StartChat&quot;</span>, context, appIntent.apps[<span class="hljs-number">0</span>]);
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="upgrading-to-a-remote-api-connection"></a><a href="#upgrading-to-a-remote-api-connection" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Upgrading to a Remote API Connection</h4>

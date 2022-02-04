@@ -80,25 +80,48 @@ For each intent, it reference the applications that support that intent.</p>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="appmetadata"></a><a href="#appmetadata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>AppMetadata</code></h2>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> AppMetadata {
-  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
-  appId?: <span class="hljs-built_in">string</span>;
-  version?: <span class="hljs-built_in">string</span>;
-  title?: <span class="hljs-built_in">string</span>;
-  tooltip?: <span class="hljs-built_in">string</span>;
-  description?: <span class="hljs-built_in">string</span>;
-  icons?: <span class="hljs-built_in">Array</span>&lt;Icon&gt;;
-  images?: <span class="hljs-built_in">Array</span>&lt;<span class="hljs-built_in">string</span>&gt;;
+  <span class="hljs-comment">/** The unique app name that can be used with the open and raiseIntent calls. */</span>
+  <span class="hljs-keyword">readonly</span> name: <span class="hljs-built_in">string</span>;
+
+  <span class="hljs-comment">/** The unique application identifier located within a specific application directory instance. An example of an appId might be &#x27;app<span class="hljs-doctag">@sub</span>.root&#x27; */</span>
+  <span class="hljs-keyword">readonly</span> appId?: <span class="hljs-built_in">string</span>;
+
+  <span class="hljs-comment">/** The Version of the application. */</span>
+  <span class="hljs-keyword">readonly</span> version?: <span class="hljs-built_in">string</span>;
+
+  <span class="hljs-comment">/** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/</span>
+  <span class="hljs-keyword">readonly</span> instanceId?: <span class="hljs-built_in">string</span>;
+
+  <span class="hljs-comment">/** An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set. */</span>
+  <span class="hljs-keyword">readonly</span> instanceMetadata?: Record&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;;
+
+  <span class="hljs-comment">/** A more user-friendly application title that can be used to render UI elements  */</span>
+  <span class="hljs-keyword">readonly</span> title?: <span class="hljs-built_in">string</span>;
+
+  <span class="hljs-comment">/**  A tooltip for the application that can be used to render UI elements */</span>
+  <span class="hljs-keyword">readonly</span> tooltip?: <span class="hljs-built_in">string</span>;
+
+  <span class="hljs-comment">/** A longer, multi-paragraph description for the application that could include markup */</span>
+  <span class="hljs-keyword">readonly</span> description?: <span class="hljs-built_in">string</span>;
+
+  <span class="hljs-comment">/** A list of icon URLs for the application that can be used to render UI elements */</span>
+  <span class="hljs-keyword">readonly</span> icons?: <span class="hljs-built_in">Array</span>&lt;Icon&gt;;
+
+  <span class="hljs-comment">/** A list of image URLs for the application that can be used to render UI elements */</span>
+  <span class="hljs-keyword">readonly</span> images?: <span class="hljs-built_in">Array</span>&lt;<span class="hljs-built_in">string</span>&gt;;
 }
 </code></pre>
-<p>App metadata is provided by the FDC3 App Directory that the desktop agent connects to.</p>
-<p>It always includes at least a <code>name</code> property, which can be used with <a href="DesktopAgent#open"><code>open</code></a> and <a href="DesktopAgent#raiseIntent"><code>raiseIntent</code></a>.</p>
-<p>Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu.
-This includes a title, description, tooltip and icon and image URLs.</p>
+<p>Describes an application, or instance of an application, using metadata that is usually  provided by an FDC3 App Directory that the desktop agent connects to.</p>
+<p>Will always includes at least a <code>name</code> property, which can be used with <a href="DesktopAgent#open"><code>open</code></a> and <a href="DesktopAgent#raiseIntent"><code>raiseIntent</code></a>. If the <code>instanceId</code> field is set then the <code>AppMetadata</code> object represents a specific instance of the application that may be addressed using that Id.</p>
+<p>Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu. This includes a title, description, tooltip and icon and image URLs.</p>
 <p>In situations where a desktop agent connects to multiple app directories or multiple versions of the same app exists in a single app directory, it may be neccessary to specify appId and version to target applications that share the same name.</p>
+<p><code>AppMetadata</code></p>
 <h4><a class="anchor" aria-hidden="true" id="see-also-1"></a><a href="#see-also-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="AppIntent"><code>AppIntent.apps</code></a></li>
 <li><a href="Icon"><code>Icon</code></a></li>
+<li><a href="DesktopAgent#findintent"><code>DesktopAgent.findIntent</code></a></li>
+<li><a href="DesktopAgent#raiseintent"><code>DesktopAgent.raiseIntent</code></a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="displaymetadata"></a><a href="#displaymetadata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>DisplayMetadata</code></h2>
 <pre><code class="hljs css language-ts"> <span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> DisplayMetadata {
@@ -151,10 +174,12 @@ This includes a title, description, tooltip and icon and image URLs.</p>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="intentresolution"></a><a href="#intentresolution" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>IntentResolution</code></h2>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> IntentResolution {
-  <span class="hljs-comment">/**
-   * The application that resolved the intent.
+  <span class="hljs-comment">/** 
+   * Metadata about the app instance that was selected (or started) to resolve the intent.
+   * `source.instanceId` MUST be set, indicating the specific app instance that 
+   * received the intent.
    */</span>
-  <span class="hljs-keyword">readonly</span> source: TargetApp;
+  <span class="hljs-keyword">readonly</span> source: AppMetadata;
   <span class="hljs-comment">/**
    * The intent that was raised. May be used to determine which intent the user
    * chose in response to `fdc3.raiseIntentForContext()`.
@@ -168,12 +193,23 @@ This includes a title, description, tooltip and icon and image URLs.</p>
    * The version number of the Intents schema being used.
    */</span>
   <span class="hljs-keyword">readonly</span> version?: <span class="hljs-built_in">string</span>;
+
 }
 </code></pre>
 <p>IntentResolution provides a standard format for data returned upon resolving an intent.</p>
-<h4><a class="anchor" aria-hidden="true" id="example"></a><a href="#example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
+<h4><a class="anchor" aria-hidden="true" id="examples"></a><a href="#examples" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// resolve a &quot;Chain&quot; type intent</span>
-<span class="hljs-keyword">const</span> intentResolution = <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&quot;intentName&quot;</span>, context);
+<span class="hljs-keyword">let</span> resolution = <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&quot;intentName&quot;</span>, context);
+
+<span class="hljs-comment">// Use metadata about the resolving app instance to target a further intent</span>
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">const</span> resolution = <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&#x27;StageOrder&#x27;</span>, context);
+  ...
+
+  <span class="hljs-comment">//some time later</span>
+  <span class="hljs-keyword">await</span> agent.raiseIntent(<span class="hljs-string">&quot;UpdateOrder&quot;</span>, context, resolution.source);
+}
+<span class="hljs-keyword">catch</span> (err) { ... }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="see-also-5"></a><a href="#see-also-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
