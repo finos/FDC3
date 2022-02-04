@@ -3,23 +3,29 @@
  * Copyright 2019 FINOS FDC3 contributors - see NOTICE file
  */
 
-import { TargetApp } from './Types';
+import { AppMetadata } from './AppMetadata';
 
 /**
  * IntentResolution provides a standard format for data returned upon resolving an intent.
  * ```javascript
  * //resolve a "Chain" type intent
- * var intentR = await agent.raiseIntent("intentName", context);
+ * let resolution = await agent.raiseIntent("intentName", context);
  * //resolve a "Client-Service" type intent with data response
- * var intentR = await agent.raiseIntent("intentName", context);
+ * let resolution = await agent.raiseIntent("intentName", context);
  * var dataR = intentR.data;
+ *
+ * // Use metadata about the resolving app instance to target a further intent
+ * await agent.raiseIntent("intentName", context, resolution.source);
+ *
  * ```
  */
 export interface IntentResolution {
   /**
-   * The application that resolved the intent.
+   * Metadata about the app instance that was selected (or started) to resolve the intent.
+   * `source.instanceId` MUST be set, indicating the specific app instance that
+   * received the intent.
    */
-  readonly source: TargetApp;
+  readonly source: AppMetadata;
   /**
    * The intent that was raised. May be used to determine which intent the user
    * chose in response to `fdc3.raiseIntentForContext()`.
