@@ -56,7 +56,7 @@ const position = {
             ticker: "AAPL"
         }
     },
-    holding: 2000000
+    holding: 2000000,
     trades: [
         {
              type: "fdc3.trade",
