@@ -12,12 +12,12 @@ Notes:
 
 - Intended to be used in situations where no context is desired. 
 - For example:
-  - Raising an Intent without context (e.g. opening a blank order form, or chat
+  - Raising an intent without context (e.g. opening a blank order form, or chat
     interface without a contact selected).
   - Resetting context on a channel (e.g. when context is used to set a filter in
     other applications a null context might release the filter).
 - An explicit representation of a Null or empty context allows apps to declare support for
-  a lack of context, for example in their Intent metadata in an app directory.
+  a lack of context, for example in their intent metadata in an app directory.
 
 ## Type
 
