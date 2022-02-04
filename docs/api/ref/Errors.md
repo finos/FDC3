@@ -26,9 +26,10 @@ Contains constants representing the errors that can be encountered when calling 
 export enum ResolveError {
   NoAppsFound = 'NoAppsFound',
   ResolverUnavailable = 'ResolverUnavailable',
+  UserCancelled = 'UserCancelledResolution',
   ResolverTimeout = 'ResolverTimeout',
   TargetAppUnavailable = 'TargetAppUnavailable',
-  TargetInstanceUnavailable = 'TargetInstanceUnavailable',
+  TargetInstanceUnavailable = 'TargetInstanceUnavailable'
 }
 ```
 
