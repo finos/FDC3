@@ -167,11 +167,12 @@ interface IntentResolution {
   readonly version?: string;
   /**
    * Retrieves a promise that will resolve to data returned by the
-   * application that resolves the raised intent. If an error is thrown 
-   * by the handler function,  the promise returned is rejected, or 
-   * no promise is returned then the Desktop Agent MUST reject 
-   * the promise returned by the `getResult()` function of the 
-   * `IntentResolution` with a string from the `DataError` enumeration.
+   * application that resolves the raised intent. If an error occurs 
+   * (i.e. an error is thrown by the handler function,  the promise 
+   * returned by the handler function is rejected, or no promise is 
+   * returned) then the Desktop Agent MUST reject the promise 
+   * returned by the `getResult()` function of the `IntentResolution` 
+   * with a string from the `DataError` enumeration.
    */
   getResult(): Promise<Context>;
 }
