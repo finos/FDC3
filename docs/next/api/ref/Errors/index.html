@@ -80,9 +80,10 @@
 <pre><code class="hljs css language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-built_in">enum</span> ResolveError {
   NoAppsFound = <span class="hljs-string">&#x27;NoAppsFound&#x27;</span>,
   ResolverUnavailable = <span class="hljs-string">&#x27;ResolverUnavailable&#x27;</span>,
+  UserCancelled = <span class="hljs-string">&#x27;UserCancelledResolution&#x27;</span>,
   ResolverTimeout = <span class="hljs-string">&#x27;ResolverTimeout&#x27;</span>,
   TargetAppUnavailable = <span class="hljs-string">&#x27;TargetAppUnavailable&#x27;</span>,
-  TargetInstanceUnavailable = <span class="hljs-string">&#x27;TargetInstanceUnavailable&#x27;</span>,
+  TargetInstanceUnavailable = <span class="hljs-string">&#x27;TargetInstanceUnavailable&#x27;</span>
 }
 </code></pre>
 <p>Contains constants representing the errors that can be encountered when calling the <a href="DesktopAgent#findintent"><code>findIntent</code></a>, <a href="DesktopAgent#findintentsbycontext"><code>findIntentsByContext</code></a>, <a href="DesktopAgent#raiseintent"><code>raiseIntent</code></a> or <a href="DesktopAgent#raiseintentforcontext"><code>raiseIntentForContext</code></a> methods on the <a href="DesktopAgent">DesktopAgent</a>.</p>
