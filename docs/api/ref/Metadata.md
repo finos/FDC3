@@ -140,7 +140,7 @@ interface IntentMetadata {
 }
 ```
 
-The Interface used to describe an Intent within the platform.
+The interface used to describe an intent within the platform.
 
 
 #### See also

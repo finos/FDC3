@@ -92,21 +92,21 @@ Linking from one application to another is a critical basic workflow that the we
 ### Raising Intents
 Often, we want to link from one app to another to dynamically create a workflow.  Enabling this without requiring prior knowledge between apps is a key goal of FDC3.
 
-Intents provide a way for an app to request functionality from another app and defer the discovery and launching of the destination app to the Desktop Agent.  There are multiple models for interop that Intents can support.
+Intents provide a way for an app to request functionality from another app and defer the discovery and launching of the destination app to the Desktop Agent.  There are multiple models for interop that intents can support.
 
 - **Chain**:  In this case the workflow is completely handed off from one app to another (similar to linking).  Currently, this is the primary focus in FDC3.
 - **Client-Service**: A Client invokes a Service via the Intent, the Service performs some function, then passes the workflow back to the Client. Typically, there is a data payload type associated with this intent that is published as the standard contract for the intent.
 - **Remote API**: An app wants to remote an entire API that it owns to another App.  In this case, the API for the App cannot be standardized.  However, the FDC3 API can address how an App connects to another App in order to get access to a proprietary API.
 
 #### Intents and Context
-When raising an Intent a specific context may be provided. The type of the provided context may determine which applications can resolve the Intent.
+When raising an intent a specific context may be provided. The type of the provided context may determine which applications can resolve the intent.
 
-A Context type may also be associated with multiple Intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other Intents. In addition to raising a specific intent, you can raise an Intent for a specific Context allowing the Desktop Agent or the user (if the Intent is ambiguous) to select the appropriate Intent for the selected Context and then to raise that Intent for resolution.
+A context type may also be associated with multiple intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other intents. In addition to raising a specific intent, you can raise an intent for a specific context allowing the Desktop Agent or the user (if the intent is ambiguous) to select the appropriate intent for the selected context and then to raise that intent for resolution.
 
-To raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an Intent listener or in an App Directory).
+To raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an intent listener or in an App Directory).
 
 #### Intent Resolution
-Raising an Intent will return a Promise-type object that will resolve/reject based on a number of factors.
+Raising an intent will return a Promise-type object that will resolve/reject based on a number of factors.
 
 ##### Resolve
 - Intent was resolved unambiguously and the receiving app was launched successfully (if necessary).
@@ -153,7 +153,7 @@ interface IntentResolution {
 }
 ```
 
-For example, to raise a specific Intent:
+For example, to raise a specific intent:
 
 ```js
 try {
@@ -162,7 +162,7 @@ try {
 catch (err){ ... }
 ```
 
-or to raise an unspecified Intent for a specific context, where the user will select an intent from a resolver dialog:
+or to raise an unspecified intent for a specific context, where the user will select an intent from a resolver dialog:
 ```js
 try {
   const resolution = await fdc3.raiseIntentForContext(context);
@@ -208,7 +208,7 @@ const chartApp = fin.Application.wrap(chart.source);
 ![Upgrading Connection to Remote API](assets/api-3.png)
 
 ### Register an Intent
-Applications need to let the system know the Intents they can support.  Typically, this is done via registration with the App Directory.  It is also possible for Intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  While, dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
+Applications need to let the system know the intents they can support.  Typically, this is done via registration with the App Directory.  It is also possible for intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  While dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
 
 #### Compliance with Intent Standards
 Intents represent a contract with expected behavior if an app asserts that it supports the intent.  Where this contract is enforceable by schema (for example, return object types), the FDC3 API implementation should enforce compliance and return an error if the interface is not met.
@@ -237,7 +237,7 @@ Context channels allows a set of apps to share a stateful piece of data between 
 
 There are two types of channels, which are functionally identical, but have different visibility and discoverability semantics:
 
-1. **System channels**, which: 
+1. **_System channels_**, which: 
     * facilitate the creation of user-controlled context links between applications (often via the selection of a color channel),
     * are created and named by the desktop agent,
     * are discoverable (via the [`getSystemChannels()`](ref/DesktopAgent#getsystemchannels) API call),
@@ -246,7 +246,7 @@ There are two types of channels, which are functionally identical, but have diff
     > **Note:** Earlier versions of FDC3 included the concept of a 'global' system channel
     which was deprecated in FDC3 1.2 and removed in FDC 2.0.
 
-2. **App channels**, which: 
+2. **_App channels_**, which: 
     * facilitate developer controlled messaging between applications,
     * are created and named by applications (via the [`getOrCreateChannel()`](ref/DesktopAgent#getorcreatechannel) API call),
     * are not discoverable,

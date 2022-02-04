@@ -6,7 +6,7 @@ title: Intents Specification (next)
 
 ## Introduction
 
-FDC3 [Intents](intents-intro) define a standard set of nouns and verbs that can be used to put together common cross-application workflows on the financial desktop.
+FDC3 [Intents](intents-intro) define a standard set of verbs that, in conjunction with context data acting as nouns, can be used to put together common cross-application workflows on the financial desktop.
 
 ### Naming Syntax
 * Intent names should be free of non-alphanumeric characters.
@@ -28,32 +28,32 @@ Intents shoulde be:
     * Granular enough that Intent handlers can communicate key functional differences
 
 ### Namespaces ###
-All standard Intent names are reserved. Applications may use their own Intents ad hoc.
-However, there is a need for applications to ensure that their Intents avoid collision. The recommended approach here is to use the app name as the noun. For example, the ‘myChart’ App may expose the ‘ViewChart’ intent and the ‘myChart.Foo’ proprietary Intent.
+All standard intent names are reserved. Applications may use their own intents ad hoc.
+However, there is a need for applications to ensure that their intents avoid collision. The recommended approach here is to use the app name as the noun. For example, the ‘myChart’ App may expose the ‘ViewChart’ intent and the ‘myChart.Foo’ proprietary intent.
 
 ## Initial Set of Standard Intents ##
 
 ### StartCall
-  * Expected Context: Contact
+  * Expected context: Contact
   * Expected behavior: initiate call with contact(s)
 ### StartChat
-  * Expected Context: Contact
+  * Expected context: Contact
   * Expected behavior: initiate chat with contact(s)
 ### ViewChart
-  * Expected Context: Instrument
+  * Expected context: Instrument
   * Expected behavior: display a chart for the context
 ### ViewContact
-  * Expected Context: Contact
+  * Expected context: Contact
   * Expected behavior: display details of a contact
 ### ViewQuote
-  * Expected Context: Instrument
+  * Expected context: Instrument
   * Expected behavior: display pricing for an instrument
 ### ViewNews
-  * Expected Context: Instrument, Contact, Organisation, etc.
+  * Expected context: Instrument, Contact, Organization, etc.
   * Expected behavior: display news for a given context
 ### ViewInstrument
-  * Expected Context: Instrument
+  * Expected context: Instrument
   * Expected behavior: display relevant information for a given instrument
 ### ViewAnalysis
-  * Expected Context: Instrument, Organization, etc.
+  * Expected context: Instrument, Organization, etc.
   * Expected behavior: Send context to receiving application for displaying analysis

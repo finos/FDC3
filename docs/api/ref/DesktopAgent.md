@@ -108,7 +108,7 @@ Publishes context to other apps on the desktop.  Calling `broadcast` at the `Des
 
 DesktopAgent implementations should ensure that context messages broadcast to a channel by an application joined to it are not delivered back to that same application.
 
-If you are working with complex context types composed of other simpler types (as recommend by the [Context specification](../../context/spec#assumptions)) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.
+If you are working with complex context types composed of other simpler types (as recommended by the [Context Data specification](../../context/spec#assumptions)) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.
 
 #### Example
 ```js
@@ -436,7 +436,7 @@ Raises a specific intent for resolution against apps registered with the desktop
 The desktop agent will resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, a method for resolving the intent to a target app, such as presenting the user with a resolver UI allowing them to pick an app, SHOULD be provided.
 Alternatively, the specific app or app instance to target can also be provided. A list of valid target applications and instances can be retrieved via [`findIntent`](DesktopAgent#findintent).  
 
-If you wish to raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
+If you wish to raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
 
 Returns an `IntentResolution` object with details of the app instance that was selected (or started) to respond to the intent.
 
@@ -485,7 +485,7 @@ If a target app or intent cannot be found with the criteria provided, an `Error`
 #### Example
 
 ```js
-// Display a resolver UI for the user to select an Intent and application to resolve it
+// Display a resolver UI for the user to select an intent and application to resolve it
 const intentResolution = await fdc3.raiseIntentForContext(context);
 
 // Resolve against all intents registered by a specific target app for the specified context
