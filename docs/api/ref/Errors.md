@@ -41,6 +41,22 @@ Contains constants representing the errors that can be encountered when calling 
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 
+## `DataError`
+
+```typescript
+enum DataError {
+  NoDataReturned = 'NoDataReturned',
+  IntentHandlerRejected = 'IntentHandlerRejected',
+}
+```
+
+Contains constants representing the errors that can be encountered when calling the [`getResult`](DesktopAgent#findintent) method on the [IntentResolution](Metadata#intentresolution) Object.
+
+#### See also
+* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+* [`IntentResolution`](Metadata#intentresolution)
+
 ## `ChannelError`
 
 ```typescript

@@ -1,4 +1,13 @@
-import { AppIntent, Channel, Context, ContextHandler, IntentResolution, Listener, ImplementationMetadata } from '..';
+import {
+  AppIntent,
+  Channel,
+  Context,
+  ContextHandler,
+  IntentHandler,
+  IntentResolution,
+  Listener,
+  ImplementationMetadata,
+} from '..';
 import { TargetApp } from './Types';
 
 const DEFAULT_TIMEOUT = 5000;
@@ -71,7 +80,7 @@ export function raiseIntentForContext(context: Context, app?: TargetApp): Promis
   return rejectIfNoGlobal(() => window.fdc3.raiseIntentForContext(context, app));
 }
 
-export function addIntentListener(intent: string, handler: ContextHandler): Promise<Listener> {
+export function addIntentListener(intent: string, handler: IntentHandler): Promise<Listener> {
   return rejectIfNoGlobal(() => window.fdc3.addIntentListener(intent, handler));
 }
 

@@ -31,7 +31,7 @@ interface DesktopAgent {
   findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
   raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
   raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
-  addIntentListener(intent: string, handler: ContextHandler): Promise<Listener>;
+  addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 
   // channels
   getOrCreateChannel(channelId: string): Promise<Channel>;
@@ -75,27 +75,39 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', contact =>
 #### See also
 * [`Listener`](Types#listener)
 * [`Context`](Types#context)
+* [`ContextHandler`](Types#contexthandler)
 
 
 
 ### `addIntentListener`
 
 ```ts
-addIntentListener(intent: string, handler: ContextHandler): Promise<Listener>;
+addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 ```
- Adds a listener for incoming Intents from the Agent.
+ Adds a listener for incoming Intents from the Agent. The handler function may return void or a promise that should resolve to a context object representing any data that should be returned to the app that raised the intent. If an error is thrown by the handler function, the promise returned is rejected, or a promise is not returned then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution`.
 
 #### Examples
 
 ```js
-const listener = await fdc3.addIntentListener('StartChat', context => {
-  // start chat has been requested by another application
+//Handle a raised intent
+const listener = fdc3.addIntentListener('StartChat', context => {
+    // start chat has been requested by another application
+    return;
+});
+
+//Handle a raised intent and return Context data via a promise
+fdc3.addIntentListener("CreateOrder", (context) => {
+  return new Promise<Context>((resolve) => {
+    // go create the order
+    resolve({type: "fdc3.order", id: { "orderId": 1234 }});
+  });
 });
 ```
 
 #### See also
 * [`Listener`](Types#listener)
 * [`Context`](Types#context)
+* [`IntentHandler`](Types#intenthandler)
 
 
 
@@ -443,7 +455,7 @@ Alternatively, the specific app or app instance to target can also be provided. 
 
 If you wish to raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
 
-Returns an `IntentResolution` object with details of the app instance that was selected (or started) to respond to the intent.
+Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getResult()` function of the IntentResolution object. If an error occurs (i.e. an error is thrown by the handler function, the promise it returns is rejected, or a promse is not returned by the handler function) then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution` with a string from the `DataError` enumeration. 
 
 If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned. If a specific target `app` parameter was set, but either the app or app instance is not available then the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` errors MUST be returned.
 
@@ -451,7 +463,7 @@ If a target app for the intent cannot be found with the criteria provided or the
 
 ```js
 // raise an intent for resolution by the desktop agent
-// a resolver UI may be displayed, or another method of resolving the intent to a 
+// a resolver UI may be displayed, or another method of resolving the intent to a
 // target applied, if more than one application can resolve the intent
 await fdc3.raiseIntent("StartChat", context);
 
@@ -463,6 +475,15 @@ await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 
 //Raise an intent without a context by using the null context type
 await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
+
+//Raise an intent and retrieve data from the IntentResolution
+let resolution = await agent.raiseIntent("intentName", context);
+try {
+  const result = await resolution.getResult();
+  console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+} catch(error) {
+  console.error(`${resolution.source} returned a data error: ${error}`);
+}
 ```
 #### See also
 * [`Context`](Types#context)
@@ -483,7 +504,7 @@ Alternatively, the specific app or app instance to target can also be provided, 
 
 Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
 
-Returns an `IntentResolution` object with a handle to the app that responded to the selected intent.
+Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getResult()` function of the IntentResolution object. If an error occurs (i.e. an error is thrown by the handler function, the promise it returns is rejected, or a promse is not returned by the handler function) then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution` with a string from the `DataError` enumeration. 
 
 If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned. If a specific target `app` parameter was set, but either the app or app instance is not available then the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` errors MUST be returned. 
 

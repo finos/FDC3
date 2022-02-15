@@ -162,14 +162,19 @@ interface IntentResolution {
    */
   readonly intent: string;
   /**
-   * @deprecated not assignable from intent listeners
-   */
-  readonly data?: object;
-  /**
    * The version number of the Intents schema being used.
    */
   readonly version?: string;
-
+  /**
+   * Retrieves a promise that will resolve to data returned by the
+   * application that resolves the raised intent. If an error occurs 
+   * (i.e. an error is thrown by the handler function,  the promise 
+   * returned by the handler function is rejected, or no promise is 
+   * returned) then the Desktop Agent MUST reject the promise 
+   * returned by the `getResult()` function of the `IntentResolution` 
+   * with a string from the `DataError` enumeration.
+   */
+  getResult(): Promise<Context>;
 }
 ```
 
@@ -177,8 +182,8 @@ IntentResolution provides a standard format for data returned upon resolving an 
 
 #### Examples
 ```js
-// resolve a "Chain" type intent
-let resolution = await fdc3.raiseIntent("intentName", context);
+//resolve a "Chain" type intent
+let resolution = await agent.raiseIntent("intentName", context);
 
 // Use metadata about the resolving app instance to target a further intent
 try {
@@ -189,6 +194,15 @@ try {
   await agent.raiseIntent("UpdateOrder", context, resolution.source);
 }
 catch (err) { ... }
+
+//resolve a "Client-Service" type intent with a data response
+let resolution = await agent.raiseIntent("intentName", context);
+try {
+	  const result = await resolution.getResult();
+    console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+} catch(error) {
+    console.error(`${resolution.source} returned an error: ${error}`);
+}
 ```
 
 #### See also
