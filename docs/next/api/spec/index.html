@@ -94,7 +94,7 @@
 <p>The FDC3 API can be made available to an application through a number of different methods.  In the case of web applications, a Desktop Agent MUST provide the FDC3 API via a global accessible as <code>window.fdc3</code>. Implementors MAY additionally make the API available through modules, imports, or other means.</p>
 <p>The global <code>window.fdc3</code> must only be available after the API is ready to use. To enable applications to avoid using the API before it is ready, implementors MUST provide a global <code>fdc3Ready</code> event. Here is code demonstrating the use of the FDC3 API and the ready event:</p>
 <pre><code class="hljs css language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fdc3Stuff</span>(<span class="hljs-params"></span>) </span>{
-  <span class="hljs-comment">// Make some fdc3 API calls here</span>
+  <span class="hljs-comment">// Make fdc3 API calls here</span>
 }
 
 <span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.fdc3) {
@@ -144,9 +144,10 @@
 <li><strong>Remote API</strong>: An app wants to remote an entire API that it owns to another App.  In this case, the API for the App cannot be standardized.  However, the FDC3 API can address how an App connects to another App in order to get access to a proprietary API.</li>
 </ul>
 <h4><a class="anchor" aria-hidden="true" id="intents-and-context"></a><a href="#intents-and-context" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Intents and Context</h4>
-<p>When raising an intent a specific context may be provided. The type of the provided context may determine which applications can resolve the intent.</p>
+<p>When raising an intent a specific context may be provided as input. The type of the provided context may determine which applications can resolve the intent.</p>
 <p>A context type may also be associated with multiple intents. For example, an <code>fdc3.instrument</code> could be associated with <code>ViewChart</code>, <code>ViewNews</code>, <code>ViewAnalysis</code> or other intents. In addition to raising a specific intent, you can raise an intent for a specific context allowing the Desktop Agent or the user (if the intent is ambiguous) to select the appropriate intent for the selected context and then to raise that intent for resolution.</p>
 <p>To raise an intent without a context, use the <code>fdc3.nothing</code> context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an intent listener or in an App Directory).</p>
+<p>An optional context object may also be returned as output by an application resolving an intent. For example, an application resolving a <code>CreateOrder</code> intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.</p>
 <h4><a class="anchor" aria-hidden="true" id="intent-resolution"></a><a href="#intent-resolution" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Intent Resolution</h4>
 <p>Raising an intent will return a Promise-type object that will resolve/reject based on a number of factors.</p>
 <h5><a class="anchor" aria-hidden="true" id="resolve"></a><a href="#resolve" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Resolve</h5>
@@ -161,13 +162,6 @@
 <li>The intent was ambiguous and the resolver experienced an error.</li>
 </ul>
 <h5><a class="anchor" aria-hidden="true" id="resolution-object"></a><a href="#resolution-object" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Resolution Object</h5>
-<blockquote>
-<p><strong>Deprecation notice</strong></p>
-<p>It is not currently possible to provide a value for the <code>data</code> property described below,
-as intent listeners don't currently offer a way to return values.</p>
-<p>Future versions of FDC3 plan to remove the optional <code>data</code> property from the intent resolution object,
-and include a more robust mechanism for intents that need to return data back to the caller.</p>
-</blockquote>
 <p>If the raising of the intent resolves (or rejects), a standard object will be passed into the resolver function with the following format:</p>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> IntentResolution {
   <span class="hljs-comment">/** 
@@ -182,13 +176,17 @@ and include a more robust mechanism for intents that need to return data back to
    */</span>
   <span class="hljs-keyword">readonly</span> intent: <span class="hljs-built_in">string</span>;
   <span class="hljs-comment">/**
-   * <span class="hljs-doctag">@deprecated </span>not assignable from intent listeners
-   */</span>
-  <span class="hljs-keyword">readonly</span> data?: <span class="hljs-built_in">object</span>;
-  <span class="hljs-comment">/**
    * The version number of the Intents schema being used.
    */</span>
   <span class="hljs-keyword">readonly</span> version?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-comment">/**
+   * Retrieves a promise that will resolve to data returned by the application that 
+   * resolves the raised intent. If an error occurs (i.e. an error is thrown by the handler 
+   * function, the promise returned is rejected, or no promise is returned) then the Desktop 
+   * Agent MUST reject the promise returned by the `getResult()` function of the 
+   * `IntentResolution` with a string from the `DataError` enumeration.
+   */</span>
+  getResult(): <span class="hljs-built_in">Promise</span>&lt;Context&gt;;
 }
 </code></pre>
 <p>For example, to raise a specific intent:</p>
@@ -197,7 +195,7 @@ and include a more robust mechanism for intents that need to return data back to
 }
 <span class="hljs-keyword">catch</span> (err){ ... }
 </code></pre>
-<p>or to raise an unspecified intent for a specific context, where the user will select an intent from a resolver dialog:</p>
+<p>or to raise an unspecified intent for a specific context, where the user may select an intent from a resolver dialog:</p>
 <pre><code class="hljs css language-js"><span class="hljs-keyword">try</span> {
   <span class="hljs-keyword">const</span> resolution = <span class="hljs-keyword">await</span> fdc3.raiseIntentForContext(context);
   <span class="hljs-keyword">if</span> (resolution.data) {
@@ -215,6 +213,15 @@ and include a more robust mechanism for intents that need to return data back to
   <span class="hljs-keyword">await</span> agent.raiseIntent(<span class="hljs-string">&quot;UpdateOrder&quot;</span>, context, resolution.source);
 }
 <span class="hljs-keyword">catch</span> (err) { ... }
+</code></pre>
+<p>Raise an intent and retrieve data from the IntentResolution:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">let</span> resolution = <span class="hljs-keyword">await</span> agent.raiseIntent(<span class="hljs-string">&quot;intentName&quot;</span>, context);
+<span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> resolution.getResult();
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${resolution.source}</span> returned <span class="hljs-subst">${<span class="hljs-built_in">JSON</span>.stringify(result)}</span>`</span>);
+} <span class="hljs-keyword">catch</span>(error) {
+    <span class="hljs-built_in">console</span>.error(<span class="hljs-string">`<span class="hljs-subst">${resolution.source}</span> returned a data error: <span class="hljs-subst">${error}</span>`</span>);
+}
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="resolvers"></a><a href="#resolvers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Resolvers</h4>
 <p>Intents functionality is dependent on resolver functionality to map the intent to a specific App.  This will often require end-user input.  Resolution can either be performed by the Desktop Agent (for example, by displaying a resolver UI allowing the user to pick the desired app or app instance for the intent) or by the app handling the resolution itself (by using the <code>findIntents</code> API and specifying a target app or app instance when invoking the Intent), e.g.:</p>

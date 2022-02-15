@@ -84,7 +84,7 @@
   findIntentsByContext(context: Context): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;AppIntent&gt;&gt;;
   raiseIntent(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">context</span>: Context, app?: TargetApp): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
   raiseIntentForContext(context: Context, app?: TargetApp): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
-  addIntentListener(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">handler</span>: ContextHandler): <span class="hljs-built_in">Promise</span>&lt;Listener&gt;;
+  addIntentListener(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">handler</span>: IntentHandler): <span class="hljs-built_in">Promise</span>&lt;Listener&gt;;
 
   <span class="hljs-comment">// channels</span>
   getOrCreateChannel(channelId: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">Promise</span>&lt;Channel&gt;;
@@ -120,20 +120,32 @@ addContextListener(handler: ContextHandler): <span class="hljs-built_in">Promise
 <ul>
 <li><a href="Types#listener"><code>Listener</code></a></li>
 <li><a href="Types#context"><code>Context</code></a></li>
+<li><a href="Types#contexthandler"><code>ContextHandler</code></a></li>
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="addintentlistener"></a><a href="#addintentlistener" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>addIntentListener</code></h3>
-<pre><code class="hljs css language-ts">addIntentListener(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">handler</span>: ContextHandler): <span class="hljs-built_in">Promise</span>&lt;Listener&gt;;
+<pre><code class="hljs css language-ts">addIntentListener(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">handler</span>: IntentHandler): <span class="hljs-built_in">Promise</span>&lt;Listener&gt;;
 </code></pre>
-<p>Adds a listener for incoming Intents from the Agent.</p>
+<p>Adds a listener for incoming Intents from the Agent. The handler function may return void or a promise that should resolve to a context object representing any data that should be returned to the app that raised the intent. If an error is thrown by the handler function, the promise returned is rejected, or a promise is not returned then the Desktop Agent MUST reject the promise returned by the <code>getResult()</code> function of the <code>IntentResolution</code>.</p>
 <h4><a class="anchor" aria-hidden="true" id="examples-1"></a><a href="#examples-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> listener = <span class="hljs-keyword">await</span> fdc3.addIntentListener(<span class="hljs-string">&#x27;StartChat&#x27;</span>, <span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> {
-  <span class="hljs-comment">// start chat has been requested by another application</span>
+<pre><code class="hljs css language-js"><span class="hljs-comment">//Handle a raised intent</span>
+<span class="hljs-keyword">const</span> listener = fdc3.addIntentListener(<span class="hljs-string">&#x27;StartChat&#x27;</span>, <span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> {
+    <span class="hljs-comment">// start chat has been requested by another application</span>
+    <span class="hljs-keyword">return</span>;
+});
+
+<span class="hljs-comment">//Handle a raised intent and return Context data via a promise</span>
+fdc3.addIntentListener(<span class="hljs-string">&quot;CreateOrder&quot;</span>, <span class="hljs-function">(<span class="hljs-params">context</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>&lt;Context&gt;(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> {
+    <span class="hljs-comment">// go create the order</span>
+    resolve({<span class="hljs-attr">type</span>: <span class="hljs-string">&quot;fdc3.order&quot;</span>, <span class="hljs-attr">id</span>: { <span class="hljs-string">&quot;orderId&quot;</span>: <span class="hljs-number">1234</span> }});
+  });
 });
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="see-also-1"></a><a href="#see-also-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="Types#listener"><code>Listener</code></a></li>
 <li><a href="Types#context"><code>Context</code></a></li>
+<li><a href="Types#intenthandler"><code>IntentHandler</code></a></li>
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="broadcast"></a><a href="#broadcast" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>broadcast</code></h3>
 <pre><code class="hljs css language-ts">broadcast(context: Context): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
@@ -385,11 +397,11 @@ redChannel.addContextListener(<span class="hljs-literal">null</span>, channelLis
 <p>The desktop agent will resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, a method for resolving the intent to a target app, such as presenting the user with a resolver UI allowing them to pick an app, SHOULD be provided.
 Alternatively, the specific app or app instance to target can also be provided. A list of valid target applications and instances can be retrieved via <a href="DesktopAgent#findintent"><code>findIntent</code></a>.</p>
 <p>If you wish to raise an intent without a context, use the <code>fdc3.nothing</code> context type. This type exists so that apps can explicitly declare support for raising an intent without context.</p>
-<p>Returns an <code>IntentResolution</code> object with details of the app instance that was selected (or started) to respond to the intent.</p>
+<p>Returns an <code>IntentResolution</code> object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the <code>getResult()</code> function of the IntentResolution object. If an error occurs (i.e. an error is thrown by the handler function, the promise it returns is rejected, or a promse is not returned by the handler function) then the Desktop Agent MUST reject the promise returned by the <code>getResult()</code> function of the <code>IntentResolution</code> with a string from the <code>DataError</code> enumeration.</p>
 <p>If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an <code>Error</code> with a string from the <a href="Errors#resolveerror"><code>ResolveError</code></a> enumeration is returned. If a specific target <code>app</code> parameter was set, but either the app or app instance is not available then the <code>ResolveError.TargetAppUnavailable</code> or <code>ResolveError.TargetInstanceUnavailable</code> errors MUST be returned.</p>
 <h4><a class="anchor" aria-hidden="true" id="example-7"></a><a href="#example-7" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// raise an intent for resolution by the desktop agent</span>
-<span class="hljs-comment">// a resolver UI may be displayed, or another method of resolving the intent to a </span>
+<span class="hljs-comment">// a resolver UI may be displayed, or another method of resolving the intent to a</span>
 <span class="hljs-comment">// target applied, if more than one application can resolve the intent</span>
 <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&quot;StartChat&quot;</span>, context);
 
@@ -401,6 +413,15 @@ Alternatively, the specific app or app instance to target can also be provided. 
 
 <span class="hljs-comment">//Raise an intent without a context by using the null context type</span>
 <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&quot;StartChat&quot;</span>, {<span class="hljs-attr">type</span>: <span class="hljs-string">&quot;fdc3.nothing&quot;</span>});
+
+<span class="hljs-comment">//Raise an intent and retrieve data from the IntentResolution</span>
+<span class="hljs-keyword">let</span> resolution = <span class="hljs-keyword">await</span> agent.raiseIntent(<span class="hljs-string">&quot;intentName&quot;</span>, context);
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> resolution.getResult();
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${resolution.source}</span> returned <span class="hljs-subst">${<span class="hljs-built_in">JSON</span>.stringify(result)}</span>`</span>);
+} <span class="hljs-keyword">catch</span>(error) {
+  <span class="hljs-built_in">console</span>.error(<span class="hljs-string">`<span class="hljs-subst">${resolution.source}</span> returned a data error: <span class="hljs-subst">${error}</span>`</span>);
+}
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="see-also-11"></a><a href="#see-also-11" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
@@ -416,7 +437,7 @@ Alternatively, the specific app or app instance to target can also be provided. 
 <p>The desktop agent SHOULD first resolve to a specific intent based on the provided context if more than one intent is available for the specified context. This MAY be achieved by displaying a resolver UI. It SHOULD then resolve to a specific app to handle the selected intent and specified context.
 Alternatively, the specific app or app instance to target can also be provided, in which case any method of resolution SHOULD only consider intents supported by the specified application.</p>
 <p>Using <code>raiseIntentForContext</code> is similar to calling <code>findIntentsByContext</code>, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.</p>
-<p>Returns an <code>IntentResolution</code> object with a handle to the app that responded to the selected intent.</p>
+<p>Returns an <code>IntentResolution</code> object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the <code>getResult()</code> function of the IntentResolution object. If an error occurs (i.e. an error is thrown by the handler function, the promise it returns is rejected, or a promse is not returned by the handler function) then the Desktop Agent MUST reject the promise returned by the <code>getResult()</code> function of the <code>IntentResolution</code> with a string from the <code>DataError</code> enumeration.</p>
 <p>If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an <code>Error</code> with a string from the <a href="Errors#resolveerror"><code>ResolveError</code></a> enumeration is returned. If a specific target <code>app</code> parameter was set, but either the app or app instance is not available then the <code>ResolveError.TargetAppUnavailable</code> or <code>ResolveError.TargetInstanceUnavailable</code> errors MUST be returned.</p>
 <h4><a class="anchor" aria-hidden="true" id="example-8"></a><a href="#example-8" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// Display a resolver UI for the user to select an intent and application to resolve it</span>
