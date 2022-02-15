@@ -236,7 +236,7 @@ const appIntent = await fdc3.findIntent("StartChat");
 
 An optional input context object and/or `resultType` argument may be specified, which the resolver MUST use to filter the returned applications such that each supports the specified input and result types.
 ```js
-const appIntent = await fdc3.findIntent("StartChat", contact);
+const appIntent = await fdc3.findIntent("StartChat", context);
 
 // returns only apps that support the type of the specified input context:
 // {
