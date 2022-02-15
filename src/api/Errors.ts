@@ -19,6 +19,11 @@ export enum ResolveError {
   TargetInstanceUnavailable = 'TargetInstanceUnavailable',
 }
 
+export enum DataError {
+  NoDataReturned = 'NoDataReturned',
+  IntentHandlerRejected = 'IntentHandlerRejected',
+}
+
 export enum ChannelError {
   NoChannelFound = 'NoChannelFound',
   AccessDenied = 'AccessDenied',

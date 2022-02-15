@@ -42,7 +42,7 @@ The global `window.fdc3` must only be available after the API is ready to use. T
 
 ```js
 function fdc3Stuff() {
-  // Make some fdc3 API calls here
+  // Make fdc3 API calls here
 }
 
 if (window.fdc3) {
@@ -99,11 +99,13 @@ Intents provide a way for an app to request functionality from another app and d
 - **Remote API**: An app wants to remote an entire API that it owns to another App.  In this case, the API for the App cannot be standardized.  However, the FDC3 API can address how an App connects to another App in order to get access to a proprietary API.
 
 #### Intents and Context
-When raising an intent a specific context may be provided. The type of the provided context may determine which applications can resolve the intent.
+When raising an intent a specific context may be provided as input. The type of the provided context may determine which applications can resolve the intent.
 
 A context type may also be associated with multiple intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other intents. In addition to raising a specific intent, you can raise an intent for a specific context allowing the Desktop Agent or the user (if the intent is ambiguous) to select the appropriate intent for the selected context and then to raise that intent for resolution.
 
 To raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an intent listener or in an App Directory).
+
+An optional context object may also be returned as output by an application resolving an intent. For example, an application resolving a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.  
 
 #### Intent Resolution
 Raising an intent will return a Promise-type object that will resolve/reject based on a number of factors.
@@ -118,14 +120,6 @@ Raising an intent will return a Promise-type object that will resolve/reject bas
 - The intent was ambiguous and the resolver experienced an error.
 
 ##### Resolution Object
-
-> **Deprecation notice**
->
-> It is not currently possible to provide a value for the `data` property described below,
-as intent listeners don't currently offer a way to return values.
->
-> Future versions of FDC3 plan to remove the optional `data` property from the intent resolution object,
-and include a more robust mechanism for intents that need to return data back to the caller.
 
 If the raising of the intent resolves (or rejects), a standard object will be passed into the resolver function with the following format:
 
@@ -143,13 +137,17 @@ interface IntentResolution {
    */
   readonly intent: string;
   /**
-   * @deprecated not assignable from intent listeners
-   */
-  readonly data?: object;
-  /**
    * The version number of the Intents schema being used.
    */
   readonly version?: string;
+  /**
+   * Retrieves a promise that will resolve to data returned by the application that 
+   * resolves the raised intent. If an error occurs (i.e. an error is thrown by the handler 
+   * function, the promise returned is rejected, or no promise is returned) then the Desktop 
+   * Agent MUST reject the promise returned by the `getResult()` function of the 
+   * `IntentResolution` with a string from the `DataError` enumeration.
+   */
+  getResult(): Promise<Context>;
 }
 ```
 
@@ -162,7 +160,8 @@ try {
 catch (err){ ... }
 ```
 
-or to raise an unspecified intent for a specific context, where the user will select an intent from a resolver dialog:
+or to raise an unspecified intent for a specific context, where the user may select an intent from a resolver dialog:
+
 ```js
 try {
   const resolution = await fdc3.raiseIntentForContext(context);
@@ -183,6 +182,17 @@ try {
   await agent.raiseIntent("UpdateOrder", context, resolution.source);
 }
 catch (err) { ... }
+```
+
+Raise an intent and retrieve data from the IntentResolution:
+```js
+let resolution = await agent.raiseIntent("intentName", context);
+try {
+    const result = await resolution.getResult();
+    console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+} catch(error) {
+    console.error(`${resolution.source} returned a data error: ${error}`);
+}
 ```
 
 #### Resolvers
