@@ -57,7 +57,9 @@ Contains constants representing the errors that can be encountered when calling 
 
 ```typescript
 enum DataError {
+  /** Returned if the intent handler exited without returning Promise or that Promise was not resolved with a Context object. */
   NoDataReturned = 'NoDataReturned',
+  /** Returned if the Intent handler function processing the raised intent throws an error or rejects the promise it returned. */
   IntentHandlerRejected = 'IntentHandlerRejected',
 }
 ```
