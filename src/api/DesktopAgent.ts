@@ -219,16 +219,16 @@ export interface DesktopAgent {
   /**
    * Raises a specific intent for resolution against apps registered with the desktop agent.
    *
-   * The desktop agent will resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, the user may be presented with an app picker.
+   * The desktop agent MUST resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, the user MAY be presented with a Resolver UI allowing them to pick one, or another method of Resolution applied to select an app.
    * Alternatively, the specific app or app instance to target can also be provided. A list of valid target applications and instances can be retrieved via `findIntent`.
    *
-   * If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the `ResolveError` enumeration MUST be returned.
+   * If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an `Error` with a string from the `ResolveError` enumeration is returned. If a specific target `app` parameter was set, but either the app or app instance is not available then the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` errors MUST be returned.
    *
    * If you wish to raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
    *
-   * Returns an `IntentResolution` object with details of the app instance that was selected (or started) to respond to the intent.
+   * Returns an `IntentResolution` object with details of the app instance that was selected (or started) to respond to the intent. 
    *
-   * Issuing apps may optionally wait on the promise that is returned by the `getResult()` member of the IntentResolution. This promise will resolve when the _receiving app's_ intent handler function returns and resolves a promise. The Desktop Agent resolves the issuing app's promise with the Context object or Channel that is provided as resolution within the receiving app. The Desktop Agent MUST reject the issuing app's promise, with a string from the `ResultError` enumeration, if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.
+   * Issuing apps may optionally wait on the promise that is returned by the `getResult()` member of the `IntentResolution`. This promise will resolve when the _receiving app's_ intent handler function returns and resolves a promise. The Desktop Agent resolves the issuing app's promise with the Context object or Channel that is provided as resolution within the receiving app. The Desktop Agent MUST reject the issuing app's promise, with a string from the `ResultError` enumeration, if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.
    *
    * ```javascript
    * // raise an intent for resolution by the desktop agent

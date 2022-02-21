@@ -108,9 +108,9 @@ Despite this limitation, implementing support for FDC3 in a native application c
 
 - [x] Publish versioned NPM packages to ease adoption and implementation of FDC3 APIs.
 - [x] Release version 1.2 of the standard with expanded API capabilities.
-- [ ] Establish a process to accelerate community-contributed context data definitions.
-- [ ] Release version 2.0 of the standard with support for app instances, two-way data flow and joining multiple channels.
+- [x] Establish a process to accelerate community-contributed context data definitions.
 - [ ] Improve the app directory specification, with support for container-agnostic app manifests, and more type metadata around channels and launching apps.
+- [ ] Release version 2.0 of the standard with API support for app instances, two-way data flow and requesting channels with context.
 - [ ] Introduce a hosted app directory example with sample application definitions.
 - [ ] Continue building out business use cases to inform future versions of the FDC3 Standard.
 
