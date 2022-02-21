@@ -59,7 +59,7 @@ const instrument = {
     }
 }
 
-fdc3.joinChannel('red')
+fdc3.joinUserChannel('Channel 1')
 fdc3.broadcast(instrument)
 ```
 

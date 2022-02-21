@@ -15,7 +15,7 @@ interface AppIntent {
 An interface that represents the binding of an intent to apps, returned as part of intent disocvery.
 For each intent, it reference the applications that support that intent.
 
-#### See also
+### See also
 * [`AppMetadata`](AppMetadata)
 * [`IntentMetadata`](IntentMetadata)
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
@@ -77,6 +77,7 @@ In situations where a desktop agent connects to multiple app directories or mult
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 
+
 ## `DisplayMetadata`
 
 ```ts
@@ -99,9 +100,8 @@ interface DisplayMetadata {
 A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
 
 #### See also
-
 * [`Channel`](Channel)
-* [`DesktopAgent.getSystemChannels`](DesktopAgent#getsystemchannels)
+* [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
 
 ## `ImplementationMetadata`
 
@@ -120,7 +120,7 @@ interface ImplementationMetadata {
 
 Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification and the name of the provider of the implementation.
 
-#### See also
+### See also
 * [`DesktopAgent.getInfo`](DesktopAgent#getInfo)
 
 ## `IntentMetadata`
@@ -137,7 +137,7 @@ interface IntentMetadata {
 The interface used to describe an intent within the platform.
 
 
-#### See also
+### See also
 * [`AppIntent.intent`](AppIntent)
 
 ## `IntentResolution`
@@ -212,7 +212,7 @@ try {
 }
 ```
 
-#### See also
+### See also
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 * [`TargetApp`](TargetApp)
