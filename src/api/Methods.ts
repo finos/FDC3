@@ -96,12 +96,36 @@ export function addContextListener(
   }
 }
 
+export function getUserChannels(): Promise<Channel[]> {
+  return rejectIfNoGlobal(() => {
+    //fallback to getSystemChannels for FDC3 <2.0 implementations
+    if (window.fdc3.getUserChannels) {
+      return window.fdc3.getUserChannels();
+    } else {
+      return window.fdc3.getSystemChannels();
+    }
+  });
+}
+
 export function getSystemChannels(): Promise<Channel[]> {
-  return rejectIfNoGlobal(() => window.fdc3.getSystemChannels());
+  //fallforward to getUserChannels for FDC3 2.0+ implementations
+  return getUserChannels();
+}
+
+export function joinUserChannel(channelId: string): Promise<void> {
+  return rejectIfNoGlobal(() => {
+    //fallback to joinChannel for FDC3 <2.0 implementations
+    if (window.fdc3.joinUserChannel) {
+      return window.fdc3.joinUserChannel(channelId);
+    } else {
+      return window.fdc3.joinChannel(channelId);
+    }
+  });
 }
 
 export function joinChannel(channelId: string): Promise<void> {
-  return rejectIfNoGlobal(() => window.fdc3.joinChannel(channelId));
+  //fallforward to joinUserChannel for FDC3 2.0+ implementations
+  return joinUserChannel(channelId);
 }
 
 export function getOrCreateChannel(channelId: string): Promise<Channel> {
