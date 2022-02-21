@@ -157,7 +157,7 @@ await fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
 findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
 ```
 
-Find all the avalable intents for a particular context.
+Find all the available intents for a particular context.
 _findIntentsByContext_ is effectively granting programmatic access to the Desktop Agent's resolver.
 A promise resolving to all the intents, their metadata and metadata about the apps that registered as handlers is returned, based on the context types the intents have registered.
 

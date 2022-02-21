@@ -82,6 +82,7 @@ Represented as a union type in Typescript, however, this type may be rendered as
 * [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 * [`IntentResolution`](Metadata#intentresolution)
 
+
 ## `Listener`
 
 A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](#addintentlistener) or [`addContextListener`](#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.

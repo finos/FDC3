@@ -26,7 +26,6 @@ import { AppMetadata } from './AppMetadata';
  * } catch(error) {
  *     console.error(`${resolution.source} returned an error: ${error}`);
  * }
- *
  * // Use metadata about the resolving app instance to target a further intent
  * await agent.raiseIntent("intentName", context, resolution.source);
  * ```
