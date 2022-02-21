@@ -45,6 +45,10 @@ expect.extend({
   },
 });
 
+beforeEach(() => {
+  jest.resetAllMocks();
+});
+
 describe('test ES6 module', () => {
   describe('without `window.fdc3` global', () => {
     test('open should reject', async () => {
@@ -203,7 +207,7 @@ describe('test ES6 module', () => {
     test('getSystemChannels should delegate to window.fdc3.getUserChannels', async () => {
       await getSystemChannels();
 
-      expect(window.fdc3.getUserChannels).toHaveBeenCalledTimes(2); //was already called in previous test, hence this should be the second call to getUserChannels
+      expect(window.fdc3.getUserChannels).toHaveBeenCalledTimes(1);
       expect(window.fdc3.getUserChannels).toHaveBeenCalledWith();
     });
 
@@ -221,7 +225,7 @@ describe('test ES6 module', () => {
 
       await joinUserChannel(channelId);
 
-      expect(window.fdc3.joinUserChannel).toHaveBeenCalledTimes(2);
+      expect(window.fdc3.joinUserChannel).toHaveBeenCalledTimes(1);
       expect(window.fdc3.joinUserChannel).toHaveBeenCalledWith(channelId);
     });
 
