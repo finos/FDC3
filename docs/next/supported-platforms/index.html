@@ -89,7 +89,7 @@
 <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> fdc3.raiseIntent(<span class="hljs-string">&#x27;ViewAnalysis&#x27;</span>, instrument)
 
 <span class="hljs-comment">// join the red channel and broadcast data to subscribers</span>
-<span class="hljs-keyword">await</span> fdc3.joinChannel(<span class="hljs-string">&#x27;red&#x27;</span>)
+<span class="hljs-keyword">await</span> fdc3.joinUserChannel(<span class="hljs-string">&#x27;red&#x27;</span>)
 fdc3.broadcast(instrument)
 
 <span class="hljs-comment">// set up a listener for incoming data</span>

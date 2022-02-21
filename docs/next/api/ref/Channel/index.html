@@ -64,7 +64,7 @@
             });
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="channel"></a><a href="#channel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Channel</code></h1>
 <p>Represents a context channel that applications can join to share context data.</p>
-<p>A channel can be either a well-known &quot;system&quot; channel (retrieved with <a href="DesktopAgent#getsystemchannels"><code>getSystemChannels</code></a>) or a custom &quot;app&quot; channel (obtained through <a href="DesktopAgent#getorcreatechannel"><code>getOrCreateChannel</code></a>).</p>
+<p>A channel can be either a &quot;User&quot; channel (retrieved with <a href="DesktopAgent#getuserchannels"><code>getUserChannels</code></a>) or a custom &quot;App&quot; channel (obtained through <a href="DesktopAgent#getorcreatechannel"><code>getOrCreateChannel</code></a>).</p>
 <p>Channels each have a unique identifier, some display metadata and operations for broadcasting context to other applications, or receiving context from other applications.</p>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> Channel {
   <span class="hljs-comment">// properties</span>
@@ -86,15 +86,15 @@
 <ul>
 <li><a href="Types#context"><code>Context</code></a></li>
 <li><a href="Types#listener"><code>Listener</code></a></li>
-<li><a href="DesktopAgent#getsystemchannels"><code>DesktopAgent.getSystemChannels</code></a></li>
+<li><a href="DesktopAgent#getuserchannels"><code>DesktopAgent.getUserChannels</code></a></li>
 <li><a href="DesktopAgent#getorcreatechannel"><code>DesktopAgent.getOrCreateChannel</code></a></li>
-<li><a href="DesktopAgent#joinchannel"><code>DesktopAgent.joinChannel</code></a></li>
+<li><a href="DesktopAgent#joinuserchannel"><code>DesktopAgent.joinUserChannel</code></a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="properties"></a><a href="#properties" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Properties</h2>
 <h3><a class="anchor" aria-hidden="true" id="id"></a><a href="#id" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>id</code></h3>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">public</span> <span class="hljs-keyword">readonly</span> id: <span class="hljs-built_in">string</span>;
 </code></pre>
-<p>Uniquely identifies the channel. It is either assigned by the desktop agent (system channel) or defined by an application (app channel).</p>
+<p>Uniquely identifies the channel. It is either assigned by the desktop agent (User Channel) or defined by an application (App Channel).</p>
 <h3><a class="anchor" aria-hidden="true" id="type"></a><a href="#type" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>type</code></h3>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">public</span> <span class="hljs-keyword">readonly</span> <span class="hljs-keyword">type</span>: <span class="hljs-built_in">string</span>;
 </code></pre>
@@ -102,7 +102,7 @@
 <h3><a class="anchor" aria-hidden="true" id="displaymetadata"></a><a href="#displaymetadata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>displayMetadata</code></h3>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">public</span> <span class="hljs-keyword">readonly</span> displayMetadata?: DisplayMetadata;
 </code></pre>
-<p>DisplayMetadata can be used to provide display hints for channels intended to be visualized and selectable by end users.</p>
+<p>DisplayMetadata can be used to provide display hints for User Channels intended to be visualized and selectable by end users.</p>
 <h4><a class="anchor" aria-hidden="true" id="see-also-1"></a><a href="#see-also-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="Metadata#displaymetadata"><code>DisplayMetadata</code></a></li>
@@ -155,7 +155,7 @@ instrumentListener.unsubscribe();
 <h3><a class="anchor" aria-hidden="true" id="broadcast"></a><a href="#broadcast" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>broadcast</code></h3>
 <pre><code class="hljs css language-typescript"><span class="hljs-keyword">public</span> broadcast(context: Context): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
 </code></pre>
-<p>Broadcasts a context on the channel. This function can be used without first joining the channel, allowing applications to broadcast on channels that they aren't a member of.</p>
+<p>Broadcasts a context on the channel. This function can be used without first joining the channel, allowing applications to broadcast on both App Channels and User Channels that they aren't a member of.</p>
 <p>If the broadcast is denied by the channel or the channel is not available, the method will return an <code>Error</code> with a string from the <a href="ChannelError"><code>ChannelError</code></a> enumeration.</p>
 <p>Channel implementations should ensure that context messages broadcast by an application on a channel should not be delivered back to that same application if they are joined to the channel.</p>
 <p>If you are working with complex context types composed of other simpler types (as recommended by the <a href="../../context/spec#assumptions">FDC3 Context Data specification</a>) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.</p>
