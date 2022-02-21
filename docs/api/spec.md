@@ -111,9 +111,6 @@ An optional [`IntentResult`](ref/Types#intentresult) may also be returned as out
 For example, an application handling a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.
 
 An optional result type is also supported when programmatically resolving an intent via [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext).
-
-An optional context object may also be returned as output by an application resolving an intent. For example, an application resolving a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.  
-
 #### Intent Resolution
 Raising an intent will return a Promise-type object that will resolve/reject based on a number of factors.
 
