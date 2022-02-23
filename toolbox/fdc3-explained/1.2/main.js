@@ -65,9 +65,9 @@ async function populateHTML() {
     //populate available channels list with system channels
     let channelList = document.getElementById('system-channel-list');
 
-    const populateChannelsList = name => {
+    const populateChannelsList = id => {
       let node = document.createElement('li');
-      let textNode = document.createTextNode(name);
+      let textNode = document.createTextNode(id);
       node.appendChild(textNode);
       channelList.appendChild(node);
     };
@@ -76,9 +76,9 @@ async function populateHTML() {
 
     // for all of the system channels populate dropdowns & lists
     systemChannels.forEach(({ displayMetadata, id, type }) => {
-      let { name } = displayMetadata;
-      populateChannelsList(name);
-      populateChannelsDropDown(name);
+      //use the id field as this is what is needed to join the channel
+      populateChannelsList(id);
+      populateChannelsDropDown(id);
     });
 
     // as FDC3 is supported we can enable the buttons again except those that are not yet supported features
@@ -97,20 +97,15 @@ function setUpEventListeners() {
 
   document.getElementById('join-channel__btn').addEventListener('click', joinChannel);
 
-  document.getElementById('leave-channel__btn').addEventListener('click', fdc3.leaveCurrentChannel);
+  document.getElementById('leave-channel__btn').addEventListener('click', () => { fdc3.leaveCurrentChannel(); });
 
   document.getElementById('broadcast__btn').addEventListener('click', broadcastFDC3Context);
 
   document.getElementById('raise-intent__btn').addEventListener('click', raiseIntent);
 
-  document.getElementById('context-type').addEventListener('keyup', event => {
-    //  we only want to get the context wen the user hits enter
-    if (event.key === 'Enter') {
-      event.preventDefault();
-
-      let contextType = event.target.value;
+  document.getElementById('get_context__btn').addEventListener('click', event => {
+      let contextType = document.getElementById('context-type').value;
       getContext(contextType);
-    }
   });
 }
 
@@ -134,7 +129,7 @@ function populateChannelsDropDown(newOptionText) {
 function joinChannel() {
   try {
     let dropdownElement = document.getElementById('join-channel');
-    let channelName = dropdownElement.options[dropdownElement.selectedIndex].text.toLowerCase();
+    let channelName = dropdownElement.options[dropdownElement.selectedIndex].text;
     fdc3.joinChannel(channelName);
   } catch (error) {
     console.error("Can't join channel", error);
@@ -159,11 +154,11 @@ async function getContext(contextType) {
     if (contextType) {
       contextListener = fdc3.addContextListener(
         contextType,
-        context => (contextResultBox.innerText = JSON.stringify(context, null, 2))
+        context => (contextResultBox.innerHTML = "<pre>" + JSON.stringify(context, null, 2)) + "</pre>"
       );
     } else {
       contextListener = fdc3.addContextListener(
-        context => (contextResultBox.innerText = JSON.stringify(context, null, 2))
+        context => (contextResultBox.innerHTML=  "<pre>" + JSON.stringify(context, null, 2)) + "</pre>"
       );
     }
   } catch (error) {
