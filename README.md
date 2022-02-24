@@ -147,9 +147,9 @@ If you or your firm are new to contributing to open source projects, please see 
 According to [Governance document](GOVERNANCE.md) document: 
 - **"Participants"** are those that have made Contributions to the FDC3 Standard Working Group (subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/governance/IP-Policy.pdf)). The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the standard. In practice, that means people that attend and contribute to meetings, raise issues, pull requests (to submit patches to the standard) and reviews.
 
-- **“Editors”** are responsible for ensuring that the contents of the standard's documents accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines.
+- **"Editors"** are responsible for ensuring that the contents of the standard's documents accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines.
 
-- **“Maintainers”** are responsible for organizing activities around developing, maintaining, and updating the specification(s) developed by the Working Group. Maintainers are also responsible for determining consensus and coordinating appeals.
+- **"Maintainers"** are responsible for organizing activities around developing, maintaining, and updating the specification(s) developed by the Working Group. Maintainers are also responsible for determining consensus and coordinating appeals.
 
 Whilst all 3 roles require some amount of attention, being an Editor or Maintainer will obviously require a greater and more regular investment of time from anyone taking on that role.
 
@@ -189,6 +189,6 @@ Copyright 2017-2022 FINOS and FDC3 Participants
 
 Version 1.0 of the FDC3 specification is licensed under the [FDC3 1.0 Final Specification License](PATENTS-FDC3-1.0.md).
 
-Subsequent FDC3 specifications and draft specifications are subject to the [FINOS IP Policy](https://www.finos.org/hubfs/FINOS/governance/FINOS%20IP%20Policy.pdf), which authorizes implementation of FDC3 specifications without charge, on a RAND basis, subject to the terms of the policy. For details of the IP commitments made by contributors to FDC3, please refer to the policy.
+Subsequent FDC3 specifications and draft specifications are subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/governance/IP-Policy.pdf), which authorizes implementation of FDC3 specifications without charge, on a RAND basis, subject to the terms of the policy. For details of the IP commitments made by contributors to FDC3, please refer to the policy.
 
 Reference implementations and other software contained in FDC3 repositories is licensed under the [Apache License, Version 2.0](LICENSE) unless otherwise noted. SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0).
