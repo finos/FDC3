@@ -19,7 +19,7 @@ This Working Group accepts contributions via pull requests. The following sectio
 
 **1.1.1.2.	Proposals and Enhancement Requests.** Used for items that propose a new ideas or functionality that require a larger discussion. This allows for feedback from others before a specification change is actually written. 
 
-**1.1.1.3.	Minor Issue:** These track minor changes or corrections that don't alter teh Standard significantly but rather correct minor errors or ommisions.
+**1.1.1.3.	Minor Issue:** These track minor changes or corrections that don't alter the Standard significantly but rather correct minor errors or ommisions.
 
 **1.1.1.4.	Question:** May be used to ask questions about FDC3, requests support etc..
 
