@@ -144,11 +144,12 @@ If you or your firm intends to make use of the FDC3 standard (by implementing a 
 If you or your firm are new to contributing to open source projects, please see the variety of resources available from FINOS, (such as the [Open Source readiness project](https://www.finos.org/open-source-readiness)), Linux Foundation ([Participating in Open Source communities](https://www.linuxfoundation.org/tools/participating-in-open-source-communities/)) and others (e.g. [opensource.guide](https://opensource.guide/)). 
 
 ## What it means to be an FDC3 Participant, Editor or Maintainer
-According to [Governance document](GOVERNANCE.md) document, **"Participants"** are those that have made Contributions to the FDC3 Standard Working Group (subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/governance/IP-Policy.pdf)). The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the standard. In practice, that means people that attend and contribute to meetings, raise issues, pull requests (to submit patches to the standard) and reviews.
+According to [Governance document](GOVERNANCE.md) document: 
+- **"Participants"** are those that have made Contributions to the FDC3 Standard Working Group (subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/governance/IP-Policy.pdf)). The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the standard. In practice, that means people that attend and contribute to meetings, raise issues, pull requests (to submit patches to the standard) and reviews.
 
-**“Editors”** are responsible for ensuring that the contents of the standard's documents accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines.
+- **“Editors”** are responsible for ensuring that the contents of the standard's documents accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines.
 
-**“Maintainers”** are responsible for organizing activities around developing, maintaining, and updating the specification(s) developed by the Working Group. Maintainers are also responsible for determining consensus and coordinating appeals.
+- **“Maintainers”** are responsible for organizing activities around developing, maintaining, and updating the specification(s) developed by the Working Group. Maintainers are also responsible for determining consensus and coordinating appeals.
 
 Whilst all 3 roles require some amount of attention, being an Editor or Maintainer will obviously require a greater and more regular investment of time from anyone taking on that role.
 
