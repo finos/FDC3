@@ -139,24 +139,28 @@ Finally, another great way to interact with the community, is to attend the mont
 ### Need help?
 Email [fdc3@finos.org](mailto:fdc3@finos.org) if you need help getting started in the FDC3 Community. If you encounter technical difficulties accessing repositories, joining Slack, mailing lists or meetings, please email [help@finos.org](mailto:help@finos.org).
 
-## Become an FDC3 Participant, Editor or Maintainer
-Email [fdc3@finos.org](mailto:fdc3@finos.org) if you would like to become an FDC3 Participant, Editor or Maintainer. For more details on FDC3's governance please see our [Governance document](GOVERNANCE.md).
+## Why should you get involved in FDC3?
+If you or your firm intends to make use of the FDC3 standard (by implementing a Desktop Agent or App Directory, by adding support to apps to interoperate  with others via FDC3, or even by using apps, Desktop Agents or App Directories written by others) then participating in the governance, maintenance and onward development of FDC3 Standard will help to protect and strengthen the ecosystem developing around FDC3. Doing so will also empower you to help guide the Standard in directions that are relevant to your use or that of your firm.
+If you or your firm are new to contributing to open source projects, please see the variety of resources available from FINOS, (such as the [Open Source readiness project](https://www.finos.org/open-source-readiness)), Linux Foundation ([Participating in Open Source communities](https://www.linuxfoundation.org/tools/participating-in-open-source-communities/)) and others (e.g. [opensource.guide](https://opensource.guide/)). 
 
-### FDC3 Participants
-FDC3 Participants are those that make and have made contributions to the FDC3 Standard Working Group. The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the standard. 
+## What it means to be an FDC3 Participant, Editor or Maintainer
+According to [Governance document](GOVERNANCE.md) document, **"Participants"** are those that have made Contributions to the FDC3 Standard Working Group (subject to the FINOS IP Policy). The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the standard. In practice that means people that attend and contribute to meetings, raise issues, pull requests (to submit patches to the standard) and reviews.
 
-#### Enrollment
-If you would like to formally enroll as a voting participant to the standard (as described in our standards governance),
-please email [fdc3-participants+subscribe@finos.org](mailto:fdc3-participants+subscribe@finos.org?subject=Please%20enroll%20me%20as%20FDC3%20standard%20participant&amp;cc=fdc3-pmc%40finos.org&amp;body=HI%2C%20my%20name%20is%20%3CFirstName%20LastName%3E%20and%20I%27d%20like%20to%20formally%20participate%20to%20the%20FDC3%20standard%20process.%20I%20plan%20to%20contribute%20as%20%3Cindividual%7Con%20behalf%20of%20organizationName%3E%20and%20I%20have%20reviewed%20the%20policies%20described%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2Fcommunity%2Ftree%2Fmaster%2Fgovernance%2FStandards-Projects%20.%20Thank%20you!) making your intent to participate in the standard process explicit.
-Please note that standard participants are bound to the provisions in the [FINOS IP Policy](https://github.com/finos/community/blob/db11c11b80651b8bc888e7cb1d56d20afdf2a346/governance/IP-Policy.pdf) as described in the [FINOS standards governance](https://github.com/finos/community/tree/db11c11b80651b8bc888e7cb1d56d20afdf2a346/governance/Standards-Projects).
+**“Editors”** are responsible for ensuring that the contents of the standard's documents accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines.
+
+**“Maintainers”** are responsible for organizing activities around developing, maintaining, and updating the specification(s) developed by the Working Group. Maintainers are also responsible for determining consensus and coordinating appeals.
+
+Whilst all 3 roles require some amount of attention, being an Editor or Maintainer will obviously require a greater and more regular investment of time from anyone taking on that role.
+
+### How do you become a Participant, Editor or Maintainer?
+Becoming an FDC3 participant is as easy as attending meetings and/or raising issues for changes you'd like see in the standard, commenting on issues others have raised or even asking questions, which can often result in the clarification of standards documentation to help other with the same questions in future).
+
+If you are going to use, implement or benefit from the FDC3 standard, we also recommend that you sign up as a voting participant. To do so, please use this link: [fdc3-participants+subscribe@finos.org](mailto:fdc3-participants+subscribe@finos.org?subject=Please%20enroll%20me%20as%20FDC3%20standard%20participant&amp;cc=fdc3-pmc%40finos.org&amp;body=HI%2C%20my%20name%20is%20%3CFirstName%20LastName%3E%20and%20I%27d%20like%20to%20formally%20participate%20to%20the%20FDC3%20standard%20process.%20I%20plan%20to%20contribute%20as%20%3Cindividual%7Con%20behalf%20of%20organizationName%3E%20and%20I%20have%20reviewed%20the%20policies%20described%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2Fcommunity%2Ftree%2Fmaster%2Fgovernance%2FStandards-Projects%20.%20Thank%20you!) to send a templated email email to join the enrolled voting participants group. Please note that standard participants are bound to the provisions in the [FINOS IP Policy](https://github.com/finos/community/blob/master/governance/IP-Policy.pdf) as described in the FINOS standards governance.
 
 Upon enrollment as an [FDC3 voting participant](https://github.com/orgs/finos/teams/fdc3-participants), you will be invited to join the [FINOS GitHub organization](https://github.com/orgs/finos/people) and the [fdc3-participants](https://github.com/orgs/finos/teams/fdc3-participants) GitHub team.
 
-### FDC3 Editors
-FDC3 Editors are responsible for ensuring that the contents of the document accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines. The appointment of an Editor is approved by the FDC3 Standards Working Group Participants.
-
-### FDC3 Maintainers
-FDC3 Maintainers are responsible for organizing activities around developing, maintaining, and updating the specification developed by the FDC3 Standard Working Group. Maintainers are also responsible for determining consensus and coordinating appeals, as well as FDC3-related planning and communications. The appointment of a Maintainer is approved by the FDC3 Standards Working Group Participants.
+#### Become an FDC3 Editor or Maintainer
+Once you are an enrolled participant in FDC3, you can apply to become an editor or maintainer by contacting the existing FDC3 maintainers at [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org) and then seeking the approval of the FDC3 Standards Working Group. Generally, the maintainers will look for both a history of contribution to FDC3 and a commitment to investing sufficient time in the role from any prospective candidates before proposing them to the Standards Working Group for approval. If you are new to FDC3, but wiling to make the investment of time the maintainers can work with you to build up a history of contribution.
 
 #### Mailing list
 You can contact the FDC3 maintainers by sending an email to [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org).
