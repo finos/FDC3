@@ -60,3 +60,18 @@ FDC3 adopts the following deprecation policy:
 3. Deprecated features are clearly marked with an `@deprecated` tag and comment in both the documentation and jsDocs applied to the TypeScript sources.
 4. Where possible, changes to the behavior of an existing feature should be avoided; consider deprecating it and replacing it with something with a different name/syntax.
 5. Breaking changes should only be made in a major version of the Standard.
+
+## Intellectual Property Claims
+Recipients of this document are requested to submit, with their comments, notification of
+any relevant patent claims or other intellectual property rights of which they may be aware that
+might be infringed by any implementation of the standard set forth in this document, and to provide 
+supporting documentation.
+
+THIS STANDARD IS BEING OFFERED WITHOUT ANY WARRANTY
+WHATSOEVER, AND IN PARTICULAR, ANY WARRANTY OF NON-INFRINGEMENT IS
+EXPRESSLY DISCLAIMED. ANY USE OF THIS STANDARD SHALL BE MADE
+ENTIRELY AT THE IMPLEMENTER'S OWN RISK, AND NEITHER THE FOUNDATION,
+NOR ANY OF ITS MEMBERS OR SUBMITTERS, SHALL HAVE ANY LIABILITY
+WHATSOEVER TO ANY IMPLEMENTER OR THIRD PARTY FOR ANY DAMAGES OF
+ANY NATURE WHATSOEVER, DIRECTLY OR INDIRECTLY, ARISING FROM THE USE
+OF THIS STANDARD.
