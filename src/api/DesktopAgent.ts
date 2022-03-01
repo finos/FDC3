@@ -1,6 +1,6 @@
 /**
  * SPDX-License-Identifier: Apache-2.0
- * Copyright 2019-2021 FINOS FDC3 contributors - see NOTICE file
+ * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
 import { AppIntent } from './AppIntent';
@@ -249,7 +249,7 @@ export interface DesktopAgent {
    * 	   const result = await resolution.getResult();
    *     if (result && result.broadcast) { //detect whether the result is Context or a Channel
    *         console.log(`${resolution.source} returned a channel with id ${result.id}`);
-   *     } else if (){
+   *     } else if (result){
    *         console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);
    *     } else {
    *         console.error(`${resolution.source} didn't return anything`
@@ -405,8 +405,8 @@ export interface DesktopAgent {
    *
    *  * It is intended that Desktop Agent implementations:
    * - SHOULD restrict external apps from listening or publishing on this channel.
-   * - MUST prevent private channels from being retrieved via fdc3.getOrCreateChannel.
-   * - MUST provide the `id` value for the channel as required by the Channel interface.
+   * - MUST prevent `PrivateChannels` from being retrieved via fdc3.getOrCreateChannel.
+   * - MUST provide the `id` value for the channel as required by the `Channel` interface.
    *
    * ```javascript
    * fdc3.addIntentListener("QuoteStream", async (context) => {
