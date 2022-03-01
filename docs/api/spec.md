@@ -106,7 +106,7 @@ A context type may also be associated with multiple intents. For example, an `fd
 
 To raise an Intent without a context, use the [`fdc3.nothing`](../context/ref/Nothing) context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an Intent listener or in an App Directory).
 
-An optional [`IntentResult`](ref/Types#intentresult) may also be returned as output by an application handling an intent. Results maybe either a single `Context` object or a `Channel`, that may be used to send a stream of responses. The [`PrivateChannel`](ref/PrivateChannel) type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via [raising an intent](ref/DesktopAgent#raiseintent).
+An optional [`IntentResult`](ref/Types#intentresult) may also be returned as output by an application handling an intent. Results maybe either a single `Context` object, or a `Channel` that may be used to send a stream of responses. The [`PrivateChannel`](ref/PrivateChannel) type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via [raising an intent](ref/DesktopAgent#raiseintent).
 
 For example, an application handling a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.
 
@@ -200,9 +200,10 @@ Raise an intent and retrieve either data or a channel from the IntentResolution:
 let resolution = await agent.raiseIntent("intentName", context);
 try {
   const result = await resolution.getResult();
-  if (result && result.broadcast) { //detect whether the result is Context or a Channel
+  /* Detect whether the result is Context or a Channel by checking for properties unique to Channels. */
+  if (result && result.broadcast) { 
     console.log(`${resolution.source} returned a channel with id ${result.id}`);
-  } else if (){
+  } else if (result){
     console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);
   } else {
     console.error(`${resolution.source} didn't return anything`
@@ -213,7 +214,7 @@ try {
 ```
 
 #### Resolvers
-Successful delivery of an intent depends first upon the Desktop Agent's ability to "resolve the intent" (i.e. map the intent to a specific App instance). Desktop Agents may resolve intents by any methodology. A common methodology is to display a UI that allows the user to pick the desired App for a given intent. Alternatively, the intent issuing app may proactively handle resolution by calling [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext) and then raising the Intent with a specific target application, e.g.:
+Successful delivery of an intent depends first upon the Desktop Agent's ability to "resolve the intent" (i.e. map the intent to a specific App instance). Desktop Agents may resolve intents by any methodology. A common methodology is to display a UI that allows the user to pick the desired App for a given intent. Alternatively, the intent issuing app may proactively handle resolution by calling [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext) and then raising the intent with a specific target application, e.g.:
 
 ```js
 // Find apps to resolve an intent to start a chat with a given contact
@@ -317,10 +318,10 @@ There are three types of channels, which have different visibility and discovera
     * are interacted with via the [Channel API](ref/Channel) (accessed via the desktop agent [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API call)
 
 3. **_Private_** channels, which: 
-    * facilitate private communication between two parties, have an
-    * auto-generated identity and can only be retrieved via a raised intent.
+    * facilitate private communication between two parties, 
+    * have an auto-generated identity and can only be retrieved via a raised intent.
 
-Channels are interacted with via `broadcast` and `addContextListener` functions, allowing an application to send and receive Context objects via the channel. For System channels, these functions are provided on the Desktop Agent, e.g. [`fdc3.broadcast(context)`](ref/DesktopAgent#broadcast), and apply to channels joined via [`fdc3.joinChannel`](ref/DesktopAgent#joinchannel). For App channels, a channel object must be retrieved, via [`fdc3.getOrCreateChannel(channelName)`](ref/DesktopAgent#getorcreatechannel), which provides the functions, e.g. [`myChannel.broadcast(context)`](ref/Channel#broadcast). For Private Channels, a channel object must also be retrieved, but via an intent raised with [`fdc3.raiseIntent(intnet, context)`](ref/DesktopAgent#raiseintent) and returned as an [`IntentResult`](ref/Types#intentresult).
+Channels are interacted with via `broadcast` and `addContextListener` functions, allowing an application to send and receive Context objects via the channel. For User channels, these functions are provided on the Desktop Agent, e.g. [`fdc3.broadcast(context)`](ref/DesktopAgent#broadcast), and apply to channels joined via [`fdc3.joinUserChannel`](ref/DesktopAgent#joinuserchannel). For App channels, a channel object must be retrieved, via [`fdc3.getOrCreateChannel(channelName)`](ref/DesktopAgent#getorcreatechannel), which provides the functions, e.g. [`myChannel.broadcast(context)`](ref/Channel#broadcast). For `PrivateChannels`, a channel object must also be retrieved, but via an intent raised with [`fdc3.raiseIntent(intent, context)`](ref/DesktopAgent#raiseintent) and returned as an [`IntentResult`](ref/Types#intentresult).
 
 Channel implementations should ensure that context messages broadcast by an application on a channel are not  delivered back to that same application if they are also listening on the channel.
 
@@ -407,14 +408,14 @@ if another application broadcasts to "my_custom_channel" (by retrieving it and b
 
 ### Private Channels
 
-Private Channels are created to support the return of a stream of responses from a raised intent, or  private dialog between two applications. 
+`PrivateChannels` are created to support the return of a stream of responses from a raised intent, or  private dialog between two applications. 
 
 It is intended that Desktop Agent implementations:
  * - SHOULD restrict external apps from listening or publishing on this channel.
- * - MUST prevent private channels from being retrieved via fdc3.getOrCreateChannel.
- * - MUST provide the `id` value for the channel as required by the Channel interface.
+ * - MUST prevent `PrivateChannels` from being retrieved via `fdc3.getOrCreateChannel`.
+ * - MUST provide the `id` value for the channel as required by the `Channel` interface.
 
-The `PrivateChannel` type also supports synchronisation of data transmitted over returned channels. They do so by extending the Channel interface with event handlers which provide information on the connection state of both parties, ensuring that desktop agents do not need to queue or retain messages that are broadcast before a context listener is added and that applications are able to stop broadcasting messages when the other party has disconnected.
+The `PrivateChannel` type also supports synchronisation of data transmitted over returned channels. They do so by extending the `Channel` interface with event handlers which provide information on the connection state of both parties, ensuring that desktop agents do not need to queue or retain messages that are broadcast before a context listener is added and that applications are able to stop broadcasting messages when the other party has disconnected.
 
 ## APIs
 The APIs are defined in TypeScript in [src], with documentation generated in the [docs] folder.
