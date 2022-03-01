@@ -87,7 +87,7 @@ interface DisplayMetadata {
    */
   readonly name?: string;
   /**
-   * The color that should be associated within this channel when displaying this channel in a UI, e.g: `0xFF0000`.
+   * The color that should be associated within this channel when displaying this channel in a UI, e.g: `#FF0000`. May be any color value supported by CSS, e.g. name, hex, rgba, etc..
    */
   readonly color?: string;
   /**
@@ -202,7 +202,7 @@ try {
 	  const result = await resolution.getResult();
     if (result && result.broadcast) { //detect whether the result is Context or a Channel
         console.log(`${resolution.source} returned a channel with id ${result.id}`);
-    } else if (){
+    } else if (result){
         console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);
     } else {
         console.error(`${resolution.source} didn't return anything`

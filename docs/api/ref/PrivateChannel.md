@@ -6,12 +6,12 @@ hide_title: true
 ---
 # `PrivateChannel`
 
-Object representing a private context channel, which is intended to support secure communication between applications, and extends the Channel interface with event handlers which provide information on the connection state of both parties, ensuring that desktop agents do not need to queue or retain messages that are broadcast before a context listener is added and that applications are able to stop broadcasting messages when the other party has disconnected.
+Object representing a private context channel, which is intended to support secure communication between applications, and extends the `Channel` interface with event handlers which provide information on the connection state of both parties, ensuring that desktop agents do not need to queue or retain messages that are broadcast before a context listener is added and that applications are able to stop broadcasting messages when the other party has disconnected.
 
 It is intended that Desktop Agent implementations:
 - SHOULD restrict external apps from listening or publishing on this channel.
-- MUST prevent private channels from being retrieved via fdc3.getOrCreateChannel.
-- MUST provide the `id` value for the channel as required by the Channel interface.
+- MUST prevent `PrivateChannels` from being retrieved via fdc3.getOrCreateChannel.
+- MUST provide the `id` value for the channel as required by the `Channel` interface.
 
 ```ts
 interface  PrivateChannel extends Channel {
@@ -33,11 +33,12 @@ interface  PrivateChannel extends Channel {
 
 ## Examples
 ### 'Server-side' example:
-The intent app establishes and returns a PrivateChannel to the client (who is awaiting `getResult()`). When the client calls `addContextlistener()` on that channel, the intent app receives notice via the handler added with `onAddContextListener()` and knows that the client is ready to start receiving quotes.
+The intent app establishes and returns a `PrivateChannel` to the client (who is awaiting `getResult()`). When the client calls `addContextlistener()` on that channel, the intent app receives notice via the handler added with `onAddContextListener()` and knows that the client is ready to start receiving quotes.
 
 The Desktop Agent knows that a channel is being returned by inspecting the object returned from the handler (e.g. check constructor or look for private member).
 
-```javascript
+Although this interaction occurs entirely in frontend code, we refer to it as the 'server-side' interaction as it receives a request and initiates a stream of responses.
+```typescript
 fdc3.addIntentListener("QuoteStream", async (context) => {
 	const channel: PrivateChannel = await fdc3.createPrivateChannel();
 	const symbol = context.id.ticker;
@@ -65,6 +66,9 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 ```
 
 ### 'Client-side' example:
+The 'client' application retrieves a `Channel` by raising an intent with context and awaiting the result. It adds a `ContextListener` so that it can receive messages from it. If a `PrivateChannel` was returned this may in turn trigger a handler added on the 'server-side' with `onAddContextListener()` and start the stream. A listener may also be to clear up if the 'server-side' disconnects from the stream. 
+
+Although this interaction occurs entirely in frontend code, we refer to it as the 'client-side' interaction as it requests and receives a stream of responses.
 
 ```javascript
 try {
@@ -100,7 +104,7 @@ onAddContextListener(handler: (contextType?: string) => void): Listener;
 ```
 Adds a listener that will be called each time that the remote app invokes addContextListener on this channel.
 
-Desktop Agents MUST call this for each invokation of addContextListener on this channel, including those that occurred before this handler was registered (to prevent race conditions).
+Desktop Agents MUST call this for each invocation of addContextListener on this channel, including those that occurred before this handler was registered (to prevent race conditions).
 
 #### See also
 * [`Channel.addContextListener`](Channel#addcontextlistener)
@@ -113,7 +117,7 @@ onUnsubscribe(handler: (contextType?: string) => void): Listener;
 
 Adds a listener that will be called whenever the remote app invokes `Listener.unsubscribe()` on a context listener that it previously added.
 
-Desktop Agents MUST call this when disconnect() is called by the other party, for each listner that they had added.
+Desktop Agents MUST call this when disconnect() is called by the other party, for each listener that they had added.
 
 #### See also
 * [`Listener`](Types#listener)
@@ -124,7 +128,7 @@ Desktop Agents MUST call this when disconnect() is called by the other party, fo
 onDisconnect(handler: () => void): Listener;
 ```
 
-Adds a listener that will be called when the remote app terminates, for example when its window is closed or because disconnect was called. This is in addition to calls that will be made to an onUnsubscribe listeners.
+Adds a listener that will be called when the remote app terminates, for example when its window is closed or because disconnect was called. This is in addition to calls that will be made to onUnsubscribe listeners.
 
 #### See also
 * [`disconnect`](#disconnect)
