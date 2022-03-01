@@ -24,7 +24,7 @@ export interface PrivateChannel extends Channel {
    * Adds a listener that will be called each time that the remote app invokes
    * addContextListener on this channel.
    *
-   * Desktop Agents MUST call this for each invokation of addContextListener on this
+   * Desktop Agents MUST call this for each invocation of addContextListener on this
    * channel, including those that occurred before this handler was registered
    * (to prevent race conditions).
    */
@@ -42,7 +42,7 @@ export interface PrivateChannel extends Channel {
   /**
    * Adds a listener that will be called when the remote app terminates, for example
    * when its window is closed or because disconnect was called. This is in addition
-   * to calls that will be made to an onUnsubscribe listeners.
+   * to calls that will be made to onUnsubscribe listeners.
    */
   onDisconnect(handler: () => void): Listener;
 

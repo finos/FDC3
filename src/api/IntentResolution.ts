@@ -18,7 +18,7 @@ import { AppMetadata } from './AppMetadata';
  * 	   const result = await resolution.getResult();
  *     if (result && result.broadcast) {
  *         console.log(`${resolution.source} returned a channel with id ${result.id}`);
- *     } else if (){
+ *     } else if (result){
  *         console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);
  *     } else {
  *         console.error(`${resolution.source} didn't return data`
