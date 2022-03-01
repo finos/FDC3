@@ -79,7 +79,7 @@ enum ChannelError {
   NoChannelFound = 'NoChannelFound',
   /** SHOULD be returned when a request to join a user channel or to a retrieve a Channel object via the `joinUserChannel` or `getOrCreateChannel` methods of the DesktopAgent (`fdc3`) object is denied. */
   AccessDenied = 'AccessDenied',
-  /** SHOULD Returned when a channel cannot be created or retrieved via the `getOrCreateChannel` method of the DesktopAgent (`fdc3`).*/
+  /** SHOULD be returned when a channel cannot be created or retrieved via the `getOrCreateChannel` method of the DesktopAgent (`fdc3`).*/
   CreationFailed = 'CreationFailed',
 }
 ```
