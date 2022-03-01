@@ -117,7 +117,7 @@ fdc3.addIntentListener("CreateOrder", (context) => {
   });
 });
 
-//Handle a raised intent and return a Private Channel over which response will be sent
+//Handle a raised intent and return a PrivateChannel over which response will be sent
 fdc3.addIntentListener("QuoteStream", async (context) => {
   const channel: PrivateChannel = await fdc3.createPrivateChannel();
   const symbol = context.id.symbol;
@@ -392,8 +392,8 @@ if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
 getOrCreateChannel(channelId: string): Promise<Channel>;
 ```
 
-Returns a Channel object for the specified channel, creating it (as an _App_ channel) - if it does not exist.
-`Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration if channel could not be created or access was denied.
+Returns a `Channel` object for the specified channel, creating it (as an _App_ channel) - if it does not exist.
+`Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration if the channel could not be created or access was denied.
 
 #### Example
 
@@ -416,7 +416,7 @@ catch (err){
 createPrivateChannel(): Promise<PrivateChannel>;
 ```
  
-Returns a `Channel` with an auto-generated identity that is intended for private communication between applications. Primarily used to create Channels that will be returned to other applications via an IntentResolution for a raised intent.
+Returns a `Channel` with an auto-generated identity that is intended for private communication between applications. Primarily used to create channels that will be returned to other applications via an IntentResolution for a raised intent.
 
 If the `PrivateChannel` cannot be created, the returned promise MUST be rejected with an error string from the [`ChannelError`](Errors#channelerror) enumeration.
 
@@ -424,8 +424,8 @@ The `PrivateChannel` type is provided to support synchronisation of data transmi
 
 It is intended that Desktop Agent implementations:
 - SHOULD restrict external apps from listening or publishing on this channel.
-- MUST prevent private channels from being retrieved via fdc3.getOrCreateChannel.
-- MUST provide the `id` value for the channel as required by the Channel interface.
+- MUST prevent `PrivateChannels` from being retrieved via fdc3.getOrCreateChannel.
+- MUST provide the `id` value for the channel as required by the `Channel` interface.
 
 #### Example
 
@@ -640,7 +640,7 @@ try {
   const result = await resolution.getResult();
   if (result && result.broadcast) { //detect whether the result is Context or a Channel
     console.log(`${resolution.source} returned a channel with id ${result.id}`);
-  } else if (){
+  } else if (result){
     console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);
   } else {
     console.error(`${resolution.source} didn't return anything`
