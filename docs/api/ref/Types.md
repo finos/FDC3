@@ -72,7 +72,7 @@ type IntentResult = Context | Channel;
 
 Describes results that an Intent handler may optionally return that should be communicated back to the app that raised the intent, via the [`IntentResolution`](Metadata#intentresolution). 
 
-Represented as a union type in Typescript, however, this type may be rendered as an interface in other languages that both the Context and Channel types implement, allowing either to be returned by an intent handler.
+Represented as a union type in TypeScript, however, this type may be rendered as an interface in other languages that both the `Context` and `Channel` types implement, allowing either to be returned by an `IntentHandler`.
 
 #### See also
 * [`Context`](#context)
