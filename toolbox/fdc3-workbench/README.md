@@ -13,7 +13,7 @@ _Created and contributed to [FDC3](http://fdc3.finos.org) by [Cosaic, Inc.](http
 
 2. Install dependencies
 
-`cd fdc3-workbench & yarn install`
+`cd toolbox/fdc3-workbench & yarn install`
 
 3. Start the development server
 
