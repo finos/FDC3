@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>FDC3 Conformance</title>
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" type="text/css" href="https://unpkg.com/mocha@9.1.0/mocha.css" />
+	<link rel="stylesheet" type="text/css" href="FDC3Conformance.css" />
+</head>
+
+<body class="entry-point">
+	<div class="fixedHeaderContainer">
+		<div class="headerWrapper wrapper">
+			<header>
+				<a target="_blank" href="https://fdc3.finos.org/">
+					<img class="logo" src="https://fdc3.finos.org/img/fdc3-icon-2019.svg" alt="FDC3">
+					<h2 class="headerTitleWithLogo">FDC3</h2>
+				</a>
+
+				<div class="navigationWrapper navigationSlider">
+					<nav class="slidingNav">
+						<ul class="nav-site nav-site-internal">
+							<li class=""><a target="_blank" href="https://github.com/ScottLogic/fdc3-conformance/" target="_self">Conformance Test</a></li>
+						</ul>
+					</nav>
+				</div>
+			</header>
+		</div>
+	</div>
+	<div id="no-fdc3" hidden>
+		<h4>FDC3 API not detected!</h4>
+		<p>An FDC3 desktop agent implementation was not found at <span class="jss10">window.fdc3</span>.</p>
+		<p>For web applications to be FDC3-enabled, they need to run in the context of an agent that makes the FDC3 API available to the application. This desktop agent is also responsible for lauching and co-ordinating applications. It could be a browser extension, web app, or full-fledged desktop container framework.</p>
+		<p>See the FDC3 standard documentation for details on <a href="https://fdc3.finos.org/docs/supported-platforms">supported platforms</a> and <a href="https://fdc3.finos.org/docs/api/spec#api-access">accessing the FDC3 API</a>.</p>
+	</div>
+	<div id="mocha"></div>
+</body>
+
+</html>

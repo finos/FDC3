@@ -1,0 +1,42 @@
+{
+  "name": "fdc3-compliance",
+  "version": "1.0.0",
+  "description": "FDC3 Compliance Testing",
+  "main": "index.js",
+  "scripts": {
+    "build": "prettier --write ./src/**/*.ts && webpack build && npx copyfiles --flat src/*.* build/ --exclude **/*.ts --exclude src/index.html",
+    "server": "node src/server/server.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finos/FDC3.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/finos/FDC3/issues"
+  },
+  "homepage": "https://github.com/finos/FDC3/toolbox/fdc3-compliance#readme",
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "chai": "^4.3.6",
+    "html-webpack-plugin": "^5.5.0",
+    "mocha": "^9.2.1",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.4",
+    "@finos/fdc3": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.1.0",
+    "css-loader": "^6.6.0",
+    "express": "^4.17.3",
+    "prettier": "^2.5.1",
+    "ts-loader": "^9.2.7",
+    "typescript": "^4.6.2",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2"
+  }
+}
