@@ -23,9 +23,9 @@ export enum ResolveError {
   ResolverUnavailable = 'ResolverUnavailable',
   /** Returned if the user cancelled the resolution request, for example by closing or cancelling a resolver UI.*/
   UserCancelled = 'UserCancelledResolution',
-  /** SHOULD be returned if a timeout cancels intent resolution, that required user interaction. Please used `ResolverUnavailable` instead for situations where a resolver UI or similar fails.*/
+  /** SHOULD be returned if a timeout cancels an intent resolution that required user interaction. Please use `ResolverUnavailable` instead for situations where a resolver UI or similar fails.*/
   ResolverTimeout = 'ResolverTimeout',
-  /** Returned if a specified target application is not available or new instance of it cannot be opened. */
+  /** Returned if a specified target application is not available or a new instance of it cannot be opened. */
   TargetAppUnavailable = 'TargetAppUnavailable',
   /** Returned if a specified target application instance is not available, for example because it has been closed. */
   TargetInstanceUnavailable = 'TargetInstanceUnavailable',
@@ -34,9 +34,9 @@ export enum ResolveError {
 }
 
 export enum DataError {
-  /** Returned if the intent handler exited without returning Promise or that Promise was not resolved with a Context object. */
+  /** Returned if the intent handler exited without returning a Promise or that Promise was not resolved with a Context object. */
   NoDataReturned = 'NoDataReturned',
-  /** Returned if the Intent handler function processing the raised intent throws an error or rejects the promise it returned. */
+  /** Returned if the Intent handler function processing the raised intent throws an error or rejects the Promise it returned. */
   IntentHandlerRejected = 'IntentHandlerRejected',
 }
 
