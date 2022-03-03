@@ -1,5 +1,7 @@
+import { ResolveError } from "@finos/fdc3";
+
 describe("fdc3.raiseIntentForContext", async () => {
-  it("Conformance", async () => {
+  it("Method is callable", async () => {
     const context = {
       type: "fdc3.instrument",
       name: "Apple",
@@ -11,6 +13,12 @@ describe("fdc3.raiseIntentForContext", async () => {
       },
     };
 
-    await window.fdc3.raiseIntentForContext(context);
+    try {
+      await window.fdc3.raiseIntentForContext(context);
+    } catch (ex) {
+      if (ex !== ResolveError.NoAppsFound) {
+        throw ex;
+      }
+    }
   });
 });

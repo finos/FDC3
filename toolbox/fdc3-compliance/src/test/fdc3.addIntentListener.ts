@@ -1,5 +1,5 @@
 describe("fdc3.addIntentListener", async () => {
-  it("Conformance", async () => {
+  it("Method is callable", async () => {
     await window.fdc3.addIntentListener(
       "fdc3.conformanceListener",
       (info: any) => {

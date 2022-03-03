@@ -11,8 +11,6 @@ const config = {
       "./src/test/fdc3.addContextListener.ts",
       "./src/test/fdc3.addIntentListener.ts",
       "./src/test/fdc3.broadcast.ts",
-      "./src/test/fdc3.findIntent.ts",
-      "./src/test/fdc3.findIntentsByContext.ts",
       "./src/test/fdc3.getCurrentChannel.ts",
       "./src/test/fdc3.getInfo.ts",
       "./src/test/fdc3.getOrCreateChannel.ts",
@@ -20,6 +18,8 @@ const config = {
       "./src/test/fdc3.joinChannel.ts",
       "./src/test/fdc3.leaveCurrentChannel.ts",
       "./src/test/fdc3.open.ts",
+      "./src/test/fdc3.findIntent.ts",
+      "./src/test/fdc3.findIntentsByContext.ts",
       "./src/test/fdc3.raiseIntent.ts",
       "./src/test/fdc3.raiseIntentForContext.ts",
 

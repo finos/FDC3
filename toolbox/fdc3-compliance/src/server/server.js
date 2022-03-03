@@ -19,7 +19,7 @@ const startExpress = async (port, path) => {
   return app.listen(port);
 };
 
-const port = 9003;
+const port = 3001;
 startExpress(port, "build/");
 
 console.log(`Server running on port ${port}, press Ctrl+C to stop`);

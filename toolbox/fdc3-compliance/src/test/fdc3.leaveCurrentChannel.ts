@@ -1,5 +1,5 @@
 describe("fdc3.leaveCurrentChannel", async () => {
-  it("Conformance", async () => {
+  it("Method is callable", async () => {
     await window.fdc3.leaveCurrentChannel();
   });
 });

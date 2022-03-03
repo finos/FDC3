@@ -5,11 +5,20 @@ This project represents a means to confirm conformance of a [desktop agent](http
 
 To do so this application can be launched within the desktop agent which will run a series of tests to verify conformance against the specification.
 
-## Build application content
-To build the application content follow the steps below:
-1. run `npm install`
-1. run `npm run build`
+## Getting Started
 
-The tests and assets will be created in the `build` directory, this can then be hosted in a webserver (e.g. iis or express) for use within the appropriate desktop agent/s.
+1. Clone the repository
 
-The desktop agents should use `FDC3Conformance.html` as the application url.
+`git clone https://github.com/finos/FDC3/fdc3-compliance`
+
+2. Install dependencies
+
+`cd fdc3-compliance & yarn install`
+
+3. Start the development server
+
+`yarn start`
+
+4. Add the URL http://localhost:3001 to your FDC3-enabled container or desktop agent and ensure it has access to the `window.fdc3` object.
+
+Alternatively, a full set of static files are available in the `build` folder. Load the index.html file into an environment that has the `window.fdc3` object available.
