@@ -22,3 +22,7 @@ To do so this application can be launched within the desktop agent which will ru
 4. Add the URL http://localhost:3001 to your FDC3-enabled container or desktop agent and ensure it has access to the `window.fdc3` object.
 
 Alternatively, a full set of static files are available in the `build` folder. Load the index.html file into an environment that has the `window.fdc3` object available.
+
+## Application Definition
+
+A basic FDC3 application definition, as defined in the [application directory specification](https://fdc3.finos.org/schemas/1.2/app-directory#tag/Application), is supplied in the file `appDefinition.json`. This may be useful when adding the conformance tests to an application directory.
