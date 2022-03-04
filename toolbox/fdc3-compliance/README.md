@@ -9,11 +9,11 @@ To do so this application can be launched within the desktop agent which will ru
 
 1. Clone the repository
 
-`git clone https://github.com/finos/FDC3/fdc3-compliance`
+`git clone https://github.com/finos/FDC3`
 
 2. Install dependencies
 
-`cd fdc3-compliance & yarn install`
+`cd FDC3/toolbox/fdc3-compliance & yarn install`
 
 3. Start the development server
 
