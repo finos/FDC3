@@ -1,0 +1,77 @@
+{
+  "name": "fdc3-workbench",
+  "version": "1.2.0",
+  "private": true,
+  "homepage": ".",
+  "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^9.0.9",
+    "@finos/fdc3": "^1.2.0",
+    "@fontsource/roboto": "^4.4.5",
+    "@fontsource/source-code-pro": "^4.5.0",
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.59",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "jsoneditor": "^9.5.6",
+    "mobx": "^6.3.2",
+    "mobx-react": "^7.2.0",
+    "nanoid": "^3.1.31",
+    "normalize.css": "^8.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "typescript": "^4.1.2",
+    "web-vitals": "^1.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint --cache --quiet **/*.{ts,tsx,js,jsx} && prettier --check **/*.{ts,tsx,js,jsx,json,yml,css,html,md}",
+    "lint:fix": "eslint --cache --quiet --fix **/*.{ts,tsx,js,jsx} && prettier --write **/*.{ts,tsx,js,jsx} && prettier --write **/*.{json,yml,css,html,md}"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/jsoneditor": "^8.6.1",
+    "@types/mocha": "^9.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.27.0",
+    "@typescript-eslint/parser": "^4.27.0",
+    "chai": "^4.3.6",
+    "eslint": "^7.28.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-react": "^7.24.0",
+    "lint-staged": "^11.0.0",
+    "mocha": "^9.2.1",
+    "prettier": "^2.3.1",
+    "pretty-quick": "^3.1.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --cache --quiet --fix",
+      "prettier --write --prose-wrap never"
+    ],
+    "*.{json,yml,css,html,md}": "prettier --write --prose-wrap never",
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
+  }
+}
