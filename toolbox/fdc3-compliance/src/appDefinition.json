@@ -1,7 +1,7 @@
 {
     "appId": "fdc3-compliance",
     "name": "FDC3 Compliance",
-    "manifest": "{\"url\":\"http://localhost:3001\"}",
+    "manifest": "{\"url\":\"http://localhost:8080\"}",
     "manifestType": "web",
     "version": "1.2",
     "title": "FDC3 Compliance",
