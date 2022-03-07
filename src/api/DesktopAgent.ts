@@ -104,7 +104,7 @@ export interface DesktopAgent {
    * // returns only apps that support the type of the specified input context:
    * // {
    * //     intent: { name: "StartChat", displayName: "Chat" },
-   * //     apps: { name: "Symphony" }]
+   * //     apps: [{ name: "Symphony" }]
    * // }
    *
    * const appIntent = await fdc3.findIntent("ViewContact", contact, "fdc3.ContactList");
@@ -120,7 +120,7 @@ export interface DesktopAgent {
    * // returns only apps that return a channel which will receive the specified input and result types:
    * // {
    * //     intent: { name: "QuoteStream", displayName: "Quotes stream" },
-   * //     apps: { name: "MyOMS", resultType: "channel<fdc3.Quote>"}]
+   * //     apps: [{ name: "MyOMS", resultType: "channel<fdc3.Quote>"}]
    * // }
    * ```
    */

@@ -72,14 +72,14 @@ Although this interaction occurs entirely in frontend code, we refer to it as th
 
 ```javascript
 try {
-    const resolution3 = await fdc3.raiseIntent("QuoteStream", { type: "fdc3.instrument", id : { symbol: "AAPL"}});
+    const resolution3 = await fdc3.raiseIntent("QuoteStream", { type: "fdc3.instrument", id : { symbol: "AAPL" } });
     try {
 	       const result = await resolution3.getResult();
          //check that we got a result and that it's a channel
          if (result && result.addContextListener) {
              const listener = result.addContextListener("price", (quote) => console.log(quote));
 	           
-	           //if its a PrivateChannel
+	           //if it's a PrivateChannel
 	           if (result.onDisconnect) {
 	               result.onDisconnect(() => {
 		                 console.warn("Quote feed went down");
@@ -91,7 +91,7 @@ try {
         } else {
             console.warn(`${resolution3.source} did not return a channel`);
         }
-    } catch(channelError){
+    } catch(channelError) {
 	      console.log(`Error: ${resolution3.source} returned an error: ${channelError}`);
     }
 } catch (resolverError) {

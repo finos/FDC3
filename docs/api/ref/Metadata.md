@@ -205,7 +205,7 @@ try {
     } else if (result){
         console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);
     } else {
-        console.error(`${resolution.source} didn't return anything`
+        console.error(`${resolution.source} didn't return anything`);
     }
 } catch(error) {
     console.error(`${resolution.source} returned an error: ${error}`);

@@ -206,7 +206,7 @@ try {
   } else if (result){
     console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);
   } else {
-    console.error(`${resolution.source} didn't return anything`
+    console.error(`${resolution.source} didn't return anything`);
   }
 } catch(error) {
   console.error(`${resolution.source} returned a data error: ${error}`);
@@ -214,7 +214,7 @@ try {
 ```
 
 #### Resolvers
-Successful delivery of an intent depends first upon the Desktop Agent's ability to "resolve the intent" (i.e. map the intent to a specific App instance). Desktop Agents may resolve intents by any methodology. A common methodology is to display a UI that allows the user to pick the desired App for a given intent. Alternatively, the intent issuing app may proactively handle resolution by calling [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext) and then raising the intent with a specific target application, e.g.:
+Successful delivery of an intent depends first upon the Desktop Agent's ability to "resolve the intent" (i.e. map the intent to a specific App instance). Desktop Agents may resolve intents by any methodology. A common methodology is to display a UI that allows the user to pick the desired App for a given intent. Alternatively, the app issuing the intent may proactively handle resolution by calling [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext) and then raising the intent with a specific target application, e.g.:
 
 ```js
 // Find apps to resolve an intent to start a chat with a given contact
@@ -238,7 +238,7 @@ const appIntent = await fdc3.findIntent("QuoteStream", context, "channel");
 try {
   const resolution = await fdc3.raiseIntent(appIntent.intent, context, appIntent.apps[0].name);
   const result = await resolution.getResult();
-  if (result && result.addContextListener){
+  if (result && result.addContextListener) {
     result.addContextListener(null, (context) => { 
       console.log(`received context: ${JSON.stringify(context)}`); 
     });
@@ -269,7 +269,7 @@ const chartApp = fin.Application.wrap(chart.source);
 ![Upgrading Connection to Remote API](assets/api-3.png)
 
 ### Register an Intent Handler
-Applications need to let the system know the intents they can support.  Typically, this is done via registration with an App Directory.  It is also possible for intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  While, dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
+Applications need to let the system know the intents they can support.  Typically, this is done via registration with an App Directory.  It is also possible for intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  Although dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
 
 #### Compliance with Intent Standards
 Intents represent a contract with expected behaviour if an app asserts that it supports the intent.  Where this contract is enforceable by schema (for example, return object types), the FDC3 API implementation should enforce compliance and return an error if the interface is not met.
@@ -306,7 +306,7 @@ There are three types of channels, which have different visibility and discovera
     * are discoverable (via the [`getUserChannels()`](ref/DesktopAgent#getuserchannels) API call),
     * can be 'joined' (via the [`joinUserChannel()`](ref/DesktopAgent#joinuserchannel) API call).
 
-    > **Note:** Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels).
+    > **Note:** Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels).
 
     > **Note:** Earlier versions of FDC3 included the concept of a 'global' system channel
     which was deprecated in FDC3 1.2 and removed in FDC3 2.0.
