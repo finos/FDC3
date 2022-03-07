@@ -4,7 +4,10 @@
   "description": "FDC3 Compliance Testing",
   "main": "index.js",
   "scripts": {
-    "build": "prettier --write ./src/**/*.ts && webpack build && npx copyfiles --flat src/*.* build/ --exclude **/*.ts --exclude src/index.html",
+    "build": "yarn run build:prettier && yarn run build:webpack && yarn run build:copy",
+    "build:copy": "npx copyfiles --exclude **/*.ts --exclude src/index.html --flat src/*.* build/",
+    "build:prettier": "prettier --write ./src/**/*.ts",
+    "build:webpack": "webpack build",
     "start": "live-server build",
     "test": "test"
   },
