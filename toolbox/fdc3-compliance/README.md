@@ -11,9 +11,13 @@ To do so this application can be launched within the desktop agent which will ru
 
 `git clone https://github.com/finos/FDC3`
 
-2. Install dependencies
+2. Install dependencies and build
 
-`cd FDC3/toolbox/fdc3-compliance & yarn install`
+~~~
+cd FDC3/toolbox/fdc3-compliance
+yarn install
+yarn build
+~~~
 
 3. Start the development server
 
