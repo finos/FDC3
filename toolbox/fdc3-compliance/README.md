@@ -23,7 +23,7 @@ yarn build
 
 `yarn start`
 
-4. Add the URL http://localhost:3001 to your FDC3-enabled container or desktop agent and ensure it has access to the `window.fdc3` object.
+4. Add the URL http://localhost:8080 to your FDC3-enabled container or desktop agent and ensure it has access to the `window.fdc3` object.
 
 Alternatively, a full set of static files are available in the `build` folder. Load the index.html file into an environment that has the `window.fdc3` object available.
 
