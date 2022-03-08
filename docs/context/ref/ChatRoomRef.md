@@ -48,7 +48,7 @@ const newChat = await fdc3.raiseIntent('StartChat', {
     }],
     initMessage: "Hello Jane"
 });
-const roomRef = await newChat.getResult();
+const roomRefs = await newChat.getResult();
 ```
 
 ## See Also

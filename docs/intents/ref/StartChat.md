@@ -24,7 +24,7 @@ Initiate a chat with a contact, a list of contacts or detailed initialization se
 
 ## Result Context
 
-* [ChatRoomRef](../../context/ref/ChatRoomRef)
+* Array of [ChatRoomRef](../../context/ref/ChatRoomRef)
 ## Example
 
 ```js
@@ -66,7 +66,7 @@ const initSettings = {
 }
 
 const resolution = fdc3.raiseIntent('StartChat', initSettings);
-const chatRoomRef = await resolution.getResult();
+const chatRoomRefs = await resolution.getResult();
 ```
 
 ## See Also
