@@ -3,7 +3,6 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Typography, Grid, Button } from "@material-ui/core";
 import React, { useEffect } from "react";
 import mocha from "mocha";
-import "./mocha.css";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
