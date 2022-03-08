@@ -37,8 +37,9 @@ However, there is a need for applications to ensure that their intents avoid col
   * Expected context: Contact
   * Expected behavior: initiate call with contact(s)
 ### StartChat
-  * Expected context: Contact
-  * Expected behavior: initiate chat with contact(s)
+  * Expected context: Contact or ContactList or ChatInitSettings
+  * Expected behavior: initiate chat with contact(s) or initialization settings
+  * Result context: ChatRoomRef
 ### ViewChart
   * Expected context: Instrument
   * Expected behavior: display a chart for the context
