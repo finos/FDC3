@@ -187,7 +187,7 @@ export const App = observer(() => {
 					<Grid className={classes.body} container spacing={2} item xs={12} style={{ marginLeft: "0px" }}>
 						<Grid item xs={12} style={{ flex: 1 }}>
 							<Paper className={classes.paper}>
-								<Typography variant="h4">{`{conformance}`}</Typography>
+								<Typography variant="h4">{`{compliance}`}</Typography>
 								<Tabs
 									value={tabIndex}
 									indicatorColor="primary"
@@ -199,7 +199,7 @@ export const App = observer(() => {
 										indicator: classes.indicator,
 									}}
 								>
-									<Tab label="Agent Conformance" />
+									<Tab label="Agent Compliance" />
 								</Tabs>
 								<TabPanel value={tabIndex} index={0}>
 									<AgentTests />
