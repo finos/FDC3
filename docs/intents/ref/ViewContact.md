@@ -4,6 +4,10 @@ sidebar_label: ViewContact
 title: ViewContact
 hide_title: true
 ---
+
+> **Note:** ViewContact has been deprecated in FDC 2.0 in favour of the more general [ViewProfile](ViewProfile)
+
+
 # `ViewContact`
 
 View details for a contact.

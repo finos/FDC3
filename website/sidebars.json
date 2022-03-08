@@ -36,12 +36,12 @@
           "intents/ref/StartCall",
           "intents/ref/StartChat",
           "intents/ref/ViewChart",
-          "intents/ref/ViewContact",
           "intents/ref/ViewQuote",
           "intents/ref/ViewNews",
           "intents/ref/ViewAnalysis",
           "intents/ref/ViewInstrument",
-          "intents/ref/ViewHoldings"
+          "intents/ref/ViewHoldings",
+          "intents/ref/ViewProfile"
         ]
       }
     ],
