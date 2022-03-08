@@ -64,7 +64,7 @@ const initSettings = {
 }
 
 const res = fdc3.raiseIntent('StartChat', initSettings);
-const roomRef = await res.getResult();
+const roomRefs = await res.getResult();
 ```
 
 ## See Also
