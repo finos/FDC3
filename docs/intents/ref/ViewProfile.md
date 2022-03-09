@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `ViewProfile`
 
-Display basic profile information for the provided individual or organization.
+Display basic profile information for the individual or organization provided as context.
 
 ## Intent Name
 
