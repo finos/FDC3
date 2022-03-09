@@ -3,6 +3,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Typography, Grid, Button } from "@material-ui/core";
 import React, { useEffect } from "react";
 import mocha from "mocha";
+import { initTests } from "../../test/initTests";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -44,22 +45,23 @@ export const AgentTests = observer(() => {
 	const classes = useStyles();
 
 	useEffect(() => {
-		mocha.setup('bdd')
-	}, [])
+		mocha.setup("bdd");
+		initTests();
+	}, []);
 
-  const handRunTests = () => {
-		mocha.run()
-  }
-	
+	const handRunTests = () => {
+		mocha.run();
+	};
+
 	return (
 		<div className={classes.root}>
 			<Grid item xs={12}>
 				<Typography variant="h5">FDC3 Agent Conformance Test</Typography>
 				<Typography>Tests which parts of the FDC3 specification the current desktop agent has implemented.</Typography>
 
-        <Button variant="contained" color="primary" onClick={handRunTests}>
-          Run Tests
-        </Button>
+				<Button variant="contained" color="primary" onClick={handRunTests}>
+					Run Tests
+				</Button>
 
 				<div id="mocha"></div>
 			</Grid>
