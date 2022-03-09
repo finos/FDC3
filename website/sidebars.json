@@ -43,6 +43,13 @@
           "intents/ref/ViewHoldings",
           "intents/ref/ViewProfile"
         ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Deprecated",
+        "ids": [
+          "intents/ref/ViewContact"
+        ]
       }
     ],
     "Context Data": [
