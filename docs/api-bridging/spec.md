@@ -22,26 +22,29 @@ Need to product some description of a protocol, to be used over a websocket, for
    requestGuid: string,
    timestamp: date,
    type: string, //FDC3 function name message relates to, e.g. "findIntent"
-   intent: string
+   intent: string,
    context?: Context,
-   sourceAgent?: string  //optional as filled in by server
+   sourceAgent?: string  //optional as filled in by server and subsequently used to route responses
 }
 ```
 
 ### Response:
-Responses will be differentiated by the presence of a `responseGuid` field
+Responses will be differentiated by the presence of a `responseGuid` field.
 ```typescript
 {
    requestGuid: string, //value from request
    responseGuid: string,
    timestamp: Date,
    type: string, //same as request value
-   intent: string
+   intent: string,
    appIntent: AppIntent,
-   sourceAgent?: string, //optional, filled in by server
-   targetAgent: string //sourceAgent from request
+   sourceAgent?: string, //optionalsd filled in by server on receipt of message
+   targetAgent: string //sourceAgent from request,  used to route response
 }
 ```
+Clients should send these messages on to the 'server', which will add the `sourceAgent` metadata. Further, when processing responses, the agent acting as the 'server' should augment any `AppMetadata` objects in responses with the the same id applied to sourceAgent.
+
+
 
 
 ## Individual message exchanges
@@ -50,32 +53,53 @@ Assume that we have 3 agents connected by bridge: agent-A, agent-B and agent-C. 
 
 ### For broadcasts on channels
 Only needs a single message (no response)
-An app on agent-A does `fdc3.broadcast(contextObj); `or`
-(await fdc3.getOrCreateChannel("myChannel")).broadcast(contextObj)`
+An app on agent-A does:
+```javascript
+fdc3.broadcast(contextObj);
+``` 
+or 
+```javascript
+(await fdc3.getOrCreateChannel("myChannel")).broadcast(contextObj)
 ```
+
+It encodes this as a message which it sends to the websocker (hosted by agent-C):
+
+```JSON
 {
    requestGuid: "some-guid-string-here",
-   timestamp: 2020-03-...,
+   timestamp: "2020-03-...",
    type: "broadcast",
    channel: "myChannel",
    context: contxtObj
 }
 ```
 
-(server to add agent field)
+which it repeats on to Agent-B with the sourceAgent metadata added:
+```JSON
+{
+   requestGuid: "some-guid-string-here",
+   timestamp: "2020-03-...",
+   type: "broadcast",
+   channel: "myChannel",
+   context: contxtObj,
+   sourceAgent: "agent-A"
+}
+```
+
+
 ### findIntent
 ```
 findIntent(intent: string, context?: Context): Promise<AppIntent>;
 ```
 #### Request format:
 
-A findIntent call is made on agent-A. It sends an outward message to the other desktop agents (sent from A -> C (which then sends -> B)):
+A findIntent call is made on agent-A. It sends an outward message to the other desktop agents (sent from A -> C, which C then sends on to B)):
 let appIntent = await fdc3.findIntent();
 
 ```
 {
    requestGuid: "4dd60b3b-9835-4cab-870c-6b9b099ed7ae",
-   timestamp: 2020-03-...,
+   timestamp: "2020-03-...",
    type: "findIntent",
    intent: "StartChat"
    context?: contxtObj
@@ -97,7 +121,7 @@ And repeated from C -> B as:
 Note that the `sourceAgent` field has been populated with the id of the agent that raised the requests, enabling the routing of responses.
 
 #### Response format
-When processing responses, the agent acting as the 'server' should augment and `AppMetadata` objects in responses with the desktop agent. targetAgent field should always be filled in with the sourceAgent of the request \
+
 E.g.
 Normal response from:agent A,where the request was raised (a websocket client)
 ```
