@@ -89,7 +89,6 @@ It encodes this as a message which it sends to the websocket server(hosted by ag
         "channel": "myChannel",
         "context": { /*contxtObj*/ }
     }
-    
 }
 ```
 
@@ -104,7 +103,7 @@ which it repeats on to Agent-B with the `sourceAgent` metadata added:
         "context": { /*contxtObj*/}
     },
     "sourceAgent": "agent-A"
-    }
+}
 ```
 
 
@@ -221,12 +220,12 @@ Which gets repeated by the websocket server (agent-C) in augmented form as:
 }
 ```
 
-Desktop agent C (the websocket server) as sends its own response:
+Desktop agent C (the websocket server) also sends its own response:
 ```JSON
 {
     "intent":  { "name": "StartChat", "displayName": "Chat" },
     "apps": [
-       { name "WebIce"}
+       { "name": "WebIce"}
     ]
 }
 ```
@@ -243,7 +242,7 @@ which it encodes as a message:
         "appIntent":  {
             "intent":  { "name": "StartChat", "displayName": "Chat" },
             "apps": [
-            { name "WebIce", "agent": "agent-C"}
+            { "name": "WebIce", "agent": "agent-C"}
             ]
         }
     },
@@ -257,11 +256,11 @@ Then on agent-A the originating app finally gets back the following response fro
     "intent":  { "name": "StartChat", "displayName": "Chat" },
     "apps": [
         { "name": "myChat" }, // local to this agent
-        { "name": "Skype", "agent": "agent-B" },
+        { "name": "Skype", "agent": "agent-B" }, //agent-B responses
         { "name": "Symphony", "agent": "agent-B" },
         { "name": "Symphony", "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859", "agent": "agent-B" },
         { "name": "Slack", "agent": "agent-B" },
-        { "name": "WebIce", "agent": "agent-C"}
+        { "name": "WebIce", "agent": "agent-C"} //agent C response
     ]
 }
 ```
