@@ -29,7 +29,7 @@ Need to product some description of a protocol, to be used over a websocket, for
    body: {
        //example fields for specific messages... wouldn't be specified in base type
        channel?: string,
-       intent?: string
+       intent?: string,
        context?: Context,
        //fields for other possible arguments
    },
