@@ -15,7 +15,7 @@ Need to product some description of a protocol, to be used over a websocket, for
 ## Individual message exchanges
 ### For broadcasts on channels
 Only needs a single message (no response)
-Somebody does `fdc3.broadcast(contextObj); `or`  \
+Somebody does `fdc3.broadcast(contextObj); `or`
 (await fdc3.getOrCreateChannel(channelName)).broadcast(contextObj)`
 ```
 {
@@ -26,7 +26,7 @@ Somebody does `fdc3.broadcast(contextObj); `or`  \
    context: contxtObj
 }
 ```
- \
+
 (server to add agent field)
 ### findIntent
 ```
@@ -43,10 +43,9 @@ findIntent(intent: string, context?: Context): Promise<AppIntent>;
    sourceAgent?: string  //optional as filled in by server
 }
 ```
-E.g. Call outward to other desktop agents (sent from A -> C \
- \
-`{`
+E.g. Call outward to other desktop agents (sent from A -> C 
 ```
+{
    requestGuid: "4dd60b3b-9835-4cab-870c-6b9b099ed7ae",
    timestamp: 2020-03-...,
    type: "findIntentRequest",
@@ -78,7 +77,7 @@ And repeated from C -> B as:
    targetAgent: string
 }
 ```
- \
+ 
 Server should augment the AppIntent.apps[AppMetadata] objects with the desktop agent as well as the sourceAgent field. targetAgent field should always be filled in with the sourceAgent of the request \
 E.g.
 Normal response from:agent A (where the request was raised) - websocket client
@@ -90,9 +89,10 @@ Normal response from:agent A (where the request was raised) - websocket client
     ]
 }
 ```
-Desktop agent B - websocket client \
-`{`
+Desktop agent B - websocket client 
+
 ```
+{
     intent: { name: "StartChat", displayName: "Chat" },
     apps: [
         { name: "Skype" },
@@ -132,7 +132,7 @@ Sent back over the bridge (by Agent B - which happens to be a websocket client) 
     targetAgent: "agent-A"
 }
 ```
- \
+
 Which gets repeated by a server (agent-C) in augmented form as:
 ```
 {
