@@ -27,6 +27,7 @@ Need to product some description of a protocol, to be used over a websocket, for
    type:  string,
    /** Request body, containing the arguments to the function called.*/
    body: {
+       //example fields for specific messages... wouldn't be specified in base type
        channel?: string,
        intent?: string
        context?: Context,
@@ -51,6 +52,7 @@ Responses will be differentiated by the presence of a `responseGuid` field.
     type:  string, //same as request value
     /** Response body */
     body: {
+        //example fields for specific messages... wouldn't be specified in base type
         intent?:  string,
         appIntent?:  AppIntent,
         //fields for other possible response values
