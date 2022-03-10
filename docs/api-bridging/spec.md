@@ -12,17 +12,52 @@ Need to product some description of a protocol, to be used over a websocket, for
 * Desktop agents that are bridged will need to wait for responses from other desktop agents before responding to API calls…
     * for resilience, this may mean defining timeouts
     * Desktop Agents may need GUIDs and / OR metadata - names?
+
+
+## Generic request and response formats
+
+### Request:
+```typescript
+{
+   requestGuid: string,
+   timestamp: date,
+   type: string, //FDC3 function name message relates to, e.g. "findIntent"
+   intent: string
+   context?: Context,
+   sourceAgent?: string  //optional as filled in by server
+}
+```
+
+### Response:
+Responses will be differentiated by the presence of a `responseGuid` field
+```typescript
+{
+   requestGuid: string, //value from request
+   responseGuid: string,
+   timestamp: Date,
+   type: string, //same as request value
+   intent: string
+   appIntent: AppIntent,
+   sourceAgent?: string, //optional, filled in by server
+   targetAgent: string //sourceAgent from request
+}
+```
+
+
 ## Individual message exchanges
+
+Assume that we have 3 agents connected by bridge: agent-A, agent-B and agent-C. agent-C provides a websocket server that agent-A and agent-B have connected to.
+
 ### For broadcasts on channels
 Only needs a single message (no response)
-Somebody does `fdc3.broadcast(contextObj); `or`
-(await fdc3.getOrCreateChannel(channelName)).broadcast(contextObj)`
+An app on agent-A does `fdc3.broadcast(contextObj); `or`
+(await fdc3.getOrCreateChannel("myChannel")).broadcast(contextObj)`
 ```
 {
-   guid: "",
+   requestGuid: "some-guid-string-here",
    timestamp: 2020-03-...,
    type: "broadcast",
-   channel: channelName,
+   channel: "myChannel",
    context: contxtObj
 }
 ```
@@ -33,54 +68,38 @@ Somebody does `fdc3.broadcast(contextObj); `or`
 findIntent(intent: string, context?: Context): Promise<AppIntent>;
 ```
 #### Request format:
-```
-{
-   requestGuid: string,
-   timestamp: date,
-   type: "findIntentRequest",
-   intent: string
-   context?: Context,
-   sourceAgent?: string  //optional as filled in by server
-}
-```
-E.g. Call outward to other desktop agents (sent from A -> C 
+
+A findIntent call is made on agent-A. It sends an outward message to the other desktop agents (sent from A -> C (which then sends -> B)):
+let appIntent = await fdc3.findIntent();
+
 ```
 {
    requestGuid: "4dd60b3b-9835-4cab-870c-6b9b099ed7ae",
    timestamp: 2020-03-...,
-   type: "findIntentRequest",
-   intent: "ViewInstrument"
+   type: "findIntent",
+   intent: "StartChat"
    context?: contxtObj
 }
 ```
+
 And repeated from C -> B as:
 ```
 {
    requestGuid: "4dd60b3b-9835-4cab-870c-6b9b099ed7ae",
    timestamp: 2020-03-...,
-   type: "findIntentRequest",
-   intent: "ViewInstrument"
+   type: "findIntent",
+   intent: "StartChat"
    context?: contxtObj,
    sourceAgent: "agent-A"
 }
 ```
+
+Note that the `sourceAgent` field has been populated with the id of the agent that raised the requests, enabling the routing of responses.
+
 #### Response format
-```
-{
-   requestGuid: string
-   responseGuid: string,
-   timestamp: Date,
-   type: "findIntentResponse",
-   intent: string
-   appIntent: AppIntent,
-   sourceAgent?: string, //optional, filled in by server
-   targetAgent: string
-}
-```
- 
-Server should augment the AppIntent.apps[AppMetadata] objects with the desktop agent as well as the sourceAgent field. targetAgent field should always be filled in with the sourceAgent of the request \
+When processing responses, the agent acting as the 'server' should augment and `AppMetadata` objects in responses with the desktop agent. targetAgent field should always be filled in with the sourceAgent of the request \
 E.g.
-Normal response from:agent A (where the request was raised) - websocket client
+Normal response from:agent A,where the request was raised (a websocket client)
 ```
 {
     intent: { name: "StartChat", displayName: "Chat" },
@@ -89,7 +108,7 @@ Normal response from:agent A (where the request was raised) - websocket client
     ]
 }
 ```
-Desktop agent B - websocket client 
+Desktop agent B (a websocket client) 
 
 ```
 {
@@ -102,22 +121,14 @@ Desktop agent B - websocket client
     ]
 }
 ```
-Desktop agent C - websocket server
-```
-{
-    intent: { name: "StartChat", displayName: "Chat" },
-    apps: [
-       { name "WebIce"}
-    ]
-}
-```
-Sent back over the bridge (by Agent B - which happens to be a websocket client)  as:
+
+which is sent back over the bridge by Agent B -> C as:
 ```
 {
     requestGuid: "4dd60b3b-9835-4cab-870c-6b9b099ed7ae",
     responseGuid: "b4cf1b91-0b64-45b6-9f55-65503d507024"
     timestamp: 2020-03-...,
-    type: "findIntentResponse",
+    type: "findIntent",
     intent: "StartChat",
     agent: undefined // can be undefined for server to fill in
     appIntent: {
@@ -133,13 +144,13 @@ Sent back over the bridge (by Agent B - which happens to be a websocket client) 
 }
 ```
 
-Which gets repeated by a server (agent-C) in augmented form as:
+Which gets repeated by the websocket server (agent-C) in augmented form as:
 ```
 {
     requestGuid: "4dd60b3b-9835-4cab-870c-6b9b099ed7ae",
     responseGuid: "b4cf1b91-0b64-45b6-9f55-65503d507024"
     timestamp: 2020-03-...,
-    type: "findIntentResponse",
+    type: "findIntent",
     intent: "StartChat",
     appIntent: {
         intent: { name: "StartChat", displayName: "Chat" },
@@ -149,18 +160,29 @@ Which gets repeated by a server (agent-C) in augmented form as:
             { name: "Symphony", instanceId: "93d2fe3e-a66c-41e1-b80b-246b87120859", agent: "agent-B" },
             { name: "Slack", agent: "agent-B" }
         ]
-     },
-     targetAgent: "agent-A"
-     sourceAgent: "agent-B"
+    },
+    targetAgent: "agent-A"
+    sourceAgent: "agent-B"
+}
+
+
+Desktop agent C (the websocket server) as sends its own response:
+```
+{
+    intent: { name: "StartChat", displayName: "Chat" },
+    apps: [
+       { name "WebIce"}
+    ]
 }
 ```
-Agent-C also sends its own response:
+
+which it encodes as a message:
 ```
 {
     requestGuid: "4dd60b3b-9835-4cab-870c-6b9b099ed7ae",
     responseGuid: "988a49c8-49c2-4fb4-aad4-be39d1471834"
     timestamp: 2020-03-...,
-    type: "findIntentResponse",
+    type: "findIntent",
     intent: "StartChat",
     appIntent: {
         intent: { name: "StartChat", displayName: "Chat" },
@@ -172,7 +194,7 @@ Agent-C also sends its own response:
      sourceAgent: "agent-C"
 }
 ```
-Then on agent-A the originating app finally gets back the following response from the FDC3 desktop agent C:
+Then on agent-A the originating app finally gets back the following response from the FDC3 desktop agent:
 ```
 {
     intent: { name: "StartChat", displayName: "Chat" },
@@ -186,6 +208,7 @@ Then on agent-A the originating app finally gets back the following response fro
     ]
 }
 ```
+
 ### raiseIntent
 ```
 raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
