@@ -32,7 +32,8 @@ Need to product some description of a protocol, to be used over a websocket, for
        context?: Context,
        //fields for other possible arguments
    },
-   sourceAgent?: string  //optional as filled in by server and subsequently used to route responses
+   /** Agent request received from, filled in by server on receipt of message */
+   sourceAgent?: string
 }
 ```
 
