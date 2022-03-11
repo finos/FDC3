@@ -19,8 +19,8 @@ export enum ResolveError {
   TargetInstanceUnavailable = 'TargetInstanceUnavailable',
 }
 
-export enum DataError {
-  NoDataReturned = 'NoDataReturned',
+export enum ResultError {
+  NoResultReturned = 'NoResultReturned',
   IntentHandlerRejected = 'IntentHandlerRejected',
 }
 
