@@ -33,9 +33,9 @@ export enum ResolveError {
   IntentDeliveryFailed = 'IntentDeliveryFailed',
 }
 
-export enum DataError {
-  /** Returned if the intent handler exited without returning a Promise or that Promise was not resolved with a Context object. */
-  NoDataReturned = 'NoDataReturned',
+export enum ResultError {
+/** Returned if the intent handler exited without returning a Promise or that Promise was not resolved with a Context or Channel object. */
+  NoResultReturned = 'NoResultReturned',
   /** Returned if the Intent handler function processing the raised intent throws an error or rejects the Promise it returned. */
   IntentHandlerRejected = 'IntentHandlerRejected',
 }

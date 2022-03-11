@@ -1,6 +1,6 @@
 # FDC3 Standard Contribution Policy 1.0
 
-This document provides the contribution policy for the FDC3 Standard and is based on the [Community Specification Contribution Policy 1.0](https://github.com/finos/standards-project-blueprint/edit/master/6._Contributing.md).
+This document provides the contribution policy for the FDC3 Standard and is based on the [Community Specification Contribution Policy 1.0](https://github.com/finos/standards-project-blueprint/blob/master/governance-documents/6._Contributing.md).
 
 _NOTE:_ Commits and pull requests to FINOS repositories will only be accepted from those contributors with an active, executed Individual Contributor License Agreement (ICLA) with FINOS, _OR_ who are covered under an existing and active Corporate Contribution License Agreement (CCLA) executed with FINOS. Commits from individuals not covered under an ICLA or CCLA will be flagged and blocked by the [Linux Foundation `EasyCLA` tool](https://easycla.lfx.linuxfoundation.org/#/). Please note that some CCLAs require individuals/employees to be explicitly named on the CCLA.
 
@@ -19,7 +19,7 @@ This Working Group accepts contributions via pull requests. The following sectio
 
 **1.1.1.2.	Proposals and Enhancement Requests.** Used for items that propose a new ideas or functionality that require a larger discussion. This allows for feedback from others before a specification change is actually written. 
 
-**1.1.1.3.	Minor Issue:** These track minor changes or corrections that don't alter teh Standard significantly but rather correct minor errors or ommisions.
+**1.1.1.3.	Minor Issue:** These track minor changes or corrections that don't alter the Standard significantly but rather correct minor errors or ommisions.
 
 **1.1.1.4.	Question:** May be used to ask questions about FDC3, requests support etc..
 

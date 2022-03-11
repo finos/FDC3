@@ -3,7 +3,7 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { Context } from '../context/ContextTypes';
+import { IntentResult } from './Types';
 import { AppMetadata } from './AppMetadata';
 
 /**
@@ -12,12 +12,14 @@ import { AppMetadata } from './AppMetadata';
  * //resolve a "Chain" type intent
  * let resolution = await agent.raiseIntent("intentName", context);
  *
- * //resolve a "Client-Service" type intent with a data response
+ * //resolve a "Client-Service" type intent with a data response or a Channel
  * let resolution = await agent.raiseIntent("intentName", context);
  * try {
  * 	   const result = await resolution.getResult();
- *     if (result) {
- *         console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+ *     if (result && result.broadcast) {
+ *         console.log(`${resolution.source} returned a channel with id ${result.id}`);
+ *     } else if (result){
+ *         console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);
  *     } else {
  *         console.error(`${resolution.source} didn't return data`
  *     }
@@ -26,7 +28,6 @@ import { AppMetadata } from './AppMetadata';
  * }
  * // Use metadata about the resolving app instance to target a further intent
  * await agent.raiseIntent("intentName", context, resolution.source);
- *
  * ```
  */
 export interface IntentResolution {
@@ -46,11 +47,18 @@ export interface IntentResolution {
    */
   readonly version?: string;
   /**
-   * Retrieves a promise that will resolve to data returned by the
-   * application that resolves the raised intent. The promise MUST
-   * reject with a string from the `DataError` enumeration if an error
-   * is thrown by the intent handler, it rejects the returned promise,
-   * or it does not return a promise.
+   * Retrieves a promise that will resolve to either `Context` data returned
+   * by the application that resolves the raised intent or a `Channel`
+   * established and returned by the app resolving the intent.
+   *
+   * A `Channel` returned will often be of the `PrivateChannel` type. The
+   * client can then `addContextListener()` on that channel to, for example,
+   * receive a stream of data.
+   *
+   * The promise MUST reject with a string from the `ResultError` enumeration
+   * if an error is thrown by the intent handler, it rejects the returned
+   * promise, it does not return a promise or the promise resolves to an
+   * object of an invalid type.
    */
-  getResult(): Promise<Context>;
+  getResult(): Promise<IntentResult>;
 }
