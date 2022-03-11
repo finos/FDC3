@@ -51,17 +51,37 @@ Used when attaching listeners for context broadcasts.
 ## `IntentHandler`
 
 ```typescript
-type IntentHandler = (context: Context) => Promise<Context> | void;
+type IntentHandler = (context: Context) => Promise<IntentResult> | void;
 ```
 
-Describes a callback that handles a context event and may return a promise of a Context object to be returned to the application that raised the intent.
+Describes a callback that handles a context event and may return a promise of a Context or Channel object to be returned to the application that raised the intent.
 
 Used when attaching listeners for raised intents.
 
 #### See also
 * [`Context`](#context)
+* [`PrivateChannel`](PrivateChannel)
 * [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 * [`Channel.addContextListener`](Channel#addcontextlistener)
+
+## `IntentResult`
+
+```typescript
+type IntentResult = Context | Channel;
+```
+
+Describes results that an Intent handler may optionally return that should be communicated back to the app that raised the intent, via the [`IntentResolution`](Metadata#intentresolution). 
+
+Represented as a union type in TypeScript, however, this type may be rendered as an interface in other languages that both the `Context` and `Channel` types implement, allowing either to be returned by an `IntentHandler`.
+
+#### See also
+* [`Context`](#context)
+* [`Channel`](Channel)
+* [`PrivateChannel`](PrivateChannel)
+* [`IntentHandler`](#intenthandler)
+* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+* [`IntentResolution`](Metadata#intentresolution)
+
 
 ## `Listener`
 
