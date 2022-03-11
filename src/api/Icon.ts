@@ -1,6 +1,6 @@
 /**
  * SPDX-License-Identifier: Apache-2.0
- * Copyright 2019 FINOS FDC3 contributors - see NOTICE file
+ * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
 export interface Icon {
