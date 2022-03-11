@@ -138,14 +138,30 @@ describe('test ES6 module', () => {
       await findIntent(intent, ContactContext);
 
       expect(window.fdc3.findIntent).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.findIntent).toHaveBeenCalledWith(intent, ContactContext);
+      expect(window.fdc3.findIntent).toHaveBeenLastCalledWith(intent, ContactContext, undefined);
+    });
+
+    test('findIntent should delegate to window.fdc3.findIntent (with additional output type argument)', async () => {
+      const intent = 'ViewChart';
+
+      await findIntent(intent, ContactContext, ContextTypes.Contact);
+
+      expect(window.fdc3.findIntent).toHaveBeenCalledTimes(1);
+      expect(window.fdc3.findIntent).toHaveBeenLastCalledWith(intent, ContactContext, ContextTypes.Contact);
     });
 
     test('findIntentsByContext should delegate to window.fdc3.findIntentsByContext', async () => {
       await findIntentsByContext(ContactContext);
 
       expect(window.fdc3.findIntentsByContext).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.findIntentsByContext).toHaveBeenCalledWith(ContactContext);
+      expect(window.fdc3.findIntentsByContext).toHaveBeenLastCalledWith(ContactContext, undefined);
+    });
+
+    test('findIntentsByContext should delegate to window.fdc3.findIntentsByContext (with additional output type argument)', async () => {
+      await findIntentsByContext(ContactContext, ContextTypes.Contact);
+
+      expect(window.fdc3.findIntentsByContext).toHaveBeenCalledTimes(1);
+      expect(window.fdc3.findIntentsByContext).toHaveBeenLastCalledWith(ContactContext, ContextTypes.Contact);
     });
 
     test('broadcast should delegate to window.fdc3.broadcast', async () => {

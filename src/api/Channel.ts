@@ -19,6 +19,7 @@ export interface Channel {
 
   /**
    * Uniquely defines each channel type.
+   * Can be "user", "app" or "private".
    */
   readonly type: string;
 

@@ -41,11 +41,11 @@ Contains constants representing the errors that can be encountered when calling 
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 
-## `DataError`
+## `ResultError`
 
 ```typescript
-enum DataError {
-  NoDataReturned = 'NoDataReturned',
+enum ResultError {
+  NoResultReturned = 'NoResultReturned',
   IntentHandlerRejected = 'IntentHandlerRejected',
 }
 ```
