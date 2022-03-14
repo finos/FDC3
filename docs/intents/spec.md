@@ -60,6 +60,9 @@ However, there is a need for applications to ensure that their intents avoid col
 ### [ViewProfile](ref/ViewProfile)
 * Expected context: Contact, Organization
 * Expected behavior: Display basic profile information for individual or organization
+### [ViewInteractions](ref/ViewInteractions)
+* Expected context: Contact, Instrument, Organization
+* Expected behavior: Display interactions (calls, meetings, etc.) related to an individual, an instrument or organization
 
 ## Deprecated Intents ##
 

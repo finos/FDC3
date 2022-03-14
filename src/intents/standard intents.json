@@ -39,6 +39,10 @@
     {
       "name": "ViewProfile",
       "displayName": "Profile"
+    },
+    {
+      "name": "ViewInteractions",
+      "displayName": "Interactions"
     }
   ]
 }

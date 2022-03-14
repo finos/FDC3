@@ -43,3 +43,4 @@ Context
 
 Intents
 * [ViewHoldings](ViewHoldings)
+* [ViewInteractions](ViewInteractions)
