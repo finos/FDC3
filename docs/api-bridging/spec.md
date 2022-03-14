@@ -297,19 +297,35 @@ DA-A                        DA-B                       DA-C
 |                           |<--- intentResolution  ----|
 |<--- intentResolution -----|                           |
 ```
+---
+**Assumptions & Questions**
+- No client - client communication - All request go to server first which are then routed to the correct DA.
+- The intentResolution result should be as is? The outcome of the raiseIntent should be the same as current?
+
+**NOTE:** - (TP 14/03/2022) - The raiseIntent response should not really change (?) - Meaning, you raise and intent and the result of that would either be an intentResolution, that might need to contain information about which DA the intent was resolved, OR an error if the intent fails to resolve.
+
+The raiseIntent request however, will need to be able to specify a target which must (should) include an DA as well.
+
+Maybe we can strongly advise that `raiseIntent` should be preceeded by `findIntents`.
+
+No target specified
+1. DA-A (client) sends `raiseIntent` request without target to DA-C (server)
+2. DA-C MUST fire a `findIntent` to DA-A, DA-B and DA-C
+   * `findIntent` response only has one possible resolution
+      *  No resolver UI is shown and a `findIntent` response is sent to DA-A which sends a `raiseIntent` with target. This should happen silently/transparently?
+   * `findIntent` response has multiple resolution possibilities
+     * Resolver UI is shown on DA-A which upon the user selecting the app will send a `raiseIntent` with target
+   * `findIntent` returns error because there is no possible resolution
 
 
-Considerations:
+Target specified
 
-If no `TargetApp` is specified, then a `findIntent` needs to be sent to other Desktop Agents to get back options and send them to the desktop agent that the raiseIntent was called on. The `AppMetadata` returned by `findIntent` should contain the `agent` that the app lives on.
+1. DA-A (client) sends `raiseIntent` request with target (DA-B) to DA-C (server)
+2. DA-C populates the sourceAgent in the raiseIntent request and forward the request to DA-B directly
+3. DA-B sends `intentResolution` response to DA-C that fills in the targetAgent field
+4. DA-C sends the augmented `intentResolution` response to DA-A 
 
-If `TargetApp` is specified: ...
-
-??? what if we have AChartApp in agent-B and AchartApp in agent-C ???
-
-???it is expected that the `AppMetadata` contains the target agent in that should resolve the intent.??? 
-
-
+---
 
 It sends an outward message to the other desktop agents (sent from A -> C):
 ```JSON
@@ -534,4 +550,3 @@ Then agent C (ie. the server) should augment the responses so that a unequivocal
 }
 ```
 
-#### Result Response format
