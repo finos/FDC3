@@ -27,15 +27,17 @@ interface DesktopAgent {
   addContextListener(handler: ContextHandler): Promise<Listener>;
 
   // intents
-  findIntent(intent: string, context?: Context): Promise<AppIntent>;
-  findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
+  findIntent(intent: string, context?: Context, resultType?: string): Promise<AppIntent>;
+  findIntentsByContext(context: Context, resultType?: string): Promise<Array<AppIntent>>;
   raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
   raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 
   // channels
   getOrCreateChannel(channelId: string): Promise<Channel>;
+  createPrivateChannel(): Promise<PrivateChannel>;
   getUserChannels(): Promise<Array<Channel>>;
+
   // optional channel management functions
   joinUserChannel(channelId: string) : Promise<void>;
   getCurrentChannel() : Promise<Channel | null>;
@@ -91,7 +93,12 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', contact =>
 ```ts
 addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 ```
- Adds a listener for incoming Intents from the Agent. The handler function may return void or a promise that should resolve to a context object representing any data that should be returned to the app that raised the intent. If an error is thrown by the handler function, the promise returned is rejected, or a promise is not returned then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution`.
+
+Adds a listener for incoming intents from the Desktop Agent. The handler function may return void or a promise that resolves to a [`IntentResult`](Types#intentresult), which is either a [`Context`](Types#context) object, representing any data that should be returned to the app that raised the intent, or a [`Channel`](Channel) or [`PrivateChannel`](PrivateChannel) over which data responses will be sent. The `IntentResult` will be returned to app that raised the intent via the [`IntentResolution`](Metadata#intentresolution) and retrieved from it using the `getResult()` function.
+
+The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.
+
+The [`PrivateChannel`](PrivateChannel) type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
 
 #### Examples
 
@@ -106,12 +113,34 @@ const listener = fdc3.addIntentListener('StartChat', context => {
 fdc3.addIntentListener("CreateOrder", (context) => {
   return new Promise<Context>((resolve) => {
     // go create the order
-    resolve({type: "fdc3.order", id: { "orderId": 1234 }});
+    resolve({type: "fdc3.order", id: { "orderId": 1234}});
   });
+});
+
+//Handle a raised intent and return a PrivateChannel over which response will be sent
+fdc3.addIntentListener("QuoteStream", async (context) => {
+  const channel: PrivateChannel = await fdc3.createPrivateChannel();
+  const symbol = context.id.symbol;
+
+// Called when the remote side adds a context listener
+  const addContextListener = channel.onAddContextListener((contextType) => {
+    // broadcast price quotes as they come in from our quote feed
+    feed.onQuote(symbol, (price) => {
+      channel.broadcast({ type: "price", price});
+    });
+  });
+
+  // Stop the feed if the remote side closes
+  const disconnectListener = channel.onDisconnect(() => {
+    feed.stop(symbol);
+  });
+
+  return channel;
 });
 ```
 
 #### See also
+* [`PrivateChannel`](PrivateChannel)
 * [`Listener`](Types#listener)
 * [`Context`](Types#context)
 * [`IntentHandler`](Types#intenthandler)
@@ -169,20 +198,22 @@ let resolution = fdc3.raiseIntent("ViewInstrument", context, instances[0]);
 ### `findIntent`
 
 ```ts
-findIntent(intent: string, context?: Context): Promise<AppIntent>;
+findIntent(intent: string, context?: Context, resultType?: string): Promise<AppIntent>;
 ```
 
-Find out more information about a particular intent by passing its name, and optionally its context.
+Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result context type.
 
 `findIntent` is effectively granting programmatic access to the Desktop Agent's resolver.
 It returns a promise resolving to the intent, its metadata and metadata about the apps and app instances that are registered to handle it.
 This can be used to raise the intent against a specific app or app instance.
 
-If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
+If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
 
+Result types may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
 #### Examples
+I know 'StartChat' exists as a concept, and want to know which apps can resolve it:
+
 ```js
-// I know 'StartChat' exists as a concept, and want to know more about it ...
 const appIntent = await fdc3.findIntent("StartChat");
 // returns a single AppIntent:
 // {
@@ -211,56 +242,100 @@ const appIntent = await fdc3.findIntent("StartChat");
 //   ]
 ```
 
+An optional input context object and/or `resultType` argument may be specified, which the resolver MUST use to filter the returned applications such that each supports the specified input and result types.
+```js
+const appIntent = await fdc3.findIntent("StartChat", contact);
+
+// returns only apps that support the type of the specified input context:
+// {
+//     intent: { name: "StartChat", displayName: "Chat" },
+//     apps: { name: "Symphony" }]
+// }
+
+const appIntent = await fdc3.findIntent("ViewContact", "fdc3.ContactList");
+// returns only apps that return the specified result type:
+// {
+//     intent: { name: "ViewContact", displayName: "View Contact Details" },
+//     apps: { name: "MyCRM", resultType: "fdc3.ContactList"}]
+// }
+
+const appIntent = await fdc3.findIntent("QuoteStream", instrument, "channel<fdc3.Quote>");
+// returns only apps that return a channel which will receive the specified input and result types:
+// {
+//     intent: { name: "QuoteStream", displayName: "Quotes stream" },
+//     apps: { name: "MyOMS", resultType: "channel<fdc3.Quote>"}]
+// }
+```
+
 #### See also
 * [`ResolveError`](Errors#resolveerror)
 
 ### `findIntentsByContext`
 
 ```ts
-findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
+findIntentsByContext(context: Context, resultType?: string): Promise<Array<AppIntent>>;
 ```
 
-Find all the available intents for a particular context.
+Find all the available intents for a particular context, and optionally a desired result context type.
+
 `findIntentsByContext` is effectively granting programmatic access to the Desktop Agent's resolver.
 A promise resolving to all the intents, their metadata and metadata about the apps and app instances that registered as handlers is returned, based on the context types the intents have registered.
 
 If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
 
- #### Example
- ```js
- // I have a context object, and I want to know what I can do with it, hence, I look for intents...
- const appIntents = await fdc3.findIntentsByContext(context);
+The optional `resultType` argument may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
 
- // returns, for example:
- // [
- //   {
- //     intent: { name: "StartCall", displayName: "Call" },
- //     apps: [{ name: "Skype" }]
- //   },
- //   {
- //     intent: { name: "StartChat", displayName: "Chat" }, 
- //     apps: [
- //       { name: "Skype" }, 
- //       { name: "Symphony" }, 
- //       { name: "Symphony", instanceId: "93d2fe3e-a66c-41e1-b80b-246b87120859" }, 
- //       { name: "Slack" }
- //     ]
- //   }
- // ];
+#### Example
+I have a context object, and I want to know what I can do with it, hence, I look for intents and apps to resolve them...
+ 
+```js
+const appIntents = await fdc3.findIntentsByContext(context);
 
- // select a particular intent to raise
- const startChat = appIntents[1];
+// returns, for example:
+// [
+//   {
+//     intent: { name: "StartCall", displayName: "Call" },
+//     apps: [{ name: "Skype" }]
+//   },
+//   {
+//     intent: { name: "StartChat", displayName: "Chat" }, 
+//     apps: [
+//       { name: "Skype" }, 
+//       { name: "Symphony" }, 
+//       { name: "Symphony", instanceId: "93d2fe3e-a66c-41e1-b80b-246b87120859" }, 
+//       { name: "Slack" }
+//     ]
+//   },
+//   {
+//     intent: { name: "ViewContact", displayName: "View Contact" },
+//     apps: [{ name: "Symphony" }, { name: "MyCRM", resultType: "fdc3.ContactList"}]
+//   }
+// ];
+```
 
- // target a particular app or instance
- const selectedApp = startChat.apps[2];
+or I look for only intents that are resolved by apps returning a particular result type
 
- // raise the intent, passing the given context, targeting the app
- await fdc3.raiseIntent(startChat.intent.name, context, selectedApp);
- ```
+```js
+const appIntentsForType = await fdc3.findIntentsByContext(context, "fdc3.ContactList");
+// returns for example:
+// [{
+//     intent: { name: "ViewContact", displayName: "View Contact" },
+//     apps: [{ name: "Symphony" }, { name: "MyCRM", resultType: "fdc3.ContactList"}]
+// }];
+ 
+// select a particular intent to raise
+const startChat = appIntents[1];
+
+// target a particular app or instance
+const selectedApp = startChat.apps[2];
+
+// raise the intent, passing the given context, targeting the app
+await fdc3.raiseIntent(startChat.intent.name, context, selectedApp);
+```
 
 #### See also
-   * [`findIntent()`](#findintent)
-   * [`ResolveError`](Errors#resolveerror)
+* [`findIntent()`](#findintent)
+* [`ResolveError`](Errors#resolveerror)
 
 
 
@@ -317,8 +392,8 @@ if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
 getOrCreateChannel(channelId: string): Promise<Channel>;
 ```
 
-Returns a Channel object for the specified channel, creating it (as an _App Channel_) - if it does not exist.
-`Error` with a string from the [`ChannelError`](ChannelError) enumeration if channel could not be created or access was denied.
+Returns a `Channel` object for the specified channel, creating it (as an _App_ channel) - if it does not exist.
+`Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration if the channel could not be created or access was denied.
 
 #### Example
 
@@ -330,11 +405,61 @@ try {
 catch (err){
   //app could not register the channel
 }
-
 ```
 
 #### See also
 *  [`Channel`](Channel)
+
+### `createPrivateChannel`
+
+```ts
+createPrivateChannel(): Promise<PrivateChannel>;
+```
+ 
+Returns a `Channel` with an auto-generated identity that is intended for private communication between applications. Primarily used to create channels that will be returned to other applications via an IntentResolution for a raised intent.
+
+If the `PrivateChannel` cannot be created, the returned promise MUST be rejected with an error string from the [`ChannelError`](Errors#channelerror) enumeration.
+
+The `PrivateChannel` type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
+
+It is intended that Desktop Agent implementations:
+- SHOULD restrict external apps from listening or publishing on this channel.
+- MUST prevent `PrivateChannels` from being retrieved via fdc3.getOrCreateChannel.
+- MUST provide the `id` value for the channel as required by the `Channel` interface.
+
+#### Example
+
+```js
+fdc3.addIntentListener("QuoteStream", async (context) => {
+	const channel = await fdc3.createPrivateChannel();
+	const symbol = context.id.ticker;
+
+	// This gets called when the remote side adds a context listener
+	const addContextListener = channel.onAddContextListener((contextType) => {
+		// broadcast price quotes as they come in from our quote feed
+		feed.onQuote(symbol, (price) => {
+			channel.broadcast({ type: "price", price});
+		});
+	});
+
+	// This gets called when the remote side calls Listener.unsubscribe()
+	const unsubscriberListener = channel.onUnsubscribe((contextType) => {
+		feed.stop(symbol);
+	});
+
+	// This gets called if the remote side closes
+	const disconnectListener = channel.onDisconnect(() => {
+		feed.stop(symbol);
+	});
+
+	return channel;
+});
+```
+
+#### See also
+*  [`PrivateChannel`](PrivateChannel)
+*  [`raiseIntent`](#raiseintent)
+*  [`addIntentListener`](#addintentlistener)
 
 ### `getUserChannels`
 ```ts
@@ -481,14 +606,16 @@ raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentRe
 ```
 Raises a specific intent for resolution against apps registered with the desktop agent. 
 
-The desktop agent will resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, a method for resolving the intent to a target app, such as presenting the user with a resolver UI allowing them to pick an app, SHOULD be provided.
+The desktop agent MUST resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, a method for resolving the intent to a target app, such as presenting the user with a resolver UI allowing them to pick an app, SHOULD be provided.
 Alternatively, the specific app or app instance to target can also be provided. A list of valid target applications and instances can be retrieved via [`findIntent`](DesktopAgent#findintent).  
+
+If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned. If a specific target `app` parameter was set, but either the app or app instance is not available then the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` errors MUST be returned.
 
 If you wish to raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
 
-Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getResult()` function of the IntentResolution object. If an error occurs (i.e. an error is thrown by the handler function, the promise it returns is rejected, or a promse is not returned by the handler function) then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution` with a string from the `DataError` enumeration. 
+Returns an [`IntentResolution`](Metadata#intentresolution) object with details of the app instance that was selected (or started) to respond to the intent. 
 
-If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned. If a specific target `app` parameter was set, but either the app or app instance is not available then the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` errors MUST be returned.
+Issuing apps may optionally wait on the promise that is returned by the `getResult()` member of the IntentResolution. This promise will resolve when the _receiving app's_ intent handler function returns and resolves a promise. The Desktop Agent resolves the issuing app's promise with the Context object or Channel that is provided as resolution by the receiving app. The Desktop Agent MUST reject the issuing app's promise, with a string from the [`ResultError`](Errors#resulterror) enumeration, if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.
 
 #### Example
 
@@ -507,20 +634,28 @@ await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 //Raise an intent without a context by using the null context type
 await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
 
-//Raise an intent and retrieve data from the IntentResolution
+//Raise an intent and retrieve a result from the IntentResolution
 let resolution = await agent.raiseIntent("intentName", context);
 try {
   const result = await resolution.getResult();
-  console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+  if (result && result.broadcast) { //detect whether the result is Context or a Channel
+    console.log(`${resolution.source} returned a channel with id ${result.id}`);
+  } else if (result){
+    console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);
+  } else {
+    console.error(`${resolution.source} didn't return anything`
+  }
 } catch(error) {
-  console.error(`${resolution.source} returned a data error: ${error}`);
+  console.error(`${resolution.source} returned a result error: ${error}`);
 }
 ```
 #### See also
 * [`Context`](Types#context)
 * [`TargetApp`](Types#targetapp)
+* [`IntentResult`](Types#intentresult)
 * [`IntentResolution`](Metadata#intentresolution)
 * [`ResolveError`](Errors#resolveerror)
+* [`ResultError`](Errors#resulterror)
 
 ### `raiseIntentForContext`
 
@@ -535,7 +670,7 @@ Alternatively, the specific app or app instance to target can also be provided, 
 
 Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
 
-Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getResult()` function of the IntentResolution object. If an error occurs (i.e. an error is thrown by the handler function, the promise it returns is rejected, or a promse is not returned by the handler function) then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution` with a string from the `DataError` enumeration. 
+Returns an `IntentResolution` object, see [`raiseIntent()`](#raiseintent) for details.
 
 If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned. If a specific target `app` parameter was set, but either the app or app instance is not available then the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` errors MUST be returned. 
 
@@ -550,6 +685,7 @@ await fdc3.raiseIntentForContext(context, targetAppMetadata);
 ```
 
 #### See also
+* [`raiseIntent()`](#raiseintent)
 * [`Context`](Types#context)
 * [`TargetApp`](Types#targetapp)
 * [`IntentResolution`](Metadata#intentresolution)

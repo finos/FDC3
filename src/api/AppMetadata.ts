@@ -1,6 +1,6 @@
 /**
  * SPDX-License-Identifier: Apache-2.0
- * Copyright 2019 FINOS FDC3 contributors - see NOTICE file
+ * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
 import { Icon } from './Icon';
@@ -44,4 +44,7 @@ export interface AppMetadata {
 
   /** A list of image URLs for the application that can be used to render UI elements */
   readonly images?: Array<string>;
+
+  /** The type of output returned for any intent specified during resolution. May express a particular context type (e.g. "fdc3.instrument"), channel (e.g. "channel") or a channel that will receive a specified type (e.g. "channel<fdc3.instrument>"). */
+  readonly resultType?: string | null;
 }
