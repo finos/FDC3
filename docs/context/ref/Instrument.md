@@ -19,7 +19,7 @@ In general, the more identifiers an application can provide, the easier it will 
 is for at least one instrument identifier to be provided.
 
 - Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant for stock tickers specifically,
-if the identifier you want to share is not a stock ticker, or one of the other standardised ones, rather define 
+if the identifier you want to share is not a stock ticker, or one of the other standardised ones, rather define
 a property that makes it clear what value it is. This makes it easier for target applications.
 
 ## Type
@@ -76,6 +76,7 @@ Intents
 - [ViewInstrument](../../intents/ref/ViewInstrument)
 - [ViewNews](../../intents/ref/ViewNews)
 - [ViewQuote](../../intents/ref/ViewQuote)
+- [ViewInteractions](../../intents/ref/ViewInteractions)
 
 FINOS Financial Objects
 - [Instrument](https://fo.finos.org/docs/objects/instrument)
