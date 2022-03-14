@@ -18,6 +18,7 @@
         "ids": [
           "api/ref/DesktopAgent",
           "api/ref/Channel",
+          "api/ref/PrivateChannel",
           "api/ref/Listener",
           "api/ref/Globals",
           "api/ref/Types",

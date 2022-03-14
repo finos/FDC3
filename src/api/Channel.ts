@@ -1,6 +1,6 @@
 /**
  * SPDX-License-Identifier: Apache-2.0
- * Copyright 2019 FINOS FDC3 contributors - see NOTICE file
+ * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
 import { Context } from '../context/ContextTypes';
@@ -19,6 +19,7 @@ export interface Channel {
 
   /**
    * Uniquely defines each channel type.
+   * Can be "user", "app" or "private".
    */
   readonly type: string;
 
