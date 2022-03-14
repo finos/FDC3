@@ -67,16 +67,123 @@ Clients should send these messages on to the 'server', which will add the `sourc
 
 
 ## Individual message exchanges
+The sections below cover all scenerios for each of the Desktop Agent methods.
+Each section assumes that we have 3 agents connected by bridge: agent-A, agent-B and agent-C. Agent-C provides a websocket server that agent-A and agent-B have connected to.
 
-Assume that we have 3 agents connected by bridge: agent-A, agent-B and agent-C. agent-C provides a websocket server that agent-A and agent-B have connected to.
+## Apps
+### Open
+```typescript
+  open(app: TargetApp, context?: Context): Promise<AppMetadata>;
+```
+#### Request format:
+A findIntent call is made on agent-A.
+```javascript
+// Open an app without context, using the app name
+let instanceMetadata = await fdc3.open('myApp');
 
+// Open an app without context, using an AppMetadata object to specify the target
+let appMetadata = {name: 'myApp', appId: 'myApp-v1.0.1', version: '1.0.1'};
+let instanceMetadata = await fdc3.open(appMetadata);
+
+// Open an app without context, using an AppMetadata object to specify the target and Desktop Agent
+let appMetadata = {name: 'myApp', appId: 'myApp-v1.0.1', version: '1.0.1', desktopAgents:["DesktopAgentB"]};
+let instanceMetadata = await fdc3.open(appMetadata);
+
+```
+There are three scenerios where Desktop Agent A sends an Open command
+1) The app is opened on all Desktop Agents instances
+2) The app is not found on any Desktop Agent
+3) The Desktop Agent(s) that the app should open on is specified by the end user ahead of time
+```mermaid
+sequenceDiagram
+    participant DA as Desktop Agent A
+    participant DB as Desktop Agent B
+    participant DC as Desktop Agent C
+    DA ->>+ DB: Open Chart
+    DB ->>+ DC: Open Chart
+    DB ->> DB: App Found
+    DB ->> DB: Open App
+    DB -->>- DA: Return App Data
+    DC ->> DC: App Found
+    DC ->> DC: Open App
+    DC -->>- DB: Return App Data
+```
+**When the desktop agent is in a list**
+```mermaid
+sequenceDiagram
+    participant DA as Desktop Agent A
+    participant DB as Desktop Agent B
+    participant DC as Desktop Agent C
+    DA ->>+ DB: Open App
+    DB --x DB: Is not in the desktopAgents list
+    DB ->>+ DC: Open App
+    DC ->> DC: Desktop agent in list and App Found
+    DC ->> DC: Open App
+    DC -->>- DB: Return App Data
+    DB -->>- DA:Return App Data
+```
+
+It sends an outward message to the other desktop agents (sent from A -> C):
+```JSON
+{
+   "requestGuid": "4dd60b3b-9835-4cab-870c-6b9b099ed7ae",
+   "timestamp": "2020-03-...",
+   "type": "open",
+   "body": {
+       "appMetaData": {
+           "name": "myApp",
+           "appId": "myApp-v1.0.1",
+           "version": "1.0.1",
+           "desktopAgent":"DesktopAgentB"
+           },
+       "context": {/*contxtObj*/}
+   }
+}
+```
+
+which is repeated from C -> B as:
+```JSON
+{
+    "requestGuid": "4dd60b3b-9835-4cab-870c-6b9b099ed7ae",
+    "timestamp": 2020-03-...,
+    "type": "open",
+    "body": {
+       "appMetaData": {
+           "name": "myApp",
+           "appId": "myApp-v1.0.1",
+           "version": "1.0.1",
+           "desktopAgent":"DesktopAgentB"
+           },
+       "context": {/*contxtObj*/}
+    },
+    "sourceAgent": "agent-A"
+}
+```
+
+### findInstances
+```typescript
+  findInstances(app: TargetApp): Promise<Array<AppMetadata>>;
+```
+
+```mermaid
+sequenceDiagram
+    participant DA as Desktop Agent A
+    participant DB as Desktop Agent B
+    participant DC as Desktop Agent C
+    DA ->>+ DB: Find Instances of App
+    DB ->>+ DC: Find Instances of App
+    DC -->>- DB: Return App Data
+    DB -->>- DA:Return App Data
+```
+
+## Context
 ### For broadcasts on channels
 Only needs a single message (no response)
 An app on agent-A does:
 ```javascript
 fdc3.broadcast(contextObj);
-``` 
-or 
+```
+or
 ```javascript
 (await fdc3.getOrCreateChannel("myChannel")).broadcast(contextObj)
 ```
@@ -109,7 +216,7 @@ which it repeats on to Agent-B with the `sourceAgent` metadata added:
 }
 ```
 
-
+## Intents
 ### findIntent
 ```typescript
 findIntent(intent: string, context?: Context): Promise<AppIntent>;
@@ -117,7 +224,7 @@ findIntent(intent: string, context?: Context): Promise<AppIntent>;
 
 #### Request format:
 
-A findIntent call is made on agent-A. 
+A findIntent call is made on agent-A.
 ```javascript
 let appIntent = await fdc3.findIntent();
 ```
@@ -323,7 +430,7 @@ Target specified
 1. DA-A (client) sends `raiseIntent` request with target (DA-B) to DA-C (server)
 2. DA-C populates the sourceAgent in the raiseIntent request and forward the request to DA-B directly
 3. DA-B sends `intentResolution` response to DA-C that fills in the targetAgent field
-4. DA-C sends the augmented `intentResolution` response to DA-A 
+4. DA-C sends the augmented `intentResolution` response to DA-A
 
 ---
 
@@ -537,7 +644,7 @@ Then agent C (ie. the server) should augment the responses so that a unequivocal
         "source": { // agent-A intent resolver UI response
             "name": "myChartA",
             "agent": "agent-A"
-        },    
+        },
         "source": { // agent-B intent resolver UI response
             "name": "myChartB",
             "agent": "agent-B"
@@ -549,4 +656,6 @@ Then agent C (ie. the server) should augment the responses so that a unequivocal
     ],
 }
 ```
+
+## Channels
 
