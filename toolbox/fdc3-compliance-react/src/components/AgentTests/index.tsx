@@ -3,7 +3,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Typography, Grid, Button } from "@material-ui/core";
 import React, { useEffect } from "react";
 import mocha from "mocha";
-import { initTests } from "../../test/initTests";
+import { initAllTests, runTests } from "../../test/testSuite";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -48,27 +48,23 @@ export const AgentTests = observer(() => {
 		// We're not really using the JSON output but it prevents
 		// it from trying to add to the mocha div
 		// This version of the setup isn't in the typescript defs
-		(mocha as any).setup({ ui: "bdd", reporter: "json" });
-		initTests();
+		initAllTests();
 	}, []);
 
+	const reportFailure = (test: any): void => {
+		console.log("Oh no it failed.");
+		console.log(test);
+	};
+
+	const reportSuccess = (test: any) => {
+		console.log("This test passed!!!");
+		console.log(test);
+	};
+
 	const handRunTests = () => {
-		const runner = mocha.run();
-
-		// runner contains all the test info and event handlers
-		// The typescript defs say it is void but they lie
-		// runner.stats contains all the totals
-		// runner.suite contains test details
-		// But we can also add event handlers to it:
-
-		(runner as any).on("pass", (test: any) => {
-			console.log("This test passed!!!");
-			console.log(test);
-		});
-
-		(runner as any).on("fail", (test: any) => {
-			console.log("Oh no it failed.");
-			console.log(test);
+		runTests({
+			onFail: reportFailure,
+			onPass: reportSuccess,
 		});
 	};
 
