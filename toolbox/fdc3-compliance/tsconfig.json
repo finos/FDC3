@@ -2,11 +2,15 @@
     "compilerOptions": {
       "allowSyntheticDefaultImports": true,
       "noImplicitAny": false,
-      "module": "es6",
+      "module": "commonjs",
       "target": "es5",
       "allowJs": true,
-      "moduleResolution": "node",
+      "moduleResolution":"Node",
       "sourceMap": true,
+      "esModuleInterop": true,
+      "declaration": true,
+      "declarationDir": "declarations",
+      "declarationMap": true
     },
-    "include": ["src/**/*.ts"],
+    "include": ["src/**/*.ts", "src/silentRun.mts"],
 }

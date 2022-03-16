@@ -2,7 +2,6 @@
   "name": "fdc3-compliance",
   "version": "0.0.1",
   "description": "FDC3 Compliance Testing",
-  "main": "index.js",
   "scripts": {
     "build": "yarn run build:prettier && yarn run build:webpack && yarn run build:copy",
     "build:copy": "npx copyfiles --exclude **/*.ts --exclude src/index.html --flat src/*.* build/",
@@ -29,7 +28,8 @@
     "mocha": "^9.2.1",
     "process": "^0.11.10",
     "stream-browserify": "^3.0.0",
-    "util": "^0.12.4"
+    "util": "^0.12.4",
+    "window": "^4.2.7"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",

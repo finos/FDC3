@@ -12,7 +12,7 @@ import fdc3LeaveCurrentChannel from "./fdc3.leaveCurrentChannel";
 import fdc3Open from "./fdc3.open";
 import fdc3RaiseIntent from "./fdc3.raiseIntent";
 import fdc3RaiseIntentForContext from "./fdc3.raiseIntentForContext";
-import mocha, { Runner, Stats } from "mocha";
+import mocha, { Stats } from "mocha";
 import { TestResultHandlers } from "../complianceTypes";
 
 const nonInteractiveTestSuites = [
@@ -38,7 +38,11 @@ const potentiallyInteractiveTestSuites = [
 const commonInitialisation = () => {
   // Mocha setup creates the describe and it functions,
   // so must happens before test definition
-  (mocha as any).setup({ ui: "bdd", reporter: "json" });
+  (mocha as any).setup({
+    ui: "bdd",
+    reporter: "json",
+    cleanReferencesAfterRun: false,
+  });
 
   // The Typescript mappings are missing the global timeout function
   (mocha as any).timeout(10000);
@@ -58,23 +62,51 @@ export const initAllTests = () => {
   initPotentiallyInteractive();
 };
 
-export const initNonInteractiveTests = () => {
+export const initNonInteractiveTests = (fdc3?: any) => {
+  if (fdc3) {
+    if (typeof window === "undefined") {
+      (global.window as any) = { fdc3 };
+      if (typeof location === "undefined") {
+        (global.location as any) = {};
+      }
+    } else {
+      window.fdc3 = fdc3;
+    }
+  }
+
   commonInitialisation();
   initNonInteractive();
 };
 
-export const runTests = (resultHandlers?: TestResultHandlers): Stats => {
+export const runTests = (resultHandlers?: TestResultHandlers): void => {
   const runner = mocha.run();
+
+  const passed = [];
+  const failed = [];
 
   if (resultHandlers) {
     if (resultHandlers.onPass) {
-      (runner as any).on("pass", resultHandlers.onPass);
+      (runner as any).on("pass", (test) => {
+        passed.push(test);
+        resultHandlers.onPass(test);
+      });
     }
 
     if (resultHandlers.onFail) {
-      (runner as any).on("fail", resultHandlers.onFail);
+      (runner as any).on("fail", (test) => {
+        failed.push(test);
+        resultHandlers.onFail(test);
+      });
+    }
+
+    if (resultHandlers.onComplete) {
+      (runner as any).on("end", () => {
+        resultHandlers.onComplete({
+          passed,
+          failed,
+          stats: (runner as any).stats,
+        });
+      });
     }
   }
-
-  return (runner as any).stats;
 };

@@ -7,9 +7,14 @@ const isProduction = process.env.NODE_ENV == "production";
 const config = {
   entry: {
     FDC3Conformance: "./src/FDC3Conformance.ts",
+    silentRun: "./src/silentRun.ts",
   },
   devtool: "inline-source-map",
   output: {
+    library: "FDC3Compliance",
+    libraryTarget: "umd",
+    libraryExport: "default",
+    globalObject: 'this',
     path: path.resolve(__dirname, "build"),
   },
   plugins: [
@@ -37,6 +42,7 @@ const config = {
       util: require.resolve("util/"),
       stream: require.resolve("stream-browserify/"),
       buffer: require.resolve("buffer/"),
+      window: false,
     },
   },
 };

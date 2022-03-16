@@ -1,23 +1,15 @@
 import { Summary } from "./complianceTypes";
 import { initNonInteractiveTests, runTests } from "./test/testSuite";
 
-let summary: Summary;
+const runSilentTests = (
+  fdc3: any,
+  onComplete: (summary: Summary) => void
+): void => {
+  initNonInteractiveTests(fdc3);
 
-export const runSilentTests = (): Summary => {
-  initNonInteractiveTests();
-  summary.stats = runTests({
-    onPass: (test) => {
-      console.log(`Test passed: ${test.parent.title}: ${test.title}`);
-
-      summary.passed.push(test);
-    },
-    onFail: (test) => {
-      console.error(`Test failed: ${test.parent.title}: ${test.title}`);
-
-      summary.failed.push(test);
-    },
+  const stats = runTests({
+    onComplete,
   });
-
-  console.log(summary);
-  return summary;
 };
+
+export default runSilentTests;
