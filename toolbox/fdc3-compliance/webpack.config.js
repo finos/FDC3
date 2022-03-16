@@ -6,29 +6,15 @@ const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
   entry: {
-    FDC3Conformance: [
-      "./src/initMocha.ts",
-      "./src/test/fdc3.addContextListener.ts",
-      "./src/test/fdc3.addIntentListener.ts",
-      "./src/test/fdc3.broadcast.ts",
-      "./src/test/fdc3.getCurrentChannel.ts",
-      "./src/test/fdc3.getInfo.ts",
-      "./src/test/fdc3.getOrCreateChannel.ts",
-      "./src/test/fdc3.getSystemChannels.ts",
-      "./src/test/fdc3.joinChannel.ts",
-      "./src/test/fdc3.leaveCurrentChannel.ts",
-      "./src/test/fdc3.open.ts",
-      "./src/test/fdc3.findIntent.ts",
-      "./src/test/fdc3.findIntentsByContext.ts",
-      "./src/test/fdc3.raiseIntent.ts",
-      "./src/test/fdc3.raiseIntentForContext.ts",
-
-      /* Must be last so all the preceding files setup their tests first */
-      "./src/FDC3Conformance.ts",
-    ],
+    FDC3Conformance: "./src/FDC3Conformance.ts",
+    silentRun: "./src/silentRun.ts",
   },
   devtool: "inline-source-map",
   output: {
+    library: "FDC3Compliance",
+    libraryTarget: "umd",
+    libraryExport: "default",
+    globalObject: 'this',
     path: path.resolve(__dirname, "build"),
   },
   plugins: [
@@ -47,7 +33,7 @@ const config = {
         test: /\.(ts|tsx)$/i,
         loader: "ts-loader",
         exclude: [path.resolve(__dirname, "/node_modules/")],
-      }
+      },
     ],
   },
   resolve: {
@@ -56,6 +42,7 @@ const config = {
       util: require.resolve("util/"),
       stream: require.resolve("stream-browserify/"),
       buffer: require.resolve("buffer/"),
+      window: false,
     },
   },
 };
