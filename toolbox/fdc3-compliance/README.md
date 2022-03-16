@@ -30,3 +30,20 @@ Alternatively, a full set of static files are available in the `build` folder. L
 ## Application Definition
 
 A basic FDC3 application definition, as defined in the [application directory specification](https://fdc3.finos.org/schemas/1.2/app-directory#tag/Application), is supplied in the file `appDefinition.json`. This may be useful when adding the conformance tests to an application directory.
+
+## Integration with automated testing
+
+The test suite can be run independently without interaction - for example as part of a CI build, or from the command line. See TypeScript and JavaScript examples [here](./examples/). 
+First import the silentRun module from the build folder, and then call the default method. The fdc3 global variable is passed in as a parameter, to remove the need for a complete desktop agent environment:
+
+```javascript
+const runSilentTests = require("../build/silentRun");
+
+// Pass in the fdc3 global object to be tested
+// Results are returned via callback
+runSilentTests(fdc3, (results) => {
+  // results.stats contains the summary results
+  // For more details, see the passed and failed arrays
+  console.log(results.stats);
+});
+```
