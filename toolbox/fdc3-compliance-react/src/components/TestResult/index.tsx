@@ -13,15 +13,15 @@ interface ITest {
   [key: string]: any
 }
 
-const statusIcons = (): { [key: string]: React.ReactElement } => { return{
+const statusIcons = (): { [key: string]: React.ReactElement } => ({
   running: <PlayArrowRounded color="secondary" fontSize="small"/>,
   passed: <CheckRounded color="success" fontSize="small"/>,
   failed: <CloseRounded color="error" fontSize="small"/>,
-}}
+})
 
 export const TestResult = ({ test }: IProps) => {
   const { title, state, err } = test
-console.log(test)
+
   return (
     <Box
       sx={{
