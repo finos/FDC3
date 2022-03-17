@@ -2,8 +2,7 @@ import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Typography, Grid, Button } from "@material-ui/core";
 import React, { useEffect } from "react";
-import mocha from "mocha";
-import { initAllTests, runTests } from "../../test/testSuite";
+import { initAllTests, runTests } from "fdc3-compliance";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({

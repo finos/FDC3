@@ -1,5 +1,4 @@
-import { Summary } from "../build/complianceTypes";
-import runSilentTests from "../build/silentRun";
+const { runSilentTests } = require("..");
 
 // Dummy implementation of FDC3
 const fdc3 = {
@@ -14,8 +13,8 @@ const fdc3 = {
 
 // Pass in the fdc3 global object to be tested
 // Results are returned via callback
-runSilentTests(fdc3, (results: Summary) => {
-  // stats contains the summary results
+runSilentTests(fdc3, (results) => {
+  // results.stats contains the summary results
   // For more details, see the passed and failed arrays
   console.log(results.stats);
 });
