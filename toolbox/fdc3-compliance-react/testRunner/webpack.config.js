@@ -1,27 +1,23 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 
 const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
   entry: {
-    FDC3Conformance: "./src/FDC3Conformance.ts",
-    silentRun: "./src/silentRun.ts",
+    index: "./src/index.ts",
   },
   devtool: "inline-source-map",
   output: {
-    library: "FDC3Compliance",
-    libraryTarget: "umd",
-    libraryExport: "default",
+    library: {
+      name: "fdc3Compliance",
+      type: "umd",
+    },
+    filename: 'fdc3-compliance.js',
     globalObject: 'this',
-    path: path.resolve(__dirname, "build"),
+    path: path.resolve(__dirname, "lib"),
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: "src/index.html",
-      filename: "index.html",
-    }),
     new webpack.ProvidePlugin({
       process: "process/browser",
       Buffer: ["buffer", "Buffer"],

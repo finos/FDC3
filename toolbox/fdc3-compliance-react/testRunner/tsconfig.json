@@ -1,15 +1,16 @@
 {
     "compilerOptions": {
+      "module": "esnext",
+      "lib": ["dom", "esnext"],
       "allowSyntheticDefaultImports": true,
       "noImplicitAny": false,
-      "module": "commonjs",
       "target": "es5",
       "allowJs": true,
       "moduleResolution":"Node",
       "sourceMap": true,
       "esModuleInterop": true,
       "declaration": true,
-      "declarationDir": "build",
+      "declarationDir": "lib",
       "declarationMap": true
     },
     "include": ["src/**/*.ts"],

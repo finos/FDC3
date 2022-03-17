@@ -18,6 +18,7 @@
     "@types/node": "^17.0.21",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "fdc3-compliance": "./testRunner/",
     "jsoneditor": "^9.5.6",
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
@@ -31,7 +32,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build:app": "react-scripts build",
+    "build:lib": "cd testRunner && yarn build",
+    "build": "yarn build:lib && yarn build:app",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --cache --quiet **/*.{ts,tsx,js,jsx} && prettier --check **/*.{ts,tsx,js,jsx,json,yml,css,html,md}",
