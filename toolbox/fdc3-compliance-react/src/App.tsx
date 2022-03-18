@@ -183,7 +183,7 @@ export const App = observer(() => {
 				<Grid className={classes.header} container item xs={12}>
 					<Header fdc3Available={fdc3Available} />
 				</Grid>
-				{!fdc3Available ? (
+				{fdc3Available ? (
 					<Grid className={classes.body} container spacing={2} item xs={12} style={{ marginLeft: "0px" }}>
 						<Grid item xs={12} style={{ flex: 1 }}>
 							<Paper className={classes.paper}>
