@@ -1,14 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CircularProgress, Typography } from "@mui/material"
 import { Box } from "@mui/system"
+import { Stats } from "mocha";
+import { useTimer } from "../../hooks/useTimer";
+import { TestsStatus } from "../AgentTests";
 
 interface IProps {
-  stats: any
+  status: TestsStatus
+  passes: number
+  failures: number
+  total: number
+  stats: Stats | null
 }
 
-export const TestSummary = ({ stats }: IProps) => {
-  const { passes = 0, failures = 0, tests = 1, duration } = stats
-  const completion = ((passes + failures) / tests) * 100
+export const TestSummary = ({ status, passes, failures, total, stats }: IProps) => {
+  const completion = Math.floor(((passes + failures) / total) * 100)
+  const { timer, start, stop, reset } = useTimer()
+
+  useEffect(() => {
+    if (status === 'running') {
+      reset()
+      start()
+    }
+    if (status === 'idle') {
+      stop()
+    }
+  }, [status])
 
   return (
     <Box
@@ -20,7 +37,7 @@ export const TestSummary = ({ stats }: IProps) => {
     > 
       <Typography>Passed: {passes}</Typography>
       <Typography>Failed: {failures}</Typography>
-      <Typography>Duration: {duration}</Typography>
+      <Typography>Duration: {stats ? stats.duration : timer}ms</Typography>
       <Box
         sx={{
           display: 'grid',

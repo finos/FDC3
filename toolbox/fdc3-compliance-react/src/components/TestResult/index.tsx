@@ -1,16 +1,10 @@
-import React from "react"
+import React, { memo } from "react"
 import { CheckRounded, CloseRounded, PlayArrowRounded } from "@mui/icons-material"
 import { Box, Typography } from "@mui/material"
+import { Test } from "mocha"
 
 interface IProps {
-  test: ITest
-}
-
-interface ITest {
-  title: string
-  state: string
-  error: string
-  [key: string]: any
+  test: Test
 }
 
 const statusIcons = (): { [key: string]: React.ReactElement } => ({
@@ -19,7 +13,7 @@ const statusIcons = (): { [key: string]: React.ReactElement } => ({
   failed: <CloseRounded color="error" fontSize="small"/>,
 })
 
-export const TestResult = ({ test }: IProps) => {
+export const TestResult = memo(({ test }: IProps) => {
   const { title, state, err } = test
 
   return (
@@ -35,8 +29,12 @@ export const TestResult = ({ test }: IProps) => {
         sx={{
           p: 1,
         }}
-      >
-        {statusIcons()[state]}
+      > 
+        {state ? (
+          statusIcons()[state]
+        ) : (
+          statusIcons()['running']
+        )}
       </Box>
 
       <Typography
@@ -70,4 +68,6 @@ export const TestResult = ({ test }: IProps) => {
       )}
     </Box>
   )
-}
+})
+
+TestResult.displayName = 'TestResult';

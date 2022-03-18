@@ -87,7 +87,7 @@ export const runTests = (resultHandlers?: TestResultHandlers): void => {
   if (resultHandlers) {
     if (resultHandlers.onStart) {
       (runner as any).on("start", () => {
-        resultHandlers.onStart();
+        resultHandlers.onStart(runner);
       });
     }
 
