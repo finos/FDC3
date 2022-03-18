@@ -1,0 +1,156 @@
+<html>
+
+<head>
+	<title>FDC3 Explained</title>
+  <meta charset="UTF-8">
+	<link rel="stylesheet" href="./styles.css">
+	<script type="module" src="./main.js" defer></script>
+</head>
+
+<body>
+	<div class="main">
+		<table border="1">
+
+			<tr>
+				<td colspan="3" style="text-align:center;">Back to <a href="..">main page</a>.</td>
+			</tr>
+
+			<tr>
+				<td colspan="3"><hr/></td>
+			</tr>
+
+			<tr>
+				<td class="header">FDC3 Supported </td>
+				<td><span id="fdc3-support">Checking...</span></td>
+			</tr>
+
+			<tr>
+				<td class="header">FDC3 Provider:</td>
+				<td><span id="providerDetails">None</span></td>
+			</tr>
+
+			<tr>
+				<td class="header">FDC3 Version:</td>
+				<td>
+          <select id="versions" onchange="window.location.href=`../${this.value}`">
+            <option value="1.0">1.0</option>
+            <option value="1.1" selected>1.1</option>
+            <option value="1.2">1.2</option>
+          </select>
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="3"><hr/></td>
+			</tr>
+
+			<tr>
+				<td class="header">App Directory:</td>
+				<td><span id="directoryDetails">Not supported yet!</span></td>
+				<td><input type="button" value="Connect" class="not-supported" disabled></td>
+			</tr>
+
+			<tr>
+				<td class="header">Available Apps:</td>
+				<td><textarea disabled></textarea></td>
+				<td><input type="button" value="Fetch" disabled></td>
+			</tr>
+
+			<tr>
+				<td colspan="3"><hr/></td>
+			</tr>
+
+			<tr>
+				<td class="header">Available Channels:</td>
+				<td>
+					System Channels:
+					<ul id="system-channel-list"></ul>
+					App Channels:
+					<ul id="app-channel-list"></ul>
+				</td>
+			</tr>
+
+			<tr>
+				<td class="header">Add App Channel:</td>
+				<td><input id="app-channel"></input></td>
+				<td><Button type="button" id="add-app-channel__btn" disabled>Add</Button></td>
+			</tr>
+
+			<tr>
+				<td class="header">Join Channel:</td>
+				<td>Channel: <select class="fdc3-channels" id="join-channel"></select>
+					<Button type="button" id="join-channel__btn" disabled>Join</Button>
+				</td>
+				<td><Button type="button" id="leave-channel__btn" disabled>Leave</Button></td>
+			</tr>
+
+			<tr>
+				<td colspan="3"><hr/></td>
+			</tr>
+
+			<tr>
+				<td class="header" rowspan="2">Broadcast Context:</td>
+			</tr>
+			<tr>
+				<td>
+          <textarea id="txtBroadcastData">{
+  "type":"fdc3.instrument",
+  "id": {
+    "ISIN":"US0378331005",
+    "SEDOL":"2046251",
+    "ticker":"AAPL"
+  },
+  "name":"Apple Inc."
+}</textarea>
+        </td>
+        <td rowspan="2">
+          <Button type="button" id="broadcast__btn" disabled>Send</Button>
+        </td>
+			</tr>
+
+			<tr>
+				<td class="header" rowspan="3">Context received:</td>
+			</tr>
+
+			<tr>
+				<td>Context Type: <input type="text" id="context-type"></td>
+				<td><Button type="button" id="get_context__btn" disabled>Get context</Button></td>
+			</tr>
+
+			<tr>
+				<td><textarea id="context-result" disabled></textarea></td>
+			</tr>
+
+			<tr>
+				<td colspan="3"><hr/></td>
+			</tr>
+
+			<tr>
+				<td class="header" rowspan="3">Raise Intent:</td>
+			</tr>
+
+			<tr>
+				<td>Intent: <input type="text" id="intent" value="ViewChart"></td>
+			</tr>
+
+			<tr>
+				<td><textarea id="intent-context">{
+  "type":"fdc3.instrument",
+  "id": {
+    "ISIN":"US0378331005",
+    "SEDOL":"2046251",
+    "ticker":"AAPL"
+  },
+  "name":"Apple Inc."
+}</textarea>
+        </td>
+				<td>
+          <Button id="raise-intent__btn" disabled>Raise Intent </Button>
+        </td>
+			</tr>
+
+		</table>
+	</div>
+</body>
+
+</html>
