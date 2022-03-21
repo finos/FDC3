@@ -1,0 +1,90 @@
+<html>
+
+<head>
+	<title>FDC3 Explained</title>
+	<link rel="stylesheet" href="./styles.css">
+	<script type="module" src="./main.js" defer></script>
+</head>
+
+<body>
+
+	<table border="1">
+		<tr>
+			<td colspan="3" style="text-align:center;">Back to <a href="..">main page</a>.</td>
+		</tr>
+
+		<tr>
+			<td class="header">FDC3 Provider:</td>
+			<td><span id="providerDetails">FDC3 Not Available</span></td>
+    </tr>
+
+		<tr>
+			<td class="header">FDC3 Version:</td>
+			<td>
+				<select id="versions" onchange="window.location.href=`../${this.value}`">
+          <option value="1.0" selected>1.0</option>
+          <option value="1.1">1.1</option>
+          <option value="1.2">1.2</option>
+				</select>
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="3"><hr/></td>
+		</tr>
+
+		<tr>
+			<td class="header">App Directory:</td>
+			<td><span id="directoryDetails">No Application Directory Connected</span></td>
+			<td><input type="button" value="Connect" disabled></td>
+		</tr>
+
+		<tr>
+			<td class="header">Available Apps:</td>
+			<td><textarea disabled></textarea></td>
+			<td><input type="button" value="Fetch" disabled></td>
+		</tr>
+
+		<tr>
+			<td colspan="3"><hr/></td>
+		</tr>
+
+		<tr>
+			<td class="header">Broadcast Context:</td>
+			<td>
+        <textarea id="broadcastText" disabled>{
+  "type":"fdc3.instrument",
+  "id": {
+    "ISIN":"US0378331005",
+    "SEDOL":"2046251",
+    "ticker":"AAPL"
+  },
+  "name":"Apple Inc."
+}</textarea>
+      </td>
+			<td>
+        <input type="button"
+               value="Send"
+               id="broadcastButton"
+               disabled>
+      </td>
+		</tr>
+
+		<tr>
+			<td colspan="3"><hr/></td>
+		</tr>
+
+		<tr>
+			<td class="header" rowspan="3">Get Context:</td>
+      <td><textarea disabled>Not implemented</textarea></td>
+			<td>
+        <input type="button" value="Subscribe" disabled />
+        <br />
+        <input type="button" value="Unsbscribe" disabled />
+      </td>
+		</tr>
+	</table>
+
+</body>
+
+</html>
