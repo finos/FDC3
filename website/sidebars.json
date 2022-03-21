@@ -36,6 +36,7 @@
         "ids": [
           "intents/ref/StartCall",
           "intents/ref/StartChat",
+          "intents/ref/StartEmail",
           "intents/ref/ViewChart",
           "intents/ref/ViewQuote",
           "intents/ref/ViewNews",
@@ -63,6 +64,7 @@
           "context/ref/Context",
           "context/ref/Contact",
           "context/ref/ContactList",
+          "context/ref/Email",
           "context/ref/Instrument",
           "context/ref/InstrumentList",
           "context/ref/Organization",
