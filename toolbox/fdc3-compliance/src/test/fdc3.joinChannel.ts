@@ -1,5 +1,6 @@
-describe("fdc3.joinChannel", async () => {
+describe("fdc3.joinChannel", () => {
   it("Method is callable", async () => {
-    await window.fdc3.joinChannel("FDC3Conformance"); // This will hang under the Chrome Extension Desktop Agent
+    const channels = window.fdc3.getSystemChannels();
+    await window.fdc3.joinChannel(channels[0]);
   });
 });

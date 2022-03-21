@@ -6,16 +6,16 @@
     "version": "1.2",
     "title": "FDC3 Compliance",
     "tooltip": "FDC3 Compliance Test",
-    "description": "FDC3  TestCompliance",
+    "description": "FDC3 Compliance Test",
     "images": [
       {
-        "url": "https://fdc3.finos.org/img/fdc3-icon-2019.svg"
+        "url": "https://fdc3.finos.org/img/fdc3-logo-2019.png"
       }
     ],
     "publisher": "FINOS",
     "icons": [
       {
-        "icon": "https://fdc3.finos.org/img/favicon/favicon.ico"
+        "icon": "https://fdc3.finos.org/img/fdc3-logo-2019.png"
       }
     ],
     "intents": [

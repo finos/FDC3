@@ -1,7 +1,7 @@
 # FDC3 Conformance
 
 ## Background
-This project represents a means to confirm conformance of a [desktop agent](https://fdc3.finos.org/docs/api/ref/DesktopAgent) to the [fdc3 api specification](https://fdc3.finos.org/docs/api/spec).
+This project represents a means to confirm conformance of a [desktop agent](https://fdc3.finos.org/docs/api/ref/DesktopAgent) to the [fdc3 api specification](https://fdc3.finos.org/docs/api/spec). See [here](https://fdc3.finos.org/docs/fdc3-compliance) for more information about conformance. 
 
 To do so this application can be launched within the desktop agent which will run a series of tests to verify conformance against the specification.
 

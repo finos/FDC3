@@ -1,6 +1,6 @@
-describe("fdc3.broadcast", async () => {
+describe("fdc3.broadcast", () => {
   it("Method is callable", async () => {
-    window.fdc3.broadcast({
+    await window.fdc3.broadcast({
       type: "fdc3.instrument",
       id: { ticker: "AAPL" },
     });
