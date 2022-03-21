@@ -88,6 +88,9 @@ The following are standard FDC3 context types.
     - A collection of contacts.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/contactlist)
     - [schema](/schemas/next/contactList.schema.json)
+- __fd3.email__
+  - A collection of information to be used to initiate an email with a Contact or ContactList
+  - [schema](/schemas/next/email.schema.json)
 - __fdc3.country__
     - A standard country entity.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/country)
@@ -164,6 +167,22 @@ __Note:__ The below examples show how the base context data interface can be use
         "ISOALPHA2":"US",
         "ISOALPHA3":"USA"
     }
+}
+```
+
+#### Email
+```json
+{
+  "type": "fdc3.email",
+  "recipients": {
+    "type": "fdc3.contact",
+    "name": "Jane Doe",
+    "id": {
+      "email": "jane.doe@example.com"
+    }
+  },
+  "subject": "The information you requested",
+  "textBody": "Blah, blah, blah ..."
 }
 ```
 

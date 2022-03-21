@@ -39,6 +39,9 @@ However, there is a need for applications to ensure that their intents avoid col
 ### [StartChat](ref/StartChat)
   * Expected context: Contact
   * Expected behavior: initiate chat with contact(s)
+### [StartEmail](ref/StartEmail)
+  * Expected context: Email
+  * Expected behavior: Initiate an email with a contact or list of contacts provided as part of an Email context
 ### [ViewChart](ref/ViewChart)
   * Expected context: Instrument
   * Expected behavior: display a chart for the context
