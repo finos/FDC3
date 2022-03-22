@@ -42,27 +42,24 @@ fdc3.raiseIntent('StartChat', contact)
 const initSettings = {
     type: 'fdc3.chat.initSettings',
     chatName: 'Issue #123',
-    members: [{
-        type: 'fdc3.contact',
-        name: 'Jane Doe',
-        id: {
-            email: 'jane@mail.com'
-        }
-    },{
-        type: 'fdc3.contact',
-        name: 'John Doe',
-        id: {
-            email: 'john@mail.com'
-        },
-    }],
+    members: {
+        type: 'fdc3.contactList',
+        contacts: [{
+            type: 'fdc3.contact',
+            name: 'John Doe',
+            id: {
+                email: 'john@mail.com'
+            },
+        }]
+    },
     options: {
         groupRecipients: true, // one chat with both contacts
         public: false, // private chat room
         allowHistoryBrowsing: true,
         allowMessageCopy: true,
-        allowAddUser: false, // Jane and John won't be able to add other users to the chat
+        allowAddUser: false, // John won't be auhtorized to add other users to the chat
     }
-    initMessage: "Hello both!"
+    initMessage: 'Hello John!'
 }
 
 const resolution = fdc3.raiseIntent('StartChat', initSettings);

@@ -11,7 +11,7 @@
             "type": "string"
         },
         "members": {
-            "$ref": "contact.schema.json#"
+            "$ref": "contactList.schema.json#"
         },
         "initMessage": {
             "type": "string"
