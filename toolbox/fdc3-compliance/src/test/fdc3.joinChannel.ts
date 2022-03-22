@@ -1,5 +1,15 @@
-describe("fdc3.joinChannel", async () => {
+describe("fdc3.joinChannel", () => {
+  afterEach(async () => {
+    window.fdc3.leaveCurrentChannel();
+  });
+
   it("Method is callable", async () => {
-    await window.fdc3.joinChannel("FDC3Conformance"); // This will hang under the Chrome Extension Desktop Agent
+    const channels = await window.fdc3.getSystemChannels();
+
+    if (channels.length > 0) {
+      await window.fdc3.joinChannel(channels[0].id);
+    } else {
+      throw Error("No system channels are available");
+    }
   });
 });

@@ -1,12 +1,12 @@
 import { ResolveError } from "@finos/fdc3";
 
-describe("fdc3.findIntentsByContext", async () => {
+describe("fdc3.findIntentsByContext", () => {
   it("Method is callable", async () => {
     const context = {
-      type: "fdc3.instrument",
-      name: "Apple",
+      type: "ThisContextDoesNotExist",
+      name: "Name",
       id: {
-        ticker: "aapl",
+        ticker: "ticker",
         ISIN: "US0378331005",
         CUSIP: "037833100",
         FIGI: "BBG000B9XRY4",

@@ -1,9 +1,9 @@
 import { OpenError } from "@finos/fdc3";
 
-describe("fdc3.open", async () => {
+describe("fdc3.open", () => {
   it("Method is callable", async () => {
     try {
-      window.fdc3.open("fdc3-workbench");
+      await window.fdc3.open("ThisAppDoesNotExist");
     } catch (ex) {
       if (ex !== OpenError.AppNotFound) {
         throw ex;

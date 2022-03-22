@@ -1,7 +1,21 @@
-describe("fdc3.addContextListener", async () => {
+import { Listener } from "@finos/fdc3";
+
+describe("fdc3.addContextListener", () => {
+  let listener: Listener;
+
+  afterEach(async () => {
+    listener.unsubscribe();
+  });
+
   it("Method is callable", async () => {
-    await window.fdc3.addContextListener("fdc3.contact", (info: any) => {
-      console.log(`Context listener triggered for ${info}`);
-    });
+    const contextType = "fdc3.contact";
+    listener = await window.fdc3.addContextListener(
+      contextType,
+      (info: any) => {
+        console.log(
+          `Context listener of type ${contextType} triggered with result ${info}`
+        );
+      }
+    );
   });
 });
