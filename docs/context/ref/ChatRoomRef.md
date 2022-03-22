@@ -39,13 +39,6 @@ const roomRefExample = {
 const newChat = await fdc3.raiseIntent('StartChat', {
     type: 'fdc3.chat.initSettings',
     chatName: 'Issue #123',
-    members: [{
-        type: 'fdc3.contact',
-        name: 'Jane Doe',
-        id: {
-            email: 'jane@mail.com'
-        }
-    }],
     initMessage: "Hello Jane"
 });
 const roomRefs = await newChat.getResult();

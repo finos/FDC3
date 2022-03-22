@@ -19,17 +19,17 @@ https://fdc3.finos.org/schemas/next/chatInitSettings.schema.json
 
 ## Details
 
-| Property                       | Type      | Required | Example Value                                                        |
-| ------------------------------ | --------- | -------- | -------------------------------------------------------------------- |
-| `type`                         | string    | Yes      | `'fdc3.chat.initSettings'`                                           |
-| `chatName`                     | string    | No       | `'Instrumet XYZ'`                                                    |
-| `members`                      | Contact[] | No       | `[contact1, contact2]`                                               |
-| `initMessage`                  | string    | No       | `'Hello!'`                                                           |
-| `options.groupRecipients`      | boolean   | No       | `true`: if false a separate chat will be created for each member     |
-| `options.public`               | boolean   | No       | `true`: the room will be visible to everyone in the chat application |
-| `options.allowHistoryBrowsing` | boolean   | No       | `true`: members will be allowed to browser past messages             |
-| `options.allowMessageCopy`     | boolean   | No       | `true`: members will be allowed to copy/paste messages               |
-| `options.allowAddUser`         | boolean   | No       | `true`: members will be allowed to add other members to the chat     |
+| Property                       | Type        | Required | Example Value                                                        |
+| ------------------------------ | ----------- | -------- | -------------------------------------------------------------------- |
+| `type`                         | string      | Yes      | `'fdc3.chat.initSettings'`                                           |
+| `chatName`                     | string      | No       | `'Instrumet XYZ'`                                                    |
+| `members`                      | ContactList | No       | ContactList - cf. below                                              |
+| `initMessage`                  | string      | No       | `'Hello!'`                                                           |
+| `options.groupRecipients`      | boolean     | No       | `true`: if false a separate chat will be created for each member     |
+| `options.public`               | boolean     | No       | `true`: the room will be visible to everyone in the chat application |
+| `options.allowHistoryBrowsing` | boolean     | No       | `true`: members will be allowed to browser past messages             |
+| `options.allowMessageCopy`     | boolean     | No       | `true`: members will be allowed to copy/paste messages               |
+| `options.allowAddUser`         | boolean     | No       | `true`: members will be allowed to add other members to the chat     |
 
 If _members_ or _chatName_ are not provided, the application executing this
 intent is expectd to provide a mean to enter such information.
@@ -39,28 +39,30 @@ intent is expectd to provide a mean to enter such information.
 ```js
 const initSettings = {
     type: 'fdc3.chat.initSettings',
-    chatName: 'Issue #123',
-    members: [{
-        type: 'fdc3.contact',
-        name: 'Jane Doe',
-        id: {
-            email: 'jane@mail.com'
-        }
-    },{
-        type: 'fdc3.contact',
-        name: 'John Doe',
-        id: {
-            email: 'john@mail.com'
-        },
-    }],
+    chatName: 'Chat ABCD',
+    members: {
+        type: 'fdc3.contactList',
+        contacts: [{
+            type: 'fdc3.contact',
+            name: 'Jane Doe',
+            id: {
+                email: 'jane@mail.com'
+            }
+        },{
+            type: 'fdc3.contact',
+            name: 'John Doe',
+            id: {
+                email: 'john@mail.com'
+            },
+        }]
+    },
     options: {
         groupRecipients: true, // one chat with both contacts
         public: false, // private chat room
         allowHistoryBrowsing: true,
-        allowMessageCopy: true,
-        allowAddUser: false, // Jane and John won't be able to add other users to the chat
+        allowMessageCopy: true
     }
-    initMessage: "Hello both!"
+    initMessage: 'Hello both!'
 }
 
 const res = fdc3.raiseIntent('StartChat', initSettings);
