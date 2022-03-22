@@ -1,5 +1,5 @@
 ---
-id: submit-new-intent
+id: SubmitNewIntent
 sidebar_label: How To Submit New Intent
 title: How to Submit a New Intent PR
 ---
