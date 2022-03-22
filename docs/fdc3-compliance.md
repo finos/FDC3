@@ -57,7 +57,7 @@ FDC3 adopts the following deprecation policy:
 
 1. A feature can be deprecated by any major or minor version. Newly deprecated features will be described in the [Changelog](https://github.com/finos/FDC3/blob/master/CHANGELOG.md).
 2. A feature shall only be removed by a major version. Newly removed features will be described in the [Changelog](https://github.com/finos/FDC3/blob/master/CHANGELOG.md).
-3. Deprecated features are clearly marked with an `@deprecated` tag and comment in both the documentation and jsDocs applied to the Typescript sources.
+3. Deprecated features are clearly marked with an `@deprecated` tag and comment in both the documentation and jsDocs applied to the TypeScript sources.
 4. Where possible, changes to the behavior of an existing feature should be avoided; consider deprecating it and replacing it with something with a different name/syntax.
 5. Breaking change should only be made in a major version of the Standard.
 
@@ -72,3 +72,4 @@ FDC3 adopts the following experimental features policy:
 4. Unless otherwise stated, experimental features should be considered optional for compliance purposes, but recommended for implementation (i.e. the SHOULD keyword is implied).
 5. Experimental features are exempted from the normal versioning and deprecation policies that govern changes to FDC3. I.e. breaking changes may be made to experimental features between versions of the Standard without a major version release.
 6. The experimental designation maybe removed from a feature in a minor version release (as this will be considered an additive change).
+
