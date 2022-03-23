@@ -1,6 +1,6 @@
 describe("fdc3.joinChannel", () => {
   afterEach(async () => {
-    window.fdc3.leaveCurrentChannel();
+    await window.fdc3.leaveCurrentChannel();
   });
 
   it("Method is callable", async () => {

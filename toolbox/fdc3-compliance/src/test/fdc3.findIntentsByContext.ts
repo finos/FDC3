@@ -1,5 +1,7 @@
 import { ResolveError } from "@finos/fdc3";
 
+const ExpectedErrorNotThrownError = "Expected error NoAppsFound not thrown";
+
 describe("fdc3.findIntentsByContext", () => {
   it("Method is callable", async () => {
     const context = {
@@ -15,6 +17,7 @@ describe("fdc3.findIntentsByContext", () => {
 
     try {
       await window.fdc3.findIntentsByContext(context);
+      throw ExpectedErrorNotThrownError;
     } catch (ex) {
       if (ex !== ResolveError.NoAppsFound) {
         throw ex;

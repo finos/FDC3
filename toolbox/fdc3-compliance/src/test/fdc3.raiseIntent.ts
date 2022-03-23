@@ -1,12 +1,14 @@
 import { ResolveError } from "@finos/fdc3";
 
+const ExpectedErrorNotThrownError = "Expected error NoAppsFound not thrown";
+
 describe("fdc3.raiseIntent", async () => {
   it("Method is callable", async () => {
     const context = {
-      type: "fdc3.instrument",
-      name: "Apple",
+      type: "ThisContextDoesNotExist",
+      name: "Name",
       id: {
-        ticker: "aapl",
+        ticker: "ticker",
         ISIN: "US0378331005",
         CUSIP: "037833100",
         FIGI: "BBG000B9XRY4",
@@ -14,7 +16,8 @@ describe("fdc3.raiseIntent", async () => {
     };
 
     try {
-      await window.fdc3.raiseIntent("ViewChart", context);
+      await window.fdc3.raiseIntent("ThisIntentDoesNotExist", context);
+      throw ExpectedErrorNotThrownError;
     } catch (ex) {
       if (ex !== ResolveError.NoAppsFound) {
         throw ex;
