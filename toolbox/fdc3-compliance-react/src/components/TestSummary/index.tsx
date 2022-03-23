@@ -51,6 +51,9 @@ export const TestSummary = ({ status, passes, failures, total, stats }: IProps) 
             gridColumn: 1,
             gridRow: 1,
           }}
+          classes={{
+            circle: "transition: 'none';"
+          }}
         />
         <Typography
           sx={{

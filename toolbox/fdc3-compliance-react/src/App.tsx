@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { Grid, Paper, Tabs, Tab, Typography, Link } from "@material-ui/core";
+import { Box, Paper, Tabs, Tab, Typography, Link } from "@mui/material";
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import { observer } from "mobx-react";
-import { ThemeProvider } from "@material-ui/styles";
-import { createTheme } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import "normalize.css";
@@ -15,115 +13,67 @@ import snackbarStore from "./store/SnackbarStore";
 import "./App.css";
 import { fdc3Ready } from "@finos/fdc3";
 import { AgentTests } from "./components/AgentTests/index";
+import { FDC3Message } from "./components/FDC3Message";
 
 const mainTheme = createTheme({
 	palette: {
 		primary: {
-			light: "#005d85",
-			main: "#0086bf",
-			dark: "#339ecb",
-			contrastText: "#fff",
+			light: '#005d85',
+			main: '#0086bf',
+			dark: '#339ecb',
+			contrastText: '#fff',
 		},
 	},
-	props: {
+	typography: {
+		h4: {
+			fontFamily: 'Source Code Pro',
+			fontSize: '20px',
+			color: '#0086bf',
+			paddingLeft: '4px',
+			paddingBottom: '11px',
+		},
+		h5: {
+			fontSize: '16px',
+		},
+		body1: {
+			fontSize: '1rem',
+			fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+			fontWeight: 400,
+			lineHeight: 1.5,
+			letterSpacing: '0.00938em',
+			marginBlockStart: '10px',
+			marginBlockEnd: '10px',
+		},
+	},
+	components: {
 		MuiLink: {
-			underline: "hover"
+			defaultProps: {
+				underline: 'hover',
+			}
 		}
 	}
 });
 
-mainTheme.typography.h4 = {
-	fontFamily: "Source Code Pro",
-	fontSize: "20px",
-	color: "#0086bf",
-	paddingLeft: "4px",
-	paddingBottom: "11px",
-};
+const StyledTabs = styled(Tabs)({
+	borderBottomColor: '#acb2c0',
+	borderBottomStyle: 'solid',
+	borderBottomWidth: '1px',
+	minHeight: '28px',
+	'& [aria-selected="true"]': {
+		backgroundColor: 'rgba(0, 134, 191, 0.21)',
+	},
+	'& .MuiTabs-indicatorSpan': {
+    backgroundColor: 'rgba(0, 134, 191, 0.21)',
+  },
+  '& .MuiTabs-indicator': {
+    backgroundColor: '#00bbe1',
+  },
+});
 
-mainTheme.typography.h5 = {
-	fontSize: "16px",
-};
-
-mainTheme.typography.body1 = {
-	fontSize: "1rem",
-    fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-    fontWeight: 400,
-    lineHeight: 1.5,
-    letterSpacing: "0.00938em",
-	marginBlockStart: "10px",
-	marginBlockEnd: "10px",
-};
-
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		"@global": {
-			".MuiFormHelperText-contained.Mui-error": {
-				position: "absolute",
-				marginLeft: "9px",
-				bottom: "-11px",
-				padding: "0 4px",
-				backgroundColor: theme.palette.common.white,
-			},
-			".MuiButton-contained": {
-				boxShadow: "none",
-			},
-		},
-		root: {
-			flexGrow: 1,
-		},
-		header: {
-			marginBottom: theme.spacing(2),
-		},
-		body: {
-			padding: theme.spacing(1),
-			height: "100%",
-		},
-		paper: {
-			marginTop: theme.spacing(2),
-			padding: theme.spacing(2),
-			height: "100%",
-			"&:first-child": {
-				marginTop: 0,
-			},
-		},
-		tabs: {
-			borderBottomColor: "#acb2c0",
-			borderBottomStyle: "solid",
-			borderBottomWidth: "1px",
-			minHeight: "28px",
-			"& [aria-selected='true']": {
-				backgroundColor: "rgba(0, 134, 191, 0.21)",
-			},
-		},
-		tabIndicator: {
-			backgroundColor: "rgba(0, 134, 191, 0.21)",
-		},
-		indicator: {
-			backgroundColor: "#00bbe1",
-		},
-		footer: {
-			fontSize: "10px",
-			fontStyle: "italic",
-			color: "#5b606f",
-			flexDirection: "row",
-			justifyContent: "center",
-			margin: theme.spacing(2),
-			"& *:first-child": {
-				paddingTop: "27px",
-			},
-		},
-		link: {
-			color: "#5b606f",
-			fontWeight: "bold",
-			"&:hover": {
-				color: "#5b606f",
-			},
-		},
-		code: {
-			fontFamily: "courier, courier new, serif",
-		},
-	})
-);
+const StyledLink = styled(Link)({
+	color: '#5b606f',
+	fontWeight: 'bold',
+});
 
 const openAPIDocs = (event: React.MouseEvent<HTMLElement>) => {
 	event.preventDefault();
@@ -131,20 +81,7 @@ const openAPIDocs = (event: React.MouseEvent<HTMLElement>) => {
 	return false;
 };
 
-const openSpecAccessDocs = (event: React.MouseEvent<HTMLElement>) => {
-	event.preventDefault();
-	window.open("https://fdc3.finos.org/docs/api/spec#api-access", "FDC3ApiDocs");
-	return false;
-};
-
-const openSupportedPlatformsDocs = (event: React.MouseEvent<HTMLElement>) => {
-	event.preventDefault();
-	window.open("https://fdc3.finos.org/docs/supported-platforms", "FDC3ApiDocs");
-	return false;
-};
-
 export const App = observer(() => {
-	const classes = useStyles();
 	const [fdc3Available, setFdc3Available] = useState(false);
 	const [openSnackbar, setOpenSnackbar] = useState(false);
 	const [tabIndex, setTabIndex] = useState(0);
@@ -179,86 +116,66 @@ export const App = observer(() => {
 
 	return (
 		<ThemeProvider theme={mainTheme}>
-			<Grid className={classes.root} container>
-				<Grid className={classes.header} container item xs={12}>
-					<Header fdc3Available={fdc3Available} />
-				</Grid>
+			<Box sx={{
+				flexGrow: 1,
+				display: 'flex',
+				flexDirection: 'column',
+				gap: 2,
+			}}>
+				<Header fdc3Available={fdc3Available} />
 				{fdc3Available ? (
-					<Grid className={classes.body} container spacing={2} item xs={12} style={{ marginLeft: "0px" }}>
-						<Grid item xs={12} style={{ flex: 1 }}>
-							<Paper className={classes.paper}>
-								<Typography variant="h4">{`{compliance}`}</Typography>
-								<Tabs
-									value={tabIndex}
-									indicatorColor="primary"
-									onChange={handleTabChange}
-									variant="scrollable"
-									scrollButtons="auto"
-									className={classes.tabs}
-									classes={{
-										indicator: classes.indicator,
-									}}
-								>
-									<Tab label="Agent Compliance" />
-								</Tabs>
-								<TabPanel value={tabIndex} index={0}>
-									<AgentTests />
-								</TabPanel>
-							</Paper>
-						</Grid>
-					</Grid>
+					<Box
+						sx={{
+							px: 2,
+						}}
+					>
+						<Paper
+							sx={{
+								px: 2,
+								py: 2,
+								display: 'flex',
+								flexDirection: 'column',
+								gap: 1,
+							}}
+						>
+							<Typography
+								variant="h4"
+							>{`{compliance}`}</Typography>
+							<StyledTabs
+								value={tabIndex}
+								indicatorColor="primary"
+								onChange={handleTabChange}
+								variant="scrollable"
+								scrollButtons="auto"
+							>
+								<Tab label="Agent Compliance" />
+							</StyledTabs>
+							<TabPanel value={tabIndex} index={0}>
+								<AgentTests />
+							</TabPanel>
+						</Paper>
+					</Box>
 				) : (
-					<Grid className={classes.body} container spacing={2} item xs={12} style={{ marginLeft: "0px" }}>
-						<Grid container direction="column" justifyContent="center" alignItems="center" spacing={2} item xs={12}>
-							<Paper className={classes.paper}>
-								<Typography variant="h4">FDC3 API not detected!</Typography>
-								<Typography variant="body1">
-									An FDC3 desktop agent implementation was not found at{" "}
-									<span className={classes.code}>window.fdc3</span>.
-								</Typography>
-								<Typography variant="body1">
-									For web applications to be FDC3-enabled, they need to run in the context of an 
-									agent that makes the FDC3 API available to the application. This desktop agent is 
-									also responsible for lauching and co-ordinating applications. It could be a browser 
-									extension, web app, or full-fledged desktop container framework.
-								</Typography>
-								<Typography variant="body1">
-									See the FDC3 standard documentation for details on{" "}
-									<Link
-										className={classes.link}
-										href="https://fdc3.finos.org/docs/supported-platforms"
-										onClick={openSupportedPlatformsDocs}
-									>
-									supported platforms
-									</Link>
-									{" "}and{" "}
-									<Link
-										className={classes.link}
-										href="https://fdc3.finos.org/docs/api/spec#api-access"
-										onClick={openSpecAccessDocs}
-									>
-										accessing the FDC3 API
-									</Link>.
-								</Typography>
-							</Paper>
-						</Grid>
-					</Grid>
+					<FDC3Message/>
 				)}
-
-				<Grid container item xs={12} className={classes.footer}>
-					<Typography variant="body1">
+				<Box
+					sx={{
+						px: 2,
+					}}
+				>
+					<Typography variant="body1" color="#5b606f" fontSize="small" fontStyle="italic">
 						Learn more about the{" "}
-						<Link className={classes.link} href="https://fdc3.finos.org/docs/api/overview" onClick={openAPIDocs}>
+						<StyledLink href="https://fdc3.finos.org/docs/api/overview" onClick={openAPIDocs}>
 							FDC3 Standard and APIs
-						</Link>{" "}
+						</StyledLink>{" "}
 						| Proud member of the{" "}
-						<Link className={classes.link} href="https://www.finos.org/">
+						<StyledLink href="https://www.finos.org/">
 							Fintech Open Source Foundation
-						</Link>{" "}
+						</StyledLink>{" "}
 						| Copyright © 2021 Cosaic, inc. &amp; Contributors to the FDC3 standards project
 					</Typography>
-				</Grid>
-			</Grid>
+				</Box>
+			</Box>
 
 			<Snackbar key={snackbarStore.snackbarData?.id} open={openSnackbar} autoHideDuration={4000} onClose={handleClose}>
 				<Alert elevation={6} variant="filled" onClose={handleClose} severity={snackbarStore.snackbarData?.type}>

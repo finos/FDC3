@@ -1,49 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import * as fdc3 from "@finos/fdc3";
-
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		root: {
-			flexGrow: 1,
-		},
-		toolbar: {
-			backgroundColor: "transparent",
-			padding: theme.spacing(2, 4),
-			paddingBottom: "0px",
-		},
-		link: {
-			color: theme.palette.common.white,
-			textDecoration: "underline",
-			"&:hover": {
-				color: theme.palette.common.white,
-			},
-		},
-		info: {
-			marginLeft: "auto",
-			minWidth: "200px",
-			fontSize: "12px",
-		},
-		fdc3: {},
-		headerCube: {
-			width: "150px",
-			height: "50px",
-		},
-		backgroundHeader: {
-			background: "linear-gradient(to bottom, #0086bf, #00bbe1)",
-			height: "200px",
-			width: "100%",
-			left: "0px",
-			top: "0px",
-			position: "absolute",
-			zIndex: -10,
-		},
-	})
-);
+import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 
 export const Header = (props: { fdc3Available: boolean }) => {
-	const classes = useStyles();
 	const [appInfo, setAppInfo] = useState<fdc3.ImplementationMetadata>();
 
 	useEffect(() => {
@@ -67,17 +26,51 @@ export const Header = (props: { fdc3Available: boolean }) => {
 	}, [props.fdc3Available]);
 
 	return (
-		<div className={classes.root}>
-			<div className={classes.backgroundHeader}></div>
-			<AppBar position="static" elevation={0} style={{ backgroundColor: "transparent" }}>
-				<Toolbar className={classes.toolbar}>
+		<Box sx={{
+			flexGrow: 1,
+		}}>
+			<Box
+				sx={{
+					backgroundImage: 'linear-gradient(to bottom, #0086bf, #00bbe1)',
+					height: '200px',
+					width: '100%',
+					left: '0px',
+					top: '0px',
+					position: 'absolute',
+					zIndex: -10,
+				}}
+			/>
+			<AppBar
+				elevation={0}
+				sx={{
+					position: 'static',
+					bgcolor: 'transparent'
+				}}
+			>
+				<Toolbar sx={{
+					bg: 'transparent',
+					pt: 2,
+					px: 4,
+					display: 'flex',
+					justifyContent: 'space-between',
+				}}>
 					<div>
-						<Typography variant="h3" color="inherit" className={classes.fdc3}>
-							<img src="./fdc3-logo.svg" className={classes.headerCube} />
+						<Typography
+							variant="h3"
+							sx={{
+								color: 'inherit',
+							}}
+						>
+							<img src="./fdc3-logo.svg" width={150} height={50}/>
 						</Typography>
 					</div>
 
-					<div className={classes.info}>
+					<Box
+						sx={{
+							minWidth: '200px',
+							fontSize: '12px',
+						}}
+					>
 						<table id="providerInfo">
 							<tbody>
 								<tr>
@@ -94,9 +87,9 @@ export const Header = (props: { fdc3Available: boolean }) => {
 								</tr>
 							</tbody>
 						</table>
-					</div>
+					</Box>
 				</Toolbar>
 			</AppBar>
-		</div>
+		</Box>
 	);
 };

@@ -1,7 +1,5 @@
 import React from "react";
-import { observer } from "mobx-react";
-import { Typography } from "@material-ui/core";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { TestRunner } from "../TestRunner";
 
 const statuses = {
@@ -11,7 +9,7 @@ const statuses = {
 
 export type TestsStatus = 'idle' | 'running'
 
-export const AgentTests = observer(() => {
+export const AgentTests = () => {
 	return (
 		<Box
 			sx={{
@@ -20,7 +18,7 @@ export const AgentTests = observer(() => {
 		>
 			<Stack gap={2}>
 				<Box>
-					<Typography variant="h5">FDC3 Agent Conformance Test</Typography>
+					<Typography variant="h5">FDC3 Agent Compliance Test</Typography>
 					<Typography>Tests which parts of the FDC3 specification the current desktop agent has implemented.</Typography>
 				</Box>
 				
@@ -28,4 +26,4 @@ export const AgentTests = observer(() => {
 			</Stack>
 		</Box>
 	);
-});
+};
