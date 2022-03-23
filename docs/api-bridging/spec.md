@@ -379,7 +379,7 @@ Then on agent-A the originating app finally gets back the following response fro
 ```typescript
 raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
 ```
-For Desktop Agent bridging, a `raiseIntent` call MUST always pass a `app:TargetApp` argument. If one is not passed a `findIntent` will be sent instead. See details below.
+For Desktop Agent bridging, a `raiseIntent` call MUST always pass a `app:TargetApp` argument. If one is not passed a `findIntent` will be sent instead to collect options to display in a local resolver UI, allowing for a targetted intent to be raised afterwards. See details below.
 
 #### Request format
 A raiseIntent call, __without__ `app:TargetApp` argument is made on agent-A.
@@ -401,15 +401,15 @@ agent-A sends an outward `findIntent` message to the desktop agent(s) acting as 
        "context": {/*contxtObj*/}
    },
    "source": {
-        "name": "",
-        "appId": "",
-        "version": "",
+        "name": "someOtherApp", //should this be the desktop agent or the app?
+        "appId": "...",
+        "version": "...",
         // ... other metadata fields
     }
 }
 ```
 
-This will trigger the same flow of `findIntent`. Upon receiveing a `findIntentResponse`, the resolver is shown.
+This will trigger the same flow as `findIntent`. Upon receiveing a `findIntentResponse`, the resolver is shown.
 
 User selects an option which will trigger a `raiseIntent` call with a `app:TargetApp` argument.
 
@@ -436,11 +436,12 @@ raiseIntent(intent: string, context: Context, app: TargetApp): Promise<IntentRes
        }
    },
    "source": {
-        "name": "",
-        "appId": "",
+        "name": "someOtherApp",
+        "appId": "...",
+        "version": "...",
         // ... other metadata fields
    },
-   "destination": { // duplicates the app argument
+   "destination": { // duplicates the app argument so that the message is routed like any other
         "app": {
            "name": "AChatApp",
            "desktopAgent": "agent-B"
@@ -463,17 +464,17 @@ The agent-C (server) fills in the `source.desktopAgent` field and forwards the r
     },
     "source": {
         "name": "someOtherApp",
-        "appId": "",
-        "version": "",
+        "appId": "...",
+        "version": "...",
         "desktopAgent": "agent-A" // <---- filled by server (C)
         // ... other metadata fields
-   },
-   "destination": {
+    },
+    "destination": {
         "app": {
-           "name": "AChatApp",
-           "desktopAgent": "agent-B"
-       }
-   }
+            "name": "AChatApp",
+            "desktopAgent": "agent-B"
+        }
+    }
 }
 ```
 
@@ -499,14 +500,14 @@ Normal response from agent-B (to-C), where the request was targeted to by agent-
         "version": "...",
     },
     "error?:": "ResolveError Enum",
-    "source": {
+    "source": { //Note this was the destination of the raised intent
         "name": "AChatApp",
         "appId": "",
         "version": "",
         // ... other metadata fields
     },
-    "destination": { // duplicates the app argument
-        "app": {
+    "destination": { 
+        "app": { //note this was the source of the raised intent
            "name": "someOtherApp",
            "appId": "",
             "version": "",
@@ -925,6 +926,7 @@ sequenceDiagram
 ```
 
 ## Channels
-App Channels don't need specific messages sending for `fdc3.getOrCreateChannel` as other agents will be come aware of it when messages are broadcast. However, `PrivateChannel` instances do require additional handling due to the listeners for subscription and disconnect.
+App Channels don't need specific messages sending for `fdc3.getOrCreateChannel` as other agents will be come aware of it when messages are broadcast. 
 
-<!-- TODO: write up message exchanges for PrivateChannel listeners -->
+However, `PrivateChannel` instances do require additional handling due to the listeners for subscription and disconnect. Please see the raiseIntent section for the mesages sent in support of this functionality.
+
