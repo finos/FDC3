@@ -85,6 +85,12 @@ export const runTests = (resultHandlers?: TestResultHandlers): void => {
   const failed = [];
 
   if (resultHandlers) {
+    if (resultHandlers.onStart) {
+      (runner as any).on("start", () => {
+        resultHandlers.onStart();
+      });
+    }
+
     if (resultHandlers.onPass) {
       (runner as any).on("pass", (test) => {
         passed.push(test);

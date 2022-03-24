@@ -1,6 +1,7 @@
 import { Test, Stats } from "mocha";
 
 export interface TestResultHandlers {
+  onStart?: () => void;
   onPass?: (test: any) => void;
   onFail?: (test: any) => void;
   onComplete?: (summary: Summary) => void;
