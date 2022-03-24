@@ -121,7 +121,7 @@ interface ImplementationMetadata {
 Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification and the name of the provider of the implementation.
 
 ### See also
-* [`DesktopAgent.getInfo`](DesktopAgent#getInfo)
+* [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
 
 ## `IntentMetadata`
 
