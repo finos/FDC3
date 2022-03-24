@@ -1,4 +1,5 @@
 import mocha from "mocha";
+<<<<<<< HEAD
 import fdc3 from "@finos/fdc3";
 import { initAllTests, runTests } from "./test/testSuite";
 
@@ -21,16 +22,28 @@ const reportFailure = (test): void => {
 const reportSuccess = (test) => {
   report(test, "passed");
 };
+=======
+import constants from "./constants";
+>>>>>>> master
 
 let fdc3Available = false;
 const initialise = () => {
   // Initialise test run
   fdc3Available = true;
+<<<<<<< HEAD
   initAllTests();
   runTests({
     onFail: reportFailure,
     onPass: reportSuccess,
   });
+=======
+
+  const detectingMessage = document.getElementById("detecting-fdc3");
+  detectingMessage.setAttribute("hidden", "");
+  window.removeEventListener("fdc3Ready", initialise);
+
+  mocha.run();
+>>>>>>> master
 };
 
 if ((window as any).fdc3) {
@@ -40,8 +53,11 @@ if ((window as any).fdc3) {
 
   setTimeout(() => {
     if (!fdc3Available) {
+      const detectingMessage = document.getElementById("detecting-fdc3");
+      detectingMessage.setAttribute("hidden", "");
+      window.removeEventListener("fdc3Ready", initialise);
       const hiddenMessage = document.getElementById("no-fdc3");
       hiddenMessage?.removeAttribute("hidden");
     }
-  }, 5000);
+  }, constants.Fdc3Timeout);
 }

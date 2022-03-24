@@ -1,6 +1,6 @@
 {
   "name": "fdc3-compliance",
-  "version": "0.0.1",
+  "version": "1.2.0",
   "description": "FDC3 Compliance Testing",
   "scripts": {
     "build": "yarn run build:prettier && yarn run build:webpack && yarn run build:copy",
