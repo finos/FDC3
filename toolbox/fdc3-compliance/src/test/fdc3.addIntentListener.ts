@@ -1,10 +1,24 @@
+import { Listener } from "@finos/fdc3";
+
 export default () =>
-  describe("fdc3.addIntentListener", async () => {
+  describe("fdc3.addIntentListener", () => {
+    let listener: Listener;
+
+    afterEach(() => {
+      if (listener !== undefined) {
+        listener.unsubscribe();
+        listener = undefined;
+      }
+    });
+
     it("Method is callable", async () => {
-      await window.fdc3.addIntentListener(
-        "fdc3.conformanceListener",
+      const intentName = "fdc3.conformanceListener";
+      listener = await window.fdc3.addIntentListener(
+        intentName,
         (info: any) => {
-          console.log(`Context listener triggered for ${info}`);
+          console.log(
+            `Intent listener for intent ${intentName} triggered with result ${info}`
+          );
         }
       );
     });

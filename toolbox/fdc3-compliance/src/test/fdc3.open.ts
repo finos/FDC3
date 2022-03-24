@@ -1,10 +1,13 @@
 import { OpenError } from "@finos/fdc3";
 
+const ExpectedErrorNotThrownError = "Expected error AppNotFound not thrown";
+
 export default () =>
-  describe("fdc3.open", async () => {
+  describe("fdc3.open", () => {
     it("Method is callable", async () => {
       try {
-        window.fdc3.open("fdc3-workbench");
+        await window.fdc3.open("ThisAppDoesNotExist");
+        throw ExpectedErrorNotThrownError;
       } catch (ex) {
         if (ex !== OpenError.AppNotFound) {
           throw ex;
