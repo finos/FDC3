@@ -35,7 +35,7 @@ All that is required is a "desktop agent" that supports the FDC3 standard, which
 
 ## Web
 
-For web applications to be FDC3-enabled, they need to run in the context of an agent that makes the FDC3 API available to the application. This desktop agent is also responsible for lauching and co-ordinating applications. It could be a browser extension, web app, or full-fledged desktop container framework.
+For web applications to be FDC3-enabled, they need to run in the context of an agent that makes the FDC3 API available to the application. This desktop agent is also responsible for launching and co-ordinating applications. It could be a browser extension, web app, or full-fledged desktop container framework.
 
 ### Example
 
