@@ -29,7 +29,7 @@ Alternatively, a full set of static files are available in the `build` folder. L
 
 ## Application Definition
 
-A basic FDC3 application definition, as defined in the [application directory specification](https://fdc3.finos.org/schemas/1.2/app-directory#tag/Application), is supplied in the file `appDefinition.json`. This may be useful when adding the conformance tests to an application directory.
+A basic FDC3 application definition, as defined in the [application directory specification](https://fdc3.finos.org/schemas/1.2/app-directory#tag/Application), is supplied in the [file](./src/appDefinition.json) `appDefinition.json`. This may be useful when adding the conformance tests to an application directory. This file may need to be updated with additional manifest information, depending on the desktop agent. Consult the host environment documentation for information on configuring new applications.
 
 ## Integration with automated testing
 

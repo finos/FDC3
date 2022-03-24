@@ -14,6 +14,7 @@ import fdc3RaiseIntent from "./fdc3.raiseIntent";
 import fdc3RaiseIntentForContext from "./fdc3.raiseIntentForContext";
 import mocha, { Stats } from "mocha";
 import { TestResultHandlers } from "../complianceTypes";
+import constants from "../constants";
 
 const nonInteractiveTestSuites = [
   fdc3AddContextListener,
@@ -45,7 +46,7 @@ const commonInitialisation = () => {
   });
 
   // The Typescript mappings are missing the global timeout function
-  (mocha as any).timeout(10000);
+  (mocha as any).timeout(constants.TestTimeout);
 };
 
 const initNonInteractive = () => {
