@@ -3,8 +3,11 @@ import { Listener } from "@finos/fdc3";
 describe("fdc3.addIntentListener", () => {
   let listener: Listener;
 
-  afterEach(async () => {
-    listener.unsubscribe();
+  afterEach(() => {
+    if (listener !== undefined) {
+      listener.unsubscribe();
+      listener = undefined;
+    }
   });
 
   it("Method is callable", async () => {
