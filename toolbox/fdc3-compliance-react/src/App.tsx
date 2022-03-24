@@ -43,7 +43,7 @@ const mainTheme = createTheme({
 			letterSpacing: '0.00938em',
 			marginBlockStart: '10px',
 			marginBlockEnd: '10px',
-		},
+		}
 	},
 	components: {
 		MuiLink: {

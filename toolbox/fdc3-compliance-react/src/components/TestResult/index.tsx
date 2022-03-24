@@ -14,14 +14,16 @@ const statusIcons = (): { [key: string]: React.ReactElement } => ({
 })
 
 export const TestResult = memo(({ test }: IProps) => {
-  const { title, state, err } = test
+  const { parent, title, state, err } = test
+
+  console.log(test)
 
   return (
     <Box
       sx={{
         display: 'grid',
         gridTemplateColumns: 'auto 1fr',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         gridGap: 2,
       }}
     >
@@ -36,14 +38,30 @@ export const TestResult = memo(({ test }: IProps) => {
           statusIcons()['running']
         )}
       </Box>
+      
+      <Box>
+        {parent &&
+          <Typography
+            sx={{
+              fontFamily: 'Source Code Pro, monospace',
+              fontSize: 12,
+              fontWeight: 'bold',
+              color: '#5b606f',
+              lineHeight: 1.2,
+            }}
+          >
+            {parent.title}
+          </Typography>
+        }
 
-      <Typography
-        sx={{
-          lineHeight: 1.2,
-        }}
-      >
-        {title}
-      </Typography>
+        <Typography
+          sx={{
+            lineHeight: 1.2,
+          }}
+        >
+          {title}
+        </Typography>
+      </Box>
 
       {err && (
         <Box
