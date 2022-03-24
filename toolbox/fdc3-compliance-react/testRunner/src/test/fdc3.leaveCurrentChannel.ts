@@ -1,5 +1,5 @@
 export default () =>
-  describe("fdc3.leaveCurrentChannel", async () => {
+  describe("fdc3.leaveCurrentChannel", () => {
     it("Method is callable", async () => {
       await window.fdc3.leaveCurrentChannel();
     });
