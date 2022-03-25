@@ -1,49 +1,46 @@
-# FDC3 Conformance
+# <a href='http://fdc3.finos.org'><img src='https://fdc3.finos.org/img/fdc3-logo-2019-color.png' height='150' alt='FDC3 Logo' aria-label='fdc3.finos.org' /></a>
 
-## Background
-This project represents a means to confirm conformance of a [desktop agent](https://fdc3.finos.org/docs/api/ref/DesktopAgent) to the [fdc3 api specification](https://fdc3.finos.org/docs/api/spec).
+# FDC3 Workbench
+When developing interoperability for your application with other apps on a Financial services desktop, using the [FDC3 standard](https://fdc3.finos.org/docs/fdc3-intro), the first step is often to develop a test harness or workbench tool with which to exchange messaging. The FDC3 Workbench is designed to provide that tooling so that you can focus on implementing FDC3 support in your application.
 
-To do so this application can be launched within the desktop agent which will run a series of tests to verify conformance against the specification.
+_Created and contributed to [FDC3](http://fdc3.finos.org) by [Cosaic, Inc.](https://cosaic.io/) in 2021._
 
 ## Getting Started
 
 1. Clone the repository
 
-`git clone https://github.com/finos/FDC3`
+`git clone https://github.com/ChartIQ/fdc3-workbench`
 
-2. Install dependencies and build
+2. Install dependencies
 
-~~~
-cd FDC3/toolbox/fdc3-compliance
-yarn install
-yarn build
-~~~
+`cd fdc3-workbench & yarn install`
 
 3. Start the development server
 
 `yarn start`
 
-4. Add the URL http://localhost:8080 to your FDC3-enabled container or desktop agent and ensure it has access to the `window.fdc3` object.
+4. Add the URL http://localhost:3000 to your FDC3-enabled container or desktop agent and ensure it has access to the `window.fdc3` object.
 
-Alternatively, a full set of static files are available in the `build` folder. Load the index.html file into an environment that has the `window.fdc3` object available.
+## TODO
+- Implement a panel for working with [App channels](https://fdc3.finos.org/docs/api/spec#direct-listening-and-broadcast-on-channels).
+- Implement `findIntent` in the intents panel with support for a targetted `raiseIntent` using one of the results.
+- Add support for saving context tempaltes across sessions (e.g. via localstorage)
+## Packages
 
-## Application Definition
+Core:
+- [Create React App](https://github.com/facebook/create-react-app) - with TypeScript
+- [MATERIAL-UI](https://material-ui.com) - v4
+- [MobX](https://mobx.js.org/README.html) - state management
 
-A basic FDC3 application definition, as defined in the [application directory specification](https://fdc3.finos.org/schemas/1.2/app-directory#tag/Application), is supplied in the file `appDefinition.json`. This may be useful when adding the conformance tests to an application directory.
+Also using Eslint, Husky and Prettier please configure your IDE to work properly with code style rules.
 
-## Integration with automated testing
+Minor:
+- [JsonEditor](https://github.com/josdejong/jsoneditor) - lib to add json editor field with json schema validation
+- [nanoid](https://www.npmjs.com/package/nanoid) - A tiny, secure, URL-friendly, unique string ID generator for JavaScript.
 
-The test suite can be run independently without interaction - for example as part of a CI build, or from the command line. See TypeScript and JavaScript examples [here](./examples/). 
-First import the silentRun module from the build folder, and then call the default method. The fdc3 global variable is passed in as a parameter, to remove the need for a complete desktop agent environment:
+## Known Issues
 
-```javascript
-const runSilentTests = require("../build/silentRun");
+- The following console error may appear periodically: `Warning: findDOMNode is deprecated in StrictMode.`, this is a [well-known issue in material-ui](https://github.com/mui-org/material-ui/issues/13394) and will be fixed in v5, which (at the time of writing) is currently in beta.
 
-// Pass in the fdc3 global object to be tested
-// Results are returned via callback
-runSilentTests(fdc3, (results) => {
-  // results.stats contains the summary results
-  // For more details, see the passed and failed arrays
-  console.log(results.stats);
-});
-```
+
+
