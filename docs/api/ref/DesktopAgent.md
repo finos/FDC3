@@ -183,7 +183,7 @@ Find all the available instances for a particular application.
 
 If there are no instances of the specified application the returned promise should resolve to an empty array.
 
-If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
+If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
 
 ### Example
 ```js
@@ -530,7 +530,7 @@ fdc3.joinUserChannel(selectedChannel.id);
    */
 joinChannel(channelId: string) : Promise<void>;
 ```
-Alias to the [`joinUserChannel`](#joinUserChannel) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
+Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
 
 #### See also
 * [`joinUserChannel`](#joinuserchannel)
@@ -570,9 +570,9 @@ open(app: TargetApp, context?: Context): Promise<AppMetadata>;
 
 Launches an app with target information, which can be either be a string like a name, or an [`AppMetadata`](Metadata#appmetadata) object.
 
-The `open` method differs in use from [`raiseIntent`](#raiseIntent).  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, `open` would be used to open an app returned in the search results.
+The `open` method differs in use from [`raiseIntent`](#raiseintent).  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, `open` would be used to open an app returned in the search results.
 
-**Note**, if the intent, context and target app name are all known, it is recommended to instead use [`raiseIntent`](#raiseIntent) with the `target` argument.
+**Note**, if the intent, context and target app name are all known, it is recommended to instead use [`raiseIntent`](#raiseintent) with the `target` argument.
 
 If a [`Context`](Types#context) object is passed in, this object will be provided to the opened application via a contextListener. The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
 
