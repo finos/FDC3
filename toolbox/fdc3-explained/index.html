@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <title>
+      FDC3 Explained
+    </title>
+
+    <style>
+      body {
+        font-family: "Noto Sans JP", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #284b63;
+        color: white;
+      }
+
+      .main {
+        margin: 10px 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        place-content: center;
+        flex-direction: column;
+      }
+
+      .linkbox {
+        width: 25%;
+        padding: 5px;
+        text-align: center;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .retired {
+        background-color: red;
+      }
+
+      .acceptable {
+        background-color: orange;
+      }
+
+      .optimal {
+        background-color: green;
+      }
+
+      #logo {
+        height: 200px;
+      }
+    </style>
+
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div class="main">
+      <table border="0" style="width: 500px;">
+        <tr>
+          <td colspan="4"><img id="logo" src="logo.svg" /></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="padding: 30px 0px 30px 0px;">
+            FDC3 Explained is a community project and reference implementation
+            of various FDC3 functionality. The key goal is to provide a tool for
+            application and container developers to verify their implementations
+            and act as basic but fully functional participant when testing and
+            demonstrating desktop interoperability.
+          </td>
+        </tr>
+        <tr>
+          <td class="linkbox acceptable" onClick="window.location.href='1.0/';">
+            1.0
+          </td>
+          <td class="linkbox acceptable" onClick="window.location.href='1.1/';">
+            1.1
+          </td>
+          <td class="linkbox optimal" onClick="window.location.href='1.2/';">
+            1.2
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
