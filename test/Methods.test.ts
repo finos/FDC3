@@ -13,9 +13,11 @@ import {
   getCurrentChannel,
   getInfo,
   getOrCreateChannel,
+  getUserChannels,
   getSystemChannels,
   ImplementationMetadata,
   joinChannel,
+  joinUserChannel,
   leaveCurrentChannel,
   open,
   raiseIntent,
@@ -41,6 +43,10 @@ expect.extend({
     expect(received).toThrowError(UnavailableError);
     return { pass: true } as jest.CustomMatcherResult;
   },
+});
+
+beforeEach(() => {
+  jest.resetAllMocks();
 });
 
 describe('test ES6 module', () => {
@@ -79,12 +85,16 @@ describe('test ES6 module', () => {
       await expect(addContextListener(expect.any(String), expect.any(Object))).rejects.toEqual(UnavailableError);
     });
 
-    test('getSystemChannels should reject', async () => {
-      await expect(getSystemChannels()).rejects.toEqual(UnavailableError);
+    test('getUserChannels should reject', async () => {
+      await expect(getUserChannels()).rejects.toEqual(UnavailableError);
     });
 
     test('joinChannel should reject', async () => {
       await expect(joinChannel(expect.any(String))).rejects.toEqual(UnavailableError);
+    });
+
+    test('joinUserChannel should reject', async () => {
+      await expect(joinUserChannel(expect.any(String))).rejects.toEqual(UnavailableError);
     });
 
     test('getOrCreateChannel should reject', async () => {
@@ -187,20 +197,36 @@ describe('test ES6 module', () => {
       expect(window.fdc3.addContextListener).toHaveBeenNthCalledWith(2, null, handler2);
     });
 
-    test('getSystemChannels should delegate to window.fdc3.getSystemChannels', async () => {
-      await getSystemChannels();
+    test('getUserChannels should delegate to window.fdc3.getUserChannels', async () => {
+      await getUserChannels();
 
-      expect(window.fdc3.getSystemChannels).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.getSystemChannels).toHaveBeenCalledWith();
+      expect(window.fdc3.getUserChannels).toHaveBeenCalledTimes(1);
+      expect(window.fdc3.getUserChannels).toHaveBeenCalledWith();
     });
 
-    test('joinChannel should delegate to window.fdc3.joinChannel', async () => {
+    test('getSystemChannels should delegate to window.fdc3.getUserChannels', async () => {
+      await getSystemChannels();
+
+      expect(window.fdc3.getUserChannels).toHaveBeenCalledTimes(1);
+      expect(window.fdc3.getUserChannels).toHaveBeenCalledWith();
+    });
+
+    test('joinChannel should delegate to window.fdc3.joinUserChannel', async () => {
       const channelId = 'channel';
 
       await joinChannel(channelId);
 
-      expect(window.fdc3.joinChannel).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.joinChannel).toHaveBeenCalledWith(channelId);
+      expect(window.fdc3.joinUserChannel).toHaveBeenCalledTimes(1);
+      expect(window.fdc3.joinUserChannel).toHaveBeenCalledWith(channelId);
+    });
+
+    test('joinUserChannel should delegate to window.fdc3.joinUserChannel', async () => {
+      const channelId = 'channel';
+
+      await joinUserChannel(channelId);
+
+      expect(window.fdc3.joinUserChannel).toHaveBeenCalledTimes(1);
+      expect(window.fdc3.joinUserChannel).toHaveBeenCalledWith(channelId);
     });
 
     test('getOrCreateChannel should delegate to window.fdc3.getOrCreateChannel', async () => {

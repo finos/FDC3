@@ -7,7 +7,7 @@
   "tooltip": "FDC3 Workbench",
   "icons": [
     {
-      "url": "http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png"
+      "src": "http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png"
     }
   ],
   "images": [

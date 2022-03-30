@@ -5,7 +5,7 @@
 
 import { AppIntent } from './AppIntent';
 import { Channel } from './Channel';
-import { ContextHandler, TargetApp } from './Types';
+import { ContextHandler, IntentHandler, TargetApp } from './Types';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
@@ -150,8 +150,8 @@ export interface DesktopAgent {
   findInstances(app: TargetApp): Promise<Array<AppMetadata>>;
 
   /**
-   * Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
-   * 
+   * Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever _User Channel_ the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
+   *
    * DesktopAgent implementations should ensure that context messages broadcast to a channel by an application joined to it should not be delivered back to that same application.
    *
    * ```javascript
@@ -161,7 +161,6 @@ export interface DesktopAgent {
    *     ticker: 'AAPL'
    *   }
    * };
-
    * fdc3.broadcast(context);
    * ```
    */
@@ -170,26 +169,37 @@ export interface DesktopAgent {
   /**
    * Raises a specific intent for resolution against apps registered with the desktop agent.
    *
-   * The desktop agent will resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, the user may be presented with an app picker.
+   * The desktop agent MUST resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, the user MAY be presented with a Resolver UI allowing them to pick one, or another method of Resolution applied to select an app.
    * Alternatively, the specific app or app instance to target can also be provided. A list of valid target applications and instances can be retrieved via `findIntent`.
-   * 
+   *
    * If you wish to raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
    *
-   * Returns an `IntentResolution` object with details of the app instance that was selected (or started) to respond to the intent.
+   * Returns an `IntentResolution` object with details of the app instance that was selected (or started) to respond to the intent. If the application that resolves the intent returns a promise of context data, this may be retrieved via the `getResult()` function of the `IntentResolution` object. If an error occurs (i.e. an error is thrown by the handler function, the promise returned is rejected, or no promise is returned) then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution` with a string from the `DataError` enumeration.
    *
-   * If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the `ResolveError` enumeration is returned.
+   * If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the `ResolveError` enumeration MUST be returned.
    *
    * ```javascript
    * // raise an intent for resolution by the desktop agent
-   * // a resolver UI will be displayed if more than one application can resolve the intent
+   * // a resolver UI may be displayed if more than one application can resolve the intent
    * await fdc3.raiseIntent("StartChat", context);
+   *
    * // or find apps to resolve an intent to start a chat with a given contact
    * const appIntent = await fdc3.findIntent("StartChat", context);
 
    * // use the metadata of an app or app instance to describe the target app for the intent
    * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
+   *
    * //Raise an intent without a context by using the null context type
    * await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
+   *
+   * //Raise an intent and retrieve data from the IntentResolution
+   * let resolution = await agent.raiseIntent("intentName", context);
+   * try {
+   * 	   const result = await resolution.getResult();
+   *     console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+   * } catch(error) {
+   *     console.error(`${resolution.source} returned a data error: ${error}`);
+   * }
    * ```
    */
   raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
@@ -198,11 +208,11 @@ export interface DesktopAgent {
    * Finds and raises an intent against apps registered with the desktop agent based purely on the type of the context data.
    *
    * The desktop agent SHOULD first resolve to a specific intent based on the provided context if more than one intent is available for the specified context. This MAY be achieved by displaying a resolver UI. It SHOULD then resolve to a specific app to handle the selected intent and specified context.
-   * Alternatively, the specific app or app instance to target can also be provided, in which case the resolver should only offer intents supported by the specified application.
+   * Alternatively, the specific app or app instance to target can also be provided, in which case the resolver SHOULD only offer intents supported by the specified application.
    *
    * Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
    *
-   * Returns an `IntentResolution` object with a handle to the app that responded to the selected intent.
+   * Returns an `IntentResolution` object with details of the app that was selected to respond to the intent. If the application that resolves the intent returns a promise of Context data, this may be retrieved via the `getResult()` function of the IntentResolution object. If an error occurs (i.e. an error is thrown by the handler function, the promise returned is rejected, or no promise is returned) then the Desktop Agent MUST reject the promise returned by the `getResult()` function of the `IntentResolution` with a string from the `DataError` enumeration.
    *
    * If a target app for the intent cannot be found with the criteria provided, an `Error` with a string from the `ResolveError` enumeration is returned.
    *
@@ -216,19 +226,40 @@ export interface DesktopAgent {
   raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
 
   /**
-   * Adds a listener for incoming Intents from the Agent.
+   * Adds a listener for incoming Intents from the Agent. The handler function may
+   * return void or a promise that should resolve to a context object representing
+   * any data that should be returned to app that raised the intent. If an error occurs
+   * (i.e. an error is thrown by the handler function, the promise returned is rejected, or
+   * a promise is not returned) then the Desktop Agent MUST reject the promise returned
+   * by the `getResult()` function of the `IntentResolution`.
+   *
+   * ```javascript
+   * //Handle a raised intent
+   * const listener = fdc3.addIntentListener('StartChat', context => {
+   *     // start chat has been requested by another application
+   *     return;
+   * });
+   *
+   * //Handle a raised intent and return Context data via a promise
+   * fdc3.addIntentListener("CreateOrder", (context) => {
+   *     return new Promise<Context>((resolve) => {
+   *         // go create the order
+   *         resolve({type: "fdc3.order", id: { "orderId": 1234}});
+   *	   });
+   * });
+   * ```
    */
-  addIntentListener(intent: string, handler: ContextHandler): Promise<Listener>;
+  addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 
   /**
-   * Adds a listener for incoming context broadcast from the Desktop Agent.
+   * Adds a listener for incoming context broadcasts from the Desktop Agent.
    * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
    */
   addContextListener(handler: ContextHandler): Promise<Listener>;
 
   /**
-   * Adds a listener for incoming context broadcasts from the Desktop Agent. If the consumer is only interested in a context of a particular type, they can they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
-   * Context broadcasts are only received from apps that are joined to the same channel as the listening application, hence, if the application is not currently joined to a channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
+   * Adds a listener for incoming context broadcasts from the Desktop Agent via User channels. If the consumer is only interested in a context of a particular type, they can they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
+   * Context broadcasts are only received from apps that are joined to the same User channel as the listening application, hence, if the application is not currently joined to a channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
    * ```javascript
    * // any context
    * const listener = fdc3.addContextListener(null, context => { ... });
@@ -239,12 +270,17 @@ export interface DesktopAgent {
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 
   /**
-   * Retrieves a list of the System channels available for the app to join
+   * Retrieves a list of the User channels available for the app to join.
+   */
+  getUserChannels(): Promise<Array<Channel>>;
+
+  /**
+   * @deprecated Alias to the `getUserChannels function provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
    */
   getSystemChannels(): Promise<Array<Channel>>;
 
   /**
-   * Optional function that joins the app to the specified channel. In most cases, applications SHOULD be joined to channels via UX provided to the application by the desktop agent, rather than calling this function directly.
+   * Optional function that joins the app to the specified User channel. In most cases, applications SHOULD be joined to channels via UX provided to the application by the desktop agent, rather than calling this function directly.
    *
    * If an app is joined to a channel, all `fdc3.broadcast` calls will go to the channel, and all listeners assigned via `fdc3.addContextListener` will listen on the channel.
    * If the channel already contains context that would be passed to context listeners assed via `fdc3.addContextListener` then those listeners will be called immediately with that context.
@@ -252,16 +288,21 @@ export interface DesktopAgent {
    * Rejects with an error if the channel is unavailable or the join request is denied. The error string will be drawn from the `ChannelError` enumeration.
    * ```javascript
    *   // get all system channels
-   *   const channels = await fdc3.getSystemChannels();
-   *   // create UI to pick from the system channels
+   *   const channels = await fdc3.getUserChannels();
+   *   // create UI to pick from the User channels
    *   // join the channel on selection
-   *   fdc3.joinChannel(selectedChannel.id);
+   *   fdc3.joinUserChannel(selectedChannel.id);
    *  ```
+   */
+  joinUserChannel(channelId: string): Promise<void>;
+
+  /**
+   * @deprecated Alias to the `joinUserChannel` function provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
    */
   joinChannel(channelId: string): Promise<void>;
 
   /**
-   * Returns a channel with the given identity. Either stands up a new channel or returns an existing channel.
+   * Returns an App channel with the given identity. Either stands up a new channel or returns an existing channel.
    * It is up to applications to manage how to share knowledge of these custom channels across windows and to manage
    * channel ownership and lifecycle.
    * `Error` with a string from the `ChannelError` enumeration.
@@ -269,14 +310,14 @@ export interface DesktopAgent {
   getOrCreateChannel(channelId: string): Promise<Channel>;
 
   /**
-   * Optional function that returns the `Channel` object for the current channel membership. In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
+   * Optional function that returns the `Channel` object for the current User channel membership. In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
    *
    * Returns `null` if the app is not joined to a channel.
    */
   getCurrentChannel(): Promise<Channel | null>;
 
   /**
-   * Optional function that removes the app from any channel membership. In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
+   * Optional function that removes the app from any User channel membership. In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
    *
    * Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not on a channel.
    * ```javascript

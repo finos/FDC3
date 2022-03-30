@@ -41,6 +41,22 @@ Contains constants representing the errors that can be encountered when calling 
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 
+## `DataError`
+
+```typescript
+enum DataError {
+  NoDataReturned = 'NoDataReturned',
+  IntentHandlerRejected = 'IntentHandlerRejected',
+}
+```
+
+Contains constants representing the errors that can be encountered when calling the [`getResult`](DesktopAgent#findintent) method on the [IntentResolution](Metadata#intentresolution) Object.
+
+#### See also
+* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+* [`IntentResolution`](Metadata#intentresolution)
+
 ## `ChannelError`
 
 ```typescript
@@ -51,10 +67,10 @@ enum ChannelError {
 }
 ```
 
-Contains constants representing the errors that can be encountered when calling channels using the [`joinChannel`](DesktopAgent#joinchannel) or [`getOrCreateChannel`](DesktopAgent#getorcreatechannel) methods, or the [`getCurrentContext`](Channel#getcurrentcontext), [`broadcast`](Channel#broadcast) or [`addContextListener`](Channel#addcontextlistener) methods on the `Channel` object.
+Contains constants representing the errors that can be encountered when calling channels using the [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`getOrCreateChannel`](DesktopAgent#getorcreatechannel) methods, or the [`getCurrentContext`](Channel#getcurrentcontext), [`broadcast`](Channel#broadcast) or [`addContextListener`](Channel#addcontextlistener) methods on the `Channel` object.
 
 #### See also
-* [`DesktopAgent.joinChannel`](DesktopAgent#joincannel)
+* [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
 * [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
 * [`Channel.broadcast`](Channel#broadcast)
 * [`Channel.addContextListener`](Channel#addcontextlistener)

@@ -7,4 +7,5 @@ export enum Intents {
   ViewNews = 'ViewNews',
   ViewInstrument = 'ViewInstrument',
   ViewAnalysis = 'ViewAnalysis',
+  ViewHoldings = 'ViewHoldings',
 }
