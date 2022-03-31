@@ -32,7 +32,7 @@ https://fdc3.finos.org/schemas/next/chatInitSettings.schema.json
 | `options.allowAddUser`         | boolean     | No       | `true`: members will be allowed to add other members to the chat     |
 
 If _members_ or _chatName_ are not provided, the application executing this
-intent is expectd to provide a mean to enter such information.
+intent is expected to provide a means to enter such information.
 
 ## Example
 
