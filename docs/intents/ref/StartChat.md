@@ -38,7 +38,7 @@ const contact = {
 
 fdc3.raiseIntent('StartChat', contact)
 
-// chat with initialization settigns
+// chat with initialization settings
 const initSettings = {
     type: 'fdc3.chat.initSettings',
     chatName: 'Issue #123',
