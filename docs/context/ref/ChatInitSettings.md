@@ -27,7 +27,7 @@ https://fdc3.finos.org/schemas/next/chatInitSettings.schema.json
 | `initMessage`                  | string      | No       | `'Hello!'`                                                           |
 | `options.groupRecipients`      | boolean     | No       | `true`: if false a separate chat will be created for each member     |
 | `options.public`               | boolean     | No       | `true`: the room will be visible to everyone in the chat application |
-| `options.allowHistoryBrowsing` | boolean     | No       | `true`: members will be allowed to browser past messages             |
+| `options.allowHistoryBrowsing` | boolean     | No       | `true`: members will be allowed to browse past messages             |
 | `options.allowMessageCopy`     | boolean     | No       | `true`: members will be allowed to copy/paste messages               |
 | `options.allowAddUser`         | boolean     | No       | `true`: members will be allowed to add other members to the chat     |
 
