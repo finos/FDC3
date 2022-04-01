@@ -54,7 +54,6 @@
         "ids": [
           "context/ref/Context",
           "context/ref/ChatInitSettings",
-          "context/ref/ChatRoomRef",
           "context/ref/Contact",
           "context/ref/ContactList",
           "context/ref/Country",

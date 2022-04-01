@@ -74,7 +74,6 @@ const roomRefs = await res.getResult();
 Other Types
 
 - [ContactList](ContactList)
-- [ChatRoomRef](ChatRoomRef)
 
 Intents
 

@@ -22,9 +22,6 @@ Initiate a chat with a contact, a list of contacts or detailed initialization se
 * [ContactList](../../context/ref/ContactList)
 * [ChatInitSettings](../../context/ref/ChatInitSettings)
 
-## Result Context
-
-* Array of [ChatRoomRef](../../context/ref/ChatRoomRef)
 ## Example
 
 ```js
@@ -72,7 +69,6 @@ Context
 - [Contact](../../context/ref/Contact)
 - [ContactList](../../context/ref/ContactList)
 - [ChatInitSettings](../../context/ref/ChatInitSettings)
-- [ChatRoomRef](../../context/ref/ChatRoomRef)
 
 Intents
 - [StartCall](StartCall)
