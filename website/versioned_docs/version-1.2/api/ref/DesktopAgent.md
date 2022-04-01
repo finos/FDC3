@@ -132,7 +132,7 @@ _findIntent_ is effectively granting programmatic access to the Desktop Agent's 
 It returns a promise resolving to the intent, its metadata and metadata about the apps that are registered to handle it.
 This can be used to raise the intent against a specific app.
 
-If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
+If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
 
 #### Examples
 ```js
@@ -161,7 +161,7 @@ Find all the available intents for a particular context.
 _findIntentsByContext_ is effectively granting programmatic access to the Desktop Agent's resolver.
 A promise resolving to all the intents, their metadata and metadata about the apps that registered as handlers is returned, based on the context types the intents have registered.
 
- If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
+ If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
 
  #### Example
  ```js
@@ -246,7 +246,7 @@ getOrCreateChannel(channelId: string): Promise<Channel>;
 ```
 
 Returns a Channel object for the specified channel, creating it (as an _App_ channel) - if it does not exist.
-`Error` with a string from the [`ChannelError`](ChannelError) enumeration if channel could not be created or access was denied.
+`Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration if channel could not be created or access was denied.
 
 #### Example
 
