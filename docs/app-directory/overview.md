@@ -9,7 +9,7 @@ hide_title: true
 
 An application directory (appD) is a structured repository of information about apps that can be used in an FDC3-enabled desktop. In other words, it’s a convenient way of storing and managing metadata about apps in your ecosystem. 
 
-The application metadata stored in appD includes the app name, type, details about how to run the application, its icons, publisher, support contact details and so on. All this information is readily available in one place and can be used both to populate a launcher or app catalog UI for your users, and by the desktop agent managing the apps on your desktop. In fact, if your smart desktop follows the FDC3 standard, appD is the primary way your desktop agent knows all the details about apps available to run on your desktop. Conversely, if an app is not listed in appD, the desktop agent can’t ensure its participation in context sharing or use it to resolve intents.
+The application metadata stored in appD includes the app name, type, details about how to run the application, its icons, publisher, support contact details and so on. All this information is readily available in one place and can be used both to populate a launcher or app catalog UI for your users, and by the desktop agent managing the apps on your desktop. In fact, if your desktop platform supports the FDC3 standard, appD is the primary way that the FDC3 desktop agent implementation should receive the details about apps available to run on your desktop. Conversely, if an app is not listed in appD, the desktop agent can’t ensure its participation in context sharing or use it to resolve intents.
 
 
 ## Advantages 
@@ -34,7 +34,7 @@ AppD has two types of users. One is the desktop agent, but the other is humans a
 
 For large institutions, it can be difficult to keep track of all the apps (developed both in-house and by vendors), since a typical desktop could have many. Users can search appD to discover the apps they need. An app might already reside on their system or be available to them over the internet, but if they don’t have a way to search the apps available to them, they won’t be able to find it. An appD provides a way for users to discover the apps they need.
 
-An appD makes it possible to discover info about apps that reside on various domains, not just the one domain the appD itself is hosted on. In addition, you can find details about how to launch the apps in multiple, diverse environments. This is in sharp contrast to the [W3C's Web App Manifest](https://www.w3.org/TR/appmanifest/), which is hosted on the same domain as the app, is limited to web apps, and is generally used to 'install' an app that the user has already accessed.
+An appD makes it possible to discover info about apps that reside on various domains, not just the one domain the appD itself is hosted on. In addition, you can find details about how to launch the apps in multiple, diverse environments. This is a different use-case to, for example, the [W3C's Web App Manifest](https://www.w3.org/TR/appmanifest/), which is hosted on the same domain as the app, is limited to web apps, and is generally used to 'install' an app that the user has already accessed.
 
 
 #### Updating apps
@@ -51,7 +51,7 @@ AppD reduces fragmentation in the market and allows end-users more flexibility i
 
 #### Intent resolution
 
-AppD provides information to the Desktop Agent on which applications support particular [intents](../intents/overview) and the context types they require as input to them. This allows the Desktop Agent to implement an [intent resolver](../api/spec#resolvers) that can launch applications and pass the intent and context to them to operate on, supporting workflows between applications that didn't require prior bilateral agreements between the application providers.
+AppD provides information to the Desktop Agent on which applications can handle particular [intents](../intents/overview) and the context types they support as input to them. This allows the Desktop Agent to implement an [intent resolver](../api/spec#resolvers) that can launch applications and pass the intent and context to them to operate on, supporting workflows between applications that didn't require prior bilateral agreements between the application providers.
 
 
 ### For an Application Provider
