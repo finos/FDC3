@@ -206,7 +206,7 @@ fdc3.broadcast(instrument);
 </code></pre>
 <p>Find all the available instances for a particular application.</p>
 <p>If there are no instances of the specified application the returned promise should resolve to an empty array.</p>
-<p>If the resolution fails, the promise will return an <code>Error</code> with a string from the <a href="ResolveError"><code>ResolveError</code></a> enumeration.</p>
+<p>If the resolution fails, the promise will return an <code>Error</code> with a string from the <a href="Errors#resolveerror"><code>ResolveError</code></a> enumeration.</p>
 <h3><a class="anchor" aria-hidden="true" id="example-1"></a><a href="#example-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h3>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// Retrieve a list of instances of an application</span>
 <span class="hljs-keyword">let</span> instances = <span class="hljs-keyword">await</span> fdc3.findInstances({<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;MyApp&quot;</span>});
@@ -478,7 +478,7 @@ fdc3.joinUserChannel(selectedChannel.id);
    */</span>
 joinChannel(channelId: <span class="hljs-built_in">string</span>) : <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
 </code></pre>
-<p>Alias to the <a href="#joinUserChannel"><code>joinUserChannel</code></a> function provided for backwards compatibility with version 1.1 &amp; 1.2 of the FDC3 standard.</p>
+<p>Alias to the <a href="#joinuserchannel"><code>joinUserChannel</code></a> function provided for backwards compatibility with version 1.1 &amp; 1.2 of the FDC3 standard.</p>
 <h4><a class="anchor" aria-hidden="true" id="see-also-12"></a><a href="#see-also-12" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="#joinuserchannel"><code>joinUserChannel</code></a></li>
@@ -503,8 +503,8 @@ redChannel.addContextListener(<span class="hljs-literal">null</span>, channelLis
 <pre><code class="hljs css language-ts">open(app: TargetApp, context?: Context): <span class="hljs-built_in">Promise</span>&lt;AppMetadata&gt;;
 </code></pre>
 <p>Launches an app with target information, which can be either be a string like a name, or an <a href="Metadata#appmetadata"><code>AppMetadata</code></a> object.</p>
-<p>The <code>open</code> method differs in use from <a href="#raiseIntent"><code>raiseIntent</code></a>.  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, <code>open</code> would be used to open an app returned in the search results.</p>
-<p><strong>Note</strong>, if the intent, context and target app name are all known, it is recommended to instead use <a href="#raiseIntent"><code>raiseIntent</code></a> with the <code>target</code> argument.</p>
+<p>The <code>open</code> method differs in use from <a href="#raiseintent"><code>raiseIntent</code></a>.  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, <code>open</code> would be used to open an app returned in the search results.</p>
+<p><strong>Note</strong>, if the intent, context and target app name are all known, it is recommended to instead use <a href="#raiseintent"><code>raiseIntent</code></a> with the <code>target</code> argument.</p>
 <p>If a <a href="Types#context"><code>Context</code></a> object is passed in, this object will be provided to the opened application via a contextListener. The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.</p>
 <p>Returns an <a href="Metadata#appmetadata"><code>AppMetadata</code></a> object with the <code>instanceId</code> field set identifying the instance of the application opened by this call.</p>
 <p>If opening errors, it returns an <code>Error</code> with a string from the <a href="Errors#openerror"><code>OpenError</code></a> enumeration.</p>
