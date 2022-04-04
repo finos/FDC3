@@ -76,7 +76,7 @@ Intents
 - [ViewInstrument](../../intents/ref/ViewInstrument)
 - [ViewNews](../../intents/ref/ViewNews)
 - [ViewQuote](../../intents/ref/ViewQuote)
-- [ViewResearch](../../intents/ref/ViewResearch.md)
+- [ViewResearch](../../intents/ref/ViewResearch)
 
 FINOS Financial Objects
 - [Instrument](https://fo.finos.org/docs/objects/instrument)
