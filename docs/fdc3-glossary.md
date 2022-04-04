@@ -6,9 +6,11 @@ sidebar_label: Glossary
 For the purposes of this Standard, the following definitions apply. Other terms are defined when first used, at which place they appear in bold and italic type. Terms explicitly defined in this Standard are not to be presumed to refer implicitly to similar terms defined elsewhere. Terms not defined are assumed to be well-known in the financial services or software industries.
 
 
-- **app directory**: A repository of application metadata supporting discovery, for example via name or intent, and retrieval of metadata necessary to launch an application.
 - **app**: Shorthand for application.
+- **app directory**: A repository of application metadata supporting discovery, for example via name or intent, and retrieval of metadata necessary to launch an application.
+- **app directory record**: Metadata relating to a single application, encoded in JSON.
 - **appD**: Shorthand for app directory.
+- **appD record**: Shorthand for app directory record.
 - **application**: Any endpoint on the desktop that is registered with/known by a Desktop Agent, launchable by a Desktop Agent, addressable by a Desktop Agent or otherwise able to interact with the Desktop Agent.
 - **application, hybrid**: Any web application running within the context of a standalone native application that embeds a web view, typically based on Chromium.
 - **application, native**: A non-web-based application; i.e., one that runs outside the context of web browser, web view or web container. A user-written program—typically implemented in a language such as C++, C#, Java, or Python, rather than JavaScript or TypeScript.
