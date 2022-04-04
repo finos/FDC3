@@ -9,8 +9,9 @@ hide_title: true
 
 An application directory (appD) is a structured repository of information about apps that can be used in an FDC3-enabled desktop. In other words, it’s a convenient way of storing and managing metadata about apps in your ecosystem. 
 
-The application metadata stored in appD includes the app name, type, details about how to run the application, its icons, publisher, support contact details and so on. All this information is readily available in one place and can be used both to populate a launcher or app catalog UI for your users, and by the desktop agent managing the apps on your desktop. In fact, if your desktop platform supports the FDC3 standard, appD is the primary way that the FDC3 desktop agent implementation should receive the details about apps available to run on your desktop. Conversely, if an app is not listed in appD, the desktop agent can’t ensure its participation in context sharing or use it to resolve intents.
+The application metadata stored in appD records may include: the app name, type, details about how to run the application, its icons, publisher, support contact details and so on. It may also include links to or embed manifest formats defined elsewhere, such as proprietary manifests for launching the app in container product or a Web Application Manifest (as [defined by the W3C](https://www.w3.org/TR/appmanifest/)). 
 
+All this information is readily available in one place and can be used both to populate a launcher or app catalog UI for your users, and by the desktop agent managing the apps on your desktop. In fact, if your desktop platform supports the FDC3 standard, appD is the primary way that the FDC3 desktop agent implementation should receive the details about apps available to run on your desktop. Conversely, if an app is not listed in appD, the desktop agent can’t ensure its participation in context sharing or use it to resolve intents.
 
 ## Advantages 
 
