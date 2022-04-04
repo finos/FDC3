@@ -95,5 +95,12 @@
         "infoLink": "https://www.scottlogic.com/",
         "pinned": true,
         "isMember": true
-    } 
+    },
+    {
+        "caption": "Singletrack",
+        "image": "/img/users/singletrack.png",
+        "infoLink": "https://www.singletrack.com/",
+        "pinned": true,
+        "isMember": true
+    }
 ]

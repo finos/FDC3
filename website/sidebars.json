@@ -6,6 +6,7 @@
       "why-fdc3",
       "fdc3-charter",
       "fdc3-compliance",
+      "fdc3-glossary",
       "references"
     ],
     "API": [
@@ -17,6 +18,7 @@
         "ids": [
           "api/ref/DesktopAgent",
           "api/ref/Channel",
+          "api/ref/PrivateChannel",
           "api/ref/Listener",
           "api/ref/Globals",
           "api/ref/Types",
@@ -39,7 +41,8 @@
           "intents/ref/ViewQuote",
           "intents/ref/ViewNews",
           "intents/ref/ViewAnalysis",
-          "intents/ref/ViewInstrument"
+          "intents/ref/ViewInstrument",
+          "intents/ref/ViewHoldings"
         ]
       }
     ],

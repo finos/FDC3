@@ -14,7 +14,7 @@ interface Context {
 }
 ```
 
-The base interface that all contexts should extend: a context data object adhering to the [Context Data Specification](../../context/spec).
+The base interface that all contexts should extend: a context data object adhering to the [FDC3 Context Data specification](../../context/spec).
 
 This means that it must at least have a `type` property that indicates what type of data it represents, e.g. `'fdc3.contact'`. The `type` property of context objects is important for certain FDC3 operations, like [`Channel.getCurrentContext`](Channel#getCurrentContext) and [`DesktopAgent.addContextListener`](DesktopAgent#addContextListener), which allows you to filter contexts by their type.
 
@@ -41,13 +41,47 @@ type ContextHandler = (context: Context) => void;
 
 Describes a callback that handles a context event.
 
-Used when attaching listeners for context broadcasts and raised intents.
+Used when attaching listeners for context broadcasts.
 
 #### See also
 * [`Context`](#context)
-* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 * [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
 * [`Channel.addContextListener`](Channel#addcontextlistener)
+
+## `IntentHandler`
+
+```typescript
+type IntentHandler = (context: Context) => Promise<IntentResult> | void;
+```
+
+Describes a callback that handles a context event and may return a promise of a Context or Channel object to be returned to the application that raised the intent.
+
+Used when attaching listeners for raised intents.
+
+#### See also
+* [`Context`](#context)
+* [`PrivateChannel`](PrivateChannel)
+* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+* [`Channel.addContextListener`](Channel#addcontextlistener)
+
+## `IntentResult`
+
+```typescript
+type IntentResult = Context | Channel;
+```
+
+Describes results that an Intent handler may optionally return that should be communicated back to the app that raised the intent, via the [`IntentResolution`](Metadata#intentresolution). 
+
+Represented as a union type in TypeScript, however, this type may be rendered as an interface in other languages that both the `Context` and `Channel` types implement, allowing either to be returned by an `IntentHandler`.
+
+#### See also
+* [`Context`](#context)
+* [`Channel`](Channel)
+* [`PrivateChannel`](PrivateChannel)
+* [`IntentHandler`](#intenthandler)
+* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+* [`IntentResolution`](Metadata#intentresolution)
+
 
 ## `Listener`
 
