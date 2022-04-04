@@ -59,7 +59,7 @@ However, there is a need for applications to ensure that their intents avoid col
 * Expected behavior: Display any holdings for the provided instrument, list of instruments, or organization
 ### [ViewProfile](ref/ViewProfile)
 * Expected context: Contact, Organization
-* Expected behavior: Display basic profile information for individual or organization
+* Expected behavior: Display basic profile information for an individual or organization
 ### [ViewResearch](ref/ViewResearch)
 * Expected context: Contact, Instrument, Organization
 * Expected behavior: Show research related to an instrument, an individual or organization
