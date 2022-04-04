@@ -35,7 +35,7 @@ All that is required is a "desktop agent" that supports the FDC3 standard, which
 
 ## Web
 
-For web applications to be FDC3-enabled, they need to run in the context of an agent that makes the FDC3 API available to the application. This desktop agent is also responsible for lauching and co-ordinating applications. It could be a browser extension, web app, or full-fledged desktop container framework.
+For web applications to be FDC3-enabled, they need to run in the context of an agent that makes the FDC3 API available to the application. This desktop agent is also responsible for launching and co-ordinating applications. It could be a browser extension, web app, or full-fledged desktop container framework.
 
 ### Example
 
@@ -108,9 +108,9 @@ Despite this limitation, implementing support for FDC3 in a native application c
 
 - [x] Publish versioned NPM packages to ease adoption and implementation of FDC3 APIs.
 - [x] Release version 1.2 of the standard with expanded API capabilities.
-- [ ] Establish a process to accelerate community-contributed context data definitions.
-- [ ] Release version 2.0 of the standard with support for app instances, two-way data flow and joining multiple channels.
+- [x] Establish a process to accelerate community-contributed context data definitions.
 - [ ] Improve the app directory specification, with support for container-agnostic app manifests, and more type metadata around channels and launching apps.
+- [ ] Release version 2.0 of the standard with API support for app instances, two-way data flow and requesting channels with context.
 - [ ] Introduce a hosted app directory example with sample application definitions.
 - [ ] Continue building out business use cases to inform future versions of the FDC3 Standard.
 
@@ -139,24 +139,29 @@ Finally, another great way to interact with the community, is to attend the mont
 ### Need help?
 Email [fdc3@finos.org](mailto:fdc3@finos.org) if you need help getting started in the FDC3 Community. If you encounter technical difficulties accessing repositories, joining Slack, mailing lists or meetings, please email [help@finos.org](mailto:help@finos.org).
 
-## Become an FDC3 Participant, Editor or Maintainer
-Email [fdc3@finos.org](mailto:fdc3@finos.org) if you would like to become an FDC3 Participant, Editor or Maintainer. For more details on FDC3's governance please see our [Governance document](GOVERNANCE.md).
+## Why should you get involved in FDC3?
+If you or your firm intends to make use of the FDC3 Standard (by implementing a Desktop Agent or App Directory, by adding support to apps to interoperate with others via FDC3, or even by using apps, Desktop Agents or App Directories written by others) then participating in the governance, maintenance and onward development of the FDC3 Standard will help to protect and strengthen the ecosystem developing around FDC3. Doing so will also empower you to help guide the Standard in directions that are relevant to your use or that of your firm.
+If you or your firm are new to contributing to open source projects, please see the variety of resources available from FINOS, (such as the [Open Source readiness project](https://www.finos.org/open-source-readiness)), Linux Foundation ([Participating in Open Source communities](https://www.linuxfoundation.org/tools/participating-in-open-source-communities/)) and others (e.g. [opensource.guide](https://opensource.guide/)). 
 
-### FDC3 Participants
-FDC3 Participants are those that make and have made contributions to the FDC3 Standard Working Group. The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the standard. 
+## What it means to be an FDC3 Participant, Editor or Maintainer
+According to [Governance document](GOVERNANCE.md) document: 
+- **"Participants"** are those that have made contributions to the FDC3 Standard Working Group (subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/governance/IP-Policy.pdf)). The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the Standard. In practice, that means people that attend and contribute to meetings, raise issues, pull requests (to submit patches to the Standard) and reviews.
 
-#### Enrollment
-If you would like to formally enroll as a voting participant to the standard (as described in our standards governance),
-please email [fdc3-participants+subscribe@finos.org](mailto:fdc3-participants+subscribe@finos.org?subject=Please%20enroll%20me%20as%20FDC3%20standard%20participant&amp;cc=fdc3-pmc%40finos.org&amp;body=HI%2C%20my%20name%20is%20%3CFirstName%20LastName%3E%20and%20I%27d%20like%20to%20formally%20participate%20to%20the%20FDC3%20standard%20process.%20I%20plan%20to%20contribute%20as%20%3Cindividual%7Con%20behalf%20of%20organizationName%3E%20and%20I%20have%20reviewed%20the%20policies%20described%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2Fcommunity%2Ftree%2Fmaster%2Fgovernance%2FStandards-Projects%20.%20Thank%20you!) making your intent to participate in the standard process explicit.
-Please note that standard participants are bound to the provisions in the [FINOS IP Policy](https://github.com/finos/community/blob/db11c11b80651b8bc888e7cb1d56d20afdf2a346/governance/IP-Policy.pdf) as described in the [FINOS standards governance](https://github.com/finos/community/tree/db11c11b80651b8bc888e7cb1d56d20afdf2a346/governance/Standards-Projects).
+- **"Editors"** are responsible for ensuring that the contents of the Standard's documents accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines.
+
+- **"Maintainers"** are responsible for organizing activities around developing, maintaining, and updating the specification(s) developed by the Working Group. Maintainers are also responsible for determining consensus and coordinating appeals.
+
+Whilst all 3 roles require some amount of attention, being an Editor or Maintainer will obviously require a greater and more regular investment of time from anyone taking on that role.
+
+### How do you become a Participant, Editor or Maintainer?
+Becoming an FDC3 participant is as easy as attending meetings and/or raising issues for changes you'd like see in the Standard, commenting on issues others have raised or even asking questions (which can often result in the clarification of the Standard's documentation to help others with the same questions in future).
+
+If you are going to use, implement or benefit from the FDC3 Standard, we also recommend that you sign up as a voting participant. To do so, please use this link: [fdc3-participants+subscribe@finos.org](mailto:fdc3-participants+subscribe@finos.org?subject=Please%20enroll%20me%20as%20FDC3%20standard%20participant&amp;cc=fdc3-pmc%40finos.org&amp;body=HI%2C%20my%20name%20is%20%3CFirstName%20LastName%3E%20and%20I%27d%20like%20to%20formally%20participate%20to%20the%20FDC3%20standard%20process.%20I%20plan%20to%20contribute%20as%20%3Cindividual%7Con%20behalf%20of%20organizationName%3E%20and%20I%20have%20reviewed%20the%20policies%20described%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2Fcommunity%2Ftree%2Fmaster%2Fgovernance%2FStandards-Projects%20.%20Thank%20you!) to send a templated email email to join the enrolled voting participants group. Please note that standard participants are bound to the provisions in the [FINOS IP Policy](https://github.com/finos/community/blob/master/governance/IP-Policy.pdf) as described in the [FINOS Standards governance document](https://github.com/finos/community/tree/master/governance/Standards-Projects).
 
 Upon enrollment as an [FDC3 voting participant](https://github.com/orgs/finos/teams/fdc3-participants), you will be invited to join the [FINOS GitHub organization](https://github.com/orgs/finos/people) and the [fdc3-participants](https://github.com/orgs/finos/teams/fdc3-participants) GitHub team.
 
-### FDC3 Editors
-FDC3 Editors are responsible for ensuring that the contents of the document accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines. The appointment of an Editor is approved by the FDC3 Standards Working Group Participants.
-
-### FDC3 Maintainers
-FDC3 Maintainers are responsible for organizing activities around developing, maintaining, and updating the specification developed by the FDC3 Standard Working Group. Maintainers are also responsible for determining consensus and coordinating appeals, as well as FDC3-related planning and communications. The appointment of a Maintainer is approved by the FDC3 Standards Working Group Participants.
+#### Become an FDC3 Editor or Maintainer
+Once you are an enrolled participant in FDC3, you can apply to become an editor or maintainer by contacting the existing FDC3 maintainers at [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org) and then seeking the approval of the FDC3 Standards Working Group. Generally, the maintainers will look for both a history of contribution to FDC3 and a commitment to investing sufficient time in the role from any prospective candidates before proposing them to the Standards Working Group for approval. If you are new to FDC3, but willing to make the investment of time, the maintainers can work with you to build up a history of contribution.
 
 #### Mailing list
 You can contact the FDC3 maintainers by sending an email to [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org).
@@ -184,6 +189,14 @@ Copyright 2017-2022 FINOS and FDC3 Participants
 
 Version 1.0 of the FDC3 specification is licensed under the [FDC3 1.0 Final Specification License](PATENTS-FDC3-1.0.md).
 
-Subsequent FDC3 specifications and draft specifications are subject to the [FINOS IP Policy](https://www.finos.org/hubfs/FINOS/governance/FINOS%20IP%20Policy.pdf), which authorizes implementation of FDC3 specifications without charge, on a RAND basis, subject to the terms of the policy. For details of the IP commitments made by contributors to FDC3, please refer to the policy.
+Subsequent FDC3 specifications and draft specifications are subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/governance/IP-Policy.pdf), which authorizes implementation of FDC3 specifications without charge, on a RAND basis, subject to the terms of the policy. For details of the IP commitments made by contributors to FDC3, please refer to the policy.
 
 Reference implementations and other software contained in FDC3 repositories is licensed under the [Apache License, Version 2.0](LICENSE) unless otherwise noted. SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0).
+
+## Intellectual Property Claims
+Users of the FDC3 standard are requested to submit, with their comments, notification of
+any relevant patent claims or other intellectual property rights of which they may be aware that
+might be infringed by any implementation of the standard set forth in this document, and to provide 
+supporting documentation.
+
+THIS STANDARD IS BEING OFFERED WITHOUT ANY WARRANTY WHATSOEVER, AND IN PARTICULAR, ANY WARRANTY OF NON-INFRINGEMENT IS EXPRESSLY DISCLAIMED. ANY USE OF THIS STANDARD SHALL BE MADE ENTIRELY AT THE IMPLEMENTER'S OWN RISK, AND NEITHER THE FOUNDATION, NOR ANY OF ITS MEMBERS OR SUBMITTERS, SHALL HAVE ANY LIABILITY WHATSOEVER TO ANY IMPLEMENTER OR THIRD PARTY FOR ANY DAMAGES OF ANY NATURE WHATSOEVER, DIRECTLY OR INDIRECTLY, ARISING FROM THE USE OF THIS STANDARD.
