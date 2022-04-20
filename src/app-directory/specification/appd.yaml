@@ -455,6 +455,10 @@ components:
         tooltip:
           type: string
           description: Optional tooltip description e.g. for a launcher
+        lang:
+          type: string
+          pattern: '[a-z]{2}(-[a-zA-Z0-9]{2,8}){0,1}'
+          description:  a language tag that specifies the primary language of both application and it's AppD entry, as defined by IETF RFC 5646.
         description:
           type: string
           description: >-
