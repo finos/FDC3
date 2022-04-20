@@ -469,10 +469,16 @@ components:
             $ref: '#/components/schemas/AppImage'
         contactEmail:
           type: string
+          format: email
           description: Optional e-mail to receive queries about the application
         supportEmail:
           type: string
+          format: email
           description: Optional e-mail to receive support requests for the application
+        moreInfo:
+          type: string
+          format: uri
+          description: Optional URL that provides more infomation about the application
         publisher:
           type: string
           description: >-
@@ -568,9 +574,11 @@ components:
             $ref: '#/components/schemas/AppImage'
         contactEmail:
           type: string
+          format: email
           description: Optional e-mail to receive queries about the application
         supportEmail:
           type: string
+          format: email
           description: Optional e-mail to receive support requests for the application
         publisher:
           type: string
@@ -636,6 +644,7 @@ components:
       properties:
         src:
           type: string
+          format: uri
           description: Icon URL
         size:
           type: string
@@ -648,12 +657,14 @@ components:
       properties:
         icon:
           type: string
+          format: uri
           description: Icon URL
     AppImage:
       description: App Image holder
       properties:
         url:
           type: string
+          format: uri
           description: App Image URL
     Intent:
       description: >-
@@ -727,6 +738,7 @@ components:
       properties:
         url:
           type: string
+          format: uri
           description: Application URL.
       additionalProperties: false
     HostManifests:
@@ -761,6 +773,7 @@ components:
             tooltip: FDC3 logo
         contactEmail: fdc3@finos.org
         supportEmail: fdc3-maintainers@finos.org
+        moreInfo: https://fdc3.finos.org #update to point to implementations page when it exists
         publisher: FDC3
         intents: [{
           name: ViewChart,
