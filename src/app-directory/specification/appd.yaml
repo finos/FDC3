@@ -364,9 +364,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApplicationSearchResponseV1'
-              examples:
-                FDC3WorkbenchAppDefinitionSearchResponse:
-                  $ref: '#/components/examples/FDC3WorkbenchAppDefinitionSearchResponseV1'
         '400':
           description: Bad request.
           content:
