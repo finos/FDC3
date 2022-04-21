@@ -45,7 +45,7 @@ Typically, software evolves over time. The app versions you are running today wi
 
 #### Agent-agnostic
 
-As a part of the FDC3 standard, appD isn't tied to any specific vendor. This is important, as it allows you more flexibility in that you are not tied to any specific container or desktop agent implementation. If at any point you want to switch to a different desktop agent, the process won’t be prohibitively difficult. The existing appD will work without any additional effort from you, as long as your new desktop agent is also FDC3-compliant. This is in contrast with proprietary solutions, where you would have to reconstruct the entire ecosystem from scratch. 
+As a part of the FDC3 standard, appD isn't tied to any specific vendor. This is important, as it allows you more flexibility in that you are not tied to any specific container or desktop agent implementation. If at any point you want to switch to a different desktop agent, the process won’t be prohibitively difficult. The existing appD will work without any additional effort from you, as long as your new desktop agent is also FDC3-compliant. This is in contrast with proprietary solutions, where you would have to produce a new configuration and integration for every application. 
 
 AppD reduces fragmentation in the market and allows end-users more flexibility in what applications can be included in their desktop.
 
