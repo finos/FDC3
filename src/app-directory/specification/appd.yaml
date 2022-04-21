@@ -728,12 +728,18 @@ components:
     Type:
       type: string
       description: >-
-        The technology type that is used to launch and run the application. Particular application types imply
+        The technology type that is used to launch and run the application. 
+        Each application type implies a particular set of launch `details`.
+        The supported types include:<br> 
+        **web**: Web applications launched via a URL<br>
+        **native**: Native applications pre-installed on a device and launch via a filesystem path<br>
+        **citrix**: Apps virtualized via Citrix<br>
+        **onlineNative**: Native apps that have an online launcher, e.g. online ClickOnce app deployments.
       enum:
         - web
         - native
         - citrix
-        - clickonce
+        - onlineNative
     LaunchDetails:
       description: Properties used to launch apps of various types. 
       oneOf:
@@ -742,7 +748,7 @@ components:
         - $ref: '#/components/schemas/CitrixAppDetails'
         - $ref: '#/components/schemas/OnlineNativeAppDetails'
     WebAppDetails:
-      description: Properties used to launch web apps.
+      description: 'Properties used to launch apps with `type: web`.'
       required:
         - url
       properties:
@@ -752,7 +758,7 @@ components:
           description: Application start URL.
       additionalProperties: false
     NativeAppDetails:
-      description: Properties used to launch native apps installed on a desktop.
+      description: 'Properties used to launch apps with `type: native` that are already installed on the device.'
       required:
         - path
       properties:
@@ -764,19 +770,19 @@ components:
           description: Arguments that must be passed on the command line to launch the app in the expected configuration.
       additionalProperties: false
     CitrixAppDetails:
-      description: Properties used to launch apps virtualized via Citrix.
+      description: 'Properties used to launch apps virtualized apps with `type: citrix`.'
       required:
         - alias
       properties:
         alias:
           type: string
-          description: Application start URL.
+          description: The Citrix alias / name of the virtual app (passed to the Citrix SelfService qlaunch parameter).
         arguments:
           type: string
           description: Arguments that must be passed on the command line to launch the app in the expected configuration.
       additionalProperties: false
     OnlineNativeAppDetails:
-      description: Properties used to launch native application with an online launcher, e.g. online ClickOnce app deployments.
+      description: 'Properties used to launch a native apps with `type: onelineNative` that have an online launcher, e.g. online ClickOnce app deployments.'
       required:
         - url
       properties:
