@@ -503,10 +503,11 @@ components:
         Launching typically means running for a user on a desktop.
         The details around 'launching' including who or what might do it, and how the launch action is initiated are
         discussed elsewhere in the FDC3 App Directory spec.
-      required:            # details are not required as the host type applications use the hostsManifests mapping instead
+      required:
         - appId
         - name
         - type
+        - details
       allOf:
         - $ref: '#/components/schemas/BaseApplication'
         - type: object
