@@ -426,10 +426,11 @@ components:
           $ref: '#/components/schemas/Type'
         details:
           description: >-
-            The type specific details of the application. Currently only the "browser" type is standardized.
-            "host" type applications should use the hostManifest's object for all application details.
+            The type specific launch details of the application. These details are intended to be 
+            vendor-agnostic and _MAY_ be duplicated or overridden by details provided in the hostManifests 
+            object for a specific host.
           oneOf:
-            - $ref: '#/components/schemas/BrowserDetails'
+            - $ref: '#/components/schemas/LaunchDetails'
         version:
           type: string
           description: >-
@@ -726,28 +727,72 @@ components:
     Type:
       type: string
       description: >-
-        Enumeration describing the supported application types. Currently only the browser application type is officially supported.
-        The host application type allows for host specific application types (e.g. exe, workspaces, citrix, etc.).
+        The technology type that is used to launch and run the application. Particular application types imply
       enum:
-        - browser
-        - host
-    BrowserDetails:
-      description: Properties common to all browser applications.
+        - web
+        - native
+        - citrix
+        - clickonce
+    LaunchDetails:
+      description: Properties used to launch apps of various types. 
+      oneOf:
+        - $ref: '#/components/schemas/WebAppDetails'
+        - $ref: '#/components/schemas/NativeAppDetails'
+        - $ref: '#/components/schemas/CitrixAppDetails'
+        - $ref: '#/components/schemas/OnlineNativeAppDetails'
+    WebAppDetails:
+      description: Properties used to launch web apps.
       required:
         - url
       properties:
         url:
           type: string
-          description: Application URL.
+          formt: uri
+          description: Application start URL.
+      additionalProperties: false
+    NativeAppDetails:
+      description: Properties used to launch native apps installed on a desktop.
+      required:
+        - path
+      properties:
+        path:
+          type: string
+          description: The path on disk from which the application is launched.
+        arguments:
+          type: string
+          description: Arguments that must be passed on the command line to launch the app in the expected configuration.
+      additionalProperties: false
+    CitrixAppDetails:
+      description: Properties used to launch apps virtualized via Citrix.
+      required:
+        - alias
+      properties:
+        alias:
+          type: string
+          description: Application start URL.
+        arguments:
+          type: string
+          description: Arguments that must be passed on the command line to launch the app in the expected configuration.
+      additionalProperties: false
+    OnlineNativeAppDetails:
+      description: Properties used to launch native application with an online launcher, e.g. online ClickOnce app deployments.
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          formt: uri
+          description: Application start URL.
       additionalProperties: false
     HostManifests:
       type: object
       description: >-
-        A mapping from host string to a host-specific application manifest object or URI
-        from which that manifest can be retrieved. The manifest should provide all details required to
-        launch and use the application within the specified host.
+        A mapping from host name to a host-specific application manifest object or URI
+        from which that manifest can be retrieved. The manifest should provide details required to
+        launch and use the application within the specified host. The manifest _MAY_ duplicate or 
+        override information provided in the `details` field.
       additionalProperties:
-        x-additionalPropertiesName: Host
+        x-additionalPropertiesName: Host name
         oneOf:
           - type: string   # URI pointing to a JSON containing all host specific properties
             format: uri
@@ -764,7 +809,7 @@ components:
         The keys to this object should be language tags as defined by IETF RFC 5646, e.g. en, en-GB or fr-FR.
       additionalProperties:
         x-additionalPropertiesName: Language tag
-        $ref: '#/components/schemas/BaseApplication'
+        $ref: '#/components/schemas/BaseApplication' # due to a bug in redoc this may display as a recursive definition, it is not. It will render correctly in swagger and other OpenAPI parsers.
   examples:
     FDC3WorkbenchAppDefinition:
       value:
