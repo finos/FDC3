@@ -39,7 +39,7 @@ The 'next' version will be indicated in the header:
 
 Add the new intent markdown file to docs/intents/ref. Use one of the existing intent markdown files as a template. E.g. the [ViewResearch](../intents/ref/ViewResearch) intent was created using [ViewProfile](../intents/ref/ViewProfile) as an example:
 
-![View Research](assets/view_research.png)
+![View Research](../assets/view_research.png)
 
 ## Link to Intent File
 
