@@ -16,8 +16,8 @@ An interface that represents the binding of an intent to apps, returned as part 
 For each intent, it reference the applications that support that intent.
 
 ### See also
-* [`AppMetadata`](AppMetadata)
-* [`IntentMetadata`](IntentMetadata)
+* [`AppMetadata`]#appmetadata)
+* [`IntentMetadata`](#intentmetadata)
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
 
@@ -72,8 +72,8 @@ Optionally, extra information from the app directory can be returned, to aid in 
 In situations where a desktop agent connects to multiple app directories or multiple versions of the same app exists in a single app directory, it may be necessary to specify `appId` or `version` to target applications that share the same name.
 
 #### See also
-* [`AppIntent.apps`](AppIntent)
-* [`Icon`](Icon)
+* [`AppIntent.apps`](#appintent)
+* [`Icon`](Types#icon)
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 
@@ -121,7 +121,7 @@ interface ImplementationMetadata {
 Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification and the name of the provider of the implementation.
 
 ### See also
-* [`DesktopAgent.getInfo`](DesktopAgent#getInfo)
+* [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
 
 ## `IntentMetadata`
 
@@ -138,7 +138,7 @@ The interface used to describe an intent within the platform.
 
 
 ### See also
-* [`AppIntent.intent`](AppIntent)
+* [`AppIntent.intent`](#appintent)
 
 ## `IntentResolution`
 
@@ -215,4 +215,4 @@ try {
 ### See also
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
-* [`TargetApp`](TargetApp)
+* [`TargetApp`](Types#targetapp)

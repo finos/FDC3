@@ -49,7 +49,12 @@ const siteConfig = {
   
   },
 
-  separateCss: ['static/toolbox/fdc3-workbench/static/css'],
+  separateCss: [
+    'static/toolbox/fdc3-workbench/static/css',
+    'static/toolbox/fdc3-explained/1.0',
+    'static/toolbox/fdc3-explained/1.1',
+    'static/toolbox/fdc3-explained/1.2'
+  ],
 
   /* Custom fonts for website */
   /*
