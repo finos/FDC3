@@ -49,7 +49,7 @@ Intents
 - [StartChat](../../intents/ref/StartChat)
 - [StartCall](../../intents/ref/StartCall)
 - [ViewProfile](../../intents/ref/ViewProfile)
-- [ViewResearch](../../intents/ref/ViewResearch.md)
+- [ViewResearch](../../intents/ref/ViewResearch)
 
 FINOS Financial Objects
 - [Contact](https://fo.finos.org/docs/objects/contact)
