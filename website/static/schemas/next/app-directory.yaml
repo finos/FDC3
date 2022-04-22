@@ -463,6 +463,7 @@ components:
             appropriate categories (or category) under which to list the app. 
             AppD record authors are encouraged to use lower-case and, where 
             possible, to select categories from the following list: <br>
+            - allocations<br>
             - analytics<br>
             - charts<br>
             - chat<br>
@@ -482,10 +483,13 @@ components:
             - presentation<br>
             - pricing<br>
             - productivity<br>
+            - research<br>
             - risk<br>
             - screen sharing<br>
             - security<br>
             - spreadsheet<br>
+            - trade cost analysis<br>
+            - trading system<br>
             - training<br>
             - travel<br>
             - video<br>
@@ -905,7 +909,7 @@ components:
       summary: A sample app definition for the FDC3 Workbench application
     FDC3WorkbenchAppDefinitionSearchResponse:
       value:
-        applications:
+        applications: # you can't $ref inside a $ref so example is repeated here for search response
           - appId: fdc3-workbench
             name: fdc3-workbench
             title: FDC3 Workbench
