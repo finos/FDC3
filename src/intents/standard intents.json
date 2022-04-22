@@ -35,6 +35,10 @@
     {
       "name": "ViewHoldings",
       "displayName": "Holdings"
+    },
+    {
+      "name": "ViewOrders",
+      "displayName": "Orders"
     }
   ]
 }

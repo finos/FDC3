@@ -1,25 +1,25 @@
 ---
-id: ViewHoldings
-sidebar_label: ViewHoldings
-title: ViewHoldings
+id: ViewOrders
+sidebar_label: ViewOrders
+title: ViewOrders
 hide_title: true
 ---
-# `ViewHoldings`
+# `ViewOrders`
 
-Display any holdings for the provided instrument, list of instruments, or organization.
+Display any orders related to the provided contact, instrument, or organization.
 
 ## Intent Name
 
-`ViewHoldings`
+`ViewOrders`
 
 ## Display Name
 
-`View Holdings`
+`View Orders`
 
 ## Possible Contexts
 
+* [Contact](../../context/ref/Contact)
 * [Instrument](../../context/ref/Instrument)
-* [InstrumentList](../../context/ref/InstrumentList)
 * [Organization](../../context/ref/Organization)
 
 ## Example
@@ -33,17 +33,16 @@ const instrument = {
     }
 }
 
-fdc3.raiseIntent('ViewHoldings', instrument)
+fdc3.raiseIntent('ViewOrders', instrument)
 ```
 
 ## See Also
 
 Context
+- [Contact](../../context/ref/Contact)
 - [Instrument](../../context/ref/Instrument)
-- [InstrumentList](../../context/ref/InstrumentList)
 - [Organization](../../context/ref/Organization)
 
 Intents
+- [ViewHoldings](ViewHoldings)
 - [ViewInstrument](ViewInstrument)
-- [ViewAnalysis](ViewAnalysis)
-- [ViewOrders](ViewOrders)

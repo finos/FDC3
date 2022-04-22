@@ -57,3 +57,6 @@ However, there is a need for applications to ensure that their intents avoid col
 ### ViewAnalysis
   * Expected context: Instrument, Organization, etc.
   * Expected behavior: Send context to receiving application for displaying analysis
+### ViewOrders
+  * Expected context: Contact, Instrument, Organization, etc.
+  * Expected behavior: Display any orders related to the provided contact, instrument, or organization.
