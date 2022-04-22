@@ -45,9 +45,9 @@ Add the new intent markdown file to docs/intents/ref. Use one of the existing in
 
 Add links to your Intent File to the following:
 
-* src/intents/Intents.ts
-* src/intents/standard intents.json
-* website/sidebars.json (look for the 'Intents' property and the 'ids' property within it)
+* [src/intents/Intents.ts](https://github.com/finos/FDC3/blob/master/src/intents/Intents.ts)
+* [src/intents/standard intents.json](https://github.com/finos/FDC3/blob/master/src/intents/standard%20intents.json)
+* [website/sidebars.json](https://github.com/finos/FDC3/blob/master/website/sidebars.json) (look for the 'Intents' property and the 'ids' property within it)
 
 At this point your new Intent should appear on the sidebar (you may need to restart yarn to get this).
 
