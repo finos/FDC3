@@ -453,13 +453,13 @@ components:
           description: >-
             Description of the application. This will typically be a 1-2
             paragraph style blurb about the application. Allow mark up language
-        images:
+        screenshots :
           type: array
           description: >-
             Array of images to show the user when they are looking at app
             description. Each image can have an optional description/tooltip
           items:
-            $ref: '#/components/schemas/AppImage'
+            $ref: '#/components/schemas/Screenshot'
         contactEmail:
           type: string
           format: email
@@ -582,7 +582,7 @@ components:
             Array of images to show the user when they are looking at app
             description. Each image can have an optional description/tooltip
           items:
-            $ref: '#/components/schemas/AppImage'
+            $ref: '#/components/schemas/AppImageV1'
         contactEmail:
           type: string
           format: email
@@ -659,7 +659,7 @@ components:
           description: Icon URL
         size:
           type: string
-          description: Icon dimension formatted as "<height>x<width>"
+          description: Icon dimension formatted as `<height>x<width>`
         type:
           type: string
           description: Image media type. If not present the Desktop Agent may use the src file extension
@@ -670,7 +670,23 @@ components:
           type: string
           format: uri
           description: Icon URL
-    AppImage:
+    Screenshot:
+      description: Images representing the app in common usage scenarios
+      properties:
+        src:
+          type: string
+          format: uri
+          description: App Image URL
+        size:
+          type: string
+          description: Icon dimension formatted as `<height>x<width>`
+        type:
+          type: string
+          description: Image media type. If not present the Desktop Agent may use the src file extension
+        label:
+          type: string
+          description: Optional caption for the image
+    AppImageV1:
       description: App Image holder
       properties:
         url:
@@ -789,9 +805,9 @@ components:
         lang: en-US
         icons:
           - src: http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png
-        images:
-          - url: https://fdc3.finos.org/docs/assets/fdc3-logo.png
-            tooltip: FDC3 logo
+        screenshots:
+          - src: https://fdc3.finos.org/docs/assets/fdc3-logo.png
+            label: FDC3 logo
         contactEmail: fdc3@finos.org
         supportEmail: fdc3-maintainers@finos.org
         moreInfo: https://fdc3.finos.org #update to point to implementations page when it exists
@@ -872,9 +888,9 @@ components:
             tooltip: FDC3 Workbench
             icons:
               - src: http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png
-            images:
-              - url: https://fdc3.finos.org/docs/assets/fdc3-logo.png,
-                tooltip: FDC3 logo
+            screenshots:
+              - src: https://fdc3.finos.org/docs/assets/fdc3-logo.png,
+                label: FDC3 logo
             contactEmail: fdc3@finos.org,
             supportEmail: fdc3-maintainers@finos.org,
             publisher: FDC3,
