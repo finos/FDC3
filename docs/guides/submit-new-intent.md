@@ -29,7 +29,7 @@ Note that the page opens on the current release version of the docs and you will
 
 and then select 'Documentation' under 'Latest Version'
 
-![Latest Version Selector](assets/latest_version_selector.png)
+![Latest Version Selector](../assets/latest_version_selector.png)
 
 The 'next' version will be indicated in the header:
 
