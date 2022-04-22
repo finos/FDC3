@@ -14,6 +14,7 @@ The following normative documents contain provisions, which, through reference i
 - **OpenAPI Standard v3.0**, [https://www.openapis.org/].
 - **RFC 2119**, _Keywords for use in RFCs to Indicate Requirement Levels, March 1997_, [https://datatracker.ietf.org/doc/html/rfc2119].
 - **RFC 2782**, _A DNS RR for specifying the location of services (DNS SRV), February 2000_, [https://datatracker.ietf.org/doc/html/rfc2782].
+- **RFC 5646**, _Tags for Identifying Languages, September 2009_, [https://datatracker.ietf.org/doc/html/rfc5646].
 - **TypeScript Programming Language**, [https://www.typescriptlang.org/].
 
 

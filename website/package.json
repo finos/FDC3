@@ -26,7 +26,7 @@
     "del-cli": "4.0.1",
     "docusaurus": "1.14.7",
     "docusaurus-delete-version": "0.1.1",
-    "redoc-cli": "0.10.1",
+    "redoc-cli": "0.13.10",
     "replace-in-files-cli": "1.0.0",
     "replace-json-property": "1.6.3",
     "rimraf": "3.0.2"
