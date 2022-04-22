@@ -28,10 +28,10 @@ This means that it must at least have a `type` property that indicates what type
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-* [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseIntentForContext)
+* [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 * [`Channel.broadcast`](Channel#broadcast)
-* [`Channel.getCurrentContext`](Channel#getCurrentContext)
-* [`Channel.addContextListener`](Channel#addContextListener)
+* [`Channel.getCurrentContext`](Channel#getcurrentcontext)
+* [`Channel.addContextListener`](Channel#addcontextlistener)
 
 ## `ContextHandler`
 
