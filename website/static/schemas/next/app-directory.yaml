@@ -404,18 +404,7 @@ components:
           format: int32
         message:
           type: string
-    Application:
-      description: >
-        Defines an application retrieved from an FDC3 App Directory, which can
-        then be launched.
-
-        Launching typically means running for a user on a desktop.
-        The details around 'launching' including who or what might do it, and how the launch action is initiated are
-        discussed elsewhere in the FDC3 App Directory spec.
-      required:            # details are not required as the host type applications use the hostsManifests mapping instead
-        - appId
-        - name
-        - type
+    BaseApplication:
       properties:
         appId:
           type: string
@@ -455,6 +444,10 @@ components:
         tooltip:
           type: string
           description: Optional tooltip description e.g. for a launcher
+        lang:
+          type: string
+          pattern: '^[a-z]{2}(-[a-zA-Z0-9]{2,8}){0,1}$'
+          description:  a language tag that specifies the primary language of both application and its AppD entry, as defined by IETF RFC 5646.
         description:
           type: string
           description: >-
@@ -501,6 +494,24 @@ components:
             $ref: '#/components/schemas/Intent'
         hostManifests:
           $ref: '#/components/schemas/HostManifests'
+    Application:
+      description: >
+        Defines an application retrieved from an FDC3 App Directory, which can
+        then be launched.
+
+        Launching typically means running for a user on a desktop.
+        The details around 'launching' including who or what might do it, and how the launch action is initiated are
+        discussed elsewhere in the FDC3 App Directory spec.
+      required:            # details are not required as the host type applications use the hostsManifests mapping instead
+        - appId
+        - name
+        - type
+      allOf:
+        - $ref: '#/components/schemas/BaseApplication'
+        - type: object
+          properties:
+            localizedVersions:
+              $ref: '#/components/schemas/LocalizedVersions'
     ApplicationV1:
       description: >
         (Deprecated v1 API version) Defines an application retrieved from an FDC3 App Directory, which can
@@ -745,6 +756,15 @@ components:
       type: object
       description: >-
         Object containing all host specific properties.
+    LocalizedVersions:
+      type: object # keys should be constrained to valid language tags '^[a-z]{2}(-[a-zA-Z0-9]{2,8}){0,1}$' - not possible to express in OpenAPI without moving to v3.1.0 and the javascript/jsonschema version
+      description: >
+        Provides localized alternatives to any field of the AppD record, which may also refer to an alternative
+        version of the application that is also localized (e.g. by providing customConfig or an alternative URL). 
+        The keys to this object should be language tags as defined by IETF RFC 5646, e.g. en, en-GB or fr-FR.
+      additionalProperties:
+        x-additionalPropertiesName: Language tag
+        $ref: '#/components/schemas/BaseApplication'
   examples:
     FDC3WorkbenchAppDefinition:
       value:
@@ -754,6 +774,7 @@ components:
         description: Development and test tool for FDC3 desktop agents and apps
         version: 1.0.0
         tooltip: FDC3 Workbench
+        lang: en-US
         icons:
           - src: http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png
         images:
@@ -819,6 +840,12 @@ components:
             }
           },
           Web App Manifest: https://example.com/fdc3-workbench.json
+        }
+        localizedVersions: {
+          fr-FR: {
+            title: FDC3 Table de travail,
+            description: Outil de développement et de test pour les desktop agents et applications FDC3
+          }
         }
       summary: A sample app definition for the FDC3 Workbench application
     FDC3WorkbenchAppDefinitionSearchResponse:
