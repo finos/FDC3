@@ -53,9 +53,9 @@ At this point your new Intent should appear on the sidebar (you may need to rest
 
 Also add to:
 
-* docs/intents/spec.md in the 'Standard Intents' section (also add the summary from your Intent page)
-* Any of the Context documents in docs/context/ref that are utilised by the Intent (e.g. for the [ViewResearch](../intents/ref/ViewResearch) intent, each of the [Contact](../context/ref/Contact), [Instrument](../context/ref/Instrument) and [Organization](../context/ref/Organization) Contexts are valid and so links were added to their Context pages)
-* Any of the Intents documents in docs/intents/ref that are related or relevant to the new Intent (e.g. for the [ViewResearch](../intents/ref/ViewResearch) intent a link was added to the [ViewAnalysis](../intents/ref/ViewAnalysis) document)
+* [docs/intents/spec.md](https://github.com/finos/FDC3/blob/master/docs/intents/spec.md) in the 'Standard Intents' section (also add the summary from your Intent page)
+* Any of the Context documents in [docs/context/ref](https://github.com/finos/FDC3/blob/master/docs/context/ref) that are utilised by the Intent (e.g. for the [ViewResearch](../intents/ref/ViewResearch) intent, each of the [Contact](../context/ref/Contact), [Instrument](../context/ref/Instrument) and [Organization](../context/ref/Organization) Contexts are valid and so links were added to their Context pages)
+* Any of the Intents documents in [docs/intents/ref](https://github.com/finos/FDC3/blob/master/docs/intents/ref) that are related or relevant to the new Intent (e.g. for the [ViewResearch](../intents/ref/ViewResearch) intent a link was added to the [ViewAnalysis](../intents/ref/ViewAnalysis) document)
 
 ## Finishing Off
 
