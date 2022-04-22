@@ -33,7 +33,7 @@ and then select 'Documentation' under 'Latest Version'
 
 The 'next' version will be indicated in the header:
 
-![Next Version](assets/next_version.png)
+![Next Version](../assets/next_version.png)
 
 ## Create Intent File
 
