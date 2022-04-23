@@ -88,7 +88,7 @@ The following are standard FDC3 context types.
     - A collection of contacts.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/contactlist)
     - [schema](/schemas/next/contactList.schema.json)
-- __fd3.email__
+- __fdc3.email__
   - A collection of information to be used to initiate an email with a Contact or ContactList
   - [schema](/schemas/next/email.schema.json)
 - __fdc3.country__
