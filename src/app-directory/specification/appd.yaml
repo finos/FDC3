@@ -738,14 +738,15 @@ components:
             particular desktop agent.
     Type:
       type: string
-      description: >-
+      description: |
         The technology type that is used to launch and run the application. 
         Each application type implies a particular set of launch `details`.
-        The supported types include:<br> 
-        **web**: Web applications launched via a URL<br>
-        **native**: Native applications pre-installed on a device and launch via a filesystem path<br>
-        **citrix**: Apps virtualized via Citrix<br>
-        **onlineNative**: Native apps that have an online launcher, e.g. online ClickOnce app deployments.
+        The supported types include:
+
+        - **web**: Web applications launched via a URL
+        - **native**: Native applications pre-installed on a device and launch via a filesystem path
+        - **citrix**: Apps virtualized via Citrix
+        - **onlineNative**: Native apps that have an online launcher, e.g. online ClickOnce app deployments.
       enum:
         - web
         - native
