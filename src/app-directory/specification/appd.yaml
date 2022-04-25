@@ -456,45 +456,46 @@ components:
             Description of the application. This will typically be a 1-2
             paragraph style blurb about the application. 
         categories:
-          description: >-
+          description: |
             An array of string categories that describe the application. 
             These are meant as a hint to catalogs or stores listing FDC3-enabled 
             apps and it is expected that these will make a best effort to find 
             appropriate categories (or category) under which to list the app. 
             AppD record authors are encouraged to use lower-case and, where 
-            possible, to select categories from the following list: <br>
-            - allocations<br>
-            - analytics<br>
-            - charts<br>
-            - chat<br>
-            - communication<br>
-            - compliance<br>
-            - crm<br>
-            - developer tools<br>
-            - events<br>
-            - execution management<br>
-            - file sharing<br>
-            - market data<br>
-            - news<br>
-            - networking<br>
-            - order management<br>
-            - office apps<br>
-            - portfolio management<br>
-            - presentation<br>
-            - pricing<br>
-            - productivity<br>
-            - research<br>
-            - risk<br>
-            - screen sharing<br>
-            - security<br>
-            - spreadsheet<br>
-            - trade cost analysis<br>
-            - trading system<br>
-            - training<br>
-            - travel<br>
-            - video<br>
-            - visualisation<br>
-            - weather<br>
+            possible, to select categories from the following list:
+
+            - allocations
+            - analytics
+            - charts
+            - chat
+            - communication
+            - compliance
+            - crm
+            - developer tools
+            - events
+            - execution management
+            - file sharing
+            - market data
+            - news
+            - networking
+            - order management
+            - office apps
+            - portfolio management
+            - presentation
+            - pricing
+            - productivity
+            - research
+            - risk
+            - screen sharing
+            - security
+            - spreadsheet
+            - trade cost analysis
+            - trading system
+            - training
+            - travel
+            - video
+            - visualisation
+            - weather
           type: array
           items:
             type: string
