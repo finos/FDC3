@@ -425,12 +425,7 @@ components:
         type:
           $ref: '#/components/schemas/Type'
         details:
-          description: >-
-            The type specific launch details of the application. These details are intended to be 
-            vendor-agnostic and _MAY_ be duplicated or overridden by details provided in the hostManifests 
-            object for a specific host.
-          oneOf:
-            - $ref: '#/components/schemas/LaunchDetails'
+          $ref: '#/components/schemas/LaunchDetails'
         version:
           type: string
           description: >-
@@ -743,22 +738,30 @@ components:
         Each application type implies a particular set of launch `details`.
         The supported types include:
 
-        - **web**: Web applications launched via a URL
-        - **native**: Native applications pre-installed on a device and launch via a filesystem path
-        - **citrix**: Apps virtualized via Citrix
-        - **onlineNative**: Native apps that have an online launcher, e.g. online ClickOnce app deployments.
+        - `web`: Web applications launched via a URL
+        - `native`: Native applications pre-installed on a device and launch via a filesystem path
+        - `citrix`: Apps virtualized via Citrix
+        - `onlineNative`: Native apps that have an online launcher, e.g. online ClickOnce app deployments.
+        - `other`: Used to represent apps that do not conform to or cannot be launched via the other types, and are likely to be defined solely by a hostManifest.
+
+        FDC3 Desktop Agents MUST support at least the `web` application type and MAY support any or all of the other types.
       enum:
         - web
         - native
         - citrix
         - onlineNative
+        - other
     LaunchDetails:
-      description: Properties used to launch apps of various types. 
+      description: >-
+        The type specific launch details of the application. These details are intended to be 
+        vendor-agnostic and _MAY_ be duplicated or overridden by details provided in the hostManifests 
+        object for a specific host.
       oneOf:
         - $ref: '#/components/schemas/WebAppDetails'
         - $ref: '#/components/schemas/NativeAppDetails'
         - $ref: '#/components/schemas/CitrixAppDetails'
         - $ref: '#/components/schemas/OnlineNativeAppDetails'
+        - $ref: '#/components/schemas/OtherAppDetails'
     WebAppDetails:
       description: 'Properties used to launch apps with `type: web`.'
       required:
@@ -802,6 +805,9 @@ components:
           type: string
           format: uri
           description: Application URL.
+      additionalProperties: false
+    OtherAppDetails:
+      description: 'Apps with `type: other` are defined by a hostManifest and do not require other details.'
       additionalProperties: false
     HostManifests:
       type: object
