@@ -19,7 +19,7 @@ const Implementation = ({ type, title, publisher, image, infoLink, docsLink, des
   <div className={"implementation " + type}>
     <div className="implementation-metadata">
       <div className="title-and-publisher">
-        <div className="title">{title}</div>
+        <div className="title">{infoLink ? <a href={infoLink} key={infoLink}>{title}</a> : {title}}</div>
         {publisher ? <div className="publisher">{publisher}</div> : null}
       </div>
       <div className="type">{type}</div>
@@ -47,6 +47,7 @@ Implementation.propTypes = {
 };
 
 const ImplementationsShowcase = () => (
+  //TODO: add filtering controls
   <div className="Implementations">
     {implementations.map(impl => (
       <Implementation key={impl.infoLink} {...impl} />
