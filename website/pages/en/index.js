@@ -156,7 +156,7 @@ class Index extends React.Component {
       return (
         <div className="userShowcase productShowcaseSection paddingTop paddingBottom">
           <h2>Who is Using FDC3?</h2>
-          <p>The Financial Desktop Connectivity and Collaboration Consortium (FDC3) was founded in 2017 by <a href="https://openfin.co">OpenFin</a> and contributed to <a href="https://finos.org">FINOS</a>.  The FDC3 standards are created and used by leading organizations across the financial industry.</p>
+          <p>The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standards are created and used by <a href="/users">leading organizations across the financial industry</a>. For more detail on who's using FDC3, developer tools, training and examples see the <a href="/implementations">implementations page</a>.</p>
           <Showcase users={pinnedUsers} />
           {/* exclude button to users page for now, all users shown on main page */}
           {/* <div className="more-users">

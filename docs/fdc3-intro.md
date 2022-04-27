@@ -30,7 +30,7 @@ From its inception, the standards have been informed by real-world [business use
 
 ## Who is using FDC3?
 
-FDC3 was launched in October 2017 by [OpenFin](http://www.openfin.co) in collaboration with [major industry participants](/users). It includes representatives from over 40 major banks, buy-side firms, consultancies and financial services platforms.
+The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standards are created and used by [leading organizations across the financial industry](/users). For more detail on who's using FDC3, developer tools, training and examples, see the [implementations page](/implementations).
 
 ## How is FDC3 governed?
 
