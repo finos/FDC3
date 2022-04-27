@@ -197,36 +197,76 @@ article iframe {
 
 .implementation {
   margin: 6px 0px;
-  padding: 6px 0px;
-  background-color: lightblue;
+  padding: 6px 6px;
   display: flex;
   flex-direction: column;
+  border-color: #0086bf;
+  border-width: 2px;
+  border-style: solid;
 }
-
-.implementation > .title {
+.implementation-metadata {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.title-and-publisher {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  
+  flex-grow: 1;
+}
+.title-and-publisher > .title {
   font-size: 24px;
   font-weight: 600;
   flex-basis: 100%;
 }
-.implementation > .publisher {
+.implementation-metadata > .type {
+  font-size: 16px;
+  font-weight: 600;
+  flex-basis: content;
+  font-variant-caps: small-caps;
+}
+.title-and-publisher > .publisher {
   font-size: 14px;
   font-weight: 400;
   font-variant-caps: small-caps;
   flex-basis: 100%;
 }
-.implementation-details {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-}
 .implementation-details > img {
-  max-width: 300px;
+  max-width: 285px;
+  max-height: 150px;
+  padding-top: 6px;
+  padding-bottom: 10px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
   flex-basis: 300px;
   flex-shrink: 1;
-  margin-right: 10px;
+  margin-right: 15px;
 }
 .implementation-details > .description {
   flex-shrink: 1;
   flex-grow: 1;
   flex-basis: 300px;
+}
+
+@media screen and (max-width: 736px) {
+  .implementation-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-basis: 100%;
+  }
+  .implementation-details > img {
+    align-self: center;
+  }
+}
+@media screen and (min-width: 737px) {
+  .implementation-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-basis: 100%;
+  }
 }
