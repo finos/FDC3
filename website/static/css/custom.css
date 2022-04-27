@@ -192,3 +192,41 @@ article iframe {
 .nav-footer .sitemap{
   margin: 0 auto 1em;
 }
+
+/* Implementations CSS added Apr 2021 */
+
+.implementation {
+  margin: 6px 0px;
+  padding: 6px 0px;
+  background-color: lightblue;
+  display: flex;
+  flex-direction: column;
+}
+
+.implementation > .title {
+  font-size: 24px;
+  font-weight: 600;
+  flex-basis: 100%;
+}
+.implementation > .publisher {
+  font-size: 14px;
+  font-weight: 400;
+  font-variant-caps: small-caps;
+  flex-basis: 100%;
+}
+.implementation-details {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.implementation-details > img {
+  max-width: 300px;
+  flex-basis: 300px;
+  flex-shrink: 1;
+  margin-right: 10px;
+}
+.implementation-details > .description {
+  flex-shrink: 1;
+  flex-grow: 1;
+  flex-basis: 300px;
+}

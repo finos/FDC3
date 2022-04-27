@@ -23,12 +23,12 @@ const siteConfig = {
   organizationName: 'finos',
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    
-    {doc: 'fdc3-intro', label: 'Docs'},   
+    {doc: 'fdc3-intro', label: 'Getting Started'},   
     {doc: 'use-cases/overview', label: 'Use Cases'},
+    {page: 'implementations', label: 'Implementations'},
+    {doc: 'fdc3-standard', label: 'The Standard'},
     {page: 'get-involved', label: 'Get Involved'},
-    {href: 'https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop', label: 'Training', external: true},
-    {doc: 'why-fdc3', label: 'Why FDC3'}
+    {href: 'https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop', label: 'Training', external: true}
    //, {blog: true, label: 'News'}
   ],
 

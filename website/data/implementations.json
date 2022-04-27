@@ -1,0 +1,64 @@
+[
+    {
+        "title": "ChartIQ",
+        "publisher": "Cosaic, Inc.",
+        "image": "/img/users/ChartIQ.png",
+        "infoLink": "https://cosaic.io/chartiq/",
+        "docsLink": "https://documentation.chartiq.com/",
+        "type": "application-provider",
+        "description": "Overview/introduction copy about the platform provider. Should be limited to 100 words. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula sodales sapien porttitor porta. Orci varius natoque penatibus et magnis is parturient montes, nascetur ridiculus mus. Nulla in aliquam lectus. Praesent nec dolor nec lacus varius congue vitae at orci. Ut porttitor felis sit amet lectus pulvinar iaculis. Nunc efficitur ex nec dignissim aliquet. Integer pellentesque fermentum diam, id semper velit. Fusce vel faucibus arcu. Maecenas ut pretium massa, nec posuere est. Maecenas dapibus viverra orci vitae ullamcorper. Aliquam sed sagittis diam. Praesent gravida velit."
+    },
+    {
+        "title": "Finsemble",
+        "publisher": "Cosaic, Inc.",
+        "image": "/img/users/Finsemble.png",
+        "infoLink": "https://www.finsemble.com/",
+        "docsLink": "https://documentation.finsemble.com/",
+        "type": "platform-provider",
+        "description": "Overview/introduction copy about the platform provider. Should be limited to 100 words. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula sodales sapien porttitor porta. Orci varius natoque penatibus et magnis is parturient montes, nascetur ridiculus mus. Nulla in aliquam lectus. Praesent nec dolor nec lacus varius congue vitae at orci. Ut porttitor felis sit amet lectus pulvinar iaculis. Nunc efficitur ex nec dignissim aliquet. Integer pellentesque fermentum diam, id semper velit. Fusce vel faucibus arcu. Maecenas ut pretium massa, nec posuere est. Maecenas dapibus viverra orci vitae ullamcorper. Aliquam sed sagittis diam. Praesent gravida velit."
+    },
+    {
+        "title": "Glue42",
+        "publisher": "Tick42",
+        "image": "/img/users/GLUE42.png",
+        "infoLink": "https://glue42.com/",
+        "docsLink": "https://docs.glue42.com/",
+        "type": "platform-provider",
+        "description": "Overview/introduction copy about the platform provider. Should be limited to 100 words. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula sodales sapien porttitor porta. Orci varius natoque penatibus et magnis is parturient montes, nascetur ridiculus mus. Nulla in aliquam lectus. Praesent nec dolor nec lacus varius congue vitae at orci. Ut porttitor felis sit amet lectus pulvinar iaculis. Nunc efficitur ex nec dignissim aliquet. Integer pellentesque fermentum diam, id semper velit. Fusce vel faucibus arcu. Maecenas ut pretium massa, nec posuere est. Maecenas dapibus viverra orci vitae ullamcorper. Aliquam sed sagittis diam. Praesent gravida velit."
+    },
+    {
+        "title": "OpenFin",
+        "publisher": "OpenFin Inc.",
+        "image": "/img/users/Openfin.png",
+        "infoLink": "https://openfin.co/",
+        "docsLink": "https://developers.openfin.co/of-docs",
+        "type": "platform-provider",
+        "description": "Overview/introduction copy about the platform provider. Should be limited to 100 words. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula sodales sapien porttitor porta. Orci varius natoque penatibus et magnis is parturient montes, nascetur ridiculus mus. Nulla in aliquam lectus. Praesent nec dolor nec lacus varius congue vitae at orci. Ut porttitor felis sit amet lectus pulvinar iaculis. Nunc efficitur ex nec dignissim aliquet. Integer pellentesque fermentum diam, id semper velit. Fusce vel faucibus arcu. Maecenas ut pretium massa, nec posuere est. Maecenas dapibus viverra orci vitae ullamcorper. Aliquam sed sagittis diam. Praesent gravida velit."
+    },
+    {
+        "title": "FDC3 Workbench",
+        "publisher": "FDC3 / FINOS",
+        "image": "http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png",
+        "infoLink": "http://fdc3.finos.org/toolbox/fdc3-workbench",
+        "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-workbench/README.md",
+        "type": "examples-and-training",
+        "description": "Overview/introduction copy about the platform provider. Should be limited to 100 words. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula sodales sapien porttitor porta. Orci varius natoque penatibus et magnis is parturient montes, nascetur ridiculus mus. Nulla in aliquam lectus. Praesent nec dolor nec lacus varius congue vitae at orci. Ut porttitor felis sit amet lectus pulvinar iaculis. Nunc efficitur ex nec dignissim aliquet. Integer pellentesque fermentum diam, id semper velit. Fusce vel faucibus arcu. Maecenas ut pretium massa, nec posuere est. Maecenas dapibus viverra orci vitae ullamcorper. Aliquam sed sagittis diam. Praesent gravida velit."
+    },
+    {
+        "title": "FDC3 eXplained",
+        "publisher": "FDC3 / FINOS",
+        "image": "https://fdc3.finos.org/toolbox/fdc3-explained/logo.svg",
+        "infoLink": "https://fdc3.finos.org/toolbox/fdc3-explained",
+        "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-explained/README.md",
+        "type": "examples-and-training",
+        "description": "Overview/introduction copy about the platform provider. Should be limited to 100 words. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula sodales sapien porttitor porta. Orci varius natoque penatibus et magnis is parturient montes, nascetur ridiculus mus. Nulla in aliquam lectus. Praesent nec dolor nec lacus varius congue vitae at orci. Ut porttitor felis sit amet lectus pulvinar iaculis. Nunc efficitur ex nec dignissim aliquet. Integer pellentesque fermentum diam, id semper velit. Fusce vel faucibus arcu. Maecenas ut pretium massa, nec posuere est. Maecenas dapibus viverra orci vitae ullamcorper. Aliquam sed sagittis diam. Praesent gravida velit."
+    },
+    {
+        "title": "FDC3 training course",
+        "publisher": "LinuxFoundationX",
+        "image": "http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png",
+        "infoLink": "https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop",
+        "type": "platform-provider",
+        "description": "Overview/introduction copy about the platform provider. Should be limited to 100 words. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula sodales sapien porttitor porta. Orci varius natoque penatibus et magnis is parturient montes, nascetur ridiculus mus. Nulla in aliquam lectus. Praesent nec dolor nec lacus varius congue vitae at orci. Ut porttitor felis sit amet lectus pulvinar iaculis. Nunc efficitur ex nec dignissim aliquet. Integer pellentesque fermentum diam, id semper velit. Fusce vel faucibus arcu. Maecenas ut pretium massa, nec posuere est. Maecenas dapibus viverra orci vitae ullamcorper. Aliquam sed sagittis diam. Praesent gravida velit."
+    }
+]

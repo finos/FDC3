@@ -1,4 +1,5 @@
 ---
+id: fdc3-intro
 title: Welcome to FDC3 2.0 (pre-draft)
 sidebar_label: Introduction
 ---
@@ -14,12 +15,6 @@ This includes standardized verbs to invoke actions between applications ("intent
 FDC3 codifies standard patterns that application developers have been using for cross-application workflows between web and native applications in the financial industry.
 
 For more information, see [Why FDC3](why-fdc3).
-
-## Versioning
-This Standard defines FDC3 Version 2.0 (predraft). The differences between this version and earlier ones can be found in the [Changelog](https://github.com/finos/FDC3/blob/master/CHANGELOG.md). 
-
-For more details on FDC3's versioning, deprecation and experimental features policies see the [Compliance page](./fdc3-compliance#versioning).
-
 ## Specifications
 
 The Standard currently consists of four complementary specifications:
