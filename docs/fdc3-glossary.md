@@ -1,4 +1,5 @@
 ---
+id: fdc3-glossary
 title: Glossary of Terms
 sidebar_label: Glossary
 ---
