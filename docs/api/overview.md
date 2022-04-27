@@ -22,57 +22,7 @@ The focus of the FDC3 Standard Working Group has been to create a small but cons
 - [`Channel`](ref/Channel) interface, for subscribing to specific context channels.
 - [`Listener`](ref/Types#listener) interface, which allows unsubscribing intent or context listeners.
 
-## Usage
 
-There are two main ways FDC3 can be used from web applications:
-
-### 1. Direct Usage
-
-Simply rely on the global object being made available by your desktop agent, and address the API directly:
-
-```ts
-function sendData() {
-  window.fdc3.broadcast({
-    type: 'fdc3.instrument',
-    id: { ticker: 'AAPL' }
-  })
-}
-
-if (window.fdc3) {
-  sendData();
-} else {
-  window.addEventListener("fdc3Ready", sendData);
-}
-```
-
-
-### 2. NPM Wrapper
-
-The [`@finos/fdc3` npm package](https://www.npmjs.com/package/@finos/fdc3) provides a wrapper around FDC3, allowing you to use it with ES6 import syntax:
-
-```ts
-import * as fdc3 from '@finos/fdc3'
-
-await fdc3.raiseIntent('ViewAnalysis', {
-    type: 'fdc3.instrument',
-    id: { ticker: 'AAPL' }
-})
-```
-
-It also includes a helper function you can use to wait for FDC3 to become available:
-
-```ts
-import { fdc3Ready, addIntentListener } from '@finos/fdc3'
-
-await fdc3Ready();
-
-const listener = await addIntentListener('ViewAnalysis', instrument => {
-  // handle intent
-})
-```
-
-#### See also
-* [`fdc3Ready() Function`](ref/Globals#fdc3ready-function)
 
 
 
