@@ -17,8 +17,13 @@ implementations.sort((a, b) => {
 
 const Implementation = ({ type, title, publisher, image, infoLink, docsLink, description }) => (
   <div className={"implementation " + type}>
-    <div className="title">{title}</div>
-    {publisher ? <div className="publisher">{publisher}</div> : null}
+    <div className="implementation-metadata">
+      <div className="title-and-publisher">
+        <div className="title">{title}</div>
+        {publisher ? <div className="publisher">{publisher}</div> : null}
+      </div>
+      <div className="type">{type}</div>
+    </div>
     <div className="implementation-details">
       <img src={image} alt={title} title={title} />
       <div className="description">

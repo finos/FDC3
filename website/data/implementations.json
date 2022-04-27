@@ -38,7 +38,7 @@
     {
         "title": "FDC3 Workbench",
         "publisher": "FDC3 / FINOS",
-        "image": "http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png",
+        "image": "/toolbox/fdc3-workbench/fdc3-icon-256.png",
         "infoLink": "http://fdc3.finos.org/toolbox/fdc3-workbench",
         "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-workbench/README.md",
         "type": "examples-and-training",
@@ -47,7 +47,7 @@
     {
         "title": "FDC3 eXplained",
         "publisher": "FDC3 / FINOS",
-        "image": "https://fdc3.finos.org/toolbox/fdc3-explained/logo.svg",
+        "image": "/toolbox/fdc3-explained/logo.png",
         "infoLink": "https://fdc3.finos.org/toolbox/fdc3-explained",
         "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-explained/README.md",
         "type": "examples-and-training",
