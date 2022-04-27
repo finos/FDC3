@@ -11,8 +11,31 @@ There are two main categories of platform: web and native, both of which are des
 
 For a web application to be FDC3-enabled, it needs to run in the context of an environment or **_Platform Provider_** that makes the FDC3 API available to the application. This environment could be a browser extension, a web or native app, or fully-fledged desktop container framework.
 
-### Installation
+### Usage
 
+There are two main ways FDC3 can be used from web applications:
+
+#### 1. Direct Usage
+
+Simply rely on the global object being made available by your desktop agent, and address the API directly:
+
+```ts
+function sendData() {
+  window.fdc3.broadcast({
+    type: 'fdc3.instrument',
+    id: { ticker: 'AAPL' }
+  })
+}
+
+if (window.fdc3) {
+  sendData();
+} else {
+  window.addEventListener("fdc3Ready", sendData);
+}
+```
+
+
+#### 2. NPM Wrapper
 FDC3 offers the [`@finos/fdc3` npm package](https://www.npmjs.com/package/@finos/fdc3) that can by used by web applications to target operations from the [API Specification](api/spec) in a consistent way. Each FDC3-compliant desktop agent that the application runs in, can then provide an implementation of the FDC3 API operations.
 
 <!--DOCUSAURUS_CODE_TABS-->
@@ -35,33 +58,31 @@ pnpm install @finos/fdc3
 
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-### Usage
+The npm package provides a wrapper around FDC3, allowing you to use it with ES6 import syntax:
 
-```javascript
+```ts
 import * as fdc3 from '@finos/fdc3'
 
-// declare FDC3-compliant data
-const instrument = {
+await fdc3.raiseIntent('ViewAnalysis', {
     type: 'fdc3.instrument',
-    id: {
-        ticker: 'AAPL',
-        ISIN: 'US0378331005',
-        FIGI : 'BBG000B9XRY4'
-    }
-}
-
-// invoke an action in another application, with the required data
-const result = await fdc3.raiseIntent('ViewAnalysis', instrument)
-
-// join the red channel and broadcast data to subscribers
-await fdc3.joinUserChannel('red')
-fdc3.broadcast(instrument)
-
-// set up a listener for incoming data
-const listener = fdc3.addContextListener('fdc3.contact', contact => { })
+    id: { ticker: 'AAPL' }
+})
 ```
 
-For details about the available API operations, see the [API Referennce](api/ref/DesktopAgent).
+It also includes a helper function you can use to wait for FDC3 to become available:
+
+```ts
+import { fdc3Ready, addIntentListener } from '@finos/fdc3'
+
+await fdc3Ready();
+
+const listener = await addIntentListener('ViewAnalysis', instrument => {
+  // handle intent
+})
+```
+
+##### See also
+* [`fdc3Ready() Function`](api/ref/Globals#fdc3ready-function)
 
 ## Native
 
