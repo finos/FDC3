@@ -15,7 +15,6 @@
         "type": "subcategory",
         "label": "API Part",
         "ids": [
-          "api/overview",
           "api/spec",
           "api/ref/DesktopAgent",
           "api/ref/Channel",
