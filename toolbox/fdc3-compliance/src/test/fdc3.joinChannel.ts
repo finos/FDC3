@@ -9,7 +9,7 @@ describe("fdc3.joinChannel", () => {
     if (channels.length > 0) {
       await window.fdc3.joinChannel(channels[0].id);
     } else {
-      throw Error("No system channels are available");
+      throw new Error("No system channels are available");
     }
   });
 });
