@@ -34,7 +34,6 @@ For platform providers FDC3 compliance requires:
     * Support for intent and context resolution using a resolver UI
     * Support for retrieving information about the version of the FDC3 specification supported by a Desktop Agent implementation and the name of the implementation provider
 * In the case of web applications, a Desktop Agent MUST provide the FDC3 API via a global accessible as `window.fdc3`.
-* At least one workflow of one of the use cases marked as Accepted by the Use Cases working group SHOULD be satisfied by the implementation.
 
 ### Application Provider
 For application providers FDC3 compliance requires:
