@@ -79,47 +79,6 @@ The identifier "foo" is proprietary, an application that can use it is free to d
 }
 ```
 
-### Standard Context Types
-
-The following are standard FDC3 context types.
- __Note:__ The specification for these types are shared with the [FINOS Financial Objects](https://fo.finos.org) definitions, JSON schemas are hosted with FDC3.
-
-- __fdc3.contact__
-    - A person contact that can be engaged with through email, calling, messaging, CMS, etc.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/contact)
-    - [schema](/schemas/next/contact.schema.json)
-- __fd3.contactList__
-    - A collection of contacts.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/contactlist)
-    - [schema](/schemas/next/contactList.schema.json)
-- __fdc3.country__
-    - A standard country entity.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/country)
-    - [schema](/schemas/next/country.schema.json)
-- __fdc3.instrument__
-    - A financial instrument from any asset class.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrument)
-    - [schema](/schemas/next/instrument.schema.json)
-- __fdc3.instrumentList__
-    - A collection of instruments.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrumentlist)
-    - [schema](/schemas/next/instrumentList.schema.json)
-- __fdd3.organization__
-    - A standard organization entity.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/organization)
-    - [schema](/schemas/next/organization.schema.json)
-- __fdc3.portfolio__
-    - A collection of positions.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/portfolio)
-    - [schema](/schemas/next/portfolio.schema.json)
-- __fdc3.position__
-    - An amount of a security, asset, or property that is owned (or sold short) by some individual or other entity
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/position)
-    - [schema](/schemas/next/position.schema.json)
-- __fdc3.nothing
-    - Explicit representation of a lack of context
-    - [schema](/schemas/next/nothing.schema.json)
-
 ### Example Context Object
 
 An instrument could for example be derived as (note that the name is required and the type is fixed):
