@@ -71,5 +71,5 @@ FDC3 adopts the following experimental features policy:
 3. Experimental features are clearly marked with an `@experimental` tag and comment in both the documentation and jsDocs applied to the TypeScript sources.
 4. Unless otherwise stated, experimental features should be considered optional for compliance purposes, but recommended for implementation (i.e. the SHOULD keyword is implied).
 5. Experimental features are exempted from the normal versioning and deprecation policies that govern changes to FDC3. I.e. breaking changes may be made to experimental features between versions of the Standard without a major version release.
-6. The experimental designation maybe removed from a feature in a minor version release (as this will be considered an additive change).
+6. The experimental designation may be removed from a feature in a minor version release (as this will be considered an additive change).
 
