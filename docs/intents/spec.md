@@ -10,12 +10,12 @@ FDC3 Intents define a standard set of verbs that, in conjunction with context da
 * Intents are not full RPC, apps don’t need to enumerate every function with an intent.
 * FDC3 standard intents are a limited set, organizations can create their own intents.
 
-### Naming Syntax
+## Naming Syntax
 * Intent names should be free of non-alphanumeric characters.
 * ‘.’ will be used to namespace the intent (see below).
 * Intent names should be in UpperCamelCase.
 
-### Characteristics
+## Characteristics
 Intents shoulde be:
 * Recognizable
     * Generally self-evident what the thing is
@@ -28,7 +28,7 @@ Intents shoulde be:
 * Distinct
     * Granular enough that Intent handlers can communicate key functional differences
 
-### Namespaces
+## Namespaces
 All standard intent names are reserved. Applications may use their own intents ad hoc.
 However, there is a need for applications to ensure that their intents avoid collision. The recommended approach here is to use the app name as the noun. For example, the ‘myChart’ App may expose the ‘ViewChart’ intent and the ‘myChart.Foo’ proprietary intent.
 
