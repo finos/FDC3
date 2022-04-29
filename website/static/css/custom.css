@@ -246,14 +246,17 @@ article iframe {
   object-fit: contain;
   flex-basis: 300px;
   flex-shrink: 1;
-  margin-right: 15px;
+  margin-right: 6px;
 }
 .implementation-details > .description {
   flex-shrink: 1;
   flex-grow: 1;
   flex-basis: 300px;
 }
-.implementation-details > .description > .infoLinks {
+.implementation-details > .description > .prose {
+  padding-left: 10px;
+}
+.implementation-details > .description > .infoLinks, .implementation-details > .description > .infoLinks > a  {
   font-size: 16px;
   font-weight: 600;
 }

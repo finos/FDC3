@@ -28,11 +28,11 @@ const Implementation = ({ type, title, publisher, image, infoLink, docsLink, des
       <img src={image} alt={title} title={title} />
       <div className="description">
         <div className="infoLinks">
-          {infoLink ? <a href={infoLink} key={infoLink}>More info</a> : null}
+          {infoLink ? <a href={infoLink} key={infoLink} className="button">More info</a> : null}
           {infoLink && docsLink ? <span> | </span> : null}
-          {docsLink ? <a href={docsLink} key={docsLink}>Documentation</a> : null}
+          {docsLink ? <a href={docsLink} key={docsLink} className="button">Documentation</a> : null}
         </div>
-        {description}
+        <div className="prose">{description}</div>
       </div>
     </div>
     
