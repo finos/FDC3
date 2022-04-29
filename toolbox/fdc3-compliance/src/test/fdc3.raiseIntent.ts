@@ -17,10 +17,10 @@ describe("fdc3.raiseIntent", async () => {
 
     try {
       await window.fdc3.raiseIntent("ThisIntentDoesNotExist", context);
-      throw ExpectedErrorNotThrownError;
+      throw new Error(ExpectedErrorNotThrownError);
     } catch (ex) {
-      if (ex !== ResolveError.NoAppsFound) {
-        throw ex;
+      if ((ex.message ?? ex) !== ResolveError.NoAppsFound) {
+        throw new Error(ExpectedErrorNotThrownError + "\nException thrown: " + (ex.message ?? ex));
       }
     }
   });

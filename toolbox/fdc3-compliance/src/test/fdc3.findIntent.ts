@@ -8,8 +8,8 @@ describe("fdc3.findIntent", () => {
       await window.fdc3.findIntent("ThisIntentDoesNotExist");
       throw ExpectedErrorNotThrownError;
     } catch (ex) {
-      if (ex !== ResolveError.NoAppsFound) {
-        throw ex;
+      if ((ex.message ?? ex) !== ResolveError.NoAppsFound) {
+        throw new Error(ExpectedErrorNotThrownError + "\nException thrown: " + (ex.message ?? ex));
       }
     }
   });
