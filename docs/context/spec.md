@@ -1,14 +1,12 @@
 ---
 id: spec
-sidebar_label: Context Data Specification
-title: Context Data Specification (next)
+sidebar_label: Overview
+title: Context Data (next)
 ---
 
-## Introduction
+To interoperate, apps need to exchange commonly recognized context structures that can indicate topic with any number of identifiers or mappings to different systems. FDC3 Context Data defines a standard for passing common identifiers and data between apps to create a seamless workflow. FDC3 Context Data is not a symbology solution and is not specifically focused on modeling financial objects. The focus is on providing a standard payload structure that can be used to establish a lowest common denominator for interoperability.
 
-To interoperate, apps need to exchange commonly recognized context structures that can indicate topic with any number of identifiers or mappings to different systems.
-
-Exchanging context is the most basic entry point to desktop interoperability. The barriers to adoption for this interaction must be kept as low as possible.
+Context objects are used when raising [intents](../intents/spec) and when broadcasting context to other applications.
 
 There are two main use cases for exchanging context data:
 
@@ -20,7 +18,7 @@ There are two main use cases for exchanging context data:
 * __Transferring information between applications.__
   The source application may have data required to compose a workflow with another application, e.g. a list of contacts that have been selected, or a complex object representing an RFQ request.
 
-  In many such cases there isn't any sensible reference identifiers that can be shared, it is instead the data itself being transferred.
+  In many such cases there aren't any sensible reference identifiers that can be shared, it is instead the data itself being transferred.
 
 ## Assumptions
 
@@ -34,9 +32,14 @@ There are two main use cases for exchanging context data:
 
 FDC3 recognizes that there are other object definitions for providing context between applications. Most, if not all of these definitions though are platform-specific. FDC3, as a rule, sets out to be platform-agnostic and focused on creating bridges between the various walled gardens on the financial desktop.
 
-## The Context Interface
+## Context Object
 
-```ts
+Context can be summarised as:
+* Having a unique _type_ identifier, used for routing.
+* Optionally providing a name.
+* Optionally providing a map of equivalent identifiers.
+* Any other properties or metadata.
+```typescript
 interface Context {
     type: string;
     name?: string;
@@ -46,6 +49,7 @@ interface Context {
     [x: string]: any;
 }
 ```
+
 ### Namespacing
 
 All well-known types at FDC3 level should be prefixed with `fdc3`. For private type definitions, or type definitions issued by other organisations, different namespaces can be used, e.g. `blackrock.fund`, etc.
@@ -75,7 +79,7 @@ The identifier "foo" is proprietary, an application that can use it is free to d
 }
 ```
 
-## Standard Context Types
+### Standard Context Types
 
 The following are standard FDC3 context types.
  __Note:__ The specification for these types are shared with the [FINOS Financial Objects](https://fo.finos.org) definitions, JSON schemas are hosted with FDC3.
@@ -116,164 +120,35 @@ The following are standard FDC3 context types.
     - Explicit representation of a lack of context
     - [schema](/schemas/next/nothing.schema.json)
 
-__Note:__ The below examples show how the base context data interface can be used to define specific context data objects. It is not the purpose of the specification at this stage to define standard representations for objects. It establishes the framework in which such definitions could be created.
+### Example Context Object
 
-### Examples
+An instrument could for example be derived as (note that the name is required and the type is fixed):
 
-#### Contact
-```json
-{
-    "type": "fdc3.contact",
-    "name": "John Smith",
-    "id":{
-        "email": "john.smith@company.com",
+```typescript
+interface Instrument extends Context {
+    type: 'fdc3.instrument',
+    name: string;
+    id: {
+        ticker?: string;
+        ISIN?: string;
+        CUSIP?: string;
     }
 }
 ```
 
-#### ContactList
-```json
-{
-    "type": "fdc3.contactList",
-    "name": "client list",
-    "contacts":[
-        {
-            "type":"fdc3.contact",
-            "name":"joe",
-            "id":{
-                "email": "joe@company1.com",
-            }
-        },
-        {
-            "type":"fdc3.contact",
-            "name":"jane",
-            "id":{
-                "email": "jane@company2.com",
-            }
-        }
-    ]
-}
-```
+e.g. as a JSON payload:
 
-#### Country
-```json
-{
-    "type":"fdc3.country",
-    "name":"the USA",
-    "id":{
-        "ISOALPHA2":"US",
-        "ISOALPHA3":"USA"
-    }
-}
-```
-
-#### Instrument
 ```json
 {
     "type" : "fdc3.instrument",
     "name" : "Apple",
-    "id" :
-    {
+    "id" : 
+    {  
         "ticker" : "aapl",
         "ISIN" : "US0378331005",
-        "CUSIP" : "037833100",
-        "FIGI" : "BBG000B9XRY4",
-    }
-}
-```
-
-#### InstrumentList
-```json
-{
-    "type" : "fdc3.instrumentList",
-    "name" : "my portfolio",
-    "instruments" : [
-        {
-            "type" : "fdc3.instrument",
-            "name" : "Apple",
-            "id": {
-               "ticker" : "aapl"
-            }
-        },
-        {
-            "type" : "fdc3.instrument",
-            "name" : "International Business Machines",
-            "id": {
-               "ticker" : "ibm"
-            }
-        }
-    ]
-}
-```
-
-#### Organization
-```json
-{
-    "type": "fdc3.organization",
-    "name": "IBM",
-    "id": {
-        "PERMID" : "4295904307",
-        "LEI" : "VGRQXHF3J8VDLUA7XE92"
-    }
-}
-```
-
-#### Portfolio
-```json
-{
-    "type":"fdc3.portfolio",
-    "name":"my portfolio",
-    "positions":[
-        {
-            "type": "fdc3.position",
-            "instrument": {
-                "type" : "fdc3.instrument",
-                "name" : "Apple",
-                "id" :
-                {
-                    "ISIN" : "US0378331005"
-                }
-            },
-            "holding": 500
-        },
-         {
-            "type": "fdc3.position",
-            "instrument": {
-                "type" : "fdc3.instrument",
-                "name" : "IBM",
-                "id" :
-                {
-                    "ISIN" : "US4592001014"
-                }
-            },
-            "holding": 1000
-        }
-    ]
-}
-```
-
-
-#### Position
-```json
-{
-    "type": "fdc3.position",
-    "instrument": {
-        "type" : "fdc3.instrument",
-        "name" : "Apple",
-        "id" :
-        {
-            "ISIN" : "US0378331005"
-        }
+        "CUSIP" : "037833100"
     },
-    "holding": 500
+    "country": "US"
 }
 ```
-
-#### Nothing
-```json
-{
-    "type": "fdc3.nothing",
-}
-```
-
-
+ It is important to note that the context data specification allows extra identifiers and properties to be added as needed for each interop use case. In the example above, `country` could represent extra data in addition to the agreed instrument representation.
