@@ -8,16 +8,17 @@ The mission of the Financial Desktop Connectivity and Collaboration Consortium (
 
 FDC3 provides an **open standard for interoperability** between applications on the financial desktop.
 
-This includes standardized verbs to invoke actions between applications ("intents"), a standardized data format ("context data"), a REST-based App Directory standard, and standardized API operations (a "Desktop Agent").
+This includes standardized verbs to invoke actions between applications (**intents**), a standardized **context data** format, a REST-based **App Directory** standard, and standardized API operations for a **Desktop Agent**.
 
 ## Motivation
 
 FDC3 codifies standard patterns that application developers have been using for cross-application workflows between web and native applications in the financial industry.
 
-For more information, see [Why FDC3](why-fdc3).
-## Specifications
+For more information, see [Why FDC3?](why-fdc3)
 
-The Standard currently consists of four complementary specifications:
+## Parts of the Standard
+
+The [Standard](fdc3-standard) currently consists of four complementary parts:
 
 - [API](api/spec)
 - [Intents](intents/spec)
