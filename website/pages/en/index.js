@@ -112,24 +112,28 @@ class Index extends React.Component {
             image: `${baseUrl}img/feature-api.svg`,
             imageAlign: 'top',
             title: 'API',
+            key: 'API',
           },
           {
             content: `Use [standardized verbs](${docUrl('intents/overview')}) to instruct other apps to take an action`,
             image: `${baseUrl}img/feature-intents.svg`,
             imageAlign: 'top',
             title: 'Intents',
+            key: 'Intents',
           },
           {
             content: `Share [context](${docUrl('context/overview')}) between apps to eliminate re-keying and streamline workflow`,
             image: `${baseUrl}img/feature-context.svg`,
             imageAlign: 'top',
             title: 'Context Data',
+            key: 'Context Data',
           },
           {
             content: `Discover trusted apps that can take part in a FDC3 workflow using an [App directory](${docUrl('app-directory/overview')}).`,
             image: `${baseUrl}img/feature-appd.svg`,
             imageAlign: 'top',
             title: 'App Directory',
+            key: 'App Directory',
             link: `${baseUrl}/app-directory/overview`
           }
           
