@@ -31,7 +31,7 @@ function Versions(props) {
           <h3 id="latest">Current version (Stable)</h3>
           <table className="versions">
             <tbody>
-              <tr>
+              <tr key="headers">
                 <th>{latestVersion}</th>
                 <td>
                   <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/fdc3-intro`}>Documentation</a>
@@ -45,7 +45,7 @@ function Versions(props) {
           <h3 id="rc">Latest version</h3>
           <table className="versions">
             <tbody>
-              <tr>
+              <tr key="latest">
                 <th>master</th>
                 <td>
                   <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/next/fdc3-intro`}>Documentation</a>
@@ -63,7 +63,7 @@ function Versions(props) {
               {versions.map(
                 version =>
                   version !== latestVersion && (
-                    <tr>
+                    <tr key="{version}">
                       <th>{version}</th>
                       <td>
                         <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${version}/fdc3-intro`}>Documentation</a>
