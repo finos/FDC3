@@ -75,9 +75,9 @@ As a vendor, you prefer for all your customers to run your latest software. Howe
 By hosting our own appD we can easily combine applications from various providers into one cohesive directory. Alternatively, we can connect to directories from multiple providers (in standardized format) and provide a single view over them. This reduces fragmentation in the market, allows end-users more flexibility in what apps to include in their smart desktop, and obviates the need for vendors to provide application details in diverse formats or for their customers to work out these details for themselves.
 
 ## Relationship to other standards
-The App Directory's application record is similar to application manifests defined in other standards, in particular the W3C's [Web Application Manifest](https://www.w3.org/TR/appmanifest/). However, the App Directory, and by extension the application record, serve a different set of use-cases specific to application interoperability on financial services desktops, which other standards do not fully solve for. 
+The App Directory's application record is similar to application manifests defined in other standards, in particular the W3C's [Web Application Manifest](https://www.w3.org/TR/appmanifest/). However, the App Directory, and by extension the application record, serve a different set of use-cases specific to application interoperability on financial services desktops, which other standards do not fully address. 
 
-Whereever possible, FDC3 seeks to draw inspiration from, align itself with and reference other standards - ensuring that conventions and best practices developed by those standards are reused, along with the standard itself (e.g. data formats in ISO standard formats, external links to technology specific manifest file formats etc.). For a list of standards that FDC3 references, see the [References](../references) page.
+Wherever possible, FDC3 seeks to draw inspiration from, align itself with and reference other standards - ensuring that conventions and best practices developed by those standards are reused, along with the standard itself (e.g. data formats in ISO standard formats, external links to technology-specific manifest file formats etc.). For a list of standards that FDC3 references, see the [References](../references) page.
 
 ## Sections to review
 
