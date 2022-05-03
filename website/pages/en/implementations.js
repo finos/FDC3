@@ -7,47 +7,56 @@
 
 const React = require('react');
 
-const {useState, useEffect} = React;
+const { useState, useEffect } = React;
 const CompLibrary = require('../../core/CompLibrary.js');
 const Container = CompLibrary.Container;
 const implData = require(`${process.cwd()}/data/implementations.json`);
+
+//remove comments
+implData.forEach(function (item, index, object) {
+	if (item["//"]) {
+		implData.splice(index, 1);
+	}
+});
+
+//alpha sort implementations
 implData.sort((a, b) => {
-  const titleA = a.title.toUpperCase(); // ignore upper and lowercase
-  const titleB = b.title.toUpperCase(); // ignore upper and lowercase
-  if (titleA < titleB) {
-    return -1;
-  } else if (titleA > titleB) {
-    return 1;
-  } else {
-    return 0;
-  }
+	const titleA = a.title.toUpperCase(); // ignore upper and lowercase
+	const titleB = b.title.toUpperCase(); // ignore upper and lowercase
+	if (titleA < titleB) {
+		return -1;
+	} else if (titleA > titleB) {
+		return 1;
+	} else {
+		return 0;
+	}
 });
 
 function Implementation({ type, title, publisher, image, infoLink, docsLink, description }) {
-  return <div className={"implementation hide " + type }>
-    <div className="implementation-metadata">
-      <div className="title-and-publisher">
-        <div className="title">{infoLink ? <a href={infoLink} key={infoLink}>{title}</a> : { title }}</div>
-        {publisher ? <div className="publisher">{publisher}</div> : null}
-      </div>
-      <div className="type">{type}</div>
-    </div>
-    <div className="implementation-details">
-      <img src={image} alt={title} title={title} />
-      <div className="description">
-        <div className="infoLinks">
-          {infoLink ? <a href={infoLink} key={infoLink} className="button">More info</a> : null}
-          {infoLink && docsLink ? <span> | </span> : null}
-          {docsLink ? <a href={docsLink} key={docsLink} className="button">Documentation</a> : null}
-        </div>
-        <div className="prose" dangerouslySetInnerHTML={{__html: description}}></div>
-      </div>
-    </div>
-  </div>
+	return <div className={"implementation hide " + type}>
+		<div className="implementation-metadata">
+			<div className="title-and-publisher">
+				<div className="title">{infoLink ? <a href={infoLink} key={infoLink}>{title}</a> : { title }}</div>
+				{publisher ? <div className="publisher">{publisher}</div> : null}
+			</div>
+			<div className="type">{type}</div>
+		</div>
+		<div className="implementation-details">
+			<img src={image} alt={title} title={title} />
+			<div className="description">
+				<div className="infoLinks">
+					{infoLink ? <a href={infoLink} key={infoLink} className="button">More info</a> : null}
+					{infoLink && docsLink ? <span> | </span> : null}
+					{docsLink ? <a href={docsLink} key={docsLink} className="button">Documentation</a> : null}
+				</div>
+				<div className="prose" dangerouslySetInnerHTML={{ __html: description }}></div>
+			</div>
+		</div>
+	</div>
 }
 
 //Note: docusaurus-v1 pages are pre-rendered, static HTML, so we have to use a nasty script tag for dynamic content
-function ImplementationsShowcase () {
+function ImplementationsShowcase() {
 	return <div>
 		<script type="text/javascript" src="/js/implementationFilters.js"></script>
 		<div className="filters">
@@ -72,7 +81,7 @@ function ImplementationsShowcase () {
 	</div>
 }
 
-function Implementations (props) {
+function Implementations(props) {
 	const { config: siteConfig } = props;
 	const { repoUrl } = siteConfig;
 	const editUrl = `${repoUrl}/edit/master/website/data/implementations.json`;
@@ -95,7 +104,7 @@ function Implementations (props) {
 				</i>
 			</p>
 		</div>
-		<ImplementationsShowcase initialFilter={"platform-provider"}/>
+		<ImplementationsShowcase initialFilter={"platform-provider"} />
 	</Container>
 }
 
