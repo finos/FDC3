@@ -68,7 +68,7 @@ The DAB MUST be able to forward messages received from one DA on to others (excl
   * If you are a DA, send it on to the bridge
   * The bridge will send it on to other known DAs (except the source of the message)
 
-* If the message has a target Destkop Agent (e.g. response to findIntent)
+* If the message has a target Desktop Agent (e.g. response to findIntent)
   * The bridge will forward the message to it.
 
 ### Open Questions
@@ -129,7 +129,7 @@ interface AppMetadata {
 
 ### Generic request and response formats
 
-From simpliciy, in this spec the request and response GUID will be just `requestGUID` and `responseGUID`. A GUID/UUID 128-bit integer number used to uniquelly identify resources should be used.
+For simplicity, in this spec the request and response GUID will be just `requestGUID` and `responseGUID`. A GUID/UUID 128-bit integer number used to uniquely identify resources should be used.
 
 #### Request
 
@@ -190,9 +190,9 @@ DAs should send these messages on to the bridge, which will add the `source.desk
 
 ### Individual message exchanges
 
-The sections below cover most scenerios for each of the Desktop Agent methods in order to explore how this protocol might work.
+The sections below cover most scenarios for each of the Desktop Agent methods in order to explore how this protocol might work.
 
-Each section assumes that we have 3 agents connected by bridge:
+Each section assumes that we have 3 agents connected by a bridge:
 
 * agent-A
 * agent-B
@@ -236,7 +236,7 @@ It encodes this as a message which it sends to the DAB
     "type": "broadcast",
     "payload": {
         "channel": "myChannel",
-        "context": { /*contxtObj*/ }
+        "context": { /*contextObj*/ }
     },
     "meta": {
         "requestGuid": "requestGuid",
@@ -260,7 +260,7 @@ which it repeats on to agent-B AND agent-c with the `source.desktopAgent` metada
     "type": "broadcast",
     "payload": {
         "channel": "myChannel",
-        "context": { /*contxtObj*/}
+        "context": { /*contextObj*/}
     },
     "meta": {
         "requestGuid": "requestGuid",
@@ -276,7 +276,7 @@ which it repeats on to agent-B AND agent-c with the `source.desktopAgent` metada
 }
 ```
 
-When adding context listeners (either for User Channels or specific App Channels) no messages need to be exchanged. Instead, upon receving a broadcast message the Desktop Agent just needs to pass it on to all listeners on that named channel.
+When adding context listeners (either for User Channels or specific App Channels) no messages need to be exchanged. Instead, upon receiving a broadcast message the Desktop Agent just needs to pass it on to all listeners on that named channel.
 
 ## Intents
 
@@ -316,7 +316,7 @@ Sends an outward message to the DAB.
    "type": "findIntent",
    "payload": {
         "intent": "StartChat",
-        "context": {/*contxtObj*/}
+        "context": {/*contextObj*/}
    },
    "meta": {
         "requestGuid": "requestGuid",
@@ -340,13 +340,13 @@ The DAB fills in the `source.desktopAgent` field and forwards the request to the
     "type": "findIntent",
     "payload": {
         "intent": "StartChat",
-        "context": {/*contxtObj*/},
+        "context": {/*contextObj*/},
     },
     "meta": {
         "requestGuid": "requestGuid",
         "timestamp": "2020-03-...",
         "source": {
-            "desktoAgent": "agent-A", // filled by dab
+            "desktopAgent": "agent-A", // filled by dab
             "name": "",
             "appId": "",
             "version": "",
@@ -371,7 +371,7 @@ Normal response from agent-A, where the request was raised.
 }
 ```
 
-DA agent-b woud produce response:
+DA agent-b would produce response:
 
 ```JSON
 {
@@ -449,13 +449,13 @@ This response gets repeated by the bridge in augmented form as:
             // ... other metadata fields
         },
         "source": {
-            "desktoAgent": "agent-B",
+            "desktopAgent": "agent-B",
         }
     }
 }
 ```
 
-DA agent-c woud produce response:
+DA agent-c would produce response:
 
 ```JSON
 {
@@ -522,7 +522,7 @@ This response gets repeated by the bridge in augmented form as:
            // ... other metadata fields
        },
        "source": {
-            "desktoAgent": "agent-C",
+            "desktopAgent": "agent-C",
         }
     }
 }
@@ -551,10 +551,9 @@ Then on agent-A the originating app finally gets back the following response fro
 raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
 ```
 
-For Desktop Agent bridging, a `raiseIntent` call MUST always pass a `app:TargetApp` argument. If one is not passed a `findIntent` will be sent instead to collect options to display in a local resolver UI, allowing for a targetted intent to be raised afterwards. See details below.
+For Desktop Agent bridging, a `raiseIntent` call MUST always pass a `app:TargetApp` argument. If one is not passed a `findIntent` will be sent instead to collect options to display in a local resolver UI, allowing for a targeted intent to be raised afterwards. See details below.
 
 When receiving a response from invoking `raiseIntent` the new app instances MUST be fully initialized ie. the responding Desktop Agent will need to return an `AppMetadata` with an `instanceId`.
-
 
 Note that the below diagram assumes a `raiseIntent` WITH a `app:TargetApp` was specified and therefore agent-C is not involved.
 
@@ -589,7 +588,7 @@ agent-A sends an outward `findIntent` message to the DAB:
     "type": "findIntent",
     "payload": {
         "intent": "StartChat",
-        "context": {/*contxtObj*/}
+        "context": {/*contextObj*/}
     },
     "meta": {
         "requestGuid": "requestGuid",
@@ -604,7 +603,7 @@ agent-A sends an outward `findIntent` message to the DAB:
 }
 ```
 
-This will trigger the same flow as `findIntent`. Upon receiveing a `findIntentResponse`, the resolver is shown.
+This will trigger the same flow as `findIntent`. Upon receiving a `findIntentResponse`, the resolver is shown.
 
 User selects an option which will trigger a `raiseIntent` call with a `app:TargetApp` argument.
 
@@ -622,7 +621,7 @@ raiseIntent(intent: string, context: Context, app: TargetApp): Promise<IntentRes
     "type": "raiseIntent",
     "payload": {
         "intent": "StartChat",
-        "context": {/*contxtObj*/},
+        "context": {/*contextObj*/},
         "app": {
             "name": "AChatApp",
             "desktopAgent": "agent-B"
@@ -655,7 +654,7 @@ The bridge fills in the `source.desktopAgent` field and forwards the request to 
     "type": "raiseIntent",
     "payload": {
         "intent": "StartChat",
-        "context": {/*contxtObj*/},
+        "context": {/*contextObj*/},
     },
     "meta": {
         "requestGuid": "requestGuid",
@@ -1118,7 +1117,7 @@ It sends an outward message to the bridge:
             "version": "1.0.1",
             "desktopAgent":"agent-B"
             },
-        "context": {/*contxtObj*/}
+        "context": {/*contextObj*/}
     },
     "meta": {
         "requestGuid": "requestGuid",
@@ -1140,7 +1139,7 @@ which is repeated as:
            "version": "1.0.1",
            "desktopAgent":"DesktopAgentB"
            },
-       "context": {/*contxtObj*/}
+       "context": {/*contextObj*/}
     },
     "meta": {
         "requestGuid": "requestGuid",
@@ -1177,4 +1176,4 @@ sequenceDiagram
 
 App Channels don't need specific messages sending for `fdc3.getOrCreateChannel` as other agents will be come aware of it when messages are broadcast.
 
-However, `PrivateChannel` instances do require additional handling due to the listeners for subscription and disconnect. Please see the raiseIntent section for the mesages sent in support of this functionality.
+However, `PrivateChannel` instances do require additional handling due to the listeners for subscription and disconnect. Please see the raiseIntent section for the messages sent in support of this functionality.
