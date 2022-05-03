@@ -59,11 +59,11 @@
         "description": "Overview/introduction copy about the platform provider. Should be limited to 100 words. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula sodales sapien porttitor porta. Orci varius natoque penatibus et magnis is parturient montes, nascetur ridiculus mus. Nulla in aliquam lectus. Praesent nec dolor nec lacus varius congue vitae at orci. Ut porttitor felis sit amet lectus pulvinar iaculis. Nunc efficitur ex nec dignissim aliquet. Integer pellentesque fermentum diam, id semper velit. Fusce vel faucibus arcu. Maecenas ut pretium massa, nec posuere est. Maecenas dapibus viverra orci vitae ullamcorper. Aliquam sed sagittis diam. Praesent gravida velit."
     },
     {
-        "title": "FDC3 training course",
+        "title": "FDC3: Interoperability for the Financial Desktop (training course)",
         "publisher": "LinuxFoundationX",
-        "image": "http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png",
+        "image": "https://www.linuxfoundation.org/wp-content/uploads/lf_logo.svg",
         "infoLink": "https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop",
         "type": "examples-and-training",
-        "description": "Overview/introduction copy about the platform provider. Should be limited to 100 words. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula sodales sapien porttitor porta. Orci varius natoque penatibus et magnis is parturient montes, nascetur ridiculus mus. Nulla in aliquam lectus. Praesent nec dolor nec lacus varius congue vitae at orci. Ut porttitor felis sit amet lectus pulvinar iaculis. Nunc efficitur ex nec dignissim aliquet. Integer pellentesque fermentum diam, id semper velit. Fusce vel faucibus arcu. Maecenas ut pretium massa, nec posuere est. Maecenas dapibus viverra orci vitae ullamcorper. Aliquam sed sagittis diam. Praesent gravida velit."
+        "description": "The FDC3 standard for application interoperability has become a key fintech enabler for transformation as financial organizations embrace micro-frontend-oriented workflows. Learn about the vision and key concepts of FDC3, the benefits it provides, and how workflow-driven design makes it easy to get started with FDC3."
     }
 ]
