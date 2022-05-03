@@ -6,6 +6,7 @@
  */
 
 const React = require('react');
+
 const {useState, useEffect} = React;
 const CompLibrary = require('../../core/CompLibrary.js');
 const Container = CompLibrary.Container;
@@ -39,12 +40,13 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, des
           {infoLink && docsLink ? <span> | </span> : null}
           {docsLink ? <a href={docsLink} key={docsLink} className="button">Documentation</a> : null}
         </div>
-        <div className="prose">{description}</div>
+        <div className="prose" dangerouslySetInnerHTML={{__html: description}}></div>
       </div>
     </div>
   </div>
 }
 
+//Note: docusaurus-v1 pages are pre-rendered, static HTML, so we have to use a nasty script tag for dynamic content
 function ImplementationsShowcase () {
 	return <div>
 		<script type="text/javascript" src="/js/implementationFilters.js"></script>
