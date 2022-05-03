@@ -197,7 +197,7 @@ Each section assumes that we have 3 agents connected by a bridge:
 * agent-A
 * agent-B
 * agent-C
-* dab
+* DAB
 
 ## Context
 
@@ -231,7 +231,7 @@ sequenceDiagram
 It encodes this as a message which it sends to the DAB
 
 ```JSON
-// agent-A -> dab
+// agent-A -> DAB
 {
     "type": "broadcast",
     "payload": {
@@ -254,8 +254,8 @@ It encodes this as a message which it sends to the DAB
 which it repeats on to agent-B AND agent-C with the `source.desktopAgent` metadata added.
 
 ```JSON
-// dab -> agent-B
-// dab -> agent-C
+// DAB -> agent-B
+// DAB -> agent-C
 {
     "type": "broadcast",
     "payload": {
@@ -311,7 +311,7 @@ let appIntent = await fdc3.findIntent();
 Sends an outward message to the DAB.
 
 ```JSON
-// agent-A -> dab
+// agent-A -> DAB
 {
    "type": "findIntent",
    "payload": {
@@ -334,8 +334,8 @@ Sends an outward message to the DAB.
 The DAB fills in the `source.desktopAgent` field and forwards the request to the other desktop agents (agent-B AND agent-C).
 
 ```JSON
-// dab -> agent-B
-// dab -> agent-C
+// DAB -> agent-B
+// DAB -> agent-C
 {
     "type": "findIntent",
     "payload": {
@@ -346,7 +346,7 @@ The DAB fills in the `source.desktopAgent` field and forwards the request to the
         "requestGuid": "requestGuid",
         "timestamp": "2020-03-...",
         "source": {
-            "desktopAgent": "agent-A", // filled by dab
+            "desktopAgent": "agent-A", // filled by DAB
             "name": "",
             "appId": "",
             "version": "",
@@ -388,7 +388,7 @@ DA agent-B would produce response:
 which is sent back over the bridge as a response to the request message as:
 
 ```JSON
-// agent-B -> dab
+// agent-B -> DAB
 {
     "type":  "findIntentResponse",
     "payload": {
@@ -469,7 +469,7 @@ DA agent-C would produce response:
 which is sent back over the bridge as a response to the request message as:
 
 ```JSON
-// agent-C -> dab
+// agent-C -> DAB
 {
     "type":  "findIntentResponse",
     "payload": {
@@ -531,7 +531,7 @@ This response gets repeated by the bridge in augmented form as:
 Then on agent-A the originating app finally gets back the following response from the bridge:
 
 ```JSON
-// dab -> agent-A
+// DAB -> agent-A
 {
     "intent":  { "name": "StartChat", "displayName": "Chat" },
     "apps": [
@@ -582,7 +582,7 @@ raiseIntent(intent: string, context: Context): Promise<IntentResolution>;
 agent-A sends an outward `findIntent` message to the DAB:
 
 ```JSON
-// agent-A -> dab
+// agent-A -> DAB
 {
     "type": "findIntent",
     "payload": {
@@ -615,7 +615,7 @@ raiseIntent(intent: string, context: Context, app: TargetApp): Promise<IntentRes
 ```
 
 ```JSON
-// agent-A -> dab
+// agent-A -> DAB
 {
     "type": "raiseIntent",
     "payload": {
@@ -648,7 +648,7 @@ raiseIntent(intent: string, context: Context, app: TargetApp): Promise<IntentRes
 The bridge fills in the `source.desktopAgent` field and forwards the request to the target desktop agent
 
 ```JSON
-// dab -> agent-B
+// DAB -> agent-B
 {
     "type": "raiseIntent",
     "payload": {
@@ -720,7 +720,7 @@ Normal response from agent-B, where the request was targeted to by agent-A. It s
 The bridge will fill in the `source.DesktopAgent` and relay the message on to agent-A
 
 ```JSON
-// dab -> agent-A
+// DAB -> agent-A
 {
     "type": "intentResolution",
     "payload": {
@@ -838,7 +838,7 @@ If intent result is private channel:
 `onSubscribe` to the private channel sent to server:
 
 ```JSON
-// agent-A -> dab
+// agent-A -> DAB
 {
     "type": "privateChannelSubscribe",
     "payload": {},
@@ -867,7 +867,7 @@ If intent result is private channel:
 The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
 
 ```JSON
-// dab -> agent-B
+// DAB -> agent-B
 {
     "type": "privateChannelSubscribe",
     "payload": {},
@@ -898,7 +898,7 @@ The bridge will add in the source agent (agent-A) and forward the message to des
 `onUnsubscribe` to the private channel sent to the bridge
 
 ```JSON
-// agent-A -> dab
+// agent-A -> DAB
 {
     "type": "privateChannelUnsubscribe",
     "payload": {},
@@ -927,7 +927,7 @@ The bridge will add in the source agent (agent-A) and forward the message to des
 The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
 
 ```JSON
-// dab -> agent-B
+// DAB -> agent-B
 {
     "requestGuid": "requestGuid",
     "timestamp": "2020-03-...",
@@ -958,7 +958,7 @@ The bridge will add in the source agent (agent-A) and forward the message to des
 `onDisconnect` to the private channel sent to the bridge
 
 ```JSON
-// agent-A -> dab
+// agent-A -> DAB
 {
     "type": "privateChannelDisconnect",
     "payload": {},
@@ -987,7 +987,7 @@ The bridge will add in the source agent (agent-A) and forward the message to des
 The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
 
 ```JSON
-// dab -> agent-B
+// DAB -> agent-B
 {
     "type": "privateChannelDisconnect",
     "payload": {},
