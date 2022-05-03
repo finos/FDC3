@@ -61,7 +61,7 @@
     {
         "title": "FDC3: Interoperability for the Financial Desktop (training course)",
         "publisher": "LinuxFoundationX",
-        "image": "https://www.linuxfoundation.org/wp-content/uploads/lf_logo.svg",
+        "image": "https://linuxfoundation.org/wp-content/uploads/Linux-Foundation-OG-Image.png",
         "infoLink": "https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop",
         "type": "examples-and-training",
         "description": "The FDC3 standard for application interoperability has become a key fintech enabler for transformation as financial organizations embrace micro-frontend-oriented workflows. Learn about the vision and key concepts of FDC3, the benefits it provides, and how workflow-driven design makes it easy to get started with FDC3."
