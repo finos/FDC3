@@ -1,4 +1,9 @@
 [
+    {   "//": "Implementations page content - required fields: title, image, type, description",
+        "//": "Please keep descriptions to (at most) 100 words.",
+        "//": "Description content may be formatted in basic HTML (e.g. <p>, <i> and <a> tags)",
+        "//": "Please do not add complex structure, additional images or more than 3 inline links or your PR may be rejected"
+    },
     {
         "title": "ChartIQ",
         "publisher": "Cosaic, Inc.",
@@ -6,16 +11,16 @@
         "infoLink": "https://cosaic.io/chartiq/",
         "docsLink": "https://documentation.chartiq.com/",
         "type": "application-provider",
-        "description": "Overview/introduction copy about the platform provider. Should be limited to 100 words. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula sodales sapien porttitor porta. Orci varius natoque penatibus et magnis is parturient montes, nascetur ridiculus mus. Nulla in aliquam lectus. Praesent nec dolor nec lacus varius congue vitae at orci. Ut porttitor felis sit amet lectus pulvinar iaculis. Nunc efficitur ex nec dignissim aliquet. Integer pellentesque fermentum diam, id semper velit. Fusce vel faucibus arcu. Maecenas ut pretium massa, nec posuere est. Maecenas dapibus viverra orci vitae ullamcorper. Aliquam sed sagittis diam. Praesent gravida velit."
+        "description": "<p>ChartIQ is a powerful and flexible HTML5 charting library with millions of users worldwide. Written in JavaScript, it runs entirely within the browser. With state of the art integrations, including  third-party apps, educational components, analysis, and more, you can create efficient workflows and streamline the way to work.</p><p>ChartIQ works on any platform (mobile, web, desktop) and any framework (Angular, React).</p><p>Most companies have at least one financial charting library for each platform or app they target—web, C#, Java, Android, iOS, etc., so developers have multiple code bases to maintain. With ChartIQ, write your code once and use it everywhere.</p>"
     },
     {
         "title": "Finsemble",
         "publisher": "Cosaic, Inc.",
         "image": "/img/users/Finsemble.png",
-        "infoLink": "https://www.finsemble.com/",
+        "infoLink": "https://cosaic.io/finsemble/",
         "docsLink": "https://documentation.finsemble.com/",
         "type": "platform-provider",
-        "description": "Overview/introduction copy about the platform provider. Should be limited to 100 words. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula sodales sapien porttitor porta. Orci varius natoque penatibus et magnis is parturient montes, nascetur ridiculus mus. Nulla in aliquam lectus. Praesent nec dolor nec lacus varius congue vitae at orci. Ut porttitor felis sit amet lectus pulvinar iaculis. Nunc efficitur ex nec dignissim aliquet. Integer pellentesque fermentum diam, id semper velit. Fusce vel faucibus arcu. Maecenas ut pretium massa, nec posuere est. Maecenas dapibus viverra orci vitae ullamcorper. Aliquam sed sagittis diam. Praesent gravida velit."
+        "description": "<p>Finsemble is a no code/low code smart desktop platform that helps you achieve both visual and logical integration of various types of apps that you already use (web, native, in-house, and third-party, including Citrix virtual apps).</p><p>Connect apps into automated workflows to improve user efficiency and reduce error rates. With <a href='https://documentation.finsemble.com/tutorial-ControllingInformationFlow.html' alt='Controlling information flow through FDC3 in Finsemble'>SelectConnect</a>, you are in full control over which apps communicate and which are excluded.</p><p>Build a fully customizable UI to work across multiple windows and monitors.</p><p>Use our <a href='https://documentation.finsemble.com/tutorial-SDD-01-Welcome.html' alt='The Smart Desktop Designer: fast-track to interoperability'>Smart Desktop Designer</a> to create and share fully functioning, highly customized, integrated desktops in a few hours, no coding knowledge needed.</p>"
     },
     {
         "title": "Glue42",
@@ -58,7 +63,7 @@
         "publisher": "LinuxFoundationX",
         "image": "http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png",
         "infoLink": "https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop",
-        "type": "platform-provider",
+        "type": "examples-and-training",
         "description": "Overview/introduction copy about the platform provider. Should be limited to 100 words. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula sodales sapien porttitor porta. Orci varius natoque penatibus et magnis is parturient montes, nascetur ridiculus mus. Nulla in aliquam lectus. Praesent nec dolor nec lacus varius congue vitae at orci. Ut porttitor felis sit amet lectus pulvinar iaculis. Nunc efficitur ex nec dignissim aliquet. Integer pellentesque fermentum diam, id semper velit. Fusce vel faucibus arcu. Maecenas ut pretium massa, nec posuere est. Maecenas dapibus viverra orci vitae ullamcorper. Aliquam sed sagittis diam. Praesent gravida velit."
     }
 ]
