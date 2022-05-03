@@ -272,7 +272,6 @@ article iframe {
 .implementation-details > .description {
   flex-shrink: 1;
   flex-grow: 1;
-  flex-basis: 300px;
 }
 .implementation-details > .description > .prose {
   padding-left: 10px;
@@ -301,5 +300,7 @@ article iframe {
   }
 }
 @media screen and (min-width: 737px) {
-  
+  .implementation-details > .description {
+    flex-basis: 300px;
+  }
 }
