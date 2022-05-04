@@ -1,38 +1,52 @@
 # Desktop Agent Bridging
+The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent, facilitating cross-application workflows. Desktop Agent Bridging addresses the interconnection of desktop agents such that apps running under different desktop agents can also interoperate, allowing workflows to span multiple desktop agents.
 
-In order to implement Desktop Agent Bridging some means for Desktop Agents to communicate with each other is needed. This spec assumes the Desktop Agent Bridging is implemented via a standalone bridge (instead of peer-to-peer or client/server topologies). Another assumption of this spec is that the data traffic will be over websocket connection.
+In any desktop agent bridging scenario, it is expected that each Desktop Agent is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although Desktop Agents may be run on different machines. 
 
-This topology will be similar to a star topology on a network in which the Desktop Agent Bridge (DAB or simply bridge) will be the central node acting as a router.
+## Connection Overview
 
-The discovery, i.e. mechanism which allows us to discover which Desktop Agents (DA) are present in the "network" can be done via known port (TBD) or config.
+### Topology
+In order to implement Desktop Agent Bridging some means for desktop agents to connect to and communicate with each other is needed. This Standard assumes that Desktop Agent Bridging is implemented via a standalone 'bridge' which each agent connects to and will use to route messages to or from other agents. This topology is similar to a star topology in networking, where the Desktop Agent Bridge (a 'bridge') will be the central node acting as a router.
 
-How the data will flow from Desktop Agent (DA) over a bridge to other DA will be outlined below.
+Other possible topologies include peer-to-peer or client/server networks, however, these introduce significant additional complexity into multiple aspects of the bridging protocol that must be implemetned by desktop agents, (including discovery, authentication and message routing), where a star topology/standalone bridge enables a relatively simple set of protocols, with the most difficult parts being implemented in the bridge itself. 
 
-## Locating
+Whilst the standalone bridge represents a single point of failure for the interconnection of desktop agents, it will also be significantly simpler than a full desktop agent implementation. Further, failures may be mitigated by setting the bridge up as a system service, such that it is started when the user's computer is started and may be restarted automatically if it fails. In the event of a bridge failure or manual shutdown, then desktop agents will no longer be bridged and should act as single agents.
 
-A DAB will implement a "server" behavior by:
+### Technology & Service Discovery
+Connections between desktop agents and the Desktop Agent Bridge will be made via websocket connections, with the bridge acting as the websocket server and each connected desktop agent as a client.
 
-* receiving requests from clients
-* route requests to clients
-* route responses to clients
+The bridge SHOULD run on the same machine as the desktop agents, ensuring the websocket can be bound to the loopback adapter IP address (127.0.0.1), ensuring that the websocket is not exposed to wider networks. However, bridge implementations and desktop agents MAY support configuration of a specific alternative IP address to connect to. 
 
-A DA will implement a "client" behavior by:
+Bridge implementations SHOULD default to binding their websocket server to port XXXX, enabling simple discovery of a running bridge via attepting a socket connection to that port and handshake (as defined later in this proposal). However, bridge implementations and desktop agents MAY support configuration of a specific alternative port number to connect to.   
 
-* forwarding requests to the bridge
-* await response(s) from the bridge
-* receive requests from the bridge
+As part of the Desktop Agent Bridging protocol, a bridge will implement "server" behavior by:
 
-## Connecting
+* Receiving requests from client desktop agents.
+* Routing requests to client desktop agents.
+* Receiving responses from client desktop agents.
+* Routing responses to client desktop agents.
 
-Desktop Agents should authenticate against the bridge, which needs to implement the authentication logic (TBD - access keys? JWT?).
+A desktop agent will implement "client" behavior by:
 
-The DAB is also responsible for assigning each DA a name. a name can be requested by a DA.
+* Forwarding requests to the bridge.
+* Awaiting response(s) from the bridge.
+* Receiving requests from the bridge.
+* Forwarding response to the bridge.
 
-Whilst the DAB represents a single point of failure in this bridging configuration, a critical failure should only mean that a DA will operate as if it was the only DA in a machine.
+### Handshake, Authentication & Name Assignment
+On connection to the bridge, a handshake and authentication step must be completed. This allows: 
+- The desktop agent to confirm that it is connecting to an FDC3 Desktop Agent Bridge, rather than another service exposed via a websocket.
+- The bridge to require that the desktop agent authenticate itself, allowing it to control access to the network of bridged desktop agents
+- The destkop agent to request a particular name by which it will be addressed by other agents and for the bridge to assign the requested namee, after confirming that no other agent is connected with that name, or a derivative of that name if it is already in use.
 
-## Interacting
+The bridge is ultimately responsible for assigning each desktop agent a name and for routing messages using those names.
 
-With a standalone DAB, the message paths and message propagation should become simple to implement since messages will only from between a source and a destination with a DAB in the middle. A standalone DAB will also simplify the implementation for supporting multi-machine and Access Control Lists.  
+
+## Interaction
+
+
+With a standalone DAB, the message paths and message propagation should become simple to implement since messages will only from between a source and a destination with a DAB in the middle. A standalone DAB will also sim
+plify the implementation for supporting multi-machine and Access Control Lists.  
 
 ### Handling FDC3 calls When Bridged
 
