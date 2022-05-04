@@ -1,57 +1,155 @@
 # Desktop Agent Bridging
+The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent, facilitating cross-application workflows. Desktop Agent Bridging addresses the interconnection of desktop agents such that apps running under different desktop agents can also interoperate, allowing workflows to span multiple desktop agents.
 
-In order to implement Desktop Agent Bridging some means for Desktop Agents to communicate with each other is needed. One obvious solution is to support the use a websocket to communicate. However, to do so some idea of the protocol for that communication is needed. 
+In any desktop agent bridging scenario, it is expected that each Desktop Agent is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although Desktop Agents may be run on different machines. 
 
-## Websocket protocol proposal 
-In a typical bridging scenario, one of more Desktop Agents will need to provide a websocket server for other agents to connect to - in the rest of this proposal the agent providing the websocket server will be referred to as 'the server' or 'a server', while Desktop Agents connecting to it are referred to as 'the client' or 'a client'.
+## Connection Overview
 
-If a Desktop Agent acts as a server, this should not preclude it also being a client of another server (allowing for a variety of bridging topologies). However, there should exist only one connection between any two desktop agents.
+### Topology
+In order to implement Desktop Agent Bridging some means for desktop agents to connect to and communicate with each other is needed. This Standard assumes that Desktop Agent Bridging is implemented via a standalone 'bridge' which each agent connects to and will use to route messages to or from other agents. This topology is similar to a star topology in networking, where the Desktop Agent Bridge (a 'bridge') will be the central node acting as a router.
 
-### Identifying Desktop Agents and Message Sources
-In order to target intents and perform other actions that require specific routing between Desktop Agents, Desktop Agents need to have an identity. Identities should be assigned to clients when they connect to a server, although they might request a particular identity. This allows for multiple copies of the same underlying desktop agent implementation to be bridged and ensures that id clashes can be avoided.
+Other possible topologies include peer-to-peer or client/server networks, however, these introduce significant additional complexity into multiple aspects of the bridging protocol that must be implemetned by desktop agents, (including discovery, authentication and message routing), where a star topology/standalone bridge enables a relatively simple set of protocols, with the most difficult parts being implemented in the bridge itself. 
 
-To prevent spoofing and to simplify the implementation of clients, sender identities for birdging messages should be added, by the server to top level messages AND to AppMetadata objects embedded in them.
+Whilst the standalone bridge represents a single point of failure for the interconnection of desktop agents, it will also be significantly simpler than a full desktop agent implementation. Further, failures may be mitigated by setting the bridge up as a system service, such that it is started when the user's computer is started and may be restarted automatically if it fails. In the event of a bridge failure or manual shutdown, then desktop agents will no longer be bridged and should act as single agents.
 
-* Sender details to be added by websocket server to top level messages AND any embedded AppMetadata objects.
-    * AppMetadata needs a new `desktopAgent `field
-    * When a client connects to a server it should be assigned an identity of some sort, which can be used to augment messages with details of the agent
-        * The server should do the assignments and could generate ids or accept them via config.
-        * Clients don't need to know their own ids or even the ids of others, they just need to be able to pass around AppMetadata objects that contain them.
+Where multi-machine use cases must be supported, cross-machine routing is an internal concern of the Desktop Agent Bridge, with each desktop agent simply communicating with a bridge instance located on the same machine (or nominated IP address, where supported). Bridges running on different machines may then exchange messages between each other. The connection protocol between bridges themselves is implementation specific and beyond the scope of this standard. Further, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user.
 
-### Identifying Individual Messages
-There are a variety of message types we'll need to send between bridged Desktop Agents, several of which will need to be replied to specifically (e.g. a `fdc3.raiseIntent` call should receive and `IntentResponse` when an app has been chosen and the intent and context delivered to it). Hence, messages also need a unique identity.
 
-* GUIDs required to uniquely identify messages
-    * To be referenced in replies
+### Technology & Service Discovery
+Connections between desktop agents and the Desktop Agent Bridge will be made via websocket connections, with the bridge acting as the websocket server and each connected desktop agent as a client.
+
+The bridge SHOULD run on the same machine as the desktop agents, ensuring the websocket can be bound to the loopback adapter IP address (127.0.0.1), ensuring that the websocket is not exposed to wider networks. However, bridge implementations and desktop agents MAY support configuration of a specific alternative IP address to connect to. 
+
+Bridge implementations SHOULD default to binding their websocket server to port XXXX, enabling simple discovery of a running bridge via attepting a socket connection to that port and handshake (as defined later in this proposal). However, bridge implementations and desktop agents MAY support configuration of a specific alternative port number to connect to.   
+
+As part of the Desktop Agent Bridging protocol, a bridge will implement "server" behavior by:
+
+* Receiving requests from client desktop agents.
+* Routing requests to client desktop agents.
+* Receiving responses from client desktop agents.
+* Routing responses to client desktop agents.
+
+A desktop agent will implement "client" behavior by:
+
+* Forwarding requests to the bridge.
+* Awaiting response(s) from the bridge.
+* Receiving requests from the bridge.
+* Forwarding response to the bridge.
+
+Hence, message paths and propagation are simple. All messages to other desktop agents are passed to the bridge for routing and all messages (both requests and responses) are received back from it, i.e. the bridge is responsible for all message routing. 
+
+### Handshake, Authentication & Name Assignment
+On connection to the bridge, a handshake and authentication step must be completed. This allows: 
+- The desktop agent to confirm that it is connecting to an FDC3 Desktop Agent Bridge, rather than another service exposed via a websocket.
+- The bridge to require that the desktop agent authenticate itself, allowing it to control access to the network of bridged desktop agents
+- The destkop agent to request a particular name by which it will be addressed by other agents and for the bridge to assign the requested namee, after confirming that no other agent is connected with that name, or a derivative of that name if it is already in use.
+
+The bridge is ultimately responsible for assigning each desktop agent a name and for routing messages using those names.
+
+
+## Interactions between Desktop Agents
 
 ### Handling FDC3 calls When Bridged
-* Desktop agents that are bridged will need to wait for responses from other desktop agents before responding to API calls.
-    * for resilience, this may mean defining timeouts...
+
+* DAs that are bridged will need to wait for responses from other DAs before responding to API calls.
+  * for resilience, this may mean defining timeouts...
+
+### Identifying Desktop Agents Identity and Message Sources
+
+In order to target intents and perform other actions that require specific routing between DAs, DAs need to have an identity. Identities should be assigned to clients when they connect to the bridge, although they might request a particular identity. This allows for multiple copies of the same underlying desktop agent implementation to be bridged and ensures that id clashes can be avoided.
+
+To prevent spoofing and to simplify the implementation of clients, sender identities for bridging messages should be added, by the bridge to `AppMetadata` objects embedded in them.
+
+* Sender details to be added by the DAB to the embedded `AppMetadata` objects.
+  * `AppMetadata` needs a new `desktopAgent` field
+  * When a client connects to a DAB it should be assigned an identity of some sort, which can be used to augment messages with details of the agent
+    * The DAB should do the assignments and could generate ids or accept them via config.
+    * DAs don't need to know their own ids or even the ids of others, they just need to be able to pass around `AppMetadata` objects that contain them.
+
+### Identifying Individual Messages
+
+There are a variety of message types we'll need to send between bridged DAs, several of which will need to be replied to specifically (e.g. a `fdc3.raiseIntent` call should receive and `IntentResponse` when an app has been chosen and the intent and context delivered to it). Hence, messages also need a unique identity.
+
+* GUIDs required to uniquely identify messages
+  * To be referenced in replies
+
+This means that each request that gets generated, should contain a request GUID, and every response to a request should contain a response GUID AND reference the request GUID. A response the does not reference a request GUID should be considered invalid.
 
 ### Forwarding of Messages from Other Agents
-To enable support for a vairety of topologies, it is necessary for a Desktop Agent to be able to forward messages received from one Desktop Agent on to others. There are a few simple rules which determine whether a message needs to be forwarded:
-- the message does not have a target Desktop Agent (e.g. findIntent)
-  - If you are a client of a server, send it on to the server
-  - If you are a server, send it on to your clients (except the source of the message)
-  - If you are both do both
-- If the message has a target Destkop Agent (e.g. response to findIntent)
-  - If you are a server and the target is one of your clients forward the message to it.
-  - If you are a client (and teh target isn't you) forward the message to your server.
 
+The DAB MUST be able to forward messages received from one DA on to others (excluding obviously the Desktop Agent where the request was originated). There are a few simple rules which determine whether a message needs to be forwarded:
 
-### Open Questions
-* Is it necessary to preserve message path as it passes through different servers?
+* the message does not have a target Desktop Agent (e.g. findIntent)
+  * If you are a DA, send it on to the bridge
+  * The bridge will send it on to other known DAs (except the source of the message)
 
+* If the message has a target Desktop Agent (e.g. response to findIntent)
+  * The bridge will forward the message to it.
 
-### Generic request and response formats
+## Open Questions
 
-#### Request:
+* Do we need to make mandatory that a `fdc3.joinChannel` was invoked before you can return the current state of the channel?
+* Bridging startup - Consider an app that joins a channel whose last context was sent before the bridge was created, then DA couldn’t send the correct initial context when the channel joined
+  * Current context is ignored
+  * Add an init flow where DAs share info about channels they have with context on them already - (this type of discovery of channels does not happen in FDC3 at the moment, therefore it would add significant complexity to the spec).
+* How to handle slow responding DAs?
+
+## AppMetadata
+
+`AppMetadata` needs to be expanded to contain a `desktopAgent` field.
+
+```typescript
+interface AppMetadata {
+  /** The unique app name that can be used with the open and raiseIntent calls. */
+  readonly name: string;
+
+  /** The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root' */
+  readonly appId?: string;
+
+  /** The Version of the application. */
+  readonly version?: string;
+
+  /** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/
+  readonly instanceId?: string;
+
+  /** An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set. */
+  readonly instanceMetadata?: Record<string, any>;
+
+  /** A more user-friendly application title that can be used to render UI elements  */
+  readonly title?: string;
+
+  /**  A tooltip for the application that can be used to render UI elements */
+  readonly tooltip?: string;
+
+  /** A longer, multi-paragraph description for the application that could include mark-up */
+  readonly description?: string;
+
+  /** A list of icon URLs for the application that can be used to render UI elements */
+  readonly icons?: Array<Icon>;
+
+  /** A list of image URLs for the application that can be used to render UI elements */
+  readonly images?: Array<string>;
+  
+  /** The type of result returned for any intent specified during resolution. 
+   * May express a particular context type (e.g. "fdc3.instrument"), channel 
+   * (e.g. "channel") or a channel that will receive a specified type 
+   * (e.g. "channel<fdc3.instrument>"). */
+  readonly resultType?: string | null;
+
+  /** A string filled in by server on receipt of message, that represents 
+   * the Desktop Agent that the app is available on. */
+  readonly desktopAgent?: string;
+}
+```
+
+## Generic request and response formats
+
+For simplicity, in this spec the request and response GUID will be just `requestGUID` and `responseGUID`. A GUID/UUID 128-bit integer number used to uniquely identify resources should be used.
+
+### Request
+
 ```typescript
 {
-    /** Unique guid for this request */
-    requestGuid: string,
-    /** Timestamp at which request was generated */
-    timestamp:  date,
     /** FDC3 function name message relates to, e.g. "findIntent" */
     type:  string,
     /** Request body, containing the arguments to the function called.*/
@@ -62,27 +160,25 @@ To enable support for a vairety of topologies, it is necessary for a Desktop Age
         context?: Context,
         //fields for other possible arguments
     },
-    /** AppMetadata source request received from */
-    source?: {
-            AppMetadata & {
-            desktopAgent?: string // filled in by server on receipt of message
-            }
+    meta: {
+        /** Unique guid for this request */
+        requestGuid: string,
+        /** Timestamp at which request was generated */
+        timestamp:  date,
+         /** AppMetadata source request received from */
+        source?: AppMetadata
     }
 }
 ```
 
-#### Response:
-Responses will be differentiated by the presence of a `responseGuid` field.
+### Response
+
+Responses will be differentiated by the presence of a `responseGuid` field and MUST reference the `requestGuid` that they are responding to.
+
 ```typescript
 {
-    /** Value from request*/
-    requestGuid: string,
-    /** Unique guid for this response */
-    responseGuid:  string,
-    /** Timestamp at which request was generated */
-    timestamp:  Date,
     /** FDC3 function name the original request related to, e.g. "findIntent" */
-    type:  string, //same as request value
+    type:  string,
     /** Response body */
     payload: {
         //example fields for specific messages... wouldn't be specified in base type
@@ -90,149 +186,197 @@ Responses will be differentiated by the presence of a `responseGuid` field.
         appIntent?:  AppIntent,
         //fields for other possible response values
     },
-    /** AppMetadata source request received from */
-    source?: {
-        AppMetadata & {
-            desktopAgent?: string // filled in by server on receipt of message
-        }
-    }
-    /** AppMetadata destination response sent from */
-    destination?: {
-        AppMetadata & {
-            desktopAgent?: string // filled in by server on receipt of message
-        }
+    meta: {
+        /** Value from request*/
+        requestGuid: string,
+        /** Unique guid for this response */
+        responseGuid:  string,
+        /** Timestamp at which request was generated */
+        timestamp:  Date,
+        /** AppMetadata source request received from */
+        source?: AppMetadata,
+        /** AppMetadata destination response sent from */
+        destination?: AppMetadata
     }
 }
 ```
-Clients should send these messages on to the 'server', which will add the `source.desktopAgent` metadata. Further, when processing responses, the agent acting as the 'server' should augment any `AppMetadata` objects in responses with the the same id applied to `source.desktopAgent`.
 
+DAs should send these messages on to the bridge, which will add the `source.desktopAgent` metadata. Further, when processing responses, the bridge should also augment any `AppMetadata` objects in responses with the the same id applied to `source.desktopAgent`.
 
-### Individual message exchanges
-The sections below cover most scenerios for each of the Desktop Agent methods in order to explore how this protocol might work.
+## Individual message exchanges
 
-Each section assumes that we have 3 agents connected by bridge: agent-A, agent-B and agent-C. Agent-C provides a websocket server that agent-A and agent-B have connected to.
+The sections below cover most scenarios for each of the Desktop Agent methods in order to explore how this protocol might work.
 
+Each section assumes that we have 3 agents connected by a bridge:
 
+* agent-A
+* agent-B
+* agent-C
+* DAB
 
 ## Context
-### For broadcasts on channels
-Only needs a single message (no response)
+
+### broadcast (on channels)
+
+Only needs a single message (no response).
+
 An app on agent-A does:
+
 ```javascript
 fdc3.broadcast(contextObj);
 ```
+
 or
+
 ```javascript
 (await fdc3.getOrCreateChannel("myChannel")).broadcast(contextObj)
 ```
 
-It encodes this as a message which it sends to the websocket server (agent-C)
+```mermaid
+sequenceDiagram
+    participant DA as Desktop Agent A
+    participant DAB as Desktop Agent Bridge
+    participant DB as Desktop Agent B
+    participant DC as Desktop Agent C
+    DA ->>+ DAB: Broadcast
+    DAB ->>+ DB: Broadcast
+    DAB ->>+ DC: Broadcast
+```
 
-Message flow: agent-A -> agent-C
+It encodes this as a message which it sends to the DAB
 
 ```JSON
+// agent-A -> DAB
 {
-    "requestGuid": "some-guid-string-here",
-    "timestamp": "2020-03-...",
     "type": "broadcast",
     "payload": {
         "channel": "myChannel",
-        "context": { /*contxtObj*/ }
+        "context": { /*contextObj*/ }
     },
-    "source": {
-        "name": "...",
-        "appId": "...",
-        "version": "...",
-        // ... other metadata fields
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "name": "...",
+            "appId": "...",
+            "version": "...",
+            // ... other metadata fields
+        }
     }
 }
 ```
 
-which it repeats on to Agent-B with the `source.desktopAgent` metadata added.
-
-Message flow: agent-C -> agent-B
+which it repeats on to agent-B AND agent-C with the `source.desktopAgent` metadata added.
 
 ```JSON
+// DAB -> agent-B
+// DAB -> agent-C
 {
-    "requestGuid": "some-guid-string-here",
-    "timestamp": "2020-03-...",
     "type": "broadcast",
     "payload": {
         "channel": "myChannel",
-        "context": { /*contxtObj*/}
+        "context": { /*contextObj*/}
     },
-    "source": {
-        "desktopAgent": "agent-A",
-        "name": "...",
-        "appId": "...",
-        "version": "...",
-        // ... other metadata fields
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "desktopAgent": "agent-A",
+            "name": "...",
+            "appId": "...",
+            "version": "...",
+            // ... other metadata fields
+        },
     }
 }
 ```
 
-When adding context listeners (either for User channels or specific App Channels) no messages need to be exchanged. Instead, upon receving a broadcast message the Desktop Agent just needs  to pass it on to all listeners on that named channel.
+When adding context listeners (either for User Channels or specific App Channels) no messages need to be exchanged. Instead, upon receiving a broadcast message the Desktop Agent just needs to pass it on to all listeners on that named channel.
 
 ## Intents
+
 ### findIntent
+
 ```typescript
 findIntent(intent: string, context?: Context): Promise<AppIntent>;
 ```
 
-#### Request format:
+```mermaid
+sequenceDiagram
+    participant DA as Desktop Agent A
+    participant DAB as Desktop Agent Bridge
+    participant DB as Desktop Agent B
+    participant DC as Desktop Agent C
+    DA ->>+ DAB: findIntent
+    DAB ->>+ DB: findIntent
+    DB -->>- DAB: findIntentResponse (B)
+    DAB ->>+ DC: findIntent
+    DC -->>- DAB: findIntentResponse (C)
+    DAB -->>- DA: findIntentResponse (B + C)
+```
+
+#### Request format
 
 A findIntent call is made on agent-A.
+
 ```javascript
 let appIntent = await fdc3.findIntent();
 ```
 
-Sends an outward message to the desktop agent(s) acting as server(s).
+Sends an outward message to the DAB.
 
 ```JSON
-// agent-A -> agent-C
+// agent-A -> DAB
 {
-   "requestGuid": "requestGuid",
-   "timestamp": "2020-03-...",
    "type": "findIntent",
    "payload": {
-       "intent": "StartChat",
-       "context": {/*contxtObj*/}
+        "intent": "StartChat",
+        "context": {/*contextObj*/}
    },
-   "source": {
-        "name": "",
-        "appId": "",
-        "version": "",
-        // ... other metadata fields
-    }
+   "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "name": "",
+            "appId": "",
+            "version": "",
+            // ... other metadata fields
+        }
+   }
 }
 ```
 
-The server (agent-C) fills in the `source.desktopAgent` field and forwards the request to the other desktop agents.
+The DAB fills in the `source.desktopAgent` field and forwards the request to the other desktop agents (agent-B AND agent-C).
 
 ```JSON
-// agent-C -> agent-B
+// DAB -> agent-B
+// DAB -> agent-C
 {
-    "requestGuid": "requestGuid",
-    "timestamp": "2020-03-...",
     "type": "findIntent",
     "payload": {
         "intent": "StartChat",
-        "context": {/*contxtObj*/},
+        "context": {/*contextObj*/},
     },
-    "source": {
-        "desktoAgent": "agent-A",
-        "name": "",
-        "appId": "",
-        "version": "",
-        // ... other metadata fields
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "desktopAgent": "agent-A", // filled by DAB
+            "name": "",
+            "appId": "",
+            "version": "",
+            // ... other metadata fields
+        }
     }
 }
 ```
+
 Note that the `source.desktopAgent` field has been populated with the id of the agent that raised the requests, enabling the routing of responses.
 
 #### Response format
 
-Normal response from agent-A, where the request was raised (a websocket client)
+Normal response from agent-A, where the request was raised.
+
 ```JSON
 {
     "intent": { "name": "StartChat", "displayName": "Chat" },
@@ -242,7 +386,8 @@ Normal response from agent-A, where the request was raised (a websocket client)
 }
 ```
 
-Desktop agent B (a websocket client) woud produce response:
+DA agent-B would produce response:
+
 ```JSON
 {
     "intent": { "name": "StartChat", "displayName": "Chat" },
@@ -258,11 +403,8 @@ Desktop agent B (a websocket client) woud produce response:
 which is sent back over the bridge as a response to the request message as:
 
 ```JSON
-// agent-B -> agent-C
+// agent-B -> DAB
 {
-    "requestGuid": "requestGuid",
-    "responseGuid":  "requestAgentBGuid",
-    "timestamp":  "2020-03-...",
     "type":  "findIntentResponse",
     "payload": {
         "intent":  "StartChat",
@@ -276,23 +418,27 @@ which is sent back over the bridge as a response to the request message as:
             ]
         }
     },
-    "destination": {
-        "desktopAgent": "agent-A",
-        "name": "",
-        "appId": "",
-        "version": "",
-        // ... other metadata fields
+    "meta": {
+        "requestGuid": "requestGuid",
+        "responseGuid":  "responseGuidAgentB",
+        "timestamp":  "2020-03-...",
+        "destination": {
+            "desktopAgent": "agent-A",
+            "name": "",
+            "appId": "",
+            "version": "",
+            // ... other metadata fields
+        }
     }
 }
 ```
 
-Which gets repeated by the websocket server (agent-C) in augmented form as:
+Note the response guid generated by the agent-B and the reference to the request guid produced by agent-A where the request was originated.
+
+This response gets repeated by the bridge in augmented form as:
 
 ```JSON
 {
-    "requestGuid": "requestGuid",
-    "responseGuid":  "requestAgentB_Guid",
-    "timestamp":  "2020-03-...",
     "type":  "findIntentResponse",
     "payload": {
         "intent":  "StartChat",
@@ -306,20 +452,26 @@ Which gets repeated by the websocket server (agent-C) in augmented form as:
             ]
         }
     },
-    "destination": {
-        "desktopAgent": "agent-A",
-        "name": "",
-        "appId": "",
-        "version": "",
-        // ... other metadata fields
-    },
-    "source": {
-        "desktoAgent": "agent-B",
+    "meta": {
+        "requestGuid": "requestGuid",
+        "responseGuid":  "responseGuidAgentB",
+        "timestamp":  "2020-03-...",
+        "destination": {
+            "desktopAgent": "agent-A",
+            "name": "",
+            "appId": "",
+            "version": "",
+            // ... other metadata fields
+        },
+        "source": {
+            "desktopAgent": "agent-B",
+        }
     }
 }
 ```
 
-Desktop agent C (the websocket server) also sends its own response:
+DA agent-C would produce response:
+
 ```JSON
 {
     "intent":  { "name": "StartChat", "displayName": "Chat" },
@@ -329,38 +481,72 @@ Desktop agent C (the websocket server) also sends its own response:
 }
 ```
 
-which it encodes as a message:
+which is sent back over the bridge as a response to the request message as:
+
 ```JSON
+// agent-C -> DAB
 {
-    "requestGuid": "requestGuid",
-    "responseGuid":  "requestAgentC_Guid",
-    "timestamp":  "2020-03-...",
     "type":  "findIntentResponse",
     "payload": {
         "intent":  "StartChat",
         "appIntent":  {
             "intent":  { "name": "StartChat", "displayName": "Chat" },
             "apps": [
-            { "name": "WebIce", "desktopAgent": "agent-C"}
+                { "name": "WebIce", "desktopAgent": "agent-C"}
             ]
         }
     },
-     "destination": {
-        "desktopAgent": "agent-A",
-        "name": "",
-        "appId": "",
-        "version": "",
-        // ... other metadata fields
-    },
-    "source": {
-        "desktoAgent": "agent-C",
+    "meta": {
+        "requestGuid": "requestGuid",
+        "responseGuid":  "responseGuidAgentC",
+        "timestamp":  "2020-03-...",
+        "destination": {
+           "desktopAgent": "agent-A",
+           "name": "",
+           "appId": "",
+           "version": "",
+           // ... other metadata fields
+       }
     }
 }
 ```
-Then on agent-A the originating app finally gets back the following response from agent-C:
+
+This response gets repeated by the bridge in augmented form as:
 
 ```JSON
-// agent-C -> agent-A
+{
+    "type":  "findIntentResponse",
+    "payload": {
+        "intent":  "StartChat",
+        "appIntent":  {
+            "intent":  { "name": "StartChat", "displayName": "Chat" },
+            "apps": [
+                { "name": "WebIce", "desktopAgent": "agent-C"}
+            ]
+        }
+    },
+    "meta": {
+        "requestGuid": "requestGuid",
+        "responseGuid":  "responseGuidAgentC",
+        "timestamp":  "2020-03-...",
+        "destination": {
+           "desktopAgent": "agent-A",
+           "name": "",
+           "appId": "",
+           "version": "",
+           // ... other metadata fields
+       },
+       "source": {
+            "desktopAgent": "agent-C",
+        }
+    }
+}
+```
+
+Then on agent-A the originating app finally gets back the following response from the bridge:
+
+```JSON
+// DAB -> agent-A
 {
     "intent":  { "name": "StartChat", "displayName": "Chat" },
     "apps": [
@@ -379,37 +565,59 @@ Then on agent-A the originating app finally gets back the following response fro
 ```typescript
 raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
 ```
-For Desktop Agent bridging, a `raiseIntent` call MUST always pass a `app:TargetApp` argument. If one is not passed a `findIntent` will be sent instead to collect options to display in a local resolver UI, allowing for a targetted intent to be raised afterwards. See details below.
+
+For Desktop Agent bridging, a `raiseIntent` call MUST always pass a `app:TargetApp` argument. If one is not passed a `findIntent` will be sent instead to collect options to display in a local resolver UI, allowing for a targeted intent to be raised afterwards. See details below.
+
+When receiving a response from invoking `raiseIntent` the new app instances MUST be fully initialized ie. the responding Desktop Agent will need to return an `AppMetadata` with an `instanceId`.
+
+Note that the below diagram assumes a `raiseIntent` WITH a `app:TargetApp` was specified and therefore agent-C is not involved.
+
+```mermaid
+sequenceDiagram
+    participant DA as Desktop Agent A
+    participant DAB as Desktop Agent Bridge
+    participant DB as Desktop Agent B
+    participant DC as Desktop Agent C
+    DA ->>+ DAB: raiseIntent
+    DAB ->>+ DB: raiseIntent
+    DB -->>- DAB: intentResolution
+    DAB -->>- DA: intentResolution
+    DB ->>+ DAB: intentResult
+    DAB ->>+ DA: intentResult
+```
 
 #### Request format
+
 A raiseIntent call, __without__ `app:TargetApp` argument is made on agent-A.
 
 ```typescript
 raiseIntent(intent: string, context: Context): Promise<IntentResolution>;
 ```
 
-agent-A sends an outward `findIntent` message to the desktop agent(s) acting as server(s):
+agent-A sends an outward `findIntent` message to the DAB:
 
 ```JSON
-// agent-A -> agent-C
+// agent-A -> DAB
 {
-   "requestGuid": "requestGuid",
-   "timestamp": "2020-03-...",
-   "type": "findIntent",
-   "payload": {
-       "intent": "StartChat",
-       "context": {/*contxtObj*/}
-   },
-   "source": {
-        "name": "someOtherApp", //should this be the desktop agent or the app?
-        "appId": "...",
-        "version": "...",
-        // ... other metadata fields
+    "type": "findIntent",
+    "payload": {
+        "intent": "StartChat",
+        "context": {/*contextObj*/}
+    },
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "name": "someOtherApp", //should this be the desktop agent or the app?
+            "appId": "...",
+            "version": "...",
+            // ... other metadata fields
+        }
     }
 }
 ```
 
-This will trigger the same flow as `findIntent`. Upon receiveing a `findIntentResponse`, the resolver is shown.
+This will trigger the same flow as `findIntent`. Upon receiving a `findIntentResponse`, the resolver is shown.
 
 User selects an option which will trigger a `raiseIntent` call with a `app:TargetApp` argument.
 
@@ -422,110 +630,73 @@ raiseIntent(intent: string, context: Context, app: TargetApp): Promise<IntentRes
 ```
 
 ```JSON
-// agent-A -> agent-C
+// agent-A -> DAB
 {
-   "requestGuid": "requestGuid",
-   "timestamp": "2020-03-...",
-   "type": "raiseIntent",
-   "payload": {
-       "intent": "StartChat",
-       "context": {/*contxtObj*/},
-       "app": {
-           "name": "AChatApp",
-           "desktopAgent": "agent-B"
-       }
-   },
-   "source": {
-        "name": "someOtherApp",
-        "appId": "...",
-        "version": "...",
-        // ... other metadata fields
-   },
-   "destination": { // duplicates the app argument so that the message is routed like any other
-        "app": {
-           "name": "AChatApp",
-           "desktopAgent": "agent-B"
-       }
-   }
-}
-```
-
-The agent-C (server) fills in the `source.desktopAgent` field and forwards the request to the target desktop agent.
-
-```JSON
-// agent-C -> agent-B
-{
-    "requestGuid": "requestGuid",
-    "timestamp": "2020-03-...",
     "type": "raiseIntent",
     "payload": {
         "intent": "StartChat",
-        "context": {/*contxtObj*/},
-    },
-    "source": {
-        "name": "someOtherApp",
-        "appId": "...",
-        "version": "...",
-        "desktopAgent": "agent-A" // <---- filled by server (C)
-        // ... other metadata fields
-    },
-    "destination": {
+        "context": {/*contextObj*/},
         "app": {
             "name": "AChatApp",
             "desktopAgent": "agent-B"
+        }
+    },
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+                "name": "someOtherApp",
+                "appId": "...",
+                "version": "...",
+                // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument so that the message is routed like any other
+                "app": {
+                "name": "AChatApp",
+                "desktopAgent": "agent-B"
+            }
         }
     }
 }
 ```
 
-
-#### Response format
-Normal response from agent-B (to-C), where the request was targeted to by agent-A. It sends this `intentResolution` as soon as it delivers the `raiseIntent` to the target app.
+The bridge fills in the `source.desktopAgent` field and forwards the request to the target desktop agent
 
 ```JSON
-// agent-B -> agent-C
+// DAB -> agent-B
 {
-    "requestGuid": "requestGuid",
-    "responseGuid": "responseGuid",
-    "timestamp": "2020-03-...",
-    "type": "intentResolution",
+    "type": "raiseIntent",
     "payload": {
         "intent": "StartChat",
+        "context": {/*contextObj*/},
+    },
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
         "source": {
-            "name": "AChatApp",
-            "appId": "",
-            "version": "",
+            "name": "someOtherApp",
+            "appId": "...",
+            "version": "...",
+            "desktopAgent": "agent-A" // <---- filled by DAB
             // ... other metadata fields
         },
-        "version": "...",
-    },
-    "error?:": "ResolveError Enum",
-    "source": { //Note this was the destination of the raised intent
-        "name": "AChatApp",
-        "appId": "",
-        "version": "",
-        // ... other metadata fields
-    },
-    "destination": { 
-        "app": { //note this was the source of the raised intent
-           "name": "someOtherApp",
-           "appId": "",
-            "version": "",
-            "desktopAgent": "agent-A"
-            // ... other metadata fields
-       }
-   }
+        "destination": {
+            "app": {
+                "name": "AChatApp",
+                "desktopAgent": "agent-B"
+            }
+        },
+    }
 }
 ```
 
-agent-C (server) will fill in the `source.DesktopAgent` and relay the message on to agent-A.
+#### Response format
+
+Normal response from agent-B, where the request was targeted to by agent-A. It sends this `intentResolution` as soon as it delivers the `raiseIntent` to the target app
 
 ```JSON
-// agent-C -> agent-A
+// agent-B -> DAB
 {
-    "requestGuid": "requestGuid",
-    "responseGuid": "intentResolutionResponseGuid",
-    "timestamp": "2020-03-...",
     "type": "intentResolution",
     "payload": {
         "intent": "StartChat",
@@ -533,38 +704,80 @@ agent-C (server) will fill in the `source.DesktopAgent` and relay the message on
             "name": "AChatApp",
             "appId": "",
             "version": "",
-            "desktopAgent": "agent-B" // filled by server
             // ... other metadata fields
         },
         "version": "...",
     },
-    "source": {
-        "name": "AChatApp",
-        "appId": "",
-        "version": "",
-        "desktopAgent": "agent-B" // filled by server
-        // ... other metadata fields
-    },
-    "destination": { // duplicates the app argument
-        "app": {
-           "name": "someOtherApp",
-           "appId": "",
+    "meta": {
+        "requestGuid": "requestGuid",
+        "responseGuid": "intentResolutionResponseGuid",
+        "timestamp": "2020-03-...",
+        "error?:": "ResolveError Enum",
+        "source": { //Note this was the destination of the raised intent
+            "name": "AChatApp",
+            "appId": "",
             "version": "",
-            "desktopAgent": "agent-A"
             // ... other metadata fields
+        },
+        "destination": { 
+            "app": { //note this was the source of the raised intent
+            "name": "someOtherApp",
+            "appId": "",
+                "version": "",
+                "desktopAgent": "agent-A"
+                // ... other metadata fields
+            }
+        }
+    }
+}
+```
+
+The bridge will fill in the `source.DesktopAgent` and relay the message on to agent-A
+
+```JSON
+// DAB -> agent-A
+{
+    "type": "intentResolution",
+    "payload": {
+        "intent": "StartChat",
+        "source": {
+            "name": "AChatApp",
+            "appId": "",
+            "version": "",
+            "desktopAgent": "agent-B" // filled by DAB
+            // ... other metadata fields
+        },
+        "version": "...",
+    },
+    "meta": {
+        "requestGuid": "requestGuid",
+        "responseGuid": "intentResolutionResponseGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "name": "AChatApp",
+            "appId": "",
+            "version": "",
+            "desktopAgent": "agent-B" // filled by DAB
+            // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+               "name": "someOtherApp",
+               "appId": "",
+                "version": "",
+                "desktopAgent": "agent-A"
+                // ... other metadata fields
+           }
        }
-   }
+    }
 }
 ```
 
 When `AChatApp` produces a response, or the intent handler finishes running, it should send a further `intentResult` message to send that response onto the intent raiser (or throw an error if one occurred)
 
 ```JSON
-// agent-B -> agent-C -> agent-A
+// agent-B -> DAB -> agent-A
 {
-    "requestGuid": "requestGuid",
-    "responseGuid": "intentResultResponseGuid",
-    "timestamp": "2020-03-...",
     "type": "intentResult",
     "payload?:": {
         "channel": {
@@ -573,34 +786,36 @@ When `AChatApp` produces a response, or the intent handler finishes running, it 
         },
         "context": {/*contextObj*/} // in alternative to channel
     },
-    "error?:": "ResultError Enum",
-    "source": {
-        "name": "AChatApp",
-        "appId": "",
-        "version": "",
-        "desktopAgent": "agent-B" // filled by server
-        // ... other metadata fields
-    },
-    "destination": { // duplicates the app argument
-        "app": {
-           "name": "someOtherApp",
-           "appId": "",
+    "meta": {
+        "requestGuid": "requestGuid",
+        "responseGuid": "intentResultResponseGuid",
+        "timestamp": "2020-03-...",
+        "error?:": "ResultError Enum",
+        "source": {
+            "name": "AChatApp",
+            "appId": "",
             "version": "",
-            "desktopAgent": "agent-A"
+            "desktopAgent": "agent-B" // filled by DAB
             // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+               "name": "someOtherApp",
+               "appId": "",
+                "version": "",
+                "desktopAgent": "agent-A"
+                // ... other metadata fields
+           }
        }
-   }
+    }
 }
 ```
 
 If intent result is private channel:
 
 ```JSON
-// agent-B -> agent-C -> agent-A
+// agent-B -> DAB -> agent-A
 {
-    "requestGuid": "requestGuid",
-    "responseGuid": "intentResultResponseGuid",
-    "timestamp": "2020-03-...",
     "type": "intentResult",
     "payload?:": {
         "channel": {
@@ -609,196 +824,222 @@ If intent result is private channel:
         },
         "context": {/*contextObj*/} // in alternative to channel
     },
-    "error?:": "ResultError Enum",
-    "source": {
-        "name": "AChatApp",
-        "appId": "",
-        "version": "",
-        "desktopAgent": "agent-B" // filled by server
-        // ... other metadata fields
-    },
-    "destination": { // duplicates the app argument
-        "app": {
-           "name": "someOtherApp",
-           "appId": "",
+    "meta": {
+        "requestGuid": "requestGuid",
+        "responseGuid": "intentResultResponseGuid",
+        "timestamp": "2020-03-...",
+        "error?:": "ResultError Enum",
+        "source": {
+            "name": "AChatApp",
+            "appId": "",
             "version": "",
-            "desktopAgent": "agent-A"
+            "desktopAgent": "agent-B" // filled by DAB
             // ... other metadata fields
-       }
-   }
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+            "name": "someOtherApp",
+            "appId": "",
+                "version": "",
+                "desktopAgent": "agent-A"
+                // ... other metadata fields
+            }
+        }
+    }
 }
 ```
+
 ---
 `onSubscribe` to the private channel sent to server:
 
 ```JSON
-// agent-A -> agent-C
+// agent-A -> DAB
 {
-    "requestGuid": "requestGuid",
-    "timestamp": "2020-03-...",
     "type": "privateChannelSubscribe",
     "payload": {},
-    "source": {
-        "name": "AChatApp",
-        "appId": "",
-        "version": "",
-        // ... other metadata fields
-    },
-    "destination": { // duplicates the app argument
-        "app": {
-           "name": "someOtherApp",
-           "appId": "",
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "name": "AChatApp",
+            "appId": "",
             "version": "",
-            "desktopAgent": "agent-B"
             // ... other metadata fields
-       }
-   }
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+            "name": "someOtherApp",
+            "appId": "",
+                "version": "",
+                "desktopAgent": "agent-B"
+                // ... other metadata fields
+            }
+        }
+    }
 }
 ```
 
-Server (agent-C) will add in the source agent (agent-A) and forward the message to destination (agent-B)
+The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
 
 ```JSON
-// agent-A -> agent-C
+// DAB -> agent-B
 {
-    "requestGuid": "requestGuid",
-    "timestamp": "2020-03-...",
     "type": "privateChannelSubscribe",
     "payload": {},
-    "source": {
-        "name": "AChatApp",
-        "appId": "",
-        "version": "",
-        "desktopAgent": "agent-A"
-        // ... other metadata fields
-    },
-    "destination": { // duplicates the app argument
-        "app": {
-           "name": "someOtherApp",
-           "appId": "",
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "name": "AChatApp",
+            "appId": "",
             "version": "",
-            "desktopAgent": "agent-B"
+            "desktopAgent": "agent-A"
             // ... other metadata fields
-       }
-   }
+        },
+            "destination": { // duplicates the app argument
+                "app": {
+                "name": "someOtherApp",
+                "appId": "",
+                    "version": "",
+                    "desktopAgent": "agent-B"
+                    // ... other metadata fields
+            }
+        }
+    }
 }
 ```
+
 ---
-`onUnsubscribe` to the private channel sent to server
+`onUnsubscribe` to the private channel sent to the bridge
 
 ```JSON
-// agent-A -> agent-C
+// agent-A -> DAB
+{
+    "type": "privateChannelUnsubscribe",
+    "payload": {},
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "name": "AChatApp",
+            "appId": "",
+            "version": "",
+            // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+               "name": "someOtherApp",
+               "appId": "",
+                "version": "",
+                "desktopAgent": "agent-B"
+                // ... other metadata fields
+           }
+       }
+    }
+}
+```
+
+The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
+
+```JSON
+// DAB -> agent-B
 {
     "requestGuid": "requestGuid",
     "timestamp": "2020-03-...",
     "type": "privateChannelUnsubscribe",
     "payload": {},
-    "source": {
-        "name": "AChatApp",
-        "appId": "",
-        "version": "",
-        // ... other metadata fields
-    },
-    "destination": { // duplicates the app argument
-        "app": {
-           "name": "someOtherApp",
-           "appId": "",
+    "meta": {
+        "source": {
+            "name": "AChatApp",
+            "appId": "",
             "version": "",
-            "desktopAgent": "agent-B"
+            "desktopAgent": "agent-A",
             // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+               "name": "someOtherApp",
+               "appId": "",
+                "version": "",
+                "desktopAgent": "agent-B"
+                // ... other metadata fields
+           }
        }
-   }
+    }
 }
 ```
 
-Server (agent-C) will add in the source agent (agent-A) and forward the message to destination (agent-B)
-
-```JSON
-// agent-C -> agent-B
-{
-    "requestGuid": "requestGuid",
-    "timestamp": "2020-03-...",
-    "type": "privateChannelUnsubscribe",
-    "payload": {},
-    "source": {
-        "name": "AChatApp",
-        "appId": "",
-        "version": "",
-        "desktopAgent": "agent-A",
-        // ... other metadata fields
-    },
-    "destination": { // duplicates the app argument
-        "app": {
-           "name": "someOtherApp",
-           "appId": "",
-            "version": "",
-            "desktopAgent": "agent-B"
-            // ... other metadata fields
-       }
-   }
-}
-```
 ---
-`onDisconnect` to the private channel sent to server
+`onDisconnect` to the private channel sent to the bridge
 
 ```JSON
-// agent-A -> agent-C
-{
-    "requestGuid": "requestGuid",
-    "timestamp": "2020-03-...",
-    "type": "privateChannelDisconnect",
-    "payload": {},
-    "source": {
-        "name": "AChatApp",
-        "appId": "",
-        "version": "",
-        // ... other metadata fields
-    },
-    "destination": { // duplicates the app argument
-        "app": {
-           "name": "someOtherApp",
-           "appId": "",
-            "version": "",
-            "desktopAgent": "agent-B"
-            // ... other metadata fields
-       }
-   }
-}
-```
-
-Server (agent-C) will add in the source agent (agent-A) and forward the message to destination (agent-B)
-
-```JSON
-// agent-C -> agent-B
+// agent-A -> DAB
 {
     "type": "privateChannelDisconnect",
     "payload": {},
-    "source": {
-        "name": "AChatApp",
-        "appId": "",
-        "version": "",
-        "desktopAgent": "agent-A"
-        // ... other metadata fields
-    },
-    "destination": { // duplicates the app argument
-        "app": {
-           "name": "someOtherApp",
-           "appId": "",
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "name": "AChatApp",
+            "appId": "",
             "version": "",
-            "desktopAgent": "agent-B"
             // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+               "name": "someOtherApp",
+               "appId": "",
+                "version": "",
+                "desktopAgent": "agent-B"
+                // ... other metadata fields
+           }
        }
-   }
+    }
 }
 ```
----
 
-### `fdc3.open`
+The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
+
+```JSON
+// DAB -> agent-B
+{
+    "type": "privateChannelDisconnect",
+    "payload": {},
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "name": "AChatApp",
+            "appId": "",
+            "version": "",
+            "desktopAgent": "agent-A"
+            // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+               "name": "someOtherApp",
+               "appId": "",
+                "version": "",
+                "desktopAgent": "agent-B"
+                // ... other metadata fields
+           }
+       }
+    }
+}
+```
+
+### open
+
 ```typescript
-  open(app: TargetApp, context?: Context): Promise<AppMetadata>;
+open(app: TargetApp, context?: Context): Promise<AppMetadata>;
 ```
-#### Request format:
-A `fdc3.open`` call is made on agent-A.
+
+When receiving a response from invoking `fdc3.open` the new app instances MUST be fully initialized ie. the responding Desktop Agent will need to return an `AppMetadata` with an `instanceId`.
+
+#### Request format
+
+A `fdc3.open` call is made on agent-A.
 
 ```javascript
 // Open an app without context, using the app name
@@ -813,120 +1054,137 @@ let appMetadata = {name: 'myApp', appId: 'myApp-v1.0.1', version: '1.0.1', deskt
 let instanceMetadata = await fdc3.open(appMetadata);
 ```
 
-
 The `fdc3.open` command should result in a single copy of the specified app being opened and its instance data returned, or an error if it could not be opened. There are two possible scenarios:
 
-1) The Desktop Agent that the app should open on is specified 
+1) The Desktop Agent that the app should open on is specified
 2) The Desktop Agent that the app should open on is NOT specified app
 
-The first case (target Desktop Agent is specified) is simple: 
-- If the local Desktop Agent is the target, handle the call normally
-- If you are a server
-  - check if any of your clients is the target and transmit the call to them and await a response
-  - If you are also a client of another server follow the client steps
-  - otherwise return `OpenError.AppNotFound`
-- If you are a client
-  - transmit the call to the server and await a response
+The first case (target Desktop Agent is specified) is simple:
+
+* If the local Desktop Agent is the target, handle the call normally
+* If you are a server
+  * check if any of your clients is the target and transmit the call to them and await a response
+  * If you are also a client of another server follow the client steps
+  * otherwise return `OpenError.AppNotFound`
+* If you are a client
+  * transmit the call to the server and await a response
 
 The second case is a little trickier as we don't know which agent may have the app available:
-- If the local Desktop Agent has the app, open it and exit.
-- If you are a server
-  - call each client one at a time and await a response
-    - If the response is `OpenError.AppNotFound` move to the next client
-    - If the response is AppMetadata then return it and exit
-  - If you are also a client of another server follow the client steps
-  - otherwise return `OpenError.AppNotFound`
-- If you are a client
-  - transmit the call to the server and await a response
 
+* If the local Desktop Agent has the app, open it and exit.
+* If you are a server
+  * call each client one at a time and await a response
+    * If the response is `OpenError.AppNotFound` move to the next client
+    * If the response is `AppMetadata` then return it and exit
+  * If you are also a client of another server follow the client steps
+  * otherwise return `OpenError.AppNotFound`
+* If you are a client
+  * transmit the call to the server and await a response
 
-<!-- TODO correct mermaid diagrams -->
 ```mermaid
 sequenceDiagram
     participant DA as Desktop Agent A
+    participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DB: Open Chart
-    DB ->>+ DC: Open Chart
+    DA ->>+ DAB: Open Chart
+    DAB ->>+ DB: Open Chart
+    DAB ->>+ DC: Open Chart
     DB ->> DB: App Found
     DB ->> DB: Open App
-    DB -->>- DA: Return App Data
+    DB -->>- DAB: Return App Data
     DC ->> DC: App Found
     DC ->> DC: Open App
-    DC -->>- DB: Return App Data
+    DC -->>- DAB: Return App Data
+    DAB -->>- DA: Augmented App Data
 ```
 
-**When the target Desktop Agent is set**
+__When the target Desktop Agent is set__
+
 ```mermaid
 sequenceDiagram
     participant DA as Desktop Agent A
+    participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DB: Open App
-    DB --x DB: Is not in the desktopAgents list
-    DB ->>+ DC: Open App
+    DA ->>+ DAB: Open App
+    DAB ->>+ DC: Open App
     DC ->> DC: Desktop agent in list and App Found
-    DC ->> DC: Open App
-    DC -->>- DB: Return App Data
-    DB -->>- DA:Return App Data
+    DC ->>x DC: Open App
+    DC -->>- DAB: Return App Data
+    DAB -->>- DA: Return App Data
 ```
 
-It sends an outward message to the other desktop agents (sent from A -> C):
+It sends an outward message to the bridge:
+
 ```JSON
+// agent-A -> DAB
 {
-   "requestGuid": "4dd60b3b-9835-4cab-870c-6b9b099ed7ae",
-   "timestamp": "2020-03-...",
-   "type": "open",
-   "payload": {
-       "appMetaData": {
-           "name": "myApp",
-           "appId": "myApp-v1.0.1",
-           "version": "1.0.1",
-           "desktopAgent":"agent-B"
-           },
-       "context": {/*contxtObj*/}
-   }
+    "type": "open",
+    "payload": {
+        "appMetaData": {
+            "name": "myApp",
+            "appId": "myApp-v1.0.1",
+            "version": "1.0.1",
+            "desktopAgent":"agent-B"
+            },
+        "context": {/*contextObj*/}
+    },
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+    }
 }
 ```
 
-which is repeated from C -> B as:
+which is repeated as:
+
 ```JSON
+// DAB -> agent-B
 {
-    "requestGuid": "4dd60b3b-9835-4cab-870c-6b9b099ed7ae",
-    "timestamp": 2020-03-...,
     "type": "open",
     "payload": {
-       "appMetaData": {
-           "name": "myApp",
+        "appMetaData": {
+            "name": "myApp",
            "appId": "myApp-v1.0.1",
            "version": "1.0.1",
            "desktopAgent":"DesktopAgentB"
            },
-       "context": {/*contxtObj*/}
+       "context": {/*contextObj*/}
     },
-    "sourceAgent": "agent-A"
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": 2020-03-...,
+        "source": {
+            "desktoAgent": "agent-A", // filled by DAB
+            // ... other metadata fields
+        }
+    }
 }
 ```
 
-### `fdc3.findInstances`
+### findInstances
+
 ```typescript
-  findInstances(app: TargetApp): Promise<Array<AppMetadata>>;
+findInstances(app: TargetApp): Promise<Array<AppMetadata>>;
 ```
 
-<!-- TODO: write this one up -->
 ```mermaid
 sequenceDiagram
     participant DA as Desktop Agent A
+    participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DB: Find Instances of App
-    DB ->>+ DC: Find Instances of App
-    DC -->>- DB: Return App Data
+    DA ->>+ DAB: Find Instances of App.
+    DAB ->>+ DB: Find Instances of App
+    DAB ->>+ DC: Find Instances of App
+    DC --x DC: No Instance found
+    DB ->> DB: App Instance found
     DB -->>- DA: Return App Data
 ```
 
 ## Channels
-App Channels don't need specific messages sending for `fdc3.getOrCreateChannel` as other agents will be come aware of it when messages are broadcast. 
 
-However, `PrivateChannel` instances do require additional handling due to the listeners for subscription and disconnect. Please see the raiseIntent section for the mesages sent in support of this functionality.
+App Channels don't need specific messages sending for `fdc3.getOrCreateChannel` as other agents will be come aware of it when messages are broadcast.
 
+However, `PrivateChannel` instances do require additional handling due to the listeners for subscription and disconnect. Please see the raiseIntent section for the messages sent in support of this functionality.
