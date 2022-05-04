@@ -1,7 +1,16 @@
 # Desktop Agent Bridging
 The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent, facilitating cross-application workflows. Desktop Agent Bridging addresses the interconnection of desktop agents such that apps running under different desktop agents can also interoperate, allowing workflows to span multiple desktop agents.
 
-In any desktop agent bridging scenario, it is expected that each Desktop Agent is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although Desktop Agents may be run on different machines. 
+In any desktop agent bridging scenario, it is expected that each Desktop Agent is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although Desktop Agents may be run on different machines operated by the same user. 
+
+## Open questions / TODO list
+* Add topology diagram
+* Define handshake, authentication and naming protocol
+* Do we need to make mandatory that a `fdc3.joinChannel` was invoked before you can return the current state of the channel?
+* Bridging startup - Consider an app that joins a channel whose last context was sent before the bridge was created, then DA couldn’t send the correct initial context when the channel joined
+  * Current context is ignored
+  * Add an init flow where DAs share info about channels they have with context on them already - (this type of discovery of channels does not happen in FDC3 at the moment, therefore it would add significant complexity to the spec).
+* How to handle slow responding DAs?
 
 ## Connection Overview
 
@@ -48,10 +57,12 @@ The bridge is ultimately responsible for assigning each desktop agent a name and
 
 
 ## Interactions between Desktop Agents
+The use of Desktop Agent Bridging affects how a desktop agent must handle FDC3 API calls. Details on how this affects the FD3 API and how a deskttop agent should interact with other agents over the bridge are provided below in this section.  
 
 ### Handling FDC3 calls When Bridged
 
-* DAs that are bridged will need to wait for responses from other DAs before responding to API calls.
+#### WIP
+Destkop Agents that are bridged will need to wait for responses from other DAs before responding to API calls.
   * for resilience, this may mean defining timeouts...
 
 ### Identifying Desktop Agents Identity and Message Sources
@@ -85,14 +96,6 @@ The DAB MUST be able to forward messages received from one DA on to others (excl
 
 * If the message has a target Desktop Agent (e.g. response to findIntent)
   * The bridge will forward the message to it.
-
-## Open Questions
-
-* Do we need to make mandatory that a `fdc3.joinChannel` was invoked before you can return the current state of the channel?
-* Bridging startup - Consider an app that joins a channel whose last context was sent before the bridge was created, then DA couldn’t send the correct initial context when the channel joined
-  * Current context is ignored
-  * Add an init flow where DAs share info about channels they have with context on them already - (this type of discovery of channels does not happen in FDC3 at the moment, therefore it would add significant complexity to the spec).
-* How to handle slow responding DAs?
 
 ## AppMetadata
 
