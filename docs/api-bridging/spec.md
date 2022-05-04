@@ -12,7 +12,7 @@ Other possible topologies include peer-to-peer or client/server networks, howeve
 
 Whilst the standalone bridge represents a single point of failure for the interconnection of desktop agents, it will also be significantly simpler than a full desktop agent implementation. Further, failures may be mitigated by setting the bridge up as a system service, such that it is started when the user's computer is started and may be restarted automatically if it fails. In the event of a bridge failure or manual shutdown, then desktop agents will no longer be bridged and should act as single agents.
 
-Where multi-machine use cases must be supported, cross-machine routing is an internal concern of the Desktop Agent Bridge, with each desktop agent simply communicating with a bridge instance located on the same machine (or nominated IP address, where supported). Bridges running on different machines may then exchange messages between each other. The connection protocol between bridges themselves is implementation specific and beyond the scope of this standard.
+Where multi-machine use cases must be supported, cross-machine routing is an internal concern of the Desktop Agent Bridge, with each desktop agent simply communicating with a bridge instance located on the same machine (or nominated IP address, where supported). Bridges running on different machines may then exchange messages between each other. The connection protocol between bridges themselves is implementation specific and beyond the scope of this standard. Further, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user.
 
 
 ### Technology & Service Discovery

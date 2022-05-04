@@ -12,6 +12,7 @@ on:
       - '.github/workflows/docusaurus.yml'
       - 'docs/**'
       - 'website/**'
+      - 'toolbox/**'
       - 'src/app-directory/specification/**'
       - 'src/context/schemas/**'
   pull_request:
