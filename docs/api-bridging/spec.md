@@ -12,6 +12,9 @@ Other possible topologies include peer-to-peer or client/server networks, howeve
 
 Whilst the standalone bridge represents a single point of failure for the interconnection of desktop agents, it will also be significantly simpler than a full desktop agent implementation. Further, failures may be mitigated by setting the bridge up as a system service, such that it is started when the user's computer is started and may be restarted automatically if it fails. In the event of a bridge failure or manual shutdown, then desktop agents will no longer be bridged and should act as single agents.
 
+Where multi-machine use cases must be supported, cross-machine routing is an internal concern of the Desktop Agent Bridge, with each desktop agent simply communicating with a bridge instance located on the same machine (or nominated IP address, where supported). Bridges running on different machines may then exchange messages between each other. The connection protocol between bridges themselves is implementation specific and beyond the scope of this standard.
+
+
 ### Technology & Service Discovery
 Connections between desktop agents and the Desktop Agent Bridge will be made via websocket connections, with the bridge acting as the websocket server and each connected desktop agent as a client.
 
@@ -33,6 +36,8 @@ A desktop agent will implement "client" behavior by:
 * Receiving requests from the bridge.
 * Forwarding response to the bridge.
 
+Hence, message paths and propagation are simple. All messages to other desktop agents are passed to the bridge for routing and all messages (both requests and responses) are received back from it, i.e. the bridge is responsible for all message routing. 
+
 ### Handshake, Authentication & Name Assignment
 On connection to the bridge, a handshake and authentication step must be completed. This allows: 
 - The desktop agent to confirm that it is connecting to an FDC3 Desktop Agent Bridge, rather than another service exposed via a websocket.
@@ -42,11 +47,7 @@ On connection to the bridge, a handshake and authentication step must be complet
 The bridge is ultimately responsible for assigning each desktop agent a name and for routing messages using those names.
 
 
-## Interaction
-
-
-With a standalone DAB, the message paths and message propagation should become simple to implement since messages will only from between a source and a destination with a DAB in the middle. A standalone DAB will also sim
-plify the implementation for supporting multi-machine and Access Control Lists.  
+## Interactions between Desktop Agents
 
 ### Handling FDC3 calls When Bridged
 
