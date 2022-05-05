@@ -478,8 +478,9 @@ components:
             - market data
             - news
             - networking
-            - order management
             - office apps
+            - order management
+            - other
             - portfolio management
             - presentation
             - pricing
