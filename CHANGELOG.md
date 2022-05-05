@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added a `moreInfo` URL field to AppD application records to enable linking to a web page with more information on an app ([#669](https://github.com/finos/FDC3/pull/669))
 * Added `lang` field to AppD application records to specify the primary language of an app and its appD record. ([#670](https://github.com/finos/FDC3/pull/670))
 * Added `localizedVersions` field to AppD application records to support localized versions of descriptive fields in the app records and alternative launch details for localized versions of the applications themselves. ([#670](https://github.com/finos/FDC3/pull/670))
+* Added `categories` field and recommended categories list to AppD application records to enable category based browsing of AppDs ([#673](https://github.com/finos/FDC3/pull/673))
 
 ### Changed
 * Consolidated `Listener` documentation with other types ([#404](https://github.com/finos/FDC3/pull/404))
