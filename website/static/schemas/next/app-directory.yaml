@@ -242,7 +242,7 @@ paths:
   '/v1/apps/{appId}':
     get:
       deprecated: true
-      summary: (Deprecated v1 API version) Retrieve an application definition
+      summary: Retrieve an application definition
       parameters:
         - name: appId
           in: path
@@ -281,7 +281,7 @@ paths:
   /v1/apps:
     post:
       deprecated: true
-      summary: (Deprecated v1 API version) Create a new application definition
+      summary: Create a new application definition
       responses:
         '200':
           description: OK
@@ -320,7 +320,7 @@ paths:
   /v1/apps/search:
     get:
       deprecated: true
-      summary: (Deprecated v1 API version) Retrieve a list of applications based on parameters provided.  Depending on implementation, parameter
+      summary: Retrieve a list of applications based on parameters provided.  Depending on implementation, parameter
               values should self describe search format and type (e.g. Regex)
       parameters:
         - in: query
@@ -485,7 +485,7 @@ components:
           type: string
           pattern: '^[a-z]{2}(-[a-zA-Z0-9]{2,8}){0,1}$'
           description: >- 
-            A language tag that specifies the primary language of both 
+            A language tag that specifies the primary language of both the
             application and its AppD entry, as defined by IETF RFC 5646.
         description:
           type: string
