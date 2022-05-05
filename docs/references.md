@@ -16,7 +16,7 @@ The following normative documents contain provisions, which, through reference i
 - **RFC 2782**, _A DNS RR for specifying the location of services (DNS SRV), February 2000_, [https://datatracker.ietf.org/doc/html/rfc2782].
 - **RFC 5646**, _Tags for Identifying Languages, September 2009_, [https://datatracker.ietf.org/doc/html/rfc5646].
 - **TypeScript Programming Language**, [https://www.typescriptlang.org/].
-
+- **Web Application Manifest**, _W3C Working Draft_, February 2022 [https://www.w3.org/TR/appmanifest/]
 
 The following documents may be useful in understanding certain aspects of this Standard; however, knowledge of them is not essential to the creation of a compliant implementation of this Standard:
 
