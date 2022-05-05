@@ -54,8 +54,8 @@ paths:
       tags:
         - Application
   /v2/apps:
-    post:
-      summary: Create a new application definition
+    get:
+      summary: Retrieve all application definitions
       responses:
         '200':
           description: OK
@@ -66,6 +66,40 @@ paths:
               examples:
                 FDC3WorkbenchAppDefinitionSearchResponse:
                   $ref: '#/components/examples/FDC3WorkbenchAppDefinitionSearchResponse'
+        '400':
+          description: Bad request.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: >-
+            Forbidden: Certificate authentication is not allowed for the
+            requested user.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: 'Server error, see response body for further details.'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+      tags:
+        - Application
+    post:
+      summary: Create a new application definition
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+              examples:
+                FDC3WorkbenchAppDefinition:
+                  $ref: '#/components/examples/FDC3WorkbenchAppDefinition'
         '400':
           description: Bad request.
           content:
@@ -207,6 +241,7 @@ paths:
         - Application
   '/v1/apps/{appId}':
     get:
+      deprecated: true
       summary: (Deprecated v1 API version) Retrieve an application definition
       parameters:
         - name: appId
@@ -245,6 +280,7 @@ paths:
         - Application
   /v1/apps:
     post:
+      deprecated: true
       summary: (Deprecated v1 API version) Create a new application definition
       responses:
         '200':
@@ -283,6 +319,7 @@ paths:
         required: true
   /v1/apps/search:
     get:
+      deprecated: true
       summary: (Deprecated v1 API version) Retrieve a list of applications based on parameters provided.  Depending on implementation, parameter
               values should self describe search format and type (e.g. Regex)
       parameters:
@@ -531,7 +568,7 @@ components:
           description: >-
             The name of the company that owns the application. The publisher has
             control over their namespace/app/signature.
-       customConfig:
+        customConfig:
           type: array
           description: >-
             An optional set of name value pairs that can be used to deliver
