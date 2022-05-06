@@ -17,7 +17,7 @@ In any desktop agent bridging scenario, it is expected that each Desktop Agent i
 ### Topology
 In order to implement Desktop Agent Bridging some means for desktop agents to connect to and communicate with each other is needed. This Standard assumes that Desktop Agent Bridging is implemented via a standalone 'bridge' which each agent connects to and will use to route messages to or from other agents. This topology is similar to a star topology in networking, where the Desktop Agent Bridge (a 'bridge') will be the central node acting as a router.
 
-Other possible topologies include peer-to-peer or client/server networks, however, these introduce significant additional complexity into multiple aspects of the bridging protocol that must be implemetned by desktop agents, (including discovery, authentication and message routing), where a star topology/standalone bridge enables a relatively simple set of protocols, with the most difficult parts being implemented in the bridge itself. 
+Other possible topologies include peer-to-peer or client/server networks, however, these introduce significant additional complexity into multiple aspects of the bridging protocol that must be implemented by desktop agents, (including discovery, authentication and message routing), where a star topology/standalone bridge enables a relatively simple set of protocols, with the most difficult parts being implemented in the bridge itself.
 
 Whilst the standalone bridge represents a single point of failure for the interconnection of desktop agents, it will also be significantly simpler than a full desktop agent implementation. Further, failures may be mitigated by setting the bridge up as a system service, such that it is started when the user's computer is started and may be restarted automatically if it fails. In the event of a bridge failure or manual shutdown, then desktop agents will no longer be bridged and should act as single agents.
 
@@ -27,9 +27,11 @@ Where multi-machine use cases must be supported, cross-machine routing is an int
 ### Technology & Service Discovery
 Connections between desktop agents and the Desktop Agent Bridge will be made via websocket connections, with the bridge acting as the websocket server and each connected desktop agent as a client.
 
-The bridge SHOULD run on the same machine as the desktop agents, ensuring the websocket can be bound to the loopback adapter IP address (127.0.0.1), ensuring that the websocket is not exposed to wider networks. However, bridge implementations and desktop agents MAY support configuration of a specific alternative IP address to connect to. 
+The bridge MUST run on the same machine as the desktop agents, and the websocket MUST be bound to the loopback adapter IP address (127.0.0.1), ensuring that the websocket is not exposed to wider networks.
 
-Bridge implementations SHOULD default to binding their websocket server to port XXXX, enabling simple discovery of a running bridge via attepting a socket connection to that port and handshake (as defined later in this proposal). However, bridge implementations and desktop agents MAY support configuration of a specific alternative port number to connect to.   
+Bridge implementations SHOULD default to binding the recommended websocket server to port XXXX, enabling simple discovery of a running bridge via attempting a socket connection to that port and handshake (as defined later in this proposal). However, bridge implementations and desktop agents SHOULD support configuration of a alternative port range which can be scanned for connection.
+
+Both DAs and the bridge MUST support configuration of the bridging port and/or port range.
 
 As part of the Desktop Agent Bridging protocol, a bridge will implement "server" behavior by:
 
@@ -48,21 +50,25 @@ A desktop agent will implement "client" behavior by:
 Hence, message paths and propagation are simple. All messages to other desktop agents are passed to the bridge for routing and all messages (both requests and responses) are received back from it, i.e. the bridge is responsible for all message routing. 
 
 ### Handshake, Authentication & Name Assignment
-On connection to the bridge, a handshake and authentication step must be completed. This allows: 
+On connection to the bridge, a handshake and authentication step must be completed. This allows:
+
 - The desktop agent to confirm that it is connecting to an FDC3 Desktop Agent Bridge, rather than another service exposed via a websocket.
 - The bridge to require that the desktop agent authenticate itself, allowing it to control access to the network of bridged desktop agents
-- The destkop agent to request a particular name by which it will be addressed by other agents and for the bridge to assign the requested namee, after confirming that no other agent is connected with that name, or a derivative of that name if it is already in use.
+- The desktop agent to request a particular name by which it will be addressed by other agents and for the bridge to assign the requested name, after confirming that no other agent is connected with that name, or a derivative of that name if it is already in use.
 
 The bridge is ultimately responsible for assigning each desktop agent a name and for routing messages using those names.
 
+### Channels
+It is assumed that Desktop Agents SHOULD adopt the recommended 8 channel set (and the respective display metadata). Desktop Agents MAY support channel customization through configuration.
+The Desktop Agent Bridge MAY support channel mapping ability to deal with channel differences that can arise.
 
 ## Interactions between Desktop Agents
-The use of Desktop Agent Bridging affects how a desktop agent must handle FDC3 API calls. Details on how this affects the FD3 API and how a deskttop agent should interact with other agents over the bridge are provided below in this section.  
+The use of Desktop Agent Bridging affects how a desktop agent must handle FDC3 API calls. Details on how this affects the FD3 API and how a desktop agent should interact with other agents over the bridge are provided below in this section.  
 
 ### Handling FDC3 calls When Bridged
 
 #### WIP
-Destkop Agents that are bridged will need to wait for responses from other DAs before responding to API calls.
+Desktop Agents that are bridged will need to wait for responses from other DAs before responding to API calls.
   * for resilience, this may mean defining timeouts...
 
 ### Identifying Desktop Agents Identity and Message Sources
@@ -1159,7 +1165,7 @@ which is repeated as:
         "requestGuid": "requestGuid",
         "timestamp": 2020-03-...,
         "source": {
-            "desktoAgent": "agent-A", // filled by DAB
+            "desktopAgent": "agent-A", // filled by DAB
             // ... other metadata fields
         }
     }
