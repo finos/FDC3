@@ -88,49 +88,6 @@ paths:
                 $ref: '#/components/schemas/ErrorDTO'
       tags:
         - Application
-    post:
-      summary: Create a new application definition
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Application'
-              examples:
-                FDC3WorkbenchAppDefinition:
-                  $ref: '#/components/examples/FDC3WorkbenchAppDefinition'
-        '400':
-          description: Bad request.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        '403':
-          description: >-
-            Forbidden: Certificate authentication is not allowed for the
-            requested user.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        '500':
-          description: 'Server error, see response body for further details.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-      tags:
-        - Application
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Application'
-            examples:
-              FDC3WorkbenchAppDefinition:
-                $ref: '#/components/examples/FDC3WorkbenchAppDefinition'
-        required: true
   /v2/apps/search:
     get:
       summary: Retrieve a list of applications based on parameters provided.  Depending on implementation, parameter
