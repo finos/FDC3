@@ -133,8 +133,9 @@ paths:
         required: true
   /v2/apps/search:
     get:
-      summary: Retrieve a list of applications based on parameters provided.  Depending on implementation, parameter
-              values should self describe search format and type (e.g. Regex)
+      summary: Filter a list of applications based on parameters provided.
+      description: >
+        Depending on implementation, parameter values should self describe search format and type (e.g. Regex)
       parameters:
         - in: query
           name: appId
