@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added `lang` field to AppD application records to specify the primary language of an app and its appD record. ([#670](https://github.com/finos/FDC3/pull/670))
 * Added `localizedVersions` field to AppD application records to support localized versions of descriptive fields in the app records and alternative launch details for localized versions of the applications themselves. ([#670](https://github.com/finos/FDC3/pull/670))
 * Added `categories` field and recommended categories list to AppD application records to enable category based browsing of AppDs ([#673](https://github.com/finos/FDC3/pull/673))
+* Added `interopUse` field to AppD application records to description of an apps use of FDC3 and enable search for apps that 'interoperate' with a selected app ([#697](https://github.com/finos/FDC3/pull/697))
 
 ### Changed
 * Consolidated `Listener` documentation with other types ([#404](https://github.com/finos/FDC3/pull/404))
