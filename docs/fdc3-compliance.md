@@ -59,4 +59,17 @@ FDC3 adopts the following deprecation policy:
 2. A feature shall only be removed by a major version. Newly removed features will be described in the [Changelog](https://github.com/finos/FDC3/blob/master/CHANGELOG.md).
 3. Deprecated features are clearly marked with an `@deprecated` tag and comment in both the documentation and jsDocs applied to the TypeScript sources.
 4. Where possible, changes to the behavior of an existing feature should be avoided; consider deprecating it and replacing it with something with a different name/syntax.
-5. Breaking changes should only be made in a major version of the Standard.
+5. Breaking change should only be made in a major version of the Standard.
+
+## Experimental Features
+Occasionally, a change to FDC3 may be proposed where the design is tentative, and because of this, we need feedback from the community to finalise its inclusion in the Standard. In such cases, a feature may be designated as _experimental_ to indicate that its design may change in future and that it is exempted from the normal versioning and deprecation polices in order to facilitate that change.  However, designating a feature as experimental is likely to reduce its uptake by the community, hence, this designation should be used sparingly.
+
+FDC3 adopts the following experimental features policy:
+
+1. A feature may be designated as experimental where feedback is needed to confirm the final design of that feature, with the goal of including it as a full part of the Standard without the experimental label. 
+2. A feature should only be designated as experimental where there is a reasonable chance that breaking changes to its design may be applied, based on feedback received; non-breaking changes (refinements) may already be applied to features defined in the Standard without the experimental designation.
+3. Experimental features are clearly marked with an `@experimental` tag and comment in both the documentation and jsDocs applied to the TypeScript sources.
+4. Unless otherwise stated, experimental features should be considered optional for compliance purposes, but recommended for implementation (i.e. the SHOULD keyword is implied).
+5. Experimental features are exempted from the normal versioning and deprecation policies that govern changes to FDC3. I.e. breaking changes may be made to experimental features between versions of the Standard without a major version release.
+6. The experimental designation may be removed from a feature in a minor version release (as this will be considered an additive change).
+
