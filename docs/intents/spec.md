@@ -8,14 +8,20 @@ title: Intents Specification (next)
 
 FDC3 [Intents](intents-intro) define a standard set of verbs that, in conjunction with context data acting as nouns, can be used to put together common cross-application workflows on the financial desktop.
 
-### Naming Syntax
+### Naming Conventions
+
+The FDC3 standard included two initial Intents which were `View___` and `Start___`.  As more use cases were identified it was clear further Intents were required.
+
+Naming of Intents must follow the below guidelines:
 * Intent names should be free of non-alphanumeric characters.
 * ‘.’ will be used to namespace the intent (see below).
 * Intent names should be in UpperCamelCase.
 
+> **Note:** The naming guidelines should be adhered to when creating future Intents.  This is to ensure they meet the criteria for addition to the FDC3 standard.
+
 ### Characteristics
 
-Intents shoulde be:
+When creating Intents they should be:
 * Recognizable
     * Generally self-evident what the thing is
 * Repeatable
@@ -31,29 +37,61 @@ Intents shoulde be:
 All standard intent names are reserved. Applications may use their own intents ad hoc.
 However, there is a need for applications to ensure that their intents avoid collision. The recommended approach here is to use the app name as the noun. For example, the ‘myChart’ App may expose the ‘ViewChart’ intent and the ‘myChart.Foo’ proprietary intent.
 
+### Intents
+
+The FDC3 2.0 standard expanded the Intents that are available.  The list of available Intents are the following:
+
+### `View___`
+  * Expected context: Contact
+
+### `Start___`
+  * Expected context: Contact
+
+### `Create___`
+  * Expected characteristics: Create a new record, but fail if it already exists
+
+### `Update___`
+  * Expected characteristics: Update an existing record, but fail if it does not exist
+
+### `CreateOrUpdate___`
+  * Expected characteristics: todo
+
+### `Delete___`
+  * Expected characteristics: Delete an existing record, but fail if it does not exist
+
+### `Get___`
+  * Expected characteristics: Retrieve an existing record, but fail if it does not exist
+
+### `Share___`
+  * Expected characteristics: Share an existing record, but fail if it does not exist
+
+
+
+
+
 ## Initial Set of Standard Intents ##
 
-### StartCall
+### `StartCall`
   * Expected context: Contact
   * Expected behavior: initiate call with contact(s)
-### StartChat
+### `StartChat`
   * Expected context: Contact
   * Expected behavior: initiate chat with contact(s)
-### ViewChart
+### `ViewChart`
   * Expected context: Instrument
   * Expected behavior: display a chart for the context
-### ViewContact
+### `ViewContact`
   * Expected context: Contact
   * Expected behavior: display details of a contact
-### ViewQuote
+### `ViewQuote`
   * Expected context: Instrument
   * Expected behavior: display pricing for an instrument
-### ViewNews
+### `ViewNews`
   * Expected context: Instrument, Contact, Organization, etc.
   * Expected behavior: display news for a given context
-### ViewInstrument
+### `ViewInstrument`
   * Expected context: Instrument
   * Expected behavior: display relevant information for a given instrument
-### ViewAnalysis
+### `ViewAnalysis`
   * Expected context: Instrument, Organization, etc.
   * Expected behavior: Send context to receiving application for displaying analysis
