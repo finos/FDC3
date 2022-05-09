@@ -25,7 +25,7 @@ const siteConfig = {
   headerLinks: [
     {doc: 'fdc3-intro', label: 'Getting Started'},   
     {doc: 'use-cases/overview', label: 'Use Cases'},
-    //{page: 'implementations', label: 'Implementations'},
+    {page: 'implementations', label: 'Implementations'},
     {doc: 'fdc3-standard', label: 'The Standard'},
     {page: 'get-involved', label: 'Get Involved'},
     {href: 'https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop', label: 'Training', external: true}
