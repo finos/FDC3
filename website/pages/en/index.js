@@ -144,7 +144,7 @@ class Index extends React.Component {
     const FeatureCallout = () => (
       <div  className="featureShowcaseSection  paddingBottom" style={{textAlign: 'center'}}>
         <h2>Use Cases</h2>
-        <MarkdownBlock>{`Document business [use cases](${docUrl('use-cases/overview')}) that drive FDC3 interoperability standards.`}</MarkdownBlock>
+        <MarkdownBlock>{`Documented business [use cases](${docUrl('use-cases/overview')}) that drive FDC3 interoperability standards.`}</MarkdownBlock>
       </div>
     );
 
