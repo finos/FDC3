@@ -66,8 +66,6 @@
         "label": "App Directory Part",
         "ids": [
           "app-directory/overview",
-          "app-directory/discovery",
-          "app-directory/usage",
           "app-directory/spec"
         ]
       }
