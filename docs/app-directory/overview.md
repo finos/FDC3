@@ -95,7 +95,7 @@ Application Records served by an app directory are each labelled with an identif
 
 Fully qualified appIds may be used to locate the appD instance hosting the application's record. See the [Service Discovery](#service-discovery) section for details.
 
-### Shrinking the URI and AppdD defaults
+### Shrinking the URI
 
 Although the concept of fully qualified application IDs are useful in resolving the actual host of the application directory, there is no requirement for an application directory to use this fully qualified application ID as the resolver for a record.  An application ID is unique to given application directory, but there is no requirement to use the fully qualified representation when querying an interface.  Taking the prior example, the fully qualified application ID "app1@appd.foo.com" is represented as "app1" within the application directory.  As a result a launcher can use a shortened URI construct `"https://appd.foo.com/api/appd/v2/app1"` to resolve the application data vs `"https://appd.foo.com/api/appd/v2/app1@appd.foo.com"`.
 
