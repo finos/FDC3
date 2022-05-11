@@ -70,7 +70,7 @@ The following provides a summary of use cases.
 
 A desktop agent will usually include a user interface allowing the user to select from a set of launchable applications and then allow them to manually launch an one. It is also responsible for launching applications necessary to resolve a raised intent. However, it must first retrieve the necessary metadata about the available applications. An app directory provides an endpoint to retrieve a list of the available applications along with their metadata, which may include or link to additional information necessary to launch the application in a specific desktop agent.
 
-A launcher will usually be configured with the locations of one or more AppD servers (which is necessary to implement intent resolution), however, as described in the [AppD Discovery](/AppD_Discovery) section, a fully qualified application identifier (app1@host.appd.com) may also be used to both locate the AppD service and to retrieve the specific application data.
+A launcher will usually be configured with the locations of one or more AppD servers (which is necessary to implement intent resolution), however, as described in the [Service Discovery](#service-discovery) section, a fully qualified application identifier (app1@host.appd.com) may also be used to both locate the AppD service and to retrieve the specific application data.
 
 ![img](assets/appd_launcher_embedded.png)
 
@@ -93,7 +93,11 @@ The specification does not define or make mandatory any authorizations or roles 
 
 Application Records served by an app directory are each labelled with an identifer, `appId`, which should be unique within the app directory instance and may be used to refer to or retrieve the application's record via the [app directory API](spec). This identifier may be made globally unique through a nested namespace approach and email address construction (`appId@fqdn`) where `@` followed by the app directory instance's host name is appended to it. The resulting globally unique identifier is known as a 'fully qualified application identifier'.
 
-Fully qualified appIds may be used to locate the appD instance hosting the application's record. See the [Service Discovery](#servicediscovery) section for details.
+Fully qualified appIds may be used to locate the appD instance hosting the application's record. See the [Service Discovery](#service-discovery) section for details.
+
+### Shrinking the URI and AppdD defaults
+
+Although the concept of fully qualified application IDs are useful in resolving the actual host of the application directory, there is no requirement for an application directory to use this fully qualified application ID as the resolver for a record.  An application ID is unique to given application directory, but there is no requirement to use the fully qualified representation when querying an interface.  Taking the prior example, the fully qualified application ID "app1@appd.foo.com" is represented as "app1" within the application directory.  As a result a launcher can use a shortened URI construct `"https://appd.foo.com/api/appd/v2/app1"` to resolve the application data vs `"https://appd.foo.com/api/appd/v2/app1@appd.foo.com"`.
 
 ## Service Discovery
 
@@ -130,9 +134,7 @@ A launcher can then easily construct a URI by:
 
 The resulting URI to retrieve application data for "app1" would be "[https://appd.foo.com/api/appd/v2/app1@appd.foo.com](https://appd.foo.com/api/appd/v2/app1@appd.foo.com)"  
 
-#### Application identifiers, Shrinking the URI and AppdD defaults
 
-Although the concept of fully qualified application IDs are useful in resolving the actual host of the application directory, there is no requirement for an application directory to use this fully qualified application ID as the resolver for a record.  An application ID is unique to given application directory, but there is no requirement to use the fully qualified representation when querying an interface.  Taking the prior example, the fully qualified application ID "app1@appd.foo.com" is represented as "app1" within the application directory.  As a result a launcher can use a shortened URI construct `"https://appd.foo.com/api/appd/v2/app1"` to resolve the application data vs `"https://appd.foo.com/api/appd/v2/app1@appd.foo.com"`.
 
 ### DNS/SRV Records
 
