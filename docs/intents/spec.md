@@ -35,7 +35,7 @@ When creating Intents they should be:
 
 ### Namespaces ###
 All standard intent names are reserved. Applications may use their own intents ad hoc.
-However, there is a need for applications to ensure that their intents avoid collision. The recommended approach here is to use the app name as the noun. For example, the ‘myChart’ App may expose the ‘ViewChart’ intent and the ‘myChart.Foo’ proprietary intent.
+However, there is occasionally a need for applications to ensure that their intents avoid collision, for example, where a workflow is highly specific to or internal to an application. The recommended approach is to namespace the intent with the application name. For example, the ‘myChart’ App may expose the ‘ViewChart’ intent and the ‘myChart.Foo’ proprietary intent.
 
 ### Intents
 
