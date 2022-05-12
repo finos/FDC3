@@ -41,28 +41,28 @@ However, there is occasionally a need for applications to ensure that their inte
 Early versions of the FDC3 standard included 8 intents, which used one of two different prefixes which help to define the behavior of the expected of an app resolving the intent. FDC3 2.0 expanded this set to include the following:
 
 ### `View___`
-  * Expected context: Contact
+  * Expected behaviour: Content should be displayed to the user.
 
 ### `Start___`
-  * Expected context: Contact
+  * Expected behaviour: An interaction, such as a chat room or email thread, should be initiated.
 
 ### `Create___`
-  * Expected characteristics: Create a new record, but fail if it already exists
+  * Expected behaviour: A new record or entity should be created. The operation should fail if it already exists.
 
 ### `Update___`
-  * Expected characteristics: Update an existing record, but fail if it does not exist
+  * Expected behaviour: An existing record or entity should be updated. The operation should fail if it does not exist.
 
 ### `CreateOrUpdate___`
-  * Expected characteristics: todo
+  * Expected behaviour: A new record or entity should be created, or an existing one updated if it exists.
 
 ### `Delete___`
-  * Expected characteristics: Delete an existing record, but fail if it does not exist
+  * Expected behaviour: An existing record or entity should be deleted. The operation should fail if it does not exist.
 
 ### `Get___`
-  * Expected characteristics: Retrieve an existing record, but fail if it does not exist
+  * Expected behaviour: A record or entity should be retrieved and returned as an intent result. The operation should fail if the record does not exist.
 
 ### `Share___`
-  * Expected characteristics: Share an existing record, but fail if it does not exist
+  * Expected behaviour: A record or entity should shared. The operation should fail if it does not exist
 
 
 
