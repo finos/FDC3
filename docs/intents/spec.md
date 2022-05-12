@@ -9,9 +9,6 @@ title: Intents Specification (next)
 FDC3 [Intents](intents-intro) define a standard set of verbs that, in conjunction with context data acting as nouns, can be used to put together common cross-application workflows on the financial desktop.
 
 ### Naming Conventions
-
-The FDC3 standard included two initial Intents which were `View___` and `Start___`.  As more use cases were identified it was clear further Intents were required.
-
 Naming of Intents SHOULD follow the below guidelines:
 * Intent names should be free of non-alphanumeric characters.
 * ‘.’ will be used to namespace the intent (see below).
@@ -38,13 +35,15 @@ All standard intent names are reserved. Applications may use their own intents a
 However, there is occasionally a need for applications to ensure that their intents avoid collision, for example, where a workflow is highly specific to or internal to an application. The recommended approach is to namespace the intent with the application name. For example, the ‘myChart’ App may expose the ‘ViewChart’ intent and the ‘myChart.Foo’ proprietary intent.
 
 ### Intent Name Prefixes
-Early versions of the FDC3 standard included 8 intents, which used one of two different prefixes which help to define the behavior of the expected of an app resolving the intent. FDC3 2.0 expanded this set to include the following:
+Early versions of the FDC3 standard included 8 intents, which used one of two different prefixes.  The two initial prefixes were `View___` and `Start___`.  These are used to help define the behavior of the expected app when resolving the intent. 
 
 ### `View___`
   * Expected behaviour: Content should be displayed to the user.
 
 ### `Start___`
   * Expected behaviour: An interaction, such as a chat room or email thread, should be initiated.
+
+As more use cases were identified it was clear further Intents were required.  FDC3 2.0 expanded this set to include the following:
 
 ### `Create___`
   * Expected behaviour: A new record or entity should be created. The operation should fail if it already exists.
@@ -69,28 +68,12 @@ Early versions of the FDC3 standard included 8 intents, which used one of two di
 
 
 ## Initial Set of Standard Intents ##
-
-### `StartCall`
-  * Expected context: Contact
-  * Expected behavior: initiate call with contact(s)
-### `StartChat`
-  * Expected context: Contact
-  * Expected behavior: initiate chat with contact(s)
-### `ViewChart`
-  * Expected context: Instrument
-  * Expected behavior: display a chart for the context
-### `ViewContact`
-  * Expected context: Contact
-  * Expected behavior: display details of a contact
-### `ViewQuote`
-  * Expected context: Instrument
-  * Expected behavior: display pricing for an instrument
-### `ViewNews`
-  * Expected context: Instrument, Contact, Organization, etc.
-  * Expected behavior: display news for a given context
-### `ViewInstrument`
-  * Expected context: Instrument
-  * Expected behavior: display relevant information for a given instrument
-### `ViewAnalysis`
-  * Expected context: Instrument, Organization, etc.
-  * Expected behavior: Send context to receiving application for displaying analysis
+A list of standardized intents are defined in the following pages:
+* [`StartCall`](ref/StartCall)
+* [`StartChat`](ref/StartChat)
+* [`ViewChart`](ref/ViewChart)
+* [`ViewContact`](ref/ViewContact)
+* [`ViewQuote`](ref/ViewQuote)
+* [`ViewNews`](ref/ViewNews)
+* [`ViewInstrument`](ref/ViewInstrument)
+* [`ViewAnalysis`](ref/ViewAnalysis)
