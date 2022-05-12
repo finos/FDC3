@@ -63,10 +63,6 @@ As more use cases were identified it was clear further Intents were required.  F
 ### `Share___`
   * Expected behaviour: A record or entity should shared. The operation should fail if it does not exist
 
-
-
-
-
 ## Initial Set of Standard Intents ##
 A list of standardized intents are defined in the following pages:
 * [`StartCall`](ref/StartCall)
