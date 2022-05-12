@@ -62,7 +62,8 @@
           "context/ref/Country",
           "context/ref/Position",
           "context/ref/Portfolio",
-          "context/ref/Nothing"
+          "context/ref/Nothing",
+          "context/ref/Valuation"
         ]
       }
     ],
