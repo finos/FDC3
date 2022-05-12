@@ -8,7 +8,9 @@
     "type": { "const": "fdc3.valuation" },
     "value": { "type": "number" },
     "price": { "type": "number"},
-    "CURRENCY_ISCODE": { "type": "string", "pattern": "^[A-Z]{3}$"}
+    "CURRENCY_ISCODE": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "valuationTime": {"type": "string", "format": "date-time" },
+    "expiryTime": {"type": "string", "format": "date-time" }
   },
   "required": ["value", "CURRENCY_ISOCODE"]
 }
