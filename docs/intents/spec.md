@@ -37,9 +37,8 @@ When creating Intents they should be:
 All standard intent names are reserved. Applications may use their own intents ad hoc.
 However, there is occasionally a need for applications to ensure that their intents avoid collision, for example, where a workflow is highly specific to or internal to an application. The recommended approach is to namespace the intent with the application name. For example, the ‘myChart’ App may expose the ‘ViewChart’ intent and the ‘myChart.Foo’ proprietary intent.
 
-### Intents
-
-The FDC3 2.0 standard expanded the Intents that are available.  The list of available Intents are the following:
+### Intent Name Prefixes
+Early versions of the FDC3 standard included 8 intents, which used one of two different prefixes which help to define the behavior of the expected of an app resolving the intent. FDC3 2.0 expanded this set to include the following:
 
 ### `View___`
   * Expected context: Contact
