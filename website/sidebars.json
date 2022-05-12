@@ -56,6 +56,7 @@
           "context/ref/Context",
           "context/ref/Contact",
           "context/ref/ContactList",
+          "context/ref/Currency",
           "context/ref/Instrument",
           "context/ref/InstrumentList",
           "context/ref/Organization",

@@ -2,6 +2,7 @@
   "Context": ["https://fdc3.finos.org/schemas/next/context.schema.json"],
   "Contact": ["https://fdc3.finos.org/schemas/next/contact.schema.json"],
   "ContactList": ["https://fdc3.finos.org/schemas/next/contactList.schema.json"],
+  "Currency": ["https://fdc3.finos.org/schemas/next/currency.schema.json"],
   "Instrument": ["https://fdc3.finos.org/schemas/next/instrument.schema.json"],
   "InstrumentList": ["https://fdc3.finos.org/schemas/next/instrumentList.schema.json"],
   "Country": ["https://fdc3.finos.org/schemas/next/country.schema.json"],
