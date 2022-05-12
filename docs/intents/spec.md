@@ -12,7 +12,7 @@ FDC3 [Intents](intents-intro) define a standard set of verbs that, in conjunctio
 
 The FDC3 standard included two initial Intents which were `View___` and `Start___`.  As more use cases were identified it was clear further Intents were required.
 
-Naming of Intents must follow the below guidelines:
+Naming of Intents SHOULD follow the below guidelines:
 * Intent names should be free of non-alphanumeric characters.
 * ‘.’ will be used to namespace the intent (see below).
 * Intent names should be in UpperCamelCase.
