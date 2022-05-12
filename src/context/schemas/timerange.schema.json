@@ -4,10 +4,21 @@
   "type": "object",
   "title": "TimeRange",
   "allOf": [{ "$ref": "context.schema.json#" }],
+  "anyOf": [
+    {
+      "required": ["startTime", "endTime"]
+    },
+    {
+      "required": ["startTime"]
+    },
+    {
+      "required": ["endTime"]
+    }
+  ],
   "properties": {
     "type": { "const": "fdc3.timerange" },
     "startTime": { "type": "string", "format": "date-time" },
     "endTime":  {"type": "string", "format": "date-time" }
   },
-  "required": ["startTime"]
+  "required": []
 }

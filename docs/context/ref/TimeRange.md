@@ -12,15 +12,21 @@ A context representing a period of time. Any user interfaces that represent or v
 - A trade blotter
 - A record of client contact/activity in a CRM
 
-A time period may be closed (i.e. `startTime` and `endTime` are both known) or open (i.e. only the `startTime` is known, an `endTime` will be known in the future, e.g. when an order is filled).
+Example use cases:
 
-Example application in a raised intent:
+- User may want to view pricing/trades/customer activity for a security over a particular time period, the time range might be specified as the context for the `ViewChart` intent OR it might be embedded in another context (e.g. a context representing a chart to plot).
+- User filters a visualisation (e.g. a pricing chart) to show a particular period, the `TimeRange` is broadcast and other visualisations (e.g. a heatmap of activity by instrument, or industry sector etc.) receive it and filter themselves to show data over the same range.
 
-User may want to view pricing/trades/customer activity for a security over a particular time period, the time range might be specified as the context for the `ViewChart` intent OR it might be embedded in another context (e.g. a context representing a chart to plot).
+Notes:
 
-Example application as a broadcast context:
+- A `TimeRange` may be closed (i.e. `startTime` and `endTime` are both known)or open (i.e. only one of the `startTime` or `endTime` is known).
 
-User filters a visualisation (e.g. a pricing chart) to show a particular period, the `TimeRange` is broadcast and other visualisations (e.g. a heatmap of activity by instrument, or industry sector etc.) receive it and filter themselves to show data over the same range.
+- Ranges corresponding to dates (e.g. `2022-05-12` to `2022-05-19`) should be specified using times as this prevents issues with timezone conversions and inclusive/exclusive date ranges.
+
+- String fields representing times are encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html).
+  - A timezone indicator should be specified, e.g. `"2022-05-12T15:18:03Z"` or `"2022-05-12T16:18:03+01:00"`
+.
+  - Times MAY be specified with millisecond precision, e.g. `"2022-05-12T15:18:03.349Z"`
 
 ## Type
 
@@ -35,10 +41,12 @@ https://fdc3.finos.org/schemas/next/timerange.schema.json
 | Property    | Type      | Required | Example Value                 |
 |-------------|-----------|----------|-------------------------------|
 | `type`      | string    | Yes      | `"fdc3.timeRange"`            |
-| `startTime` | string *  | Yes      | `"2022-03-30T15:44:44Z"`      |
-| `endTime`   | string *  | No       | `"2022-04-30T23:59:59+00:00"` |
+| `startTime` | string *  | No **    | `"2022-03-30T15:44:44Z"`       |
+| `endTime`   | string *  | No **    | `"2022-04-30T23:59:59+00:00"` |
 
-Fields representing time SHOULD be string encoded according [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
+\* Fields representing time SHOULD be string encoded according [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
+
+\*\* One of `startTime` or `endTime` MUST be specified.
 
 ## Example
 
@@ -47,16 +55,23 @@ A closed range:
 ```js
 const timeRange = {
     type: "fdc3.timeRange",
-    startTime: "2022-03-30T15:44:44+00:00",
-    endTime: "2022-04-30T23:59:59+00:00"
+    startTime: "2022-03-30T15:44:44Z",
+    endTime: "2022-04-30T23:59:59ZS"
 }
 ```
 
-An open range:
+Open ranges:
 
 ```js
 const timeRange = {
     type: "fdc3.timeRange",
     startTime: "2022-03-30T15:44:44+00:00"
+}
+```
+
+```js
+const timeRange = {
+    type: "fdc3.timeRange",
+    endTime: "2022-03-30T16:44:44.123Z"
 }
 ```
