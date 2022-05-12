@@ -33,10 +33,10 @@ https://fdc3.finos.org/schemas/next/country.schema.json
 | `name`                   | string  | No       | `'Sweden'`           |
 | `id.COUNTRY_ISOALPHA2`   | string  | Yes      | `'SE'`               |
 | `id.COUNTRY_ISOALPHA3`   | string  | No       | `'SWE'`              |
-| `id.ISOALPHA2` *         | string  | No      | `'SE'`               |
+| `id.ISOALPHA2` *         | string  | No       | `'SE'`               |
 | `id.ISOALPHA3` *         | string  | No       | `'SWE'`              |
 
-\* Field names deprecated in FDC3 2.0 in favour of the versions prefixed with `COUNTRY_`. 
+\* Field names deprecated in FDC3 2.0 in favour of the versions prefixed with `COUNTRY_`.
 ## Example
 
 ```js
