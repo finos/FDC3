@@ -7,7 +7,7 @@ The mission of the Financial Desktop Connectivity and Collaboration Consortium (
 
 FDC3 provides an **open standard for interoperability** between applications on the financial desktop.
 
-This includes standardized verbs to invoke actions between applications (called "intents"), a standardized data format, a REST-based app directory standard, and standardized API operations.
+This includes standardized verbs to invoke actions between applications ("intents"), a standardized data format ("context data"), a REST-based App Directory standard, and standardized API operations (a "Desktop Agent").
 
 ## Motivation
 
@@ -22,7 +22,7 @@ For more details on FDC3's versioning, deprecation and experimental features pol
 
 ## Specifications
 
-The standard currently consists of four complementary specifications:
+The Standard currently consists of four complementary specifications:
 
 - [API](api/spec)
 - [Intents](intents/spec)
@@ -31,8 +31,7 @@ The standard currently consists of four complementary specifications:
 
 ## Use Cases
 
-From its inception, the standards have been informed by real-world [business use cases](use-cases/overview), which you can view on this website,
-and form an important part of FDC3.
+From its inception, the standards have been informed by real-world [business use cases](use-cases/overview), which you can view on this website, and form an important part of FDC3.
 
 ## Who is using FDC3?
 
@@ -42,7 +41,9 @@ FDC3 was launched in October 2017 by [OpenFin](http://www.openfin.co) in collabo
 
 FDC3 is hosted within, and governed by the policies of, the [Fintech Open Source Foundation](http://finos.org/) (FINOS). FINOS is an independent nonprofit organization focused on promoting open innovation within financial services.
 
-See the [FDC3 Charter](fdc3-charter#licensing) for details of how deliverables are licensed.
+- See the [FDC3 Governance document](https://github.com/finos/FDC3/blob/master/GOVERNANCE.md) for details of how FDC3 is governed.
+- See the [FDC3 Contribution Guide](https://github.com/finos/FDC3/blob/master/CONTRIBUTING.md) for details of how to contribute to FDC3.
+- See the [FDC3 Charter](fdc3-charter#licensing) for details of how deliverables are licensed.
 
 ## Where should I go next?
 

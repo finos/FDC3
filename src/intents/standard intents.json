@@ -31,6 +31,10 @@
     {
       "name": "ViewAnalysis",
       "displayName": "Analyze"
+    },
+    {
+      "name": "ViewHoldings",
+      "displayName": "Holdings"
     }
   ]
 }

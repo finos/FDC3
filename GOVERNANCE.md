@@ -10,7 +10,7 @@ Working Group contributors include the following roles:
 
 **1.2.	Editor.**  “Editors” are responsible for ensuring that the contents of the document accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines. The Working Group will designate one or more Editor(s). The Working Group may select a new Editor upon Approval of the Working Group Participants.
 
-**1.3.	Participants.**  “Participants” are those that have made Contributions to the Working Group subject to the [FINOS IP Policy](https://www.finos.org/hubfs/FINOS/governance/FINOS%20IP%20Policy.pdf).
+**1.3.	Participants.**  “Participants” are those that have made Contributions to the Working Group subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/website/static/governance-docs/IP-Policy.pdf).
 
 **1.4. Discussion Groups.** The Working Group may form one or more "Discussion Groups" to organize collaboration around a particular aspect of a specification. Discussion Groups are for discussion only -- Approval of all portions of a specification is subject to the consensus-based decision making process.
 
@@ -42,7 +42,7 @@ Inspired by [ANSI’s Essential Requirements for Due Process](https://share.ansi
 
 **4.2.	Draft.**  Each Pre-Draft document of the Working Group must first be Approved to become a “Draft Specification”.  Once the Working Group approves a document as a Draft Specification, the Draft Specification becomes the basis for all going forward work on that specification.
 
-**4.3.	Working Group Approval.**  Once the Working Group believes it has achieved the objectives for its specification as described in the Scope, it will Approve that Draft Specification and progress it to “Approved Specification” status. 
+**4.3.	Working Group Approval.**  Once the Working Group believes it has achieved the objectives for its specification as described in the [Scope](./SCOPE), it will Approve that Draft Specification and progress it to “Approved Specification” status. 
 
 **4.4.	Publication and Submission.**  Upon the designation of a Draft Specification as an Approved Specification, the Maintainer(s) will publish the Approved Specification in a manner agreed upon by the Working Group Participants (i.e., Working Group Participant only location, publicly available location, Working Group maintained website, Working Group member website, etc.).  The publication of an Approved Specification in a publicly accessible manner must include the terms under which the Approved Specification is being made available under.
 

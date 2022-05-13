@@ -30,22 +30,21 @@ For platform providers FDC3 compliance requires:
 
 * Support for connections to 1 or more App Directories meeting the FDC3 App Directory standards SHOULD be provided
 * An API implementation that meets the FDC3 API standards MUST be provided to all applications running in the context of the platform, including:
-    * Support for FDC3 Context Data and Intents standards
-    * Support for Intent and Context resolution using a resolver UI
+    * Support for the FDC3 Context Data and Intents standards
+    * Support for intent and context resolution using a resolver UI
     * Support for retrieving information about the version of the FDC3 specification supported by a Desktop Agent implementation and the name of the implementation provider
 * In the case of web applications, a Desktop Agent MUST provide the FDC3 API via a global accessible as `window.fdc3`.
-* At least one workflow of one of the use cases marked as Accepted by the Use Cases working group SHOULD be satisfied by the implementation.
 
 ### Application Provider
 For application providers FDC3 compliance requires:
-* If intents are supported by the application, they SHOULD favor supporting applicable FDC3 defined intents over proprietary ones.
+* If intents are supported by the application, they SHOULD favor supporting applicable FDC3 defined standard intents over proprietary ones.
 * If FDC3 defined intents are supported, they MUST meet the expected context and behavior defined for the intent.
 * If proprietary intents are handled, those intents SHOULD follow the recommended naming conventions in the specification.
-* If intents are supported, the application SHOULD use the addIntentListener API to set up a handler.
-* If Context Data is supported by the application, they SHOULD favor supporting applicable FDC3 defined Context Data over proprietary ones.
-* If FDC3 defined Context Data is supported, it MUST meet the interface defined for the type of Context Data.
-* If proprietary Context Data properties are handled, they SHOULD follow any recommended naming conventions in the specification.
-* If Context Data is supported, the application SHOULD use the addContextListener API to set up a handler.
+* If intents are supported, the application SHOULD use the `addIntentListener` API to set up a handler.
+* If context data is supported by the application, they SHOULD favor supporting applicable FDC3 defined context data types over proprietary ones.
+* If FDC3 defined context data is supported, it MUST meet the interface defined for that type of context data.
+* If proprietary context data properties are handled, they SHOULD follow any recommended naming conventions in the specification.
+* If context data is supported, the application SHOULD use the `addContextListener` API to set up a handler.
 
 ## Versioning
 Typically, a Standard that has marketplace relevance is revised from time to time, to correct errors and/or to add functionality to support new use cases. Hence, there exist multiple versions of the standard. As FDC3 is a standards project, we don't follow semver, which is meant for libraries. We use the versioning scheme `<major>.<minor>`, e.g. `1.1` or `2.3`.
@@ -73,3 +72,17 @@ FDC3 adopts the following experimental features policy:
 5. Experimental features are exempted from the normal versioning and deprecation policies that govern changes to FDC3. I.e. breaking changes may be made to experimental features between versions of the Standard without a major version release.
 6. The experimental designation may be removed from a feature in a minor version release (as this will be considered an additive change).
 
+## Intellectual Property Claims
+Recipients of this document are requested to submit, with their comments, notification of
+any relevant patent claims or other intellectual property rights of which they may be aware that
+might be infringed by any implementation of the standard set forth in this document, and to provide 
+supporting documentation.
+
+THIS STANDARD IS BEING OFFERED WITHOUT ANY WARRANTY
+WHATSOEVER, AND IN PARTICULAR, ANY WARRANTY OF NON-INFRINGEMENT IS
+EXPRESSLY DISCLAIMED. ANY USE OF THIS STANDARD SHALL BE MADE
+ENTIRELY AT THE IMPLEMENTER'S OWN RISK, AND NEITHER THE FOUNDATION,
+NOR ANY OF ITS MEMBERS OR SUBMITTERS, SHALL HAVE ANY LIABILITY
+WHATSOEVER TO ANY IMPLEMENTER OR THIRD PARTY FOR ANY DAMAGES OF
+ANY NATURE WHATSOEVER, DIRECTLY OR INDIRECTLY, ARISING FROM THE USE
+OF THIS STANDARD.

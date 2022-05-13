@@ -28,6 +28,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Application'
+              examples:
+                FDC3WorkbenchAppDefinition:
+                  $ref: '#/components/examples/FDC3WorkbenchAppDefinition'
         '400':
           description: Bad request.
           content:
@@ -60,6 +63,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApplicationSearchResponse'
+              examples:
+                FDC3WorkbenchAppDefinitionSearchResponse:
+                  $ref: '#/components/examples/FDC3WorkbenchAppDefinitionSearchResponse'
         '400':
           description: Bad request.
           content:
@@ -87,6 +93,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Application'
+            examples:
+              FDC3WorkbenchAppDefinition:
+                $ref: '#/components/examples/FDC3WorkbenchAppDefinition'
         required: true
   /v1/apps/search:
     get:
@@ -115,17 +124,6 @@ paths:
 
             The same appName could occur in other directories. We are not
             currently specifying app name conventions in the document.
-        - in: query
-          name: manifest
-          schema:
-            type: string
-          required: false
-          description: >
-            URI or full JSON of the application manifest providing all details related to launch
-            and use requirements as described by the vendor.
-
-            The format of this manifest is vendor specific, but can be identified by
-            the manifestType attribute.
         - in: query
           name: version
           schema:
@@ -182,6 +180,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApplicationSearchResponse'
+              examples:
+                FDC3WorkbenchAppDefinitionSearchResponse:
+                  $ref: '#/components/examples/FDC3WorkbenchAppDefinitionSearchResponse'
         '400':
           description: Bad request.
           content:
@@ -204,7 +205,7 @@ paths:
                 $ref: '#/components/schemas/ErrorDTO'
       tags:
         - Application
- 
+
 servers:
   - url: /appd
 components:
@@ -227,14 +228,13 @@ components:
         Defines an application retrieved from an FDC3 App Directory, which can
         then be launched.
 
-        Launching typically means running for a user on a desktop. 
+        Launching typically means running for a user on a desktop.
         The details around 'launching' including who or what might do it, and how the launch action is initiated are
         discussed elsewhere in the FDC3 App Directory spec.
-      required:
+      required:            # details are not required as the host type applications use the hostsManifests mapping instead
         - appId
         - name
-        - manifest
-        - manifestType
+        - type
       properties:
         appId:
           type: string
@@ -252,19 +252,14 @@ components:
 
             The same appName could occur in other directories. We are not
             currently specifying app name conventions in the document.
-        manifest:
-          type: string
-          description: >
-            URI or full JSON of the application manifest providing all details related to launch
-            and use requirements as described by the vendor.
-
-            The format of this manifest is vendor specific, but can be identified by
-            the manifestType attribute.
-        manifestType:
-          type: string
-          description: >
-            The manifest type which relates to the format and structure of the manifest content.
-            The definition is based on the vendor specific format and definition outside of this specification.
+        type:
+          $ref: '#/components/schemas/Type'
+        details:
+          description: >-
+            The type specific details of the application. Currently only the "browser" type is standardized.
+            "host" type applications should use the hostManifest's object for all application details.
+          oneOf:
+            - $ref: '#/components/schemas/BrowserDetails'
         version:
           type: string
           description: >-
@@ -323,6 +318,8 @@ components:
             https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
           items:
             $ref: '#/components/schemas/Intent'
+        hostManifests:
+          $ref: '#/components/schemas/HostManifests'
     ApplicationSearchResponse:
       properties:
         applications:
@@ -347,9 +344,15 @@ components:
     Icon:
       description: Icon holder
       properties:
-        icon:
+        src:
           type: string
           description: Icon URL
+        size:
+          type: string
+          description: Icon dimension formatted as "<height>x<width>"
+        type:
+          type: string
+          description: Image media type. If not present the Desktop Agent may use the src file extension
     AppImage:
       description: App Image holder
       properties:
@@ -374,10 +377,200 @@ components:
           items:
             type: string
           description: >-
-            A comma sepaarted list of the types of contexts the intent offered by the application can process. 
+            A comma separated list of the types of contexts the intent offered by the application can process, 
             where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
+        resultContext:
+          type: string
+          description: >-
+            The type of context return by the application when resolving this intent. E.g. "fdc3.instrument"
         customConfig:
           type: object
           description: >-
             Custom configuration for the intent that may be required for a
             particular desktop agent.
+    Type:
+      type: string
+      description: >-
+        Enumeration describing the supported application types. Currently only the browser application type is officially supported.
+        The host application type allows for host specific application types (e.g. exe, workspaces, citrix, etc.).
+      enum:
+        - browser
+        - host
+    BrowserDetails:
+      description: Properties common to all browser applications.
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          description: Application URL.
+      additionalProperties: false
+    HostManifests:
+      type: object
+      description: >-
+        A mapping from host string to a host-specific application manifest object or URI
+        from which that manifest can be retrieved. The manifest should provide all details required to
+        launch and use the application within the specified host.
+      additionalProperties:
+        x-additionalPropertiesName: Host
+        oneOf:
+          - type: string   # URI pointing to a JSON containing all host specific properties
+            format: uri
+          - $ref: '#/components/schemas/HostManifest'
+    HostManifest:
+      type: object
+      description: >-
+        Object containing all host specific properties.
+  examples:
+    FDC3WorkbenchAppDefinition:
+      value:
+        appId: fdc3-workbench
+        name: fdc3-workbench
+        title: FDC3 Workbench
+        description: Development and test tool for FDC3 desktop agents and apps
+        version: 1.0.0
+        tooltip: FDC3 Workbench
+        icons:
+          - src: http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png
+        images:
+          - url: https://fdc3.finos.org/docs/assets/fdc3-logo.png
+            tooltip: FDC3 logo
+        contactEmail: fdc3@finos.org
+        supportEmail: fdc3-maintainers@finos.org
+        publisher: FDC3
+        intents: [{
+          name: ViewChart,
+          displayName: View Chart,
+          contexts: [fdc3.instrument]
+        }]
+        type: browser
+        details:
+          url: https://fdc3.finos.org/toolbox/fdc3-workbench/
+        hostManifests: {
+          Glue42: {
+            type: window,
+            icon: https://fdc3.finos.org/docs/assets/fdc3-logo.png,
+            details: {
+              height: 640,
+              width: 560,
+              left: 120,
+              top: 120,
+              mode: tab,
+              allowChannels: true,
+              loader: {
+                enabled: true,
+                hideOnLoad: true
+              }
+            },
+            customProperties: {
+              folder: FDC3 Toolbox
+            }
+          },
+          Finsemble: {
+            window: {
+              left: 120,
+              top: 120,
+              width: 800,
+              height: 750,
+              options: {
+                minWidth: 75
+              }
+            },
+            foreign: {
+              components: {
+                App Launcher: {
+                  launchableByUser: true
+                },
+                Toolbar: {
+                  iconURL: http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png
+                },
+                Window Manager: {
+                  FSBLHeader: true,
+                  persistWindowState: true
+                }
+              }
+            },
+            interop: {
+              autoConnect: true
+            }
+          },
+          Web App Manifest: https://example.com/fdc3-workbench.json
+        }
+      summary: A sample app definition for the FDC3 Workbench application
+    FDC3WorkbenchAppDefinitionSearchResponse:
+      value:
+        applications:
+          - appId: fdc3-workbench
+            name: fdc3-workbench
+            title: FDC3 Workbench
+            description: Development and test tool for FDC3 desktop agents and apps,
+            version: 1.0.0
+            tooltip: FDC3 Workbench
+            icons:
+              - src: http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png
+            images:
+              - url: https://fdc3.finos.org/docs/assets/fdc3-logo.png,
+                tooltip: FDC3 logo
+            contactEmail: fdc3@finos.org,
+            supportEmail: fdc3-maintainers@finos.org,
+            publisher: FDC3,
+            intents: [{
+              name: ViewChart,
+              displayName: View Chart,
+              contexts: [fdc3.instrument]
+            }]
+            type: browser
+            details:
+              url: https://fdc3.finos.org/toolbox/fdc3-workbench/
+            hostManifests: {
+              Glue42: {
+                type: window,
+                icon: https://fdc3.finos.org/docs/assets/fdc3-logo.png,
+                details: {
+                  height: 640,
+                  width: 560,
+                  left: 120,
+                  top: 120,
+                  mode: tab,
+                  allowChannels: true,
+                  loader: {
+                    enabled: true,
+                    hideOnLoad: true
+                  }
+                },
+                customProperties: {
+                  folder: FDC3 Toolbox
+                }
+              },
+              Finsemble: {
+                window: {
+                  left: 120,
+                  top: 120,
+                  width: 800,
+                  height: 750,
+                  options: {
+                    minWidth: 75
+                  }
+                },
+                foreign: {
+                  components: {
+                    App Launcher: {
+                      launchableByUser: true
+                    },
+                    Toolbar: {
+                      iconURL: http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png
+                    },
+                    Window Manager: {
+                      FSBLHeader: true,
+                      persistWindowState: true
+                    }
+                  }
+                },
+                interop: {
+                  autoConnect: true
+                }
+              },
+              Web App Manifest: https://example.com/fdc3-workbench.json
+            }
+        message: OK
+      summary: A sample application search response containing the FDC3 Workbench application
