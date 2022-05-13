@@ -1,4 +1,5 @@
 export enum ContextTypes {
+  Chart = 'fdc3.chart',
   Contact = 'fdc3.contact',
   ContactList = 'fdc3.contactList',
   Country = 'fdc3.country',
