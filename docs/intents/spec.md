@@ -5,7 +5,7 @@ title: Intents Overview (next)
 ---
 
 FDC3 Intents define a standard set of verbs that, in conjunction with context data acting as nouns, can be used to put together common cross-application workflows on the financial desktop.
-* Applications register the intents and [context data](../context/overview) combinations they support in the [App Directory](../app-directory/overview).
+* Applications register the intents and [context data](../context/spec) combinations they support in the [App Directory](../app-directory/spec).
 * The App Directory supports application discovery by intents and/or context data.
 * Intents are not full RPC, apps don’t need to enumerate every function with an intent.
 * FDC3 standard intents are a limited set, organizations can create their own intents.
@@ -75,7 +75,7 @@ const intentsAndApps = await fdc3.findIntentsByContext({
 
 ## Using Intents without a context
 As the [Desktop Agent API](../api/ref/DesktopAgent) and [App Directory](../app-directory/overview) both
-require a context to specified whereever intents are used, using an intent without a context is
+require a context to be specified wherever intents are used, using an intent without a context is
 achieved through the use of an explcit `null` context type `fdc3.nothing`. By using an explicit type
 to represent a lack of context we allow applications to declare their support for a lack of 
 context.
