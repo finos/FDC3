@@ -75,3 +75,9 @@ const timeRange = {
     endTime: "2022-03-30T16:44:44.123Z"
 }
 ```
+
+## See Also
+
+Other Types
+
+- [Chart](Chart)

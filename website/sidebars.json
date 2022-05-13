@@ -54,6 +54,7 @@
         "label": "Reference",
         "ids": [
           "context/ref/Context",
+          "context/ref/Chart",
           "context/ref/Contact",
           "context/ref/ContactList",
           "context/ref/Instrument",
