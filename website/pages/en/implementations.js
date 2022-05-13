@@ -32,7 +32,7 @@ implData.sort((a, b) => {
 	}
 });
 
-function Implementation({ type, title, publisher, image, infoLink, docsLink, description }) {
+function Implementation({ type, title, publisher, image, infoLink, docsLink, badges, description }) {
 	return <div className={"implementation hide " + type}>
 		<div className="implementation-metadata">
 			<div className="title-and-publisher">
@@ -50,6 +50,9 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, des
 					{docsLink ? <a href={docsLink} key={docsLink} className="button">Documentation</a> : null}
 				</div>
 				<div className="prose" dangerouslySetInnerHTML={{ __html: description }}></div>
+				<div className="badges">
+					{ badges.map(b =><div className="button badge" key={b}>{b.text}</div>)}
+				</div>
 			</div>
 		</div>
 	</div>
