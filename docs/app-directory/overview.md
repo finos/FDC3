@@ -12,7 +12,7 @@ All this information is readily available in one place and can be used both to p
 
 ## Advantages
 
-Using appD offers many advantages both for the financial institutions running an FDC3-enabled desktop container and for vendors that provide FDC3-compliant apps:
+Using appD offers many advantages both for financial institutions running an FDC3-enabled desktop container and for vendors that provide FDC3-compliant apps:
 
 ### For the user
 
@@ -62,7 +62,7 @@ By hosting our own appD we can easily combine applications from various provider
 
 ## Use Cases
 
-An application directory (AppD) provides information about an application's identifiers, publisher details, intents that it supports, and metadata necessary to launch and integrate the application in a desktop agent.
+An application directory provides information about an application's identifiers, publisher details, intents that it supports, and metadata necessary to launch and integrate the application in a desktop agent.
 
 The following provides a summary of use cases.
 
@@ -70,13 +70,13 @@ The following provides a summary of use cases.
 
 A desktop agent will usually include a user interface allowing the user to select from a set of launchable applications and then allow them to manually launch an one. It is also responsible for launching applications necessary to resolve a raised intent. However, it must first retrieve the necessary metadata about the available applications. An app directory provides an endpoint to retrieve a list of the available applications along with their metadata, which may include or link to additional information necessary to launch the application in a specific desktop agent.
 
-A launcher will usually be configured with the locations of one or more AppD servers (which is necessary to implement intent resolution), however, as described in the [Service Discovery](#service-discovery) section, a fully qualified application identifier (app1@host.appd.com) may also be used to both locate the AppD service and to retrieve the specific application data.
+A launcher will usually be configured with the locations of one or more AppD servers (which is necessary to implement intent resolution), however, as described in the [Service Discovery](#service-discovery) section, a fully qualified application identifier (app1@host.appd.com) may also be used to both locate the appD service and to retrieve the specific application data.
 
 ![img](assets/appd_launcher_embedded.png)
 
 ### Aggregated View
 
-There could be many different AppD service instances in the world providing application data zoned to the provider or enterprise deployment. The AppD specification allows for unique instances of the service with no requirement to aggregate data or define a structured hierarchy. With this said, a launcher might want to construct an aggregated view of applications from one or more AppD instances. In this case, the launcher would be required to retrieve multiple application definitions from one or more AppD instances providing a consolidated view of all applications required.
+There could be many different appD service instances in the world providing application data zoned to the provider or enterprise deployment. The appD specification allows for unique instances of the service with no requirement to aggregate data or define a structured hierarchy. With this said, a launcher might want to construct an aggregated view of applications from one or more appD instances. In this case, the launcher would be required to retrieve multiple application definitions from one or more appD instances providing a consolidated view of all applications required.
 
 Today, there is no intention to create a single registry of known AppD instances, so there is an assumption that the launcher will have prior
 knowledge of the AppD instance location.
@@ -85,7 +85,7 @@ knowledge of the AppD instance location.
 
 ### Authentication and Entitlements
 
-The AppD API specification defines the optional use of an access token to identify the requesting user/launcher and implement authorizations which may affect AppD API responses. For example, different subsets of the full list of applications may be returned for different users depending on their role in an organization.  
+The AppD API specification defines the optional use of an access token to identify the requesting user/launcher and implement authorizations which may affect appD API responses. For example, different subsets of the full list of applications may be returned for different users depending on their role in an organization.  
 
 The specification does not define or make mandatory any authorizations or roles that a provider or enterprise can define.
 
@@ -110,20 +110,20 @@ However, in order to do so, you must first discover the location of an app direc
 Three methods for discovering app directory services are defined in this Standard:
 
   1. **Static configuration:** Statically defined URI records for use within client applications (typically a desktop agent implementation) directly. 
-  2. **Fully-qualified appID namespace syntax host resolution:** Discovery of the AppD location using a fully qualified application ID (appId) domain name.  
-  3. **DNS lookup by domain name:** Discovery of the AppD location using a domain name to lookup DNS SRV records identifying the host server location and TCP port. ([RFC2782](https://tools.ietf.org/html/rfc2782))
+  2. **Fully-qualified appID namespace syntax host resolution:** Discovery of the appD location using a fully qualified application ID (appId) domain name.  
+  3. **DNS lookup by domain name:** Discovery of the appD location using a domain name to lookup DNS SRV records identifying the host server location and TCP port. ([RFC2782](https://tools.ietf.org/html/rfc2782))
 
-AppD service host discovery implementations SHOULD support each of these methods and MUST support at least static configuration.
+App directory service host discovery implementations SHOULD support each of these methods and MUST support at least static configuration.
 
 ### Static configuration
 
-As the name implies, a static configuration for an AppD service location is defined within a desktop agent, launcher application. This is the simplest and most common approach to app directory and application data discovery.
+As the name implies, a static configuration for an appD service location is defined within a desktop agent or launcher application. This is the simplest and most common approach to app directory and application data discovery.
 
 ![img](assets/appd_static_config.png)
 
 ### Fully-qualified appID namespace syntax host resolution
 
-An application directory URI can be constructed using a [fully qualified application ID](spec#applicationidentifiers) (email address syntax) by using fqdn part of the ID as the host location and the name part as the application name. Given an application id "app1" with a fully qualified identifier of "app1@appd.foo.com" an application directory host location can be derived by simply extracting the fqdn "appd.foo.com" from the email syntax. The extracted fqdn "app.foo.com" MUST resolve to the actual host location where the application directory is running.
+An app directory URI can be constructed using a [fully qualified application ID](spec#applicationidentifiers) (email address syntax) by using fqdn part of the ID as the host location and the name part as the application name. Given an application id "app1" with a fully qualified identifier of "app1@appd.foo.com" an application directory host location can be derived by simply extracting the fqdn "appd.foo.com" from the email syntax. The extracted fqdn "app.foo.com" MUST resolve to the actual host location where the application directory is running.
 
 A launcher can then easily construct a URI by:
 
@@ -138,9 +138,9 @@ The resulting URI to retrieve application data for "app1" would be "[https://app
 
 ### DNS/SRV Records
 
-Another approach to support AppD service discovery (resolution) is through use of existing domain name service (DNS) implementations that are broadly used on the Internet today (see: [RFCs](https://www.isc.org/community/rfcs/dns/)). Name service implementations can be considered critical infrastructure and are proven stable with over twenty years of use. Name services can be used both through public Internet or locally deployed intranet, which provides optionality to deployment schemes.
+Another approach to support app directory service discovery (resolution) is through use of existing domain name service (DNS) implementations that are broadly used on the Internet today (see: [RFCs](https://www.isc.org/community/rfcs/dns/)). Name service implementations can be considered critical infrastructure and are proven stable with over twenty years of use. Name services can be used both through public Internet or locally deployed intranet, which provides optionality to deployment schemes.
 
-More specifically, resolution of an AppD service instance (host location) can be implemented using DNS "service records" (SRV) providing the host instance, protocol and associated port. The following is a well known description of a SRV record ([RFC2782](https://tools.ietf.org/html/rfc2782)):
+More specifically, resolution of an appD service instance (host location) can be implemented using DNS "service records" (SRV) providing the host instance, protocol and associated port. The following is a well-known description of a SRV record ([RFC2782](https://tools.ietf.org/html/rfc2782)):
 
 ```
 zone name { _service._proto.name. TTL  class  SRV priority weight port target.}
@@ -168,4 +168,4 @@ For AppD Service the SRV record MUST use the following definitions:
 
 #### Known domains
 
-Although SRV records provide the means of resolving the location of an AppD service for a specific domain, there could be a need to know what domains exist in the universe. This would be a list of domains representing all known directory instances. It is recommended that  the FDC3/FINOS organization publish a list of known domains which support AppD services. This publication can be handled in multiple ways, such as structured files or API endpoints. This proposal shall not provide a qualified solution to achieve this, but rather draw attention to a potential requirement.
+Although SRV records provide the means of resolving the location of an app directory service for a specific domain, there could be a need to know what domains exist in the universe. This would be a list of domains representing all known directory instances. It is recommended that the FDC3/FINOS organization publish a list of known domains which support AppD services. This publication can be handled in multiple ways, such as structured files or API endpoints. This proposal shall not provide a qualified solution to achieve this, but rather draw attention to a potential requirement.

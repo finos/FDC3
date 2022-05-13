@@ -32,7 +32,7 @@ There are two main use cases for exchanging context data:
 
 FDC3 recognizes that there are other object definitions for providing context between applications. Most, if not all of these definitions though are platform-specific. FDC3, as a rule, sets out to be platform-agnostic and focused on creating bridges between the various walled gardens on the financial desktop.
 
-## Context Object
+## The Context Interface
 
 Context can be summarised as:
 * Having a unique _type_ identifier, used for routing.
