@@ -12,7 +12,6 @@ View the [full specification](/schemas/next/app-directory) in [OpenAPI v3.0](htt
  Endpoint           | Method | Description
  ------------------ | ------ | -----------
  `/v2/apps`         | GET    | Retrieve all application definitions
- `/v2/apps`         | POST   | Create a new application definition
  `/v2/apps/{appId}` | GET    | Retrieve an application defintion
  `/v2/apps/search`  | GET    | Retrieve a list of applications
  `/v1/apps`         | POST   | (deprecated v1 API version) Create a new application definition
