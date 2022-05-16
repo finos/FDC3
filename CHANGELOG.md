@@ -20,6 +20,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * `IntentResolution` now requires the name of the intent raised to included, allowing it to be used to determine the intent raised via `fdc3.raiseIntentForContext()`. ([#507](https://github.com/finos/FDC3/pull/507))
 * A Trademarks page was added to acknowledge trademarks used within the Standard not owned by FINOS or the Linux Foundation ([#534](https://github.com/finos/FDC3/pull/534))
 * Added details of FDC3's existing versioning and deprecation policies to the FDC3 compliance page ([#539](https://github.com/finos/FDC3/pull/539))
+* Added a new experimental features policy, which exempts features designated as experimental from the versioning and deprecation policies, to the FDC3 compliance page ([#549](https://github.com/finos/FDC3/pull/549))
+* Add `IntentDeliveryFailed` to the `ResolveError` enumeration to be used when delivery of an intent and context to a targetted app or instance fails. ([#601](https://github.com/finos/FDC3/pull/601))
 * Added `IntentDeliveryFailed` to the `ResolveError` enumeration to be used when delivery of an intent and context to a targetted app or instance fails. ([#601](https://github.com/finos/FDC3/pull/601))
 * Added a definition for "app directory record" to the FDC3 glossary to be used to refer to a single appD record ([#658](https://github.com/finos/FDC3/pull/658))
 * Added `/v2/` paths to the AppD's specification, allowing a single implementation to support serving both FDC3 v1.2 and v2.0 application records, enabling simpler migration ([#666](https://github.com/finos/FDC3/pull/666))
@@ -42,7 +44,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * App Directory `images` field was replaced with `screenshots` to better align the application record with web application manifest and match its format to that used by `icons` ([#675](https://github.com/finos/FDC3/pull/675))
 * App Directory endpoint for creating applications was removed as these will often be implementation dependent and should not be required for compliance ([#695](https://github.com/finos/FDC3/pull/695))
 * App Directory endpoint for searching applications was removed as searches over multiple app directories are better implemented by retrieving all the records and searching over the resulting combined dataset ([#696](https://github.com/finos/FDC3/pull/696))
-
 
 ### Deprecated
 * Removed details of the 'global' channel that was deprecated in FDC3 1.2. ([#496](https://github.com/finos/FDC3/pull/496))
