@@ -62,10 +62,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApplicationSearchResponse'
+                $ref: '#/components/schemas/AllApplicationsResponse'
               examples:
-                FDC3WorkbenchAppDefinitionSearchResponse:
-                  $ref: '#/components/examples/FDC3WorkbenchAppDefinitionSearchResponse'
+                FDC3WorkbenchAppDefinitionAllAppsResponse:
+                  $ref: '#/components/examples/FDC3WorkbenchAppDefinitionAllAppsResponse'
         '400':
           description: Bad request.
           content:
@@ -84,114 +84,6 @@ paths:
           description: 'Server error, see response body for further details.'
           content:
             '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-      tags:
-        - Application
-  /v2/apps/search:
-    get:
-      summary: Retrieve a list of applications based on parameters provided.  Depending on implementation, parameter
-              values should self describe search format and type (e.g. Regex)
-      parameters:
-        - in: query
-          name: appId
-          schema:
-            type: string
-          required: false
-          description: >
-            The unique application identifier located within a specific
-            application directory instance.
-        - in: query
-          name: name
-          schema:
-            type: string
-          required: false
-          description: >
-            The name of the application.
-
-            The name should be unique within an FDC3 App Directory instance. The
-            exception to the uniqueness constraint is that an App Directory can
-            hold definitions for multiple versions of the same app.
-
-            The same appName could occur in other directories. We are not
-            currently specifying app name conventions in the document.
-        - in: query
-          name: version
-          schema:
-            type: string
-          required: false
-          description: >-
-            Version of the application. This allows multiple app versions to be
-            defined using the same app name. This can be a triplet but can also
-            include things like 1.2.5 (BETA)
-        - in: query
-          name: title
-          schema:
-            type: string
-          required: false
-          description: >-
-            Optional title for the application, if missing use appName,
-            typically used in a launcher UI.
-        - in: query
-          name: tooltip
-          schema:
-            type: string
-          required: false
-          description: Optional tooltip description e.g. for a launcher
-        - in: query
-          name: description
-          schema:
-            type: string
-          required: false
-          description: >-
-            Description of the application. This will typically be a 1-2
-            paragraph style blurb about the application. Allow mark up language
-        - in: query
-          name: intent_name
-          schema:
-            type: string
-          required: false
-          description: name of intent
-        - in: query
-          name: intent_displayName
-          schema:
-            type: string
-          required: false
-          description: displayName of intent
-        - in: query
-          name: intent_context
-          schema:
-            type: string
-          required: false
-          description: search contexts list
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApplicationSearchResponse'
-              examples:
-                FDC3WorkbenchAppDefinitionSearchResponse:
-                  $ref: '#/components/examples/FDC3WorkbenchAppDefinitionSearchResponse'
-        '400':
-          description: Bad request.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        '403':
-          description: >-
-            Forbidden: Certificate authentication is not allowed for the
-            requested user.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        '500':
-          description: 'Server error, see response body for further details.'
-          content:
-            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
       tags:
@@ -658,7 +550,7 @@ components:
             https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
           items:
             $ref: '#/components/schemas/IntentV1'
-    ApplicationSearchResponse:
+    AllApplicationsResponse:
       properties:
         applications:
           type: array
@@ -919,7 +811,7 @@ components:
           }
         }
       summary: A sample app definition for the FDC3 Workbench application
-    FDC3WorkbenchAppDefinitionSearchResponse:
+    FDC3WorkbenchAppDefinitionAllAppsResponse:
       value:
         applications: # you can't $ref inside a $ref so example is repeated here for search response
           - appId: fdc3-workbench
@@ -1003,4 +895,4 @@ components:
               }
             }
         message: OK
-      summary: A sample application search response containing the FDC3 Workbench application
+      summary: A sample 'all applications' listing response containing the FDC3 Workbench application
