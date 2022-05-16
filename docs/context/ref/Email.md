@@ -47,7 +47,7 @@ const email = {
 }
 
 
-fdc3.broadcast(email)
+fdc3.raiseIntent("StartEmail", email)
 ```
 
 ## See Also
