@@ -378,7 +378,7 @@ components:
             type: string
           description: >-
             A comma separated list of the types of contexts the intent offered by the application can process,  
-            where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
+            where the first part of the context type is the namespace e.g."fdc3.contact", "org.symphony.contact"
         resultType:
           type: string
           description: >-
