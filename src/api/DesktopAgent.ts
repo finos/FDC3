@@ -457,22 +457,22 @@ export interface DesktopAgent {
 
   /**
    * Adds a listener for incoming context broadcasts from the Desktop Agent.
-   * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
+   * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`. Provided for backwards compatibility with versions FDC3 standard <2.0.
    */
   addContextListener(handler: ContextHandler): Promise<Listener>;
 
   /**
-   * @deprecated Alias to the `getUserChannels` function provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
+   * @deprecated Alias to the `getUserChannels` function provided for backwards compatibility with versions FDC3 standard <2.0.
    */
   getSystemChannels(): Promise<Array<Channel>>;
 
   /**
-   * @deprecated Alias to the `joinUserChannel` function provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
+   * @deprecated Alias to the `joinUserChannel` function Provided for backwards compatibility with versions FDC3 standard <2.0.
    */
   joinChannel(channelId: string): Promise<void>;
 
   /**
-   * @deprecated version of `open` that launches an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
+   * @deprecated version of `open` that launches an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
    *
    * ```javascript
    * //Open an app without context, using the app name
@@ -482,7 +482,7 @@ export interface DesktopAgent {
   open(name: String, context?: Context): Promise<AppMetadata>;
 
   /**
-   * @deprecated version of `raiseIntent` that targets an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
+   * @deprecated version of `raiseIntent` that targets an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
    *
    * ```javascript
    * // use the `name` metadata of an app to describe the target app for the intent
@@ -492,7 +492,7 @@ export interface DesktopAgent {
   raiseIntent(intent: string, context: Context, name: String): Promise<IntentResolution>;
 
   /**
-   * @deprecated version of `raiseIntentForContext` that targets an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
+   * @deprecated version of `raiseIntentForContext` that targets an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
    *
    * ```javascript
    * // Resolve against all intents registered by a specific target app name for the specified context

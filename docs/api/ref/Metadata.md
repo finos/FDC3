@@ -4,14 +4,37 @@ title: Metadata
 
 FDC3 API operations return various types of metadata.
 
+## `AppIdentifier`
+
+Identifies an application, or instance of an application, and is used to target FDC3 API calls at specific applications.
+Will always include at least a `appId` property, which can be used with `fdc3.open`, `fdc3.raiseIntent` etc..
+If the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.
+
+
+```ts
+interface AppIdentifier {
+  /** The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root' */
+  readonly appId: string;
+  /** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/
+  readonly instanceId?: string;
+}
+```
+### See also
+* [`AppMetadata`]#appmetadata)
+* [`DesktopAgent.open`](DesktopAgent#open)
+* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+
 ## `AppIntent`
 
 ```ts
 interface AppIntent {
+  /** Details of the intet who's relationship to resolving applications is being described. */
   readonly intent: IntentMetadata;
+  /** Details of applications that can resolve the intent. */
   readonly apps: Array<AppMetadata>;
 }
 ```
+
 An interface that represents the binding of an intent to apps, returned as part of intent disocvery.
 For each intent, it reference the applications that support that intent.
 
@@ -24,18 +47,12 @@ For each intent, it reference the applications that support that intent.
 ## `AppMetadata`
 
 ```ts
-interface AppMetadata {
-  /** The unique app name that can be used with the open and raiseIntent calls. */
+interface AppMetadata extends AppIdentifier {
+  /** The app name that was used with the open and raiseIntent calls in FDC3 <2.0. */
   readonly name: string;
-
-  /** The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root' */
-  readonly appId?: string;
 
   /** The Version of the application. */
   readonly version?: string;
-
-  /** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/
-  readonly instanceId?: string;
 
   /** An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set. */
   readonly instanceMetadata?: Record<string, any>;
@@ -63,17 +80,16 @@ interface AppMetadata {
 }
 ```
 
-Describes an application, or instance of an application, using metadata that is usually  provided by an FDC3 App Directory that the desktop agent connects to.
+Extends an AppIdentifier, describing an application or instance of an application, with additional descriptive metadata that is usually provided by an FDC3 App Directory that the desktop agent connects to.
 
-Will always includes at least a `name` property, which can be used with [`open`](DesktopAgent#open) and [`raiseIntent`](DesktopAgent#raiseIntent). If the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.
+The additional information from an app directory can aid in rendering UI elements, such as a launcher menu or resolver UI. This includes a title, description, tooltip and icon and screenshot URLs.
 
-Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu. This includes a title, description, tooltip and icon and image URLs.
-
-In situations where a desktop agent connects to multiple app directories or multiple versions of the same app exists in a single app directory, it may be necessary to specify `appId` or `version` to target applications that share the same name.
+Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc..
 
 #### See also
 * [`AppIntent.apps`](#appintent)
 * [`Icon`](Types#icon)
+* [`DesktopAgent.open`](DesktopAgent#open)
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 

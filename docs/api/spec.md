@@ -226,7 +226,7 @@ await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 //Find apps to resolve an intent and return a specified context type
 const appIntent = await fdc3.findIntent("ViewContact", context, "fdc3.contact");
 try {
-  const resolution = await fdc3.raiseIntent(appIntent.intent, context, appIntent.apps[0].name);
+  const resolution = await fdc3.raiseIntent(appIntent.intent, context, appIntent.apps[0]);
   const result = await resolution.getResult();
   console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
 } catch(error) {
@@ -236,7 +236,7 @@ try {
 //Find apps to resolve an intent and return a channel
 const appIntent = await fdc3.findIntent("QuoteStream", context, "channel");
 try {
-  const resolution = await fdc3.raiseIntent(appIntent.intent, context, appIntent.apps[0].name);
+  const resolution = await fdc3.raiseIntent(appIntent.intent, context, appIntent.apps[0]);
   const result = await resolution.getResult();
   if (result && result.addContextListener) {
     result.addContextListener(null, (context) => { 
