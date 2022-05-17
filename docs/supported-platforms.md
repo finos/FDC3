@@ -19,7 +19,7 @@ There are two main ways FDC3 can be used from web applications:
 
 Simply rely on the global object being made available by your desktop agent, and address the API directly:
 
-```ts
+```javascript
 function sendData() {
   window.fdc3.broadcast({
     type: 'fdc3.instrument',
@@ -60,25 +60,25 @@ pnpm install @finos/fdc3
 
 The npm package provides a wrapper around FDC3, allowing you to use it with ES6 import syntax:
 
-```ts
-import * as fdc3 from '@finos/fdc3'
+```javascript
+import * as fdc3 from '@finos/fdc3';
 
 await fdc3.raiseIntent('ViewAnalysis', {
     type: 'fdc3.instrument',
     id: { ticker: 'AAPL' }
-})
+});
 ```
 
 It also includes a helper function you can use to wait for FDC3 to become available:
 
-```ts
+```javascript
 import { fdc3Ready, addIntentListener } from '@finos/fdc3'
 
 await fdc3Ready();
 
 const listener = await addIntentListener('ViewAnalysis', instrument => {
   // handle intent
-})
+});
 ```
 
 ##### See also
