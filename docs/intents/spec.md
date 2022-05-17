@@ -38,9 +38,9 @@ Combined with [context data](../context/overview) and [App Directory](../app-dir
 ### Ask for a chart to be displayed
 ```javascript
 const result = await fdc3.raiseIntent("ViewChart", {
- type: "fdc3.instrument",
- name: "IBM",
- id: {
+  type: "fdc3.instrument",
+  name: "IBM",
+  id: {
     ticker:"ibm"
   }
 });
@@ -49,9 +49,9 @@ const result = await fdc3.raiseIntent("ViewChart", {
 ### Ask a specific application to display a chart
 ```javascript
 const result = await fdc3.raiseIntent("ViewChart", {
- type: "fdc3.instrument",
- name: "IBM",
- id: {
+  type: "fdc3.instrument",
+  name: "IBM",
+  id: {
     ticker:"ibm"
   }
 }, "market-data-app");
@@ -65,9 +65,9 @@ const intentApps = await fdc3.findIntent("StartChat");
 ### Find available intents for a contact
 ```javascript
 const intentsAndApps = await fdc3.findIntentsByContext({
- type: "fdc3.contact",
- name: "Jane Doe",
- id: {
+  type: "fdc3.contact",
+  name: "Jane Doe",
+  id: {
     email:"jane@doe.com"
   }
 });
@@ -76,8 +76,8 @@ const intentsAndApps = await fdc3.findIntentsByContext({
 ## Using Intents without a context
 As the [Desktop Agent API](../api/ref/DesktopAgent) and [App Directory](../app-directory/overview) both
 require a context to be specified wherever intents are used, using an intent without a context is
-achieved through the use of an explcit `null` context type `fdc3.nothing`. By using an explicit type
-to represent a lack of context we allow applications to declare their support for a lack of 
+achieved through the use of the explicit `null` context type `fdc3.nothing`. By using an explicit type
+to represent an absence of context we allow applications to declare their support for an absence of 
 context.
 
 ```javascript
