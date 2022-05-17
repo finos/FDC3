@@ -15,7 +15,7 @@ import { Icon } from './Icon';
  */
 export interface AppMetadata extends AppIdentifier {
   /** The app name that was used with the open and raiseIntent calls in FDC3 <2.0. */
-  readonly name: string;
+  readonly name?: string;
 
   /** The Version of the application. */
   readonly version?: string;

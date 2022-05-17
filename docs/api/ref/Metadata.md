@@ -4,26 +4,6 @@ title: Metadata
 
 FDC3 API operations return various types of metadata.
 
-## `AppIdentifier`
-
-Identifies an application, or instance of an application, and is used to target FDC3 API calls at specific applications.
-Will always include at least a `appId` property, which can be used with `fdc3.open`, `fdc3.raiseIntent` etc..
-If the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.
-
-
-```ts
-interface AppIdentifier {
-  /** The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root' */
-  readonly appId: string;
-  /** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/
-  readonly instanceId?: string;
-}
-```
-### See also
-* [`AppMetadata`]#appmetadata)
-* [`DesktopAgent.open`](DesktopAgent#open)
-* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-
 ## `AppIntent`
 
 ```ts
@@ -38,7 +18,8 @@ interface AppIntent {
 An interface that represents the binding of an intent to apps, returned as part of intent disocvery.
 For each intent, it reference the applications that support that intent.
 
-### See also
+#### See also
+
 * [`AppMetadata`]#appmetadata)
 * [`IntentMetadata`](#intentmetadata)
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
@@ -49,7 +30,7 @@ For each intent, it reference the applications that support that intent.
 ```ts
 interface AppMetadata extends AppIdentifier {
   /** The app name that was used with the open and raiseIntent calls in FDC3 <2.0. */
-  readonly name: string;
+  readonly name?: string;
 
   /** The Version of the application. */
   readonly version?: string;
@@ -87,12 +68,13 @@ The additional information from an app directory can aid in rendering UI element
 Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc..
 
 #### See also
+
+* [`AppIdentifier`](Types#AppIdentifier)
 * [`AppIntent.apps`](#appintent)
-* [`Icon`](Types#icon)
+* [`Icon`](#icon)
 * [`DesktopAgent.open`](DesktopAgent#open)
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-
 
 ## `DisplayMetadata`
 
@@ -116,8 +98,56 @@ interface DisplayMetadata {
 A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
 
 #### See also
+
 * [`Channel`](Channel)
 * [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
+
+## `Icon`
+
+```typescript
+interface Icon {
+  src: string;
+  size?: string;
+  type?: string;
+}
+```
+
+AppMetadata includes an icons property allowing multiple icon types to be specified. Various properties may be used by the Desktop Agent to decide which icon is the most suitable to be used considering the application chooser UI, device DPI and formats supported by the system.
+
+#### Example
+
+```js
+"icons": [
+  {
+    "src": "https://app.foo.icon/app_icons/lowres.webp",
+    "size": "48x48",
+    "type": "image/webp"
+  },
+  {
+    "src": "https://app.foo.icon/app_icons/hd_hi.svg",
+    "size": "72x72",
+    "type": "image/svg+xml"
+  }
+]
+```
+
+#### Properties
+
+#### `src`
+
+The fully qualified url to the icon.
+
+#### `size`
+
+The dimension of the icon using formatted as "<height>x<width>"
+
+#### `type`
+
+The media type of the icon. If not provided the Desktop agent may refer to the src file extension.
+
+#### See also
+
+* [`AppMetadata`](Metadata#appmetadata)
 
 ## `ImplementationMetadata`
 
@@ -136,7 +166,8 @@ interface ImplementationMetadata {
 
 Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification and the name of the provider of the implementation.
 
-### See also
+#### See also
+
 * [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
 
 ## `IntentMetadata`
@@ -153,7 +184,8 @@ interface IntentMetadata {
 The interface used to describe an intent within the platform.
 
 
-### See also
+#### See also
+
 * [`AppIntent.intent`](#appintent)
 
 ## `IntentResolution`
@@ -198,6 +230,7 @@ interface IntentResolution {
 IntentResolution provides a standard format for data returned upon resolving an intent.
 
 #### Examples
+
 ```js
 //resolve a "Chain" type intent
 let resolution = await agent.raiseIntent("intentName", context);
@@ -215,7 +248,7 @@ catch (err) { ... }
 //resolve a "Client-Service" type intent with a data or channel response
 let resolution = await agent.raiseIntent("intentName", context);
 try {
-	  const result = await resolution.getResult();
+    const result = await resolution.getResult();
     if (result && result.broadcast) { //detect whether the result is Context or a Channel
         console.log(`${resolution.source} returned a channel with id ${result.id}`);
     } else if (result){
@@ -228,7 +261,8 @@ try {
 }
 ```
 
-### See also
+#### See also
+
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 * [`TargetApp`](Types#targetapp)
