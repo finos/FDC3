@@ -258,49 +258,59 @@ try {
 ```
 
 ### Register an Intent Handler
+
 Applications need to let the system know the intents they can support.  Typically, this is done via registration with an [App Directory](../app-directory/spec).  It is also possible for intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  Although dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
 
 When an instance of an application is launched, it is expected to add an [`IntentHandler`](ref/Types#intenthandler) function to the desktop agent for each intent it has registered by calling the [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) function of the Desktop Agent. Doing so allows the Desktop Agent to pass incoming intents and contexts to that instance of the application. Hence, if the application instance was spawned in response to the raised intent, then the Desktop Agent must wait for the relevant intent listener to be added by that instance, before it can deliver the intent and context to it. In order to facilitate accurate error responses, calls to `fdc3.raiseIntent` should not return an `IntentResolution` until the intent handler has been added and the intent delivered to the target app.
 
-#### Compliance with Intent Standards
+### Originating App Metadata
+
+Optional metadata about each intent & context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation to registered intent handlers. As this metadata is optional, apps making use of it MUST handle cases where it is not provided.
+
+### Compliance with Intent Standards
+
 Intents represent a contract with expected behaviour if an app asserts that it supports the intent.  Where this contract is enforceable by schema (for example, return object types), the FDC3 API implementation SHOULD enforce compliance and return an error if the interface is not met.
 
 It is expected that App Directories SHOULD also curate listed apps and ensure that they are complying with declared intents.
-
 
 ## Context Channels
 
 Context channels allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.  Use cases for channels include color linking between applications to automate the sharing of context and topic based pub/sub such as theme.
 
 ### Types of Channel
+
 There are three types of channels, which have different visibility and discoverability semantics:
 
-1. **_User channels_**, which: 
-    * facilitate the creation of user-controlled context links between applications (often via the selection of a color channel),
-    * are created and named by the desktop agent,
-    * are discoverable (via the [`getUserChannels()`](ref/DesktopAgent#getuserchannels) API call),
-    * can be 'joined' (via the [`joinUserChannel()`](ref/DesktopAgent#joinuserchannel) API call).
+1. **_User channels_**, which:
 
-    > **Note:** Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels).
+  * facilitate the creation of user-controlled context links between applications (often via the selection of a color channel),
+  * are created and named by the desktop agent,
+  * are discoverable (via the [`getUserChannels()`](ref/DesktopAgent#getuserchannels) API call),
+  * can be 'joined' (via the [`joinUserChannel()`](ref/DesktopAgent#joinuserchannel) API call).
 
-    > **Note:** Earlier versions of FDC3 included the concept of a 'global' system channel
-    which was deprecated in FDC3 1.2 and removed in FDC3 2.0.
+  > **Note:** Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels).
 
-2. **_App channels_**, which: 
-    * facilitate developer controlled messaging between applications,
-    * are created and named by applications (via the [`getOrCreateChannel()`](ref/DesktopAgent#getorcreatechannel) API call),
-    * are not discoverable,
-    * are interacted with via the [Channel API](ref/Channel) (accessed via the desktop agent [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API call)
+  > **Note:** Earlier versions of FDC3 included the concept of a 'global' system channel
+  which was deprecated in FDC3 1.2 and removed in FDC3 2.0.
 
-3. **_Private_** channels, which: 
-    * facilitate private communication between two parties, 
-    * have an auto-generated identity and can only be retrieved via a raised intent.
+2. **_App channels_**, which:
+
+  * facilitate developer controlled messaging between applications,
+  * are created and named by applications (via the [`getOrCreateChannel()`](ref/DesktopAgent#getorcreatechannel) API call),
+  * are not discoverable,
+  * are interacted with via the [Channel API](ref/Channel) (accessed via the desktop agent [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API call)
+
+3. **_Private_** channels, which:
+
+  * facilitate private communication between two parties, 
+  * have an auto-generated identity and can only be retrieved via a raised intent.
 
 Channels are interacted with via `broadcast` and `addContextListener` functions, allowing an application to send and receive Context objects via the channel. For User channels, these functions are provided on the Desktop Agent, e.g. [`fdc3.broadcast(context)`](ref/DesktopAgent#broadcast), and apply to channels joined via [`fdc3.joinUserChannel`](ref/DesktopAgent#joinuserchannel). For App channels, a channel object must be retrieved, via [`fdc3.getOrCreateChannel(channelName)`](ref/DesktopAgent#getorcreatechannel), which provides the functions, i.e. [`myChannel.broadcast(context)`](ref/Channel#broadcast) and [`myChannel.addContextListener(context)`](ref/Channel#addcontextlistener). For `PrivateChannels`, a channel object must also be retrieved, but via an intent raised with [`fdc3.raiseIntent(intent, context)`](ref/DesktopAgent#raiseintent) and returned as an [`IntentResult`](ref/Types#intentresult).
 
 Channel implementations SHOULD ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are also listening on the channel.
 
 ### Joining User Channels
+
 Apps can join _User channels_.  An app can only be joined to one User channel at a time.  
 
 When an app is joined to a User channel, calls to [`fdc3.broadcast`](ref/DesktopAgent#broadcast) will be routed to that channel and listeners added through [`fdc3.addContextListener`](ref/DesktopAgent#addcontextlistener) will receive context broadcasts from other apps also joined to that channel. If an app is not joined to a User channel [`fdc3.broadcast`](ref/DesktopAgent#broadcast) will be a no-op and handler functions added with  [`fdc3.addContextListener`](ref/DesktopAgent#addcontextlistener) will not receive any broadcasts. However, apps can still choose to listen and broadcast to specific channels (both User and App channels) via the methods on the [`Channel`](ref/Channel) class.
@@ -389,3 +399,6 @@ The [Context specification](../../context/spec#assumptions) recommends that comp
 
 To facilitate context linking in such situations it is recommended that applications `broadcast` each context type that other apps (listening on a User Channel or App Channel) may wish to process, starting with the simpler types, followed by the complex type. Doing so allows applications to filter the context types they receive by adding listeners for specific context types - but requires that the application broadcasting context make multiple broadcast calls in quick succession when sharing its context.
 
+### Originating App Metadata
+
+Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation to registered context handlers on all types of channel. As this metadata is optional, apps making use of it MUST handle cases where it is not provided.

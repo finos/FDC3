@@ -19,10 +19,12 @@ interface Channel {
   type: "user" | "app" | "private";
   displayMetadata?: DisplayMetadata;
 
-  // methods
+  // functions
   broadcast(context: Context): Promise<void>;
   getCurrentContext(contextType?: string): Promise<Context|null>;
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+  
+  //deprecated functions
   /**
    * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
    */
@@ -68,8 +70,7 @@ DisplayMetadata can be used to provide display hints for User Channels intended 
 
 * [`DisplayMetadata`](Metadata#displaymetadata)
 
-## Methods
-
+## Functions
 
 ### `addContextListener`
 
@@ -81,15 +82,7 @@ Adds a listener for incoming contexts of the specified _context type_ whenever a
 
 If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the [`fdc3.addContextListener`](DesktopAgent#addcontextlistener) function). Apps wishing to access to the current context of the channel should instead call the [`getCurrentContext(contextType)`](#getcurrentcontext) function.
 
-
-```ts
-/**
- * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
- */
-public addContextListener(handler: ContextHandler): Promise<Listener>;
-```
-Adds a listener for incoming contexts whenever a broadcast happens on the channel.
-
+Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
 
 #### Examples
 
@@ -210,3 +203,19 @@ try {
 * [`broadcast`](#broadcast)
 * [`addContextListener`](#addcontextlistener)
 
+## Deprecated Functions
+
+### `addContextListener` (deprecated)
+
+```ts
+/**
+ * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
+ */
+public addContextListener(handler: ContextHandler): Promise<Listener>;
+```
+
+Adds a listener for incoming contexts whenever a broadcast happens on the channel.
+
+#### See also
+
+* [`addContextListener`](#addcontextlistener)

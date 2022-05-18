@@ -36,30 +36,37 @@ This means that it must at least have a `type` property that indicates what type
 ## `ContextHandler`
 
 ```typescript
-type ContextHandler = (context: Context) => void;
+type ContextHandler = (context: Context, metadata?: ContextMetadata) => void;
 ```
 
-Describes a callback that handles a context event.
+Describes a callback that handles a context event. Optional metadata about the context message, including the app that originated the message, may be provided.
 
 Used when attaching listeners for context broadcasts.
 
+Optional metadata about the context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+
 #### See also
+
 * [`Context`](#context)
+* [`ContextMetadata`](Metadata#contextmetadata)
 * [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
 * [`Channel.addContextListener`](Channel#addcontextlistener)
 
 ## `IntentHandler`
 
 ```typescript
-type IntentHandler = (context: Context) => Promise<IntentResult> | void;
+type IntentHandler = (context: Context, metadata?: ContextMetadata) => Promise<IntentResult> | void;
 ```
 
 Describes a callback that handles a context event and may return a promise of a Context or Channel object to be returned to the application that raised the intent.
 
 Used when attaching listeners for raised intents.
 
+Optional metadata about the intent & context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+
 #### See also
 * [`Context`](#context)
+* [`ContextMetadata`](Metadata#contextmetadata)
 * [`PrivateChannel`](PrivateChannel)
 * [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 * [`Channel.addContextListener`](Channel#addcontextlistener)
