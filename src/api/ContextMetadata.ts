@@ -3,7 +3,7 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { AppMetadata } from "./AppMetadata";
+import { AppMetadata } from './AppMetadata';
 
 /**
  * Metadata relating to a context or intent and context received through the
