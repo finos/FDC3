@@ -3,6 +3,7 @@
 node_modules
 dist
 coverage
+.project
 
 lib/core/metadata.js
 lib/core/MetadataBlog.js
