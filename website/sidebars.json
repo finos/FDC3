@@ -2,20 +2,20 @@
   "docs": {
     "Getting Started": [
       "fdc3-intro",
-      "supported-platforms",
       "why-fdc3",
-      "fdc3-charter",
+      "fdc3-charter"
+    ],
+    "FDC3 Standard": [
+      "fdc3-standard",
       "fdc3-compliance",
       "fdc3-glossary",
-      "references"
-    ],
-    "API": [
-      "api/overview",
-      "api/spec",
+      "references",
+      "supported-platforms",
       {
         "type": "subcategory",
-        "label": "Reference",
+        "label": "API Part",
         "ids": [
+          "api/spec",
           "api/ref/DesktopAgent",
           "api/ref/Channel",
           "api/ref/PrivateChannel",
@@ -25,15 +25,13 @@
           "api/ref/Metadata",
           "api/ref/Errors"
         ]
-      }
-    ],
-    "Intents": [
-      "intents/overview",
-      "intents/spec",
+      },
       {
         "type": "subcategory",
-        "label": "Reference",
+        "label": "Intents Part",
         "ids": [
+          "intents/overview",
+          "intents/spec",
           "intents/ref/StartCall",
           "intents/ref/StartChat",
           "intents/ref/ViewChart",
@@ -51,15 +49,13 @@
         "ids": [
           "intents/ref/ViewContact"
         ]
-      }
-    ],
-    "Context Data": [
-      "context/overview",
-      "context/spec",
+      },
       {
         "type": "subcategory",
-        "label": "Reference",
+        "label": "Context Data Part",
         "ids": [
+          "context/overview",
+          "context/spec",
           "context/ref/Context",
           "context/ref/Contact",
           "context/ref/ContactList",
@@ -71,13 +67,15 @@
           "context/ref/Portfolio",
           "context/ref/Nothing"
         ]
+      },
+      {
+        "type": "subcategory",
+        "label": "App Directory Part",
+        "ids": [
+          "app-directory/overview",
+          "app-directory/spec"
+        ]
       }
-    ],
-    "App Directory": [
-      "app-directory/overview",
-      "app-directory/discovery",
-      "app-directory/usage",
-      "app-directory/spec"
     ]
   },
   "use-cases": {

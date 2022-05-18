@@ -112,24 +112,28 @@ class Index extends React.Component {
             image: `${baseUrl}img/feature-api.svg`,
             imageAlign: 'top',
             title: 'API',
+            key: 'API',
           },
           {
             content: `Use [standardized verbs](${docUrl('intents/overview')}) to instruct other apps to take an action`,
             image: `${baseUrl}img/feature-intents.svg`,
             imageAlign: 'top',
             title: 'Intents',
+            key: 'Intents',
           },
           {
             content: `Share [context](${docUrl('context/overview')}) between apps to eliminate re-keying and streamline workflow`,
             image: `${baseUrl}img/feature-context.svg`,
             imageAlign: 'top',
             title: 'Context Data',
+            key: 'Context Data',
           },
           {
             content: `Discover trusted apps that can take part in a FDC3 workflow using an [App directory](${docUrl('app-directory/overview')}).`,
             image: `${baseUrl}img/feature-appd.svg`,
             imageAlign: 'top',
             title: 'App Directory',
+            key: 'App Directory',
             link: `${baseUrl}/app-directory/overview`
           }
           
@@ -140,7 +144,7 @@ class Index extends React.Component {
     const FeatureCallout = () => (
       <div  className="featureShowcaseSection  paddingBottom" style={{textAlign: 'center'}}>
         <h2>Use Cases</h2>
-        <MarkdownBlock>{`Document business [use cases](${docUrl('use-cases/overview')}) that drive FDC3 interoperability standards.`}</MarkdownBlock>
+        <MarkdownBlock>{`Documented business [use cases](${docUrl('use-cases/overview')}) that drive FDC3 interoperability standards.`}</MarkdownBlock>
       </div>
     );
 
@@ -156,7 +160,7 @@ class Index extends React.Component {
       return (
         <div className="userShowcase productShowcaseSection paddingTop paddingBottom">
           <h2>Who is Using FDC3?</h2>
-          <p>The Financial Desktop Connectivity and Collaboration Consortium (FDC3) was founded in 2017 by <a href="https://openfin.co">OpenFin</a> and contributed to <a href="https://finos.org">FINOS</a>.  The FDC3 standards are created and used by leading organizations across the financial industry.</p>
+          <p>The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standards are created and used by <a href="/users">leading organizations across the financial industry</a>.</p>
           <Showcase users={pinnedUsers} />
           {/* exclude button to users page for now, all users shown on main page */}
           {/* <div className="more-users">
