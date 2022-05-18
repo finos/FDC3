@@ -8,5 +8,4 @@ export enum Intents {
   ViewInstrument = 'ViewInstrument',
   ViewAnalysis = 'ViewAnalysis',
   ViewHoldings = 'ViewHoldings',
-  ViewProfile = 'ViewProfile',
 }
