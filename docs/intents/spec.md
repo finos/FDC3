@@ -124,6 +124,7 @@ const intentsAndApps = await fdc3.findIntentsByContext({
   }
 });
 ```
+
 ## Standard Intents
 
 A list of standardized intents are defined in the following pages:
