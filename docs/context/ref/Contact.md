@@ -48,7 +48,7 @@ Other Types
 Intents
 - [StartChat](../../intents/ref/StartChat)
 - [StartCall](../../intents/ref/StartCall)
-- [ViewContact](../../intents/ref/ViewContact)
+- [ViewProfile](../../intents/ref/ViewProfile)
 
 FINOS Financial Objects
 - [Contact](https://fo.finos.org/docs/objects/contact)
