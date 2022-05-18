@@ -1,4 +1,5 @@
 ---
+id: fdc3-charter
 title: FDC3 Charter
 ---
 
@@ -17,7 +18,7 @@ This Standard is focused specifically on the desktop.  Activities of the desktop
 * Interoperability between mobile apps
 * Interoperability via REST or other client to server communication
 
-Note: While these areas are out of scope, compatibility with Mobile and/or REST are still valid points of consideration for the FDC3.
+Note: While these areas are out of scope, compatibility with Mobile and/or REST are still valid points of consideration for FDC3.
 
 ### Success Criteria
 * Commitment from major banks and application vendors to support the standards set out by the FDC3
