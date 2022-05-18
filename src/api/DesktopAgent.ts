@@ -289,6 +289,8 @@ export interface DesktopAgent {
    * The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.
    *
    * The `PrivateChannel` type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
+   * 
+   * Optional metadata about the raised intent, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
    *
    * ```javascript
    * //Handle a raised intent
@@ -338,6 +340,10 @@ export interface DesktopAgent {
   /**
    * Adds a listener for incoming context broadcasts from the Desktop Agent via User channels. If the consumer is only interested in a context of a particular type, they can they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
    * Context broadcasts are only received from apps that are joined to the same User channel as the listening application, hence, if the application is not currently joined to a channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
+   * 
+   * 
+   * Optional metadata about the context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+   * 
    * ```javascript
    * // any context
    * const listener = fdc3.addContextListener(null, context => { ... });
