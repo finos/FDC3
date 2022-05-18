@@ -20,7 +20,7 @@ For each intent, it reference the applications that support that intent.
 
 #### See also
 
-* [`AppMetadata`]#appmetadata)
+* [`AppMetadata`](#appmetadata)
 * [`IntentMetadata`](#intentmetadata)
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
