@@ -68,8 +68,12 @@ A list of standardized intents are defined in the following pages:
 * [`StartCall`](ref/StartCall)
 * [`StartChat`](ref/StartChat)
 * [`ViewChart`](ref/ViewChart)
-* [`ViewContact`](ref/ViewContact)
 * [`ViewQuote`](ref/ViewQuote)
 * [`ViewNews`](ref/ViewNews)
-* [`ViewInstrument`](ref/ViewInstrument)
 * [`ViewAnalysis`](ref/ViewAnalysis)
+* [`ViewHoldings`](ref/ViewHoldings)
+* [`ViewInstrument`](ref/ViewInstrument)
+* [`ViewProfile`](ref/ViewProfile)
+
+## Deprecated Intents ##
+* [`ViewContact`](ref/ViewContact)
