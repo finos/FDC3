@@ -713,7 +713,7 @@ Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwar
 open(name: String, context?: Context): Promise<AppMetadata>;
 ```
 
-Version of `open` that launches an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
+Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
 
 #### See also
 
@@ -725,7 +725,7 @@ Version of `open` that launches an app by by name rather than `AppIdentifier`. P
 raiseIntent(intent: string, context: Context, name: String): Promise<IntentResolution>;
 ```
 
-Version of `raiseIntent` that targets an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
+Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
 
 #### See also
 
@@ -737,7 +737,7 @@ Version of `raiseIntent` that targets an app by by name rather than `AppIdentifi
 raiseIntentForContext(context: Context, name: String): Promise<IntentResolution>;;
 ```
 
-Version of `raiseIntentForContext` that targets an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
+Version of `raiseIntentForContext` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
 
 #### See also
 

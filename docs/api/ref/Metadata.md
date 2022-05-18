@@ -8,7 +8,7 @@ FDC3 API operations return various types of metadata.
 
 ```ts
 interface AppIntent {
-  /** Details of the intet who's relationship to resolving applications is being described. */
+  /** Details of the intent who's relationship to resolving applications is being described. */
   readonly intent: IntentMetadata;
   /** Details of applications that can resolve the intent. */
   readonly apps: Array<AppMetadata>;
@@ -32,7 +32,7 @@ interface AppMetadata extends AppIdentifier {
   /** The app name that was used with the open and raiseIntent calls in FDC3 <2.0. */
   readonly name?: string;
 
-  /** The Version of the application. */
+  /** The version of the application. */
   readonly version?: string;
 
   /** An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set. */
@@ -139,11 +139,11 @@ The fully qualified url to the icon.
 
 #### `size`
 
-The dimension of the icon using formatted as "<height>x<width>"
+The dimensions of the icon using formatted as "<height>x<width>"
 
 #### `type`
 
-The media type of the icon. If not provided the Desktop agent may refer to the src file extension.
+The media type of the icon. If not provided the Desktop Agent may refer to the src file extension.
 
 #### See also
 
