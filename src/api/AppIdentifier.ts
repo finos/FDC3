@@ -4,9 +4,9 @@
  */
 
 /**
- * Identifies an application, or instance of an application, and is used to target FDC3 API calls at specific applications.
+ * Identifies an application, or instance of an application, and is used to target FDC3 API calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application instances.
  *
- * Will always include at least a `appId` property, which can be used with `fdc3.open`, `fdc3.raiseIntent` etc..
+ * Will always include at least an `appId` field, which uniquely identifies a specific app.
  *
  * If the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.
  */

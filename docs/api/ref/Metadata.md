@@ -29,7 +29,11 @@ For each intent, it reference the applications that support that intent.
 
 ```ts
 interface AppMetadata extends AppIdentifier {
-  /** The app name that was used with the open and raiseIntent calls in FDC3 <2.0. */
+  /** 
+      The 'friendly' app name. 
+      This field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now require an `AppIdentifier` wth `appId` set. 
+      Note that for display purposes the `title` field should be used, if set, in preference to this field.
+   */
   readonly name?: string;
 
   /** The version of the application. */
