@@ -1,5 +1,6 @@
 ---
-title: FDC3 Compliance
+id: fdc3-compliance
+title: Compliance
 ---
 
 FDC3 standards follow the IETF best practices for keywords to Indicate Requirement levels: [RFC 2119](https://tools.ietf.org/html/rfc2119).  Documentation should be updated as needed to reflect this.
