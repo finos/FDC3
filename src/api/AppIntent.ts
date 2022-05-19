@@ -10,7 +10,7 @@ import { IntentMetadata } from './IntentMetadata';
  * An interface that relates an intent to apps
  */
 export interface AppIntent {
-  /** Details of the intent who's relationship to resolving applications is being described. */
+  /** Details of the intent whose relationship to resolving applications is being described. */
   readonly intent: IntentMetadata;
   /** Details of applications that can resolve the intent. */
   readonly apps: Array<AppMetadata>;
