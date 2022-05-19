@@ -7,7 +7,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
-* Updated for Intent Naming conventions.  Added hyperlinks for existing Intent spec definitions. Changes based on ([#701](https://github.com/finos/FDC3/pull/701))
 * Definition of the `icons` property of `AppMetadata`, based on PWA icon spec ([#319](https://github.com/finos/FDC3/pull/319))
 * Added support for raiseIntent without a context via the addition of the `fdc3.nothing` context type ([#375](https://github.com/finos/FDC3/pull/375))
 * Added [**FDC3 Workbench**](https://fdc3.finos.org/toolbox/fdc3-workbench/), an FDC3 API developer application ([#457](https://github.com/finos/FDC3/pull/457))
@@ -23,6 +22,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added details of FDC3's existing versioning and deprecation policies to the FDC3 compliance page ([#539](https://github.com/finos/FDC3/pull/539))
 * Added a new experimental features policy, which exempts features designated as experimental from the versioning and deprecation policies, to the FDC3 compliance page ([#549](https://github.com/finos/FDC3/pull/549))
 * Add `IntentDeliveryFailed` to the `ResolveError` enumeration to be used when delivery of an intent and context to a targetted app or instance fails. ([#601](https://github.com/finos/FDC3/pull/601))
+* Added a `ViewResearch` Intent to be used when a user wants to see the latest research on a particular stock ([#623](https://github.com/finos/FDC3/pull/623))
+
 
 ### Changed
 * Consolidated `Listener` documentation with other types ([#404](https://github.com/finos/FDC3/pull/404))
@@ -34,6 +35,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Moved the Icon type definition into the Types documentation page for consistency with other types. ([#493](https://github.com/finos/FDC3/pull/493)
 * The `fdc3.joinChannel()`, `fdc3.getCurrentChannel()` and `fdc3.leaveCurrentChannel()` functions have been made optional for FDC3 API compliance, but are recommended through the application of the SHOULD keyword. ([#512](https://github.com/finos/FDC3/pull/512)) 
 * All DesktopAgent and Channel API functions are now async for consistency, changing the return type of the `broadcast`, `addIntentListener`, `addContextListener` and `getInfo` functions ([#516](https://github.com/finos/FDC3/pull/516))
+* Updated Intent Naming conventions.  Added hyperlinks for existing Intent spec definitions. Changes based on ([#701](https://github.com/finos/FDC3/pull/701))
+
 
 ### Deprecated
 * Removed details of the 'global' channel that was deprecated in FDC3 1.2. ([#496](https://github.com/finos/FDC3/pull/496))

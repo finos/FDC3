@@ -46,3 +46,4 @@ Context
 
 Intents
 - [ViewChart](ViewChart)
+- [ViewResearch](ViewResearch)
