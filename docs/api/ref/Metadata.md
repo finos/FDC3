@@ -12,10 +12,12 @@ interface AppIntent {
   readonly apps: Array<AppMetadata>;
 }
 ```
+
 An interface that represents the binding of an intent to apps, returned as part of intent disocvery.
 For each intent, it reference the applications that support that intent.
 
 #### See also
+
 * [`AppMetadata`](#appmetadata)
 * [`IntentMetadata`](#intentmetadata)
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
@@ -72,11 +74,11 @@ Optionally, extra information from the app directory can be returned, to aid in 
 In situations where a desktop agent connects to multiple app directories or multiple versions of the same app exists in a single app directory, it may be necessary to specify `appId` or `version` to target applications that share the same name.
 
 #### See also
+
 * [`AppIntent.apps`](#appintent)
 * [`Icon`](Types#icon)
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-
 
 ## `DisplayMetadata`
 
@@ -100,6 +102,7 @@ interface DisplayMetadata {
 A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
 
 #### See also
+
 * [`Channel`](Channel)
 * [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
 
@@ -111,16 +114,23 @@ interface ImplementationMetadata {
    *  The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
    */
   readonly fdc3Version: string;
+
   /** The name of the provider of the FDC3 Desktop Agent Implementation (e.g. Finsemble, Glue42, OpenFin etc.). */
   readonly provider: string;
+  
   /** The version of the provider of the FDC3 Desktop Agent Implementation (e.g. 5.3.0). */
   readonly providerVersion?: string;
+
+  /** The calling application instance's own metadata, according to the Desktop Agent (MUST include at least the `appId` and `instanceId`). */
+  readonly appMetadata: AppMetadata;
 }
 ```
 
-Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification and the name of the provider of the implementation.
+Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number and the metadata of the calling application according to the Desktop Agent.
 
 #### See also
+
+* [`AppMetadata`](#appmetadata)
 * [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
 
 ## `IntentMetadata`
@@ -136,8 +146,8 @@ interface IntentMetadata {
 
 The interface used to describe an intent within the platform.
 
-
 #### See also
+
 * [`AppIntent.intent`](#appintent)
 
 ## `IntentResolution`
@@ -182,6 +192,7 @@ interface IntentResolution {
 IntentResolution provides a standard format for data returned upon resolving an intent.
 
 #### Examples
+
 ```js
 //resolve a "Chain" type intent
 let resolution = await agent.raiseIntent("intentName", context);
@@ -199,7 +210,7 @@ catch (err) { ... }
 //resolve a "Client-Service" type intent with a data or channel response
 let resolution = await agent.raiseIntent("intentName", context);
 try {
-	  const result = await resolution.getResult();
+   const result = await resolution.getResult();
     if (result && result.broadcast) { //detect whether the result is Context or a Channel
         console.log(`${resolution.source} returned a channel with id ${result.id}`);
     } else if (result){
@@ -213,6 +224,7 @@ try {
 ```
 
 #### See also
+
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 * [`TargetApp`](Types#targetapp)
