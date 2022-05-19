@@ -14,7 +14,11 @@ import { Icon } from './Icon';
  * Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc.
  */
 export interface AppMetadata extends AppIdentifier {
-  /** The app name that was used with the open and raiseIntent calls in FDC3 <2.0. */
+  /** 
+      The 'friendly' app name. 
+      This field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now require an `AppIdentifier` wth `appId` set. 
+      Note that for display purposes the `title` field should be used, if set, in preference to this field.
+   */
   readonly name?: string;
 
   /** The Version of the application. */
