@@ -138,7 +138,7 @@ A list of standardized intents are defined in the following pages:
 * [`ViewHoldings`](ref/ViewHoldings)
 * [`ViewInstrument`](ref/ViewInstrument)
 * [`ViewProfile`](ref/ViewProfile)
-* [ViewResearch](ref/ViewResearch)
+* [`ViewResearch`](ref/ViewResearch)
 
 ### Deprecated Intents
 
