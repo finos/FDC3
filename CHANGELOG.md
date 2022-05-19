@@ -22,8 +22,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added details of FDC3's existing versioning and deprecation policies to the FDC3 compliance page ([#539](https://github.com/finos/FDC3/pull/539))
 * Added a new experimental features policy, which exempts features designated as experimental from the versioning and deprecation policies, to the FDC3 compliance page ([#549](https://github.com/finos/FDC3/pull/549))
 * Add `IntentDeliveryFailed` to the `ResolveError` enumeration to be used when delivery of an intent and context to a targetted app or instance fails. ([#601](https://github.com/finos/FDC3/pull/601))
+* Addition of `ViewProfile` and deprecation of `ViewContact`. Changes based on ([#619](https://github.com/finos/FDC3/pull/619))
 * Added a new context type `ChatInitSettings` to initialize a chat creation with new optional parameters ([#620](https://github.com/finos/FDC3/pull/620))
 * Added a `ViewResearch` Intent to be used when a user wants to see the latest research on a particular stock ([#623](https://github.com/finos/FDC3/pull/623))
+* Updated for Intent Naming conventions.  Added hyperlinks for existing Intent spec definitions. Changes based on ([#701](https://github.com/finos/FDC3/pull/701))
 
 
 ### Changed
@@ -40,6 +42,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 ### Deprecated
+* Deprecation of `ViewContact`. Changes based on ([#619](https://github.com/finos/FDC3/pull/619))
 * Removed details of the 'global' channel that was deprecated in FDC3 1.2. ([#496](https://github.com/finos/FDC3/pull/496))
 
 ### Fixed

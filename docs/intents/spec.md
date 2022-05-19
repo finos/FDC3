@@ -22,7 +22,6 @@ Naming of Intents SHOULD follow the below guidelines:
 > **Note:** The naming guidelines should be adhered to when creating future Intents.  This is to ensure they meet the criteria for addition to the FDC3 standard and to provide a consistent user experience.
 
 ### Characteristics
-
 When creating Intents they should be:
 
 * Recognizable
@@ -146,7 +145,7 @@ A list of standardized intents are defined in the following pages:
 
 ## Using Intents without a context
 
-As the [Desktop Agent API](../api/ref/DesktopAgent) and [App Directory](../app-directory/overview) both require a context to be specified wherever intents are used, using an intent without a context isachieved through the use of the explicit `null` context type `fdc3.nothing`. By using an explicit type to represent an absence of context we allow applications to declare their support for an absence of context.
+As the [Desktop Agent API](../api/ref/DesktopAgent) and [App Directory](../app-directory/overview) both require a context to be specified wherever intents are used, using an intent without a context is achieved through the use of the explicit `null` context type `fdc3.nothing`. By using an explicit type to represent an absence of context we allow applications to declare their support for an absence of context.
 
 ```javascript
 const intentsAndApps = await fdc3.findIntentsByContext({
