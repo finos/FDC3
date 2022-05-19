@@ -80,6 +80,13 @@ The identifier "foo" is proprietary, an application that can use it is free to d
 The following are standard FDC3 context types.
  __Note:__ The specification for these types are shared with the [FINOS Financial Objects](https://fo.finos.org) definitions, JSON schemas are hosted with FDC3.
 
+- __fdc3.chat.initSettings__
+    - Initialization parameters to start a new chat
+    - [Financial Objects Specification](https://fo.finos.org/docs/objects/chatInitSettings)
+    - [schema](/schemas/next/chatInitSettings.schema.json)
+- __fdc3.chat.roomRef__
+    - Room reference object to specify a specific chat room
+    - [schema](/schemas/next/chatRoomRef.schema.json)
 - __fdc3.contact__
     - A person contact that can be engaged with through email, calling, messaging, CMS, etc.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/contact)
@@ -120,6 +127,34 @@ __Note:__ The below examples show how the base context data interface can be use
 
 ### Examples
 
+#### ChatInitSettings
+```json
+{
+    "type": "fdc3.chat.initSettings",
+    "chatName": "Issue #123",
+    "members": [{
+        "type": "fdc3.contact",
+        "name": "Jane Doe",
+        "id": {
+            "email": "jane@mail.com"
+        }
+    },{
+        "type": "fdc3.contact",
+        "name": "John Doe",
+        "id": {
+            "email": "john@mail.com"
+        },
+    }],
+    "options": {
+        "groupRecipients": true, 
+        "public": false, 
+        "allowHistoryBrowsing": true,
+        "allowMessageCopy": true,
+        "allowAddUser": false, 
+    }
+    "initMessage": "Hello both!"
+}
+```
 #### Contact
 ```json
 {
