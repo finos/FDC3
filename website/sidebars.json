@@ -61,15 +61,16 @@
         "label": "Reference",
         "ids": [
           "context/ref/Context",
+          "context/ref/ChatInitSettings",
           "context/ref/Contact",
           "context/ref/ContactList",
+          "context/ref/Country",
           "context/ref/Instrument",
           "context/ref/InstrumentList",
+          "context/ref/Nothing",
           "context/ref/Organization",
-          "context/ref/Country",
-          "context/ref/Position",
           "context/ref/Portfolio",
-          "context/ref/Nothing"
+          "context/ref/Position"
         ]
       }
     ],
