@@ -9,6 +9,8 @@
     "id": {
       "type": "object",
       "properties": {
+        "COUNTRY_ISOALPHA2": { "type": "string" },
+        "COUNTRY_ISOALPHA3": { "type": "string" },
         "ISOALPHA2": { "type": "string" },
         "ISOALPHA3": { "type": "string" }
       }

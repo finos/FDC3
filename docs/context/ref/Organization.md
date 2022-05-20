@@ -54,6 +54,8 @@ Other Types
 Intents
 - [ViewNews](../../intents/ref/ViewNews)
 - [ViewAnalysis](../../intents/ref/viewAnalysis)
+- [ViewProfile](../../intents/ref/ViewProfile)
+- [ViewResearch](../../intents/ref/ViewResearch)
 
 FINOS Financial Objects
 - [Organization](https://fo.finos.org/docs/objects/organization)

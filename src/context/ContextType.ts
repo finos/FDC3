@@ -9,6 +9,7 @@ export enum ContextTypes {
   Portfolio = 'fdc3.portfolio',
   Position = 'fdc3.position',
   Nothing = 'fdc3.nothing',
+  TimeRange = 'fdc3.timerange',
 }
 
 export type ContextType = ContextTypes | string;
