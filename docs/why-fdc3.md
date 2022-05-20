@@ -1,7 +1,7 @@
 ---
 id: why-fdc3
-sidebar_label: Why FDC3
-title: Why FDC3
+sidebar_label: Why FDC3?
+title: Why FDC3?
 ---
 
 ## Why look for FDC3-enabled applications?
