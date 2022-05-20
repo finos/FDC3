@@ -58,6 +58,7 @@
           "context/overview",
           "context/spec",
           "context/ref/Context",
+          "context/ref/Chart",
           "context/ref/ChatInitSettings",
           "context/ref/Contact",
           "context/ref/ContactList",
