@@ -5,6 +5,8 @@ title: ViewContact
 hide_title: true
 ---
 # `ViewContact`
+> **Note:** ViewContact has been deprecated in FDC3 2.0 in favour of the more general [ViewProfile](ViewProfile)
+
 
 View details for a contact.
 
