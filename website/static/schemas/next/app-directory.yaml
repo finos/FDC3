@@ -642,7 +642,7 @@ components:
             type: string
           description: >-
             A comma separated list of the types of contexts the intent offered by the application can process,  
-            where the first part of the context type is the namespace e.g."fdc3.contact", "org.symphony.contact"
+            where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
         resultType:
           type: string
           description: >-
@@ -703,7 +703,7 @@ components:
     LaunchDetails:
       description: >-
         The type specific launch details of the application. These details are intended to be 
-        vendor-agnostic and _MAY_ be duplicated or overridden by details provided in the hostManifests 
+        vendor-agnostic and MAY be duplicated or overridden by details provided in the hostManifests 
         object for a specific host.
       oneOf:
         - $ref: '#/components/schemas/WebAppDetails'
@@ -809,7 +809,7 @@ components:
           displayName: View Chart,
           contexts: [fdc3.instrument]
         }]
-        type: browser
+        type: web
         details:
           url: https://fdc3.finos.org/toolbox/fdc3-workbench/
         hostManifests: {
@@ -893,7 +893,7 @@ components:
               displayName: View Chart,
               contexts: [fdc3.instrument]
             }]
-            type: browser
+            type: web
             details:
               url: https://fdc3.finos.org/toolbox/fdc3-workbench/
             hostManifests: {
