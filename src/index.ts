@@ -17,6 +17,7 @@ export * from './api/IntentResolution';
 export * from './api/Listener';
 export * from './api/ImplementationMetadata';
 export * from './api/Methods';
+export * from './api/RecommendedChannels';
 export * from './context/ContextType';
 export * from './context/ContextTypes';
 export * from './intents/Intents';
