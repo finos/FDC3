@@ -809,7 +809,7 @@ components:
           displayName: View Chart,
           contexts: [fdc3.instrument]
         }]
-        type: browser
+        type: web
         details:
           url: https://fdc3.finos.org/toolbox/fdc3-workbench/
         hostManifests: {
@@ -893,7 +893,7 @@ components:
               displayName: View Chart,
               contexts: [fdc3.instrument]
             }]
-            type: browser
+            type: web
             details:
               url: https://fdc3.finos.org/toolbox/fdc3-workbench/
             hostManifests: {
