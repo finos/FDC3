@@ -212,7 +212,7 @@ This can be used to raise the intent against a specific app or app instance.
 
 If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
 
-Result types may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
+Result types may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested, the Desktop Agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
 
 #### Examples
 
@@ -290,7 +290,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 
 If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
 
-The optional `resultType` argument may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
+The optional `resultType` argument may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested, the Desktop Agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
 
 #### Example
 
@@ -352,7 +352,7 @@ await fdc3.raiseIntent(startChat.intent.name, context, selectedApp);
 getCurrentChannel() : Promise<Channel | null>;
 ```
 
-Optional function that returns the `Channel` object for the current User channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
+Optional function that returns the `Channel` object for the current User channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the Desktop Agent, rather than calling this function directly.
 
 Returns `null` if the app is not joined to a channel.
 
@@ -389,11 +389,11 @@ if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
 }
 ```
 
-The `ImplementationMetadata` object returned also includes the metadata for the calling application, according to the desktop agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
+The `ImplementationMetadata` object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
 
 ```js
-let implMetadata = await fdc3.getInfo();
-let {appId, instanceId} = impleMetadata.appMetadata;
+let implementationMetadata = await fdc3.getInfo();
+let {appId, instanceId} = implementationMetadata.appMetadata;
 
 ```
 
@@ -519,7 +519,7 @@ Alias to the [`getUserChannels`](#getuserchannels) function provided for backwar
 joinUserChannel(channelId: string) : Promise<void>;
 ```
 
-Optional function that joins the app to the specified User channel. In most cases, applications SHOULD be joined to channels via UX provided to the application by the desktop agent, rather than calling this function directly.
+Optional function that joins the app to the specified User channel. In most cases, applications SHOULD be joined to channels via UX provided to the application by the Desktop Agent, rather than calling this function directly.
 
 If an app is joined to a channel, all `fdc3.broadcast` calls will go to the channel, and all listeners assigned via `fdc3.addContextListener` will listen on the channel.
 
@@ -630,9 +630,9 @@ let instanceMetadata = await fdc3.open(appMetadata, context);
 raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
 ```
 
-Raises a specific intent for resolution against apps registered with the desktop agent.
+Raises a specific intent for resolution against apps registered with the Desktop Agent.
 
-The desktop agent MUST resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, a method for resolving the intent to a target app, such as presenting the user with a resolver UI allowing them to pick an app, SHOULD be provided.
+The Desktop Agent MUST resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, a method for resolving the intent to a target app, such as presenting the user with a resolver UI allowing them to pick an app, SHOULD be provided.
 Alternatively, the specific app or app instance to target can also be provided. A list of valid target applications and instances can be retrieved via [`findIntent`](DesktopAgent#findintent).  
 
 If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned. If a specific target `app` parameter was set, but either the app or app instance is not available then the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` errors MUST be returned.
@@ -693,7 +693,7 @@ raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResoluti
 
 Finds and raises an intent against apps registered with the desktop agent based purely on the type of the context data.
 
-The desktop agent SHOULD first resolve to a specific intent based on the provided context if more than one intent is available for the specified context. This MAY be achieved by displaying a resolver UI. It SHOULD then resolve to a specific app to handle the selected intent and specified context.
+The Desktop Agent SHOULD first resolve to a specific intent based on the provided context if more than one intent is available for the specified context. This MAY be achieved by displaying a resolver UI. It SHOULD then resolve to a specific app to handle the selected intent and specified context.
 Alternatively, the specific app or app instance to target can also be provided, in which case any method of resolution SHOULD only consider intents supported by the specified application.
 
 Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
