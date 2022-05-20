@@ -16,7 +16,7 @@ Channels each have a unique identifier, some display metadata and operations for
 interface Channel {
   // properties
   id: string;
-  type: string;
+  type: "user" | "app" | "private";
   displayMetadata?: DisplayMetadata;
 
   // methods
@@ -51,10 +51,10 @@ Uniquely identifies the channel. It is either assigned by the desktop agent (Use
 ### `type`
 
 ```ts
-public readonly type: string;
+public readonly type: "user" | "app" | "private";
 ```
 
-Can be _system_,  _app_ or _private_.
+Can be _user_,  _app_ or _private_.
 
 ### `displayMetadata`
 
@@ -65,15 +65,18 @@ public readonly displayMetadata?: DisplayMetadata;
 DisplayMetadata can be used to provide display hints for User Channels intended to be visualized and selectable by end users.
 
 #### See also
+
 * [`DisplayMetadata`](Metadata#displaymetadata)
 
 ## Methods
 
 
 ### `addContextListener`
+
 ```ts
 public addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 ```
+
 Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
 
 If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the [`fdc3.addContextListener`](DesktopAgent#addcontextlistener) function). Apps wishing to access to the current context of the channel should instead call the [`getCurrentContext(contextType)`](#getcurrentcontext) function.
@@ -122,6 +125,7 @@ instrumentListener.unsubscribe();
 ```
 
 #### See also
+
 * [`Listener`](Types#listener)
 * [`ContextHandler`](Types#contexthandler)
 * [`broadcast`](#broadcast)
@@ -159,6 +163,7 @@ try {
 ```
 
 #### See also
+
 * [`ChannelError`](Errors#channelerror)
 * [`getCurrentContext`](#getcurrentcontext)
 * [`addContextListener`](#addcontextlistener)
@@ -174,7 +179,6 @@ When a _context type_ is provided, the most recent context matching the type wil
 If no _context type_ is provided, the most recent context that was broadcast on the channel - regardless of type - will be returned.  If no context has been set on the channel, it will return `null`.
 
 It is up to the specific Desktop Agent implementation whether and how recent contexts are stored. For example, an implementation could store context history for a channel in a single array and search through the array for the last context matching a provided type, or context could be maintained as a dictionary keyed by context types. An implementation could also choose not to support context history, in which case this method will return `null` for any context type not matching the type of the most recent context.
-
 
 If getting the current context fails, the promise will return an `Error` with a string from the [`ChannelError`](ChannelError) enumeration.
 
@@ -201,6 +205,7 @@ try {
 ```
 
 #### See also
+
 * [`ChannelError`](Errors#channelerror)
 * [`broadcast`](#broadcast)
 * [`addContextListener`](#addcontextlistener)
