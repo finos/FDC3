@@ -1,4 +1,5 @@
 export enum ContextTypes {
+  Chart = 'fdc3.chart',
   Contact = 'fdc3.contact',
   ContactList = 'fdc3.contactList',
   Country = 'fdc3.country',
@@ -9,8 +10,8 @@ export enum ContextTypes {
   Portfolio = 'fdc3.portfolio',
   Position = 'fdc3.position',
   Nothing = 'fdc3.nothing',
-  Valuation = 'fdc3.valuation',
   TimeRange = 'fdc3.timerange',
+  Valuation = 'fdc3.valuation',
 }
 
 export type ContextType = ContextTypes | string;

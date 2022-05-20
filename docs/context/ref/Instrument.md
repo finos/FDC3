@@ -66,11 +66,14 @@ fdc3.broadcast(instrument)
 ## See Also
 
 Other Types
+
 - [InstrumentList](InstrumentList)
+- [Chart](Chart)
 - [Position](Position)
 - [Portfolio](Portfolio)
 
 Intents
+
 - [ViewAnalysis](../../intents/ref/ViewAnalysis)
 - [ViewChart](../../intents/ref/ViewChart)
 - [ViewInstrument](../../intents/ref/ViewInstrument)
@@ -79,4 +82,5 @@ Intents
 - [ViewResearch](../../intents/ref/ViewResearch)
 
 FINOS Financial Objects
+
 - [Instrument](https://fo.finos.org/docs/objects/instrument)
