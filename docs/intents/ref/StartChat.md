@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `StartChat`
 
-Initiate a chat with a contact or list of contacts.
+Initiate a chat with a contact, a list of contacts or detailed initialization settings.
 
 ## Intent Name
 
@@ -20,6 +20,7 @@ Initiate a chat with a contact or list of contacts.
 
 * [Contact](../../context/ref/Contact)
 * [ContactList](../../context/ref/ContactList)
+* [ChatInitSettings](../../context/ref/ChatInitSettings)
 
 ## Example
 
@@ -33,6 +34,33 @@ const contact = {
 }
 
 fdc3.raiseIntent('StartChat', contact)
+
+// chat with initialization settings
+const initSettings = {
+    type: 'fdc3.chat.initSettings',
+    chatName: 'Issue #123',
+    members: {
+        type: 'fdc3.contactList',
+        contacts: [{
+            type: 'fdc3.contact',
+            name: 'John Doe',
+            id: {
+                email: 'john@mail.com'
+            },
+        }]
+    },
+    options: {
+        groupRecipients: true, // one chat with both contacts
+        public: false, // private chat room
+        allowHistoryBrowsing: true,
+        allowMessageCopy: true,
+        allowAddUser: false, // John won't be auhtorized to add other users to the chat
+    }
+    initMessage: 'Hello John!'
+}
+
+const resolution = fdc3.raiseIntent('StartChat', initSettings);
+const chatRoomRefs = await resolution.getResult();
 ```
 
 ## See Also
@@ -40,6 +68,7 @@ fdc3.raiseIntent('StartChat', contact)
 Context
 - [Contact](../../context/ref/Contact)
 - [ContactList](../../context/ref/ContactList)
+- [ChatInitSettings](../../context/ref/ChatInitSettings)
 
 Intents
 - [StartCall](StartCall)
