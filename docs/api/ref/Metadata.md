@@ -71,7 +71,7 @@ Will always includes at least a `name` property, which can be used with [`open`]
 
 Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu. This includes a title, description, tooltip and icon and image URLs.
 
-In situations where a desktop agent connects to multiple app directories or multiple versions of the same app exists in a single app directory, it may be necessary to specify `appId` or `version` to target applications that share the same name.
+In situations where a Desktop Agent connects to multiple app directories or multiple versions of the same app exists in a single app directory, it may be necessary to specify `appId` or `version` to target applications that share the same name.
 
 #### See also
 
@@ -99,7 +99,7 @@ interface DisplayMetadata {
 }
 ```
 
-A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
+A Desktop Agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
 
 #### See also
 
