@@ -9,6 +9,7 @@ export enum ContextTypes {
   Portfolio = 'fdc3.portfolio',
   Position = 'fdc3.position',
   Nothing = 'fdc3.nothing',
+  Valuation = 'fdc3.valuation',
   TimeRange = 'fdc3.timerange',
 }
 
