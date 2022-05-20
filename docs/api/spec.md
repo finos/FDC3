@@ -332,7 +332,90 @@ Calling `fdc3.broadcast` will now route context to the joined channel.
 
 Channel implementations SHOULD ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are joined to the channel.
 
-  > Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels). The `joinChannel` function was also renamed to `joinUserChannel` to clarify that it is only intended to be used to join 'user', rather than 'app', channels.
+  > Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels). The `joinChannel` function was also renamed to `joinUserChannel` to clarify that it is only intended to be used to join 'user', rather than 'app', channels.
+
+### Recommended User Channel Set
+
+Desktop Agent implementations SHOULD use the following set of channels, to enable a consistent user experience across different implementations. Desktop Agent implementation MAY support configuration of the user channels.
+
+> Note: Future versions of the FDC3 Standard may support connections between desktop agents, where differing user channel sets may cause user experience issues.
+
+```javascript
+const recommendedChannels = [
+    {
+        "id": "A",
+        "type": "user",
+        "displayMetadata": {
+            "name": "Channel A",
+            "color": "red",
+            "glyph": "A"
+        }
+    },
+    {
+        "id": "B",
+        "type": "user",
+        "displayMetadata": {
+            "name": "Channel B",
+            "color": "orange",
+            "glyph": "B"
+        }
+    },
+    {
+        "id": "C",
+        "type": "user",
+        "displayMetadata": {
+            "name": "Channel C",
+            "color": "yellow",
+            "glyph": "C"
+        }
+    },
+    {
+        "id": "D",
+        "type": "user",
+        "displayMetadata": {
+            "name": "Channel D",
+            "color": "green",
+            "glyph": "D"
+        }
+    },
+    {
+        "id": "E",
+        "type": "user",
+        "displayMetadata": {
+            "name": "Channel E",
+            "color": "lightblue",
+            "glyph": "E"
+        }
+    },
+    {
+        "id": "F",
+        "type": "user",
+        "displayMetadata": {
+            "name": "Channel F",
+            "color": "blue",
+            "glyph": "F"
+        }
+    },
+    {
+        "id": "G",
+        "type": "user",
+        "displayMetadata": {
+            "name": "Channel G",
+            "color": "purple",
+            "glyph": "G"
+        }
+    },
+    {
+        "id": "H",
+        "type": "user",
+        "displayMetadata": {
+            "name": "Channel H",
+            "color": "brown",
+            "glyph": "H"
+        }
+    }
+];
+```
 
 ### Direct Listening and Broadcast on Channels
 While joining User channels (using fdc3.joinUserChannel) automates a lot of the channel behaviour for an app, it has the limitation that an app can only be 'joined' to one channel at a time.  However, an app may instead retrieve a `Channel` Object via the [`fdc3.getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API, or by raising an intent that returns a channel. The `Channel` object may then be used to listen to and broadcast on that channel directly using the [`Channel.addContextListener`](ref/Channel#addcontextlistener) and the [`Channel.broadcast`](ref/Channel#broadcast) APIs. This is especially useful for working with dynamic _App Channels_. FDC3 imposes no restriction on adding context listeners or broadcasting to multiple channels.
