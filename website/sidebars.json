@@ -68,8 +68,9 @@
           "context/ref/Nothing",
           "context/ref/Organization",
           "context/ref/Portfolio",
-          "context/ref/Position"
-          "context/ref/TimeRange"
+          "context/ref/Position",
+          "context/ref/TimeRange",
+          "context/ref/Valuation"
         ]
       },
       {
