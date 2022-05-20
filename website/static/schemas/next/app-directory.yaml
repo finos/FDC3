@@ -62,10 +62,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApplicationSearchResponse'
+                $ref: '#/components/schemas/AllApplicationsResponse'
               examples:
-                FDC3WorkbenchAppDefinitionSearchResponse:
-                  $ref: '#/components/examples/FDC3WorkbenchAppDefinitionSearchResponse'
+                FDC3WorkbenchAppDefinitionAllAppsResponse:
+                  $ref: '#/components/examples/FDC3WorkbenchAppDefinitionAllAppsResponse'
         '400':
           description: Bad request.
           content:
@@ -84,157 +84,6 @@ paths:
           description: 'Server error, see response body for further details.'
           content:
             '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-      tags:
-        - Application
-    post:
-      summary: Create a new application definition
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Application'
-              examples:
-                FDC3WorkbenchAppDefinition:
-                  $ref: '#/components/examples/FDC3WorkbenchAppDefinition'
-        '400':
-          description: Bad request.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        '403':
-          description: >-
-            Forbidden: Certificate authentication is not allowed for the
-            requested user.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        '500':
-          description: 'Server error, see response body for further details.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-      tags:
-        - Application
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Application'
-            examples:
-              FDC3WorkbenchAppDefinition:
-                $ref: '#/components/examples/FDC3WorkbenchAppDefinition'
-        required: true
-  /v2/apps/search:
-    get:
-      summary: Retrieve a list of applications based on parameters provided.  Depending on implementation, parameter
-              values should self describe search format and type (e.g. Regex)
-      parameters:
-        - in: query
-          name: appId
-          schema:
-            type: string
-          required: false
-          description: >
-            The unique application identifier located within a specific
-            application directory instance.
-        - in: query
-          name: name
-          schema:
-            type: string
-          required: false
-          description: >
-            The name of the application.
-
-            The name should be unique within an FDC3 App Directory instance. The
-            exception to the uniqueness constraint is that an App Directory can
-            hold definitions for multiple versions of the same app.
-
-            The same appName could occur in other directories. We are not
-            currently specifying app name conventions in the document.
-        - in: query
-          name: version
-          schema:
-            type: string
-          required: false
-          description: >-
-            Version of the application. This allows multiple app versions to be
-            defined using the same app name. This can be a triplet but can also
-            include things like 1.2.5 (BETA)
-        - in: query
-          name: title
-          schema:
-            type: string
-          required: false
-          description: >-
-            Optional title for the application, if missing use appName,
-            typically used in a launcher UI.
-        - in: query
-          name: tooltip
-          schema:
-            type: string
-          required: false
-          description: Optional tooltip description e.g. for a launcher
-        - in: query
-          name: description
-          schema:
-            type: string
-          required: false
-          description: >-
-            Description of the application. This will typically be a 1-2
-            paragraph style blurb about the application. Allow mark up language
-        - in: query
-          name: intent_name
-          schema:
-            type: string
-          required: false
-          description: name of intent
-        - in: query
-          name: intent_displayName
-          schema:
-            type: string
-          required: false
-          description: displayName of intent
-        - in: query
-          name: intent_context
-          schema:
-            type: string
-          required: false
-          description: search contexts list
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApplicationSearchResponse'
-              examples:
-                FDC3WorkbenchAppDefinitionSearchResponse:
-                  $ref: '#/components/examples/FDC3WorkbenchAppDefinitionSearchResponse'
-        '400':
-          description: Bad request.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        '403':
-          description: >-
-            Forbidden: Certificate authentication is not allowed for the
-            requested user.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        '500':
-          description: 'Server error, see response body for further details.'
-          content:
-            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
       tags:
@@ -462,11 +311,7 @@ components:
         type:
           $ref: '#/components/schemas/Type'
         details:
-          description: >-
-            The type specific details of the application. Currently only the "browser" type is standardized.
-            "host" type applications should use the hostManifest's object for all application details.
-          oneOf:
-            - $ref: '#/components/schemas/BrowserDetails'
+          $ref: '#/components/schemas/LaunchDetails'
         version:
           type: string
           description: >-
@@ -593,10 +438,11 @@ components:
         Launching typically means running for a user on a desktop.
         The details around 'launching' including who or what might do it, and how the launch action is initiated are
         discussed elsewhere in the FDC3 App Directory spec.
-      required:            # details are not required as the host type applications use the hostsManifests mapping instead
+      required:
         - appId
         - name
         - type
+        - details
       allOf:
         - $ref: '#/components/schemas/BaseApplication'
         - type: object
@@ -702,7 +548,7 @@ components:
             https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
           items:
             $ref: '#/components/schemas/IntentV1'
-    ApplicationSearchResponse:
+    AllApplicationsResponse:
       properties:
         applications:
           type: array
@@ -797,7 +643,7 @@ components:
             type: string
           description: >-
             A comma separated list of the types of contexts the intent offered by the application can process,  
-            where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
+            where the first part of the context type is the namespace e.g."fdc3.contact", "org.symphony.contact"
         resultType:
           type: string
           description: >-
@@ -837,14 +683,71 @@ components:
             particular desktop agent.
     Type:
       type: string
-      description: >-
-        Enumeration describing the supported application types. Currently only the browser application type is officially supported.
-        The host application type allows for host specific application types (e.g. exe, workspaces, citrix, etc.).
+      description: |
+        The technology type that is used to launch and run the application. 
+        Each application type implies a particular set of launch `details`.
+        The supported types include:
+
+        - `web`: Web applications launched via a URL
+        - `native`: Native applications pre-installed on a device and launch via a filesystem path
+        - `citrix`: Apps virtualized via Citrix
+        - `onlineNative`: Native apps that have an online launcher, e.g. online ClickOnce app deployments.
+        - `other`: Used to represent apps that do not conform to or cannot be launched via the other types, and are likely to be defined solely by a hostManifest.
+
+        FDC3 Desktop Agents MUST support at least the `web` application type and MAY support any or all of the other types.
       enum:
-        - browser
-        - host
-    BrowserDetails:
-      description: Properties common to all browser applications.
+        - web
+        - native
+        - citrix
+        - onlineNative
+        - other
+    LaunchDetails:
+      description: >-
+        The type specific launch details of the application. These details are intended to be 
+        vendor-agnostic and _MAY_ be duplicated or overridden by details provided in the hostManifests 
+        object for a specific host.
+      oneOf:
+        - $ref: '#/components/schemas/WebAppDetails'
+        - $ref: '#/components/schemas/NativeAppDetails'
+        - $ref: '#/components/schemas/CitrixAppDetails'
+        - $ref: '#/components/schemas/OnlineNativeAppDetails'
+        - $ref: '#/components/schemas/OtherAppDetails'
+    WebAppDetails:
+      description: 'Properties used to launch apps with `type: web`.'
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          formt: uri
+          description: Application start URL.
+      additionalProperties: false
+    NativeAppDetails:
+      description: 'Properties used to launch apps with `type: native` that are already installed on the device.'
+      required:
+        - path
+      properties:
+        path:
+          type: string
+          description: The path on disk from which the application is launched.
+        arguments:
+          type: string
+          description: Arguments that must be passed on the command line to launch the app in the expected configuration.
+      additionalProperties: false
+    CitrixAppDetails:
+      description: 'Properties used to launch apps virtualized apps with `type: citrix`.'
+      required:
+        - alias
+      properties:
+        alias:
+          type: string
+          description: The Citrix alias / name of the virtual app (passed to the Citrix SelfService qlaunch parameter).
+        arguments:
+          type: string
+          description: Arguments that must be passed on the command line to launch the app in the expected configuration.
+      additionalProperties: false
+    OnlineNativeAppDetails:
+      description: 'Properties used to launch a native apps with `type: onelineNative` that have an online launcher, e.g. online ClickOnce app deployments.'
       required:
         - url
       properties:
@@ -853,14 +756,18 @@ components:
           format: uri
           description: Application URL.
       additionalProperties: false
+    OtherAppDetails:
+      description: 'Apps with `type: other` are defined by a hostManifest and do not require other details.'
+      additionalProperties: false
     HostManifests:
       type: object
       description: >-
-        A mapping from host string to a host-specific application manifest object or URI
-        from which that manifest can be retrieved. The manifest should provide all details required to
-        launch and use the application within the specified host.
+        A mapping from host name to a host-specific application manifest object or URI
+        from which that manifest can be retrieved. The manifest should provide details required to
+        launch and use the application within the specified host. The manifest _MAY_ duplicate or 
+        override information provided in the `details` field.
       additionalProperties:
-        x-additionalPropertiesName: Host
+        x-additionalPropertiesName: Host name
         oneOf:
           - type: string   # URI pointing to a JSON containing all host specific properties
             format: uri
@@ -1027,7 +934,7 @@ components:
           }
         }
       summary: A sample app definition for the FDC3 Workbench application
-    FDC3WorkbenchAppDefinitionSearchResponse:
+    FDC3WorkbenchAppDefinitionAllAppsResponse:
       value:
         applications: # you can't $ref inside a $ref so example is repeated here for search response
           - appId: fdc3-workbench
@@ -1111,4 +1018,4 @@ components:
               }
             }
         message: OK
-      summary: A sample application search response containing the FDC3 Workbench application
+      summary: A sample 'all applications' listing response containing the FDC3 Workbench application
