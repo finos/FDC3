@@ -24,6 +24,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added a new experimental features policy, which exempts features designated as experimental from the versioning and deprecation policies, to the FDC3 compliance page ([#549](https://github.com/finos/FDC3/pull/549))
 * Add `IntentDeliveryFailed` to the `ResolveError` enumeration to be used when delivery of an intent and context to a targetted app or instance fails. ([#601](https://github.com/finos/FDC3/pull/601))
 * Added a context type representing a range of time (`fdc3.timerange`). ([#706](https://github.com/finos/FDC3/pull/706))
+* Addition of `ViewProfile` and deprecation of `ViewContact`. Changes based on ([#619](https://github.com/finos/FDC3/pull/619))
+* Added a new context type `ChatInitSettings` to initialize a chat creation with new optional parameters ([#620](https://github.com/finos/FDC3/pull/620))
+* Added a `ViewResearch` Intent to be used when a user wants to see the latest research on a particular stock ([#623](https://github.com/finos/FDC3/pull/623))
+* Updated for Intent Naming conventions.  Added hyperlinks for existing Intent spec definitions. Changes based on ([#701](https://github.com/finos/FDC3/pull/701))
 
 ### Changed
 * Consolidated `Listener` documentation with other types ([#404](https://github.com/finos/FDC3/pull/404))
@@ -35,8 +39,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Moved the Icon type definition into the Types documentation page for consistency with other types. ([#493](https://github.com/finos/FDC3/pull/493)
 * The `fdc3.joinChannel()`, `fdc3.getCurrentChannel()` and `fdc3.leaveCurrentChannel()` functions have been made optional for FDC3 API compliance, but are recommended through the application of the SHOULD keyword. ([#512](https://github.com/finos/FDC3/pull/512)) 
 * All DesktopAgent and Channel API functions are now async for consistency, changing the return type of the `broadcast`, `addIntentListener`, `addContextListener` and `getInfo` functions ([#516](https://github.com/finos/FDC3/pull/516))
+* Updated Intent Naming conventions.  Added hyperlinks for existing Intent spec definitions. Changes based on ([#701](https://github.com/finos/FDC3/pull/701))
+
 
 ### Deprecated
+* Deprecation of `ViewContact`. Changes based on ([#619](https://github.com/finos/FDC3/pull/619))
 * Removed details of the 'global' channel that was deprecated in FDC3 1.2. ([#496](https://github.com/finos/FDC3/pull/496))
 
 ### Fixed
@@ -64,6 +71,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * `addContextListener(contextType, handler)` now supports passing `null` as the context type ([#329](https://github.com/finos/FDC3/pull/329))
 * All other API type changes and additions from the [FDC3 Standard 1.2](https://github.com/finos/FDC3/releases/tag/v1.2) release
 * The Application schema by removing the `manifestType` and `manifest` properties, introducing new `type` (required), `details` and `hostManifests` properties ([#437](https://github.com/finos/FDC3/pull/437)
+* Extended context recommend field type conventions to include types for ids, times, dates, currency codes and country codes. The fdc3.Country context type was updated to comply with the recommended field name for country codes (`COUNTRY_ISOALPHA2`). ([#704](https://github.com/finos/FDC3/pull/704))
 
 ### Deprecated
 * `addContextListener(handler)` ([#329](https://github.com/finos/FDC3/pull/329))

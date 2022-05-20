@@ -35,10 +35,12 @@ FDC3 recognizes that there are other object definitions for providing context be
 ## The Context Interface
 
 Context can be summarised as:
+
 * Having a unique _type_ identifier, used for routing.
 * Optionally providing a name.
 * Optionally providing a map of equivalent identifiers.
 * Any other properties or metadata.
+
 ```typescript
 interface Context {
     type: string;
@@ -60,18 +62,27 @@ The specification recognises that evolving context data definitions over time, a
 
 It may be as simple as adding an optional `$version` property to types, but it could also be a set of guidelines for adding new properties, without removing or changing existing ones. For example, web technologies like REST or GraphQL do not take a particular opinion about versioning.
 
+## Field Type Conventions
+
+This Standard defines a number of conventions for the fields of context types that all context objects SHOULD adhere to in order to reduce or prevent competing conventions from being established in both standardized types and proprietary types created by app developers.
+
 ### Identifiers
+
+An `id` field with type `object` is defined in the base [fdc3.context](ref/Context) type, from which all other context objects are derived, and SHOULD be used to encapsulate identifiers. Specific context types may define subfields for specific identifiers as needed.
 
 Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifer is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.
 
 All standard identifier names are reserved names. Applications may use their own identifiers ad hoc. For example:
+
 ```json
 "id": {
     "CUSIP":"037833100",
     "foo":"bar"
 }
 ```
+
 The identifier "foo" is proprietary, an application that can use it is free to do so. However, since multiple applications may want to use the "foo" name and may use it to mean different things, there is a need for applications to ensure that their identifiers use naming conventions that will avoid collision. The recommended approach here is to prefix the identifier name with a namespace. For example:
+
 ```json
 "id": {
     "CUSIP":"037833100",
@@ -79,7 +90,52 @@ The identifier "foo" is proprietary, an application that can use it is free to d
 }
 ```
 
-### Example Context Object
+### Times
+
+Fields representing a point in time SHOULD be string encoded according [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator should be included, e.g.:
+
+* Time in UTC: `"2022-03-30T15:44:44Z"`
+* Also time in UTC: `"2022-03-30T15:44:44+00:00"`
+* Same time in EDT: `"2022-03-30T11:44:44-04:00"`
+
+Times MAY be expressed with millisecond precision, e.g.:
+
+* `"2022-03-30T11:44:44.123-04:00"`
+* `"2022-03-30T11:44:44.123Z"`
+
+Parsing in Javascript:
+
+```javascript
+let aDate = new Date("2022-03-30T11:44:44.123-04:00")
+```
+
+### Dates
+
+Fields representing a point in time SHOULD be string encoded according using the `YYYY-MM-DD` date format from [ISO 8601-1:2019](https://www.iso.org/standard/70907.html).
+
+E.g. `"2022-03-30"`
+
+Parsing in Javascript:
+
+```javascript
+let aDate = new Date("2022-03-30")
+```
+
+### Country codes
+
+Fields representing a country SHOULD be string encoded using the Alpha-2-codes from [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) and field name `COUNTRY_ISOALPHA2`. The Alpha-3-codes from [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) MAY be used in addition to the Alpha-2-code with the field name `COUNTRY_ISOALPHA3`.
+
+E.g. `"COUNTRY_ISOALPHA2": "GB"`
+
+### Currency codes
+
+Fields representing a currency SHOULD be string encoded using the Alphabetic code from [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) with the field name `CURRENCY_ISOCODE`.
+
+E.g. `"CURRENCY_ISOCODE": "GBP"`
+
+> Note: ISO 4217 only includes major currency codes, conversions to minor currencies is the responsibility of the consuming system (where required).
+
+## Example Context Object
 
 An instrument could for example be derived as (note that the name is required and the type is fixed):
 
@@ -110,4 +166,5 @@ e.g. as a JSON payload:
     "country": "US"
 }
 ```
+
  It is important to note that the context data specification allows extra identifiers and properties to be added as needed for each interop use case. In the example above, `country` could represent extra data in addition to the agreed instrument representation.

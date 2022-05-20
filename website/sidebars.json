@@ -35,12 +35,20 @@
           "intents/ref/StartCall",
           "intents/ref/StartChat",
           "intents/ref/ViewChart",
-          "intents/ref/ViewContact",
           "intents/ref/ViewQuote",
           "intents/ref/ViewNews",
           "intents/ref/ViewAnalysis",
           "intents/ref/ViewInstrument",
-          "intents/ref/ViewHoldings"
+          "intents/ref/ViewHoldings",
+          "intents/ref/ViewProfile",
+          "intents/ref/ViewResearch"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Deprecated",
+        "ids": [
+          "intents/ref/ViewContact"
         ]
       },
       {
@@ -50,15 +58,16 @@
           "context/overview",
           "context/spec",
           "context/ref/Context",
+          "context/ref/ChatInitSettings",
           "context/ref/Contact",
           "context/ref/ContactList",
+          "context/ref/Country",
           "context/ref/Instrument",
           "context/ref/InstrumentList",
-          "context/ref/Organization",
-          "context/ref/Country",
-          "context/ref/Position",
-          "context/ref/Portfolio",
           "context/ref/Nothing",
+          "context/ref/Organization",
+          "context/ref/Portfolio",
+          "context/ref/Position"
           "context/ref/TimeRange"
         ]
       },
