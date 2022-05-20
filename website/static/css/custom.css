@@ -117,6 +117,16 @@ body {
   border: 1px solid #ffffff;
 }
 
+.button.selected {
+  background: #0086bf;
+  color: #fff;
+}
+
+.button.selected:hover {
+  background: #0086bf44;
+  color: #0086bf;;
+}
+
 .mainContainer {
   padding: 40 0;
 }
@@ -191,4 +201,106 @@ article iframe {
 
 .nav-footer .sitemap{
   margin: 0 auto 1em;
+}
+
+/* Implementations CSS added Apr 2021 */
+.filters {
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+.implementations {
+  padding-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 25px;
+}
+.implementation {
+  margin: 6px 0px;
+  padding: 0px 0px;
+  display: flex;
+  flex-direction: column;
+  border-color: #0086bf;
+  border-width: 3px;
+  border-style: solid;
+}
+.implementation.hide {
+  display: none;
+}
+.implementation-metadata {
+  padding: 6px 6px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #0086bf;
+  color: #ffffff
+}
+.title-and-publisher {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+}
+.title-and-publisher > .title, .title-and-publisher > .title > a {
+  font-size: 24px;
+  font-weight: 600;
+  flex-basis: 100%;
+  color: #ffffff;
+}
+.implementation-metadata > .type {
+  font-size: 16px;
+  font-weight: 600;
+  flex-basis: content;
+  font-variant-caps: small-caps;
+}
+.title-and-publisher > .publisher {
+  font-size: 14px;
+  font-weight: 400;
+  font-variant-caps: small-caps;
+  flex-basis: 100%;
+}
+.implementation-details > img {
+  max-width: 285px;
+  max-height: 150px;
+  padding-top: 6px;
+  padding-bottom: 10px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  flex-basis: 300px;
+  flex-shrink: 1;
+  margin-right: 6px;
+}
+.implementation-details > .description {
+  flex-shrink: 1;
+  flex-grow: 1;
+}
+.implementation-details > .description > .prose {
+  padding-left: 10px;
+}
+.implementation-details > .description > .infoLinks, .implementation-details > .description > .infoLinks > a  {
+  font-size: 16px;
+  font-weight: 600;
+}
+.implementation-details {
+  padding: 6px 6px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-basis: 100%;
+}
+@media screen and (max-width: 736px) {
+  .implementation-details {
+    padding: 6px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-basis: 100%;
+  }
+  .implementation-details > img {
+    align-self: center;
+  }
+}
+@media screen and (min-width: 737px) {
+  .implementation-details > .description {
+    flex-basis: 300px;
+  }
 }
