@@ -10,5 +10,6 @@ export enum Intents {
   ViewHoldings = 'ViewHoldings',
   ViewProfile = 'ViewProfile',
   ViewResearch = 'ViewResearch',
-  ViewInteractions = 'ViewInteractions'
+  ViewInteractions = 'ViewInteractions',
+  ViewOrders = 'ViewOrders'
 }

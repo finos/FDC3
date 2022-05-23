@@ -139,6 +139,8 @@ A list of standardized intents are defined in the following pages:
 * [`ViewProfile`](ref/ViewProfile)
 * [`ViewResearch`](ref/ViewResearch)
 * [`ViewInteractions`](ref/ViewInteractions)
+* [`ViewInteractions`](ref/ViewInteractions)
+* [`ViewOrders`](ref/ViewOrders)
 
 ### Deprecated Intents
 
