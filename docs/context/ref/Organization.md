@@ -56,6 +56,7 @@ Intents
 - [ViewAnalysis](../../intents/ref/viewAnalysis)
 - [ViewProfile](../../intents/ref/ViewProfile)
 - [ViewResearch](../../intents/ref/ViewResearch)
+- [ViewInteractions](../../intents/ref/ViewInteractions)
 
 FINOS Financial Objects
 - [Organization](https://fo.finos.org/docs/objects/organization)
