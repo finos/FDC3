@@ -32,8 +32,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added a `ViewResearch` Intent to be used when a user wants to see the latest research on a particular stock ([#623](https://github.com/finos/FDC3/pull/623))
 * Updated for Intent Naming conventions.  Added hyperlinks for existing Intent spec definitions. Changes based on ([#701](https://github.com/finos/FDC3/pull/701))
 * Added guide on how to submit a new Intent. ([#624](https://github.com/finos/FDC3/pull/624))
-* Added a context type for View Interactions. Used when a user wants to see the latest interactions (calls, meetings, conferences, roadshows) on a particular stock or with an individual or organization. ([#625](https://github.com/finos/FDC3/pull/625))
-
+* Added a context type for `ViewInteractions`. Used when a user wants to see the latest interactions (calls, meetings, conferences, roadshows) on a particular stock or with an individual or organization. ([#625](https://github.com/finos/FDC3/pull/625))
+* Added guide on how to submit a new Intent. ([#624](https://github.com/finos/FDC3/pull/624))
+* Added `ViewOrders`. Used when a user wants to see the order history of an individual, an institution or of a particular stock. ([#672](https://github.com/finos/FDC3/pull/672))
 
 ### Changed
 * Consolidated `Listener` documentation with other types ([#404](https://github.com/finos/FDC3/pull/404))
