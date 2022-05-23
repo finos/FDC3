@@ -42,7 +42,8 @@
           "intents/ref/ViewHoldings",
           "intents/ref/ViewProfile",
           "intents/ref/ViewResearch",
-          "intents/ref/ViewInteractions"
+          "intents/ref/ViewInteractions",
+          "intents/ref/ViewOrders"
         ]
       },
       {
