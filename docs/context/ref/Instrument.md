@@ -80,7 +80,7 @@ Intents
 - [ViewNews](../../intents/ref/ViewNews)
 - [ViewQuote](../../intents/ref/ViewQuote)
 - [ViewResearch](../../intents/ref/ViewResearch)
+- [ViewInteractions](../../intents/ref/ViewInteractions)
 
 FINOS Financial Objects
-
 - [Instrument](https://fo.finos.org/docs/objects/instrument)

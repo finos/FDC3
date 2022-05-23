@@ -43,6 +43,10 @@
     {
       "name": "ViewResearch",
       "displayName": "Research"
+    },
+    {
+      "name": "ViewInteractions",
+      "displayName": "Interactions"
     }
   ]
 }
