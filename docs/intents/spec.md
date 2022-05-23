@@ -130,6 +130,7 @@ A list of standardized intents are defined in the following pages:
 
 * [`StartCall`](ref/StartCall)
 * [`StartChat`](ref/StartChat)
+* [`StartEmail`](ref/StartEmail)
 * [`ViewChart`](ref/ViewChart)
 * [`ViewQuote`](ref/ViewQuote)
 * [`ViewNews`](ref/ViewNews)
