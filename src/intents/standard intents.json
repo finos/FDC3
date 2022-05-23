@@ -9,6 +9,10 @@
       "displayName": "Chat"
     },
     {
+      "name": "StartEmail",
+      "displayName": "Email"
+    },
+    {
       "name": "ViewChart",
       "displayName": "Chart"
     },

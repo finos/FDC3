@@ -71,4 +71,5 @@ Context
 - [ChatInitSettings](../../context/ref/ChatInitSettings)
 
 Intents
-- [StartCall](StartCall)
+* [StartCall](StartCall)
+* [StartEmail](StartEmail)
