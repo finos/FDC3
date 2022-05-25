@@ -19,7 +19,7 @@ Example use cases:
 
 Notes:
 
-- A `TimeRange` may be closed (i.e. `startTime` and `endTime` are both known)or open (i.e. only one of the `startTime` or `endTime` is known).
+- A `TimeRange` may be closed (i.e. `startTime` and `endTime` are both known) or open (i.e. only one of `startTime` or `endTime` is known).
 
 - Ranges corresponding to dates (e.g. `2022-05-12` to `2022-05-19`) should be specified using times as this prevents issues with timezone conversions and inclusive/exclusive date ranges.
 
