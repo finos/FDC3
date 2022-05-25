@@ -42,7 +42,7 @@ However, there is occasionally a need for applications to ensure that their inte
 
 ### Intent Name Prefixes
 
-Early versions of the FDC3 standard included 8 intents, which used one of two different prefixes.  The two initial prefixes were `View___` and `Start___`.  These are used to help define the behavior of the expected app when resolving the intent. 
+Early versions of the FDC3 standard included 8 intents, which used one of two different prefixes ( `View___` and `Start___`) that are focused on UI interactions.  The prefixes are used to help define the expected behavior of an app when resolving an intent with that prefix. The list of intent name prefixes was expanded in FDC3 2.0 to include prefixes that indicate that CRUD operations should be performed on data.
 
 #### `View___`
 
