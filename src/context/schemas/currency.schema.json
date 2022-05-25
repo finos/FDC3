@@ -7,7 +7,13 @@
   "properties": {
     "type": { "const": "fdc3.currency" },
     "name": { "type": "string" },
-    "CURRENCY_ISOCODE": { "type": "string", "pattern": "^[A-Z]{3}$"}
+    "id": {
+      "type": "object",
+      "properties": {
+        "CURRENCY_ISOCODE": { "type": "string", "pattern": "^[A-Z]{3}$"}
+      }
+    }
+    
   },
-  "required": ["CURRENCY_ISOCODE"]
+  "required": ["id"]
 }
