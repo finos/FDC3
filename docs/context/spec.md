@@ -201,9 +201,9 @@ __Note:__ The below examples show how the base context data interface can be use
 }
 ```
 
-## Example Context Object
+#### TypeScript definition
 
-An instrument could for example be derived as (note that the name is required and the type is fixed):
+The `Instrument` type is derived from the `Context` type (note that the name becomes a required field, the type is fixed and optional `id` subfields are defined):
 
 ```typescript
 interface Instrument extends Context {
