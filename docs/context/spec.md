@@ -111,7 +111,7 @@ let aDate = new Date("2022-03-30T11:44:44.123-04:00")
 
 ### Dates
 
-Fields representing a point in time SHOULD be string encoded according using the `YYYY-MM-DD` date format from [ISO 8601-1:2019](https://www.iso.org/standard/70907.html).
+Fields representing a point in time SHOULD be string encoded using the `YYYY-MM-DD` date format from [ISO 8601-1:2019](https://www.iso.org/standard/70907.html).
 
 E.g. `"2022-03-30"`
 
