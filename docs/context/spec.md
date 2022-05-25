@@ -229,7 +229,6 @@ e.g. as a JSON payload:
         "ISIN" : "US0378331005",
         "CUSIP" : "037833100"
     },
-    "country": "US"
 }
 ```
 
