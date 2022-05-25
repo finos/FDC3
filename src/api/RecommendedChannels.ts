@@ -54,7 +54,7 @@ const recommendedChannels: Array<UserChannelTemplate> = [
     type: 'user',
     displayMetadata: {
       name: 'Channel 5',
-      color: 'turquoise',
+      color: 'cyan',
       glyph: '5',
     },
   },
@@ -63,7 +63,7 @@ const recommendedChannels: Array<UserChannelTemplate> = [
     type: 'user',
     displayMetadata: {
       name: 'Channel 6',
-      color: 'lightblue',
+      color: 'blue',
       glyph: '6',
     },
   },
@@ -72,7 +72,7 @@ const recommendedChannels: Array<UserChannelTemplate> = [
     type: 'user',
     displayMetadata: {
       name: 'Channel 7',
-      color: 'blue',
+      color: 'magenta',
       glyph: '7',
     },
   },
