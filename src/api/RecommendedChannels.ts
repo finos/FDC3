@@ -14,75 +14,75 @@ interface UserChannelTemplate {
 
 const recommendedChannels: Array<UserChannelTemplate> = [
   {
-    id: 'A',
+    id: 'Channel 1',
     type: 'user',
     displayMetadata: {
-      name: 'Channel A',
+      name: 'Channel 1',
       color: 'red',
-      glyph: 'A',
+      glyph: '1',
     },
   },
   {
-    id: 'B',
+    id: 'Channel 2',
     type: 'user',
     displayMetadata: {
-      name: 'Channel B',
+      name: 'Channel 2',
       color: 'orange',
-      glyph: 'B',
+      glyph: '2',
     },
   },
   {
-    id: 'C',
+    id: 'Channel 3',
     type: 'user',
     displayMetadata: {
-      name: 'Channel C',
+      name: 'Channel 3',
       color: 'yellow',
-      glyph: 'C',
+      glyph: '3',
     },
   },
   {
-    id: 'D',
+    id: 'Channel 4',
     type: 'user',
     displayMetadata: {
-      name: 'Channel D',
+      name: 'Channel 4',
       color: 'green',
-      glyph: 'D',
+      glyph: '4',
     },
   },
   {
-    id: 'E',
+    id: 'Channel 5',
     type: 'user',
     displayMetadata: {
-      name: 'Channel E',
+      name: 'Channel 5',
+      color: 'turquoise',
+      glyph: '5',
+    },
+  },
+  {
+    id: 'Channel 6',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 6',
       color: 'lightblue',
-      glyph: 'E',
+      glyph: '6',
     },
   },
   {
-    id: 'F',
+    id: 'Channel 7',
     type: 'user',
     displayMetadata: {
-      name: 'Channel F',
+      name: 'Channel 7',
       color: 'blue',
-      glyph: 'F',
+      glyph: '7',
     },
   },
   {
-    id: 'G',
+    id: 'Channel 8',
     type: 'user',
     displayMetadata: {
-      name: 'Channel G',
+      name: 'Channel 8',
       color: 'purple',
-      glyph: 'G',
-    },
-  },
-  {
-    id: 'H',
-    type: 'user',
-    displayMetadata: {
-      name: 'Channel H',
-      color: 'brown',
-      glyph: 'H',
+      glyph: '8',
     },
   },
 ];
