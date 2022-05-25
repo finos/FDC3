@@ -1,5 +1,6 @@
 export enum ContextTypes {
   Chart = 'fdc3.chart',
+  ChatInitSettings = 'fdc3.chat.initSettings',
   Contact = 'fdc3.contact',
   ContactList = 'fdc3.contactList',
   Country = 'fdc3.country',

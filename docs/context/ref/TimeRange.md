@@ -19,13 +19,12 @@ Example use cases:
 
 Notes:
 
-- A `TimeRange` may be closed (i.e. `startTime` and `endTime` are both known)or open (i.e. only one of the `startTime` or `endTime` is known).
+- A `TimeRange` may be closed (i.e. `startTime` and `endTime` are both known) or open (i.e. only one of `startTime` or `endTime` is known).
 
 - Ranges corresponding to dates (e.g. `2022-05-12` to `2022-05-19`) should be specified using times as this prevents issues with timezone conversions and inclusive/exclusive date ranges.
 
 - String fields representing times are encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html).
   - A timezone indicator should be specified, e.g. `"2022-05-12T15:18:03Z"` or `"2022-05-12T16:18:03+01:00"`
-.
   - Times MAY be specified with millisecond precision, e.g. `"2022-05-12T15:18:03.349Z"`
 
 ## Type
@@ -41,7 +40,7 @@ https://fdc3.finos.org/schemas/next/timerange.schema.json
 | Property    | Type      | Required | Example Value                 |
 |-------------|-----------|----------|-------------------------------|
 | `type`      | string    | Yes      | `"fdc3.timeRange"`            |
-| `startTime` | string *  | No **    | `"2022-03-30T15:44:44Z"`       |
+| `startTime` | string *  | No **    | `"2022-03-30T15:44:44Z"`      |
 | `endTime`   | string *  | No **    | `"2022-04-30T23:59:59+00:00"` |
 
 \* Fields representing time SHOULD be string encoded according [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
