@@ -1,9 +1,11 @@
 # Desktop Agent Bridging
-The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent, facilitating cross-application workflows. Desktop Agent Bridging addresses the interconnection of desktop agents such that apps running under different desktop agents can also interoperate, allowing workflows to span multiple desktop agents.
 
-In any desktop agent bridging scenario, it is expected that each Desktop Agent is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although Desktop Agents may be run on different machines operated by the same user. 
+The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent (DA), facilitating cross-application workflows. Desktop Agent Bridging addresses the interconnection of desktop agents (DAs) such that apps running under different desktop agents can also interoperate, allowing workflows to span multiple desktop agents.
+
+In any desktop agent bridging scenario, it is expected that each DA is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although DAs may be run on different machines operated by the same user.
 
 ## Open questions / TODO list
+
 * Add topology diagram
 * Define handshake, authentication and naming protocol
 * Do we need to make mandatory that a `fdc3.joinChannel` was invoked before you can return the current state of the channel?
@@ -15,23 +17,24 @@ In any desktop agent bridging scenario, it is expected that each Desktop Agent i
 ## Connection Overview
 
 ### Topology
+
 In order to implement Desktop Agent Bridging some means for desktop agents to connect to and communicate with each other is needed. This Standard assumes that Desktop Agent Bridging is implemented via a standalone 'bridge' which each agent connects to and will use to route messages to or from other agents. This topology is similar to a star topology in networking, where the Desktop Agent Bridge (a 'bridge') will be the central node acting as a router.
 
 Other possible topologies include peer-to-peer or client/server networks, however, these introduce significant additional complexity into multiple aspects of the bridging protocol that must be implemented by desktop agents, (including discovery, authentication and message routing), where a star topology/standalone bridge enables a relatively simple set of protocols, with the most difficult parts being implemented in the bridge itself.
 
 Whilst the standalone bridge represents a single point of failure for the interconnection of desktop agents, it will also be significantly simpler than a full desktop agent implementation. Further, failures may be mitigated by setting the bridge up as a system service, such that it is started when the user's computer is started and may be restarted automatically if it fails. In the event of a bridge failure or manual shutdown, then desktop agents will no longer be bridged and should act as single agents.
 
-Where multi-machine use cases must be supported, cross-machine routing is an internal concern of the Desktop Agent Bridge, with each desktop agent simply communicating with a bridge instance located on the same machine (or nominated IP address, where supported). Bridges running on different machines may then exchange messages between each other. The connection protocol between bridges themselves is implementation specific and beyond the scope of this standard. Further, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user.
-
+In Financial services it is not unusual for a single user to be working with applications on more than one desktop. As desktop agents do not span desktops bridging desktop agents across multiple machines is an additional use case for desktop agent bridging. However, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user.
 
 ### Technology & Service Discovery
+
 Connections between desktop agents and the Desktop Agent Bridge will be made via websocket connections, with the bridge acting as the websocket server and each connected desktop agent as a client.
 
 The bridge MUST run on the same machine as the desktop agents, and the websocket MUST be bound to the loopback adapter IP address (127.0.0.1), ensuring that the websocket is not exposed to wider networks.
 
-Bridge implementations SHOULD default to binding the recommended websocket server to port XXXX, enabling simple discovery of a running bridge via attempting a socket connection to that port and handshake (as defined later in this proposal). However, bridge implementations and desktop agents SHOULD support configuration of a alternative port range which can be scanned for connection.
+Bridge implementations SHOULD default to binding the websocket server to a port in the recommended port range XXXX - XXYY, enabling simple discovery of a running bridge via attempting socket connections to ports in that range and attempting a handshake (as defined later in this proposal) that will identify the websocket as belong to a Desktop Agent Bridge. A port range is used, in preference to a single nominated port, in order to enable the automatic resolution of port clashes with other services.
 
-Both DAs and the bridge MUST support configuration of the bridging port and/or port range.
+Both DAs and bridge implementations MUST support at least connection to the recommended port range and MAY also support configuration for connection to an alternative bridging port range.
 
 As part of the Desktop Agent Bridging protocol, a bridge will implement "server" behavior by:
 
@@ -47,29 +50,69 @@ A desktop agent will implement "client" behavior by:
 * Receiving requests from the bridge.
 * Forwarding response to the bridge.
 
-Hence, message paths and propagation are simple. All messages to other desktop agents are passed to the bridge for routing and all messages (both requests and responses) are received back from it, i.e. the bridge is responsible for all message routing. 
+Hence, message paths and propagation are simple. All messages to other desktop agents are passed to the bridge for routing and all messages (both requests and responses) are received back from it, i.e. the bridge is responsible for all message routing.
 
-### Handshake, Authentication & Name Assignment
-On connection to the bridge, a handshake and authentication step must be completed. This allows:
+#### Bridging Desktop Agent on Multiple Machines
 
-- The desktop agent to confirm that it is connecting to an FDC3 Desktop Agent Bridge, rather than another service exposed via a websocket.
-- The bridge to require that the desktop agent authenticate itself, allowing it to control access to the network of bridged desktop agents
-- The desktop agent to request a particular name by which it will be addressed by other agents and for the bridge to assign the requested name, after confirming that no other agent is connected with that name, or a derivative of that name if it is already in use.
+As the bridge binds its websocket on the loopback address (127.0.0.1) it cannot be connected to from another device. Hence, an instance of the standalone bridge may be run on each device and those instances exchange messages in order to implement the bridge cross-device.
+
+However, cross-machine routing is an internal concern of the Desktop Agent Bridge, with each desktop agent simply communicating with a bridge instance located on the same machine. The connection protocol between bridges themselves is implementation specific and beyond the scope of this standard. Further, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user. However, methods of verifying the identity of user are currently beyond the scope of this Standard.
+
+### Connection Protocol
+
+On connection to the bridge handshake, authentication and name assignment steps must be completed. These allow:
+
+* The desktop agent to confirm that it is connecting to an FDC3 Desktop Agent Bridge, rather than another service exposed via a websocket.
+* The bridge to require that the desktop agent authenticate itself, allowing it to control access to the network of bridged desktop agents
+* The desktop agent to request a particular name by which it will be addressed by other agents and for the bridge to assign the requested name, after confirming that no other agent is connected with that name, or a derivative of that name if it is already in use.
 
 The bridge is ultimately responsible for assigning each desktop agent a name and for routing messages using those names.
 
+#### Step 1. Handshake
+
+TBC
+Standard hello message that identifies that this is bridge, perhaps with implementation details for logging
+
+#### Step 2. Authentication
+
+Send in authentication details + a proposal for a specific name
+TBC
+Needs research
+
+#### Step 3. Auth Confirmation and  Name Assignment
+
+TBC
+Receive back auth confirmation and assigned name
+    Name to appear in ImplementationMetadata
+Note: own name is rarely used by the desktop agent, but useful to log for debugging purposes
+
+#### Step 4. Connected agents update
+
+Message sent with names of other desktop agents connected to bridge
+Message reissued whenever an agent connects or disconnects
+    Enables logging of connected agents and (optional) targeted API calls (e.g. `raiseIntent` to a specific agent)
+
 ### Channels
+
 It is assumed that Desktop Agents SHOULD adopt the recommended 8 channel set (and the respective display metadata). Desktop Agents MAY support channel customization through configuration.
 The Desktop Agent Bridge MAY support channel mapping ability to deal with channel differences that can arise.
 
 ## Interactions between Desktop Agents
+
 The use of Desktop Agent Bridging affects how a desktop agent must handle FDC3 API calls. Details on how this affects the FD3 API and how a desktop agent should interact with other agents over the bridge are provided below in this section.  
 
 ### Handling FDC3 calls When Bridged
 
 #### WIP
-Desktop Agents that are bridged will need to wait for responses from other DAs before responding to API calls.
-  * for resilience, this may mean defining timeouts...
+
+Desktop Agents that are bridged will need to wait for responses from other DAs before responding to API calls. For resilience, this may mean defining timeouts.
+
+Different types of call
+
+* fire and forget, e.g. broadcast
+* request/response
+  * send request, await responses
+  * who collates responses and implements timeouts (bridge or DA)?
 
 ### Identifying Desktop Agents Identity and Message Sources
 
@@ -83,6 +126,31 @@ To prevent spoofing and to simplify the implementation of clients, sender identi
     * The DAB should do the assignments and could generate ids or accept them via config.
     * DAs don't need to know their own ids or even the ids of others, they just need to be able to pass around `AppMetadata` objects that contain them.
 
+#### AppMetadata
+
+`AppMetadata` needs to be expanded to contain a `desktopAgent` field.
+
+```typescript
+interface AppMetadata {
+  readonly name: string;
+  readonly appId?: string;
+  readonly version?: string;
+  readonly instanceId?: string;
+  readonly instanceMetadata?: Record<string, any>;
+  readonly title?: string;
+  readonly tooltip?: string;
+  readonly description?: string;
+  readonly icons?: Array<Icon>;
+  readonly images?: Array<string>;
+  readonly resultType?: string | null;
+
+  /** A string filled in by the DAB on receipt of a message, that represents 
+   * the Desktop Agent that the app is available on. 
+   **/
+  readonly desktopAgent?: string;
+}
+```
+
 ### Identifying Individual Messages
 
 There are a variety of message types we'll need to send between bridged DAs, several of which will need to be replied to specifically (e.g. a `fdc3.raiseIntent` call should receive and `IntentResponse` when an app has been chosen and the intent and context delivered to it). Hence, messages also need a unique identity.
@@ -92,7 +160,11 @@ There are a variety of message types we'll need to send between bridged DAs, sev
 
 This means that each request that gets generated, should contain a request GUID, and every response to a request should contain a response GUID AND reference the request GUID. A response the does not reference a request GUID should be considered invalid.
 
-### Forwarding of Messages from Other Agents
+### Forwarding of Messages to Other Agents
+
+//TODO: rewrite based on DA deciding to send to bridge, bridge forwards on
+//if target specified, forward to specific agent only
+
 
 The DAB MUST be able to forward messages received from one DA on to others (excluding obviously the Desktop Agent where the request was originated). There are a few simple rules which determine whether a message needs to be forwarded:
 
@@ -103,55 +175,11 @@ The DAB MUST be able to forward messages received from one DA on to others (excl
 * If the message has a target Desktop Agent (e.g. response to findIntent)
   * The bridge will forward the message to it.
 
-## AppMetadata
 
-`AppMetadata` needs to be expanded to contain a `desktopAgent` field.
-
-```typescript
-interface AppMetadata {
-  /** The unique app name that can be used with the open and raiseIntent calls. */
-  readonly name: string;
-
-  /** The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root' */
-  readonly appId?: string;
-
-  /** The Version of the application. */
-  readonly version?: string;
-
-  /** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/
-  readonly instanceId?: string;
-
-  /** An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set. */
-  readonly instanceMetadata?: Record<string, any>;
-
-  /** A more user-friendly application title that can be used to render UI elements  */
-  readonly title?: string;
-
-  /**  A tooltip for the application that can be used to render UI elements */
-  readonly tooltip?: string;
-
-  /** A longer, multi-paragraph description for the application that could include mark-up */
-  readonly description?: string;
-
-  /** A list of icon URLs for the application that can be used to render UI elements */
-  readonly icons?: Array<Icon>;
-
-  /** A list of image URLs for the application that can be used to render UI elements */
-  readonly images?: Array<string>;
-  
-  /** The type of result returned for any intent specified during resolution. 
-   * May express a particular context type (e.g. "fdc3.instrument"), channel 
-   * (e.g. "channel") or a channel that will receive a specified type 
-   * (e.g. "channel<fdc3.instrument>"). */
-  readonly resultType?: string | null;
-
-  /** A string filled in by server on receipt of message, that represents 
-   * the Desktop Agent that the app is available on. */
-  readonly desktopAgent?: string;
-}
-```
 
 ## Generic request and response formats
+
+//TODO explain basic message structure type/payload (original FDC3 call args/response), meta (routing info).
 
 For simplicity, in this spec the request and response GUID will be just `requestGUID` and `responseGUID`. A GUID/UUID 128-bit integer number used to uniquely identify resources should be used.
 
@@ -1071,24 +1099,20 @@ The `fdc3.open` command should result in a single copy of the specified app bein
 The first case (target Desktop Agent is specified) is simple:
 
 * If the local Desktop Agent is the target, handle the call normally
-* If you are a server
-  * check if any of your clients is the target and transmit the call to them and await a response
-  * If you are also a client of another server follow the client steps
+* Otherwise:
+  * Request is sent to the bridge
+  * DAB checks to see if any of the connected DAs is the target and transmit the call to it and awaits a response
   * otherwise return `OpenError.AppNotFound`
-* If you are a client
-  * transmit the call to the server and await a response
 
 The second case is a little trickier as we don't know which agent may have the app available:
 
 * If the local Desktop Agent has the app, open it and exit.
-* If you are a server
-  * call each client one at a time and await a response
-    * If the response is `OpenError.AppNotFound` move to the next client
-    * If the response is `AppMetadata` then return it and exit
-  * If you are also a client of another server follow the client steps
-  * otherwise return `OpenError.AppNotFound`
-* If you are a client
-  * transmit the call to the server and await a response
+* Otherwise:
+  * Request is sent to the bridge
+  * Bridge will query each connected DA asynchronously and await a response
+    * If the response is `AppMetadata` then return it and exit (ignore every subsequent response)
+    * If the response is `OpenError.AppNotFound` and there are pending responses, wait for the next response
+    * If the response is `OpenError.AppNotFound` and there are NO pending responses, return `OpenError.AppNotFound`
 
 ```mermaid
 sequenceDiagram
@@ -1099,9 +1123,8 @@ sequenceDiagram
     DA ->>+ DAB: Open Chart
     DAB ->>+ DB: Open Chart
     DAB ->>+ DC: Open Chart
-    DB ->> DB: App Found
-    DB ->> DB: Open App
-    DB -->>- DAB: Return App Data
+    DB ->> DB: App NOT Found
+    DB -->>- DAB: OpenError.AppNotFound
     DC ->> DC: App Found
     DC ->> DC: Open App
     DC -->>- DAB: Return App Data
