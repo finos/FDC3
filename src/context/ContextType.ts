@@ -12,7 +12,7 @@ export enum ContextTypes {
   Position = 'fdc3.position',
   Nothing = 'fdc3.nothing',
   TimeRange = 'fdc3.timerange',
-  Valuation = 'fdc3.valuation'
+  Valuation = 'fdc3.valuation',
 }
 
 export type ContextType = ContextTypes | string;
