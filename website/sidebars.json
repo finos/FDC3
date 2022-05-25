@@ -28,29 +28,30 @@
       },
       {
         "type": "subcategory",
-        "label": "Intents Part",
+        "label": "App Directory Part",
         "ids": [
-          "intents/overview",
-          "intents/spec",
-          "intents/ref/StartCall",
-          "intents/ref/StartChat",
-          "intents/ref/StartEmail",
-          "intents/ref/ViewChart",
-          "intents/ref/ViewQuote",
-          "intents/ref/ViewNews",
-          "intents/ref/ViewAnalysis",
-          "intents/ref/ViewInstrument",
-          "intents/ref/ViewHoldings",
-          "intents/ref/ViewProfile",
-          "intents/ref/ViewResearch",
-          "intents/ref/ViewInteractions",
-          "intents/ref/ViewOrders"
+          "app-directory/overview",
+          "app-directory/spec"
         ]
       },
       {
         "type": "subcategory",
-        "label": "Deprecated",
+        "label": "Intents Part",
         "ids": [
+          "intents/spec",
+          "intents/ref/StartCall",
+          "intents/ref/StartChat",
+          "intents/ref/StartEmail",
+          "intents/ref/ViewAnalysis",
+          "intents/ref/ViewChart",
+          "intents/ref/ViewHoldings",
+          "intents/ref/ViewInstrument",
+          "intents/ref/ViewInteractions",
+          "intents/ref/ViewNews",
+          "intents/ref/ViewOrders",
+          "intents/ref/ViewProfile",
+          "intents/ref/ViewQuote",
+          "intents/ref/ViewResearch",
           "intents/ref/ViewContact"
         ]
       },
@@ -76,14 +77,6 @@
           "context/ref/Position",
           "context/ref/TimeRange",
           "context/ref/Valuation"
-        ]
-      },
-      {
-        "type": "subcategory",
-        "label": "App Directory Part",
-        "ids": [
-          "app-directory/overview",
-          "app-directory/spec"
         ]
       }
     ]
