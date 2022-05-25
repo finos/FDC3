@@ -155,7 +155,7 @@ The following are standard FDC3 context types:
 - [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/next/timerange.schema.json))
 - [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/valuation.schema.json))
 
-__Note:__ The below examples show how the base context data interface can be used to define specific context data objects. It is not the purpose of the specification at this stage to define standard representations for objects. It establishes the framework in which such definitions could be created.
+__Note:__ The below examples show how the base context data interface can be used to define specific context data objects.
 
 ### Examples
 
