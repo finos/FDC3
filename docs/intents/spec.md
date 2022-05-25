@@ -42,7 +42,7 @@ However, there is occasionally a need for applications to ensure that their inte
 
 ### Intent Name Prefixes
 
-Early versions of the FDC3 standard included 8 intents, which used one of two different prefixes.  The two initial prefixes were `View___` and `Start___`.  These are used to help define the behavior of the expected app when resolving the intent. 
+Early versions of the FDC3 standard included 8 intents, which used one of two different prefixes ( `View___` and `Start___`) that are focused on UI interactions.  The prefixes are used to help define the expected behavior of an app when resolving an intent with that prefix. The list of intent name prefixes was expanded in FDC3 2.0 to include prefixes that indicate that CRUD operations should be performed on data.
 
 #### `View___`
 
@@ -131,17 +131,16 @@ A list of standardized intents are defined in the following pages:
 * [`StartCall`](ref/StartCall)
 * [`StartChat`](ref/StartChat)
 * [`StartEmail`](ref/StartEmail)
-* [`ViewChart`](ref/ViewChart)
-* [`ViewQuote`](ref/ViewQuote)
-* [`ViewNews`](ref/ViewNews)
 * [`ViewAnalysis`](ref/ViewAnalysis)
+* [`ViewChart`](ref/ViewChart)
 * [`ViewHoldings`](ref/ViewHoldings)
 * [`ViewInstrument`](ref/ViewInstrument)
-* [`ViewProfile`](ref/ViewProfile)
-* [`ViewResearch`](ref/ViewResearch)
 * [`ViewInteractions`](ref/ViewInteractions)
-* [`ViewInteractions`](ref/ViewInteractions)
+* [`ViewNews`](ref/ViewNews)
 * [`ViewOrders`](ref/ViewOrders)
+* [`ViewProfile`](ref/ViewProfile)
+* [`ViewQuote`](ref/ViewQuote)
+* [`ViewResearch`](ref/ViewResearch)
 
 ### Deprecated Intents
 
