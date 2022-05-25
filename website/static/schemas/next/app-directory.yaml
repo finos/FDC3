@@ -673,7 +673,7 @@ components:
           items:
             type: string
           description: >-
-            A comma sepaarted list of the types of contexts the intent offered by the application can process. 
+            A comma separated list of the types of contexts the intent offered by the application can process. 
             where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
         customConfig:
           type: object
@@ -746,7 +746,7 @@ components:
           description: Arguments that must be passed on the command line to launch the app in the expected configuration.
       additionalProperties: false
     OnlineNativeAppDetails:
-      description: 'Properties used to launch a native apps with `type: onelineNative` that have an online launcher, e.g. online ClickOnce app deployments.'
+      description: 'Properties used to launch a native apps with `type: onlineNative` that have an online launcher, e.g. online ClickOnce app deployments.'
       required:
         - url
       properties:
