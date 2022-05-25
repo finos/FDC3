@@ -232,11 +232,3 @@ e.g. as a JSON payload:
 }
 ```
 
-It is important to note that the context data specification allows extra identifiers and properties to be added as needed for each interop use case. In the example above, `country` could represent extra data in addition to the agreed instrument representation.
-
-
-
-
-
-
-
