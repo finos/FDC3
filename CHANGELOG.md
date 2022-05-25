@@ -40,7 +40,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 * Removed trailing slashes from schema references (which break refs for schema parsers) ([#374](https://github.com/finos/FDC3/pull/374))
-* Corrected that definition of the `Context` type in documentation ([#406](https://github.com/finos/FDC3/pull/406)])
+* Corrected the definition of the `Context` type in documentation ([#406](https://github.com/finos/FDC3/pull/406)])
 * Corrected syntax errors in context schema examples ([#424](https://github.com/finos/FDC3/pull/424))
 * Corrected a minor error in the ViewQuote Intent example ([#439](https://github.com/finos/FDC3/pull/439))
 * Clarified behavior of `fdc3.addContextListener` when not joined to a channel ([#449](https://github.com/finos/FDC3/pull/449))
