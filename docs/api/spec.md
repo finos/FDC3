@@ -342,82 +342,83 @@ Desktop Agent implementations SHOULD use the following set of channels, to enabl
 
 ```javascript
 const recommendedChannels = [
-    {
-        "id": "A",
-        "type": "user",
-        "displayMetadata": {
-            "name": "Channel A",
-            "color": "red",
-            "glyph": "A"
-        }
+  {
+    id: 'Channel 1',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 1',
+      color: 'red',
+      glyph: '1',
     },
-    {
-        "id": "B",
-        "type": "user",
-        "displayMetadata": {
-            "name": "Channel B",
-            "color": "orange",
-            "glyph": "B"
-        }
+  },
+  {
+    id: 'Channel 2',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 2',
+      color: 'orange',
+      glyph: '2',
     },
-    {
-        "id": "C",
-        "type": "user",
-        "displayMetadata": {
-            "name": "Channel C",
-            "color": "yellow",
-            "glyph": "C"
-        }
+  },
+  {
+    id: 'Channel 3',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 3',
+      color: 'yellow',
+      glyph: '3',
     },
-    {
-        "id": "D",
-        "type": "user",
-        "displayMetadata": {
-            "name": "Channel D",
-            "color": "green",
-            "glyph": "D"
-        }
+  },
+  {
+    id: 'Channel 4',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 4',
+      color: 'green',
+      glyph: '4',
     },
-    {
-        "id": "E",
-        "type": "user",
-        "displayMetadata": {
-            "name": "Channel E",
-            "color": "lightblue",
-            "glyph": "E"
-        }
+  },
+  {
+    id: 'Channel 5',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 5',
+      color: 'turquoise',
+      glyph: '5',
     },
-    {
-        "id": "F",
-        "type": "user",
-        "displayMetadata": {
-            "name": "Channel F",
-            "color": "blue",
-            "glyph": "F"
-        }
+  },
+  {
+    id: 'Channel 6',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 6',
+      color: 'lightblue',
+      glyph: '6',
     },
-    {
-        "id": "G",
-        "type": "user",
-        "displayMetadata": {
-            "name": "Channel G",
-            "color": "purple",
-            "glyph": "G"
-        }
+  },
+  {
+    id: 'Channel 7',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 7',
+      color: 'blue',
+      glyph: '7',
     },
-    {
-        "id": "H",
-        "type": "user",
-        "displayMetadata": {
-            "name": "Channel H",
-            "color": "brown",
-            "glyph": "H"
-        }
-    }
+  },
+  {
+    id: 'Channel 8',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 8',
+      color: 'purple',
+      glyph: '8',
+    },
+  },
 ];
 ```
 
 ### Direct Listening and Broadcast on Channels
+
 While joining User channels (using fdc3.joinUserChannel) automates a lot of the channel behaviour for an app, it has the limitation that an app can only be 'joined' to one channel at a time.  However, an app may instead retrieve a `Channel` Object via the [`fdc3.getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API, or by raising an intent that returns a channel. The `Channel` object may then be used to listen to and broadcast on that channel directly using the [`Channel.addContextListener`](ref/Channel#addcontextlistener) and the [`Channel.broadcast`](ref/Channel#broadcast) APIs. This is especially useful for working with dynamic _App Channels_. FDC3 imposes no restriction on adding context listeners or broadcasting to multiple channels.
 
 ### App Channels
