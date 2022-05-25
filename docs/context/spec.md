@@ -92,7 +92,7 @@ The identifier "foo" is proprietary, an application that can use it is free to d
 
 ### Times
 
-Fields representing a point in time SHOULD be string encoded according [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator should be included, e.g.:
+Fields representing a point in time SHOULD be string encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included, e.g.:
 
 * Time in UTC: `"2022-03-30T15:44:44Z"`
 * Also time in UTC: `"2022-03-30T15:44:44+00:00"`
