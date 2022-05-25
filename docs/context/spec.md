@@ -137,47 +137,23 @@ E.g. `"CURRENCY_ISOCODE": "GBP"`
 
 ## Standard Context Types
 
-The following are standard FDC3 context types.
- __Note:__ The specification for these types are shared with the [FINOS Financial Objects](https://fo.finos.org) definitions, JSON schemas are hosted with FDC3.
+The following are standard FDC3 context types:
 
-- __fdc3.contact__
-    - A person contact that can be engaged with through email, calling, messaging, CMS, etc.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/contact)
-    - [schema](/schemas/next/contact.schema.json)
-- __fd3.contactList__
-    - A collection of contacts.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/contactlist)
-    - [schema](/schemas/next/contactList.schema.json)
-- __fdc3.email__
-  - A collection of information to be used to initiate an email with a Contact or ContactList
-  - [schema](/schemas/next/email.schema.json)
-- __fdc3.country__
-    - A standard country entity.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/country)
-    - [schema](/schemas/next/country.schema.json)
-- __fdc3.instrument__
-    - A financial instrument from any asset class.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrument)
-    - [schema](/schemas/next/instrument.schema.json)
-- __fdc3.instrumentList__
-    - A collection of instruments.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrumentlist)
-    - [schema](/schemas/next/instrumentList.schema.json)
-- __fdd3.organization__
-    - A standard organization entity.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/organization)
-    - [schema](/schemas/next/organization.schema.json)
-- __fdc3.portfolio__
-    - A collection of positions.
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/portfolio)
-    - [schema](/schemas/next/portfolio.schema.json)
-- __fdc3.position__
-    - An amount of a security, asset, or property that is owned (or sold short) by some individual or other entity
-    - [Financial Objects Specification](https://fo.finos.org/docs/objects/position)
-    - [schema](/schemas/next/position.schema.json)
-- __fdc3.nothing
-    - Explicit representation of a lack of context
-    - [schema](/schemas/next/nothing.schema.json)
+- [`fdc3.chart`](ref/Chart) ([schema](/schemas/next/chart.schema.json))
+- [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](/schemas/next/chatInitSettings.schema.json))
+- [`fdc3.contact`](ref/Contact) ([schema](/schemas/next/contact.schema.json))
+- [`fdc3.contactList`](ref/ContactList) ([schema](/schemas/next/contactList.schema.json))
+- [`fdc3.country`](ref/Country) ([schema](/schemas/next/country.schema.json))
+- [`fdc3.currency`](ref/Currency) ([schema](/schemas/next/currency.schema.json))
+- [`fdc3.email`](ref/Email) ([schema](/schemas/next/email.schema.json))
+- [`fdc3.instrument`](ref/Instrument) ([schema](/schemas/next/instrument.schema.json))
+- [`fdc3.instrumentList`](ref/InstrumentList) ([schema](/schemas/next/instrumentList.schema.json))
+- [`fdc3.organization`](ref/Organization) ([schema](/schemas/next/organization.schema.json))
+- [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/next/portfolio.schema.json))
+- [`fdc3.position`](ref/Position) ([schema](/schemas/next/position.schema.json))
+- [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/next/nothing.schema.json))
+- [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/next/timerange.schema.json))
+- [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/valuation.schema.json))
 
 __Note:__ The below examples show how the base context data interface can be used to define specific context data objects. It is not the purpose of the specification at this stage to define standard representations for objects. It establishes the framework in which such definitions could be created.
 
