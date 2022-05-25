@@ -25,7 +25,6 @@ Notes:
 
 - String fields representing times are encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html).
   - A timezone indicator should be specified, e.g. `"2022-05-12T15:18:03Z"` or `"2022-05-12T16:18:03+01:00"`
-.
   - Times MAY be specified with millisecond precision, e.g. `"2022-05-12T15:18:03.349Z"`
 
 ## Type
