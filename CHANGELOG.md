@@ -27,7 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added a context type representing a Currency (`fdc3.currency`). ([#708](https://github.com/finos/FDC3/pull/708))
 * Added a context type representing the price and value of a holding (`fdc3.valuation`). ([#709](https://github.com/finos/FDC3/pull/709))
 * Added a context type representing a Chart (`fdc3.chart`). ([#715](https://github.com/finos/FDC3/pull/715))
-* Addition of `ViewProfile` and deprecation of `ViewContact` intents. Changes based on ([#619](https://github.com/finos/FDC3/pull/619))
+* Addition of `ViewProfile` and deprecation of `ViewContact` intents ([#619](https://github.com/finos/FDC3/pull/619))
 * Added a new context type `ChatInitSettings` to initialize a chat creation with new optional parameters ([#620](https://github.com/finos/FDC3/pull/620))
 * Added a `ViewResearch` Intent to be used when a user wants to see the latest research on a particular stock ([#623](https://github.com/finos/FDC3/pull/623))
 * Added guide on how to submit a new Intent. ([#624](https://github.com/finos/FDC3/pull/624))
