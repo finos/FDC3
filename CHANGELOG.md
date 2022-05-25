@@ -50,7 +50,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 ### Deprecated
-* Deprecation of `ViewContact`. Changes based on ([#619](https://github.com/finos/FDC3/pull/619))
+* Deprecated the `ViewContact` intent, which is superseded by `ViewProfile` ([#619](https://github.com/finos/FDC3/pull/619))
 * Removed details of the 'global' channel that was deprecated in FDC3 1.2. ([#496](https://github.com/finos/FDC3/pull/496))
 
 ### Fixed
