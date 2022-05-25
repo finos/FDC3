@@ -131,17 +131,16 @@ A list of standardized intents are defined in the following pages:
 * [`StartCall`](ref/StartCall)
 * [`StartChat`](ref/StartChat)
 * [`StartEmail`](ref/StartEmail)
-* [`ViewChart`](ref/ViewChart)
-* [`ViewQuote`](ref/ViewQuote)
-* [`ViewNews`](ref/ViewNews)
 * [`ViewAnalysis`](ref/ViewAnalysis)
+* [`ViewChart`](ref/ViewChart)
 * [`ViewHoldings`](ref/ViewHoldings)
 * [`ViewInstrument`](ref/ViewInstrument)
-* [`ViewProfile`](ref/ViewProfile)
-* [`ViewResearch`](ref/ViewResearch)
 * [`ViewInteractions`](ref/ViewInteractions)
-* [`ViewInteractions`](ref/ViewInteractions)
+* [`ViewNews`](ref/ViewNews)
 * [`ViewOrders`](ref/ViewOrders)
+* [`ViewProfile`](ref/ViewProfile)
+* [`ViewQuote`](ref/ViewQuote)
+* [`ViewResearch`](ref/ViewResearch)
 
 ### Deprecated Intents
 
