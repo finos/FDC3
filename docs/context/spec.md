@@ -103,7 +103,7 @@ Times MAY be expressed with millisecond precision, e.g.:
 * `"2022-03-30T11:44:44.123-04:00"`
 * `"2022-03-30T11:44:44.123Z"`
 
-Parsing in Javascript:
+Parsing in JavaScript:
 
 ```javascript
 let aDate = new Date("2022-03-30T11:44:44.123-04:00")
@@ -115,7 +115,7 @@ Fields representing a point in time SHOULD be string encoded using the `YYYY-MM-
 
 E.g. `"2022-03-30"`
 
-Parsing in Javascript:
+Parsing in JavaScript:
 
 ```javascript
 let aDate = new Date("2022-03-30")

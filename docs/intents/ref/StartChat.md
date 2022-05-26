@@ -54,7 +54,7 @@ const initSettings = {
         public: false, // private chat room
         allowHistoryBrowsing: true,
         allowMessageCopy: true,
-        allowAddUser: false, // John won't be auhtorized to add other users to the chat
+        allowAddUser: false, // John won't be authorized to add other users to the chat
     }
     initMessage: 'Hello John!'
 }

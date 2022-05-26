@@ -22,7 +22,7 @@ https://fdc3.finos.org/schemas/next/chatInitSettings.schema.json
 | Property                       | Type        | Required | Example Value                                                        |
 | ------------------------------ | ----------- | -------- | -------------------------------------------------------------------- |
 | `type`                         | string      | Yes      | `'fdc3.chat.initSettings'`                                           |
-| `chatName`                     | string      | No       | `'Instrumet XYZ'`                                                    |
+| `chatName`                     | string      | No       | `'Instrument XYZ'`                                                    |
 | `members`                      | ContactList | No       | ContactList - cf. below                                              |
 | `initMessage`                  | string      | No       | `'Hello!'`                                                           |
 | `options.groupRecipients`      | boolean     | No       | `true`: if false a separate chat will be created for each member     |

@@ -85,7 +85,7 @@ The next section contains more information on the workflow followed for Pull Req
 
 - All PRs will be reviewed by at least one of the FDC3 Maintainers and any appointed Editors. PRs are also open to review by FDC3 Participants.
 
-- The FDC3 Maintainers are responsible for ensuring that the the Standard Working Group has been consulted on either an issue (that provides a high-level of detail on the proposed changes) or on the PR itself, a decision has been reached that the change should be made and that that decision has been documented.
+- The FDC3 Maintainers are responsible for ensuring that the Standard Working Group has been consulted on either an issue (that provides a high-level of detail on the proposed changes) or on the PR itself, a decision has been reached that the change should be made and that that decision has been documented.
 
 - All reviews will be completed using the Github review tool.
 
