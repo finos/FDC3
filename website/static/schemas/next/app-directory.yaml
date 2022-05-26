@@ -428,14 +428,8 @@ components:
             $ref: '#/components/schemas/Intent'
         hostManifests:
           $ref: '#/components/schemas/HostManifests'
-        raiseIntent:
-          $ref: '#/components/schemas/RaiseIntent'
-        raiseIntentForContext:
-          $ref: '#/components/schemas/RaiseIntentForContext'
-        userChannels:
-          $ref: '#/components/schemas/UserChannels'
-        appChannels:
-          $ref: '#/components/schemas/AppChannels'
+        interopUse:
+          $ref: '#/components/schemas/InteropUse'
     Application:
       description: >
         Defines an application retrieved from an FDC3 App Directory, which can
@@ -549,13 +543,9 @@ components:
             $ref: '#/components/schemas/NameValuePair'
         intents:
           type: array
-          description: >-
-            The list of intents that the Application listens for and resolves as defined by
+          description: >
+            The list of intents implemented by the Application as defined by
             https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
-            Primarily used to implement intent resolution in a Desktop Agent, but may also be used, 
-            for example in an app catalog UI, to find apps that 'interoperate with' other apps.
-            An Application MUST use the Desktop Agent's `addIntentListener` API to add an intent listener
-            for each intent listed here as soon as possible after it starts up.
           items:
             $ref: '#/components/schemas/IntentV1'
     AllApplicationsResponse:
@@ -653,7 +643,7 @@ components:
             type: string
           description: >-
             A comma separated list of the types of contexts the intent offered by the application can process,  
-            where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
+            where the first part of the context type is the namespace e.g."fdc3.contact", "org.symphony.contact"
         resultType:
           type: string
           description: >-
@@ -714,7 +704,7 @@ components:
     LaunchDetails:
       description: >-
         The type specific launch details of the application. These details are intended to be 
-        vendor-agnostic and MAY be duplicated or overridden by details provided in the hostManifests 
+        vendor-agnostic and _MAY_ be duplicated or overridden by details provided in the hostManifests 
         object for a specific host.
       oneOf:
         - $ref: '#/components/schemas/WebAppDetails'
@@ -795,81 +785,70 @@ components:
       additionalProperties:
         x-additionalPropertiesName: Language tag
         $ref: '#/components/schemas/BaseApplication' # due to a bug in redoc this may display as a recursive definition, it is not. It will render correctly in swagger and other OpenAPI parsers.
-    RaiseIntent:
+    InteropUse:
       type: object
       description: >-
-        Optional metadata that describes which Intents are raised by the application and context types they are 
-        raised with.
-        This metadata may be used, for example in an app catalog UI, to find apps that 'interoperate with' other 
-        apps or to advertise intents that the application uses. 
-        The presence of this metadata does not imply any form of contract with the DesktopAgent and actual usage 
-        MAY vary from what is described.
-      additionalProperties:
-        x-additionalPropertiesName: Intent name
-        type: array
-        description: Context types that the intent may be raised with
-        items:
-          type: string
-    RaiseIntentForContext:
-      type: array
-      description: >-
-        Contexts that are raised via `raiseIntentForContext` or `findIntentForContext`, which allow the user to 
-        select an intent from those that are available via the Desktop Agent. 
-        This metadata may be used, for example in an app catalog UI, to find apps that 'interoperate with' other 
-        apps or to advertise intents that the application uses.
-        The presence of this metadata does not imply any form of contract with the DesktopAgent and actual usage 
-        MAY vary from what is described.
-      additionalProperties:
-      items:
-        type: string
-    UserChannels:
-      type: object
-      description: >-
-        Describes the application's use of context types on User Channels.  
-        This metadata may be used, for example in an app catalog UI, to find apps that 'interoperate with' other 
-        apps or to advertise contexts that the application uses. 
-        The presence of this metadata does not imply any form of contract with the DesktopAgent and actual usage 
-        MAY vary from what is described.
+        Optional metadata that describes how the application uses FDC3 APIs (beyond intents it listens for, 
+        which are defined under the `intents` element). This metadata may be used, for example in an app catalog UI, 
+        to find apps that 'interoperate with' other apps or to advertise app channels or intents that the application
+        use to other app developers and desktop assemblers. 
+        The presence of this metadata does not imply any form of contract with the DesktopAgent and actual FDC3 API 
+        use MAY vary from what is described.
       properties:
-        broadcast:
-          type: array
-          description: Context types that are broadcast by the application
-          items:
-            type: string
-        listen:
-          type: array
-          description: Context types that the application listens for
-          items:
-            type: string
-    AppChannels:
-      type: array
-      description: >-
-        Describes the application's use of App Channels.
-        This metadata may be used, for example in an app catalog UI, to find apps that 'interoperate with' other 
-        apps or to advertise App channels and contexts that the application creates and uses. 
-        The presence of this metadata does not imply any form of contract with the DesktopAgent and actual usage 
-        MAY vary from what is described.
-      items:
-        type: object
-        required:
-          - name
-        properties:
-          name:
-            type: string
-            description: The name of the App Channel
-          description:
-            type: string
-            description: A description of how the channel is used
-          broadcast:
+        raisesIntents:
+          type: object
+          description: Intents that are raised by the application and contexts they are raised with.
+          additionalProperties:
+            x-additionalPropertiesName: Intent name
             type: array
-            description: Context types that are broadcast by the application on the channel
+            description: Context types that the intent may be raised with
             items:
               type: string
-          listen:
-            type: array
-            description: Context types that the application listens for on the channel
-            items:
-              type: string
+        raisesContexts:
+          type: array
+          description: >-
+            Contexts that are raised via `raiseIntentForContext` or `findIntentForContext`, which allow 
+            the user to select an intent from those that are available via the Desktop Agent.
+          items:
+            type: string
+        userChannels:
+          type: object
+          description: Describes the application's use of context types on User Channels
+          properties:
+            broadcast:
+              type: array
+              description: Context types that are broadcast by the application
+              items:
+                type: string
+            listen:
+              type: array
+              description: Context types that the application listens for
+              items:
+                type: string
+        appChannels:
+          type: array
+          description: Describes the application's use of App Channels
+          items:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+                description: The name of the App Channel
+              description:
+                type: string
+                description: A description of how the channel is used
+              broadcast:
+                type: array
+                description: Context types that are broadcast by the application on the channel
+                items:
+                  type: string
+              listen:
+                type: array
+                description: Context types that the application listens for on the channel
+                items:
+                  type: string
   examples:
     FDC3WorkbenchAppDefinition:
       value:
