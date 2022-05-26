@@ -742,7 +742,7 @@ components:
       properties:
         name:
           type: string
-          description: The name of the intent to 'launch'. In this case the name of an Intent supported by an Application.
+          description: The name of the intent to 'launch'. In this case the name of an Intent supported by an application.
         displayName:
           type: string
           description: An optional display name for the intent that may be used in UI instead of the name.
@@ -853,7 +853,7 @@ components:
         intents:
           type: array
           description: >
-            The list of intents implemented by the Application as defined by
+            The list of intents implemented by the application as defined by
             https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
           items:
             $ref: '#/components/schemas/IntentV1'
