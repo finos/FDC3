@@ -561,7 +561,7 @@ components:
           description: Arguments that must be passed on the command line to launch the app in the expected configuration.
       additionalProperties: false
     OnlineNativeAppDetails:
-      description: 'Properties used to launch a native apps with `type: onelineNative` that have an online launcher, e.g. online ClickOnce app deployments.'
+      description: 'Properties used to launch a native apps with `type: onlineNative` that have an online launcher, e.g. online ClickOnce app deployments.'
       required:
         - url
       properties:
@@ -889,7 +889,7 @@ components:
         supportEmail: fdc3-maintainers@finos.org
         moreInfo: https://fdc3.finos.org #update to point to implementations page when it exists
         publisher: FDC3
-        type: browser
+        type: web
         details:
           url: https://fdc3.finos.org/toolbox/fdc3-workbench/
         hostManifests: {
@@ -976,7 +976,7 @@ components:
         supportEmail: fdc3-maintainers@finos.org
         moreInfo: http://example.domain.com/
         publisher: Example App, Inc.
-        type: browser
+        type: web
         details:
           url: http://example.domain.com/app.html
         hostManifests: {
@@ -1091,7 +1091,7 @@ components:
             supportEmail: fdc3-maintainers@finos.org
             moreInfo: http://example.domain.com/
             publisher: Example App, Inc.
-            type: browser
+            type: web
             details:
               url: http://example.domain.com/app.html
             hostManifests: {
@@ -1193,7 +1193,7 @@ components:
             contactEmail: fdc3@finos.org,
             supportEmail: fdc3-maintainers@finos.org,
             publisher: FDC3,
-            type: browser
+            type: web
             details:
               url: https://fdc3.finos.org/toolbox/fdc3-workbench/
             hostManifests: {
