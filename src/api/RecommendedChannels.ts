@@ -14,7 +14,7 @@ interface UserChannelTemplate {
 
 const recommendedChannels: Array<UserChannelTemplate> = [
   {
-    id: 'Channel 1',
+    id: 'fdc3.channel.1',
     type: 'user',
     displayMetadata: {
       name: 'Channel 1',
@@ -23,7 +23,7 @@ const recommendedChannels: Array<UserChannelTemplate> = [
     },
   },
   {
-    id: 'Channel 2',
+    id: 'fdc3.channel.2',
     type: 'user',
     displayMetadata: {
       name: 'Channel 2',
@@ -32,7 +32,7 @@ const recommendedChannels: Array<UserChannelTemplate> = [
     },
   },
   {
-    id: 'Channel 3',
+    id: 'fdc3.channel.3',
     type: 'user',
     displayMetadata: {
       name: 'Channel 3',
@@ -41,7 +41,7 @@ const recommendedChannels: Array<UserChannelTemplate> = [
     },
   },
   {
-    id: 'Channel 4',
+    id: 'fdc3.channel.4',
     type: 'user',
     displayMetadata: {
       name: 'Channel 4',
@@ -50,7 +50,7 @@ const recommendedChannels: Array<UserChannelTemplate> = [
     },
   },
   {
-    id: 'Channel 5',
+    id: 'fdc3.channel.5',
     type: 'user',
     displayMetadata: {
       name: 'Channel 5',
@@ -59,7 +59,7 @@ const recommendedChannels: Array<UserChannelTemplate> = [
     },
   },
   {
-    id: 'Channel 6',
+    id: 'fdc3.channel.6',
     type: 'user',
     displayMetadata: {
       name: 'Channel 6',
@@ -68,7 +68,7 @@ const recommendedChannels: Array<UserChannelTemplate> = [
     },
   },
   {
-    id: 'Channel 7',
+    id: 'fdc3.channel.7',
     type: 'user',
     displayMetadata: {
       name: 'Channel 7',
@@ -77,7 +77,7 @@ const recommendedChannels: Array<UserChannelTemplate> = [
     },
   },
   {
-    id: 'Channel 8',
+    id: 'fdc3.channel.8',
     type: 'user',
     displayMetadata: {
       name: 'Channel 8',
