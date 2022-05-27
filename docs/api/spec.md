@@ -93,7 +93,7 @@ For example:
 - entitlements
 - UX of application resolution
 
-Are all areas of functionality that any feature-complete Desktop Agent would implement, but are not currently areas considered for standardization under FDC3.
+Are all areas of functionality that any feature-complete desktop agent would implement, but are not currently areas considered for standardization under FDC3.
 
 ### Inter-Agent Communication
 
