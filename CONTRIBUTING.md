@@ -7,17 +7,17 @@ _NOTE:_ Commits and pull requests to FINOS repositories will only be accepted fr
 *Need an ICLA? Unsure if you are covered under an existing CCLA? Email [help@finos.org](mailto:help@finos.org).*
 
 
-## 1.	Contribution Guidelines. 
+## 1.	Contribution Guidelines.
 
 This Working Group accepts contributions via pull requests. The following section outlines the process for merging contributions to the specification
 
-**1.1.	Issues.**  Issues are used as the primary method for tracking anything to do with this specification Working Group. 
+**1.1.	Issues.**  Issues are used as the primary method for tracking anything to do with this specification Working Group.
 
 **1.1.1.	Issue Types.**  A number of issue templates are available in the FDC3 respository:
 
 **1.1.1.1.	Meetings.** Templates for issues that represent meetings and include agendas, teleconference details and minutes.
 
-**1.1.1.2.	Proposals and Enhancement Requests.** Used for items that propose a new ideas or functionality that require a larger discussion. This allows for feedback from others before a specification change is actually written. 
+**1.1.1.2.	Proposals and Enhancement Requests.** Used for items that propose a new ideas or functionality that require a larger discussion. This allows for feedback from others before a specification change is actually written.
 
 **1.1.1.3.	Minor Issue:** These track minor changes or corrections that don't alter the Standard significantly but rather correct minor errors or ommisions.
 
@@ -33,7 +33,7 @@ The issue lifecycle is mainly driven by the Maintainer. All issue types follow t
 
 - The FDC3 Maintainers will apply the proper labels for the issue. This may include labels for priority, type, and metadata.
 
-- (If needed) Clean up the title to succinctly and clearly state the issue. 
+- (If needed) Clean up the title to succinctly and clearly state the issue.
 
 **2.3.	Discussion.**
 
@@ -47,13 +47,13 @@ The issue lifecycle is mainly driven by the Maintainer. All issue types follow t
 
 The Working Group uses pull requests to track changes. To submit a change to the Standard:
 
-**3.1.	Fork the Repo** 
+**3.1.	Fork the Repo**
 - (<https://github.com/finos/FDC3/fork>)
 
 **3.2.	Create your feature branch**
 - `git checkout -b feature/fooBar`
 
-**3.3.	Commit your changes** 
+**3.3.	Commit your changes**
 - `git commit -am 'Describe what you changed'`
 
 **3.4.	Push to the branch**
@@ -62,6 +62,7 @@ The Working Group uses pull requests to track changes. To submit a change to the
 **3.5.	Create a Pull Request**
 - For help creating a pull request from your fork, [see Github's documentation](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
 
+To contribute a patch for a New Intent, see the [Submit New Intent](docs/guides/submit-new-intent) guide.
 
 ## 4.	Pull Request Workflow.
 
@@ -78,13 +79,13 @@ The next section contains more information on the workflow followed for Pull Req
 
 **4.2.	Triage**
 
-- The Maintainers will apply the proper labels for the issue. This may include an indication of the subject area or type (e.g. `deprecation`). 
+- The Maintainers will apply the proper labels for the issue. This may include an indication of the subject area or type (e.g. `deprecation`).
 
 **4.3.	Reviewing/Discussion.**
 
 - All PRs will be reviewed by at least one of the FDC3 Maintainers and any appointed Editors. PRs are also open to review by FDC3 Participants.
 
-- The FDC3 Maintainers are responsible for ensuring that the the Standard Working Group has been consulted on either an issue (that provides a high-level of detail on the proposed changes) or on the PR itself, a decision has been reached that the change should be made and that that decision has been documented. 
+- The FDC3 Maintainers are responsible for ensuring that the Standard Working Group has been consulted on either an issue (that provides a high-level of detail on the proposed changes) or on the PR itself, a decision has been reached that the change should be made and that that decision has been documented.
 
 - All reviews will be completed using the Github review tool.
 
