@@ -84,7 +84,7 @@ if (window.fdc3) {
 
 ![Desktop Agent - Standards Schematic](assets/api-1.png)
 
-The surface area of FDC3 standardization (shown in *white* above) itself is quite small in comparison to the extent of a typical Desktop Agent implementation (in *grey*).
+The surface area of FDC3 standardization (shown in *white* above) itself is quite small in comparison to the extent of a typical desktop agent implementation (in *grey*).
 
 For example:
 
@@ -310,7 +310,7 @@ There are three types of channels, which have different visibility and discovera
 
 1. ***User channels***, which:
     - facilitate the creation of user-controlled context links between applications (often via the selection of a color channel),
-    - are created and named by the Desktop Agent,
+    - are created and named by the desktop agent,
     - are discoverable (via the [`getUserChannels()`](ref/DesktopAgent#getuserchannels) API call),
     - can be 'joined' (via the [`joinUserChannel()`](ref/DesktopAgent#joinuserchannel) API call).
 
@@ -323,7 +323,7 @@ There are three types of channels, which have different visibility and discovera
     - facilitate developer controlled messaging between applications,
     - are created and named by applications (via the [`getOrCreateChannel()`](ref/DesktopAgent#getorcreatechannel) API call),
     - are not discoverable,
-    - are interacted with via the [Channel API](ref/Channel) (accessed via the Desktop Agent [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API call)
+    - are interacted with via the [Channel API](ref/Channel) (accessed via the desktop agent [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API call)
 
 3. ***Private*** channels, which:
     - facilitate private communication between two parties,
@@ -341,7 +341,7 @@ When an app is joined to a User channel, calls to [`fdc3.broadcast`](ref/Desktop
 
 When an app joins a User channel, or adds a context listener when already joined to a channel, it will automatically receive the current context for that channel.
 
-It is possible that a call to join a User channel could be rejected.  If for example, the Desktop Agent wanted to implement controls around what data apps can access.
+It is possible that a call to join a User channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.
 
 Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app. To support programmatic management of joined channels and the implementation of channel selector UIs other than those provided outside of the app, Desktop Agent implementations MAY provide [`fdc3.joinChannel()`](ref/DesktopAgent#joinchannel), [`fdc3.getCurrentChannel()](ref/DesktopAgent#getcurrentchannel) and [`fdc3.leaveCurrentChannel()`](ref/DesktopAgent#leavecurrentchannel) functions and if they do, MUST do so as defined in the [Desktop Agent API reference](ref/DesktopAgent).
 
@@ -419,7 +419,7 @@ It is intended that Desktop Agent implementations:
   - - MUST prevent `PrivateChannels` from being retrieved via `fdc3.getOrCreateChannel`.
   - - MUST provide the `id` value for the channel as required by the `Channel` interface.
 
-The `PrivateChannel` type also supports synchronisation of data transmitted over returned channels. They do so by extending the `Channel` interface with event handlers which provide information on the connection state of both parties, ensuring that Desktop Agents do not need to queue or retain messages that are broadcast before a context listener is added and that applications are able to stop broadcasting messages when the other party has disconnected.
+The `PrivateChannel` type also supports synchronisation of data transmitted over returned channels. They do so by extending the `Channel` interface with event handlers which provide information on the connection state of both parties, ensuring that desktop agents do not need to queue or retain messages that are broadcast before a context listener is added and that applications are able to stop broadcasting messages when the other party has disconnected.
 
 ### Broadcasting and listening for multiple context types
 
