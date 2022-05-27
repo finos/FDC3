@@ -161,17 +161,23 @@ interface ImplementationMetadata {
    *  The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
    */
   readonly fdc3Version: string;
+
   /** The name of the provider of the FDC3 Desktop Agent Implementation (e.g. Finsemble, Glue42, OpenFin etc.). */
   readonly provider: string;
+  
   /** The version of the provider of the FDC3 Desktop Agent Implementation (e.g. 5.3.0). */
   readonly providerVersion?: string;
+
+  /** The calling application instance's own metadata, according to the Desktop Agent (MUST include at least the `appId` and `instanceId`). */
+  readonly appMetadata: AppMetadata;
 }
 ```
 
-Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification and the name of the provider of the implementation.
+Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number and the metadata of the calling application according to the desktop agent.
 
 #### See also
 
+* [`AppMetadata`](#appmetadata)
 * [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
 
 ## `IntentMetadata`
@@ -186,7 +192,6 @@ interface IntentMetadata {
 ```
 
 The interface used to describe an intent within the platform.
-
 
 #### See also
 
