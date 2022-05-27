@@ -42,4 +42,5 @@ Context
 - [ContactList](../../context/ref/ContactList)
 
 Intents
-- [StartChat](StartChat)
+* [StartChat](StartChat)
+* [StartEmail](StartEmail)

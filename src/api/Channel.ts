@@ -21,7 +21,7 @@ export interface Channel {
    * Uniquely defines each channel type.
    * Can be "user", "app" or "private".
    */
-  readonly type: string;
+  readonly type: 'user' | 'app' | 'private';
 
   /**
    * Channels may be visualized and selectable by users. DisplayMetadata may be used to provide hints on how to see them.
