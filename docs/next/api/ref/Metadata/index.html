@@ -65,7 +65,9 @@
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Metadata</h1></header><article><div><span><p>FDC3 API operations return various types of metadata.</p>
 <h2><a class="anchor" aria-hidden="true" id="appintent"></a><a href="#appintent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>AppIntent</code></h2>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> AppIntent {
+  <span class="hljs-comment">/** Details of the intent whose relationship to resolving applications is being described. */</span>
   <span class="hljs-keyword">readonly</span> intent: IntentMetadata;
+  <span class="hljs-comment">/** Details of applications that can resolve the intent. */</span>
   <span class="hljs-keyword">readonly</span> apps: <span class="hljs-built_in">Array</span>&lt;AppMetadata&gt;;
 }
 </code></pre>
@@ -79,18 +81,16 @@ For each intent, it reference the applications that support that intent.</p>
 <li><a href="DesktopAgent#findintentsbycontext"><code>DesktopAgent.findIntentsByContext</code></a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="appmetadata"></a><a href="#appmetadata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>AppMetadata</code></h2>
-<pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> AppMetadata {
-  <span class="hljs-comment">/** The unique app name that can be used with the open and raiseIntent calls. */</span>
-  <span class="hljs-keyword">readonly</span> name: <span class="hljs-built_in">string</span>;
+<pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> AppMetadata <span class="hljs-keyword">extends</span> AppIdentifier {
+  <span class="hljs-comment">/** 
+      The &#x27;friendly&#x27; app name. 
+      This field was used with the `open` and `raiseIntent` calls in FDC3 &lt;2.0, which now require an `AppIdentifier` wth `appId` set. 
+      Note that for display purposes the `title` field should be used, if set, in preference to this field.
+   */</span>
+  <span class="hljs-keyword">readonly</span> name?: <span class="hljs-built_in">string</span>;
 
-  <span class="hljs-comment">/** The unique application identifier located within a specific application directory instance. An example of an appId might be &#x27;app<span class="hljs-doctag">@sub</span>.root&#x27; */</span>
-  <span class="hljs-keyword">readonly</span> appId?: <span class="hljs-built_in">string</span>;
-
-  <span class="hljs-comment">/** The Version of the application. */</span>
+  <span class="hljs-comment">/** The version of the application. */</span>
   <span class="hljs-keyword">readonly</span> version?: <span class="hljs-built_in">string</span>;
-
-  <span class="hljs-comment">/** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/</span>
-  <span class="hljs-keyword">readonly</span> instanceId?: <span class="hljs-built_in">string</span>;
 
   <span class="hljs-comment">/** An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set. */</span>
   <span class="hljs-keyword">readonly</span> instanceMetadata?: Record&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;;
@@ -117,14 +117,15 @@ For each intent, it reference the applications that support that intent.</p>
   <span class="hljs-keyword">readonly</span> resultType?: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>;
 }
 </code></pre>
-<p>Describes an application, or instance of an application, using metadata that is usually  provided by an FDC3 App Directory that the desktop agent connects to.</p>
-<p>Will always includes at least a <code>name</code> property, which can be used with <a href="DesktopAgent#open"><code>open</code></a> and <a href="DesktopAgent#raiseIntent"><code>raiseIntent</code></a>. If the <code>instanceId</code> field is set then the <code>AppMetadata</code> object represents a specific instance of the application that may be addressed using that Id.</p>
-<p>Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu. This includes a title, description, tooltip and icon and image URLs.</p>
-<p>In situations where a desktop agent connects to multiple app directories or multiple versions of the same app exists in a single app directory, it may be necessary to specify <code>appId</code> or <code>version</code> to target applications that share the same name.</p>
+<p>Extends an AppIdentifier, describing an application or instance of an application, with additional descriptive metadata that is usually provided by an FDC3 App Directory that the desktop agent connects to.</p>
+<p>The additional information from an app directory can aid in rendering UI elements, such as a launcher menu or resolver UI. This includes a title, description, tooltip and icon and screenshot URLs.</p>
+<p>Note that as <code>AppMetadata</code> instances are also <code>AppIdentifiers</code> they may be passed to the <code>app</code> argument of <code>fdc3.open</code>, <code>fdc3.raiseIntent</code> etc..</p>
 <h4><a class="anchor" aria-hidden="true" id="see-also-1"></a><a href="#see-also-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
+<li><a href="Types#AppIdentifier"><code>AppIdentifier</code></a></li>
 <li><a href="#appintent"><code>AppIntent.apps</code></a></li>
-<li><a href="Types#icon"><code>Icon</code></a></li>
+<li><a href="#icon"><code>Icon</code></a></li>
+<li><a href="DesktopAgent#open"><code>DesktopAgent.open</code></a></li>
 <li><a href="DesktopAgent#findintent"><code>DesktopAgent.findIntent</code></a></li>
 <li><a href="DesktopAgent#raiseintent"><code>DesktopAgent.raiseIntent</code></a></li>
 </ul>
@@ -150,6 +151,39 @@ For each intent, it reference the applications that support that intent.</p>
 <li><a href="Channel"><code>Channel</code></a></li>
 <li><a href="DesktopAgent#getuserchannels"><code>DesktopAgent.getUserChannels</code></a></li>
 </ul>
+<h2><a class="anchor" aria-hidden="true" id="icon"></a><a href="#icon" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Icon</code></h2>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> Icon {
+  <span class="hljs-attr">src</span>: <span class="hljs-built_in">string</span>;
+  size?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-keyword">type</span>?: <span class="hljs-built_in">string</span>;
+}
+</code></pre>
+<p>AppMetadata includes an icons property allowing multiple icon types to be specified. Various properties may be used by the Desktop Agent to decide which icon is the most suitable to be used considering the application chooser UI, device DPI and formats supported by the system.</p>
+<h4><a class="anchor" aria-hidden="true" id="example"></a><a href="#example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
+<pre><code class="hljs css language-js"><span class="hljs-string">&quot;icons&quot;</span>: [
+  {
+    <span class="hljs-string">&quot;src&quot;</span>: <span class="hljs-string">&quot;https://app.foo.icon/app_icons/lowres.webp&quot;</span>,
+    <span class="hljs-string">&quot;size&quot;</span>: <span class="hljs-string">&quot;48x48&quot;</span>,
+    <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;image/webp&quot;</span>
+  },
+  {
+    <span class="hljs-string">&quot;src&quot;</span>: <span class="hljs-string">&quot;https://app.foo.icon/app_icons/hd_hi.svg&quot;</span>,
+    <span class="hljs-string">&quot;size&quot;</span>: <span class="hljs-string">&quot;72x72&quot;</span>,
+    <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;image/svg+xml&quot;</span>
+  }
+]
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="properties"></a><a href="#properties" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Properties</h4>
+<h4><a class="anchor" aria-hidden="true" id="src"></a><a href="#src" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>src</code></h4>
+<p>The fully qualified url to the icon.</p>
+<h4><a class="anchor" aria-hidden="true" id="size"></a><a href="#size" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>size</code></h4>
+<p>The dimensions of the icon using formatted as &quot;<height>x<width>&quot;</p>
+<h4><a class="anchor" aria-hidden="true" id="type"></a><a href="#type" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>type</code></h4>
+<p>The media type of the icon. If not provided the Desktop Agent may refer to the src file extension.</p>
+<h4><a class="anchor" aria-hidden="true" id="see-also-3"></a><a href="#see-also-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="Metadata#appmetadata"><code>AppMetadata</code></a></li>
+</ul>
 <h2><a class="anchor" aria-hidden="true" id="implementationmetadata"></a><a href="#implementationmetadata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ImplementationMetadata</code></h2>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> ImplementationMetadata {
   <span class="hljs-comment">/** The version number of the FDC3 specification that the implementation provides.
@@ -163,7 +197,7 @@ For each intent, it reference the applications that support that intent.</p>
 }
 </code></pre>
 <p>Metadata relating to the FDC3 <a href="DesktopAgent">DesktopAgent</a> object and its provider, including the supported version of the FDC3 specification and the name of the provider of the implementation.</p>
-<h4><a class="anchor" aria-hidden="true" id="see-also-3"></a><a href="#see-also-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-4"></a><a href="#see-also-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="DesktopAgent#getinfo"><code>DesktopAgent.getInfo</code></a></li>
 </ul>
@@ -176,7 +210,7 @@ For each intent, it reference the applications that support that intent.</p>
 }
 </code></pre>
 <p>The interface used to describe an intent within the platform.</p>
-<h4><a class="anchor" aria-hidden="true" id="see-also-4"></a><a href="#see-also-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-5"></a><a href="#see-also-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="#appintent"><code>AppIntent.intent</code></a></li>
 </ul>
@@ -234,7 +268,7 @@ For each intent, it reference the applications that support that intent.</p>
 <span class="hljs-comment">//resolve a &quot;Client-Service&quot; type intent with a data or channel response</span>
 <span class="hljs-keyword">let</span> resolution = <span class="hljs-keyword">await</span> agent.raiseIntent(<span class="hljs-string">&quot;intentName&quot;</span>, context);
 <span class="hljs-keyword">try</span> {
-      <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> resolution.getResult();
+    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> resolution.getResult();
     <span class="hljs-keyword">if</span> (result &amp;&amp; result.broadcast) { <span class="hljs-comment">//detect whether the result is Context or a Channel</span>
         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${resolution.source}</span> returned a channel with id <span class="hljs-subst">${result.id}</span>`</span>);
     } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (result){
@@ -246,10 +280,10 @@ For each intent, it reference the applications that support that intent.</p>
     <span class="hljs-built_in">console</span>.error(<span class="hljs-string">`<span class="hljs-subst">${resolution.source}</span> returned an error: <span class="hljs-subst">${error}</span>`</span>);
 }
 </code></pre>
-<h4><a class="anchor" aria-hidden="true" id="see-also-5"></a><a href="#see-also-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-6"></a><a href="#see-also-6" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="DesktopAgent#raiseintent"><code>DesktopAgent.raiseIntent</code></a></li>
 <li><a href="DesktopAgent#raiseintentforcontext"><code>DesktopAgent.raiseIntentForContext</code></a></li>
 <li><a href="Types#targetapp"><code>TargetApp</code></a></li>
 </ul>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/next/api/ref/Types"><span class="arrow-prev">← </span><span>Types</span></a><a class="docs-next button" href="/docs/next/api/ref/Errors"><span>Errors</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#appintent"><code>AppIntent</code></a></li><li><a href="#appmetadata"><code>AppMetadata</code></a></li><li><a href="#displaymetadata"><code>DisplayMetadata</code></a></li><li><a href="#implementationmetadata"><code>ImplementationMetadata</code></a></li><li><a href="#intentmetadata"><code>IntentMetadata</code></a></li><li><a href="#intentresolution"><code>IntentResolution</code></a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/fdc3-icon-2019.svg" alt="FDC3"/></a><div><h5>Learn</h5><a href="/docs/fdc3-intro">Getting Started</a><a href="/docs/supported-platforms">Supported Platforms</a><a href="/docs/api/ref/DesktopAgent">API Reference</a><a href="/docs/use-cases/overview">Use Cases</a><a href="https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop" target="_blank">Training</a></div><div><h5>Community</h5><a href="https://www.finos.org/" target="_blank" rel="noreferrer noopener">FINOS</a><a href="https://finos-lf.slack.com/messages/fdc3/" target="_blank" rel="noreferrer noopener">Slack</a><a href="https://stackoverflow.com/questions/tagged/fdc3" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://groups.google.com/a/finos.org/forum/#!forum/fdc3" target="_blank" rel="noreferrer noopener">Google Groups</a><a href="/docs/next/trademarks">Trademarks</a></div><div><h5>More</h5><div class="social"><a class="github-button" href="https://github.com/finos/FDC3" data-count-href="https://github.com/finos/FDC3/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">FDC3</a></div><div class="social"><a href="https://twitter.com/FDC3_" class="twitter-follow-button">@FDC3_</a></div></div></section><section class="finos finosBanner"><a href="https://www.finos.org"><img id="finosicon" src="https://fdc3.finos.org/img/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS"/><h2 id="proud">Proud member of the Fintech Open Source Foundation</h2></a></section><section class="copyright">Copyright © 2022 FDC3</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/next/api/ref/Types"><span class="arrow-prev">← </span><span>Types</span></a><a class="docs-next button" href="/docs/next/api/ref/Errors"><span>Errors</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#appintent"><code>AppIntent</code></a></li><li><a href="#appmetadata"><code>AppMetadata</code></a></li><li><a href="#displaymetadata"><code>DisplayMetadata</code></a></li><li><a href="#icon"><code>Icon</code></a></li><li><a href="#implementationmetadata"><code>ImplementationMetadata</code></a></li><li><a href="#intentmetadata"><code>IntentMetadata</code></a></li><li><a href="#intentresolution"><code>IntentResolution</code></a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/fdc3-icon-2019.svg" alt="FDC3"/></a><div><h5>Learn</h5><a href="/docs/fdc3-intro">Getting Started</a><a href="/docs/supported-platforms">Supported Platforms</a><a href="/docs/api/ref/DesktopAgent">API Reference</a><a href="/docs/use-cases/overview">Use Cases</a><a href="https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop" target="_blank">Training</a></div><div><h5>Community</h5><a href="https://www.finos.org/" target="_blank" rel="noreferrer noopener">FINOS</a><a href="https://finos-lf.slack.com/messages/fdc3/" target="_blank" rel="noreferrer noopener">Slack</a><a href="https://stackoverflow.com/questions/tagged/fdc3" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://groups.google.com/a/finos.org/forum/#!forum/fdc3" target="_blank" rel="noreferrer noopener">Google Groups</a><a href="/docs/next/trademarks">Trademarks</a></div><div><h5>More</h5><div class="social"><a class="github-button" href="https://github.com/finos/FDC3" data-count-href="https://github.com/finos/FDC3/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">FDC3</a></div><div class="social"><a href="https://twitter.com/FDC3_" class="twitter-follow-button">@FDC3_</a></div></div></section><section class="finos finosBanner"><a href="https://www.finos.org"><img id="finosicon" src="https://fdc3.finos.org/img/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS"/><h2 id="proud">Proud member of the Fintech Open Source Foundation</h2></a></section><section class="copyright">Copyright © 2022 FDC3</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>
