@@ -267,7 +267,6 @@ Intents represent a contract with expected behaviour if an app asserts that it s
 
 It is expected that App Directories SHOULD also curate listed apps and ensure that they are complying with declared intents.
 
-
 ## Context Channels
 
 Context channels allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.  Use cases for channels include color linking between applications to automate the sharing of context and topic based pub/sub such as theme.

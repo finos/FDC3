@@ -3,15 +3,9 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { AppMetadata, Channel } from '..';
+import { Channel } from '..';
 import { Context } from '../context/ContextTypes';
 
-/**
- * Operations that target apps (like open or raiseIntent) can identify
- * an app just by by its name, or pass full app metadata, giving the
- * desktop agent more information about the targeted app.
- */
-export type TargetApp = string | AppMetadata;
 /**
  * Describes a callback that handles a context event.
  * Used when attaching listeners for context broadcasts.
