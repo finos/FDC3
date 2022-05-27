@@ -15,22 +15,18 @@ It is expected that the `DesktopAgent` interface is made availabe via the [`wind
 ```ts
 interface DesktopAgent {
   // apps
-  open(app: TargetApp, context?: Context): Promise<AppMetadata>;
-  findInstances(app: TargetApp): Promise<Array<AppMetadata>>;
+  open(app: AppIdentifier, context?: Context): Promise<AppMetadata>;
+  findInstances(app: AppIdentifier): Promise<Array<AppMetadata>>;
 
   // context
   broadcast(context: Context): Promise<void>;
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
-  /**
-   * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
-   */
-  addContextListener(handler: ContextHandler): Promise<Listener>;
 
   // intents
   findIntent(intent: string, context?: Context, resultType?: string): Promise<AppIntent>;
   findIntentsByContext(context: Context, resultType?: string): Promise<Array<AppIntent>>;
-  raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
-  raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
+  raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 
   // channels
@@ -46,30 +42,25 @@ interface DesktopAgent {
   //implementation info
   getInfo(): Promise<ImplementationMetadata>;
 
-  /**
-   * @deprecated Use `getUserChannels()` instead of `getSystemChannels()`
-   */
+  //Deprecated functions
+  addContextListener(handler: ContextHandler): Promise<Listener>;
   getSystemChannels(): Promise<Array<Channel>>;
-  /**
-   * @deprecated Use `joinUserChannel()` instead of `joinChannel()`
-   */
   joinChannel(channelId: string) : Promise<void>;
+  open(name: String, context?: Context): Promise<AppMetadata>;
+  raiseIntent(intent: string, context: Context, name: String): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, name: String): Promise<IntentResolution>;
 }
 ```
 
-## Methods
+## Functions
 
 ### `addContextListener`
 
 ```ts
 addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
-/**
- * @deprecated 'Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
- */
-addContextListener(handler: ContextHandler): Promise<Listener>;
 ```
 
-Adds a listener for incoming context broadcasts from the Desktop Agent. If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
+Adds a listener for incoming context broadcasts from the Desktop Agent. If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types. 
 
 Context broadcasts are only received from apps that are joined to the same User Channel as the listening application, hence, if the application is not currently joined to a User Channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
 
@@ -179,7 +170,7 @@ fdc3.broadcast(instrument);
 ### `findInstances`
 
 ```ts
-findInstances(app: TargetApp): Promise<Array<AppMetadata>>;
+findInstances(app: AppIdentifier): Promise<Array<AppMetadata>>;
 ```
 
 Find all the available instances for a particular application.
@@ -188,7 +179,7 @@ If there are no instances of the specified application the returned promise shou
 
 If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
 
-### Example
+#### Example
 
 ```js
 // Retrieve a list of instances of an application
@@ -440,6 +431,7 @@ If the `PrivateChannel` cannot be created, the returned promise MUST be rejected
 The `PrivateChannel` type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
 
 It is intended that Desktop Agent implementations:
+
 * SHOULD restrict external apps from listening or publishing on this channel.
 * MUST prevent `PrivateChannels` from being retrieved via fdc3.getOrCreateChannel.
 * MUST provide the `id` value for the channel as required by the `Channel` interface.
@@ -448,28 +440,28 @@ It is intended that Desktop Agent implementations:
 
 ```js
 fdc3.addIntentListener("QuoteStream", async (context) => {
- const channel = await fdc3.createPrivateChannel();
- const symbol = context.id.ticker;
+  const channel = await fdc3.createPrivateChannel();
+  const symbol = context.id.ticker;
 
- // This gets called when the remote side adds a context listener
- const addContextListener = channel.onAddContextListener((contextType) => {
-  // broadcast price quotes as they come in from our quote feed
-  feed.onQuote(symbol, (price) => {
-   channel.broadcast({ type: "price", price});
+  // This gets called when the remote side adds a context listener
+  const addContextListener = channel.onAddContextListener((contextType) => {
+    // broadcast price quotes as they come in from our quote feed
+    feed.onQuote(symbol, (price) => {
+      channel.broadcast({ type: "price", price});
+    });
   });
- });
 
- // This gets called when the remote side calls Listener.unsubscribe()
- const unsubscriberListener = channel.onUnsubscribe((contextType) => {
-  feed.stop(symbol);
- });
+  // This gets called when the remote side calls Listener.unsubscribe()
+  const unsubscriberListener = channel.onUnsubscribe((contextType) => {
+    feed.stop(symbol);
+  });
 
- // This gets called if the remote side closes
- const disconnectListener = channel.onDisconnect(() => {
-  feed.stop(symbol);
- });
+  // This gets called if the remote side closes
+  const disconnectListener = channel.onDisconnect(() => {
+    feed.stop(symbol);
+  });
 
- return channel;
+  return channel;
 });
 ```
 
@@ -497,21 +489,6 @@ const redChannel = userChannels.find(c => c.id === 'red');
 #### See also
 
 * [`Channel`](Channel)
-
-### `getSystemChannels`
-
-```ts
-/**
- * @deprecated Use `getUserChannels` instead.
- */
-getSystemChannels() : Promise<Array<Channel>>;
-```
-
-Alias to the [`getUserChannels`](#getuserchannels) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
-
-#### See also
-
-* [`getUserChannels`](#getuserchannels)
 
 ### `joinUserChannel`
 
@@ -546,21 +523,6 @@ fdc3.joinUserChannel(selectedChannel.id);
 
 * [`getUserChannels`](#getuserchannels)
 
-### `joinChannel`
-
-```ts
-/**
-   * @deprecated Use `joinUserChannel()` instead of `joinChannel()`
-   */
-joinChannel(channelId: string) : Promise<void>;
-```
-
-Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
-
-#### See also
-
-* [`joinUserChannel`](#joinuserchannel)
-
 ### `leaveCurrentChannel`
 
 ```ts
@@ -588,7 +550,7 @@ redChannel.addContextListener(null, channelListener);
 ### `open`
 
 ```ts
-open(app: TargetApp, context?: Context): Promise<AppMetadata>;
+open(app: AppIdentifier, context?: Context): Promise<AppMetadata>;
 ```
 
 Launches an app with target information, which can be either be a string like a name, or an [`AppMetadata`](Metadata#appmetadata) object.
@@ -620,17 +582,17 @@ let instanceMetadata = await fdc3.open(appMetadata, context);
 #### See also
 
 * [`Context`](Types#context)
-* [`TargetApp`](Types#targetapp)
+* [`AppIdentifier`](Metadata#AppIdentifier)
 * [`AppMetadata`](Metadata#appmetadata)
 * [`OpenError`](Errors#openerror)
 
 ### `raiseIntent`
 
 ```ts
-raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
+raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<IntentResolution>;
 ```
 
-Raises a specific intent for resolution against apps registered with the Desktop Agent.
+Raises a specific intent for resolution against apps registered with the desktop agent. 
 
 The Desktop Agent MUST resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, a method for resolving the intent to a target app, such as presenting the user with a resolver UI allowing them to pick an app, SHOULD be provided.
 Alternatively, the specific app or app instance to target can also be provided. A list of valid target applications and instances can be retrieved via [`findIntent`](DesktopAgent#findintent).  
@@ -679,7 +641,7 @@ try {
 #### See also
 
 * [`Context`](Types#context)
-* [`TargetApp`](Types#targetapp)
+* [`AppIdentifier`](Metadata#AppIdentifier)
 * [`IntentResult`](Types#intentresult)
 * [`IntentResolution`](Metadata#intentresolution)
 * [`ResolveError`](Errors#resolveerror)
@@ -688,7 +650,7 @@ try {
 ### `raiseIntentForContext`
 
 ```ts
-raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
+raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<IntentResolution>;
 ```
 
 Finds and raises an intent against apps registered with the desktop agent based purely on the type of the context data.
@@ -716,6 +678,77 @@ await fdc3.raiseIntentForContext(context, targetAppMetadata);
 
 * [`raiseIntent()`](#raiseintent)
 * [`Context`](Types#context)
-* [`TargetApp`](Types#targetapp)
+* [`AppIdentifier`](Metadata#AppIdentifier)
 * [`IntentResolution`](Metadata#intentresolution)
 * [`ResolveError`](Errors#resolveerror)
+
+## Deprecated Functions
+
+### `addContextListener` (deprecated)
+
+```ts
+addContextListener(handler: ContextHandler): Promise<Listener>;
+```
+
+Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard <2.0.
+
+#### See also
+* [`addContextListener`](#addcontextlistener)
+
+
+### `getSystemChannels` (deprecated)
+
+```ts
+getSystemChannels() : Promise<Array<Channel>>;
+```
+
+Alias to the [`getUserChannels`](#getuserchannels) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
+#### See also
+* [`getUserChannels`](#getuserchannels)
+
+### `joinChannel` (deprecated)
+
+```ts
+joinChannel(channelId: string) : Promise<void>;
+```
+
+Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
+
+#### See also
+* [`joinUserChannel`](#joinuserchannel)
+
+### `open` (deprecated)
+
+```ts
+open(name: String, context?: Context): Promise<AppMetadata>;
+```
+
+Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
+
+#### See also
+
+* [`open`](#open)
+
+### `raiseIntent` (deprecated)
+
+```ts
+raiseIntent(intent: string, context: Context, name: String): Promise<IntentResolution>;
+```
+
+Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
+
+#### See also
+
+* [`raiseIntent`](#raiseintent)
+
+### `raiseIntentForContext` (deprecated)
+
+```ts
+raiseIntentForContext(context: Context, name: String): Promise<IntentResolution>;;
+```
+
+Version of `raiseIntentForContext` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
+
+#### See also
+
+* [`raiseIntentForContext`](#raiseintentforcontext)

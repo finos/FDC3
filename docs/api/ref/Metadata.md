@@ -8,7 +8,9 @@ FDC3 API operations return various types of metadata.
 
 ```ts
 interface AppIntent {
+  /** Details of the intent whose relationship to resolving applications is being described. */
   readonly intent: IntentMetadata;
+  /** Details of applications that can resolve the intent. */
   readonly apps: Array<AppMetadata>;
 }
 ```
@@ -26,18 +28,16 @@ For each intent, it reference the applications that support that intent.
 ## `AppMetadata`
 
 ```ts
-interface AppMetadata {
-  /** The unique app name that can be used with the open and raiseIntent calls. */
-  readonly name: string;
+interface AppMetadata extends AppIdentifier {
+  /** 
+      The 'friendly' app name. 
+      This field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now require an `AppIdentifier` wth `appId` set. 
+      Note that for display purposes the `title` field should be used, if set, in preference to this field.
+   */
+  readonly name?: string;
 
-  /** The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root' */
-  readonly appId?: string;
-
-  /** The Version of the application. */
+  /** The version of the application. */
   readonly version?: string;
-
-  /** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/
-  readonly instanceId?: string;
 
   /** An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set. */
   readonly instanceMetadata?: Record<string, any>;
@@ -65,18 +65,18 @@ interface AppMetadata {
 }
 ```
 
-Describes an application, or instance of an application, using metadata that is usually  provided by an FDC3 App Directory that the desktop agent connects to.
+Extends an AppIdentifier, describing an application or instance of an application, with additional descriptive metadata that is usually provided by an FDC3 App Directory that the desktop agent connects to.
 
-Will always includes at least a `name` property, which can be used with [`open`](DesktopAgent#open) and [`raiseIntent`](DesktopAgent#raiseIntent). If the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.
+The additional information from an app directory can aid in rendering UI elements, such as a launcher menu or resolver UI. This includes a title, description, tooltip and icon and screenshot URLs.
 
-Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu. This includes a title, description, tooltip and icon and image URLs.
-
-In situations where a Desktop Agent connects to multiple app directories or multiple versions of the same app exists in a single app directory, it may be necessary to specify `appId` or `version` to target applications that share the same name.
+Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc..
 
 #### See also
 
+* [`AppIdentifier`](Types#AppIdentifier)
 * [`AppIntent.apps`](#appintent)
-* [`Icon`](Types#icon)
+* [`Icon`](#icon)
+* [`DesktopAgent.open`](DesktopAgent#open)
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 
@@ -105,6 +105,53 @@ A Desktop Agent (typically for _system_ channels) may want to provide additional
 
 * [`Channel`](Channel)
 * [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
+
+## `Icon`
+
+```typescript
+interface Icon {
+  src: string;
+  size?: string;
+  type?: string;
+}
+```
+
+AppMetadata includes an icons property allowing multiple icon types to be specified. Various properties may be used by the Desktop Agent to decide which icon is the most suitable to be used considering the application chooser UI, device DPI and formats supported by the system.
+
+#### Example
+
+```js
+"icons": [
+  {
+    "src": "https://app.foo.icon/app_icons/lowres.webp",
+    "size": "48x48",
+    "type": "image/webp"
+  },
+  {
+    "src": "https://app.foo.icon/app_icons/hd_hi.svg",
+    "size": "72x72",
+    "type": "image/svg+xml"
+  }
+]
+```
+
+#### Properties
+
+#### `src`
+
+The fully qualified url to the icon.
+
+#### `size`
+
+The dimensions of the icon using formatted as "<height>x<width>"
+
+#### `type`
+
+The media type of the icon. If not provided the Desktop Agent may refer to the src file extension.
+
+#### See also
+
+* [`AppMetadata`](Metadata#appmetadata)
 
 ## `ImplementationMetadata`
 
@@ -210,7 +257,7 @@ catch (err) { ... }
 //resolve a "Client-Service" type intent with a data or channel response
 let resolution = await agent.raiseIntent("intentName", context);
 try {
-   const result = await resolution.getResult();
+    const result = await resolution.getResult();
     if (result && result.broadcast) { //detect whether the result is Context or a Channel
         console.log(`${resolution.source} returned a channel with id ${result.id}`);
     } else if (result){
