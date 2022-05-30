@@ -15,11 +15,13 @@ enum OpenError {
   ErrorOnLaunch = 'ErrorOnLaunch',
 
   /** Returned if the specified application launches but fails to add a context
-   *  listener in order to receive the context passed to the `fdc3.open` call.*/
+   *  listener in order to receive the context passed to the `fdc3.open` call.
+   */
   AppTimeout = 'AppTimeout',
 
   /** Returned if the FDC3 desktop agent implementation is not currently able
-   *  to handle the request.*/
+   *  to handle the request.
+   */
   ResolverUnavailable = 'ResolverUnavailable',
 }
 ```
@@ -35,33 +37,40 @@ Contains constants representing the errors that can be encountered when calling 
 ```typescript
 export enum ResolveError {
   /** SHOULD be returned if no apps are available that can resolve the intent
-   *  and context combination.*/
+   *  and context combination.
+   */
   NoAppsFound = 'NoAppsFound',
 
   /** Returned if the FDC3 desktop agent implementation is not currently able
-   *  to handle the request.*/
+   *  to handle the request.
+   */
   ResolverUnavailable = 'ResolverUnavailable',
 
   /** Returned if the user cancelled the resolution request, for example by
-   *  closing or cancelling a resolver UI.*/
+   *  closing or cancelling a resolver UI.
+   */
   UserCancelled = 'UserCancelledResolution',
 
   /** SHOULD be returned if a timeout cancels an intent resolution that
    *  required user interaction. Please use `ResolverUnavailable` instead for
-   *  situations where a resolver UI or similar fails.*/
+   *  situations where a resolver UI or similar fails.
+   */
   ResolverTimeout = 'ResolverTimeout',
 
   /** Returned if a specified target application is not available or a new
-   *  instance of it cannot be opened. */
+   *  instance of it cannot be opened. 
+   */
   TargetAppUnavailable = 'TargetAppUnavailable',
 
   /** Returned if a specified target application instance is not available,
-   *  for example because it has been closed. */
+   *  for example because it has been closed. 
+   */
   TargetInstanceUnavailable = 'TargetInstanceUnavailable',
 
   /** Returned if the intent and context could not be delivered to the selected
    *  application or instance, for example because it has not added an intent
-   *  handler within a timeout.*/
+   *  handler within a timeout.
+   */
   IntentDeliveryFailed = 'IntentDeliveryFailed',
 }
 ```
@@ -80,11 +89,13 @@ Contains constants representing the errors that can be encountered when calling 
 ```typescript
 enum ResultError {
   /** Returned if the intent handler exited without returning a Promise or that
-   *  Promise was not resolved with a Context or Channel object. */
+   *  Promise was not resolved with a Context or Channel object. 
+   */
   NoResultReturned = 'NoResultReturned',
 
   /** Returned if the Intent handler function processing the raised intent
-   *  throws an error or rejects the Promise it returned. */
+   *  throws an error or rejects the Promise it returned. 
+   */
   IntentHandlerRejected = 'IntentHandlerRejected',
 }
 ```
@@ -102,16 +113,19 @@ Contains constants representing the errors that can be encountered when calling 
 ```typescript
 enum ChannelError {
   /** Returned if the specified channel is not found when attempting to join a
-   *  channel via the `joinUserChannel` function of the DesktopAgent (`fdc3`).*/
+   *  channel via the `joinUserChannel` function of the DesktopAgent (`fdc3`).
+   */
   NoChannelFound = 'NoChannelFound',
 
   /** SHOULD be returned when a request to join a user channel or to a retrieve
    *  a Channel object via the `joinUserChannel` or `getOrCreateChannel` methods
-   *  of the DesktopAgent (`fdc3`) object is denied. */
+   *  of the DesktopAgent (`fdc3`) object is denied. 
+   */
   AccessDenied = 'AccessDenied',
   
   /** SHOULD be returned when a channel cannot be created or retrieved via the
-   *  `getOrCreateChannel` method of the DesktopAgent (`fdc3`).*/
+   *  `getOrCreateChannel` method of the DesktopAgent (`fdc3`).
+   */
   CreationFailed = 'CreationFailed',
 }
 ```
