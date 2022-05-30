@@ -191,13 +191,17 @@ interface ImplementationMetadata {
    *  (e.g. 5.3.0).
    */
   readonly providerVersion?: string;
+
+  /** The calling application instance's own metadata, according to the Desktop Agent (MUST include at least the `appId` and `instanceId`). */
+  readonly appMetadata: AppMetadata;
 }
 ```
 
-Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification and the name of the provider of the implementation.
+Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number and the metadata of the calling application according to the desktop agent.
 
 #### See also
 
+* [`AppMetadata`](#appmetadata)
 * [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
 
 ## `IntentMetadata`

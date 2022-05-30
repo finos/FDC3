@@ -204,6 +204,7 @@ This can be used to raise the intent against a specific app or app instance.
 If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
 
 Result types may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
+
 #### Examples
 
 I know 'StartChat' exists as a concept, and want to know which apps can resolve it:
@@ -342,7 +343,7 @@ await fdc3.raiseIntent(startChat.intent.name, context, selectedApp);
 getCurrentChannel() : Promise<Channel | null>;
 ```
 
-Optional function that returns the `Channel` object for the current User channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly. 
+Optional function that returns the `Channel` object for the current User channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
 
 Returns `null` if the app is not joined to a channel.
 
@@ -357,15 +358,13 @@ let current = await fdc3.getCurrentChannel();
 
 * [`Channel`](Channel)
 
-
-
 ### `getInfo`
 
 ```ts
 getInfo(): Promise<ImplementationMetadata>;
 ```
 
-Retrieves information about the FDC3 Desktop Agent implementation, such as the implemented version of the FDC3 specification and the name of the implementation provider.
+Retrieves information about the FDC3 Desktop Agent implementation, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number and the metadata of the calling application according to the desktop agent.
 
 Returns an [`ImplementationMetadata`](Metadata#implementationmetadata) object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.
 
@@ -381,9 +380,18 @@ if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
 }
 ```
 
+The `ImplementationMetadata` object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
+
+```js
+let implementationMetadata = await fdc3.getInfo();
+let {appId, instanceId} = implementationMetadata.appMetadata;
+
+```
+
 #### See also
 
 * [`ImplementationMetadata`](Metadata#implementationmetadata)
+* [`AppMetadata`](Metadata#appmetadata)
 
 ### `getOrCreateChannel`
 
@@ -469,7 +477,7 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 getUserChannels() : Promise<Array<Channel>>;
 ```
 
-Retrieves a list of the User Channels available for the app to join. 
+Retrieves a list of the User Channels available for the app to join.
 
 #### Example
 
@@ -490,7 +498,7 @@ joinUserChannel(channelId: string) : Promise<void>;
 
 Optional function that joins the app to the specified User channel. In most cases, applications SHOULD be joined to channels via UX provided to the application by the desktop agent, rather than calling this function directly.
 
-If an app is joined to a channel, all `fdc3.broadcast` calls will go to the channel, and all listeners assigned via `fdc3.addContextListener` will listen on the channel. 
+If an app is joined to a channel, all `fdc3.broadcast` calls will go to the channel, and all listeners assigned via `fdc3.addContextListener` will listen on the channel.
 
 If the channel already contains context that would be passed to context listeners added via `fdc3.addContextListener` then those listeners will be called immediately with that context.
 
@@ -510,6 +518,7 @@ const channels = await fdc3.getUserChannels();
 fdc3.joinUserChannel(selectedChannel.id);
 
 ```
+
 #### See also
 
 * [`getUserChannels`](#getuserchannels)
@@ -592,7 +601,7 @@ If a target app for the intent cannot be found with the criteria provided or the
 
 If you wish to raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
 
-Returns an [`IntentResolution`](Metadata#intentresolution) object with details of the app instance that was selected (or started) to respond to the intent. 
+Returns an [`IntentResolution`](Metadata#intentresolution) object with details of the app instance that was selected (or started) to respond to the intent.
 
 Issuing apps may optionally wait on the promise that is returned by the `getResult()` member of the IntentResolution. This promise will resolve when the _receiving app's_ intent handler function returns and resolves a promise. The Desktop Agent resolves the issuing app's promise with the Context object or Channel that is provided as resolution by the receiving app. The Desktop Agent MUST reject the issuing app's promise, with a string from the [`ResultError`](Errors#resulterror) enumeration, if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.
 
@@ -628,6 +637,7 @@ try {
   console.error(`${resolution.source} returned a result error: ${error}`);
 }
 ```
+
 #### See also
 
 * [`Context`](Types#context)
@@ -645,14 +655,14 @@ raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<IntentReso
 
 Finds and raises an intent against apps registered with the desktop agent based purely on the type of the context data.
 
-The desktop agent SHOULD first resolve to a specific intent based on the provided context if more than one intent is available for the specified context. This MAY be achieved by displaying a resolver UI. It SHOULD then resolve to a specific app to handle the selected intent and specified context. 
-Alternatively, the specific app or app instance to target can also be provided, in which case any method of resolution SHOULD only consider intents supported by the specified application. 
+The desktop agent SHOULD first resolve to a specific intent based on the provided context if more than one intent is available for the specified context. This MAY be achieved by displaying a resolver UI. It SHOULD then resolve to a specific app to handle the selected intent and specified context.
+Alternatively, the specific app or app instance to target can also be provided, in which case any method of resolution SHOULD only consider intents supported by the specified application.
 
 Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
 
 Returns an `IntentResolution` object, see [`raiseIntent()`](#raiseintent) for details.
 
-If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned. If a specific target `app` parameter was set, but either the app or app instance is not available then the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` errors MUST be returned. 
+If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned. If a specific target `app` parameter was set, but either the app or app instance is not available then the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` errors MUST be returned.
 
 #### Example
 
