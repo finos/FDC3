@@ -192,7 +192,9 @@ interface ImplementationMetadata {
    */
   readonly providerVersion?: string;
 
-  /** The calling application instance's own metadata, according to the Desktop Agent (MUST include at least the `appId` and `instanceId`). */
+  /** The calling application instance's own metadata, according to the 
+   *  Desktop Agent (MUST include at least the `appId` and `instanceId`).
+   */
   readonly appMetadata: AppMetadata;
 }
 ```
@@ -229,38 +231,34 @@ The interface used to describe an intent within the platform.
 ```ts
 interface IntentResolution {
 
-  /** 
-   *  Metadata about the app instance that was selected (or started) to resolve
+  /** Metadata about the app instance that was selected (or started) to resolve
    *  the intent. `source.instanceId` MUST be set, indicating the specific app 
    *  instance that received the intent.
    */
   readonly source: AppMetadata;
 
-  /**
-   * The intent that was raised. May be used to determine which intent the user
-   * chose in response to `fdc3.raiseIntentForContext()`.
+  /** The intent that was raised. May be used to determine which intent the user
+   *  chose in response to `fdc3.raiseIntentForContext()`.
    */
   readonly intent: string;
 
-  /**
-   * The version number of the Intents schema being used.
+  /** The version number of the Intents schema being used.
    */
   readonly version?: string;
   
-  /**
-   * Retrieves a promise that will resolve to either `Context` data returned 
-   * by the application that resolves the raised intent or a `Channel` 
-   * established and returned by the app resolving the intent. 
+  /** Retrieves a promise that will resolve to either `Context` data returned 
+   *  by the application that resolves the raised intent or a `Channel` 
+   *  established and returned by the app resolving the intent. 
    * 
-   * A `Channel` returned MAY be of the `PrivateChannel` type. The 
-   * client can then `addContextListener()` on that channel to, for example, 
-   * receive a stream of data.
+   *  A `Channel` returned MAY be of the `PrivateChannel` type. The 
+   *  client can then `addContextListener()` on that channel to, for example, 
+   *  receive a stream of data.
    * 
-   * If an error occurs (i.e. an error is thrown by the handler function,
-   * the promise it returns is rejected, or a promise is not returned by the
-   * handler function) then the Desktop Agent MUST reject the promise returned
-   * by the `getResult()` function of the `IntentResolution` with a string from
-   * the `ResultError` enumeration.
+   *  If an error occurs (i.e. an error is thrown by the handler function,
+   *  the promise it returns is rejected, or a promise is not returned by the
+   *  handler function) then the Desktop Agent MUST reject the promise returned
+   *  by the `getResult()` function of the `IntentResolution` with a string from
+   *  the `ResultError` enumeration.
    */
    getResult(): Promise<IntentResult>;
 }
@@ -271,7 +269,7 @@ IntentResolution provides a standard format for data returned upon resolving an 
 #### Examples
 
 ```js
-//resolve a "Chain" type intent
+// Resolve a "Chain" type intent
 let resolution = await agent.raiseIntent("intentName", context);
 
 // Use metadata about the resolving app instance to target a further intent
@@ -279,12 +277,12 @@ try {
   const resolution = await fdc3.raiseIntent('StageOrder', context);
   ...
 
-  //some time later
+  //Some time later
   await agent.raiseIntent("UpdateOrder", context, resolution.source);
 }
 catch (err) { ... }                                    
                                                
-//resolve a "Client-Service" type intent with a data or channel response
+//Resolve a "Client-Service" type intent with a data or channel response
 let resolution = await agent.raiseIntent("intentName", context);
 try {
     const result = await resolution.getResult();
