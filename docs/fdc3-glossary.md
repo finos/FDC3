@@ -28,6 +28,7 @@ For the purposes of this Standard, the following definitions apply. Other terms 
 - **interoperability**: the ability of software applications to exchange and make use of information and invoke specified actions.
 - **intent**: A verb, with a pre-agreed meaning (expected behavior), used to invoke an action between applications. A set of such verbs can, in conjunction with Context Data acting as nouns, be used to put together common cross-application workflows on the financial desktop.
 - **Listener**: API interface which allows unsubscribing from Intents or Context Channels.
+- **Originating App**: The application that sent a particular context message or raised an intent.
 - **Platform Provider**: An environment that provides an implementation of the FDC3 API that applications can use.
 - **raising an intent**: The act of requesting, via the FDC3 API/Desktop Agent that a specified action be performed by another application, using specified context data as input.
 - **resolver**: A facility of a Desktop Agent used to map a raised intent and associated context object to an application that will perform the action represented by the intent, using the context object as input. Where multiple applications can resolve the intent, a resolver will often display a user-interface allowing a user to pick from the available applications that support the intent and type of context supplied.
