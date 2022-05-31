@@ -32,7 +32,7 @@ An application is any endpoint on the desktop that is:
 - Launchable by a Desktop Agent
 - Addressable by a Desktop Agent
 
-Examples of End Points include:
+Examples of endpoints include:
 
 - Native Applications
 - Web Applications
@@ -93,7 +93,7 @@ For example:
 - entitlements
 - UX of application resolution
 
-Are all areas of functionality that any feature complete desktop agent would implement, but are not currently areas considered for standardization under FDC3.
+Are all areas of functionality that any feature-complete desktop agent would implement, but are not currently areas considered for standardization under FDC3.
 
 ### Inter-Agent Communication
 
@@ -119,6 +119,14 @@ if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), '1.2')) {
 } else {
   await fdc3.raiseIntent('ViewChart', context);
 }
+```
+
+The `ImplementationMetadata` object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
+
+```js
+let implementationMetadata = await fdc3.getInfo();
+let {appId, instanceId} = implementationMetadata.appMetadata;
+
 ```
 
 ### Open an Application by Name
@@ -284,7 +292,7 @@ try {
 
 Applications need to let the system know the intents they can support.  Typically, this is done via registration with an [App Directory](../app-directory/spec).  It is also possible for intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  Although dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
 
-When an instance of an application is launched, it is expected to add an [`IntentHandler`](ref/Types#intenthandler) function to the desktop agent for each intent it has registered by calling the [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) function of the Desktop Agent. Doing so allows the Desktop Agent to pass incoming intents and contexts to that instance of the application. Hence, if the application instance was spawned in response to the raised intent, then the Desktop Agent must wait for the relevant intent listener to be added by that instance, before it can deliver the intent and context to it. In order to facilitate accurate error responses, calls to `fdc3.raiseIntent` should not return an `IntentResolution` until the intent handler has been added and the intent delivered to the target app.
+When an instance of an application is launched, it is expected to add an [`IntentHandler`](ref/Types#intenthandler) function to the desktop agent for each intent it has registered by calling the [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) function of the Desktop Agent. Doing so allows the Desktop Agent to pass incoming intents and contexts to that instance of the application. Hence, if the application instance was spawned in response to the raised intent, then the Desktop Agent must wait for the relevant intent listener to be added by that instance before it can deliver the intent and context to it. In order to facilitate accurate error responses, calls to `fdc3.raiseIntent` should not return an `IntentResolution` until the intent handler has been added and the intent delivered to the target app.
 
 #### Compliance with Intent Standards
 
