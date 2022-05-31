@@ -110,12 +110,19 @@
 </code></pre>
 <p>Adds a listener for incoming context broadcasts from the Desktop Agent. If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass <code>null</code> as the <code>contextType</code> parameter to receive all context types.</p>
 <p>Context broadcasts are only received from apps that are joined to the same User Channel as the listening application, hence, if the application is not currently joined to a User Channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.</p>
+<p>Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.</p>
 <h4><a class="anchor" aria-hidden="true" id="examples"></a><a href="#examples" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// any context</span>
 <span class="hljs-keyword">const</span> listener = <span class="hljs-keyword">await</span> fdc3.addContextListener(<span class="hljs-literal">null</span>, <span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> { ... });
 
 <span class="hljs-comment">// listener for a specific type</span>
 <span class="hljs-keyword">const</span> contactListener = <span class="hljs-keyword">await</span> fdc3.addContextListener(<span class="hljs-string">&#x27;fdc3.contact&#x27;</span>, <span class="hljs-function"><span class="hljs-params">contact</span> =&gt;</span> { ... });
+
+<span class="hljs-comment">// listener that logs metadata for the message a specific type</span>
+<span class="hljs-keyword">const</span> contactListener = <span class="hljs-keyword">await</span> fdc3.addContextListener(<span class="hljs-string">&#x27;fdc3.contact&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">contact, metadata</span>) =&gt;</span> { 
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Received context message\nContext: <span class="hljs-subst">${contact}</span>\nOriginating app: <span class="hljs-subst">${metadata?.sourceAppMetadata}</span>`</span>);
+  <span class="hljs-comment">//do something else with the context</span>
+});
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="see-also"></a><a href="#see-also" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
@@ -129,10 +136,17 @@
 <p>Adds a listener for incoming intents from the Desktop Agent. The handler function may return void or a promise that resolves to a <a href="Types#intentresult"><code>IntentResult</code></a>, which is either a <a href="Types#context"><code>Context</code></a> object, representing any data that should be returned to the app that raised the intent, or a <a href="Channel"><code>Channel</code></a> or <a href="PrivateChannel"><code>PrivateChannel</code></a> over which data responses will be sent. The <code>IntentResult</code> will be returned to app that raised the intent via the <a href="Metadata#intentresolution"><code>IntentResolution</code></a> and retrieved from it using the <code>getResult()</code> function.</p>
 <p>The Desktop Agent MUST reject the promise returned by the <code>getResult()</code> function of <code>IntentResolution</code> if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.</p>
 <p>The <a href="PrivateChannel"><code>PrivateChannel</code></a> type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. <code>PrivateChannels</code> are only retrievable via raising an intent.</p>
+<p>Optional metadata about each intent &amp; context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.</p>
 <h4><a class="anchor" aria-hidden="true" id="examples-1"></a><a href="#examples-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
 <pre><code class="hljs css language-js"><span class="hljs-comment">//Handle a raised intent</span>
 <span class="hljs-keyword">const</span> listener = fdc3.addIntentListener(<span class="hljs-string">&#x27;StartChat&#x27;</span>, <span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> {
-    <span class="hljs-comment">// start chat has been requested by another application</span>
+  <span class="hljs-comment">// start chat has been requested by another application</span>
+  <span class="hljs-keyword">return</span>;
+});
+
+<span class="hljs-comment">//Handle a raised intent and log the originating app metadata</span>
+<span class="hljs-keyword">const</span> listener = fdc3.addIntentListener(<span class="hljs-string">&#x27;StartChat&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">contact, metadata</span>) =&gt;</span> { 
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Received intent StartChat\nContext: <span class="hljs-subst">${contact}</span>\nOriginating app: <span class="hljs-subst">${metadata?.sourceAppMetadata}</span>`</span>);
     <span class="hljs-keyword">return</span>;
 });
 
@@ -149,7 +163,7 @@ fdc3.addIntentListener(<span class="hljs-string">&quot;QuoteStream&quot;</span>,
   <span class="hljs-keyword">const</span> channel: PrivateChannel = <span class="hljs-keyword">await</span> fdc3.createPrivateChannel();
   <span class="hljs-keyword">const</span> symbol = context.id.symbol;
 
-<span class="hljs-comment">// Called when the remote side adds a context listener</span>
+  <span class="hljs-comment">// Called when the remote side adds a context listener</span>
   <span class="hljs-keyword">const</span> addContextListener = channel.onAddContextListener(<span class="hljs-function">(<span class="hljs-params">contextType</span>) =&gt;</span> {
     <span class="hljs-comment">// broadcast price quotes as they come in from our quote feed</span>
     feed.onQuote(symbol, <span class="hljs-function">(<span class="hljs-params">price</span>) =&gt;</span> {
