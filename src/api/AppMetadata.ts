@@ -5,6 +5,7 @@
 
 import { AppIdentifier } from './AppIdentifier';
 import { Icon } from './Icon';
+import { Image } from './Image';
 
 /**
  * Extends an `AppIdentifier`, describing an application or instance of an application, with additional descriptive metadata that is usually provided by an FDC3 App Directory that the desktop agent connects to.
@@ -40,7 +41,7 @@ export interface AppMetadata extends AppIdentifier {
   readonly icons?: Array<Icon>;
 
   /** A list of image URLs for the application that can be used to render UI elements */
-  readonly images?: Array<string>;
+  readonly images?: Array<Image>;
 
   /** The type of output returned for any intent specified during resolution. May express a particular context type (e.g. "fdc3.instrument"), channel (e.g. "channel") or a channel that will receive a specified type (e.g. "channel<fdc3.instrument>"). */
   readonly resultType?: string | null;

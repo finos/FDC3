@@ -609,10 +609,10 @@ components:
           description: App Image URL
         size:
           type: string
-          description: Icon dimension formatted as `<height>x<width>`
+          description: Image dimension formatted as `<height>x<width>`
         type:
           type: string
-          description: Image media type. If not present the Desktop Agent may use the src file extension
+          description: Image media type. If not present the Desktop Agent may use the src file extension.
         label:
           type: string
           description: Optional caption for the image
