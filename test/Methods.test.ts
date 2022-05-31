@@ -376,6 +376,7 @@ describe('test version comparison functions', () => {
     const metaOneTwo: ImplementationMetadata = {
       fdc3Version: '1.2',
       provider: 'test',
+      appMetadata: { appId: 'dummy', name: 'dummy' },
     };
     expect(versionIsAtLeast(metaOneTwo, '1.1')).toBe(true);
     expect(versionIsAtLeast(metaOneTwo, '1.2')).toBe(true);
@@ -385,6 +386,7 @@ describe('test version comparison functions', () => {
     const metaOneTwoOne: ImplementationMetadata = {
       fdc3Version: '1.2.1',
       provider: 'test',
+      appMetadata: { appId: 'dummy', name: 'dummy' },
     };
     expect(versionIsAtLeast(metaOneTwoOne, '1.1')).toBe(true);
     expect(versionIsAtLeast(metaOneTwoOne, '1.2')).toBe(true);
