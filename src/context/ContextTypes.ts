@@ -40,6 +40,14 @@ export interface ContactID {
   FDS_ID?: string;
 }
 
+export interface Email {
+  type: string;
+  recipients: object;
+  subject?: string;
+  textBody?: string;
+  richTextBody?: object;
+}
+
 export interface InstrumentList {
   instruments: Instrument[];
   type: string;
@@ -132,6 +140,14 @@ export class Convert {
 
   public static contactListToJson(value: ContactList): string {
     return JSON.stringify(uncast(value, r('ContactList')), null, 2);
+  }
+
+  public static toEmail(json: string): Email {
+    return cast(JSON.parse(json), r('Email'));
+  }
+
+  public static emailToJson(value: Email): string {
+    return JSON.stringify(uncast(value, r('Email')), null, 2);
   }
 
   public static toInstrument(json: string): Instrument {
@@ -358,6 +374,16 @@ const typeMap: any = {
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
     ],
     ''
+  ),
+  Email: o(
+    [
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'recipients', js: 'recipients', typ: u(undefined, '') },
+      { json: 'subject', js: 'subject', typ: u(undefined, '') },
+      { json: 'textBody', js: 'textBody', typ: u(undefined, '') },
+      { json: 'richTextBody', js: 'richTextBody', typ: u(undefined, '') },
+    ],
+    'any'
   ),
   InstrumentList: o(
     [
