@@ -5,6 +5,7 @@
 
 import { DesktopAgent } from './api/DesktopAgent';
 
+export * from './api/AppIdentifier';
 export * from './api/AppIntent';
 export * from './api/AppMetadata';
 export * from './api/Channel';
