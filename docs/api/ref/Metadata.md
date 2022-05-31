@@ -54,8 +54,8 @@ interface AppMetadata extends AppIdentifier {
   /** A list of icon URLs for the application that can be used to render UI elements */
   readonly icons?: Array<Icon>;
 
-  /** A list of image URLs for the application that can be used to render UI elements */
-  readonly images?: Array<string>;
+  /** Images representing the app in common usage scenarios that can be used to render UI elements */
+  readonly screenshots?: Array<Image>;
   
   /** The type of result returned for any intent specified during resolution. 
    * May express a particular context type (e.g. "fdc3.instrument"), channel 
@@ -140,6 +140,8 @@ interface Icon {
 }
 ```
 
+Metadata relating to a single icon image at a remote URL, used to represent an application in a user interface.
+
 AppMetadata includes an icons property allowing multiple icon types to be specified. Various properties may be used by the Desktop Agent to decide which icon is the most suitable to be used considering the application chooser UI, device DPI and formats supported by the system.
 
 #### Example
@@ -167,11 +169,63 @@ The fully qualified url to the icon.
 
 #### `size`
 
-The dimensions of the icon using formatted as "<height>x<width>"
+The dimensions of the Icon formatted as `<height>x<width>`.
 
 #### `type`
 
 The media type of the icon. If not provided the Desktop Agent may refer to the src file extension.
+
+#### See also
+
+* [`AppMetadata`](Metadata#appmetadata)
+
+## `Image`
+
+```typescript
+interface Image {
+  src: string;
+  size?: string;
+  type?: string;
+  label?: string;
+}
+```
+
+Metadata relating to a single image at a remote URL, used to represent screenshot images.
+
+AppMetadata includes a screenshots property allowing multiple images to be specified. Various properties may be used by the Desktop Agent to decide which image(s) are the most suitable to be used considering the application chooser UI, device DPI and formats supported by the system.
+
+#### Example
+
+```js
+"screenshots": [
+  {
+    "src": "https://app.foo.icon/app_screenshots/dashboard.png",
+    "size": "800x600",
+    "type": "image/png",
+    "label": "Example app dashboard"
+  },
+  {
+    "src": "https://app.foo.icon/app_screenshots/notifications.png",
+    "size": "800x600",
+    "type": "image/png",
+    "label": "Order notifications view"
+  }
+]
+```
+
+#### Properties
+
+#### `src`
+
+The fully qualified url to the image.
+
+#### `size`
+
+The dimensions of the image formatted as `<height>x<width>`.
+
+#### `type`
+
+The media type of the image. If not provided the Desktop Agent may refer to the src file extension.
 
 #### See also
 
