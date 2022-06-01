@@ -5,9 +5,11 @@
 
 import { DesktopAgent } from './api/DesktopAgent';
 
+export * from './api/AppIdentifier';
 export * from './api/AppIntent';
 export * from './api/AppMetadata';
 export * from './api/Channel';
+export * from './api/ContextMetadata';
 export * from './api/Types';
 export * from './api/DesktopAgent';
 export * from './api/DisplayMetadata';

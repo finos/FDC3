@@ -1,7 +1,9 @@
 /**
  * SPDX-License-Identifier: Apache-2.0
- * Copyright 2021 FINOS FDC3 contributors - see NOTICE file
+ * Copyright FINOS FDC3 contributors - see NOTICE file
  */
+
+import { AppMetadata } from './AppMetadata';
 
 /**
  * Metadata relating to the FDC3 Desktop Agent implementation and its provider.
@@ -17,4 +19,7 @@ export interface ImplementationMetadata {
 
   /** The version of the provider of the FDC3 Desktop Agent Implementation (e.g. 5.3.0). */
   readonly providerVersion?: string;
+
+  /** The calling application instance's own metadata, according to the Desktop Agent (MUST include at least the `appId` and `instanceId`). */
+  readonly appMetadata: AppMetadata;
 }

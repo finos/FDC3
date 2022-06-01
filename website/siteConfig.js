@@ -23,12 +23,13 @@ const siteConfig = {
   organizationName: 'finos',
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    
-    {doc: 'fdc3-intro', label: 'Docs'},   
+    {doc: 'fdc3-intro', label: 'Getting Started'},   
+    {page: 'fdc3-roadmap', label: 'Roadmap'},
     {doc: 'use-cases/overview', label: 'Use Cases'},
+    //{page: 'implementations', label: 'Implementations'},
+    {doc: 'fdc3-standard', label: 'The Standard'},
     {page: 'get-involved', label: 'Get Involved'},
-    {href: 'https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop', label: 'Training', external: true},
-    {doc: 'why-fdc3', label: 'Why FDC3'}
+    {href: 'https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop', label: 'Training', external: true}
    //, {blog: true, label: 'News'}
   ],
 
@@ -46,10 +47,14 @@ const siteConfig = {
   colors: {
     primaryColor: '#0086bf', /* This changes the top FINOS banner & all links - DO NOT CHANGE */
     secondaryColor: '#0033A0' /* This does net change anything - but keep as the project / program main color */
-  
   },
 
-  separateCss: ['static/toolbox/fdc3-workbench/static/css'],
+  separateCss: [
+    'static/toolbox/fdc3-workbench/static/css',
+    'static/toolbox/fdc3-explained/1.0',
+    'static/toolbox/fdc3-explained/1.1',
+    'static/toolbox/fdc3-explained/1.2'
+  ],
 
   /* Custom fonts for website */
   /*
