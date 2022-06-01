@@ -9,6 +9,10 @@
       "displayName": "Chat"
     },
     {
+      "name": "StartEmail",
+      "displayName": "Email"
+    },
+    {
       "name": "ViewChart",
       "displayName": "Chart"
     },
@@ -31,6 +35,26 @@
     {
       "name": "ViewAnalysis",
       "displayName": "Analyze"
+    },
+    {
+      "name": "ViewHoldings",
+      "displayName": "Holdings"
+    },
+    {
+      "name": "ViewProfile",
+      "displayName": "Profile"
+    },
+    {
+      "name": "ViewResearch",
+      "displayName": "Research"
+    },
+    {
+      "name": "ViewInteractions",
+      "displayName": "Interactions"
+    },
+    {
+      "name": "ViewOrders",
+      "displayName": "Orders"
     }
   ]
 }

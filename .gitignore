@@ -3,6 +3,7 @@
 node_modules
 dist
 coverage
+.project
 
 lib/core/metadata.js
 lib/core/MetadataBlog.js
@@ -13,3 +14,6 @@ website/static/toolbox
 website/node_modules
 website/i18n/*
 website/package-lock.json
+
+.idea/
+*.iml

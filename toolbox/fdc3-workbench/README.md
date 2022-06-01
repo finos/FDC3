@@ -9,11 +9,11 @@ _Created and contributed to [FDC3](http://fdc3.finos.org) by [Cosaic, Inc.](http
 
 1. Clone the repository
 
-`git clone https://github.com/ChartIQ/fdc3-workbench`
+`git clone https://github.com/finos/FDC3.git`
 
 2. Install dependencies
 
-`cd fdc3-workbench & yarn install`
+`cd toolbox/fdc3-workbench & yarn install`
 
 3. Start the development server
 
