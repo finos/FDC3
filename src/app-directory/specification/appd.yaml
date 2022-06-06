@@ -29,6 +29,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Application'
               examples:
+                MyAppDefinition:
+                  $ref: '#/components/examples/MyAppDefinition'
                 FDC3WorkbenchAppDefinition:
                   $ref: '#/components/examples/FDC3WorkbenchAppDefinition'
         '400':
@@ -64,8 +66,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/AllApplicationsResponse'
               examples:
-                FDC3WorkbenchAppDefinitionAllAppsResponse:
-                  $ref: '#/components/examples/FDC3WorkbenchAppDefinitionAllAppsResponse'
+                AllAppsResponse:
+                  $ref: '#/components/examples/AllAppsResponse'
         '400':
           description: Bad request.
           content:
@@ -420,15 +422,10 @@ components:
             custom data from an App Directory to a launcher.
           items:
             $ref: '#/components/schemas/NameValuePair'
-        intents:
-          type: array
-          description: >
-            The list of intents implemented by the Application as defined by
-            https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
-          items:
-            $ref: '#/components/schemas/Intent'
         hostManifests:
           $ref: '#/components/schemas/HostManifests'
+        interop:
+          $ref: '#/components/schemas/Interop'
     Application:
       description: >
         Defines an application retrieved from an FDC3 App Directory, which can
@@ -448,105 +445,6 @@ components:
           properties:
             localizedVersions:
               $ref: '#/components/schemas/LocalizedVersions'
-    ApplicationV1:
-      description: >
-        (Deprecated v1 API version) Defines an application retrieved from an FDC3 App Directory, which can
-        then be launched.
-        Launching typically means running for a user on a desktop. 
-        The details around 'launching' including who or what might do it, and how the launch action is initiated are
-        discussed elsewhere in the FDC3 App Directory spec.
-      required:
-        - appId
-        - name
-        - manifest
-        - manifestType
-      properties:
-        appId:
-          type: string
-          description: >
-            The unique application identifier located within a specific
-            application directory instance.
-        name:
-          type: string
-          description: >
-            The name of the application.
-            The name should be unique within an FDC3 App Directory instance. The
-            exception to the uniqueness constraint is that an App Directory can
-            hold definitions for multiple versions of the same app.
-            The same appName could occur in other directories. We are not
-            currently specifying app name conventions in the document.
-        manifest:
-          type: string
-          description: >
-            URI or full JSON of the application manifest providing all details related to launch
-            and use requirements as described by the vendor.
-            The format of this manifest is vendor specific, but can be identified by
-            the manifestType attribute.
-        manifestType:
-          type: string
-          description: >
-            The manifest type which relates to the format and structure of the manifest content.
-            The definition is based on the vendor specific format and definition outside of this specification.
-        version:
-          type: string
-          description: >-
-            Version of the application. This allows multiple app versions to be
-            defined using the same app name. This can be a triplet but can also
-            include things like 1.2.5 (BETA)
-        title:
-          type: string
-          description: >-
-            Optional title for the application, if missing use appName,
-            typically used in a launcher UI.
-        tooltip:
-          type: string
-          description: Optional tooltip description e.g. for a launcher
-        description:
-          type: string
-          description: >-
-            Description of the application. This will typically be a 1-2
-            paragraph style blurb about the application. Allow mark up language
-        images:
-          type: array
-          description: >-
-            Array of images to show the user when they are looking at app
-            description. Each image can have an optional description/tooltip
-          items:
-            $ref: '#/components/schemas/AppImageV1'
-        contactEmail:
-          type: string
-          format: email
-          description: Optional e-mail to receive queries about the application
-        supportEmail:
-          type: string
-          format: email
-          description: Optional e-mail to receive support requests for the application
-        publisher:
-          type: string
-          description: >-
-            The name of the company that owns the application. The publisher has
-            control over their namespace/app/signature.
-        icons:
-          type: array
-          description: >-
-            Holds Icons used for the application, a Launcher may be able to use
-            multiple Icon sizes or there may be a 'button' Icon
-          items:
-            $ref: '#/components/schemas/IconV1'
-        customConfig:
-          type: array
-          description: >-
-            An optional set of name value pairs that can be used to deliver
-            custom data from an App Directory to a launcher.
-          items:
-            $ref: '#/components/schemas/NameValuePair'
-        intents:
-          type: array
-          description: >
-            The list of intents implemented by the Application as defined by
-            https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
-          items:
-            $ref: '#/components/schemas/IntentV1'
     AllApplicationsResponse:
       properties:
         applications:
@@ -555,18 +453,6 @@ components:
             List of applications
           items:
             $ref: '#/components/schemas/Application'
-        message:
-          type: string
-          description: |
-            Response message providing status of query
-    ApplicationSearchResponseV1:
-      properties:
-        applications:
-          type: array
-          description: |
-            List of applications
-          items:
-            $ref: '#/components/schemas/ApplicationV1'
         message:
           type: string
           description: |
@@ -593,13 +479,6 @@ components:
         type:
           type: string
           description: Image media type. If not present the Desktop Agent may use the src file extension
-    IconV1:
-      description: (Deprecated v1 API version) Icon holder
-      properties:
-        icon:
-          type: string
-          format: uri
-          description: Icon URL
     Screenshot:
       description: Images representing the app in common usage scenarios
       properties:
@@ -616,70 +495,6 @@ components:
         label:
           type: string
           description: Optional caption for the image
-    AppImageV1:
-      description: App Image holder
-      properties:
-        url:
-          type: string
-          format: uri
-          description: App Image URL
-    Intent:
-      description: >-
-        An intent definition as defined by spec
-        https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          description: The name of the intent to 'launch'. In this case the name of an Intent supported by an Application.
-        displayName:
-          type: string
-          description: An optional display name for the intent that may be used in UI instead of the name.
-        contexts:
-          type: array
-          items:
-            type: string
-          description: >-
-            A comma separated list of the types of contexts the intent offered by the application can process,  
-            where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
-        resultType:
-          type: string
-          description: >-
-            An optional type for output returned by the application, if any, when resolving this intent. 
-            May indicate a context type by type name (e.g. "fdc3.instrument"), a channel (e.g. "channel") 
-            or a combination that indicates a channel that returns a particular context type 
-            (e.g. "channel<fdc3.instrument>").
-        customConfig:
-          type: object
-          description: >-
-            Custom configuration for the intent that may be required for a
-            particular desktop agent.
-    IntentV1:
-      description: >-
-        (Deprecated v1 API version) An intent definition as defined by spec
-        https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          description: The name of the intent to 'launch'. In this case the name of an Intent supported by an Application.
-        displayName:
-          type: string
-          description: An optional display name for the intent that may be used in UI instead of the name.
-        contexts:
-          type: array
-          items:
-            type: string
-          description: >-
-            A comma separated list of the types of contexts the intent offered by the application can process. 
-            where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
-        customConfig:
-          type: object
-          description: >-
-            Custom configuration for the intent that may be required for a
-            particular desktop agent.
     Type:
       type: string
       description: |
@@ -784,6 +599,276 @@ components:
       additionalProperties:
         x-additionalPropertiesName: Language tag
         $ref: '#/components/schemas/BaseApplication' # due to a bug in redoc this may display as a recursive definition, it is not. It will render correctly in swagger and other OpenAPI parsers.
+    Intent:
+      description: >-
+        Definition of an intent that an app listens for
+      required:
+        - contexts
+      properties:
+        displayName:
+          type: string
+          description: An optional display name for the intent that may be used in UI instead of the name.
+        contexts:
+          type: array
+          items:
+            type: string
+          description: >-
+            A comma separated list of the types of contexts the intent offered by the application can process,  
+            where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
+        resultType:
+          type: string
+          description: >-
+            An optional type for output returned by the application, if any, when resolving this intent. 
+            May indicate a context type by type name (e.g. "fdc3.instrument"), a channel (e.g. "channel") 
+            or a combination that indicates a channel that returns a particular context type 
+            (e.g. "channel<fdc3.instrument>").
+        customConfig:
+          type: object
+          description: >-
+            Custom configuration for the intent that may be required for a
+            particular desktop agent.
+    Interop:
+      type: object
+      description: |
+        Metadata that describes how the application uses FDC3 APIs. This metadata serves multiple purposes:
+        
+        - It supports intent resolution by a desktop agent, by declaring what intents an app listens for.
+        - It may be used, for example in an app catalog UI, to find apps that 'interoperate with' other apps. 
+        - It provides a standard location to document how the app interacts with user channels, app channels, 
+          and intents, for use by other app developers and desktop assemblers.
+      properties:
+        intents:
+          type: object
+          description: Describes the app's interactions with intents.
+          properties:
+            listensFor:
+              type: object
+              description: | 
+                A mapping of Intents names that an app listens for via `fdc3.addIntentListener()` to their 
+                configuration. 
+                
+                Used to support intent resolution by desktop agents. Replaces the `intents` element used in appD records prior to FDC3 2.0. 
+              additionalProperties:
+                x-additionalPropertiesName: Intent name
+                items:
+                  $ref: '#/components/schemas/Intent'
+            raises:
+              type: object
+              description: | 
+                A mapping of Intent names that an app raises (via `fdc3.raiseIntent`) to an array of context 
+                type names that it may be raised with.
+
+                Use the intent name "any" to represent use of the `fdc3.raiseIntentForContext` and 
+                `fdc3.findIntentForContext` functions, which allow the user to select from intents available for a 
+                specified context type.
+
+                This metadata is not currently used by the desktop agent, but is provided to help find apps
+                that will interoperate with this app and to document API interactions for use by other app
+                developers.
+              additionalProperties:
+                x-additionalPropertiesName: Intent name
+                type: array
+                description: Context type names that the intent may be raised with.
+                items:
+                  type: string
+        userChannels:
+          type: object
+          description: |
+            Describes the application's use of context types on User Channels.
+
+            This metadata is not currently used by the desktop agent, but is provided to help find apps
+            that will interoperate with this app and to document API interactions for use by other app
+            developers.
+          properties:
+            broadcasts:
+              type: array
+              description: Context type names that are broadcast by the application.
+              items:
+                type: string
+            listensFor:
+              type: array
+              description: Context type names that the application listens for.
+              items:
+                type: string
+        appChannels:
+          type: array
+          description: | 
+            Describes the application's use of App Channels.
+
+            This metadata is not currently used by the desktop agent, but is provided to help find apps 
+            that will interoperate with this app and to document API interactions for use by other app 
+            developers.
+          items:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+                description: The name of the App Channel.
+              description:
+                type: string
+                description: A description of how the channel is used.
+              broadcasts:
+                type: array
+                description: Context type names that are broadcast by the application on the channel.
+                items:
+                  type: string
+              listensFor:
+                type: array
+                description: Context type names that the application listens for on the channel.
+                items:
+                  type: string
+    AppImageV1:
+      description: App Image holder
+      properties:
+        url:
+          type: string
+          format: uri
+          description: App Image URL
+    IconV1:
+      description: (Deprecated v1 API version) Icon holder
+      properties:
+        icon:
+          type: string
+          format: uri
+          description: Icon URL
+    IntentV1:
+      description: >-
+        (Deprecated v1 API version) An intent definition as defined by spec
+        https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The name of the intent to 'launch'. In this case the name of an Intent supported by an application.
+        displayName:
+          type: string
+          description: An optional display name for the intent that may be used in UI instead of the name.
+        contexts:
+          type: array
+          items:
+            type: string
+          description: >-
+            A comma sepaarted list of the types of contexts the intent offered by the application can process. 
+            where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
+        customConfig:
+          type: object
+          description: >-
+            Custom configuration for the intent that may be required for a
+            particular desktop agent.
+    ApplicationV1:
+      description: >
+        (Deprecated v1 API version) Defines an application retrieved from an FDC3 App Directory, which can
+        then be launched.
+        Launching typically means running for a user on a desktop. 
+        The details around 'launching' including who or what might do it, and how the launch action is initiated are
+        discussed elsewhere in the FDC3 App Directory spec.
+      required:
+        - appId
+        - name
+        - manifest
+        - manifestType
+      properties:
+        appId:
+          type: string
+          description: >
+            The unique application identifier located within a specific
+            application directory instance.
+        name:
+          type: string
+          description: >
+            The name of the application.
+            The name should be unique within an FDC3 App Directory instance. The
+            exception to the uniqueness constraint is that an App Directory can
+            hold definitions for multiple versions of the same app.
+            The same appName could occur in other directories. We are not
+            currently specifying app name conventions in the document.
+        manifest:
+          type: string
+          description: >
+            URI or full JSON of the application manifest providing all details related to launch
+            and use requirements as described by the vendor.
+            The format of this manifest is vendor specific, but can be identified by
+            the manifestType attribute.
+        manifestType:
+          type: string
+          description: >
+            The manifest type which relates to the format and structure of the manifest content.
+            The definition is based on the vendor specific format and definition outside of this specification.
+        version:
+          type: string
+          description: >-
+            Version of the application. This allows multiple app versions to be
+            defined using the same app name. This can be a triplet but can also
+            include things like 1.2.5 (BETA)
+        title:
+          type: string
+          description: >-
+            Optional title for the application, if missing use appName,
+            typically used in a launcher UI.
+        tooltip:
+          type: string
+          description: Optional tooltip description e.g. for a launcher
+        description:
+          type: string
+          description: >-
+            Description of the application. This will typically be a 1-2
+            paragraph style blurb about the application. Allow mark up language
+        images:
+          type: array
+          description: >-
+            Array of images to show the user when they are looking at app
+            description. Each image can have an optional description/tooltip
+          items:
+            $ref: '#/components/schemas/AppImageV1'
+        contactEmail:
+          type: string
+          format: email
+          description: Optional e-mail to receive queries about the application
+        supportEmail:
+          type: string
+          format: email
+          description: Optional e-mail to receive support requests for the application
+        publisher:
+          type: string
+          description: >-
+            The name of the company that owns the application. The publisher has
+            control over their namespace/app/signature.
+        icons:
+          type: array
+          description: >-
+            Holds Icons used for the application, a Launcher may be able to use
+            multiple Icon sizes or there may be a 'button' Icon
+          items:
+            $ref: '#/components/schemas/IconV1'
+        customConfig:
+          type: array
+          description: >-
+            An optional set of name value pairs that can be used to deliver
+            custom data from an App Directory to a launcher.
+          items:
+            $ref: '#/components/schemas/NameValuePair'
+        intents:
+          type: array
+          description: >
+            The list of intents implemented by the application as defined by
+            https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
+          items:
+            $ref: '#/components/schemas/IntentV1'
+    ApplicationSearchResponseV1:
+      properties:
+        applications:
+          type: array
+          description: |
+            List of applications
+          items:
+            $ref: '#/components/schemas/ApplicationV1'
+        message:
+          type: string
+          description: |
+            Response message providing status of query
   examples:
     FDC3WorkbenchAppDefinition:
       value:
@@ -804,11 +889,6 @@ components:
         supportEmail: fdc3-maintainers@finos.org
         moreInfo: https://fdc3.finos.org #update to point to implementations page when it exists
         publisher: FDC3
-        intents: [{
-          name: ViewChart,
-          displayName: View Chart,
-          contexts: [fdc3.instrument]
-        }]
         type: web
         details:
           url: https://fdc3.finos.org/toolbox/fdc3-workbench/
@@ -869,9 +949,234 @@ components:
           }
         }
       summary: A sample app definition for the FDC3 Workbench application
-    FDC3WorkbenchAppDefinitionAllAppsResponse:
+    MyAppDefinition:
+      value:
+        appId: my-application
+        name: my-application
+        title: My Application
+        description: An example application that uses FDC3 and fully describes itself in an AppD record.
+        categories: [market data, research, news]
+        version: 1.0.0
+        tooltip: My example application definition
+        lang: en-US
+        icons:
+          - src: http://example.domain.com/assets/my-app-icon.png
+            size: 256x256
+            type: image/png
+        screenshots:
+          - src: http://example.domain.com/assets/my-app-screenshot-1.png
+            label: The first screenshot of my example app
+            type: image/png
+            size: 800x600
+          - src: http://example.domain.com/assets/my-app-screenshot-2.png
+            label: The second screenshot of my example app
+            type: image/png
+            size: 800x600
+        contactEmail: fdc3@finos.org
+        supportEmail: fdc3-maintainers@finos.org
+        moreInfo: http://example.domain.com/
+        publisher: Example App, Inc.
+        type: web
+        details:
+          url: http://example.domain.com/app.html
+        hostManifests: {
+          Finsemble: {
+            window: {
+              left: 120,
+              top: 120,
+              width: 600,
+              height: 800,
+              options: {
+                minWidth: 75
+              }
+            },
+            foreign: {
+              components: {
+                App Launcher: {
+                  launchableByUser: true
+                },
+                Window Manager: {
+                  FSBLHeader: true,
+                  persistWindowState: true
+                }
+              }
+            },
+            interop: {
+              autoConnect: true
+            }
+          },
+          Glue42: {
+            type: window,
+            details: {
+              height: 800,
+              width: 600,
+              left: 120,
+              top: 120,
+              mode: tab,
+              allowChannels: true,
+              loader: {
+                enabled: true,
+                hideOnLoad: true
+              }
+            },
+            customProperties: {
+              folder: FDC3 Toolbox
+            }
+          },
+          Web App Manifest: http://example.domain.com/my-app.json
+        }
+        interop:
+          intents: 
+            listensFor: 
+              ViewChart: 
+                displayName: View Chart
+                contexts: 
+                  - fdc3.instrument
+              myApp.GetPrice: 
+                displayName: Get Price
+                contexts: 
+                  - fdc3.instrument
+                resultType: myApp.quote
+            raises: 
+              ViewOrders: 
+                - fdc3.instrument
+                - fdc3.organization
+              StartEmail: 
+                - fdc3.email
+          userChannels: 
+            broadcasts: 
+              - fdc3.instrument
+              - fdc3.organization
+            listensFor: 
+              - fdc3.instrument
+              - fdc3.organization
+          appChannels: 
+            - name: myApp.quotes,
+              description: >-
+                Used to share a stream of quotes for currently displayed instrument and may be used to change the currently displayed symbol,
+              broadcasts: 
+                - myApp.quote
+              listensFor: 
+                - fdc3.instrument
+        localizedVersions: 
+          fr-FR: 
+            title: Mon application,
+            description: Un exemple d'application qui utilise FDC3 et se décrit entièrement dans un enregistrement AppD.
+      summary: A sample app definition for an application that describes its use of interop.
+    AllAppsResponse:
       value:
         applications: # you can't $ref inside a $ref so example is repeated here for search response
+          - appId: my-application
+            name: my-application
+            title: My Application
+            description: An example application that uses FDC3 and fully describes itself in an AppD record.
+            categories: [market data, research, news]
+            version: 1.0.0
+            tooltip: My example application definition
+            lang: en-US
+            icons:
+              - src: http://example.domain.com/assets/my-app-icon.png
+                size: 256x256
+                type: image/png
+            screenshots:
+              - src: http://example.domain.com/assets/my-app-screenshot-1.png
+                label: The first screenshot of my example app
+                type: image/png
+                size: 800x600
+              - src: http://example.domain.com/assets/my-app-screenshot-2.png
+                label: The second screenshot of my example app
+                type: image/png
+                size: 800x600
+            contactEmail: fdc3@finos.org
+            supportEmail: fdc3-maintainers@finos.org
+            moreInfo: http://example.domain.com/
+            publisher: Example App, Inc.
+            type: web
+            details:
+              url: http://example.domain.com/app.html
+            hostManifests: {
+              Finsemble: {
+                window: {
+                  left: 120,
+                  top: 120,
+                  width: 600,
+                  height: 800,
+                  options: {
+                    minWidth: 75
+                  }
+                },
+                foreign: {
+                  components: {
+                    App Launcher: {
+                      launchableByUser: true
+                    },
+                    Window Manager: {
+                      FSBLHeader: true,
+                      persistWindowState: true
+                    }
+                  }
+                },
+                interop: {
+                  autoConnect: true
+                }
+              },
+              Glue42: {
+                type: window,
+                details: {
+                  height: 800,
+                  width: 600,
+                  left: 120,
+                  top: 120,
+                  mode: tab,
+                  allowChannels: true,
+                  loader: {
+                    enabled: true,
+                    hideOnLoad: true
+                  }
+                },
+                customProperties: {
+                  folder: FDC3 Toolbox
+                }
+              },
+              Web App Manifest: http://example.domain.com/my-app.json
+            }
+            interop:
+              intents: 
+                listensFor: 
+                  ViewChart: 
+                    displayName: View Chart
+                    contexts: 
+                      - fdc3.instrument
+                  myApp.GetPrice: 
+                    displayName: Get Price
+                    contexts: 
+                      - fdc3.instrument
+                    resultType: myApp.quote
+                raises: 
+                  ViewOrders: 
+                    - fdc3.instrument
+                    - fdc3.organization
+                  StartEmail: 
+                    - fdc3.email
+              userChannels: 
+                broadcasts: 
+                  - fdc3.instrument
+                  - fdc3.organization
+                listensFor: 
+                  - fdc3.instrument
+                  - fdc3.organization
+              appChannels: 
+                - name: myApp.quotes,
+                  description: >-
+                    Used to share a stream of quotes for currently displayed instrument and may be used to change the currently displayed symbol,
+                  broadcasts:
+                    - myApp.quote
+                  listensFor: 
+                    - fdc3.instrument
+            localizedVersions: 
+              fr-FR:
+                title: Mon application,
+                description: Un exemple d'application qui utilise FDC3 et se décrit entièrement dans un enregistrement AppD.
           - appId: fdc3-workbench
             name: fdc3-workbench
             title: FDC3 Workbench
@@ -888,11 +1193,6 @@ components:
             contactEmail: fdc3@finos.org,
             supportEmail: fdc3-maintainers@finos.org,
             publisher: FDC3,
-            intents: [{
-              name: ViewChart,
-              displayName: View Chart,
-              contexts: [fdc3.instrument]
-            }]
             type: web
             details:
               url: https://fdc3.finos.org/toolbox/fdc3-workbench/
@@ -953,4 +1253,4 @@ components:
               }
             }
         message: OK
-      summary: A sample 'all applications' listing response containing the FDC3 Workbench application
+      summary: A sample 'all applications' listing response
