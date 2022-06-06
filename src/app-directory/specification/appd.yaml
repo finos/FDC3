@@ -424,8 +424,8 @@ components:
             $ref: '#/components/schemas/NameValuePair'
         hostManifests:
           $ref: '#/components/schemas/HostManifests'
-        interopMeta:
-          $ref: '#/components/schemas/InteropMeta'
+        interop:
+          $ref: '#/components/schemas/Interop'
     Application:
       description: >
         Defines an application retrieved from an FDC3 App Directory, which can
@@ -627,7 +627,7 @@ components:
           description: >-
             Custom configuration for the intent that may be required for a
             particular desktop agent.
-    InteropMeta:
+    Interop:
       type: object
       description: |
         Metadata that describes how the application uses FDC3 APIs. This metadata serves multiple purposes:
@@ -647,7 +647,7 @@ components:
                 A mapping of Intents names that an app listens for via `fdc3.addIntentListener()` to their 
                 configuration. 
                 
-                Used to support intent resolution by desktop agents.
+                Used to support intent resolution by desktop agents. Replaces the `intents` element used in appD records prior to FDC3 2.0. 
               additionalProperties:
                 x-additionalPropertiesName: Intent name
                 items:
@@ -1025,7 +1025,7 @@ components:
           },
           Web App Manifest: http://example.domain.com/my-app.json
         }
-        interopMeta:
+        interop:
           intents: 
             listensFor: 
               ViewChart: 
@@ -1140,7 +1140,7 @@ components:
               },
               Web App Manifest: http://example.domain.com/my-app.json
             }
-            interopMeta:
+            interop:
               intents: 
                 listensFor: 
                   ViewChart: 

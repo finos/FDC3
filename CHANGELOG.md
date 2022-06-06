@@ -62,7 +62,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * App Directory endpoint for searching applications was removed as searches over multiple app directories are better implemented by retrieving all the records and searching over the resulting combined dataset ([#696](https://github.com/finos/FDC3/pull/696))
 * Extended Intent Naming conventions and added hyperlinks for existing Intent spec definitions ([#701](https://github.com/finos/FDC3/pull/701))
 * Extended recommended field type conventions for contexts to include types for ids, times, dates, currency codes and country codes. The `fdc3.country` context type was updated to comply with the recommended field name for country codes (`COUNTRY_ISOALPHA2`). ([#704](https://github.com/finos/FDC3/pull/704))
-* The intents field of an AppD application records has been replaced with the `interop` field, to more fully describe an app's use of FDC3 and enable search for apps that 'interoperate' with a selected app ([#697](https://github.com/finos/FDC3/pull/697))
+* The `intents` field of an AppD application records has been replaced with the `interop` field, to more fully describe an app's use of FDC3 and enable search for apps that 'interoperate' with a selected app ([#697](https://github.com/finos/FDC3/pull/697))
 
 ### Deprecated
 
