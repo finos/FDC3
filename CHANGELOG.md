@@ -42,6 +42,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added `localizedVersions` field to AppD application records to support localized versions of descriptive fields in the app records and alternative launch details for localized versions of the applications themselves. ([#670](https://github.com/finos/FDC3/pull/670))
 * Added `type` and `details` elements to AppD application records to support vendor-agnostic launch details for both web and native apps ([#671](https://github.com/finos/FDC3/pull/671))
 * Added `categories` field and recommended categories list to AppD application records to enable category based browsing of AppDs ([#673](https://github.com/finos/FDC3/pull/673))
+* Added an `interop` field to AppD application records, replacing the `intents` field, to more fully describe an app's use of FDC3 and enable search for apps that 'interoperate' with a selected app ([#697](https://github.com/finos/FDC3/pull/697))
 * Added `AppIdentifier` type, which is a new parent of `AppMetadata` and clarifies required fields for API call parameters which now prefer `appId` and `instanceId` over `name` ([#722](https://github.com/finos/FDC3/pull/722))
 
 ### Changed
@@ -61,6 +62,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * App Directory endpoint for searching applications was removed as searches over multiple app directories are better implemented by retrieving all the records and searching over the resulting combined dataset ([#696](https://github.com/finos/FDC3/pull/696))
 * Extended Intent Naming conventions and added hyperlinks for existing Intent spec definitions ([#701](https://github.com/finos/FDC3/pull/701))
 * Extended recommended field type conventions for contexts to include types for ids, times, dates, currency codes and country codes. The `fdc3.country` context type was updated to comply with the recommended field name for country codes (`COUNTRY_ISOALPHA2`). ([#704](https://github.com/finos/FDC3/pull/704))
+* The `intents` field of an AppD application records has been replaced with the `interop` field, to more fully describe an app's use of FDC3 and enable search for apps that 'interoperate' with a selected app ([#697](https://github.com/finos/FDC3/pull/697))
 
 ### Deprecated
 
