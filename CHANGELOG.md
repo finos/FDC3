@@ -17,11 +17,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added the ability to return a Channel from an intent (via the `IntentResult` type), resolver support for intents that return Channels and the concept of PrivateChannels. ([#508](https://github.com/finos/FDC3/pull/508))
 * Added error `UserCancelled` to the `ResolveError` enumeration to be used when user closes the resolver UI or otherwise cancels resolution of a raised intent ([#522](https://github.com/finos/FDC3/pull/522))
 * Added `IntentDeliveryFailed` to the `ResolveError` enumeration to be used when delivery of an intent and context to a targetted app or instance fails. ([#601](https://github.com/finos/FDC3/pull/601))
-* Added an `instanceId` (and optional `instanceMetadata`) field to `AppMetadata` allowing it to refer to specific app instances and thereby supporting targetting of intents to specific app instances. Also added a `findInstances()` function to the desktop agent and `TargetAppUnavailable` and `TargetInstanceUnavailable` Errors to the `ResolveError` enumeration. ([#509]((https://github.com/finos/FDC3/pull/509))
+* Added an `instanceId` (and optional `instanceMetadata`) field to `AppMetadata` allowing it to refer to specific app instances and thereby supporting targetting of intents to specific app instances. Also added a `findInstances()` function to the desktop agent and `TargetAppUnavailable` and `TargetInstanceUnavailable` Errors to the `ResolveError` enumeration. ([#509](https://github.com/finos/FDC3/pull/509))
 * Added a References and Bibliography section to the Standard's documentation to hold links to 'normative references' and other documentation that is useful for understanding the standard ([#530](https://github.com/finos/FDC3/pull/530))
 * Added a Trademarks page to website to acknowledge trademarks used within the Standard not owned by FINOS or the Linux Foundation ([#534](https://github.com/finos/FDC3/pull/534))
 * Added details of FDC3's existing versioning and deprecation policies to the FDC3 compliance page ([#539](https://github.com/finos/FDC3/pull/539))
 * Added a new experimental features policy, which exempts features designated as experimental from the versioning and deprecation policies, to the FDC3 compliance page ([#549](https://github.com/finos/FDC3/pull/549))
+* Added the optional exposure of originating app metadata to messages received via `addContextListener` and `addIntentListener` via the new `ContextMetadata` type. ([#725](https://github.com/finos/FDC3/pull/725))
 * Added the current app's `AppMetadata` to the `ImplementationMetadata` returned by `fdc3.getInfo()` allowing an app to retrieve its own metadata, according to the Desktop Agent ([#726](https://github.com/finos/FDC3/pull/726))
 * Added a context type representing a range of time (`fdc3.timerange`). ([#706](https://github.com/finos/FDC3/pull/706))
 * Added a context type representing a Currency (`fdc3.currency`). ([#708](https://github.com/finos/FDC3/pull/708))
@@ -133,9 +134,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 * `Intents` enum should contain `StartChat` not `StartChart` ([#364](https://github.com/finos/FDC3/pull/364))
-
-### Fixed
-
 * Return type of `getCurrentChannel()` should be `Promise<Channel | null>` ([#282](https://github.com/finos/FDC3/pull/282))
 * Missing `leaveCurrentChannel()` export ([#283](https://github.com/finos/FDC3/pull/283))
 
