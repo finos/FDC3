@@ -64,6 +64,8 @@ Adds a listener for incoming context broadcasts from the Desktop Agent. If the c
 
 Context broadcasts are only received from apps that are joined to the same User Channel as the listening application, hence, if the application is not currently joined to a User Channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
 
+Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+
 #### Examples
 
 ```js
@@ -72,6 +74,12 @@ const listener = await fdc3.addContextListener(null, context => { ... });
 
 // listener for a specific type
 const contactListener = await fdc3.addContextListener('fdc3.contact', contact => { ... });
+
+// listener that logs metadata for the message a specific type
+const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, metadata) => { 
+  console.log(`Received context message\nContext: ${contact}\nOriginating app: ${metadata?.sourceAppMetadata}`);
+  //do something else with the context
+});
 ```
 
 #### See also
@@ -92,12 +100,20 @@ The Desktop Agent MUST reject the promise returned by the `getResult()` function
 
 The [`PrivateChannel`](PrivateChannel) type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
 
+Optional metadata about each intent & context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+
 #### Examples
 
 ```js
 //Handle a raised intent
 const listener = fdc3.addIntentListener('StartChat', context => {
-    // start chat has been requested by another application
+  // start chat has been requested by another application
+  return;
+});
+
+//Handle a raised intent and log the originating app metadata
+const listener = fdc3.addIntentListener('StartChat', (contact, metadata) => { 
+  console.log(`Received intent StartChat\nContext: ${contact}\nOriginating app: ${metadata?.sourceAppMetadata}`);
     return;
 });
 
@@ -114,7 +130,7 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
   const channel: PrivateChannel = await fdc3.createPrivateChannel();
   const symbol = context.id.symbol;
 
-// Called when the remote side adds a context listener
+  // Called when the remote side adds a context listener
   const addContextListener = channel.onAddContextListener((contextType) => {
     // broadcast price quotes as they come in from our quote feed
     feed.onQuote(symbol, (price) => {
