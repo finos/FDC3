@@ -36,7 +36,7 @@ Typically, software evolves over time. The app versions you are running today wi
 
 #### Agent-agnostic
 
-As a part of the FDC3 standard, appD isn't tied to any specific vendor. This is important, as it allows you more flexibility in that you are not tied to any specific container or desktop agent implementation. If at any point you want to switch to a different desktop agent, the process won’t be prohibitively difficult. The existing appD will work without any additional effort from you, as long as your new desktop agent is also FDC3-compliant. This is in contrast with proprietary solutions, where you would have to produce a new configuration and integration for every application. 
+As a part of the FDC3 standard, appD isn't tied to any specific vendor. This is important, as it allows you more flexibility in that you are not tied to any specific container or desktop agent implementation. If at any point you want to switch to a different desktop agent, the process won’t be prohibitively difficult. The existing appD will work without any additional effort from you, as long as your new desktop agent is also FDC3-compliant. This is in contrast with proprietary solutions, where you would have to produce a new configuration and integration for every application.
 
 AppD reduces fragmentation in the market and allows end-users more flexibility in what applications can be included in their desktop.
 
@@ -62,7 +62,7 @@ By hosting our own appD we can easily combine applications from various provider
 
 ## Relationship to Other Standards
 
-The App Directory's application record is similar to application manifests defined in other standards, in particular the W3C's [Web Application Manifest](https://www.w3.org/TR/appmanifest/). However, the App Directory, and by extension the application record, serve a different set of use-cases specific to application interoperability on financial services desktops, which other standards do not fully address. 
+The App Directory's application record is similar to application manifests defined in other standards, in particular the W3C's [Web Application Manifest](https://www.w3.org/TR/appmanifest/). However, the App Directory, and by extension the application record, serve a different set of use-cases specific to application interoperability on financial services desktops, which other standards do not fully address.
 
 Wherever possible, FDC3 seeks to draw inspiration from, align itself with and reference other standards - ensuring that conventions and best practices developed by those standards are reused, along with the standard itself (e.g. data formats in ISO standard formats, external links to technology-specific manifest file formats etc.). For a list of standards that FDC3 references, see the [References](../references) page.
 
@@ -107,7 +107,7 @@ Although the concept of fully qualified application IDs are useful in resolving 
 
 ## Service Discovery
 
-In order to support the discovery of applications that can be used with a desktop agent, it is necessary to access data stored in one or more app directory instances. 
+In order to support the discovery of applications that can be used with a desktop agent, it is necessary to access data stored in one or more app directory instances.
 
 ![img](assets/appd_service_distribution.png)
 
@@ -115,7 +115,7 @@ However, in order to do so, you must first discover the location of an app direc
 
 Three methods for discovering app directory services are defined in this Standard:
 
-  1. **Static configuration:** Statically defined URI records for use within client applications (typically a desktop agent implementation) directly. 
+  1. **Static configuration:** Statically defined URI records for use within client applications (typically a desktop agent implementation) directly.
   2. **Fully-qualified appID namespace syntax host resolution:** Discovery of the appD location using a fully qualified application ID (appId) domain name.  
   3. **DNS lookup by domain name:** Discovery of the appD location using a domain name to lookup DNS SRV records identifying the host server location and TCP port. ([RFC2782](https://tools.ietf.org/html/rfc2782))
 
@@ -134,13 +134,11 @@ An app directory URI can be constructed using a [fully qualified application ID]
 A launcher can then easily construct a URI by:
 
 1. URI protocol is defaulted to `https`, but can be overridden by the launcher.
-2. URI hostname is the fully qualified domain of the application ID. 
+2. URI hostname is the fully qualified domain of the application ID.
 3. URI port is default `https/443`, but can be overridden by the launcher
 4. URI url is by default `"/api/appd/(version)"` . Calls that are made without version MUST automatically default to latest, i.e. `"/api/appd/app1"` should return the same result as `"/api/appd/v2/app1"`.
 
 The resulting URI to retrieve application data for "app1" would be "[https://appd.foo.com/api/appd/v2/app1@appd.foo.com](https://appd.foo.com/api/appd/v2/app1@appd.foo.com)"  
-
-
 
 ### DNS/SRV Records
 
@@ -159,8 +157,8 @@ zone name { _service._proto.name. TTL  class  SRV priority weight port target.}
 - *class*: standard DNS class field (this is always *IN*).
 - *priority*: the priority of the target host, lower value means more preferred.
 - *weight*: A relative weight for records with the same priority, higher value means more preferred.
-- *port*: the TCP or UDP port on which the service is to be found. For AppD service, TCP should always be used. 
-- *target*: the canonical hostname of the machine providing the service, ending in a dot. This would be the host where the AppD service is running. 
+- *port*: the TCP or UDP port on which the service is to be found. For AppD service, TCP should always be used.
+- *target*: the canonical hostname of the machine providing the service, ending in a dot. This would be the host where the AppD service is running.
 
 For AppD Service the SRV record MUST use the following definitions:
 
