@@ -342,8 +342,88 @@ which was deprecated in FDC3 1.2 and removed in FDC3 2.0.</p>
 <p>Calling <code>fdc3.broadcast</code> will now route context to the joined channel.</p>
 <p>Channel implementations SHOULD ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are joined to the channel.</p>
 <blockquote>
-<p>Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels). The <code>joinChannel</code> function was also renamed to <code>joinUserChannel</code> to clarify that it is only intended to be used to join 'user', rather than 'app', channels.</p>
+<p>Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels). The <code>joinChannel</code> function was also renamed to <code>joinUserChannel</code> to clarify that it is only intended to be used to join 'user', rather than 'app', channels.</p>
 </blockquote>
+<h3><a class="anchor" aria-hidden="true" id="recommended-user-channel-set"></a><a href="#recommended-user-channel-set" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Recommended User Channel Set</h3>
+<p>Desktop Agent implementations SHOULD use the following set of channels, to enable a consistent user experience across different implementations. Desktop Agent implementation MAY support configuration of the user channels.</p>
+<blockquote>
+<p>Note: Future versions of the FDC3 Standard may support connections between desktop agents, where differing user channel sets may cause user experience issues.</p>
+</blockquote>
+<pre><code class="hljs css language-javascript"><span class="hljs-keyword">const</span> recommendedChannels = [
+  {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;fdc3.channel.1&#x27;</span>,
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;user&#x27;</span>,
+    <span class="hljs-attr">displayMetadata</span>: {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Channel 1&#x27;</span>,
+      <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;red&#x27;</span>,
+      <span class="hljs-attr">glyph</span>: <span class="hljs-string">&#x27;1&#x27;</span>,
+    },
+  },
+  {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;fdc3.channel.2&#x27;</span>,
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;user&#x27;</span>,
+    <span class="hljs-attr">displayMetadata</span>: {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Channel 2&#x27;</span>,
+      <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;orange&#x27;</span>,
+      <span class="hljs-attr">glyph</span>: <span class="hljs-string">&#x27;2&#x27;</span>,
+    },
+  },
+  {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;fdc3.channel.3&#x27;</span>,
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;user&#x27;</span>,
+    <span class="hljs-attr">displayMetadata</span>: {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Channel 3&#x27;</span>,
+      <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;yellow&#x27;</span>,
+      <span class="hljs-attr">glyph</span>: <span class="hljs-string">&#x27;3&#x27;</span>,
+    },
+  },
+  {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;fdc3.channel.4&#x27;</span>,
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;user&#x27;</span>,
+    <span class="hljs-attr">displayMetadata</span>: {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Channel 4&#x27;</span>,
+      <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;green&#x27;</span>,
+      <span class="hljs-attr">glyph</span>: <span class="hljs-string">&#x27;4&#x27;</span>,
+    },
+  },
+  {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;fdc3.channel.5&#x27;</span>,
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;user&#x27;</span>,
+    <span class="hljs-attr">displayMetadata</span>: {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Channel 5&#x27;</span>,
+      <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;cyan&#x27;</span>,
+      <span class="hljs-attr">glyph</span>: <span class="hljs-string">&#x27;5&#x27;</span>,
+    },
+  },
+  {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;fdc3.channel.6&#x27;</span>,
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;user&#x27;</span>,
+    <span class="hljs-attr">displayMetadata</span>: {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Channel 6&#x27;</span>,
+      <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;blue&#x27;</span>,
+      <span class="hljs-attr">glyph</span>: <span class="hljs-string">&#x27;6&#x27;</span>,
+    },
+  },
+  {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;fdc3.channel.7&#x27;</span>,
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;user&#x27;</span>,
+    <span class="hljs-attr">displayMetadata</span>: {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Channel 7&#x27;</span>,
+      <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;magenta&#x27;</span>,
+      <span class="hljs-attr">glyph</span>: <span class="hljs-string">&#x27;7&#x27;</span>,
+    },
+  },
+  {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;fdc3.channel.8&#x27;</span>,
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;user&#x27;</span>,
+    <span class="hljs-attr">displayMetadata</span>: {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Channel 8&#x27;</span>,
+      <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;purple&#x27;</span>,
+      <span class="hljs-attr">glyph</span>: <span class="hljs-string">&#x27;8&#x27;</span>,
+    },
+  },
+];
+</code></pre>
 <h3><a class="anchor" aria-hidden="true" id="direct-listening-and-broadcast-on-channels"></a><a href="#direct-listening-and-broadcast-on-channels" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Direct Listening and Broadcast on Channels</h3>
 <p>While joining User channels (using fdc3.joinUserChannel) automates a lot of the channel behaviour for an app, it has the limitation that an app can only be 'joined' to one channel at a time.  However, an app may instead retrieve a <code>Channel</code> Object via the <a href="ref/DesktopAgent#getorcreatechannel"><code>fdc3.getOrCreateChannel</code></a> API, or by raising an intent that returns a channel. The <code>Channel</code> object may then be used to listen to and broadcast on that channel directly using the <a href="ref/Channel#addcontextlistener"><code>Channel.addContextListener</code></a> and the <a href="ref/Channel#broadcast"><code>Channel.broadcast</code></a> APIs. This is especially useful for working with dynamic <em>App Channels</em>. FDC3 imposes no restriction on adding context listeners or broadcasting to multiple channels.</p>
 <h3><a class="anchor" aria-hidden="true" id="app-channels"></a><a href="#app-channels" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>App Channels</h3>
@@ -378,15 +458,9 @@ joinedChannel = <span class="hljs-keyword">await</span> fdc3.getCurrentChannel()
 <p><code>PrivateChannels</code> are created to support the return of a stream of responses from a raised intent, or private dialog between two applications.</p>
 <p>It is intended that Desktop Agent implementations:</p>
 <ul>
-<li><ul>
 <li>SHOULD restrict external apps from listening or publishing on this channel.</li>
-</ul></li>
-<li><ul>
 <li>MUST prevent <code>PrivateChannels</code> from being retrieved via <code>fdc3.getOrCreateChannel</code>.</li>
-</ul></li>
-<li><ul>
 <li>MUST provide the <code>id</code> value for the channel as required by the <code>Channel</code> interface.</li>
-</ul></li>
 </ul>
 <p>The <code>PrivateChannel</code> type also supports synchronisation of data transmitted over returned channels. They do so by extending the <code>Channel</code> interface with event handlers which provide information on the connection state of both parties, ensuring that desktop agents do not need to queue or retain messages that are broadcast before a context listener is added and that applications are able to stop broadcasting messages when the other party has disconnected.</p>
 <h3><a class="anchor" aria-hidden="true" id="broadcasting-and-listening-for-multiple-context-types"></a><a href="#broadcasting-and-listening-for-multiple-context-types" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Broadcasting and listening for multiple context types</h3>
@@ -394,4 +468,4 @@ joinedChannel = <span class="hljs-keyword">await</span> fdc3.getCurrentChannel()
 <p>To facilitate context linking in such situations it is recommended that applications <code>broadcast</code> each context type that other apps (listening on a User Channel or App Channel) may wish to process, starting with the simpler types, followed by the complex type. Doing so allows applications to filter the context types they receive by adding listeners for specific context types - but requires that the application broadcasting context make multiple broadcast calls in quick succession when sharing its context.</p>
 <h3><a class="anchor" aria-hidden="true" id="originating-app-metadata-1"></a><a href="#originating-app-metadata-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Originating App Metadata</h3>
 <p>Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation to registered context handlers on all types of channel. As this metadata is optional, apps making use of it MUST handle cases where it is not provided.</p>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/next/supported-platforms"><span class="arrow-prev">← </span><span>Supported Platforms</span></a><a class="docs-next button" href="/docs/next/api/ref/DesktopAgent"><span class="function-name-prevnext">DesktopAgent</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#components">Components</a><ul class="toc-headings"><li><a href="#desktop-agent">Desktop Agent</a></li><li><a href="#application">Application</a></li></ul></li><li><a href="#desktop-agent-implementation">Desktop Agent Implementation</a><ul class="toc-headings"><li><a href="#api-access">API Access</a></li><li><a href="#standards-vs-implementation">Standards vs. Implementation</a></li><li><a href="#inter-agent-communication">Inter-Agent Communication</a></li></ul></li><li><a href="#functional-use-cases">Functional Use Cases</a><ul class="toc-headings"><li><a href="#retrieve-metadata-about-the-desktop-agent-implementation">Retrieve Metadata about the Desktop Agent implementation</a></li><li><a href="#open-an-application-by-name">Open an Application by Name</a></li><li><a href="#requesting-functionality-from-another-app">Requesting Functionality From Another App</a></li><li><a href="#sendbroadcast-context">Send/broadcast Context</a></li></ul></li><li><a href="#raising-intents">Raising Intents</a><ul class="toc-headings"><li><a href="#intents-and-context">Intents and Context</a></li><li><a href="#intent-results">Intent Results</a></li><li><a href="#resolvers">Resolvers</a></li><li><a href="#intent-resolution">Intent Resolution</a></li><li><a href="#register-an-intent-handler">Register an Intent Handler</a></li><li><a href="#originating-app-metadata">Originating App Metadata</a></li><li><a href="#compliance-with-intent-standards">Compliance with Intent Standards</a></li></ul></li><li><a href="#context-channels">Context Channels</a><ul class="toc-headings"><li><a href="#types-of-channel">Types of Channel</a></li><li><a href="#joining-user-channels">Joining User Channels</a></li><li><a href="#direct-listening-and-broadcast-on-channels">Direct Listening and Broadcast on Channels</a></li><li><a href="#app-channels">App Channels</a></li><li><a href="#private-channels">Private Channels</a></li><li><a href="#broadcasting-and-listening-for-multiple-context-types">Broadcasting and listening for multiple context types</a></li><li><a href="#originating-app-metadata-1">Originating App Metadata</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/fdc3-icon-2019.svg" alt="FDC3"/></a><div><h5>Learn</h5><a href="/docs/fdc3-intro">Getting Started</a><a href="/docs/supported-platforms">Supported Platforms</a><a href="/docs/api/ref/DesktopAgent">API Reference</a><a href="/docs/use-cases/overview">Use Cases</a><a href="https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop" target="_blank">Training</a></div><div><h5>Community</h5><a href="https://www.finos.org/" target="_blank" rel="noreferrer noopener">FINOS</a><a href="https://finos-lf.slack.com/messages/fdc3/" target="_blank" rel="noreferrer noopener">Slack</a><a href="https://stackoverflow.com/questions/tagged/fdc3" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://groups.google.com/a/finos.org/forum/#!forum/fdc3" target="_blank" rel="noreferrer noopener">Google Groups</a><a href="/docs/next/trademarks">Trademarks</a></div><div><h5>More</h5><div class="social"><a class="github-button" href="https://github.com/finos/FDC3" data-count-href="https://github.com/finos/FDC3/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">FDC3</a></div><div class="social"><a href="https://twitter.com/FDC3_" class="twitter-follow-button">@FDC3_</a></div></div></section><section class="finos finosBanner"><a href="https://www.finos.org"><img id="finosicon" src="https://fdc3.finos.org/img/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS"/><h2 id="proud">Proud member of the Fintech Open Source Foundation</h2></a></section><section class="copyright">Copyright © 2022 FDC3</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/next/supported-platforms"><span class="arrow-prev">← </span><span>Supported Platforms</span></a><a class="docs-next button" href="/docs/next/api/ref/DesktopAgent"><span class="function-name-prevnext">DesktopAgent</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#components">Components</a><ul class="toc-headings"><li><a href="#desktop-agent">Desktop Agent</a></li><li><a href="#application">Application</a></li></ul></li><li><a href="#desktop-agent-implementation">Desktop Agent Implementation</a><ul class="toc-headings"><li><a href="#api-access">API Access</a></li><li><a href="#standards-vs-implementation">Standards vs. Implementation</a></li><li><a href="#inter-agent-communication">Inter-Agent Communication</a></li></ul></li><li><a href="#functional-use-cases">Functional Use Cases</a><ul class="toc-headings"><li><a href="#retrieve-metadata-about-the-desktop-agent-implementation">Retrieve Metadata about the Desktop Agent implementation</a></li><li><a href="#open-an-application-by-name">Open an Application by Name</a></li><li><a href="#requesting-functionality-from-another-app">Requesting Functionality From Another App</a></li><li><a href="#sendbroadcast-context">Send/broadcast Context</a></li></ul></li><li><a href="#raising-intents">Raising Intents</a><ul class="toc-headings"><li><a href="#intents-and-context">Intents and Context</a></li><li><a href="#intent-results">Intent Results</a></li><li><a href="#resolvers">Resolvers</a></li><li><a href="#intent-resolution">Intent Resolution</a></li><li><a href="#register-an-intent-handler">Register an Intent Handler</a></li><li><a href="#originating-app-metadata">Originating App Metadata</a></li><li><a href="#compliance-with-intent-standards">Compliance with Intent Standards</a></li></ul></li><li><a href="#context-channels">Context Channels</a><ul class="toc-headings"><li><a href="#types-of-channel">Types of Channel</a></li><li><a href="#joining-user-channels">Joining User Channels</a></li><li><a href="#recommended-user-channel-set">Recommended User Channel Set</a></li><li><a href="#direct-listening-and-broadcast-on-channels">Direct Listening and Broadcast on Channels</a></li><li><a href="#app-channels">App Channels</a></li><li><a href="#private-channels">Private Channels</a></li><li><a href="#broadcasting-and-listening-for-multiple-context-types">Broadcasting and listening for multiple context types</a></li><li><a href="#originating-app-metadata-1">Originating App Metadata</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/fdc3-icon-2019.svg" alt="FDC3"/></a><div><h5>Learn</h5><a href="/docs/fdc3-intro">Getting Started</a><a href="/docs/supported-platforms">Supported Platforms</a><a href="/docs/api/ref/DesktopAgent">API Reference</a><a href="/docs/use-cases/overview">Use Cases</a><a href="https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop" target="_blank">Training</a></div><div><h5>Community</h5><a href="https://www.finos.org/" target="_blank" rel="noreferrer noopener">FINOS</a><a href="https://finos-lf.slack.com/messages/fdc3/" target="_blank" rel="noreferrer noopener">Slack</a><a href="https://stackoverflow.com/questions/tagged/fdc3" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://groups.google.com/a/finos.org/forum/#!forum/fdc3" target="_blank" rel="noreferrer noopener">Google Groups</a><a href="/docs/next/trademarks">Trademarks</a></div><div><h5>More</h5><div class="social"><a class="github-button" href="https://github.com/finos/FDC3" data-count-href="https://github.com/finos/FDC3/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">FDC3</a></div><div class="social"><a href="https://twitter.com/FDC3_" class="twitter-follow-button">@FDC3_</a></div></div></section><section class="finos finosBanner"><a href="https://www.finos.org"><img id="finosicon" src="https://fdc3.finos.org/img/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS"/><h2 id="proud">Proud member of the Fintech Open Source Foundation</h2></a></section><section class="copyright">Copyright © 2022 FDC3</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>
