@@ -1,4 +1,6 @@
 import {
+  AppIdentifier,
+  AppMetadata,
   AppIntent,
   Channel,
   Context,
@@ -8,7 +10,6 @@ import {
   Listener,
   ImplementationMetadata,
 } from '..';
-import { TargetApp } from './Types';
 
 const DEFAULT_TIMEOUT = 5000;
 
@@ -56,8 +57,16 @@ export const fdc3Ready = async (waitForMs = DEFAULT_TIMEOUT): Promise<void> => {
   });
 };
 
-export function open(app: TargetApp, context?: Context): Promise<void> {
-  return rejectIfNoGlobal(() => window.fdc3.open(app, context));
+function isString(app: AppIdentifier | String): app is String {
+  return typeof app === 'string';
+}
+
+export function open(app: AppIdentifier | String, context?: Context): Promise<AppMetadata> {
+  if (isString(app)) {
+    return rejectIfNoGlobal(() => window.fdc3.open(app, context));
+  } else {
+    return rejectIfNoGlobal(() => window.fdc3.open(app, context));
+  }
 }
 
 export function findIntent(intent: string, context?: Context, resultType?: string): Promise<AppIntent> {
@@ -72,12 +81,20 @@ export function broadcast(context: Context): Promise<void> {
   return rejectIfNoGlobal(() => window.fdc3.broadcast(context));
 }
 
-export function raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution> {
-  return rejectIfNoGlobal(() => window.fdc3.raiseIntent(intent, context, app));
+export function raiseIntent(intent: string, context: Context, app?: AppIdentifier | String): Promise<IntentResolution> {
+  if (app && isString(app)) {
+    return rejectIfNoGlobal(() => window.fdc3.raiseIntent(intent, context, app));
+  } else {
+    return rejectIfNoGlobal(() => window.fdc3.raiseIntent(intent, context, app));
+  }
 }
 
-export function raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution> {
-  return rejectIfNoGlobal(() => window.fdc3.raiseIntentForContext(context, app));
+export function raiseIntentForContext(context: Context, app?: AppIdentifier | String): Promise<IntentResolution> {
+  if (app && isString(app)) {
+    return rejectIfNoGlobal(() => window.fdc3.raiseIntentForContext(context, app));
+  } else {
+    return rejectIfNoGlobal(() => window.fdc3.raiseIntentForContext(context, app));
+  }
 }
 
 export function addIntentListener(intent: string, handler: IntentHandler): Promise<Listener> {

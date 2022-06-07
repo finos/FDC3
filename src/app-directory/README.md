@@ -12,8 +12,8 @@ The purpose of the Application Directory specification within FDC3 is to:
 
 ## Specification
 
-* [View the OpenAPI Specification in Swagger](https://editor.swagger.io/?url=https://fdc3.finos.org/schemas/1.1/app-directory.yaml)
-* [More about the Specification on the FDC3 Website](https://fdc3.finos.org/docs/1.1/app-directory/overview)
+* [View the OpenAPI Specification in Swagger](https://editor.swagger.io/?url=https://fdc3.finos.org/schemas/1.2/app-directory.yaml)
+* [More about the Specification on the FDC3 Website](https://fdc3.finos.org/docs/1.2/app-directory/overview)
 
 
 ## Directory structure

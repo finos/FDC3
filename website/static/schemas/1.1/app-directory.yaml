@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: FDC3 Application Directory
-  version: 1.1
+  version: '1.1'
   description: >
     Application Directory specification providing both interface
     definition and objects necessary to construct an application directory
