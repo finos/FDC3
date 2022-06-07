@@ -12,6 +12,15 @@ const CompLibrary = require('../../core/CompLibrary.js');
 const Container = CompLibrary.Container;
 const implData = require(`${process.cwd()}/data/implementations.json`);
 
+const badgeTitles = {
+	"Open Source": "Indicates that the project source code is available to download and modify, under an Apache 2.0 or similar license.",
+	"FDC3 1.2 Supported": "This badge is given as an indicator that the agent vendor is marketing the desktop agent as supporting the FDC3 1.2 Standard. ",
+	"FDC3 1.2 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 1.2 Conformance testing process.",
+	"FDC3 2.0 Supported": "This badge is given as an indicator that the agent vendor is marketing the desktop agent as supporting the FDC3 2.0 Standard.", 
+	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 1.2 Conformance testing process."
+}
+
+
 //remove comments
 implData.forEach(function (item, index, object) {
 	if (item["//"]) {
@@ -51,7 +60,7 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 				</div>
 				<div className="prose" dangerouslySetInnerHTML={{ __html: description }}></div>
 				<div className="badges">
-					{ badges.map(b =><div className="button badge" key={b}>{b.text}</div>)}
+					{ badges.map(b =><a href="#" key={b.text} title={badgeTitles[b.text]} className="button badge">{b.text}</a>)}
 				</div>
 			</div>
 		</div>
