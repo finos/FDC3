@@ -55,6 +55,10 @@
     {
       "name": "ViewOrders",
       "displayName": "Orders"
+    },
+    {
+      "name": "CreateInteraction",
+      "displayName": "Create Interaction"
     }
   ]
 }

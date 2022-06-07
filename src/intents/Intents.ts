@@ -13,4 +13,5 @@ export enum Intents {
   ViewProfile = 'ViewProfile',
   ViewQuote = 'ViewQuote',
   ViewResearch = 'ViewResearch',
+  CreateInteraction = 'CreateInteraction',
 }
