@@ -374,7 +374,90 @@ Calling `fdc3.broadcast` will now route context to the joined channel.
 
 Channel implementations SHOULD ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are joined to the channel.
 
-  > Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels). The `joinChannel` function was also renamed to `joinUserChannel` to clarify that it is only intended to be used to join 'user', rather than 'app', channels.
+  > Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels). The `joinChannel` function was also renamed to `joinUserChannel` to clarify that it is only intended to be used to join 'user', rather than 'app', channels.
+
+### Recommended User Channel Set
+
+Desktop Agent implementations SHOULD use the following set of channels, to enable a consistent user experience across different implementations. Desktop Agent implementation MAY support configuration of the user channels.
+
+> Note: Future versions of the FDC3 Standard may support connections between desktop agents, where differing user channel sets may cause user experience issues.
+
+```javascript
+const recommendedChannels = [
+  {
+    id: 'fdc3.channel.1',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 1',
+      color: 'red',
+      glyph: '1',
+    },
+  },
+  {
+    id: 'fdc3.channel.2',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 2',
+      color: 'orange',
+      glyph: '2',
+    },
+  },
+  {
+    id: 'fdc3.channel.3',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 3',
+      color: 'yellow',
+      glyph: '3',
+    },
+  },
+  {
+    id: 'fdc3.channel.4',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 4',
+      color: 'green',
+      glyph: '4',
+    },
+  },
+  {
+    id: 'fdc3.channel.5',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 5',
+      color: 'cyan',
+      glyph: '5',
+    },
+  },
+  {
+    id: 'fdc3.channel.6',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 6',
+      color: 'blue',
+      glyph: '6',
+    },
+  },
+  {
+    id: 'fdc3.channel.7',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 7',
+      color: 'magenta',
+      glyph: '7',
+    },
+  },
+  {
+    id: 'fdc3.channel.8',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 8',
+      color: 'purple',
+      glyph: '8',
+    },
+  },
+];
+```
 
 ### Direct Listening and Broadcast on Channels
 
@@ -422,9 +505,10 @@ if another application broadcasts to "my_custom_channel" (by retrieving it and b
 `PrivateChannels` are created to support the return of a stream of responses from a raised intent, or private dialog between two applications.
 
 It is intended that Desktop Agent implementations:
-  - - SHOULD restrict external apps from listening or publishing on this channel.
-  - - MUST prevent `PrivateChannels` from being retrieved via `fdc3.getOrCreateChannel`.
-  - - MUST provide the `id` value for the channel as required by the `Channel` interface.
+
+- SHOULD restrict external apps from listening or publishing on this channel.
+- MUST prevent `PrivateChannels` from being retrieved via `fdc3.getOrCreateChannel`.
+- MUST provide the `id` value for the channel as required by the `Channel` interface.
 
 The `PrivateChannel` type also supports synchronisation of data transmitted over returned channels. They do so by extending the `Channel` interface with event handlers which provide information on the connection state of both parties, ensuring that desktop agents do not need to queue or retain messages that are broadcast before a context listener is added and that applications are able to stop broadcasting messages when the other party has disconnected.
 
