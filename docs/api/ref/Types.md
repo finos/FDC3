@@ -12,9 +12,14 @@ If the `instanceId` field is set then the `AppMetadata` object represents a spec
 
 ```ts
 interface AppIdentifier {
-  /** The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root' */
+  /** The unique application identifier located within a specific application
+   *  directory instance. An example of an appId might be 'app@sub.root'.
+   */
   readonly appId: string;
-  /** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/
+  
+  /** An optional instance identifier, indicating that this object represents a
+   *  specific instance of the application described.
+   */
   readonly instanceId?: string;
 }
 ```
@@ -101,7 +106,7 @@ Optional metadata about the intent & context message, including the app that ori
 type IntentResult = Context | Channel;
 ```
 
-Describes results that an Intent handler may optionally return that should be communicated back to the app that raised the intent, via the [`IntentResolution`](Metadata#intentresolution). 
+Describes results that an Intent handler may optionally return that should be communicated back to the app that raised the intent, via the [`IntentResolution`](Metadata#intentresolution).
 
 Represented as a union type in TypeScript, however, this type may be rendered as an interface in other languages that both the `Context` and `Channel` types implement, allowing either to be returned by an `IntentHandler`.
 
