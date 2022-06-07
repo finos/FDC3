@@ -68,9 +68,14 @@
 Will always include at least an <code>appId</code> property, which can be used with <code>fdc3.open</code>, <code>fdc3.raiseIntent</code> etc..
 If the <code>instanceId</code> field is set then the <code>AppMetadata</code> object represents a specific instance of the application that may be addressed using that Id.</p>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> AppIdentifier {
-  <span class="hljs-comment">/** The unique application identifier located within a specific application directory instance. An example of an appId might be &#x27;app<span class="hljs-doctag">@sub</span>.root&#x27; */</span>
+  <span class="hljs-comment">/** The unique application identifier located within a specific application
+   *  directory instance. An example of an appId might be &#x27;app<span class="hljs-doctag">@sub</span>.root&#x27;.
+   */</span>
   <span class="hljs-keyword">readonly</span> appId: <span class="hljs-built_in">string</span>;
-  <span class="hljs-comment">/** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/</span>
+  
+  <span class="hljs-comment">/** An optional instance identifier, indicating that this object represents a
+   *  specific instance of the application described.
+   */</span>
   <span class="hljs-keyword">readonly</span> instanceId?: <span class="hljs-built_in">string</span>;
 }
 </code></pre>
