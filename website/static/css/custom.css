@@ -46,10 +46,12 @@ header.postHeader:empty + article h1 {
 }
 
 .showcase img {
-  width: 250px;
-  max-height: 150px;
+  max-width: 250px;
+  max-height: 120px;
   padding-left: 15px;
   padding-right: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .finos {
