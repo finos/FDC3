@@ -80,6 +80,30 @@ Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passe
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 
+## `ContextMetadata`
+
+```ts
+interface ContextMetadata {
+  /** Metadata identifying the app that sent the context and/or intent. 
+   *  @experimental
+   */
+  readonly sourceAppMetadata: AppMetadata;
+}
+```
+
+Metadata relating to a context or intent & context received through the `addContextListener` and `addIntentListener` functions. Currently identifies that originated the context or intent message.
+
+[`@experimental`](../../fdc3-compliance#experimental-features) Introduced in FDC3 2.0 and may be refined by further changes outside the normal FDC3 versioning policy.
+
+#### See also
+
+* [`AppMetadata`](#appmetadata)
+* [`ContextHandler`](Types#contexthandler)
+* [`IntentHandler`](Types#intenthandler)
+* [`addIntentListener`](DesktopAgent#addintentlistener)
+* [`addContextListener`](DesktopAgent#addcontextlistener)
+* [`Channel.addContextListener`](Channel#addcontextlistener)
+
 ## `DisplayMetadata`
 
 ```ts
@@ -161,17 +185,23 @@ interface ImplementationMetadata {
    *  The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
    */
   readonly fdc3Version: string;
+
   /** The name of the provider of the FDC3 Desktop Agent Implementation (e.g. Finsemble, Glue42, OpenFin etc.). */
   readonly provider: string;
+  
   /** The version of the provider of the FDC3 Desktop Agent Implementation (e.g. 5.3.0). */
   readonly providerVersion?: string;
+
+  /** The calling application instance's own metadata, according to the Desktop Agent (MUST include at least the `appId` and `instanceId`). */
+  readonly appMetadata: AppMetadata;
 }
 ```
 
-Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification and the name of the provider of the implementation.
+Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number and the metadata of the calling application according to the desktop agent.
 
 #### See also
 
+* [`AppMetadata`](#appmetadata)
 * [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
 
 ## `IntentMetadata`
@@ -186,7 +216,6 @@ interface IntentMetadata {
 ```
 
 The interface used to describe an intent within the platform.
-
 
 #### See also
 

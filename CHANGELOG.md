@@ -17,23 +17,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added the ability to return a Channel from an intent (via the `IntentResult` type), resolver support for intents that return Channels and the concept of PrivateChannels. ([#508](https://github.com/finos/FDC3/pull/508))
 * Added error `UserCancelled` to the `ResolveError` enumeration to be used when user closes the resolver UI or otherwise cancels resolution of a raised intent ([#522](https://github.com/finos/FDC3/pull/522))
 * Added `IntentDeliveryFailed` to the `ResolveError` enumeration to be used when delivery of an intent and context to a targetted app or instance fails. ([#601](https://github.com/finos/FDC3/pull/601))
-* Added an `instanceId` (and optional `instanceMetadata`) field to `AppMetadata` allowing it to refer to specific app instances and thereby supporting targetting of intents to specific app instances. Also added a `findInstances()` function to the desktop agent and `TargetAppUnavailable` and `TargetInstanceUnavailable` Errors to the `ResolveError` enumeration. ([#509]((https://github.com/finos/FDC3/pull/509))
+* Added an `instanceId` (and optional `instanceMetadata`) field to `AppMetadata` allowing it to refer to specific app instances and thereby supporting targetting of intents to specific app instances. Also added a `findInstances()` function to the desktop agent and `TargetAppUnavailable` and `TargetInstanceUnavailable` Errors to the `ResolveError` enumeration. ([#509](https://github.com/finos/FDC3/pull/509))
 * Added a References and Bibliography section to the Standard's documentation to hold links to 'normative references' and other documentation that is useful for understanding the standard ([#530](https://github.com/finos/FDC3/pull/530))
 * Added a Trademarks page to website to acknowledge trademarks used within the Standard not owned by FINOS or the Linux Foundation ([#534](https://github.com/finos/FDC3/pull/534))
 * Added details of FDC3's existing versioning and deprecation policies to the FDC3 compliance page ([#539](https://github.com/finos/FDC3/pull/539))
 * Added a new experimental features policy, which exempts features designated as experimental from the versioning and deprecation policies, to the FDC3 compliance page ([#549](https://github.com/finos/FDC3/pull/549))
+* Added the optional exposure of originating app metadata to messages received via `addContextListener` and `addIntentListener` via the new `ContextMetadata` type. ([#725](https://github.com/finos/FDC3/pull/725))
+* Added the current app's `AppMetadata` to the `ImplementationMetadata` returned by `fdc3.getInfo()` allowing an app to retrieve its own metadata, according to the Desktop Agent ([#726](https://github.com/finos/FDC3/pull/726))
 * Added a context type representing a range of time (`fdc3.timerange`). ([#706](https://github.com/finos/FDC3/pull/706))
 * Added a context type representing a Currency (`fdc3.currency`). ([#708](https://github.com/finos/FDC3/pull/708))
 * Added a context type representing the price and value of a holding (`fdc3.valuation`). ([#709](https://github.com/finos/FDC3/pull/709))
 * Added a context type representing a Chart (`fdc3.chart`). ([#715](https://github.com/finos/FDC3/pull/715))
-* Addition of `ViewProfile` and deprecation of `ViewContact` intents ([#619](https://github.com/finos/FDC3/pull/619))
-* Added a new context type `ChatInitSettings` to initialize a chat creation with new optional parameters ([#620](https://github.com/finos/FDC3/pull/620))
+* Added a context type `ChatInitSettings` to initialize a chat creation with new optional parameters ([#620](https://github.com/finos/FDC3/pull/620))
+* Added guide on how to submit a new Intent. ([#624](https://github.com/finos/FDC3/pull/624))
 * Added a `ViewResearch` Intent to be used when a user wants to see the latest research on a particular stock ([#623](https://github.com/finos/FDC3/pull/623))
-* Added guide on how to submit a new Intent. ([#624](https://github.com/finos/FDC3/pull/624))
+* Added a `ViewProfile` intent, which supersedes the `ViewContact` intent which is deprecated. ([#619](https://github.com/finos/FDC3/pull/619))
 * Added a `ViewInteractions` intent to be used when a user wants to see the latest interactions (calls, meetings, conferences, roadshows) on a particular stock or with an individual or organization. ([#625](https://github.com/finos/FDC3/pull/625))
-* Added guide on how to submit a new Intent. ([#624](https://github.com/finos/FDC3/pull/624))
 * Added a `ViewOrders` intent to be used when a user wants to see the order history of an individual, an institution or of a particular instrument. ([#672](https://github.com/finos/FDC3/pull/672))
-* Added a start `StartEmail` intent and `fdc3.email` context type to be used to initiate an email with a contact or list of contacts provided as part of the context. ([#632](https://github.com/finos/FDC3/pull/632))
+* Added a `StartEmail` intent and `fdc3.email` context type to be used to initiate an email with a contact or list of contacts provided as part of the context. ([#632](https://github.com/finos/FDC3/pull/632))
 * Added a definition for "app directory record" to the FDC3 glossary to be used to refer to a single appD record ([#658](https://github.com/finos/FDC3/pull/658))
 * Added `/v2/` paths to the AppD's specification, allowing a single implementation to support serving both FDC3 v1.2 and v2.0 application records, enabling simpler migration ([#666](https://github.com/finos/FDC3/pull/666))
 * Added a `moreInfo` URL field to AppD application records to enable linking to a web page with more information on an app ([#669](https://github.com/finos/FDC3/pull/669))
@@ -41,6 +42,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added `localizedVersions` field to AppD application records to support localized versions of descriptive fields in the app records and alternative launch details for localized versions of the applications themselves. ([#670](https://github.com/finos/FDC3/pull/670))
 * Added `type` and `details` elements to AppD application records to support vendor-agnostic launch details for both web and native apps ([#671](https://github.com/finos/FDC3/pull/671))
 * Added `categories` field and recommended categories list to AppD application records to enable category based browsing of AppDs ([#673](https://github.com/finos/FDC3/pull/673))
+* Added an `interop` field to AppD application records, replacing the `intents` field, to more fully describe an app's use of FDC3 and enable search for apps that 'interoperate' with a selected app ([#697](https://github.com/finos/FDC3/pull/697))
 * Added `AppIdentifier` type, which is a new parent of `AppMetadata` and clarifies required fields for API call parameters which now prefer `appId` and `instanceId` over `name` ([#722](https://github.com/finos/FDC3/pull/722))
 
 ### Changed
@@ -60,6 +62,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * App Directory endpoint for searching applications was removed as searches over multiple app directories are better implemented by retrieving all the records and searching over the resulting combined dataset ([#696](https://github.com/finos/FDC3/pull/696))
 * Extended Intent Naming conventions and added hyperlinks for existing Intent spec definitions ([#701](https://github.com/finos/FDC3/pull/701))
 * Extended recommended field type conventions for contexts to include types for ids, times, dates, currency codes and country codes. The `fdc3.country` context type was updated to comply with the recommended field name for country codes (`COUNTRY_ISOALPHA2`). ([#704](https://github.com/finos/FDC3/pull/704))
+* The `intents` field of an AppD application records has been replaced with the `interop` field, to more fully describe an app's use of FDC3 and enable search for apps that 'interoperate' with a selected app ([#697](https://github.com/finos/FDC3/pull/697))
 
 ### Deprecated
 
@@ -131,9 +134,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 * `Intents` enum should contain `StartChat` not `StartChart` ([#364](https://github.com/finos/FDC3/pull/364))
-
-### Fixed
-
 * Return type of `getCurrentChannel()` should be `Promise<Channel | null>` ([#282](https://github.com/finos/FDC3/pull/282))
 * Missing `leaveCurrentChannel()` export ([#283](https://github.com/finos/FDC3/pull/283))
 
