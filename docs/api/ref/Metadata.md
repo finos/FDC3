@@ -8,8 +8,11 @@ FDC3 API operations return various types of metadata.
 
 ```ts
 interface AppIntent {
-  /** Details of the intent whose relationship to resolving applications is being described. */
+  /** Details of the intent whose relationship to resolving applications is
+   *  being described.
+   */
   readonly intent: IntentMetadata;
+
   /** Details of applications that can resolve the intent. */
   readonly apps: Array<AppMetadata>;
 }
@@ -30,37 +33,51 @@ For each intent, it reference the applications that support that intent.
 ```ts
 interface AppMetadata extends AppIdentifier {
   /** 
-      The 'friendly' app name. 
-      This field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now require an `AppIdentifier` wth `appId` set. 
-      Note that for display purposes the `title` field should be used, if set, in preference to this field.
+  /**
+   *  The 'friendly' app name. This field was used with the `open` and
+   *  `raiseIntent` calls in FDC3 <2.0, which now require an `AppIdentifier`
+   *  with `appId` set. 
+   * 
+   *  Note that for display purposes the `title` field should be used, if set,
+   *  in preference to this field.
    */
   readonly name?: string;
 
   /** The version of the application. */
   readonly version?: string;
 
-  /** An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set. */
+  /** An optional set of, implementation specific, metadata fields that can be
+   *  used to disambiguate instances, such as a window title or screen position.
+   *  Must only be set if `instanceId` is set. 
+   */
   readonly instanceMetadata?: Record<string, any>;
 
-  /** A more user-friendly application title that can be used to render UI elements  */
+  /** A more user-friendly application title that can be used to render UI
+   *  elements.
+   */
   readonly title?: string;
 
-  /**  A tooltip for the application that can be used to render UI elements */
+  /** A tooltip for the application that can be used to render UI elements. */
   readonly tooltip?: string;
 
-  /** A longer, multi-paragraph description for the application that could include mark-up */
+  /** A longer, multi-paragraph description for the application that could
+   *  include mark-up.
+   */
   readonly description?: string;
 
-  /** A list of icon URLs for the application that can be used to render UI elements */
+  /** A list of icon URLs for the application that can be used to render UI 
+   *  elements.
+   */
   readonly icons?: Array<Icon>;
 
   /** Images representing the app in common usage scenarios that can be used to render UI elements */
   readonly screenshots?: Array<Image>;
   
   /** The type of result returned for any intent specified during resolution. 
-   * May express a particular context type (e.g. "fdc3.instrument"), channel 
-   * (e.g. "channel") or a channel that will receive a specified type 
-   * (e.g. "channel<fdc3.instrument>"). */
+   *  May express a particular context type (e.g. "fdc3.instrument"), channel 
+   *  (e.g. "channel") or a channel that will receive a specified type 
+   *  (e.g. "channel<fdc3.instrument>").
+   */
   readonly resultType?: string | null;
 }
 ```
@@ -76,6 +93,7 @@ Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passe
 * [`AppIdentifier`](Types#AppIdentifier)
 * [`AppIntent.apps`](#appintent)
 * [`Icon`](#icon)
+* [`Image`](#image)
 * [`DesktopAgent.open`](DesktopAgent#open)
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
@@ -109,16 +127,17 @@ Metadata relating to a context or intent & context received through the `addCont
 ```ts
 interface DisplayMetadata {
   /**
-   * A user-readable name for this channel, e.g: `"Red"`
-   */
+   *  A user-readable name for this channel, e.g: `"Red"`. */
   readonly name?: string;
+
   /**
-   * The color that should be associated within this channel when displaying this channel in a UI, e.g: `#FF0000`. May be any color value supported by CSS, e.g. name, hex, rgba, etc..
-   */
+   *  The color that should be associated within this channel when displaying
+   *  this channel in a UI, e.g: `#FF0000`. May be any color value supported by
+   *  CSS, e.g. name, hex, rgba, etc.. */
   readonly color?: string;
+
   /**
-   * A URL of an image that can be used to display this channel
-   */
+   *  A URL of an image that can be used to display this channel. */
   readonly glyph?: string;
 }
 ```
@@ -235,18 +254,24 @@ The media type of the image. If not provided the Desktop Agent may refer to the 
 
 ```ts
 interface ImplementationMetadata {
-  /** The version number of the FDC3 specification that the implementation provides.
-   *  The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
+  /** The version number of the FDC3 specification that the implementation
+   *  provides. The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
    */
   readonly fdc3Version: string;
 
-  /** The name of the provider of the FDC3 Desktop Agent Implementation (e.g. Finsemble, Glue42, OpenFin etc.). */
+  /** The name of the provider of the FDC3 Desktop Agent Implementation
+   *  (e.g.Finsemble, Glue42, OpenFin etc.).
+   */
   readonly provider: string;
-  
-  /** The version of the provider of the FDC3 Desktop Agent Implementation (e.g. 5.3.0). */
+
+  /** The version of the provider of the FDC3 Desktop Agent Implementation
+   *  (e.g. 5.3.0).
+   */
   readonly providerVersion?: string;
 
-  /** The calling application instance's own metadata, according to the Desktop Agent (MUST include at least the `appId` and `instanceId`). */
+  /** The calling application instance's own metadata, according to the 
+   *  Desktop Agent (MUST include at least the `appId` and `instanceId`).
+   */
   readonly appMetadata: AppMetadata;
 }
 ```
@@ -262,9 +287,12 @@ Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provid
 
 ```ts
 interface IntentMetadata {
-  /** The unique name of the intent that can be invoked by the raiseIntent call */
+  /** The unique name of the intent that can be invoked by the raiseIntent call. */
   readonly name: string;
-  /** A friendly display name for the intent that should be used to render UI elements */
+
+  /** A friendly display name for the intent that should be used to render UI
+   *  elements.
+   */
   readonly displayName: string;
 }
 ```
@@ -280,35 +308,34 @@ The interface used to describe an intent within the platform.
 ```ts
 interface IntentResolution {
 
-  /** 
-   * Metadata about the app instance that was selected (or started) to resolve the intent.
-   * `source.instanceId` MUST be set, indicating the specific app instance that 
-   * received the intent.
+  /** Metadata about the app instance that was selected (or started) to resolve
+   *  the intent. `source.instanceId` MUST be set, indicating the specific app 
+   *  instance that received the intent.
    */
   readonly source: AppMetadata;
-  /**
-   * The intent that was raised. May be used to determine which intent the user
-   * chose in response to `fdc3.raiseIntentForContext()`.
+
+  /** The intent that was raised. May be used to determine which intent the user
+   *  chose in response to `fdc3.raiseIntentForContext()`.
    */
   readonly intent: string;
-  /**
-   * The version number of the Intents schema being used.
+
+  /** The version number of the Intents schema being used.
    */
   readonly version?: string;
-  /**
-   * Retrieves a promise that will resolve to either `Context` data returned 
-   * by the application that resolves the raised intent or a `Channel` 
-   * established and returned by the app resolving the intent. 
+  
+  /** Retrieves a promise that will resolve to either `Context` data returned 
+   *  by the application that resolves the raised intent or a `Channel` 
+   *  established and returned by the app resolving the intent. 
    * 
-   * A `Channel` returned MAY be of the `PrivateChannel` type. The 
-   * client can then `addContextListener()` on that channel to, for example, 
-   * receive a stream of data.
+   *  A `Channel` returned MAY be of the `PrivateChannel` type. The 
+   *  client can then `addContextListener()` on that channel to, for example, 
+   *  receive a stream of data.
    * 
-   * If an error occurs (i.e. an error is thrown by the handler function,
-   * the promise it returns is rejected, or a promise is not returned by the
-   * handler function) then the Desktop Agent MUST reject the promise returned
-   * by the `getResult()` function of the `IntentResolution` with a string from
-   * the `ResultError` enumeration.
+   *  If an error occurs (i.e. an error is thrown by the handler function,
+   *  the promise it returns is rejected, or a promise is not returned by the
+   *  handler function) then the Desktop Agent MUST reject the promise returned
+   *  by the `getResult()` function of the `IntentResolution` with a string from
+   *  the `ResultError` enumeration.
    */
    getResult(): Promise<IntentResult>;
 }
@@ -319,7 +346,7 @@ IntentResolution provides a standard format for data returned upon resolving an 
 #### Examples
 
 ```js
-//resolve a "Chain" type intent
+// Resolve a "Chain" type intent
 let resolution = await agent.raiseIntent("intentName", context);
 
 // Use metadata about the resolving app instance to target a further intent
@@ -327,12 +354,12 @@ try {
   const resolution = await fdc3.raiseIntent('StageOrder', context);
   ...
 
-  //some time later
+  //Some time later
   await agent.raiseIntent("UpdateOrder", context, resolution.source);
 }
 catch (err) { ... }                                    
                                                
-//resolve a "Client-Service" type intent with a data or channel response
+//Resolve a "Client-Service" type intent with a data or channel response
 let resolution = await agent.raiseIntent("intentName", context);
 try {
     const result = await resolution.getResult();
