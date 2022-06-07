@@ -5,13 +5,14 @@
 
 import { AppIntent } from './AppIntent';
 import { Channel } from './Channel';
-import { ContextHandler, IntentHandler, TargetApp } from './Types';
+import { ContextHandler, IntentHandler } from './Types';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
 import { ImplementationMetadata } from './ImplementationMetadata';
 import { PrivateChannel } from './PrivateChannel';
 import { AppMetadata } from './AppMetadata';
+import { AppIdentifier } from './AppIdentifier';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -25,7 +26,7 @@ import { AppMetadata } from './AppMetadata';
 
 export interface DesktopAgent {
   /**
-   * Launches an app by target, which can be optionally a string like a name, or an AppMetadata object.
+   * Launches an app.
    *
    * The `open` method differs in use from `raiseIntent`.  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, `open` would be used to open an app returned in the search results.
    *
@@ -38,16 +39,15 @@ export interface DesktopAgent {
    * If opening errors, it returns an `Error` with a string from the `OpenError` enumeration.
    *
    * ```javascript
-   * //Open an app without context, using the app name
-   * let instanceMetadata = await fdc3.open('myApp');
-   * //Open an app without context, using an AppMetadataobject to specify the target
-   * let appMetadata = {name: 'myApp', appId: 'myApp-v1.0.1', version: '1.0.1'};
-   * let instanceMetadata = await fdc3.open(appMetadata);
+   * //Open an app without context, using an AppIdentifier object to specify the target by `appId`.
+   * let appIdentifier = {appId: 'myApp-v1.0.1'};
+   * let instanceMetadata = await fdc3.open(appIdentifier);
+   *
    * //Open an app with context
-   * let instanceMetadata = await fdc3.open(appMetadata, context);
+   * let instanceMetadata = await fdc3.open(appIdentifier, context);
    * ```
    */
-  open(app: TargetApp, context?: Context): Promise<AppMetadata>;
+  open(app: AppIdentifier, context?: Context): Promise<AppMetadata>;
 
   /**
    * Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result type.
@@ -189,14 +189,14 @@ export interface DesktopAgent {
    *
    * ```javascript
    * // Retrieve a list of instances of an application
-   * let instances = await fdc3.findInstances({name: "MyApp"});
+   * let instances = await fdc3.findInstances({appId: "MyApp"});
    *
    * // Target a raised intent at a specific instance
    * let resolution = fdc3.raiseIntent("ViewInstrument", context, instances[0]);
    * ```
    * @param app
    */
-  findInstances(app: TargetApp): Promise<Array<AppMetadata>>;
+  findInstances(app: AppIdentifier): Promise<Array<AppMetadata>>;
 
   /**
    * Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever _User Channel_ the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
@@ -259,7 +259,7 @@ export interface DesktopAgent {
    * }
    * ```
    */
-  raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
+  raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<IntentResolution>;
 
   /**
    * Finds and raises an intent against apps registered with the desktop agent based on the type of the specified context data example.
@@ -281,7 +281,7 @@ export interface DesktopAgent {
    * await fdc3.raiseIntentForContext(context, targetAppMetadata);
    * ```
    */
-  raiseIntentForContext(context: Context, app?: TargetApp): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<IntentResolution>;
 
   /**
    * Adds a listener for incoming Intents from the Agent. The handler function may return void or a promise that should resolve to an `IntentResult`, which is either a `Context` object, representing any data that should be returned, or a `Channel` over which data responses will be sent. The IntentResult will be returned to app that raised the intent via the `IntentResolution` and retrieved from it using the `getResult()` function.
@@ -289,6 +289,8 @@ export interface DesktopAgent {
    * The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.
    *
    * The `PrivateChannel` type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
+   *
+   * Optional metadata about the raised intent, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
    *
    * ```javascript
    * //Handle a raised intent
@@ -330,14 +332,12 @@ export interface DesktopAgent {
   addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 
   /**
-   * Adds a listener for incoming context broadcasts from the Desktop Agent.
-   * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
-   */
-  addContextListener(handler: ContextHandler): Promise<Listener>;
-
-  /**
    * Adds a listener for incoming context broadcasts from the Desktop Agent via User channels. If the consumer is only interested in a context of a particular type, they can they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
    * Context broadcasts are only received from apps that are joined to the same User channel as the listening application, hence, if the application is not currently joined to a channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
+   *
+   *
+   * Optional metadata about the context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+   *
    * ```javascript
    * // any context
    * const listener = fdc3.addContextListener(null, context => { ... });
@@ -351,11 +351,6 @@ export interface DesktopAgent {
    * Retrieves a list of the User channels available for the app to join.
    */
   getUserChannels(): Promise<Array<Channel>>;
-
-  /**
-   * @deprecated Alias to the `getUserChannels function provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
-   */
-  getSystemChannels(): Promise<Array<Channel>>;
 
   /**
    * Optional function that joins the app to the specified User channel. In most cases, applications SHOULD be joined to channels via UX provided to the application by the desktop agent, rather than calling this function directly.
@@ -373,11 +368,6 @@ export interface DesktopAgent {
    *  ```
    */
   joinUserChannel(channelId: string): Promise<void>;
-
-  /**
-   * @deprecated Alias to the `joinUserChannel` function provided for backwards compatibility with version 1.1 and 1.2 of the FDC3 standard.
-   */
-  joinChannel(channelId: string): Promise<void>;
 
   /**
    * Returns a channel with the given identity. Either stands up a new channel or returns an existing channel. It is up to applications to manage how to share knowledge of these custom channels across windows and to manage channel ownership and lifecycle.
@@ -466,4 +456,54 @@ export interface DesktopAgent {
    * provider.
    */
   getInfo(): Promise<ImplementationMetadata>;
+
+  //---------------------------------------------------------------------------------------------
+  //Deprecated function signatures
+  //---------------------------------------------------------------------------------------------
+
+  /**
+   * Adds a listener for incoming context broadcasts from the Desktop Agent.
+   * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`. Provided for backwards compatibility with versions FDC3 standard <2.0.
+   */
+  addContextListener(handler: ContextHandler): Promise<Listener>;
+
+  /**
+   * @deprecated Alias to the `getUserChannels` function provided for backwards compatibility with versions FDC3 standard <2.0.
+   */
+  getSystemChannels(): Promise<Array<Channel>>;
+
+  /**
+   * @deprecated Alias to the `joinUserChannel` function Provided for backwards compatibility with versions FDC3 standard <2.0.
+   */
+  joinChannel(channelId: string): Promise<void>;
+
+  /**
+   * @deprecated version of `open` that launches an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
+   *
+   * ```javascript
+   * //Open an app without context, using the app name
+   * let instanceMetadata = await fdc3.open('myApp');
+   * ```
+   */
+  open(name: String, context?: Context): Promise<AppMetadata>;
+
+  /**
+   * @deprecated version of `raiseIntent` that targets an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
+   *
+   * ```javascript
+   * // use the `name` metadata of an app to describe the target app for the intent
+   * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
+   * ```
+   */
+  raiseIntent(intent: string, context: Context, name: String): Promise<IntentResolution>;
+
+  /**
+   * @deprecated version of `raiseIntentForContext` that targets an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
+   *
+   * ```javascript
+   * // Resolve against all intents registered by a specific target app name for the specified context
+   * await fdc3.raiseIntentForContext(context, targetAppName);
+   * ```
+   */
+  raiseIntentForContext(context: Context, name: String): Promise<IntentResolution>;
 }
