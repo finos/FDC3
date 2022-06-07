@@ -27,7 +27,7 @@
         "description": "<p>This project provides a fully open source implementation of the FDC3 interoperability standard. </p><p>Includes a fully featured and secure electron desktop agent featuring intent resolution, channel linking, directory search and a local file-based app directory implementation. </p>"
     },
     {
-    	"title": "FDC3 Desktop Agent",
+    	"title": "FDC3 Desktop Agent Chrome Extension",
     	"publisher" : "FINOS",
         "image": "/img/users/FINOS.png",
         "infoLink": "https://github.com/finos/fdc3-desktop-agent",

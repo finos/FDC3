@@ -17,7 +17,7 @@ const badgeTitles = {
 	"FDC3 1.2 Supported": "This badge is given as an indicator that the agent vendor is marketing the desktop agent as supporting the FDC3 1.2 Standard. ",
 	"FDC3 1.2 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 1.2 Conformance testing process.",
 	"FDC3 2.0 Supported": "This badge is given as an indicator that the agent vendor is marketing the desktop agent as supporting the FDC3 2.0 Standard.", 
-	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 1.2 Conformance testing process."
+	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process."
 }
 
 
