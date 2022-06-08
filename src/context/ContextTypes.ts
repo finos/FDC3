@@ -48,6 +48,17 @@ export interface Email {
   richTextBody?: object;
 }
 
+export interface Interaction {
+  id?: { [key: string]: string };
+  type: string;
+  participants: ContactList;
+  timeRange: TimeRange;
+  interactionType: ("Instant Message" | "Email" | "Call" | "Meeting") | string;
+  description: string;
+  initiator?: Contact;
+  origin?: string;
+}
+
 export interface InstrumentList {
   instruments: Instrument[];
   type: string;

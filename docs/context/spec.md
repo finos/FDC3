@@ -146,6 +146,7 @@ The following are standard FDC3 context types:
 - [`fdc3.country`](ref/Country) ([schema](/schemas/next/country.schema.json))
 - [`fdc3.currency`](ref/Currency) ([schema](/schemas/next/currency.schema.json))
 - [`fdc3.email`](ref/Email) ([schema](/schemas/next/email.schema.json))
+- [`fdc3.interaction`](ref/Interaction) ([schema](/schemas/next/interaction.schema.json))
 - [`fdc3.instrument`](ref/Instrument) ([schema](/schemas/next/instrument.schema.json))
 - [`fdc3.instrumentList`](ref/InstrumentList) ([schema](/schemas/next/instrumentList.schema.json))
 - [`fdc3.organization`](ref/Organization) ([schema](/schemas/next/organization.schema.json))

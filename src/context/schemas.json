@@ -9,6 +9,7 @@
   "Country": ["https://fdc3.finos.org/schemas/next/country.schema.json"],
   "Currency": ["https://fdc3.finos.org/schemas/next/currency.schema.json"],
   "Email": ["https://fdc3.finos.org/schemas/next/email.schema.json"],
+  "Interaction": ["https://fdc3.finos.org/schemas/next/interaction.schema.json"],
   "Instrument": ["https://fdc3.finos.org/schemas/next/instrument.schema.json"],
   "InstrumentList": ["https://fdc3.finos.org/schemas/next/instrumentList.schema.json"],
   "Country": ["https://fdc3.finos.org/schemas/next/country.schema.json"],

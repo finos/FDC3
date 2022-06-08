@@ -66,6 +66,4 @@ fdc3.raiseIntent('CreateInteraction', interaction)
 ## See Also
 
 Context
-- [Contact](../../context/ref/Contact)
-- [ContactList](../../context/ref/ContactList)
-- [TimeRange](../../context/ref/TimeRange)
+- [Interaction](../../context/ref/Interaction)
