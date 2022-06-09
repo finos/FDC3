@@ -57,7 +57,7 @@ const interaction = {
             email: 'jane.doe@mail.com'
         }
     },
-    source: 'Outlook'
+    origin: 'Outlook'
 }
 
 fdc3.raiseIntent('CreateInteraction', interaction)
