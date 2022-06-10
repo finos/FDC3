@@ -13,7 +13,7 @@
         "infoLink": "https://cosaic.io/chartiq/",
         "docsLink": "https://documentation.chartiq.com/",
         "type": "application-provider",
-        "badges": [ ],
+        "badges": [{"text": "FDC3 1.2 Supported"} ],
         "description": "<p>ChartIQ is a powerful and flexible HTML5 charting library with millions of users worldwide. Written in JavaScript, it runs entirely within the browser. With state of the art integrations, including  third-party apps, educational components, analysis, and more, you can create efficient workflows and streamline the way to work.</p><p>ChartIQ works on any platform (mobile, web, desktop) and any framework (Angular, React).</p><p>Most companies have at least one financial charting library for each platform or app they target—web, C#, Java, Android, iOS, etc., so developers have multiple code bases to maintain. With ChartIQ, write your code once and use it everywhere.</p>"
     },
     {
@@ -74,5 +74,15 @@
         "type": "examples-and-training",
         "badges": [ ],
         "description": "The FDC3 standard for application interoperability has become a key fintech enabler for transformation as financial organizations embrace micro-frontend-oriented workflows. Learn about the vision and key concepts of FDC3, the benefits it provides, and how workflow-driven design makes it easy to get started with FDC3."
+    },
+    {
+        "title": "Glue42 Enterprise",
+        "publisher": "Glue42",
+        "image": "/img/users/Glue42 Enterprise Positive.svg",
+        "infoLink": "https://glue42.com/enterprise/",
+        "docsLink": "https://docs.glue42.com/",
+        "type": "platform-provider",
+        "badges": [ {"text": "FDC3 1.2 Supported"} ],
+        "description": "<p>Glue42 enables organizations to build intelligent desktops that support configurable workflows between web and desktop applications. We’re working with some of the world’s biggest financial organizations to help them optimize complex processes and become more efficient.</p><p>Our flagship product, Glue42 Enterprise, is a desktop application integration platform that helps organizations create a simplified desktop experience by connecting the UI and data of any application, e.g., legacy, in-house or web. The platform supports open-source standards, including FINOS-FDC3, thus reducing delivery time and avoiding vendor lock-in.</p>"
     }
 ]
