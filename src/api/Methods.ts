@@ -61,7 +61,7 @@ function isString(app: AppIdentifier | String): app is String {
   return typeof app === 'string';
 }
 
-export function open(app: AppIdentifier | String, context?: Context): Promise<AppMetadata> {
+export function open(app: AppIdentifier | String, context?: Context): Promise<AppIdentifier> {
   if (isString(app)) {
     return rejectIfNoGlobal(() => window.fdc3.open(app, context));
   } else {
