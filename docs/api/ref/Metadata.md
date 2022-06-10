@@ -101,10 +101,10 @@ Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passe
 
 ```ts
 interface ContextMetadata {
-  /** Metadata identifying the app that sent the context and/or intent. 
-   *  @experimental
+  /** Identifier for the app instance that sent the context and/or intent. 
+   *  @experimental 
    */
-  readonly source: AppMetadata;
+  readonly source: AppIdentifier;
 }
 ```
 
