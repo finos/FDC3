@@ -28,6 +28,13 @@
       },
       {
         "type": "subcategory",
+        "label": "API Bridging Part",
+        "ids": [
+          "api-bridging/spec"
+        ]
+      },
+      {
+        "type": "subcategory",
         "label": "App Directory Part",
         "ids": [
           "app-directory/overview",
