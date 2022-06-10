@@ -1,6 +1,5 @@
 import {
   AppIdentifier,
-  AppMetadata,
   AppIntent,
   Channel,
   Context,
@@ -9,6 +8,7 @@ import {
   IntentResolution,
   Listener,
   ImplementationMetadata,
+  AppMetadata,
 } from '..';
 
 const DEFAULT_TIMEOUT = 5000;
@@ -159,6 +159,10 @@ export function leaveCurrentChannel(): Promise<void> {
 
 export function getInfo(): Promise<ImplementationMetadata> {
   return rejectIfNoGlobal(() => window.fdc3.getInfo());
+}
+
+export function getAppMetadata(app: AppIdentifier): Promise<AppMetadata> {
+  return rejectIfNoGlobal(() => window.fdc3.getAppMetadata(app));
 }
 
 /**

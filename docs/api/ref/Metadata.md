@@ -378,4 +378,4 @@ try {
 
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
-* [`TargetApp`](Types#targetapp)
+* [`AppIdentifier`](Types#appidentifier)

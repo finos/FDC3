@@ -11,8 +11,8 @@ import { Listener } from './Listener';
 import { Context } from '../context/ContextTypes';
 import { ImplementationMetadata } from './ImplementationMetadata';
 import { PrivateChannel } from './PrivateChannel';
-import { AppMetadata } from './AppMetadata';
 import { AppIdentifier } from './AppIdentifier';
+import { AppMetadata } from './AppMetadata';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -61,7 +61,7 @@ export interface DesktopAgent {
    * Result types may be a type name, the string "channel" (which indicates that the app
    * will return a channel) or a string indicating a channel that returns a specific type,
    * e.g. "channel<fdc3.instrument>".
-   * 
+   *
    * If intent resolution to an app returning a channel is requested, the desktop agent
    * MUST include both apps that are registered as returning a channel and those registered
    * as returning a channel with a specific type in the response.
@@ -135,9 +135,9 @@ export interface DesktopAgent {
    *
    * If the resolution fails, the promise will return an `Error` with a string from the `ResolveError` enumeration.
    *
-   * The optional `resultType` argument may be a type name, the string "channel" (which indicates that the app 
-   * should return a channel) or a string indicating a channel that returns a specific type, 
-   * e.g. "channel<fdc3.instrument>". If intent resolution to an app returning a channel is requested without 
+   * The optional `resultType` argument may be a type name, the string "channel" (which indicates that the app
+   * should return a channel) or a string indicating a channel that returns a specific type,
+   * e.g. "channel<fdc3.instrument>". If intent resolution to an app returning a channel is requested without
    * a specified context type, the desktop agent MUST also include apps that are registered as returning a
    * channel with a specific type in the response.
    *
@@ -209,7 +209,7 @@ export interface DesktopAgent {
    * each individual type (starting with the simpler types, followed by the complex type) that you want other
    * apps to be able to respond to. Doing so allows applications to filter the context types they receive by
    * adding listeners for specific context types.
-   * 
+   *
    * ```javascript
    * const instrument = {
    *   type: 'fdc3.instrument',
@@ -305,9 +305,9 @@ export interface DesktopAgent {
    *     // start chat has been requested by another application
    *     return;
    * });
-   * 
+   *
    * //Handle a raised intent and log the originating app metadata
-   * const listener = fdc3.addIntentListener('StartChat', (contact, metadata) => { 
+   * const listener = fdc3.addIntentListener('StartChat', (contact, metadata) => {
    *   console.log(`Received intent StartChat\nContext: ${contact}\nOriginating app: ${metadata?.source}`);
    *     return;
    * });
@@ -346,7 +346,7 @@ export interface DesktopAgent {
 
   /**
    * Adds a listener for incoming context broadcasts from the Desktop Agent via User channels. If the consumer is only interested in a context of a particular type, they can they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
-   * 
+   *
    * Context broadcasts are only received from apps that are joined to the same User channel as the listening application, hence, if the application is not currently joined to a channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
    *
    * Optional metadata about the context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
@@ -354,12 +354,12 @@ export interface DesktopAgent {
    * ```javascript
    * // any context
    * const listener = await fdc3.addContextListener(null, context => { ... });
-   * 
+   *
    * // listener for a specific type
    * const contactListener = await fdc3.addContextListener('fdc3.contact', contact => { ... });
-   * 
+   *
    * // listener that logs metadata for the message a specific type
-   * const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, metadata) => { 
+   * const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, metadata) => {
    *   console.log(`Received context message\nContext: ${contact}\nOriginating app: ${metadata?.source}`);
    *   //do something else with the context
    * });
@@ -376,13 +376,13 @@ export interface DesktopAgent {
    * Optional function that joins the app to the specified User channel. In most cases, applications SHOULD be joined to channels via UX provided to the application by the desktop agent, rather than calling this function directly.
    *
    * If an app is joined to a channel, all `fdc3.broadcast` calls will go to the channel, and all listeners assigned via `fdc3.addContextListener` will listen on the channel.
-   * 
+   *
    * If the channel already contains context that would be passed to context listeners assed via `fdc3.addContextListener` then those listeners will be called immediately with that context.
-   * 
+   *
    * An app can only be joined to one channel at a time.
-   * 
+   *
    * Rejects with an error if the channel is unavailable or the join request is denied. The error string will be drawn from the `ChannelError` enumeration.
-   * 
+   *
    * ```javascript
    *   // get all system channels
    *   const channels = await fdc3.getUserChannels();
@@ -478,31 +478,42 @@ export interface DesktopAgent {
    * Retrieves information about the FDC3 Desktop Agent implementation, including the supported version
    * of the FDC3 specification, the name of the provider of the implementation, its own version number
    * and the metadata of the calling application according to the desktop agent.
-   * 
-   * Returns an [`ImplementationMetadata`](Metadata#implementationmetadata) object.  This metadata object can
-   * be used to vary the behavior of an application based on the version supported by the Desktop Agent and
-   * for logging purposes.
-   * 
+   *
+   * Returns an `ImplementationMetadata` object.  This metadata object can be used to vary the behavior
+   * of an application based on the version supported by the Desktop Agent and for logging purposes.
+   *
    * ```js
    * import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
-   * 
+   *
    * if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
    *   await fdc3.raiseIntentForContext(context);
    * } else {
    *   await fdc3.raiseIntent("ViewChart", context);
    * }
    * ```
-   * 
-   * The `ImplementationMetadata` object returned also includes the metadata for the calling application, 
-   * according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` 
+   *
+   * The `ImplementationMetadata` object returned also includes the metadata for the calling application,
+   * according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId`
    * and other details, e.g.:
-   * 
+   *
    * ```js
    * let implementationMetadata = await fdc3.getInfo();
    * let {appId, instanceId} = implementationMetadata.appMetadata;
    * ```
    */
   getInfo(): Promise<ImplementationMetadata>;
+
+  /**
+   * Retrieves the `AppMetadata` for an `AppIdentifier`, which provides additional metadata (such as icons,
+   * a title and description) from the App Directory record for the application, that may be used for display
+   * purposes.
+   *
+   * ```js
+   * let appIdentifier = { appId: "MyAppId@my.appd.com" }
+   * let appMetadata = await fdc3.getAppMetadata(appIdentifier);
+   * ```
+   */
+  getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
 
   //---------------------------------------------------------------------------------------------
   //Deprecated function signatures

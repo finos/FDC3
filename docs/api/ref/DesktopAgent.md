@@ -17,6 +17,7 @@ interface DesktopAgent {
   // apps
   open(app: AppIdentifier, context?: Context): Promise<AppIdentifier>;
   findInstances(app: AppIdentifier): Promise<Array<AppIdentifier>>;
+  getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
 
   // context
   broadcast(context: Context): Promise<void>;
@@ -352,6 +353,26 @@ await fdc3.raiseIntent(startChat.intent.name, context, selectedApp);
 
 * [`findIntent()`](#findintent)
 * [`ResolveError`](Errors#resolveerror)
+
+### `getAppMetadata`
+
+```ts
+getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
+```
+
+Retrieves the [`AppMetadata`](Metadata#appmetadata) for an [`AppIdentifier`](Types#appidentifier), which provides additional metadata (such as icons, a title and description) from the App Directory record for the application, that may be used for display purposes.
+
+#### Examples
+
+```js
+let appIdentifier = { appId: "MyAppId@my.appd.com" }
+let appMetadata = await fdc3.getAppMetadata(appIdentifier);
+```
+
+#### See also
+
+* [`AppMetadata`](Metadata#appmetadata)
+* [`AppIdentifier`](Types#appidentifier)
 
 ### `getCurrentChannel`
 
