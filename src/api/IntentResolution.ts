@@ -4,12 +4,11 @@
  */
 
 import { IntentResult } from './Types';
-import { AppMetadata } from './AppMetadata';
 import { AppIdentifier } from './AppIdentifier';
 
 /**
  * IntentResolution provides a standard format for data returned upon resolving an intent.
- * 
+ *
  * ```javascript
  * //resolve a "Chain" type intent
  * let resolution = await agent.raiseIntent("intentName", context);
@@ -28,7 +27,7 @@ import { AppIdentifier } from './AppIdentifier';
  * } catch(error) {
  *     console.error(`${resolution.source} returned an error: ${error}`);
  * }
- * 
+ *
  * // Use metadata about the resolving app instance to target a further intent
  * await agent.raiseIntent("intentName", context, resolution.source);
  * ```
