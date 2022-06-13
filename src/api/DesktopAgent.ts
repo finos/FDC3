@@ -53,7 +53,7 @@ export interface DesktopAgent {
    * Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result context type.
    *
    * `findIntent` is effectively granting programmatic access to the Desktop Agent's resolver.
-   * It returns a promise resolving to the intent, its metadata and metadata about the apps and app instances that registered it is returned.
+   * It returns a promise resolving to the intent, its metadata and metadata about the apps and app instances that registered that intent.
    * This can be used to raise the intent against a specific app or app instance.
    *
    * If the resolution fails, the promise will return an `Error` with a string from the `ResolveError` enumeration.
@@ -309,7 +309,7 @@ export interface DesktopAgent {
    * //Handle a raised intent and log the originating app metadata
    * const listener = fdc3.addIntentListener('StartChat', (contact, metadata) => {
    *   console.log(`Received intent StartChat\nContext: ${contact}\nOriginating app: ${metadata?.source}`);
-   *     return;
+   *   return;
    * });
    *
    * //Handle a raised intent and return Context data via a promise
