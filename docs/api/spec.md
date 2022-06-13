@@ -153,11 +153,11 @@ let {appId, instanceId} = implementationMetadata.appMetadata;
 
 ### Reference apps or app instance(s) and retrieve their metadata
 
-To construct workflows between applications, you need to be able to reference specific applications and instance of those applications. 
+To construct workflows between applications, you need to be able to reference specific applications and instances of those applications. 
 
 From version 2.0 of the FDC3 Standard, Desktop Agent functions that reference or return information about other applications do so via an [`AppIdentifier`](ref/Types#appidentifier) type. [`AppIdentifier`](ref/Types#appidentifier) references specific applications via an `appId` from an [App Directory](../app-directory/overview) record and instances of that application via an `instanceId` assigned by the Desktop Agent.
 
-Additional metadata for an application can be retrieved via the [`fdc3.getAppMetadata(appIdentifier)`](ref/DesktopAgent#getappmetadata) function, which returns an [`AppMetadata`](ref/Metadata#appmetadata) object. The additional metadata may include a title, description,  icons, etc., which may be used for display purposes.
+Additional metadata for an application can be retrieved via the [`fdc3.getAppMetadata(appIdentifier)`](ref/DesktopAgent#getappmetadata) function, which returns an [`AppMetadata`](ref/Metadata#appmetadata) object. The additional metadata may include a title, description, icons, etc., which may be used for display purposes.
 
 Identifiers for instances of an application may be retrieved via the [`fdc3.findInstances(appIdentifier)`](ref/DesktopAgent#findinstances) function.
 
