@@ -20,32 +20,31 @@ In general, the ratified FDC3 specs represent a lowest common denominator interf
 These rules would apply only to standards work within FDC3. Today, this covers the API, App Directory, Context Data, and Intents specifications.
 
 ## Personas
-FDC3 implementors generally fall into 2 categories: platform providers, and application providers. A platform provider supplies an implementation of the FDC3 API for applications to use. Implicitly, it connects to one or more App Directories.
+FDC3 implementors generally fall into 2 categories: platform providers, and application providers. A platform provider supplies an implementation(s) of the FDC3 APIs (The Desktop Agent API and Applkication Directory) for applications to use.
 
 An application provider is largely a downstream consumer of FDC3 standards. It MAY use the API, it MAY use Context Data, it MAY use Intents. Application providers are only required to comply with the standards they make use of.
 
 Depending on persona, implementation compliance with FDC3 will mean different things.
 
 ### Platform Provider
-For platform providers FDC3 compliance requires:
+For platform providers FDC3 compliance requires that they meet the requirements of the APIs that they implement:
 
-* Support for connections to 1 or more App Directories meeting the FDC3 App Directory standards SHOULD be provided
-* An API implementation that meets the FDC3 API standards MUST be provided to all applications running in the context of the platform, including:
-    * Support for the FDC3 Context Data and Intents standards
-    * Support for intent and context resolution using a resolver UI
-    * Support for retrieving information about the version of the FDC3 specification supported by a Desktop Agent implementation and the name of the implementation provider
-* In the case of web applications, a Desktop Agent MUST provide the FDC3 API via a global accessible as `window.fdc3`.
+* [Desktop Agent API compliance requirements](api/spec#desktop-agent-api-standard-compliance).
+* [App Directory compliance requirements](app-directory/spec#app-directory-standard-compliance).
 
 ### Application Provider
-For application providers FDC3 compliance requires:
-* If intents are supported by the application, they SHOULD favor supporting applicable FDC3 defined standard intents over proprietary ones.
-* If FDC3 defined intents are supported, they MUST meet the expected context and behavior defined for the intent.
-* If proprietary intents are handled, those intents SHOULD follow the recommended naming conventions in the specification.
-* If intents are supported, the application SHOULD use the `addIntentListener` API to set up a handler.
-* If context data is supported by the application, they SHOULD favor supporting applicable FDC3 defined context data types over proprietary ones.
-* If FDC3 defined context data is supported, it MUST meet the interface defined for that type of context data.
-* If proprietary context data properties are handled, they SHOULD follow any recommended naming conventions in the specification.
-* If context data is supported, the application SHOULD use the `addContextListener` API to set up a handler.
+For application providers FDC3 compliance requires that they interact with the FDC3 APIs as intended. Specifically:
+
+* If Intents are supported by the application:
+  * FDC3 defined standard intents used MUST meet the expected context and behavior defined for the intent.
+  * Where available, FDC3 defined standard intents SHOULD be used in preference to proprietary intents.
+  * Proprietary intents used SHOULD follow the recommended naming conventions in the specification.
+  * The application MUST use the `addIntentListener` API to set up a handler when it starts up.
+* If context data sharing via channels is supported by the application:
+  * FDC3 defined standard context types used MUST meet the interface defined for that type of context data.
+  * Where available, FDC3 defined standard context types SHOULD used in preference to proprietary contexts.
+  * Proprietary context data types SHOULD follow any recommended naming and format conventions in the specification.
+  * Where Channels are supported or an app is intended to receive context from `fdc3.open` calls, the application MUST use the `addContextListener` API to set up appropriate handlers when it starts up (for User channels and for receiving context from `fdc3.open`) or when the channel is first created or retrieved (for App and Private channels).
 
 ## Versioning
 Typically, a Standard that has marketplace relevance is revised from time to time, to correct errors and/or to add functionality to support new use cases. Hence, there exist multiple versions of the standard. As FDC3 is a standards project, we don't follow semver, which is meant for libraries. We use the versioning scheme `<major>.<minor>`, e.g. `1.1` or `2.3`.
