@@ -1,9 +1,7 @@
 {
-  "ChatInitSettings": [
-    "https://fdc3.finos.org/schemas/next/chatInitSettings.schema.json"
-  ],
   "Context": ["https://fdc3.finos.org/schemas/next/context.schema.json"],
   "Chart": ["https://fdc3.finos.org/schemas/next/chart.schema.json"],
+  "ChatInitSettings": ["https://fdc3.finos.org/schemas/next/chatInitSettings.schema.json"],
   "Contact": ["https://fdc3.finos.org/schemas/next/contact.schema.json"],
   "ContactList": ["https://fdc3.finos.org/schemas/next/contactList.schema.json"],
   "Country": ["https://fdc3.finos.org/schemas/next/country.schema.json"],
@@ -11,11 +9,10 @@
   "Email": ["https://fdc3.finos.org/schemas/next/email.schema.json"],
   "Instrument": ["https://fdc3.finos.org/schemas/next/instrument.schema.json"],
   "InstrumentList": ["https://fdc3.finos.org/schemas/next/instrumentList.schema.json"],
-  "Country": ["https://fdc3.finos.org/schemas/next/country.schema.json"],
+  "Nothing": ["https://fdc3.finos.org/schemas/next/nothing.schema.json"],
   "Organization": ["https://fdc3.finos.org/schemas/next/organization.schema.json"],
   "Portfolio": ["https://fdc3.finos.org/schemas/next/portfolio.schema.json"],
   "Position": ["https://fdc3.finos.org/schemas/next/position.schema.json"],
-  "Nothing": ["https://fdc3.finos.org/schemas/next/nothing.schema.json"],
   "TimeRange": ["https://fdc3.finos.org/schemas/next/timerange.schema.json"],
   "Valuation": ["https://fdc3.finos.org/schemas/next/valuation.schema.json"]
 }
