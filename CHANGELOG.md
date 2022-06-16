@@ -58,6 +58,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * The `fdc3.joinChannel()`, `fdc3.getCurrentChannel()` and `fdc3.leaveCurrentChannel()` functions have been made optional for FDC3 API compliance, but are recommended through the application of the SHOULD keyword. ([#512](https://github.com/finos/FDC3/pull/512))
 * All DesktopAgent and Channel API functions are now async for consistency, changing the return type of the `broadcast`, `addIntentListener`, `addContextListener` and `getInfo` functions ([#516](https://github.com/finos/FDC3/pull/516))
 * `IntentResolution` now requires the name of the intent raised to included, allowing it to be used to determine the intent raised via `fdc3.raiseIntentForContext()`. ([#507](https://github.com/finos/FDC3/pull/507))
+* The Application schema have had the `manifestType` and `manifest` properties removed and replaced with the new `type` (required), `details` and `hostManifests` properties ([#437](https://github.com/finos/FDC3/pull/437))
 * App Directory `images` field was replaced with `screenshots` to better align the application record with web application manifest and match its format to that used by `icons` ([#675](https://github.com/finos/FDC3/pull/675))
 * API `AppMetadata` type was updated to replace the `images` field with a `screenshots` field (an array of `Image` objects) matching the spec of the App Directory's `screenshots` field entries ([#736](https://github.com/finos/FDC3/pull/736))
 * App Directory endpoint for creating applications was removed as these will often be implementation dependent and should not be required for compliance ([#695](https://github.com/finos/FDC3/pull/695))
@@ -99,7 +100,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * `addContextListener(contextType, handler)` now supports passing `null` as the context type ([#329](https://github.com/finos/FDC3/pull/329))
 * All other API type changes and additions from the [FDC3 Standard 1.2](https://github.com/finos/FDC3/releases/tag/v1.2) release
-* The Application schema by removing the `manifestType` and `manifest` properties, introducing new `type` (required), `details` and `hostManifests` properties ([#437](https://github.com/finos/FDC3/pull/437)
 
 ### Deprecated
 
