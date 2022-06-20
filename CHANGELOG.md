@@ -45,6 +45,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added `categories` field and recommended categories list to AppD application records to enable category based browsing of AppDs ([#673](https://github.com/finos/FDC3/pull/673))
 * Added an `interop` field to AppD application records, replacing the `intents` field, to more fully describe an app's use of FDC3 and enable search for apps that 'interoperate' with a selected app ([#697](https://github.com/finos/FDC3/pull/697))
 * Added `AppIdentifier` type, which is a new parent of `AppMetadata` and clarifies required fields for API call parameters which now prefer `appId` and `instanceId` over `name` ([#722](https://github.com/finos/FDC3/pull/722))
+* Added a `getAppMetdata()` function to the desktop agent that can be used to retrieve the full `AppMetadata` for an `AppIdentifier` and reduced types such as `IntentResolution.source` and `ContextMetadata.source` from `AppMetadata` to `AppIdentifier` to clarify what fields a developer can rely on and that they should manually retrieve the full `AppMetadata` when they need it for display purposes. ([#751](https://github.com/finos/FDC3/pull/751))
 
 ### Changed
 
