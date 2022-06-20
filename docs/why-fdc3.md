@@ -12,7 +12,7 @@ The main goal of FDC3 is to standardize how applications communicate, without ha
 
 ## Why should I FDC3-enable my applications?
 
-There is a trend towards breaking up monolithic desktop applications, replacing them with adaptable workflows which involve the collaboration of multiple best-of-breed applications. Still, much of the integration on the desktop is done by the actual end-user; copy/paste between applications, exporting/importing CSV files etc. 
+There is a trend towards breaking up monolithic desktop applications, replacing them with adaptable workflows which involve the collaboration of multiple best-of-breed applications. Still, much of the integration on the desktop is done by the actual end-user; copy/paste between applications, exporting/importing CSV files etc..
 
 Every application that has manual user input is a candidate for being FDC3-enabled, being able to demonstrate that your application can effectively take part in a workflow (without manual dual-entry or other tedious operations) is a easy route to happier users. Allowing your application to reach out to others is another way of extending the power of your offering; your app might not offer charting, but can let the end-user chart in an FDC3-enabled companion application based on context passed from your own app.
 
