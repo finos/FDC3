@@ -68,8 +68,9 @@
 <p>It is expected that the <code>DesktopAgent</code> interface is made availabe via the <a href="Globals#windowfdc3-object"><code>window.fdc3</code></a> global object, and that the <a href="Globals#fdc3ready-event"><code>fdc3Ready</code></a> event fires when it is ready to be used.</p>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> DesktopAgent {
   <span class="hljs-comment">// apps</span>
-  open(app: AppIdentifier, context?: Context): <span class="hljs-built_in">Promise</span>&lt;AppMetadata&gt;;
-  findInstances(app: AppIdentifier): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;AppMetadata&gt;&gt;;
+  open(app: AppIdentifier, context?: Context): <span class="hljs-built_in">Promise</span>&lt;AppIdentifier&gt;;
+  findInstances(app: AppIdentifier): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;AppIdentifier&gt;&gt;;
+  getAppMetadata(app: AppIdentifier): <span class="hljs-built_in">Promise</span>&lt;AppMetadata&gt;;
 
   <span class="hljs-comment">// context</span>
   broadcast(context: Context): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
@@ -99,7 +100,7 @@
   addContextListener(handler: ContextHandler): <span class="hljs-built_in">Promise</span>&lt;Listener&gt;;
   getSystemChannels(): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;Channel&gt;&gt;;
   joinChannel(channelId: <span class="hljs-built_in">string</span>) : <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
-  open(name: <span class="hljs-built_in">String</span>, context?: Context): <span class="hljs-built_in">Promise</span>&lt;AppMetadata&gt;;
+  open(name: <span class="hljs-built_in">String</span>, context?: Context): <span class="hljs-built_in">Promise</span>&lt;AppIdentifier&gt;;
   raiseIntent(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">context</span>: Context, <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
   raiseIntentForContext(context: Context, <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
 }
@@ -120,7 +121,7 @@
 
 <span class="hljs-comment">// listener that logs metadata for the message a specific type</span>
 <span class="hljs-keyword">const</span> contactListener = <span class="hljs-keyword">await</span> fdc3.addContextListener(<span class="hljs-string">&#x27;fdc3.contact&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">contact, metadata</span>) =&gt;</span> { 
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Received context message\nContext: <span class="hljs-subst">${contact}</span>\nOriginating app: <span class="hljs-subst">${metadata?.sourceAppMetadata}</span>`</span>);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Received context message\nContext: <span class="hljs-subst">${contact}</span>\nOriginating app: <span class="hljs-subst">${metadata?.source}</span>`</span>);
   <span class="hljs-comment">//do something else with the context</span>
 });
 </code></pre>
@@ -146,7 +147,7 @@
 
 <span class="hljs-comment">//Handle a raised intent and log the originating app metadata</span>
 <span class="hljs-keyword">const</span> listener = fdc3.addIntentListener(<span class="hljs-string">&#x27;StartChat&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">contact, metadata</span>) =&gt;</span> { 
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Received intent StartChat\nContext: <span class="hljs-subst">${contact}</span>\nOriginating app: <span class="hljs-subst">${metadata?.sourceAppMetadata}</span>`</span>);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Received intent StartChat\nContext: <span class="hljs-subst">${contact}</span>\nOriginating app: <span class="hljs-subst">${metadata?.source}</span>`</span>);
     <span class="hljs-keyword">return</span>;
 });
 
@@ -207,11 +208,11 @@ fdc3.broadcast(instrument);
 <li><a href="#addcontextlistener">addContextListener</a></li>
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="findinstances"></a><a href="#findinstances" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>findInstances</code></h3>
-<pre><code class="hljs css language-ts">findInstances(app: AppIdentifier): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;AppMetadata&gt;&gt;;
+<pre><code class="hljs css language-ts">findInstances(app: AppIdentifier): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;AppIdentifier&gt;&gt;;
 </code></pre>
 <p>Find all the available instances for a particular application.</p>
 <p>If there are no instances of the specified application the returned promise should resolve to an empty array.</p>
-<p>If the resolution fails, the promise will return an <code>Error</code> with a string from the <a href="Errors#resolveerror"><code>ResolveError</code></a> enumeration.</p>
+<p>If the request fails for another reason, the promise will return an <code>Error</code> with a string from the <code>ResolveError</code> enumeration.</p>
 <h4><a class="anchor" aria-hidden="true" id="example-1"></a><a href="#example-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// Retrieve a list of instances of an application</span>
 <span class="hljs-keyword">let</span> instances = <span class="hljs-keyword">await</span> fdc3.findInstances({<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;MyApp&quot;</span>});
@@ -235,14 +236,14 @@ This can be used to raise the intent against a specific app or app instance.</p>
 <span class="hljs-comment">// {</span>
 <span class="hljs-comment">//   intent: { name: &quot;StartChat&quot;, displayName: &quot;Chat&quot; },</span>
 <span class="hljs-comment">//   apps: [</span>
-<span class="hljs-comment">//    { name: &quot;Skype&quot; }, </span>
-<span class="hljs-comment">//    { name: &quot;Symphony&quot; }, </span>
-<span class="hljs-comment">//    { name: &quot;Slack&quot; }</span>
+<span class="hljs-comment">//    { appId: &quot;Skype&quot; }, </span>
+<span class="hljs-comment">//    { appId: &quot;Symphony&quot; }, </span>
+<span class="hljs-comment">//    { appId: &quot;Slack&quot; }</span>
 <span class="hljs-comment">//   ]</span>
 <span class="hljs-comment">// }</span>
 
 <span class="hljs-comment">// raise the intent against a particular app</span>
-<span class="hljs-keyword">await</span> fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[<span class="hljs-number">0</span>].name);
+<span class="hljs-keyword">await</span> fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[<span class="hljs-number">0</span>]);
 
 <span class="hljs-comment">//later, we want to raise &#x27;StartChat&#x27; intent again</span>
 <span class="hljs-keyword">const</span> appIntent = <span class="hljs-keyword">await</span> fdc3.findIntent(<span class="hljs-string">&quot;StartChat&quot;</span>);
@@ -251,10 +252,10 @@ This can be used to raise the intent against a specific app or app instance.</p>
 <span class="hljs-comment">// {</span>
 <span class="hljs-comment">//   intent: { name: &quot;StartChat&quot;, displayName: &quot;Chat&quot; },</span>
 <span class="hljs-comment">//   apps: [</span>
-<span class="hljs-comment">//    { name: &quot;Skype&quot; }, </span>
-<span class="hljs-comment">//    { name: &quot;Symphony&quot; }, </span>
-<span class="hljs-comment">//    { name: &quot;Symphony&quot;, instanceId: &quot;93d2fe3e-a66c-41e1-b80b-246b87120859&quot; }, </span>
-<span class="hljs-comment">//    { name: &quot;Slack&quot; }</span>
+<span class="hljs-comment">//    { appId: &quot;Skype&quot; }, </span>
+<span class="hljs-comment">//    { appId: &quot;Symphony&quot; }, </span>
+<span class="hljs-comment">//    { appId: &quot;Symphony&quot;, instanceId: &quot;93d2fe3e-a66c-41e1-b80b-246b87120859&quot; }, </span>
+<span class="hljs-comment">//    { appId: &quot;Slack&quot; }</span>
 <span class="hljs-comment">//   ]</span>
 </code></pre>
 <p>An optional input context object and/or <code>resultType</code> argument may be specified, which the resolver MUST use to filter the returned applications such that each supports the specified input and result types.</p>
@@ -270,14 +271,14 @@ This can be used to raise the intent against a specific app or app instance.</p>
 <span class="hljs-comment">// returns only apps that return the specified result type:</span>
 <span class="hljs-comment">// {</span>
 <span class="hljs-comment">//     intent: { name: &quot;ViewContact&quot;, displayName: &quot;View Contact Details&quot; },</span>
-<span class="hljs-comment">//     apps: { name: &quot;MyCRM&quot;, resultType: &quot;fdc3.ContactList&quot;}]</span>
+<span class="hljs-comment">//     apps: { appId: &quot;MyCRM&quot;, resultType: &quot;fdc3.ContactList&quot;}]</span>
 <span class="hljs-comment">// }</span>
 
 <span class="hljs-keyword">const</span> appIntent = <span class="hljs-keyword">await</span> fdc3.findIntent(<span class="hljs-string">&quot;QuoteStream&quot;</span>, instrument, <span class="hljs-string">&quot;channel&lt;fdc3.Quote&gt;&quot;</span>);
 <span class="hljs-comment">// returns only apps that return a channel which will receive the specified input and result types:</span>
 <span class="hljs-comment">// {</span>
 <span class="hljs-comment">//     intent: { name: &quot;QuoteStream&quot;, displayName: &quot;Quotes stream&quot; },</span>
-<span class="hljs-comment">//     apps: { name: &quot;MyOMS&quot;, resultType: &quot;channel&lt;fdc3.Quote&gt;&quot;}]</span>
+<span class="hljs-comment">//     apps: { appId: &quot;MyOMS&quot;, resultType: &quot;channel&lt;fdc3.Quote&gt;&quot;}]</span>
 <span class="hljs-comment">// }</span>
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="see-also-3"></a><a href="#see-also-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
@@ -291,7 +292,7 @@ This can be used to raise the intent against a specific app or app instance.</p>
 <p><code>findIntentsByContext</code> is effectively granting programmatic access to the Desktop Agent's resolver.
 A promise resolving to all the intents, their metadata and metadata about the apps and app instances that registered as handlers is returned, based on the context types the intents have registered.</p>
 <p>If the resolution fails, the promise will return an <code>Error</code> with a string from the <a href="Errors#resolveerror"><code>ResolveError</code></a> enumeration.</p>
-<p>The optional <code>resultType</code> argument may be a type name, the string <code>&quot;channel&quot;</code> (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. <code>&quot;channel&lt;fdc3,instrument&gt;&quot;</code>. If intent resolution to an app returning a channel is requested, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.</p>
+<p>The optional <code>resultType</code> argument may be a type name, the string <code>&quot;channel&quot;</code> (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. <code>&quot;channel&lt;fdc3,instrument&gt;&quot;</code>. If intent resolution to an app returning a channel is requested without a specified context type, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.</p>
 <h4><a class="anchor" aria-hidden="true" id="example-2"></a><a href="#example-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
 <p>I have a context object, and I want to know what I can do with it, hence, I look for intents and apps to resolve them...</p>
 <pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> appIntents = <span class="hljs-keyword">await</span> fdc3.findIntentsByContext(context);
@@ -300,20 +301,20 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 <span class="hljs-comment">// [</span>
 <span class="hljs-comment">//   {</span>
 <span class="hljs-comment">//     intent: { name: &quot;StartCall&quot;, displayName: &quot;Call&quot; },</span>
-<span class="hljs-comment">//     apps: [{ name: &quot;Skype&quot; }]</span>
+<span class="hljs-comment">//     apps: [{ appId: &quot;Skype&quot; }]</span>
 <span class="hljs-comment">//   },</span>
 <span class="hljs-comment">//   {</span>
 <span class="hljs-comment">//     intent: { name: &quot;StartChat&quot;, displayName: &quot;Chat&quot; }, </span>
 <span class="hljs-comment">//     apps: [</span>
-<span class="hljs-comment">//       { name: &quot;Skype&quot; }, </span>
-<span class="hljs-comment">//       { name: &quot;Symphony&quot; }, </span>
-<span class="hljs-comment">//       { name: &quot;Symphony&quot;, instanceId: &quot;93d2fe3e-a66c-41e1-b80b-246b87120859&quot; }, </span>
-<span class="hljs-comment">//       { name: &quot;Slack&quot; }</span>
+<span class="hljs-comment">//       { appId: &quot;Skype&quot; }, </span>
+<span class="hljs-comment">//       { appId: &quot;Symphony&quot; }, </span>
+<span class="hljs-comment">//       { appId: &quot;Symphony&quot;, instanceId: &quot;93d2fe3e-a66c-41e1-b80b-246b87120859&quot; }, </span>
+<span class="hljs-comment">//       { appId: &quot;Slack&quot; }</span>
 <span class="hljs-comment">//     ]</span>
 <span class="hljs-comment">//   },</span>
 <span class="hljs-comment">//   {</span>
 <span class="hljs-comment">//     intent: { name: &quot;ViewContact&quot;, displayName: &quot;View Contact&quot; },</span>
-<span class="hljs-comment">//     apps: [{ name: &quot;Symphony&quot; }, { name: &quot;MyCRM&quot;, resultType: &quot;fdc3.ContactList&quot;}]</span>
+<span class="hljs-comment">//     apps: [{ appId: &quot;Symphony&quot; }, { appId: &quot;MyCRM&quot;, resultType: &quot;fdc3.ContactList&quot;}]</span>
 <span class="hljs-comment">//   }</span>
 <span class="hljs-comment">// ];</span>
 </code></pre>
@@ -322,7 +323,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 <span class="hljs-comment">// returns for example:</span>
 <span class="hljs-comment">// [{</span>
 <span class="hljs-comment">//     intent: { name: &quot;ViewContact&quot;, displayName: &quot;View Contact&quot; },</span>
-<span class="hljs-comment">//     apps: [{ name: &quot;Symphony&quot; }, { name: &quot;MyCRM&quot;, resultType: &quot;fdc3.ContactList&quot;}]</span>
+<span class="hljs-comment">//     apps: [{ appId: &quot;Symphony&quot; }, { appId: &quot;MyCRM&quot;, resultType: &quot;fdc3.ContactList&quot;}]</span>
 <span class="hljs-comment">// }];</span>
  
 <span class="hljs-comment">// select a particular intent to raise</span>
@@ -339,16 +340,29 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 <li><a href="#findintent"><code>findIntent()</code></a></li>
 <li><a href="Errors#resolveerror"><code>ResolveError</code></a></li>
 </ul>
+<h3><a class="anchor" aria-hidden="true" id="getappmetadata"></a><a href="#getappmetadata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>getAppMetadata</code></h3>
+<pre><code class="hljs css language-ts">getAppMetadata(app: AppIdentifier): <span class="hljs-built_in">Promise</span>&lt;AppMetadata&gt;;
+</code></pre>
+<p>Retrieves the <a href="Metadata#appmetadata"><code>AppMetadata</code></a> for an <a href="Types#appidentifier"><code>AppIdentifier</code></a>, which provides additional metadata (such as icons, a title and description) from the App Directory record for the application, that may be used for display purposes.</p>
+<h4><a class="anchor" aria-hidden="true" id="examples-3"></a><a href="#examples-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">let</span> appIdentifier = { <span class="hljs-attr">appId</span>: <span class="hljs-string">&quot;MyAppId@my.appd.com&quot;</span> }
+<span class="hljs-keyword">let</span> appMetadata = <span class="hljs-keyword">await</span> fdc3.getAppMetadata(appIdentifier);
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="see-also-5"></a><a href="#see-also-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<ul>
+<li><a href="Metadata#appmetadata"><code>AppMetadata</code></a></li>
+<li><a href="Types#appidentifier"><code>AppIdentifier</code></a></li>
+</ul>
 <h3><a class="anchor" aria-hidden="true" id="getcurrentchannel"></a><a href="#getcurrentchannel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>getCurrentChannel</code></h3>
 <pre><code class="hljs css language-ts">getCurrentChannel() : <span class="hljs-built_in">Promise</span>&lt;Channel | <span class="hljs-literal">null</span>&gt;;
 </code></pre>
 <p>Optional function that returns the <code>Channel</code> object for the current User channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.</p>
 <p>Returns <code>null</code> if the app is not joined to a channel.</p>
-<h4><a class="anchor" aria-hidden="true" id="examples-3"></a><a href="#examples-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
+<h4><a class="anchor" aria-hidden="true" id="examples-4"></a><a href="#examples-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// get the current channel membership</span>
 <span class="hljs-keyword">let</span> current = <span class="hljs-keyword">await</span> fdc3.getCurrentChannel();
 </code></pre>
-<h4><a class="anchor" aria-hidden="true" id="see-also-5"></a><a href="#see-also-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-6"></a><a href="#see-also-6" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="Channel"><code>Channel</code></a></li>
 </ul>
@@ -369,9 +383,8 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 <p>The <code>ImplementationMetadata</code> object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own <code>appId</code>, <code>instanceId</code> and other details, e.g.:</p>
 <pre><code class="hljs css language-js"><span class="hljs-keyword">let</span> implementationMetadata = <span class="hljs-keyword">await</span> fdc3.getInfo();
 <span class="hljs-keyword">let</span> {appId, instanceId} = implementationMetadata.appMetadata;
-
 </code></pre>
-<h4><a class="anchor" aria-hidden="true" id="see-also-6"></a><a href="#see-also-6" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-7"></a><a href="#see-also-7" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="Metadata#implementationmetadata"><code>ImplementationMetadata</code></a></li>
 <li><a href="Metadata#appmetadata"><code>AppMetadata</code></a></li>
@@ -379,8 +392,8 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 <h3><a class="anchor" aria-hidden="true" id="getorcreatechannel"></a><a href="#getorcreatechannel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>getOrCreateChannel</code></h3>
 <pre><code class="hljs css language-ts">getOrCreateChannel(channelId: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">Promise</span>&lt;Channel&gt;;
 </code></pre>
-<p>Returns a <code>Channel</code> object for the specified channel, creating it (as an <em>App</em> channel) - if it does not exist.
-<code>Error</code> with a string from the <a href="Errors#channelerror"><code>ChannelError</code></a> enumeration if the channel could not be created or access was denied.</p>
+<p>Returns a <code>Channel</code> object for the specified channel, creating it (as an <em>App</em> channel) if it does not exist.</p>
+<p>If the Channel cannot be created or access was denied, the returned promise MUST be rejected with an error string from the <code>ChannelError</code> enumeration.</p>
 <h4><a class="anchor" aria-hidden="true" id="example-4"></a><a href="#example-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
 <pre><code class="hljs css language-js"><span class="hljs-keyword">try</span> {
   <span class="hljs-keyword">const</span> myChannel = <span class="hljs-keyword">await</span> fdc3.getOrCreateChannel(<span class="hljs-string">&quot;myChannel&quot;</span>);
@@ -390,7 +403,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
   <span class="hljs-comment">//app could not register the channel</span>
 }
 </code></pre>
-<h4><a class="anchor" aria-hidden="true" id="see-also-7"></a><a href="#see-also-7" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-8"></a><a href="#see-also-8" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="Channel"><code>Channel</code></a></li>
 </ul>
@@ -432,7 +445,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
   <span class="hljs-keyword">return</span> channel;
 });
 </code></pre>
-<h4><a class="anchor" aria-hidden="true" id="see-also-8"></a><a href="#see-also-8" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-9"></a><a href="#see-also-9" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="PrivateChannel"><code>PrivateChannel</code></a></li>
 <li><a href="#raiseintent"><code>raiseIntent</code></a></li>
@@ -446,7 +459,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 <pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> userChannels = <span class="hljs-keyword">await</span> fdc3.getUserChannels();
 <span class="hljs-keyword">const</span> redChannel = userChannels.find(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> c.id === <span class="hljs-string">&#x27;red&#x27;</span>);
 </code></pre>
-<h4><a class="anchor" aria-hidden="true" id="see-also-9"></a><a href="#see-also-9" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-10"></a><a href="#see-also-10" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="Channel"><code>Channel</code></a></li>
 </ul>
@@ -458,7 +471,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 <p>If the channel already contains context that would be passed to context listeners added via <code>fdc3.addContextListener</code> then those listeners will be called immediately with that context.</p>
 <p>An app can only be joined to one channel at a time.</p>
 <p>Rejects with an error if the channel is unavailable or the join request is denied. The error string will be drawn from the <a href="Errors#channelerror"><code>ChannelError</code></a> enumeration.</p>
-<h4><a class="anchor" aria-hidden="true" id="examples-4"></a><a href="#examples-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
+<h4><a class="anchor" aria-hidden="true" id="examples-5"></a><a href="#examples-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// get all user channels</span>
 <span class="hljs-keyword">const</span> channels = <span class="hljs-keyword">await</span> fdc3.getUserChannels();
 
@@ -468,7 +481,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 fdc3.joinUserChannel(selectedChannel.id);
 
 </code></pre>
-<h4><a class="anchor" aria-hidden="true" id="see-also-10"></a><a href="#see-also-10" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-11"></a><a href="#see-also-11" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="#getuserchannels"><code>getUserChannels</code></a></li>
 </ul>
@@ -477,7 +490,7 @@ fdc3.joinUserChannel(selectedChannel.id);
 </code></pre>
 <p>Optional function that removes the app from any User channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.</p>
 <p>Context broadcast and listening through the top-level <code>fdc3.broadcast</code> and <code>fdc3.addContextListener</code> will be a no-op when the app is not joined to a User channel.</p>
-<h4><a class="anchor" aria-hidden="true" id="examples-5"></a><a href="#examples-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
+<h4><a class="anchor" aria-hidden="true" id="examples-6"></a><a href="#examples-6" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h4>
 <pre><code class="hljs css language-js"><span class="hljs-comment">//desktop-agent scope context listener</span>
 <span class="hljs-keyword">const</span> fdc3Listener = fdc3.addContextListener(<span class="hljs-literal">null</span>, <span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> {});
 
@@ -489,26 +502,23 @@ redChannel.addContextListener(<span class="hljs-literal">null</span>, channelLis
 
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="open"></a><a href="#open" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>open</code></h3>
-<pre><code class="hljs css language-ts">open(app: AppIdentifier, context?: Context): <span class="hljs-built_in">Promise</span>&lt;AppMetadata&gt;;
+<pre><code class="hljs css language-ts">open(app: AppIdentifier, context?: Context): <span class="hljs-built_in">Promise</span>&lt;AppIdentifier&gt;;
 </code></pre>
-<p>Launches an app with target information, which can be either be a string like a name, or an <a href="Metadata#appmetadata"><code>AppMetadata</code></a> object.</p>
-<p>The <code>open</code> method differs in use from <a href="#raiseintent"><code>raiseIntent</code></a>.  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, <code>open</code> would be used to open an app returned in the search results.</p>
+<p>Launches an app, specified via an <a href="Metadata#appidentifier"><code>AppIdentifier</code></a> object.</p>
+<p>The <code>open</code> method differs in use from <a href="#raiseintent"><code>raiseIntent</code></a>.  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying an App Directory, <code>open</code> would be used to open an app returned in the search results.</p>
 <p><strong>Note</strong>, if the intent, context and target app name are all known, it is recommended to instead use <a href="#raiseintent"><code>raiseIntent</code></a> with the <code>target</code> argument.</p>
 <p>If a <a href="Types#context"><code>Context</code></a> object is passed in, this object will be provided to the opened application via a contextListener. The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.</p>
-<p>Returns an <a href="Metadata#appmetadata"><code>AppMetadata</code></a> object with the <code>instanceId</code> field set identifying the instance of the application opened by this call.</p>
+<p>Returns an <a href="Metadata#appidentifier"><code>AppIdentifier</code></a> object with the <code>instanceId</code> field set to identify the instance of the application opened by this call.</p>
 <p>If opening errors, it returns an <code>Error</code> with a string from the <a href="Errors#openerror"><code>OpenError</code></a> enumeration.</p>
 <h4><a class="anchor" aria-hidden="true" id="example-7"></a><a href="#example-7" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
-<pre><code class="hljs css language-js"><span class="hljs-comment">// Open an app without context, using the app name</span>
-<span class="hljs-keyword">let</span> instanceMetadata = <span class="hljs-keyword">await</span> fdc3.open(<span class="hljs-string">&#x27;myApp&#x27;</span>);
-
-<span class="hljs-comment">// Open an app without context, using an AppMetadata object to specify the target</span>
-<span class="hljs-keyword">let</span> appMetadata = {<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;myApp&#x27;</span>, <span class="hljs-attr">appId</span>: <span class="hljs-string">&#x27;myApp-v1.0.1&#x27;</span>, <span class="hljs-attr">version</span>: <span class="hljs-string">&#x27;1.0.1&#x27;</span>};
-<span class="hljs-keyword">let</span> instanceMetadata = <span class="hljs-keyword">await</span> fdc3.open(appMetadata);
+<pre><code class="hljs css language-js"><span class="hljs-comment">// Open an app without context, using an AppIdentifier object to specify the target</span>
+<span class="hljs-keyword">let</span> appIdentifier = { <span class="hljs-attr">appId</span>: <span class="hljs-string">&#x27;myApp-v1.0.1&#x27;</span> };
+<span class="hljs-keyword">let</span> instanceIdentifier = <span class="hljs-keyword">await</span> fdc3.open(appIdentifier);
 
 <span class="hljs-comment">// Open an app with context </span>
-<span class="hljs-keyword">let</span> instanceMetadata = <span class="hljs-keyword">await</span> fdc3.open(appMetadata, context);
+<span class="hljs-keyword">let</span> instanceIdentifier = <span class="hljs-keyword">await</span> fdc3.open(appIdentifier, context);
 </code></pre>
-<h4><a class="anchor" aria-hidden="true" id="see-also-11"></a><a href="#see-also-11" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-12"></a><a href="#see-also-12" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="Types#context"><code>Context</code></a></li>
 <li><a href="Metadata#AppIdentifier"><code>AppIdentifier</code></a></li>
@@ -555,7 +565,7 @@ Alternatively, the specific app or app instance to target can also be provided. 
   <span class="hljs-built_in">console</span>.error(<span class="hljs-string">`<span class="hljs-subst">${resolution.source}</span> returned a result error: <span class="hljs-subst">${error}</span>`</span>);
 }
 </code></pre>
-<h4><a class="anchor" aria-hidden="true" id="see-also-12"></a><a href="#see-also-12" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-13"></a><a href="#see-also-13" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="Types#context"><code>Context</code></a></li>
 <li><a href="Metadata#AppIdentifier"><code>AppIdentifier</code></a></li>
@@ -578,9 +588,9 @@ Alternatively, the specific app or app instance to target can also be provided, 
 <span class="hljs-keyword">const</span> intentResolution = <span class="hljs-keyword">await</span> fdc3.raiseIntentForContext(context);
 
 <span class="hljs-comment">// Resolve against all intents registered by a specific target app for the specified context</span>
-<span class="hljs-keyword">await</span> fdc3.raiseIntentForContext(context, targetAppMetadata);
+<span class="hljs-keyword">await</span> fdc3.raiseIntentForContext(context, targetAppIdentifier);
 </code></pre>
-<h4><a class="anchor" aria-hidden="true" id="see-also-13"></a><a href="#see-also-13" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-14"></a><a href="#see-also-14" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="#raiseintent"><code>raiseIntent()</code></a></li>
 <li><a href="Types#context"><code>Context</code></a></li>
@@ -593,7 +603,7 @@ Alternatively, the specific app or app instance to target can also be provided, 
 <pre><code class="hljs css language-ts">addContextListener(handler: ContextHandler): <span class="hljs-built_in">Promise</span>&lt;Listener&gt;;
 </code></pre>
 <p>Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard &lt;2.0.</p>
-<h4><a class="anchor" aria-hidden="true" id="see-also-14"></a><a href="#see-also-14" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-15"></a><a href="#see-also-15" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="#addcontextlistener"><code>addContextListener</code></a></li>
 </ul>
@@ -601,7 +611,7 @@ Alternatively, the specific app or app instance to target can also be provided, 
 <pre><code class="hljs css language-ts">getSystemChannels() : <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;Channel&gt;&gt;;
 </code></pre>
 <p>Alias to the <a href="#getuserchannels"><code>getUserChannels</code></a> function provided for backwards compatibility with version 1.1 &amp; 1.2 of the FDC3 standard.</p>
-<h4><a class="anchor" aria-hidden="true" id="see-also-15"></a><a href="#see-also-15" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-16"></a><a href="#see-also-16" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="#getuserchannels"><code>getUserChannels</code></a></li>
 </ul>
@@ -609,15 +619,15 @@ Alternatively, the specific app or app instance to target can also be provided, 
 <pre><code class="hljs css language-ts">joinChannel(channelId: <span class="hljs-built_in">string</span>) : <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
 </code></pre>
 <p>Alias to the <a href="#joinuserchannel"><code>joinUserChannel</code></a> function provided for backwards compatibility with version 1.1 &amp; 1.2 of the FDC3 standard.</p>
-<h4><a class="anchor" aria-hidden="true" id="see-also-16"></a><a href="#see-also-16" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-17"></a><a href="#see-also-17" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="#joinuserchannel"><code>joinUserChannel</code></a></li>
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="open-deprecated"></a><a href="#open-deprecated" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>open</code> (deprecated)</h3>
-<pre><code class="hljs css language-ts">open(name: <span class="hljs-built_in">String</span>, context?: Context): <span class="hljs-built_in">Promise</span>&lt;AppMetadata&gt;;
+<pre><code class="hljs css language-ts">open(name: <span class="hljs-built_in">String</span>, context?: Context): <span class="hljs-built_in">Promise</span>&lt;AppIdentifier&gt;;
 </code></pre>
 <p>Version of <code>open</code> that launches an app by name rather than <code>AppIdentifier</code>. Provided for backwards compatibility with versions of the FDC3 Standard &lt;2.0.</p>
-<h4><a class="anchor" aria-hidden="true" id="see-also-17"></a><a href="#see-also-17" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-18"></a><a href="#see-also-18" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="#open"><code>open</code></a></li>
 </ul>
@@ -625,7 +635,7 @@ Alternatively, the specific app or app instance to target can also be provided, 
 <pre><code class="hljs css language-ts">raiseIntent(intent: <span class="hljs-built_in">string</span>, <span class="hljs-attr">context</span>: Context, <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;
 </code></pre>
 <p>Version of <code>raiseIntent</code> that targets an app by name rather than <code>AppIdentifier</code>. Provided for backwards compatibility with versions of the FDC3 Standard &lt;2.0.</p>
-<h4><a class="anchor" aria-hidden="true" id="see-also-18"></a><a href="#see-also-18" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-19"></a><a href="#see-also-19" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="#raiseintent"><code>raiseIntent</code></a></li>
 </ul>
@@ -633,8 +643,8 @@ Alternatively, the specific app or app instance to target can also be provided, 
 <pre><code class="hljs css language-ts">raiseIntentForContext(context: Context, <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>): <span class="hljs-built_in">Promise</span>&lt;IntentResolution&gt;;;
 </code></pre>
 <p>Version of <code>raiseIntentForContext</code> that targets an app by name rather than <code>AppIdentifier</code>. Provided for backwards compatibility with versions of the FDC3 Standard &lt;2.0.</p>
-<h4><a class="anchor" aria-hidden="true" id="see-also-19"></a><a href="#see-also-19" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
+<h4><a class="anchor" aria-hidden="true" id="see-also-20"></a><a href="#see-also-20" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>See also</h4>
 <ul>
 <li><a href="#raiseintentforcontext"><code>raiseIntentForContext</code></a></li>
 </ul>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/next/api/spec"><span class="arrow-prev">← </span><span>Overview</span></a><a class="docs-next button" href="/docs/next/api/ref/Channel"><span>Channel</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#functions">Functions</a><ul class="toc-headings"><li><a href="#addcontextlistener"><code>addContextListener</code></a></li><li><a href="#addintentlistener"><code>addIntentListener</code></a></li><li><a href="#broadcast"><code>broadcast</code></a></li><li><a href="#findinstances"><code>findInstances</code></a></li><li><a href="#findintent"><code>findIntent</code></a></li><li><a href="#findintentsbycontext"><code>findIntentsByContext</code></a></li><li><a href="#getcurrentchannel"><code>getCurrentChannel</code></a></li><li><a href="#getinfo"><code>getInfo</code></a></li><li><a href="#getorcreatechannel"><code>getOrCreateChannel</code></a></li><li><a href="#createprivatechannel"><code>createPrivateChannel</code></a></li><li><a href="#getuserchannels"><code>getUserChannels</code></a></li><li><a href="#joinuserchannel"><code>joinUserChannel</code></a></li><li><a href="#leavecurrentchannel"><code>leaveCurrentChannel</code></a></li><li><a href="#open"><code>open</code></a></li><li><a href="#raiseintent"><code>raiseIntent</code></a></li><li><a href="#raiseintentforcontext"><code>raiseIntentForContext</code></a></li></ul></li><li><a href="#deprecated-functions">Deprecated Functions</a><ul class="toc-headings"><li><a href="#addcontextlistener-deprecated"><code>addContextListener</code> (deprecated)</a></li><li><a href="#getsystemchannels-deprecated"><code>getSystemChannels</code> (deprecated)</a></li><li><a href="#joinchannel-deprecated"><code>joinChannel</code> (deprecated)</a></li><li><a href="#open-deprecated"><code>open</code> (deprecated)</a></li><li><a href="#raiseintent-deprecated"><code>raiseIntent</code> (deprecated)</a></li><li><a href="#raiseintentforcontext-deprecated"><code>raiseIntentForContext</code> (deprecated)</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/fdc3-icon-2019.svg" alt="FDC3"/></a><div><h5>Learn</h5><a href="/docs/fdc3-intro">Getting Started</a><a href="/docs/supported-platforms">Supported Platforms</a><a href="/docs/api/ref/DesktopAgent">API Reference</a><a href="/docs/use-cases/overview">Use Cases</a><a href="https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop" target="_blank">Training</a></div><div><h5>Community</h5><a href="https://www.finos.org/" target="_blank" rel="noreferrer noopener">FINOS</a><a href="https://finos-lf.slack.com/messages/fdc3/" target="_blank" rel="noreferrer noopener">Slack</a><a href="https://stackoverflow.com/questions/tagged/fdc3" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://groups.google.com/a/finos.org/forum/#!forum/fdc3" target="_blank" rel="noreferrer noopener">Google Groups</a><a href="/docs/next/trademarks">Trademarks</a></div><div><h5>More</h5><div class="social"><a class="github-button" href="https://github.com/finos/FDC3" data-count-href="https://github.com/finos/FDC3/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">FDC3</a></div><div class="social"><a href="https://twitter.com/FDC3_" class="twitter-follow-button">@FDC3_</a></div></div></section><section class="finos finosBanner"><a href="https://www.finos.org"><img id="finosicon" src="https://fdc3.finos.org/img/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS"/><h2 id="proud">Proud member of the Fintech Open Source Foundation</h2></a></section><section class="copyright">Copyright © 2022 FDC3</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/next/api/spec"><span class="arrow-prev">← </span><span>Overview</span></a><a class="docs-next button" href="/docs/next/api/ref/Channel"><span>Channel</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#functions">Functions</a><ul class="toc-headings"><li><a href="#addcontextlistener"><code>addContextListener</code></a></li><li><a href="#addintentlistener"><code>addIntentListener</code></a></li><li><a href="#broadcast"><code>broadcast</code></a></li><li><a href="#findinstances"><code>findInstances</code></a></li><li><a href="#findintent"><code>findIntent</code></a></li><li><a href="#findintentsbycontext"><code>findIntentsByContext</code></a></li><li><a href="#getappmetadata"><code>getAppMetadata</code></a></li><li><a href="#getcurrentchannel"><code>getCurrentChannel</code></a></li><li><a href="#getinfo"><code>getInfo</code></a></li><li><a href="#getorcreatechannel"><code>getOrCreateChannel</code></a></li><li><a href="#createprivatechannel"><code>createPrivateChannel</code></a></li><li><a href="#getuserchannels"><code>getUserChannels</code></a></li><li><a href="#joinuserchannel"><code>joinUserChannel</code></a></li><li><a href="#leavecurrentchannel"><code>leaveCurrentChannel</code></a></li><li><a href="#open"><code>open</code></a></li><li><a href="#raiseintent"><code>raiseIntent</code></a></li><li><a href="#raiseintentforcontext"><code>raiseIntentForContext</code></a></li></ul></li><li><a href="#deprecated-functions">Deprecated Functions</a><ul class="toc-headings"><li><a href="#addcontextlistener-deprecated"><code>addContextListener</code> (deprecated)</a></li><li><a href="#getsystemchannels-deprecated"><code>getSystemChannels</code> (deprecated)</a></li><li><a href="#joinchannel-deprecated"><code>joinChannel</code> (deprecated)</a></li><li><a href="#open-deprecated"><code>open</code> (deprecated)</a></li><li><a href="#raiseintent-deprecated"><code>raiseIntent</code> (deprecated)</a></li><li><a href="#raiseintentforcontext-deprecated"><code>raiseIntentForContext</code> (deprecated)</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/fdc3-icon-2019.svg" alt="FDC3"/></a><div><h5>Learn</h5><a href="/docs/fdc3-intro">Getting Started</a><a href="/docs/supported-platforms">Supported Platforms</a><a href="/docs/api/ref/DesktopAgent">API Reference</a><a href="/docs/use-cases/overview">Use Cases</a><a href="https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop" target="_blank">Training</a></div><div><h5>Community</h5><a href="https://www.finos.org/" target="_blank" rel="noreferrer noopener">FINOS</a><a href="https://finos-lf.slack.com/messages/fdc3/" target="_blank" rel="noreferrer noopener">Slack</a><a href="https://stackoverflow.com/questions/tagged/fdc3" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://groups.google.com/a/finos.org/forum/#!forum/fdc3" target="_blank" rel="noreferrer noopener">Google Groups</a><a href="/docs/next/trademarks">Trademarks</a></div><div><h5>More</h5><div class="social"><a class="github-button" href="https://github.com/finos/FDC3" data-count-href="https://github.com/finos/FDC3/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">FDC3</a></div><div class="social"><a href="https://twitter.com/FDC3_" class="twitter-follow-button">@FDC3_</a></div></div></section><section class="finos finosBanner"><a href="https://www.finos.org"><img id="finosicon" src="https://fdc3.finos.org/img/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS"/><h2 id="proud">Proud member of the Fintech Open Source Foundation</h2></a></section><section class="copyright">Copyright © 2022 FDC3</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

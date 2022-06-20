@@ -85,8 +85,7 @@ For each intent, it reference the applications that support that intent.</p>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="appmetadata"></a><a href="#appmetadata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>AppMetadata</code></h2>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> AppMetadata <span class="hljs-keyword">extends</span> AppIdentifier {
-  <span class="hljs-comment">/** 
-  /**
+  <span class="hljs-comment">/**
    *  The &#x27;friendly&#x27; app name. This field was used with the `open` and
    *  `raiseIntent` calls in FDC3 &lt;2.0, which now require an `AppIdentifier`
    *  with `appId` set. 
@@ -149,10 +148,10 @@ For each intent, it reference the applications that support that intent.</p>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="contextmetadata"></a><a href="#contextmetadata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ContextMetadata</code></h2>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> ContextMetadata {
-  <span class="hljs-comment">/** Metadata identifying the app that sent the context and/or intent. 
-   *  <span class="hljs-doctag">@experimental</span>
+  <span class="hljs-comment">/** Identifier for the app instance that sent the context and/or intent. 
+   *  <span class="hljs-doctag">@experimental </span>
    */</span>
-  <span class="hljs-keyword">readonly</span> sourceAppMetadata: AppMetadata;
+  <span class="hljs-keyword">readonly</span> source: AppIdentifier;
 }
 </code></pre>
 <p>Metadata relating to a context or intent &amp; context received through the <code>addContextListener</code> and <code>addIntentListener</code> functions. Currently identifies that originated the context or intent message.</p>
@@ -308,11 +307,11 @@ For each intent, it reference the applications that support that intent.</p>
 <h2><a class="anchor" aria-hidden="true" id="intentresolution"></a><a href="#intentresolution" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>IntentResolution</code></h2>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">interface</span> IntentResolution {
 
-  <span class="hljs-comment">/** Metadata about the app instance that was selected (or started) to resolve
+  <span class="hljs-comment">/** Identifier for the app instance that was selected (or started) to resolve
    *  the intent. `source.instanceId` MUST be set, indicating the specific app 
    *  instance that received the intent.
    */</span>
-  <span class="hljs-keyword">readonly</span> source: AppMetadata;
+  <span class="hljs-keyword">readonly</span> source: AppIdentifier;
 
   <span class="hljs-comment">/** The intent that was raised. May be used to determine which intent the user
    *  chose in response to `fdc3.raiseIntentForContext()`.
@@ -374,6 +373,6 @@ For each intent, it reference the applications that support that intent.</p>
 <ul>
 <li><a href="DesktopAgent#raiseintent"><code>DesktopAgent.raiseIntent</code></a></li>
 <li><a href="DesktopAgent#raiseintentforcontext"><code>DesktopAgent.raiseIntentForContext</code></a></li>
-<li><a href="Types#targetapp"><code>TargetApp</code></a></li>
+<li><a href="Types#appidentifier"><code>AppIdentifier</code></a></li>
 </ul>
 </span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/next/api/ref/Types"><span class="arrow-prev">← </span><span>Types</span></a><a class="docs-next button" href="/docs/next/api/ref/Errors"><span>Errors</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#appintent"><code>AppIntent</code></a></li><li><a href="#appmetadata"><code>AppMetadata</code></a></li><li><a href="#contextmetadata"><code>ContextMetadata</code></a></li><li><a href="#displaymetadata"><code>DisplayMetadata</code></a></li><li><a href="#icon"><code>Icon</code></a></li><li><a href="#image"><code>Image</code></a></li><li><a href="#implementationmetadata"><code>ImplementationMetadata</code></a></li><li><a href="#intentmetadata"><code>IntentMetadata</code></a></li><li><a href="#intentresolution"><code>IntentResolution</code></a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/fdc3-icon-2019.svg" alt="FDC3"/></a><div><h5>Learn</h5><a href="/docs/fdc3-intro">Getting Started</a><a href="/docs/supported-platforms">Supported Platforms</a><a href="/docs/api/ref/DesktopAgent">API Reference</a><a href="/docs/use-cases/overview">Use Cases</a><a href="https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop" target="_blank">Training</a></div><div><h5>Community</h5><a href="https://www.finos.org/" target="_blank" rel="noreferrer noopener">FINOS</a><a href="https://finos-lf.slack.com/messages/fdc3/" target="_blank" rel="noreferrer noopener">Slack</a><a href="https://stackoverflow.com/questions/tagged/fdc3" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://groups.google.com/a/finos.org/forum/#!forum/fdc3" target="_blank" rel="noreferrer noopener">Google Groups</a><a href="/docs/next/trademarks">Trademarks</a></div><div><h5>More</h5><div class="social"><a class="github-button" href="https://github.com/finos/FDC3" data-count-href="https://github.com/finos/FDC3/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">FDC3</a></div><div class="social"><a href="https://twitter.com/FDC3_" class="twitter-follow-button">@FDC3_</a></div></div></section><section class="finos finosBanner"><a href="https://www.finos.org"><img id="finosicon" src="https://fdc3.finos.org/img/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS"/><h2 id="proud">Proud member of the Fintech Open Source Foundation</h2></a></section><section class="copyright">Copyright © 2022 FDC3</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>
