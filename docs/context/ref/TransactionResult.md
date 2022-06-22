@@ -22,7 +22,7 @@ https://fdc3.finos.org/schemas/next/transactionresult.schema.json
 |-------------|---------|----------|-------------------|
 | `type`      | string  | Yes      | `'fdc3.transactionResult'`  |
 | `status`      | string  | Yes       | `'Updated'`      |
-| `context`  | string  | Yes       | `'See Below'` |
+| `context`  | string  | Yes       | See Below |
 
 ## Example
 
@@ -35,23 +35,23 @@ const contact = {
     }
 }
 
-
-fdc3.broadcast(contact)
+const resolution = await window.fdc3.raiseIntent('CreateOrUpdateProfile', contact);
+const result = await resolution.getResult();
+console.log(JSON.stringify(result));
 ```
 
-## See Also
+Console log will display:
 
-Other Types
-- [ContactList](ContactList)
-
-Intents
-- [StartChat](../../intents/ref/StartChat)
-- [StartCall](../../intents/ref/StartCall)
-- [ViewProfile](../../intents/ref/ViewProfile)
-- [ViewResearch](../../intents/ref/ViewResearch)
-- [ViewInteractions](../../intents/ref/ViewInteractions)
-- [ViewOrders](../../intents/ref/ViewOrders)
-- [CreateInteraction](../../intents/ref/CreateInteraction)
-
-FINOS Financial Objects
-- [Contact](https://fo.finos.org/docs/objects/contact)
+```json
+{
+    "type": "fdc3.transactionResult",
+    "status": "Updated",
+    "context": {
+        "type": "fdc3.contact",
+        "name": "Jane Doe",
+        "id": {
+            "email": "jane.doe@mail.com"
+        }
+    }
+}
+```
