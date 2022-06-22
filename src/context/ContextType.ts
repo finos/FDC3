@@ -13,6 +13,7 @@ export enum ContextTypes {
   Position = 'fdc3.position',
   Nothing = 'fdc3.nothing',
   TimeRange = 'fdc3.timerange',
+  TransactionResult = 'fdc3.transactionResult',
   Valuation = 'fdc3.valuation',
 }
 
