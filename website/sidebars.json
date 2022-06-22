@@ -78,6 +78,7 @@
           "context/ref/Portfolio",
           "context/ref/Position",
           "context/ref/TimeRange",
+          "context/ref/TransactionResult",
           "context/ref/Valuation"
         ]
       }
