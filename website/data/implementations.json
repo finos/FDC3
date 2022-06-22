@@ -84,5 +84,15 @@
         "type": "platform-provider",
         "badges": [ {"text": "FDC3 1.2 Supported"} ],
         "description": "<p>Glue42 enables organizations to build intelligent desktops that support configurable workflows between web and desktop applications. We’re working with some of the world’s biggest financial organizations to help them optimize complex processes and become more efficient.</p><p>Our flagship product, Glue42 Enterprise, is a desktop application integration platform that helps organizations create a simplified desktop experience by connecting the UI and data of any application, e.g., legacy, in-house or web. The platform supports open-source standards, including FINOS-FDC3, thus reducing delivery time and avoiding vendor lock-in.</p>"
+    },
+    {
+        "title": "OpenFin",
+        "publisher": "OpenFin Inc.",
+        "image": "/img/users/Openfin.png",
+        "infoLink": "https://openfin.co/",
+        "docsLink": "https://developers.openfin.co/of-docs",
+        "type": "platform-provider",
+        "badges": [ ],
+        "description": "<p>OpenFin founded the FDC3 standard in 2017 in collaboration with major banks and asset managers. Deployed at more than 2400 financial firms, OpenFin OS, allows applications from multiple providers to co-exist and interoperate on the desktop.</p><p>OpenFin OS consists of a secure, Chromium-based runtime called Container and a visual interface called Workspace. Workspace gets you running in no time, with themeable UI components for complex windowing, advanced search, actionable notifications and application discovery.</p><p>You can also build your own solutions using the OpenFin Container, native language adapters and APIs while remaining compatible with everything else built on OpenFin.</p>"
     }
 ]
