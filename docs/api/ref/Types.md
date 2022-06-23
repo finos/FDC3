@@ -8,7 +8,7 @@ FDC3 API operations make use of several type declarations.
 
 Identifies an application, or instance of an application, and is used to target FDC3 API calls at specific applications.
 Will always include at least an `appId` property, which can be used with `fdc3.open`, `fdc3.raiseIntent` etc..
-If the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.
+If the `instanceId` field is set then the `AppIdentifier` object represents a specific instance of the application that may be addressed using that Id.
 
 ```ts
 interface AppIdentifier {
