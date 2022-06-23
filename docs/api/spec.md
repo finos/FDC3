@@ -150,29 +150,7 @@ For more details on FDC3 Standards compliance (including the versioning, depreca
 
 ## Functional Use Cases
 
-### Retrieve Metadata about the Desktop Agent implementation
-
-From version 1.2 of the FDC3 specification, Desktop Agent implementations MUST provide a `fdc3.getInfo()` function to allow apps to retrieve information about the version of the FDC3 specification supported by a Desktop Agent implementation and the name of the implementation provider. This metadata can be used to vary the behavior of an application based on the version supported by the Desktop Agent, e.g.:
-
-```js
-import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
-
-if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), '1.2')) {
-  await fdc3.raiseIntentForContext(context);
-} else {
-  await fdc3.raiseIntent('ViewChart', context);
-}
-```
-
-The `ImplementationMetadata` object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
-
-```js
-let implementationMetadata = await fdc3.getInfo();
-let {appId, instanceId} = implementationMetadata.appMetadata;
-
-```
-
-### Open an Application by Name
+### Open an Application
 
 Linking from one application to another is a critical basic workflow that the web revolutionized via the hyperlink.  Supporting semantic addressing of applications across different technologies and platform domains greatly reduces friction in linking different applications into a single workflow.
 
@@ -191,6 +169,40 @@ Intents provide a way for an app to request functionality from another app and d
 On the financial desktop, applications often want to broadcast [context](../context/spec) to any number of applications.  Context sharing needs to support different groupings of applications, which is supported via the concept of 'channels', over which context is broadcast and received by other applications listening to the channel.  
 
 In some cases, an application may want to communicate with a single application or service and to prevent other applications from participating in the communication. For single transactions, this can instead be implemented via a raised intent, which will be delivered to a single application that can, optionally, respond with data. Alternatively, it may instead respond with a [`Channel`](ref/Channel) or [`PrivateChannel`](ref/PrivateChannel) over which a stream of responses or a dialog can be supported.
+
+### Retrieve Metadata about the Desktop Agent implementation
+
+An application may wish to retrieve information about the version of the FDC3 Standard supported by a Desktop Agent implementation and the name of the implementation provider. 
+
+Since version 1.2 of the FDC3 Standard it may do so via the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function. The metadata returned can be used, for example, to vary the behavior of an application based on the version supported by the Desktop Agent, e.g.:
+
+```js
+import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
+
+if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), '1.2')) {
+  await fdc3.raiseIntentForContext(context);
+} else {
+  await fdc3.raiseIntent('ViewChart', context);
+}
+```
+
+The [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
+
+```js
+let implementationMetadata = await fdc3.getInfo();
+let {appId, instanceId} = implementationMetadata.appMetadata;
+
+```
+
+### Reference apps or app instance(s) and retrieve their metadata
+
+To construct workflows between applications, you need to be able to reference specific applications and instances of those applications. 
+
+From version 2.0 of the FDC3 Standard, Desktop Agent functions that reference or return information about other applications do so via an [`AppIdentifier`](ref/Types#appidentifier) type. [`AppIdentifier`](ref/Types#appidentifier) references specific applications via an `appId` from an [App Directory](../app-directory/overview) record and instances of that application via an `instanceId` assigned by the Desktop Agent.
+
+Additional metadata for an application can be retrieved via the [`fdc3.getAppMetadata(appIdentifier)`](ref/DesktopAgent#getappmetadata) function, which returns an [`AppMetadata`](ref/Metadata#appmetadata) object. The additional metadata may include a title, description, icons, etc., which may be used for display purposes.
+
+Identifiers for instances of an application may be retrieved via the [`fdc3.findInstances(appIdentifier)`](ref/DesktopAgent#findinstances) function.
 
 ## Raising Intents
 
