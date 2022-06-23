@@ -10,12 +10,12 @@ Context objects are used when raising [intents](../intents/spec) and when broadc
 
 There are two main use cases for exchanging context data:
 
-* __Transmitting reference data between applications.__
+* **Transmitting reference data between applications.**
   The source application will send as many known identifiers as possible, and the target application will try to match the entity based on the identifiers. It may then choose to map to its own internal domain representation for rendering purposes.
 
   An example of this is sending an instrument or contact, when only an ISIN or email is required to reference the same data in another application.
 
-* __Transferring information between applications.__
+* **Transferring information between applications.**
   The source application may have data required to compose a workflow with another application, e.g. a list of contacts that have been selected, or a complex object representing an RFQ request.
 
   In many such cases there aren't any sensible reference identifiers that can be shared, it is instead the data itself being transferred.
@@ -135,31 +135,50 @@ E.g. `"CURRENCY_ISOCODE": "GBP"`
 
 > Note: ISO 4217 only includes major currency codes, conversions to minor currencies is the responsibility of the consuming system (where required).
 
+## Context Data Standard Compliance
+
+An FDC3 Standard compliant application that supports the use of context data **MUST**:
+
+* Ensure that any FDC3-defined standard context types used meet the interface defined for that type of context data.
+* Where Channels are supported or an app is intended to receive context from [`fdc3.open`](api/ref/DesktopAgent#open) calls, use the [`fdc3.addContextListener`](api/ref/DesktopAgent#addcontextlistener) API call to set up appropriate handlers on start-up (for User channels and for receiving context from [`fdc3.open`](api/ref/DesktopAgent#open)) or when the channel is first created or retrieved (for App and Private channels).
+
+An FDC3 Standard compliant application that supports the use of context data **SHOULD**:
+
+* Prefer FDC3-defined standard context types over proprietary contexts, where a suitable FDC3-defined stanrd context type is available.
+* Ensure that any proprietary context data types fefined follow any the recommended [namespacing](#namespacing) and [field type conventions](#field-type-conventions) in the specification.
+
+An FDC3 Standard compliant application that supports the use of context data **MAY**:
+
+* Define proprietary context data types to support use cases not currently supported via FDC3-defined standard context types.
+
+For more details on FDC3 Standards compliance (including the versioning, deprecation and experimental features policies) please see the [FDC3 Compliance page](../fdc3-compliance).
+
 ## Standard Context Types
 
 The following are standard FDC3 context types:
 
-- [`fdc3.chart`](ref/Chart) ([schema](/schemas/next/chart.schema.json))
-- [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](/schemas/next/chatInitSettings.schema.json))
-- [`fdc3.contact`](ref/Contact) ([schema](/schemas/next/contact.schema.json))
-- [`fdc3.contactList`](ref/ContactList) ([schema](/schemas/next/contactList.schema.json))
-- [`fdc3.country`](ref/Country) ([schema](/schemas/next/country.schema.json))
-- [`fdc3.currency`](ref/Currency) ([schema](/schemas/next/currency.schema.json))
-- [`fdc3.email`](ref/Email) ([schema](/schemas/next/email.schema.json))
-- [`fdc3.instrument`](ref/Instrument) ([schema](/schemas/next/instrument.schema.json))
-- [`fdc3.instrumentList`](ref/InstrumentList) ([schema](/schemas/next/instrumentList.schema.json))
-- [`fdc3.organization`](ref/Organization) ([schema](/schemas/next/organization.schema.json))
-- [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/next/portfolio.schema.json))
-- [`fdc3.position`](ref/Position) ([schema](/schemas/next/position.schema.json))
-- [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/next/nothing.schema.json))
-- [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/next/timerange.schema.json))
-- [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/valuation.schema.json))
+* [`fdc3.chart`](ref/Chart) ([schema](/schemas/next/chart.schema.json))
+* [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](/schemas/next/chatInitSettings.schema.json))
+* [`fdc3.contact`](ref/Contact) ([schema](/schemas/next/contact.schema.json))
+* [`fdc3.contactList`](ref/ContactList) ([schema](/schemas/next/contactList.schema.json))
+* [`fdc3.country`](ref/Country) ([schema](/schemas/next/country.schema.json))
+* [`fdc3.currency`](ref/Currency) ([schema](/schemas/next/currency.schema.json))
+* [`fdc3.email`](ref/Email) ([schema](/schemas/next/email.schema.json))
+* [`fdc3.instrument`](ref/Instrument) ([schema](/schemas/next/instrument.schema.json))
+* [`fdc3.instrumentList`](ref/InstrumentList) ([schema](/schemas/next/instrumentList.schema.json))
+* [`fdc3.organization`](ref/Organization) ([schema](/schemas/next/organization.schema.json))
+* [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/next/portfolio.schema.json))
+* [`fdc3.position`](ref/Position) ([schema](/schemas/next/position.schema.json))
+* [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/next/nothing.schema.json))
+* [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/next/timerange.schema.json))
+* [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/valuation.schema.json))
 
-__Note:__ The below examples show how the base context data interface can be used to define specific context data objects.
+**Note:** The below examples show how the base context data interface can be used to define specific context data objects.
 
 ### Examples
 
 #### Contact
+
 ```json
 {
     "type": "fdc3.contact",
@@ -171,6 +190,7 @@ __Note:__ The below examples show how the base context data interface can be use
 ```
 
 #### Email
+
 ```json
 {
   "type": "fdc3.email",
@@ -187,6 +207,7 @@ __Note:__ The below examples show how the base context data interface can be use
 ```
 
 #### Instrument
+
 ```json
 {
     "type" : "fdc3.instrument",
@@ -231,4 +252,3 @@ e.g. as a JSON payload:
     },
 }
 ```
-

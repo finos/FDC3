@@ -9,48 +9,44 @@ In general, the ratified FDC3 specs represent a lowest common denominator interf
 
 >6. **Guidance in the use of these Imperatives**
 >
->   Imperatives of the type defined in this memo must be used with care
->   and sparingly.  In particular, they MUST only be used where it is
->   actually required for interoperation or to limit behavior which has
->   potential for causing harm (e.g., limiting retransmisssions)  For
->   example, they must not be used to try to impose a particular method
->   on implementors where the method is not required for 
->   interoperability.
+>    Imperatives of the type defined in this memo must be used with care
+>    and sparingly.  In particular, they MUST only be used where it is
+>    actually required for interoperation or to limit behavior which has
+>    potential for causing harm (e.g., limiting retransmisssions)  For
+>    example, they must not be used to try to impose a particular method
+>    on implementors where the method is not required for 
+>    interoperability.
 
 These rules would apply only to standards work within FDC3. Today, this covers the API, App Directory, Context Data, and Intents specifications.
 
 ## Personas
-FDC3 implementors generally fall into 2 categories: platform providers, and application providers. A platform provider supplies an implementation of the FDC3 API for applications to use. Implicitly, it connects to one or more App Directories.
+
+FDC3 implementors generally fall into 2 categories: platform providers, and application providers. A platform provider supplies an implementation(s) of the FDC3 APIs (The Desktop Agent API and Applkication Directory) for applications to use.
 
 An application provider is largely a downstream consumer of FDC3 standards. It MAY use the API, it MAY use Context Data, it MAY use Intents. Application providers are only required to comply with the standards they make use of.
 
 Depending on persona, implementation compliance with FDC3 will mean different things.
 
 ### Platform Provider
-For platform providers FDC3 compliance requires:
 
-* Support for connections to 1 or more App Directories meeting the FDC3 App Directory standards SHOULD be provided
-* An API implementation that meets the FDC3 API standards MUST be provided to all applications running in the context of the platform, including:
-    * Support for the FDC3 Context Data and Intents standards
-    * Support for intent and context resolution using a resolver UI
-    * Support for retrieving information about the version of the FDC3 specification supported by a Desktop Agent implementation and the name of the implementation provider
-* In the case of web applications, a Desktop Agent MUST provide the FDC3 API via a global accessible as `window.fdc3`.
+For platform providers FDC3 compliance requires that they meet the requirements of the APIs that they implement:
+
+* [Desktop Agent API compliance requirements](api/spec#desktop-agent-api-standard-compliance).
+* [App Directory compliance requirements](app-directory/spec#app-directory-standard-compliance).
 
 ### Application Provider
-For application providers FDC3 compliance requires:
-* If intents are supported by the application, they SHOULD favor supporting applicable FDC3 defined standard intents over proprietary ones.
-* If FDC3 defined intents are supported, they MUST meet the expected context and behavior defined for the intent.
-* If proprietary intents are handled, those intents SHOULD follow the recommended naming conventions in the specification.
-* If intents are supported, the application SHOULD use the `addIntentListener` API to set up a handler.
-* If context data is supported by the application, they SHOULD favor supporting applicable FDC3 defined context data types over proprietary ones.
-* If FDC3 defined context data is supported, it MUST meet the interface defined for that type of context data.
-* If proprietary context data properties are handled, they SHOULD follow any recommended naming conventions in the specification.
-* If context data is supported, the application SHOULD use the `addContextListener` API to set up a handler.
+
+For application providers FDC3 compliance requires that they interact with the FDC3 APIs as intended and meet the requirements of the Intents and Context Data Standards. Specifically:
+
+* [Intents Standard compliance requirements](intents/spec#intents-standard-compliance)
+* [Context Data Standard compliance requirements](context/spec#context-data-standard-compliance)
 
 ## Versioning
+
 Typically, a Standard that has marketplace relevance is revised from time to time, to correct errors and/or to add functionality to support new use cases. Hence, there exist multiple versions of the standard. As FDC3 is a standards project, we don't follow semver, which is meant for libraries. We use the versioning scheme `<major>.<minor>`, e.g. `1.1` or `2.3`.
 
 ## Deprecation Policy
+
 Over time, it is not uncommon for certain things in a standard to be marked for removal in a future version, possibly being replaced by an alternative. That is, they are deprecated. Often, they are retained in the standard because of their widespread use, but their use in new projects is discouraged.
 
 FDC3 adopts the following deprecation policy:
@@ -62,6 +58,7 @@ FDC3 adopts the following deprecation policy:
 5. Breaking change should only be made in a major version of the Standard.
 
 ## Experimental Features
+
 Occasionally, a change to FDC3 may be proposed where the design is tentative, and because of this, we need feedback from the community to finalise its inclusion in the Standard. In such cases, a feature may be designated as _experimental_ to indicate that its design may change in future and that it is exempted from the normal versioning and deprecation polices in order to facilitate that change.  However, designating a feature as experimental is likely to reduce its uptake by the community, hence, this designation should be used sparingly.
 
 FDC3 adopts the following experimental features policy:
@@ -74,6 +71,7 @@ FDC3 adopts the following experimental features policy:
 6. The experimental designation may be removed from a feature in a minor version release (as this will be considered an additive change).
 
 ## Intellectual Property Claims
+
 Recipients of this document are requested to submit, with their comments, notification of
 any relevant patent claims or other intellectual property rights of which they may be aware that
 might be infringed by any implementation of the standard set forth in this document, and to provide 
