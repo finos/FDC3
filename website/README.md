@@ -80,6 +80,7 @@ VERSION=1.2 yarn run version
 ```
 
 The `VERSION` environment variable and `version` script are used to:
+
 * Run the `docusaurus-version` command
 * Copy schemas from the `/website/static/schemas/next` (which matches `master`) to `/website/static/schemas/<version>`
 * Copy the app-directory OpenAPI html file from `/website/pages/schemas/next` to `/website/pages/schemas/<version>`
