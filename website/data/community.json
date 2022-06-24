@@ -13,7 +13,7 @@
         "infoLink": "https://cosaic.io/chartiq/",
         "docsLink": "https://documentation.chartiq.com/",
         "type": "application-provider",
-        "badges": [{"text": "Supporting FDC3 1.2"} ],
+        "badges": [{"text": "FDC3 1.2 Supported"} ],
         "description": "<p>ChartIQ is a powerful and flexible HTML5 charting library with millions of users worldwide. Written in JavaScript, it runs entirely within the browser. With state of the art integrations, including  third-party apps, educational components, analysis, and more, you can create efficient workflows and streamline the way to work.</p><p>ChartIQ works on any platform (mobile, web, desktop) and any framework (Angular, React).</p><p>Most companies have at least one financial charting library for each platform or app they target—web, C#, Java, Android, iOS, etc., so developers have multiple code bases to maintain. With ChartIQ, write your code once and use it everywhere.</p>"
     },
     {
@@ -23,7 +23,7 @@
         "infoLink": "https://github.com/finos/electron-fdc3",
         "docsLink": "https://github.com/finos/electron-fdc3",
         "type": "platform-provider",
-        "badges": [ {"text": "Supporting FDC3 1.2"}, {"text": "Open Source"} ],
+        "badges": [ {"text": "FDC3 1.2 Supported"}, {"text": "Open Source"} ],
         "description": "<p>This project provides a fully open source implementation of the FDC3 interoperability standard. </p><p>Includes a fully featured and secure electron desktop agent featuring intent resolution, channel linking, directory search and a local file-based app directory implementation. </p>"
     },
     {
@@ -33,7 +33,7 @@
         "infoLink": "https://github.com/finos/fdc3-desktop-agent",
         "docsLink": "https://github.com/finos/fdc3-desktop-agent",
         "type": "platform-provider",
-        "badges": [ {"text": "Supporting FDC3 1.2"}, {"text": "Open Source"} ],
+        "badges": [ {"text": "FDC3 1.2 Supported"}, {"text": "Open Source"} ],
         "description": "<p>The FDC3 Desktop Agent is an open source implementation of FDC3 as a Chrome Extension. </p><p> Its purpose is to provide a quick and easy way for app developers to get started with the FDC3 APIs. </p> "
     },
     {
@@ -43,7 +43,7 @@
         "infoLink": "https://cosaic.io/finsemble/",
         "docsLink": "https://documentation.finsemble.com/",
         "type": "platform-provider",
-        "badges": [ {"text": "Supporting FDC3 1.2"} ],
+        "badges": [ {"text": "FDC3 1.2 Supported"} ],
         "description": "<p>Finsemble is a no code/low code smart desktop platform that helps you achieve both visual and logical integration of various types of apps that you already use (web, native, in-house, and third-party, including Citrix virtual apps).</p><p>Connect apps into automated workflows to improve user efficiency and reduce error rates. With <a href='https://documentation.finsemble.com/tutorial-ControllingInformationFlow.html' alt='Controlling information flow through FDC3 in Finsemble'>SelectConnect</a>, you are in full control over which apps communicate and which are excluded.</p><p>Build a fully customizable UI to work across multiple windows and monitors.</p><p>Use our <a href='https://documentation.finsemble.com/tutorial-SDD-01-Welcome.html' alt='The Smart Desktop Designer: fast-track to interoperability'>Smart Desktop Designer</a> to create and share fully functioning, highly customized, integrated desktops in a few hours, no coding knowledge needed.</p>"
     },
     {
@@ -82,7 +82,7 @@
         "infoLink": "https://glue42.com/enterprise/",
         "docsLink": "https://docs.glue42.com/",
         "type": "platform-provider",
-        "badges": [ {"text": "Supporting FDC3 1.2"} ],
+        "badges": [ {"text": "FDC3 1.2 Supported"} ],
         "description": "<p>Glue42 enables organizations to build intelligent desktops that support configurable workflows between web and desktop applications. We’re working with some of the world’s biggest financial organizations to help them optimize complex processes and become more efficient.</p><p>Our flagship product, Glue42 Enterprise, is a desktop application integration platform that helps organizations create a simplified desktop experience by connecting the UI and data of any application, e.g., legacy, in-house or web. The platform supports open-source standards, including FINOS-FDC3, thus reducing delivery time and avoiding vendor lock-in.</p>"
     },
     {
