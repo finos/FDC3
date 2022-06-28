@@ -10,14 +10,15 @@ const React = require('react');
 const { useState, useEffect } = React;
 const CompLibrary = require('../../core/CompLibrary.js');
 const Container = CompLibrary.Container;
-const implData = require(`${process.cwd()}/data/implementations.json`);
+const implData = require(`${process.cwd()}/data/community.json`);
 
 const badgeTitles = {
 	"Open Source": "Indicates that the project source code is available to download and modify, under an Apache 2.0 or similar license.",
-	"FDC3 1.2 Supported": "This badge is given as an indicator that the agent vendor is marketing the desktop agent as supporting the FDC3 1.2 Standard. ",
+	"FDC3 1.2 Supported": "Indicates that this product advertises compatibility with the FDC3 1.2 Standard. ",
+	"FDC3 2.0 Supported ": "Indicates that this product advertises compatibility with the FDC3 2.0 Standard. ", 
 	"FDC3 1.2 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 1.2 Conformance testing process.",
-	"FDC3 2.0 Supported": "This badge is given as an indicator that the agent vendor is marketing the desktop agent as supporting the FDC3 2.0 Standard.", 
-	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process."
+	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process.",
+	"FDC3 2.0 Support Coming Soon": "This product is working towards attaining the FDC3 2.0 Standard.",
 }
 
 
@@ -99,13 +100,13 @@ function Implementations(props) {
 	const editUrl = `${repoUrl}/edit/master/website/data/implementations.json`;
 
 	return <Container>
-		<h1>FDC3 Implementations</h1>
+		<h1>FDC3 Community</h1>
 		<div className="prose">
 			<p>
 				The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standard is maintained and used by leading organizations across the financial industry through a variety of different implementations.
 			</p>
 			<p>
-				For more detail on who's implementing the Desktop Agent (a "Platform Provider"), using FDC3 to enable interop with their apps (an "Application Provider") or details on where to find tools, examples apps and training materials see below.
+				For more detail on who's implementing the Desktop Agent (a "Platform Provider"), using FDC3 to enable interop with their apps (an "App Provider") or details on where to find tools, examples apps and training materials see below.
 			</p>
 			<p>
 				<i>

@@ -1,5 +1,5 @@
 [
-    {   "//": "Implementations page content - required fields: title, image, type, badges, description",
+    {   "//": "community page content - required fields: title, image, type, badges, description",
         "//": "Image link may be external or images may be added to the /website/static/img/users directory for hosting on the FDC3 website",
         "//": "Please keep descriptions to (at most) 100 words.",
         "//": "Description content may be formatted in basic HTML (e.g. <p>, <i> and <a> tags)",
