@@ -32,7 +32,6 @@ For each intent, it reference the applications that support that intent.
 
 ```ts
 interface AppMetadata extends AppIdentifier {
-  /** 
   /**
    *  The 'friendly' app name. This field was used with the `open` and
    *  `raiseIntent` calls in FDC3 <2.0, which now require an `AppIdentifier`
@@ -102,10 +101,10 @@ Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passe
 
 ```ts
 interface ContextMetadata {
-  /** Metadata identifying the app that sent the context and/or intent. 
-   *  @experimental
+  /** Identifier for the app instance that sent the context and/or intent. 
+   *  @experimental 
    */
-  readonly sourceAppMetadata: AppMetadata;
+  readonly source: AppIdentifier;
 }
 ```
 
@@ -308,11 +307,11 @@ The interface used to describe an intent within the platform.
 ```ts
 interface IntentResolution {
 
-  /** Metadata about the app instance that was selected (or started) to resolve
+  /** Identifier for the app instance that was selected (or started) to resolve
    *  the intent. `source.instanceId` MUST be set, indicating the specific app 
    *  instance that received the intent.
    */
-  readonly source: AppMetadata;
+  readonly source: AppIdentifier;
 
   /** The intent that was raised. May be used to determine which intent the user
    *  chose in response to `fdc3.raiseIntentForContext()`.
@@ -379,4 +378,4 @@ try {
 
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
-* [`TargetApp`](Types#targetapp)
+* [`AppIdentifier`](Types#appidentifier)
