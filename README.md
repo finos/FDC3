@@ -33,17 +33,13 @@ FDC3 is an open standard for interoperability on the financial desktop.
 > Applications can contribute intents to each other, extending each other's functionality. 
 > Instead of the user copy-and-pasting bits of data from one application to another, FDC3 makes sure the intents have the data they need to seamlessly transition activity between applications.
 
-## Platform Agnostic
-
-## 🖥️  Platform-Agnostic
+## 🖥️  Platform Agnostic
 
 > As an open standard, FDC3 can be implemented on any platform and in any language.
 > All that is required is a "desktop agent" that supports the FDC3 standard, which is responsible for co-ordinating application interactions.
 > FDC3 is successfully running on Web and Native platforms in financial institutions around the world.
 
-## End the Integration Nightmare
-
-## 🔌  End the integration nightmare
+## 🔌  End the Integration Nightmare
 
 > By providing support for FDC3, vendors and financial organizations alike can avoid the bilateral or trilateral integration projects that plague desktop app roll-out, cause vendor lock-in and result in a slow pace of change on the Financial Services desktop.
 
