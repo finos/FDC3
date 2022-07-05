@@ -107,29 +107,7 @@ An actual connection protocol between Desktop Agents is not currently available 
 
 ## Functional Use Cases
 
-### Retrieve Metadata about the Desktop Agent implementation
-
-From version 1.2 of the FDC3 specification, Desktop Agent implementations MUST provide a `fdc3.getInfo()` function to allow apps to retrieve information about the version of the FDC3 specification supported by a Desktop Agent implementation and the name of the implementation provider. This metadata can be used to vary the behavior of an application based on the version supported by the Desktop Agent, e.g.:
-
-```js
-import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
-
-if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), '1.2')) {
-  await fdc3.raiseIntentForContext(context);
-} else {
-  await fdc3.raiseIntent('ViewChart', context);
-}
-```
-
-The `ImplementationMetadata` object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
-
-```js
-let implementationMetadata = await fdc3.getInfo();
-let {appId, instanceId} = implementationMetadata.appMetadata;
-
-```
-
-### Open an Application by Name
+### Open an Application
 
 Linking from one application to another is a critical basic workflow that the web revolutionized via the hyperlink.  Supporting semantic addressing of applications across different technologies and platform domains greatly reduces friction in linking different applications into a single workflow.
 
@@ -148,6 +126,40 @@ Intents provide a way for an app to request functionality from another app and d
 On the financial desktop, applications often want to broadcast [context](../context/spec) to any number of applications.  Context sharing needs to support different groupings of applications, which is supported via the concept of 'channels', over which context is broadcast and received by other applications listening to the channel.  
 
 In some cases, an application may want to communicate with a single application or service and to prevent other applications from participating in the communication. For single transactions, this can instead be implemented via a raised intent, which will be delivered to a single application that can, optionally, respond with data. Alternatively, it may instead respond with a [`Channel`](ref/Channel) or [`PrivateChannel`](ref/PrivateChannel) over which a stream of responses or a dialog can be supported.
+
+### Retrieve Metadata about the Desktop Agent implementation
+
+An application may wish to retrieve information about the version of the FDC3 Standard supported by a Desktop Agent implementation and the name of the implementation provider. 
+
+Since version 1.2 of the FDC3 Standard it may do so via the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function. The metadata returned can be used, for example, to vary the behavior of an application based on the version supported by the Desktop Agent, e.g.:
+
+```js
+import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
+
+if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), '1.2')) {
+  await fdc3.raiseIntentForContext(context);
+} else {
+  await fdc3.raiseIntent('ViewChart', context);
+}
+```
+
+The [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
+
+```js
+let implementationMetadata = await fdc3.getInfo();
+let {appId, instanceId} = implementationMetadata.appMetadata;
+
+```
+
+### Reference apps or app instance(s) and retrieve their metadata
+
+To construct workflows between applications, you need to be able to reference specific applications and instances of those applications. 
+
+From version 2.0 of the FDC3 Standard, Desktop Agent functions that reference or return information about other applications do so via an [`AppIdentifier`](ref/Types#appidentifier) type. [`AppIdentifier`](ref/Types#appidentifier) references specific applications via an `appId` from an [App Directory](../app-directory/overview) record and instances of that application via an `instanceId` assigned by the Desktop Agent.
+
+Additional metadata for an application can be retrieved via the [`fdc3.getAppMetadata(appIdentifier)`](ref/DesktopAgent#getappmetadata) function, which returns an [`AppMetadata`](ref/Metadata#appmetadata) object. The additional metadata may include a title, description, icons, etc., which may be used for display purposes.
+
+Identifiers for instances of an application may be retrieved via the [`fdc3.findInstances(appIdentifier)`](ref/DesktopAgent#findinstances) function.
 
 ## Raising Intents
 
@@ -374,7 +386,90 @@ Calling `fdc3.broadcast` will now route context to the joined channel.
 
 Channel implementations SHOULD ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are joined to the channel.
 
-  > Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels). The `joinChannel` function was also renamed to `joinUserChannel` to clarify that it is only intended to be used to join 'user', rather than 'app', channels.
+  > Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels). The `joinChannel` function was also renamed to `joinUserChannel` to clarify that it is only intended to be used to join 'user', rather than 'app', channels.
+
+### Recommended User Channel Set
+
+Desktop Agent implementations SHOULD use the following set of channels, to enable a consistent user experience across different implementations. Desktop Agent implementation MAY support configuration of the user channels.
+
+> Note: Future versions of the FDC3 Standard may support connections between desktop agents, where differing user channel sets may cause user experience issues.
+
+```javascript
+const recommendedChannels = [
+  {
+    id: 'fdc3.channel.1',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 1',
+      color: 'red',
+      glyph: '1',
+    },
+  },
+  {
+    id: 'fdc3.channel.2',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 2',
+      color: 'orange',
+      glyph: '2',
+    },
+  },
+  {
+    id: 'fdc3.channel.3',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 3',
+      color: 'yellow',
+      glyph: '3',
+    },
+  },
+  {
+    id: 'fdc3.channel.4',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 4',
+      color: 'green',
+      glyph: '4',
+    },
+  },
+  {
+    id: 'fdc3.channel.5',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 5',
+      color: 'cyan',
+      glyph: '5',
+    },
+  },
+  {
+    id: 'fdc3.channel.6',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 6',
+      color: 'blue',
+      glyph: '6',
+    },
+  },
+  {
+    id: 'fdc3.channel.7',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 7',
+      color: 'magenta',
+      glyph: '7',
+    },
+  },
+  {
+    id: 'fdc3.channel.8',
+    type: 'user',
+    displayMetadata: {
+      name: 'Channel 8',
+      color: 'purple',
+      glyph: '8',
+    },
+  },
+];
+```
 
 ### Direct Listening and Broadcast on Channels
 
@@ -422,9 +517,10 @@ if another application broadcasts to "my_custom_channel" (by retrieving it and b
 `PrivateChannels` are created to support the return of a stream of responses from a raised intent, or private dialog between two applications.
 
 It is intended that Desktop Agent implementations:
-  - - SHOULD restrict external apps from listening or publishing on this channel.
-  - - MUST prevent `PrivateChannels` from being retrieved via `fdc3.getOrCreateChannel`.
-  - - MUST provide the `id` value for the channel as required by the `Channel` interface.
+
+- SHOULD restrict external apps from listening or publishing on this channel.
+- MUST prevent `PrivateChannels` from being retrieved via `fdc3.getOrCreateChannel`.
+- MUST provide the `id` value for the channel as required by the `Channel` interface.
 
 The `PrivateChannel` type also supports synchronisation of data transmitted over returned channels. They do so by extending the `Channel` interface with event handlers which provide information on the connection state of both parties, ensuring that desktop agents do not need to queue or retain messages that are broadcast before a context listener is added and that applications are able to stop broadcasting messages when the other party has disconnected.
 
