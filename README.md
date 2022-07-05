@@ -9,7 +9,48 @@
 [![website-build](https://github.com/finos/FDC3/workflows/website-build/badge.svg)](https://github.com/finos/FDC3/actions?query=workflow%3Awebsite-build)
 [![Slack](https://img.shields.io/badge/slack-@finos/fdc3-green.svg?logo=slack)](https://finos-lf.slack.com/messages/fdc3/)
 
-FDC3 aims to provide an open standard for interoperability on the financial desktop. This includes standardized verbs to invoke actions between applications (called "intents"), a standardized data format, an OpenAPI app directory standard, and standardized API operations.
+# FDC3 - Financial Desktop Connectivity and Collaboration Consortium
+
+FDC3 is an open standard for interoperability on the financial desktop. 
+
+# What Is It?
+
+- [FDC3](https://fdc3.finos.org) is a standard for a suite of applications and a financial desktop to cooperate together.  
+- Users benefit from a more joined-up experience: applications contribute functionality to one another and share data between each other.
+- This reduces the "friction" in getting common tasks done.
+
+# What Are The Benefits?
+
+## 📇 Help Manage Information Overload
+
+> Finance is an information-dense environment.  
+> Typically, traders will use serveral different displays so that they can keep track of multiple information sources at once.
+> FDC3 helps with this by sharing the "context" between multiple applications, so that they collectively track the topic the user is focused on.
+
+## 🏃‍♂️ Work Faster
+
+> FDC3 standardizes a way to call actions between applications (called "intents").
+> Applications can contribute intents to each other, extending each other's functionality. 
+> Instead of the user copy-and-pasting bits of data from one application to another, FDC3 makes sure the intents have the data they need to seamlessly transition activity between applications.
+
+## 🖥️ Platform-Agnostic
+
+> As an open standard, FDC3 can be implemented on any platform and in any language.
+> All that is required is a "desktop agent" that supports the FDC3 standard, which is responsible for co-ordinating application interactions.
+> FDC3 is successfully running on Web and Native platforms in financial institutions around the world.
+
+## 🔌  End the integration nightmare. 
+
+> By providing support for FDC3, vendors and financial organizations alike can avoid the bilateral or trilateral integration projects that plague desktop app roll-out, cause vendor lock-in and result in a slow pace of change on the Financial Services desktop.
+
+## 👐 Open Standards Promote Innovation
+
+> FDC3 is developed collaboratively by a [consortium of industry participants](https://fdc3.finos.org/community) including banks, agent vendors, app developers and FinTech firms.   
+> By design, FDC3 is open to extension.   We have an active community working on growing and improving the standard with new data and intents. 
+
+# How Does It Work?
+
+This includes standardized verbs to invoke actions between applications (called "intents"), a standardized data format, an OpenAPI app directory standard, and standardized API operations.
 
 The standard currently consists of four specifications:
 
@@ -29,96 +70,19 @@ See https://fdc3.finos.org for more information, including on [compliance] and t
 
 # Supported Platforms
 
-As an open standard, FDC3 can be implemented on any platform and in any language.
-
-All that is required is a "desktop agent" that supports the FDC3 standard, which is responsible for co-ordinating application interactions.
-
-## Web
-
-For web applications to be FDC3-enabled, they need to run in the context of an agent that makes the FDC3 API available to the application. This desktop agent is also responsible for launching and co-ordinating applications. It could be a browser extension, web app, or full-fledged desktop container framework.
-
-### Example
-
-```ts
-// declare FDC3-compliant data
-const instrument = {
-    type: 'fdc3.instrument',
-    id: {
-        ticker: 'AAPL',
-        ISIN: 'US0378331005',
-        FIGI : 'BBG000B9XRY4'
-    }
-}
-
-// invoke an action in another application, with the required data
-const result = await fdc3.raiseIntent('ViewAnalysis', instrument)
-
-// join the red channel and broadcast data to subscribers
-await fdc3.joinChannel('red')
-fdc3.broadcast(instrument)
-
-// set up a listener for incoming data
-const listener = fdc3.addContextListener('fdc3.contact', contact => { })
-```
-
-### Installation
-
-To access the APIs in your application, simply install the FDC3 npm package:
-
-```sh
-# npm
-npm install @finos/fdc3
-
-# yarn
-yarn add @finos/fdc3
-
-# pnpm
-pnpm install @finos/fdc3
-```
-
-Note that the web application still needs to run in the context of an FDC3 desktop agent to work. For more details, please see the [relevant documentation](https://fdc3.finos.org/docs/supported-platforms).
-
-### Usage
-
-FDC3 can be accessed either via the global window object:
-
-```ts
-if (window.fdc3) {
-  const channel = await window.fdc3.getOrCreateChannel('myChannel')
-  channel.broadcast({ ... })
-}
-```
-
-Or by importing relevant FDC3 functions with ES6 module syntax:
-
-```ts
-import { getOrCreateChannel } from '@finos/fdc3'
-
-// will throw if window.fdc3 is not available
-const channel = await getOrCreateChannel('myChannel')
-channel.broadcast({ ... })
-```
-
-## Native
-The FDC3 standard does not define wire formats for communication. Hence, for native applications to be FDC3-enabled, they need to make use of a library (e.g. a DLL in .Net or Jar file in Java) that provides them with an implementation of the FDC3 API. FDC3-enabled native applications are therefore specific to particular desktop container frameworks (or other suitable environments) that provide the necessary libraries.
-
-Despite this limitation, implementing support for FDC3 in a native application can allow it to interact with a wide variety of FDC3-enabled web applications.
+ - As an open standard, FDC3 can be implemented on any platform and in any language.
+ - All that is required is a "desktop agent" that supports the FDC3 standard, which is responsible for co-ordinating application interactions.
+ - Get started using FDC3 on the web with typescript by reading the [supported platforms](https://fdc3.finos.org/supported-platforms) page.
 
 # Roadmap
 
-- [x] Publish versioned NPM packages to ease adoption and implementation of FDC3 APIs.
-- [x] Release version 1.2 of the standard with expanded API capabilities.
-- [x] Establish a process to accelerate community-contributed context data definitions.
-- [ ] Improve the app directory specification, with support for container-agnostic app manifests, and more type metadata around channels and launching apps.
-- [ ] Release version 2.0 of the standard with API support for app instances, two-way data flow and requesting channels with context.
-- [ ] Introduce a hosted app directory example with sample application definitions.
-- [ ] Continue building out business use cases to inform future versions of the FDC3 Standard.
+Work on FDC3 is split into several "streams".  You can view details of the streams on our [Roadmap page](https://fdc3.finos.org/fdc3-roadmap).  All standardization work is carried out in this GitHub repo.
 
 # Using the standard? Let us know!
 
 If you are an existing individual or corporate user of the FDC3 standard, we would love to hear from you: just email [fdc3@finos.org](mailto:fdc3@finos.org) with details about how you are using the standard.
 
-If you'd like to be listed as a user of the standard, you can directly send a pull request to update the [FDC3 website](https://fdc3.finos.org/): upload your logo to [this folder](https://github.com/finos/FDC3/tree/master/website/static/img/users) and update [this file](https://github.com/finos/FDC3/edit/master/website/data/users.json) with your company's details. If listing your logo publicly requires legal evaluation, you can reach out **privately** to [FDC3 Maintainers](mailto:fdc3-maintainers-private@finos.org).
+If you'd like to be listed as a user of the standard, you can [fill out this form](https://share.hsforms.com/1gOo0_A70QqyahOygzryVQg1fux8) and we will update the [FDC3 website](https://fdc3.finos.org/community) with your information.
 
 # Getting Involved
 
@@ -191,9 +155,15 @@ Version 1.0 of the FDC3 specification is licensed under the [FDC3 1.0 Final Spec
 
 Subsequent FDC3 specifications and draft specifications are subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/website/static/governance-docs/IP-Policy.pdf), which authorizes implementation of FDC3 specifications without charge, on a RAND basis, subject to the terms of the policy. For details of the IP commitments made by contributors to FDC3, please refer to the policy.
 
-Reference implementations and other software contained in FDC3 repositories is licensed under the [Apache License, Version 2.0](LICENSE) unless otherwise noted. SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0).
+Reference implementations and other software contained in FDC3 repositories is licensed under the [Apache License, Version 2.0](LICENSE) unless otherwise noted. 
 
-## Intellectual Property Claims
+SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0).
+
+# Vulnerabilities / Security
+
+Please see our [Security Policy](SECURITY.md)
+
+# Intellectual Property Claims
 Users of the FDC3 standard are requested to submit, with their comments, notification of
 any relevant patent claims or other intellectual property rights of which they may be aware that
 might be infringed by any implementation of the standard set forth in this document, and to provide 
