@@ -13,7 +13,7 @@
 
 FDC3 is an open standard for interoperability on the financial desktop. 
 
-# What Is It?
+## What Is It?
 
 - [FDC3](https://fdc3.finos.org) is a standard for a suite of applications and a financial desktop to cooperate together.  
 - Users benefit from a more joined-up experience: applications contribute functionality to one another and share data between each other.
