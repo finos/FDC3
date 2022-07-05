@@ -49,4 +49,3 @@ FDC3 is hosted within, and governed by the policies of, the [Fintech Open Source
 - Try out an FDC3-compliant implementation, e.g. this [browser extension](https://github.com/finos/fdc3-desktop-agent).
 - Join us in the [mailing list](fdc3+subscribe@finos.org) or on [Slack](https://app.slack.com/client/T01E7QRQH97/C01R0P7H5LH).
 - [Participate](https://github.com/finos/FDC3#getting-involved) in the evolution of the standard.
-- [Download and Use the Typescript APIs from NPM](fdc3-typescript)
