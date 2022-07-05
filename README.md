@@ -19,35 +19,33 @@ FDC3 is an open standard for interoperability on the financial desktop.
 - Users benefit from a more joined-up experience: applications contribute functionality to one another and share data between each other.
 - This reduces the "friction" in getting common tasks done.
 
-# What Are The Benefits?
+## What Are The Benefits?
 
-## 📇 Help Manage Information Overload
+### 📇 Help Manage Information Overload
 
 > Finance is an information-dense environment.  
 > Typically, traders will use serveral different displays so that they can keep track of multiple information sources at once.
 > FDC3 helps with this by sharing the "context" between multiple applications, so that they collectively track the topic the user is focused on.
 
-## 🏃‍♂️ Work Faster
+### 🏃‍♂️ Work Faster
 
 > FDC3 standardizes a way to call actions between applications (called "intents").
 > Applications can contribute intents to each other, extending each other's functionality. 
 > Instead of the user copy-and-pasting bits of data from one application to another, FDC3 makes sure the intents have the data they need to seamlessly transition activity between applications.
 
-## 🖥️  Platform Agnostic
+### 🖥️  Platform Agnostic
 
 > As an open standard, FDC3 can be implemented on any platform and in any language.
 > All that is required is a "desktop agent" that supports the FDC3 standard, which is responsible for co-ordinating application interactions.
 > FDC3 is successfully running on Web and Native platforms in financial institutions around the world.
 
-## 🔌  End the Integration Nightmare
+### 🔌  End the Integration Nightmare
 
 > By providing support for FDC3, vendors and financial organizations alike can avoid the bilateral or trilateral integration projects that plague desktop app roll-out, cause vendor lock-in and result in a slow pace of change on the Financial Services desktop.
 
-## 👐 Open Standards Promote Innovation
+### 👐 Open Standards Promote Innovation
 
-> FDC3 is developed collaboratively by a [consortium of industry participants](https://fdc3.finos.org/community) including banks, agent vendors, app developers and FinTech firms.  
-> By design, FDC3 is open to extension.
-> We have an active community working on growing and improving the standard with new data and intents. 
+> FDC3 is developed collaboratively by a [consortium of industry participants](https://fdc3.finos.org/community) including banks, agent vendors, app developers and FinTech firms.  By design, FDC3 is open to extension.  We have an active community working on growing and improving the standard with new data and intents. 
 
 # How Does It Work?
 
@@ -69,13 +67,13 @@ See https://fdc3.finos.org for more information, including on [compliance] and t
 [Compliance]: https://fdc3.finos.org/docs/fdc3-compliance
 [API Reference]: https://fdc3.finos.org/docs/api/ref/DesktopAgent
 
-# Supported Platforms
+## Supported Platforms
 
  - As an open standard, FDC3 can be implemented on any platform and in any language.
  - All that is required is a "desktop agent" that supports the FDC3 standard, which is responsible for co-ordinating application interactions.
  - Get started using FDC3 on the web with typescript by reading the [supported platforms](https://fdc3.finos.org/docs/supported-platforms) page.
 
-# Roadmap
+## Roadmap
 
 Work on FDC3 is split into several "streams".  You can view details of the streams on our [Roadmap page](https://fdc3.finos.org/fdc3-roadmap).  All standardization work is carried out in this GitHub repo.
 
