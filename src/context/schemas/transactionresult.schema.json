@@ -10,7 +10,7 @@
       "anyOf": [
         {
           "type": "string",
-          "enum": ["Created", "Deleted", "Updated"]
+          "enum": ["Created", "Deleted", "Updated", "Failed"]
         },
         {
           "type": "string"
@@ -19,5 +19,8 @@
     },
     "context": { "$ref": "context.schema.json#" }
   },
+    "message": {
+      "type": "string"
+    },
   "required": ["status", "context"]
 }
