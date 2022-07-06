@@ -20,9 +20,10 @@ https://fdc3.finos.org/schemas/next/transactionresult.schema.json
 
 | Property    | Type    | Required | Example Value     |
 |-------------|---------|----------|-------------------|
-| `type`      | string  | Yes      | `'fdc3.transactionResult'`  |
+| `type`      | Context  | Yes      | See Below  |
 | `status`      | string  | Yes       | `'Updated'`      |
 | `context`  | string  | Yes       | See Below |
+| `message`  | string  | No       | See Below |
 
 ## Example
 
@@ -52,6 +53,7 @@ Console log will display:
         "id": {
             "email": "jane.doe@mail.com"
         }
-    }
+    },
+    "message": "record with id jane.doe@mail.com was updated"
 }
 ```

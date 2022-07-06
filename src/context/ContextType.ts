@@ -6,6 +6,7 @@ export enum ContextTypes {
   Country = 'fdc3.country',
   Currency = 'fdc3.currency',
   Email = 'fdc3.email',
+  Interaction = 'fdc3.interaction',
   Instrument = 'fdc3.instrument',
   InstrumentList = 'fdc3.instrumentList',
   Organization = 'fdc3.organization',
