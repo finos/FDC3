@@ -144,7 +144,7 @@ When a new connection is made to the DAB websocket, it sends a `hello` message, 
         desktopAgentBridgeVersion: number,
         supportedFDC3Versions: string[],
         authRequired: boolean
-    }
+    },
     meta: {
         timestamp: date
     }
@@ -161,14 +161,14 @@ DA should respond to the `hello` message with a `handshake` request to the bridg
     /** Request body, containing the arguments to the function called.*/
     payload: {
         /** The JWT authentication token */
-        authToken?: string
+        authToken?: string,
         /** DesktopAgent implementationMetadata trying to connect to the bridge */
         implementationMetadata: ImplementationMetadata,
         /** The requested DA name */
         requestedName: string,
         /** The current state of the Desktop Agent's channels, excluding any private channels,
          *  as a mapping of channel id to an array of Context objects, most recent first.*/
-        channelsState: Record<string, Context[]>{
+        channelsState: Record<string, Context[]>
     },
     meta: {
         /** Unique GUID for this request */
@@ -200,6 +200,8 @@ e.g.
 
 Note that the `sub` SHOULD be a UUID that does NOT need to match the name requested by the Desktop Agent. It will be used to identify the keypair that should be used to validate the JWT token. Further, multiple Desktop Agent's MAY share the same keys for authentication and hence the same `sub`, but they will be assigned different names for routing purposes by the DAB. If an agent disconnects from the bridge and later re-connects it MAY request and be assigned the same name it connected with before.
 
+#### Step 3. Auth Confirmation and Name Assignment
+
 The DAB will extract the authentication token `sub` from the JWT token's claims and then verify the token's signature against any public key it has been configured with. If the signature can't be verified, the bridge should respond with the below authentication failed message and the socket should be disconnected by the bridge.
 
 ```typescript
@@ -207,7 +209,7 @@ The DAB will extract the authentication token `sub` from the JWT token's claims 
     type:  "authenticationFailed",
     meta: {
         /** Timestamp at which response was generated */
-        timestamp:  date
+        timestamp:  date,
         /** GUID for the handshake request */
         requestGuid: string,
         /** Unique guid for this message */
@@ -216,13 +218,12 @@ The DAB will extract the authentication token `sub` from the JWT token's claims 
 }
 ```
 
-#### Step 3. Auth Confirmation and Name Assignment
-
 If authentication succeeds (or is not required), then the DAB should assign the Desktop Agent, and associated socket connection, the name requested in the `handshake` message, unless another agent is already connected with that name in which case it should generate a new name which MAY be derived from the requested name.
+
+#### Step 4. Synchronize the bridge's channel state
 
 A key responsibility of the DAB is ensuring that the channel state of the connected agents is kept in-sync. To do so the states must be synchronized whenever a new agent connects. Hence, the Bridge must process the `channelState` provided by the new agent in the `handshake` request containing details of each known User Channel or App Channel and its state, compare it to its own representation of the current state of channels in connected agents, merge that state with that of the new agent and communicate the updated state to connected agents to ensure that they are synchronized with it.
 
-#### Step 4. Synchronize the bridge's channel state
 
 Channel state of agents's already connected to the bridge should take precedence over agents that are connecting. However, if all agent's disconnect from the bridge it should reset (clear) its internal state and adopt that of the first agent to connect. The state of any Private channels does not need to be included as these can only be retrieved via a raised intent.
 
