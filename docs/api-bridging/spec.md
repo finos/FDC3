@@ -293,6 +293,9 @@ When applying the updated channel state, it should be noted that desktop agents 
 
 After applying the `connectedAgentsUpdate` message, the newly connected desktop agent and other already connected agents are able to begin communicating through the bridge.
 
+#### Step 6. Disconnects
+
+Although not part of the connection protocol, it should be noted that the `connectedAgentsUpdate` message sent in step 5 should also be sent whenever an agent disconnects from the bridge to update other agents. If any agents remain connected, then the `channelState` does not change and can be omitted. However, if the last agent disconnects the bridge SHOULD discard its internal `channelState`, instead of issuing the update.
 
 
 
