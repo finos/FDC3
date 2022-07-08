@@ -10,7 +10,7 @@ Working Group contributors include the following roles:
 
 **1.2.	Editor.**  “Editors” are responsible for ensuring that the contents of the document accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines. The Working Group will designate one or more Editor(s). The Working Group may select a new Editor upon Approval of the Working Group Participants.
 
-**1.3.	Participants.**  “Participants” are those that have made Contributions to the Working Group subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/website/static/governance-docs/IP-Policy.pdf).
+**1.3.	Participants.**  “Participants” are those that have made Contributions to the Working Group subject to the Community Specification License.  Contributions made prior to the adoption of FDC3 2.0 were made under the [FINOS IP Policy](https://community.finos.org/governance-docs/IP-Policy.pdf).
 
 **1.4. Discussion Groups.** The Working Group may form one or more "Discussion Groups" to organize collaboration around a particular aspect of a specification. Discussion Groups are for discussion only -- Approval of all portions of a specification is subject to the consensus-based decision making process.
 

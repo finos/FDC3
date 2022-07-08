@@ -107,7 +107,9 @@ If you or your firm intends to make use of the FDC3 Standard (by implementing a 
 If you or your firm are new to contributing to open source projects, please see the variety of resources available from FINOS, (such as the [Open Source readiness project](https://www.finos.org/open-source-readiness)), Linux Foundation ([Participating in Open Source communities](https://www.linuxfoundation.org/tools/participating-in-open-source-communities/)) and others (e.g. [opensource.guide](https://opensource.guide/)). 
 
 ## What it means to be an FDC3 Participant, Editor or Maintainer
-According to [Governance document](GOVERNANCE.md) document: 
+
+According to [Governance document](GOVERNANCE.md) document:
+
 - **"Participants"** are those that have made contributions to the FDC3 Standard Working Group (subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/website/static/governance-docs/IP-Policy.pdf)). The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the Standard. In practice, that means people that attend and contribute to meetings, raise issues, pull requests (to submit patches to the Standard) and reviews.
 
 - **"Editors"** are responsible for ensuring that the contents of the Standard's documents accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines.
@@ -133,30 +135,33 @@ You can contact the FDC3 maintainers by sending an email to [fdc3-maintainers@fi
 An archive of FDC3 documentation and meeting notes is available at https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview. The mailing list archive for fdc3@finos.org is available at https://groups.google.com/a/finos.org/g/fdc3
 
 # Contributing
+
 If you'd like to contribute to the FDC3 standard, or have noticed something that needs correcting, the first step is to [raise an issue on the FDC3 Github Repo](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) and describe what you'd like to see changed. There are a number of issue templates that you can choose from [here](https://github.com/finos/FDC3/issues/new/choose).
 
 Issues that change the Standard usually need discussion. You can post comments directly on the issue or can ask for it to be added to a Standards Working Group meeting agenda by emailing [fdc3@finos.org](mailto:fdc3@finos.org), sending a message to the [#fdc3 channel on the FINOS slack](https://finos-lf.slack.com/messages/fdc3/) or tag the FDC3 maintainers (`@finos/fdc3-maintainers`) in your issue.
 
 To implement changes in the FDC3 repository resolving an issue please read our [contribution guidelines](CONTRIBUTING.md). 
 
-Contributions merged into the master branch of the FDC3 repository will form part of the next pre-draft of the FDC3 Standard (as defined by the [FDC3 Governance document](./GOVERNANCE.md)), which must be approved by the Standard Working Group voting participants before it is accepted as a draft and subsequently released as the next version of the Standard.
-
+Contributions merged into the master branch of the FDC3 repository will form part of the next pre-draft of the FDC3 Standard (as defined by the [FDC3 Governance document](GOVERNANCE.md)), which must be approved by the Standard Working Group voting participants before it is accepted as a draft and subsequently released as the next version of the Standard.
 
 _NOTE:_ Commits and pull requests to FINOS repositories will only be accepted from those contributors with an active, executed Individual Contributor License Agreement (ICLA) with FINOS, _OR_ who are covered under an existing and active Corporate Contribution License Agreement (CCLA) executed with FINOS. Commits from individuals not covered under an ICLA or CCLA will be flagged and blocked by the [Linux Foundation `EasyCLA` tool](https://easycla.lfx.linuxfoundation.org/#/). Please note that some CCLAs require individuals/employees to be explicitly named on the CCLA.
 
 *Need an ICLA? Unsure if you are covered under an existing CCLA? Email [help@finos.org](mailto:help@finos.org).*
 
+# FINOS Code of Conduct
+
+Contributors to FINOS standards projects should follow the FINOS Code of Conduct, which can be found at: https://community.finos.org/docs/governance/code-of-conduct
+
 # License
 
-Copyright 2017-2022 FINOS and FDC3 Participants
+Copyright 2017-2022 FINOS and FDC3 Participants.
 
-Version 1.0 of the FDC3 specification is licensed under the [FDC3 1.0 Final Specification License](PATENTS-FDC3-1.0.md).
+Please see the [license](LICENSE).
 
-Subsequent FDC3 specifications and draft specifications are subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/website/static/governance-docs/IP-Policy.pdf), which authorizes implementation of FDC3 specifications without charge, on a RAND basis, subject to the terms of the policy. For details of the IP commitments made by contributors to FDC3, please refer to the policy.
+SPDX-License-Identifiers:
 
-Reference implementations and other software contained in FDC3 repositories is licensed under the [Apache License, Version 2.0](LICENSE) unless otherwise noted. 
-
-SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0).
+  - [Apache-2.0](https://spdx.org/licenses/Apache-2.0) (Software)
+  - [Community-Spec-1.0](https://spdx.org/licenses/Community-Spec-1.0)  (Specification)
 
 # Vulnerabilities / Security
 
