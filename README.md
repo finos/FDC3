@@ -49,7 +49,7 @@ FDC3 is an open standard for interoperability on the financial desktop.
 
 # How Does It Work?
 
-This includes standardized verbs to invoke actions between applications (called "intents"), a standardized data format, an OpenAPI app directory standard, and standardized API operations.
+FDC3 includes standardized verbs to invoke actions between applications (called "intents"), a standardized data format, an OpenAPI app directory standard, and standardized API operations.
 
 The standard currently consists of four specifications:
 
