@@ -7,9 +7,9 @@ export interface Icon {
   /** The icon url */
   readonly src: string;
 
-  /** The icon dimension */
+  /** The icon dimension, formatted as `<height>x<width>`. */
   readonly size?: string;
 
-  /** The icon media type */
+  /** Icon media type. If not present the Desktop Agent may use the src file extension. */
   readonly type?: string;
 }
