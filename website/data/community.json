@@ -179,7 +179,7 @@
       "docsLink": "https://www.normanandsons.com/research/",
       "description": "Norman & Sons is a digital product studio specializing in the research, design and build of user-centered enterprise applications. The studio has led the design and delivery of some of the best-known enterprise digital platforms for world-leading financial services firms and product firms. <br /><br /> They are starting to contribute to the development of Electron FDC3.",
       "badges": [],
-      "type": "platform-provider"
+      "type": "application-provider"
     },
     {
       "title": "Ignite UI",
@@ -189,7 +189,7 @@
       "docsLink": "https://www.npmjs.com/package/igniteui-webcomponents-fdc3",
       "description": "Ignite UI from Infragistics is a feature complete UI Platform for FDC3-enabled financial services apps. With over 60 UI controls & components plus charting including the world’s fastest virtualized data grids & data charts. No-lag, smooth scrolling for unlimited columns & rows of data, real-time, high-volume data support, with support for Web Components, Angular, React & Blazor, you have all the UX features you need for your modern FinTech apps.\nWith our FDC3 Data Adapter, build low-touch, composite-based financial services desktop workflows with FDC3 and give your apps the chance to participate in the broader FinTech ecosystem.",
       "badges": [],
-      "type": "platform-provider"
+      "type": "application-provider"
     },
     {
       "title": "Client Engagement and Data Driven Advisory",
@@ -220,5 +220,25 @@
       "description": "A powerful AG Grid add-on which includes FDC3 columns allowing users to broadcast FDC3 messages and raise FDC3 intents.  <br/><br/> We provide FDC3 columns allowing developers using AdapTable to build applications that can broadcast FDC3 messages and raise FDC3 intents. When using AdapTable inside OpenFin, Finsemble or Glue42 we enable communication between widgets using FDC3.",
       "badges": [],
       "type": "application-provider"
+    },
+    {
+        "title": "ipushpull",
+        "publisher": "Pushpull Technology Ltd",
+        "image": "/img/users/ipp-logo.png",
+        "infoLink": "https://ipushpull.com/",
+        "docsLink": "https://support.ipushpull.com/",
+        "description": "ipushpull is a configurable low & no-code platform that makes it easy to maximise the value of your data-driven services. We help you to transform your clients’ experience with our low-code custom applications & solutions and integrated, white-labelled workflows. <br /><br />The ipushpull platform seamlessly integrates with all desktop interop solutions and lets you build your own FDC3-driven workflows through configuration alone.",
+        "badges": [],
+        "type": "application-provider"
+    },
+    {
+        "title": "Symphony",
+        "publisher": "Symphony",
+        "image": "/img/users/symphony.png",
+        "infoLink": "https://symphony.com/",
+        "docsLink": "https://docs.developers.symphony.com/embedded-modules/desktop-interoperability",
+        "description": "Symphony is the most secure and compliance-enabling markets’ infrastructure and technology platform, where solutions are built or integrated to standardize, automate and innovate financial services workflows. It is a vibrant community of over half a million financial professionals with a trusted directory and serves over 1,000 institutions. <br /><br />Symphony is powering over 2,000 community built applications and bots.<br /><br />The company's mission is to promote a strong ecosystem of innovation by our customers and partners on the platform. As a result, the platform has been built with an open API approach to benefit our end users through the fostering of deep integrations and novel workflows.<br /><br />Specifically, Symphony considers Desktop Integration Platforms integration as a key workflow enabler, bringing benefits like cross-application workflows and context sharing, better screen real-estate management and aggregated notification centers. As such, the company is actively working with the FINOS FDC3 working group to standardize DIP integration APIs across the industry.",
+        "badges": [],
+        "type": "application-provider"
     }
 ]

@@ -102,5 +102,19 @@
         "infoLink": "https://www.singletrack.com/",
         "pinned": true,
         "isMember": true
+    },
+    {
+        "caption": "Norman & Sons",
+        "image": "/img/users/norman-and-sons.png",
+        "infoLink": "https://www.normanandsons.com/",
+        "pinned": true,
+        "isMember": true
+    },
+    {
+        "caption": "iPushPull",
+        "image": "/img/users/ipp-logo.png",
+        "infoLink": "https://www.ipushpull.com/",
+        "pinned": true,
+        "isMember": true
     }
 ]
