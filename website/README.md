@@ -286,3 +286,4 @@ iOS doesn't currently (July 2019) support .webp image files - so use .png - and 
 # Full Documentation
 
 Full documentation can be found on the [website](https://docusaurus.io/).
+
