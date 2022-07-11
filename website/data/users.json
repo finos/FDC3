@@ -117,4 +117,10 @@
         "pinned": true,
         "isMember": true
     }
+        "caption": "Symphony",
+        "image": "/img/users/Symphony.png",
+        "infoLink": "https://www.symphony.com/",
+        "pinned": true,
+        "isMember": true
+    } 
 ]

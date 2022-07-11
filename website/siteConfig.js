@@ -47,7 +47,6 @@ const siteConfig = {
   colors: {
     primaryColor: '#0086bf', /* This changes the top FINOS banner & all links - DO NOT CHANGE */
     secondaryColor: '#0033A0' /* This does net change anything - but keep as the project / program main color */
-  
   },
 
   separateCss: [
