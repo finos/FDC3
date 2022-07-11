@@ -138,7 +138,7 @@
     {
       "title": "Symphony Demo - FDC3",
       "publisher": "Symphony",
-      "image": "/img/users/symphony.png",
+      "image": "/img/users/Symphony.png",
       "infoLink": "https://www.youtube.com/watch?v=wMF1h7RaAJY",
       "description": "This demo showcases Symphony’s interoperability, flexibility and open architecture via FDC3 protocol. Leveraging FDC3, data and information can be seamlessly shared across multiple platforms on the same desktop. In this demo we showcase FX liquidity pricing via Tradefeedr, and data and trading analytics via Cosaic’s ChartIQ and Finsemble.",
       "badges": [],
@@ -234,7 +234,7 @@
     {
         "title": "Symphony",
         "publisher": "Symphony",
-        "image": "/img/users/symphony.png",
+        "image": "/img/users/Symphony.png",
         "infoLink": "https://symphony.com/",
         "docsLink": "https://docs.developers.symphony.com/embedded-modules/desktop-interoperability",
         "description": "Symphony is the most secure and compliance-enabling markets’ infrastructure and technology platform, where solutions are built or integrated to standardize, automate and innovate financial services workflows. It is a vibrant community of over half a million financial professionals with a trusted directory and serves over 1,000 institutions. <br /><br />Symphony is powering over 2,000 community built applications and bots.<br /><br />The company's mission is to promote a strong ecosystem of innovation by our customers and partners on the platform. As a result, the platform has been built with an open API approach to benefit our end users through the fostering of deep integrations and novel workflows.<br /><br />Specifically, Symphony considers Desktop Integration Platforms integration as a key workflow enabler, bringing benefits like cross-application workflows and context sharing, better screen real-estate management and aggregated notification centers. As such, the company is actively working with the FINOS FDC3 working group to standardize DIP integration APIs across the industry.",
