@@ -31,7 +31,7 @@ From its inception, the standards have been informed by real-world [business use
 
 ## Who is using FDC3?
 
-The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standards are created and used by [leading organizations across the financial industry](/users).
+The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standards are created and used by [leading organizations across the financial industry](/users). For more detail on who's using FDC3, developer tools, training and examples, see the [community page](/community).
 
 ## How is FDC3 governed?
 
