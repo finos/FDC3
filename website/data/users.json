@@ -55,9 +55,9 @@
         "isMember": true
     },
     {
-        "caption": "IHS Markit",
-        "image": "/img/users/IHSMarkit.png",
-        "infoLink": "https://ihsmarkit.com/",
+        "caption": "S&P Global",
+        "image": "/img/users/spglobal.png",
+        "infoLink": "https://spglobal.com/",
         "pinned": true,
         "isMember": true
     },
@@ -121,6 +121,27 @@
         "caption": "Symphony",
         "image": "/img/users/Symphony.png",
         "infoLink": "https://www.symphony.com/",
+        "pinned": true,
+        "isMember": true
+    },
+    {
+        "caption": "Pictet",
+        "image": "/img/users/pictet.png",
+        "infoLink": "https://www.pictet.com/",
+        "pinned": true,
+        "isMember": true
+    },
+    {
+        "caption": "UBS",
+        "image": "/img/users/ubs.png",
+        "infoLink": "https://www.ubs.com/",
+        "pinned": true,
+        "isMember": true
+    },
+    {
+        "caption": "Connectifi",
+        "image": "/img/users/connectifi.png",
+        "infoLink": "https://www.connectifi.co/",
         "pinned": true,
         "isMember": true
     } 

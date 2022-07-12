@@ -79,8 +79,14 @@ function ImplementationsShowcase() {
 			<button className="button filter" id="application-provider">
 				App Providers
 			</button>
+			<button className="button filter" id="solution-provider">
+				Solution Providers
+			</button>
 			<button className="button filter" id="examples-and-training">
 				Examples &amp; Training
+			</button>
+			<button className="button filter" id="adopter">
+				Adopters
 			</button>
 			<button className="button filter" id="all">
 				All
@@ -97,7 +103,7 @@ function ImplementationsShowcase() {
 function Implementations(props) {
 	const { config: siteConfig } = props;
 	const { repoUrl } = siteConfig;
-	const editUrl = `${repoUrl}/edit/master/website/data/implementations.json`;
+	const editUrl = `https://www.finos.org/get-involved-fdc3`;
 
 	return <Container>
 		<h1>FDC3 Community</h1>
