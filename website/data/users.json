@@ -144,5 +144,12 @@
         "infoLink": "https://www.connectifi.co/",
         "pinned": true,
         "isMember": true
-    } 
+    },
+    {
+        "caption": "FlexTrade",
+        "image": "/img/users/flextrade.jpg",
+        "infoLink": "https://www.flextrade.com/",
+        "pinned": true,
+        "isMember": true
+    }  
 ]

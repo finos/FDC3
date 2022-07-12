@@ -297,5 +297,16 @@
         "description": "Connectifi provides FDC3 interop as a cloud service, empowering organizations to connect anything, anywhere, in a security-first environment that does not require installs.\n\nUse Connectifi to leverage FDC3 in standard browser and mobile environments, to expand the reach and ROI of your existing desktop tech stack, and to create secure and verifiable interop channels between mission critical applications.",
         "badges": [{"text": "FDC3 1.2 Supported"}],
         "type": "platform-provider"
+    },
+    {
+        "title": "FlexTrade Buy and Sell-Side O/EMS Solutions",
+        "publisher": "FlexTrade Systems",
+        "image": "/img/users/flextrade.jpg",
+        "infoLink": "https://flextrade.com/buy-side-flextrade-products/",
+        "docsLink": "https://flextrade.com/openfin/",
+        "description": "FlexTrade uses the FDC3 standard for application interoperability to deliver trading teams a seamless experience across its full suite of buy and sell-side O/EMS solutions. Using FDC3 within FlexTrade’s solutions, trading teams are empowered to choose to customize their workflow with the specific tools and data unique to their needs. Further, it is visualized into a single view within their order blotter, eliminating the need to context switch between different screens or solutions within their workflow, enabling better decision-making and improving trading performance. <br/><br/>The work with OpenFin and LSEG Turquoise recently picked up “Financial Technology Innovation of the Year” in the Financial News Excellence in Trading and Tech Awards 2022. ",
+        "badges": [],
+        "type": "application-provider"
     }
+ 
 ]
