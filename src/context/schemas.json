@@ -9,6 +9,8 @@
   "Email": ["https://fdc3.finos.org/schemas/next/email.schema.json"],
   "Instrument": ["https://fdc3.finos.org/schemas/next/instrument.schema.json"],
   "InstrumentList": ["https://fdc3.finos.org/schemas/next/instrumentList.schema.json"],
+  "Intent": ["https://fdc3.finos.org/schemas/next/intent.schema.json"],
+  "Message": ["https://fdc3.finos.org/schemas/next/message.schema.json"],
   "Nothing": ["https://fdc3.finos.org/schemas/next/nothing.schema.json"],
   "Organization": ["https://fdc3.finos.org/schemas/next/organization.schema.json"],
   "Portfolio": ["https://fdc3.finos.org/schemas/next/portfolio.schema.json"],

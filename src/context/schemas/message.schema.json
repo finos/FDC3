@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/message.schema.json",
+  "type": "object",
+  "title": "Message",
+  "properties": {
+    "text": {
+      "type": "object",
+      "properties": {
+        "text/plain": {
+          "type": "string"
+        },
+        "text/markdown": {
+          "type": "string"
+        }
+      }
+    },
+    "entities": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "intent.schema.json#"
+              }
+            ],
+            "properties": {
+              "type": {
+                "const": "fdc3.entity.intent"
+              }
+            },
+            "required": ["type"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "fdc3.entity.fileAttachment"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "dataUri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "dataUri"
+                ]
+              }
+            },
+            "required": ["type", "data"]
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "text"
+  ]
+}
