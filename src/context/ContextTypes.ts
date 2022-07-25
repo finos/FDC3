@@ -1,17 +1,23 @@
 // To parse this data:
 //
-//   import { Convert, Context, Contact, ContactList, Instrument, InstrumentList, Country, Organization, Portfolio, Position, Nothing } from "./file";
+//   import { Convert, Context, Chart, ChatInitSettings, Contact, ContactList, Country, Currency, Email, Instrument, InstrumentList, Nothing, Organization, Portfolio, Position, TimeRange, Valuation } from "./file";
 //
 //   const context = Convert.toContext(json);
+//   const chart = Convert.toChart(json);
+//   const chatInitSettings = Convert.toChatInitSettings(json);
 //   const contact = Convert.toContact(json);
 //   const contactList = Convert.toContactList(json);
+//   const country = Convert.toCountry(json);
+//   const currency = Convert.toCurrency(json);
+//   const email = Convert.toEmail(json);
 //   const instrument = Convert.toInstrument(json);
 //   const instrumentList = Convert.toInstrumentList(json);
-//   const country = Convert.toCountry(json);
+//   const nothing = Convert.toNothing(json);
 //   const organization = Convert.toOrganization(json);
 //   const portfolio = Convert.toPortfolio(json);
 //   const position = Convert.toPosition(json);
-//   const nothing = Convert.toNothing(json);
+//   const timeRange = Convert.toTimeRange(json);
+//   const valuation = Convert.toValuation(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
@@ -22,34 +28,11 @@ export interface Context {
   type: string;
 }
 
-export interface ContactList {
-  contacts: Contact[];
-  type: string;
-  id?: { [key: string]: string };
-  name?: string;
-}
-
-export interface Contact {
-  id: ContactID;
-  type: string;
-  name?: string;
-}
-
-export interface ContactID {
-  email?: string;
-  FDS_ID?: string;
-}
-
-export interface Email {
-  type: string;
-  recipients: object;
-  subject?: string;
-  textBody?: string;
-  richTextBody?: object;
-}
-
-export interface InstrumentList {
+export interface Chart {
   instruments: Instrument[];
+  otherConfig?: { [key: string]: any };
+  range?: TimeRange;
+  style?: Style;
   type: string;
   id?: { [key: string]: string };
   name?: string;
@@ -73,6 +56,53 @@ export interface InstrumentID {
   ticker?: string;
 }
 
+export interface TimeRange {
+  endTime?: Date;
+  startTime?: Date;
+  type: string;
+  id?: { [key: string]: string };
+  name?: string;
+}
+
+export enum Style {
+  Bar = 'bar',
+  Candle = 'candle',
+  Custom = 'custom',
+  Heatmap = 'heatmap',
+  Histogram = 'histogram',
+  Line = 'line',
+  Mountain = 'mountain',
+  Pie = 'pie',
+  Scatter = 'scatter',
+  StackedBar = 'stacked-bar',
+}
+
+export interface ChatInitSettings {
+  chatName?: string;
+  initMessage?: string;
+  members?: ContactList;
+  options?: any;
+  type: any;
+}
+
+export interface ContactList {
+  contacts: Contact[];
+  type: string;
+  id?: { [key: string]: string };
+  name?: string;
+}
+
+export interface Contact {
+  id: ContactID;
+  type: string;
+  name?: string;
+}
+
+export interface ContactID {
+  email?: string;
+  FDS_ID?: string;
+}
+
 export interface Country {
   id: CountryID;
   type: string;
@@ -80,8 +110,54 @@ export interface Country {
 }
 
 export interface CountryID {
+  COUNTRY_ISOALPHA2?: string;
+  COUNTRY_ISOALPHA3?: string;
   ISOALPHA2?: string;
   ISOALPHA3?: string;
+}
+
+export interface Currency {
+  id: CurrencyID;
+  name?: string;
+  type: string;
+}
+
+export interface CurrencyID {
+  CURRENCY_ISOCODE?: string;
+}
+
+export interface Email {
+  recipients: RecipientsObject;
+  subject?: string;
+  textBody?: string;
+  type: string;
+  id?: { [key: string]: string };
+  name?: string;
+}
+
+export interface RecipientsObject {
+  id?: RecipientsID;
+  type: string;
+  name?: string;
+  contacts?: Contact[];
+}
+
+export interface RecipientsID {
+  email?: string;
+  FDS_ID?: string;
+}
+
+export interface InstrumentList {
+  instruments: Instrument[];
+  type: string;
+  id?: { [key: string]: string };
+  name?: string;
+}
+
+export interface Nothing {
+  type: string;
+  id?: { [key: string]: string };
+  name?: string;
 }
 
 export interface Organization {
@@ -111,8 +187,16 @@ export interface Position {
   name?: string;
 }
 
-export interface Nothing {
+export interface Valuation {
+  CURRENCY_ISCODE?: string;
+  expiryTime?: Date;
+  price?: number;
   type: string;
+  valuationTime?: Date;
+  value: number;
+  CURRENCY_ISOCODE: any;
+  id?: { [key: string]: string };
+  name?: string;
 }
 
 // Converts JSON strings to/from your types
@@ -124,6 +208,22 @@ export class Convert {
 
   public static contextToJson(value: Context): string {
     return JSON.stringify(uncast(value, r('Context')), null, 2);
+  }
+
+  public static toChart(json: string): Chart {
+    return cast(JSON.parse(json), r('Chart'));
+  }
+
+  public static chartToJson(value: Chart): string {
+    return JSON.stringify(uncast(value, r('Chart')), null, 2);
+  }
+
+  public static toChatInitSettings(json: string): ChatInitSettings {
+    return cast(JSON.parse(json), r('ChatInitSettings'));
+  }
+
+  public static chatInitSettingsToJson(value: ChatInitSettings): string {
+    return JSON.stringify(uncast(value, r('ChatInitSettings')), null, 2);
   }
 
   public static toContact(json: string): Contact {
@@ -140,6 +240,22 @@ export class Convert {
 
   public static contactListToJson(value: ContactList): string {
     return JSON.stringify(uncast(value, r('ContactList')), null, 2);
+  }
+
+  public static toCountry(json: string): Country {
+    return cast(JSON.parse(json), r('Country'));
+  }
+
+  public static countryToJson(value: Country): string {
+    return JSON.stringify(uncast(value, r('Country')), null, 2);
+  }
+
+  public static toCurrency(json: string): Currency {
+    return cast(JSON.parse(json), r('Currency'));
+  }
+
+  public static currencyToJson(value: Currency): string {
+    return JSON.stringify(uncast(value, r('Currency')), null, 2);
   }
 
   public static toEmail(json: string): Email {
@@ -166,12 +282,12 @@ export class Convert {
     return JSON.stringify(uncast(value, r('InstrumentList')), null, 2);
   }
 
-  public static toCountry(json: string): Country {
-    return cast(JSON.parse(json), r('Country'));
+  public static toNothing(json: string): Nothing {
+    return cast(JSON.parse(json), r('Nothing'));
   }
 
-  public static countryToJson(value: Country): string {
-    return JSON.stringify(uncast(value, r('Country')), null, 2);
+  public static nothingToJson(value: Nothing): string {
+    return JSON.stringify(uncast(value, r('Nothing')), null, 2);
   }
 
   public static toOrganization(json: string): Organization {
@@ -198,12 +314,20 @@ export class Convert {
     return JSON.stringify(uncast(value, r('Position')), null, 2);
   }
 
-  public static toNothing(json: string): Nothing {
-    return cast(JSON.parse(json), r('Nothing'));
+  public static toTimeRange(json: string): TimeRange {
+    return cast(JSON.parse(json), r('TimeRange'));
   }
 
-  public static nothingToJson(value: Nothing): string {
-    return JSON.stringify(uncast(value, r('Nothing')), null, 2);
+  public static timeRangeToJson(value: TimeRange): string {
+    return JSON.stringify(uncast(value, r('TimeRange')), null, 2);
+  }
+
+  public static toValuation(json: string): Valuation {
+    return cast(JSON.parse(json), r('Valuation'));
+  }
+
+  public static valuationToJson(value: Valuation): string {
+    return JSON.stringify(uncast(value, r('Valuation')), null, 2);
   }
 }
 
@@ -351,43 +475,12 @@ const typeMap: any = {
     ],
     'any'
   ),
-  ContactList: o(
-    [
-      { json: 'contacts', js: 'contacts', typ: a(r('Contact')) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  Contact: o(
-    [
-      { json: 'id', js: 'id', typ: r('ContactID') },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  ContactID: o(
-    [
-      { json: 'email', js: 'email', typ: u(undefined, '') },
-      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
-    ],
-    ''
-  ),
-  Email: o(
-    [
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'recipients', js: 'recipients', typ: u(undefined, '') },
-      { json: 'subject', js: 'subject', typ: u(undefined, '') },
-      { json: 'textBody', js: 'textBody', typ: u(undefined, '') },
-      { json: 'richTextBody', js: 'richTextBody', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  InstrumentList: o(
+  Chart: o(
     [
       { json: 'instruments', js: 'instruments', typ: a(r('Instrument')) },
+      { json: 'otherConfig', js: 'otherConfig', typ: u(undefined, m('any')) },
+      { json: 'range', js: 'range', typ: u(undefined, r('TimeRange')) },
+      { json: 'style', js: 'style', typ: u(undefined, r('Style')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -416,6 +509,50 @@ const typeMap: any = {
     ],
     ''
   ),
+  TimeRange: o(
+    [
+      { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
+      { json: 'startTime', js: 'startTime', typ: u(undefined, Date) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  ChatInitSettings: o(
+    [
+      { json: 'chatName', js: 'chatName', typ: u(undefined, '') },
+      { json: 'initMessage', js: 'initMessage', typ: u(undefined, '') },
+      { json: 'members', js: 'members', typ: u(undefined, r('ContactList')) },
+      { json: 'options', js: 'options', typ: u(undefined, 'any') },
+      { json: 'type', js: 'type', typ: 'any' },
+    ],
+    'any'
+  ),
+  ContactList: o(
+    [
+      { json: 'contacts', js: 'contacts', typ: a(r('Contact')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Contact: o(
+    [
+      { json: 'id', js: 'id', typ: r('ContactID') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  ContactID: o(
+    [
+      { json: 'email', js: 'email', typ: u(undefined, '') },
+      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
+    ],
+    ''
+  ),
   Country: o(
     [
       { json: 'id', js: 'id', typ: r('CountryID') },
@@ -426,10 +563,65 @@ const typeMap: any = {
   ),
   CountryID: o(
     [
+      { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
+      { json: 'COUNTRY_ISOALPHA3', js: 'COUNTRY_ISOALPHA3', typ: u(undefined, '') },
       { json: 'ISOALPHA2', js: 'ISOALPHA2', typ: u(undefined, '') },
       { json: 'ISOALPHA3', js: 'ISOALPHA3', typ: u(undefined, '') },
     ],
     ''
+  ),
+  Currency: o(
+    [
+      { json: 'id', js: 'id', typ: r('CurrencyID') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    'any'
+  ),
+  CurrencyID: o([{ json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: u(undefined, '') }], ''),
+  Email: o(
+    [
+      { json: 'recipients', js: 'recipients', typ: r('RecipientsObject') },
+      { json: 'subject', js: 'subject', typ: u(undefined, '') },
+      { json: 'textBody', js: 'textBody', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  RecipientsObject: o(
+    [
+      { json: 'id', js: 'id', typ: u(undefined, r('RecipientsID')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'contacts', js: 'contacts', typ: u(undefined, a(r('Contact'))) },
+    ],
+    'any'
+  ),
+  RecipientsID: o(
+    [
+      { json: 'email', js: 'email', typ: u(undefined, '') },
+      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
+    ],
+    ''
+  ),
+  InstrumentList: o(
+    [
+      { json: 'instruments', js: 'instruments', typ: a(r('Instrument')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Nothing: o(
+    [
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
   ),
   Organization: o(
     [
@@ -466,5 +658,19 @@ const typeMap: any = {
     ],
     'any'
   ),
-  Nothing: o([{ json: 'type', js: 'type', typ: '' }], 'any'),
+  Valuation: o(
+    [
+      { json: 'CURRENCY_ISCODE', js: 'CURRENCY_ISCODE', typ: u(undefined, '') },
+      { json: 'expiryTime', js: 'expiryTime', typ: u(undefined, Date) },
+      { json: 'price', js: 'price', typ: u(undefined, 3.14) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'valuationTime', js: 'valuationTime', typ: u(undefined, Date) },
+      { json: 'value', js: 'value', typ: 3.14 },
+      { json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: 'any' },
+      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Style: ['bar', 'candle', 'custom', 'heatmap', 'histogram', 'line', 'mountain', 'pie', 'scatter', 'stacked-bar'],
 };
