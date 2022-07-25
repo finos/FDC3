@@ -6,20 +6,21 @@ In any desktop agent bridging scenario, it is expected that each DA is being ope
 
 ## Open questions / TODO list
 
-* Confirm draft handshake, authentication and naming protocol
-  * Should auth be optional? E.g. triggered by a challenge?
-
-* Confirm method of resolving differing state on channels (app/user not private) when a new DA joins the bridge?
-  * Added an init flow where DAs share info about channels they have with context on them already
-
+* Handshake
+  * Confirm we want to add optional auth token to `hello` message coming from the bridge for DA to authenticate the bridge? (Two-way authentication)
+* Channel State Synchronization
+  * Add details about potential race conditions or workflows broken by disconnection
+  * Handling race conditions - e.g. on startup apps might load and start broadcasting state immediately - concurrent with the desktop agent connecting to the bridge and receiving state
+    * Handle handshakes sequentially one at a time
+    * Atomic operations for broadcasts and channel synchronization messages
+    * Other suggestions?
 * Define generic protocol for interacting with the bridge when handling fdc3 API calls
-  
-  * Include details of who collates responses to queries (e.g. findIntent, raiseIntent, findInstances etc.): The bridge
-    * Handle of slow responding DAs? Recommended timeout
-    * An agent that is repeatedly timing out should be disconnected
-    * Advise on whether other agents report to users on connect/disconnect events?
+  * Handle of slow responding DAs?
+    * Recommended timeout of 2500ms/3000ms
+  * An agent that is repeatedly timing out should be disconnected?
+  * Advise on whether other agents report to users on connect/disconnect events?
+* Confirm recommended port range for bridge - (4475 - 4575)
 
-* Select recommended port range for bridge
 
 ## Connection Overview
 
@@ -53,7 +54,7 @@ Connections between desktop agents and the Desktop Agent Bridge will be made via
 
 The bridge MUST run on the same machine as the desktop agents, and the websocket MUST be bound to the loopback adapter IP address (127.0.0.1), ensuring that the websocket is not exposed to wider networks.
 
-Bridge implementations SHOULD default to binding the websocket server to a port in the recommended port range XXXX - XXYY, enabling simple discovery of a running bridge via attempting socket connections to ports in that range and attempting a handshake (as defined later in this proposal) that will identify the websocket as belong to a Desktop Agent Bridge. A port range is used, in preference to a single nominated port, in order to enable the automatic resolution of port clashes with other services.
+Bridge implementations SHOULD default to binding the websocket server to a port in the recommended port range 4475 - 4575, enabling simple discovery of a running bridge via attempting socket connections to ports in that range and attempting a handshake (as defined later in this proposal) that will identify the websocket as belong to a Desktop Agent Bridge. A port range is used, in preference to a single nominated port, in order to enable the automatic resolution of port clashes with other services.
 
 Both DAs and bridge implementations MUST support at least connection to the recommended port range and MAY also support configuration for connection to an alternative bridging port range.
 
@@ -127,6 +128,7 @@ sequenceDiagram
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
+    DA ->>+ DAB: connect
     DAB ->>+ DA: hello
     DA ->>+ DAB: handshake
     DAB ->>+ DA: connectedAgentsUpdate
@@ -143,7 +145,9 @@ When a new connection is made to the DAB websocket, it sends a `hello` message, 
     payload: {
         desktopAgentBridgeVersion: number,
         supportedFDC3Versions: string[],
-        authRequired: boolean
+        authRequired: boolean,
+        /** The DAB JWT authentication token */
+        authToken?: string
     },
     meta: {
         timestamp: date
@@ -151,7 +155,9 @@ When a new connection is made to the DAB websocket, it sends a `hello` message, 
 }
 ```
 
-A Desktop Agent can use the structure of this message to determine that it has connected to a Desktop Agent Bridge (i.e by checking `msg.type === hello && msg.payload.desktopAgentBridgeVersion`), whether it supports a compatible FDC3 version and whether it is expected to provide authentication credentials in the next step (`if(msg.payload.authRequired) { ... }`).
+A Desktop Agent can use the structure of this message to determine that it has connected to a Desktop Agent Bridge (i.e by checking `msg.type === "hello" && msg.payload.desktopAgentBridgeVersion`), whether it supports a compatible FDC3 version and whether it is expected to provide authentication credentials in the next step (`if(msg.payload.authRequired) { ... }`).
+
+An optional JWT token can be included in the `hello` message to allow the connecting agent to authenticate the bridge. Verification of the JWM by the DA is option but recommended, meaning that the DA SHOULD verify the received JWT when one is included in the `hello` message.
 
 DA should respond to the `hello` message with a `handshake` request to the bridge, including an auth token (JWT) if required.
 
@@ -222,12 +228,11 @@ If authentication succeeds (or is not required), then the DAB should assign the 
 
 #### Step 4. Synchronize the bridge's channel state
 
-A key responsibility of the DAB is ensuring that the channel state of the connected agents is kept in-sync. To do so the states must be synchronized whenever a new agent connects. Hence, the Bridge must process the `channelState` provided by the new agent in the `handshake` request containing details of each known User Channel or App Channel and its state, compare it to its own representation of the current state of channels in connected agents, merge that state with that of the new agent and communicate the updated state to connected agents to ensure that they are synchronized with it.
-
+Channels are the only stateful mechanism in the FDC3 that we have to consider. A key responsibility of the DAB is ensuring that the channel state of the connected agents is kept in-sync. To do so, the states must be synchronized whenever a new agent connects. Hence, the Bridge must process the `channelState` provided by the new agent in the `handshake` request containing details of each known User Channel or App Channel and its state, compare it to its own representation of the current state of channels in connected agents, merge that state with that of the new agent and communicate the updated state to connected agents to ensure that they are synchronized with it.
 
 Channel state of agents's already connected to the bridge should take precedence over agents that are connecting. However, if all agent's disconnect from the bridge it should reset (clear) its internal state and adopt that of the first agent to connect. The state of any Private channels does not need to be included as these can only be retrieved via a raised intent.
 
-When an agent connects to the bridge, it should adopt the state of any channels that do not currently exist or do not currently contain state of a particular type. This synchronization is NOT performed via broadcast of context as it may result in an older context, of a type not already found on the channel, being merged into the channel (and subsequently broadcast to context listeners with a matching type).
+When an agent connects to the bridge, it should adopt the state of any channels that do not currently exist or do not currently contain state of a particular type. This synchronization is NOT performed via broadcast of context as it may result in an older context, of a type not already found on the channel being merged into the channel (and subsequently broadcast to context listeners with a matching type).
 
 The incoming `channelsState` should be merged with the `existingChannelsState` as follows:
 
@@ -250,6 +255,8 @@ Object.keys(channelsState).forEach((channelId) => {
     }
 });
 ```
+
+For the scenario of multiple agents connecting to the Desktop Agent Bridge at the same time, this portion of the handshake should be handled by the DAB serially to ensure correct channel state synchronization.
 
 #### Step 5. Connected agents update
 
@@ -285,7 +292,7 @@ The `connectedAgentsUpdate` message will take the form:
 }
 ```
 
-When applying the updated channel state, it should be noted that desktop agents will not have context listeners for previously unknown channels and can simply record that channel's state for use when that channel is first used. For known channel names, the Desktop Agent must also compare its current state to that which it has just received and may need to broadcast context to existing connected listeners. As context listeners can be registered for either a specific type or all types some care is necessary when doing so (as the most recently transmitted Context should be received by un-typed listeners). Hence, updating listeners for a known channel should be performed as follows:
+When applying the updated channel state, it should be noted that desktop agents will not have context listeners for previously unknown channels, and can simply record that channel's state for use when that channel is first used. For known channel names, the Desktop Agent must also compare its current state to that which it has just received and may need to broadcast context to existing connected listeners. As context listeners can be registered for either a specific type or all types some care is necessary when doing so (as the most recently transmitted Context should be received by un-typed listeners). Hence, updating listeners for a known channel should be performed as follows:
 
 1. The incoming channel state `channelState` for a particular channel should be processed from last (oldest) to first.
 2. If there is no current context of that type, broadcast it to listeners of that specific type only.
@@ -293,6 +300,8 @@ When applying the updated channel state, it should be noted that desktop agents 
 4. If the most recent (first in the incoming array) type OR value of that type doesn't match the most recent context broadcast on the channel, broadcast it to un-typed listeners only.
 
 After applying the `connectedAgentsUpdate` message, the newly connected desktop agent and other already connected agents are able to begin communicating through the bridge.
+
+Channel state synchronization messages from the DAB to Desktop Agents should be handled atomically to prevent message overlap with `fdc3.broadcast`, `channel.broadcast`, `fdc3.addContextListener` or `channel.getCurrentContext`.
 
 #### Step 6. Disconnects
 
