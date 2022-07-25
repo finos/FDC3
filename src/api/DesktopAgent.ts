@@ -191,7 +191,7 @@ export interface DesktopAgent {
    *
    * ```javascript
    * // Retrieve a list of instances of an application
-   * let instances = await fdc3.findInstances({appId: "MyApp"});
+   * let instances = await fdc3.findInstances({appId: "MyAppId"});
    *
    * // Target a raised intent at a specific instance
    * let resolution = fdc3.raiseIntent("ViewInstrument", context, instances[0]);
