@@ -4,9 +4,9 @@ sidebar_label: Overview
 title: API Bridging Overview (next)
 ---
 
-The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent (DA), facilitating cross-application workflows. Desktop Agent API Bridging addresses the interconnection of desktop agents (DAs) such that apps running under different desktop agents can also interoperate, allowing workflows to span multiple desktop agents.
+The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent (DA), facilitating cross-application workflows. Desktop Agent API Bridging addresses the interconnection of Deskop Agents (DAs) such that apps running under different Deskop Agents can also interoperate, allowing workflows to span multiple Deskop Agents.
 
-In any desktop agent bridging scenario, it is expected that each DA is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although DAs may be run on different machines operated by the same user.
+In any Deskop Agent bridging scenario, it is expected that each DA is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although DAs may be run on different machines operated by the same user.
 
 ## Open questions / TODO list
 
@@ -14,23 +14,26 @@ In any desktop agent bridging scenario, it is expected that each DA is being ope
   * Confirm we want to add optional auth token to `hello` message coming from the bridge for DA to authenticate the bridge? (Two-way authentication)
 * Channel State Synchronization
   * Add details about potential race conditions or workflows broken by disconnection
-  * Handling race conditions - e.g. on startup apps might load and start broadcasting state immediately - concurrent with the desktop agent connecting to the bridge and receiving state
+  * Handling race conditions - e.g. on startup apps might load and start broadcasting state immediately - concurrent with the Deskop Agent connecting to the bridge and receiving state
     * Handle handshakes sequentially one at a time
     * Atomic operations for broadcasts and channel synchronization messages
     * Other suggestions?
+* Confirm recommended port range for bridge - (4470 - 4480)
 * Define generic protocol for interacting with the bridge when handling fdc3 API calls
   * Handle of slow responding DAs?
     * Recommended timeout of 2500ms/3000ms
   * An agent that is repeatedly timing out should be disconnected?
   * Advise on whether other agents report to users on connect/disconnect events?
-* Confirm recommended port range for bridge - (4475 - 4575)
+* Add section on GUID generation (with reference to external standard) used in requestGuid and response Guid fields in messages.
+* Add new terms and acronyms to FDC3 glossary and ensure they are defined in this spec's introduction
+* Add RFC 4122 - https://datatracker.ietf.org/doc/html/rfc4122 to references page
 
 
 ## Connection Overview
 
 ### Topology
 
-In order to implement Desktop Agent Bridging some means for desktop agents to connect to and communicate with each other is needed. This Standard assumes that Desktop Agent Bridging is implemented via a standalone 'bridge' which each agent connects to and will use to route messages to or from other agents. This topology is similar to a star topology in networking, where the Desktop Agent Bridge (a 'bridge') will be the central node acting as a router.
+In order to implement Desktop Agent Bridging some means for Deskop Agents to connect to and communicate with each other is needed. This Standard assumes that Desktop Agent Bridging is implemented via a standalone 'bridge' which each agent connects to and will use to route messages to or from other agents. This topology is similar to a star topology in networking, where the Desktop Agent Bridge (a 'bridge') will be the central node acting as a router.
 
 ```mermaid
 flowchart TD;
@@ -46,17 +49,17 @@ flowchart TD;
     E --> |loopback - 127.0.0.1| E
 ```
 
-Other possible topologies include peer-to-peer or client/server networks, however, these introduce significant additional complexity into multiple aspects of the bridging protocol that must be implemented by desktop agents, (including discovery, authentication and message routing), where a star topology/standalone bridge enables a relatively simple set of protocols, with the most difficult parts being implemented in the bridge itself.
+Other possible topologies include peer-to-peer or client/server networks, however, these introduce significant additional complexity into multiple aspects of the bridging protocol that must be implemented by Deskop Agents, (including discovery, authentication and message routing), where a star topology/standalone bridge enables a relatively simple set of protocols, with the most difficult parts being implemented in the bridge itself.
 
-Whilst the standalone bridge represents a single point of failure for the interconnection of desktop agents, it will also be significantly simpler than a full desktop agent implementation. Further, failures may be mitigated by setting the bridge up as a system service, such that it is started when the user's computer is started and may be restarted automatically if it fails. In the event of a bridge failure or manual shutdown, then desktop agents will no longer be bridged and should act as single agents.
+Whilst the standalone bridge represents a single point of failure for the interconnection of Deskop Agents, it will also be significantly simpler than a full Deskop Agent implementation. Further, failures may be mitigated by setting the bridge up as a system service, such that it is started when the user's computer is started and may be restarted automatically if it fails. In the event of a bridge failure or manual shutdown, then Deskop Agents will no longer be bridged and should act as single agents.
 
-In Financial services it is not unusual for a single user to be working with applications on more than one desktop. As desktop agents do not span desktops bridging desktop agents across multiple machines is an additional use case for desktop agent bridging. However, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user.
+In Financial services it is not unusual for a single user to be working with applications on more than one desktop. As Deskop Agents do not span desktops bridging Deskop Agents across multiple machines is an additional use case for Deskop Agent bridging. However, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user.
 
 ### Technology & Service Discovery
 
-Connections between desktop agents and the Desktop Agent Bridge will be made via websocket connections, with the bridge acting as the websocket server and each connected desktop agent as a client.
+Connections between Deskop Agents and the Desktop Agent Bridge will be made via websocket connections, with the bridge acting as the websocket server and each connected Deskop Agent as a client.
 
-The bridge MUST run on the same machine as the desktop agents, and the websocket MUST be bound to the loopback adapter IP address (127.0.0.1), ensuring that the websocket is not exposed to wider networks.
+The bridge MUST run on the same machine as the Deskop Agents, and the websocket MUST be bound to the loopback adapter IP address (127.0.0.1), ensuring that the websocket is not exposed to wider networks.
 
 Bridge implementations SHOULD default to binding the websocket server to a port in the recommended port range 4475 - 4575, enabling simple discovery of a running bridge via attempting socket connections to ports in that range and attempting a handshake (as defined later in this proposal) that will identify the websocket as belong to a Desktop Agent Bridge. A port range is used, in preference to a single nominated port, in order to enable the automatic resolution of port clashes with other services.
 
@@ -64,13 +67,13 @@ Both DAs and bridge implementations MUST support at least connection to the reco
 
 As part of the Desktop Agent Bridging protocol, a bridge will implement "server" behavior by:
 
-* Accepting connections from client desktop agents, receiving and authenticating credentials and assigning a name (for routing purposes)
-* Receiving requests from client desktop agents.
-* Routing requests to client desktop agents.
-* Receiving responses (and collating?) from client desktop agents.
-* Routing responses to client desktop agents.
+* Accepting connections from client Deskop Agents, receiving and authenticating credentials and assigning a name (for routing purposes)
+* Receiving requests from client Deskop Agents.
+* Routing requests to client Deskop Agents.
+* Receiving responses (and collating?) from client Deskop Agents.
+* Routing responses to client Deskop Agents.
 
-A desktop agent will implement "client" behavior by:
+A Deskop Agent will implement "client" behavior by:
 
 * Connecting to the bridge, providing authentication credentials and receiving an assigned named (for purposes)
 * Forwarding requests to the bridge.
@@ -78,7 +81,7 @@ A desktop agent will implement "client" behavior by:
 * Receiving requests from the bridge.
 * Sending responses to the bridge.
 
-Hence, message paths and propagation are simple. All messages to other desktop agents are passed to the bridge for routing and all messages (both requests and responses) are received back from it, i.e. the bridge is responsible for all message routing.
+Hence, message paths and propagation are simple. All messages to other Deskop Agents are passed to the bridge for routing and all messages (both requests and responses) are received back from it, i.e. the bridge is responsible for all message routing.
 
 #### Collating responses
 
@@ -102,21 +105,19 @@ A key responsibility of the DAB is ensuring that the channel state of the connec
 
 As the bridge binds its websocket on the loopback address (127.0.0.1) it cannot be connected to from another device. Hence, an instance of the standalone bridge may be run on each device and those instances exchange messages in order to implement the bridge cross-device.
 
-However, cross-machine routing is an internal concern of the Desktop Agent Bridge, with each desktop agent simply communicating with a bridge instance located on the same machine. The connection protocol between bridges themselves is implementation specific and beyond the scope of this standard. Further, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user. However, methods of verifying the identity of user are currently beyond the scope of this Standard.
+However, cross-machine routing is an internal concern of the Desktop Agent Bridge, with each Deskop Agent simply communicating with a bridge instance located on the same machine. The connection protocol between bridges themselves is implementation specific and beyond the scope of this standard. Further, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user. However, methods of verifying the identity of user are currently beyond the scope of this Standard.
 
 ### Connection Protocol
 
-On connection to the bridge's websocket, a handshake must be completed that may include an authentication step before a name is assigned  to the desktop agent for use in routing messages. The purpose of the handshake is to allow:
+On connection to the bridge's websocket, a handshake must be completed that may include an authentication step before a name is assigned  to the Deskop Agent for use in routing messages. The purpose of the handshake is to allow:
 
-* The desktop agent to confirm that it is connecting to an FDC3 Desktop Agent Bridge, rather than another service exposed via a websocket.
-* The bridge to require that the desktop agent authenticate itself, allowing it to control access to the network of bridged desktop agents.
-* The desktop agent to request a particular name by which it will be addressed by other agents and for the bridge to assign the requested name, after confirming that no other agent is connected with that name, or a derivative of that name if it is already in use.
+* The Desktop Agent to confirm that it is connecting to Deskop Agent Bridge, rather than another service exposed via a websocket.
+* The DAB to require that the desktop agent authenticate itself, allowing it to control access to the network of bridged desktop agents.
+* The Desktop Agent to request a particular name by which it will be addressed by other agents and for the bridge to assign the requested name, after confirming that no other agent is connected with that name, or a derivative of that name if it is already in use.
 
-The bridge is ultimately responsible for assigning each desktop agent a name and for routing messages using those names. Desktop agents MUST accept the name they are assigned by the bridge.
+The bridge is ultimately responsible for assigning each desktop agent a name and for routing messages using those names. Desktop Agents MUST accept the name they are assigned by the bridge.
 
-#### Step 1. Handshake
-
-Exchange standardized hello messages that identify:
+Exchange standardized handshake messages that identify:
 
 * That the server is a bridge, including:
   * implementation details for logging by DA.
@@ -132,15 +133,18 @@ sequenceDiagram
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: connect
-    DAB ->>+ DA: hello
-    DA ->>+ DAB: handshake
-    DAB ->>+ DA: connectedAgentsUpdate
-    DAB ->>+ DB: connectedAgentsUpdate
-    DAB ->>+ DC: connectedAgentsUpdate
-
+    DA ->>+ DAB: connect (step 1)
+    DAB ->>+ DA: hello (step 2)
+    DA ->>+ DAB: handshake (steps 3-5)
+    DAB ->>+ DA: connectedAgentsUpdate (step 6)
+    DAB ->>+ DB: connectedAgentsUpdate (step 6)
+    DAB ->>+ DC: connectedAgentsUpdate (step 6)
 ```
 
+#### Step 1. Connect to Websocket
+The Desktop Agent attempts to connect to the websocket at the first port in the defined port range.
+
+#### Step 2. Hello
 When a new connection is made to the DAB websocket, it sends a `hello` message, including its metadata.
 
 ```typescript
@@ -161,9 +165,13 @@ When a new connection is made to the DAB websocket, it sends a `hello` message, 
 
 A Desktop Agent can use the structure of this message to determine that it has connected to a Desktop Agent Bridge (i.e by checking `msg.type === "hello" && msg.payload.desktopAgentBridgeVersion`), whether it supports a compatible FDC3 version and whether it is expected to provide authentication credentials in the next step (`if(msg.payload.authRequired) { ... }`).
 
-An optional JWT token can be included in the `hello` message to allow the connecting agent to authenticate the bridge. Verification of the JWM by the DA is option but recommended, meaning that the DA SHOULD verify the received JWT when one is included in the `hello` message.
+An optional JWT token can be included in the `hello` message to allow the connecting agent to authenticate the bridge. Verification of the supplied JWT by the DA is optional but recommended, meaning that the DA SHOULD verify the received JWT when one is included in the `hello` message.
 
-DA should respond to the `hello` message with a `handshake` request to the bridge, including an auth token (JWT) if required.
+If no hello message is received, the message doesn't match the defined format or validation of the optional JWT fails, the Desktop Agent should return to step 1 and attempt connection to the next port in the range.  In the event that there are no ports reining in the range, the Desktop Agent SHOULD reset to the beginning of the range, MAY pause its attempts to connect and resume later. Note, if the Desktop Agent is configured to run at startup (of the user's machine) it is possible that the Desktop Agent Bridge may start later (or be restarted at some point). Hence, Desktop Agents SHOULD be capable of connecting to the bridge once they are already running (rather than purely at startup).
+
+#### Step 3. Handshake & Authentication
+
+The DA must then respond to the `hello` message with a `handshake` request to the bridge, including an auth token (JWT) if required.
 
 ```typescript
 {
@@ -189,7 +197,8 @@ DA should respond to the `hello` message with a `handshake` request to the bridg
 }
 ```
 
-#### Step 2. Authentication (optional?)
+Note that the `meta` element of of the handshake message contains both a `timestamp` field (for logging purposes) and a `requestGuid` field that should be populated with a Globally Unique Identifier (GUID), generated by the Destkop Agent. This `responseGuid` will be used to link the handshake message to a response from the DAB that assigns it a name. For more details on GUID generation see section XX.
+
 
 If requested by the server, the JWT auth token payload should take the form:
 
@@ -210,7 +219,7 @@ e.g.
 
 Note that the `sub` SHOULD be a UUID that does NOT need to match the name requested by the Desktop Agent. It will be used to identify the keypair that should be used to validate the JWT token. Further, multiple Desktop Agent's MAY share the same keys for authentication and hence the same `sub`, but they will be assigned different names for routing purposes by the DAB. If an agent disconnects from the bridge and later re-connects it MAY request and be assigned the same name it connected with before.
 
-#### Step 3. Auth Confirmation and Name Assignment
+#### Step 4. Auth Confirmation and Name Assignment
 
 The DAB will extract the authentication token `sub` from the JWT token's claims and then verify the token's signature against any public key it has been configured with. If the signature can't be verified, the bridge should respond with the below authentication failed message and the socket should be disconnected by the bridge.
 
@@ -228,41 +237,38 @@ The DAB will extract the authentication token `sub` from the JWT token's claims 
 }
 ```
 
-If authentication succeeds (or is not required), then the DAB should assign the Desktop Agent, and associated socket connection, the name requested in the `handshake` message, unless another agent is already connected with that name in which case it should generate a new name which MAY be derived from the requested name.
+If authentication succeeds (or is not required), then the DAB should assign the Desktop Agent the name requested in the `handshake` message, unless another agent is already connected with that name in which case it should generate a new name which MAY be derived from the requested name. Note that the assigned name is not communicated to the connecting agent until step 5.
 
-#### Step 4. Synchronize the bridge's channel state
+#### Step 5. Synchronize the bridge's channel state
 
-Channels are the only stateful mechanism in the FDC3 that we have to consider. A key responsibility of the DAB is ensuring that the channel state of the connected agents is kept in-sync. To do so, the states must be synchronized whenever a new agent connects. Hence, the Bridge must process the `channelState` provided by the new agent in the `handshake` request containing details of each known User Channel or App Channel and its state, compare it to its own representation of the current state of channels in connected agents, merge that state with that of the new agent and communicate the updated state to connected agents to ensure that they are synchronized with it.
+Channels are the main stateful mechanism in the FDC3 that we have to consider. A key responsibility of the DAB is ensuring that the channel state of the connected agents is kept in-sync. To do so, the states must be synchronized whenever a new agent connects. Hence, the Bridge MUST process the `channelState` provided by the new agent in the `handshake` request, which MUST contain details of each known User Channel or App Channel and its state. The bridge MUST compare the received channel names and states to its own representation of the current state of channels in connected agents, merge that state with that of the new agent and communicate the updated state to all connected agents to ensure that they are synchronized with it.
 
-Channel state of agents's already connected to the bridge should take precedence over agents that are connecting. However, if all agent's disconnect from the bridge it should reset (clear) its internal state and adopt that of the first agent to connect. The state of any Private channels does not need to be included as these can only be retrieved via a raised intent.
-
-When an agent connects to the bridge, it should adopt the state of any channels that do not currently exist or do not currently contain state of a particular type. This synchronization is NOT performed via broadcast of context as it may result in an older context, of a type not already found on the channel being merged into the channel (and subsequently broadcast to context listeners with a matching type).
-
-The incoming `channelsState` should be merged with the `existingChannelsState` as follows:
+Hence, if we assume that the state of each channel can be represented by an ordered array of context objects (most recent first - noting that only the first position, that of the most recent context broadcast, matters), the Desktop Agent Bridge MUST merge the incoming `channelsState` with the `existingChannelsState` as follows:
 
 ```typescript
 Object.keys(channelsState).forEach((channelId) => {
     if (!existingChannelsState[channelId]) {
-        //unknown channel, just aodopt its state
+        //unknown channels: just adopt its state
         existingChannelsState[channelId] = channelsState[channelId];
     } else {
-        //known channel merge state, with existing state taking precedence
+        //known channels: merge state, with existing state taking precedence
         const currentState = existingChannelsState[channelId];
         const incoming = channelsState[channelId];
         incoming.forEach((context) => {
+            //only add previously unknown context types to the state
             if (!currentState.find(element => element.type === context.type)){
+                //add to end of array to avoid setting most recent context type at the beginning
                 currentState.push(context);
             } 
-            // ignore any types that are already known and 
-            // preserve most recent channel state by adding to the end of the array           
+            // else ignore any types that are already known          
         });
     }
 });
 ```
 
-For the scenario of multiple agents connecting to the Desktop Agent Bridge at the same time, this portion of the handshake should be handled by the DAB serially to ensure correct channel state synchronization.
+When multiple agents attempt to connect to the Desktop Agent Bridge at the same time, steps 3-6 of the connection protocol MUST be handled by the DAB serially to ensure correct channel state synchronization.
 
-#### Step 5. Connected agents update
+#### Step 6. Connected agents update
 
 The updated `existingChannelsState` will then be shared with all connected agents along with updated details of all connected agents via a `connectedAgentsUpdate` message sent to all connected sockets. The newly connected agent will receive both its assigned name and channel state via this message. The `connectedAgentsUpdate` message will be linked to the handshake request by quoting the `meta.requestGuid` of the `handshake` message.
 
@@ -296,31 +302,37 @@ The `connectedAgentsUpdate` message will take the form:
 }
 ```
 
-When applying the updated channel state, it should be noted that desktop agents will not have context listeners for previously unknown channels, and can simply record that channel's state for use when that channel is first used. For known channel names, the Desktop Agent must also compare its current state to that which it has just received and may need to broadcast context to existing connected listeners. As context listeners can be registered for either a specific type or all types some care is necessary when doing so (as the most recently transmitted Context should be received by un-typed listeners). Hence, updating listeners for a known channel should be performed as follows:
+When an agent connects to the bridge, it should adopt the state of any channels that do not currently exist or do not currently contain state of a particular type. This synchronization is NOT performed via broadcast as the context being merged would become the most recent context on the channel, when other contexts may have been broadcast subsequently. Rather, it should be adopted internally by the Desktop Agent merging it such that it would be received by applications that are adding a user channel context listener or calling `channel.getCurrentContext()`. 
 
-1. The incoming channel state `channelState` for a particular channel should be processed from last (oldest) to first.
-2. If there is no current context of that type, broadcast it to listeners of that specific type only.
+It should be noted that Deskop Agents will not have context listeners for previously unknown channels, and SHOULD simply record that channel's state for use when that channel is first used. 
+
+For known channel names, the Desktop Agent MUST also compare its current state to that which it has just received and may need to internally adopt context of types not previously seen on a channel. As context listeners can be registered for either a specific type or all types some care is necessary when doing so (as only the most recently transmitted Context should be received by un-typed listeners). Hence, the new context MUST only be passed to a context listener if it was registered specifically for that type and a context of that type did not previously exist on the channel.
+
+In summary, updating listeners for a known channel should be performed as follows:
+
+1. The incoming channel state `channelState` for a particular channel should be processed from last to first (most recent context broadcast).
+2. If there is no current context of that type, broadcast it to any listeners of that specific type only.
 3. If there is a current context of that type, and it does not match the incoming object exactly, broadcast it to listeners of that specific type only.
 4. If the most recent (first in the incoming array) type OR value of that type doesn't match the most recent context broadcast on the channel, broadcast it to un-typed listeners only.
 
-After applying the `connectedAgentsUpdate` message, the newly connected desktop agent and other already connected agents are able to begin communicating through the bridge.
+This procedure is the same for both previously connected and connecting agents, however, the merging procedure used by the DAB in step 5 will result in apps managed by previously connected agents only rarely receiving context broadcasts (and only for types they have not yet seen on a channel).
 
-Channel state synchronization messages from the DAB to Desktop Agents should be handled atomically to prevent message overlap with `fdc3.broadcast`, `channel.broadcast`, `fdc3.addContextListener` or `channel.getCurrentContext`.
+After applying the `connectedAgentsUpdate` message, the newly connected Deskop Agent and other already connected agents are able to begin communicating through the bridge.
 
-#### Step 6. Disconnects
+The handling of these synchronization messages from the DAB to Desktop Agents should be handled atomically by Desktop Agents to prevent message overlap with `fdc3.broadcast`, `channel.broadcast`, `fdc3.addContextListener` or `channel.getCurrentContext`. I.e. the `connectedAgentsUpdate` message must be processed immediately on receipt and updates applied before any other messages are sent or responses processed.
 
-Although not part of the connection protocol, it should be noted that the `connectedAgentsUpdate` message sent in step 5 should also be sent whenever an agent disconnects from the bridge to update other agents. If any agents remain connected, then the `channelState` does not change and can be omitted. However, if the last agent disconnects the bridge SHOULD discard its internal `channelState`, instead of issuing the update.
+Similarly, the DAB must process `handshake` messages and issue `connectedAgentsUpdate` messages to all participants (steps 3-6) atomically, allowing no overlap with the processing of other messages from connected agents.
 
+#### Step 7. Disconnects
 
+Although not part of the connection protocol, it should be noted that the `connectedAgentsUpdate` message sent in step 6 should also be sent whenever an agent disconnects from the bridge to update other agents. If any agents remain connected, then the `channelState` does not change and can be omitted. However, if the last agent disconnects the bridge SHOULD discard its internal `channelState`, instead of issuing the update.
 
-## Interactions between Desktop Agents
+## Handling FDC3 Interactions When Bridged
 
-The use of Desktop Agent Bridging affects how a desktop agent must handle FDC3 API calls. Details on how this affects the FD3 API and how a desktop agent should interact with other agents over the bridge are provided below in this section.  
+The use of Desktop Agent Bridging affects how a Desktop Agent must handle FDC3 API calls. Details on how this affects the FD3 API, how a Desktop Agent should interact the bridge and specifics of the messaging protocol are provided in this section.  
 
-### Handling FDC3 calls When Bridged
-
+### Messaging protocol
 TBC - describe generic protocol for working with the bridge for both fire and forget and request/response type calls.
-
 
 ### Identifying Desktop Agents Identity and Message Sources
 
@@ -347,7 +359,7 @@ interface AppIdentifier {
    **/
   readonly desktopAgent?: string;
 }
-```
+``` 
 
 ### Identifying Individual Messages
 
@@ -356,13 +368,15 @@ There are a variety of message types we'll need to send between bridged DAs, sev
 * GUIDs required to uniquely identify messages
   * To be referenced in replies
 
-This means that each request that gets generated, should contain a request GUID, and every response to a request should contain a response GUID AND reference the request GUID. A response the does not reference a request GUID should be considered invalid.
+This means that each request that gets generated, should contain a request GUID, and every response to a request should contain a response GUID AND reference the request GUID. A response that does not reference a request GUID will be considered invalid.
+
+#### Global Unique Identifier
+
+A GUID (globally unique identifier), also known as a Universally Unique IDentifier (UUID), is a generated 128-bit text string that is intended to be 'unique across space and time', as defined in [IETF RFC 4122](https://www.ietf.org/rfc/rfc4122.txt).  
+
+There are several types of GUIDs, which vary how they are generated. As Desktop Agents will typically be running on the same machine, system clock and hardware details may not provide sufficient uniqueness in GUIDs generated (including during the connect step, where Desktop Agent name collisions may exist). Hence, it is recommended that both Desktop Agents and Desktop Agent Bridges SHOULD use a version 4 generation type (random).
 
 ### Forwarding of Messages to Other Agents
-
-//TODO: rewrite based on DA deciding to send to bridge, bridge forwards on
-//if target specified, forward to specific agent only
-
 
 The DAB MUST be able to forward messages received from one DA on to others (excluding obviously the Desktop Agent where the request was originated). There are a few simple rules which determine whether a message needs to be forwarded:
 
@@ -371,11 +385,9 @@ The DAB MUST be able to forward messages received from one DA on to others (excl
   * The bridge will send it on to other known DAs (except the source of the message)
 
 * If the message has a target Desktop Agent (e.g. response to findIntent)
-  * The bridge will forward the message to it.
 
 
-
-## Generic request and response formats
+## Request and Response Formats
 
 //TODO explain basic message structure type/payload (original FDC3 call args/response), meta (routing info).
 
@@ -391,7 +403,7 @@ For simplicity, in this spec the request and response GUID will be just `request
     payload: {
         //example fields for specific messages... wouldn't be specified in base type
         channel?: string,
-        intent?: string,
+Deskop Agent        intent?: string,
         context?: Context,
         //fields for other possible arguments
     },
@@ -653,7 +665,7 @@ which is sent back over the bridge as a response to the request message as:
             ]
         }
     },
-    "meta": {
+Deskop Agent    "meta": {
         "requestGuid": "requestGuid",
         "responseGuid":  "responseGuidAgentB",
         "timestamp":  "2020-03-...",
@@ -705,7 +717,7 @@ This response gets repeated by the bridge in augmented form as:
 }
 ```
 
-DA agent-C would produce response:
+Deskop AgentDA agent-C would produce response:
 
 ```JSON
 {
