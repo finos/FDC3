@@ -27,12 +27,12 @@
     "test": "tsdx test --verbose",
     "lint": "tsdx lint src/api test",
     "prepare": "tsdx build",
-    "typegen": "cd src/context && quicktype -s schema --src-urls schemas.json -o ContextTypes.ts && cd ../.. && tsdx lint src/context --fix"
+    "typegen": "cd src/context && quicktype -s schema --src-urls schemas.json -o ContextTypes.ts"
   },
   "peerDependencies": {},
   "husky": {
     "hooks": {
-      "pre-commit": "tsdx lint src test"
+      "pre-commit": "tsdx lint"
     }
   },
   "prettier": {

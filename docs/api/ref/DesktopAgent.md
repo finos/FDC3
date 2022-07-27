@@ -15,9 +15,8 @@ It is expected that the `DesktopAgent` interface is made availabe via the [`wind
 ```ts
 interface DesktopAgent {
   // apps
-  open(app: AppIdentifier, context?: Context): Promise<AppIdentifier>;
-  findInstances(app: AppIdentifier): Promise<Array<AppIdentifier>>;
-  getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
+  open(app: AppIdentifier, context?: Context): Promise<AppMetadata>;
+  findInstances(app: AppIdentifier): Promise<Array<AppMetadata>>;
 
   // context
   broadcast(context: Context): Promise<void>;
@@ -47,7 +46,7 @@ interface DesktopAgent {
   addContextListener(handler: ContextHandler): Promise<Listener>;
   getSystemChannels(): Promise<Array<Channel>>;
   joinChannel(channelId: string) : Promise<void>;
-  open(name: String, context?: Context): Promise<AppIdentifier>;
+  open(name: String, context?: Context): Promise<AppMetadata>;
   raiseIntent(intent: string, context: Context, name: String): Promise<IntentResolution>;
   raiseIntentForContext(context: Context, name: String): Promise<IntentResolution>;
 }
@@ -61,7 +60,7 @@ interface DesktopAgent {
 addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 ```
 
-Adds a listener for incoming context broadcasts from the Desktop Agent. If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
+Adds a listener for incoming context broadcasts from the Desktop Agent. If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types. 
 
 Context broadcasts are only received from apps that are joined to the same User Channel as the listening application, hence, if the application is not currently joined to a User Channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
 
@@ -78,7 +77,7 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', contact =>
 
 // listener that logs metadata for the message a specific type
 const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, metadata) => { 
-  console.log(`Received context message\nContext: ${contact}\nOriginating app: ${metadata?.source}`);
+  console.log(`Received context message\nContext: ${contact}\nOriginating app: ${metadata?.sourceAppMetadata}`);
   //do something else with the context
 });
 ```
@@ -114,7 +113,7 @@ const listener = fdc3.addIntentListener('StartChat', context => {
 
 //Handle a raised intent and log the originating app metadata
 const listener = fdc3.addIntentListener('StartChat', (contact, metadata) => { 
-  console.log(`Received intent StartChat\nContext: ${contact}\nOriginating app: ${metadata?.source}`);
+  console.log(`Received intent StartChat\nContext: ${contact}\nOriginating app: ${metadata?.sourceAppMetadata}`);
     return;
 });
 
@@ -187,14 +186,14 @@ fdc3.broadcast(instrument);
 ### `findInstances`
 
 ```ts
-findInstances(app: AppIdentifier): Promise<Array<AppIdentifier>>;
+findInstances(app: AppIdentifier): Promise<Array<AppMetadata>>;
 ```
 
 Find all the available instances for a particular application.
 
 If there are no instances of the specified application the returned promise should resolve to an empty array.
 
-If the request fails for another reason, the promise will return an `Error` with a string from the `ResolveError` enumeration.
+If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
 
 #### Example
 
@@ -232,14 +231,14 @@ const appIntent = await fdc3.findIntent("StartChat");
 // {
 //   intent: { name: "StartChat", displayName: "Chat" },
 //   apps: [
-//    { appId: "Skype" }, 
-//    { appId: "Symphony" }, 
-//    { appId: "Slack" }
+//    { name: "Skype" }, 
+//    { name: "Symphony" }, 
+//    { name: "Slack" }
 //   ]
 // }
 
 // raise the intent against a particular app
-await fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[0]);
+await fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
 
 //later, we want to raise 'StartChat' intent again
 const appIntent = await fdc3.findIntent("StartChat");
@@ -248,10 +247,10 @@ const appIntent = await fdc3.findIntent("StartChat");
 // {
 //   intent: { name: "StartChat", displayName: "Chat" },
 //   apps: [
-//    { appId: "Skype" }, 
-//    { appId: "Symphony" }, 
-//    { appId: "Symphony", instanceId: "93d2fe3e-a66c-41e1-b80b-246b87120859" }, 
-//    { appId: "Slack" }
+//    { name: "Skype" }, 
+//    { name: "Symphony" }, 
+//    { name: "Symphony", instanceId: "93d2fe3e-a66c-41e1-b80b-246b87120859" }, 
+//    { name: "Slack" }
 //   ]
 ```
 
@@ -270,14 +269,14 @@ const appIntent = await fdc3.findIntent("ViewContact", "fdc3.ContactList");
 // returns only apps that return the specified result type:
 // {
 //     intent: { name: "ViewContact", displayName: "View Contact Details" },
-//     apps: { appId: "MyCRM", resultType: "fdc3.ContactList"}]
+//     apps: { name: "MyCRM", resultType: "fdc3.ContactList"}]
 // }
 
 const appIntent = await fdc3.findIntent("QuoteStream", instrument, "channel<fdc3.Quote>");
 // returns only apps that return a channel which will receive the specified input and result types:
 // {
 //     intent: { name: "QuoteStream", displayName: "Quotes stream" },
-//     apps: { appId: "MyOMS", resultType: "channel<fdc3.Quote>"}]
+//     apps: { name: "MyOMS", resultType: "channel<fdc3.Quote>"}]
 // }
 ```
 
@@ -298,7 +297,7 @@ A promise resolving to all the intents, their metadata and metadata about the ap
 
 If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
 
-The optional `resultType` argument may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested without a specified context type, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
+The optional `resultType` argument may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
 
 #### Example
 
@@ -311,20 +310,20 @@ const appIntents = await fdc3.findIntentsByContext(context);
 // [
 //   {
 //     intent: { name: "StartCall", displayName: "Call" },
-//     apps: [{ appId: "Skype" }]
+//     apps: [{ name: "Skype" }]
 //   },
 //   {
 //     intent: { name: "StartChat", displayName: "Chat" }, 
 //     apps: [
-//       { appId: "Skype" }, 
-//       { appId: "Symphony" }, 
-//       { appId: "Symphony", instanceId: "93d2fe3e-a66c-41e1-b80b-246b87120859" }, 
-//       { appId: "Slack" }
+//       { name: "Skype" }, 
+//       { name: "Symphony" }, 
+//       { name: "Symphony", instanceId: "93d2fe3e-a66c-41e1-b80b-246b87120859" }, 
+//       { name: "Slack" }
 //     ]
 //   },
 //   {
 //     intent: { name: "ViewContact", displayName: "View Contact" },
-//     apps: [{ appId: "Symphony" }, { appId: "MyCRM", resultType: "fdc3.ContactList"}]
+//     apps: [{ name: "Symphony" }, { name: "MyCRM", resultType: "fdc3.ContactList"}]
 //   }
 // ];
 ```
@@ -336,7 +335,7 @@ const appIntentsForType = await fdc3.findIntentsByContext(context, "fdc3.Contact
 // returns for example:
 // [{
 //     intent: { name: "ViewContact", displayName: "View Contact" },
-//     apps: [{ appId: "Symphony" }, { appId: "MyCRM", resultType: "fdc3.ContactList"}]
+//     apps: [{ name: "Symphony" }, { name: "MyCRM", resultType: "fdc3.ContactList"}]
 // }];
  
 // select a particular intent to raise
@@ -353,26 +352,6 @@ await fdc3.raiseIntent(startChat.intent.name, context, selectedApp);
 
 * [`findIntent()`](#findintent)
 * [`ResolveError`](Errors#resolveerror)
-
-### `getAppMetadata`
-
-```ts
-getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
-```
-
-Retrieves the [`AppMetadata`](Metadata#appmetadata) for an [`AppIdentifier`](Types#appidentifier), which provides additional metadata (such as icons, a title and description) from the App Directory record for the application, that may be used for display purposes.
-
-#### Examples
-
-```js
-let appIdentifier = { appId: "MyAppId@my.appd.com" }
-let appMetadata = await fdc3.getAppMetadata(appIdentifier);
-```
-
-#### See also
-
-* [`AppMetadata`](Metadata#appmetadata)
-* [`AppIdentifier`](Types#appidentifier)
 
 ### `getCurrentChannel`
 
@@ -422,6 +401,7 @@ The `ImplementationMetadata` object returned also includes the metadata for the 
 ```js
 let implementationMetadata = await fdc3.getInfo();
 let {appId, instanceId} = implementationMetadata.appMetadata;
+
 ```
 
 #### See also
@@ -435,9 +415,8 @@ let {appId, instanceId} = implementationMetadata.appMetadata;
 getOrCreateChannel(channelId: string): Promise<Channel>;
 ```
 
-Returns a `Channel` object for the specified channel, creating it (as an _App_ channel) if it does not exist.
-
-If the Channel cannot be created or access was denied, the returned promise MUST be rejected with an error string from the `ChannelError` enumeration.
+Returns a `Channel` object for the specified channel, creating it (as an _App_ channel) - if it does not exist.
+`Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration if the channel could not be created or access was denied.
 
 #### Example
 
@@ -587,30 +566,33 @@ redChannel.addContextListener(null, channelListener);
 ### `open`
 
 ```ts
-open(app: AppIdentifier, context?: Context): Promise<AppIdentifier>;
+open(app: AppIdentifier, context?: Context): Promise<AppMetadata>;
 ```
 
-Launches an app, specified via an [`AppIdentifier`](Metadata#appidentifier) object.
+Launches an app with target information, which can be either be a string like a name, or an [`AppMetadata`](Metadata#appmetadata) object.
 
-The `open` method differs in use from [`raiseIntent`](#raiseintent).  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying an App Directory, `open` would be used to open an app returned in the search results.
+The `open` method differs in use from [`raiseIntent`](#raiseintent).  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying the App Directory, `open` would be used to open an app returned in the search results.
 
 **Note**, if the intent, context and target app name are all known, it is recommended to instead use [`raiseIntent`](#raiseintent) with the `target` argument.
 
 If a [`Context`](Types#context) object is passed in, this object will be provided to the opened application via a contextListener. The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
 
-Returns an [`AppIdentifier`](Metadata#appidentifier) object with the `instanceId` field set to identify the instance of the application opened by this call.
+Returns an [`AppMetadata`](Metadata#appmetadata) object with the `instanceId` field set identifying the instance of the application opened by this call.
 
 If opening errors, it returns an `Error` with a string from the [`OpenError`](Errors#openerror) enumeration.
 
 #### Example
 
  ```js
-// Open an app without context, using an AppIdentifier object to specify the target
-let appIdentifier = { appId: 'myApp-v1.0.1' };
-let instanceIdentifier = await fdc3.open(appIdentifier);
+// Open an app without context, using the app name
+let instanceMetadata = await fdc3.open('myApp');
+
+// Open an app without context, using an AppMetadata object to specify the target
+let appMetadata = {name: 'myApp', appId: 'myApp-v1.0.1', version: '1.0.1'};
+let instanceMetadata = await fdc3.open(appMetadata);
 
 // Open an app with context 
-let instanceIdentifier = await fdc3.open(appIdentifier, context);
+let instanceMetadata = await fdc3.open(appMetadata, context);
 ```
 
 #### See also
@@ -626,7 +608,7 @@ let instanceIdentifier = await fdc3.open(appIdentifier, context);
 raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<IntentResolution>;
 ```
 
-Raises a specific intent for resolution against apps registered with the desktop agent.
+Raises a specific intent for resolution against apps registered with the desktop agent. 
 
 The desktop agent MUST resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, a method for resolving the intent to a target app, such as presenting the user with a resolver UI allowing them to pick an app, SHOULD be provided.
 Alternatively, the specific app or app instance to target can also be provided. A list of valid target applications and instances can be retrieved via [`findIntent`](DesktopAgent#findintent).  
@@ -705,7 +687,7 @@ If a target app for the intent cannot be found with the criteria provided or the
 const intentResolution = await fdc3.raiseIntentForContext(context);
 
 // Resolve against all intents registered by a specific target app for the specified context
-await fdc3.raiseIntentForContext(context, targetAppIdentifier);
+await fdc3.raiseIntentForContext(context, targetAppMetadata);
 ```
 
 #### See also
@@ -727,8 +709,8 @@ addContextListener(handler: ContextHandler): Promise<Listener>;
 Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard <2.0.
 
 #### See also
-
 * [`addContextListener`](#addcontextlistener)
+
 
 ### `getSystemChannels` (deprecated)
 
@@ -738,7 +720,6 @@ getSystemChannels() : Promise<Array<Channel>>;
 
 Alias to the [`getUserChannels`](#getuserchannels) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
 #### See also
-
 * [`getUserChannels`](#getuserchannels)
 
 ### `joinChannel` (deprecated)
@@ -755,7 +736,7 @@ Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwar
 ### `open` (deprecated)
 
 ```ts
-open(name: String, context?: Context): Promise<AppIdentifier>;
+open(name: String, context?: Context): Promise<AppMetadata>;
 ```
 
 Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.

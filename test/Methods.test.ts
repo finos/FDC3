@@ -12,7 +12,6 @@ import {
   findIntentsByContext,
   getCurrentChannel,
   getInfo,
-  getAppMetadata,
   getOrCreateChannel,
   getUserChannels,
   getSystemChannels,
@@ -274,14 +273,6 @@ describe('test ES6 module', () => {
 
       expect(window.fdc3.getInfo).toHaveBeenCalledTimes(1);
       expect(window.fdc3.getInfo).toHaveBeenCalledWith();
-    });
-
-    test('getAppMetadata should delegate to window.fdc3.getAppMetadata', async () => {
-      const dummyApp = { appId: 'dummy' };
-      await getAppMetadata(dummyApp);
-
-      expect(window.fdc3.getAppMetadata).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.getAppMetadata).toHaveBeenCalledWith(dummyApp);
     });
   });
 

@@ -1,4 +1,4 @@
-const validTypes = ["platform-provider", "application-provider", "examples-and-training", "solution-provider", "adopter", "all"];
+const validTypes = ["platform-provider", "application-provider", "examples-and-training", "all"];
 const setType = (theType) => { 
 	let typeToSet = theType;
 	if (validTypes.indexOf(theType) === -1) {

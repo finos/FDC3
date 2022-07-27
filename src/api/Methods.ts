@@ -1,5 +1,6 @@
 import {
   AppIdentifier,
+  AppMetadata,
   AppIntent,
   Channel,
   Context,
@@ -8,7 +9,6 @@ import {
   IntentResolution,
   Listener,
   ImplementationMetadata,
-  AppMetadata,
 } from '..';
 
 const DEFAULT_TIMEOUT = 5000;
@@ -61,7 +61,7 @@ function isString(app: AppIdentifier | String): app is String {
   return typeof app === 'string';
 }
 
-export function open(app: AppIdentifier | String, context?: Context): Promise<AppIdentifier> {
+export function open(app: AppIdentifier | String, context?: Context): Promise<AppMetadata> {
   if (isString(app)) {
     return rejectIfNoGlobal(() => window.fdc3.open(app, context));
   } else {
@@ -159,10 +159,6 @@ export function leaveCurrentChannel(): Promise<void> {
 
 export function getInfo(): Promise<ImplementationMetadata> {
   return rejectIfNoGlobal(() => window.fdc3.getInfo());
-}
-
-export function getAppMetadata(app: AppIdentifier): Promise<AppMetadata> {
-  return rejectIfNoGlobal(() => window.fdc3.getAppMetadata(app));
 }
 
 /**

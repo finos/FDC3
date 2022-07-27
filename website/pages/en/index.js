@@ -71,7 +71,6 @@ class HomeSplash extends React.Component {
               <ProjectTitle siteConfig={siteConfig} />
               <PromoSection>
                 <Button href={docUrl('fdc3-intro')}>Get Started</Button>
-                <Button href={docUrl('next/fdc3-intro')}>Review 2.0 PreDraft</Button>
                 <Button href={repoUrl}>GitHub</Button>
               </PromoSection>
             </div>
@@ -161,7 +160,7 @@ class Index extends React.Component {
       return (
         <div className="userShowcase productShowcaseSection paddingTop paddingBottom">
           <h2>Who is Using FDC3?</h2>
-          <p>The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standards are created and used by <a href="/users">leading organizations across the financial industry</a>. For more detail on who's using FDC3, developer tools, training and examples see the <a href="/community">community page</a>.</p>
+          <p>The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standards are created and used by <a href="/users">leading organizations across the financial industry</a>.</p>
           <Showcase users={pinnedUsers} />
           {/* exclude button to users page for now, all users shown on main page */}
           {/* <div className="more-users">

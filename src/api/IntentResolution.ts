@@ -4,11 +4,10 @@
  */
 
 import { IntentResult } from './Types';
-import { AppIdentifier } from './AppIdentifier';
+import { AppMetadata } from './AppMetadata';
 
 /**
  * IntentResolution provides a standard format for data returned upon resolving an intent.
- *
  * ```javascript
  * //resolve a "Chain" type intent
  * let resolution = await agent.raiseIntent("intentName", context);
@@ -27,18 +26,17 @@ import { AppIdentifier } from './AppIdentifier';
  * } catch(error) {
  *     console.error(`${resolution.source} returned an error: ${error}`);
  * }
- *
  * // Use metadata about the resolving app instance to target a further intent
  * await agent.raiseIntent("intentName", context, resolution.source);
  * ```
  */
 export interface IntentResolution {
   /**
-   * Identifier for the app instance that was selected (or started) to resolve the intent.
+   * Metadata about the app instance that was selected (or started) to resolve the intent.
    * `source.instanceId` MUST be set, indicating the specific app instance that
    * received the intent.
    */
-  readonly source: AppIdentifier;
+  readonly source: AppMetadata;
   /**
    * The intent that was raised. May be used to determine which intent the user
    * chose in response to `fdc3.raiseIntentForContext()`.

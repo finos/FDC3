@@ -10,17 +10,7 @@ const React = require('react');
 const { useState, useEffect } = React;
 const CompLibrary = require('../../core/CompLibrary.js');
 const Container = CompLibrary.Container;
-const implData = require(`${process.cwd()}/data/community.json`);
-
-const badgeTitles = {
-	"Open Source": "Indicates that the project source code is available to download and modify, under an Apache 2.0 or similar license.",
-	"FDC3 1.2 Supported": "Indicates that this product advertises compatibility with the FDC3 1.2 Standard. ",
-	"FDC3 2.0 Supported ": "Indicates that this product advertises compatibility with the FDC3 2.0 Standard. ", 
-	"FDC3 1.2 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 1.2 Conformance testing process.",
-	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process.",
-	"FDC3 2.0 Support Coming Soon": "This product is working towards attaining the FDC3 2.0 Standard.",
-}
-
+const implData = require(`${process.cwd()}/data/implementations.json`);
 
 //remove comments
 implData.forEach(function (item, index, object) {
@@ -42,7 +32,7 @@ implData.sort((a, b) => {
 	}
 });
 
-function Implementation({ type, title, publisher, image, infoLink, docsLink, badges, description }) {
+function Implementation({ type, title, publisher, image, infoLink, docsLink, description }) {
 	return <div className={"implementation hide " + type}>
 		<div className="implementation-metadata">
 			<div className="title-and-publisher">
@@ -60,9 +50,6 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 					{docsLink ? <a href={docsLink} key={docsLink} className="button">Documentation</a> : null}
 				</div>
 				<div className="prose" dangerouslySetInnerHTML={{ __html: description }}></div>
-				<div className="badges">
-					{ badges.map(b =><a href="#" key={b.text} title={badgeTitles[b.text]} className="button badge">{b.text}</a>)}
-				</div>
 			</div>
 		</div>
 	</div>
@@ -79,14 +66,8 @@ function ImplementationsShowcase() {
 			<button className="button filter" id="application-provider">
 				App Providers
 			</button>
-			<button className="button filter" id="solution-provider">
-				Solution Providers
-			</button>
 			<button className="button filter" id="examples-and-training">
 				Examples &amp; Training
-			</button>
-			<button className="button filter" id="adopter">
-				Adopters
 			</button>
 			<button className="button filter" id="all">
 				All
@@ -103,16 +84,16 @@ function ImplementationsShowcase() {
 function Implementations(props) {
 	const { config: siteConfig } = props;
 	const { repoUrl } = siteConfig;
-	const editUrl = `https://www.finos.org/get-involved-fdc3`;
+	const editUrl = `${repoUrl}/edit/master/website/data/implementations.json`;
 
 	return <Container>
-		<h1>FDC3 Community</h1>
+		<h1>FDC3 Implementations</h1>
 		<div className="prose">
 			<p>
 				The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standard is maintained and used by leading organizations across the financial industry through a variety of different implementations.
 			</p>
 			<p>
-				For more detail on who's implementing the Desktop Agent (a "Platform Provider"), using FDC3 to enable interop with their apps (an "App Provider") or details on where to find tools, examples apps and training materials see below.
+				For more detail on who's implementing the Desktop Agent (a "Platform Provider"), using FDC3 to enable interop with their apps (an "Application Provider") or details on where to find tools, examples apps and training materials see below.
 			</p>
 			<p>
 				<i>

@@ -287,18 +287,6 @@ article iframe {
   align-items: center;
   flex-basis: 100%;
 }
-.implementation-details  > .description > .badges {
-	padding-left: 10px;
-}
-.implementation-details  > .description > .badges > .badge {
-	background-color: rgb(239, 239, 239);
-	display: inline-block;
-	border: 0px;
-	margin-top: 5px;
-	margin-right: 10px;
-}
-
-
 @media screen and (max-width: 736px) {
   .implementation-details {
     padding: 6px 6px;
