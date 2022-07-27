@@ -498,7 +498,7 @@ There are a few simple rules which determine how a request message should be for
 * else if the message is a response
   * and the message response includes 
 
-
+//TODO complete this
 
 ## Handling FDC3 Interactions When Bridged
 
