@@ -57,4 +57,4 @@ This section includes any Exclusion Notices made against a Draft Deliverable or 
 
 ## FDC3 Licensing Terms For Past Versions
 
-Please see [LICENSE](LICENSE) for licensing details of past versions.
+Please see [LICENSE](LICENSE.md) for licensing details of past versions.

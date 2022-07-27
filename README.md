@@ -156,7 +156,7 @@ Contributors to FINOS standards projects should follow the FINOS Code of Conduct
 
 Copyright 2017-2022 FINOS and FDC3 Participants.
 
-Please see the [license](LICENSE).
+Please see the [license](LICENSE.md).
 
 SPDX-License-Identifiers:
 
