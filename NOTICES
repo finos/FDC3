@@ -31,8 +31,6 @@ Date of withdrawal:
 
 ## Exclusions
 
-- For FDC3 1.0, please see [Patents-FDC3-1.0.md](Patents-FDC3-1.0.md)
-
 This section includes any Exclusion Notices made against a Draft Deliverable or Approved Deliverable as set forth in the Community Specification Development License.  Each Exclusion Notice must include the following information:
 
 -	Name of party making the Exclusion Notice:
@@ -56,3 +54,7 @@ This section includes any Exclusion Notices made against a Draft Deliverable or 
 	(ii) identification of the specific part(s) of the Specification whose implementation makes the excluded claim a Necessary Claim.
 
 -----------------------------------------------------------------------------------------
+
+## FDC3 Licensing Terms For Past Versions
+
+Please see [LICENSE](LICENSE) for licensing details of past versions.
