@@ -43,8 +43,8 @@ Thursday DD MMM yyyy - 10am EST / 3pm GMT
 
 - FINOS project meetings may be recorded for use solely by the FINOS team for administration purposes. In very limited instances, and with explicit approval, recordings may be made more widely available.
   
-- A Discussion Group has no direct decision-making power regarding the FDC3 standard - rather it is intended that anything they propose or work on will result in proposals (via Github issues and PRs) for the Standards Working Group participants to consider and vote on for inclusion in the standard. As such, participation in a Discussion group is not required for contributing to any particular issue or FDC 2.0 as a whole.
-
+- A Discussion Group has no direct decision-making power regarding the FDC3 standard - rather it is intended that anything they propose or work on will result in proposals (via Github issues and PRs) for the Standards Working Group participants to consider and vote on for inclusion in the standard.
+   
 ## Agenda
 - [ ] Convene & roll call, review meeting notices (5mins)
 - [ ] Review action items from previous meeting (5mins)
