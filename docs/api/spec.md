@@ -98,7 +98,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 
 - Provide the FDC3 API to web applications via a global accessible as [`window.fdc3`](#api-access).
 - Provide a global [`fdc3Ready`](#api-access) event that is fired when the API is ready for use.
-- Provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to raiseIntentForCOntext that return multiple options), usch as a resolver UI.
+- Provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to `raiseIntentForContext` that return multiple options), such as a resolver UI.
   - Intent resolution MUST take into account any specified input or return context types
   - Requests for resolution to apps returning a channel MUST include any apps that are registered as returning a channel with a specific type.
 - Return Errors from the [`ChannelError`](ref/Errors#channelerror), [`OpenError`](ref/Errors#openerror), [`ResolveError`](ref/Errors#resolveerror) and [`ResultError`](ref/Errors#resulterror) enumerations as appropriate.
