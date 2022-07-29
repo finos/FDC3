@@ -21,7 +21,7 @@ These rules would apply only to standards work within FDC3. Today, this covers t
 
 ## Personas
 
-FDC3 implementors generally fall into 2 categories: platform providers, and application providers. A platform provider supplies an implementation(s) of the FDC3 APIs (The Desktop Agent API and Applkication Directory) for applications to use.
+FDC3 implementors generally fall into 2 categories: platform providers, and application providers. A platform provider supplies an implementation(s) of the FDC3 APIs (The Desktop Agent API and Application Directory) for applications to use.
 
 An application provider is largely a downstream consumer of FDC3 standards. It MAY use the API, it MAY use Context Data, it MAY use Intents. Application providers are only required to comply with the standards they make use of.
 

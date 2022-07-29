@@ -144,8 +144,8 @@ An FDC3 Standard compliant application that supports the use of context data **M
 
 An FDC3 Standard compliant application that supports the use of context data **SHOULD**:
 
-* Prefer FDC3-defined standard context types over proprietary contexts, where a suitable FDC3-defined stanrd context type is available.
-* Ensure that any proprietary context data types fefined follow any the recommended [namespacing](#namespacing) and [field type conventions](#field-type-conventions) in the specification.
+* Prefer FDC3-defined standard context types over proprietary contexts, where a suitable FDC3-defined standard context type is available.
+* Ensure that any proprietary context data types defined follow any the recommended [namespacing](#namespacing) and [field type conventions](#field-type-conventions) in the specification.
 
 An FDC3 Standard compliant application that supports the use of context data **MAY**:
 

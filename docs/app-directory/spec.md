@@ -27,7 +27,7 @@ An FDC3 Standard compliant App Directory implementation **MUST**:
   * `/v2/apps/{appId}` (GET)
 * Ensure that `appId` field values assigned to applications are unique within the directory.
 * Ensure that app directory records served meet the minimum requirements specified in the [app directory OpenAPI specification](/schemas/next/app-directory#tag/Application/paths/~1v2~1apps~1{appId}/get)
-* Support retrieval of app directory records via either the raw appId (e.g. `myAppId`) or fully-qualified appId (e.g. `myAppId@host.domain.com`) as defined in the [app directory overview](overview#shrinking-the-uri).
+* Support retrieval of app directory records via either the raw `appId` (e.g. `myAppId`) or fully-qualified appId (e.g. `myAppId@host.domain.com`) as defined in the [app directory overview](overview#shrinking-the-uri).
 
 An FDC3 Standard compliant App Directory implementation **SHOULD**:
 
