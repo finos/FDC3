@@ -268,6 +268,19 @@ interface ImplementationMetadata {
    */
   readonly providerVersion?: string;
 
+  /** Metadata indicating whether the Desktop Agent implements optional features of
+   *  the Desktop Agent API.
+   */
+  readonly optionalFeatures: {
+    /** Used to indicate whether the exposure of 'origninating app metadata' for
+     *  context and intent messages is supported by the Desktop Agent.*/
+    "OriginatingAppMetadata": boolean;
+    /** Used to indicate whether the optional `fdc3.joinUserChannel`,
+     *  `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
+     *  the Desktop Agent.*/
+    "UserChannelMembershipAPIs": boolean;
+  };
+
   /** The calling application instance's own metadata, according to the 
    *  Desktop Agent (MUST include at least the `appId` and `instanceId`).
    */
