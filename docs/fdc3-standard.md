@@ -5,7 +5,7 @@ sidebar_label: Abstract
 ---
 
 **Status:** draft  
-_**adopted:** 1st July 2022  
+_**adopted:** 1st July 2022_
 _**released:** pending_  
 
 ## Abstract
