@@ -66,44 +66,32 @@
 <p>In general, the ratified FDC3 specs represent a lowest common denominator interface for interoperability. So, unless a particular item in a spec is marked with keywords such as OPTIONAL, MAY, SHOULD, or SHOULD NOT, it should be treated as REQUIRED.  Since FDC3 itself is primarily concerned with establishing the baseline requirements for interoperation, this is consistent with the IETF Guidance:</p>
 <blockquote>
 <ol start="6">
-<li><strong>Guidance in the use of these Imperatives</strong></li>
-</ol>
+<li><p><strong>Guidance in the use of these Imperatives</strong></p>
 <p>Imperatives of the type defined in this memo must be used with care
 and sparingly.  In particular, they MUST only be used where it is
 actually required for interoperation or to limit behavior which has
 potential for causing harm (e.g., limiting retransmisssions)  For
 example, they must not be used to try to impose a particular method
 on implementors where the method is not required for
-interoperability.</p>
+interoperability.</p></li>
+</ol>
 </blockquote>
 <p>These rules would apply only to standards work within FDC3. Today, this covers the API, App Directory, Context Data, and Intents specifications.</p>
 <h2><a class="anchor" aria-hidden="true" id="personas"></a><a href="#personas" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Personas</h2>
-<p>FDC3 implementors generally fall into 2 categories: platform providers, and application providers. A platform provider supplies an implementation of the FDC3 API for applications to use. Implicitly, it connects to one or more App Directories.</p>
+<p>FDC3 implementors generally fall into 2 categories: platform providers, and application providers. A platform provider supplies an implementation(s) of the FDC3 APIs (The Desktop Agent API and Application Directory) for applications to use.</p>
 <p>An application provider is largely a downstream consumer of FDC3 standards. It MAY use the API, it MAY use Context Data, it MAY use Intents. Application providers are only required to comply with the standards they make use of.</p>
 <p>Depending on persona, implementation compliance with FDC3 will mean different things.</p>
 <h3><a class="anchor" aria-hidden="true" id="platform-provider"></a><a href="#platform-provider" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Platform Provider</h3>
-<p>For platform providers FDC3 compliance requires:</p>
+<p>For platform providers FDC3 compliance requires that they meet the requirements of the APIs that they implement:</p>
 <ul>
-<li>Support for connections to 1 or more App Directories meeting the FDC3 App Directory standards SHOULD be provided</li>
-<li>An API implementation that meets the FDC3 API standards MUST be provided to all applications running in the context of the platform, including:
-<ul>
-<li>Support for the FDC3 Context Data and Intents standards</li>
-<li>Support for intent and context resolution using a resolver UI</li>
-<li>Support for retrieving information about the version of the FDC3 specification supported by a Desktop Agent implementation and the name of the implementation provider</li>
-</ul></li>
-<li>In the case of web applications, a Desktop Agent MUST provide the FDC3 API via a global accessible as <code>window.fdc3</code>.</li>
+<li><a href="api/spec#desktop-agent-api-standard-compliance">Desktop Agent API compliance requirements</a>.</li>
+<li><a href="app-directory/spec#app-directory-standard-compliance">App Directory compliance requirements</a>.</li>
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="application-provider"></a><a href="#application-provider" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Application Provider</h3>
-<p>For application providers FDC3 compliance requires:</p>
+<p>For application providers FDC3 compliance requires that they interact with the FDC3 APIs as intended and meet the requirements of the Intents and Context Data Standards. Specifically:</p>
 <ul>
-<li>If intents are supported by the application, they SHOULD favor supporting applicable FDC3 defined standard intents over proprietary ones.</li>
-<li>If FDC3 defined intents are supported, they MUST meet the expected context and behavior defined for the intent.</li>
-<li>If proprietary intents are handled, those intents SHOULD follow the recommended naming conventions in the specification.</li>
-<li>If intents are supported, the application SHOULD use the <code>addIntentListener</code> API to set up a handler.</li>
-<li>If context data is supported by the application, they SHOULD favor supporting applicable FDC3 defined context data types over proprietary ones.</li>
-<li>If FDC3 defined context data is supported, it MUST meet the interface defined for that type of context data.</li>
-<li>If proprietary context data properties are handled, they SHOULD follow any recommended naming conventions in the specification.</li>
-<li>If context data is supported, the application SHOULD use the <code>addContextListener</code> API to set up a handler.</li>
+<li><a href="intents/spec#intents-standard-compliance">Intents Standard compliance requirements</a></li>
+<li><a href="context/spec#context-data-standard-compliance">Context Data Standard compliance requirements</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="versioning"></a><a href="#versioning" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Versioning</h2>
 <p>Typically, a Standard that has marketplace relevance is revised from time to time, to correct errors and/or to add functionality to support new use cases. Hence, there exist multiple versions of the standard. As FDC3 is a standards project, we don't follow semver, which is meant for libraries. We use the versioning scheme <code>&lt;major&gt;.&lt;minor&gt;</code>, e.g. <code>1.1</code> or <code>2.3</code>.</p>

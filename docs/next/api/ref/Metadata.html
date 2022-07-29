@@ -276,6 +276,19 @@ For each intent, it reference the applications that support that intent.</p>
    */</span>
   <span class="hljs-keyword">readonly</span> providerVersion?: <span class="hljs-built_in">string</span>;
 
+  <span class="hljs-comment">/** Metadata indicating whether the Desktop Agent implements optional features of
+   *  the Desktop Agent API.
+   */</span>
+  <span class="hljs-keyword">readonly</span> optionalFeatures: {
+    <span class="hljs-comment">/** Used to indicate whether the exposure of &#x27;origninating app metadata&#x27; for
+     *  context and intent messages is supported by the Desktop Agent.*/</span>
+    <span class="hljs-string">&quot;OriginatingAppMetadata&quot;</span>: <span class="hljs-built_in">boolean</span>;
+    <span class="hljs-comment">/** Used to indicate whether the optional `fdc3.joinUserChannel`,
+     *  `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
+     *  the Desktop Agent.*/</span>
+    <span class="hljs-string">&quot;UserChannelMembershipAPIs&quot;</span>: <span class="hljs-built_in">boolean</span>;
+  };
+
   <span class="hljs-comment">/** The calling application instance&#x27;s own metadata, according to the 
    *  Desktop Agent (MUST include at least the `appId` and `instanceId`).
    */</span>
