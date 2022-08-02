@@ -253,7 +253,7 @@ If the request fails for another reason, the promise will return an `Error` with
 
 ```js
 // Retrieve a list of instances of an application
-let instances = await fdc3.findInstances({name: "MyApp"});
+let instances = await fdc3.findInstances({appId: "MyAppId"});
 
 // Target a raised intent at a specific instance
 let resolution = fdc3.raiseIntent("ViewInstrument", context, instances[0]);
