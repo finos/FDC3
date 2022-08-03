@@ -7,16 +7,9 @@
   "properties": {
     "type": { "const": "fdc3.transactionResult" },
     "status": {
-      "anyOf": [
-        {
           "type": "string",
           "enum": ["Created", "Deleted", "Updated", "Failed"]
         },
-        {
-          "type": "string"
-        }
-      ]
-    },
     "context": { "$ref": "context.schema.json#" }
   },
     "message": {
