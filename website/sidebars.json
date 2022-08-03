@@ -39,6 +39,7 @@
         "label": "Intents Part",
         "ids": [
           "intents/spec",
+          "intents/ref/CreateInteraction",
           "intents/ref/StartCall",
           "intents/ref/StartChat",
           "intents/ref/StartEmail",
@@ -52,7 +53,6 @@
           "intents/ref/ViewProfile",
           "intents/ref/ViewQuote",
           "intents/ref/ViewResearch",
-          "intents/ref/CreateInteraction",
           "intents/ref/ViewContact"
         ]
       },
@@ -70,9 +70,9 @@
           "context/ref/Country",
           "context/ref/Currency",
           "context/ref/Email",
-          "context/ref/Interaction",
           "context/ref/Instrument",
           "context/ref/InstrumentList",
+          "context/ref/Interaction",
           "context/ref/Nothing",
           "context/ref/Organization",
           "context/ref/Portfolio",
