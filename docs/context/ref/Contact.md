@@ -46,13 +46,13 @@ Other Types
 - [ContactList](ContactList)
 
 Intents
+- [CreateInteraction](../../intents/ref/CreateInteraction)
 - [StartChat](../../intents/ref/StartChat)
 - [StartCall](../../intents/ref/StartCall)
 - [ViewProfile](../../intents/ref/ViewProfile)
 - [ViewResearch](../../intents/ref/ViewResearch)
 - [ViewInteractions](../../intents/ref/ViewInteractions)
 - [ViewOrders](../../intents/ref/ViewOrders)
-- [CreateInteraction](../../intents/ref/CreateInteraction)
 
 FINOS Financial Objects
 - [Contact](https://fo.finos.org/docs/objects/contact)
