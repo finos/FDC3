@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `TransactionResult`
 
-`TransactionResult` is intended to be returned as an [`IntentResult`](../../api/Types#intentresult) by intents that create, retrieve, update or delete content or records in another application. Its purpose is to provide a status and message (where needed) for the transaction and MAY wrap a returned context object.
+The result of any given create, update or delete intent.
 
 ## Type
 
@@ -20,9 +20,9 @@ https://fdc3.finos.org/schemas/next/transactionresult.schema.json
 
 | Property    | Type    | Required | Example Value     |
 |-------------|---------|----------|-------------------|
-| `type`      | Context  | Yes      | See Below  |
+| `type`      | string  | Yes      | 'fdc3.transactionResult'  |
 | `status`      | string  | Yes       | `'Updated'`      |
-| `context`  | string  | Yes       | See Below |
+| `context`  | Context  | Yes       | See Below |
 | `message`  | string  | No       | See Below |
 
 ## Example
