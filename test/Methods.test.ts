@@ -12,6 +12,7 @@ import {
   findIntentsByContext,
   getCurrentChannel,
   getInfo,
+  getAppMetadata,
   getOrCreateChannel,
   getUserChannels,
   getSystemChannels,
@@ -274,6 +275,14 @@ describe('test ES6 module', () => {
       expect(window.fdc3.getInfo).toHaveBeenCalledTimes(1);
       expect(window.fdc3.getInfo).toHaveBeenCalledWith();
     });
+
+    test('getAppMetadata should delegate to window.fdc3.getAppMetadata', async () => {
+      const dummyApp = { appId: 'dummy' };
+      await getAppMetadata(dummyApp);
+
+      expect(window.fdc3.getAppMetadata).toHaveBeenCalledTimes(1);
+      expect(window.fdc3.getAppMetadata).toHaveBeenCalledWith(dummyApp);
+    });
   });
 
   describe('fdc3Ready', () => {
@@ -377,6 +386,10 @@ describe('test version comparison functions', () => {
       fdc3Version: '1.2',
       provider: 'test',
       appMetadata: { appId: 'dummy', name: 'dummy' },
+      optionalFeatures: {
+        OriginatingAppMetadata: true,
+        UserChannelMembershipAPIs: false,
+      },
     };
     expect(versionIsAtLeast(metaOneTwo, '1.1')).toBe(true);
     expect(versionIsAtLeast(metaOneTwo, '1.2')).toBe(true);
@@ -387,6 +400,10 @@ describe('test version comparison functions', () => {
       fdc3Version: '1.2.1',
       provider: 'test',
       appMetadata: { appId: 'dummy', name: 'dummy' },
+      optionalFeatures: {
+        OriginatingAppMetadata: true,
+        UserChannelMembershipAPIs: false,
+      },
     };
     expect(versionIsAtLeast(metaOneTwoOne, '1.1')).toBe(true);
     expect(versionIsAtLeast(metaOneTwoOne, '1.2')).toBe(true);

@@ -53,7 +53,7 @@ function Help(props) {
       content: 
       `If you are an existing user of the FDC3 Standard, we would love to hear from you: 
       just email the [FDC3 General List](fdc3@finos.org) with details about how you are using it. 
-      If you'd like to be listed as a user on our [homepage](fdc3.finos.org), 
+      If you'd like to be listed as a user on our [homepage](https://fdc3.finos.org), 
       you can directly [send a pull request](https://github.com/finos/FDC3/edit/master/website/data/users.json) or, 
       [contact us](fdc3-private@finos.org) if you need help with legal evaluation of your logo.`,
     },
