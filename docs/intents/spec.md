@@ -148,6 +148,7 @@ For more details on FDC3 Standards compliance (including the versioning, depreca
 
 A list of standardized intents are defined in the following pages:
 
+* [`CreateInteraction`](ref/CreateInteraction)
 * [`StartCall`](ref/StartCall)
 * [`StartChat`](ref/StartChat)
 * [`StartEmail`](ref/StartEmail)
@@ -161,7 +162,6 @@ A list of standardized intents are defined in the following pages:
 * [`ViewProfile`](ref/ViewProfile)
 * [`ViewQuote`](ref/ViewQuote)
 * [`ViewResearch`](ref/ViewResearch)
-* [`CreateInteraction`](ref/CreateInteraction)
 
 ### Deprecated Intents
 
