@@ -386,6 +386,10 @@ describe('test version comparison functions', () => {
       fdc3Version: '1.2',
       provider: 'test',
       appMetadata: { appId: 'dummy', name: 'dummy' },
+      optionalFeatures: {
+        OriginatingAppMetadata: true,
+        UserChannelMembershipAPIs: false,
+      },
     };
     expect(versionIsAtLeast(metaOneTwo, '1.1')).toBe(true);
     expect(versionIsAtLeast(metaOneTwo, '1.2')).toBe(true);
@@ -396,6 +400,10 @@ describe('test version comparison functions', () => {
       fdc3Version: '1.2.1',
       provider: 'test',
       appMetadata: { appId: 'dummy', name: 'dummy' },
+      optionalFeatures: {
+        OriginatingAppMetadata: true,
+        UserChannelMembershipAPIs: false,
+      },
     };
     expect(versionIsAtLeast(metaOneTwoOne, '1.1')).toBe(true);
     expect(versionIsAtLeast(metaOneTwoOne, '1.2')).toBe(true);
