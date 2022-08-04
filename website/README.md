@@ -16,6 +16,7 @@ This website was created with [Docusaurus](https://docusaurus.io/).
 # Install dependencies
 $ yarn
 ```
+
 2. Run your dev server:
 
 ```sh
@@ -50,11 +51,11 @@ my-docusaurus/
 
 # Versioning
 
-Docusaurus uses the `docusaurus-version` command to create a snapshot of the documents in the `docs` folder with a particular version number, 
-and places them in the `versioned_docs/version-<version>` folder. It also creates a `versioned_sidebars/version-<version>-sidebars.json` 
-to save the navigation structure at the time the snapshot was taken. 
+Docusaurus uses the `docusaurus-version` command to create a snapshot of the documents in the `docs` folder with a particular version number,
+and places them in the `versioned_docs/version-<version>` folder. It also creates a `versioned_sidebars/version-<version>-sidebars.json`
+to save the navigation structure at the time the snapshot was taken.
 
-See https://docusaurus.io/docs/en/versioning for more info.
+See <https://docusaurus.io/docs/en/versioning> for more info.
 
 ## Versioning scheme
 
@@ -67,22 +68,26 @@ Before creating a version, please make sure docs/fdc3-intro.md has been updated 
 Since the website also uses some generated and copied static files (like schemas), extra tasks need to be performed as part of creating a new version.
 
 To create a new version, use this command:
+
 ```sh
 VERSION=<version> yarn run version
 ```
+
 e.g.
+
 ```sh
 VERSION=1.2 yarn run version
 ```
 
 The `VERSION` environment variable and `version` script are used to:
-- Run the `docusaurus-version` command
-- Copy schemas from the `/website/static/schemas/next` (which matches `master`) to `/website/static/schemas/<version>`
-- Copy the app-directory OpenAPI html file from `/website/pages/schemas/next` to `/website/pages/schemas/<version>`
-- Update paths referring to `/schemas/next` to point to `/schemas/<version>`
-- Update the version number in the app directory schema from `version: next` to `version: <version>`
+* Run the `docusaurus-version` command
+* Copy schemas from the `/website/static/schemas/next` (which matches `master`) to `/website/static/schemas/<version>`
+* Copy the app-directory OpenAPI html file from `/website/pages/schemas/next` to `/website/pages/schemas/<version>`
+* Update paths referring to `/schemas/next` to point to `/schemas/<version>`
+* Update the version number in the app directory schema from `version: next` to `version: <version>`
 
 After a new version is created with the script, the following step also needs to be performed:
+
 1. Change `defaultVersionShown` in `siteConfig.js` to match the latest version (if the new version is now the latest version).
 2. Change `versions.json` to have the version `stable` at the top, followed by the actual version numbers in descending order, e.g. `[stable, 1.3, 1.2, 1.1]`. (Docusaurus will add the new version number at the top of the array.)
 
@@ -91,10 +96,13 @@ These steps are needed because we follow a workaround for an [issue with permane
 ## Delete a version
 
 To delete a version, use this command:
+
 ```sh
 VERSION=<version> yarn run version:delete
 ```
+
 e.g.
+
 ```sh
 VERSION=1.2 yarn run version:delete
 ```
@@ -125,6 +133,7 @@ For more information about docs, click [here](https://docusaurus.io/docs/en/navi
 Edit blog posts by navigating to `website/blog` and editing the corresponding post:
 
 `website/blog/post-to-be-edited.md`
+
 ```markdown
 ---
 id: post-needs-edit
@@ -174,6 +183,7 @@ For more information about adding new docs, click [here](https://docusaurus.io/d
 1. Make sure there is a header link to your blog in `website/siteConfig.js`:
 
 `website/siteConfig.js`
+
 ```javascript
 headerLinks: [
     ...
@@ -204,6 +214,7 @@ For more information about blog posts, click [here](https://docusaurus.io/docs/e
 1. Add links to docs, custom pages or external links by editing the headerLinks field of `website/siteConfig.js`:
 
 `website/siteConfig.js`
+
 ```javascript
 {
   headerLinks: [
@@ -228,6 +239,7 @@ For more information about the navigation bar, click [here](https://docusaurus.i
 1. If you want your page to show up in your navigation header, you will need to update `website/siteConfig.js` to add to the `headerLinks` element:
 
 `website/siteConfig.js`
+
 ```javascript
 {
   headerLinks: [
@@ -243,7 +255,7 @@ For more information about custom pages, click [here](https://docusaurus.io/docs
 
 ## Custom CSS & Design Changes
 
-1. Changing logos for the Header and Footer and Favicon are done in website/siteConfig.js file in the /* path to images for header/footer */ section
+1. Changing logos for the Header and Footer and Favicon are done in website/siteConfig.js file in the /*path to images for header/footer*/ section
 
 Note: make sure that you add your new logos to the website/static/img folder first.
 
@@ -253,7 +265,7 @@ Note: make sure that you add your new logos to the website/static/img folder fir
 
 3. Change the background color and the background transparent image in the website/static/css/custom.css file.
 
-Go to the section labeled: .homeContainer 
+Go to the section labeled: .homeContainer
 
 Change "background-image" - and insert your new background image file. Note - make sure you add your new background transparent image file to the website/static/img folder first.
 
