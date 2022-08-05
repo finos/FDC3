@@ -11,7 +11,7 @@ for example a chat message.
 
 ## Type
 
-`fdc3.entiy.action`
+`fdc3.entity.action`
 
 ## Schema
 
