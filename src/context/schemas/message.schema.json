@@ -23,12 +23,12 @@
             "type": "object",
             "allOf": [
               {
-                "$ref": "intent.schema.json#"
+                "$ref": "action.schema.json#"
               }
             ],
             "properties": {
               "type": {
-                "const": "fdc3.entity.intent"
+                "const": "fdc3.entity.action"
               }
             },
             "required": ["type"]

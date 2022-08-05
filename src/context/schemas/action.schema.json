@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/action.schema.json",
+  "type": "object",
+  "title": "Action",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "intent": {
+      "type": "string",
+      "$comment": "Should reference one of the intent types listed in 'standard intents'"
+    },
+    "context": {
+      "type": "object",
+      "$ref": "context.schema.json#"
+    },
+    "customConfig": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "title", "context"
+  ]
+}
