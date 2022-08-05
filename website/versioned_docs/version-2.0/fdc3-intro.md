@@ -1,7 +1,8 @@
 ---
-id: fdc3-intro
+id: version-2.0-fdc3-intro
 title: Welcome to FDC3 2.0
 sidebar_label: Introduction
+original_id: fdc3-intro
 ---
 
 The mission of the Financial Desktop Connectivity and Collaboration Consortium (FDC3) is to develop specific protocols and taxonomies to advance the ability of desktop applications in financial workflows to interoperate in a plug-and-play fashion, without prior bi-lateral agreements.
