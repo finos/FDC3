@@ -60,16 +60,20 @@ const initSettings = {
 }
 
 const resolution = fdc3.raiseIntent('StartChat', initSettings);
-const chatRoomRefs = await resolution.getResult();
+
+// Return a reference to the room
+const chatRoom = await resolution.getResult();
 ```
 
 ## See Also
 
 Context
+- [ChatRoom](../../context/ref/ChatRoom)
 - [Contact](../../context/ref/Contact)
 - [ContactList](../../context/ref/ContactList)
 - [ChatInitSettings](../../context/ref/ChatInitSettings)
 
 Intents
+* [SendChatMessage](SendChatMessage)
 * [StartCall](StartCall)
 * [StartEmail](StartEmail)
