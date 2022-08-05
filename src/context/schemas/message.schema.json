@@ -4,6 +4,7 @@
   "type": "object",
   "title": "Message",
   "properties": {
+    "type": { "const": "fdc3.chat.message" },
     "text": {
       "type": "object",
       "properties": {
@@ -20,18 +21,7 @@
       "additionalProperties": {
         "anyOf": [
           {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "action.schema.json#"
-              }
-            ],
-            "properties": {
-              "type": {
-                "const": "fdc3.entity.action"
-              }
-            },
-            "required": ["type"]
+            "$ref": "action.schema.json#"
           },
           {
             "type": "object",
@@ -61,7 +51,5 @@
       }
     }
   },
-  "required": [
-    "text"
-  ]
+  "required": ["type"]
 }

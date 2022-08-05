@@ -4,6 +4,7 @@
   "type": "object",
   "title": "Action",
   "properties": {
+    "type": { "const": "fdc3.entity.action" },
     "title": {
       "type": "string"
     },
@@ -20,6 +21,6 @@
     }
   },
   "required": [
-    "title", "context"
+    "type,", "title", "context"
   ]
 }
