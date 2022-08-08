@@ -169,6 +169,7 @@ The following are standard FDC3 context types:
 * [`fdc3.organization`](ref/Organization) ([schema](/schemas/next/organization.schema.json))
 * [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/next/portfolio.schema.json))
 * [`fdc3.position`](ref/Position) ([schema](/schemas/next/position.schema.json))
+* [`fdc3.searchCriteria`](ref/SearchCriteria) ([schema](/schemas/next/searchCriteria.schema.json))
 * [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/next/nothing.schema.json))
 * [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/next/timerange.schema.json))
 * [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/valuation.schema.json))

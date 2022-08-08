@@ -187,6 +187,11 @@ export interface Position {
   name?: string;
 }
 
+export interface SearchCriteria {
+  contexts: (Instrument|Organization|Contact|string)[];
+  type: string
+}
+
 export interface Valuation {
   CURRENCY_ISCODE?: string;
   expiryTime?: Date;
