@@ -85,20 +85,6 @@ export interface ChatInitSettings {
   type: any;
 }
 
-export interface ChatRoom {
-  id: { [key: string]: string };
-  name?: string;
-  providerName: string;
-  type: string;
-  uri?: string;
-}
-
-export interface ChatMessage {
-  chatRoom: ChatRoom;
-  message: string; // TODO: Replace 'string' by 'Message' after the merge of the PR https://github.com/finos/FDC3/pull/779
-  type: string;
-}
-
 export interface ContactList {
   contacts: Contact[];
   type: string;
