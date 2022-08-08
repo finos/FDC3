@@ -152,6 +152,7 @@ A list of standardized intents are defined in the following pages:
 * [`StartChat`](ref/StartChat)
 * [`StartEmail`](ref/StartEmail)
 * [`ViewAnalysis`](ref/ViewAnalysis)
+* [`ViewChat`](ref/ViewChat)
 * [`ViewChart`](ref/ViewChart)
 * [`ViewHoldings`](ref/ViewHoldings)
 * [`ViewInstrument`](ref/ViewInstrument)

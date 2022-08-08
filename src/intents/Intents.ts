@@ -3,6 +3,7 @@ export enum Intents {
   StartChat = 'StartChat',
   StartEmail = 'StartEmail',
   ViewAnalysis = 'ViewAnalysis',
+  ViewChat = 'ViewChat',
   ViewChart = 'ViewChart',
   ViewContact = 'ViewContact',
   ViewHoldings = 'ViewHoldings',
