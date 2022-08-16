@@ -65,7 +65,7 @@ const initSettings = {
     message: {
       type: 'fdc3.chat.message',
       text: {
-        text/plain: 'Hey all, can we discuss the issue together? I attached a screenshot'
+        'text/plain': 'Hey all, can we discuss the issue together? I attached a screenshot'
       },
       entities: {
          '0': {

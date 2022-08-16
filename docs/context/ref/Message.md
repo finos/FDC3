@@ -31,7 +31,7 @@ https://fdc3.finos.org/schemas/next/message.schema.json
 const message = {
   type: 'fdc3.chat.message',
   text: {
-    text/plain: 'Hey all, can we discuss the issue together? I attached a screenshot and a link to the current exchange rate'
+    'text/plain': 'Hey all, can we discuss the issue together? I attached a screenshot and a link to the current exchange rate'
   },
   entities: {
       'picture1': {
@@ -46,7 +46,7 @@ const message = {
         data: {
             title: 'Click to view Chart',
             intent: 'ViewChart',
-            context {
+            context: {
                 type: 'fdc3.chart',
                 instruments: [
                     {
