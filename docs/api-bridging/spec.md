@@ -10,21 +10,10 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
 
 ## Recent Changes
 
-* Connection protocol updated
-  * Added initial connection step to connection protocol diagram
-  * Renumbered connection protocol steps to better map to diagram
-  * Improvements to connection protocol steps titles
-  * Added optional auth token to `hello` message from bridge to DA (allows 2-way authentication)
-  * Added description of atomicity requirements for handling of handshake and connectedAgentsUpdate messages by both DAB and DAs
-  * Channel State Synchronization
-    * Added details necessary to avoid race conditions (e.g. if a DA is connecting and another is broadcasting context concurrently)
-* Recommended port range for bridge - (4470 - 4480)
-* Interaction/Messaging protocol
-  * Added WIP draft
-  * Added section on GUID generation (with reference to external standard) used in requestGuid and responseGuid fields in messages.
-  * Added missing field comments for message formats
-* Handling of slow responding DAs?
-  * Recommended timeout of 1500ms/3000ms
+* Fixed typos found during last meeting
+* Added new `DesktopAgentIdentifier` type
+* Updated `meta.source` to be of `AppIdentifier` OR `DesktopAgentIdentifier` type
+* Highlighted that `source.destination` field should be used for troubleshooting and debugging purposes only
 
 ## Open questions / TODO list
 
@@ -34,6 +23,7 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
   * Advise on whether other agents report to users on connect/disconnect events?
 * Add new terms and acronyms to FDC3 glossary and ensure they are defined in this spec's introduction
 * Add RFC 4122 - https://datatracker.ietf.org/doc/html/rfc4122 to FDC3 references page
+* Add a response collation example to generic messaging protocol
 
 ## Implementing a Desktop Agent Bridge
 
@@ -383,15 +373,15 @@ Request messages use the following format:
         requestGuid: string,
         /** Timestamp at which request was generated */
         timestamp:  date,
-         /** AppIdentifier for the source application that the request was 
+         /** AppIdentifier OR DesktopAgentIdentifier for the source application that the request was 
           *  received from and will be augmented with the assigned name of the 
           *  Desktop Agent by the Desktop Agent Bridge, rather than the sender. */
-        source: AppIdentifier,
-        /** Optional AppIdentifier for the destination that the request should be 
+        source: AppIdentifier | DesktopAgentIdentifier,
+        /** Optional AppIdentifier or DesktopAgentIdentifier for the destination that the request should be 
          *  routed to, which MUST be set by the Desktop Agent for API calls that 
          *  include a target (`app`) parameter. MUST include the name of the 
          *  Desktop Agent hosting the target application. */
-        destination?: AppIdentifier
+        destination?: AppIdentifier | DesktopAgentIdentifier
     }
 }
 ```
@@ -426,9 +416,9 @@ Response messages will be differentiated from requests by the presence of a `res
         /** Timestamp at which request was generated */
         timestamp:  Date,
         /** AppIdentifier for the source that generated this response */
-        source: AppIdentifier,
-        /** AppIdentifier for the destination that the response should be routed to */
-        destination: AppIdentifier //TODO determine if this is actually needed as we can use the requestGuid...
+        source: AppIdentifier | DesktopAgentIdentifier,
+        /** AppIdentifier OR DesktopAgentIdentifier for the destination that the response should be routed to */
+        destination: AppIdentifier | DesktopAgentIdentifier
     }
 }
 ```
@@ -439,28 +429,41 @@ Response messages MUST always include a `meta.destination` field which matches t
 
 Desktop Agents will prepare messages in the above format and transmit them to the bridge. However, to target intents and perform other actions that require specific routing between DAs, DAs need to have an identity. Identities should be assigned to clients when they connect to the bridge. This allows for multiple copies of the same underlying Desktop Agent implementation to be bridged and ensures that id clashes can be avoided.
 
-To prevent spoofing and to simplify the implementation of clients, sender identities for bridging messages should be added, by the bridge to `AppIdentifier` objects embedded in them as the `source` field. Request and response `destination` fields are set by the Desktop Agent sending the message. However, in the case of response messages, Desktop Agent Bridge implementation SHOULD retain a record of `requestGuid` fields, until teh request is fully resolved, allowing them to validate or overwrite the `destination` for a response to match the source of the original request, effectively enforcing the routing policy for interactions.
+To prevent spoofing and to simplify the implementation of clients, sender identities for bridging messages should be added, by the bridge to `AppIdentifier` or `DesktopAgentIdentifier` objects embedded in them as the `source` field. Request and response `destination` fields are set by the Desktop Agent sending the message. However, in the case of response messages, Desktop Agent Bridge implementation SHOULD retain a record of `requestGuid` fields, until teh request is fully resolved, allowing them to validate or overwrite the `destination` for a response to match the source of the original request, effectively enforcing the routing policy for interactions.
 
 Further, the Desktop Agent Bridge should also inspect the `payload` of both request and response messages and ensure that any `AppIdentifier` objects have been augmented with the correct `desktopAgent` value for the app's host Desktop Agent (e.g. if returning responses to `findIntent`, ensure each `AppIntent.apps[]` entry includes the correct `desktopAgent` value). Further details of such augmentation is provided in the description of each message exchange.
 
-#### AppIdentifier
+#### DesktopAgentIdentifier
 
-To facilitate addressing of messages to particular Desktop Agents and apps that they host, `AppIdentifier` is expanded to contain a `desktopAgent` field.
+This proposal  introduces a new `DesktopAgentIdentifier` type. This type is to facilitate addressing of messages to particular Desktop Agent and apps that they host.
 
 ```typescript
-interface AppIdentifier {
-  readonly appId: string;
-  readonly instanceId?: string;
-  /** A string filled in by the bridge on receipt of a message, that represents 
-   * the Desktop Agent that the app is available on. 
+interface DesktopAgentIdentifier {
+  /** A string filled in by the Desktop Agent Bridge on receipt of a message, that represents 
+   * the Desktop Agent Identifier that is the source of the message. 
    **/
   readonly desktopAgent?: string;
 }
 ```
 
+#### AppIdentifier
+
+The `AppIdentifier` is to be expanded to contain an optional `desktopAgent` field.
+
+```typescript
+interface AppIdentifier {
+  readonly appId: string;
+  readonly instanceId?: string;
+  /** Field that represents the Desktop Agent that the app is available on.**/
+  readonly desktopAgent?: DesktopAgentIdentifier;
+}
+```
+
 ### Identifying Individual Messages
 
-There are a variety of message types need to be sent between bridged DAs, several of which will need to be replied to specifically (e.g. a `fdc3.raiseIntent` call should receive an `IntentResolution` when an app has been chosen, and may subsequently receive an `IntentResult` after the intent handler has run). Hence, messages also need a unique identity, which should be generated at the Desktop Agent that is the source of that message, in the form of a Globally Unique Identifier (GUID). Response messages will include the identity of the request message they are related to, allowing multiple message exchanges to be 'in-flight' at the same time.
+There are a variety of message types need to be sent between bridged Desktop Agents, several of which will need to be replied to specifically (e.g. a `fdc3.raiseIntent` call should receive an `IntentResolution` when an app has been chosen, and may subsequently receive an `IntentResult` after the intent handler has run). Hence, messages also need a unique identity, which should be generated at the Desktop Agent that is the source of that message, in the form of a Globally Unique Identifier (GUID). Response messages will include the identity of the request message they are related to, allowing multiple message exchanges to be 'in-flight' at the same time.
+
+The `meta.destination` field MUST not be relied upon to ensure the correct routing of messages. The spec recognizes the superior readability that this value provides over the `meta.requestGuid` but it should only be used for debugging and troubleshooting purposes.
 
 Hence, whenever a request message is generated by a Desktop Agent it should contain a unique `meta.requestGuid` value. Response messages should quote that same value in the `meta.requestGuid` field and generate a further unique identity for their response, which is included in the `meta.responseGuid` field.
 
