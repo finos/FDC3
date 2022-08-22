@@ -110,7 +110,7 @@ interface ContextMetadata {
 }
 ```
 
-Metadata relating to a context or intent & context received through the `addContextListener` and `addIntentListener` functions. Currently identifies that originated the context or intent message.
+Metadata relating to a context or intent & context received through the `addContextListener` and `addIntentListener` functions. Currently identifies the app that originated the context or intent message.
 
 [`@experimental`](../../fdc3-compliance#experimental-features) Introduced in FDC3 2.0 and may be refined by further changes outside the normal FDC3 versioning policy.
 
