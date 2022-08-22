@@ -19,7 +19,6 @@
           "version-2.0-api/ref/DesktopAgent",
           "version-2.0-api/ref/Channel",
           "version-2.0-api/ref/PrivateChannel",
-          "version-2.0-api/ref/Listener",
           "version-2.0-api/ref/Globals",
           "version-2.0-api/ref/Types",
           "version-2.0-api/ref/Metadata",
