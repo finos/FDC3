@@ -16,7 +16,7 @@ A collection of settings to start a new chat conversation
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/chatInitSettings.schema.json
+https://fdc3.finos.org/schemas/2.0/chatInitSettings.schema.json
 
 ## Details
 

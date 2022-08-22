@@ -15,7 +15,7 @@ A collection of information to be used to initiate an email with a Contact or Co
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/email.schema.json
+https://fdc3.finos.org/schemas/2.0/email.schema.json
 
 ## Details
 

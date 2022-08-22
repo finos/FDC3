@@ -158,21 +158,21 @@ For more details on FDC3 Standards compliance (including the versioning, depreca
 
 The following are standard FDC3 context types:
 
-* [`fdc3.chart`](ref/Chart) ([schema](/schemas/next/chart.schema.json))
-* [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](/schemas/next/chatInitSettings.schema.json))
-* [`fdc3.contact`](ref/Contact) ([schema](/schemas/next/contact.schema.json))
-* [`fdc3.contactList`](ref/ContactList) ([schema](/schemas/next/contactList.schema.json))
-* [`fdc3.country`](ref/Country) ([schema](/schemas/next/country.schema.json))
-* [`fdc3.currency`](ref/Currency) ([schema](/schemas/next/currency.schema.json))
-* [`fdc3.email`](ref/Email) ([schema](/schemas/next/email.schema.json))
-* [`fdc3.instrument`](ref/Instrument) ([schema](/schemas/next/instrument.schema.json))
-* [`fdc3.instrumentList`](ref/InstrumentList) ([schema](/schemas/next/instrumentList.schema.json))
-* [`fdc3.organization`](ref/Organization) ([schema](/schemas/next/organization.schema.json))
-* [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/next/portfolio.schema.json))
-* [`fdc3.position`](ref/Position) ([schema](/schemas/next/position.schema.json))
-* [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/next/nothing.schema.json))
-* [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/next/timerange.schema.json))
-* [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/valuation.schema.json))
+* [`fdc3.chart`](ref/Chart) ([schema](/schemas/2.0/chart.schema.json))
+* [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](/schemas/2.0/chatInitSettings.schema.json))
+* [`fdc3.contact`](ref/Contact) ([schema](/schemas/2.0/contact.schema.json))
+* [`fdc3.contactList`](ref/ContactList) ([schema](/schemas/2.0/contactList.schema.json))
+* [`fdc3.country`](ref/Country) ([schema](/schemas/2.0/country.schema.json))
+* [`fdc3.currency`](ref/Currency) ([schema](/schemas/2.0/currency.schema.json))
+* [`fdc3.email`](ref/Email) ([schema](/schemas/2.0/email.schema.json))
+* [`fdc3.instrument`](ref/Instrument) ([schema](/schemas/2.0/instrument.schema.json))
+* [`fdc3.instrumentList`](ref/InstrumentList) ([schema](/schemas/2.0/instrumentList.schema.json))
+* [`fdc3.organization`](ref/Organization) ([schema](/schemas/2.0/organization.schema.json))
+* [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/2.0/portfolio.schema.json))
+* [`fdc3.position`](ref/Position) ([schema](/schemas/2.0/position.schema.json))
+* [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/2.0/nothing.schema.json))
+* [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/2.0/timerange.schema.json))
+* [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/2.0/valuation.schema.json))
 
 **Note:** The below examples show how the base context data interface can be used to define specific context data objects.
 

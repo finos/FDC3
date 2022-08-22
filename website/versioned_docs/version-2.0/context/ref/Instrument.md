@@ -29,7 +29,7 @@ a property that makes it clear what value it is. This makes it easier for target
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/instrument.schema.json
+https://fdc3.finos.org/schemas/2.0/instrument.schema.json
 
 ## Details
 
