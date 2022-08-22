@@ -22,7 +22,7 @@ In addition to handling requests to plot charts, a charting application may use 
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/chart.schema.json
+https://fdc3.finos.org/schemas/2.0/chart.schema.json
 
 ## Details
 

@@ -24,7 +24,7 @@ is for at least one standardised identifier to be provided
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/country.schema.json
+https://fdc3.finos.org/schemas/2.0/country.schema.json
 
 ## Details
 

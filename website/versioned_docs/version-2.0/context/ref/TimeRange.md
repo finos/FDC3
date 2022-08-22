@@ -34,7 +34,7 @@ Notes:
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/timerange.schema.json
+https://fdc3.finos.org/schemas/2.0/timerange.schema.json
 
 ## Details
 

@@ -30,7 +30,7 @@ this part of the contract with custom identifiers if so desired.
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/portfolio.schema.json
+https://fdc3.finos.org/schemas/2.0/portfolio.schema.json
 
 ## Details
 
