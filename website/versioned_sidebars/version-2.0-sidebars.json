@@ -59,7 +59,6 @@
         "type": "subcategory",
         "label": "Context Data Part",
         "ids": [
-          "version-2.0-context/overview",
           "version-2.0-context/spec",
           "version-2.0-context/ref/Context",
           "version-2.0-context/ref/Chart",
