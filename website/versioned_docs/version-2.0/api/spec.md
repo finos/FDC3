@@ -1,7 +1,7 @@
 ---
 id: version-2.0-spec
 sidebar_label: Overview
-title: API Overview (next)
+title: API Overview 2.0
 original_id: spec
 ---
 
