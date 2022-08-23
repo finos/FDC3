@@ -429,7 +429,7 @@ Response messages MUST always include a `meta.destination` field which matches t
 
 Desktop Agents will prepare messages in the above format and transmit them to the bridge. However, to target intents and perform other actions that require specific routing between DAs, DAs need to have an identity. Identities should be assigned to clients when they connect to the bridge. This allows for multiple copies of the same underlying Desktop Agent implementation to be bridged and ensures that id clashes can be avoided.
 
-To prevent spoofing and to simplify the implementation of clients, sender identities for bridging messages should be added, by the bridge to `AppIdentifier` or `DesktopAgentIdentifier` objects embedded in them as the `source` field. Request and response `destination` fields are set by the Desktop Agent sending the message. However, in the case of response messages, Desktop Agent Bridge implementation SHOULD retain a record of `requestGuid` fields, until teh request is fully resolved, allowing them to validate or overwrite the `destination` for a response to match the source of the original request, effectively enforcing the routing policy for interactions.
+To prevent spoofing and to simplify the implementation of clients, sender identities for bridging messages MUST be added, by the bridge to `AppIdentifier` or `DesktopAgentIdentifier` objects embedded in them as the `source` field. Request and response `destination` fields are set by the Desktop Agent sending the message. However, in the case of response messages, Desktop Agent Bridge implementation MUST retain a record of `requestGuid` fields, until the request is fully resolved, allowing them to validate or overwrite the `destination` for a response to match the source of the original request, effectively enforcing the routing policy for interactions.
 
 Further, the Desktop Agent Bridge should also inspect the `payload` of both request and response messages and ensure that any `AppIdentifier` objects have been augmented with the correct `desktopAgent` value for the app's host Desktop Agent (e.g. if returning responses to `findIntent`, ensure each `AppIntent.apps[]` entry includes the correct `desktopAgent` value). Further details of such augmentation is provided in the description of each message exchange.
 
@@ -442,7 +442,7 @@ interface DesktopAgentIdentifier {
   /** A string filled in by the Desktop Agent Bridge on receipt of a message, that represents 
    * the Desktop Agent Identifier that is the source of the message. 
    **/
-  readonly desktopAgent?: string;
+  readonly desktopAgent: string;
 }
 ```
 
