@@ -109,7 +109,7 @@ interface ContextMetadata {
 }
 ```
 
-Metadata relating to a context or intent & context received through the `addContextListener` and `addIntentListener` functions. Currently identifies that originated the context or intent message.
+Metadata relating to a context or intent & context received through the `addContextListener` and `addIntentListener` functions. Currently identifies the app that originated the context or intent message.
 
 [`@experimental`](../../fdc3-compliance#experimental-features) Introduced in FDC3 2.0 and may be refined by further changes outside the normal FDC3 versioning policy.
 
@@ -268,6 +268,19 @@ interface ImplementationMetadata {
    *  (e.g. 5.3.0).
    */
   readonly providerVersion?: string;
+
+  /** Metadata indicating whether the Desktop Agent implements optional features of
+   *  the Desktop Agent API.
+   */
+  readonly optionalFeatures: {
+    /** Used to indicate whether the exposure of 'origninating app metadata' for
+     *  context and intent messages is supported by the Desktop Agent.*/
+    "OriginatingAppMetadata": boolean;
+    /** Used to indicate whether the optional `fdc3.joinUserChannel`,
+     *  `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
+     *  the Desktop Agent.*/
+    "UserChannelMembershipAPIs": boolean;
+  };
 
   /** The calling application instance's own metadata, according to the 
    *  Desktop Agent (MUST include at least the `appId` and `instanceId`).
