@@ -17,17 +17,23 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
 * Completed set of payload fields used on request and response messages.
   * with the exception of handling for PrivateChannel events
 * Added a list of FDC3 API calls that do NOT generate bridge messages.
+*  Procedure for forwarding of Messages and collation of responses
+* Broke down previously specified bridge timeout range to be 1500ms on the bridge side and added Desktop Agent timeout (waiting for bridge responses) to be 3000ms
+  * Added recomendation on Desktop Agent timeout handling behavior when bridge stops responding
+  * Added behavior for an agent that is repeatedly timing out - Bridge should disconnect agent
+* Added details of workflows broken by disconnection and agent and bridge behaviors
+  * Proposed new errors to add to Error enumerations
+* Added recomendation of a minimum wait period of 5 seconds on reconnection attempts
 
 ## Open questions / TODO list
 
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
-* Add details of how to handle:
-  * workflows broken by disconnection
-  * An agent that is repeatedly timing out should be disconnected?
-  * Advise on whether other agents report to users on connect/disconnect events? (SHOULD)
-* Add new terms and acronyms to FDC3 glossary and ensure they are defined in this spec's introduction
-* Add RFC 4122 - https://datatracker.ietf.org/doc/html/rfc4122 to FDC3 references page
+* Advise on whether other agents report to users on connect/disconnect events? (SHOULD)
 * How to handle events from PrivateChannels (addContextListener, listener.unsubscribe, disconnect)
+* To create final PR:
+  * Add new terms and acronyms to FDC3 glossary and ensure they are defined in this spec's introduction
+  * Add new errors to Error enumerations specified in this proposal
+  * Add RFC 4122 - https://datatracker.ietf.org/doc/html/rfc4122 to FDC3 references page
 
 ## Implementing a Desktop Agent Bridge
 
@@ -91,7 +97,7 @@ The DAB is the responsible entity for collating responses together from all DAs.
 
 The DAB MUST allow for timeout configuration.
 
-The Bridge SHOULD also implement timeout for waiting on DA responses. Assuming the message exchange will be all intra-machine, a recommended timeout of 1500ms - 3000ms should be used.
+The Bridge SHOULD also implement timeout for waiting on DA responses. Assuming the message exchange will be all intra-machine, a recommended timeout of 1500ms SHOULD be used. Similarly, Desktop Agents SHOULD apply a timeout to requests made to the bridge that require a response (collated or otherwise), to handle situations where the bridge is not responding as expected. A recommended timeout of 3000ms SHOULD be used in this case.
 
 #### Channels
 
@@ -143,7 +149,11 @@ sequenceDiagram
 
 ### Step 1. Connect to Websocket
 
-The Desktop Agent attempts to connect to the websocket at the first port in the defined port range.
+The Desktop Agent attempts to connect to the websocket at the first port in the defined port range. If a connection cannot be made on the current port, move to the next port in the range and reattempt connection. 
+
+In the event that there are no ports remaining in the range, the Desktop Agent SHOULD reset to the beginning of the range, SHOULD pause its attempts to connect and resume later (a minimum wait period of 5 seconds SHOULD be used)
+
+Note, if the Desktop Agent is configured to run at startup (of the user's machine) it is possible that the Desktop Agent Bridge may start later (or be restarted at some point). Hence, Desktop Agents SHOULD be capable of connecting to the bridge once they are already running (rather than purely at startup).
 
 ### Step 2. Hello
 
@@ -169,7 +179,7 @@ A Desktop Agent can use the structure of this message to determine that it has c
 
 An optional JWT token can be included in the `hello` message to allow the connecting agent to authenticate the bridge. Verification of the supplied JWT by the DA is optional but recommended, meaning that the DA SHOULD verify the received JWT when one is included in the `hello` message.
 
-If no hello message is received, the message doesn't match the defined format or validation of the optional JWT fails, the Desktop Agent should return to step 1 and attempt connection to the next port in the range.  In the event that there are no ports remaining in the range, the Desktop Agent SHOULD reset to the beginning of the range, MAY pause its attempts to connect and resume later. Note, if the Desktop Agent is configured to run at startup (of the user's machine) it is possible that the Desktop Agent Bridge may start later (or be restarted at some point). Hence, Desktop Agents SHOULD be capable of connecting to the bridge once they are already running (rather than purely at startup).
+If no hello message is received, the message doesn't match the defined format or validation of the optional JWT fails, the Desktop Agent should return to step 1 and attempt connection to the next port in the range.  
 
 ### Step 3. Handshake & Authentication
 
@@ -199,7 +209,7 @@ The DA must then respond to the `hello` message with a `handshake` request to th
 }
 ```
 
-Note that the `meta` element of of the handshake message contains both a `timestamp` field (for logging purposes) and a `requestGuid` field that should be populated with a Globally Unique Identifier (GUID), generated by the Desktop Agent. This `responseGuid` will be used to link the handshake message to a response from the DAB that assigns it a name. For more details on GUID generation see [Globally Unique Identifier](####globally-unique-identifier) section.
+Note that the `meta` element of of the handshake message contains both a `timestamp` field (for logging purposes) and a `requestGuid` field that should be populated with a Globally Unique Identifier (GUID), generated by the Desktop Agent. This `responseGuid` will be used to link the handshake message to a response from the DAB that assigns it a name. For more details on GUID generation see [Globally Unique Identifier](#globally-unique-identifier) section.
 
 If requested by the server, the JWT auth token payload should take the form:
 
@@ -496,7 +506,8 @@ When handling request messages, it is the responsibility of the Desktop Agent Br
 
 * Receive request messages from connected Desktop Agents.
 * Augment request messages with `meta.source.desktopAgent` information (as described above).
-* Forward request messages onto either a specific Desktop Agent or all Desktop Agents as appropriate.
+* Forward request messages onto either a specific Desktop Agent or all other Desktop Agents 
+  * The bridge MUST NOT forward the request to the agent that sent the request, nor expect a reply from it.
 
 For message exchanges that involve responses, it is the responsibility of the Desktop Agent Bridge to:
 
@@ -512,7 +523,7 @@ The following pseudo-code defines how messages should be forwarded or collated:
 * if the message is a request (`meta.requestGuid` is set, but `meta.responseGuid` is not),
   * and the message does not include a `meta.destination` field,
     * forward it to all other Desktop Agents (not including the source),
-    * annotate the request as requiring responses from all connected agents,
+    * annotate the request as requiring responses from all other connected agents,
     * await responses or the specified timeout.
   * else if a `meta.destination` was included,
     * forward it to the specified destination agent
@@ -530,59 +541,57 @@ The following pseudo-code defines how messages should be forwarded or collated:
   * else discard the response message (as it is a delayed to a request that has timed out or is otherwise invalid).
 * else the message is invalid and should be discarded.
 
-//TODO add examples
-
 ### Workflows Broken By Disconnects
 
 Targeted request and request/response workflows may be broken when a Desktop Agent disconnects from the bridge, which bridge implementations will need to handle.
 
 Three types of requests:
 
-* Fire and forget
-* Requests that require the bridge to collate multiple responses from the bridged Desktop Agents
-* Requests targeted at a specific Desktop Agent and will need to be forwarded, by the bridge, to the target Desktop Agent
+1. Fire and forget (i.e. `broadcast`).
+2. Requests that require the bridge to collate multiple responses from the bridged Desktop Agents (e.g. `findIntent`).
+3. Requests targeted at a specific Desktop Agent that are forwarded to the target Desktop Agent (e.g. `raiseIntent`).
 
 The latter two types embody workflows that may be broken by an agent disconnecting from the bridge either before or during the processing of the request.
 
-For requests that require the bridge to collate multiple responses the generic flow will be:
+When processing the disconnection of agent from the bridge, the bridge MUST examine requests currently 'in-flight' and:
 
-* bridge will forward request to connected agents
-  * if agent disconnects
-    * bridge timeout will be reached
-    * bridge collates an error/timeout for disconnected agent???
+* For requests that require the bridge to collate multiple responses:
+  * complete those that no longer require further responses (all other agents have responded), or
+  * continue to await the timeout (if other agents are yet to respond), or
+  * return an 'empty' response in the expected format (if no other agents are connected and no data will be received).
+* For requests that target a specific agent:
+  * return an appropriate error (as the request cannot be completed).
 
-If an Agent disconnects after the bridge sends the response to the requesting agent, and the requesting agent issues a targeted request to the disconnected Desktop Agent, it will go to the below scenario.
+In the event that an Error must be returned (for requests that target a specific agent), it should be selected from the [Error enumeration](../api/ref/Errors) normally used by the corresponding FDC3 function (i.e. `OpenError` for `open` calls, `ResolveError` for `findIntent` and `raiseIntent` etc.). To facilitate easier debugging, errors specific to Desktop Agent Bridge are added to those enumerations, including:
 
-For requests targeted at a specific Desktop Agent the generic flow will be:
+```typescript
+enum OpenError {
+  ...
+  /** Returned if the specified Desktop Agent is not found, via a connected 
+      Desktop Agent Bridge. */
+  DesktopAgentNotFound = 'DesktopAgentNotFound',
+}
 
-* bridge will check connected agents
-  * if target Desktop Agent found
-    * bridge forwards the request to target agent
-    * if Desktop Agent disconnects (bridge will update disconnected agents and ignore any response that may come)
-      * bridge timeout will be reached and error will be returned by the bridge
-  * otherwise bridge will send DesktopAgentNotFound error?
+enum ResolveError {
+  ...
+  /** Returned if the specified Desktop Agent is not found, via a connected 
+      Desktop Agent Bridge. */
+  DesktopAgentNotFound = 'DesktopAgentNotFound',
+}
 
-//TODO new ErrorEnumeration needed for bridge errors?
+enum ResultError {
+  ...
+  /** Returned if the specified Desktop Agent disconnected from the Desktop 
+      Agent Bridge before a result was returned. */
+  DesktopAgentDisconnected = 'DesktopAgentDisconnected',
+}
+```
 
-Requests that pass `AppIdentifier` as an argument - Assumed `AppIdentifier` is for an instance that was running in a Desktop Agent that disconnected
+Finally, in the event that either a Desktop Agent or the bridge itself stops responding, but doesn't fully disconnect, the timeouts (specified earlier in this document) will be used to handle the request as if a disconnection had occurred.
 
-`findInstances(app: AppIdentifier)`
-`open(app: AppIdentifier, context?: Context)`
-`getAppMetadata(app: AppIdentifier)`
-`raiseIntent(intent: string, context: Context, app: AppIdentifier)`
-`raiseIntentForContext(context: Context, app: AppIdentifier)`
-  
-* Request issued with `AppIdentifier.desktopAgent` - Bridge will reply with AgentNotFound error
-* Request issued without `AppIdentifier.desktopAgent` - Bridge will forward request to all connected agents - AppNotFound will be returned???
+In the event that a Desktop Agent repeatedly times out, the bridge SHOULD disconnect that agent (and update other agents via the `connectedAgentsUpdate` message specified in the connection protocol), to avoid all requests requiring the full timeout to complete.
 
-Requests without `AppIdentifier`
-
-`findIntent(intent: string, context?: Context, resultType?: string)`
-`findIntentsByContext(context: Context, resultType?: string)`
-`raiseIntent(intent: string, context: Context)`
-`raiseIntentForContext(context: Context)`
-
-Bridge disconnecting or crashing
+In the event that the bridge repeatedly times out, connected Desktop Agents MAY disconnect from the bridge and attempt to reconnect by returning to Step 1 of the connection protocol.
 
 ### FDC3 API calls that do NOT generate bridge messages
 
