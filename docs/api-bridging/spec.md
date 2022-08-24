@@ -482,7 +482,7 @@ interface DesktopAgentIdentifier {
 }
 ```
 
-Hence, either an `AppIdentifier` or `DestkopAgentIdentifer` is used as the `meta.source` value of both request or respose messages and the source Desktop Agent identity for bridging messages will always be found at `meta.source.desktopAgent`. To prevent spoofing and to simplify the implementation of clients, the source Desktop Agent identity MUST be added to (or overwritten in) each message by the bridge when received.
+Hence, either an `AppIdentifier` or `DesktopAgentIdentifier` is used as the `meta.source` value of both request or response messages and the source Desktop Agent identity for bridging messages will always be found at `meta.source.desktopAgent`. To prevent spoofing and to simplify the implementation of clients, the source Desktop Agent identity MUST be added to (or overwritten in) each message by the bridge when received.
 
 A request message may include a `destination` field, set by the source Desktop Agent if the message is intended for a particular Desktop Agent (e.g. to support a `raiseIntent` call with a specified target app or app instance on a particular Desktop Agent).
 
@@ -521,9 +521,9 @@ The following pseudo-code defines how messages should be forwarded or collated:
 * else if the message is a response (both `meta.requestGuid` and `meta.responseGuid` are set)
   * if the `meta.requestGuid` is known,
     * add the message to the collated responses for the request,
-      * augment any `AppIdentifier` types in the reponse message with a `desktopAgent` field matching that of the responding Desktop Agent,
+      * augment any `AppIdentifier` types in the response message with a `desktopAgent` field matching that of the responding Desktop Agent,
       * if all expected responses have been received (i.e. all connected agents or he specified agent have responded, as appropriate),
-        * produce the collated response mesage and return to the requesting Desktop Agent.
+        * produce the collated response message and return to the requesting Desktop Agent.
       * else await the configured response timeout or further responses,
         * if the timeout is reached without any responses being received
           * produce and return an appropriate [error response](../api/ref/Errors).
@@ -534,26 +534,53 @@ The following pseudo-code defines how messages should be forwarded or collated:
 
 ### Workflows Broken By Disconnects
 
-Targetted request and request/response workflows may be broken when a Desktop Agent disconnects from the bridge, which bridge implementations will need to handle.
+Targeted request and request/response workflows may be broken when a Desktop Agent disconnects from the bridge, which bridge implementations will need to handle.
 
 Three types of requests:
+
 * Fire and forget
 * Requests that require the bridge to collate multiple responses from the bridged Desktop Agents
-* Requests targeted at a specific Desktop Agent
+* Requests targeted at a specific Desktop Agent and will need to be forwarded, by the bridge, to the target Desktop Agent
 
 The latter two types embody workflows that may be broken by an agent disconnecting from the bridge either before or during the processing of the request.
 
-Requests that will return error if disconnect occurs
+For requests that require the bridge to collate multiple responses the generic flow will be:
 
-new ErrorEnumeration needed for bridge errors? 
+* bridge will forward request to connected agents
+  * if agent disconnects
+    * bridge timeout will be reached
+    * bridge collates an error/timeout for disconnected agent???
 
-* `findInstances(app: AppIdentifier)` - AppIdentifier w desktopAgent
-findIntent - bridge will enforce timeout
-findIntentByContext - bridge will enforce timeout
-getAppMetadata - bridge will enforce timeout
-open - error will be returned
-raiseIntent - 
-raiseIntentForContext -
+If an Agent disconnects after the bridge sends the response to the requesting agent, and the requesting agent issues a targeted request to the disconnected Desktop Agent, it will go to the below scenario.
+
+For requests targeted at a specific Desktop Agent the generic flow will be:
+
+* bridge will check connected agents
+  * if target Desktop Agent found
+    * bridge forwards the request to target agent
+    * if Desktop Agent disconnects (bridge will update disconnected agents and ignore any response that may come)
+      * bridge timeout will be reached and error will be returned by the bridge
+  * otherwise bridge will send DesktopAgentNotFound error?
+
+//TODO new ErrorEnumeration needed for bridge errors?
+
+Requests that pass `AppIdentifier` as an argument - Assumed `AppIdentifier` is for an instance that was running in a Desktop Agent that disconnected
+
+`findInstances(app: AppIdentifier)`
+`open(app: AppIdentifier, context?: Context)`
+`getAppMetadata(app: AppIdentifier)`
+`raiseIntent(intent: string, context: Context, app: AppIdentifier)`
+`raiseIntentForContext(context: Context, app: AppIdentifier)`
+  
+* Request issued with `AppIdentifier.desktopAgent` - Bridge will reply with AgentNotFound error
+* Request issued without `AppIdentifier.desktopAgent` - Bridge will forward request to all connected agents - AppNotFound will be returned???
+
+Requests without `AppIdentifier`
+
+`findIntent(intent: string, context?: Context, resultType?: string)`
+`findIntentsByContext(context: Context, resultType?: string)`
+`raiseIntent(intent: string, context: Context)`
+`raiseIntentForContext(context: Context)`
 
 Bridge disconnecting or crashing
 
