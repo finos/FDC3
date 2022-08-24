@@ -10,30 +10,30 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
 
 ## Recent Changes
 
-* Connection protocol updated
-  * Added initial connection step to connection protocol diagram
-  * Renumbered connection protocol steps to better map to diagram
-  * Improvements to connection protocol steps titles
-  * Added optional auth token to `hello` message from bridge to DA (allows 2-way authentication)
-  * Added description of atomicity requirements for handling of handshake and connectedAgentsUpdate messages by both DAB and DAs
-  * Channel State Synchronization
-    * Added details necessary to avoid race conditions (e.g. if a DA is connecting and another is broadcasting context concurrently)
-* Recommended port range for bridge - (4470 - 4480)
-* Interaction/Messaging protocol
-  * Added WIP draft
-  * Added section on GUID generation (with reference to external standard) used in requestGuid and responseGuid fields in messages.
-  * Added missing field comments for message formats
-* Handling of slow responding DAs?
-  * Recommended timeout of 1500ms/3000ms
+* Fixed typos found during last meeting.
+* Clarified use of DesktopAgent identity fields and update `meta.source` to be of `AppIdentifier` OR `DesktopAgentIdentifier` type.
+* Added new `DesktopAgentIdentifier` type (for use on response messages that don't originate from an app, e.g., findIntent responses).
+* Removed `meta.destination` from responses messages. Response collation and routing should be performed using `requestGuid` only.
+* Completed set of payload fields used on request and response messages.
+  * with the exception of handling for PrivateChannel events
+* Added a list of FDC3 API calls that do NOT generate bridge messages.
+*  Procedure for forwarding of Messages and collation of responses
+* Broke down previously specified bridge timeout range to be 1500ms on the bridge side and added Desktop Agent timeout (waiting for bridge responses) to be 3000ms
+  * Added recomendation on Desktop Agent timeout handling behavior when bridge stops responding
+  * Added behavior for an agent that is repeatedly timing out - Bridge should disconnect agent
+* Added details of workflows broken by disconnection and agent and bridge behaviors
+  * Proposed new errors to add to Error enumerations
+* Added recomendation of a minimum wait period of 5 seconds on reconnection attempts
 
 ## Open questions / TODO list
 
-* Add details of how to handle:
-  * workflows broken by disconnection
-  * An agent that is repeatedly timing out should be disconnected?
-  * Advise on whether other agents report to users on connect/disconnect events?
-* Add new terms and acronyms to FDC3 glossary and ensure they are defined in this spec's introduction
-* Add RFC 4122 - https://datatracker.ietf.org/doc/html/rfc4122 to FDC3 references page
+* Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
+* Advise on whether other agents report to users on connect/disconnect events? (SHOULD)
+* How to handle events from PrivateChannels (addContextListener, listener.unsubscribe, disconnect)
+* To create final PR:
+  * Add new terms and acronyms to FDC3 glossary and ensure they are defined in this spec's introduction
+  * Add new errors to Error enumerations specified in this proposal
+  * Add RFC 4122 - https://datatracker.ietf.org/doc/html/rfc4122 to FDC3 references page
 
 ## Implementing a Desktop Agent Bridge
 
@@ -97,7 +97,7 @@ The DAB is the responsible entity for collating responses together from all DAs.
 
 The DAB MUST allow for timeout configuration.
 
-The Bridge SHOULD also implement timeout for waiting on DA responses. Assuming the message exchange will be all intra-machine, a recommended timeout of 1500ms - 3000ms should be used.
+The Bridge SHOULD also implement timeout for waiting on DA responses. Assuming the message exchange will be all intra-machine, a recommended timeout of 1500ms SHOULD be used. Similarly, Desktop Agents SHOULD apply a timeout to requests made to the bridge that require a response (collated or otherwise), to handle situations where the bridge is not responding as expected. A recommended timeout of 3000ms SHOULD be used in this case.
 
 #### Channels
 
@@ -149,7 +149,11 @@ sequenceDiagram
 
 ### Step 1. Connect to Websocket
 
-The Desktop Agent attempts to connect to the websocket at the first port in the defined port range.
+The Desktop Agent attempts to connect to the websocket at the first port in the defined port range. If a connection cannot be made on the current port, move to the next port in the range and reattempt connection. 
+
+In the event that there are no ports remaining in the range, the Desktop Agent SHOULD reset to the beginning of the range, SHOULD pause its attempts to connect and resume later (a minimum wait period of 5 seconds SHOULD be used)
+
+Note, if the Desktop Agent is configured to run at startup (of the user's machine) it is possible that the Desktop Agent Bridge may start later (or be restarted at some point). Hence, Desktop Agents SHOULD be capable of connecting to the bridge once they are already running (rather than purely at startup).
 
 ### Step 2. Hello
 
@@ -175,7 +179,7 @@ A Desktop Agent can use the structure of this message to determine that it has c
 
 An optional JWT token can be included in the `hello` message to allow the connecting agent to authenticate the bridge. Verification of the supplied JWT by the DA is optional but recommended, meaning that the DA SHOULD verify the received JWT when one is included in the `hello` message.
 
-If no hello message is received, the message doesn't match the defined format or validation of the optional JWT fails, the Desktop Agent should return to step 1 and attempt connection to the next port in the range.  In the event that there are no ports reining in the range, the Desktop Agent SHOULD reset to the beginning of the range, MAY pause its attempts to connect and resume later. Note, if the Desktop Agent is configured to run at startup (of the user's machine) it is possible that the Desktop Agent Bridge may start later (or be restarted at some point). Hence, Desktop Agents SHOULD be capable of connecting to the bridge once they are already running (rather than purely at startup).
+If no hello message is received, the message doesn't match the defined format or validation of the optional JWT fails, the Desktop Agent should return to step 1 and attempt connection to the next port in the range.  
 
 ### Step 3. Handshake & Authentication
 
@@ -205,8 +209,7 @@ The DA must then respond to the `hello` message with a `handshake` request to th
 }
 ```
 
-Note that the `meta` element of of the handshake message contains both a `timestamp` field (for logging purposes) and a `requestGuid` field that should be populated with a Globally Unique Identifier (GUID), generated by the Desktop Agent. This `responseGuid` will be used to link the handshake message to a response from the DAB that assigns it a name. For more details on GUID generation see section XX.
-
+Note that the `meta` element of of the handshake message contains both a `timestamp` field (for logging purposes) and a `requestGuid` field that should be populated with a Globally Unique Identifier (GUID), generated by the Desktop Agent. This `responseGuid` will be used to link the handshake message to a response from the DAB that assigns it a name. For more details on GUID generation see [Globally Unique Identifier](#globally-unique-identifier) section.
 
 If requested by the server, the JWT auth token payload should take the form:
 
@@ -218,6 +221,7 @@ If requested by the server, the JWT auth token payload should take the form:
 ```
 
 e.g.
+
 ```JSON
 {
     "sub": "65141135-7200-47d3-9777-eb8786dd31c7",
@@ -310,9 +314,9 @@ The `connectedAgentsUpdate` message will take the form:
 }
 ```
 
-When an agent connects to the bridge, it should adopt the state of any channels that do not currently exist or do not currently contain state of a particular type. This synchronization is NOT performed via broadcast as the context being merged would become the most recent context on the channel, when other contexts may have been broadcast subsequently. Rather, it should be adopted internally by the Desktop Agent merging it such that it would be received by applications that are adding a user channel context listener or calling `channel.getCurrentContext()`. 
+When an agent connects to the bridge, it should adopt the state of any channels that do not currently exist or do not currently contain state of a particular type. This synchronization is NOT performed via broadcast as the context being merged would become the most recent context on the channel, when other contexts may have been broadcast subsequently. Rather, it should be adopted internally by the Desktop Agent merging it such that it would be received by applications that are adding a user channel context listener or calling `channel.getCurrentContext()`.
 
-It should be noted that Desktop Agents will not have context listeners for previously unknown channels, and SHOULD simply record that channel's state for use when that channel is first used. 
+It should be noted that Desktop Agents will not have context listeners for previously unknown channels, and SHOULD simply record that channel's state for use when that channel is first used.
 
 For known channel names, the Desktop Agent MUST also compare its current state to that which it has just received and may need to internally adopt context of types not previously seen on a channel. As context listeners can be registered for either a specific type or all types some care is necessary when doing so (as only the most recently transmitted Context should be received by un-typed listeners). Hence, the new context MUST only be passed to a context listener if it was registered specifically for that type and a context of that type did not previously exist on the channel.
 
@@ -371,11 +375,16 @@ Request messages use the following format:
     type:  string,
     /** Request body, typically containing the arguments to the function called.*/
     payload: {
-        //example fields for specific messages
+        /** Used to indicate which channel `broadcast` functions were called on. */
         channel?: string,
+        /** Used as an argument to `findIntent` and `raiseIntent` functions.`*/
         intent?: string,
+        /** Used as an argument to `broadcast`, `findIntent` and `raiseIntent` functions. */
         context?: Context,
-        app?: AppIdentifier
+        /** Used as an argument to `open`, `raiseIntent`, `getAppMetadata`, and `findInstances` functions */
+        app?: AppIdentifier,
+        /** Used as an argument to `findIntent` functions. */
+        resultType?: string
     },
     /** Metadata used to uniquely identify the message and its sender. */
     meta: {
@@ -383,26 +392,26 @@ Request messages use the following format:
         requestGuid: string,
         /** Timestamp at which request was generated */
         timestamp:  date,
-         /** AppIdentifier for the source application that the request was 
+         /** AppIdentifier OR DesktopAgentIdentifier for the source application that the request was 
           *  received from and will be augmented with the assigned name of the 
           *  Desktop Agent by the Desktop Agent Bridge, rather than the sender. */
-        source: AppIdentifier
-        /** Optional AppIdentifier for the destination that the request should be 
+        source: AppIdentifier | DesktopAgentIdentifier,
+        /** Optional AppIdentifier or DesktopAgentIdentifier for the destination that the request should be 
          *  routed to, which MUST be set by the Desktop Agent for API calls that 
          *  include a target (`app`) parameter. MUST include the name of the 
          *  Desktop Agent hosting the target application. */
-        destination?: AppIdentifier
+        destination?: AppIdentifier | DesktopAgentIdentifier
     }
 }
 ```
 
 If the FDC3 API call underlying the request message includes a target (typically defined by an `app` argument, in the form of an AppIdentifier object) it is the responsibility of the Desktop Agent to copy that argument into the `meta.destination` field of the message and to ensure that it includes a `meta.destination.desktopAgent` value. If the target is provided in the FDC3 API call, but without a `meta.destination.desktopAgent` value, the Desktop Agent should assume that the call relates to a local application and does not need to send it to the bridge.
 
-Requests without a `meta.destination` field will be forwarded to all other agents for processing and the collation of responses by the bridge.
+Requests without a `meta.destination` field will be forwarded to all other agents by the bridge, which will also handle the collation of responses which quote the `meta.requestGuid`.
 
 #### Response Messages
 
-Response messages will be differentiated from requests by the presence of a `responseGuid` field and MUST reference the `requestGuid` that they are responding to.
+Response messages will be differentiated from requests by the presence of a `meta.responseGuid` field and MUST quote the `meta.requestGuid` that they are responding to.
 
 ```typescript
 {
@@ -410,13 +419,23 @@ Response messages will be differentiated from requests by the presence of a `res
     type:  string,
     /** Response body, containing the actual response data. */
     payload: {
-        //example fields for specific messages... 
-        intent?:  string,
+        /** Standardized error strings from an appropriate FDC3 API Error enumeration. */
+        error?: string,
+        /** Response to `open` */
+        appIdentifier?: AppIdentifier,
+        /** Response to `findInstances` */
+        appIdentifiers?: Array<AppIdentifier>,
+        /** Response to `getAppMetadata` */
+        appMetadata?: AppMetadata,
+        /** Response to `findIntent` functions*/
         appIntent?:  AppIntent,
-        
-        //TODO
-
-
+        /** Response to `raiseIntent` functions, returned on delivery of the intent and context to the target app.
+         *  Note `getResult()` function should not / can not be included in JSON. */
+        intentResolution?: IntentResolution,
+        /** Secondary response to `raiseIntent`, sent when the `IntentHandler` has returned.
+         *  Note return an empty object if the `IntentHandler` returned void. 
+         *  Note `Channel` functions (`broadcast`, `getCurrentContext`, `addContextListener` should not / can not be included in JSON)*/
+        intentResult?: {context?: Context, channel?: Channel},
     },
     meta: {
         /** requestGuid from the original request being responded to*/
@@ -426,41 +445,16 @@ Response messages will be differentiated from requests by the presence of a `res
         /** Timestamp at which request was generated */
         timestamp:  Date,
         /** AppIdentifier for the source that generated this response */
-        source: AppIdentifier,
-        /** AppIdentifier for the destination that the response should be routed to */
-        destination: AppIdentifier //TODO determine if this is actually needed as we can use the requestGuid...
+        source: AppIdentifier | DesktopAgentIdentifier,
     }
 }
 ```
 
-Response messages MUST always include a `meta.destination` field which matches the `meta.source` information provided in the request. Response messages that do not include a `meta.destination` should be discarded.
-
-### Identifying Desktop Agents Identity and Message Sources
-
-Desktop Agents will prepare messages in the above format and transmit them to the bridge. However, to target intents and perform other actions that require specific routing between DAs, DAs need to have an identity. Identities should be assigned to clients when they connect to the bridge. This allows for multiple copies of the same underlying Desktop Agent implementation to be bridged and ensures that id clashes can be avoided.
-
-To prevent spoofing and to simplify the implementation of clients, sender identities for bridging messages should be added, by the bridge to `AppIdentifier` objects embedded in them as the `source` field. Request and response `destination` fields are set by the Desktop Agent sending the message. However, in the case of response messages, Desktop Agent Bridge implementation SHOULD retain a record of `requestGuid` fields, until teh request is fully resolved, allowing them to validate or overwrite the `destination` for a response to match the source of the original request, effectively enforcing the routing policy for interactions.
-
-Further, the Desktop Agent Bridge should also inspect the `payload` of both request and response messages and ensure that any `AppIdentifier` objects have been augmented with the correct `desktopAgent` value for the app's host Desktop Agent (e.g. if returning responses to `findIntent`, ensure each `AppIntent.apps[]` entry includes the correct `desktopAgent` value). Further details of such augmentation is provided in the description of each message exchange.
-
-#### AppIdentifier
-
-To facilitate addressing of messages to particular Desktop Agents and apps that they host, `AppIdentifier` is expanded to contain a `desktopAgent` field.
-
-```typescript
-interface AppIdentifier {
-  readonly appId: string;
-  readonly instanceId?: string;
-  /** A string filled in by the bridge on receipt of a message, that represents 
-   * the Desktop Agent that the app is available on. 
-   **/
-  readonly desktopAgent?: string;
-}
-```
+Response messages do not include a `meta.destination` as the routing of responses is handled by the bridge via the `meta.requestGuid` field.
 
 ### Identifying Individual Messages
 
-There are a variety of message types need to be sent between bridged DAs, several of which will need to be replied to specifically (e.g. a `fdc3.raiseIntent` call should receive an `IntentResolution` when an app has been chosen, and may subsequently receive an `IntentResult` after the intent handler has run). Hence, messages also need a unique identity, which should be generated at the Desktop Agent that is the source of that message, in the form of a Globally Unique Identifier (GUID). Response messages will include the identity of the request message they are related to, allowing multiple message exchanges to be 'in-flight' at the same time.
+There are a variety of message types need to be sent between bridged Desktop Agents, several of which will need to be replied to specifically (e.g. a `fdc3.raiseIntent` call should receive an `IntentResolution` when an app has been chosen, and may subsequently receive an `IntentResult` after the intent handler has run). Hence, messages also need a unique identity, which should be generated at the Desktop Agent that is the source of that message, in the form of a Globally Unique Identifier (GUID). Response messages will include the identity of the request message they are related to, allowing multiple message exchanges to be 'in-flight' at the same time.
 
 Hence, whenever a request message is generated by a Desktop Agent it should contain a unique `meta.requestGuid` value. Response messages should quote that same value in the `meta.requestGuid` field and generate a further unique identity for their response, which is included in the `meta.responseGuid` field.
 
@@ -472,38 +466,151 @@ A GUID (globally unique identifier), also known as a Universally Unique IDentifi
 
 There are several types of GUIDs, which vary how they are generated. As Desktop Agents will typically be running on the same machine, system clock and hardware details may not provide sufficient uniqueness in GUIDs generated (including during the connect step, where Desktop Agent name collisions may exist). Hence, it is recommended that both Desktop Agents and Desktop Agent Bridges SHOULD use a version 4 generation type (random).
 
+### Identifying Desktop Agents Identity and Message Sources
+
+Desktop Agents will prepare messages in the above format and transmit them to the bridge. However, to target intents and perform other actions that require specific routing between DAs, DAs need to have an identity. Identities should be assigned to clients when they connect to the bridge. This allows for multiple copies of the same underlying Desktop Agent implementation to be bridged and ensures that id clashes can be avoided.
+
+To facilitate routing of messages between agents, the `AppIdentifier` is expanded to contain an optional `desktopAgent` field:
+
+```typescript
+interface AppIdentifier {
+  readonly appId: string;
+  readonly instanceId?: string;
+  /** Field that represents the Desktop Agent that the app is available on.**/
+  readonly desktopAgent?: DesktopAgentIdentifier;
+}
+```
+
+Further, a new `DesktopAgentIdentifier` type is introduced to handle cases where a response message is returned by the Desktop Agent (or more specifically its resolver) rather than a specific app. This is particularly relevant for `findIntent` responses:
+
+```typescript
+interface DesktopAgentIdentifier {
+  /** A string filled in by the Desktop Agent Bridge on receipt of a message, that represents 
+   * the Desktop Agent Identifier that is the source of the message. 
+   **/
+  readonly desktopAgent: string;
+}
+```
+
+Hence, either an `AppIdentifier` or `DesktopAgentIdentifier` is used as the `meta.source` value of both request or response messages and the source Desktop Agent identity for bridging messages will always be found at `meta.source.desktopAgent`. To prevent spoofing and to simplify the implementation of clients, the source Desktop Agent identity MUST be added to (or overwritten in) each message by the bridge when received.
+
+A request message may include a `destination` field, set by the source Desktop Agent if the message is intended for a particular Desktop Agent (e.g. to support a `raiseIntent` call with a specified target app or app instance on a particular Desktop Agent).
+
+Response messages do not include a `destination` field. Instead, a Desktop Agent Bridge implementation MUST retain a record of `requestGuid` fields for request message, until the request is fully resolved, allowing them to determine the destination for the collated responses and effectively enforcing the routing policy for interactions.
+
+Further, the Desktop Agent Bridge should also inspect the `payload` of both request and response messages and ensure that any `AppIdentifier` objects have been augmented with the correct `desktopAgent` value for the app's host Desktop Agent (e.g. if returning responses to `findIntent`, ensure each `AppIntent.apps[]` entry includes the correct `desktopAgent` value). Further details of any such augmentation are provided in the description of each message exchange.
+
 ### Forwarding of Messages and Collating Responses
 
 When handling request messages, it is the responsibility of the Desktop Agent Bridge to:
 
-* Receive request messages from connected Desktop Agents,
-* Augment request messages with source information (as described above),
-* Forward request messages onto either a specific Desktop Agent or all Desktop Agents as appropriate.
+* Receive request messages from connected Desktop Agents.
+* Augment request messages with `meta.source.desktopAgent` information (as described above).
+* Forward request messages onto either a specific Desktop Agent or all other Desktop Agents 
+  * The bridge MUST NOT forward the request to the agent that sent the request, nor expect a reply from it.
 
 For message exchanges that involve responses, it is the responsibility of the Desktop Agent Bridge to:
 
-* Receive and collate response messages according the requestGuid (allowing multiple message exchanges to be 'in-flight' at once),
-* Apply a timeout to the receipt of response messages for each request,
-* Produce a single collated response message that incorporates the output of each individual response received,
-* Deliver the collated response message to the source of the request
+* Receive and collate response messages according the `meta.requestGuid` (allowing multiple message exchanges to be 'in-flight' at once).
+* Apply a timeout to the receipt of response messages for each request.
+* Produce a single collated response message that incorporates the output of each individual response received.
+* Deliver the collated response message to the source Desktop Agent that sent the request.
 
-There are a few simple rules which determine how a request message should be forwarded:
+Collated response messages generated by the bridge use the same format as individual response messages.
 
-* If the message is a request (`meta.requestGuid` is set, but `meta.responseGuid` is not)
-  * and the message does not include a `meta.destination` field
-    * forward it to all other Desktop Agents (not including the source) and await responses
-  * else if a `meta.destination` was included
-    * forward it to the specified destination agent and await the response
-* else if the message is a response
-  * and the message response includes
+The following pseudo-code defines how messages should be forwarded or collated:
 
-//TODO complete this
+* if the message is a request (`meta.requestGuid` is set, but `meta.responseGuid` is not),
+  * and the message does not include a `meta.destination` field,
+    * forward it to all other Desktop Agents (not including the source),
+    * annotate the request as requiring responses from all other connected agents,
+    * await responses or the specified timeout.
+  * else if a `meta.destination` was included,
+    * forward it to the specified destination agent
+    * annotate the request as requiring only a response from the specified agent,
+    * await the response or the specified timeout.
+* else if the message is a response (both `meta.requestGuid` and `meta.responseGuid` are set)
+  * if the `meta.requestGuid` is known,
+    * add the message to the collated responses for the request,
+      * augment any `AppIdentifier` types in the response message with a `desktopAgent` field matching that of the responding Desktop Agent,
+      * if all expected responses have been received (i.e. all connected agents or he specified agent have responded, as appropriate),
+        * produce the collated response message and return to the requesting Desktop Agent.
+      * else await the configured response timeout or further responses,
+        * if the timeout is reached without any responses being received
+          * produce and return an appropriate [error response](../api/ref/Errors).
+  * else discard the response message (as it is a delayed to a request that has timed out or is otherwise invalid).
+* else the message is invalid and should be discarded.
 
-## Handling FDC3 Interactions When Bridged
+### Workflows Broken By Disconnects
 
-//TODO add details of AppIdentifier augmentation to each exchange 
+Targeted request and request/response workflows may be broken when a Desktop Agent disconnects from the bridge, which bridge implementations will need to handle.
 
-The use of Desktop Agent Bridging affects how a Desktop Agent must handle FDC3 API calls. Details on how this affects the FD3 API, how a Desktop Agent should interact the bridge and specifics of the messaging protocol are provided in this section.  
+Three types of requests:
+
+1. Fire and forget (i.e. `broadcast`).
+2. Requests that require the bridge to collate multiple responses from the bridged Desktop Agents (e.g. `findIntent`).
+3. Requests targeted at a specific Desktop Agent that are forwarded to the target Desktop Agent (e.g. `raiseIntent`).
+
+The latter two types embody workflows that may be broken by an agent disconnecting from the bridge either before or during the processing of the request.
+
+When processing the disconnection of agent from the bridge, the bridge MUST examine requests currently 'in-flight' and:
+
+* For requests that require the bridge to collate multiple responses:
+  * complete those that no longer require further responses (all other agents have responded), or
+  * continue to await the timeout (if other agents are yet to respond), or
+  * return an 'empty' response in the expected format (if no other agents are connected and no data will be received).
+* For requests that target a specific agent:
+  * return an appropriate error (as the request cannot be completed).
+
+In the event that an Error must be returned (for requests that target a specific agent), it should be selected from the [Error enumeration](../api/ref/Errors) normally used by the corresponding FDC3 function (i.e. `OpenError` for `open` calls, `ResolveError` for `findIntent` and `raiseIntent` etc.). To facilitate easier debugging, errors specific to Desktop Agent Bridge are added to those enumerations, including:
+
+```typescript
+enum OpenError {
+  ...
+  /** Returned if the specified Desktop Agent is not found, via a connected 
+      Desktop Agent Bridge. */
+  DesktopAgentNotFound = 'DesktopAgentNotFound',
+}
+
+enum ResolveError {
+  ...
+  /** Returned if the specified Desktop Agent is not found, via a connected 
+      Desktop Agent Bridge. */
+  DesktopAgentNotFound = 'DesktopAgentNotFound',
+}
+
+enum ResultError {
+  ...
+  /** Returned if the specified Desktop Agent disconnected from the Desktop 
+      Agent Bridge before a result was returned. */
+  DesktopAgentDisconnected = 'DesktopAgentDisconnected',
+}
+```
+
+Finally, in the event that either a Desktop Agent or the bridge itself stops responding, but doesn't fully disconnect, the timeouts (specified earlier in this document) will be used to handle the request as if a disconnection had occurred.
+
+In the event that a Desktop Agent repeatedly times out, the bridge SHOULD disconnect that agent (and update other agents via the `connectedAgentsUpdate` message specified in the connection protocol), to avoid all requests requiring the full timeout to complete.
+
+In the event that the bridge repeatedly times out, connected Desktop Agents MAY disconnect from the bridge and attempt to reconnect by returning to Step 1 of the connection protocol.
+
+### FDC3 API calls that do NOT generate bridge messages
+
+Some FDC3 API calls can be handled locally and do not need to generate request messages to the Desktop Agent Bridge, but are likely to be involved in other exchanges that do generate messages to the bridge (for example adding context or intent handlers). Those calls include:
+
+* `addContextListener` functions
+* `addIntentListener`
+* `getOrCreateChannel`
+* `createPrivateChannel`
+* `getUserChannels` and `getSystemChannels`
+* `joinUserChannel` and `joinChannel`
+* `getCurrentChannel`
+* `leaveCurrentChannel`
+* `getInfo`
+
+//TODO deal with exceptions for PrivateChannel event handlers
+//  addContextListener
+//  listener.unsubscribe
+//  disconnect
 
 ## Individual message exchanges
 

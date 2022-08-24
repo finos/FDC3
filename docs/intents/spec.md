@@ -22,6 +22,7 @@ Naming of Intents SHOULD follow the below guidelines:
 > **Note:** The naming guidelines should be adhered to when creating future Intents.  This is to ensure they meet the criteria for addition to the FDC3 standard and to provide a consistent user experience.
 
 ### Characteristics
+
 When creating Intents they should be:
 
 * Recognizable
@@ -124,6 +125,25 @@ const intentsAndApps = await fdc3.findIntentsByContext({
 });
 ```
 
+## Intents Standard Compliance
+
+An FDC3 Standard compliant application that supports intents **MUST**:
+
+* Meet the expected context and behavior defined for any FDC3-defined standard intents used.
+* Use the [`fdc3.addIntentListener`](api/ref/DesktopAgent#addintentlistener) API call to set up a handler for each supported intent as soon as possible when it starts up. This facilitates delivery of raised intents to the application.
+
+An FDC3 Standard compliant application that supports intents **SHOULD**:
+
+* Prefer FDC3-defined standard intents over proprietary intents, where a suitable standardized intent is available.
+* Ensure that proprietary intents follow the recommended naming conventions in the specification.
+* Apply [namespacing](#namespaces) to proprietary intent names, where it is necessary to avoid collision with those created by other applications.
+
+An FDC3 Standard compliant application that supports intents **MAY**:
+
+* Define proprietary intents to support use cases not currently supported via FDC3-defined standard intents.
+
+For more details on FDC3 Standards compliance (including the versioning, deprecation and experimental features policies) please see the [FDC3 Compliance page](../fdc3-compliance).
+
 ## Standard Intents
 
 A list of standardized intents are defined in the following pages:
@@ -148,7 +168,7 @@ A list of standardized intents are defined in the following pages:
 
 ## Using Intents without a context
 
-As the [Desktop Agent API](../api/ref/DesktopAgent) and [App Directory](../app-directory/overview) both require a context to be specified wherever intents are used, using an intent without a context is achieved through the use of the explicit `null` context type `fdc3.nothing`. By using an explicit type to represent an absence of context we allow applications to declare their support for an absence of context.
+As the [Desktop Agent API](../api/ref/DesktopAgent) and [App Directory](../app-directory/overview) both require a context to be specified wherever intents are used, using an intent without a context is achieved through the use of the explicit `null` context type [`fdc3.nothing`](../context/ref/Nothing). By using an explicit type to represent an absence of context we allow applications to declare their support for an absence of context.
 
 ```javascript
 const intentsAndApps = await fdc3.findIntentsByContext({

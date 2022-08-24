@@ -40,27 +40,14 @@ Examples of endpoints include:
 
 ## Desktop Agent Implementation
 
-The FDC3 API specification consists of interfaces.  It is expected that each Desktop Agent will implement these interfaces.  A typical implemention would provide instantiable classes for the following interfaces:
+The FDC3 API specification consists of interfaces.  It is expected that each Desktop Agent will implement these interfaces.  A typical implemention would provide implementations for the following interfaces:
 
 - [`DesktopAgent`](ref/DesktopAgent)
 - [`Channel`](ref/Channel)
 - [`PrivateChannel`](ref/PrivateChannel)
 - [`Listener`](ref/Types#listener)
 
-Other interfaces defined in the spec are not critical to define as concrete types.  Rather, the Desktop Agent should expect to have objects of the interface shape passed into or out of their library.  These interfaces include:
-
-- [`AppIntent`](ref/Metadata#appintent)
-- [`AppMetadata`](ref/Metadata#appmetadata)
-- [`Context`](ref/Types#context)
-- [`ContextHandler`](ref/Types#contexthandler)
-- [`DisplayMetadata`](ref/Metadata#displaymetadata)
-- [`Icon`](ref/Types#icon)
-- [`ImplementationMetadata`](ref/Metadata#implementationmetadata)
-- [`IntentHandler`](ref/Types#intenthandler)
-- [`IntentResult`](ref/Types#intentresult)
-- [`IntentMetadata`](ref/Metadata#intentmetadata)
-- [`IntentResolution`](ref/Metadata#intentresolution)
-- [`TargetApp`](ref/Types#targetapp)
+Other interfaces defined in the spec are not critical to define as concrete types.  Rather, the Desktop Agent should expect to have objects of the interface shape passed into or out of their library.
 
 ### API Access
 
@@ -104,6 +91,63 @@ A goal of FDC3 standards is that applications running in different Desktop Agent
 Desktop Agent interop is supported by common standards for APIs for App discovery and launching.  So, an App in one Desktop Agent context would not need to know a different syntax to call an App in another Desktop Agent context.
 
 An actual connection protocol between Desktop Agents is not currently available in the FDC3 standard, but work on creating one for a future version of the standard is underway (see [GitHub discussion #544](https://github.com/finos/FDC3/discussions/544) for details).
+
+### Desktop Agent API Standard Compliance
+
+An FDC3 Standard compliant Desktop Agent implementation **MUST**:
+
+- Provide the FDC3 API to web applications via a global accessible as [`window.fdc3`](#api-access).
+- Provide a global [`fdc3Ready`](#api-access) event that is fired when the API is ready for use.
+- Provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to `raiseIntentForContext` that return multiple options), such as a resolver UI.
+  - Intent resolution MUST take into account any specified input or return context types
+  - Requests for resolution to apps returning a channel MUST include any apps that are registered as returning a channel with a specific type.
+- Return Errors from the [`ChannelError`](ref/Errors#channelerror), [`OpenError`](ref/Errors#openerror), [`ResolveError`](ref/Errors#resolveerror) and [`ResultError`](ref/Errors#resulterror) enumerations as appropriate.
+- Accept as input and return as output data structures that are compatibile with the interfaces defined in this Standard.
+- Include implementations of the following [Desktop Agent](ref/DesktopAgent) API functions, as defined in this Standard:
+  - [`addContextListener`](ref/DesktopAgent#addcontextlistener)
+  - [`addIntentListener`](ref/DesktopAgent#addintentlistener)
+  - [`broadcast`](ref/DesktopAgent#broadcast)
+  - [`createPrivateChannel`](ref/DesktopAgent#createprivatechannel)
+  - [`findInstances`](ref/DesktopAgent#findinstances)
+  - [`findIntent`](ref/DesktopAgent#findintent)
+  - [`findIntentsByContext`](ref/DesktopAgent#findintentsbycontext)
+  - [`getCurrentChannel`](ref/DesktopAgent#getcurrentchannel)
+  - [`getInfo`](ref/DesktopAgent#getinfo)
+  - [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel)
+  - [`getUserChannels`](ref/DesktopAgent#getuserchannels)
+  - [`open`](ref/DesktopAgent#open)
+  - [`raiseIntent`](ref/DesktopAgent#raiseintent)
+  - [`raiseIntentForContext`](ref/DesktopAgent#raiseintentforcontext)
+- Provide an ID for each [`PrivateChannel`](ref/PrivateChannel) created via [`createPrivateChannel`](ref/DesktopAgent#createprivatechannel) and prevent them from being retrieved via [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) by ID.
+- Only require app directories that they connect to to have implemented only the minimum requirements specified in the [App Directory API Part](../app-directory/spec) of this Standard.
+- Provide details of whether they implement optional features of the Desktop Agent API in the `optionalFeatures` property of the [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned by the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function.
+
+An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
+
+- Support connection to one or more App Directories meeting the [FDC3 App Directory Standard](../app-directory/overview).
+- Qualify `appId` values received from an app directory with the hostname of the app directory server (e.g. `myAppId@name.domain.com`) [as defined in the app directory standard](../app-directory/overview#application-identifiers).
+- Adopt the [recommended set of User channel definitions](#recommended-user-channel-set).
+- Ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are joined to the channel.
+- Make metadata about each context message or intent and context message received (including the app that originated the message) available to the receiving application.
+- Prevent external apps from listening or publishing on a [`PrivateChannel`](ref/PrivateChannel) that they did not request or provide.
+- Enforce compliance with the expected behavior of intents (where Intents specify a contract that is enforceable by schema, for example, return object types) and return an error if the interface is not met.
+
+An FDC3 Standard compliant Desktop Agent implementation **MAY**:
+
+- Make the Desktop Agent API available through modules, imports, or other means.
+- Implement the following OPTIONAL [Desktop Agent](ref/DesktopAgent) API functions:
+  - [`joinUserChannel`](ref/DesktopAgent#joinuserchannel)
+  - [`leaveCurrentChannel`](ref/DesktopAgent#leavecurrentchannel)
+  - [`getCurrentChannel`](ref/DesktopAgent#getcurrentchannel)
+- Implement the following deprecated API functions:
+  - [`addContextListener`](ref/DesktopAgent#addcontextlistener-deprecated) (without a contextType argument)
+  - [`getSystemChannels`](ref/DesktopAgent#getsystemchannels-deprecated) (renamed getUserChannels)
+  - [`joinChannel`](ref/DesktopAgent#joinchannel-deprecated) (renamed joinUserChannel)
+  - [`open`](ref/DesktopAgent#open-deprecated) (deprecated version that addresses apps via `name` field)
+  - [`raiseIntent`](ref/DesktopAgent#raiseintent-deprecated) (deprecated version that addresses apps via `name` field)
+  - [`raiseIntentForContext`](ref/DesktopAgent#raiseintentforcontext-deprecated) (deprecated version that addresses apps via `name` field)
+
+For more details on FDC3 Standards compliance (including the versioning, deprecation and experimental features policies) please see the [FDC3 Compliance page](../fdc3-compliance).
 
 ## Functional Use Cases
 
@@ -159,7 +203,7 @@ When raising an intent a specific context is provided as input. The type of the 
 
 A context type may also be associated with multiple intents. For example, an `fdc3.instrument` could be associated with `ViewChart`, `ViewNews`, `ViewAnalysis` or other intents.
 
-To raise an Intent without a context, use the [`fdc3.nothing`](../context/ref/Nothing) context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an Intent listener or in an App Directory).
+To raise an intent without a context, use the [`fdc3.nothing`](../context/ref/Nothing) context type. This type exists so that applications can explicitly declare that they support raising an intent without a context (when registering an `IntentHandler` or in an App Directory).
 
 As an alternative to raising a specific intent, you may also raise an unspecified intent with a known context allowing the Desktop Agent or the user (if the intent is ambiguous) to select the appropriate intent and then to raise it with the specified context for resolution.
 
@@ -292,7 +336,7 @@ try {
 
 Applications need to let the system know the intents they can support.  Typically, this is done via registration with an [App Directory](../app-directory/spec).  It is also possible for intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  Although dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
 
-When an instance of an application is launched, it is expected to add an [`IntentHandler`](ref/Types#intenthandler) function to the desktop agent for each intent it has registered by calling the [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) function of the Desktop Agent. Doing so allows the Desktop Agent to pass incoming intents and contexts to that instance of the application. Hence, if the application instance was spawned in response to the raised intent, then the Desktop Agent must wait for the relevant intent listener to be added by that instance before it can deliver the intent and context to it. In order to facilitate accurate error responses, calls to `fdc3.raiseIntent` should not return an `IntentResolution` until the intent handler has been added and the intent delivered to the target app.
+When an instance of an application is launched, it is expected to add an [`IntentHandler`](ref/Types#intenthandler) function to the Desktop Agent for each intent it has registered by calling the [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) function of the Desktop Agent. Doing so allows the Desktop Agent to pass incoming intents and contexts to that instance of the application. Hence, if the application instance was spawned in response to the raised intent, then the Desktop Agent must wait for the relevant intent listener to be added by that instance before it can deliver the intent and context to it. In order to facilitate accurate error responses, calls to `fdc3.raiseIntent` should not return an `IntentResolution` until the intent handler has been added and the intent delivered to the target app.
 
 ### Originating App Metadata
 
@@ -350,7 +394,7 @@ When an app joins a User channel, or adds a context listener when already joined
 
 It is possible that a call to join a User channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.
 
-Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app. To support programmatic management of joined channels and the implementation of channel selector UIs other than those provided outside of the app, Desktop Agent implementations MAY provide [`fdc3.joinChannel()`](ref/DesktopAgent#joinchannel), [`fdc3.getCurrentChannel()](ref/DesktopAgent#getcurrentchannel) and [`fdc3.leaveCurrentChannel()`](ref/DesktopAgent#leavecurrentchannel) functions and if they do, MUST do so as defined in the [Desktop Agent API reference](ref/DesktopAgent).
+Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app. To support programmatic management of joined channels and the implementation of channel selector UIs other than those provided outside of the app, Desktop Agent implementations MAY provide [`fdc3.joinChannel()`](ref/DesktopAgent#joinchannel), [`fdc3.getCurrentChannel()`](ref/DesktopAgent#getcurrentchannel) and [`fdc3.leaveCurrentChannel()`](ref/DesktopAgent#leavecurrentchannel) functions and if they do, MUST do so as defined in the [Desktop Agent API reference](ref/DesktopAgent).
 
 There SHOULD always be a clear UX indicator of what channel an app is joined to.
 
@@ -465,7 +509,7 @@ While joining User channels (using fdc3.joinUserChannel) automates a lot of the 
 
 ### App Channels
 
-App Channels are topics dynamically created by applications connected via FDC3. For example, an app may` create a channel to broadcast to others data or status specific to that app.
+App Channels are topics dynamically created by applications connected via FDC3. For example, an app may create a named App Channel to broadcast data or status that is specific to that app to other apps that know to connect to the channel with that name.
 
 To get (or create) a channel reference, then interact with it:
 
