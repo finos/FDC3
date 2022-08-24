@@ -21,7 +21,7 @@ Message to send to a chat.
 | Property    | Type    | Required | Example Value     |
 |-------------|---------|----------|-------------------|
 | `type`      | string  | Yes      | `'fdc3.chat.message'`  |
-| `chatRoom`      | ChatRoom  | Yes       | `{ type: 'fdc3.chat.room', providerName: 'Symphony', id:{ roomdId: 'j75xqXy25NBOdacUI3FNBH'} }`      |
+| `chatRoom`      | ChatRoom  | Yes       | `{ type: 'fdc3.chat.room', providerName: 'Symphony', id:{ roomId: 'j75xqXy25NBOdacUI3FNBH'} }`      |
 | `message`  | [Message](https://fdc3.finos.org/schemas/next/message.schema.json)  | Yes       | `'A message to send'` |
 
 ## Example
