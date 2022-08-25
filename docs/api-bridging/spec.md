@@ -17,7 +17,7 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
 * Completed set of payload fields used on request and response messages.
   * with the exception of handling for PrivateChannel events
 * Added a list of FDC3 API calls that do NOT generate bridge messages.
-*  Procedure for forwarding of Messages and collation of responses
+* Procedure for forwarding of Messages and collation of responses
 * Broke down previously specified bridge timeout range to be 1500ms on the bridge side and added Desktop Agent timeout (waiting for bridge responses) to be 3000ms
   * Added recomendation on Desktop Agent timeout handling behavior when bridge stops responding
   * Added behavior for an agent that is repeatedly timing out - Bridge should disconnect agent
@@ -477,7 +477,7 @@ interface AppIdentifier {
   readonly appId: string;
   readonly instanceId?: string;
   /** Field that represents the Desktop Agent that the app is available on.**/
-  readonly desktopAgent?: DesktopAgentIdentifier;
+  readonly desktopAgent?: string;
 }
 ```
 
@@ -533,12 +533,12 @@ The following pseudo-code defines how messages should be forwarded or collated:
   * if the `meta.requestGuid` is known,
     * add the message to the collated responses for the request,
       * augment any `AppIdentifier` types in the response message with a `desktopAgent` field matching that of the responding Desktop Agent,
-      * if all expected responses have been received (i.e. all connected agents or he specified agent have responded, as appropriate),
+      * if all expected responses have been received (i.e. all connected agents or the specified agent have responded, as appropriate),
         * produce the collated response message and return to the requesting Desktop Agent.
       * else await the configured response timeout or further responses,
         * if the timeout is reached without any responses being received
           * produce and return an appropriate [error response](../api/ref/Errors).
-  * else discard the response message (as it is a delayed to a request that has timed out or is otherwise invalid).
+  * else discard the response message (as it is a delayed response to a request that has timed out or is otherwise invalid).
 * else the message is invalid and should be discarded.
 
 ### Workflows Broken By Disconnects
@@ -553,7 +553,7 @@ Three types of requests:
 
 The latter two types embody workflows that may be broken by an agent disconnecting from the bridge either before or during the processing of the request.
 
-When processing the disconnection of agent from the bridge, the bridge MUST examine requests currently 'in-flight' and:
+When processing the disconnection of an agent from the bridge, the bridge MUST examine requests currently 'in-flight' and:
 
 * For requests that require the bridge to collate multiple responses:
   * complete those that no longer require further responses (all other agents have responded), or
