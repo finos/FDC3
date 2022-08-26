@@ -389,6 +389,7 @@ try {
 
 #### See also
 
+* [`IntentResult`](Types#intentresult)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 * [`AppIdentifier`](Types#appidentifier)
