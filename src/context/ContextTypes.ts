@@ -188,8 +188,8 @@ export interface Position {
 }
 
 export interface SearchCriteria {
-  contexts: (Instrument|Organization|Contact|string)[];
-  type: string
+  contexts: (Instrument | Organization | Contact | string)[];
+  type: string;
 }
 
 export interface Valuation {
