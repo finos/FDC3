@@ -4,7 +4,7 @@
   "type": "object",
   "title": "Message",
   "properties": {
-    "type": { "const": "fdc3.chat.message" },
+    "type": { "const": "fdc3.message" },
     "text": {
       "type": "object",
       "properties": {

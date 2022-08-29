@@ -62,7 +62,7 @@ const initSettings = {
         allowMessageCopy: true
     }
     message: {
-      type: 'fdc3.chat.message',
+      type: 'fdc3.message',
       text: {
         'text/plain': 'Hey all, can we discuss the issue together? I attached a screenshot'
       },

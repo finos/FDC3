@@ -11,7 +11,7 @@ as well as attached entities (either arbitrary file attachments or fdc actions t
 
 ## Type
 
-`fdc3.chat.message`
+`fdc3.message`
 
 ## Schema
 
@@ -21,7 +21,7 @@ https://fdc3.finos.org/schemas/next/message.schema.json
 
 | Property          | Type                                      | Required | Example Value           |
 |-------------------|-------------------------------------------|----------|-------------------------|
-| `type`            | string                                    | Yes      | `'fdc3.chat.message'`   |
+| `type`            | string                                    | Yes      | `'fdc3.message'`   |
 | `text`            | map of string content to string mime-type | No       | { text/plain: 'Hello' } |
 | `entities`        | map of json entity to string id           | No       | See Below               |
 
@@ -29,7 +29,7 @@ https://fdc3.finos.org/schemas/next/message.schema.json
 
 ```js
 const message = {
-  type: 'fdc3.chat.message',
+  type: 'fdc3.message',
   text: {
     'text/plain': 'Hey all, can we discuss the issue together? I attached a screenshot and a link to the current exchange rate'
   },
