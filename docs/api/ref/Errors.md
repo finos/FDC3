@@ -4,6 +4,39 @@ title: Errors
 
 Some FDC3 API operations return promises that can result in errors.
 
+## `ChannelError`
+
+```typescript
+enum ChannelError {
+  /** Returned if the specified channel is not found when attempting to join a
+   *  channel via the `joinUserChannel` function of the DesktopAgent (`fdc3`).
+   */
+  NoChannelFound = 'NoChannelFound',
+
+  /** SHOULD be returned when a request to join a user channel or to a retrieve
+   *  a Channel object via the `joinUserChannel` or `getOrCreateChannel` methods
+   *  of the DesktopAgent (`fdc3`) object is denied. 
+   */
+  AccessDenied = 'AccessDenied',
+  
+  /** SHOULD be returned when a channel cannot be created or retrieved via the
+   *  `getOrCreateChannel` method of the DesktopAgent (`fdc3`).
+   */
+  CreationFailed = 'CreationFailed',
+}
+```
+
+Contains constants representing the errors that can be encountered when calling channels using the [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`getOrCreateChannel`](DesktopAgent#getorcreatechannel) methods, or the [`getCurrentContext`](Channel#getcurrentcontext), [`broadcast`](Channel#broadcast) or [`addContextListener`](Channel#addcontextlistener) methods on the `Channel` object.
+
+#### See also
+
+* [`DesktopAgent.createPrivateChannel`](DesktopAgent#createprivatechannel)
+* [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
+* [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
+* [`Channel.broadcast`](Channel#broadcast)
+* [`Channel.addContextListener`](Channel#addcontextlistener)
+* [`Channel.getCurrentContext`](Channel#getcurrentcontext)
+
 ## `OpenError`
 
 ```typescript
@@ -88,12 +121,12 @@ Contains constants representing the errors that can be encountered when calling 
 
 ```typescript
 enum ResultError {
-  /** Returned if the intent handler exited without returning a Promise or that
+  /** Returned if the `IntentHandler` exited without returning a Promise or that
    *  Promise was not resolved with a Context or Channel object. 
    */
   NoResultReturned = 'NoResultReturned',
 
-  /** Returned if the Intent handler function processing the raised intent
+  /** Returned if the `IntentHandler` function processing the raised intent
    *  throws an error or rejects the Promise it returned. 
    */
   IntentHandlerRejected = 'IntentHandlerRejected',
@@ -107,35 +140,3 @@ Contains constants representing the errors that can be encountered when calling 
 * [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`IntentResolution`](Metadata#intentresolution)
-
-## `ChannelError`
-
-```typescript
-enum ChannelError {
-  /** Returned if the specified channel is not found when attempting to join a
-   *  channel via the `joinUserChannel` function of the DesktopAgent (`fdc3`).
-   */
-  NoChannelFound = 'NoChannelFound',
-
-  /** SHOULD be returned when a request to join a user channel or to a retrieve
-   *  a Channel object via the `joinUserChannel` or `getOrCreateChannel` methods
-   *  of the DesktopAgent (`fdc3`) object is denied. 
-   */
-  AccessDenied = 'AccessDenied',
-  
-  /** SHOULD be returned when a channel cannot be created or retrieved via the
-   *  `getOrCreateChannel` method of the DesktopAgent (`fdc3`).
-   */
-  CreationFailed = 'CreationFailed',
-}
-```
-
-Contains constants representing the errors that can be encountered when calling channels using the [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`getOrCreateChannel`](DesktopAgent#getorcreatechannel) methods, or the [`getCurrentContext`](Channel#getcurrentcontext), [`broadcast`](Channel#broadcast) or [`addContextListener`](Channel#addcontextlistener) methods on the `Channel` object.
-
-#### See also
-
-* [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
-* [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
-* [`Channel.broadcast`](Channel#broadcast)
-* [`Channel.addContextListener`](Channel#addcontextlistener)
-* [`Channel.getCurrentContext`](Channel#getcurrentcontext)
