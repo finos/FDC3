@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `Action`
 
-A representation of an FDC Action (Context or Context+Intent) that can be inserted inside another object, 
+A representation of an FDC3 Action (specified via a Context or Context & Intent) that can be inserted inside another object, 
 for example a chat message.
 
 ## Type

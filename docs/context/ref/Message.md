@@ -7,7 +7,7 @@ hide_title: true
 # `Message`
 
 A chat message to be sent through an instant messaging application. Can contain one or several text bodies (organised by mime-type, plaintext or markdown), 
-as well as attached entities (either arbitrary file attachments or fdc actions to be embedded in the message). To be put inside a ChatInitSettings object.
+as well as attached entities (either arbitrary file attachments or FDC3 actions to be embedded in the message). To be put inside a ChatInitSettings object.
 
 ## Type
 
