@@ -8,7 +8,7 @@
     "type": { "const": "fdc3.chat.room" },
     "providerName": { "type": "string" },
     "id": { "type": "object" },
-    "uri": { "type": "string" },
+    "url": { "type": "string" },
     "name": { "type": "string" }
   },
   "required": ["type", "providerName", "id"]

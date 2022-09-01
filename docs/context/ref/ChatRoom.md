@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `ChatRoom`
 
-Reference to a chat room.
+Reference to a chat room (which could be used later to send a message to the room).
 
 ## Type
 
@@ -23,10 +23,10 @@ https://fdc3.finos.org/schemas/next/chatRoom.schema.json
 | `type`      | string  | Yes      | `'fdc3.chat.room'`  |
 | `providerName`      | string  | Yes       | `'Symphony'`      |
 | `id`  | object  | Yes       | `{ roomId: 'j75xqXy25NBOdacUI3FNBH', anyOtherKey: 'abcdef'}` |
-| `uri` | string  | No       | `'http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA'`      |
+| `url` | string  | No       | `'http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA'`      |
 | `name` | string  | No       | `'My new room'`      |
 
-The `uri` is an universal url to access to the room. It could be opened from a browser, a mobile app, etc...
+The `url` is an universal url to access to the room. It could be opened from a browser, a mobile app, etc...
 
 ## Example
 
@@ -37,7 +37,7 @@ const chatRoom = {
   id: {
       roomId: "j75xqXy25NBOdacUI3FNBH"
   }
-  uri: "http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA",
+  url: "http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA",
   name: 'My new room'
 };
 
