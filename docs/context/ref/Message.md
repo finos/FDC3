@@ -21,8 +21,8 @@ https://fdc3.finos.org/schemas/next/message.schema.json
 
 | Property          | Type                                      | Required | Example Value           |
 |-------------------|-------------------------------------------|----------|-------------------------|
-| `type`            | string                                    | Yes      | `'fdc3.message'`   |
-| `text`            | map of string content to string mime-type | No       | { text/plain: 'Hello' } |
+| `type`            | string                                    | Yes      | `'fdc3.message'`        |
+| `text`            | map of string mime-type to string content | No       | { text/plain: 'Hello' } |
 | `entities`        | map of json entity to string id           | No       | See Below               |
 
 ## Example
