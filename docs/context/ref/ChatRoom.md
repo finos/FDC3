@@ -31,21 +31,24 @@ The `uri` is an universal url to access to the room. It could be opened from a b
 ## Example
 
 ```js
+const chatRoom = {
+  type: "fdc3.chat.room",
+  providerName: "Symphony",
+  id: {
+      roomId: "j75xqXy25NBOdacUI3FNBH"
+  }
+  uri: "http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA",
+  name: 'My new room'
+};
+
+//Chat rooms are returned by the StartChat intent as a result
 const intentResolution = await fdc3.raiseIntent("StartChat", context);
 
-const chatRoom = intentResolution.getResult():
-
-/* // The chatRoom will be like:
-  chatRoom = {
-    type: "fdc3.chat.room",
-    providerName: "Symphony",
-    id: {
-        roomId: "j75xqXy25NBOdacUI3FNBH"
-    }
-    uri: "http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA",
-    name: 'My new room'
-  };
-*/
+try {
+    const chatRoom = await intentResolution.getResult():
+} catch (error) {
+   //chat room was not created...
+}
 ```
 
 ## See Also
