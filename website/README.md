@@ -63,7 +63,7 @@ Since FDC3 is a schema project, we don't follow semver, which is meant for libra
 
 ## Create a new version
 
-Before creating a version, please make sure docs/fdc3-intro.md has been updated such that the version number in the title and versioning section are correct for the version you are creating, as these have to be manually set.
+Before creating a version, please make sure docs/fdc3-intro.md and docs/fdc3-standard.md have been updated such that the version number in the title and metadata section of the standard's abstract are correct for the version you are creating, as these have to be manually set.
 
 Since the website also uses some generated and copied static files (like schemas), extra tasks need to be performed as part of creating a new version.
 
