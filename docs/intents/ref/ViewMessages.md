@@ -114,10 +114,10 @@ fdc3.raiseIntent('ViewMessages', searchCriteria);
 
 Context
 
+* [SearchCriteria](../../context/ref/SearchCriteria)
 * [Instrument](../../context/ref/Instrument)
 * [Contact](../../context/ref/Contact)
 * [Organization](../../context/ref/Organization)
-* [SearchCriteria](../../context/ref/SearchCriteria)
 
 Intents
 
