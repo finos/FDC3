@@ -23,7 +23,7 @@ Send a message to an existing chat room.
 ## Example
 
 ```js
-// Start a chat
+// Start a chat and retrieve a reference to the chat room created
 const intentResolution = await fdc3.raiseIntent("StartChat", context);
 const chatRoom = intentResolution.getResult();
 

@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `ChatMessage`
 
-Message to send to a chat.
+A context representing a chat message. Typically used to send the message or to pre-populate a message for sending.
 
 ## Type
 
