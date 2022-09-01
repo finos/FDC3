@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `ViewMessages`
 
-Search and display a list of messages to the user.
+Search and display a list of messages (for example in a chat application or CRM) to the user. 
 
 ## Intent Name
 
@@ -22,7 +22,7 @@ Search and display a list of messages to the user.
 
 ## Example
 
-Request to display messages for a specific ticker:
+Request display of messages relating to a specific `fdc3.instrument` (representing a ticker):
 ```js
 const searchCriteria = {
     type: "fdc3.searchCriteria",
@@ -39,7 +39,7 @@ const searchCriteria = {
 fdc3.raiseIntent('ViewMessages', searchCriteria);
 ```
 
-Request to display messages for a specific **contact**:
+Request display of messages relating to a specific `fdc3.contact`:
 
 ```js
 const searchCriteria = {
@@ -58,7 +58,7 @@ const searchCriteria = {
 fdc3.raiseIntent('ViewMessages', searchCriteria);
 ```
 
-Request to display messages for a specific **organization**:
+Request display of messages relating to a specific `fdc3.organization`:
 
 ```js
 const searchCriteria = {
@@ -74,7 +74,7 @@ const searchCriteria = {
 fdc3.raiseIntent('ViewMessages', searchCriteria);
 ```
 
-Request to display messages containing a specific **phrase**:
+Request display of messages relating to a specific **phrase**:
 
 ```js
 const searchCriteria = {
@@ -87,7 +87,7 @@ const searchCriteria = {
 fdc3.raiseIntent('ViewMessages', searchCriteria);
 ```
 
-Request to display messages with **multiples** criteria:
+Request display of messages matching _multiple_ criteria:
 ```js
 const searchCriteria = {
     type: "fdc3.searchCriteria",
