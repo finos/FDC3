@@ -54,16 +54,11 @@ try {
 ## See Also
 
 Other Types
-- [ContactList](ContactList)
+* [ChatInitSettings](ChatInitSettings)
 
 Intents
 - [StartChat](../../intents/ref/StartChat)
-- [StartCall](../../intents/ref/StartCall)
 - [SendChatMessage](../../intents/ref/SendChatMessage)
-- [ViewProfile](../../intents/ref/ViewProfile)
-- [ViewResearch](../../intents/ref/ViewResearch)
-- [ViewInteractions](../../intents/ref/ViewInteractions)
-- [ViewOrders](../../intents/ref/ViewOrders)
 
 FINOS Financial Objects
 - [Contact](https://fo.finos.org/docs/objects/contact)
