@@ -15,5 +15,5 @@
     "message": {
       "type": "string"
     },
-  "required": ["status", "context"]
+  "required": ["type", "status"]
 }
