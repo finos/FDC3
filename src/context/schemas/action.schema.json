@@ -4,13 +4,13 @@
   "type": "object",
   "title": "Action",
   "properties": {
-    "type": { "const": "fdc3.entity.action" },
+    "type": { "const": "fdc3.action" },
     "title": {
       "type": "string"
     },
     "intent": {
       "type": "string",
-      "$comment": "Should reference one of the intent types listed in 'standard intents'"
+      "$comment": "Should reference an intent type name, such as those defined in the FDC3 Standard'"
     },
     "context": {
       "type": "object",

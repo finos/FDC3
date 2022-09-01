@@ -42,7 +42,7 @@ const message = {
           }
       },
       'eurusd_action': {
-        type: 'fdc3.entity.action',
+        type: 'fdc3.action',
         data: {
             title: 'Click to view Chart',
             intent: 'ViewChart',

@@ -9,9 +9,11 @@ hide_title: true
 A representation of an FDC3 Action (specified via a Context or Context & Intent) that can be inserted inside another object, 
 for example a chat message.
 
+The action may be completed by calling `fdc3.raiseIntent()` with the specified Intent and Context, or, if only a context is specified, by calling `fdc3.raiseIntentForContext()` (which the Desktop Agent will resolve by presenting the user with a list of available Intents for the Context).
+
 ## Type
 
-`fdc3.entity.action`
+`fdc3.action`
 
 ## Schema
 
@@ -21,7 +23,7 @@ https://fdc3.finos.org/schemas/next/action.schema.json
 
 | Property          | Type                                      | Required | Example Value           |
 |-------------------|-------------------------------------------|----------|-------------------------|
-| `type`            | string                                    | Yes      | `'fdc3.entity.action'`  |
+| `type`            | string                                    | Yes      | `'fdc3.action'`  |
 | `title`           | string                                    | Yes      | `'Click to view Chart'` |
 | `context`         | string                                    | Yes      | See Below               |
 | `intent`          | string                                    | No       | `'ViewChart'`           |
@@ -30,7 +32,7 @@ https://fdc3.finos.org/schemas/next/action.schema.json
 
 ```js
 const message = {
-    type: 'fdc3.entity.action',
+    type: 'fdc3.action',
     data: {
         title: 'Click to view Chart',
         intent: 'ViewChart',
