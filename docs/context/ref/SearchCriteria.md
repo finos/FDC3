@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `SearchCriteria`
 
-A context type representing a search criteria that can be used to filter and display messages from a chat.
+A context type that represents a simple search criterion, based on a list of other context objects, that can be used to search or filter content in an application (such as messages in a chat app).
 
 ## Type
 
