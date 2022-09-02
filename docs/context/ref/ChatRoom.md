@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `ChatRoom`
 
-Reference to a chat room (which could be used later to send a message to the room).
+Reference to the chat room(s) (which could be used later to send a message to the room(s)).
 
 ## Type
 
@@ -45,9 +45,9 @@ const chatRoom = {
 const intentResolution = await fdc3.raiseIntent("StartChat", context);
 
 try {
-    const chatRoom = await intentResolution.getResult():
+    const chatRooms = await intentResolution.getResult():
 } catch (error) {
-   //chat room was not created...
+   //chat room were not created...
 }
 ```
 
