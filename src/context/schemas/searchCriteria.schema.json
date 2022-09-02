@@ -6,7 +6,7 @@
   "allOf": [{ "$ref": "context.schema.json#" }],
   "properties": {
     "type": { "const": "fdc3.searchCriteria" },
-    "contexts": {
+    "criteria": {
       "type": "array",
       "items": { 
         "anyOf": [
@@ -18,5 +18,5 @@
       }
     }
   },
-  "required": ["type", "contexts"]
+  "required": ["type", "criteria"]
 }

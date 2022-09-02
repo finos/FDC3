@@ -26,7 +26,7 @@ Request display of messages relating to a specific `fdc3.instrument` (representi
 ```js
 const searchCriteria = {
     type: "fdc3.searchCriteria",
-    contexts: [
+    criteria: [
         {
             type: "fdc3.instrument",
             id: {
@@ -44,7 +44,7 @@ Request display of messages relating to a specific `fdc3.contact`:
 ```js
 const searchCriteria = {
     type: "fdc3.searchCriteria",
-    contexts: [
+    criteria: [
         {
             type: "fdc3.contact",
             name: "Jane Doe",
@@ -63,7 +63,7 @@ Request display of messages relating to a specific `fdc3.organization`:
 ```js
 const searchCriteria = {
     type: "fdc3.searchCriteria",
-    contexts: [
+    criteria: [
         {
             type: "fdc3.organization",
             name: "Symphony"
@@ -79,7 +79,7 @@ Request display of messages relating to a specific **phrase**:
 ```js
 const searchCriteria = {
     type: "fdc3.searchCriteria",
-    contexts: [
+    criteria: [
         "#OrderID45788422"
     ]
 }
@@ -91,7 +91,7 @@ Request display of messages matching _multiple_ criteria:
 ```js
 const searchCriteria = {
     type: "fdc3.searchCriteria",
-    contexts: [
+    criteria: [
         {
             type: "fdc3.contact",
             name: "Jane Doe",

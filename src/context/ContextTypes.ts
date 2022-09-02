@@ -188,7 +188,7 @@ export interface Position {
 }
 
 export interface SearchCriteria {
-  contexts: (Instrument | Organization | Contact | string)[];
+  criteria: (Instrument | Organization | Contact | string)[];
   type: string;
 }
 
