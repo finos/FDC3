@@ -2,7 +2,7 @@
 
 ## Code of Conduct
 
-Contact for Code of Conduct issues or inquires: legal@linuxfoundation.org
+Contact for Code of Conduct issues or inquiries: help@finos.org
 
 ## License Acceptance
 
