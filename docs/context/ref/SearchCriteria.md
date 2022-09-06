@@ -10,7 +10,7 @@ A context type that represents a simple search criterion, based on a list of oth
 
 ## Type
 
-`fdc3.searchCriteria`
+`fdc3.chat.searchCriteria`
 
 ## Schema
 
@@ -20,16 +20,16 @@ https://fdc3.finos.org/schemas/next/searchCriteria.schema.json
 
 | Property         | Type            | Required | Example Value        |
 |------------------|-----------------|----------|----------------------|
-| `type`           | string          | Yes      | `'fdc3.searchCriteria'`     |
+| `type`           | string          | Yes      | `'fdc3.chat.searchCriteria'`     |
 | `criteria` | (Instrument&#124;<br>Contact&#124;<br>Organization&#124;<br>string)[] | Yes | <pre>[<br>&emsp;&emsp;{<br>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.instrument",<br>&emsp;&emsp;&emsp;&emsp;"id": {<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"ticker": "AAPL"<br>&emsp;&emsp;&emsp;&emsp;}<br>&emsp;&emsp;},<br>&emsp;&emsp;{<br>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.contact",<br>&emsp;&emsp;&emsp;&emsp;"name":"Jane Doe",<br>&emsp;&emsp;&emsp;&emsp;"id": {<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"email": "jane.doe@mail.com"<br>&emsp;&emsp;&emsp;&emsp;}<br>&emsp;&emsp;},<br>&emsp;&emsp;{<br>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.organization",<br>&emsp;&emsp;&emsp;&emsp;"name":"Symphony",<br>&emsp;&emsp;},<br>&emsp;&emsp;"#OrderID45788422",<br>]</pre> |
 
-⚠️ Operators (and/or/not) are not defined in `fdc3.searchCriteria`. It is up to the application that processes the FDC3 Intent to choose and apply the operators between the criteria.
+⚠️ Operators (and/or/not) are not defined in `fdc3.chat.searchCriteria`. It is up to the application that processes the FDC3 Intent to choose and apply the operators between the criteria.
 
 ## Example
 
 ```js
 const searchCriteria = {
-    type: "fdc3.searchCriteria",
+    type: "fdc3.chat.searchCriteria",
     criteria: [
         {
             type: "fdc3.instrument",

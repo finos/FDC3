@@ -25,7 +25,7 @@ Search and display a list of messages (for example in a chat application or CRM)
 Request display of messages relating to a specific `fdc3.instrument` (representing a ticker):
 ```js
 const searchCriteria = {
-    type: "fdc3.searchCriteria",
+    type: "fdc3.chat.searchCriteria",
     criteria: [
         {
             type: "fdc3.instrument",
@@ -43,7 +43,7 @@ Request display of messages relating to a specific `fdc3.contact`:
 
 ```js
 const searchCriteria = {
-    type: "fdc3.searchCriteria",
+    type: "fdc3.chat.searchCriteria",
     criteria: [
         {
             type: "fdc3.contact",
@@ -62,7 +62,7 @@ Request display of messages relating to a specific `fdc3.organization`:
 
 ```js
 const searchCriteria = {
-    type: "fdc3.searchCriteria",
+    type: "fdc3.chat.searchCriteria",
     criteria: [
         {
             type: "fdc3.organization",
@@ -78,7 +78,7 @@ Request display of messages relating to a specific **phrase**:
 
 ```js
 const searchCriteria = {
-    type: "fdc3.searchCriteria",
+    type: "fdc3.chat.searchCriteria",
     criteria: [
         "#OrderID45788422"
     ]
@@ -90,7 +90,7 @@ fdc3.raiseIntent('ViewMessages', searchCriteria);
 Request display of messages matching _multiple_ criteria:
 ```js
 const searchCriteria = {
-    type: "fdc3.searchCriteria",
+    type: "fdc3.chat.searchCriteria",
     criteria: [
         {
             type: "fdc3.contact",

@@ -159,6 +159,7 @@ The following are standard FDC3 context types:
 
 * [`fdc3.chart`](ref/Chart) ([schema](/schemas/next/chart.schema.json))
 * [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](/schemas/next/chatInitSettings.schema.json))
+* [`fdc3.chat.searchCriteria`](ref/SearchCriteria) ([schema](/schemas/next/searchCriteria.schema.json))
 * [`fdc3.contact`](ref/Contact) ([schema](/schemas/next/contact.schema.json))
 * [`fdc3.contactList`](ref/ContactList) ([schema](/schemas/next/contactList.schema.json))
 * [`fdc3.country`](ref/Country) ([schema](/schemas/next/country.schema.json))
@@ -169,7 +170,6 @@ The following are standard FDC3 context types:
 * [`fdc3.organization`](ref/Organization) ([schema](/schemas/next/organization.schema.json))
 * [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/next/portfolio.schema.json))
 * [`fdc3.position`](ref/Position) ([schema](/schemas/next/position.schema.json))
-* [`fdc3.searchCriteria`](ref/SearchCriteria) ([schema](/schemas/next/searchCriteria.schema.json))
 * [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/next/nothing.schema.json))
 * [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/next/timerange.schema.json))
 * [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/valuation.schema.json))

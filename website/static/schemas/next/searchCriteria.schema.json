@@ -5,7 +5,7 @@
   "title": "SearchCriteria",
   "allOf": [{ "$ref": "context.schema.json#" }],
   "properties": {
-    "type": { "const": "fdc3.searchCriteria" },
+    "type": { "const": "fdc3.chat.searchCriteria" },
     "criteria": {
       "type": "array",
       "items": { 
