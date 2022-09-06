@@ -35,7 +35,7 @@ interface DesktopAgent {
   createPrivateChannel(): Promise<PrivateChannel>;
   getUserChannels(): Promise<Array<Channel>>;
 
-  // optional channel management functions
+  // OPTIONAL channel management functions
   joinUserChannel(channelId: string) : Promise<void>;
   getCurrentChannel() : Promise<Channel | null>;
   leaveCurrentChannel() : Promise<void>;
@@ -95,7 +95,7 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, 
 addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 ```
 
-Adds a listener for incoming intents from the Desktop Agent. The handler function may return void or a promise that resolves to a [`IntentResult`](Types#intentresult), which is either a [`Context`](Types#context) object, representing any data that should be returned to the app that raised the intent, or a [`Channel`](Channel) or [`PrivateChannel`](PrivateChannel) over which data responses will be sent. The `IntentResult` will be returned to app that raised the intent via the [`IntentResolution`](Metadata#intentresolution) and retrieved from it using the `getResult()` function.
+Adds a listener for incoming intents from the Desktop Agent. The handler function may return void or a promise that resolves to a [`IntentResult`](Types#intentresult), which is either a [`Context`](Types#context) object, representing any data that should be returned to the app that raised the intent, or a [`Channel`](Channel) or [`PrivateChannel`](PrivateChannel) over which data responses will be sent. The `IntentResult` will be returned to the app that raised the intent via the [`IntentResolution`](Metadata#intentresolution) and retrieved from it using the `getResult()` function.
 
 The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.
 
@@ -184,6 +184,59 @@ fdc3.broadcast(instrument);
 
 * [addContextListener](#addcontextlistener)
 
+### `createPrivateChannel`
+
+```ts
+createPrivateChannel(): Promise<PrivateChannel>;
+```
+
+Returns a `Channel` with an auto-generated identity that is intended for private communication between applications. Primarily used to create channels that will be returned to other applications via an IntentResolution for a raised intent.
+
+If the `PrivateChannel` cannot be created, the returned promise MUST be rejected with an error string from the [`ChannelError`](Errors#channelerror) enumeration.
+
+The `PrivateChannel` type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
+
+It is intended that Desktop Agent implementations:
+
+* SHOULD restrict external apps from listening or publishing on this channel.
+* MUST prevent `PrivateChannels` from being retrieved via fdc3.getOrCreateChannel.
+* MUST provide the `id` value for the channel as required by the `Channel` interface.
+
+#### Example
+
+```js
+fdc3.addIntentListener("QuoteStream", async (context) => {
+  const channel = await fdc3.createPrivateChannel();
+  const symbol = context.id.ticker;
+
+  // This gets called when the remote side adds a context listener
+  const addContextListener = channel.onAddContextListener((contextType) => {
+    // broadcast price quotes as they come in from our quote feed
+    feed.onQuote(symbol, (price) => {
+      channel.broadcast({ type: "price", price});
+    });
+  });
+
+  // This gets called when the remote side calls Listener.unsubscribe()
+  const unsubscriberListener = channel.onUnsubscribe((contextType) => {
+    feed.stop(symbol);
+  });
+
+  // This gets called if the remote side closes
+  const disconnectListener = channel.onDisconnect(() => {
+    feed.stop(symbol);
+  });
+
+  return channel;
+});
+```
+
+#### See also
+
+* [`PrivateChannel`](PrivateChannel)
+* [`raiseIntent`](#raiseintent)
+* [`addIntentListener`](#addintentlistener)
+
 ### `findInstances`
 
 ```ts
@@ -200,7 +253,7 @@ If the request fails for another reason, the promise will return an `Error` with
 
 ```js
 // Retrieve a list of instances of an application
-let instances = await fdc3.findInstances({name: "MyApp"});
+let instances = await fdc3.findInstances({appId: "MyAppId"});
 
 // Target a raised intent at a specific instance
 let resolution = fdc3.raiseIntent("ViewInstrument", context, instances[0]);
@@ -380,7 +433,7 @@ let appMetadata = await fdc3.getAppMetadata(appIdentifier);
 getCurrentChannel() : Promise<Channel | null>;
 ```
 
-Optional function that returns the `Channel` object for the current User channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
+OPTIONAL function that returns the `Channel` object for the current User channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
 
 Returns `null` if the app is not joined to a channel.
 
@@ -401,7 +454,7 @@ let current = await fdc3.getCurrentChannel();
 getInfo(): Promise<ImplementationMetadata>;
 ```
 
-Retrieves information about the FDC3 Desktop Agent implementation, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number and the metadata of the calling application according to the desktop agent.
+Retrieves information about the FDC3 Desktop Agent implementation, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number, details of whether optional API features are implemented and the metadata of the calling application according to the desktop agent.
 
 Returns an [`ImplementationMetadata`](Metadata#implementationmetadata) object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.
 
@@ -455,59 +508,6 @@ catch (err){
 
 * [`Channel`](Channel)
 
-### `createPrivateChannel`
-
-```ts
-createPrivateChannel(): Promise<PrivateChannel>;
-```
-
-Returns a `Channel` with an auto-generated identity that is intended for private communication between applications. Primarily used to create channels that will be returned to other applications via an IntentResolution for a raised intent.
-
-If the `PrivateChannel` cannot be created, the returned promise MUST be rejected with an error string from the [`ChannelError`](Errors#channelerror) enumeration.
-
-The `PrivateChannel` type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
-
-It is intended that Desktop Agent implementations:
-
-* SHOULD restrict external apps from listening or publishing on this channel.
-* MUST prevent `PrivateChannels` from being retrieved via fdc3.getOrCreateChannel.
-* MUST provide the `id` value for the channel as required by the `Channel` interface.
-
-#### Example
-
-```js
-fdc3.addIntentListener("QuoteStream", async (context) => {
-  const channel = await fdc3.createPrivateChannel();
-  const symbol = context.id.ticker;
-
-  // This gets called when the remote side adds a context listener
-  const addContextListener = channel.onAddContextListener((contextType) => {
-    // broadcast price quotes as they come in from our quote feed
-    feed.onQuote(symbol, (price) => {
-      channel.broadcast({ type: "price", price});
-    });
-  });
-
-  // This gets called when the remote side calls Listener.unsubscribe()
-  const unsubscriberListener = channel.onUnsubscribe((contextType) => {
-    feed.stop(symbol);
-  });
-
-  // This gets called if the remote side closes
-  const disconnectListener = channel.onDisconnect(() => {
-    feed.stop(symbol);
-  });
-
-  return channel;
-});
-```
-
-#### See also
-
-* [`PrivateChannel`](PrivateChannel)
-* [`raiseIntent`](#raiseintent)
-* [`addIntentListener`](#addintentlistener)
-
 ### `getUserChannels`
 
 ```ts
@@ -533,7 +533,7 @@ const redChannel = userChannels.find(c => c.id === 'red');
 joinUserChannel(channelId: string) : Promise<void>;
 ```
 
-Optional function that joins the app to the specified User channel. In most cases, applications SHOULD be joined to channels via UX provided to the application by the desktop agent, rather than calling this function directly.
+OPTIONAL function that joins the app to the specified User channel. In most cases, applications SHOULD be joined to channels via UX provided to the application by the desktop agent, rather than calling this function directly.
 
 If an app is joined to a channel, all `fdc3.broadcast` calls will go to the channel, and all listeners assigned via `fdc3.addContextListener` will listen on the channel.
 
@@ -566,7 +566,7 @@ fdc3.joinUserChannel(selectedChannel.id);
 leaveCurrentChannel() : Promise<void>;
 ```
 
-Optional function that removes the app from any User channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
+OPTIONAL function that removes the app from any User channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
 
 Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not joined to a User channel.
 
