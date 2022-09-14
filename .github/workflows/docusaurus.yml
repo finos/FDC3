@@ -40,7 +40,7 @@ jobs:
     - name: Configure Node
       uses: actions/setup-node@v1
       with:
-        node-version: '12'
+        node-version: '16.17.*'
     - name: Install website dependencies
       run: yarn --cwd website install
     - name: Patch forked version
