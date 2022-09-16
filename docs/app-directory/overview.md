@@ -8,7 +8,7 @@ An application directory (appD) is a structured repository of information about 
 
 The application metadata stored in appD records may include: the app name, type, details about how to run the application, its icons, publisher, support contact details and so on. It may also include links to or embed manifest formats defined elsewhere, such as proprietary manifests for launching the app in a container product or a Web Application Manifest (as [defined by the W3C](https://www.w3.org/TR/appmanifest/)).
 
-All this information is readily available in one place and can be used both to populate a launcher or app catalog UI for your users, and by the desktop agent managing the apps on your desktop. In fact, if your desktop platform supports the FDC3 standard, appD is the primary way that the FDC3 desktop agent implementation should receive the details about apps available to run on your desktop. Conversely, if an app is not listed in appD, the desktop agent can’t ensure its participation in context sharing or use it to resolve intents.
+All this information is readily available in one place and can be used both to populate a launcher or app catalog UI for your users, and by the Desktop Agent managing the apps on your desktop. In fact, if your desktop platform supports the FDC3 standard, appD is the primary way that the FDC3 Desktop Agent implementation should receive the details about apps available to run on your desktop. Conversely, if an app is not listed in appD, the Desktop Agent can’t ensure its participation in context sharing or use it to resolve intents.
 
 ## Advantages
 
@@ -22,7 +22,7 @@ Your appD is the one place to collect all the information about apps. The more a
 
 #### Human Readable
 
-AppD has two types of users. One is the desktop agent, but the other is humans administrating and using the smart desktop at your organization. Hence, an appD contains information about apps in both machine- and human-readable forms. For example, it includes both unique identifiers for apps that are used to refer to them in code and human-friendly app names, icons, descriptions and tooltips necessary to populate a launcher menu or app catalog user interface for your users.
+AppD has two types of users. One is the Desktop Agent, but the other is humans administrating and using the smart desktop at your organization. Hence, an appD contains information about apps in both machine- and human-readable forms. For example, it includes both unique identifiers for apps that are used to refer to them in code and human-friendly app names, icons, descriptions and tooltips necessary to populate a launcher menu or app catalog user interface for your users.
 
 #### Apps are Discoverable
 
@@ -36,7 +36,7 @@ Typically, software evolves over time. The app versions you are running today wi
 
 #### Agent-agnostic
 
-As a part of the FDC3 standard, appD isn't tied to any specific vendor. This is important, as it allows you more flexibility in that you are not tied to any specific container or desktop agent implementation. If at any point you want to switch to a different desktop agent, the process won’t be prohibitively difficult. The existing appD will work without any additional effort from you, as long as your new desktop agent is also FDC3-compliant. This is in contrast with proprietary solutions, where you would have to produce a new configuration and integration for every application.
+As a part of the FDC3 standard, appD isn't tied to any specific vendor. This is important, as it allows you more flexibility in that you are not tied to any specific container or Desktop Agent implementation. If at any point you want to switch to a different Desktop Agent, the process won’t be prohibitively difficult. The existing appD will work without any additional effort from you, as long as your new Desktop Agent is also FDC3-compliant. This is in contrast with proprietary solutions, where you would have to produce a new configuration and integration for every application.
 
 AppD reduces fragmentation in the market and allows end-users more flexibility in what applications can be included in their desktop.
 
@@ -68,13 +68,13 @@ Wherever possible, FDC3 seeks to draw inspiration from, align itself with and re
 
 ## Use Cases
 
-An application directory provides information about an application's identifiers, publisher details, intents that it supports, and metadata necessary to launch and integrate the application in a desktop agent.
+An application directory provides information about an application's identifiers, publisher details, intents that it supports, and metadata necessary to launch and integrate the application in a Desktop Agent.
 
 The following provides a summary of use cases.
 
 ### Launcher
 
-A desktop agent will usually include a user interface allowing the user to select from a set of launchable applications and then allow them to manually launch an one. It is also responsible for launching applications necessary to resolve a raised intent. However, it must first retrieve the necessary metadata about the available applications. An app directory provides an endpoint to retrieve a list of the available applications along with their metadata, which may include or link to additional information necessary to launch the application in a specific desktop agent.
+A Desktop Agent will usually include a user interface allowing the user to select from a set of launchable applications and then allow them to manually launch one. It is also responsible for launching applications necessary to resolve a raised intent. However, it must first retrieve the necessary metadata about the available applications. An app directory provides an endpoint to retrieve a list of the available applications along with their metadata, which may include or link to additional information necessary to launch the application in a specific Desktop Agent.
 
 A launcher will usually be configured with the locations of one or more AppD servers (which is necessary to implement intent resolution), however, as described in the [Service Discovery](#service-discovery) section, a fully qualified application identifier (app1@host.appd.com) may also be used to both locate the appD service and to retrieve the specific application data.
 
@@ -107,7 +107,7 @@ Although the concept of fully qualified application IDs are useful in resolving 
 
 ## Service Discovery
 
-In order to support the discovery of applications that can be used with a desktop agent, it is necessary to access data stored in one or more app directory instances.
+In order to support the discovery of applications that can be used with a Desktop Agent, it is necessary to access data stored in one or more app directory instances.
 
 ![img](assets/appd_service_distribution.png)
 
@@ -115,7 +115,7 @@ However, in order to do so, you must first discover the location of an app direc
 
 Three methods for discovering app directory services are defined in this Standard:
 
-  1. **Static configuration:** Statically defined URI records for use within client applications (typically a desktop agent implementation) directly.
+  1. **Static configuration:** Statically defined URI records for use within client applications (typically a Desktop Agent implementation) directly.
   2. **Fully-qualified appID namespace syntax host resolution:** Discovery of the appD location using a fully qualified application ID (appId) domain name.  
   3. **DNS lookup by domain name:** Discovery of the appD location using a domain name to lookup DNS SRV records identifying the host server location and TCP port. ([RFC2782](https://tools.ietf.org/html/rfc2782))
 
@@ -123,7 +123,7 @@ App directory service host discovery implementations SHOULD support each of thes
 
 ### Static configuration
 
-As the name implies, a static configuration for an appD service location is defined within a desktop agent or launcher application. This is the simplest and most common approach to app directory and application data discovery.
+As the name implies, a static configuration for an appD service location is defined within a Desktop Agent or launcher application. This is the simplest and most common approach to app directory and application data discovery.
 
 ![img](assets/appd_static_config.png)
 
