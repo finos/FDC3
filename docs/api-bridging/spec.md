@@ -476,7 +476,7 @@ interface AppIdentifier {
   readonly appId: string;
   readonly instanceId?: string;
   /** Field that represents the Desktop Agent that the app is available on.**/
-  readonly desktopAgent?: DesktopAgentIdentifier;
+  readonly desktopAgent?: string;
 }
 ```
 
@@ -558,7 +558,7 @@ Three types of requests:
 
 The latter two types embody workflows that may be broken by an agent disconnecting from the bridge either before or during the processing of the request.
 
-When processing the disconnection of agent from the bridge, the bridge MUST examine requests currently 'in-flight' and:
+When processing the disconnection of an agent from the bridge, the bridge MUST examine requests currently 'in-flight' and:
 
 * For requests that require the bridge to collate multiple responses:
   * complete those that no longer require further responses (all other agents have responded), or
