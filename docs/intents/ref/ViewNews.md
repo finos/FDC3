@@ -33,6 +33,9 @@ const instrument = {
     name: 'International Business Machines',
     id: {
         ticker: 'ibm'
+    },
+    market: {
+        MIC: "XNYS"
     }
 }
 
