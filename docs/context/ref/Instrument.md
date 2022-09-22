@@ -15,12 +15,15 @@ Notes:
 - Not all applications will use the same instrument identifiers, which is why FDC3 allows for multiple to be specified.
 In general, the more identifiers an application can provide, the easier it will be to achieve interoperability.
 
+- The `market` map can be used to further specify the instrument and help achieve interoperability disparate data sources. This is especially useful when using an id that is not globally unique.
+
 - It is valid to include extra properties and metadata as part of the instrument payload, but the minimum requirement
 is for at least one instrument identifier to be provided.
 
 - Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant for tickers as used by an exhange,
 if the identifier you want to share is not a ticker or one of the other standardised ones, rather define
 a property that makes it clear what value it is. This makes it easier for target applications.
+
 
 ## Type
 
