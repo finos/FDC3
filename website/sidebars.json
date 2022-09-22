@@ -19,7 +19,6 @@
           "api/ref/DesktopAgent",
           "api/ref/Channel",
           "api/ref/PrivateChannel",
-          "api/ref/Listener",
           "api/ref/Globals",
           "api/ref/Types",
           "api/ref/Metadata",
@@ -60,7 +59,6 @@
         "type": "subcategory",
         "label": "Context Data Part",
         "ids": [
-          "context/overview",
           "context/spec",
           "context/ref/Context",
           "context/ref/Chart",

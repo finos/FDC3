@@ -43,7 +43,7 @@ https://fdc3.finos.org/schemas/next/timerange.schema.json
 | `startTime` | string *  | No **    | `"2022-03-30T15:44:44Z"`      |
 | `endTime`   | string *  | No **    | `"2022-04-30T23:59:59+00:00"` |
 
-\* Fields representing time SHOULD be string encoded according [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
+\* Fields representing time SHOULD be string encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
 
 \*\* One of `startTime` or `endTime` MUST be specified.
 
