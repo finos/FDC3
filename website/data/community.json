@@ -60,6 +60,9 @@
       "badges": [
         {
           "text": "FDC3 1.2 Supported"
+        },
+        {
+          "text": "FDC3 2.0 Support Coming Soon"
         }
       ],
       "description": "<p>Finsemble is a no code/low code smart desktop platform that helps you achieve both visual and logical integration of various types of apps that you already use (web, native, in-house, and third-party, including Citrix virtual apps).</p><p>Connect apps into automated workflows to improve user efficiency and reduce error rates. With <a href='https://documentation.finsemble.com/tutorial-ControllingInformationFlow.html' alt='Controlling information flow through FDC3 in Finsemble'>SelectConnect</a>, you are in full control over which apps communicate and which are excluded.</p><p>Build a fully customizable UI to work across multiple windows and monitors.</p><p>Use our <a href='https://documentation.finsemble.com/tutorial-SDD-01-Welcome.html' alt='The Smart Desktop Designer: fast-track to interoperability'>Smart Desktop Designer</a> to create and share fully functioning, highly customized, integrated desktops in a few hours, no coding knowledge needed.</p>"
