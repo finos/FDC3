@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `TransactionResult`
 
-`TransactionResult` is intended to be returned as an [`IntentResult`](../../api/Types#intentresult) by intents that create, retrieve, update or delete content or records in another application. Its purpose is to provide a status and message (where needed) for the transaction and MAY wrap a returned context object.
+A context type representing the result of a transaction initiated via FDC3, which SHOULD be returned as an [`IntentResult`](../../api/Types#intentresult) by intents that create, retrieve, update or delete content or records in another application. Its purpose is to provide a status and message (where needed) for the transaction and MAY wrap a returned context object.
 
 ## Type
 
@@ -18,11 +18,11 @@ https://fdc3.finos.org/schemas/next/transactionresult.schema.json
 
 ## Details
 
-| Property    | Type    | Required | Example Value     |
-|-------------|---------|----------|-------------------|
-| `type`      | string  | Yes      | 'fdc3.transactionResult'  |
-| `status`      | string  | Yes       | `'Updated'`      |
-| `context`  | Context  | Yes       | See Below |
+| Property   | Type    | Required | Example Value     |
+|------------|---------|----------|-------------------|
+| `type`     | string  | Yes      | 'fdc3.transactionResult' |
+| `status`   | string  | Yes      | `"Created" | "Deleted" | "Updated" | "Failed"` |
+| `context`  | Context | No       | See Below |
 | `message`  | string  | No       | See Below |
 
 ## Example
@@ -54,6 +54,6 @@ Console log will display:
             "email": "jane.doe@mail.com"
         }
     },
-    "message": "record with id jane.doe@mail.com was updated"
+    "message": "record with id 'jane.doe@mail.com' was updated"
 }
 ```
