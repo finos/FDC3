@@ -10,23 +10,21 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
 
 ## Recent Changes
 
-* Fixed typos found during last meeting.
-* Clarified use of DesktopAgent identity fields and update `meta.source` to be of `AppIdentifier` OR `DesktopAgentIdentifier` type.
-* Added new `DesktopAgentIdentifier` type (for use on response messages that don't originate from an app, e.g., findIntent responses).
-* Removed `meta.destination` from responses messages. Response collation and routing should be performed using `requestGuid` only.
-* Completed set of payload fields used on request and response messages.
-  * with the exception of handling for PrivateChannel events
-* Added a list of FDC3 API calls that do NOT generate bridge messages.
-* Procedure for forwarding of Messages and collation of responses
-* Broke down previously specified bridge timeout range to be 1500ms on the bridge side and added Desktop Agent timeout (waiting for bridge responses) to be 3000ms
-  * Added recomendation on Desktop Agent timeout handling behavior when bridge stops responding
-  * Added behavior for an agent that is repeatedly timing out - Bridge should disconnect agent
-* Added details of workflows broken by disconnection and agent and bridge behaviors
-  * Proposed new errors to add to Error enumerations
-* Added recomendation of a minimum wait period of 5 seconds on reconnection attempts
+* source -> sources and timedOutSources in response messages to allow messaging to user when DAs don't respond
+* Adjust pseudocode for bridge message handling for cases where we receive a timeout but already have partial responses to process.
+* Exempted PrivateChannels from some cases where bridge messages are not normally generated (but should be for PrivateChannels).
+* Classified message exchanges by type.
+* Completed message exchanges for broadcast, findIntent, findIntentsForContext and raiseIntent.
 
-## Open questions / TODO list
+## Open questions
 
+* Confirm handling of error responses
+  * Desktop Agent API should always return JavaScript errors. Doe we want to pass the entire stack trace or just the error message? (It should be possible to find the stack trace in the Desktop Agent in which the error occurred)
+* On a `findIntent` call, should the requesting Desktop Agent send its own findIntentResult to the bridge and receive its own response back (collated with other findIntent responses), or should it receive the responses from the bridge and augment its own response without sending it to the bridge?
+
+## TODO list
+
+* Complete message exchange documentation
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
 * Advise on whether other agents report to users on connect/disconnect events? (SHOULD)
 * How to handle events from PrivateChannels (addContextListener, listener.unsubscribe, disconnect)
@@ -91,7 +89,11 @@ Hence, message paths and propagation are simple. All messages to other Desktop A
 
 #### Collating Responses
 
-Whilst some FDC3 requests are fire and forget (e.g. broadcast) the main requests such as `findIntent` or `raiseIntent` expect a response. In a bridging scenario, the response can come from multiple Desktop Agents and therefore need to be aggregated and augmented before they are sent back to the requesting DA.
+Whilst some FDC3 requests are 'fire and forget' (e.g. broadcast) the main requests such as `findIntent` or `raiseIntent` expect a response. In a bridging scenario, the response can come from multiple Desktop Agents and therefore need to be aggregated and augmented before they are sent back to the requesting DA.
+
+:::note
+A set of classifications for message exchange types are provided in the [Individual message exchanges](#individual-message-exchanges) section.
+:::
 
 The DAB is the responsible entity for collating responses together from all DAs. Whilst this approach may add some complexity to bridge implementations, it will simplify DA implementations since they only need to handle one response.
 
@@ -149,7 +151,7 @@ sequenceDiagram
 
 ### Step 1. Connect to Websocket
 
-The Desktop Agent attempts to connect to the websocket at the first port in the defined port range. If a connection cannot be made on the current port, move to the next port in the range and reattempt connection. 
+The Desktop Agent attempts to connect to the websocket at the first port in the defined port range. If a connection cannot be made on the current port, move to the next port in the range and reattempt connection.
 
 In the event that there are no ports remaining in the range, the Desktop Agent SHOULD reset to the beginning of the range, SHOULD pause its attempts to connect and resume later (a minimum wait period of 5 seconds SHOULD be used)
 
@@ -427,8 +429,10 @@ Response messages will be differentiated from requests by the presence of a `met
         appIdentifiers?: Array<AppIdentifier>,
         /** Response to `getAppMetadata` */
         appMetadata?: AppMetadata,
-        /** Response to `findIntent` functions*/
+        /** Response to `findIntent`*/
         appIntent?:  AppIntent,
+        /** Response to `findIntentsByContext`*/
+        appIntents?:  AppIntent[],
         /** Response to `raiseIntent` functions, returned on delivery of the intent and context to the target app.
          *  Note `getResult()` function should not / can not be included in JSON. */
         intentResolution?: IntentResolution,
@@ -444,8 +448,14 @@ Response messages will be differentiated from requests by the presence of a `met
         responseGuid:  string,
         /** Timestamp at which request was generated */
         timestamp:  Date,
-        /** AppIdentifier for the source that generated this response */
-        source: AppIdentifier | DesktopAgentIdentifier,
+        /** Array of AppIdentifiers or DesktopAgentIdentifiers for the sources that generated
+         *  responses to the request. Will contain a single value for individual responses and
+         *  multiple values for responses that were collated by the bridge.*/
+        sources: [AppIdentifier | DesktopAgentIdentifier],
+        /** Array of AppIdentifiers or DesktopAgentIdentifiers for responses that were not returned
+         * to the bridge before the timeout or because an error occured. 
+         * May be omitted if all sources responded. */
+        errorSources: [AppIdentifier | DesktopAgentIdentifier]
     }
 }
 ```
@@ -506,7 +516,7 @@ When handling request messages, it is the responsibility of the Desktop Agent Br
 
 * Receive request messages from connected Desktop Agents.
 * Augment request messages with `meta.source.desktopAgent` information (as described above).
-* Forward request messages onto either a specific Desktop Agent or all other Desktop Agents 
+* Forward request messages onto either a specific Desktop Agent or all other Desktop Agents.
   * The bridge MUST NOT forward the request to the agent that sent the request, nor expect a reply from it.
 
 For message exchanges that involve responses, it is the responsibility of the Desktop Agent Bridge to:
@@ -518,7 +528,7 @@ For message exchanges that involve responses, it is the responsibility of the De
 
 Collated response messages generated by the bridge use the same format as individual response messages.
 
-The following pseudo-code defines how messages should be forwarded or collated:
+The following pseudo-code defines how messages should be forwarded or collated by the bridge:
 
 * if the message is a request (`meta.requestGuid` is set, but `meta.responseGuid` is not),
   * and the message does not include a `meta.destination` field,
@@ -533,13 +543,21 @@ The following pseudo-code defines how messages should be forwarded or collated:
   * if the `meta.requestGuid` is known,
     * add the message to the collated responses for the request,
       * augment any `AppIdentifier` types in the response message with a `desktopAgent` field matching that of the responding Desktop Agent,
-      * if all expected responses have been received (i.e. all connected agents or the specified agent have responded, as appropriate),
+      * if `payload.error` is set in the response add the DesktopAgentIdentifier to the `meta.errorSources` element.
+      * else add the DesktopAgentIdentifier to the `meta.sources` element.
+      * if all expected responses have been received (i.e. all connected agents or the specified agent has responded, as appropriate),
         * produce the collated response message and return to the requesting Desktop Agent.
       * else await the configured response timeout or further responses,
         * if the timeout is reached without any responses being received
-          * produce and return an appropriate [error response](../api/ref/Errors).
-  * else discard the response message (as it is a delayed response to a request that has timed out or is otherwise invalid).
+          * produce and return an appropriate [error response](../api/ref/Errors), including details of all Desktop Agents in `timedOutSources`.
+          * log the timeout for each Desktop Agent that did not respond and check disconnection criteria.
+        * if the timeout is reached with a partial set of responses
+          * produce and return a collated response, but include details of Desktop Agents that timed out in `timedOutResponses`.
+          * log the timeout for each Desktop Agent that did not respond and check disconnection criteria.
+  * else discard the response message (as it is a delayed to a request that has timed out or is otherwise invalid).
 * else the message is invalid and should be discarded.
+
+//TODO add detail on DA responsibilities and how requests should be handled by the desktop agent (with timeouts and messaging to user on timedOutSources) 
 
 ### Workflows Broken By Disconnects
 
@@ -597,7 +615,8 @@ In the event that the bridge repeatedly times out, connected Desktop Agents MAY 
 
 Some FDC3 API calls can be handled locally and do not need to generate request messages to the Desktop Agent Bridge, but are likely to be involved in other exchanges that do generate messages to the bridge (for example adding context or intent handlers). Those calls include:
 
-* `addContextListener` functions
+* `addContextListener` functions (excluding those for `PrivateChannel` instances)
+* `listener.unsubscribe` (excluding those for `PrivateChannel` instances)
 * `addIntentListener`
 * `getOrCreateChannel`
 * `createPrivateChannel`
@@ -607,10 +626,11 @@ Some FDC3 API calls can be handled locally and do not need to generate request m
 * `leaveCurrentChannel`
 * `getInfo`
 
-//TODO deal with exceptions for PrivateChannel event handlers
-//  addContextListener
-//  listener.unsubscribe
-//  disconnect
+However, `PrivateChannel` instances allow the registration of additional event handlers (for the addition or removal of context listeners) that may be used to manage streaming data sent over them by starting or stopping the stream in response to those events. Hence, the following calls DO generate request messages when used on a PrivateChannel instance:
+
+* `addContextListener`
+* `listener.unsubscribe`
+* `disconnect`
 
 ## Individual message exchanges
 
@@ -623,13 +643,23 @@ Each section assumes that we have 3 agents connected by a bridge:
 * agent-C
 * DAB
 
-## Context
+Message exchanges come in a number of formats, which are known as:
 
-### broadcast (on channels)
+* **Request only**: A request message that does not require a response ('fire and forget'), such as a `broadcast`.
+* **Request Response (single)**: A request message that expects a single response from a single Desktop Agent, such as `open` or `getAppMetadata`.
+* **Request Response (collated)**: A request message that expects responses from all other Desktop Agents that are collated by the bridge and returned as a single response to the requestor, such as `findIntent` or `findInstances`.
+* **Request Multiple Response (single)**: A request message that expects multiple responses from a single Desktop Agent, such as `raiseIntent`.
 
-Only needs a single message (no response).
+### `broadcast` (on `fdc3`, a `Channel` or `PrivateChannel`)
 
-An app on agent-A does:
+Type: **Request only**
+
+Generated by API calls:
+
+* [`fdc3.broadcast(contextObj)`](../api/ref/DesktopAgent#broadcast)
+* [`Channel.broadcast(contextObj)`](../api/ref/Channel#broadcast)
+
+e.g.
 
 ```javascript
 fdc3.broadcast(contextObj);
@@ -641,15 +671,17 @@ or
 (await fdc3.getOrCreateChannel("myChannel")).broadcast(contextObj)
 ```
 
+Message exchange:
+
 ```mermaid
 sequenceDiagram
     participant DA as Desktop Agent A
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: Broadcast
-    DAB ->>+ DB: Broadcast
-    DAB ->>+ DC: Broadcast
+    DA ->>+ DAB: broadcast
+    DAB ->>+ DB: broadcast
+    DAB ->>+ DC: broadcast
 ```
 
 It encodes this as a message which it sends to the DAB
@@ -663,14 +695,12 @@ It encodes this as a message which it sends to the DAB
         "context": { /*contextObj*/ }
     },
     "meta": {
-        "requestGuid": "requestGuid",
-        "timestamp": "2020-03-...",
-        "source": {
-            "name": "...",
-            "appId": "...",
-            "version": "...",
-            // ... other metadata fields
-        }
+        "requestGuid": "<requestGuid>",
+        "timestamp": "2022-03-...",
+        "source": [{
+            "appId": "agentA-app1",
+            "instanceId": "c6ad5174-6f78-4582-8e96-728d93a4d7d7"
+        }]
     }
 }
 ```
@@ -689,26 +719,30 @@ which it repeats on to agent-B AND agent-C with the `source.desktopAgent` metada
     "meta": {
         "requestGuid": "requestGuid",
         "timestamp": "2020-03-...",
-        "source": {
-            "desktopAgent": "agent-A",
-            "name": "...",
-            "appId": "...",
-            "version": "...",
-            // ... other metadata fields
-        },
+        "source": [{
+            "appId": "agentA-app1",
+            "instanceId": "c6ad5174-6f78-4582-8e96-728d93a4d7d7",
+            "desktopAgent": "agent-A" //added by DAB
+        }]
     }
 }
 ```
 
-When adding context listeners (either for User Channels or specific App Channels) no messages need to be exchanged. Instead, upon receiving a broadcast message the Desktop Agent just needs to pass it on to all listeners on that named channel.
+### `findIntent` (on `fdc3`)
 
-## Intents
+Type: **Request Response (collated)**
 
-### findIntent
+Generated by API call:
 
-```typescript
-findIntent(intent: string, context?: Context): Promise<AppIntent>;
+* [`findIntent(intent, context)`](../api/ref/DesktopAgent#findintent)
+
+e.g. An application with `appId: "agentA-app1"` and `instanceId: "c6ad5174-6f78-4582-8e96-728d93a4d7d7"` makes the following API call:
+
+```javascript
+let appIntent = await fdc3.findIntent("StartChat", context);
 ```
+
+Message exchange:
 
 ```mermaid
 sequenceDiagram
@@ -726,36 +760,28 @@ sequenceDiagram
 
 #### Request format
 
-A findIntent call is made on agent-A.
-
-```javascript
-let appIntent = await fdc3.findIntent();
-```
-
-Sends an outward message to the DAB.
+Outward message to the DAB:
 
 ```JSON
 // agent-A -> DAB
 {
-   "type": "findIntent",
-   "payload": {
+    "type": "findIntent",
+    "payload": {
         "intent": "StartChat",
         "context": {/*contextObj*/}
-   },
-   "meta": {
+    },
+    "meta": {
         "requestGuid": "requestGuid",
         "timestamp": "2020-03-...",
-        "source": {
-            "name": "",
-            "appId": "",
-            "version": "",
-            // ... other metadata fields
-        }
-   }
+        "source": [{
+            "appId": "agentA-app1",
+            "instanceId": "c6ad5174-6f78-4582-8e96-728d93a4d7d7"
+        }]
+    }
 }
 ```
 
-The DAB fills in the `source.desktopAgent` field and forwards the request to the other Desktop Agents (agent-B AND agent-C).
+The DAB fills in the `source.desktopAgent` field and forwards the request to the other Desktop Agents (agent-B AND agent-C):
 
 ```JSON
 // DAB -> agent-B
@@ -764,17 +790,15 @@ The DAB fills in the `source.desktopAgent` field and forwards the request to the
     "type": "findIntent",
     "payload": {
         "intent": "StartChat",
-        "context": {/*contextObj*/},
+        "context": {/*contextObj*/}
     },
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
-            "desktopAgent": "agent-A", // filled by DAB
-            "name": "",
-            "appId": "",
-            "version": "",
-            // ... other metadata fields
+            "appId": "agentA-app1",
+            "instanceId": "c6ad5174-6f78-4582-8e96-728d93a4d7d7",
+            "desktopAgent": "agent-A" //added by DAB
         }
     }
 }
@@ -788,104 +812,65 @@ Normal response from agent-A, where the request was raised.
 
 ```JSON
 {
-    "intent": { "name": "StartChat", "displayName": "Chat" },
+    "intent": { "name": "StartChat" },
     "apps": [
-        { "name": "myChat" }
+        { "appId": "myChat" }
     ]
 }
 ```
 
-DA agent-B would produce response:
+DA agent-B would produce the following response if the request was generated locally:
 
 ```JSON
 {
-    "intent": { "name": "StartChat", "displayName": "Chat" },
+    "intent": { "name": "StartChat" },
     "apps": [
-        { "name": "Skype" },
-        { "name": "Symphony" },
-        { "name": "Symphony", "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859" },
-        { "name": "Slack" }
+        { "appId": "Skype", "title": "Skype" /* other AppMetadata fields may be included */},
+        { "appId": "Symphony", "title": "Symphony" },
+        { "appId": "Symphony", 
+          "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859", 
+          "title": "Symphony" },
+        { "appId": "Slack", "title": "Slack" }
     ]
 }
 ```
 
-which is sent back over the bridge as a response to the request message as:
+Hence, the response it sends to the bridge is encoded as follows:
 
 ```JSON
 // agent-B -> DAB
 {
     "type":  "findIntentResponse",
     "payload": {
-        "intent":  "StartChat",
         "appIntent":  {
-            "intent":  { "name": "StartChat", "displayName": "Chat" },
+            "intent":  { "name": "StartChat" },
             "apps": [
-                { "name": "Skype"},
-                { "name": "Symphony" },
-                { "name": "Symphony", "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859" },
-                { "name": "Slack" }
+                { "appId": "Skype", "title": "Skype" /* other AppMetadata fields may be included */ },
+                { "appId": "Symphony", "title": "Symphony" },
+                { "appId": "Symphony", 
+                  "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859", 
+                  "title": "Symphony" },
+                { "appId": "Slack", "title": "Slack" }
             ]
         }
     },
     "meta": {
-        "requestGuid": "requestGuid",
-        "responseGuid":  "responseGuidAgentB",
+        "requestGuid": "<requestGuid>",
+        "responseGuid":  "<responseGuidAgentB>",
         "timestamp":  "2020-03-...",
-        "destination": {
-            "desktopAgent": "agent-A",
-            "name": "",
-            "appId": "",
-            "version": "",
-            // ... other metadata fields
-        }
     }
 }
 ```
 
-Note the response guid generated by the agent-B and the reference to the request guid produced by agent-A where the request was originated.
+Note the response GUID generated by the agent-B and the reference to the request GUID produced by agent-A where the request was originated. Further, note that the `AppMetadata` elements in the `AppIntent` do not have a `desktopAgent` field yet, and the `meta` element does not contain a `sources` element, both of which the bridge will add.
 
-This response gets repeated by the bridge in augmented form as:
-
-```JSON
-{
-    "type":  "findIntentResponse",
-    "payload": {
-        "intent":  "StartChat",
-        "appIntent":  {
-            "intent":  { "name": "StartChat", "displayName": "Chat" },
-            "apps": [
-                { "name": "Skype", "desktopAgent": "agent-B"},
-                { "name": "Symphony", "desktopAgent": "agent-B" },
-                { "name": "Symphony", "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859", "desktopAgent": "agent-B" },
-                { "name": "Slack", "desktopAgent": "agent-B" }
-            ]
-        }
-    },
-    "meta": {
-        "requestGuid": "requestGuid",
-        "responseGuid":  "responseGuidAgentB",
-        "timestamp":  "2020-03-...",
-        "destination": {
-            "desktopAgent": "agent-A",
-            "name": "",
-            "appId": "",
-            "version": "",
-            // ... other metadata fields
-        },
-        "source": {
-            "desktopAgent": "agent-B",
-        }
-    }
-}
-```
-
-DA agent-C would produce response:
+DA agent-C would produce the following response locally:
 
 ```JSON
 {
-    "intent":  { "name": "StartChat", "displayName": "Chat" },
+    "intent":  { "name": "StartChat" },
     "apps": [
-       { "name": "WebIce"}
+       { "appId": "WebIce"}
     ]
 }
 ```
@@ -897,89 +882,288 @@ which is sent back over the bridge as a response to the request message as:
 {
     "type":  "findIntentResponse",
     "payload": {
-        "intent":  "StartChat",
         "appIntent":  {
-            "intent":  { "name": "StartChat", "displayName": "Chat" },
+            "intent":  { "appId": "StartChat" },
             "apps": [
-                { "name": "WebIce", "desktopAgent": "agent-C"}
+                { "appId": "WebIce"}
             ]
         }
     },
     "meta": {
-        "requestGuid": "requestGuid",
-        "responseGuid":  "responseGuidAgentC",
+        "requestGuid": "<requestGuid>",
+        "responseGuid":  "<responseGuidAgentC>",
         "timestamp":  "2020-03-...",
-        "destination": {
-           "desktopAgent": "agent-A",
-           "name": "",
-           "appId": "",
-           "version": "",
-           // ... other metadata fields
-       }
     }
 }
 ```
 
-This response gets repeated by the bridge in augmented form as:
+The bridge receives and collates the responses, producing the following collated response which is sends back to agent-A:
 
 ```JSON
+// DAB -> agent-A
 {
     "type":  "findIntentResponse",
     "payload": {
         "intent":  "StartChat",
         "appIntent":  {
-            "intent":  { "name": "StartChat", "displayName": "Chat" },
+            "intent":  { "name": "StartChat" },
             "apps": [
-                { "name": "WebIce", "desktopAgent": "agent-C"}
+                { "appId": "Skype", "title": "Skype", "desktopAgent": "agent-B" }, //desktopAgent added by DAB
+                { "appId": "Symphony", "title": "Symphony", "desktopAgent": "agent-B" },
+                { "appId": "Symphony", 
+                  "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859", 
+                  "title": "Symphony", 
+                  "desktopAgent": "agent-B" },
+                { "appId": "Slack", "title": "Slack", "desktopAgent": "agent-B" },
+                { "appId": "WebIce", "desktopAgent": "agent-C"}
             ]
         }
     },
     "meta": {
-        "requestGuid": "requestGuid",
-        "responseGuid":  "responseGuidAgentC",
+        "requestGuid": "<requestGuid>",
+        "responseGuid":  "<responseGuidAgentB>",
         "timestamp":  "2020-03-...",
-        "destination": {
-           "desktopAgent": "agent-A",
-           "name": "",
-           "appId": "",
-           "version": "",
-           // ... other metadata fields
-       },
-       "source": {
-            "desktopAgent": "agent-C",
-        }
+        "sources": [ //added by DAB
+            { "desktopAgent": "agent-A" },
+            { "desktopAgent": "agent-B" },
+        ]
     }
 }
 ```
 
-Then on agent-A the originating app finally gets back the following response from the bridge:
+:::note
+In the event that an agent times out or returns an error, where others respond, its `DesktopAgentIdentifier` should be added to the `meta.errorSources element` instead of `meta.sources`.
+:::
+
+Finally, agent-A combines the data received from the bridge, with its own local response to produce the response to the requesting application:
 
 ```JSON
 // DAB -> agent-A
 {
     "intent":  { "name": "StartChat", "displayName": "Chat" },
     "apps": [
-        { "name": "myChat" }, // local to this agent
-        { "name": "Skype", "desktopAgent": "agent-B" }, //agent-B responses
-        { "name": "Symphony", "desktopAgent": "agent-B" },
-        { "name": "Symphony", "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859", "desktopAgent": "agent-B" },
-        { "name": "Slack", "desktopAgent": "agent-B" },
-        { "name": "WebIce", "desktopAgent": "agent-C"} //agent C response
+        // local to this agent
+        { "appId": "myChat" },
+        //agent-B responses
+        { "appId": "Skype", "title": "Skype", "desktopAgent": "agent-B" },
+        { "appId": "Symphony", "title": "Symphony", "desktopAgent": "agent-B" },
+        { "appId": "Symphony", 
+            "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859", 
+            "title": "Symphony", 
+            "desktopAgent": "agent-B" },
+        { "appId": "Slack", "title": "Slack", "desktopAgent": "agent-B" },
+        //agent-C responses
+        { "appId": "WebIce", "desktopAgent": "agent-C"}
     ]
 }
 ```
 
-### raiseIntent
+### `findIntentsByContext` (on `fdc3`)
 
-```typescript
-raiseIntent(intent: string, context: Context, app?: TargetApp): Promise<IntentResolution>;
+Type: **Request Response (collated)**
+
+Generated by API call:
+
+* [`findIntentsByContext(context)`](../api/ref/DesktopAgent#findintentsbycontext)
+
+e.g. An application with appId `agentA-app1` makes the following API call:
+
+```javascript
+let appIntentArr = await fdc3.findIntentsByContext(context);
 ```
 
-For Desktop Agent bridging, a `raiseIntent` call MUST always pass a `app:TargetApp` argument. If one is not passed a `findIntent` will be sent instead to collect options to display in a local resolver UI, allowing for a targeted intent to be raised afterwards. See details below.
+:::note
+The message exchanges for this API call are nearly identical to that used for `findIntent()`, differing only by the lack of an `intent` field in the request message payload and the structure of the response message (where an array of `AppIntents` is returned).
+:::
 
-When receiving a response from invoking `raiseIntent` the new app instances MUST be fully initialized ie. the responding Desktop Agent will need to return an `AppIdentifier` with an `instanceId`.
+#### Request format
 
-Note that the below diagram assumes a `raiseIntent` WITH a `app:TargetApp` was specified and therefore agent-C is not involved.
+Outward message to the DAB:
+
+```JSON
+// agent-A -> DAB
+{
+    "type": "findIntentsForContext",
+    "payload": {
+        "context": {/*contextObj*/}
+    },
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "appId": "agentA-app1",
+            "instanceId": "c6ad5174-6f78-4582-8e96-728d93a4d7d7"
+        }
+    }
+}
+```
+
+The DAB fills in the `source.desktopAgent` field and forwards the request to the other Desktop Agents (agent-B AND agent-C).
+
+```JSON
+// DAB -> agent-B
+// DAB -> agent-C
+{
+    "type": "findIntentsForContext",
+    "payload": {
+        "context": {/*contextObj*/}
+    },
+    "meta": {
+        "requestGuid": "<requestGuid>",
+        "timestamp": "2020-03-...",
+        "source": {
+            "appId": "agentA-app1",
+            "instanceId": "c6ad5174-6f78-4582-8e96-728d93a4d7d7",
+            "desktopAgent": "agent-A" //added by DAB
+        }
+    }
+}
+```
+
+#### Response format
+
+An individual agent (for example agentB) would generate a local response as an array of `AppIntent` objects:
+
+```JSON
+[
+    {
+        "intent": { "name": "StartChat" },
+        "apps": [
+            { "appId": "Skype", "title": "Skype" /* other AppMetadata fields may be included */},
+            { "appId": "Symphony", "title": "Symphony" },
+            { "appId": "Symphony", 
+                "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859", 
+                "title": "Symphony" },
+            { "appId": "Slack", "title": "Slack" }
+        ]
+    },
+    {
+        "intent": { "name": "ViewProfile" },
+        "apps": [
+            { "appId": "myCRM", "title": "My CRM" },
+            { "appId": "myCRM", 
+            "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859", 
+            "title": "My CRM" }
+        ]
+    }
+]
+```
+
+This response is encoded and sent to the bridge as:
+
+```JSON
+// agent-B -> DAB
+{
+    "type":  "findIntentsForContextResponse",
+    "payload": {
+        "appIntents": [
+            {
+                "intent": { "name": "StartChat" },
+                "apps": [
+                    { "appId": "Skype", "title": "Skype" /* other AppMetadata fields may be included */},
+                    { "appId": "Symphony", "title": "Symphony" },
+                    { "appId": "Symphony", 
+                        "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859", 
+                        "title": "Symphony" },
+                    { "appId": "Slack", "title": "Slack" }
+                ]
+            },
+            {
+                "intent": { "name": "ViewProfile" },
+                "apps": [
+                    { "appId": "myCRM", "title": "My CRM" },
+                    { "appId": "myCRM", 
+                    "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859", 
+                    "title": "My CRM" }
+                ]
+            }
+        ]
+    },
+    "meta": {
+        "requestGuid": "<requestGuid>",
+        "responseGuid":  "<responseGuidAgentB>",
+        "timestamp":  "2020-03-...",
+    }
+}
+```
+
+Each `AppMetadata` object is augmented by the bridge with a `desktopAgent` field, the responding `DesktopAgentIdentifier` value is added to the `meta.sources` element and the message payload is collated with responses from other agents into a response to the requesting agent:
+
+```JSON
+// DAB -> agent-A
+{
+    "type":  "findIntentsForContextResponse",
+    "payload": {
+        "appIntents": [
+            {
+                "intent": { "name": "StartChat" },
+                "apps": [
+                    //agent-B responses
+                    { "appId": "Skype", "title": "Skype", "desktopAgent": "agent-B" },
+                    { "appId": "Symphony", "title": "Symphony", "desktopAgent": "agent-B" },
+                    { "appId": "Symphony", 
+                        "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859", 
+                        "title": "Symphony", 
+                        "desktopAgent": "agent-B" },
+                    { "appId": "Slack", "title": "Slack", "desktopAgent": "agent-B" },
+                    //agent-C response
+                    { "appId": "WebIce", "desktopAgent": "agent-C"}
+                ]
+            },
+            {
+                "intent": { "name": "ViewProfile" },
+                "apps": [
+                    //agent-A responses
+                    { "appId": "myCRM", "title": "My CRM", "desktopAgent": "agent-B" },
+                    { "appId": "myCRM", 
+                    "instanceId": "93d2fe3e-a66c-41e1-b80b-246b87120859", 
+                    "title": "My CRM",
+                    "desktopAgent": "agent-B" }
+                    //agent-C responses
+                    { "appId": "riskToolkit", "title": "Client Risk Toolkit", "desktopAgent": "agent-C" },
+                    { "appId": "linkedIn", "title": "LinkedIn", "desktopAgent": "agent-C" }
+                ]
+            }
+        ]
+    },
+    "meta": {
+        "requestGuid": "<requestGuid>",
+        "responseGuid":  "<responseGuidAgentB>",
+        "timestamp":  "2020-03-...",
+        "sources": [{ "desktopAgent": "agent-B" }, { "desktopAgent": "agent-C" }]
+    }
+}
+```
+
+Finally agent-A combines the payload received with it own response and returns it to the requesting application.
+
+### raiseIntent
+
+Type: **Request Multiple Response (single)**
+
+Generated by API call:
+
+* [`raiseIntent(intent, context, app)`](../api/ref/DesktopAgent#raiseIntent)
+
+For Desktop Agent bridging, a `raiseIntent` call MUST always pass a `app: TargetApp` argument. If one is not passed, then the `findIntent` message exchange should be used to collect options for the local resolver to use. Once an option has been selected (for example because there is only one option, or because the user selected an option in a local intent resolver UI), the `raiseIntent` message exchange may then be used (if a remote option was selected as the resolution) to raise the intent.
+
+e.g. An application with appId `agentA-app1` makes the following API call:
+
+```javascript
+let appIntent = await fdc3.raiseIntent("StartChat", context);
+```
+
+Agent A should then conduct the `findIntent` message exchange as described above, displaying its Intent resolver UI if necessary. Once an option is selected, the `raiseIntent` message exchange is conducted as if the API call had been made with a target app:
+
+```javascript
+let appIntent = await fdc3.raiseIntent("StartChat", context, {"appId": "Slack", "desktopAgent": "agent-B"});
+```
+
+Message exchange:
+
+:::note
+Agent-C is not involved in the disagram below as the `raiseIntent` is now specified withtarget applicaiton and Desktop Agent.
+:::
 
 ```mermaid
 sequenceDiagram
@@ -997,46 +1181,7 @@ sequenceDiagram
 
 #### Request format
 
-A raiseIntent call, __without__ `app:TargetApp` argument is made on agent-A.
-
-```typescript
-raiseIntent(intent: string, context: Context): Promise<IntentResolution>;
-```
-
-agent-A sends an outward `findIntent` message to the DAB:
-
-```JSON
-// agent-A -> DAB
-{
-    "type": "findIntent",
-    "payload": {
-        "intent": "StartChat",
-        "context": {/*contextObj*/}
-    },
-    "meta": {
-        "requestGuid": "requestGuid",
-        "timestamp": "2020-03-...",
-        "source": {
-            "name": "someOtherApp", //should this be the Desktop Agent or the app?
-            "appId": "...",
-            "version": "...",
-            // ... other metadata fields
-        }
-    }
-}
-```
-
-This will trigger the same flow as `findIntent`. Upon receiving a `findIntentResponse`, the resolver is shown.
-
-User selects an option which will trigger a `raiseIntent` call with a `app:TargetApp` argument.
-
----
-
-A `raiseIntent` call is made on agent-A which targets an `AChatApp` in agent-B.
-
-```typescript
-raiseIntent(intent: string, context: Context, app: TargetApp): Promise<IntentResolution>;
-```
+Outward message to the DAB:
 
 ```JSON
 // agent-A -> DAB
@@ -1045,23 +1190,21 @@ raiseIntent(intent: string, context: Context, app: TargetApp): Promise<IntentRes
     "payload": {
         "intent": "StartChat",
         "context": {/*contextObj*/},
-        "app": {
-            "name": "AChatApp",
-            "desktopAgent": "agent-B"
+        "app": { // AppIdentifier for chosen resolution including desktopAgent value
+            "appId": "Slack",
+            "desktopAgent": "agent-B" 
         }
     },
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
-                "name": "someOtherApp",
-                "appId": "...",
-                "version": "...",
-                // ... other metadata fields
+            "appId": "agentA-app1",
+            "instanceId": "c6ad5174-6f78-4582-8e96-728d93a4d7d7"
         },
         "destination": { // duplicates the app argument so that the message is routed like any other
-                "app": {
-                "name": "AChatApp",
+            "app": {
+                "appId": "Slack",
                 "desktopAgent": "agent-B"
             }
         }
@@ -1069,29 +1212,32 @@ raiseIntent(intent: string, context: Context, app: TargetApp): Promise<IntentRes
 }
 ```
 
-The bridge fills in the `source.desktopAgent` field and forwards the request to the target Desktop Agent
+The bridge fills in the `source.desktopAgent` field and forwards the request to the target Desktop Agent:
 
 ```JSON
 // DAB -> agent-B
 {
     "type": "raiseIntent",
     "payload": {
-        "intent": "StartChat",
+       "intent": "StartChat",
         "context": {/*contextObj*/},
+        "app": {
+            "appId": "Slack",
+            "desktopAgent": "agent-B"
+            //Note an instanceId may be included to target an already running instance
+        }
     },
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
-            "name": "someOtherApp",
-            "appId": "...",
-            "version": "...",
-            "desktopAgent": "agent-A" // <---- filled by DAB
-            // ... other metadata fields
+            "appId": "agentA-app1",
+            "instanceId": "c6ad5174-6f78-4582-8e96-728d93a4d7d7",
+            "desktopAgent": "agent-A" //added by DAB
         },
         "destination": {
             "app": {
-                "name": "AChatApp",
+                "appId": "Slack",
                 "desktopAgent": "agent-B"
             }
         },
@@ -1101,162 +1247,159 @@ The bridge fills in the `source.desktopAgent` field and forwards the request to 
 
 #### Response format
 
-Normal response from agent-B, where the request was targeted to by agent-A. It sends this `intentResolution` as soon as it delivers the `raiseIntent` to the target app
+If the `raiseIntent` request were made locally, agent-B would deliver the intent and context to the target app's `IntentHandler` and respond to the raising application with an `IntentResolution`:
+
+```javascript
+{
+    "intent": "StartChat",
+    "source": {
+        "appId": "Slack",
+        "instanceId": "e36d43e1-4fd3-447a-a227-38ec48a92706"   
+    },
+    getResult: ƒ
+}
+```
+
+This is encoded and sent to the bridge (ommiting the `getResult()` function) as:
 
 ```JSON
 // agent-B -> DAB
 {
-    "type": "intentResolution",
+    "type": "raiseIntentResponse",
     "payload": {
-        "intent": "StartChat",
-        "source": {
-            "name": "AChatApp",
-            "appId": "",
-            "version": "",
-            // ... other metadata fields
-        },
-        "version": "...",
-    },
-    "meta": {
-        "requestGuid": "requestGuid",
-        "responseGuid": "intentResolutionResponseGuid",
-        "timestamp": "2020-03-...",
-        "error?:": "ResolveError Enum",
-        "source": { //Note this was the destination of the raised intent
-            "name": "AChatApp",
-            "appId": "",
-            "version": "",
-            // ... other metadata fields
-        },
-        "destination": { 
-            "app": { //note this was the source of the raised intent
-            "name": "someOtherApp",
-            "appId": "",
-                "version": "",
-                "desktopAgent": "agent-A"
-                // ... other metadata fields
+        "intentResolution": {
+            "intent": "StartChat",
+            "source": {
+                "appId": "Slack",
+                "instanceId": "e36d43e1-4fd3-447a-a227-38ec48a92706"      
             }
         }
+    },
+    "meta": {
+        "requestGuid": "<requestGuid>",
+        "responseGuid": "<responseGuid>",
+        "timestamp": "2020-03-..."
     }
 }
 ```
 
-The bridge will fill in the `source.DesktopAgent` and relay the message on to agent-A
+:::note
+When producing a response to a `raiseIntent` request, the instance of the receiving application MUST be initialized and an `instanceId` generated for it before the `IntentResolution` is generated so that it may include the `instanceId`.
+:::
+
+The bridge will fill in the `intentResolution.source.DesktopAgent` & `source.desktopAgent` and relay the message back to agent-A:
 
 ```JSON
 // DAB -> agent-A
 {
-    "type": "intentResolution",
+    "type": "raiseIntentResponse",
     "payload": {
-        "intent": "StartChat",
-        "source": {
-            "name": "AChatApp",
-            "appId": "",
-            "version": "",
-            "desktopAgent": "agent-B" // filled by DAB
-            // ... other metadata fields
-        },
-        "version": "...",
-    },
-    "meta": {
-        "requestGuid": "requestGuid",
-        "responseGuid": "intentResolutionResponseGuid",
-        "timestamp": "2020-03-...",
-        "source": {
-            "name": "AChatApp",
-            "appId": "",
-            "version": "",
-            "desktopAgent": "agent-B" // filled by DAB
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-               "name": "someOtherApp",
-               "appId": "",
-                "version": "",
-                "desktopAgent": "agent-A"
-                // ... other metadata fields
-           }
-       }
-    }
-}
-```
-
-When `AChatApp` produces a response, or the intent handler finishes running, it should send a further `intentResult` message to send that response onto the intent raiser (or throw an error if one occurred)
-
-```JSON
-// agent-B -> DAB -> agent-A
-{
-    "type": "intentResult",
-    "payload?:": {
-        "channel": {
-            "id": "channel 1",
-            "type": "system"
-        },
-        "context": {/*contextObj*/} // in alternative to channel
-    },
-    "meta": {
-        "requestGuid": "requestGuid",
-        "responseGuid": "intentResultResponseGuid",
-        "timestamp": "2020-03-...",
-        "error?:": "ResultError Enum",
-        "source": {
-            "name": "AChatApp",
-            "appId": "",
-            "version": "",
-            "desktopAgent": "agent-B" // filled by DAB
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-               "name": "someOtherApp",
-               "appId": "",
-                "version": "",
-                "desktopAgent": "agent-A"
-                // ... other metadata fields
-           }
-       }
-    }
-}
-```
-
-If intent result is private channel:
-
-```JSON
-// agent-B -> DAB -> agent-A
-{
-    "type": "intentResult",
-    "payload?:": {
-        "channel": {
-            "id": "channel a",
-            "type": "private"
-        },
-        "context": {/*contextObj*/} // in alternative to channel
-    },
-    "meta": {
-        "requestGuid": "requestGuid",
-        "responseGuid": "intentResultResponseGuid",
-        "timestamp": "2020-03-...",
-        "error?:": "ResultError Enum",
-        "source": {
-            "name": "AChatApp",
-            "appId": "",
-            "version": "",
-            "desktopAgent": "agent-B" // filled by DAB
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-            "name": "someOtherApp",
-            "appId": "",
-                "version": "",
-                "desktopAgent": "agent-A"
-                // ... other metadata fields
-            }
+        "intentResolution": {
+            "intent": "StartChat",
+            "source": {
+                "appId": "Slack",
+                "instanceId": "e36d43e1-4fd3-447a-a227-38ec48a92706",
+                "desktopAgent": "agent-B" // added by DAB
+            }  
         }
+    },
+    "meta": {
+        "requestGuid": "<requestGuid>",
+        "responseGuid": "<responseGuid>",
+        "timestamp": "2020-03-...",
+        "sources": [{ "desktopAgent": "agent-B" }] // added by DAB
     }
 }
 ```
+
+When `Slack` produces an `IntentResult` from its `IntentHandler`, or the intent handler finishes running without returning a result, it should send a further `raiseIntentResultResponse` message to indicate that its finished running and to pass any `IntentResult` onto the raising application.
+
+```JSON
+// agent-B -> DAB
+{
+    "type": "raiseIntentResultResponse",
+    "payload": {
+        "intentResult": {
+            "context": {/*contextObj*/}
+            /* for a channel IntentResult use:
+            "channel": {
+                "id": "channel 1",
+                "type": "system"
+            }
+            */
+        }
+    },
+    "meta": {
+        "requestGuid": "<requestGuid>",
+        "responseGuid": "<responseGuid 2>", //a different GUID should be used for the result response
+        "timestamp": "2020-03-...",
+        "sources": [{
+            "appId": "Slack",
+            "instanceId": "e36d43e1-4fd3-447a-a227-38ec48a92706" //instance Id should be included now that its known
+        }]
+    }
+}
+```
+
+:::note
+If intent result is private channel see [PrivateChannels](#privatechannels)
+:::
+
+Finally, the bridge augments the response with `sources[0].desktopAgent` and passes it back to Agent-A.
+
+```JSON
+// DAB -> agent-A
+{
+    "type": "intentResult",
+    "payload": {
+        "intentResult": {
+            "context": {/*contextObj*/}
+        }
+    },
+    "meta": {
+        "requestGuid": "<requestGuid>",
+        "responseGuid": "<responseGuid 2>",
+        "timestamp": "2020-03-...",
+        "sources": [{
+            "appId": "Slack",
+            "instanceId": "e36d43e1-4fd3-447a-a227-38ec48a92706",
+            "desktopAgent": "agent-B" // added by DAB
+        }]
+    }
+}
+```
+
+If the `IntentHandler` returned `void` rather than an intent result `payload.intentResult` should be empty, e.g.:
+
+```JSON
+// DAB -> agent-A
+{
+    "type": "intentResult",
+    "payload": {
+        "intentResult": {}
+    },
+    "meta": {
+        "requestGuid": "<requestGuid>",
+        "responseGuid": "<responseGuid 2>",
+        "timestamp": "2020-03-...",
+        "sources": [{
+            "appId": "Slack",
+            "instanceId": "e36d43e1-4fd3-447a-a227-38ec48a92706",
+            "desktopAgent": "agent-B" // added by DAB
+        }]
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
 
 ---
 `onSubscribe` to the private channel sent to server:
@@ -1279,9 +1422,9 @@ If intent result is private channel:
             "app": {
             "name": "someOtherApp",
             "appId": "",
-                "version": "",
-                "desktopAgent": "agent-B"
-                // ... other metadata fields
+            "version": "",
+            "desktopAgent": "agent-B"
+            // ... other metadata fields
             }
         }
     }
@@ -1587,8 +1730,303 @@ sequenceDiagram
     DB -->>- DA: Return App Data
 ```
 
-## Channels
+### PrivateChannels
 
-App Channels don't need specific messages sending for `fdc3.getOrCreateChannel` as other agents will be come aware of it when messages are broadcast.
+`PrivateChannels` provide some additional event handlers for the addition or removal of context listeners and are intended to provide a private communication channel for applications. Hence, there is a difference in how their broadcasts SHOULD be handled and a number of additional message exchanges necessary for their events.
 
-However, `PrivateChannel` instances do require additional handling due to the listeners for subscription and disconnect. Please see the raiseIntent section for the messages sent in support of this functionality.
+#### `broadcast`
+
+Desktop Agents SHOULD provide special handling for `PrivateChannel` broadcasts. A copy of the broadcast message SHOULD be forwarded to the bridge for each `ContextListener` added by a remote Desktop Agent, with a `destination` field set. Doing so will require the Desktop Agent (in addition to the app that owns the `PrivateChannel`) to track which applications have added a `ContextListener` to the `PrivateChannel`.
+
+Hence, the broadcast message should be modified to:
+
+```JSON
+// DAB -> agent-B
+{
+    "type": "broadcast",
+    "payload": {
+        "channel": "private-channel-ABC123",
+        "context": { /*contextObj*/}
+    },
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "desktopAgent": "agent-A",
+            "appId": "..."
+        },
+        "destination": {
+
+        }
+    }
+}
+```
+
+//TODO intent result is a private channel
+
+```JSON
+// agent-B -> DAB -> agent-A
+{
+    "type": "intentResult",
+    "payload?:": {
+        "channel": {
+            "id": "channel a",
+            "type": "private"
+        },
+        "context": {/*contextObj*/} // in alternative to channel
+    },
+    "meta": {
+        "requestGuid": "requestGuid",
+        "responseGuid": "intentResultResponseGuid",
+        "timestamp": "2020-03-...",
+        "error?:": "ResultError Enum",
+        "source": {
+            "appId": "AChatApp",
+            "desktopAgent": "agent-B" // filled by DAB
+            // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+            "appId": "someOtherApp",
+            "desktopAgent": "agent-A"
+            // ... other metadata fields
+            }
+        }
+    }
+}
+```
+
+#### `onAddContextListener`
+
+```JSON
+// agent-A -> DAB
+{
+    "type": "PrivateChannel.onAddContextListener",
+    "payload": {},
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "appId": "AChatApp",
+            // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+                "appId": "someOtherApp",
+                "desktopAgent": "agent-B"
+                // ... other metadata fields
+            }
+        }
+    }
+}
+```
+
+The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
+
+```JSON
+// DAB -> agent-B
+{
+    "type": "PrivateChannel.onAddContextListener",
+    "payload": {},
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "appId": "AChatApp",
+            "desktopAgent": "agent-A"
+            // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+                "appId": "someOtherApp",
+                "desktopAgent": "agent-B"
+                // ... other metadata fields
+            }
+        }
+    }
+}
+```
+
+#### `listener.unsubscribe`
+
+```JSON
+// agent-A -> DAB
+{
+    "type": "PrivateChannel.onUnsubscribe",
+    "payload": {},
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "appId": "AChatApp"
+            // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+                "appId": "someOtherApp",
+                "desktopAgent": "agent-B"
+                // ... other metadata fields
+           }
+       }
+    }
+}
+```
+
+The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
+
+```JSON
+// DAB -> agent-B
+{
+    "type": "PrivateChannel.onUnsubscribe",
+    "payload": {},
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "appId": "AChatApp",
+            "desktopAgent": "agent-A",
+            // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+               "appId": "someOtherApp",
+               "desktopAgent": "agent-B"
+               // ... other metadata fields
+           }
+       }
+    }
+}
+```
+
+#### `onDisconnect`
+
+```JSON
+// agent-A -> DAB
+{
+    "type": "PrivateChannel.onDisconnect",
+    "payload": {},
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "appId": "AChatApp",
+            // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+                "appId": "someOtherApp",
+                "desktopAgent": "agent-B"
+                // ... other metadata fields
+            }
+       }
+    }
+}
+```
+
+The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
+
+```JSON
+// DAB -> agent-B
+{
+    "type": "PrivateChannel.onDisconnect",
+    "payload": {},
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "appId": "AChatApp",
+            "desktopAgent": "agent-A"
+            // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+               "appId": "someOtherApp",
+               "desktopAgent": "agent-B"
+               // ... other metadata fields
+           }
+       }
+    }
+}
+```
+
+
+
+---
+`onDisconnect` to the private channel sent to the bridge
+
+```JSON
+// agent-A -> DAB
+{
+    "type": "privateChannelDisconnect",
+    "payload": {},
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "appId": "AChatApp",
+            // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+               "appId": "someOtherApp",
+               "desktopAgent": "agent-B"
+               // ... other metadata fields
+           }
+       }
+    }
+}
+```
+
+The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
+
+```JSON
+// DAB -> agent-B
+{
+    "type": "privateChannelDisconnect",
+    "payload": {},
+    "meta": {
+        "requestGuid": "requestGuid",
+        "timestamp": "2020-03-...",
+        "source": {
+            "appId": "AChatApp",
+            "desktopAgent": "agent-A"
+            // ... other metadata fields
+        },
+        "destination": { // duplicates the app argument
+            "app": {
+               "appId": "someOtherApp",
+               "desktopAgent": "agent-B"
+               // ... other metadata fields
+           }
+       }
+    }
+}
+```
+
+### Handling of error responses
+
+The FDC3 Desktop Agent API specifies a number of error enumerations that define specific error strings that should be used as the `message` element of a JavaScript `Error` to be returned to the requesting application via a rejected promise.
+
+In the event that an error occurs as part of a message exchange, Desktop Agent Bridging does NOT require that an `Error` object is returned across the bridge as it cannot be fully recreated from its consitituent fields in JavaScript. Rather, return only the specified message string in the `error` field of the `payload`, which should then be used to initialize a JavaScript `Error` on the receiving end. It is also advisable to output additional logging indicating that the error was originally generated by a remote Desktop Agent and to provide the relevant details.
+
+Message exchange:
+
+```JSON
+// e.g. agent-B -> DAB in response to a raiseIntent call
+{
+    "type": "raiseIntentResponse",
+    "payload": {
+        "error": "TargetInstanceUnavailable", //<error string from the relevant error enum
+    },
+    "meta": {
+        "requestGuid": "<requestGuid>",
+        "responseGuid": "<intentResolutionResponseGuid>",
+        "timestamp": "2020-03-...",
+        "source": { 
+            "desktopAgent": "agent-B" // agent that generated the error, e.g. destination of the raised intent
+        }
+    }
+}
+```
+
+In the event that an error is generated in response to a 'Request Response (collated)' type message exchange, where some agents produced successful responses, then the error MUST NOT be returned to the requesting agent and the collation of the successful responses returned instead. Desktop Agent Bridge implementations and the Desktop Agent that was the source of the error SHOULD log the errors received for debugging purposes.

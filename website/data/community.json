@@ -1,0 +1,315 @@
+[
+    {
+      "//": "Note: compliance testing information is likely to be required for listing platform providers (at least) on the FDC3 website in future"
+    },
+    {
+      "title": "ChartIQ",
+      "publisher": "Cosaic, Inc.",
+      "image": "/img/users/ChartIQ.png",
+      "infoLink": "https://cosaic.io/chartiq/",
+      "docsLink": "https://documentation.chartiq.com/",
+      "type": "application-provider",
+      "badges": [
+        {
+          "text": "FDC3 1.2 Supported"
+        }
+      ],
+      "description": "<p>ChartIQ is a powerful and flexible HTML5 charting library with millions of users worldwide. Written in JavaScript, it runs entirely within the browser. With state of the art integrations, including  third-party apps, educational components, analysis, and more, you can create efficient workflows and streamline the way to work.</p><p>ChartIQ works on any platform (mobile, web, desktop) and any framework (Angular, React).</p><p>Most companies have at least one financial charting library for each platform or app they target—web, C#, Java, Android, iOS, etc., so developers have multiple code bases to maintain. With ChartIQ, write your code once and use it everywhere.</p>"
+    },
+    {
+      "title": "Electron-FDC3",
+      "publisher": "FINOS",
+      "image": "/img/users/fdc3-electron.png",
+      "infoLink": "https://github.com/finos/electron-fdc3",
+      "docsLink": "https://github.com/finos/electron-fdc3",
+      "type": "platform-provider",
+      "badges": [
+        {
+          "text": "FDC3 1.2 Supported"
+        },
+        {
+          "text": "Open Source"
+        }
+      ],
+      "description": "<p>This project provides a fully open source implementation of the FDC3 interoperability standard. </p><p>Includes a fully featured and secure electron desktop agent featuring intent resolution, channel linking, directory search and a local file-based app directory implementation. </p>"
+    },
+    {
+      "title": "FDC3 Desktop Agent Chrome Extension",
+      "publisher": "FINOS",
+      "image": "/img/users/fdc3-desktop-agent.png",
+      "infoLink": "https://github.com/finos/fdc3-desktop-agent",
+      "docsLink": "https://github.com/finos/fdc3-desktop-agent",
+      "type": "platform-provider",
+      "badges": [
+        {
+          "text": "FDC3 1.2 Supported"
+        },
+        {
+          "text": "Open Source"
+        }
+      ],
+      "description": "<p>The FDC3 Desktop Agent is an open source implementation of FDC3 as a Chrome Extension. </p><p> Its purpose is to provide a quick and easy way for app developers to get started with the FDC3 APIs. </p> "
+    },
+    {
+      "title": "Finsemble",
+      "publisher": "Cosaic, Inc.",
+      "image": "/img/users/Finsemble.png",
+      "infoLink": "https://cosaic.io/finsemble/",
+      "docsLink": "https://documentation.finsemble.com/",
+      "type": "platform-provider",
+      "badges": [
+        {
+          "text": "FDC3 1.2 Supported"
+        },
+        {
+          "text": "FDC3 2.0 Support Coming Soon"
+        }
+      ],
+      "description": "<p>Finsemble is a no code/low code smart desktop platform that helps you achieve both visual and logical integration of various types of apps that you already use (web, native, in-house, and third-party, including Citrix virtual apps).</p><p>Connect apps into automated workflows to improve user efficiency and reduce error rates. With <a href='https://documentation.finsemble.com/tutorial-ControllingInformationFlow.html' alt='Controlling information flow through FDC3 in Finsemble'>SelectConnect</a>, you are in full control over which apps communicate and which are excluded.</p><p>Build a fully customizable UI to work across multiple windows and monitors.</p><p>Use our <a href='https://documentation.finsemble.com/tutorial-SDD-01-Welcome.html' alt='The Smart Desktop Designer: fast-track to interoperability'>Smart Desktop Designer</a> to create and share fully functioning, highly customized, integrated desktops in a few hours, no coding knowledge needed.</p>"
+    },
+    {
+      "title": "FDC3 Workbench",
+      "publisher": "FDC3 / FINOS",
+      "image": "/toolbox/fdc3-workbench/fdc3-icon-256.png",
+      "infoLink": "http://fdc3.finos.org/toolbox/fdc3-workbench",
+      "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-workbench/README.md",
+      "type": "examples-and-training",
+      "badges": [],
+      "description": "<p>When developing an FDC3-compliant app or desktop agent, you need to test. Because FDC3 is about communicating, you need at least one other app to communicate with. You could grab an existing app, but there may not be one available that uses the messaging you need to test.</p><p>Many developers end up writing their own helper tool that they discard when their app is done. So many devs have created these throwaway apps that the Finsemble team @ Cosaic decided to build and contribute a workbench (for any FDC3-compliant platform) that helps develop and test your app without writing throwaway code.</p>"
+    },
+    {
+      "title": "FDC3 eXplained",
+      "publisher": "FDC3 / FINOS",
+      "image": "/toolbox/fdc3-explained/logo.png",
+      "infoLink": "https://fdc3.finos.org/toolbox/fdc3-explained",
+      "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-explained/README.md",
+      "type": "examples-and-training",
+      "badges": [],
+      "description": "FDC3 eXplained is a no-frills tool for learning more about FDC3 concepts without requiring any engineering or coding knowledge. Click the buttons and see the API response, type in context and broadcast it. No dependencies, libraries or frameworks - just a single html page per version that you can load in any environment. Similar to FDC3 Workbench it provides a reference implementation for you to test and verify the FDC3 functionality of other applications and desktop agents."
+    },
+    {
+      "title": "FDC3: Interoperability for the Financial Desktop (training course)",
+      "publisher": "LinuxFoundationX",
+      "image": "https://linuxfoundation.org/wp-content/uploads/Linux-Foundation-OG-Image.png",
+      "infoLink": "https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop",
+      "type": "examples-and-training",
+      "badges": [],
+      "description": "The FDC3 standard for application interoperability has become a key fintech enabler for transformation as financial organizations embrace micro-frontend-oriented workflows. Learn about the vision and key concepts of FDC3, the benefits it provides, and how workflow-driven design makes it easy to get started with FDC3."
+    },
+    {
+      "title": "Glue42 Enterprise",
+      "publisher": "Glue42",
+      "image": "/img/users/Glue42 Enterprise Positive.svg",
+      "infoLink": "https://glue42.com/enterprise/",
+      "docsLink": "https://docs.glue42.com/",
+      "type": "platform-provider",
+      "badges": [
+        {
+          "text": "FDC3 1.2 Supported"
+        }
+      ],
+      "description": "<p>Glue42 enables organizations to build intelligent desktops that support configurable workflows between web and desktop applications. We’re working with some of the world’s biggest financial organizations to help them optimize complex processes and become more efficient.</p><p>Our flagship product, Glue42 Enterprise, is a desktop application integration platform that helps organizations create a simplified desktop experience by connecting the UI and data of any application, e.g., legacy, in-house or web. The platform supports open-source standards, including FINOS-FDC3, thus reducing delivery time and avoiding vendor lock-in.</p>"
+    },
+    {
+      "title": "OpenFin",
+      "publisher": "OpenFin Inc.",
+      "image": "/img/users/Openfin.png",
+      "infoLink": "https://openfin.co/",
+      "docsLink": "https://developers.openfin.co/of-docs",
+      "type": "platform-provider",
+      "badges": [],
+      "description": "<p>OpenFin founded the FDC3 standard in 2017 in collaboration with major banks and asset managers. Deployed at more than 2400 financial firms, OpenFin OS, allows applications from multiple providers to co-exist and interoperate on the desktop.</p><p>OpenFin OS consists of a secure, Chromium-based runtime called Container and a visual interface called <a href='https://www.openfin.co/workspace/' alt='OpenFin Workspace'>Workspace</a>. Workspace gets you running in no time, with themeable UI components for complex windowing, advanced search, actionable notifications and application discovery.</p><p>You can also build your own solutions using the <a href='https://www.openfin.co/container/' alt='OpenFin Container'>OpenFin Container</a>, native language <a href='https://www.openfin.co/container/adapters/' alt='OpenFin Native Adapters'>adapters</a> and APIs while remaining compatible with everything else built on OpenFin.</p>"
+    },
+    {
+      "title": "FDC3 Fast and Easy: Introducing the FDC3 Workbench for Vendors",
+      "publisher": "The Linux Foundation",
+      "image": "/img/community/lf.png",
+      "infoLink": "https://www.youtube.com/watch?v=JSEAC_1rku8",
+      "description": "Kris West (Cosaic) introduces FDC3 and the FDC3 Workbench at the October 2021 Open Source Strategy Forum in London. ",
+      "badges": [],
+      "type": "examples-and-training"
+    },
+    {
+      "title": "Building an FDC3-enabled Web Application",
+      "publisher": "The Linux Foundation", 
+      "image": "/img/community/lf.png",
+      "infoLink": "https://www.youtube.com/watch?v=BJvbVeL7ZJA",
+      "description": "Riko Eksteen (Adaptive Financial Consulting) explains why and how to build an FDC3-enabled application at the December 2020 Open-Source Strategy Forum",
+      "badges": [],
+      "type": "examples-and-training"
+    },
+    {
+      "title": "Symphony Demo - FDC3",
+      "publisher": "Symphony",
+      "image": "/img/users/Symphony.png",
+      "infoLink": "https://www.youtube.com/watch?v=wMF1h7RaAJY",
+      "description": "This demo showcases Symphony’s interoperability, flexibility and open architecture via FDC3 protocol. Leveraging FDC3, data and information can be seamlessly shared across multiple platforms on the same desktop. In this demo we showcase FX liquidity pricing via Tradefeedr, and data and trading analytics via Cosaic’s ChartIQ and Finsemble.",
+      "badges": [],
+      "type": "examples-and-training"
+    },
+    {
+      "title": "FDC3: A Review of Industry Activity - Matt Barrett & Sachin Gaba",
+      "publisher": "Linux Foundation",
+      "image": "/img/community/lf.png",
+      "infoLink": "https://www.youtube.com/watch?v=w1d0d1nM8iI",
+      "description": "9 Oct 2021  FDC3: A Review of Industry Activity - Matt Barrett, Adaptive Financial Consulting & Sachin Gaba, State Street.  “Since we last gathered in person, FDC3 usage has seen incredible growth. This talk will provide an overview of FDC3 usage across the industry, highlighting both internal and external usage. We will cover high-impact FDC3 usage and identify some key themes and trends. I’ll share some predictions about the next year of FDC3 growth, and identify missed opportunities.",
+      "badges": [],
+      "type": "examples-and-training"
+    },
+    {
+      "title": "FDC3 Google Groups",
+      "publisher": "Google Groups",
+      "image": "/img/community/groups.png",
+      "infoLink": "https://groups.google.com/a/finos.org/g/fdc3",
+      "description": "A (fairly active) Google group where you can get involved with the FDC3 project.   Talk with implementers, ask questions, find answers and hear the latest news on the FDC3 project.",
+      "badges": [],
+      "type": "examples-and-training"
+    },
+    {
+      "title": "S&P Front Office",
+      "publisher": "S&P Global Market Intelligence",
+      "image": "/img/users/spglobal.png",
+      "infoLink": "https://www.spglobal.com/marketintelligence/en/client-segments/investment-management#portfolio-management",
+      "description": "As a provider of buyside Front Office applications, we are advocating for and pushing the standard forward.  We intend to utilize the protocol(s) within our next-generation Investment Management platform in order to power both S&P Global and third-party desktop app integrations.",
+      "badges": [],
+      "type": "application-provider"
+    },
+    {
+      "title": "Norman & Sons",
+      "publisher": "Norman & Sons",
+      "image": "/img/users/norman-and-sons.png",
+      "infoLink": "https://www.normanandsons.com/",
+      "docsLink": "https://www.normanandsons.com/research/",
+      "description": "Norman & Sons is a digital product studio specializing in the research, design and build of user-centered enterprise applications. The studio has led the design and delivery of some of the best-known enterprise digital platforms for world-leading financial services firms and product firms. <br /><br /> They are starting to contribute to the development of Electron FDC3.",
+      "badges": [],
+      "type": "solution-provider"
+    },
+    {
+      "title": "Ignite UI",
+      "publisher": "Infragistics",
+      "image": "https://static.infragistics.com/marketing/Website/General/Infragistics-horizontal.svg",
+      "infoLink": "https://www.infragistics.com/openfin",
+      "docsLink": "https://www.npmjs.com/package/igniteui-webcomponents-fdc3",
+      "description": "Ignite UI from Infragistics is a feature complete UI Platform for FDC3-enabled financial services apps. With over 60 UI controls & components plus charting including the world’s fastest virtualized data grids & data charts. No-lag, smooth scrolling for unlimited columns & rows of data, real-time, high-volume data support, with support for Web Components, Angular, React & Blazor, you have all the UX features you need for your modern FinTech apps.\nWith our FDC3 Data Adapter, build low-touch, composite-based financial services desktop workflows with FDC3 and give your apps the chance to participate in the broader FinTech ecosystem.",
+      "badges": [],
+      "type": "application-provider"
+    },
+    {
+      "title": "Client Engagement and Data Driven Advisory",
+      "publisher": "Singletrack",
+      "image": "https://www.singletrack.com/wp-content/uploads/2021/03/singletrack-logo-1.svg",
+      "infoLink": "https://www.singletrack.com/sell-side/",
+      "docsLink": "https://www2.singletrack.com/sell-side-product-overview",
+      "description": "Singletrack uses FDC3 to provide smooth desktop workflows for Sales, Research and Corporate Access professionals as they move between tools such as Chat & Email and platforms such as Order Management, Authoring & our own to deliver their daily work. With FDC3 we increase efficiency and ensure rich, relevant information is always at hand.",
+      "badges": [],
+      "type": "application-provider"
+    },
+    {
+      "title": "Scott Logic Financial Services",
+      "publisher": "Scott Logic",
+      "image": "/img/users/scottlogic.png",
+      "infoLink": "https://www.scottlogic.com/",
+      "docsLink": "",
+      "description": "Scott Logic is a UK-based software consultancy that provides software development services to a number of financial services companies, many of which are FINOS members. We have built numerous bespoke, feature-rich and high-end web-based desktop solutions for our clients, including trading platforms, risk analytics and regulatory reporting. This has given us a wealth of experience of desktop container technologies and desktop interoperability. We use FDC3 with numerous clients.\nAs active FINOS members, we are keen supporters of FDC3, and have recently created the FDC3 conformance framework which automates the process of ensuring the FDC3 APIs are faithfully implemented.",
+      "badges": [],
+      "type": "solution-provider"
+    },
+    {
+      "title": "Provide Adaptable",
+      "publisher": "Adaptable Tools",
+      "image": "https://uploads-ssl.webflow.com/617a7f56602ce8b1af560594/620514d55860251a1520d1b9_Logo-AdaptableTools-text-light%20(1).svg",
+      "infoLink": "https://www.adaptabletools.com/",
+      "docsLink": "https://docs.adaptabletools.com/",
+      "description": "A powerful AG Grid add-on which includes FDC3 columns allowing users to broadcast FDC3 messages and raise FDC3 intents.  <br/><br/> We provide FDC3 columns allowing developers using AdapTable to build applications that can broadcast FDC3 messages and raise FDC3 intents. When using AdapTable inside OpenFin, Finsemble or Glue42 we enable communication between widgets using FDC3.",
+      "badges": [],
+      "type": "application-provider"
+    },
+    {
+        "title": "ipushpull",
+        "publisher": "Pushpull Technology Ltd",
+        "image": "/img/users/ipp-logo.png",
+        "infoLink": "https://ipushpull.com/",
+        "docsLink": "https://support.ipushpull.com/",
+        "description": "ipushpull is a configurable low & no-code platform that makes it easy to maximise the value of your data-driven services. We help you to transform your clients’ experience with our low-code custom applications & solutions and integrated, white-labelled workflows. <br /><br />The ipushpull platform seamlessly integrates with all desktop interop solutions and lets you build your own FDC3-driven workflows through configuration alone.",
+        "badges": [],
+        "type": "application-provider"
+    },
+    {
+        "title": "Symphony",
+        "publisher": "Symphony",
+        "image": "/img/users/Symphony.png",
+        "infoLink": "https://symphony.com/",
+        "docsLink": "https://docs.developers.symphony.com/embedded-modules/desktop-interoperability",
+        "description": "Symphony is the most secure and compliance-enabling markets’ infrastructure and technology platform, where solutions are built or integrated to standardize, automate and innovate financial services workflows. It is a vibrant community of over half a million financial professionals with a trusted directory and serves over 1,000 institutions. <br /><br />Symphony is powering over 2,000 community built applications and bots.<br /><br />The company's mission is to promote a strong ecosystem of innovation by our customers and partners on the platform. As a result, the platform has been built with an open API approach to benefit our end users through the fostering of deep integrations and novel workflows.<br /><br />Specifically, Symphony considers Desktop Integration Platforms integration as a key workflow enabler, bringing benefits like cross-application workflows and context sharing, better screen real-estate management and aggregated notification centers. As such, the company is actively working with the FINOS FDC3 working group to standardize DIP integration APIs across the industry.",
+        "badges": [],
+        "type": "application-provider"
+    },
+    {
+        "title": "UBS uses FDC3 to build their next generation Derivatives Sales and Trading Desktop",
+        "publisher": "UBS AG",
+        "image": "/img/users/ubs.png",
+        "infoLink": "https://ubs.com/",
+        "description": "UBS Investment Bank are developing their next generation of Derivatives Sales and Trading Desktop using FDC3 from the ground up.<br/><br />  Contributions are predominantly via FDC3 related meetings and discussions around the standards, contexts and intents.",
+        "badges": [],
+        "type": "adopter"
+    },
+    {
+        "title": "Reactive Trader",
+        "publisher": "Adaptive Financial Consulting",
+        "image": "https://www.reactivetrader.com/static/media/reactive-trader-icon-256x256.png",
+        "infoLink": "https://www.reactivetrader.com/",
+        "docsLink": "https://weareadaptive.com/showcase/",
+        "description": "Reactive Trader® is Adaptive’s showcase FX trading application, built with modern web technologies, and available as open source. It showcases integration with multiple different desktop platforms, including PWA, OpenFin, Finsemble, Glue42 and Symphony. Reactive Trader® broadcasts out instrument messages via FDC3 when currency pairs are selected in the blotter. It can interoperate with Reactive Analytics.",
+        "badges": [{"text": "FDC3 1.2 Supported"}, {"text": "Open Source"}],
+        "type": "examples-and-training"
+    },
+    {
+        "title": "Reactive Analytics",
+        "publisher": "Adaptive Financial Consulting",
+        "image": "https://demo-reactive-analytics.adaptivecluster.com/static/media/reactive-analytics-icon-256x256.png",
+        "infoLink": "https://demo-reactive-analytics.adaptivecluster.com/ ",
+        "docsLink": " https://github.com/AdaptiveConsulting/ReactiveAnalytics#readme",
+        "description": "Reactive Analytics is an Adaptive’s example stock and FX analytics application, built with modern web technologies, and available as open source. It showcases integration with multiple different desktop platforms, including PWA, OpenFin and Finsemble. Reactive Analytics listens and responds to instrument broadcast messages from other applications via FDC3, and can interoperate with Reactive Trader. ",
+        "badges": [{"text": "FDC3 1.2 Supported"}, {"text": "Open Source"}],
+        "type": "examples-and-training"
+    },
+    {
+        "title": "Consulting Services",
+        "publisher": "Adaptive Financial Consulting",
+        "image": "https://fdc3.finos.org/img/users/adaptive.png",
+        "infoLink": "https://demo-reactive-analytics.adaptivecluster.com/ ",
+        "docsLink": " https://weareadaptive.com/clients-stories/#electronic-trading-with-a-personal-touch",
+        "description": "This case study dives into how Adaptive was able to utilise FDC3 to deliver all the benefits of an electronic trading platform with full MiFID II compliance, while providing clients with the advantages of high-touch voice trading.",
+        "badges": [],
+        "type": "solution-provider"
+    },
+    {
+        "title": "Pictet AM smart Desktop",
+        "publisher": "Pictet Asset Management",
+        "image": "/img/users/pictet.png",
+        "infoLink": "https://am.pictet",
+        "description": "Pictet AM smart Desktop - linking our internal PMS (proprietary), our OMS (Charles River IMS) and various in-house react.js applications implementing FDC3 to share context and intents to provide a streamlined experience for Traders and Fund managers.",
+        "badges": [],
+        "type": "adopter"
+    },
+    {
+        "title": "Connectifi",
+        "publisher": "Connectifi Co.",
+        "image": "/img/users/connectifi.png",
+        "infoLink": "https://www.connectifi.co",
+        "description": "Connectifi provides FDC3 interop as a cloud service, empowering organizations to connect anything, anywhere, in a security-first environment that does not require installs.\n\nUse Connectifi to leverage FDC3 in standard browser and mobile environments, to expand the reach and ROI of your existing desktop tech stack, and to create secure and verifiable interop channels between mission critical applications.",
+        "badges": [{"text": "FDC3 1.2 Supported"}],
+        "type": "platform-provider"
+    },
+    {
+        "title": "FlexTrade Buy and Sell-Side O/EMS Solutions",
+        "publisher": "FlexTrade Systems",
+        "image": "/img/users/flextrade.jpg",
+        "infoLink": "https://flextrade.com/buy-side-flextrade-products/",
+        "docsLink": "https://flextrade.com/openfin/",
+        "description": "FlexTrade uses the FDC3 standard for application interoperability to deliver trading teams a seamless experience across its full suite of buy and sell-side O/EMS solutions. Using FDC3 within FlexTrade’s solutions, trading teams are empowered to choose to customize their workflow with the specific tools and data unique to their needs. Further, it is visualized into a single view within their order blotter, eliminating the need to context switch between different screens or solutions within their workflow, enabling better decision-making and improving trading performance. <br/><br/>The work with OpenFin and LSEG Turquoise recently picked up “Financial Technology Innovation of the Year” in the Financial News Excellence in Trading and Tech Awards 2022. ",
+        "badges": [],
+        "type": "application-provider"
+    }
+ 
+]
