@@ -1342,7 +1342,7 @@ When `Slack` produces an `IntentResult` from its `IntentHandler`, or the intent 
 ```
 
 :::note
-If intent result is private channel see [PrivateChannels](#privatechannels)
+If intent result is private channel see [PrivateChannels](#privatechannels) for additional message exchanges hat may be needed.
 :::
 
 Finally, the bridge augments the response with `sources[0].desktopAgent` and passes it back to Agent-A.
@@ -1395,173 +1395,7 @@ If the `IntentHandler` returned `void` rather than an intent result `payload.int
 
 
 
-
-
-
-
-
-
----
-`onSubscribe` to the private channel sent to server:
-
-```JSON
-// agent-A -> DAB
-{
-    "type": "privateChannelSubscribe",
-    "payload": {},
-    "meta": {
-        "requestGuid": "<requestGuid>",
-        "timestamp": "2020-03-...",
-        "source": {
-            "name": "AChatApp",
-            "appId": "",
-            "version": "",
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-            "name": "someOtherApp",
-            "appId": "",
-            "version": "",
-            "desktopAgent": "agent-B"
-            // ... other metadata fields
-            }
-        }
-    }
-}
-```
-
-The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
-
-```JSON
-// DAB -> agent-B
-{
-    "type": "privateChannelSubscribe",
-    "payload": {},
-    "meta": {
-        "requestGuid": "<requestGuid>",
-        "timestamp": "2020-03-...",
-        "source": {
-            "appId": "AChatApp",
-            "desktopAgent": "agent-A"
-            // ... other metadata fields
-        },
-            "destination": { // duplicates the app argument
-                "app": {
-                "appId": "someOtherApp",
-                "version": "",
-                "desktopAgent": "agent-B"
-                // ... other metadata fields
-            }
-        }
-    }
-}
-```
-
----
-`onUnsubscribe` to the private channel sent to the bridge
-
-```JSON
-// agent-A -> DAB
-{
-    "type": "privateChannelUnsubscribe",
-    "payload": {},
-    "meta": {
-        "requestGuid": "<requestGuid>",
-        "timestamp": "2020-03-...",
-        "source": {
-            "appId": "AChatApp",
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-                "appId": "someOtherApp",
-                "desktopAgent": "agent-B"
-                // ... other metadata fields
-           }
-       }
-    }
-}
-```
-
-The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
-
-```JSON
-// DAB -> agent-B
-{
-    "requestGuid": "<requestGuid>",
-    "timestamp": "2020-03-...",
-    "type": "privateChannelUnsubscribe",
-    "payload": {},
-    "meta": {
-        "source": {
-            "appId": "AChatApp",
-            "desktopAgent": "agent-A",
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-                "appId": "someOtherApp",
-                "desktopAgent": "agent-B"
-                // ... other metadata fields
-           }
-       }
-    }
-}
-```
-
----
-`onDisconnect` to the private channel sent to the bridge
-
-```JSON
-// agent-A -> DAB
-{
-    "type": "privateChannelDisconnect",
-    "payload": {},
-    "meta": {
-        "requestGuid": "<requestGuid>",
-        "timestamp": "2020-03-...",
-        "source": {
-            "appId": "AChatApp",
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-                "appId": "someOtherApp",
-                "desktopAgent": "agent-B"
-                // ... other metadata fields
-           }
-       }
-    }
-}
-```
-
-The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
-
-```JSON
-// DAB -> agent-B
-{
-    "type": "privateChannelDisconnect",
-    "payload": {},
-    "meta": {
-        "requestGuid": "<requestGuid>",
-        "timestamp": "2020-03-...",
-        "source": {
-            "appId": "AChatApp",
-            "desktopAgent": "agent-A"
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-                "appId": "someOtherApp",
-                "desktopAgent": "agent-B"
-                // ... other metadata fields
-           }
-       }
-    }
-}
-```
-
+//TODO: further work required on the below messsage exchanges:
 ### open
 
 ```typescript
@@ -1650,15 +1484,19 @@ It sends an outward message to the bridge:
 {
     "type": "open",
     "payload": {
-        "AppIdentifier": {
+        "app": {
             "appId": "myApp",
             "desktopAgent":"agent-B"
-            },
+        },
         "context": {/*contextObj*/}
     },
     "meta": {
         "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
+        "source": {
+            "appId": "AChatApp",
+            "instanceId": "02e575aa-4c3a-4b66-acad-155073be21f6"
+        }
     }
 }
 ```
@@ -1670,18 +1508,19 @@ which is repeated as:
 {
     "type": "open",
     "payload": {
-        "AppIdentifier": {
+        "app": {
             "appId": "myApp",
             "desktopAgent":"DesktopAgentB"
-           },
-       "context": {/*contextObj*/}
+        },
+        "context": {/*contextObj*/}
     },
     "meta": {
         "requestGuid": "<requestGuid>",
         "timestamp": 2020-03-...,
         "source": {
-            "desktopAgent": "agent-A", // filled by DAB
-            // ... other metadata fields
+            "appId": "AChatApp",
+            "instanceId": "02e575aa-4c3a-4b66-acad-155073be21f6",
+            "desktopAgent": "agent-A" //added by DAB
         }
     }
 }
@@ -1709,18 +1548,24 @@ sequenceDiagram
 
 ### PrivateChannels
 
-`PrivateChannels` provide some additional event handlers for the addition or removal of context listeners and are intended to provide a private communication channel for applications. Hence, there is a difference in how their broadcasts SHOULD be handled and a number of additional message exchanges necessary for their events.
+`PrivateChannels` are intended to provide a private communication channel for applications. In order to do so, there are differences in how their broadcasts MUST be handled and a number of additional message exchanges MUST be supported in order to handle events that are used to manage the channel's lifecycle.
+
+When a `ContextListener` is added to a remote `PrivateChannel`, removed from it or the `disconnect` function is called a notifications must be sent to the application that owns the channel. The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B).
+
+Such notification messages should be addessed to the Desktop Agent that owns the channel, which will route it to the owning application and any other listeners. If any of those listeners are remote, the message should be repeated back to the bridge, once for each listener with the destination set as a full `AppIdentifier`. Both these messages and broadcast messages MUST NOT be repeated back to the application that generated them. The source information on repeated messages should be unmodified to ensure that the message is attributed to the original source.
 
 #### `broadcast`
 
-Desktop Agents SHOULD provide special handling for `PrivateChannel` broadcasts. A copy of the broadcast message SHOULD be forwarded to the bridge for each `ContextListener` added by a remote Desktop Agent, with a `destination` field set. Doing so will require the Desktop Agent (in addition to the app that owns the `PrivateChannel`) to track which applications have added a `ContextListener` to the `PrivateChannel`.
+Type: **Request only**
 
-Hence, the broadcast message should be modified to:
+To maintain the privacy of PrivateChannel broadcasts, both Desktop Agents and Desktop Agent Bridge implementations SHOULD provide special handling for `PrivateChannel` broadcasts. Rather than broadcasting messages to all other Desktop Agents, broadcasts should be sent only to the Desktop Agent that owns the PrivateChannel, which will then repeat the broadcast message on to each `ContextListener` (both those that are local to the Desktop Agent and those added by remote Desktop Agents) - except for the source application. Doing so will require the Desktop Agent to track which applications have added a `ContextListener` to the `PrivateChannel`.
+
+Hence, the broadcast message should be modified such that it includes a destination and the `type` should indicate that it is a `PrivateChannel` broadcast:
 
 ```JSON
 // DAB -> agent-B
 {
-    "type": "broadcast",
+    "type": "PrivateChannel.broadcast", //modified type for PrivateChannel broadcasts
     "payload": {
         "channel": "private-channel-ABC123",
         "context": { /*contextObj*/}
@@ -1729,96 +1574,43 @@ Hence, the broadcast message should be modified to:
         "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
-            "desktopAgent": "agent-A",
-            "appId": "..."
+            "appId": "AChatApp",
+            "instanceId": "02e575aa-4c3a-4b66-acad-155073be21f6",
+            "desktopAgent": "agent-A" //added by DAB
         },
         "destination": {
-
+            "desktopAgent": "agent-B"
         }
     }
 }
 ```
 
-//TODO intent result is a private channel
-
-```JSON
-// agent-B -> DAB -> agent-A
-{
-    "type": "intentResult",
-    "payload?:": {
-        "channel": {
-            "id": "channel a",
-            "type": "private"
-        },
-        "context": {/*contextObj*/} // in alternative to channel
-    },
-    "meta": {
-        "requestGuid": "<requestGuid>",
-        "responseGuid": "<intentResultResponseGuid>",
-        "timestamp": "2020-03-...",
-        "error?:": "ResultError Enum",
-        "source": {
-            "appId": "AChatApp",
-            "desktopAgent": "agent-B" // filled by DAB
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-                "appId": "someOtherApp",
-                "desktopAgent": "agent-A"
-                // ... other metadata fields
-            }
-        }
-    }
-}
-```
+For a broadcast to a `PrivateChannel` owned by another agent the detination should just include the `DesktopAgentIdentifier`. The message should then be repeated (once for each listener) from that Desktop Agent to other remote listeners without modifying the source information (to ensure that the message is attributed to the original source), but with a destination set as a full `AppIdentifer` for each remote listener.
 
 #### `onAddContextListener`
+
+Type: **Request only**
+
+When a `ContextListener` is added to a remote `PrivateChannel` or a remote listener needs to be notified of the event use the following message:
 
 ```JSON
 // agent-A -> DAB
 {
     "type": "PrivateChannel.onAddContextListener",
-    "payload": {},
+    "payload": {
+        "channel": "private-channel-ABC123"
+    },
     "meta": {
         "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
             "appId": "AChatApp",
-            // ... other metadata fields
+            "instanceId": "02e575aa-4c3a-4b66-acad-155073be21f6",
+            "desktopAgent": "agent-A" //added by DAB
         },
-        "destination": { // duplicates the app argument
-            "app": {
-                "appId": "someOtherApp",
-                "desktopAgent": "agent-B"
-                // ... other metadata fields
-            }
-        }
-    }
-}
-```
-
-The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
-
-```JSON
-// DAB -> agent-B
-{
-    "type": "PrivateChannel.onAddContextListener",
-    "payload": {},
-    "meta": {
-        "requestGuid": "<requestGuid>",
-        "timestamp": "2020-03-...",
-        "source": {
-            "appId": "AChatApp",
-            "desktopAgent": "agent-A"
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-                "appId": "someOtherApp",
-                "desktopAgent": "agent-B"
-                // ... other metadata fields
-            }
+        "destination": {
+            "desktopAgent": "agent-B" //use DesktopAgentIdentifier to notify a remote PrivateChannel
+            //use a full AppIdentifier for event notifications to applications
         }
     }
 }
@@ -1826,30 +1618,9 @@ The bridge will add in the source agent (agent-A) and forward the message to des
 
 #### `listener.unsubscribe`
 
-```JSON
-// agent-A -> DAB
-{
-    "type": "PrivateChannel.onUnsubscribe",
-    "payload": {},
-    "meta": {
-        "requestGuid": "<requestGuid>",
-        "timestamp": "2020-03-...",
-        "source": {
-            "appId": "AChatApp"
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-                "appId": "someOtherApp",
-                "desktopAgent": "agent-B"
-                // ... other metadata fields
-           }
-       }
-    }
-}
-```
+Type: **Request only**
 
-The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
+When a `ContextListener` is unsubscribed from a remote `PrivateChannel` or a remote listener needs to be notified of the event use the following message:
 
 ```JSON
 // DAB -> agent-B
@@ -1861,22 +1632,23 @@ The bridge will add in the source agent (agent-A) and forward the message to des
         "timestamp": "2020-03-...",
         "source": {
             "appId": "AChatApp",
-            "desktopAgent": "agent-A",
-            // ... other metadata fields
+            "instanceId": "02e575aa-4c3a-4b66-acad-155073be21f6",
+            "desktopAgent": "agent-A" //added by DAB
         },
         "destination": { // duplicates the app argument
-            "app": {
-               "appId": "someOtherApp",
-               "desktopAgent": "agent-B"
-               // ... other metadata fields
-           }
-       }
+            "desktopAgent": "agent-B" //use DesktopAgentIdentifier to notify a remote PrivateChannel
+            //use a full AppIdentifier for event notifications to applications
+        }
     }
 }
 ```
 
 #### `onDisconnect`
 
+Type: **Request only**
+
+When the `disconnect` function is is called on a remote `PrivateChannel` or a remote listener needs to be notified of the event use the following message:
+
 ```JSON
 // agent-A -> DAB
 {
@@ -1887,95 +1659,13 @@ The bridge will add in the source agent (agent-A) and forward the message to des
         "timestamp": "2020-03-...",
         "source": {
             "appId": "AChatApp",
-            // ... other metadata fields
+            "instanceId": "02e575aa-4c3a-4b66-acad-155073be21f6",
+            "desktopAgent": "agent-A" //added by DAB
         },
         "destination": { // duplicates the app argument
-            "app": {
-                "appId": "someOtherApp",
-                "desktopAgent": "agent-B"
-                // ... other metadata fields
-            }
-       }
-    }
-}
-```
-
-The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
-
-```JSON
-// DAB -> agent-B
-{
-    "type": "PrivateChannel.onDisconnect",
-    "payload": {},
-    "meta": {
-        "requestGuid": "<requestGuid>",
-        "timestamp": "2020-03-...",
-        "source": {
-            "appId": "AChatApp",
-            "desktopAgent": "agent-A"
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-               "appId": "someOtherApp",
-               "desktopAgent": "agent-B"
-               // ... other metadata fields
-           }
-       }
-    }
-}
-```
-
-
-
----
-`onDisconnect` to the private channel sent to the bridge
-
-```JSON
-// agent-A -> DAB
-{
-    "type": "privateChannelDisconnect",
-    "payload": {},
-    "meta": {
-        "requestGuid": "<requestGuid>",
-        "timestamp": "2020-03-...",
-        "source": {
-            "appId": "AChatApp",
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-               "appId": "someOtherApp",
-               "desktopAgent": "agent-B"
-               // ... other metadata fields
-           }
-       }
-    }
-}
-```
-
-The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B)
-
-```JSON
-// DAB -> agent-B
-{
-    "type": "privateChannelDisconnect",
-    "payload": {},
-    "meta": {
-        "requestGuid": "<requestGuid>",
-        "timestamp": "2020-03-...",
-        "source": {
-            "appId": "AChatApp",
-            "desktopAgent": "agent-A"
-            // ... other metadata fields
-        },
-        "destination": { // duplicates the app argument
-            "app": {
-               "appId": "someOtherApp",
-               "desktopAgent": "agent-B"
-               // ... other metadata fields
-           }
-       }
+            "desktopAgent": "agent-B" //use DesktopAgentIdentifier to notify a remote PrivateChannel
+            //use a full AppIdentifier for event notifications to applications
+        }
     }
 }
 ```
