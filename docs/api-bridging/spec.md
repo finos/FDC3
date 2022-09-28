@@ -217,7 +217,7 @@ If requested by the server, the JWT auth token payload should take the form:
 
 ```typescript
 {
-    "sub": string, // UUID for the keypair used to sign the token
+    "sub": string, // GUID for the keypair used to sign the token
     "iat": date    // timestamp at which the the token was generated as specified in ISO 8601
 }
 ```
@@ -231,7 +231,7 @@ e.g.
 }
 ```
 
-Note that the `sub` SHOULD be a UUID that does NOT need to match the name requested by the Desktop Agent. It will be used to identify the keypair that should be used to validate the JWT token. Further, multiple Desktop Agent's MAY share the same keys for authentication and hence the same `sub`, but they will be assigned different names for routing purposes by the DAB. If an agent disconnects from the bridge and later re-connects it MAY request and be assigned the same name it connected with before.
+Note that the `sub` SHOULD be a GUID that does NOT need to match the name requested by the Desktop Agent. It will be used to identify the keypair that should be used to validate the JWT token. Further, multiple Desktop Agent's MAY share the same keys for authentication and hence the same `sub`, but they will be assigned different names for routing purposes by the DAB. If an agent disconnects from the bridge and later re-connects it MAY request and be assigned the same name it connected with before.
 
 ### Step 4. Auth Confirmation and Name Assignment
 
@@ -245,7 +245,7 @@ The DAB will extract the authentication token `sub` from the JWT token's claims 
         timestamp:  date,
         /** GUID for the handshake request */
         requestGuid: string,
-        /** Unique guid for this message */
+        /** Unique GUID for this message */
         responseGuid: string,
     }
 }
@@ -308,7 +308,7 @@ The `connectedAgentsUpdate` message will take the form:
          *  Should be the same as the responseGuid for a disconnection.
         */
         requestGuid: string,
-        /** Unique guid for this message */
+        /** Unique GUID for this message */
         responseGuid: string,
         /** Timestamp at which response was generated */
         timestamp:  date,
@@ -717,7 +717,7 @@ which it repeats on to agent-B AND agent-C with the `source.desktopAgent` metada
         "context": { /*contextObj*/}
     },
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": [{
             "appId": "agentA-app1",
@@ -771,7 +771,7 @@ Outward message to the DAB:
         "context": {/*contextObj*/}
     },
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": [{
             "appId": "agentA-app1",
@@ -988,7 +988,7 @@ Outward message to the DAB:
         "context": {/*contextObj*/}
     },
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
             "appId": "agentA-app1",
@@ -1410,7 +1410,7 @@ If the `IntentHandler` returned `void` rather than an intent result `payload.int
     "type": "privateChannelSubscribe",
     "payload": {},
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
             "name": "AChatApp",
@@ -1439,22 +1439,19 @@ The bridge will add in the source agent (agent-A) and forward the message to des
     "type": "privateChannelSubscribe",
     "payload": {},
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
-            "name": "AChatApp",
-            "appId": "",
-            "version": "",
+            "appId": "AChatApp",
             "desktopAgent": "agent-A"
             // ... other metadata fields
         },
             "destination": { // duplicates the app argument
                 "app": {
-                "name": "someOtherApp",
-                "appId": "",
-                    "version": "",
-                    "desktopAgent": "agent-B"
-                    // ... other metadata fields
+                "appId": "someOtherApp",
+                "version": "",
+                "desktopAgent": "agent-B"
+                // ... other metadata fields
             }
         }
     }
@@ -1470,19 +1467,15 @@ The bridge will add in the source agent (agent-A) and forward the message to des
     "type": "privateChannelUnsubscribe",
     "payload": {},
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
-            "name": "AChatApp",
-            "appId": "",
-            "version": "",
+            "appId": "AChatApp",
             // ... other metadata fields
         },
         "destination": { // duplicates the app argument
             "app": {
-               "name": "someOtherApp",
-               "appId": "",
-                "version": "",
+                "appId": "someOtherApp",
                 "desktopAgent": "agent-B"
                 // ... other metadata fields
            }
@@ -1496,23 +1489,19 @@ The bridge will add in the source agent (agent-A) and forward the message to des
 ```JSON
 // DAB -> agent-B
 {
-    "requestGuid": "requestGuid",
+    "requestGuid": "<requestGuid>",
     "timestamp": "2020-03-...",
     "type": "privateChannelUnsubscribe",
     "payload": {},
     "meta": {
         "source": {
-            "name": "AChatApp",
-            "appId": "",
-            "version": "",
+            "appId": "AChatApp",
             "desktopAgent": "agent-A",
             // ... other metadata fields
         },
         "destination": { // duplicates the app argument
             "app": {
-               "name": "someOtherApp",
-               "appId": "",
-                "version": "",
+                "appId": "someOtherApp",
                 "desktopAgent": "agent-B"
                 // ... other metadata fields
            }
@@ -1530,19 +1519,15 @@ The bridge will add in the source agent (agent-A) and forward the message to des
     "type": "privateChannelDisconnect",
     "payload": {},
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
-            "name": "AChatApp",
-            "appId": "",
-            "version": "",
+            "appId": "AChatApp",
             // ... other metadata fields
         },
         "destination": { // duplicates the app argument
             "app": {
-               "name": "someOtherApp",
-               "appId": "",
-                "version": "",
+                "appId": "someOtherApp",
                 "desktopAgent": "agent-B"
                 // ... other metadata fields
            }
@@ -1559,20 +1544,16 @@ The bridge will add in the source agent (agent-A) and forward the message to des
     "type": "privateChannelDisconnect",
     "payload": {},
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
-            "name": "AChatApp",
-            "appId": "",
-            "version": "",
+            "appId": "AChatApp",
             "desktopAgent": "agent-A"
             // ... other metadata fields
         },
         "destination": { // duplicates the app argument
             "app": {
-               "name": "someOtherApp",
-               "appId": "",
-                "version": "",
+                "appId": "someOtherApp",
                 "desktopAgent": "agent-B"
                 // ... other metadata fields
            }
@@ -1670,15 +1651,13 @@ It sends an outward message to the bridge:
     "type": "open",
     "payload": {
         "AppIdentifier": {
-            "name": "myApp",
-            "appId": "myApp-v1.0.1",
-            "version": "1.0.1",
+            "appId": "myApp",
             "desktopAgent":"agent-B"
             },
         "context": {/*contextObj*/}
     },
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
     }
 }
@@ -1692,15 +1671,13 @@ which is repeated as:
     "type": "open",
     "payload": {
         "AppIdentifier": {
-            "name": "myApp",
-           "appId": "myApp-v1.0.1",
-           "version": "1.0.1",
-           "desktopAgent":"DesktopAgentB"
+            "appId": "myApp",
+            "desktopAgent":"DesktopAgentB"
            },
        "context": {/*contextObj*/}
     },
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": 2020-03-...,
         "source": {
             "desktopAgent": "agent-A", // filled by DAB
@@ -1749,7 +1726,7 @@ Hence, the broadcast message should be modified to:
         "context": { /*contextObj*/}
     },
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
             "desktopAgent": "agent-A",
@@ -1776,8 +1753,8 @@ Hence, the broadcast message should be modified to:
         "context": {/*contextObj*/} // in alternative to channel
     },
     "meta": {
-        "requestGuid": "requestGuid",
-        "responseGuid": "intentResultResponseGuid",
+        "requestGuid": "<requestGuid>",
+        "responseGuid": "<intentResultResponseGuid>",
         "timestamp": "2020-03-...",
         "error?:": "ResultError Enum",
         "source": {
@@ -1787,9 +1764,9 @@ Hence, the broadcast message should be modified to:
         },
         "destination": { // duplicates the app argument
             "app": {
-            "appId": "someOtherApp",
-            "desktopAgent": "agent-A"
-            // ... other metadata fields
+                "appId": "someOtherApp",
+                "desktopAgent": "agent-A"
+                // ... other metadata fields
             }
         }
     }
@@ -1804,7 +1781,7 @@ Hence, the broadcast message should be modified to:
     "type": "PrivateChannel.onAddContextListener",
     "payload": {},
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
             "appId": "AChatApp",
@@ -1829,7 +1806,7 @@ The bridge will add in the source agent (agent-A) and forward the message to des
     "type": "PrivateChannel.onAddContextListener",
     "payload": {},
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
             "appId": "AChatApp",
@@ -1855,7 +1832,7 @@ The bridge will add in the source agent (agent-A) and forward the message to des
     "type": "PrivateChannel.onUnsubscribe",
     "payload": {},
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
             "appId": "AChatApp"
@@ -1880,7 +1857,7 @@ The bridge will add in the source agent (agent-A) and forward the message to des
     "type": "PrivateChannel.onUnsubscribe",
     "payload": {},
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
             "appId": "AChatApp",
@@ -1906,7 +1883,7 @@ The bridge will add in the source agent (agent-A) and forward the message to des
     "type": "PrivateChannel.onDisconnect",
     "payload": {},
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
             "appId": "AChatApp",
@@ -1931,7 +1908,7 @@ The bridge will add in the source agent (agent-A) and forward the message to des
     "type": "PrivateChannel.onDisconnect",
     "payload": {},
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
             "appId": "AChatApp",
@@ -1960,7 +1937,7 @@ The bridge will add in the source agent (agent-A) and forward the message to des
     "type": "privateChannelDisconnect",
     "payload": {},
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
             "appId": "AChatApp",
@@ -1985,7 +1962,7 @@ The bridge will add in the source agent (agent-A) and forward the message to des
     "type": "privateChannelDisconnect",
     "payload": {},
     "meta": {
-        "requestGuid": "requestGuid",
+        "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
         "source": {
             "appId": "AChatApp",
