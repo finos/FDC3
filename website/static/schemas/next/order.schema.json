@@ -1,0 +1,44 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/next/order.schema.json",
+    "type": "object",
+    "title": "Order",
+    "allOf": [
+        {
+            "$ref": "context.schema.json#"
+        }
+    ],
+    "properties": {
+        "type": {
+            "const": "fdc3.order"
+        },
+        "id": {
+            "properties": {
+                "EMS": {
+                    "type": "string"
+                },
+                "OMS": {
+                    "type": "string"
+                },
+                "PMS": {
+                    "type": "string"
+                }
+            }
+        },
+        "sendingTime": {
+            "type": "string"
+        },
+        "timeInForce": {
+            "$ref": "timerange.schema.json#"
+        },
+        "orderLegs": {
+            "type": "array",
+            "items": {
+                "$ref": "orderLeg.schema.json#"
+            }
+        },
+        "notes": {
+            "type": "string"
+        }
+    }
+}
