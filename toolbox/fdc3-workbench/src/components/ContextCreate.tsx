@@ -163,19 +163,6 @@ export const ContextCreate = observer(() => {
 			// 	id: "empty",
 			// 	template: null,
 			// });
-			systemLogStore.addLog({
-				name: "createContext",
-				type: "success",
-				value: context?.id,
-				variant: "text",
-			});
-		} else {
-			systemLogStore.addLog({
-				name: "createContext",
-				type: "error",
-				value: context?.id,
-				variant: "text",
-			});
 		}
 	};
 
@@ -216,7 +203,7 @@ export const ContextCreate = observer(() => {
 			});
 		} else {
 			systemLogStore.addLog({
-				name: "createContext",
+				name: "saveTemplate",
 				type: "success",
 				value: undefined,
 				variant: "text",
