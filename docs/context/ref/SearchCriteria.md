@@ -25,6 +25,8 @@ https://fdc3.finos.org/schemas/next/searchCriteria.schema.json
 
 ⚠️ Operators (and/or/not) are not defined in `fdc3.chat.searchCriteria`. It is up to the application that processes the FDC3 Intent to choose and apply the operators between the criteria.
 
+Empty search criteria can be supported to allow resetting of filters.
+
 ## Example
 
 ```js
