@@ -24,7 +24,6 @@ is for at least one instrument identifier to be provided.
 If the identifier you want to share is not a ticker or one of the other standardised fields, define
 a property that makes it clear what value represents. Doing so will make interpretation easier for the developers of target applications.
 
-
 ## Type
 
 `fdc3.instrument`
