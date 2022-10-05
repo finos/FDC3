@@ -15,7 +15,7 @@ Notes:
 - Not all applications will use the same instrument identifiers, which is why FDC3 allows for multiple to be specified.
 In general, the more identifiers an application can provide, the easier it will be to achieve interoperability.
 
-- The `market` map can be used to further specify the instrument and help achieve interoperability disparate data sources. This is especially useful when using an id that is not globally unique.
+- The `market` map can be used to further specify the instrument and help achieve interoperability between disparate data sources. This is especially useful when using an `id` field that is not globally unique.
 
 - It is valid to include extra properties and metadata as part of the instrument payload, but the minimum requirement
 is for at least one instrument identifier to be provided.
