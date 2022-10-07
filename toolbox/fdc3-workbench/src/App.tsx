@@ -70,6 +70,10 @@ const useStyles = makeStyles((theme: Theme) =>
 			".MuiButton-contained": {
 				boxShadow: "none",
 			},
+			".MuiGrid-item:has(> .MuiButton-root)": {
+				display: "flex",
+				alignItems: "center",
+			},
 		},
 		root: {
 			flexGrow: 1,

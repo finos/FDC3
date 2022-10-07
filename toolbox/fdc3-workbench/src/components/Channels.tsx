@@ -56,6 +56,10 @@ const useStyles = makeStyles((theme: Theme) =>
 			marginTop: "24px",
 			marginBottom: "16px",
 		},
+		centerChildren: {
+			display: "flex",
+			alignItems: "center",
+		},
 	})
 );
 
@@ -171,7 +175,7 @@ export const Channels = observer(() => {
 							{isError && <FormHelperText>Select channel from list</FormHelperText>}
 						</FormControl>
 					</Grid>
-					<Grid item xs={12} sm={4}>
+					<Grid item xs={12} sm={4} className={classes.centerChildren}>
 						<Grid container direction="row" justifyContent="flex-end" spacing={1}>
 							<Grid item className={classes.controls}>
 								<Button variant="contained" color="primary" onClick={handleJoinChannel}>
