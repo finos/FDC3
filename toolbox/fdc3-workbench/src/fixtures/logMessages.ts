@@ -64,10 +64,6 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			info: `Received context via '[${value}]' listener.`,
 			error: `Failed to receive context from '[${value}]' listener.`,
 		},
-		createContext: {
-			success: `Set my current context to type '[${value}]'.`,
-			error: `Failed to set my current context to type '[${value}]'.`,
-		},
 		saveTemplate: {
 			success: `Saved context template for '[${value}]'.`,
 			error: `Failed to save context template.`,

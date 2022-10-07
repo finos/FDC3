@@ -202,18 +202,20 @@ export const App = observer(() => {
 										indicator: classes.indicator,
 									}}
 								>
+									
+									<Tab label="Contexts" />
+									<Tab label="Intents" />
 									<Tab label="System Channels" />
-									<Tab label="Context" />
-									<Tab label="Intent" />
+									<Tab label="App Channels" />
 								</Tabs>
 								<TabPanel value={tabIndex} index={0}>
-									<Channels />
-								</TabPanel>
-								<TabPanel value={tabIndex} index={1}>
 									<ContextCreate />
 								</TabPanel>
-								<TabPanel value={tabIndex} index={2}>
+								<TabPanel value={tabIndex} index={1}>
 									<Intents />
+								</TabPanel>
+								<TabPanel value={tabIndex} index={2}>
+									<Channels />
 								</TabPanel>
 							</Paper>
 						</Grid>
