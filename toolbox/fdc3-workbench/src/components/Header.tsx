@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			fontSize: "12px",
 		},
 		fdc3: {
+			fontSize: "2.5em",
 			display: "flex",
 			alignItems: "center",
 		},
