@@ -74,6 +74,10 @@ const useStyles = makeStyles((theme: Theme) =>
 				display: "flex",
 				alignItems: "center",
 			},
+			".MuiInputBase-root.Mui-disabled": {
+				color: "rgba(0, 0, 0, 0.6)",
+				cursor: "default",
+			 },
 		},
 		root: {
 			flexGrow: 1,
