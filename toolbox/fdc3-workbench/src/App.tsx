@@ -82,7 +82,6 @@ const useStyles = makeStyles((theme: Theme) =>
 			marginBottom: theme.spacing(2),
 		},
 		body: {
-			padding: theme.spacing(1),
 			height: "100%",
 		},
 		paper: {
