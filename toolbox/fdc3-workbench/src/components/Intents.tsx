@@ -228,6 +228,9 @@ export const Intents = observer(() => {
 					<div className={classes.border}></div>
 
 					<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
+						<Grid item xs={12}>
+							<Typography variant="h5">Raise Intent for Context</Typography>
+						</Grid>
 						<Grid item className={classes.field}>
 							<TemplateTextField
 								label="Current context type"
@@ -263,6 +266,9 @@ export const Intents = observer(() => {
 					<div className={classes.border}></div>
 
 					<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
+						<Grid item xs={12}>
+							<Typography variant="h5">Add Context Listener</Typography>
+						</Grid>
 						<Grid item className={classes.field}>
 							<Autocomplete
 								id="intent-listener"
