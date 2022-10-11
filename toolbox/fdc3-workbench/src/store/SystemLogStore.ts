@@ -18,6 +18,7 @@ export type logMessagesName =
 	| "removeIntentListener"
 	| "receivedContextListener"
 	| "receivedIntentListener"
+	| "deleteTemplate"
 	| "saveTemplate"
 	| "copyToClipboard";
 

@@ -17,6 +17,8 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import channelStore from "../store/ChannelStore";
 import { codeExamples } from "../fixtures/codeExamples";
 import { copyToClipboard } from "./common/CopyToClipboard";
+import { ContextLinking } from "./ContextLinking";
+import contextStore, { ContextType, ContextItem } from "../store/ContextStore";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -88,6 +90,10 @@ export const Channels = observer(() => {
 
 	const handleRefreshChannel = () => {
 		channelStore.getCurrentChannel();
+	};
+
+	const handleBroadcast = () => {
+		contextStore.broadcast();
 	};
 
 	return (
@@ -196,6 +202,34 @@ export const Channels = observer(() => {
 							</Grid>
 						</Grid>
 					</Grid>
+
+					<div className={classes.border}></div>
+
+					<Grid item className={classes.controls}>
+						<Button
+							disabled={!contextStore.currentContext}
+							variant="contained"
+							color="primary"
+							onClick={handleBroadcast}
+						>
+							Broadcast Context
+						</Button>
+
+						<Tooltip title="Copy code example" aria-label="Copy code example">
+							<IconButton
+								size="small"
+								aria-label="Copy code example"
+								color="primary"
+								onClick={copyToClipboard(codeExamples.broadcast, "broadcast")}
+							>
+								<FileCopyIcon />
+							</IconButton>
+						</Tooltip>
+					</Grid>
+
+					<div className={classes.border}></div>
+
+					<ContextLinking />
 				</Grid>
 			</form>
 		</div>
