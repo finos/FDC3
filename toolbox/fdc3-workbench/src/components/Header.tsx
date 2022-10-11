@@ -25,13 +25,9 @@ const useStyles = makeStyles((theme: Theme) =>
 			minWidth: "200px",
 			fontSize: "12px",
 		},
-		fdc3: {
-			fontSize: "2.5em",
-			display: "flex",
-			alignItems: "center",
-		},
+		fdc3: {},
 		headerCube: {
-			width: "150px",
+			width: "350px",
 			height: "50px",
 		},
 		backgroundHeader: {
@@ -78,7 +74,6 @@ export const Header = (props: { fdc3Available: boolean }) => {
 					<div>
 						<Typography variant="h3" color="inherit" className={classes.fdc3}>
 							<img src="./fdc3-logo.svg" className={classes.headerCube} />
-							&nbsp;{`{workbench}`}
 						</Typography>
 					</div>
 
