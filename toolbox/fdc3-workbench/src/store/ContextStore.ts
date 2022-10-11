@@ -39,17 +39,22 @@ class ContextStore {
 			currentContext: observable,
 			contextListeners: observable,
 			createContext: action,
+			deleteContextItem: action,
 			broadcast: action,
 			addContextItem: action,
 			saveContextItem: action,
 			addContextListener: action,
 			removeContextListener: action,
 		});
+		const localStorageContextList = localStorage.getItem("contextList")
+		if(localStorageContextList) this.contextsList = JSON.parse(localStorageContextList)
+		else this.updateLocalStorage(JSON.stringify(this.contextsList))
 	}
 
 	addContextItem(contextItem: ContextItem) {
 		this.contextsList.push(contextItem);
 		this.contextsList.sort((a, b) => (a.id > b.id ? 1 : -1));
+		this.updateLocalStorage(this.contextsList);
 	}
 
 	saveContextItem(contextItem: ContextItem) {
@@ -58,10 +63,25 @@ class ContextStore {
 		if (context) {
 			context.template = contextItem.template;
 		}
+		this.updateLocalStorage(this.contextsList);
 	}
 
 	createContext(context: ContextType) {
 		this.currentContext = context;
+	}
+
+	deleteContextItem(contextItem: ContextItem) {
+		this.contextsList = this.contextsList.filter((c) => c != contextItem)
+		this.updateLocalStorage(this.contextsList);
+	}
+
+	resetContextList() {
+		this.contextsList = contexts
+		this.updateLocalStorage(this.contextsList);
+	}
+
+	updateLocalStorage(data: any) {
+		localStorage.setItem('contextList', JSON.stringify(data))
 	}
 
 	async broadcast() {

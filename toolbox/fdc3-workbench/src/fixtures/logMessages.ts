@@ -68,6 +68,10 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			success: `Saved context template for '[${value}]'.`,
 			error: `Failed to save context template.`,
 		},
+		deleteTemplate: {
+			success: `Deleted context template for '[${value}]'.`,
+			error: `Failed to delete context template.`,
+		},
 		copyToClipboard: {
 			info: `${value} code snippet copied to clipboard`,
 			error: `Failed to copy code ${value} snippet to clipboard.`,
