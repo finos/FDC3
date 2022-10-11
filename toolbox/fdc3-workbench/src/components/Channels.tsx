@@ -18,7 +18,7 @@ import channelStore from "../store/ChannelStore";
 import { codeExamples } from "../fixtures/codeExamples";
 import { copyToClipboard } from "./common/CopyToClipboard";
 import { ContextLinking } from "./ContextLinking";
-import contextStore, { ContextType, ContextItem } from "../store/ContextStore";
+import contextStore from "../store/ContextStore";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
