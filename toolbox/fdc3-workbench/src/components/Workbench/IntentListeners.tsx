@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		input: {
 			fontSize: "14px",
-			color: theme.palette.text.primary,
+			color: "rgba(0, 0, 0, 0.6)",
 		},
 		"& .Mui-disabled": {
 			borderColor: theme.palette.text.primary,
