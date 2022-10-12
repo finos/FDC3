@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		fdc3: {},
 		headerCube: {
-			width: "150px",
+			width: "350px",
 			height: "50px",
 		},
 		backgroundHeader: {
