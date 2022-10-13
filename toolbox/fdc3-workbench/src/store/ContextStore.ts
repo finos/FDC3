@@ -38,7 +38,7 @@ class ContextStore {
 			contextsList: observable,
 			currentContext: observable,
 			contextListeners: observable,
-			createContext: action,
+			setContext: action,
 			deleteContextItem: action,
 			broadcast: action,
 			addContextItem: action,
@@ -66,7 +66,7 @@ class ContextStore {
 		this.updateLocalStorage(this.contextsList);
 	}
 
-	createContext(context: ContextType) {
+	setContext(context: ContextType) {
 		this.currentContext = context;
 	}
 
