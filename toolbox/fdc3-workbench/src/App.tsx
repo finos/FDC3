@@ -74,6 +74,10 @@ const useStyles = makeStyles((theme: Theme) =>
 				display: "flex",
 				alignItems: "center",
 			},
+			".MuiInputBase-root.Mui-disabled": {
+				color: "rgba(0, 0, 0, 0.6)",
+				cursor: "default",
+			 },
 		},
 		root: {
 			flexGrow: 1,
@@ -82,7 +86,6 @@ const useStyles = makeStyles((theme: Theme) =>
 			marginBottom: theme.spacing(2),
 		},
 		body: {
-			padding: theme.spacing(1),
 			height: "100%",
 		},
 		paper: {
@@ -194,7 +197,6 @@ export const App = observer(() => {
 					<Grid className={classes.body} container spacing={2} item xs={12} style={{ marginLeft: "0px" }}>
 						<Grid item xs={8} style={{ flex: 1 }}>
 							<Paper className={classes.paper}>
-								<Typography variant="h4">{`{workbench}`}</Typography>
 								<Tabs
 									value={tabIndex}
 									indicatorColor="primary"
