@@ -139,19 +139,19 @@ _Need an ICLA? Unsure if you are covered under an existing CCLA? Email [help@fin
 If you or your firm intends to make use of the FDC3 Standard (by implementing a Desktop Agent or App Directory, by adding support to apps to interoperate with others via FDC3, or even by using apps, Desktop Agents or App Directories written by others) then participating in the governance, maintenance and onward development of the FDC3 Standard will help to protect and strengthen the ecosystem developing around FDC3. Doing so will also empower you to help guide the Standard in directions that are relevant to your use or that of your firm.
 If you or your firm are new to contributing to open source projects, please see the variety of resources available from FINOS, (such as the [Open Source readiness project](https://www.finos.org/open-source-readiness)), Linux Foundation ([Participating in Open Source communities](https://www.linuxfoundation.org/tools/participating-in-open-source-communities/)) and others (e.g. [opensource.guide](https://opensource.guide/)). 
 
-## What it means to be an FDC3 Contributor, Editor or Maintainer
+## What it means to be an FDC3 Participant, Editor or Maintainer
 
 According to [Governance document](GOVERNANCE.md) document:
 
-- **"Contributors"** are those that have made contributions to the FDC3 Standard Working Group, subject to the [Community Specification Contributor License Agreement](https://github.com/CommunitySpecification/Community_Specification/blob/main/.0_CS_Contributor_License_Agreement.md). The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the Standard. In practice, that means people that attend and contribute to meetings, raise issues, pull requests (to submit patches to the Standard) and reviews.
+- **"Participants"** are those that have made contributions to the FDC3 Standard Working Group, subject to the [Community Specification Contributor License Agreement](https://github.com/CommunitySpecification/Community_Specification/blob/main/.0_CS_Contributor_License_Agreement.md). The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the Standard. In practice, that means people that attend and contribute to meetings, raise issues, pull requests (to submit patches to the Standard) and reviews.
 - **"Editors"** are responsible for ensuring that the contents of the Standard's documents accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines.
 - **"Maintainers"** are responsible for organizing activities around developing, maintaining, and updating the specification(s) developed by the Working Group. Maintainers are also responsible for determining consensus and coordinating appeals.
 
 Whilst all 3 roles require some amount of attention, being an Editor or Maintainer will obviously require a greater and more regular investment of time from anyone taking on that role.
 
-### How do you become a Contributor, Editor or Maintainer?
+### How do you become a Participant, Editor or Maintainer?
 
-Becoming an FDC3 Contributor is as easy as attending a meeting and/or raising issues for changes you'd like see in the Standard, commenting on issues others have raised or even asking questions (which can often result in the clarification of the Standard's documentation to help others with the same questions in future).
+Becoming an FDC3 Participant is as easy as attending a meeting and/or raising issues for changes you'd like see in the Standard, commenting on issues others have raised or even asking questions (which can often result in the clarification of the Standard's documentation to help others with the same questions in future).
 
 If you are going to use, implement or benefit from the FDC3 Standard, you should accept the terms of the [Community Specification Contributor License Agreement](https://github.com/CommunitySpecification/Community_Specification/blob/main/.0_CS_Contributor_License_Agreement.md).  Accepting this agreement will allow you to vote on future changes to the standard.  To do this:
 
@@ -166,15 +166,15 @@ If you are going to use, implement or benefit from the FDC3 Standard, you should
 
 Upon acceptance, you will be invited to join the [FINOS GitHub organization](https://github.com/orgs/finos/people) and the [fdc3-participants](https://github.com/orgs/finos/teams/fdc3-participants) GitHub team.
 
-Once you are an enrolled contributor to FDC3, you can apply to become an editor or maintainer by contacting the existing FDC3 maintainers at [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org) and then seeking the approval of the FDC3 Standards Working Group. Generally, the maintainers will look for both a history of contribution to FDC3 and a commitment to investing sufficient time in the role from any prospective candidates before proposing them to the Standards Working Group for approval. If you are new to FDC3, but willing to make the investment of time, the maintainers can work with you to build up a history of contribution.
+Once you are an enrolled particpant in FDC3, you can apply to become an editor or maintainer by contacting the existing FDC3 maintainers at [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org) and then seeking the approval of the FDC3 Standards Working Group. Generally, the maintainers will look for both a history of contribution to FDC3 and a commitment to investing sufficient time in the role from any prospective candidates before proposing them to the Standards Working Group for approval. If you are new to FDC3, but willing to make the investment of time, the maintainers can work with you to build up a history of contribution.
 
 ## FINOS Code of Conduct
 
-Contributors to FINOS standards projects should follow the FINOS Code of Conduct, which can be found at: https://community.finos.org/docs/governance/code-of-conduct 
+Participants in FINOS standards projects should follow the FINOS Code of Conduct, which can be found at: https://community.finos.org/docs/governance/code-of-conduct 
 
 # License
 
-Copyright 2017-2022 FINOS and FDC3 Contributors.
+Copyright 2017-2022 FINOS and FDC3 Participants.
 
 Please see the [license](LICENSE.md).
 
