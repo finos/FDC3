@@ -159,7 +159,7 @@ If you are going to use, implement or benefit from the FDC3 Standard, you should
 2. **Click the "Create Pull Request" button.** This will notify the FDC3 team of your application.  
 3. **Review your EasyCLA settings on the Pull Request**.  Within the Pull Request, you will have a button to review your CLA settings.  A completed CLA will look like the one below:
 
-![Completed EasyCLA](./github/EasyCLA.png)
+<img width="932" alt="EasyCLA" src="https://user-images.githubusercontent.com/568673/195820700-a7978380-63cb-48c3-a1c2-63d4586d6bf9.png">
 
 - For more details on the Contributor License Agreement, please see the [FINOS CLA Page](https://community.finos.org/docs/governance/software-projects/easycla/). 
 -  For technical support on this process, please contact [FINOS Help](mailto:help@finos.org).
