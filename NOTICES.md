@@ -14,9 +14,11 @@ A Licensee may consent to accepting the current Community Specification License 
 
 Licensee’s name:
 
-Authorized individual and system identifier:
+Rob Moffat
 
-Specification version:
+Authorized individual and system identifier: rob.moffat@finos.org
+
+Specification version: 2.1 or later
 
 ---------------------------------------------------------------------------------
 
