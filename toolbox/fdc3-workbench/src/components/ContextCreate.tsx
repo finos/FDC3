@@ -1,31 +1,22 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Button, Grid, Typography, Tooltip, IconButton } from "@material-ui/core";
-import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
+import { Button, Grid, Typography, Tooltip, IconButton, Link } from "@material-ui/core";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
+import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined';
 import contextStore, { ContextType, ContextItem } from "../store/ContextStore";
 import systemLogStore from "../store/SystemLogStore";
 import { JsonInput } from "./common/JsonInput";
+import { DialogModal } from "./common/DialogModal";
 import { TemplateTextField } from "./common/TemplateTextField";
-import { codeExamples } from "../fixtures/codeExamples";
-import { ContextLinking } from "./ContextLinking";
 import { copyToClipboard } from "./common/CopyToClipboard";
-
-// interface copied from lib @material-ui/lab/Autocomplete
-interface FilterOptionsState<T> {
-	inputValue: string;
-	getOptionLabel: (option: T) => string;
-}
 
 interface OptionType {
 	title: string;
 	value: string;
 }
 
-const filter = createFilterOptions<OptionType>();
-
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles: any = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
 			flexGrow: 1,
@@ -62,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			minWidth: "190px",
 		},
 		textField: {
-			width: "100%",
+			width: "100%"
 		},
 		multilineField: {
 			width: "100%",
@@ -81,55 +72,80 @@ const useStyles = makeStyles((theme: Theme) =>
 			marginTop: "24px",
 			marginBottom: "16px",
 		},
+		delete: {
+			color: 'red',
+			height:'15px',
+			stroke: 'black',
+			transform: 'scale(1.5)',
+			strokeWidth: 1.2
+		},
+		link: {
+			cursor: "pointer",
+			color: "black"
+		}
 	})
 );
+
+let emptyJson: ContextType = {
+	type: "",
+	id: {}
+};
 
 export const ContextCreate = observer(() => {
 	const classes = useStyles();
 	const [templateName, setTemplateName] = useState<OptionType | null>(null);
-	const [contextValue, setContextValue] = useState<ContextType | null>(null);
-	const [context, setContext] = useState<ContextItem | null>(null);
-	const [contextError, setContextError] = useState<string | false>(false);
-	const contextListenersOptions: OptionType[] = contextStore.contextsList.map(({ id }) => {
-		return {
-			title: id,
-			value: id,
-		};
+	const [contextValue, setContextValue] = useState<ContextType | null>(emptyJson);
+	const [context, setContext] = useState<ContextItem | null>({
+		id: "empty",
+		template: emptyJson,
+		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/context.schema.json"),
 	});
+	const [contextError, setContextError] = useState<string | false>(false);
+	const [open, setOpen] = React.useState(false);
+	const [deleteContext, setDeleteContext] = useState<object | null>(null);
+	const [disabled, setDisabled] = useState(true);
+	
+	const handleClickOpen = (id: string, name: any) => {
+		setOpen(true);
+		setDeleteContext({id, name})
+	};
 
-	const handleContextChange = (json: ContextType) => {
-		setContextValue(json);
-		setContextError(false);
+	const handleClose = (value: boolean) => {
+		setOpen(value);
 	};
 
 	const handleJsonError = (errors: string[]) => {
 		setContextError(errors[0]);
 	};
 
-	// TODO: save template that was setup without template name
-	const handleChangeTemplate = (event: React.ChangeEvent<{}>, newValue: any) => {
+	const handleChangeTemplate = (newValue: any) => {
 		setTemplateName(newValue);
-
 		if (newValue?.value) {
 			const selectedContext = contextStore.contextsList.find(({ id }) => id === newValue?.value);
-
+			console.log(JSON.stringify(selectedContext))
 			if (selectedContext) {
 				setContextValue(selectedContext.template);
 				setContext(selectedContext);
-			} else {
-				const newContext: ContextItem = {
-					id: newValue.value,
-					template: contextValue,
-					schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/context.schema.json"),
-				};
-
-				contextStore.addContextItem(newContext);
-				setContext(newContext);
-				setContextValue(newContext.template);
 			}
 		}
 
 		setContextError(false);
+	};
+
+	const handleChangeTemplateName = (newValue: any) => {
+		setTemplateName(newValue);
+		if(context){
+			const selectedContext = contextStore.contextsList.find(({ id }) => id === context.id);
+			if(selectedContext) selectedContext.id = newValue.value
+			else context.id = newValue.value
+		}
+		setDisabled(false);
+	}
+
+	const handleContextChange = (json: ContextType) => {
+		setContextValue(json);
+		setContextError(false);
+		setDisabled(false);
 	};
 
 	const validate = () => {
@@ -148,53 +164,40 @@ export const ContextCreate = observer(() => {
 			return false;
 		}
 
+		if(!templateName) {
+			setContextError("Template name is required");
+			return false;
+		}
+
 		return true;
 	};
 
-	const handleCreateContext = () => {
+	const handleCreateTemplate = () => {
+		if (context) {
+			setTemplateName(null)
+			const newContext: ContextItem = {
+				id: "empty",
+				template: emptyJson,
+				schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/context.schema.json"),
+			};
+			setContext(newContext);
+			setContextValue(emptyJson);
+		}
+		setDisabled(true);
+	};
+
+	const handleSaveTemplate = () => {
 		const isValid: boolean = validate();
 
-		if (isValid && contextValue && !contextError) {
-			contextStore.createContext(contextValue);
-			//disabled clearing of context value and template name
-			// setContextValue(null);
-			// setTemplateName(null);
-			// setContext({
-			// 	id: "empty",
-			// 	template: null,
-			// });
-		}
-	};
-
-	const getOptionLabel = (option: OptionType) => {
-		if (option.value) {
-			return option.value;
-		}
-
-		return option.title;
-	};
-
-	const filterOptions = (options: OptionType[], params: FilterOptionsState<OptionType>) => {
-		const filtered = filter(options, params);
-
-		if (params.inputValue !== "") {
-			filtered.push({
-				value: params.inputValue,
-				title: `Add "${params.inputValue}"`,
-			});
-		}
-
-		return filtered;
-	};
-
-	// TODO: disable button if nothing in template changed
-	const handleSaveTemplate = () => {
-		if (context) {
+		if (isValid && context) {
+			const found = contextStore.contextsList.find(({ id }) => id === context.id);
+			if(!found) contextStore.addContextItem(context);
 			contextStore.saveContextItem({
 				id: context.id,
 				schemaUrl: context.schemaUrl,
 				template: contextValue,
 			});
+			handleChangeTemplate({title: context.id, value: context.id})
 			systemLogStore.addLog({
 				name: "saveTemplate",
 				type: "success",
@@ -204,58 +207,103 @@ export const ContextCreate = observer(() => {
 		} else {
 			systemLogStore.addLog({
 				name: "saveTemplate",
+				type: "error",
+				value: undefined,
+				variant: "text",
+			});
+		}
+		setDisabled(true);
+	};
+
+	const handleResetTemplate = () => {
+		contextStore.resetContextList();
+		handleCreateTemplate()
+	};
+
+	const handleDeleteTemplate = (contextId:any) => {
+		const selectedContext = contextStore.contextsList.find(({ id }) => id === contextId);
+		if (selectedContext) {
+			contextStore.deleteContextItem(selectedContext);
+			systemLogStore.addLog({
+				name: "deleteTemplate",
 				type: "success",
+				value: selectedContext?.id,
+				variant: "text",
+			});
+		} else {
+			systemLogStore.addLog({
+				name: "deleteTemplate",
+				type: "error",
 				value: undefined,
 				variant: "text",
 			});
 		}
 	};
 
-	const handleBroadcast = () => {
-		contextStore.broadcast();
-	};
-
 	return (
 		<div className={classes.root}>
-			<Grid item xs={12}>
-				<Typography variant="h5">Create Context</Typography>
+			<DialogModal open={open} onClose={handleClose} onAgree={handleDeleteTemplate} selectedValue={deleteContext} />
+			<Grid item xs={12} container spacing={1} >
+				<Typography variant="h5" >Context templates:</Typography>
 			</Grid>
+			
+			{contextStore.contextsList.map(({ id, template }, index) => (
+				<Grid key={index} container direction="row" item xs={12} spacing={1} alignItems="center" >
+					<Link underline="none" onClick={() => handleChangeTemplate({title: id, value: id})} className={classes.link}>
+						<Grid item >
+							<Typography variant="subtitle1" >
+								{id}
+							</Typography>
+						</Grid>
+					</Link>
+					<Grid item >
+						<Typography variant="caption" >{template?.type}</Typography>
+					</Grid>
+					<Grid item xs={1}>
+						<Tooltip title="Delete template" aria-label="Delete template">
+							<IconButton
+								size="small"
+								aria-label="Delete template"
+								onClick={() => handleClickOpen(id, template?.name)}
+							>
+								<ClearOutlinedIcon className={classes.delete}/>
+							</IconButton>
+						</Tooltip>
+					</Grid>
+				</Grid>
+			))}
+
+			<form className={classes.form} noValidate autoComplete="off">
+				<Grid container direction="row" spacing={1}>
+					<Grid item className={classes.controls}>
+						<Button className={classes.button} variant="contained" color="primary" onClick={handleCreateTemplate}>
+							Create new template
+						</Button>
+					</Grid>
+					<Grid item className={classes.controls}>
+						<Button className={classes.button} variant="contained" color="primary" onClick={handleResetTemplate}>
+							Reset templates
+						</Button>
+					</Grid>
+				</Grid>
+			</form>
+			
 			<form className={classes.form} noValidate autoComplete="off">
 				<Grid container direction="row" spacing={1} className={classes.rightAlign}>
-					<Grid item className={`${classes.controls} ${classes.templateSelect}`}>
-						<Autocomplete
-							id="context-template"
-							size="small"
-							selectOnFocus
-							blurOnSelect
-							clearOnBlur
-							handleHomeEndKeys
-							value={templateName}
-							onChange={handleChangeTemplate}
-							filterOptions={filterOptions}
-							options={contextListenersOptions}
-							getOptionLabel={getOptionLabel}
-							getOptionSelected={(option, value) => option.value === value.value}
-							renderOption={(option) => option.title}
-							renderInput={(params) => (
-								<TemplateTextField
-									//className={classes.textField}
-									label="TEMPLATE"
-									placeholder="Choose Context Template"
-									variant="outlined"
-									style={{
-										borderColor: "blue",
-									}}
-									{...params}
-								/>
-							)}
-						/>
-					</Grid>
-
-					<Grid item>
-						<Button className={classes.button} variant="contained" color="primary" onClick={handleSaveTemplate}>
-							Save Template
-						</Button>
+					<Grid item xs={12} className={`${classes.controls} ${classes.templateSelect}`}>
+						<Grid item xs={6} className={classes.field}>
+							<Grid item xs={12} className={classes.textField}>
+								<Typography variant="h5" >Edit template:</Typography>
+							</Grid>
+							<TemplateTextField
+								label="Template name"
+								variant="outlined"
+								className={classes.textField}
+								placeholder="Choose Context Template"
+								value={templateName?.value || ' '}
+								onChange={(e) => handleChangeTemplateName({title: e.target.value, value: e.target.value})}
+							/>
+						</Grid>
 					</Grid>
 
 					<Grid item xs={12} className={classes.controls}>
@@ -263,16 +311,12 @@ export const ContextCreate = observer(() => {
 							json={context?.template}
 							onChange={handleContextChange}
 							onJsonError={handleJsonError}
-							schemaUrl={context?.schemaUrl}
+							schemaUrl={new URL(context?.schemaUrl || 'https://fdc3.finos.org/schemas/1.2/context.schema.json')}
 							error={contextError}
 						/>
 					</Grid>
 
-					<Grid item className={classes.controls}>
-						<Button className={classes.button} variant="contained" color="primary" onClick={handleCreateContext}>
-							Create context
-						</Button>
-
+					<Grid item>
 						<Tooltip title="Copy code" aria-label="Copy code">
 							<IconButton
 								size="small"
@@ -283,32 +327,12 @@ export const ContextCreate = observer(() => {
 								<FileCopyIcon />
 							</IconButton>
 						</Tooltip>
-					</Grid>
-					<Grid item className={classes.controls}>
-						<Button
-							disabled={!contextStore.currentContext}
-							variant="contained"
-							color="primary"
-							onClick={handleBroadcast}
-						>
-							Broadcast Context
+						
+						<Button className={classes.button} variant="contained" color="primary" onClick={handleSaveTemplate} disabled={disabled}>
+							Save Changes
 						</Button>
-
-						<Tooltip title="Copy code example" aria-label="Copy code example">
-							<IconButton
-								size="small"
-								aria-label="Copy code example"
-								color="primary"
-								onClick={copyToClipboard(codeExamples.broadcast, "broadcast")}
-							>
-								<FileCopyIcon />
-							</IconButton>
-						</Tooltip>
 					</Grid>
 
-					<div className={classes.border}></div>
-
-					<ContextLinking />
 				</Grid>
 			</form>
 		</div>
