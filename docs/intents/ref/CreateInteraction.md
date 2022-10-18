@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `CreateInteraction`
 
-Create an interaction with a list of contacts.
+Create a record documenting an interaction (calls, meetings, etc.) between a list of contacts.
 
 ## Intent Name
 
@@ -19,6 +19,11 @@ Create an interaction with a list of contacts.
 ## Possible Contexts
 
 * [ContactList](../../context/ref/ContactList)
+* [Interaction](../../context/ref/Interaction)
+
+SHOULD return context as a result:
+
+* [TransactionResult](../../context/ref/TransactionResult)
 
 ## Example
 

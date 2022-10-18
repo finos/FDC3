@@ -213,8 +213,8 @@ export interface Valuation {
 export interface TransactionResult {
   status: ("Created" | "Deleted" | "Updated" | "Failed") | string; 
   type: string;
-  context: Context;
-  message: string;
+  context?: Context;
+  message?: string;
 }
 
 // Converts JSON strings to/from your types
