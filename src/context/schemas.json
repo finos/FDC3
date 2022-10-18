@@ -10,7 +10,6 @@
   "Instrument": ["https://fdc3.finos.org/schemas/next/instrument.schema.json"],
   "InstrumentList": ["https://fdc3.finos.org/schemas/next/instrumentList.schema.json"],
   "Interaction": ["https://fdc3.finos.org/schemas/next/interaction.schema.json"],
-  "Country": ["https://fdc3.finos.org/schemas/next/country.schema.json"],
   "Nothing": ["https://fdc3.finos.org/schemas/next/nothing.schema.json"],
   "Organization": ["https://fdc3.finos.org/schemas/next/organization.schema.json"],
   "Portfolio": ["https://fdc3.finos.org/schemas/next/portfolio.schema.json"],
