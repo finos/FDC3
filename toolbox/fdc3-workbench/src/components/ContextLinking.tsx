@@ -18,6 +18,7 @@ interface FilterOptionsState<T> {
 interface ListenerOptionType {
 	title: string;
 	value: string;
+	type: string | undefined;
 }
 
 type ListenerSetValue = (value: ListenerOptionType | null) => void;
@@ -34,7 +35,6 @@ const useStyles = makeStyles((theme: Theme) =>
 			flexWrap: "wrap",
 			marginTop: theme.spacing(1),
 			"& > *": {
-				margin: theme.spacing(1),
 				marginRight: 0,
 			},
 		},
@@ -66,15 +66,17 @@ export const ContextLinking = observer(() => {
 	const classes = useStyles();
 	const [contextListener, setContextListener] = useState<ListenerOptionType | null>(null);
 	const [contextError, setContextError] = useState<string | false>(false);
-	const contextListenersOptions: ListenerOptionType[] = contextStore.contextsList.map(({ id }) => {
+	const contextListenersOptions: ListenerOptionType[] = contextStore.contextsList.map(({ id, template }) => {
 		return {
 			title: id,
 			value: id,
+			type: template?.type
 		};
 	});
 	contextListenersOptions.unshift({
 		title: "All",
 		value: "all",
+		type: "All"
 	});
 
 	const handleChangeListener =
@@ -83,11 +85,13 @@ export const ContextLinking = observer(() => {
 				setValue({
 					title: newValue,
 					value: newValue,
+					type: newValue
 				});
 			} else if (newValue && newValue.inputValue) {
 				setValue({
 					title: newValue.inputValue,
 					value: newValue.inputValue,
+					type: newValue.inputValue
 				});
 			} else {
 				setValue(newValue);
@@ -110,6 +114,7 @@ export const ContextLinking = observer(() => {
 			filtered.push({
 				value: params.inputValue,
 				title: `Add "${params.inputValue}"`,
+				type: params.inputValue
 			});
 		}
 
@@ -156,10 +161,10 @@ export const ContextLinking = observer(() => {
 							filterOptions={filterOptions}
 							options={contextListenersOptions}
 							getOptionLabel={getOptionLabel}
-							renderOption={(option) => option.title}
+							renderOption={(option) => option.type}
 							renderInput={(params) => (
 								<TemplateTextField
-									label="CONTEXT LISTENER"
+									label="CONTEXT TYPE"
 									placeholder="Enter Context Type"
 									variant="outlined"
 									{...params}
