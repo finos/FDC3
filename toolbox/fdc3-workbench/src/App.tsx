@@ -218,7 +218,7 @@ export const App = observer(() => {
 									<ContextCreate />
 								</TabPanel>
 								<TabPanel value={tabIndex} index={1}>
-									<Intents />
+									<Intents handleTabChange={handleTabChange}/>
 								</TabPanel>
 								<TabPanel value={tabIndex} index={2}>
 									<Channels />
