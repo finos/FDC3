@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		contextName: {
 			flexGrow: 1,
-			marginRight: theme.spacing(1),
 			minWidth: "190px",
 		},
 		rightAlign: {
@@ -123,8 +122,7 @@ export const ContextTemplates = observer(({handleTabChange} : {handleTabChange:a
 	)
 
 	return (
-		<div className={classes.root}>
-			<form className={classes.form} noValidate autoComplete="off">
+			<form noValidate autoComplete="off">
 				<Grid
 					container
 					direction="row"
@@ -160,6 +158,5 @@ export const ContextTemplates = observer(({handleTabChange} : {handleTabChange:a
 					</Grid>
 				</Grid>
 			</form>
-		</div>
 	);
 });

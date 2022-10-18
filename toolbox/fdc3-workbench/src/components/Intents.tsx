@@ -5,6 +5,7 @@ import { observer } from "mobx-react";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
 import contextStore from "../store/ContextStore";
+import {ContextTemplates} from "../components/ContextTemplates";
 import intentStore from "../store/IntentStore";
 import { codeExamples } from "../fixtures/codeExamples";
 import { TemplateTextField } from "./common/TemplateTextField";
@@ -96,7 +97,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const filter = createFilterOptions<ListenerOptionType>();
 
-export const Intents = observer(() => {
+export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 	const classes = useStyles();
 	const [intentValue, setIntentValue] = useState<ListenerOptionType | null>(null);
 	const [raiseIntentError, setRaiseIntentError] = useState<string | false>(false);
@@ -200,6 +201,7 @@ export const Intents = observer(() => {
 									/>
 								)}
 							/>
+							<ContextTemplates handleTabChange={handleTabChange} />
 						</Grid>
 
 						<Grid item className={classes.controls}>
@@ -224,7 +226,7 @@ export const Intents = observer(() => {
 							</Tooltip>
 						</Grid>
 					</Grid>
-
+					
 					<div className={classes.border}></div>
 
 					<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
