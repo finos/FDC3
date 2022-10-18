@@ -6,12 +6,12 @@ hide_title: true
 ---
 # `Interaction`
 
-An interaction is a significant direct exchange of ideas or information between a Sell Side party and one or more Buy Side parties. An interaction might be a call, a meeting (physical or virtual), an IM or the preparation of some specialist data.
+An `Interaction` is a significant direct exchange of ideas or information between a number of participants, e.g. a Sell Side party and one or more Buy Side parties. An `Interaction` might be a call, a meeting (physical or virtual), an IM or the preparation of some specialist data, such as financial data for a given company or sector.
 
 Notes:
 
-- interactionType SHOULD be one of 'Instant Message', 'Email', 'Call', or 'Meeting' although other values can be provided
-- origin indicates the application or service that the interaction was created from to aid in tracing the source of the interaction
+- `interactionType` SHOULD be one of 'Instant Message', 'Email', 'Call', or 'Meeting' although other values are permitted.
+- `origin` is used to represent the application or service that the interaction was created from to aid in tracing the source of an interaction.
 
 ## Type
 

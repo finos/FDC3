@@ -120,13 +120,6 @@ export interface Interaction {
   origin?: string;
 }
 
-export interface InstrumentList {
-  instruments: Instrument[];
-  type: string;
-  id?: { [key: string]: string };
-  name?: string;
-}
-
   export interface CountryID {
   COUNTRY_ISOALPHA2?: string;
   COUNTRY_ISOALPHA3?: string;
