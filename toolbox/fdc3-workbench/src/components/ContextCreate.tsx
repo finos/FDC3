@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Button, Grid, Typography, Tooltip, IconButton, Link } from "@material-ui/core";
+import { Button, Grid, Typography, Tooltip, IconButton, Link, Box } from "@material-ui/core";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
-import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import contextStore, { ContextType, ContextItem } from "../store/ContextStore";
 import systemLogStore from "../store/SystemLogStore";
 import { JsonInput } from "./common/JsonInput";
@@ -73,15 +73,18 @@ const useStyles: any = makeStyles((theme: Theme) =>
 			marginBottom: "16px",
 		},
 		delete: {
-			color: 'red',
 			height:'15px',
-			stroke: 'black',
-			transform: 'scale(1.5)',
-			strokeWidth: 1.2
+			transform: 'scale(1.7)',
+		},
+		copy: {
+			height:'20px',
 		},
 		link: {
 			cursor: "pointer",
 			color: "black"
+		},
+		margins: {
+			margin: "0 5px"
 		}
 	})
 );
@@ -131,14 +134,28 @@ export const ContextCreate = observer(() => {
 		setContextError(false);
 	};
 
+	const found = (tempName: string) => (contextStore.contextsList.reduce((count, {id}) => {
+			if(id === tempName) {
+				count = count + 1;
+			}
+			return count;
+		}, 0));
+
 	const handleChangeTemplateName = (newValue: any) => {
-		setTemplateName(newValue);
-		if(context){
-			const selectedContext = contextStore.contextsList.find(({ id }) => id === context.id);
-			if(selectedContext) selectedContext.id = newValue.value
-			else context.id = newValue.value
-		}
 		setDisabled(false);
+		setContextError(false)
+		setTemplateName(newValue);
+		if(context && !found(newValue.value)){
+			const selectedContext = contextStore.contextsList.find(({ id }) => id === context.id);
+			if(selectedContext) {
+				selectedContext.id = newValue.value
+				setContext(selectedContext)
+			}
+		}
+		else if(found(newValue.value) >= 1) {
+			setDisabled(true);
+			setContextError("Template name already exists");
+		}
 	}
 
 	const handleContextChange = (json: ContextType) => {
@@ -167,7 +184,7 @@ export const ContextCreate = observer(() => {
 			setContextError("Template name is required");
 			return false;
 		}
-
+		
 		return true;
 	};
 
@@ -188,9 +205,9 @@ export const ContextCreate = observer(() => {
 	const handleSaveTemplate = () => {
 		const isValid: boolean = validate();
 
-		if (isValid && context) {
-			const found = contextStore.contextsList.find(({ id }) => id === context.id);
-			if(!found) contextStore.addContextItem(context);
+		if (isValid && context && templateName) {
+			const selectedContext = contextStore.contextsList.find(({ id }) => id === templateName.value);
+			if(!selectedContext) contextStore.addContextItem(context);
 			contextStore.saveContextItem({
 				id: context.id,
 				schemaUrl: context.schemaUrl,
@@ -213,6 +230,37 @@ export const ContextCreate = observer(() => {
 		}
 		setDisabled(true);
 	};
+
+	const handleDuplicateTemplate = (newValue: any, count = 0) => {
+		const copyName = `${newValue.value}-copy${count > 0 ? ` (${count})` : ''}`;
+		if (newValue?.value && !found(copyName)) {
+			setTemplateName({value: copyName, title: copyName});
+			const selectedContext = contextStore.contextsList.find(({ id }) => id === newValue.value);
+
+			if (selectedContext) {
+				const newContext: ContextItem = {
+					id: copyName,
+					template: selectedContext.template,
+					schemaUrl: selectedContext.schemaUrl,
+				};
+				contextStore.addContextItem(newContext);
+				contextStore.saveContextItem(newContext);
+				setContextValue(selectedContext.template);
+				setContext(newContext);
+				
+				systemLogStore.addLog({
+					name: "saveTemplate",
+					type: "success",
+					value: newContext.id,
+					variant: "text",
+				});
+			}
+		} else if(found(copyName)) {
+			handleDuplicateTemplate(newValue, ++count)
+		}
+
+		setContextError(false);
+	}
 
 	const handleResetTemplate = () => {
 		contextStore.resetContextList();
@@ -242,36 +290,60 @@ export const ContextCreate = observer(() => {
 	return (
 		<div className={classes.root}>
 			<DialogModal open={open} onClose={handleClose} onAgree={handleDeleteTemplate} selectedValue={deleteContext} />
-			<Grid item xs={12} container spacing={1} >
-				<Typography variant="h5" >Context templates:</Typography>
-			</Grid>
-			
-			{contextStore.contextsList.map(({ id, template }, index) => (
-				<Grid key={index} container direction="row" item xs={12} spacing={1} alignItems="center" >
-					<Link underline="none" onClick={() => handleChangeTemplate({title: id, value: id})} className={classes.link}>
-						<Grid item >
-							<Typography variant="subtitle1" >
-								{id}
-							</Typography>
-						</Grid>
-					</Link>
-					<Grid item >
-						<Typography variant="caption" >{template?.type}</Typography>
-					</Grid>
-					<Grid item xs={1}>
-						<Tooltip title="Delete template" aria-label="Delete template">
-							<IconButton
-								size="small"
-								aria-label="Delete template"
-								onClick={() => handleClickOpen(id, template?.name)}
-							>
-								<ClearOutlinedIcon className={classes.delete}/>
-							</IconButton>
-						</Tooltip>
-					</Grid>
+			<Grid container spacing={1} >
+				<Grid item xs={12} >
+					<Typography variant="h5" >Context templates:</Typography>
 				</Grid>
-			))}
-
+				<Box 
+					mb={2}
+					display="flex"
+					flexDirection="column"
+					height="220px"
+					width="100%"
+					style={{
+						overflow: "hidden",
+						overflowY: "auto"
+					  }}
+					>
+				{contextStore.contextsList.map(({ id, template }, index) => (
+					<Grid key={index} container direction="row" item xs={12} grid-xs-12 alignItems="center" className={classes.margins}>
+						<Grid item >
+							<Link underline="none" onClick={() => handleChangeTemplate({title: id, value: id})} className={classes.link}>
+								<Typography variant="subtitle1" >
+									{id}
+								</Typography>
+							</Link>
+						</Grid>
+						<Grid item className={classes.margins}>
+							<Typography variant="caption" >{template?.type}</Typography>
+						</Grid>
+						<Grid item >
+							<Tooltip title="Duplicate Template" aria-label="Copy code">
+								<IconButton
+									size="small"
+									aria-label="Copy code example"
+									color="primary"
+									onClick={() => handleDuplicateTemplate({title: id, value: id})}>
+									<FileCopyIcon className={classes.copy}/>
+								</IconButton>
+							</Tooltip>
+						</Grid>
+						<Grid item>
+							<Tooltip title="Delete template" aria-label="Delete template">
+								<IconButton
+									size="small"
+									aria-label="Delete template"
+									color="primary"
+									onClick={() => handleClickOpen(id, template?.name)}
+								>
+									<DeleteOutlinedIcon className={classes.delete}/>
+								</IconButton>
+							</Tooltip>
+						</Grid>
+					</Grid>
+				))}
+				</Box>
+			</Grid>
 			<form className={classes.form} noValidate autoComplete="off">
 				<Grid container direction="row" spacing={1}>
 					<Grid item className={classes.controls}>
