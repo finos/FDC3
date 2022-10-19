@@ -221,7 +221,7 @@ export const App = observer(() => {
 									<Intents handleTabChange={handleTabChange}/>
 								</TabPanel>
 								<TabPanel value={tabIndex} index={2}>
-									<Channels />
+									<Channels handleTabChange={handleTabChange}/>
 								</TabPanel>
 							</Paper>
 						</Grid>

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Grid, Link } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
 import contextStore from "../store/ContextStore";
 import { TemplateTextField } from "./common/TemplateTextField";
@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme: Theme) =>
 			flexWrap: "wrap",
 			marginTop: theme.spacing(1),
 			"& > *": {
-				margin: theme.spacing(1),
 				marginRight: 0,
 			},
 		},
@@ -67,9 +66,14 @@ export const ContextTemplates = observer(({handleTabChange} : {handleTabChange:a
 			value: id,
 		};
 	});
+	const isInitialMount = useRef(true);
 
 	const handleChange =
 		(setValue: SetValue, setError: SetError) => (event: React.ChangeEvent<{}>, newValue: any) => {
+			const selectedContext = contextStore.contextsList.find(({ id }) => id === newValue?.value);
+
+			if (selectedContext && selectedContext.template) contextStore.setContext(selectedContext.template)
+
 			if (typeof newValue === "string") {
 				setValue({
 					title: newValue,
@@ -107,19 +111,15 @@ export const ContextTemplates = observer(({handleTabChange} : {handleTabChange:a
 		return filtered;
 	};
 
-	const handleSelectContext = (value: string) => {
-		const selectedContext = contextStore.contextsList.find(({ id }) => id === value);
-		if(selectedContext && selectedContext.template) contextStore.setContext(selectedContext.template);
-		else handleTabChange(null, 0)
-	}
-
-	const handleRenderOption = (option: OptionType) => (
-		<li>
-			<Link underline="none" onClick={() => handleSelectContext(option.value)} className={classes.link}>
-				<a> {option.title} </a>
-			</Link>
-		</li>
-	)
+	useEffect(() => {
+		if (isInitialMount.current) {
+			isInitialMount.current = false;
+		 } else {
+			const selectedContext = contextStore.contextsList.find(({ id }) => id === context?.value);
+			if(!selectedContext) handleTabChange(null, 0);
+		 }
+	}, [context])
+	
 
 	return (
 			<form noValidate autoComplete="off">
@@ -140,10 +140,11 @@ export const ContextTemplates = observer(({handleTabChange} : {handleTabChange:a
 							handleHomeEndKeys
 							value={context}
 							onChange={handleChange(setContext, setContextError)}
+							getOptionSelected={(option, value) => option.value === value.value}
 							filterOptions={filterOptions}
 							options={contextsOptions}
 							getOptionLabel={getOptionLabel}
-							renderOption={handleRenderOption}
+							renderOption={(option) => option.title}
 							renderInput={(params) => (
 								<TemplateTextField
 									label="CONTEXT "
