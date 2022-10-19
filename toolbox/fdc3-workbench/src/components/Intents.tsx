@@ -92,6 +92,12 @@ const useStyles = makeStyles((theme: Theme) =>
 			marginTop: "24px",
 			marginBottom: "16px",
 		},
+		bottomMargin: {
+			marginBottom: theme.spacing(1),
+		},
+		removeSidePadding: {
+			paddingLeft: 0,
+		},
 	})
 );
 
@@ -104,7 +110,6 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 	const [intentListener, setIntentListener] = useState<ListenerOptionType | null>(null);
 	const [intentError, setIntentError] = useState<string | false>(false);
 	const intentListenersOptions: ListenerOptionType[] = intentStore.intentsList;
-	const context = JSON.parse(JSON.stringify(contextStore.currentContext))?.type;
 
 	const handleRaiseIntent = () => {
 		if (intentValue) {
@@ -230,17 +235,11 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 					<div className={classes.border}></div>
 
 					<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
-						<Grid item xs={12}>
+						<Grid item xs={12} className={classes.bottomMargin}>
 							<Typography variant="h5">Raise Intent for Context</Typography>
 						</Grid>
-						<Grid item className={classes.field}>
-							<TemplateTextField
-								label="Current context type"
-								disabled={true}
-								variant="outlined"
-								defaultValue={context || "Create a context"}
-								className={classes.textField}
-							/>
+						<Grid item className={`${classes.field} ${classes.removeSidePadding}`}>
+							<ContextTemplates handleTabChange={handleTabChange} />
 						</Grid>
 						<Grid item className={classes.controls}>
 							<Button
@@ -269,9 +268,9 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 
 					<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
 						<Grid item xs={12}>
-							<Typography variant="h5">Add Context Listener</Typography>
+							<Typography className={classes.bottomMargin} variant="h5">Add Context Listener</Typography>
 						</Grid>
-						<Grid item className={classes.field}>
+						<Grid item className={`${classes.field} ${classes.removeSidePadding}`}>
 							<Autocomplete
 								id="intent-listener"
 								size="small"

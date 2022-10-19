@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		form: {
 			display: "flex",
 			flexWrap: "wrap",
-			marginTop: theme.spacing(1),
+			// marginTop: theme.spacing(1),
 			"& > *": {
 				marginRight: 0,
 			},
@@ -122,7 +122,8 @@ export const ContextTemplates = observer(({handleTabChange} : {handleTabChange:a
 	
 
 	return (
-			<form noValidate autoComplete="off">
+		<div className={classes.root}>
+			<form className={classes.form} noValidate autoComplete="off">
 				<Grid
 					container
 					direction="row"
@@ -159,5 +160,6 @@ export const ContextTemplates = observer(({handleTabChange} : {handleTabChange:a
 					</Grid>
 				</Grid>
 			</form>
+		</div>
 	);
 });
