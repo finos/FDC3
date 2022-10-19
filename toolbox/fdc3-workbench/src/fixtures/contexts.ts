@@ -2,7 +2,7 @@ import { ContextItem } from "../store/ContextStore";
 
 export const contexts: ContextItem[] = [
 	{
-		id: "fdc3.contact",
+		id: "Contact example",
 		template: {
 			type: "fdc3.contact",
 			name: "Jane Doe",
@@ -13,7 +13,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/contact.schema.json"),
 	},
 	{
-		id: "fdc3.contactList",
+		id: "ContactList example",
 		template: {
 			type: "fdc3.contactList",
 			contacts: [
@@ -36,7 +36,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/contactList.schema.json"),
 	},
 	{
-		id: "fdc3.instrument",
+		id: "Instrument example",
 		template: {
 			type: "fdc3.instrument",
 			name: "Microsoft",
@@ -49,7 +49,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/instrument.schema.json"),
 	},
 	{
-		id: "fdc3.instrumentList",
+		id: "InstrumentList example",
 		template: {
 			type: "fdc3.instrumentList",
 			instruments: [
@@ -70,7 +70,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/instrumentList.schema.json"),
 	},
 	{
-		id: "fdc3.organization",
+		id: "Organization example",
 		template: {
 			type: "fdc3.organization",
 			name: "Cargill, Incorporated",
@@ -82,7 +82,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/organization.schema.json"),
 	},
 	{
-		id: "fdc3.country",
+		id: "Country example",
 		template: {
 			type: "fdc3.country",
 			name: "Sweden",
@@ -93,7 +93,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/country.schema.json"),
 	},
 	{
-		id: "fdc3.position",
+		id: "Position example",
 		template: {
 			type: "fdc3.position",
 			instrument: {
@@ -107,7 +107,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/position.schema.json"),
 	},
 	{
-		id: "fdc3.portfolio",
+		id: "Portfolio example",
 		template: {
 			type: "fdc3.portfolio",
 			positions: [
