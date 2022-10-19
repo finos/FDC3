@@ -19,6 +19,7 @@ import { codeExamples } from "../fixtures/codeExamples";
 import { copyToClipboard } from "./common/CopyToClipboard";
 import { ContextLinking } from "./ContextLinking";
 import contextStore from "../store/ContextStore";
+import { ContextTemplates } from "./ContextTemplates";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -65,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-export const Channels = observer(() => {
+export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => {
 	const classes = useStyles();
 	const [channelId, setChannelId] = useState<string>("");
 	const [isError, setIsError] = useState<boolean>(false);
@@ -202,10 +203,20 @@ export const Channels = observer(() => {
 							</Grid>
 						</Grid>
 					</Grid>
+				</Grid>
+			</form>
 
-					<div className={classes.border}></div>
+			<div className={classes.border}></div>
 
-					<Grid item className={classes.controls}>
+			<Grid item xs={12}>
+				<Typography variant="h5">Broadcast context</Typography>
+			</Grid>
+
+			<Grid container direction="row" spacing={1}>
+					<Grid item sm={7}>
+						<ContextTemplates handleTabChange={handleTabChange} />
+					</Grid>
+					<Grid item container className={classes.controls} sm={5} justifyContent="flex-end">
 						<Button
 							disabled={!contextStore.currentContext}
 							variant="contained"
@@ -231,7 +242,6 @@ export const Channels = observer(() => {
 
 					<ContextLinking />
 				</Grid>
-			</form>
 		</div>
 	);
 });
