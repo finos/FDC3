@@ -122,7 +122,6 @@ export const ContextCreate = observer(() => {
 		setTemplateName(newValue);
 		if (newValue?.value) {
 			const selectedContext = contextStore.contextsList.find(({ id }) => id === newValue?.value);
-			console.log(JSON.stringify(selectedContext))
 			if (selectedContext) {
 				setContextValue(selectedContext.template);
 				setContext(selectedContext);
@@ -332,7 +331,6 @@ export const ContextCreate = observer(() => {
 							Save Changes
 						</Button>
 					</Grid>
-
 				</Grid>
 			</form>
 		</div>
