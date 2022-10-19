@@ -226,7 +226,7 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 							</Tooltip>
 						</Grid>
 					</Grid>
-					
+
 					<div className={classes.border}></div>
 
 					<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
