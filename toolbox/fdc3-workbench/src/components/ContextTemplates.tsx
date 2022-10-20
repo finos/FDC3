@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const contextFilter = createFilterOptions<OptionType>();
 
-export const ContextTemplates = observer(({handleTabChange} : {handleTabChange:any}) => {
+export const ContextTemplates = observer(({handleTabChange, contextStateSetter} : {handleTabChange:any, contextStateSetter:any}) => {
 	const classes = useStyles();
 	const [context, setContext] = useState<OptionType | null>(null);
 	const [contextError, setContextError] = useState<string | false>(false);
@@ -71,7 +71,7 @@ export const ContextTemplates = observer(({handleTabChange} : {handleTabChange:a
 		(setValue: SetValue, setError: SetError) => (event: React.ChangeEvent<{}>, newValue: any) => {
 			const selectedContext = contextStore.contextsList.find(({ id }) => id === newValue?.value);
 
-			if (selectedContext && selectedContext.template) contextStore.setContext(selectedContext.template)
+			if (selectedContext) contextStateSetter(selectedContext.template)
 
 			if (typeof newValue === "string") {
 				setValue({

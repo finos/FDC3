@@ -84,8 +84,8 @@ class ContextStore {
 		localStorage.setItem('contextList', JSON.stringify(data))
 	}
 
-	async broadcast() {
-		if (this.currentContext) {
+	async broadcast(context: ContextType) {
+		if (context) {
 			//check that we're on a channel
 			let currentChannel = await fdc3.getCurrentChannel();
 			if (!currentChannel) {
@@ -97,11 +97,11 @@ class ContextStore {
 				});
 			} else {
 				try {
-					await fdc3.broadcast(toJS(this.currentContext));
+					await fdc3.broadcast(toJS(context));
 					systemLogStore.addLog({
 						name: "broadcast",
 						type: "success",
-						body: JSON.stringify(this.currentContext, null, 4),
+						body: JSON.stringify(context, null, 4),
 						variant: "code",
 					});
 				} catch (e) {
