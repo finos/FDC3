@@ -18,7 +18,7 @@ import channelStore from "../store/ChannelStore";
 import { codeExamples } from "../fixtures/codeExamples";
 import { copyToClipboard } from "./common/CopyToClipboard";
 import { ContextLinking } from "./ContextLinking";
-import contextStore from "../store/ContextStore";
+import contextStore, { ContextType } from "../store/ContextStore";
 import { ContextTemplates } from "./ContextTemplates";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -70,6 +70,7 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 	const classes = useStyles();
 	const [channelId, setChannelId] = useState<string>("");
 	const [isError, setIsError] = useState<boolean>(false);
+	const [broadcastContext, setBroadcastContext] = useState<ContextType | null>(null)
 
 	const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
 		setChannelId(event.target.value as string);
@@ -94,7 +95,7 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 	};
 
 	const handleBroadcast = () => {
-		contextStore.broadcast();
+		if(broadcastContext) contextStore.broadcast(broadcastContext);
 	};
 
 	return (
@@ -214,11 +215,11 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 
 			<Grid container direction="row" spacing={1}>
 					<Grid item sm={7}>
-						<ContextTemplates handleTabChange={handleTabChange} />
+						<ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setBroadcastContext} />
 					</Grid>
 					<Grid item container className={classes.controls} sm={5} justifyContent="flex-end">
 						<Button
-							disabled={!contextStore.currentContext}
+							disabled={!broadcastContext}
 							variant="contained"
 							color="primary"
 							onClick={handleBroadcast}
