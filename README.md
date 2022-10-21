@@ -68,6 +68,7 @@ and implemented and used by leading [financial industry participants](https://fd
  - See https://fdc3.finos.org for more information, including on [Compliance] and the [FDC3 charter], as well as a comprehensive [API Reference]. 
  - You can also take the free [FDC3 Training](https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop) for an introduction to FDC3's core concepts and usage.
  - The [FDC3 Community Page Training Tab](https://fdc3.finos.org/community#type-examples-and-training) also contains a selection of online resources to browse.
+ - FINOS' open source [Desktop Agent](https://github.com/finos/electron-fdc3) project written with Node / Electron.
 
 [FDC3 Charter]: https://fdc3.finos.org/docs/fdc3-charter
 [Compliance]: https://fdc3.finos.org/docs/fdc3-compliance
