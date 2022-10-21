@@ -172,7 +172,7 @@ If you are going to participate on an ongoing basis, use, implement or benefit f
 
 Upon acceptance, you will be invited to join the [FINOS GitHub organization](https://github.com/orgs/finos/people) and the [fdc3-participants](https://github.com/orgs/finos/teams/fdc3-participants) GitHub team.
 
-Once you are an enrolled particpant in FDC3, you can apply to become an editor or maintainer by contacting the existing FDC3 maintainers at [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org) and then seeking the approval of the FDC3 Standards Working Group. Generally, the maintainers will look for both a history of contribution to FDC3 and a commitment to investing sufficient time in the role from any prospective candidates before proposing them to the Standards Working Group for approval. If you are new to FDC3, but willing to make the investment of time, the maintainers can work with you to build up a history of contribution.
+Once you are an enrolled participant in FDC3, you can apply to become an editor or maintainer by contacting the existing FDC3 maintainers at [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org) and then seeking the approval of the FDC3 Standards Working Group. Generally, the maintainers will look for both a history of contribution to FDC3 and a commitment to investing sufficient time in the role from any prospective candidates before proposing them to the Standards Working Group for approval. If you are new to FDC3, but willing to make the investment of time, the maintainers can work with you to build up a history of contribution.
 
 ## FINOS Code of Conduct
 
