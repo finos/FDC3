@@ -167,7 +167,7 @@ If you are going to participate on an ongoing basis, use, implement or benefit f
 <img width="932" alt="EasyCLA" src="https://user-images.githubusercontent.com/568673/195820700-a7978380-63cb-48c3-a1c2-63d4586d6bf9.png">
 
 - For more details on the **Community Specification License**, please see the [license](LICENSE.md).
-- For more details on the EasyCLA process, please see the [FINOS CLA Page](https://community.finos.org/docs/governance/software-projects/easycla/) or the [Linux Foundation's EasyCLA Documentation](https://docs.linuxfoundation.org/lfx/easycla)
+- For more details on the EasyCLA process, please see the [Linux Foundation's EasyCLA Documentation](https://docs.linuxfoundation.org/lfx/easycla) or the [FINOS CLA Page](https://community.finos.org/docs/governance/software-projects/easycla/).  _NOTE:  the FINOS CLA Page refers to the FINOS IP Policy, which is no longer in use for FDC3.  The Community Specification succeeds this._
 - For technical support on this process, please contact [FINOS Help](mailto:help@finos.org).
 
 Upon acceptance, you will be invited to join the [FINOS GitHub organization](https://github.com/orgs/finos/people) and the [fdc3-participants](https://github.com/orgs/finos/teams/fdc3-participants) GitHub team.
