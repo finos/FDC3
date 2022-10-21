@@ -38,7 +38,7 @@
 ### 🖥️  Platform Agnostic
 
 > As an open standard, FDC3 can be implemented on any platform and in any language.
-> All that is required is a "Desktop Agent" that implements the FDC3 standard, which is responsible for co-ordinating application interactions.
+> All that is required is a "Desktop Agent" that implements the FDC3 standard, which is responsible for co-ordinating application interactions.  (For a list of open source and proprietary desktop agents, see "Platform providers" [here](https://fdc3.finos.org/community#type-platform-provider).)
 > FDC3 is successfully running on Web and Native platforms in financial institutions around the world.
 
 ### 🔌  End the Integration Nightmare
@@ -63,7 +63,11 @@ Hence, the standard currently consists of four parts:
 The specifications are informed by agreed [business use cases](https://fdc3.finos.org/docs/use-cases/overview),
 and implemented and used by leading [financial industry participants](https://fdc3.finos.org/community#type-all).
 
-See https://fdc3.finos.org for more information, including on [Compliance] and the [FDC3 charter], as well as a comprehensive [API Reference]. You can also take the free [FDC3 Training](https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop) for an introduction to FDC3's core concepts and usage.
+## More Resources
+
+ - See https://fdc3.finos.org for more information, including on [Compliance] and the [FDC3 charter], as well as a comprehensive [API Reference]. 
+ - You can also take the free [FDC3 Training](https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop) for an introduction to FDC3's core concepts and usage.
+ - The [FDC3 Community Page Training Tab](https://fdc3.finos.org/community#type-examples-and-training) also contains a selection of online resources to browse.
 
 [FDC3 Charter]: https://fdc3.finos.org/docs/fdc3-charter
 [Compliance]: https://fdc3.finos.org/docs/fdc3-compliance
