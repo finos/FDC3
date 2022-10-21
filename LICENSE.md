@@ -2,7 +2,7 @@
 
 ## Specification License
 
-Specifications in the repository are subject to the **Community Specification License 1.0** available at [https://github.com/CommunitySpecification/1.0](https://github.com/CommunitySpecification/1.0).
+Specifications in the repository are subject to the [FINOS Community Specification](https://github.com/finos/standards-project-blueprint/).
 
 ## Source Code License
 
