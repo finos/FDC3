@@ -158,7 +158,7 @@ Whilst all 3 roles require some amount of attention, being an Editor or Maintain
 
 Becoming an FDC3 Participant is as easy as attending a meeting and/or raising issues for changes you'd like see in the Standard, commenting on issues others have raised or even asking questions (which can often result in the clarification of the Standard's documentation to help others with the same questions in future).
 
-If you are going to participate on an ongoing basis, use, implement or benefit from the FDC3 standard you should accept the terms of the [Community Specification Contributor License Agreement](https://github.com/CommunitySpecification/Community_Specification/blob/main/.0_CS_Contributor_License_Agreement.md).  Accepting this agreement will allow you to vote on future changes to the standard.  To do this:
+If you are going to participate on an ongoing basis, use, implement or benefit from the FDC3 standard you should accept the terms of the [Community Specification Contributor License Agreement](https://github.com/finos/standards-project-blueprint/blob/master/governance-documents/0._CS_Contributor_License_Agreement.md).  Accepting this agreement will allow you to vote on future changes to the standard.  To do this:
 
 1. **Add your details to the [NOTICES.md](NOTICES.md) file in the "License Acceptance Section".**  [Click here to edit the file and create a pull request](https://github.com/finos/FDC3/edit/master/NOTICES.md).  This will begin the process of creating a pull request.  
 2. **Click the "Create Pull Request" button.** This will notify the FDC3 team of your application.  
@@ -166,8 +166,9 @@ If you are going to participate on an ongoing basis, use, implement or benefit f
 
 <img width="932" alt="EasyCLA" src="https://user-images.githubusercontent.com/568673/195820700-a7978380-63cb-48c3-a1c2-63d4586d6bf9.png">
 
-- For more details on the Contributor License Agreement, please see the [FINOS CLA Page](https://community.finos.org/docs/governance/software-projects/easycla/). 
--  For technical support on this process, please contact [FINOS Help](mailto:help@finos.org).
+- For more details on the **Community Specification License**, please see the [license](LICENSE.md).
+- For more details on the EasyCLA process, please see the [FINOS CLA Page](https://community.finos.org/docs/governance/software-projects/easycla/) or the [Linux Foundation's EasyCLA Documentation](https://docs.linuxfoundation.org/lfx/easycla)
+- For technical support on this process, please contact [FINOS Help](mailto:help@finos.org).
 
 Upon acceptance, you will be invited to join the [FINOS GitHub organization](https://github.com/orgs/finos/people) and the [fdc3-participants](https://github.com/orgs/finos/teams/fdc3-participants) GitHub team.
 
