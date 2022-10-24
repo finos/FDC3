@@ -617,7 +617,7 @@ let instanceIdentifier = await fdc3.open(appIdentifier, context);
 #### See also
 
 * [`Context`](Types#context)
-* [`AppIdentifier`](Metadata#AppIdentifier)
+* [`AppIdentifier`](Types#appidentifier)
 * [`AppMetadata`](Metadata#appmetadata)
 * [`OpenError`](Errors#openerror)
 
@@ -676,7 +676,7 @@ try {
 #### See also
 
 * [`Context`](Types#context)
-* [`AppIdentifier`](Metadata#AppIdentifier)
+* [`AppIdentifier`](Types#appidentifier)
 * [`IntentResult`](Types#intentresult)
 * [`IntentResolution`](Metadata#intentresolution)
 * [`ResolveError`](Errors#resolveerror)
@@ -713,7 +713,7 @@ await fdc3.raiseIntentForContext(context, targetAppIdentifier);
 
 * [`raiseIntent()`](#raiseintent)
 * [`Context`](Types#context)
-* [`AppIdentifier`](Metadata#AppIdentifier)
+* [`AppIdentifier`](Types#appidentifier)
 * [`IntentResolution`](Metadata#intentresolution)
 * [`ResolveError`](Errors#resolveerror)
 
