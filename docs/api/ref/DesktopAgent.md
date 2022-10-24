@@ -598,7 +598,7 @@ The `open` method differs in use from [`raiseIntent`](#raiseintent).  Generally,
 
 If a [`Context`](Types#context) object is passed in, this object will be provided to the opened application via a contextListener. The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
 
-Returns an [`AppIdentifier`](Metadata#appidentifier) object with the `instanceId` field set to identify the instance of the application opened by this call.
+Returns an [`AppIdentifier`](Types#appidentifier) object with the `instanceId` field set to identify the instance of the application opened by this call.
 
 If opening errors, it returns an `Error` with a string from the [`OpenError`](Errors#openerror) enumeration.
 
@@ -616,7 +616,7 @@ let instanceIdentifier = await fdc3.open(appIdentifier, context);
 #### See also
 
 * [`Context`](Types#context)
-* [`AppIdentifier`](Metadata#AppIdentifier)
+* [`AppIdentifier`](Types#appidentifier)
 * [`AppMetadata`](Metadata#appmetadata)
 * [`OpenError`](Errors#openerror)
 
@@ -712,7 +712,7 @@ await fdc3.raiseIntentForContext(context, targetAppIdentifier);
 
 * [`raiseIntent()`](#raiseintent)
 * [`Context`](Types#context)
-* [`AppIdentifier`](Metadata#AppIdentifier)
+* [`AppIdentifier`](Types#appidentifier)
 * [`IntentResolution`](Metadata#intentresolution)
 * [`ResolveError`](Errors#resolveerror)
 
