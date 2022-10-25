@@ -519,6 +519,36 @@ Response messages do not include a `destination` field. Instead, a Desktop Agent
 
 Further, the Desktop Agent Bridge should also inspect the `payload` of both request and response messages and ensure that any `AppIdentifier` objects have been augmented with the correct `desktopAgent` value for the app's host Desktop Agent (e.g. if returning responses to `findIntent`, ensure each `AppIntent.apps[]` entry includes the correct `desktopAgent` value). Further details of any such augmentation are provided in the description of each message exchange.
 
+### Returning Errors
+In the event that an Error must be returned by a Desktop Agent, it should be selected from the [Error enumeration](../api/ref/Errors) normally used by the corresponding FDC3 function (i.e. `OpenError` for `open` calls, `ResolveError` for `findIntent` and `raiseIntent` etc.). For messages that target a specific agent this will result in an error being returned to the calling agent and onto the application that made teh original request (as defined in the response message format). 
+
+However, API calls that require a collated response from all agents where at least one agent returns a successful respose, will result in a successful response from the Desktop Agent Bridge (i.e. no `error` element should be included), with the agents returning errors listed in the `errorSources` array. This allows for successful exchanges on API calls such as `fdc3.raiseIntent` where some agents do not have options to return and would normally respond with (for example) `ResolveError.NoAppsFound`. 
+
+Finally, to facilitate easier debugging, errors specific to Desktop Agent Bridge are added to those enumerations, including:
+
+```typescript
+enum OpenError {
+  ...
+  /** Returned if the specified Desktop Agent is not found, via a connected 
+      Desktop Agent Bridge. */
+  DesktopAgentNotFound = 'DesktopAgentNotFound',
+}
+
+enum ResolveError {
+  ...
+  /** Returned if the specified Desktop Agent is not found, via a connected 
+      Desktop Agent Bridge. */
+  DesktopAgentNotFound = 'DesktopAgentNotFound',
+}
+
+enum ResultError {
+  ...
+  /** Returned if the specified Desktop Agent disconnected from the Desktop 
+      Agent Bridge before a result was returned. */
+  DesktopAgentDisconnected = 'DesktopAgentDisconnected',
+}
+```
+
 ### Forwarding of Messages and Collating Responses
 
 When handling request messages, it is the responsibility of the Desktop Agent Bridge to:
@@ -586,31 +616,6 @@ When processing the disconnection of an agent from the bridge, the bridge MUST e
   * return an 'empty' response in the expected format (if no other agents are connected and no data will be received).
 * For requests that target a specific agent:
   * return an appropriate error (as the request cannot be completed).
-
-In the event that an Error must be returned (for requests that target a specific agent), it should be selected from the [Error enumeration](../api/ref/Errors) normally used by the corresponding FDC3 function (i.e. `OpenError` for `open` calls, `ResolveError` for `findIntent` and `raiseIntent` etc.). To facilitate easier debugging, errors specific to Desktop Agent Bridge are added to those enumerations, including:
-
-```typescript
-enum OpenError {
-  ...
-  /** Returned if the specified Desktop Agent is not found, via a connected 
-      Desktop Agent Bridge. */
-  DesktopAgentNotFound = 'DesktopAgentNotFound',
-}
-
-enum ResolveError {
-  ...
-  /** Returned if the specified Desktop Agent is not found, via a connected 
-      Desktop Agent Bridge. */
-  DesktopAgentNotFound = 'DesktopAgentNotFound',
-}
-
-enum ResultError {
-  ...
-  /** Returned if the specified Desktop Agent disconnected from the Desktop 
-      Agent Bridge before a result was returned. */
-  DesktopAgentDisconnected = 'DesktopAgentDisconnected',
-}
-```
 
 Finally, in the event that either a Desktop Agent or the bridge itself stops responding, but doesn't fully disconnect, the timeouts (specified earlier in this document) will be used to handle the request as if a disconnection had occurred.
 
