@@ -15,6 +15,7 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
 * Exempted PrivateChannels from some cases where bridge messages are not normally generated (but should be for PrivateChannels).
 * Classified message exchanges by type.
 * Completed message exchanges for broadcast, findIntent, findIntentsForContext and raiseIntent.
+* Added advice on whether other agents report to users on connect/disconnect events? (SHOULD)
 
 ## Open questions
 
@@ -26,7 +27,7 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
 
 * Complete message exchange documentation
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
-* Advise on whether other agents report to users on connect/disconnect events? (SHOULD)
+
 * How to handle events from PrivateChannels (addContextListener, listener.unsubscribe, disconnect)
 * To create final PR:
   * Add new terms and acronyms to FDC3 glossary and ensure they are defined in this spec's introduction
@@ -316,11 +317,11 @@ The `connectedAgentsUpdate` message will take the form:
 }
 ```
 
-When an agent connects to the bridge, it should adopt the state of any channels that do not currently exist or do not currently contain state of a particular type. This synchronization is NOT performed via broadcast as the context being merged would become the most recent context on the channel, when other contexts may have been broadcast subsequently. Rather, it should be adopted internally by the Desktop Agent merging it such that it would be received by applications that are adding a user channel context listener or calling `channel.getCurrentContext()`.
+When an agent connects to the bridge, it and other agents connected to the bridge, should adopt the state of any channels that do not currently exist or do not currently contain state of a particular type. This synchronization is NOT performed via broadcast as the context being merged would become the most recent context on the channel, when other contexts may have been broadcast subsequently. Rather, it should be adopted internally by each Desktop Agent, merging it such that it would be received by applications that have added a context listener to the channel or call `channel.getCurrentContext()` on it.
 
 It should be noted that Desktop Agents will not have context listeners for previously unknown channels, and SHOULD simply record that channel's state for use when that channel is first used.
 
-For known channel names, the Desktop Agent MUST also compare its current state to that which it has just received and may need to internally adopt context of types not previously seen on a channel. As context listeners can be registered for either a specific type or all types some care is necessary when doing so (as only the most recently transmitted Context should be received by un-typed listeners). Hence, the new context MUST only be passed to a context listener if it was registered specifically for that type and a context of that type did not previously exist on the channel.
+For known channel names, the Desktop Agents MUST also compare their current state to that which they have just received and may need to internally adopt context of types not previously seen on a channel. As context listeners can be registered for either a specific type or all types some care is necessary when doing so (as only the most recently transmitted Context should be received by un-typed listeners). Hence, the new context MUST only be passed to a context listener if it was registered specifically for that type and a context of that type did not previously exist on the channel.
 
 In summary, updating listeners for a known channel should be performed as follows:
 
@@ -333,13 +334,21 @@ This procedure is the same for both previously connected and connecting agents, 
 
 After applying the `connectedAgentsUpdate` message, the newly connected Desktop Agent and other already connected agents are able to begin communicating through the bridge.
 
-Handling by the Desktop Agent of these synchronization messages from the DAB should be atomic to prevent message overlap with `fdc3.broadcast`, `channel.broadcast`, `fdc3.addContextListener` or `channel.getCurrentContext`. I.e. the `connectedAgentsUpdate` message must be processed immediately on receipt by Desktop Agents and updates applied before any other messages are sent or responses processed.
+#### Atomicity and handling concurrent operations 
 
-Similarly, the DAB must process `handshake` messages and issue `connectedAgentsUpdate` messages to all participants (steps 3-6) atomically, allowing no overlap with the processing of other messages from connected agents.
+Handling by the Desktop Agent of the synchronization message from the DAB in step 6 of the connection protocol should be atomic to prevent message overlap with `fdc3.broadcast`, `channel.broadcast`, `fdc3.addContextListener` or `channel.getCurrentContext`. I.e. the `connectedAgentsUpdate` message must be processed immediately on receipt by Desktop Agents and updates applied before any other messages are sent or responses processed.
+
+Similarly, the Desktop Agent Bridge must process steps 3-6 of the connection protocol (receiving a`handshake` messages upto issuing the `connectedAgentsUpdate` messages to all participants) as a single atomic unit, allowing no overlap with the processing of other messages from connected agents (as they might modify the state information it is processing during those steps).
+
+#### Notification to users of connection events
+Desktop Agents SHOULD provide visual feedback to end users when they or other agents connect or disconnect from the Destkop Agent Bridge (i.e. whenever a `connectedAgentsUpdate` message is received). Doing so will ensure that the end user understands whether their apps and Desktop Agent can communicate with other apps running under other Desktop Agents, and can better attribute any issues with interoperability between them to the probable source.
 
 ### Step 7. Disconnects
 
 Although not part of the connection protocol, it should be noted that the `connectedAgentsUpdate` message sent in step 6 should also be sent whenever an agent disconnects from the bridge to update other agents. If any agents remain connected, then the `channelState` does not change and can be omitted. However, if the last agent disconnects the bridge SHOULD discard its internal `channelState`, instead of issuing the update.
+
+
+
 
 ## Messaging Protocol
 
