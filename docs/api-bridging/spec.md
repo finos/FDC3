@@ -14,7 +14,7 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
 * Adjust pseudocode for bridge message handling for cases where we receive a timeout but already have partial responses to process.
 * Exempted PrivateChannels from some cases where bridge messages are not normally generated (but should be for PrivateChannels).
 * Classified message exchanges by type.
-* Completed message exchanges for broadcast, findIntent, findIntentsForContext and raiseIntent.
+* Completed message exchanges for broadcast, findIntent, findIntentsForContext, raiseIntent, open & findInstances.
 * Added advice on whether other agents report to users on connect/disconnect events? (SHOULD)
 * Added/consolidated advice on handling error responses from Desktop Agents in Messaging protocol section
 
@@ -26,9 +26,8 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
 
 ## TODO list
 
-* Complete message exchange documentation
+* Complete message exchange documentation for PrivateChannels
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
-* How to handle events from PrivateChannels (addContextListener, listener.unsubscribe, disconnect)
 * To create final PR:
   * Add new terms and acronyms to FDC3 glossary and ensure they are defined in this spec's introduction
   * Add new errors to Error enumerations specified in this proposal
