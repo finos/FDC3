@@ -1560,7 +1560,6 @@ which is augmented and repeated on by the bridge as:
 }
 ```
 
-//TODO: further work required on the below message exchanges:
 
 ### findInstances
 
@@ -1734,6 +1733,8 @@ Finally, agent-A combines the data received from the bridge, with its own local 
     { "appId": "myApp", "instanceId": "688dbd5e-21dc-4469-b8cf-4b6a606f9a27" } //local response
 ]
 ```
+
+//TODO: further work required on the below message exchanges:
 
 ### PrivateChannels
 
