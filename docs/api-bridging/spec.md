@@ -545,7 +545,7 @@ The following pseudo-code defines how messages should be forwarded or collated b
     * annotate the request as requiring responses from all other connected agents,
     * await responses or the specified timeout.
   * else if a `meta.destination` was included,
-    * forward it to the specified destination agent
+    * forward it to the specified destination agent,
     * annotate the request as requiring only a response from the specified agent,
     * await the response or the specified timeout.
 * else if the message is a response (both `meta.requestGuid` and `meta.responseGuid` are set)
@@ -558,15 +558,13 @@ The following pseudo-code defines how messages should be forwarded or collated b
         * produce the collated response message and return to the requesting Desktop Agent.
       * else await the configured response timeout or further responses,
         * if the timeout is reached without any responses being received
-          * produce and return an appropriate [error response](../api/ref/Errors), including details of all Desktop Agents in `timedOutSources`.
+          * produce and return an appropriate [error response](../api/ref/Errors), including details of all Desktop Agents in `errorSources`.
           * log the timeout for each Desktop Agent that did not respond and check disconnection criteria.
         * if the timeout is reached with a partial set of responses
-          * produce and return a collated response, but include details of Desktop Agents that timed out in `timedOutResponses`.
+          * produce and return a collated response, but include details of Desktop Agents that timed out in `errorSources`.
           * log the timeout for each Desktop Agent that did not respond and check disconnection criteria.
   * else discard the response message (as it is a delayed to a request that has timed out or is otherwise invalid).
 * else the message is invalid and should be discarded.
-
-//TODO add detail on DA responsibilities and how requests should be handled by the desktop agent (with timeouts and messaging to user on timedOutSources) 
 
 ### Workflows Broken By Disconnects
 
