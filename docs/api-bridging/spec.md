@@ -333,21 +333,19 @@ This procedure is the same for both previously connected and connecting agents, 
 
 After applying the `connectedAgentsUpdate` message, the newly connected Desktop Agent and other already connected agents are able to begin communicating through the bridge.
 
-#### Atomicity and handling concurrent operations 
+#### Atomicity and handling concurrent operations
 
 Handling by the Desktop Agent of the synchronization message from the DAB in step 6 of the connection protocol should be atomic to prevent message overlap with `fdc3.broadcast`, `channel.broadcast`, `fdc3.addContextListener` or `channel.getCurrentContext`. I.e. the `connectedAgentsUpdate` message must be processed immediately on receipt by Desktop Agents and updates applied before any other messages are sent or responses processed.
 
-Similarly, the Desktop Agent Bridge must process steps 3-6 of the connection protocol (receiving a`handshake` messages upto issuing the `connectedAgentsUpdate` messages to all participants) as a single atomic unit, allowing no overlap with the processing of other messages from connected agents (as they might modify the state information it is processing during those steps).
+Similarly, the Desktop Agent Bridge must process steps 3-6 of the connection protocol (receiving a `handshake` messages up to issuing the `connectedAgentsUpdate` messages to all participants) as a single atomic unit, allowing no overlap with the processing of other messages from connected agents (as they might modify the state information it is processing during those steps).
 
 #### Notification to users of connection events
-Desktop Agents SHOULD provide visual feedback to end users when they or other agents connect or disconnect from the Destkop Agent Bridge (i.e. whenever a `connectedAgentsUpdate` message is received). Doing so will ensure that the end user understands whether their apps and Desktop Agent can communicate with other apps running under other Desktop Agents, and can better attribute any issues with interoperability between them to the probable source.
+
+Desktop Agents SHOULD provide visual feedback to end users when they or other agents connect or disconnect from the Desktop Agent Bridge (i.e. whenever a `connectedAgentsUpdate` message is received). Doing so will ensure that the end user understands whether their apps and Desktop Agent can communicate with other apps running under other Desktop Agents, and can better attribute any issues with interoperability between them to the probable source.
 
 ### Step 7. Disconnects
 
 Although not part of the connection protocol, it should be noted that the `connectedAgentsUpdate` message sent in step 6 should also be sent whenever an agent disconnects from the bridge to update other agents. If any agents remain connected, then the `channelState` does not change and can be omitted. However, if the last agent disconnects the bridge SHOULD discard its internal `channelState`, instead of issuing the update.
-
-
-
 
 ## Messaging Protocol
 
@@ -461,7 +459,7 @@ Response messages will be differentiated from requests by the presence of a `met
          *  multiple values for responses that were collated by the bridge.*/
         sources: [AppIdentifier | DesktopAgentIdentifier],
         /** Array of AppIdentifiers or DesktopAgentIdentifiers for responses that were not returned
-         * to the bridge before the timeout or because an error occured. 
+         * to the bridge before the timeout or because an error occurred. 
          * May be omitted if all sources responded. */
         errorSources: [AppIdentifier | DesktopAgentIdentifier]
     }
@@ -519,9 +517,10 @@ Response messages do not include a `destination` field. Instead, a Desktop Agent
 Further, the Desktop Agent Bridge should also inspect the `payload` of both request and response messages and ensure that any `AppIdentifier` objects have been augmented with the correct `desktopAgent` value for the app's host Desktop Agent (e.g. if returning responses to `findIntent`, ensure each `AppIntent.apps[]` entry includes the correct `desktopAgent` value). Further details of any such augmentation are provided in the description of each message exchange.
 
 ### Handling of Error Responses
+
 The FDC3 Desktop Agent API specifies a number of error enumerations that define specific error strings that should be used as the `message` element of a JavaScript `Error` to be returned to the requesting application via a rejected promise. In the event that an Error must be returned by a Desktop Agent to the Desktop Agent Bridge, the message should be selected from the [Error enumeration](../api/ref/Errors) normally used by the corresponding FDC3 function (i.e. `OpenError` for `open` calls, `ResolveError` for `findIntent` and `raiseIntent` etc.). However, Desktop Agent Bridging does NOT require that an `Error` object is returned across the bridge as it cannot be fully recreated from its constituent fields in JavaScript. Rather, return only the specified message string in the `error` field of the `payload`, which should then be used to initialize a JavaScript `Error` on the receiving end. It is also advisable to output additional logging (in the Desktop Agent Bridge) indicating that the error was originally generated by a remote Desktop Agent and to provide the relevant details.
 
-For example, a `raiseIntent` targetted at an app instane that no longer exists might generate the following response from the Desktop Agent:
+For example, a `raiseIntent` targeted at an app instance that no longer exists might generate the following response from the Desktop Agent:
 
 ```JSON
 // e.g. agent-B -> DAB in response to a raiseIntent call
@@ -538,9 +537,9 @@ For example, a `raiseIntent` targetted at an app instane that no longer exists m
 }
 ```
 
-For messages that target a specific agent, the Destkop Agent Bridge will augment the message with a `source` field and return it to the calling agent and the appl that made the original request. 
+For messages that target a specific agent, the Desktop Agent Bridge will augment the message with a `source` field and return it to the calling agent and the app that made the original request.
 
-However, API calls that require a collated response from all agents where at least one agent returns a successful respose, will result in a successful response from the Desktop Agent Bridge (i.e. no `error` element should be included), with the agents returning errors listed in the `errorSources` array. This allows for successful exchanges on API calls such as `fdc3.raiseIntent` where some agents do not have options to return and would normally respond with (for example) `ResolveError.NoAppsFound`. 
+However, API calls that require a collated response from all agents where at least one agent returns a successful response, will result in a successful response from the Desktop Agent Bridge (i.e. no `error` element should be included), with the agents returning errors listed in the `errorSources` array. This allows for successful exchanges on API calls such as `fdc3.raiseIntent` where some agents do not have options to return and would normally respond with (for example) `ResolveError.NoAppsFound`.
 
 Finally, to facilitate easier debugging, errors specific to Desktop Agent Bridge are added to those enumerations, including:
 
@@ -1290,7 +1289,7 @@ If the `raiseIntent` request were made locally, agent-B would deliver the intent
 }
 ```
 
-This is encoded and sent to the bridge (ommiting the `getResult()` function) as:
+This is encoded and sent to the bridge (omitting the `getResult()` function) as:
 
 ```JSON
 // agent-B -> DAB
@@ -1421,11 +1420,6 @@ If the `IntentHandler` returned `void` rather than an intent result `payload.int
 }
 ```
 
-
-
-
-
-
 ### open (on `fdc3`)
 
 Type: **Request Response (single)**
@@ -1526,6 +1520,7 @@ which is repeated on to the target agent as:
 #### Response format
 
 Response message from target Desktop Agent:
+
 ```JSON
 // agent-B -> DAB
 {
@@ -1566,7 +1561,6 @@ which is augmented and repeated on by the bridge as:
 ```
 
 
-//TODO: further work required on the below messsage exchanges:
 ### findInstances
 
 Type: **Request Response (collated)** or **Request Response (single)**
@@ -1674,7 +1668,7 @@ If results should be constrained to a particular Desktop Agent, then set a `desk
 }
 ```
 
-The Desktop Agent Bridge should only forward the request to the requested Destkop Agent and handle the message exchange as a **Request Response (single)**.
+The Desktop Agent Bridge should only forward the request to the requested Desktop Agent and handle the message exchange as a **Request Response (single)**.
 
 #### Response format
 
@@ -1740,6 +1734,7 @@ Finally, agent-A combines the data received from the bridge, with its own local 
 ]
 ```
 
+//TODO: further work required on the below message exchanges:
 
 ### PrivateChannels
 
@@ -1747,7 +1742,7 @@ Finally, agent-A combines the data received from the bridge, with its own local 
 
 When a `ContextListener` is added to a remote `PrivateChannel`, removed from it or the `disconnect` function is called a notifications must be sent to the application that owns the channel. The bridge will add in the source agent (agent-A) and forward the message to destination (agent-B).
 
-Such notification messages should be addessed to the Desktop Agent that owns the channel, which will route it to the owning application and any other listeners. If any of those listeners are remote, the message should be repeated back to the bridge, once for each listener with the destination set as a full `AppIdentifier`. Both these messages and broadcast messages MUST NOT be repeated back to the application that generated them. The source information on repeated messages should be unmodified to ensure that the message is attributed to the original source.
+Such notification messages should be addressed to the Desktop Agent that owns the channel, which will route it to the owning application and any other listeners. If any of those listeners are remote, the message should be repeated back to the bridge, once for each listener with the destination set as a full `AppIdentifier`. Both these messages and broadcast messages MUST NOT be repeated back to the application that generated them. The source information on repeated messages should be unmodified to ensure that the message is attributed to the original source.
 
 #### `broadcast`
 
@@ -1780,7 +1775,7 @@ Hence, the broadcast message should be modified such that it includes a destinat
 }
 ```
 
-For a broadcast to a `PrivateChannel` owned by another agent the detination should just include the `DesktopAgentIdentifier`. The message should then be repeated (once for each listener) from that Desktop Agent to other remote listeners without modifying the source information (to ensure that the message is attributed to the original source), but with a destination set as a full `AppIdentifer` for each remote listener.
+For a broadcast to a `PrivateChannel` owned by another agent the destination should just include the `DesktopAgentIdentifier`. The message should then be repeated (once for each listener) from that Desktop Agent to other remote listeners without modifying the source information (to ensure that the message is attributed to the original source), but with a destination set as a full `AppIdentifier` for each remote listener.
 
 #### `onAddContextListener`
 
