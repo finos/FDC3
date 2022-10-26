@@ -29,9 +29,11 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
 * Complete message exchange documentation for PrivateChannels
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
 * To create final PR:
+  * Create JSON schema/generated Typescript types for message exchanges
   * Add new terms and acronyms to FDC3 glossary and ensure they are defined in this spec's introduction
   * Add new errors to Error enumerations specified in this proposal
   * Add RFC 4122 - https://datatracker.ietf.org/doc/html/rfc4122 to FDC3 references page
+  * Upgrade FDC3 website to docusaurus 2 (or export diagrams to PNGs to go in docusaurus v1 site)
 
 ## Implementing a Desktop Agent Bridge
 
