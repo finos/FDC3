@@ -12,6 +12,7 @@ Notes:
 
 - `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or `'Meeting'` although other string values are permitted.
 - `origin` is used to represent the application or service that the interaction was created from to aid in tracing the source of an interaction.
+- `id` does not need to be populated by the originating application. The application that created the interaction can use this property to return an identifier as part of a TransactionResult.
 
 ## Type
 
@@ -32,6 +33,7 @@ https://fdc3.finos.org/schemas/next/interaction.schema.json
 | `description`    | string  | Yes       | `Blah, blah, blah`         |
 | `initiator`    | fdc3.contact  | No       | See below         |
 | `origin`    |  string  | No       | `Outlook`         |
+| `id`      | object    | No       | `{ customId: 'a0S8d000000uO05EAE' }` |
 
 ## Example
 
