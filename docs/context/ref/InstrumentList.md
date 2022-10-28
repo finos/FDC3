@@ -43,12 +43,15 @@ const instruments = {
             type: "fdc3.instrument",
             id: {
                 ticker: "AAPL"
+            },
+            market: {
+                MIC: "XNAS"
             }
         },
         {
             type: "fdc3.instrument",
             id: {
-                ticker: "MSFT"
+                ISIN: "US5949181045"
             }
         },
     ]
