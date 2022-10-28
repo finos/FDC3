@@ -193,7 +193,7 @@ createPrivateChannel(): Promise<PrivateChannel>;
 
 Returns a `Channel` with an auto-generated identity that is intended for private communication between applications. Primarily used to create channels that will be returned to other applications via an IntentResolution for a raised intent.
 
-If the `PrivateChannel` cannot be created, the returned promise MUST be rejected with an error string from the [`ChannelError`](Errors#channelerror) enumeration.
+If the `PrivateChannel` cannot be created, the returned promise MUST be rejected with an `Error` object with a `message` chosen from the [`ChannelError`](Errors#channelerror) enumeration.
 
 The `PrivateChannel` type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
 
@@ -248,7 +248,7 @@ Find all the available instances for a particular application.
 
 If there are no instances of the specified application the returned promise should resolve to an empty array.
 
-If the request fails for another reason, the promise will return an `Error` with a string from the `ResolveError` enumeration.
+If the request fails for another reason, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `ResolveError` enumeration.
 
 #### Example
 
@@ -269,10 +269,9 @@ findIntent(intent: string, context?: Context, resultType?: string): Promise<AppI
 Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result context type.
 
 `findIntent` is effectively granting programmatic access to the Desktop Agent's resolver.
-It returns a promise resolving to the intent, its metadata and metadata about the apps and app instances that are registered to handle it.
-This can be used to raise the intent against a specific app or app instance.
+It returns a promise resolving to an `AppIntent` which provides details of the intent, its metadata and metadata about the apps and app instances that are registered to handle it. This can be used to raise the intent against a specific app or app instance.
 
-If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
+If the resolution fails, the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`ResolveError`](Errors#resolveerror) enumeration. This includes the case where no apps are found that resolve the intent, when the `ResolveError.NoAppsFound` message should be used.
 
 Result types may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
 
@@ -350,7 +349,7 @@ Find all the available intents for a particular context, and optionally a desire
 `findIntentsByContext` is effectively granting programmatic access to the Desktop Agent's resolver.
 A promise resolving to all the intents, their metadata and metadata about the apps and app instances that registered as handlers is returned, based on the context types the intents have registered.
 
-If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration.
+If the resolution fails, the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`ResolveError`](Errors#resolveerror) enumeration. This includes the case where no intents with associated apps are found, when the `ResolveError.NoAppsFound` message should be used.
 
 The optional `resultType` argument may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested without a specified context type, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
 
@@ -491,7 +490,8 @@ getOrCreateChannel(channelId: string): Promise<Channel>;
 
 Returns a `Channel` object for the specified channel, creating it (as an _App_ channel) if it does not exist.
 
-If the Channel cannot be created or access was denied, the returned promise MUST be rejected with an error string from the `ChannelError` enumeration.
+If the Channel cannot be created or access was denied, the returned promise MUST be rejected with an `Error` Object with a `message` chosen from the `ChannelError` enumeration.
+
 
 #### Example
 
@@ -542,7 +542,7 @@ If the channel already contains context that would be passed to context listener
 
 An app can only be joined to one channel at a time.
 
-Rejects with an error if the channel is unavailable or the join request is denied. The error string will be drawn from the [`ChannelError`](Errors#channelerror) enumeration.
+If an error occurs (such as the channel is unavailable or the join request is denied) the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`ChannelError`](Errors#channelerror) enumeration.
 
 #### Examples
 
@@ -601,7 +601,8 @@ If a [`Context`](Types#context) object is passed in, this object will be provide
 
 Returns an [`AppIdentifier`](Metadata#appidentifier) object with the `instanceId` field set to identify the instance of the application opened by this call.
 
-If opening errors, it returns an `Error` with a string from the [`OpenError`](Errors#openerror) enumeration.
+If an error occurs while opening the app, the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`OpenError`](Errors#openerror) enumeration.
+
 
 #### Example
 
@@ -632,7 +633,7 @@ Raises a specific intent for resolution against apps registered with the desktop
 The desktop agent MUST resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, a method for resolving the intent to a target app, such as presenting the user with a resolver UI allowing them to pick an app, SHOULD be provided.
 Alternatively, the specific app or app instance to target can also be provided. A list of valid target applications and instances can be retrieved via [`findIntent`](DesktopAgent#findintent).  
 
-If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned. If a specific target `app` parameter was set, but either the app or app instance is not available then the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` errors MUST be returned.
+If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the [`ResolveError`](Errors#resolveerror) enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`.
 
 If you wish to raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
 
@@ -697,7 +698,7 @@ Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and 
 
 Returns an `IntentResolution` object, see [`raiseIntent()`](#raiseintent) for details.
 
-If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, an `Error` with a string from the [`ResolveError`](Errors#resolveerror) enumeration is returned. If a specific target `app` parameter was set, but either the app or app instance is not available then the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` errors MUST be returned.
+If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the [`ResolveError`](Errors#resolveerror) enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`.
 
 #### Example
 
