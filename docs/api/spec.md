@@ -126,6 +126,7 @@ An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 
 - Support connection to one or more App Directories meeting the [FDC3 App Directory Standard](../app-directory/overview).
 - Qualify `appId` values received from an app directory with the hostname of the app directory server (e.g. `myAppId@name.domain.com`) [as defined in the app directory standard](../app-directory/overview#application-identifiers).
+- Allow application to register as Intent Handlers for particular Intent and Context type pairs by providing `interop.intents.listensFor` metadata in their AppD record.
 - Adopt the [recommended set of User channel definitions](#recommended-user-channel-set).
 - Ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are joined to the channel.
 - Make metadata about each context message or intent and context message received (including the app that originated the message) available to the receiving application.
@@ -135,6 +136,7 @@ An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 An FDC3 Standard compliant Desktop Agent implementation **MAY**:
 
 - Make the Desktop Agent API available through modules, imports, or other means.
+- Support multiple routes for registration of apps as Intent handlers to be considered during Intent resolution, including dynamic registration of apps at runtime.
 - Implement the following OPTIONAL [Desktop Agent](ref/DesktopAgent) API functions:
   - [`joinUserChannel`](ref/DesktopAgent#joinuserchannel)
   - [`leaveCurrentChannel`](ref/DesktopAgent#leavecurrentchannel)
@@ -346,7 +348,7 @@ try {
 
 ### Register an Intent Handler
 
-Applications need to let the system know the intents they can support.  Typically, this is done via registration with an [App Directory](../app-directory/spec).  It is also possible for intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  Although dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
+Applications need to let the system know the intents they can support.  Typically, this SHOULD be done via registration with an [App Directory](../app-directory/spec) by providing `interop.intents.listensFor` metadata. However, Desktop Agent implementations MAY support dynamic registration of applications as intent handlers at runtime (for example, when they add an `IntentListener` via the API) to allow for ad-hoc registration which may be helpful at development time.  Although dynamic registration is not part of this specification, a Desktop Agent agent MAY choose to support any number of registration paths.
 
 When an instance of an application is launched, it is expected to add an [`IntentHandler`](ref/Types#intenthandler) function to the Desktop Agent for each intent it has registered by calling the [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) function of the Desktop Agent. Doing so allows the Desktop Agent to pass incoming intents and contexts to that instance of the application. Hence, if the application instance was spawned in response to the raised intent, then the Desktop Agent must wait for the relevant intent listener to be added by that instance before it can deliver the intent and context to it. In order to facilitate accurate error responses, calls to `fdc3.raiseIntent` should not return an `IntentResolution` until the intent handler has been added and the intent delivered to the target app.
 
