@@ -117,7 +117,7 @@ export const ContextTemplates = observer(({handleTabChange, contextStateSetter} 
 			isInitialMount.current = false;
 		 } else {
 			const selectedContext = contextStore.contextsList.find(({ id }) => id === context?.value);
-			if(!selectedContext) handleTabChange(null, 0);
+			if(!selectedContext) handleTabChange(null, 0, context?.value);
 		 }
 	}, [context])
 	

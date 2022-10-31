@@ -158,8 +158,10 @@ export const App = observer(() => {
 	const [fdc3Available, setFdc3Available] = useState(false);
 	const [openSnackbar, setOpenSnackbar] = useState(false);
 	const [tabIndex, setTabIndex] = useState(0);
+	const [contextName, setContextName] = useState('');
 
-	const handleTabChange = (event: React.ChangeEvent<{}>, newIndex: number) => {
+	const handleTabChange = (event: React.ChangeEvent<{}>, newIndex: number, name: string = '') => {
+		setContextName(name)
 		setTabIndex(newIndex);
 	};
 
@@ -215,7 +217,7 @@ export const App = observer(() => {
 									<Tab label="App Channels" />
 								</Tabs>
 								<TabPanel value={tabIndex} index={0}>
-									<ContextCreate />
+									<ContextCreate contextName={contextName}/>
 								</TabPanel>
 								<TabPanel value={tabIndex} index={1}>
 									<Intents />
