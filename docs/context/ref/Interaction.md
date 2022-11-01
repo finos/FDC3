@@ -35,8 +35,8 @@ https://fdc3.finos.org/schemas/next/interaction.schema.json
 | `description`      | string           | Yes       | `Blah, blah, blah`                              |
 | `initiator`        | fdc3.contact     | No        | See below                                       |
 | `origin`           | string           | No        | `Outlook`                                       |
-| `id.Singletrack`   | string           | No        | `a0S8d000000uO05EAE`                            |
-| `id.Salesforce`    | string           | No        | `a0S8d000000uO05EAE`                            |
+| `id.SINGLETRACK`   | string           | No        | `a0S8d000000uO05EAE`                            |
+| `id.SALESFORCE`    | string           | No        | `a0S8d000000uO05EAE`                            |
 | `id.URI`           | string           | No        | `https://example.com/record/a0S8d000000uO05EAE` |
 
 
