@@ -1,9 +1,10 @@
 import { makeObservable, observable, action, runInAction, toJS } from "mobx";
 import * as fdc3 from "@finos/fdc3";
 import { nanoid } from "nanoid";
-import contextStore, { ContextType } from "./ContextStore";
+import { ContextType } from "./ContextStore";
 import { intentTypes } from "../fixtures/intentTypes";
 import systemLogStore from "./SystemLogStore";
+import { TargetApp } from "@finos/fdc3";
 
 type IntentItem = { title: string; value: string };
 
@@ -100,10 +101,15 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntent(intent: string) {
-		if (contextStore.currentContext) {
+	async raiseIntent(intent: string, context: ContextType, app?: TargetApp ) {
+		if (context) {
 			try {
-				const appIntent = await fdc3.raiseIntent(intent, toJS(contextStore.currentContext));
+				let appIntent;
+				if (app) {
+					appIntent = await fdc3.raiseIntent(intent, toJS(context), app);
+				} else {
+					appIntent = await fdc3.raiseIntent(intent, toJS(context));
+				}
 
 				systemLogStore.addLog({
 					name: "raiseIntent",
@@ -124,10 +130,14 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntentForContext() {
-		if (contextStore.currentContext) {
+	async raiseIntentForContext(context: ContextType, app?: TargetApp ) {
+		if (context) {
 			try {
-				await fdc3.raiseIntentForContext(toJS(contextStore.currentContext));
+				if (app) {
+					await fdc3.raiseIntentForContext(toJS(context), app);
+				} else {
+					await fdc3.raiseIntentForContext(toJS(context));
+				}
 
 				systemLogStore.addLog({
 					name: "raiseIntentForContext",
