@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme: Theme) =>
 		form: {
 			display: "flex",
 			flexWrap: "wrap",
-			marginTop: theme.spacing(1),
 			"& > *": {
 				marginRight: 0,
 			},
@@ -41,7 +40,6 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		contextName: {
 			flexGrow: 1,
-			marginRight: theme.spacing(1),
 			minWidth: "190px",
 		},
 		rightAlign: {
