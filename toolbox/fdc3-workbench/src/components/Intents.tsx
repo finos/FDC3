@@ -267,7 +267,6 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 								});
 							})
 						});
-						debugger;
 						setContextIntentObjects(pairObject as any[]);
 					}
 				}
