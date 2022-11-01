@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as fdc3 from "@finos/fdc3";
 import { toJS } from "mobx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Button, IconButton, Tooltip, Typography, Grid, FormControl, FormHelperText, InputLabel, MenuItem, Select } from "@material-ui/core";
+import { Button, IconButton, Tooltip, Typography, Grid, FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import { observer } from "mobx-react";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
@@ -22,11 +22,6 @@ interface FilterOptionsState<T> {
 interface ListenerOptionType {
 	title: string;
 	value: string;
-}
-
-interface IntentMetadata {
-	name: string;
-	displayName: string;
 }
 
 type ListenerSetValue = (value: ListenerOptionType | null) => void;
@@ -242,7 +237,7 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 				setRaiseIntentError(" no intents found");
 			}
 		}
-		fetchIntents().catch((e)=>{
+		fetchIntents().catch(()=>{
 			setRaiseIntentError(" no intents found");
 		});
 		
@@ -279,7 +274,7 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 			} catch (e){
 			}
 		}
-		fetchIntents().catch((e)=>{
+		fetchIntents().catch(()=>{
 		});
 		
 	}, [raiseIntentWithContextContext]);
