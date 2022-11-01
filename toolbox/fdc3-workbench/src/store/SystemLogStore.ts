@@ -20,7 +20,8 @@ export type logMessagesName =
 	| "receivedIntentListener"
 	| "deleteTemplate"
 	| "saveTemplate"
-	| "copyToClipboard";
+	| "copyToClipboard"
+	| "getOrCreateChannel";
 
 export type logMessagesType = "error" | "success" | "warning" | "info";
 
