@@ -12,7 +12,9 @@ Notes:
 
 - `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or `'Meeting'` although other string values are permitted.
 - `origin` is used to represent the application or service that the interaction was created from to aid in tracing the source of an interaction.
-- `id` does not need to be populated by the originating application. The application that created the interaction can use this property to return an identifier as part of a TransactionResult.
+- `id` does not need to be populated by the originating application, however the target application could store it for future reference. 
+- `id` can be used by a target application to pass an identifier back to the originating application after an interaction record has been created, updated or deleted.
+- `id.URI` can be used by a target application to pass a record's link back to the originating application. This offers the originating application a way to open the record for a user to view. 
 
 ## Type
 
@@ -24,16 +26,19 @@ https://fdc3.finos.org/schemas/next/interaction.schema.json
 
 ## Details
 
-| Property    | Type    | Required | Example Value       |
-|-------------|---------|----------|---------------------|
-| `type`      | string  | Yes      | `fdc3.interaction` |
-| `participants`      | fdc3.contactList  | Yes       | See below      |
-| `timeRange` | fdc3.timeRange  | Yes       | See below            |
-| `interactionType` | string  | Yes       | `Instant Message`            |
-| `description`    | string  | Yes       | `Blah, blah, blah`         |
-| `initiator`    | fdc3.contact  | No       | See below         |
-| `origin`    |  string  | No       | `Outlook`         |
-| `id`      | object    | No       | `{ customId: 'a0S8d000000uO05EAE' }` |
+| Property           | Type             | Required  | Example Value                                   |
+|--------------------|------------------|-----------|-------------------------------------------------|
+| `type`             | string           | Yes       | `fdc3.interaction`                              |
+| `participants`     | fdc3.contactList | Yes       | See below                                       |
+| `timeRange`        | fdc3.timeRange   | Yes       | See below                                       |
+| `interactionType`  | string           | Yes       | `Instant Message`                               |
+| `description`      | string           | Yes       | `Blah, blah, blah`                              |
+| `initiator`        | fdc3.contact     | No        | See below                                       |
+| `origin`           | string           | No        | `Outlook`                                       |
+| `id.Singletrack`   | string           | No        | `a0S8d000000uO05EAE`                            |
+| `id.Salesforce`    | string           | No        | `a0S8d000000uO05EAE`                            |
+| `id.URI`           | string           | No        | `https://example.com/record/a0S8d000000uO05EAE` |
+
 
 ## Example
 
