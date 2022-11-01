@@ -15,6 +15,7 @@ import { Channels } from "./components/Channels";
 import { Workbench } from "./components/Workbench/Workbench";
 import { ContextCreate } from "./components/ContextCreate";
 import { Intents } from "./components/Intents";
+import { AppChannels } from "./components/AppChannels";
 import snackbarStore from "./store/SnackbarStore";
 import "./App.css";
 import { fdc3Ready } from "@finos/fdc3";
@@ -224,6 +225,9 @@ export const App = observer(() => {
 								</TabPanel>
 								<TabPanel value={tabIndex} index={2}>
 									<Channels handleTabChange={handleTabChange}/>
+								</TabPanel>
+								<TabPanel value={tabIndex} index={3}>
+									<AppChannels handleTabChange={handleTabChange}/>
 								</TabPanel>
 							</Paper>
 						</Grid>
