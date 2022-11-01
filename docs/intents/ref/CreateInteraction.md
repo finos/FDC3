@@ -110,7 +110,7 @@ Console log will display:
         },
         origin: 'Outlook'
         id:  {
-            customID: 'a0S8d000000uO05EAE'
+            Singletrack: 'a0S8d000000uO05EAE'
         }
     },
     message: 'record with id "a0S8d000000uO05EAE" was created'
