@@ -237,9 +237,7 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 				setRaiseIntentError(" no intents found");
 			}
 		}
-		fetchIntents().catch(()=>{
-			setRaiseIntentError(" no intents found");
-		});
+		fetchIntents();
 		
 	}, [raiseIntentContext]);
 
@@ -273,8 +271,7 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 			} catch (e){
 			}
 		}
-		fetchIntents().catch(()=>{
-		});
+		fetchIntents();
 		
 	}, [raiseIntentWithContextContext]);
 
