@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Button, IconButton, Tooltip, Typography, Grid, TextField } from "@material-ui/core";
+import { Button, IconButton, Tooltip, Typography, Grid, TextField, FormHelperText } from "@material-ui/core";
 import { observer } from "mobx-react";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
 import contextStore from "../store/ContextStore";
+import appChannelStore from "../store/AppChannelStore";
 import intentStore from "../store/IntentStore";
 import { codeExamples } from "../fixtures/codeExamples";
 import { TemplateTextField } from "./common/TemplateTextField";
@@ -81,6 +82,21 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) => {
     const classes = useStyles();
+    const [isError, setIsError] = useState<boolean>(false)
+    const [currentAppChannelId, setCurrentAppChannelId] = useState<string>("")
+
+    const handleGetorCreateChannel = () =>{
+        debugger;
+        if (currentAppChannelId) {
+           appChannelStore.getOrCreateChannel(currentAppChannelId);
+           setCurrentAppChannelId("");
+        }
+
+    };
+
+    const handleChannelChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setCurrentAppChannelId(event.target.value as string);
+    };
 
     return (
         <div className={classes.root}>
@@ -90,23 +106,29 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
 
             <form className={classes.form} noValidate autoComplete="off">
                 <Grid container direction="row" spacing={1}>
-                    <Grid item xs={12} sm={5}>
-                        <TextField variant="outlined" label="channel name" type="text" size="small" />
+                    <Grid item className={classes.field}>
+                        <TextField 
+                            fullWidth 
+                            variant="outlined" 
+                            label="Channel Name" 
+                            type="text" 
+                            size="small" 
+                            onChange={handleChannelChange}
+                        />
+                        {isError && <FormHelperText>Input app channel</FormHelperText>}
                     </Grid>
-                    <Grid item xs={12} sm={7}>
-                        <Grid item className={classes.controls}>
-							<Button
-								variant="contained"
-								color="primary"
-								onClick={handleGetorCreateChannel}
-								disabled={!contextStore.currentContext}
-							>
-								Get or Create Channel
-							</Button>
-						</Grid>
+                    <Grid item className={classes.controls}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleGetorCreateChannel}
+                            disabled={!currentAppChannelId}
+                        >
+                            Get or Create Channel
+                        </Button>
                     </Grid>
                 </Grid>
-            </form>
+        </form>
         </div>
     );
 });
