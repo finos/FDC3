@@ -46,9 +46,23 @@ class ContextStore {
 			addContextListener: action,
 			removeContextListener: action,
 		});
-		const localStorageContextList = localStorage.getItem("contextList")
-		if(localStorageContextList) this.contextsList = JSON.parse(localStorageContextList)
-		else this.updateLocalStorage(JSON.stringify(this.contextsList))
+		const localStorageContextList = localStorage.getItem("contextList");
+		let usingDefaultContexts = true;
+		try {
+			if(localStorageContextList)
+			{
+				const parsedListFromStorage = JSON.parse(localStorageContextList);
+				if (Array.isArray(parsedListFromStorage)){
+					this.contextsList = parsedListFromStorage;
+					usingDefaultContexts = false;
+				}
+			}
+		} catch (err){
+			console.log("Failed to parse context list from localstorage");
+		}
+		if (usingDefaultContexts) {
+			this.updateLocalStorage(JSON.stringify(contexts));
+		}
 	}
 
 	addContextItem(contextItem: ContextItem) {
