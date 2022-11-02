@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+* Updated definition of the `Instrument` context type to include optional market identifiers ([#819](https://github.com/finos/FDC3/pull/819))
+
 ### Deprecated
 
 ### Fixed
@@ -97,6 +99,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Updated Methods.ts to support the updated signature for `addContextListener` introduced in FDC3 1.2 ([#462](https://github.com/finos/FDC3/pull/462))
 * Clarified the description of the addContextListener functions from the Desktop Agent and Channel APIs in spec and docs. ([#492](https://github.com/finos/FDC3/pull/492))
 * Clarified that implementing `fdc3.getInfo()` is required for compliance with the FDC3 standard ([#515](https://github.com/finos/FDC3/pull/515))
+* Corrected syntax errors in valuation schema ([#834](https://github.com/finos/FDC3/pull/834))
 
 ## [npm v1.2.0] - 2021-04-19
 
