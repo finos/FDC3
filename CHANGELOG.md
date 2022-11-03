@@ -97,6 +97,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Clarified the description of the addContextListener functions from the Desktop Agent and Channel APIs in spec and docs. ([#492](https://github.com/finos/FDC3/pull/492))
 * Clarified that implementing `fdc3.getInfo()` is required for compliance with the FDC3 standard ([#515](https://github.com/finos/FDC3/pull/515))
 * Corrected syntax errors in valuation schema ([#834](https://github.com/finos/FDC3/pull/834))
+* Corrected schema definition for appD `interop.intents.listensFor` element ([#847](https://github.com/finos/FDC3/pull/847))
 
 ## [npm v1.2.0] - 2021-04-19
 
