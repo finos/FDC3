@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Button, Grid, Typography, Tooltip, IconButton, Table, TableBody, TableRow, TableCell, TableContainer } from "@material-ui/core";
@@ -164,7 +164,6 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 			setDuplicateName(false)
 		}
 		else if(found(newValue.value) >= 1) {
-			setDisabled(true);
 			setDuplicateName(true);
 			setContextError("Template name already exists");
 		}
@@ -173,7 +172,6 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 	const handleContextChange = (json: ContextType) => {
 		setContextValue(json);
 		setContextError(false);
-		if(!duplicateName) setDisabled(false);
 	};
 
 	const validate = () => {
@@ -296,6 +294,11 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 			});
 		}
 	};
+
+	useEffect(() => {
+	  if(duplicateName) setDisabled(true)
+	}, [duplicateName])
+	
 
 	return (
 		<div className={classes.root}>
