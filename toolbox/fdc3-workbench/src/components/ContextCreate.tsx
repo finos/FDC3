@@ -98,13 +98,12 @@ let emptyJson: ContextType = {
 	id: {}
 };
 
-let duplicateName = false;
-
 export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 	const classes = useStyles();
 	const [templateName, setTemplateName] = useState<OptionType | null>({
 		title: contextName,
 		value: contextName});
+	const [duplicateName, setDuplicateName] = useState(false);
 	const [contextValue, setContextValue] = useState<ContextType | null>(emptyJson);
 	const [context, setContext] = useState<ContextItem | null>({
 		id: contextName || "empty",
@@ -162,11 +161,11 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 				context.id = newValue.value;
 				setContext(context);
 			}
-			duplicateName = false;
+			setDuplicateName(false)
 		}
 		else if(found(newValue.value) >= 1) {
 			setDisabled(true);
-			duplicateName = true;
+			setDuplicateName(true);
 			setContextError("Template name already exists");
 		}
 	}
