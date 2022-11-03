@@ -98,6 +98,8 @@ let emptyJson: ContextType = {
 	id: {}
 };
 
+let duplicateName = false;
+
 export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 	const classes = useStyles();
 	const [templateName, setTemplateName] = useState<OptionType | null>({
@@ -156,10 +158,15 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 			if(selectedContext) {
 				selectedContext.id = newValue.value
 				setContext(selectedContext)
+			} else {
+				context.id = newValue.value;
+				setContext(context);
 			}
+			duplicateName = false;
 		}
 		else if(found(newValue.value) >= 1) {
 			setDisabled(true);
+			duplicateName = true;
 			setContextError("Template name already exists");
 		}
 	}
@@ -167,7 +174,7 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 	const handleContextChange = (json: ContextType) => {
 		setContextValue(json);
 		setContextError(false);
-		setDisabled(false);
+		if(!duplicateName) setDisabled(false);
 	};
 
 	const validate = () => {
@@ -195,16 +202,14 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 	};
 
 	const handleCreateTemplate = () => {
-		if (context) {
-			setTemplateName(null)
-			const newContext: ContextItem = {
-				id: "empty",
-				template: emptyJson,
-				schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/context.schema.json"),
-			};
-			setContext(newContext);
-			setContextValue(emptyJson);
-		}
+		setTemplateName(null)
+		const newContext: ContextItem = {
+			id: "empty",
+			template: emptyJson,
+			schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/context.schema.json"),
+		};
+		setContext(newContext);
+		setContextValue(emptyJson);
 		setDisabled(true);
 	};
 
