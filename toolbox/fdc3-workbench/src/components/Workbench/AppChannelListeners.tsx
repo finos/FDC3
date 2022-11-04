@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
-import contextStore from "../../store/ContextStore";
+import appChannelStore from "../../store/AppChannelStore";
 import { AccordionList, AccordionListItem } from "../common/AccordionList";
 import { TextField } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -17,12 +17,15 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-export const ContextListeners = observer(() => {
+export const AppChannelListeners = observer(() => {
 	const classes = useStyles();
-	const contextListeners: AccordionListItem[] = contextStore.contextListeners.map(
-		({ id, type, lastReceivedContext }) => {
-			const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
 
+	let contextListeners: AccordionListItem[] = [];
+    
+    // appChannelStore.appChannelsList.forEach((channel)=>{
+        // { id, type, lastReceivedContext }) => {
+        appChannelStore.appChannelListeners.forEach(({ id, channelId, type, lastReceivedContext }) => {
+			const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
 			const contextField = (
 				<TextField
 					disabled
@@ -45,18 +48,19 @@ export const ContextListeners = observer(() => {
 				/>
 			);
 
-			return { id, textPrimary: `${type}`, afterEachElement: contextField };
-		}
-	);
+			contextListeners.push({ id, textPrimary: `${channelId}: ${type}`, afterEachElement: contextField});
+        });
+		
+    // });
 
 	const handleDeleteListener = (id: string) => {
-		contextStore.removeContextListener(id);
+		appChannelStore.removeContextListener(id);
 	};
 
 	return (
 		<AccordionList
-			title="System Channels"
-			noItemsText="No System Channels Listeners"
+			title="App Channels"
+			noItemsText="No App Channel Listeners"
 			listItems={contextListeners}
 			onDelete={handleDeleteListener}
 		/>
