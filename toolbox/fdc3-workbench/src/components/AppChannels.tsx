@@ -247,8 +247,7 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
                 </Grid>
             </form>
             <div className={classes.border}></div>
-           
-                {appChannelStore.appChannelsList.length && (
+                {appChannelStore.appChannelsList.length > 0 && (
                     appChannelStore.appChannelsList.map((channel) => (
                         <Grid container key={channel.id} spacing={2} className={classes.spread}>
                             <Grid item className={classes.field}>
