@@ -22,8 +22,6 @@ export const AppChannelListeners = observer(() => {
 
 	let contextListeners: AccordionListItem[] = [];
     
-    // appChannelStore.appChannelsList.forEach((channel)=>{
-        // { id, type, lastReceivedContext }) => {
         appChannelStore.appChannelListeners.forEach(({ id, channelId, type, lastReceivedContext }) => {
 			const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
 			const contextField = (
@@ -50,8 +48,6 @@ export const AppChannelListeners = observer(() => {
 
 			contextListeners.push({ id, textPrimary: `${channelId}: ${type}`, afterEachElement: contextField});
         });
-		
-    // });
 
 	const handleDeleteListener = (id: string) => {
 		appChannelStore.removeContextListener(id);
