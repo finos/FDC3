@@ -305,15 +305,15 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 						<TableBody>
 							{contextStore.contextsList.map(({ id, template }, index) => (
 								<TableRow hover role="checkbox" tabIndex={-1} key={`row-${index}`} selected={id === templateName?.value}>
-									<TableCell key={`column-${index}`} align="left" onClick={() => handleChangeTemplate({title: id, value: id})}>
+									<TableCell key={`row-${index}-column-0`} align="left" onClick={() => handleChangeTemplate({title: id, value: id})}>
 										<Typography variant="subtitle1" >
 											{id}
 										</Typography>
 									</TableCell>
-									<TableCell key={`column-${index}`} align="left" onClick={() => handleChangeTemplate({title: id, value: id})}>
+									<TableCell key={`row-${index}-column-1`} align="left" onClick={() => handleChangeTemplate({title: id, value: id})}>
 										<Typography variant="caption" >{template?.type}</Typography>
 									</TableCell>
-									<TableCell key={`column-${index}`} align="right">
+									<TableCell key={`row-${index}-column-2`} align="right">
 										<Tooltip title="Duplicate Template" aria-label="Copy code">
 											<IconButton
 												size="small"
@@ -324,7 +324,7 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 											</IconButton>
 										</Tooltip>
 									</TableCell>
-									<TableCell key={`column-${index}`} align="right">
+									<TableCell key={`row-${index}-column-3`} align="right">
 										<Tooltip title="Delete template" aria-label="Delete template">
 											<IconButton
 												size="small"
