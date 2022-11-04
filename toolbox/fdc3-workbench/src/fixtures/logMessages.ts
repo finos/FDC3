@@ -32,6 +32,10 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			success: "Successfully broadcasted context",
 			error: "Failed to broadcast context:",
 		},
+		appbroadcast: {
+			success: `Successfully broadcasted context to channel [${value}]: `,
+			error: `Failed to broadcast context to channel [${value}]:`,
+		},
 		raiseIntent: {
 			success: `Successfully raised intent [${value}]`,
 			error: `Failed to raise intent [${value}]`,
@@ -48,6 +52,10 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			success: `A context listener for '[${value}]' has been removed`,
 			error: `Failed to remove a context listener for '[${value}]'`,
 		},
+		removeAppChannelContextListener: {
+			success: `${value}`,
+			error: `${value}`,
+		},
 		addIntentListener: {
 			success: `An intent listener for '[${value}]' has been added`,
 			error: `Failed to add an intent listener for '[${value}]'`,
@@ -59,6 +67,14 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 		receivedContextListener: {
 			info: `Received context via '[${value}]' listener`,
 			error: `Failed to receive context from '[${value}]' listener`,
+		},
+		receivedAppContextListener: {
+			info: `${value}`,
+			error: `${value}`
+		},
+		addAppContextListener: {
+			info: `${value}`,
+			error: `${value}`
 		},
 		receivedIntentListener: {
 			info: `Received context via '[${value}]' listener.`,
@@ -75,6 +91,10 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 		copyToClipboard: {
 			info: `${value} code snippet copied to clipboard`,
 			error: `Failed to copy code ${value} snippet to clipboard.`,
+		},
+		getOrCreateChannel: {
+			success: `Successfully retrieved or created current app channel [${value}]`,
+			error: `Failed retrieve or create app channel ${value}.`,
 		},
 	};
 
