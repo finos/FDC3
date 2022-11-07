@@ -67,15 +67,14 @@ class ContextStore {
 
 	addContextItem(contextItem: ContextItem) {
 		this.contextsList.push(contextItem);
-		this.contextsList.sort((a, b) => (a.id > b.id ? 1 : -1));
+		this.contextsList.sort((a, b) => a.id.localeCompare(b.id));
 		this.updateLocalStorage(this.contextsList);
 	}
 
-	saveContextItem(contextItem: ContextItem) {
-		const context = this.contextsList.find(({ id }) => id === contextItem.id);
-
+	saveContextItem(contextItem: ContextItem, selectedId?: string) {
+		const context = this.contextsList.find(({ id }) => id === selectedId || id ===contextItem.id);
 		if (context) {
-			context.template = contextItem.template;
+			Object.keys(contextItem).forEach((key:any) => (context[key as keyof ContextItem] as any) = contextItem[key as keyof ContextItem]);
 		}
 		this.updateLocalStorage(this.contextsList);
 	}
