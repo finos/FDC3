@@ -108,7 +108,6 @@ const listenerFilter = createFilterOptions<ListenerOptionType>();
 
 export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) => {
     const classes = useStyles();
-    const [isError, setIsError] = useState<boolean>(false);
     const [render, setRender] = useState<boolean>(false);
     const [currentAppChannelId, setCurrentAppChannelId] = useState<string>("");
     const contextListenersOptions: ListenerOptionType[] = contextStore.contextsList.map(({ id, template }) => {
@@ -183,16 +182,14 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
             if(foundChannel?.currentListener){
                 if (appChannelStore.isContextListenerExists(channelId, foundChannel?.currentListener.value)) {
                     foundChannel.listenerError = "Listener already added";
-                    setRender(true);
                 } else {
                     appChannelStore.addChannelListener(channelId, foundChannel.currentListener.value);
                     foundChannel.listenerError = "";
-                    setRender(true);
                 }
             } else {
                 foundChannel.listenerError = "Enter context type";
-                setRender(true);
             }
+            setRender(render);
         }
 	};
 
