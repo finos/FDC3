@@ -104,6 +104,9 @@ const useStyles = makeStyles((theme: Theme) =>
 			width: "100%",
 			marginRight: theme.spacing(1),
 		},
+		rightPadding: {
+            paddingRight: theme.spacing(.5),
+        },
 	})
 );
 
@@ -287,6 +290,7 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 						<Grid item className={classes.field}>
 							<ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setRaiseIntentContext} />
 							<Autocomplete
+								className={classes.rightPadding}
 								id="raise-intent"
 								size="small"
 								selectOnFocus
@@ -310,44 +314,45 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 									/>
 								)}
 							/>
-							<FormControl variant="outlined" size="small" className={classes.targetSelect}>
-								<InputLabel id="intent-target-app">Target (optional)</InputLabel>
-								<Select
-									labelId="intent-target-app"
-									id="intent-target-app-select"
-									value={targetApp ?? ""}
-									onChange={handleTargetChange}
-									label="Target (optional)"
-									MenuProps={{
-										anchorOrigin: {
-											vertical: "bottom",
-											horizontal: "left",
-										},
-										transformOrigin: {
-											vertical: "top",
-											horizontal: "left",
-										},
-										getContentAnchorEl: null,
-									}}
-								>
-									{!intentTargets?.length && (
-										<MenuItem value="" disabled>
-											No Target Apps Found
-										</MenuItem>
-									)}
-									{intentTargets?.length && <MenuItem key="" value="None">
-											None
-										</MenuItem>}
-									{intentTargets?.length &&
-										intentTargets.map((target) => (
-											<MenuItem key={target.name} value={target.name}>
-												{target.title}
+							<Grid className={classes.rightPadding}>
+								<FormControl variant="outlined" size="small" className={classes.targetSelect}>
+									<InputLabel id="intent-target-app">Target (optional)</InputLabel>
+									<Select
+										labelId="intent-target-app"
+										id="intent-target-app-select"
+										value={targetApp ?? ""}
+										onChange={handleTargetChange}
+										label="Target (optional)"
+										MenuProps={{
+											anchorOrigin: {
+												vertical: "bottom",
+												horizontal: "left",
+											},
+											transformOrigin: {
+												vertical: "top",
+												horizontal: "left",
+											},
+											getContentAnchorEl: null,
+										}}
+									>
+										{!intentTargets?.length && (
+											<MenuItem value="" disabled>
+												No Target Apps Found
 											</MenuItem>
-										))}
-								</Select>
-							</FormControl>
+										)}
+										{intentTargets?.length && <MenuItem key="" value="None">
+												None
+											</MenuItem>}
+										{intentTargets?.length &&
+											intentTargets.map((target) => (
+												<MenuItem key={target.name} value={target.name}>
+													{target.title}
+												</MenuItem>
+											))}
+									</Select>
+								</FormControl>
+							</Grid>
 						</Grid>
-
 						<Grid item className={classes.controls}>
 							<Button
 								variant="contained"
@@ -379,43 +384,45 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 						</Grid>
 						<Grid item className={`${classes.field} ${classes.removeSidePadding}`}>
 							<ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setRaiseIntentWithContextContext} />
-							<FormControl variant="outlined" size="small" className={classes.targetSelect}>
-								<InputLabel id="intent-context-target-app">Target (optional)</InputLabel>
-								<Select
-									labelId="intent-context-target-app"
-									id="intent-context-target-app-select"
-									value={contextTargetApp ?? ""}
-									onChange={handleContextTargetChange}
-									label="Target (optional)"
-									MenuProps={{
-										anchorOrigin: {
-											vertical: "bottom",
-											horizontal: "left",
-										},
-										transformOrigin: {
-											vertical: "top",
-											horizontal: "left",
-										},
-										getContentAnchorEl: null,
-									}}
-								>
-									{!contextIntentObjects?.length && (
-										<MenuItem value="" disabled>
-											No Target Apps Found
-										</MenuItem>
-									)}
-									{contextIntentObjects?.length && <MenuItem key="" value="None">
-											None
-										</MenuItem>}
-									{contextIntentObjects?.length &&
-										contextIntentObjects.map((target) => (
-											<MenuItem value={target.name} key={target.name} >
-												{target.name}
+							<Grid className={classes.rightPadding}>
+								<FormControl variant="outlined" size="small" className={classes.targetSelect}>
+									<InputLabel id="intent-context-target-app">Target (optional)</InputLabel>
+									<Select
+										labelId="intent-context-target-app"
+										id="intent-context-target-app-select"
+										value={contextTargetApp ?? ""}
+										onChange={handleContextTargetChange}
+										label="Target (optional)"
+										MenuProps={{
+											anchorOrigin: {
+												vertical: "bottom",
+												horizontal: "left",
+											},
+											transformOrigin: {
+												vertical: "top",
+												horizontal: "left",
+											},
+											getContentAnchorEl: null,
+										}}
+									>
+										{!contextIntentObjects?.length && (
+											<MenuItem value="" disabled>
+												No Target Apps Found
 											</MenuItem>
-										))
-									}
-								</Select>
-							</FormControl>
+										)}
+										{contextIntentObjects?.length && <MenuItem key="" value="None">
+												None
+											</MenuItem>}
+										{contextIntentObjects?.length &&
+											contextIntentObjects.map((target) => (
+												<MenuItem value={target.name} key={target.name} >
+													{target.name}
+												</MenuItem>
+											))
+										}
+									</Select>
+								</FormControl>
+							</Grid>			
 						</Grid>
 						<Grid item className={classes.controls}>
 							<Button
