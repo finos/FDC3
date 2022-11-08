@@ -159,7 +159,7 @@ Also we assume a fourth app **D** that is going to discover the intents in the o
 
 ### Find Intents By Context
 
--  `SingleContext`: Call `fdc3.findIntentsByContext(‘fdc3.testContextX’)`.  Should return `aTestingIntent` (app **A**), `sharedTestingIntent` (**A**, **B**) and `cTestingIntent` (**C**) AND nothing else.
+-  `SingleContext`: Call `fdc3.findIntentsByContext(‘fdc3.testContextX’)`.  Should return `aTestingIntent` (app **A**), `sharedTestingIntent1` (**A**, **B**) and `cTestingIntent` (**C**) AND nothing else.
 -  `NoContext`: Call `fdc3.findIntentsByContext()`. Throws error of some kind?
 
 ### Raise Intent
