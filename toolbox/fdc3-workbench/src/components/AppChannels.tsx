@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Button, IconButton, Tooltip, Typography, Grid, TextField, FormHelperText } from "@material-ui/core";
+import { Button, IconButton, Tooltip, Typography, Grid, TextField } from "@material-ui/core";
 import { observer } from "mobx-react";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
 import contextStore, { ContextType } from "../store/ContextStore";
 import appChannelStore from "../store/AppChannelStore";
-import intentStore from "../store/IntentStore";
 import { codeExamples } from "../fixtures/codeExamples";
 import { TemplateTextField } from "./common/TemplateTextField";
 import { copyToClipboard } from "./common/CopyToClipboard";
@@ -239,7 +238,6 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
                             size="small" 
                             onChange={handleChannelChange}
                         />
-                        {isError && <FormHelperText>Input app channel</FormHelperText>}
                     </Grid>
                     <Grid item className={classes.controls}>
                         <Button
