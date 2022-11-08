@@ -101,11 +101,10 @@
 - `AOpensB1`:  **A** calls `fdc3.open(‘app B Name’)`, check app **B** opens
 - `AOpensB2`:  **A** calls `fdc3.open({name: “<app B Name>”})`, check app **B** opens
 - `AOpensB3`:  **A** calls `fdc3.open({name: “<app B Name>”, appId: “<app B ID”})`, check app **B** opens
-- `AOpensB4`:  **A** calls `{appID: “<app ID>”}, check app **B** opens.  (`FDC3 2.0`)
 
 ### A Fails To Open B
 
-- `AFailsToOpenB`:  Run the above 4 tests again with a non-existent app name/app id.  Should return “App Not Found” Error from https://fdc3.finos.org/docs/api/ref/Errors#openerror
+- `AFailsToOpenB1-3`:  Run the above 4 tests again with a non-existent app name/app id.  Should return “App Not Found” Error from https://fdc3.finos.org/docs/api/ref/Errors#openerror
 
 ### A Opens B With Context
 
