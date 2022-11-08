@@ -74,7 +74,6 @@
 -  `ACUnsubscribe`: Perform above test, except that after creating the channel **A** then `unsubscribe()`s the channel. Check that **A** _doesn't_ receive anything.
 -  `ACFilteredContext4`: Perform above test, except that after creating the channel **A** creates another channel with a further _different_ channel.  Check that **A** _doesn't_ receive anything.
 -  `ACFilteredContext5`: Perform above test, except that after creating the channel **A** calls `fdc3.leaveChannel()` and doesn't receive anything.
--  `ACInvalidBroadcast1` (1.2 ONLY): Broadcast is sent either without type field / invalid object structure.  NOT DELIVERED, no other errors.
 
 ### App Channel History
 
