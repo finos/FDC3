@@ -110,11 +110,11 @@
 
 | App | Step            | Description                                              |
 |-----|-----------------|----------------------------------------------------------|
-| A   | Opening App     | various open methods as in `AOpensB1-3` except with a `<context>` argument <br>check app opens    |
+| A   | Opening App     | various open methods as in `AOpensB1-3` except with a `<context>` argument of type `fdc3.testReceiver` <br>check app opens    |
 | B   | Context present | `fdc3.addContextListener()`<br>- receives `<context>` from **A** |
 
 -  `AOpensBWithContext1-3`: Perform above tests
--  `AOpensBWithSpecificContext`: Perform above but replace **B**s call with `fdc3.addContextListener('fdc3.instrument`)`
+-  `AOpensBWithSpecificContext`: Perform above but replace **B**s call with `fdc3.addContextListener('fdc3.testReceiver`)`
 
 
 ### Specific Context
@@ -123,7 +123,7 @@
 | App | Step            | Description                                                                                                                   |
 |-----|-----------------|-------------------------------------------------------------------------------------------------------------------------------|
 | A   | Opening App     | `fdc3.open(‘app Name’, <contact context>)` <br>check app opens                                                                |
-| B   | Context present | fdc3.addContextListener()<br>- receives <context> from a                                                                      |
+| B   | Context present | fdc3.addContextListener()<br>- receives <context> from A                                                                      |
 | A   | Promise         | - receives a rejection from the open promise with “App Timeout’ from <br>https://fdc3.finos.org/docs/api/ref/Errors#openerror |
 
 -  `AOpensBWithWrongContext`: As above
