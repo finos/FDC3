@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Button, Grid, Typography, Tooltip, IconButton, Table, TableBody, TableRow, TableCell, TableContainer } from "@material-ui/core";
@@ -103,6 +103,7 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 	const [templateName, setTemplateName] = useState<OptionType | null>({
 		title: contextName,
 		value: contextName});
+	const [duplicateName, setDuplicateName] = useState(false);
 	const [contextValue, setContextValue] = useState<ContextType | null>(emptyJson);
 	const [context, setContext] = useState<ContextItem | null>({
 		id: contextName || "empty",
@@ -156,10 +157,14 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 			if(selectedContext) {
 				selectedContext.id = newValue.value
 				setContext(selectedContext)
+			} else {
+				context.id = newValue.value;
+				setContext(context);
 			}
+			setDuplicateName(false)
 		}
 		else if(found(newValue.value) >= 1) {
-			setDisabled(true);
+			setDuplicateName(true);
 			setContextError("Template name already exists");
 		}
 	}
@@ -167,7 +172,6 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 	const handleContextChange = (json: ContextType) => {
 		setContextValue(json);
 		setContextError(false);
-		setDisabled(false);
 	};
 
 	const validate = () => {
@@ -195,16 +199,14 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 	};
 
 	const handleCreateTemplate = () => {
-		if (context) {
-			setTemplateName(null)
-			const newContext: ContextItem = {
-				id: "empty",
-				template: emptyJson,
-				schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/context.schema.json"),
-			};
-			setContext(newContext);
-			setContextValue(emptyJson);
-		}
+		setTemplateName(null)
+		const newContext: ContextItem = {
+			id: "empty",
+			template: emptyJson,
+			schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/context.schema.json"),
+		};
+		setContext(newContext);
+		setContextValue(emptyJson);
 		setDisabled(true);
 	};
 
@@ -292,6 +294,11 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 			});
 		}
 	};
+
+	useEffect(() => {
+	  if(duplicateName) setDisabled(true)
+	}, [duplicateName])
+	
 
 	return (
 		<div className={classes.root}>
