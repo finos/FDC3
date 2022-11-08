@@ -3,9 +3,9 @@ import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Tabs, Tab } from "@material-ui/core";
 import { TabPanel } from "../common/TabPanel";
-import { CurrentContext } from "./CurrentContext";
 import { ContextListeners } from "./ContextListeners";
 import { IntentListeners } from "./IntentListeners";
+import { AppChannelListeners } from "./AppChannelListeners";
 import { SystemLog } from "./SystemLog";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -64,14 +64,14 @@ export const Workbench = observer(() => {
 				}}
 				className={classes.tabs}
 			>
-				<Tab label="Current State" {...a11yProps(0)} />
+				<Tab label="Listeners" {...a11yProps(0)} />
 				<Tab label="System Log" {...a11yProps(1)} />
 			</Tabs>
 
 			<TabPanel value={tabValue} index={0}>
-				<CurrentContext />
 				<ContextListeners />
 				<IntentListeners />
+				<AppChannelListeners />
 			</TabPanel>
 
 			<div className={classes.systemLog}>

@@ -10,6 +10,7 @@ export type logMessagesName =
 	| "joinChannel"
 	| "leaveChannel"
 	| "broadcast"
+	| "appbroadcast"
 	| "raiseIntent"
 	| "raiseIntentForContext"
 	| "addContextListener"
@@ -20,7 +21,11 @@ export type logMessagesName =
 	| "receivedIntentListener"
 	| "deleteTemplate"
 	| "saveTemplate"
-	| "copyToClipboard";
+	| "copyToClipboard"
+	| "getOrCreateChannel"
+	| "receivedAppContextListener"
+	| "addAppContextListener"
+	| "removeAppChannelContextListener";
 
 export type logMessagesType = "error" | "success" | "warning" | "info";
 
