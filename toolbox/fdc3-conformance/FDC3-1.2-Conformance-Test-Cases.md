@@ -57,9 +57,9 @@
 | B   | Broadcast          | `testChannel.broadcast(<some instrument>)`   |
 | A   | Receive Context    | Instrument object matches the one broadcast in 2 above.      |
 
--  `AC Basic Usage 1` Perform above test 
--  `AC Basic Usage 2` Perform above test, but join channel first and then `testChannel.addContextListener()`
--  `AC Basic Usage 3` Do the app B steps first but in reverse order to populate the channel with context, check that A will receive the context after joining
+-  `ACBasicUsage1` Perform above test 
+-  `ACBasicUsage2` Perform above test, but join channel first and then `testChannel.addContextListener()`
+-  `ACBasicUsage3` Do the app B steps first but in reverse order to populate the channel with context, check that A will receive the context after joining
 
 ### App Channels Broadcast (Filtered Context)
 
@@ -71,14 +71,13 @@
 | B   | Broadcast          | `testChannel.broadcast()` the instrument context.<br>`testChannel.broadcast()` a contact context. |
 | A   | Receive Context    | Instrument object matches the one broadcast in 2 above.<br>Check that the contact is not received.                                                                   |
 
--  `AC Filtered Context 1`: Perform above test 
+-  `ACFilteredContext1`: Perform above test 
 
--  `AC Filtered Context 2`: Perform above test, except joining a _different_ channel. Check that you _don't_ receive anything.
--  `AC Unsubscribe`: Perform above test, except that after joining, **A** then `unsubscribe()`s the channel. Check that **A** _doesn't_ receive anything.
--  `AC Filtered Context 3`: Perform above test, except that after joining, **A** changes channel with a further _different_ channel.  Check that **A** _doesn't_ receive anything.
--  `AC Filtered Context 4`: Perform above test, except that after joining, **A** calls `fdc3.leaveChannel()` and doesn't receive anything.
--  `AC Invalid Broadcast 1` (1.2 ONLY): Broadcast is sent either without type field / invalid object structure.  NOT DELIVERED, no other errors.
--  `AC Invalid Broadcast 2` (2.0 ONLY): Broadcast is sent either without type field / invalid object structure.  NOT DELIVERED, promise is rejected.
+-  `ACFilteredContext2`: Perform above test, except joining a _different_ channel. Check that you _don't_ receive anything.
+-  `ACUnsubscribe`: Perform above test, except that after joining, **A** then `unsubscribe()`s the channel. Check that **A** _doesn't_ receive anything.
+-  `ACFilteredContext3`: Perform above test, except that after joining, **A** changes channel with a further _different_ channel.  Check that **A** _doesn't_ receive anything.
+-  `ACFilteredContext4`: Perform above test, except that after joining, **A** calls `fdc3.leaveChannel()` and doesn't receive anything.
+-  `ACInvalidBroadcast1` (1.2 ONLY): Broadcast is sent either without type field / invalid object structure.  NOT DELIVERED, no other errors.
 
 ### App Channel History
 
@@ -89,9 +88,9 @@
 | B   | Broadcast          | `testChannel.broadcast()` the instrument context.<br>`testChannel.broadcast()` a contact context. |
 | A   | Receive Context    | `testChannel.getCurrentContext('fdc.instrument')` returns the last instrument<br>testChannel.getCurrentContext('fdc.contact')` returns the last broadcast contact                                                              |
 
--  `AC Context History Typed`: Perform above test.
--  `AC Context History Multiple`: **B** Broadcasts multiple history items of both types.  Only the last version of each type is received by **A**.
--  `AC Context History Last`: **A** calls `testChannel.getCurrentContext()` retrieves the last broadcast context item
+-  `ACContextHistoryTyped`: Perform above test.
+-  `ACContextHistoryMultiple`: **B** Broadcasts multiple history items of both types.  Only the last version of each type is received by **A**.
+-  `ACContextHistoryLast`: **A** calls `testChannel.getCurrentContext()` retrieves the last broadcast context item
 
 ## 3. Open API 
 
