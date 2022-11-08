@@ -131,8 +131,6 @@
 -  `AOpensBMultipleListen`:  **B** performs `fdc3.addContextListener('fdc3.instrument') prior to the existing `addContextListener`.  The correct context listener should receive the context, and the promise completes successfully
 -  `AOpensBMalformedContext`: **A** tries to pass malformed context to **B**.  Context listener receives nothing, promise completes successfully.
 
-
-
 ## 4. Intents
 
 ### Setup
@@ -171,6 +169,6 @@ Also we assume a fourth app **D** that is going to discover the intents in the o
 
 -  `SingleResolve1`: Perform above test
 -  `TargetedResolve1`: Use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, <A’s App Name>)` to start app A, otherwise, as above
--  `TargetedResolve2,3,4` Use the other ways of addressing apps (via ID, metadata) as described at the start of #18 
+-  `TargetedResolve2,3,4` Use the other ways of addressing apps (via ID, metadata) as described in `AOpensB1-3` 
 -  `FailedResolve1-4` As above, but use `fdc3.raiseIntent(‘aTestingIntent’, {testContextY}, <A’s App Name>)` and variations.  You will receive No Apps Available Resolve Error
 -  `FailedResolve5-8` As above, but use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, <C’s App Name>)` and variations.  You will receive No Apps Available Resolve Error
