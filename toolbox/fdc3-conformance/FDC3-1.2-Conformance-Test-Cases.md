@@ -110,10 +110,10 @@
 
 | App | Step            | Description                                              |
 |-----|-----------------|----------------------------------------------------------|
-| A   | Opening App     | various open methods as in `AOpensB1` except with a `<context>` argument <br>check app opens    |
+| A   | Opening App     | various open methods as in `AOpensB1-3` except with a `<context>` argument <br>check app opens    |
 | B   | Context present | `fdc3.addContextListener()`<br>- receives `<context>` from **A** |
 
--  `AOpensBWithContext`: Perform above tests
+-  `AOpensBWithContext1-3`: Perform above tests
 -  `AOpensBWithSpecificContext`: Perform above but replace **B**s call with `fdc3.addContextListener('fdc3.instrument`)`
 
 
