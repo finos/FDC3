@@ -48,7 +48,7 @@ export const IntentListeners = observer(() => {
 			/>
 		);
 
-		return { id, textPrimary: `${type} Listener`, afterEachElement: contextField };
+		return { id, textPrimary: `${type}`, afterEachElement: contextField };
 	});
 
 	const handleDeleteListener = (id: string) => {
@@ -57,7 +57,7 @@ export const IntentListeners = observer(() => {
 
 	return (
 		<AccordionList
-			title="Intent Listeners"
+			title="Intents"
 			noItemsText="No Intent Listeners"
 			listItems={intentListeners}
 			onDelete={handleDeleteListener}
