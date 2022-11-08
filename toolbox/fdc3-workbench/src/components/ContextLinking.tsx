@@ -66,18 +66,20 @@ export const ContextLinking = observer(() => {
 	const classes = useStyles();
 	const [contextListener, setContextListener] = useState<ListenerOptionType | null>(null);
 	const [contextError, setContextError] = useState<string | false>(false);
-	const contextListenersOptions: ListenerOptionType[] = contextStore.contextsList.map(({ id, template }) => {
+	const contextListenersOptionsAll: ListenerOptionType[] = contextStore.contextsList.map(({ id, template }) => {
 		return {
 			title: id,
 			value: id,
 			type: template?.type
 		};
 	});
-	contextListenersOptions.unshift({
+	contextListenersOptionsAll.unshift({
 		title: "All",
 		value: "all",
 		type: "All"
 	});
+
+	const contextListenersOptions = Array.from(new Map(contextListenersOptionsAll.reverse().map((item) => [item["type"], item])).values()).reverse();
 
 	const handleChangeListener =
 		(setValue: ListenerSetValue, setError: ListenerSetError) => (event: React.ChangeEvent<{}>, newValue: any) => {
@@ -123,10 +125,10 @@ export const ContextLinking = observer(() => {
 
 	const handleAddContextListener = () => {
 		if (contextListener) {
-			if (contextStore.isContextListenerExists(contextListener.value)) {
+			if (contextStore.isContextListenerExists(contextListener.type)) {
 				setContextError("Listener already added");
 			} else {
-				contextStore.addContextListener(contextListener.value);
+				contextStore.addContextListener(contextListener.type);
 				setContextListener(null);
 			}
 		} else {

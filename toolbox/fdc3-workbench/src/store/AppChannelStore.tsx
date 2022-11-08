@@ -7,7 +7,7 @@ import { ContextType } from "./ContextStore";
 interface Fdc3Listener {
 	id: string;
     channelId: string;
-	type: string;
+	type: string | undefined;
 	listener: fdc3.Listener;
 	lastReceivedContext?: ContextType | null;
 }
@@ -79,7 +79,7 @@ class AppChannelStore {
 		}
 	}
 
-    isContextListenerExists(channelId: string, type: string) {
+    isContextListenerExists(channelId: string, type: string | undefined) {
         return !!this.appChannelListeners?.find((listener) => listener.type === type && listener.channelId === channelId);
 	}
 
@@ -168,14 +168,14 @@ class AppChannelStore {
 		}
 	}
 
-    addChannelListener(channelId: string, newListener: string ){
+    addChannelListener(channelId: string, newListener: string | undefined ){
         try{
             let currentChannel = this.appChannelsList.find((channel)=>channel.id === channelId);
             let foundListener = this.appChannelListeners.find((currentListener)=>currentListener.type === newListener && currentListener.channelId === channelId);
 
-            if (!foundListener && currentChannel) {
+            if (!foundListener && currentChannel && newListener !== undefined) {
                 const listenerId = nanoid();
-                const contactListener = currentChannel.channel.addContextListener(newListener === "all" ? null : newListener, (context) => {
+                const contactListener = currentChannel.channel.addContextListener(newListener?.toLowerCase() === "all" ? null : newListener, (context) => {
                     const currentListener = this.appChannelListeners.find((listener)=>listener.type === newListener && listener.channelId === channelId);
 
                     runInAction(() => {
