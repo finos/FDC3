@@ -43,7 +43,6 @@
 -  `UCFilteredContext4`: Perform above test, except that after joining, **A** changes channel with a further _different_ channel.  Check that **A** _doesn't_ receive anything.
 -  `UCFilteredContext5`: Perform above test, except that after joining, **A** calls `fdc3.leaveCurrentChannel()` and doesn't receive anything.
 -  `UCInvalidBroadcast1` (1.2 ONLY): Broadcast is sent either without type field / invalid object structure.  NOT DELIVERED, no other errors.
--  `UCInvalidBroadcast2` (2.0 ONLY): Broadcast is sent either without type field / invalid object structure.  NOT DELIVERED, promise is rejected.
 -  `UCCurrentChannel`: A call to `fdc3.getCurrentChannel()` returns _null_ if called prior to any `joinChannel`.
 
 ## 2. App Channels 
