@@ -41,7 +41,6 @@
 -  `UCFilteredContext3`: Perform above test, except joining a _different_ channel. Check that you _don't_ receive anything.
 -  `UCUnsubscribe`: Perform above test, except that after joining, **A** then `unsubscribe()`s the channel. Check that **A** _doesn't_ receive anything.
 -  `UCFilteredContext4`: Perform above test, except that after joining, **A** changes channel with a further _different_ channel.  Check that **A** _doesn't_ receive anything.
--  `UCFilteredContext5`: Perform above test, except that after joining, **A** calls `fdc3.leaveCurrentChannel()` and doesn't receive anything.
 -  `UCInvalidBroadcast1` (1.2 ONLY): Broadcast is sent either without type field / invalid object structure.  NOT DELIVERED, no other errors.
 -  `UCCurrentChannel`: A call to `fdc3.getCurrentChannel()` returns _null_ if called prior to any `joinChannel`.
 
