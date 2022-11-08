@@ -15,7 +15,7 @@
 -  `UCBasicUsage1` Perform above test 
 -  `UCBasicUsage2` Perform above test, but join channel first and then `fdc3.addContextListener()`
 -  `UCBasicUsage3` Do the app B steps first to populate the channel with context, check that A will receive the context after joining
--  `UCBasicUsag4` Do the app B steps first but in reverse order to populate the channel with context, check that A will receive the context after joining
+-  `UCBasicUsage4` Do the app B steps first but in reverse order to populate the channel with context, check that A will receive the context after joining
 
 ### User Channels Broadcast (Filtered Context)
 
