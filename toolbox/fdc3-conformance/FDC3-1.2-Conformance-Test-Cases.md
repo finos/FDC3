@@ -51,40 +51,40 @@
 
 | App | Step               | Details                                                                                                                                                        |
 |-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | joinChannel        |`fdc3.getOrCreateChannel("test-channel")`       |
+| A   | createChannel        |`fdc3.getOrCreateChannel("test-channel")`       |
 | A   | addContextListener |Call `testChannel.addContextListener(null, handler)`<br>Check listener object returned<br>Check that there is an `unsubscribe` function on the returned object  |
-| B   | joinChannel        | `fdc3. getOrCreateChannel("test-channel")`   |
+| B   | createChannel        | `fdc3. getOrCreateChannel("test-channel")`   |
 | B   | Broadcast          | `testChannel.broadcast(<some instrument>)`   |
 | A   | Receive Context    | Instrument object matches the one broadcast in 2 above.      |
 
 -  `ACBasicUsage1` Perform above test 
 -  `ACBasicUsage2` Perform above test, but join channel first and then `testChannel.addContextListener()`
--  `ACBasicUsage3` Do the app B steps first but in reverse order to populate the channel with context, check that A will receive the context after joining
+-  `ACBasicUsage3` Do the app B steps first but in reverse order to populate the channel with context, check that A will receive the context after creating
 
 ### App Channels Broadcast (Filtered Context)
 
 | App | Step               | Details                                                                                                                                                              |
 |-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | joinChannel        |`fdc3.getOrCreateChannel("test-channel")`       |
+| A   | createChannel        |`fdc3.getOrCreateChannel("test-channel")`       |
 | A   | addContextListener | Call `testChannel.addContextListener("fdc3.instrument", handler)`<br>Check listener object returned<br>Check that there is an `unsubscribe` function on the returned object |
-| B   | joinChannel        | `fdc3. getOrCreateChannel("test-channel")`   |
+| B   | createChannel        | `fdc3. getOrCreateChannel("test-channel")`   |
 | B   | Broadcast          | `testChannel.broadcast()` the instrument context.<br>`testChannel.broadcast()` a contact context. |
 | A   | Receive Context    | Instrument object matches the one broadcast in 2 above.<br>Check that the contact is not received.                                                                   |
 
 -  `ACFilteredContext1`: Perform above test 
 -  `ACFilteredContext2`: Perform above test, but add listeners for both `fdc3.instrument` and `fdc3.contact` in `addContextListener` step.  Both should be received. 
--  `ACFilteredContext3`: Perform above test, except joining a _different_ channel. Check that you _don't_ receive anything.
--  `ACUnsubscribe`: Perform above test, except that after joining, **A** then `unsubscribe()`s the channel. Check that **A** _doesn't_ receive anything.
--  `ACFilteredContext4`: Perform above test, except that after joining, **A** changes channel with a further _different_ channel.  Check that **A** _doesn't_ receive anything.
--  `ACFilteredContext5`: Perform above test, except that after joining, **A** calls `fdc3.leaveChannel()` and doesn't receive anything.
+-  `ACFilteredContext3`: Perform above test, except creating a _different_ channel. Check that you _don't_ receive anything.
+-  `ACUnsubscribe`: Perform above test, except that after creating the channel **A** then `unsubscribe()`s the channel. Check that **A** _doesn't_ receive anything.
+-  `ACFilteredContext4`: Perform above test, except that after creating the channel **A** creates another channel with a further _different_ channel.  Check that **A** _doesn't_ receive anything.
+-  `ACFilteredContext5`: Perform above test, except that after creating the channel **A** calls `fdc3.leaveChannel()` and doesn't receive anything.
 -  `ACInvalidBroadcast1` (1.2 ONLY): Broadcast is sent either without type field / invalid object structure.  NOT DELIVERED, no other errors.
 
 ### App Channel History
 
 | App | Step               | Details                                                                                                                                                              |
 |-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | joinChannel        |`fdc3.getOrCreateChannel("test-channel")`       |
-| B   | joinChannel        | `fdc3. getOrCreateChannel("test-channel")`   |
+| A   | createChannel        |`fdc3.getOrCreateChannel("test-channel")`       |
+| B   | createChannel        | `fdc3. getOrCreateChannel("test-channel")`   |
 | B   | Broadcast          | `testChannel.broadcast()` the instrument context.<br>`testChannel.broadcast()` a contact context. |
 | A   | Receive Context    | `testChannel.getCurrentContext('fdc.instrument')` returns the last instrument<br>testChannel.getCurrentContext('fdc.contact')` returns the last broadcast contact                                                              |
 
