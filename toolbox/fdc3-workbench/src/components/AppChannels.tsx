@@ -88,6 +88,9 @@ const useStyles = makeStyles((theme: Theme) =>
 			marginTop: "24px",
 			marginBottom: "16px",
 		},
+        rightPadding: {
+            paddingRight: theme.spacing(.5),
+        },
 	})
 );
 
@@ -107,6 +110,7 @@ const listenerFilter = createFilterOptions<ListenerOptionType>();
 export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) => {
     const classes = useStyles();
     const [isError, setIsError] = useState<boolean>(false);
+    const [render, setRender] = useState<boolean>(false);
     const [currentAppChannelId, setCurrentAppChannelId] = useState<string>("");
     const contextListenersOptions: ListenerOptionType[] = contextStore.contextsList.map(({ id, template }) => {
         return {
@@ -138,7 +142,7 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
     };
 
     const getOptionLabel = (option: ListenerOptionType) => {
-		if (option.value) {
+        if (option.value) {
 			return option.value;
 		}
 		return option.title;
@@ -180,12 +184,15 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
             if(foundChannel?.currentListener){
                 if (appChannelStore.isContextListenerExists(channelId, foundChannel?.currentListener.value)) {
                     foundChannel.listenerError = "Listener already added";
+                    setRender(true);
                 } else {
                     appChannelStore.addChannelListener(channelId, foundChannel.currentListener.value);
                     foundChannel.listenerError = "";
+                    setRender(true);
                 }
             } else {
                 foundChannel.listenerError = "Enter context type";
+                setRender(true);
             }
         }
 	};
@@ -204,7 +211,7 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
     };
 
 	const filterOptions = (options: ListenerOptionType[], params: FilterOptionsState<ListenerOptionType>) => {
-		const filtered = listenerFilter(options, params);
+        const filtered = listenerFilter(options, params);
 		if (params.inputValue !== "") {
 			filtered.push({
 				value: params.inputValue,
@@ -281,7 +288,7 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
                                             size="small"
                                             aria-label="Copy code example"
                                             color="primary"
-                                            onClick={copyToClipboard(codeExamples.broadcast, "broadcast")}
+                                            onClick={copyToClipboard(codeExamples.appChannelBroadcast, "appChannelBroadcast")}
                                         >
                                             <FileCopyIcon />
                                         </IconButton>
@@ -294,7 +301,7 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
                                         Add Context Listener
                                     </Typography>
                                 </Grid>
-                                <Grid item sm={7}>
+                                <Grid item sm={7} className={classes.rightPadding}>
                                     <Autocomplete
                                         size="small"
                                         selectOnFocus
@@ -306,7 +313,7 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
                                         filterOptions={filterOptions}
                                         options={contextListenersOptions}
                                         getOptionLabel={getOptionLabel}
-                                        renderOption={(option) => option.title}
+                                        renderOption={(option) => option.type}
                                         renderInput={(params) => (
                                             <TemplateTextField
                                                 label="CONTEXT TYPE"
@@ -334,7 +341,7 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
                                             size="small"
                                             aria-label="Copy code example"
                                             color="primary"
-                                            onClick={copyToClipboard(codeExamples.contextListener, "addContextListener")}
+                                            onClick={copyToClipboard(codeExamples.appChannelContextListener, "addAppChannelContextListener")}
                                         >
                                             <FileCopyIcon />
                                         </IconButton>
