@@ -294,7 +294,6 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 								className={classes.rightPadding}
 								id="raise-intent"
 								size="small"
-								clearText={`${intentsForContext == null}`}
 								selectOnFocus
 								blurOnSelect
 								clearOnBlur
