@@ -133,6 +133,11 @@ const useStyles = makeStyles((theme: Theme) =>
 		code: {
 			fontFamily: "courier, courier new, serif",
 		},
+		workbench: {
+			[theme.breakpoints.down('sm')]: {
+				marginTop: '30px'
+			}
+		}
 	})
 );
 
@@ -198,7 +203,7 @@ export const App = observer(() => {
 				</Grid>
 				{fdc3Available ? (
 					<Grid className={classes.body} container spacing={2} item xs={12} style={{ marginLeft: "0px" }}>
-						<Grid item xs={8} style={{ flex: 1 }}>
+						<Grid item xs={12} md={8} style={{ flex: 1 }}>
 							<Paper className={classes.paper}>
 								<Tabs
 									value={tabIndex}
@@ -232,7 +237,7 @@ export const App = observer(() => {
 							</Paper>
 						</Grid>
 
-						<Grid item xs={4}>
+						<Grid item xs={12} md={4} className={classes.workbench}>
 							<Paper className={classes.paper}>
 								<Workbench />
 							</Paper>

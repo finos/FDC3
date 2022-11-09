@@ -103,8 +103,8 @@ export const ContextLinking = observer(() => {
 		};
 
 	const getOptionLabel = (option: ListenerOptionType) => {
-		if (option.value) {
-			return option.value;
+		if (option.type) {
+			return option.type;
 		}
 		return option.title;
 	};
