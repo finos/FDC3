@@ -142,8 +142,8 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
     };
 
     const getOptionLabel = (option: ListenerOptionType) => {
-        if (option.value) {
-			return option.value;
+        if (option.type) {
+			return option.type;
 		}
 		return option.title;
 	};
