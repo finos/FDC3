@@ -222,6 +222,7 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 	};
 
 	useEffect(() => {
+		setIntentValue(null)
 		const fetchIntents = async () => {
 			try {
 				if(raiseIntentContext) {
@@ -230,8 +231,8 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 						setIntentObjects(appIntents);
 						setIntentsForContext(appIntents.map(({intent}: {intent:any})=>{
 							return {
-								title: intent.displayName,
-								value: intent.displayName
+								title: intent.name.split('.')[1],
+								value: intent.name.split('.')[1]
 							}
 						}));
 					}
@@ -293,6 +294,7 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 								className={classes.rightPadding}
 								id="raise-intent"
 								size="small"
+								clearText={`${intentsForContext == null}`}
 								selectOnFocus
 								blurOnSelect
 								clearOnBlur
