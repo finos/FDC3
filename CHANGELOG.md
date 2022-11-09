@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added a `ViewChat` Intent to be used when a user wants to open an existing chat room. ([#796](https://github.com/finos/FDC3/pull/796))
+
 ### Changed
 
 * Updated definition of the `Instrument` context type to include optional market identifiers ([#819](https://github.com/finos/FDC3/pull/819))
