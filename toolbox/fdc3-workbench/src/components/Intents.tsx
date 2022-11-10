@@ -231,8 +231,8 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 						setIntentObjects(appIntents);
 						setIntentsForContext(appIntents.map(({intent}: {intent:any})=>{
 							return {
-								title: intent.name.split('.')[1],
-								value: intent.name.split('.')[1]
+								title: intent.name.includes('fdc3') ? intent.name.split('.')[1] : intent.name,
+								value: intent.name.includes('fdc3') ? intent.name.split('.')[1] : intent.name
 							}
 						}));
 					}
