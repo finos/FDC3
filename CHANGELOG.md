@@ -99,6 +99,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Clarified the description of the addContextListener functions from the Desktop Agent and Channel APIs in spec and docs. ([#492](https://github.com/finos/FDC3/pull/492))
 * Clarified that implementing `fdc3.getInfo()` is required for compliance with the FDC3 standard ([#515](https://github.com/finos/FDC3/pull/515))
 * Corrected syntax errors in valuation schema ([#834](https://github.com/finos/FDC3/pull/834))
+* Clarified that API errors are promises rejected with a JavaScript (or language appropriate) Error Object with a message chosen from the error enumerations. ([#843](https://github.com/finos/FDC3/pull/843))
+* Clarified that `findIntent` functions should return the `ResolveError.NoAppsFound` error, rather than an `AppIntent` with an empty `apps` array when no apps are fund during intent resolution. ([#843](https://github.com/finos/FDC3/pull/843))
 
 ## [npm v1.2.0] - 2021-04-19
 
