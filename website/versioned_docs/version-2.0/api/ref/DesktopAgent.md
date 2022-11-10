@@ -591,7 +591,7 @@ redChannel.addContextListener(null, channelListener);
 open(app: AppIdentifier, context?: Context): Promise<AppIdentifier>;
 ```
 
-Launches an app, specified via an [`AppIdentifier`](Metadata#appidentifier) object.
+Launches an app, specified via an [`AppIdentifier`](Types#appidentifier) object.
 
 The `open` method differs in use from [`raiseIntent`](#raiseintent).  Generally, it should be used when the target application is known but there is no specific intent.  For example, if an application is querying an App Directory, `open` would be used to open an app returned in the search results.
 
@@ -599,7 +599,7 @@ The `open` method differs in use from [`raiseIntent`](#raiseintent).  Generally,
 
 If a [`Context`](Types#context) object is passed in, this object will be provided to the opened application via a contextListener. The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
 
-Returns an [`AppIdentifier`](Metadata#appidentifier) object with the `instanceId` field set to identify the instance of the application opened by this call.
+Returns an [`AppIdentifier`](Types#appidentifier) object with the `instanceId` field set to identify the instance of the application opened by this call.
 
 If opening errors, it returns an `Error` with a string from the [`OpenError`](Errors#openerror) enumeration.
 
@@ -617,7 +617,7 @@ let instanceIdentifier = await fdc3.open(appIdentifier, context);
 #### See also
 
 * [`Context`](Types#context)
-* [`AppIdentifier`](Metadata#AppIdentifier)
+* [`AppIdentifier`](Types#appidentifier)
 * [`AppMetadata`](Metadata#appmetadata)
 * [`OpenError`](Errors#openerror)
 
@@ -676,7 +676,7 @@ try {
 #### See also
 
 * [`Context`](Types#context)
-* [`AppIdentifier`](Metadata#AppIdentifier)
+* [`AppIdentifier`](Types#appidentifier)
 * [`IntentResult`](Types#intentresult)
 * [`IntentResolution`](Metadata#intentresolution)
 * [`ResolveError`](Errors#resolveerror)
@@ -713,7 +713,7 @@ await fdc3.raiseIntentForContext(context, targetAppIdentifier);
 
 * [`raiseIntent()`](#raiseintent)
 * [`Context`](Types#context)
-* [`AppIdentifier`](Metadata#AppIdentifier)
+* [`AppIdentifier`](Types#appidentifier)
 * [`IntentResolution`](Metadata#intentresolution)
 * [`ResolveError`](Errors#resolveerror)
 
