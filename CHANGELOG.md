@@ -101,6 +101,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Corrected syntax errors in valuation schema ([#834](https://github.com/finos/FDC3/pull/834))
 * Clarified that API errors are promises rejected with a JavaScript (or language appropriate) Error Object with a message chosen from the error enumerations. ([#843](https://github.com/finos/FDC3/pull/843))
 * Clarified that `findIntent` functions should return the `ResolveError.NoAppsFound` error, rather than an `AppIntent` with an empty `apps` array when no apps are fund during intent resolution. ([#843](https://github.com/finos/FDC3/pull/843))
+* Clarified spec requirements for registration of intent handlers (SHOULD support `interop.intents.listensFor` in an appD record, may support other routes including dynamic registration at runtime) ([#844](https://github.com/finos/FDC3/pull/844))
 
 ## [npm v1.2.0] - 2021-04-19
 

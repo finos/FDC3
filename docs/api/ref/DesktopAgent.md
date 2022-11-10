@@ -150,6 +150,7 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 
 #### See also
 
+* [Register an Intent Handler](../spec#register-an-intent-handler)
 * [`PrivateChannel`](PrivateChannel)
 * [`Listener`](Types#listener)
 * [`Context`](Types#context)
@@ -673,6 +674,7 @@ try {
 
 #### See also
 
+* [Raising Intents](../spec#raising-intents)
 * [`Context`](Types#context)
 * [`AppIdentifier`](Types#AppIdentifier)
 * [`IntentResult`](Types#intentresult)
@@ -709,6 +711,7 @@ await fdc3.raiseIntentForContext(context, targetAppIdentifier);
 
 #### See also
 
+* [Raising Intents](../spec#raising-intents)
 * [`raiseIntent()`](#raiseintent)
 * [`Context`](Types#context)
 * [`AppIdentifier`](Types#appidentifier)
