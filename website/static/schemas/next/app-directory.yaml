@@ -650,8 +650,7 @@ components:
                 Used to support intent resolution by desktop agents. Replaces the `intents` element used in appD records prior to FDC3 2.0. 
               additionalProperties:
                 x-additionalPropertiesName: Intent name
-                items:
-                  $ref: '#/components/schemas/Intent'
+                $ref: '#/components/schemas/Intent'
             raises:
               type: object
               description: | 
