@@ -137,7 +137,7 @@
 <li>Intent resolution MUST take into account any specified input or return context types</li>
 <li>Requests for resolution to apps returning a channel MUST include any apps that are registered as returning a channel with a specific type.</li>
 </ul></li>
-<li>Return Errors from the <a href="ref/Errors#channelerror"><code>ChannelError</code></a>, <a href="ref/Errors#openerror"><code>OpenError</code></a>, <a href="ref/Errors#resolveerror"><code>ResolveError</code></a> and <a href="ref/Errors#resulterror"><code>ResultError</code></a> enumerations as appropriate.</li>
+<li>Return (JavaScript or platform appropriate) Error Objects with messages from the <a href="ref/Errors#channelerror"><code>ChannelError</code></a>, <a href="ref/Errors#openerror"><code>OpenError</code></a>, <a href="ref/Errors#resolveerror"><code>ResolveError</code></a> and <a href="ref/Errors#resulterror"><code>ResultError</code></a> enumerations as appropriate.</li>
 <li>Accept as input and return as output data structures that are compatibile with the interfaces defined in this Standard.</li>
 <li>Include implementations of the following <a href="ref/DesktopAgent">Desktop Agent</a> API functions, as defined in this Standard:
 <ul>
