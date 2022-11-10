@@ -77,21 +77,21 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 		setIsError(false);
 	};
 
-	const handleJoinChannel = () => {
+	const handleJoinUserChannel = () => {
 		if (channelId) {
-			channelStore.joinChannel(channelId);
+			channelStore.joinUserChannel(channelId);
 			setChannelId("");
 		} else {
 			setIsError(true);
 		}
 	};
 
-	const handleLeaveChannel = () => {
-		channelStore.leaveChannel();
+	const handleLeaveUserChannel = () => {
+		channelStore.leaveUserChannel();
 	};
 
-	const handleRefreshChannel = () => {
-		channelStore.getCurrentChannel();
+	const handleRefreshUserChannel = () => {
+		channelStore.getCurrentUserChannel();
 	};
 
 	const handleBroadcast = () => {
@@ -107,17 +107,17 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 			<form className={classes.form} noValidate autoComplete="off">
 				<Grid container direction="row" spacing={1}>
 					<Grid item xs={12} sm={5}>
-						<Typography variant="body1">{channelStore.currentChannel?.id ?? "None"}</Typography>
+						<Typography variant="body1">{channelStore.currentUserChannel?.id ?? "None"}</Typography>
 					</Grid>
 					<Grid item xs={12} sm={7}>
 						<Grid container direction="row" justifyContent="flex-end" spacing={1}>
 							<Grid item className={classes.controls}>
-								<Button variant="contained" color="primary" onClick={handleRefreshChannel}>
+								<Button variant="contained" color="primary" onClick={handleRefreshUserChannel}>
 									Refresh
 								</Button>
 							</Grid>
 							<Grid item className={classes.controls}>
-								<Button variant="contained" color="primary" onClick={handleLeaveChannel}>
+								<Button variant="contained" color="primary" onClick={handleLeaveUserChannel}>
 									Leave
 								</Button>
 							</Grid>
@@ -127,7 +127,7 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 										size="small"
 										aria-label="Copy code example"
 										color="primary"
-										onClick={copyToClipboard(codeExamples.getCurrentChannel, "getCurrentChannel")}
+										onClick={copyToClipboard(codeExamples.getCurrentUserChannel, "getCurrentUserChannel")}
 									>
 										<FileCopyIcon />
 									</IconButton>
@@ -141,7 +141,7 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 			<div className={classes.border}></div>
 
 			<Grid item xs={12}>
-				<Typography variant="h5">Join System Channels</Typography>
+				<Typography variant="h5">Join User Channels</Typography>
 			</Grid>
 
 			<form className={classes.form} noValidate autoComplete="off">
@@ -154,7 +154,7 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 								id="channel-select"
 								value={channelId ?? ""}
 								onChange={handleSelectChange}
-								label="Channel"
+								label="User Channel"
 								MenuProps={{
 									anchorOrigin: {
 										vertical: "bottom",
@@ -167,14 +167,14 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 									getContentAnchorEl: null,
 								}}
 							>
-								{!channelStore.systemChannels.length && (
+								{!channelStore.userChannels.length && (
 									<MenuItem value="" disabled>
 										No channels received
 									</MenuItem>
 								)}
-								{channelStore.systemChannels.length && <MenuItem value="" style={{ height: "0", padding: "0" }} />}
-								{channelStore.systemChannels.length &&
-									channelStore.systemChannels.map(({ id }) => (
+								{channelStore.userChannels.length && <MenuItem value="" style={{ height: "0", padding: "0" }} />}
+								{channelStore.userChannels.length &&
+									channelStore.userChannels.map(({ id }) => (
 										<MenuItem key={id} value={id}>
 											{id}
 										</MenuItem>
@@ -186,7 +186,7 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 					<Grid item xs={12} sm={3} className={classes.centerChildren}>
 						<Grid container direction="row" justifyContent="flex-end" spacing={1}>
 							<Grid item className={classes.controls}>
-								<Button variant="contained" color="primary" onClick={handleJoinChannel}>
+								<Button variant="contained" color="primary" onClick={handleJoinUserChannel}>
 									Join
 								</Button>
 							</Grid>
@@ -196,7 +196,7 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 										size="small"
 										aria-label="Copy code example"
 										color="primary"
-										onClick={copyToClipboard(codeExamples.channels, "joinChannel")}
+										onClick={copyToClipboard(codeExamples.userChannels, "joinUserChannel")}
 									>
 										<FileCopyIcon />
 									</IconButton>

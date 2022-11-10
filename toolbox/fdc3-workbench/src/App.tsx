@@ -219,7 +219,7 @@ export const App = observer(() => {
 									
 									<Tab label="Contexts" />
 									<Tab label="Intents" />
-									<Tab label="System Channels" />
+									<Tab label="User Channels" />
 									<Tab label="App Channels" />
 								</Tabs>
 								<TabPanel value={tabIndex} index={0}>
