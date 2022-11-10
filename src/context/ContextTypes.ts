@@ -187,7 +187,7 @@ export interface Position {
   name?: string;
 }
 
-export interface SearchCriteria {
+export interface ChatSearchCriteria {
   criteria: (Instrument | Organization | Contact | string)[];
   type: string;
 }

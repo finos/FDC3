@@ -74,7 +74,7 @@
           "context/ref/Organization",
           "context/ref/Portfolio",
           "context/ref/Position",
-          "context/ref/SearchCriteria",
+          "context/ref/ChatSearchCriteria",
           "context/ref/TimeRange",
           "context/ref/Valuation"
         ]

@@ -18,7 +18,7 @@ Search and display a list of messages (for example in a chat application or CRM)
 
 ## Possible Contexts
 
-* [SearchCriteria](../../context/ref/SearchCriteria)
+* [ChatSearchCriteria](../../context/ref/ChatSearchCriteria)
 
 ## Example
 
@@ -114,7 +114,7 @@ fdc3.raiseIntent('ViewMessages', searchCriteria);
 
 Context
 
-* [SearchCriteria](../../context/ref/SearchCriteria)
+* [ChatSearchCriteria](../../context/ref/ChatSearchCriteria)
 * [Instrument](../../context/ref/Instrument)
 * [Contact](../../context/ref/Contact)
 * [Organization](../../context/ref/Organization)

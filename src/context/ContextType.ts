@@ -12,7 +12,7 @@ export enum ContextTypes {
   Organization = 'fdc3.organization',
   Portfolio = 'fdc3.portfolio',
   Position = 'fdc3.position',
-  SearchCriteria = 'fdc3.chat.searchCriteria',
+  ChatSearchCriteria = 'fdc3.chat.searchCriteria',
   TimeRange = 'fdc3.timerange',
   Valuation = 'fdc3.valuation',
 }
