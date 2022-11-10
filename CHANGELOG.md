@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added a `ViewMessages` intent to be used when a user wants to search and see a list of messages. ([#797](https://github.com/finos/FDC3/pull/797))
+* Added a context type representing a ChatSearchCriteria (`fdc3.chat.searchCriteria`). ([#797](https://github.com/finos/FDC3/pull/797))
+
 ### Changed
 
 ### Deprecated
