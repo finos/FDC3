@@ -188,13 +188,12 @@ export interface Position {
 }
 
 export interface Valuation {
-  CURRENCY_ISCODE?: string;
+  CURRENCY_ISOCODE: string;
   expiryTime?: Date;
   price?: number;
   type: string;
   valuationTime?: Date;
   value: number;
-  CURRENCY_ISOCODE: any;
   id?: { [key: string]: string };
   name?: string;
 }
@@ -660,13 +659,12 @@ const typeMap: any = {
   ),
   Valuation: o(
     [
-      { json: 'CURRENCY_ISCODE', js: 'CURRENCY_ISCODE', typ: u(undefined, '') },
+      { json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: '' },
       { json: 'expiryTime', js: 'expiryTime', typ: u(undefined, Date) },
       { json: 'price', js: 'price', typ: u(undefined, 3.14) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'valuationTime', js: 'valuationTime', typ: u(undefined, Date) },
       { json: 'value', js: 'value', typ: 3.14 },
-      { json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: 'any' },
       { json: 'id', js: 'id', typ: u(undefined, m('')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
