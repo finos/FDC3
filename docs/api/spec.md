@@ -101,7 +101,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to `raiseIntentForContext` that return multiple options), such as a resolver UI.
   - Intent resolution MUST take into account any specified input or return context types
   - Requests for resolution to apps returning a channel MUST include any apps that are registered as returning a channel with a specific type.
-- Return Errors from the [`ChannelError`](ref/Errors#channelerror), [`OpenError`](ref/Errors#openerror), [`ResolveError`](ref/Errors#resolveerror) and [`ResultError`](ref/Errors#resulterror) enumerations as appropriate.
+- Return (JavaScript or platform appropriate) Error Objects with messages from the [`ChannelError`](ref/Errors#channelerror), [`OpenError`](ref/Errors#openerror), [`ResolveError`](ref/Errors#resolveerror) and [`ResultError`](ref/Errors#resulterror) enumerations as appropriate.
 - Accept as input and return as output data structures that are compatibile with the interfaces defined in this Standard.
 - Include implementations of the following [Desktop Agent](ref/DesktopAgent) API functions, as defined in this Standard:
   - [`addContextListener`](ref/DesktopAgent#addcontextlistener)
