@@ -7,7 +7,7 @@ export type logMessagesName =
 	| "getFdc3"
 	| "getChannels"
 	| "getCurrentChannel"
-	| "joinChannel"
+	| "joinUserChannel"
 	| "leaveChannel"
 	| "broadcast"
 	| "appbroadcast"

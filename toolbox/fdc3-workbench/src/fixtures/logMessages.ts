@@ -19,7 +19,7 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			success: `Successfully retrieved current channel [${value}]`,
 			error: `Failed to retrieve current channel`,
 		},
-		joinChannel: {
+		joinUserChannel: {
 			success: `Successfully joined the [${value}] channel`,
 			error: `Failed to join the [${value}] channel`,
 		},

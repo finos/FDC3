@@ -1,13 +1,13 @@
 export const codeExamples = {
-	channels:
-		"// get all system channels\n" +
-		"const channels = await fdc3.getSystemChannels();\n" +
+	userChannels:
+		"// get all user channels\n" +
+		"const channels = await fdc3.getUserChannels();\n" +
 		"\n" +
-		"// create UI to pick from the system channels\n" +
+		"// create UI to pick from the user channels\n" +
 		"\n" +
 		"// join the channel on selection\n" +
-		"fdc3.joinChannel(selectedChannel.id);",
-	getCurrentChannel:
+		"fdc3.joinUserChannel(selectedChannel.id);",
+	getCurrentUserChannel:
 		"// get the current channel membership\n" +
 		"let current = await fdc3.getCurrentChannel();\n" +
 		"\n" +

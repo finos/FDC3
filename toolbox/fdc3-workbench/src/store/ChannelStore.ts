@@ -4,34 +4,34 @@ import systemLogStore from "./SystemLogStore";
 import { fdc3Ready } from "@finos/fdc3";
 
 class ChannelStore {
-	systemChannels: fdc3.Channel[] = [];
+	userChannels: fdc3.Channel[] = [];
 
-	currentChannel: fdc3.Channel | null = null;
+	currentUserChannel: fdc3.Channel | null = null;
 
 	constructor() {
 		makeObservable(this, {
-			systemChannels: observable,
-			currentChannel: observable,
-			getChannels: action,
-			joinChannel: action,
-			leaveChannel: action,
-			getCurrentChannel: action,
+			userChannels: observable,
+			currentUserChannel: observable,
+			getUserChannels: action,
+			joinUserChannel: action,
+			leaveUserChannel: action,
+			getCurrentUserChannel: action,
 		});
 
-		this.getChannels();
+		this.getUserChannels();
 	}
 
-	async getCurrentChannel() {
+	async getCurrentUserChannel() {
 		try {
-			const channel = await fdc3.getCurrentChannel();
+			const userChannel = await fdc3.getCurrentChannel();
 			runInAction(() => {
 				systemLogStore.addLog({
 					name: "getCurrentChannel",
 					type: "success",
-					value: channel ? channel.id : "none",
+					value: userChannel ? userChannel.id : "none",
 					variant: "text",
 				});
-				this.currentChannel = channel;
+				this.currentUserChannel = userChannel;
 			});
 		} catch (e) {
 			runInAction(() => {
@@ -44,21 +44,21 @@ class ChannelStore {
 		}
 	}
 
-	async getChannels() {
+	async getUserChannels() {
 		//defer retrieving channels until fdc3 API is ready
 		fdc3Ready(5000).then(async () => {
 			try {
 			
-				const systemChannels = await fdc3.getSystemChannels();
-				const currentChannel = await fdc3.getCurrentChannel();
+				const userChannels = await fdc3.getSystemChannels();
+				const currentUserChannel = await fdc3.getCurrentChannel();
 	
 				runInAction(() => {
 					systemLogStore.addLog({
 						name: "getChannels",
 						type: "success",
 					});
-					this.systemChannels = systemChannels;
-					this.currentChannel = currentChannel;
+					this.userChannels = userChannels;
+					this.currentUserChannel = currentUserChannel;
 				});
 			} catch (e) {
 				systemLogStore.addLog({
@@ -78,24 +78,24 @@ class ChannelStore {
 		});
 	}
 
-	async joinChannel(channelId: string) {
+	async joinUserChannel(channelId: string) {
 		try {
 			await fdc3.joinChannel(channelId);
-			const currentChannel = await fdc3.getCurrentChannel();
-			const isSuccess = currentChannel !== null;
+			const currentUserChannel = await fdc3.getCurrentChannel();
+			const isSuccess = currentUserChannel !== null;
 
 			runInAction(() => {
 				systemLogStore.addLog({
-					name: "joinChannel",
+					name: "joinUserChannel",
 					type: isSuccess ? "success" : "error",
-					value: isSuccess ? currentChannel?.id : channelId,
+					value: isSuccess ? currentUserChannel?.id : channelId,
 					variant: "text",
 				});
-				this.currentChannel = currentChannel;
+				this.currentUserChannel = currentUserChannel;
 			});
 		} catch (e) {
 			systemLogStore.addLog({
-				name: "joinChannel",
+				name: "joinUserChannel",
 				type: "error",
 				value: channelId,
 				variant: "code",
@@ -104,11 +104,11 @@ class ChannelStore {
 		}
 	}
 
-	async leaveChannel() {
+	async leaveUserChannel() {
 		try {
 			//check that we're on a channel
-			let currentChannel = await fdc3.getCurrentChannel();
-			if (!currentChannel) {
+			let currentUserChannel = await fdc3.getCurrentChannel();
+			if (!currentUserChannel) {
 				systemLogStore.addLog({
 					name: "leaveChannel",
 					type: "warning",
@@ -117,19 +117,19 @@ class ChannelStore {
 				});
 			} else {
 				await fdc3.leaveCurrentChannel();
-				currentChannel = await fdc3.getCurrentChannel();
-				const isSuccess = currentChannel === null;
+				currentUserChannel = await fdc3.getCurrentChannel();
+				const isSuccess = currentUserChannel === null;
 
 				runInAction(() => {
 					systemLogStore.addLog({
 						name: "leaveChannel",
 						type: isSuccess ? "success" : "error",
-						value: this.currentChannel?.id,
+						value: this.currentUserChannel?.id,
 						variant: "text",
 					});
 
 					if (isSuccess) {
-						this.currentChannel = null;
+						this.currentUserChannel = null;
 					}
 				});
 			}
@@ -137,7 +137,7 @@ class ChannelStore {
 			systemLogStore.addLog({
 				name: "leaveChannel",
 				type: "error",
-				value: this.currentChannel?.id,
+				value: this.currentUserChannel?.id,
 				variant: "code",
 				body: JSON.stringify(e, null, 4),
 			});
