@@ -11,5 +11,5 @@
     "url": { "type": "string" },
     "name": { "type": "string" }
   },
-  "required": ["type", "providerName", "id"]
+  "required": ["providerName", "id"]
 }
