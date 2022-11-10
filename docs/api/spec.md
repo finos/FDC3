@@ -126,7 +126,7 @@ An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 
 - Support connection to one or more App Directories meeting the [FDC3 App Directory Standard](../app-directory/overview).
 - Qualify `appId` values received from an app directory with the hostname of the app directory server (e.g. `myAppId@name.domain.com`) [as defined in the app directory standard](../app-directory/overview#application-identifiers).
-- Allow application to register an [`IntentHandler`](ref/Types#intenthandler) for particular Intent and Context type pairs by providing `interop.intents.listensFor` metadata in their AppD record.
+- Allow applications to register an [`IntentHandler`](ref/Types#intenthandler) for particular Intent and Context type pairs by providing `interop.intents.listensFor` metadata in their AppD record.
 - Adopt the [recommended set of User channel definitions](#recommended-user-channel-set).
 - Ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are joined to the channel.
 - Make metadata about each context message or intent and context message received (including the app that originated the message) available to the receiving application.
