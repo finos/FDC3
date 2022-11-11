@@ -1,6 +1,18 @@
 # FDC3 1.2 Conformance Test Cases
 
-## 1. System / User Channels 
+## 1. Basic Tests
+
+### Context Listener
+
+- `BasicCL1`: You can call the `addContextListener` on the `DesktopAgent` for the `fdc3.contact` context type without exceptions.
+- `BasicCL2`: The returned listener object has an `ubsubscribe` function.
+
+
+
+
+
+
+## 2. System / User Channels 
 
 ### User Channels Broadcast (Basic)
 
@@ -42,7 +54,7 @@
 -  `UCFilteredContext4`: Perform above test, except that after joining, **A** changes channel with a further _different_ channel.  Check that **A** _doesn't_ receive anything.
 -  `UCCurrentChannel`: A call to `fdc3.getCurrentChannel()` returns _null_ if called prior to any `joinChannel`.
 
-## 2. App Channels 
+## 3. App Channels 
 
 ### App Channels Broadcast (Basic)
 
@@ -88,7 +100,7 @@
 -  `ACContextHistoryMultiple`: **B** Broadcasts multiple history items of both types.  Only the last version of each type is received by **A**.
 -  `ACContextHistoryLast`: **A** calls `testChannel.getCurrentContext()` retrieves the last broadcast context item
 
-## 3. Open API 
+## 4. Open API 
 
 ### A Opens B
 
@@ -125,7 +137,7 @@
 -  `AOpensBMultipleListen`:  **B** performs `fdc3.addContextListener('fdc3.instrument') prior to the existing `addContextListener`.  The correct context listener should receive the context, and the promise completes successfully
 -  `AOpensBMalformedContext`: **A** tries to pass malformed context to **B**.  Context listener receives nothing, promise completes successfully.
 
-## 4. Intents
+## 5. Intents
 
 ### Setup
 
