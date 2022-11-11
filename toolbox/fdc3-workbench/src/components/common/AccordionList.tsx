@@ -12,6 +12,7 @@ export interface AccordionListItem {
 
 export interface AccordionListProps {
 	title: string;
+	icon?: string;
 	listItems: AccordionListItem[];
 	noItemsText: string;
 	onDelete?: (id: string) => void;
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const AccordionList: React.FC<AccordionListProps> = ({
 	title,
+	icon,
 	listItems,
 	noItemsText,
 	onDelete,
@@ -51,7 +53,7 @@ export const AccordionList: React.FC<AccordionListProps> = ({
 	};
 
 	return (
-		<AccordionContent title={title}>
+		<AccordionContent title={title} icon={icon}>
 			{!listItems.length && <Typography variant="body1">{noItemsText}</Typography>}
 			{!!listItems.length && (
 				<List className={classes.list}>
