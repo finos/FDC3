@@ -56,6 +56,7 @@ export const AppChannelListeners = observer(() => {
 	return (
 		<AccordionList
 			title="App Channels"
+			icon="Any context already in the channel will NOT be received automatically"
 			noItemsText="No App Channel Listeners"
 			listItems={contextListeners}
 			onDelete={handleDeleteListener}
