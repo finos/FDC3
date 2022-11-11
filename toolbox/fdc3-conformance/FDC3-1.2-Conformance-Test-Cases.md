@@ -2,15 +2,19 @@
 
 ## 1. Basic Tests
 
-### Context Listener
+_These are some basic sanity tests implemented in the FDC3 Conformance Framework.  It is expected that Desktop Agent testers will run these first before commencing the much more thorough tests in section 2 onwards._
 
-- `BasicCL1`: You can call the `addContextListener` on the `DesktopAgent` for the `fdc3.contact` context type without exceptions.
-- `BasicCL2`: The returned listener object has an `ubsubscribe` function.
-
-
-
-
-
+- `BasicCL1`: You can call the `fdc3.addContextListener` with the `fdc3.contact` context type. The returned listener object has an `ubsubscribe` function.
+- `BasicCL2`: You can call the `fdc3addContextListener` with no context type. The returned listener object has an `ubsubscribe` function.
+- `BasicIL1`: You can call the `fdc3.addIntentListener` on the `DesktopAgent` for an intent, and get back a `Listener` object with `unsubscribe` method.
+- `BasicCH1`: A call to `fdc3.getCurrentChannel` on the `DesktopAgent` always returns a promise.
+- `BasicCH2`: A call to `fdc3.getCurrentChannel()` returns a promise resolving to _null_ if called prior to any `joinChannel`.
+- `BasicGI1`: A call to `fdc3.getInfo()` returns an object with `fdc3Version` and `provider` properties.
+- `BasicAC1`: A call to `fdc3.getOrCreateChannel(<name>)` will return an object matching the `Channel` interface, with properties of `id`, `type`, `broadcast`, `getCurrentContext` and `addContextListener`.
+- `BasicUC1`: You can call the `fdc3.getSystemChannels()` function and receive a promise containing an array of more than 1 `Channel` objects, each with type and id set.
+- `BasicJC1`: You can call `fdc3.joinChannel`, passing in the `id` of one of the system channels.  `fdc3.getCurrentChannel` should then return that joined channel.
+- `BasicLC1`: You can call `fdc3.leaveCurrentChannel` at any time without exception.
+- `BasicRI1`: You can call `fdc3.raiseIntentForContext`, passing in a context object with some `type` field.  
 
 ## 2. System / User Channels 
 
@@ -52,7 +56,6 @@
 -  `UCFilteredContext3`: Perform above test, except joining a _different_ channel. Check that you _don't_ receive anything.
 -  `UCUnsubscribe`: Perform above test, except that after joining, **A** then `unsubscribe()`s the context listener. Check that **A** _doesn't_ receive anything.
 -  `UCFilteredContext4`: Perform above test, except that after joining, **A** changes channel with a further _different_ channel.  Check that **A** _doesn't_ receive anything.
--  `UCCurrentChannel`: A call to `fdc3.getCurrentChannel()` returns _null_ if called prior to any `joinChannel`.
 
 ## 3. App Channels 
 
