@@ -33,5 +33,5 @@
       "type": "string"
     }
   },
-  "required": ["contacts", "timeRange", "interactionType", "description"]
+  "required": ["participants", "timeRange", "interactionType", "description"]
 }
