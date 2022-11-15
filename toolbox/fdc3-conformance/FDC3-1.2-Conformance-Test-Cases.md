@@ -71,7 +71,6 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 -  `ACBasicUsage1` Perform above test 
 -  `ACBasicUsage2` Perform above test, but join channel first and then `testChannel.addContextListener()`
--  `ACBasicUsage3` Do the app B steps first but in reverse order to populate the channel with context, check that A will receive the context after creating
 
 ### App Channels Broadcast (Filtered Context)
 
