@@ -16,8 +16,102 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 - `2.0-BasicLC1`: You can call `fdc3.leaveCurrentChannel` at any time without exception.
 - `2.0-BasicRI1`: You can call `fdc3.raiseIntentForContext`, passing in a context object with some `type` field.  
 
+## 2. User Channels
 
+### Broadcast (Basic)
 
+| App | Step               | Details                                                                                                                                                        |
+|-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| A   |1.  addContextListener |Call `fdc3.addContextListener(null, handler)`<br>Check **promise** resolving a **listener**  object is returned<br>Check that there is an `unsubscribe` function on the **listener object**   |
+| A   | 2. joinUserChannel        |`fdc3.getUserChannels()`<br>Check **user** channels are returned.<br>Call `fdc3.joinUserChannel()` on first **user** channel                                      |
+| B   | 3. joinUserChannel        | `fdc3.getUserChannels()`<br>Check **user** channels are returned.<br>Call `fdc3.joinUserChannel()` on first **user** channel                                      |
+| B   | 4. Broadcast          | `fdc3.broadcast(<some instrument>)` <br> **Check promise of `void` is returned**                                                                                                                         |
+| A   |5.  Receive Context    | Instrument object matches the one broadcast in 2 above.                                                                                                    |
+
+- `2.0-BasicUsage1` Perform above test 
+- `2.0-BasicUsage2` Perform steps in order: 2,1,3,4,5
+- `2.0-BasicUsage3` 3,4,1,2,5
+- `2.0-BasicUsage4` 3,4,2,1,5
+
+### Broadcast (Filtered Context)
+
+| App | Step               | Details                                                                                                                                                              |
+|-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| A   | 1. addContextListener | Call `fdc3.addContextListener("fdc3.instrument", handler)`<br>Check **promise** resolving a **listener**  object is returned<br>Check that there is an `unsubscribe` function on the **listener object**  |
+| A   | 2. joinUserChannel        |`fdc3.getUserChannels()`<br>Check **user** channels are returned.<br>Call `fdc3.joinUserChannel()` on first **user** channel                                      |
+| B   | 3. joinUserChannel        | `fdc3.getUserChannels()`<br>Check **user** channels are returned.<br>Call `fdc3.joinUserChannel()` on first **user** channel                                      |
+| B   | 4. Broadcast          | `fdc3.broadcast(<some instrument>)` <br> `fdc3.broadcast()` a contact context.   <br> **Check promise of `void` is returned in both cases**                 |
+| A   | 5. Receive Context    | Instrument object matches the one broadcast in 2 above.<br>Check that the contact is not received.                                                                   |
+
+- `2.0-FilteredUsage1` Perform above test 
+- `2.0-FilteredUsage2` Perform steps in order: 2,1,3,4,5
+- `2.0-FilteredUsage3` 3,4,1,2,5
+- `2.0-FilteredUsage4` 3,4,2,1,5
+
+| App | Step               | Details                                                                                                                                                              |
+|-----|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| A   | 1. addContextListeners | Call `addContextListener (“fdc3.instrument”, handler)`<br>Check **promise** resolving a **listener**  object is returned<br>Check that there is an `unsubscribe` function on the **listener object**<br>Call `addContextListener (“fdc3.contact”, handler)`<br>Check **promise** resolving a **listener**  object is returned<br>Check that there is an `unsubscribe` function on the **listener object**     |
+| A   | 2. joinUserChannel        |`fdc3.getUserChannels()`<br>Check **user** channels are returned.<br>Call `fdc3.joinUserChannel()` on first **user** channel                                      |
+| B   | 3. joinUserChannel        | `fdc3.getUserChannels()`<br>Check **user** channels are returned.<br>Call `fdc3.joinUserChannel()` on first **user** channel                                      |
+| B   | 4. Broadcast          | `fdc3.broadcast()` the instrument context. <br> `fdc3.broadcast()` a contact context.                                                                                                                                                                                                                                                               |
+| A   | 5. Receive Context    | Instrument object matches the one broadcast in 2 above.<br>Contact object matches the one broadcast in 2 above.                                                                                                                                                                                                                                   |
+
+ - `2.0-UCFilteredUsage5`: Perform above test
+ - `2.0-UCFilteredUsage6`: Perform above test, except B will join a _different_ channel to A. Check that you _don't_ receive anything.
+ - `2.0-UCFilteredUsageUnsubscribe`: Perform above test, except that after joining, **A** then `unsubscribe()`s from the channel using the `listener.unsubscribe` function. Check that **A** _doesn't_ receive anything.
+ - `2.0-UCFilteredUsageChange`: Perform above test, except that after joining, **A** changes channel with a further _different_ channel.  Check that **A** _doesn't_ receive anything.
+ - `2.0-UCFilteredUsageLeave`: Perform above test, except that after joining, **A** calls `fdc3.leaveChannel()` and doesn't receive anything.
+
+| App | Step               | Details                                                                                                                                                              |
+|-----|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| A   | 1. joinUserChannel        |`fdc3.getUserChannels()`<br>Check **user** channels are returned.<br>Call `fdc3.joinUserChannel()` on the _third_ **user** channel                                      |
+| A   | 2. getCurrentChannel        |`fdc3.getCurrentChannel()`<br>Check *that the channel returned matches the joined in the previous step                                      |
+
+- `2.0-UCFilteredUsageJoin`: **Perform the above test**.
+- `2.0-UCFilteredUsageNoJoin`: Perform the above test, but skip the first step so that the app is not on a channel. Config that that `fdc3.getCurrentChannel()` returns `null`.
+
+## 3. App Channels
+
+### Broadcast (Basic)
+
+| App | Step               | Details                                                                                                                                                        |
+|-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| A   | 1. getOrCreateChannel        | `const testChannel = await fdc3.getOrCreateChannel("test-channel")`       |
+| A   | 2. addContextListener |Call `const listener = await testChannel.addContextListener(null, handler)`<br>Check listener object returned<br>Check that there is an `unsubscribe` function on the returned object  |
+| B   | 3. getOrCreateChannel        | `const testChannel = await fdc3. getOrCreateChannel("test-channel")`   |
+| B   | 4. Broadcast          | `testChannel.broadcast(<some instrument>)`   |
+| A   | 5. Receive Context    | Instrument object matches the one broadcast in 2 above.      |
+
+- `2.0-ACBasicUsage1`: Perform above test 
+- `2.0-ACBasicUsage2`: Perform above test, but perform steps in order 3,4,1,2,5**
+
+### Broadcast (Filtered Context)
+
+| App | Step               | Details                                                                                                                                                              |
+|-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| A   | 1. getOrCreateChannel  |`const testChannel = await fdc3.getOrCreateChannel("test-channel")`       |
+| A   | 2. addContextListener | Call `const listener = await testChannel.addContextListener("fdc3.instrument", handler)`<br>Check `listener` object returned<br>Check that there is an `unsubscribe` function on the returned object |
+| B   | 3. getOrCreateChannel  | `const testChannel = await fdc3. getOrCreateChannel("test-channel")`   |
+| B   | 4. Broadcast          | `testChannel.broadcast()` the instrument context.<br>`testChannel.broadcast()` a contact context. |
+| A   | 5. Receive Context    | Instrument object matches the one broadcast in 2 above.<br>Check that the contact is not received.                                                                   |
+
+- `2.0-ACFilteredContext1`: Perform above test 
+- `2.0-ACFilteredContext2`: Perform above test, except B retrieves a _different_ channel. Check that you _don't_ receive any context via that channel.
+- `2.0-ACUnsubscribe`: Perform above test, except that after retrieving the channel and adding a context listener, **A** then calls `listener.unsubscribe() via the listener object that was returned. Check that **A** _doesn't_ receive anything via that channel afterwards.
+- `2.0-ACFilteredContext3`: Perform above test, except that after retrieving the channel, **A** repeats steps 1 and 2, retrieving a second channel with a different name and adds a listener to it.  Check that **A** still receives context on the first channel (i.e. it is unaffected by retrieving a second channel).**
+
+## App Channel History
+
+| App | Step               | Details                                                                                                                                                              |
+|-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| A   | 1. getOrCreateChannel  | `const testChannel = await fdc3.getOrCreateChannel("test-channel")`       |
+| B   | 2. getOrCreateChannel  | `const testChannel = await fdc3. getOrCreateChannel("test-channel")`   |
+| B   | 3. Broadcast          | `testChannel.broadcast()` the instrument context.<br>`testChannel.broadcast()` a contact context. |
+| A   | 4. Receive Context    | **`const contextInst = await testChannel.getCurrentContext('fdc3.instrument')` returns the last instrument<br>`const contextCont = await testChannel.getCurrentContext('fdc3.contact')` returns the last contact<br>`const contextLatest = await testChannel.getCurrentContext()` returns the last broadcast chronologically (contact type)**                                                             |
+
+- `2.0-ACContextHistoryTyped`: Perform above test.
+- `2.0-ACContextHistoryMultiple`: **B** Broadcasts multiple history items of both types.  Only the last version of each type is received by **A**.
+- `2.0-ACContextHistoryLast`: **A** calls testChannel.getCurrentContext() retrieves the last broadcast context item
 
 ## 4. Open API
 
