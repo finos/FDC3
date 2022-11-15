@@ -97,7 +97,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | A   | createChannel        |`fdc3.getOrCreateChannel("test-channel")`       |
 | B   | createChannel        | `fdc3.getOrCreateChannel("test-channel")`   |
 | B   | Broadcast          | `testChannel.broadcast()` the instrument context.<br>`testChannel.broadcast()` a contact context. |
-| A   | Receive Context    | `testChannel.getCurrentContext('fdc.instrument')` returns the last instrument<br>testChannel.getCurrentContext('fdc.contact')` returns the last broadcast contact                                                              |
+| A   | Receive Context    | `testChannel.getCurrentContext('fdc3.instrument')` returns the last instrument<br>testChannel.getCurrentContext('fdc3.contact')` returns the last broadcast contact                                                              |
 
 -  `ACContextHistoryTyped`: Perform above test.
 -  `ACContextHistoryMultiple`: **B** Broadcasts multiple history items of both types.  Only the last version of each type is received by **A**.
