@@ -32,7 +32,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 | App | Step               | Details                                                                                                                                                        |
 |-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| B   | createChannel        | `fdc3. getOrCreateChannel("test-channel")`   |
+| B   | createChannel        | `const testChannel = await fdc3.getOrCreateChannel("test-channel")`   |
 | B   | Broadcast          | `testChannel.broadcast(<some instrument>)`   |
 | A   | createChannel        |`const testChannel = await fdc3.getOrCreateChannel("test-channel")`       |
 | A   | getCurrentContext |Call `testChannel.getCurrentContext()`<br>Check that the Context object returned is of the expected type.  |
