@@ -105,8 +105,6 @@ You will need to pre-populate the AppDirectory with the following items:
 
 - `2.0-GetInfo1`: Perform the above steps
 
-## `getInfo (own `AppMetadata`)`
-
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
 | Test   | Open1    | `const appIdentifier1 = await fdc3.open({appId: "<A's appId>"})` to start A and retrieve its `AppIdentifier` with instance details. Confirm that the `AppIdentifier` contains both an `appId` and `instanceId` |
