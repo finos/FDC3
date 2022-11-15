@@ -22,15 +22,22 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 | App | Step               | Details                                                                                                                                                        |
 |-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | addContextListener |Call `fdc3.addContextListener(null, handler)`<br>Check listener object returned<br>Check that there is an `unsubscribe` function on the returned object  |
-| A   | joinChannel        |`fdc3.getSystemChannels()`<br>Check channels are returned.<br>Call `fdc3.joinChannel()` on first non-global channel                                      |
-| B   | joinChannel        | `fdc3.getSystemChannels()`<br>Check channels are returned.<br>Call `fdc3.joinChannel()` on first non-global channel                                      |
-| B   | Broadcast          | `fdc3.broadcast(<some instrument>)`                                                                                                                          |
-| A   | Receive Context    | Instrument object matches the one broadcast in 2 above.                                                                                                    |
+| A   | createChannel        |`const testChannel = await fdc3.getOrCreateChannel("test-channel")`       |
+| A   | addContextListener |Call `testChannel.addContextListener(null, handler)`<br>Check listener object returned<br>Check that there is an `unsubscribe` function on the returned object  |
+| B   | createChannel        | `const testChannel = fdc3. getOrCreateChannel("test-channel")`   |
+| B   | Broadcast          | `testChannel.broadcast(<some instrument>)`   |
+| A   | Receive Context    | Instrument object matches the one broadcast in 2 above.      |
 
--  `UCBasicUsage1` Perform above test 
--  `UCBasicUsage2` Perform above test, but A joins channel first and then `fdc3.addContextListener()`
--  `UCBasicUsage3` Do the app B steps first to populate the channel with context, check that A will receive the context after joining
+-  `ACBasicUsage1` Perform above test 
+
+| App | Step               | Details                                                                                                                                                        |
+|-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| B   | createChannel        | `fdc3. getOrCreateChannel("test-channel")`   |
+| B   | Broadcast          | `testChannel.broadcast(<some instrument>)`   |
+| A   | createChannel        |`const testChannel = await fdc3.getOrCreateChannel("test-channel")`       |
+| A   | getCurrentContext |Call `testChannel.getCurrentContext()`<br>Check that the Context object returned is of the expected type.  |
+
+-  `ACBasicUsage2` Perform above test.
 
 ### User Channels Broadcast (Filtered Context)
 
