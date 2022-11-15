@@ -148,10 +148,10 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 	};
 
 	const handleRaiseIntentForContext = () => {
-		if(raiseIntentWithContextContext){
-			if(contextTargetApp && contextIntentObjects) {
+		if (raiseIntentWithContextContext){
+			if (contextTargetApp && contextIntentObjects) {
 				let targetObject = contextIntentObjects.find((target) => target.name === contextTargetApp);
-				intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject);
+				intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app.name);
 			} else {
 				intentStore.raiseIntentForContext(raiseIntentWithContextContext);
 			}
@@ -233,8 +233,8 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 						setIntentObjects(appIntents);
 						setIntentsForContext(appIntents.map(({intent}: {intent:any})=>{
 							return {
-								title: intent.name.includes('fdc3') ? intent.name.split('.')[1] : intent.name,
-								value: intent.name.includes('fdc3') ? intent.name.split('.')[1] : intent.name
+								title: intent.name,
+								value: intent.name
 							}
 						}));
 					}
@@ -249,7 +249,9 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 
 	useEffect(() => {
 		if(intentObjects){
-			let targets = intentObjects.find((obj) => obj.intent.displayName === intentValue?.value);
+			const targets = intentObjects.find((obj) => {
+				return obj.intent.name === intentValue?.value
+			});
 			if(targets?.apps){
 				setIntentTargets(targets.apps);
 			}
@@ -349,7 +351,7 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 										{intentTargets?.length &&
 											intentTargets.map((target) => (
 												<MenuItem key={target.name} value={target.name}>
-													{target.title}
+													{target.name}
 												</MenuItem>
 											))}
 									</Select>
