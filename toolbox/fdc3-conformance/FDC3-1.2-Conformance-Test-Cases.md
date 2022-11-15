@@ -95,7 +95,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | App | Step               | Details                                                                                                                                                              |
 |-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | A   | createChannel        |`fdc3.getOrCreateChannel("test-channel")`       |
-| B   | createChannel        | `fdc3. getOrCreateChannel("test-channel")`   |
+| B   | createChannel        | `fdc3.getOrCreateChannel("test-channel")`   |
 | B   | Broadcast          | `testChannel.broadcast()` the instrument context.<br>`testChannel.broadcast()` a contact context. |
 | A   | Receive Context    | `testChannel.getCurrentContext('fdc.instrument')` returns the last instrument<br>testChannel.getCurrentContext('fdc.contact')` returns the last broadcast contact                                                              |
 
