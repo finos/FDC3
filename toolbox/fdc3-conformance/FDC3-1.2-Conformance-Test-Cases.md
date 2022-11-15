@@ -77,18 +77,17 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 | App | Step               | Details                                                                                                                                                              |
 |-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | createChannel        |`fdc3.getOrCreateChannel("test-channel")`       |
+| A   | createChannel        |`const testChannel = await fdc3.getOrCreateChannel("test-channel")`       |
 | A   | addContextListener | Call `testChannel.addContextListener("fdc3.instrument", handler)`<br>Check listener object returned<br>Check that there is an `unsubscribe` function on the returned object |
-| B   | createChannel        | `fdc3. getOrCreateChannel("test-channel")`   |
+| B   | createChannel        | `const testChannel = await fdc3. getOrCreateChannel("test-channel")`   |
 | B   | Broadcast          | `testChannel.broadcast()` the instrument context.<br>`testChannel.broadcast()` a contact context. |
 | A   | Receive Context    | Instrument object matches the one broadcast in 2 above.<br>Check that the contact is not received.                                                                   |
 
 -  `ACFilteredContext1`: Perform above test 
 -  `ACFilteredContext2`: Perform above test, but add listeners for both `fdc3.instrument` and `fdc3.contact` in `addContextListener` step.  Both should be received. 
 -  `ACFilteredContext3`: Perform above test, except creating a _different_ channel. Check that you _don't_ receive anything.
--  `ACUnsubscribe`: Perform above test, except that after creating the channel **A** then `unsubscribe()`s the channel. Check that **A** _doesn't_ receive anything.
--  `ACFilteredContext4`: Perform above test, except that after creating the channel **A** creates another channel with a further _different_ channel.  Check that **A** _doesn't_ receive anything.
--  `ACFilteredContext5`: Perform above test, except that after creating the channel **A** calls `fdc3.leaveChannel()` and doesn't receive anything.
+-  `ACUnsubscribe`: Perform above test, except that after creating the channel **A** then `unsubscribe()`s the listener it added to the channel. Check that **A** _doesn't_ receive anything.
+-  `ACFilteredContext4`: Perform above test, except that after creating the channel **A** creates another channel with a further _different_ channel id.  Check that **A** _doesn't_ receive anything.
 
 ### App Channel History
 
