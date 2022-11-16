@@ -327,7 +327,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 - `2.0-RaiseIntentVoidResult0secs`: Perform above test, but A should return its result immediately (no delay). Ignore test step 6 (as there is too little time between the IntentResolution and IntentHandler completing).**
 - `2.0-RaiseIntentVoidResult61secs`: Perform above test, but A should return its result after 61 seconds** (arbitrary delay to test for timeouts)
 
-## Raise Intent Result (Context result)
+### Raise Intent Result (Context result)
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
@@ -342,7 +342,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 - `2.0-RaiseIntentContextResult0secs`: Perform the previous test but B should return its result immediately (no delay).
 - `2.0-RaiseIntentContextResult61secs`: As above, but A should return its result after 61 seconds** (arbitrary delay to test for timeouts)
 
-## Raise Intent Result (Channel results)
+### Raise Intent Result (Channel results)
 | App   | Step                          | Details                                                                                           |
 |-------|-----------------------|---------------------------------------------------------------------------------------------------|
 | Test   | 1. Raise Intent          | Test raises an intent with `fdc3.raiseIntent(‘sharedTestingIntent2’, testContextY, {appId: "<E's appId>"})`<br>starts app E. |
