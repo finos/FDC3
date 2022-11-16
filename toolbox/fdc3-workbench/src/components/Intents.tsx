@@ -2,11 +2,21 @@ import React, { useEffect, useState } from "react";
 import * as fdc3 from "@finos/fdc3";
 import { toJS } from "mobx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Button, IconButton, Tooltip, Typography, Grid, FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import {
+	Button,
+	IconButton,
+	Tooltip,
+	Typography,
+	Grid,
+	FormControl,
+	InputLabel,
+	MenuItem,
+	Select,
+} from "@material-ui/core";
 import { observer } from "mobx-react";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
-import {ContextTemplates} from "../components/ContextTemplates";
+import { ContextTemplates } from "../components/ContextTemplates";
 import intentStore from "../store/IntentStore";
 import { codeExamples } from "../fixtures/codeExamples";
 import { TemplateTextField } from "./common/TemplateTextField";
@@ -61,6 +71,8 @@ const useStyles = makeStyles((theme: Theme) =>
 			"& .MuiIconButton-sizeSmall": {
 				padding: "6px",
 			},
+			display: "flex",
+			alignItems: "center",
 		},
 		rightAlign: {
 			flexDirection: "row",
@@ -105,33 +117,33 @@ const useStyles = makeStyles((theme: Theme) =>
 			marginRight: theme.spacing(1),
 		},
 		rightPadding: {
-            paddingRight: theme.spacing(.5),
-        },
+			paddingRight: theme.spacing(0.5),
+		},
 	})
 );
 
 const filter = createFilterOptions<ListenerOptionType>();
 
-export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
+export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) => {
 	const classes = useStyles();
 	const [intentValue, setIntentValue] = useState<ListenerOptionType | null>(null);
 	const [raiseIntentError, setRaiseIntentError] = useState<string | false>(false);
 	const [intentListener, setIntentListener] = useState<ListenerOptionType | null>(null);
 	const [intentsForContext, setIntentsForContext] = useState<ListenerOptionType[] | null>(null);
-	const [intentTargets, setIntentTargets] = useState<AppMetadata[]| null>(null);
-	const [targetApp, setTargetApp] = useState<string| null>(null);
-	const [contextTargetApp, setContextTargetApp] = useState<string| null>(null);
-	const [intentObjects, setIntentObjects] = useState< AppIntent[]| null>(null);
-	const [contextIntentObjects, setContextIntentObjects] = useState< any[]| null>(null);
-	const [raiseIntentContext, setRaiseIntentContext] = useState<Context | null>(null)
-	const [raiseIntentWithContextContext, setRaiseIntentWithContextContext] = useState<Context | null>(null)
+	const [intentTargets, setIntentTargets] = useState<AppMetadata[] | null>(null);
+	const [targetApp, setTargetApp] = useState<string | null>(null);
+	const [contextTargetApp, setContextTargetApp] = useState<string | null>(null);
+	const [intentObjects, setIntentObjects] = useState<AppIntent[] | null>(null);
+	const [contextIntentObjects, setContextIntentObjects] = useState<any[] | null>(null);
+	const [raiseIntentContext, setRaiseIntentContext] = useState<Context | null>(null);
+	const [raiseIntentWithContextContext, setRaiseIntentWithContextContext] = useState<Context | null>(null);
 	const [intentError, setIntentError] = useState<string | false>(false);
 	const intentListenersOptions: ListenerOptionType[] = intentStore.intentsList;
 
 	const handleRaiseIntent = () => {
 		if (!intentValue) {
 			setRaiseIntentError(" enter intent name");
-		} else if(!raiseIntentContext){
+		} else if (!raiseIntentContext) {
 			setRaiseIntentError(" enter context name");
 		} else if (targetApp && intentTargets) {
 			let targetObject = intentTargets.find((target) => target.name === targetApp);
@@ -146,31 +158,30 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 	};
 
 	const handleRaiseIntentForContext = () => {
-		if(raiseIntentWithContextContext){
-			if(contextTargetApp && contextIntentObjects) {
+		if (raiseIntentWithContextContext) {
+			if (contextTargetApp && contextIntentObjects) {
 				let targetObject = contextIntentObjects.find((target) => target.name === contextTargetApp);
-				intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject);
+				intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app.name);
 			} else {
 				intentStore.raiseIntentForContext(raiseIntentWithContextContext);
 			}
-		} 
+		}
 	};
 
 	const handleTargetChange = (event: React.ChangeEvent<{ value: unknown }>) => {
 		if (event.target.value === "None") {
 			setTargetApp("");
-		} else{
+		} else {
 			setTargetApp(event.target.value as string);
 		}
-		
 	};
 
 	const handleContextTargetChange = (event: React.ChangeEvent<{ value: unknown }>) => {
 		if (event.target.value === "None") {
 			setContextTargetApp("");
-		} else{
+		} else {
 			setContextTargetApp(event.target.value as string);
-		}		
+		}
 	};
 
 	const handleChangeListener =
@@ -222,33 +233,34 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 	};
 
 	useEffect(() => {
-		setIntentValue(null)
+		setIntentValue(null);
 		const fetchIntents = async () => {
 			try {
-				if(raiseIntentContext) {
+				if (raiseIntentContext) {
 					let appIntents = await fdc3.findIntentsByContext(toJS(raiseIntentContext));
 					if (appIntents) {
 						setIntentObjects(appIntents);
-						setIntentsForContext(appIntents.map(({intent}: {intent:any})=>{
-							return {
-								title: intent.name.split('.')[1],
-								value: intent.name.split('.')[1]
-							}
-						}));
+						setIntentsForContext(
+							appIntents.map(({ intent }: { intent: any }) => {
+								return {
+									title: intent.name,
+									value: intent.name,
+								};
+							})
+						);
 					}
 				}
-			} catch (e){
+			} catch (e) {
 				setRaiseIntentError(" no intents found");
 			}
-		}
+		};
 		fetchIntents();
-		
 	}, [raiseIntentContext]);
 
 	useEffect(() => {
-		if(intentObjects){
-			let targets = intentObjects.find((obj) => obj.intent.displayName === intentValue?.value);
-			if(targets?.apps){
+		if (intentObjects) {
+			const targets = intentObjects.find((obj) => obj.intent.name === intentValue?.value);
+			if (targets?.apps) {
 				setIntentTargets(targets.apps);
 			}
 		}
@@ -257,26 +269,24 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 	useEffect(() => {
 		const fetchIntents = async () => {
 			try {
-				if(raiseIntentWithContextContext) {
+				if (raiseIntentWithContextContext) {
 					let appIntentsForContext = await fdc3.findIntentsByContext(toJS(raiseIntentWithContextContext));
 					if (appIntentsForContext) {
 						let pairObject: any[] = [];
-						appIntentsForContext.forEach((intent)=>{
-							intent?.apps.forEach((app)=>{
-								pairObject.push( {
+						appIntentsForContext.forEach((intent) => {
+							intent?.apps.forEach((app) => {
+								pairObject.push({
 									name: `${app.name} - ${intent.intent.name}`,
-									app
+									app,
 								});
-							})
+							});
 						});
 						setContextIntentObjects(pairObject as any[]);
 					}
 				}
-			} catch (e){
-			}
-		}
+			} catch (e) {}
+		};
 		fetchIntents();
-		
 	}, [raiseIntentWithContextContext]);
 
 	return (
@@ -341,13 +351,15 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 												No Target Apps Found
 											</MenuItem>
 										)}
-										{intentTargets?.length && <MenuItem key="" value="None">
+										{intentTargets?.length && (
+											<MenuItem key="" value="None">
 												None
-											</MenuItem>}
+											</MenuItem>
+										)}
 										{intentTargets?.length &&
 											intentTargets.map((target) => (
 												<MenuItem key={target.name} value={target.name}>
-													{target.title}
+													{target.name}
 												</MenuItem>
 											))}
 									</Select>
@@ -355,12 +367,7 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 							</Grid>
 						</Grid>
 						<Grid item className={classes.controls}>
-							<Button
-								variant="contained"
-								color="primary"
-								onClick={handleRaiseIntent}
-								disabled={!raiseIntentContext}
-							>
+							<Button variant="contained" color="primary" onClick={handleRaiseIntent} disabled={!raiseIntentContext}>
 								Raise Intent
 							</Button>
 
@@ -384,7 +391,10 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 							<Typography variant="h5">Raise Intent for Context</Typography>
 						</Grid>
 						<Grid item className={`${classes.field} ${classes.removeSidePadding}`}>
-							<ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setRaiseIntentWithContextContext} />
+							<ContextTemplates
+								handleTabChange={handleTabChange}
+								contextStateSetter={setRaiseIntentWithContextContext}
+							/>
 							<Grid className={classes.rightPadding}>
 								<FormControl variant="outlined" size="small" className={classes.targetSelect}>
 									<InputLabel id="intent-context-target-app">Target (optional)</InputLabel>
@@ -411,19 +421,20 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 												No Target Apps Found
 											</MenuItem>
 										)}
-										{contextIntentObjects?.length && <MenuItem key="" value="None">
+										{contextIntentObjects?.length && (
+											<MenuItem key="" value="None">
 												None
-											</MenuItem>}
+											</MenuItem>
+										)}
 										{contextIntentObjects?.length &&
 											contextIntentObjects.map((target) => (
-												<MenuItem value={target.name} key={target.name} >
+												<MenuItem value={target.name} key={target.name}>
 													{target.name}
 												</MenuItem>
-											))
-										}
+											))}
 									</Select>
 								</FormControl>
-							</Grid>			
+							</Grid>
 						</Grid>
 						<Grid item className={classes.controls}>
 							<Button
@@ -452,7 +463,9 @@ export const Intents = observer(({handleTabChange}: {handleTabChange:any}) => {
 
 					<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
 						<Grid item xs={12}>
-							<Typography className={classes.bottomMargin} variant="h5">Add Context Listener</Typography>
+							<Typography className={classes.bottomMargin} variant="h5">
+								Add Context Listener
+							</Typography>
 						</Grid>
 						<Grid item className={`${classes.field} ${classes.removeSidePadding}`}>
 							<Autocomplete

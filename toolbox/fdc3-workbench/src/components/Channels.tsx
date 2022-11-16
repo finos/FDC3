@@ -217,28 +217,32 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 					<Grid item sm={9}>
 						<ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setBroadcastContext} />
 					</Grid>
-					<Grid item container className={classes.controls} sm={3} justifyContent="flex-end">
-						<Button
-							disabled={!broadcastContext}
-							variant="contained"
-							color="primary"
-							onClick={handleBroadcast}
-						>
-							Broadcast Context
-						</Button>
-
-						<Tooltip title="Copy code example" aria-label="Copy code example">
-							<IconButton
-								size="small"
-								aria-label="Copy code example"
-								color="primary"
-								onClick={copyToClipboard(codeExamples.broadcast, "broadcast")}
-							>
-								<FileCopyIcon />
-							</IconButton>
-						</Tooltip>
-					</Grid>
-
+					<Grid item sm={3} className={classes.centerChildren}>
+						<Grid container direction="row" justifyContent="flex-end" spacing={1}>
+							<Grid item className={classes.controls} >
+								<Button
+									disabled={!broadcastContext}
+									variant="contained"
+									color="primary"
+									onClick={handleBroadcast}
+								>
+									Broadcast Context
+								</Button>
+							</Grid>
+							<Grid item className={classes.controls} >
+								<Tooltip title="Copy code example" aria-label="Copy code example">
+									<IconButton
+										size="small"
+										aria-label="Copy code example"
+										color="primary"
+										onClick={copyToClipboard(codeExamples.broadcast, "broadcast")}
+									>
+										<FileCopyIcon />
+									</IconButton>
+								</Tooltip>
+							</Grid>
+						</Grid>
+					</Grid>				
 					<div className={classes.border}></div>
 
 					<ContextLinking />

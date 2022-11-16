@@ -1,7 +1,9 @@
 import { ContextItem } from "../store/ContextStore";
+import { v4 as uuidv4 } from 'uuid';
 
 export const contexts: ContextItem[] = [
 	{
+		uuid: uuidv4(),
 		id: "Contact example",
 		template: {
 			type: "fdc3.contact",
@@ -13,6 +15,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/contact.schema.json"),
 	},
 	{
+		uuid: uuidv4(),
 		id: "ContactList example",
 		template: {
 			type: "fdc3.contactList",
@@ -36,6 +39,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/contactList.schema.json"),
 	},
 	{
+		uuid: uuidv4(),
 		id: "Instrument example",
 		template: {
 			type: "fdc3.instrument",
@@ -49,6 +53,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/instrument.schema.json"),
 	},
 	{
+		uuid: uuidv4(),
 		id: "InstrumentList example",
 		template: {
 			type: "fdc3.instrumentList",
@@ -70,6 +75,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/instrumentList.schema.json"),
 	},
 	{
+		uuid: uuidv4(),
 		id: "Organization example",
 		template: {
 			type: "fdc3.organization",
@@ -82,6 +88,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/organization.schema.json"),
 	},
 	{
+		uuid: uuidv4(),
 		id: "Country example",
 		template: {
 			type: "fdc3.country",
@@ -93,6 +100,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/country.schema.json"),
 	},
 	{
+		uuid: uuidv4(),
 		id: "Position example",
 		template: {
 			type: "fdc3.position",
@@ -107,6 +115,7 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/position.schema.json"),
 	},
 	{
+		uuid: uuidv4(),
 		id: "Portfolio example",
 		template: {
 			type: "fdc3.portfolio",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Typography, Grid, Button, IconButton, Tooltip } from "@material-ui/core";
@@ -123,7 +123,8 @@ export const ContextLinking = observer(() => {
 		return filtered;
 	};
 
-	const handleAddContextListener = () => {
+	const handleAddContextListener = (e: FormEvent | null = null) => {
+		e?.preventDefault();
 		if (contextListener) {
 			if (contextStore.isContextListenerExists(contextListener.type)) {
 				setContextError("Listener already added");
@@ -141,8 +142,7 @@ export const ContextLinking = observer(() => {
 			<Grid item xs={12}>
 				<Typography variant="h5">Add Context Listener</Typography>
 			</Grid>
-
-			<form className={classes.form} noValidate autoComplete="off">
+			<form className={classes.form} noValidate autoComplete="off" onSubmit={(e) => handleAddContextListener(e)}>
 				<Grid
 					container
 					direction="row"
