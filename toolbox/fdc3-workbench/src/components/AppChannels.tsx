@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Button, IconButton, Tooltip, Typography, Grid, TextField } from "@material-ui/core";
 import { observer } from "mobx-react";
@@ -126,7 +126,8 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
     const contextListenersOptions = Array.from(new Map(contextListenersOptionsAll.reverse().map((item) => [item["type"], item])).values()).reverse();
 
 
-    const handleGetorCreateChannel = () =>{
+    const handleGetorCreateChannel = (e: FormEvent | null = null) =>{
+        e?.preventDefault()
         if (currentAppChannelId) {
            let foundChannel = appChannelStore.appChannelsList.find((currentChannel)=>currentChannel.id === currentAppChannelId);
             if (!foundChannel) {
@@ -226,7 +227,7 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
 				<Typography variant="h5">Get Channel</Typography>
 			</Grid>
 
-            <form className={classes.form} noValidate autoComplete="off">
+            <form className={classes.form} noValidate autoComplete="off" onSubmit={(e) => handleGetorCreateChannel(e)}>
                 <Grid container direction="row" spacing={1}>
                     <Grid item className={classes.field}>
                         <TextField 
@@ -321,6 +322,12 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
                                                 helperText={channel.listenerError}
                                             />
                                         )}
+                                        onKeyDown={(event) => {
+                                            if (event.key === 'Enter') {
+                                              event.defaultPrevented = true;
+                                              handleAddContextListener(channel.id);
+                                            }
+                                          }}
                                     />
                                 </Grid>
 
