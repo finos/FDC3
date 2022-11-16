@@ -143,19 +143,20 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 		setContextError(false);
 	};
 
-	const found = (tempName: string) => (contextStore.contextsList.reduce((count, {id}) => {
-			if(id === tempName) {
+	const found = (tempName: string, ignoreUuid?: string) => 
+		contextStore.contextsList.reduce((count, {id, uuid}) => {
+			if(id === tempName && (!ignoreUuid || ignoreUuid !== uuid)) {
 				count = count + 1;
 			}
 			return count;
-		}, 0));
+		}, 0);
 
 	const handleChangeTemplateName = (newValue: any) => {
 		setDisabled(false);
 		setContextError(false)
 		setTemplateName(newValue);
 
-		if(context && !found(newValue.value)) setDuplicateName(false);
+		if(context && !found(newValue.value, context.uuid)) setDuplicateName(false);
 		else if(found(newValue.value) >= 1) setDuplicateName(true);
 	}
 
@@ -197,37 +198,39 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 
 	const handleSaveTemplate = (e: FormEvent | null = null) => {
 		e?.preventDefault();
-		const isValid: boolean = validate();
+		if(!disabled) {
+			const isValid: boolean = validate();
 
-		if (isValid && context && templateName) {
-			
-			const selectedContext = contextStore.contextsList.find(({ id }) => id === context.id);
-			const currContext = {
-				id: templateName.value,
-				schemaUrl: context.schemaUrl,
-				template: contextValue,
+			if (isValid && context && templateName) {
+				
+				const selectedContext = contextStore.contextsList.find(({ id }) => id === context.id);
+				const currContext = {
+					id: templateName.value,
+					schemaUrl: context.schemaUrl,
+					template: contextValue,
+				}
+
+				if(!selectedContext) contextStore.addContextItem(currContext);
+
+				contextStore.saveContextItem(currContext, context.id);
+				handleChangeTemplate({title: currContext.id, value: currContext.id});
+
+				systemLogStore.addLog({
+					name: "saveTemplate",
+					type: "success",
+					value: currContext?.id,
+					variant: "text",
+				});
+			} else {
+				systemLogStore.addLog({
+					name: "saveTemplate",
+					type: "error",
+					value: undefined,
+					variant: "text",
+				});
 			}
-
-			if(!selectedContext) contextStore.addContextItem(currContext);
-
-			contextStore.saveContextItem(currContext, context.id);
-			handleChangeTemplate({title: currContext.id, value: currContext.id});
-
-			systemLogStore.addLog({
-				name: "saveTemplate",
-				type: "success",
-				value: currContext?.id,
-				variant: "text",
-			});
-		} else {
-			systemLogStore.addLog({
-				name: "saveTemplate",
-				type: "error",
-				value: undefined,
-				variant: "text",
-			});
+			setDisabled(true);
 		}
-		setDisabled(true);
 	};
 
 	const handleDuplicateTemplate = (newValue: any, count = 0) => {
