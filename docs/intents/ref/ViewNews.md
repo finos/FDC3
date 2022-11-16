@@ -32,7 +32,10 @@ const instrument = {
     type: 'fdc3.instrument',
     name: 'International Business Machines',
     id: {
-        ticker: 'ibm'
+        ticker: 'IBM'
+    },
+    market: {
+        MIC: "XNYS"
     }
 }
 

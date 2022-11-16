@@ -21,10 +21,6 @@ _Created and contributed to [FDC3](http://fdc3.finos.org) by [Cosaic, Inc.](http
 
 4. Add the URL http://localhost:3000 to your FDC3-enabled container or desktop agent and ensure it has access to the `window.fdc3` object.
 
-## TODO
-- Implement a panel for working with [App channels](https://fdc3.finos.org/docs/api/spec#direct-listening-and-broadcast-on-channels).
-- Implement `findIntent` in the intents panel with support for a targetted `raiseIntent` using one of the results.
-- Add support for saving context tempaltes across sessions (e.g. via localstorage)
 ## Packages
 
 Core:
@@ -41,6 +37,3 @@ Minor:
 ## Known Issues
 
 - The following console error may appear periodically: `Warning: findDOMNode is deprecated in StrictMode.`, this is a [well-known issue in material-ui](https://github.com/mui-org/material-ui/issues/13394) and will be fixed in v5, which (at the time of writing) is currently in beta.
-
-
-

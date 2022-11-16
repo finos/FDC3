@@ -3,6 +3,7 @@ import * as fdc3 from "@finos/fdc3";
 import { nanoid } from "nanoid";
 import { contexts } from "../fixtures/contexts";
 import systemLogStore from "./SystemLogStore";
+import { v4 as uuidv4 } from 'uuid';
 
 export type ContextType = {
 	type: string;
@@ -15,6 +16,7 @@ export type ContextType = {
 
 export type ContextItem = {
 	id: string;
+	uuid?: string; //used to determine if a duplicate id is for the same object or not
 	template: ContextType | null;
 	schemaUrl?: URL;
 };
@@ -66,13 +68,14 @@ class ContextStore {
 	}
 
 	addContextItem(contextItem: ContextItem) {
+		contextItem.uuid = uuidv4();
 		this.contextsList.push(contextItem);
 		this.contextsList.sort((a, b) => a.id.localeCompare(b.id));
 		this.updateLocalStorage(this.contextsList);
 	}
 
 	saveContextItem(contextItem: ContextItem, selectedId?: string) {
-		const context = this.contextsList.find(({ id }) => id === selectedId || id ===contextItem.id);
+		const context = this.contextsList.find(({ id }) => id === selectedId || id === contextItem.id);
 		if (context) {
 			Object.keys(contextItem).forEach((key:any) => (context[key as keyof ContextItem] as any) = contextItem[key as keyof ContextItem]);
 		}

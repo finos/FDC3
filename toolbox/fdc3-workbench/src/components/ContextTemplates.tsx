@@ -121,43 +121,41 @@ export const ContextTemplates = observer(({handleTabChange, contextStateSetter, 
 
 	return (
 		<div className={classes.root}>
-			<form className={classes.form} noValidate autoComplete="off">
-				<Grid
-					container
-					direction="row"
-					spacing={1}
-					justifyContent="space-between"
-					className={`${classes.controls} ${classes.rightAlign}`}
-				>
-					<Grid item className={classes.contextName}>
-						<Autocomplete
-							id="context-"
-							size="small"
-							selectOnFocus
-							blurOnSelect
-							clearOnBlur
-							handleHomeEndKeys
-							value={context}
-							onChange={handleChange(setContext, setContextError)}
-							getOptionSelected={(option, value) => option.value === value.value}
-							filterOptions={filterOptions}
-							options={contextsOptions}
-							getOptionLabel={getOptionLabel}
-							renderOption={(option) => option.title}
-							renderInput={(params) => (
-								<TemplateTextField
-									label="CONTEXT "
-									placeholder="Enter Context Type"
-									variant="outlined"
-									{...params}
-									error={!!contextError}
-									helperText={contextError}
-								/>
-							)}
-						/>
-					</Grid>
+			<Grid
+				container
+				direction="row"
+				spacing={1}
+				justifyContent="space-between"
+				className={`${classes.controls} ${classes.rightAlign}`}
+			>
+				<Grid item className={classes.contextName}>
+					<Autocomplete
+						id="context-"
+						size="small"
+						selectOnFocus
+						blurOnSelect
+						clearOnBlur
+						handleHomeEndKeys
+						value={context}
+						onChange={handleChange(setContext, setContextError)}
+						getOptionSelected={(option, value) => option.value === value.value}
+						filterOptions={filterOptions}
+						options={contextsOptions}
+						getOptionLabel={getOptionLabel}
+						renderOption={(option) => option.title}
+						renderInput={(params) => (
+							<TemplateTextField
+								label="CONTEXT "
+								placeholder="Enter Context Type"
+								variant="outlined"
+								{...params}
+								error={!!contextError}
+								helperText={contextError}
+							/>
+						)}
+					/>
 				</Grid>
-			</form>
+			</Grid>
 		</div>
 	);
 });
