@@ -14,6 +14,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@types/uuid": "^8.3.4",
     "jsoneditor": "^9.5.6",
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
@@ -23,6 +24,7 @@
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
     "typescript": "^4.1.2",
+    "uuid": "^9.0.0",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
@@ -70,5 +72,16 @@
     "*.{json,yml,css,html,md}": "prettier --write --prose-wrap never",
     "*.js": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"
+  },
+  "overrides": {
+    "css-select": "^3.1.0",
+    "css-what": "^5.0.1",
+    "shell-quote": "^1.7.3",
+    "node-forge": "^1.0.0",
+    "immer": "^9.0.6",
+    "glob-parent": "^5.1.2",
+    "ejs": "^3.1.7",
+    "browserslist": "^4.16.5",
+    "ansi-html": "^0.0.8"
   }
 }
