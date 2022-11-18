@@ -5,7 +5,7 @@
 _These are some basic sanity tests implemented in the FDC3 Conformance Framework.  It is expected that Desktop Agent testers will run these first before commencing the much more thorough tests in section 2 onwards._
 
 - `2.0-BasicCL1`: You can call the `fdc3.addContextListener` with the `fdc3.contact` context type. The returned listener object has an `ubsubscribe` function.
-- `2.0-BasicCL2`: You can call the `fdc3addContextListener` with no context type. The returned listener object has an `ubsubscribe` function.
+- `2.0-BasicCL2`: You can call the `fdc3.addContextListener` with a `null` context type. The returned listener object has an `unsubscribe` function.
 - `2.0-BasicIL1`: You can call the `fdc3.addIntentListener` on the `DesktopAgent` for an intent, and get back a `Listener` object with `unsubscribe` method.
 - `2.0-BasicCH1`: A call to `fdc3.getCurrentChannel` on the `DesktopAgent` always returns a promise.
 - `2.0-BasicCH2`: A call to `fdc3.getCurrentChannel()` returns a promise resolving to _null_ if called prior to any `joinChannel`.
