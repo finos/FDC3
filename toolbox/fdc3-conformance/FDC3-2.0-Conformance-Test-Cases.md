@@ -149,7 +149,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | A   | 3. Promise         | Receives a rejection from the open promise with `AppTimeout` from <br>https://fdc3.finos.org/docs/api/ref/Errors#openerror |
 
 - `2.0-AOpensBWithWrongContext`: Perform above test
-- `2.0-AOpensBNoListen`: Skip `fdc3.addContextListener()` above (i.e. no listener was added). 
+- `2.0-AOpensBNoListen`: Skip `fdc3.addContextListener()` above (i.e. no listener was added).  `AppTimeout` should still occur as in 3. 
 
 ## 5. Metadata & Instance Test Cases
 
@@ -324,8 +324,8 @@ Finally, please note that this is a larger set of apps than were required for 1.
 | Test   | 6. receive void result          | The promise received by Test from `resolution.getResult()` should resolve to void. Confirm that the promise could be retrieved before the handler function returned and that the result was received *after* the result was returned by B, not before. I.e. confirm that `resolution.getResult() does not block until the result is returned, but rather returns a promise that can be awaited.`                      |
 
 - `2.0-RaiseIntentVoidResult5secs`: Perform above test
-- `2.0-RaiseIntentVoidResult0secs`: Perform above test, but A should return its result immediately (no delay). Ignore test step 6 (as there is too little time between the IntentResolution and IntentHandler completing).**
-- `2.0-RaiseIntentVoidResult61secs`: Perform above test, but A should return its result after 61 seconds** (arbitrary delay to test for timeouts)
+- `2.0-RaiseIntentVoidResult0secs`: Perform above test, but A should return its result immediately (no delay). Ignore test step 6 (as there is too little time between the IntentResolution and IntentHandler completing).
+- `2.0-RaiseIntentVoidResult61secs`: Perform above test, but A should return its result **after 61 seconds** (arbitrary delay to test for timeouts)
 
 ### Raise Intent Result (Context result)
 
@@ -340,7 +340,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 - `2.0-RaiseIntentContextResult5secs`: Perform the above test.
 - `2.0-RaiseIntentContextResult0secs`: Perform the previous test but B should return its result immediately (no delay).
-- `2.0-RaiseIntentContextResult61secs`: As above, but A should return its result after 61 seconds** (arbitrary delay to test for timeouts)
+- `2.0-RaiseIntentContextResult61secs`: As above, but A should return its result **after 61 seconds** (arbitrary delay to test for timeouts)
 
 ### Raise Intent Result (Channel results)
 | App   | Step                          | Details                                                                                           |
