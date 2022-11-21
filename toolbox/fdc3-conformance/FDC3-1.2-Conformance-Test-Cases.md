@@ -10,7 +10,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 - `BasicCH1`: A call to `fdc3.getCurrentChannel` on the `DesktopAgent` always returns a promise.
 - `BasicCH2`: A call to `fdc3.getCurrentChannel()` returns a promise resolving to _null_ if called prior to any `joinChannel`.
 - `BasicGI1`: A call to `fdc3.getInfo()` returns an object with `fdc3Version` and `provider` properties.
-- `BasicAC1`: A call to `fdc3.getOrCreateChannel(<name>)` will return an object matching the `Channel` interface, with properties of `id`, `type`, `broadcast`, `getCurrentContext` and `addContextListener`.
+- `BasicAC1`: A call to `fdc3.getOrCreateChannel(<name>)` will return an promise resolving to an object matching the `Channel` interface, with properties of `id`, `type`, `broadcast`, `getCurrentContext` and `addContextListener`.
 - `BasicUC1`: You can call the `fdc3.getSystemChannels()` function and receive a promise containing an array of more than 1 `Channel` objects, each with `type` and `id` set.
 - `BasicJC1`: You can call `fdc3.joinChannel`, passing in the `id` of one of the system channels.  `fdc3.getCurrentChannel` should then return that joined channel.
 - `BasicLC1`: You can call `fdc3.leaveCurrentChannel` at any time without it throwing an exception.
