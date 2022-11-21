@@ -146,7 +146,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 |-----|-----------------|-------------------------------------------------------------------------------------------------------------------------------|
 | A   | Opening App     | Open method as in `AOpensBWithContext` but pass a context type that app B is NOT going to add a listener for (including NOT adding a listener for type `null`)                                                                |
 | B   | Context not received | App B calls `fdc3.addContextListener(type, handler)` for the type's it is listening for but NOT for the type A is sending in this case. Confirm that NO context is received.                         |
-| A   | Promise         | Receives a rejection from the open promise with “App Timeout’ from <br>https://fdc3.finos.org/docs/api/ref/Errors#openerror |
+| A   | Promise         | Receives a rejection from the open promise with `AppTimeout` from <br>https://fdc3.finos.org/docs/api/ref/Errors#openerror |
 
 - `2.0-AOpensBWithWrongContext`: Perform above test
 - `2.0-AOpensBNoListen`: Skip `fdc3.addContextListener()` above (i.e. no listener was added). 
