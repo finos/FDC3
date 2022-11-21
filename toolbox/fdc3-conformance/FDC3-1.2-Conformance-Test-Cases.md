@@ -144,7 +144,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 -  `AOpensBWithWrongContext`: As above
 -  `AOpensBNoListen`: Skip `fdc3.addContextListener()` above. 
--  `AOpensBMultipleListen`:  **B** performs `fdc3.addContextListener('fdc3.instrument') prior to the existing `addContextListener`.  The correct context listener should receive the context, and the promise completes successfully
+-  `AOpensBMultipleListen`:  **B** performs `fdc3.addContextListener('fdc3.instrument') prior to the existing `addContextListener`.  The correct context listener should receive the context, and the promise resolves successfully
 -  `AOpensBMalformedContext`: **A** tries to pass malformed context to **B**.  Context listener receives nothing, promise completes successfully.
 
 ## 5. Intents
