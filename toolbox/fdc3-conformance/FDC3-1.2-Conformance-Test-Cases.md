@@ -143,7 +143,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | A   | Promise         | - receives a rejection from the open promise with “App Timeout’ from <br>https://fdc3.finos.org/docs/api/ref/Errors#openerror |
 
 -  `AOpensBWithWrongContext`: As above
--  `AOpensBNoListen`: Skip `fdc3.addContextListener() above. 
+-  `AOpensBNoListen`: Skip `fdc3.addContextListener()` above. 
 -  `AOpensBMultipleListen`:  **B** performs `fdc3.addContextListener('fdc3.instrument') prior to the existing `addContextListener`.  The correct context listener should receive the context, and the promise completes successfully
 -  `AOpensBMalformedContext`: **A** tries to pass malformed context to **B**.  Context listener receives nothing, promise completes successfully.
 
