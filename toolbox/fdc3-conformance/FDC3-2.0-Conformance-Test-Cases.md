@@ -28,10 +28,10 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | B   | 4. Broadcast          | `fdc3.broadcast(<some instrument>)` <br> **Check promise of `void` is returned**                                                                                                                         |
 | A   |5.  Receive Context    | Instrument object matches the one broadcast in 2 above.                                                                                                    |
 
-- `2.0-BasicUsage1` Perform above test 
-- `2.0-BasicUsage2` Perform steps in order: 2,1,3,4,5
-- `2.0-BasicUsage3` 3,4,1,2,5
-- `2.0-BasicUsage4` 3,4,2,1,5
+- `2.0-UCBasicUsage1` Perform above test 
+- `2.0-UCBasicUsage2` Perform steps in order: 2,1,3,4,5
+- `2.0-UCBasicUsage3` 3,4,1,2,5
+- `2.0-UCBasicUsage4` 3,4,2,1,5
 
 ### Broadcast (Filtered Context)
 
@@ -43,10 +43,10 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | B   | 4. Broadcast          | `fdc3.broadcast(<some instrument>)` <br> `fdc3.broadcast()` a contact context.   <br> **Check promise of `void` is returned in both cases**                 |
 | A   | 5. Receive Context    | Instrument object matches the one broadcast in 2 above.<br>Check that the contact is not received.                                                                   |
 
-- `2.0-FilteredUsage1` Perform above test 
-- `2.0-FilteredUsage2` Perform steps in order: 2,1,3,4,5
-- `2.0-FilteredUsage3` 3,4,1,2,5
-- `2.0-FilteredUsage4` 3,4,2,1,5
+- `2.0-UCFilteredUsage1` Perform above test 
+- `2.0-UCFilteredUsage2` Perform steps in order: 2,1,3,4,5
+- `2.0-UCFilteredUsage3` 3,4,1,2,5
+- `2.0-UCFilteredUsage4` 3,4,2,1,5
 
 | App | Step               | Details                                                                                                                                                              |
 |-----|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
