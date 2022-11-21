@@ -4,17 +4,17 @@
 
 _These are some basic sanity tests implemented in the FDC3 Conformance Framework.  It is expected that Desktop Agent testers will run these first before commencing the much more thorough tests in section 2 onwards._
 
-- `2.0-BasicCL1`: You can call the `fdc3.addContextListener` with the `fdc3.contact` context type. The returned listener object has an `ubsubscribe` function.
-- `2.0-BasicCL2`: You can call the `fdc3.addContextListener` with a `null` context type. The returned listener object has an `unsubscribe` function.
-- `2.0-BasicIL1`: You can call the `fdc3.addIntentListener` on the `DesktopAgent` for an intent, and get back a `Listener` object with `unsubscribe` method.
-- `2.0-BasicCH1`: A call to `fdc3.getCurrentChannel` on the `DesktopAgent` always returns a promise.
+- `2.0-BasicCL1`: You can call the `fdc3.addContextListener` with the `fdc3.contact` context type. The returned promise's listener object has an `ubsubscribe` function.
+- `2.0-BasicCL2`: You can call the `fdc3.addContextListener` with a `null` context type. The returned promise's listener object has an `unsubscribe` function.
+- `2.0-BasicIL1`: You can call the `fdc3.addIntentListener` on the `DesktopAgent` for an intent, and get back promise resolving a `Listener` object with `unsubscribe` method.
+- `2.0-BasicCH1`: A call to `fdc3.getCurrentChannel()` on the `DesktopAgent` always returns a promise, resolving to either a `Channel` or `null`.
 - `2.0-BasicCH2`: A call to `fdc3.getCurrentChannel()` returns a promise resolving to _null_ if called prior to any `joinChannel`.
-- `2.0-BasicGI1`: A call to `fdc3.getInfo()` returns an object with `fdc3Version` and `provider` properties.
-- `2.0-BasicAC1`: A call to `fdc3.getOrCreateChannel(<name>)` will return an object matching the `Channel` interface, with properties of `id`, `type`, `broadcast`, `getCurrentContext` and `addContextListener`.
-- `2.0-BasicUC1`: You can call the `fdc3.getSystemChannels()` function and receive a promise containing an array of more than 1 `Channel` objects, each with type and id set.
-- `2.0-BasicJC1`: You can call `fdc3.joinChannel`, passing in the `id` of one of the system channels.  `fdc3.getCurrentChannel` should then return that joined channel.
-- `2.0-BasicLC1`: You can call `fdc3.leaveCurrentChannel` at any time without exception.
-- `2.0-BasicRI1`: You can call `fdc3.raiseIntentForContext`, passing in a context object with some `type` field.  
+- `2.0-BasicGI1`: A call to `fdc3.getInfo()` returns a promise resolving to an `ImplementationMetadata` object with `fdc3Version` and `provider` properties.
+- `2.0-BasicAC1`: A call to `fdc3.getOrCreateChannel(<name>)` will return a promise resolving an object matching the `Channel` interface, with properties of `id`, `type`, `broadcast`, `getCurrentContext` and `addContextListener`.
+- `2.0-BasicUC1`: You can call the `fdc3.getUserChannels()` function and receive a promise resolving an array of more than 1 `Channel` objects, each with type and id set.
+- `2.0-BasicJC1`: You can call `fdc3.joinUserChannel()`, passing in the `id` of one of the system channels.  After the returned promise is resolved, `fdc3.getCurrentChannel()` should then return a promise resolving to the joined `Channel`.
+- `2.0-BasicLC1`: You can call `fdc3.leaveCurrentChannel()` at any time without an exception being thrown.
+- `2.0-BasicRI1`: You can call `fdc3.raiseIntentForContext()`, passing in a context object with some `type` field.  
 
 ## 2. User Channels
 
