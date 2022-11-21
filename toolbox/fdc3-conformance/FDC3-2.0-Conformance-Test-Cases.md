@@ -59,7 +59,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
  - `2.0-UCFilteredUsage5`: Perform above test
  - `2.0-UCFilteredUsage6`: Perform above test, except B will join a _different_ channel to A. Check that you _don't_ receive anything.
  - `2.0-UCFilteredUsageUnsubscribe`: Perform above test, except that after joining, **A** then `unsubscribe()`s from the channel using the `listener.unsubscribe` function. Check that **A** _doesn't_ receive anything.
- - `2.0-UCFilteredUsageChange`: Perform above test, except that after joining, **A** changes channel with a further _different_ channel.  Check that **A** _doesn't_ receive anything.
+ - `2.0-UCFilteredUsageChange`: Perform above test, except that after joining, **A** changes channel to a _different_ channel via a further call to `fdc3.joinUserChannel`.  Check that **A** _doesn't_ receive anything.
  - `2.0-UCFilteredUsageLeave`: Perform above test, except that after joining, **A** calls `fdc3.leaveChannel()` and doesn't receive anything.
 
 | App | Step               | Details                                                                                                                                                              |
