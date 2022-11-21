@@ -300,10 +300,12 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - You should receive a JavaScript Error with the message `ResolveError.TargetAppUnavailable `.
 - `2.0-RaiseIntentFailTargetedAppResolve3`: Perform above test, but: 
   - Use `fdc3.raiseIntent(‘sharedTestingIntent2’, testContextY, {appId: "<H's appId>"})`.
-  - You should receive a JavaScript Error with the message `ResolveError.IntentDeliveryFailed` (as this app is configured for the intent and context pair, but does not add any intent listeners).
+  - You should receive a JavaScript Error with the message `ResolveError.IntentDeliveryFailed` (as this app is configured for the intent and context pair, but does not add any intent listeners). 
+  - **Note:  Test will need an extended timeout to allow for this to be returned in time by the desktop agent, which will have a vendor-defined timeout.**
 - `2.0-RaiseIntentFailTargetedAppResolve4`: Perform above test, but: 
   - `fdc3.raiseIntent(‘sharedTestingIntent2’, testContextY, {appId: "<I's appId>"})`
   - You should receive a JavaScript Error with the message `ResolveError.IntentDeliveryFailed` (as this app is configured for the intent and context pair, but adds intent listeners of the wrong type.
+  - **Note:  Test will need an extended timeout to allow for this to be returned in time by the desktop agent, which will have a vendor-defined timeout.**
 - `2.0-RaiseIntentFailTargetedAppInstanceResolve1`: Perform above test, but:
   - First spawn an instance of App **A** and collect its `AppIdentifier` with `const appIdentifier = await fdc3.open({appId: "<A's appId>"})`.
   - Then use `fdc3.raiseIntent(‘aTestingIntent’, testContextY, appIdentifier )` to target that instance.  
@@ -325,7 +327,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 - `2.0-RaiseIntentVoidResult5secs`: Perform above test
 - `2.0-RaiseIntentVoidResult0secs`: Perform above test, but A should return its result immediately (no delay). Ignore test step 6 (as there is too little time between the IntentResolution and IntentHandler completing).
-- `2.0-RaiseIntentVoidResult61secs`: Perform above test, but A should return its result **after 61 seconds** (arbitrary delay to test for timeouts)
+- `2.0-RaiseIntentVoidResult61secs`: Perform above test, but A should return its result **after 61 seconds** (arbitrary delay to test timeout doesn't occur)
 
 ### Raise Intent Result (Context result)
 
@@ -340,7 +342,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 - `2.0-RaiseIntentContextResult5secs`: Perform the above test.
 - `2.0-RaiseIntentContextResult0secs`: Perform the previous test but B should return its result immediately (no delay).
-- `2.0-RaiseIntentContextResult61secs`: As above, but A should return its result **after 61 seconds** (arbitrary delay to test for timeouts)
+- `2.0-RaiseIntentContextResult61secs`: As above, but A should return its result **after 61 seconds** (arbitrary delay to test timeout doesn't occur)
 
 ### Raise Intent Result (Channel results)
 | App   | Step                          | Details                                                                                           |
