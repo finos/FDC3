@@ -12,7 +12,7 @@ Notes:
 
 - `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or `'Meeting'` although other string values are permitted.
 - `origin` is used to represent the application or service that the interaction was created from to aid in tracing the source of an interaction.
-- `id` does not need to be populated by the originating application, however the target application could store it for future reference. 
+- `id` does not need to be populated by the originating application, however the target application could store it for future reference and SHOULD return it in a `TransactionResult`. 
 - `id` can be used by a target application to pass an identifier back to the originating application after an interaction record has been created, updated or deleted.
 - `id.URI` can be used by a target application to pass a record's link back to the originating application. This offers the originating application a way to open the record for a user to view. 
 
