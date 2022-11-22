@@ -85,3 +85,4 @@ Other Types
 
 Intents
 - [CreateInteraction](../../intents/ref/CreateInteraction)
+- [ViewInteractions](../../intents/ref/ViewInteractions)
