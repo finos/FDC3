@@ -123,3 +123,4 @@ Console log will display:
 
 Context
 - [Interaction](../../context/ref/Interaction)
+- [TransactionResult](../../context/ref/TransactionResult)
