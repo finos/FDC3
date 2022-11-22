@@ -40,8 +40,8 @@ export interface AppMetadata extends AppIdentifier {
   /** A list of icon URLs for the application that can be used to render UI elements */
   readonly icons?: Array<Icon>;
 
-  /** A list of image URLs for the application that can be used to render UI elements */
-  readonly images?: Array<Image>;
+  /** Images representing the app in common usage scenarios that can be used to render UI elements  */
+  readonly screenshots?: Array<Image>;
 
   /** The type of output returned for any intent specified during resolution. May express a particular context type (e.g. "fdc3.instrument"), channel (e.g. "channel") or a channel that will receive a specified type (e.g. "channel<fdc3.instrument>"). */
   readonly resultType?: string | null;
