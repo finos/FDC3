@@ -78,7 +78,7 @@ Console log will display:
     status: 'Created',
     context: {
         type: 'fdc3.interaction',
-        contacts: {
+        participants: {
             type: 'fdc3.contactList',
             contacts: [
                 {
