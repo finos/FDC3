@@ -30,7 +30,7 @@ SHOULD return context as a result:
 ```js
 const interaction = {
     type: 'fdc3.interaction',
-    contacts: {
+    participants: {
         type: 'fdc3.contactList',
         contacts: [
             {
