@@ -89,6 +89,7 @@ Other Types
 - [Contact](Contact)
 - [ContactList](ContactList)
 - [TimeRange](TimeRange)
+- [TransactionResult](TransactionResult]
 
 Intents
 - [CreateInteraction](../../intents/ref/CreateInteraction)
