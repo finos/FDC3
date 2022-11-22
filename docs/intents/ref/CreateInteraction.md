@@ -65,7 +65,9 @@ const interaction = {
     origin: 'Outlook'
 }
 
-fdc3.raiseIntent('CreateInteraction', interaction)
+const intentResolution = await fdc3.raiseIntent('CreateInteraction', interaction);
+const result = await intentResolution.getResult();
+console.log(result);
 ```
 
 Console log will display:
