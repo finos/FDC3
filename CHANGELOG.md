@@ -10,6 +10,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Added a chat `Message` type in order to describe messages with rich content and attachments
 * Added an `Action` type, encapsulating either a `Context` or the association of a `Context` with an `Intent` inside another object
+
+### Changed
+
+* Updated definition of the `ChatInitSettings` context type to use the new `Message` type
+* Updated definition of the `Instrument` context type to include optional market identifiers ([#819](https://github.com/finos/FDC3/pull/819))
+
+### Deprecated
+
+### Fixed
+
+## [FDC3 Standard 2.0](https://github.com/finos/FDC3/compare/v1.2..v2.0) - 2022-07-01
+
+### Added
+
 * Definition of the `icons` property of `AppMetadata`, based on PWA icon spec ([#319](https://github.com/finos/FDC3/pull/319))
 * Added support for raiseIntent without a context via the addition of the `fdc3.nothing` context type ([#375](https://github.com/finos/FDC3/pull/375))
 * Added [**FDC3 Workbench**](https://fdc3.finos.org/toolbox/fdc3-workbench/), an FDC3 API developer application ([#457](https://github.com/finos/FDC3/pull/457))
@@ -83,11 +97,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Corrected syntax errors in context schema examples ([#424](https://github.com/finos/FDC3/pull/424))
 * Corrected a minor error in the ViewQuote Intent example ([#439](https://github.com/finos/FDC3/pull/439))
 * Clarified behavior of `fdc3.addContextListener` when not joined to a channel ([#449](https://github.com/finos/FDC3/pull/449))
-* Clarified existing behavior of `joinChannel` and `addIntentListener` when joining a channel ([#454](https://github.com/finos/FDC3/pull/454))
+* Clarified existing behavior of `joinChannel` and `addContextListener` when joining a channel ([#454](https://github.com/finos/FDC3/pull/454))
 * Clarified numerous aspects of the existing `raiseIntent` behavior in the spec and documentation ([#461](https://github.com/finos/FDC3/pull/461))
 * Updated Methods.ts to support the updated signature for `addContextListener` introduced in FDC3 1.2 ([#462](https://github.com/finos/FDC3/pull/462))
 * Clarified the description of the addContextListener functions from the Desktop Agent and Channel APIs in spec and docs. ([#492](https://github.com/finos/FDC3/pull/492))
 * Clarified that implementing `fdc3.getInfo()` is required for compliance with the FDC3 standard ([#515](https://github.com/finos/FDC3/pull/515))
+* Corrected syntax errors in valuation schema ([#834](https://github.com/finos/FDC3/pull/834))
+* Clarified that API errors are promises rejected with a JavaScript (or language appropriate) Error Object with a message chosen from the error enumerations. ([#843](https://github.com/finos/FDC3/pull/843))
+* Clarified that `findIntent` functions should return the `ResolveError.NoAppsFound` error, rather than an `AppIntent` with an empty `apps` array when no apps are fund during intent resolution. ([#843](https://github.com/finos/FDC3/pull/843))
+* Clarified spec requirements for registration of intent handlers (SHOULD support `interop.intents.listensFor` in an appD record, may support other routes including dynamic registration at runtime) ([#844](https://github.com/finos/FDC3/pull/844))
+* Corrected schema definition for appD `interop.intents.listensFor` element ([#847](https://github.com/finos/FDC3/pull/847))
 
 ## [npm v1.2.0] - 2021-04-19
 
