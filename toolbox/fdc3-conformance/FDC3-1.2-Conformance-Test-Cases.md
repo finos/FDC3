@@ -93,7 +93,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 -  `ACFilteredContext1`: Perform above test 
 -  `ACFilteredContext2`: Perform above test, but add listeners for both `fdc3.instrument` and `fdc3.contact` in `addContextListener` step.  Both should be received. 
--  `ACFilteredContext3`: Perform above test, except creating a _different_ channel. Check that you _don't_ receive anything.
+-  `ACFilteredContext3`: Perform above test, except creating a _different_ channel in app B. Check that you _don't_ receive anything (as the channels don't match).
 -  `ACUnsubscribe`: Perform above test, except that after creating the channel **A** then `unsubscribe()`s the listener it added to the channel. Check that **A** _doesn't_ receive anything.
 -  `ACFilteredContext4`: Perform above test, except that after creating the channel **A** creates another channel with a further _different_ channel id.  Check that **A** _doesn't_ receive anything.
 
