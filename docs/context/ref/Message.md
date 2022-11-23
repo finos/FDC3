@@ -43,26 +43,24 @@ const message = {
       },
       'eurusd_action': {
         type: 'fdc3.action',
-        data: {
-            title: 'Click to view Chart',
-            intent: 'ViewChart',
-            context: {
-                type: 'fdc3.chart',
-                instruments: [
-                    {
-                        type: 'fdc3.instrument',
-                        id: {
-                            ticker: 'EURUSD'
-                        }
+        title: 'Click to view Chart',
+        intent: 'ViewChart',
+        context: {
+            type: 'fdc3.chart',
+            instruments: [
+                {
+                    type: 'fdc3.instrument',
+                    id: {
+                        ticker: 'EURUSD'
                     }
-                ],
-                range: {
-                    type: 'fdc3.dateRange',
-                    starttime: '2020-09-01T08:00:00.000Z',
-                    endtime: '2020-10-31T08:00:00.000Z'
-                },
-                style: 'candle'
-            }
+                }
+            ],
+            range: {
+                type: 'fdc3.dateRange',
+                starttime: '2020-09-01T08:00:00.000Z',
+                endtime: '2020-10-31T08:00:00.000Z'
+            },
+            style: 'candle'
         }
     }
   }

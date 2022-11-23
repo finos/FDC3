@@ -3,6 +3,7 @@
   "$id": "https://fdc3.finos.org/schemas/next/action.schema.json",
   "type": "object",
   "title": "Action",
+  "allOf": [{ "$ref": "context.schema.json#" }],
   "properties": {
     "type": { "const": "fdc3.action" },
     "title": {
@@ -16,11 +17,19 @@
       "type": "object",
       "$ref": "context.schema.json#"
     },
+    "app": {
+      "type": "object",
+      "properties": {
+        "appId": { "type": "string" },
+        "instanceId": { "type": "string" }
+      },
+      "required": ["appId"]
+    },
     "customConfig": {
       "type": "object"
     }
   },
   "required": [
-    "type,", "title", "context"
+    "title", "context"
   ]
 }
