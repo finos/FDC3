@@ -116,7 +116,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 - `AOpensB1`:  **A** calls `fdc3.open(‘app B Name’)`, check app **B** opens
 - `AOpensB2`:  **A** calls `fdc3.open({name: “<app B Name>”})`, check app **B** opens
-- `AOpensB3`:  **A** calls `fdc3.open({name: “<app B Name>”, appId: “<app B ID”})`, check app **B** opens
+- `AOpensB3`:  **A** calls `fdc3.open({name: “<app B Name>”, appId: “<app B ID>”})`, check app **B** opens
 
 ### A Fails To Open B
 
@@ -129,8 +129,10 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | A   | 1. Opening App     | various open methods as in `AOpensB1-3` except with a `<context>` argument of type `fdc3.testReceiver` <br>check app opens    |
 | B   | 2. Context present | `fdc3.addContextListener()`<br>- receives `<context>` from **A** |
 
--  `AOpensBWithContext1-3`: Perform above tests
--  `AOpensBWithSpecificContext`: Perform above but replace **B**s call with `fdc3.addContextListener('fdc3.testReceiver`)`
+- `AOpensB1WithContext1`:  **A** calls `fdc3.open(‘app B Name', ctx)`, check app **B** opens
+- `AOpensB2WithContext2`:  **A** calls `fdc3.open({name: “<app B Name>”}, ctx)`, check app **B** opens
+- `AOpensB3WithContext3`:  **A** calls `fdc3.open({name: “<app B Name>”, appId: “<app B ID>”}, ctx)`, check app **B** opens
+- `AOpensBWithSpecificContext1`: Perform `AOpensB1WithContext1` above but replace **B**s call with `fdc3.addContextListener('fdc3.testReceiver`)`
 
 
 ### Specific Context
@@ -139,13 +141,11 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | App | Step            | Description                                                                                                                   |
 |-----|-----------------|-------------------------------------------------------------------------------------------------------------------------------|
 | A   | 1. Opening App     | `fdc3.open(‘app Name’, <contact context>)` <br>check app opens                                                                |
-| B   | 2. Context present | fdc3.addContextListener()<br>- receives <context> from A                                                                      |
+| B   | 2. Context present | `fdc3.addContextListener()`<br>`fdc3.addContextListener('fdc3.instrument')`<br>- receives <context> from A                                                                      |
 | A   | 3. Promise         | - receives a rejection from the open promise with “App Timeout’ from <br>https://fdc3.finos.org/docs/api/ref/Errors#openerror |
 
--  `AOpensBWithWrongContext`: As above
--  `AOpensBNoListen`: Skip `fdc3.addContextListener()` above. 
--  `AOpensBMultipleListen`:  **B** performs `fdc3.addContextListener('fdc3.instrument') prior to the existing `addContextListener`.  The correct context listener should receive the context, and the promise resolves successfully
--  `AOpensBMalformedContext`: **A** tries to pass malformed context to **B**.  Context listener receives nothing, promise completes successfully.
+-  `AOpensBMultipleListen`:  The correct (first) context listener should receive the context, and the promise resolves successfully in **A**.
+-  `AOpensBMalformedContext`: **A** tries to pass malformed context to **B** (i.e. no `type` field on the context object).  Context listeners receive nothing, promise completes successfully.
 
 ## 5. Intents
 
@@ -185,6 +185,7 @@ Also we assume a fourth app **D** that is going to discover the intents in the o
 
 -  `SingleResolve1`: Perform above test
 -  `TargetedResolve1`: Use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, <A’s App Name>)` to start app A, otherwise, as above
--  `TargetedResolve2-3` Use the other ways of addressing apps (via ID, metadata) as described in `AOpensB2-3` 
--  `FailedResolve1-3` As above, but use `fdc3.raiseIntent(‘aTestingIntent’, {testContextY}, <A’s App Name>)` and variations.  You will receive `NoAppsFound` Error
+-  `TargetedResolve2`: Use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, {name: "<A's App Name>"})` to start app A, otherwise, as above
+-  `TargetedResolve3`: Use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, {name: “<app B Name>”, appId: “<app B ID>”})` to start app A, otherwise, as above
+-  `FailedResolve1-3` As with `TargetedResolve1-3`, but use `fdc3.raiseIntent(‘aTestingIntent’, {testContextY}, <A’s App Name>)` and variations.  You will receive `NoAppsFound` Error
 -  `FailedResolve4` As above, but use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, <C’s App Name>)`.  You will receive `NoAppsFound` Error
