@@ -66,7 +66,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 |-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | A   | 1. createChannel        |`const testChannel = await fdc3.getOrCreateChannel("test-channel")`       |
 | A   | 2. addContextListener |Call `testChannel.addContextListener(null, handler)`<br>Check listener object returned<br>Check that there is an `unsubscribe` function on the returned object  |
-| B   | 3. createChannel        | `const testChannel = fdc3. getOrCreateChannel("test-channel")`   |
+| B   | 3. createChannel        | `const testChannel = fdc3.getOrCreateChannel("test-channel")`   |
 | B   | 4. Broadcast          | `testChannel.broadcast(<some instrument>)`   |
 | A   | 5. Receive Context    | Instrument object matches the one broadcast in 4 above.      |
 
