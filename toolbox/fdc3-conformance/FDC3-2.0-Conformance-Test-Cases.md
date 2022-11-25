@@ -349,6 +349,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 - `2.0-RaiseIntentContextResult61secs`: As above, but B should return its result **after 61 seconds** (arbitrary delay to test timeout doesn't occur)
 
 ### Raise Intent Result (Channel results)
+
 | App   | Step                          | Details                                                                                           |
 |-------|-----------------------|---------------------------------------------------------------------------------------------------|
 | Test   | 1. Raise Intent          | Test raises an intent with `fdc3.raiseIntent("sharedTestingIntent2", testContextY, {appId: "<E's appId>"})`<br>starts app E. |
@@ -358,12 +359,12 @@ Finally, please note that this is a larger set of apps than were required for 1.
 | E       | 5. return Channel | E should retrieve a Channel object via `fdc3.getOrCreateChannel("someChannelName")` and return it immediately. |
 | Test   | 6. receive Channel result | The promise received by Test from `resolution.getResult()` should resolve to a `Channel` object with the expected id. Confirm that the `type` of the Channel object is "app".
 | Test   | 7. addContextListener | Add a context listener to the Channel object via `channelObj.addContextListener("testContextZ", handler)` |
-| E       | 8. broadcast context | After a short delay (of a few seconds) E should broadcast a testContextZ context object over the channel, including an id field with a unique identifier set (e.g. a uuid). |
-| Test  | 9. receive context | Test should receive the context broadcast by E and confirm that it contains the expected id value. | 
+| E       | 8. broadcast context | After a short delay (of a few seconds) E should broadcast a `testContextZ` context object over the channel, including an `id` field with a unique identifier set (e.g. a uuid). |
+| Test  | 9. receive context | Test should receive the context broadcast by E and confirm that it contains the expected `id` value. |
 
 - `2.0-RaiseIntentChannelResult`: Perform the above test
 - `2.0-RaiseIntentPrivateChannelResult`: Perform the above test, but:
-  - Substitute app F through out - which returns a PrivateChannel result instead of channel.
+  - Substitute app F throughout - which returns a PrivateChannel result instead of channel.
   - At step 5, the PrivateChannel should be created via`fdc3.createPrivateChannel()`.
   - At step 6 confirm that the type of the channel is "private".
 
