@@ -208,7 +208,7 @@ You will need to pre-populate the AppDirectory with the following items:
 
 ## 6. Intents
 
-Please note that API calls (and associated test cases) relating to API calls based on the `name` property of an appD record (used to specify a target application) were deprecated in FDC3 2.0 in favour of those based on `AppIdentifier`. Hence, those API calls have become optional and test cases related to them have been removed.
+_Please note that API calls (and associated test cases) relating to API calls based on the `name` property of an appD record (used to specify a target application) were deprecated in FDC3 2.0 in favour of those based on `AppIdentifier`. Hence, those API calls have become optional and test cases related to them have been removed._
 
 ### Setup
 
@@ -247,9 +247,9 @@ Finally, please note that this is a larger set of apps than were required for 1.
 ### Find Intent basic usage
 
 - `2.0-FindIntentAppD`: Calls `fdc3.findIntent(‘aTestingIntent’)`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** `AppMetadata`.
-- `2.0-FindNonExistentIntentAppD`: Calls `fdc3.findIntent(‘nonExistentIntent’)`. Rejects with no apps found error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
-- `2.0-FindIntentAppDRightContext`: Calls `fdc3.findIntent(‘aTestingIntent’, ‘fdc3.testContextX’)`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** app metadata.
-- `2.0-FindIntentAppDWrongContext`: Calls `fdc3.findIntent(‘aTestingIntent’, ‘fdc3.testContextY’)`.  Rejects with 'no apps found' error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
+- `2.0-FindNonExistentIntentAppD`: Calls `fdc3.findIntent(‘nonExistentIntent’)`. Rejects with with an Error whose `message` is `ResolveError.NoAppsFound`  https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
+- `2.0-FindIntentAppDRightContext`: Calls `fdc3.findIntent(‘aTestingIntent’, ‘fdc3.testContextX’)`.  Receives promise containing an AppIntent with metadata containing `aTestingIntent` and only metadata for app **A**.
+- `2.0-FindIntentAppDWrongContext`: Calls `fdc3.findIntent(‘aTestingIntent’, ‘fdc3.testContextY’)`.  Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
 - `2.0-FindIntentAppDMultiple1`: Calls `fdc3.findIntent(‘sharedTestingIntent2’)`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and metadata for apps  **D**, **E**, **F**, **G**, **H**  and **I** only.
 - `2.0-FindIntentAppDMultiple2`: Calls `fdc3.findIntent(‘sharedTestingIntent2’, testContextY)`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and `AppMetadata` for apps  **D**, **E**, **F**, **G**, **H**  and **I** only.
 
@@ -321,9 +321,9 @@ Finally, please note that this is a larger set of apps than were required for 1.
 | Test   | 1. Raise          | `fdc3.raiseIntent(‘sharedTestingIntent1’, testContextY)`<br>starts app B.                       |
 | B       | 2. Receive Intent & Context | After starting up, B runs `fdc3.addIntentListener(‘sharedTestingIntent1’)` to register its listener.<br>It then receives `testContextY`, matching that sent by Test |
 | Test   | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifer` as the `source field` with App B's `appId` and `instanceId` set.                     |
-| Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.                        |
+| Test   | 4. await results          | Test should `const resultPromise = resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.                        |
 | B       | 5. return void          | B should return void after a short delay (e.g. 5 seconds).                        |
-| Test   | 6. receive void result          | The promise received by Test from `resolution.getResult()` should resolve to void. Confirm that the promise could be retrieved before the handler function returned and that the result was received *after* the result was returned by B, not before. I.e. confirm that `resolution.getResult() does not block until the result is returned, but rather returns a promise that can be awaited.`                      |
+| Test   | 6. receive void result          | The promise received by Test from `resolution.getResult()` should eventually resolve to void and not be rejected. Additionally, confirm that the promise could be retrieved before the handler function returns. I.e. confirm that `resolution.getResult()` does not block until the result is returned, but rather returns a promise that can be awaited.`     |
 
 - `2.0-RaiseIntentVoidResult5secs`: Perform above test
 - `2.0-RaiseIntentVoidResult0secs`: Perform above test, but A should return its result immediately (no delay). Ignore test step 6 (as there is too little time between the IntentResolution and IntentHandler completing).
