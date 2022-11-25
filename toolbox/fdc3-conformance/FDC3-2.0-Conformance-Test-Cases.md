@@ -256,10 +256,11 @@ Finally, please note that this is a larger set of apps than were required for 1.
 ### Find Intents By Context
 
 - `2.0-FindIntentByContextSingleContext`: Call `fdc3.findIntentsByContext(testContextX)`.  Should return:
-  - `aTestingIntent` (app **A**), 
+  - `aTestingIntent` (app **A**),
   - `sharedTestingIntent1` (**A**, **B**)
-  - `cTestingIntent` (**C**) 
-  - `kTestingIntent` (**K**)
+  - `cTestingIntent` (**C**),
+  - `sharedTestingIntent2` (**D**)
+  - `kTestingIntent` (**K**),
   - AND nothing else.
 - `2.0FindIntentByContextWrongIntentAppD`: Calls `fdc3.findIntentsByContext(nonExistentContext)`. Rejects with 'no apps found' error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror**
 
