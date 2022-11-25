@@ -226,7 +226,7 @@ You will need to pre-populate the AppDirectory with the following items (some of
 
 | App | Usage                                                 | ListensFor `(pattern: intent([context-types…]) (=> result-type)`)                               | On Startup                                                                   |
 |-----|-------------------------------------------------------|-----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
-| A   | Raise Intent tests without results                    | `aTestingIntent(testContextX,testContextZ)`<br/>`sharedTestingIntent1(testContextX) => testContextY` | addIntentListener() for given intents                                       |
+| A   | Raise Intent tests without results                    | `aTestingIntent(testContextX,testContextZ)`<br/>`sharedTestingIntent1(testContextX)` | addIntentListener() for given intents                                       |
 | B   | Raise Intent tests with Context results               | `bTestingIntent(testContextY)`<br/>`sharedTestingIntent1(testContextX, testContextY) => testContextY` | addIntentListener() for given intents                                       |
 | C   | Find Intent tests (never started)                     | `cTestingIntent(testContextX) => testContextZ`                                                  | addIntentListener() for given intents                                       |
 | D   | Find Intent tests (never started)                     | `sharedTestingIntent2(testContextX) => testContextZ`                                            | addIntentListener() for given intents                                       |
@@ -268,8 +268,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 - `2.0-FindIntentAppDByResultSingle`: Calls `fdc3.findIntent(‘cTestingIntent’, testContextX, "testContextZ")`.  Receives promise containing an `AppIntent` with metadata containing `cTestingIntent` and only **C** app metadata.
 - `2.0-FindIntentAppDByResultSingleNullContext`: Calls `fdc3.findIntent(‘cTestingIntent’, null, "testContextZ")`.  Receives promise containing an `AppIntent` with metadata containing `cTestingIntent` and only **C** app metadata.
-- `2.0-FindIntentAppDByResultMultiple1`: Calls `fdc3.findIntent("sharedTestingIntent1", testContextX, "testContextY")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent1` and only **A** and **B** app metadata.
-- `2.0-FindIntentAppDByResultMultiple2`: Calls `fdc3.findIntent("sharedTestingIntent1", testContextY, "testContextY")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent1` and only **B** app metadata.
+- `2.0-FindIntentAppDByResultMultiple`: Calls `fdc3.findIntent("sharedTestingIntent1", testContextX, "testContextY")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent1` and only **B** app metadata.
 - `2.0-FindIntentAppDByResultChannel1`: Calls `fdc3.findIntent("sharedTestingIntent2", testContextY, "channel")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and only **E** and **F** app metadata.
 - `2.0-FindIntentAppDByResultChannel2`: Calls `fdc3.findIntent("sharedTestingIntent2", testContextY, "channel<testContextZ>")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent1` and only **F** app metadata.
 
@@ -285,7 +284,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 - `2.0-RaiseIntentTargetedAppResolve`: Repeat the above test, but:
   - In the first step use `fdc3.raiseIntent("sharedTestingIntent1", testContextX, {"appID": "<B’s appId>"})` to start app B,
   - Otherwise, as above.
-- `2.0-RaiseIntentTargetedInstanceResolveOpen`: Repeat the above test, but:** 
+- `2.0-RaiseIntentTargetedInstanceResolveOpen`: Repeat the above test, but:
   - Before the first step, use `let appIdentifier = await fdc3.open({appId: "<A's appId>"})` to start A and retrieve its `AppIdentifier` with instance details.
   - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A, otherwise, as above.
 - `2.0-RaiseIntentTargetedInstanceResolveFindInstances`: Repeat the above test, but:
