@@ -372,13 +372,13 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App  | Step                | Details                                                                                                                                    |
 |-------|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Create a private channel | Test creates a PrivateChannel with `const privChan = await fdc3.createPrivateChannel();`. Confirm that the Channel has an id.
-| Test   | 2. Confirm private channel id is unique | Test creates a second PrivateChannel with `const privChan = await fdc3.createPrivateChannel();`. Confirm that the Channel has an id and that it is distinct from the first channel created . |
+| Test   | 1. Create a private channel | Test creates a PrivateChannel with `const privChan = await fdc3.createPrivateChannel()`. Confirm that the Channel has an `id`.
+| Test   | 2. Confirm private channel `id` is unique | Test creates a second PrivateChannel with `const privChan = await fdc3.createPrivateChannel();`. Confirm that the Channel has an `id` and that it is distinct from the first channel created. |
 | Test   | 3. Retrieve as app channel | Attempt to retrieve the channels as App Channels with `const appChan = await fdc3.getOrCreateChannel(privChan.id)` this should fail with `ChannelError.AccessDenied`  |
 | Test   | 4. Raise Intent & await result | Start app J and pass it the id of the second PrivateChannel with `fdc3.raiseIntent("privateChanneliIsPrivate", privateChannelDetails)`, where the context object contains the id of the channel to attempt to retrieve. An IntentResolution should be returned and App J should start. Wait for a result to be returned via `await resolution.getResult()`.
 | J | 5. Receive Intent & Context | J should add an Intent Listener and receive the context with `fdc3.addIntentListener("privateChanneliIsPrivate", handler)` |
-| J | 6. Retrieve as app channel | J should attempt to retrieve the channel as an App Channel by id with `const appChan = await fdc3.getOrCreateChannel("<idPassedInContext>")` this should fail with `ChannelError.AccessDenied`. Return a privateChannelisPrivateResult back to Test to complete the test. |
-| Test   | 7. Receive result | Test receives the result back from J and confirms that the test was passed. | 
+| J | 6. Retrieve as app channel | J should attempt to retrieve the channel as an App Channel by `id` with `const appChan = await fdc3.getOrCreateChannel("<idPassedInContext>")` this should fail with `ChannelError.AccessDenied`. Return a `privateChannelisPrivateResult` back to Test to complete the test. |
+| Test   | 7. Receive result | Test receives the result back from J and confirms that the test was passed. |
 
 - `2.0-PrivateChannelsAreNotAppChannels`: Perform the above test
 
