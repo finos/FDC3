@@ -286,7 +286,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - Otherwise, as above.
 - `2.0-RaiseIntentTargetedInstanceResolveOpen`: Repeat the above test, but:
   - Before the first step, use `let appIdentifier = await fdc3.open({appId: "<A's appId>"})` to start A and retrieve its `AppIdentifier` with instance details.
-  - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A, otherwise, as above.
+  - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A. COnfirm that the intent is delivered to the correct instance and that another instance is NOT started. Otherwise, as above.
 - `2.0-RaiseIntentTargetedInstanceResolveFindInstances`: Repeat the above test, but:
   - Before the first step, use `let appIdentifier = await fdc3.open({appId: "<A's appId>"})` to start A and retrieve its `AppIdentifier` with instance details.
   - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A, otherwise, as above.
