@@ -50,7 +50,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 | App | Step               | Details                                                                                                                                                              |
 |-----|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | 1. addContextListeners | Call `addContextListener (“fdc3.instrument”, handler)`<br>Check **promise** resolving a **listener**  object is returned<br>Check that there is an `unsubscribe` function on the **listener object**<br>Call `addContextListener (“fdc3.contact”, handler)`<br>Check **promise** resolving a **listener**  object is returned<br>Check that there is an `unsubscribe` function on the **listener object**     |
+| A   | 1. addContextListeners | Call `addContextListener ("fdc3.instrument", handler)`<br>Check **promise** resolving a **listener**  object is returned<br>Check that there is an `unsubscribe` function on the **listener object**<br>Call `addContextListener ("fdc3.contact", handler)`<br>Check **promise** resolving a **listener**  object is returned<br>Check that there is an `unsubscribe` function on the **listener object**     |
 | A   | 2. joinUserChannel        |`fdc3.getUserChannels()`<br>Check **user** channels are returned.<br>Call `fdc3.joinUserChannel()` on first **user** channel                                      |
 | B   | 3. joinUserChannel        | `fdc3.getUserChannels()`<br>Check **user** channels are returned.<br>Call `fdc3.joinUserChannel()` on first **user** channel                                      |
 | B   | 4. Broadcast          | `fdc3.broadcast()` the instrument context. <br> `fdc3.broadcast()` a contact context.                                                                                                                                                                                                                                                               |
@@ -119,7 +119,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 | App | Step            | Description                                              |
 |-----|-----------------|----------------------------------------------------------|
-| A   | 1. Opening App     |`let appIdentifier = await fdc3.open({appId: “<app B ID>”})`   |
+| A   | 1. Opening App     |`let appIdentifier = await fdc3.open({appId: "<app B ID>"})`   |
 | B   | 2. B opens and retrieves own metadata | `const implementationMetadata = await fdc3.getInfo();`<br>`const {appId, instanceId} = implementationMetadata.appMetadata;`<br>Confirm appId matches what was opened |
 
 - `2.0-AOpensB1`:  Run above test
@@ -213,6 +213,7 @@ _Please note that API calls (and associated test cases) relating to API calls ba
 ### Setup
 
 We assume 6 context types in the below tests (and associated AppD records):
+
 - `testContextX`
 - `testContextY`
 - `testContextZ`
@@ -239,6 +240,7 @@ You will need to pre-populate the AppDirectory with the following items (some of
 | K   | PrivateChannel lifecycle events                       | `kTestingIntent(testContextX) => channel<testContextZ>`                                         | addIntentListener() for given intents                                       |
 
 NB:
+
 - There is no way to indicate in the app directory the difference between a private channel and app channel.
 - We assume a final test app `Test` that will discover the Intent support in the others using the API.
 
@@ -247,9 +249,9 @@ Finally, please note that this is a larger set of apps than were required for 1.
 ### Find Intent basic usage
 
 - `2.0-FindIntentAppD`: Calls `fdc3.findIntent("aTestingIntent")`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** `AppMetadata`.
-- `2.0-FindNonExistentIntentAppD`: Calls `fdc3.findIntent(‘nonExistentIntent’)`. Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
-- `2.0-FindIntentAppDRightContext`: Calls `fdc3.findIntent("aTestingIntent", ‘fdc3.testContextX’)`.  Receives promise containing an `AppIntent` with metadata containing `aTestingIntent` and only metadata for app **A**.
-- `2.0-FindIntentAppDWrongContext`: Calls `fdc3.findIntent("aTestingIntent", ‘fdc3.testContextY’)`.  Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
+- `2.0-FindNonExistentIntentAppD`: Calls `fdc3.findIntent("nonExistentIntent")`. Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
+- `2.0-FindIntentAppDRightContext`: Calls `fdc3.findIntent("aTestingIntent", "testContextX")`.  Receives promise containing an `AppIntent` with metadata containing `aTestingIntent` and only metadata for app **A**.
+- `2.0-FindIntentAppDWrongContext`: Calls `fdc3.findIntent("aTestingIntent", "testContextY")`.  Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
 - `2.0-FindIntentAppDMultiple1`: Calls `fdc3.findIntent("sharedTestingIntent2")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and metadata for apps  **D**, **E**, **F**, **G**, **H**  and **I** only.
 - `2.0-FindIntentAppDMultiple2`: Calls `fdc3.findIntent("sharedTestingIntent2", testContextY)`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and `AppMetadata` for apps  **E**, **F**, **G**, **H**  and **I** only.
 
@@ -266,8 +268,8 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 ### Find Intents By Result Type
 
-- `2.0-FindIntentAppDByResultSingle`: Calls `fdc3.findIntent(‘cTestingIntent’, testContextX, "testContextZ")`.  Receives promise containing an `AppIntent` with metadata containing `cTestingIntent` and only **C** app metadata.
-- `2.0-FindIntentAppDByResultSingleNullContext`: Calls `fdc3.findIntent(‘cTestingIntent’, null, "testContextZ")`.  Receives promise containing an `AppIntent` with metadata containing `cTestingIntent` and only **C** app metadata.
+- `2.0-FindIntentAppDByResultSingle`: Calls `fdc3.findIntent("cTestingIntent", testContextX, "testContextZ")`.  Receives promise containing an `AppIntent` with metadata containing `cTestingIntent` and only **C** app metadata.
+- `2.0-FindIntentAppDByResultSingleNullContext`: Calls `fdc3.findIntent("cTestingIntent", null, "testContextZ")`.  Receives promise containing an `AppIntent` with metadata containing `cTestingIntent` and only **C** app metadata.
 - `2.0-FindIntentAppDByResultMultiple`: Calls `fdc3.findIntent("sharedTestingIntent1", testContextX, "testContextY")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent1` and only **B** app metadata.
 - `2.0-FindIntentAppDByResultChannel1`: Calls `fdc3.findIntent("sharedTestingIntent2", testContextY, "channel")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and only **E** and **F** app metadata.
 - `2.0-FindIntentAppDByResultChannel2`: Calls `fdc3.findIntent("sharedTestingIntent2", testContextY, "channel<testContextZ>")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent1` and only **F** app metadata.
