@@ -278,7 +278,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App   | Step           | Details                                                                                           |
 |-------|----------------|---------------------------------------------------------------------------------------------------|
-| Test  | 1. Raise        | `fdc3.raiseIntent("aTestingIntent1", testContextX)`<br>starts app A.                       |
+| Test  | 1. Raise        | `fdc3.raiseIntent("aTestingIntent", testContextX)`<br>starts app A.                       |
 | A     | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent1")` to register its listener.<br>It then receives `testContextX`, matching that sent by Test |
 | Test  | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifer` as the `source field` with App A's `appId` and `instanceId` set.**                       |
 
