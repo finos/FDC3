@@ -208,7 +208,7 @@ You will need to pre-populate the AppDirectory with the following items:
 
 ## 6. Intents
 
-Please note that API calls (and associated test cases) relating to API calls based on the `name` property of an appD record (used to specify a target application) were deprecated in FDC3 2.0 in favour of those based on `AppIdentifier`. Hence, those API calls have become optional and test cases related to them have been removed.
+_Please note that API calls (and associated test cases) relating to API calls based on the `name` property of an appD record (used to specify a target application) were deprecated in FDC3 2.0 in favour of those based on `AppIdentifier`. Hence, those API calls have become optional and test cases related to them have been removed._
 
 ### Setup
 
@@ -229,7 +229,7 @@ You will need to pre-populate the AppDirectory with the following items (some of
 | A   | Raise Intent tests without results                    | `aTestingIntent(testContextX,testContextZ)`                                                     | addContextListener() for given intents                                       |
 | B   | Raise Intent tests with Context results               | `bTestingIntent(testContextY)`<br/> `sharedTestingIntent1(testContextX, testContextY) => testContextY` | addContextListener() for given intents                                       |
 | C   | Find Intent tests (never started)                     | `cTestingIntent(testContextX) => testContextZ`                                                  | addContextListener() for given intents                                       |
-| D   | Find Intent tests (never started)                     | `sharedTestingIntent2(testContextY) => testContextZ`                                            | addContextListener() for given intents                                       |
+| D   | Find Intent tests (never started)                     | `sharedTestingIntent2(testContextX) => testContextZ`                                            | addContextListener() for given intents                                       |
 | E   | Find Intent & Raise Intent with Channel result        | `sharedTestingIntent2(testContextY) => channel`                                                 | addContextListener() for given intents                                       |
 | F   | Find Intent & Raise Intent with PrivateChannel result | `sharedTestingIntent2(testContextY) => channel<testContextZ>` *                                 | addContextListener() for given intents                                       |
 | G   | Find Intent tests (never started)                     | `sharedTestingIntent2(testContextY)`                                                            | addContextListener() for given intents                                       |
@@ -238,9 +238,9 @@ You will need to pre-populate the AppDirectory with the following items (some of
 | J   | PrivateChannels are private                           | `privateChannelIIsPrivate(privateChannelId) => privateChannelIsPrivateResult`                   | Tries to retrieve privateChannel sent in the privateChannelId context, fails |
 | K   | PrivateChannel lifecycle events                       | `kTestingIntent(testContextX) => channel<testContextZ>`                                         | addContextListener() for given intents                                       |
 
-
-NB: * - There is no way to indicate in the app directory the difference between a private channel and app channel.
-Also, we assume a final test app `Test` that will discover the Intent support in the others using the API.
+NB:
+- There is no way to indicate in the app directory the difference between a private channel and app channel.
+- We assume a final test app `Test` that will discover the Intent support in the others using the API.
 
 Finally, please note that this is a larger set of apps than were required for 1.2 tests. This is due to an increased number of parameters to API calls and AppD records, which multiplies the number of apps required. The apps are all specified here (rather than broken down over multiple issues) to ensure that clashes between test case sets can be worked out here. For example, adding one additional app that works with a particular intent/context pair might corrupt the results of multiple `findIntent` or `raiseIntent` tests. Hence, please stick to the defined type and report any issues you find so that they can be rectified in these definitions.
 
@@ -251,7 +251,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 - `2.0-FindIntentAppDRightContext`: Calls `fdc3.findIntent(‘aTestingIntent’, ‘fdc3.testContextX’)`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** app metadata.
 - `2.0-FindIntentAppDWrongContext`: Calls `fdc3.findIntent(‘aTestingIntent’, ‘fdc3.testContextY’)`.  Rejects with 'no apps found' error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
 - `2.0-FindIntentAppDMultiple1`: Calls `fdc3.findIntent(‘sharedTestingIntent2’)`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and metadata for apps  **D**, **E**, **F**, **G**, **H**  and **I** only.
-- `2.0-FindIntentAppDMultiple2`: Calls `fdc3.findIntent(‘sharedTestingIntent2’, testContextY)`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and `AppMetadata` for apps  **D**, **E**, **F**, **G**, **H**  and **I** only.
+- `2.0-FindIntentAppDMultiple2`: Calls `fdc3.findIntent(‘sharedTestingIntent2’, testContextY)`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and `AppMetadata` for apps  **E**, **F**, **G**, **H**  and **I** only.
 
 ### Find Intents By Context
 
