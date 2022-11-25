@@ -226,8 +226,8 @@ You will need to pre-populate the AppDirectory with the following items (some of
 
 | App | Usage                                                 | ListensFor `(pattern: intent([context-types…]) (=> result-type)`)                               | On Startup                                                                   |
 |-----|-------------------------------------------------------|-----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
-| A   | Raise Intent tests without results                    | `aTestingIntent(testContextX,testContextZ)`                                                     | addContextListener() for given intents                                       |
-| B   | Raise Intent tests with Context results               | `bTestingIntent(testContextY)`<br/> `sharedTestingIntent1(testContextX, testContextY) => testContextY` | addContextListener() for given intents                                       |
+| A   | Raise Intent tests without results                    | `aTestingIntent(testContextX,testContextZ)`<br/>`sharedTestingIntent1(testContextX) => testContextY` | addContextListener() for given intents                                       |
+| B   | Raise Intent tests with Context results               | `bTestingIntent(testContextY)`<br/>`sharedTestingIntent1(testContextX, testContextY) => testContextY` | addContextListener() for given intents                                       |
 | C   | Find Intent tests (never started)                     | `cTestingIntent(testContextX) => testContextZ`                                                  | addContextListener() for given intents                                       |
 | D   | Find Intent tests (never started)                     | `sharedTestingIntent2(testContextX) => testContextZ`                                            | addContextListener() for given intents                                       |
 | E   | Find Intent & Raise Intent with Channel result        | `sharedTestingIntent2(testContextY) => channel`                                                 | addContextListener() for given intents                                       |
@@ -255,9 +255,9 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 ### Find Intents By Context
 
-- `2.0-FindIntentByContextSingleContext`: Call `fdc3.findIntentsByContext(testContextX)`.  Should return: 
+- `2.0-FindIntentByContextSingleContext`: Call `fdc3.findIntentsByContext(testContextX)`.  Should return:
   - `aTestingIntent` (app **A**), 
-  - `sharedTestingIntent` (**A**, **B**)
+  - `sharedTestingIntent1` (**A**, **B**)
   - `cTestingIntent` (**C**) 
   - `kTestingIntent` (**K**)
   - AND nothing else.
