@@ -250,8 +250,8 @@ Finally, please note that this is a larger set of apps than were required for 1.
 - `2.0-FindNonExistentIntentAppD`: Calls `fdc3.findIntent(‘nonExistentIntent’)`. Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
 - `2.0-FindIntentAppDRightContext`: Calls `fdc3.findIntent("aTestingIntent", ‘fdc3.testContextX’)`.  Receives promise containing an `AppIntent` with metadata containing `aTestingIntent` and only metadata for app **A**.
 - `2.0-FindIntentAppDWrongContext`: Calls `fdc3.findIntent("aTestingIntent", ‘fdc3.testContextY’)`.  Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
-- `2.0-FindIntentAppDMultiple1`: Calls `fdc3.findIntent(‘sharedTestingIntent2’)`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and metadata for apps  **D**, **E**, **F**, **G**, **H**  and **I** only.
-- `2.0-FindIntentAppDMultiple2`: Calls `fdc3.findIntent(‘sharedTestingIntent2’, testContextY)`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and `AppMetadata` for apps  **E**, **F**, **G**, **H**  and **I** only.
+- `2.0-FindIntentAppDMultiple1`: Calls `fdc3.findIntent("sharedTestingIntent2")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and metadata for apps  **D**, **E**, **F**, **G**, **H**  and **I** only.
+- `2.0-FindIntentAppDMultiple2`: Calls `fdc3.findIntent("sharedTestingIntent2", testContextY)`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and `AppMetadata` for apps  **E**, **F**, **G**, **H**  and **I** only.
 
 ### Find Intents By Context
 
@@ -289,34 +289,34 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A. 
   - Confirm that the intent is delivered to the correct instance and that another instance is NOT started. Otherwise, as above.
 - `2.0-RaiseIntentTargetedInstanceResolveFindInstances`: Repeat the above test, but:
-  - Before the first step, use `let appIdentifier = await fdc3.open({appId: "<A's appId>"})` to start A. 
+  - Before the first step, use `let appIdentifier = await fdc3.open({appId: "<A's appId>"})` to start A.
   - Then use `const instances = await fdc3.findInstances({appId: "<A's appId>"})` to retrieve a list of instances of app A. Confirm that only one is present and retrieve its `AppIdentifier`, confirming that it contains and `instanceId` field that matches that returned by the `fdc3.open` call.
   - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A. 
   - Confirm that the intent is delivered to the correct instance and that another instance is NOT started. Otherwise, as above.
 - `2.0-RaiseIntentFailedResolve`: Perform above test, but:
   - Use `fdc3.raiseIntent("aTestingIntent", testContextY)`.  Note that no app supports this intent and context combination.**
   - You should receive a JavaScript Error with the message `ResolveError.NoAppsFound`.
-- `2.0-RaiseIntentFailTargetedAppResolve1`: Perform above test, but:** 
+- `2.0-RaiseIntentFailTargetedAppResolve1`: Perform above test, but:
   - Use `fdc3.raiseIntent("aTestingIntent", testContextY, {appId: "<A's appId>"})`.
   - You should receive a JavaScript Error with the message `ResolveError.NoAppsFound`.
 - `2.0-RaiseIntentFailTargetedAppResolve2`: Perform above test, but:
   - Use `fdc3.raiseIntent("aTestingIntent", testContextY, {appId: "NonExistentApp"})`.
-  - You should receive a JavaScript Error with the message `ResolveError.TargetAppUnavailable `.
-- `2.0-RaiseIntentFailTargetedAppResolve3`: Perform above test, but: 
-  - Use `fdc3.raiseIntent(‘sharedTestingIntent2’, testContextY, {appId: "<H's appId>"})`.
-  - You should receive a JavaScript Error with the message `ResolveError.IntentDeliveryFailed` (as this app is configured for the intent and context pair, but does not add any intent listeners). 
+  - You should receive a JavaScript Error with the message `ResolveError.TargetAppUnavailable`.
+- `2.0-RaiseIntentFailTargetedAppResolve3`: Perform above test, but:
+  - Use `fdc3.raiseIntent("sharedTestingIntent2", testContextY, {appId: "<H's appId>"})`.
+  - You should receive a JavaScript Error with the message `ResolveError.IntentDeliveryFailed` (as this app is configured for the intent and context pair, but does not add any intent listeners).
   - **Note:  Test will need an extended timeout to allow for this to be returned in time by the desktop agent, which will have a vendor-defined timeout.**
 - `2.0-RaiseIntentFailTargetedAppResolve4`: Perform above test, but: 
-  - `fdc3.raiseIntent(‘sharedTestingIntent2’, testContextY, {appId: "<I's appId>"})`
+  - `fdc3.raiseIntent("sharedTestingIntent2", testContextY, {appId: "<I's appId>"})`
   - You should receive a JavaScript Error with the message `ResolveError.IntentDeliveryFailed` (as this app is configured for the intent and context pair, but adds intent listeners of the wrong type.
   - **Note:  Test will need an extended timeout to allow for this to be returned in time by the desktop agent, which will have a vendor-defined timeout.**
 - `2.0-RaiseIntentFailTargetedAppInstanceResolve1`: Perform above test, but:
   - First spawn an instance of App **A** and collect its `AppIdentifier` with `const appIdentifier = await fdc3.open({appId: "<A's appId>"})`.
-  - Then use `fdc3.raiseIntent("aTestingIntent", testContextY, appIdentifier )` to target that instance.  
+  - Then use `fdc3.raiseIntent("aTestingIntent", testContextY, appIdentifier)` to target that instance.  
   - You should receive a JavaScript Error with the message `ResolveError.NoAppsFound` (since A doesn't support this context type).
 - `2.0-RaiseIntentFailTargetedAppInstanceResolve2`: Perform above test, but:
   - Use `fdc3.raiseIntent("aTestingIntent", testContextY, {appId: "<A's appId>", instanceId "NonExistentInstanceId"})`.  
-  - You should receive a JavaScript Error with the message `ResolveError.TargetInstanceUnavailable `.
+  - You should receive a JavaScript Error with the message `ResolveError.TargetInstanceUnavailable`.
 
 ### Raise Intent Result (void result)
 
@@ -351,8 +351,8 @@ Finally, please note that this is a larger set of apps than were required for 1.
 ### Raise Intent Result (Channel results)
 | App   | Step                          | Details                                                                                           |
 |-------|-----------------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise Intent          | Test raises an intent with `fdc3.raiseIntent(‘sharedTestingIntent2’, testContextY, {appId: "<E's appId>"})`<br>starts app E. |
-| E       | 2. Receive Intent & Context     | After starting up, E runs `fdc3.addIntentListener(‘sharedTestingIntent2’)` to register its listener.<br>It them receives `testContextY`, matching that sent by Test |
+| Test   | 1. Raise Intent          | Test raises an intent with `fdc3.raiseIntent("sharedTestingIntent2", testContextY, {appId: "<E's appId>"})`<br>starts app E. |
+| E       | 2. Receive Intent & Context     | After starting up, E runs `fdc3.addIntentListener("sharedTestingIntent2")` to register its listener.<br>It them receives `testContextY`, matching that sent by Test |
 | Test   | 3. IntentResolution   | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifer` as the `source field` with App E's `appId` and `instanceId` set.   |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.  |
 | E       | 5. return Channel | E should retrieve a Channel object via `fdc3.getOrCreateChannel("someChannelName")` and return it immediately. |
