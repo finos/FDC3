@@ -326,7 +326,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 | B       | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent")` to register its listener.<br>It then receives `testContextX`, matching that sent by Test |
 | Test   | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifer` as the `source field` with App A's `appId` and `instanceId` set.                     |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.                        |
-| B       | 5. return void          | A should return void after a short delay (e.g. 5 seconds).                        |
+| B       | 5. return void          | A should return `void` after a short delay (e.g. 5 seconds).                        |
 | Test   | 6. receive void result          | The promise received by Test from `resolution.getResult()` should resolve to void. Confirm that the promise could be retrieved before the handler function returned and that the result was received *after* the result was returned by A, not before. I.e. confirm that `resolution.getResult()` does not block until the result is returned, but rather returns a promise that can be awaited.                      |
 
 - `2.0-RaiseIntentVoidResult5secs`: Perform above test
@@ -337,16 +337,16 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise          | `fdc3.raiseIntent("sharedTestingIntent1", testContextX)`<br>starts app **B**. |
-| B      | 2. Receive Intent & Context | After starting up, B runs `fdc3.addIntentListener("sharedTestingIntent1")` to register its listener.<br>It then receives `testContextX`, matching that sent by Test |
+| Test   | 1. Raise          | `fdc3.raiseIntent("sharedTestingIntent1", testContextY)`<br>starts app **B**. |
+| B      | 2. Receive Intent & Context | After starting up, B runs `fdc3.addIntentListener("sharedTestingIntent1")` to register its listener.<br>It then receives `testContextY`, matching that sent by Test |
 | Test   | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifer` as the `source field` with App B's `appId` and `instanceId` set. |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly. |
 | B      | 5. return `testContextY`          | B should return a `testContextY` instance after a short delay (e.g. 5 seconds). |
-| Test   | 6. receive context result          | The promise received by Test from `resolution.getResult()` should resolve to the `testContextY` instance. Confirm that the promise could be retrieved before the handler function returned and that the result was received *after* the result was returned by B, not before. I.e. confirm that `resolution.getResult() does not block until the result is returned, but rather returns a promise that can be awaited.`** |
+| Test   | 6. receive context result          | The promise received by Test from `resolution.getResult()` should resolve to the `testContextY` instance. Confirm that the promise could be retrieved before the handler function returned and that the result was received *after* the result was returned by B, not before. I.e. confirm that `resolution.getResult()` does not block until the result is returned, but rather returns a promise that can be awaited. |
 
 - `2.0-RaiseIntentContextResult5secs`: Perform the above test.
 - `2.0-RaiseIntentContextResult0secs`: Perform the previous test but B should return its result immediately (no delay).
-- `2.0-RaiseIntentContextResult61secs`: As above, but A should return its result **after 61 seconds** (arbitrary delay to test timeout doesn't occur)
+- `2.0-RaiseIntentContextResult61secs`: As above, but B should return its result **after 61 seconds** (arbitrary delay to test timeout doesn't occur)
 
 ### Raise Intent Result (Channel results)
 | App   | Step                          | Details                                                                                           |
