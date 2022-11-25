@@ -262,7 +262,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - `sharedTestingIntent2` (**D**)
   - `kTestingIntent` (**K**),
   - AND nothing else.
-- `2.0FindIntentByContextWrongIntentAppD`: Calls `fdc3.findIntentsByContext(nonExistentContext)`. Rejects with 'no apps found' error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror**
+- `2.0FindIntentByContextWrongIntentAppD`: Calls `fdc3.findIntentsByContext(nonExistentContext)`. Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror**
 
 ### Find Intents By Result Type
 
