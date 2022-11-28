@@ -141,14 +141,15 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const intentListenersOptions: ListenerOptionType[] = intentStore.intentsList;
 
 	const handleRaiseIntent = () => {
+		debugger;
 		if (!intentValue) {
-			setRaiseIntentError(" enter intent name");
+			setRaiseIntentError("enter intent name");
 		} else if (!raiseIntentContext) {
-			setRaiseIntentError(" enter context name");
+			setRaiseIntentError("enter context name");
 		} else if (targetApp && intentTargets) {
 			let targetObject = intentTargets.find((target) => target.name === targetApp);
 			if (targetObject) {
-				intentStore.raiseIntent(intentValue.value, raiseIntentContext, targetObject);
+				intentStore.raiseIntent(intentValue.value, raiseIntentContext, targetObject.name);
 				setRaiseIntentError("");
 			}
 		} else {
