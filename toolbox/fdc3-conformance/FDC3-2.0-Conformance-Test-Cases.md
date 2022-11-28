@@ -107,11 +107,12 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | A   | 1. getOrCreateChannel  | `const testChannel = await fdc3.getOrCreateChannel("test-channel")`       |
 | B   | 2. getOrCreateChannel  | `const testChannel = await fdc3. getOrCreateChannel("test-channel")`   |
 | B   | 3. Broadcast          | `testChannel.broadcast()` the instrument context.<br>`testChannel.broadcast()` a contact context. |
-| A   | 4. Receive Context    | **`const contextInst = await testChannel.getCurrentContext('fdc3.instrument')` returns the last instrument<br>`const contextCont = await testChannel.getCurrentContext('fdc3.contact')` returns the last contact<br>`const contextLatest = await testChannel.getCurrentContext()` returns the last broadcast chronologically (contact type)**                                                             |
+| A   | 4. addContextListener | A adds a context listener to the channel *after* B has completed all its broadcasts. It should NOT receive any context via this listener (past context is only retrieved by a getCurrentContext on App channels). 
+| A   | 5. Receive Context    | `testChannel.getCurrentContext('fdc3.instrument')` returns the last broadcast instrument<br>`testChannel.getCurrentContext('fdc3.contact')` returns the last broadcast contact.      |                                                      |
 
 - `2.0-ACContextHistoryTyped`: Perform above test.
 - `2.0-ACContextHistoryMultiple`: **B** Broadcasts multiple history items of both types.  Only the last version of each type is received by **A**.
-- `2.0-ACContextHistoryLast`: **A** calls testChannel.getCurrentContext() retrieves the last broadcast context item
+- `2.0-ACContextHistoryLast`: **A** calls testChannel.getCurrentContext() retrieves the last broadcast context item.
 
 ## 4. Open API
 
