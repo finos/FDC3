@@ -146,9 +146,9 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 		} else if (!raiseIntentContext) {
 			setRaiseIntentError("enter context name");
 		} else if (targetApp && intentTargets) {
-			let targetObject = intentTargets.find((target) => target.name === targetApp);
+			let targetObject = intentTargets.find((target) => target.appId === targetApp || target.name === targetApp);
 			if (targetObject) {
-				intentStore.raiseIntent(intentValue.value, raiseIntentContext, targetObject.name);
+				intentStore.raiseIntent(intentValue.value, raiseIntentContext, targetObject);
 				setRaiseIntentError("");
 			}
 		} else {
@@ -163,7 +163,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 		  }
 		if (contextTargetApp && contextIntentObjects) {
 			let targetObject = contextIntentObjects.find((target) => target.name === contextTargetApp);
-			intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app.name);
+			intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app);
 		} else {
 			intentStore.raiseIntentForContext(raiseIntentWithContextContext);
 		}	
@@ -204,12 +204,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			setError(false);
 		};
 
-	const getOptionLabel = (option: ListenerOptionType) => {
-		if (option.value) {
-			return option.value;
-		}
-		return option.title;
-	};
+	const getOptionLabel = (option: ListenerOptionType) => option.value || option.title;
 
 	const filterOptions = (options: ListenerOptionType[], params: FilterOptionsState<ListenerOptionType>) => {
 		const filtered = filter(options, params);
@@ -282,7 +277,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 				appIntentsForContext.forEach((intent) => {
 					intent?.apps.forEach((app) => {
 						pairObject.push({
-							name: `${app.name} - ${intent.intent.name}`,
+							name: `${app.appId || app.name} - ${intent.intent.name}`,
 							app,
 						});
 					});
@@ -362,10 +357,10 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 										)}
 										{intentTargets?.length &&
 											intentTargets.map((target) => (
-												<MenuItem key={target.name} value={target.name}>
-													{target.name}
+												<MenuItem key={target.appId || target.name} value={target.appId || target.name}>
+													{target.appId || target.name}
 												</MenuItem>
-											))}
+										))}
 									</Select>
 								</FormControl>
 							</Grid>
