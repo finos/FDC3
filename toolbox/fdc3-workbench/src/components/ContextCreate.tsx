@@ -198,7 +198,9 @@ export const ContextCreate = observer(({contextName}: {contextName:string}) => {
 
 	const handleSaveTemplate = (e: FormEvent | null = null) => {
 		e?.preventDefault();
-		if(!disabled) {
+		if(disabled) {
+			return;
+		} else {
 			const isValid: boolean = validate();
 
 			if (isValid && context && templateName) {

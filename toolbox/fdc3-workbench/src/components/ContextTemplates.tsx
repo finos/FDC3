@@ -89,12 +89,7 @@ export const ContextTemplates = observer(({handleTabChange, contextStateSetter, 
 			setError(false);
 		};
 
-	const getOptionLabel = (option: OptionType) => {
-		if (option.value) {
-			return option.value;
-		}
-		return option.title;
-	};
+	const getOptionLabel = (option: OptionType) => option.value || option.title;
 
 	const filterOptions = (options: OptionType[], params: FilterOptionsState<OptionType>) => {
 		const filtered = contextFilter(options, params);

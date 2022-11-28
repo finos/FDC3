@@ -101,7 +101,15 @@ class ContextStore {
 	}
 
 	async broadcast(context: ContextType) {
-		if (context) {
+		if (!context) {
+			systemLogStore.addLog({
+				name: "broadcast",
+				type: "warning",
+				value: "You must set a context before you can broadcast it",
+				variant: "text",
+			});
+			return;
+		} else {
 			//check that we're on a channel
 			let currentChannel = await fdc3.getCurrentChannel();
 			if (!currentChannel) {
@@ -129,13 +137,6 @@ class ContextStore {
 					});
 				}
 			}
-		} else {
-			systemLogStore.addLog({
-				name: "broadcast",
-				type: "warning",
-				value: "You must set a context before you can broadcast it",
-				variant: "text",
-			});
 		}
 	}
 
@@ -172,7 +173,7 @@ class ContextStore {
 				});
 				this.contextListeners.push({ id: listenerId, type: contextType, listener: contactListener });
 			});
-		}else {
+		} else {
 			runInAction(() => {
 				systemLogStore.addLog({
 					name: "addContextListener",
