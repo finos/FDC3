@@ -158,14 +158,15 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	};
 
 	const handleRaiseIntentForContext = () => {
-		if (raiseIntentWithContextContext) {
-			if (contextTargetApp && contextIntentObjects) {
-				let targetObject = contextIntentObjects.find((target) => target.name === contextTargetApp);
-				intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app.name);
-			} else {
-				intentStore.raiseIntentForContext(raiseIntentWithContextContext);
-			}
-		}
+		if (!raiseIntentWithContextContext) {
+			return;
+		  }
+		if (contextTargetApp && contextIntentObjects) {
+			let targetObject = contextIntentObjects.find((target) => target.name === contextTargetApp);
+			intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app.name);
+		} else {
+			intentStore.raiseIntentForContext(raiseIntentWithContextContext);
+		}	
 	};
 
 	const handleTargetChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -251,7 +252,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 					}
 				}
 			} catch (e) {
-				setRaiseIntentError(" no intents found");
+				setRaiseIntentError("no intents found");
 			}
 		};
 		fetchIntents();
@@ -268,22 +269,25 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 
 	useEffect(() => {
 		const fetchIntents = async () => {
+			if (!raiseIntentWithContextContext) {
+				return;
+			}
 			try {
-				if (raiseIntentWithContextContext) {
-					let appIntentsForContext = await fdc3.findIntentsByContext(toJS(raiseIntentWithContextContext));
-					if (appIntentsForContext) {
-						let pairObject: any[] = [];
-						appIntentsForContext.forEach((intent) => {
-							intent?.apps.forEach((app) => {
-								pairObject.push({
-									name: `${app.name} - ${intent.intent.name}`,
-									app,
-								});
-							});
-						});
-						setContextIntentObjects(pairObject as any[]);
-					}
+				let appIntentsForContext = await fdc3.findIntentsByContext(toJS(raiseIntentWithContextContext));
+				if(!appIntentsForContext){
+					return;
 				}
+
+				let pairObject: any[] = [];
+				appIntentsForContext.forEach((intent) => {
+					intent?.apps.forEach((app) => {
+						pairObject.push({
+							name: `${app.name} - ${intent.intent.name}`,
+							app,
+						});
+					});
+				});
+				setContextIntentObjects(pairObject as any[]);
 			} catch (e) {}
 		};
 		fetchIntents();
