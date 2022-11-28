@@ -141,7 +141,6 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const intentListenersOptions: ListenerOptionType[] = intentStore.intentsList;
 
 	const handleRaiseIntent = () => {
-		debugger;
 		if (!intentValue) {
 			setRaiseIntentError("enter intent name");
 		} else if (!raiseIntentContext) {
