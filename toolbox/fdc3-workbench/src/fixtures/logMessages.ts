@@ -33,7 +33,7 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			error: "Failed to broadcast context:",
 		},
 		appbroadcast: {
-			success: `Successfully broadcasted context to channel [${value}]: `,
+			success: `Successfully broadcast context to channel [${value}]: `,
 			error: `Failed to broadcast context to channel [${value}]:`,
 		},
 		raiseIntent: {
