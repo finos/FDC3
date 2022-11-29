@@ -251,7 +251,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 					}
 				}
 			} catch (e) {
-				setRaiseIntentError(" no intents found");
+				setRaiseIntentError("no intents found");
 			}
 		};
 		fetchIntents();
