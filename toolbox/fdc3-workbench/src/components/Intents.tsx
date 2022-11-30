@@ -142,11 +142,11 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 
 	const handleRaiseIntent = () => {
 		if (!intentValue) {
-			setRaiseIntentError(" enter intent name");
+			setRaiseIntentError("enter intent name");
 		} else if (!raiseIntentContext) {
-			setRaiseIntentError(" enter context name");
+			setRaiseIntentError("enter context name");
 		} else if (targetApp && intentTargets) {
-			let targetObject = intentTargets.find((target) => target.name === targetApp);
+			let targetObject = intentTargets.find((target) => target.appId === targetApp || target.name === targetApp);
 			if (targetObject) {
 				intentStore.raiseIntent(intentValue.value, raiseIntentContext, targetObject);
 				setRaiseIntentError("");
@@ -158,14 +158,15 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	};
 
 	const handleRaiseIntentForContext = () => {
-		if (raiseIntentWithContextContext) {
-			if (contextTargetApp && contextIntentObjects) {
-				let targetObject = contextIntentObjects.find((target) => target.name === contextTargetApp);
-				intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app.name);
-			} else {
-				intentStore.raiseIntentForContext(raiseIntentWithContextContext);
-			}
-		}
+		if (!raiseIntentWithContextContext) {
+			return;
+		  }
+		if (contextTargetApp && contextIntentObjects) {
+			let targetObject = contextIntentObjects.find((target) => target.name === contextTargetApp);
+			intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app);
+		} else {
+			intentStore.raiseIntentForContext(raiseIntentWithContextContext);
+		}	
 	};
 
 	const handleTargetChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -203,12 +204,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			setError(false);
 		};
 
-	const getOptionLabel = (option: ListenerOptionType) => {
-		if (option.value) {
-			return option.value;
-		}
-		return option.title;
-	};
+	const getOptionLabel = (option: ListenerOptionType) => option.value || option.title;
 
 	const filterOptions = (options: ListenerOptionType[], params: FilterOptionsState<ListenerOptionType>) => {
 		const filtered = filter(options, params);
@@ -268,22 +264,25 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 
 	useEffect(() => {
 		const fetchIntents = async () => {
+			if (!raiseIntentWithContextContext) {
+				return;
+			}
 			try {
-				if (raiseIntentWithContextContext) {
-					let appIntentsForContext = await fdc3.findIntentsByContext(toJS(raiseIntentWithContextContext));
-					if (appIntentsForContext) {
-						let pairObject: any[] = [];
-						appIntentsForContext.forEach((intent) => {
-							intent?.apps.forEach((app) => {
-								pairObject.push({
-									name: `${app.name} - ${intent.intent.name}`,
-									app,
-								});
-							});
-						});
-						setContextIntentObjects(pairObject as any[]);
-					}
+				let appIntentsForContext = await fdc3.findIntentsByContext(toJS(raiseIntentWithContextContext));
+				if(!appIntentsForContext){
+					return;
 				}
+
+				let pairObject: any[] = [];
+				appIntentsForContext.forEach((intent) => {
+					intent?.apps.forEach((app) => {
+						pairObject.push({
+							name: `${app.appId || app.name} - ${intent.intent.name}`,
+							app,
+						});
+					});
+				});
+				setContextIntentObjects(pairObject as any[]);
 			} catch (e) {}
 		};
 		fetchIntents();
@@ -358,10 +357,10 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 										)}
 										{intentTargets?.length &&
 											intentTargets.map((target) => (
-												<MenuItem key={target.name} value={target.name}>
-													{target.name}
+												<MenuItem key={target.appId || target.name} value={target.appId || target.name}>
+													{target.appId || target.name}
 												</MenuItem>
-											))}
+										))}
 									</Select>
 								</FormControl>
 							</Grid>

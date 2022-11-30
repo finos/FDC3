@@ -29,7 +29,7 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			warning: `Not currently joined to a channel`,
 		},
 		broadcast: {
-			success: "Successfully broadcasted context",
+			success: "Successfully broadcast context",
 			error: "Failed to broadcast context:",
 		},
 		appbroadcast: {
