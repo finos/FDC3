@@ -3,10 +3,8 @@
     "$id": "https://fdc3.finos.org/schemas/next/chatInitSettings.schema.json",
     "type": "object",
     "title": "ChatInitSettings",
+    "allOf": [{ "$ref": "context.schema.json#" }],
     "properties": {
-        "type": {
-            "const": "fdc3.chat.initSettings"
-        },
         "chatName": {
             "type": "string"
         },
@@ -23,8 +21,5 @@
             "allowMessageCopy": "boolean",
             "allowAddUser": "boolean"
         }
-    },
-    "required": [
-        "type"
-    ]
+    }
 }
