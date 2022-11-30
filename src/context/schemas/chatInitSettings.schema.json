@@ -5,6 +5,7 @@
     "title": "ChatInitSettings",
     "allOf": [{ "$ref": "context.schema.json#" }],
     "properties": {
+        "type": { "const": "fdc3.chat.initSettings" },
         "chatName": {
             "type": "string"
         },
