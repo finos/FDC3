@@ -1,16 +1,7 @@
 import { makeObservable, observable, action, runInAction, toJS } from "mobx";
-import * as fdc3 from "@finos/fdc3";
+import fdc3, {ContextType, Channel, Fdc3Listener} from "../utility/Fdc3Api";
 import systemLogStore from "./SystemLogStore";
 import { nanoid } from "nanoid";
-import { ContextType } from "./ContextStore";
-
-interface Fdc3Listener {
-	id: string;
-    channelId: string;
-	type: string | undefined;
-	listener: fdc3.Listener;
-	lastReceivedContext?: ContextType | null;
-}
 
 interface ListenerOptionType {
 	title: string;
@@ -20,7 +11,7 @@ interface ListenerOptionType {
 
 interface Fdc3Channel {
     id: string;
-    channel: fdc3.Channel;
+    channel: Channel;
     currentListener?:ListenerOptionType|null;
     broadcastError?: string;
     context?: ContextType|null;
@@ -168,19 +159,20 @@ class AppChannelStore {
 		}
 	}
 
-    addChannelListener(channelId: string, newListener: string | undefined ){
+    async addChannelListener(channelId: string, newListener: string | undefined ){
         try{
             let currentChannel = this.appChannelsList.find((channel)=>channel.id === channelId);
             let foundListener = this.appChannelListeners.find((currentListener)=>currentListener.type === newListener && currentListener.channelId === channelId);
 
             if (!foundListener && currentChannel && newListener !== undefined) {
                 const listenerId = nanoid();
-                const contactListener = currentChannel.channel.addContextListener(newListener?.toLowerCase() === "all" ? null : newListener, (context) => {
+                const contactListener = await currentChannel.channel.addContextListener(newListener?.toLowerCase() === "all" ? null : newListener, (context, metaData?: any) => {
                     const currentListener = this.appChannelListeners.find((listener)=>listener.type === newListener && listener.channelId === channelId);
 
                     runInAction(() => {
                         if (currentListener) {
                             currentListener.lastReceivedContext = context;
+							currentListener.metaData = metaData
                         }
                     });
 
