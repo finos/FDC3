@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-// import fdc3 from "../utility/Fdc3Api";
 import { TextField } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { AppIdentifier, TargetApp } from "../utility/Fdc3Api";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -56,6 +54,8 @@ export const IntentResolutionField = observer(({data}: {data: any}) => {
 	Results: ${resolutionResult}`;
 	}, [resolutionResult])
 
+	displayIntentResults();
+	
 	return (
 	 	<TextField
 			disabled
