@@ -93,7 +93,7 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntent(intent: string, context: ContextType, app?: TargetApp ) {
+	async raiseIntent(intent: string, context: ContextType, app?: AppMetadata ) {
 		if (!context) {
 			systemLogStore.addLog({
 				name: "raiseIntent",
@@ -104,11 +104,12 @@ class IntentStore {
 		}
 
 		try {
-			let appIntent;
+			let resolution: IntentResolution;
+
 			if (app) {
-				appIntent = await fdc3.raiseIntent(intent, toJS(context), app);
+				resolution = await fdc3.raiseIntent(intent, toJS(context), app);
 			} else {
-				appIntent = await fdc3.raiseIntent(intent, toJS(context));
+				resolution = await fdc3.raiseIntent(intent, toJS(context));
 			}
 
 			systemLogStore.addLog({
@@ -116,8 +117,10 @@ class IntentStore {
 				type: "success",
 				value: intent,
 				variant: "code",
-				body: JSON.stringify(appIntent, null, 4),
+				body: JSON.stringify(resolution, null, 4),
 			});
+
+			return resolution;
 		} catch (e) {
 			systemLogStore.addLog({
 				name: "raiseIntent",
@@ -129,7 +132,7 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntentForContext(context: ContextType, app?: TargetApp ) {
+	async raiseIntentForContext(context: ContextType, app?:(TargetApp & (String | AppIdentifier)) | undefined ) {
 		if (!context) {
 			systemLogStore.addLog({
 				name: "raiseIntentForContext",
