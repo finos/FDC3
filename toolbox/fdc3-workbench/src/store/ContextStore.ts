@@ -101,7 +101,15 @@ class ContextStore {
 	}
 
 	async broadcast(context: ContextType) {
-		if (context) {
+		if (!context) {
+			systemLogStore.addLog({
+				name: "broadcast",
+				type: "warning",
+				value: "You must set a context before you can broadcast it",
+				variant: "text",
+			});
+			return;
+		} else {
 			//check that we're on a channel
 			let currentChannel = await fdc3.getCurrentChannel();
 			if (!currentChannel) {
@@ -129,59 +137,52 @@ class ContextStore {
 					});
 				}
 			}
-		} else {
-			systemLogStore.addLog({
-				name: "broadcast",
-				type: "warning",
-				value: "You must set a context before you can broadcast it",
-				variant: "text",
-			});
 		}
 	}
 
 	addContextListener(contextType: string | undefined) {
 		try {
 			if( typeof contextType === "string") {
-			const listenerId = nanoid();
+				const listenerId = nanoid();
 
-			// TODO: remove window after fixing https://github.com/finos/FDC3/issues/435
-			const contactListener = window.fdc3.addContextListener(contextType.toLowerCase() === "all" ? null : contextType, (context) => {
-				const currentListener = this.contextListeners.find(({ id }) => id === listenerId);
+				// TODO: remove window after fixing https://github.com/finos/FDC3/issues/435
+				const contactListener = window.fdc3.addContextListener(contextType.toLowerCase() === "all" ? null : contextType, (context) => {
+					const currentListener = this.contextListeners.find(({ id }) => id === listenerId);
+
+					runInAction(() => {
+						if (currentListener) {
+							currentListener.lastReceivedContext = context;
+						}
+					});
+
+					systemLogStore.addLog({
+						name: "receivedContextListener",
+						type: "info",
+						value: contextType,
+						variant: "code",
+						body: JSON.stringify(context, null, 4),
+					});
+				});
 
 				runInAction(() => {
-					if (currentListener) {
-						currentListener.lastReceivedContext = context;
-					}
+					systemLogStore.addLog({
+						name: "addContextListener",
+						type: "success",
+						value: contextType,
+						variant: "text",
+					});
+					this.contextListeners.push({ id: listenerId, type: contextType, listener: contactListener });
 				});
-
-				systemLogStore.addLog({
-					name: "receivedContextListener",
-					type: "info",
-					value: contextType,
-					variant: "code",
-					body: JSON.stringify(context, null, 4),
+			} else {
+				runInAction(() => {
+					systemLogStore.addLog({
+						name: "addContextListener",
+						type: "error",
+						value: contextType,
+						variant: "code",
+					});
 				});
-			});
-
-			runInAction(() => {
-				systemLogStore.addLog({
-					name: "addContextListener",
-					type: "success",
-					value: contextType,
-					variant: "text",
-				});
-				this.contextListeners.push({ id: listenerId, type: contextType, listener: contactListener });
-			});
-		}else {
-			runInAction(() => {
-				systemLogStore.addLog({
-					name: "addContextListener",
-					type: "error",
-					value: contextType,
-					variant: "code",
-				});
-			});
-		}
+			}
 		} catch (e) {
 			systemLogStore.addLog({
 				name: "addContextListener",
