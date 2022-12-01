@@ -93,57 +93,67 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntent(intent: string, context: ContextType, app?: AppMetadata ) {
-		if (context) {
-			try {
-				let resolution: IntentResolution;
+	async raiseIntent(intent: string, context: ContextType, app?: TargetApp ) {
+		if (!context) {
+			systemLogStore.addLog({
+				name: "raiseIntent",
+				type: "error",
+				value: intent,
+			});
+			return;
+		}
 
-				if (app) {
-					resolution = await fdc3.raiseIntent(intent, toJS(context), app);
-				} else {
-					resolution = await fdc3.raiseIntent(intent, toJS(context));
-				}
-
-				systemLogStore.addLog({
-					name: "raiseIntent",
-					type: "success",
-					value: intent,
-					variant: "code",
-					body: JSON.stringify(resolution, null, 4),
-				});
-
-				return resolution;
-			} catch (e) {
-				systemLogStore.addLog({
-					name: "raiseIntent",
-					type: "error",
-					value: intent,
-					variant: "code",
-					body: JSON.stringify(e, null, 4),
-				});
+		try {
+			let appIntent;
+			if (app) {
+				appIntent = await fdc3.raiseIntent(intent, toJS(context), app);
+			} else {
+				appIntent = await fdc3.raiseIntent(intent, toJS(context));
 			}
+
+			systemLogStore.addLog({
+				name: "raiseIntent",
+				type: "success",
+				value: intent,
+				variant: "code",
+				body: JSON.stringify(appIntent, null, 4),
+			});
+		} catch (e) {
+			systemLogStore.addLog({
+				name: "raiseIntent",
+				type: "error",
+				value: intent,
+				variant: "code",
+				body: JSON.stringify(e, null, 4),
+			});
 		}
 	}
 
-	raiseIntentForContext(context: ContextType, app?:(TargetApp & (String | AppIdentifier)) | undefined ) {
-		if (context) {
-			try {
-				if (app) {
-					fdc3.raiseIntentForContext(toJS(context), app);
-				} else {
-					fdc3.raiseIntentForContext(toJS(context));
-				}
+	async raiseIntentForContext(context: ContextType, app?: TargetApp ) {
+		if (!context) {
+			systemLogStore.addLog({
+				name: "raiseIntentForContext",
+				type: "error",
+			});
+			return;
+		}
 
-				systemLogStore.addLog({
-					name: "raiseIntentForContext",
-					type: "success",
-				});
-			} catch (e) {
-				systemLogStore.addLog({
-					name: "raiseIntentForContext",
-					type: "error",
-				});
+		try {
+			if (app) {
+				await fdc3.raiseIntentForContext(toJS(context), app);
+			} else {
+				await fdc3.raiseIntentForContext(toJS(context));
 			}
+
+			systemLogStore.addLog({
+				name: "raiseIntentForContext",
+				type: "success",
+			});
+		} catch (e) {
+			systemLogStore.addLog({
+				name: "raiseIntentForContext",
+				type: "error",
+			});
 		}
 	}
 }
