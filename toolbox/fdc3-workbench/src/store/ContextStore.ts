@@ -1,18 +1,9 @@
 import { makeObservable, observable, runInAction, action, toJS } from "mobx";
-import * as fdc3 from "@finos/fdc3";
+import fdc3, {ContextType, Fdc3Listener} from "../utility/Fdc3Api";
 import { nanoid } from "nanoid";
 import { contexts } from "../fixtures/contexts";
 import systemLogStore from "./SystemLogStore";
 import { v4 as uuidv4 } from 'uuid';
-
-export type ContextType = {
-	type: string;
-	id?: {
-		[key: string]: string;
-	};
-	name?: string;
-	[x: string]: any;
-};
 
 export type ContextItem = {
 	id: string;
@@ -20,13 +11,6 @@ export type ContextItem = {
 	template: ContextType | null;
 	schemaUrl?: URL;
 };
-
-interface Fdc3Listener {
-	id: string;
-	type: string;
-	listener: fdc3.Listener;
-	lastReceivedContext?: ContextType | null;
-}
 
 class ContextStore {
 	contextsList: ContextItem[] = contexts;
@@ -139,18 +123,19 @@ class ContextStore {
 		}
 	}
 
-	addContextListener(contextType: string | undefined) {
+	async addContextListener(contextType: string | undefined) {
 		try {
 			if( typeof contextType === "string") {
 			const listenerId = nanoid();
 
 			// TODO: remove window after fixing https://github.com/finos/FDC3/issues/435
-			const contactListener = window.fdc3.addContextListener(contextType.toLowerCase() === "all" ? null : contextType, (context) => {
+			const contactListener = await fdc3.addContextListener(contextType.toLowerCase() === "all" ? "null" : contextType, (context: ContextType, metaData?: any) => {
 				const currentListener = this.contextListeners.find(({ id }) => id === listenerId);
-
+				
 				runInAction(() => {
 					if (currentListener) {
 						currentListener.lastReceivedContext = context;
+						currentListener.metaData = metaData;
 					}
 				});
 
@@ -193,12 +178,12 @@ class ContextStore {
 		}
 	}
 
-	removeContextListener(id: string) {
+	async removeContextListener(id: string) {
 		const listenerIndex = this.contextListeners.findIndex((listener) => listener.id === id);
 
 		if (listenerIndex !== -1) {
 			try {
-				this.contextListeners[listenerIndex].listener.unsubscribe();
+				(await this.contextListeners[listenerIndex].listener).unsubscribe();
 
 				runInAction(() => {
 					systemLogStore.addLog({

@@ -17,8 +17,8 @@ import { ContextCreate } from "./components/ContextCreate";
 import { Intents } from "./components/Intents";
 import { AppChannels } from "./components/AppChannels";
 import snackbarStore from "./store/SnackbarStore";
+import fdc3 from "./utility/Fdc3Api";
 import "./App.css";
-import { fdc3Ready } from "@finos/fdc3";
 
 const mainTheme = createTheme({
 	palette: {
@@ -185,7 +185,7 @@ export const App = observer(() => {
 	useEffect(() => {
 		(async () => {
 			try {
-				await fdc3Ready(5000);
+				await fdc3.fdc3Ready(5000);
 				setFdc3Available(true);
 			} catch (e) {}
 		})();

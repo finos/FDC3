@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import * as fdc3 from "@finos/fdc3";
+import fdc3, {AppIntent, AppMetadata, Context, IntentResolution} from "../utility/Fdc3Api";
 import { toJS } from "mobx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
@@ -21,7 +21,7 @@ import intentStore from "../store/IntentStore";
 import { codeExamples } from "../fixtures/codeExamples";
 import { TemplateTextField } from "./common/TemplateTextField";
 import { copyToClipboard } from "./common/CopyToClipboard";
-import { AppIntent, AppMetadata, Context } from "@finos/fdc3";
+import { IntentResolutionField } from "./IntentResolutionField";
 
 // interface copied from lib @material-ui/lab/Autocomplete
 interface FilterOptionsState<T> {
@@ -138,9 +138,10 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const [raiseIntentContext, setRaiseIntentContext] = useState<Context | null>(null);
 	const [raiseIntentWithContextContext, setRaiseIntentWithContextContext] = useState<Context | null>(null);
 	const [intentError, setIntentError] = useState<string | false>(false);
+	const [intentResolution, setIntentResolution] = useState<IntentResolution | undefined>()
 	const intentListenersOptions: ListenerOptionType[] = intentStore.intentsList;
 
-	const handleRaiseIntent = () => {
+	const handleRaiseIntent = async () => {
 		if (!intentValue) {
 			setRaiseIntentError(" enter intent name");
 		} else if (!raiseIntentContext) {
@@ -148,20 +149,21 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 		} else if (targetApp && intentTargets) {
 			let targetObject = intentTargets.find((target) => target.name === targetApp);
 			if (targetObject) {
-				intentStore.raiseIntent(intentValue.value, raiseIntentContext, targetObject);
+				setIntentResolution(await intentStore.raiseIntent(intentValue.value, raiseIntentContext, targetObject));
 				setRaiseIntentError("");
 			}
 		} else {
-			intentStore.raiseIntent(intentValue.value, raiseIntentContext);
+			setIntentResolution(await intentStore.raiseIntent(intentValue.value, raiseIntentContext));
 			setRaiseIntentError("");
 		}
+
 	};
 
 	const handleRaiseIntentForContext = () => {
 		if (raiseIntentWithContextContext) {
 			if (contextTargetApp && contextIntentObjects) {
 				let targetObject = contextIntentObjects.find((target) => target.name === contextTargetApp);
-				intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app.name);
+				intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app);
 			} else {
 				intentStore.raiseIntentForContext(raiseIntentWithContextContext);
 			}
@@ -364,6 +366,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 											))}
 									</Select>
 								</FormControl>
+								{intentResolution?.source && <IntentResolutionField data={intentResolution} />}
 							</Grid>
 						</Grid>
 						<Grid item className={classes.controls}>
