@@ -75,7 +75,7 @@
       "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-workbench/README.md",
       "type": "examples-and-training",
       "badges": [],
-      "description": "<p>When developing an FDC3-compliant app or desktop agent, you need to test. Because FDC3 is about communicating, you need at least one other app to communicate with. You could grab an existing app, but there may not be one available that uses the messaging you need to test.</p><p>Many developers end up writing their own helper tool that they discard when their app is done. So many devs have created these throwaway apps that the Finsemble team @ Cosaic decided to build and contribute a workbench (for any FDC3-compliant platform) that helps develop and test your app without writing throwaway code.</p>"
+      "description": "<p>When developing an FDC3-compliant app or desktop agent, you need to test. Because FDC3 is about communicating, you need at least one other app to communicate with. You could grab an existing app, but there may not be one available that uses the messaging you need to test.</p><p>Many developers end up writing their own helper tool, which they often discard when the work on their app is done. We've seen so many devs create these throwaway apps that the Finsemble team @ Cosaic decided to build and contribute a workbench (for any FDC3-compliant platform provider) that helps develop and test your app without writing throwaway code.</p>"
     },
     {
       "title": "FDC3 eXplained",
