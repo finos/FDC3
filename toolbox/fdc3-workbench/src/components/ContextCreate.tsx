@@ -5,12 +5,13 @@ import { Button, Grid, Typography, Tooltip, IconButton, Table, TableBody, TableR
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import contextStore, { ContextType, ContextItem } from "../store/ContextStore";
+import contextStore, { ContextItem } from "../store/ContextStore";
 import systemLogStore from "../store/SystemLogStore";
 import { JsonInput } from "./common/JsonInput";
 import { DialogModal } from "./common/DialogModal";
 import { TemplateTextField } from "./common/TemplateTextField";
 import { copyToClipboard } from "./common/CopyToClipboard";
+import { ContextType } from "../utility/Fdc3Api";
 
 interface OptionType {
 	title: string;

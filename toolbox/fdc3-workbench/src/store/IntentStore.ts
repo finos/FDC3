@@ -1,19 +1,10 @@
 import { makeObservable, observable, action, runInAction, toJS } from "mobx";
-import * as fdc3 from "@finos/fdc3";
+import fdc3, {ContextType, IntentResolution, Fdc3Listener, TargetApp, AppMetadata, AppIdentifier} from "../utility/Fdc3Api";
 import { nanoid } from "nanoid";
-import { ContextType } from "./ContextStore";
 import { intentTypes } from "../fixtures/intentTypes";
 import systemLogStore from "./SystemLogStore";
-import { TargetApp } from "@finos/fdc3";
 
 type IntentItem = { title: string; value: string };
-
-interface Fdc3Listener {
-	id: string;
-	type: string;
-	listener: fdc3.Listener;
-	lastReceivedContext?: ContextType | null;
-}
 
 class IntentStore {
 	intentsList: IntentItem[] = intentTypes;
@@ -31,16 +22,17 @@ class IntentStore {
 		});
 	}
 
-	addIntentListener(intent: string) {
+	async addIntentListener(intent: string) {
 		try {
 			const listenerId = nanoid();
 
-			const intentListener = fdc3.addIntentListener(intent, (context) => {
+			const intentListener = await fdc3.addIntentListener(intent, (context: ContextType, metaData?: any) => {
 				const currentListener = this.intentListeners.find(({ id }) => id === listenerId);
 
 				runInAction(() => {
 					if (currentListener) {
 						currentListener.lastReceivedContext = context;
+						currentListener.metaData = metaData;
 					}
 				});
 
@@ -73,12 +65,12 @@ class IntentStore {
 		}
 	}
 
-	removeIntentListener(id: string) {
+	async removeIntentListener(id: string) {
 		const listenerIndex = this.intentListeners.findIndex((listener) => listener.id === id);
 
 		if (listenerIndex !== -1) {
 			try {
-				this.intentListeners[listenerIndex].listener.unsubscribe();
+				(await this.intentListeners[listenerIndex].listener).unsubscribe();
 
 				runInAction(() => {
 					systemLogStore.addLog({
@@ -101,7 +93,7 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntent(intent: string, context: ContextType, app?: TargetApp ) {
+	async raiseIntent(intent: string, context: ContextType, app?: AppMetadata ) {
 		if (!context) {
 			systemLogStore.addLog({
 				name: "raiseIntent",
@@ -112,11 +104,12 @@ class IntentStore {
 		}
 
 		try {
-			let appIntent;
+			let resolution: IntentResolution;
+
 			if (app) {
-				appIntent = await fdc3.raiseIntent(intent, toJS(context), app);
+				resolution = await fdc3.raiseIntent(intent, toJS(context), app);
 			} else {
-				appIntent = await fdc3.raiseIntent(intent, toJS(context));
+				resolution = await fdc3.raiseIntent(intent, toJS(context));
 			}
 
 			systemLogStore.addLog({
@@ -124,8 +117,10 @@ class IntentStore {
 				type: "success",
 				value: intent,
 				variant: "code",
-				body: JSON.stringify(appIntent, null, 4),
+				body: JSON.stringify(resolution, null, 4),
 			});
+
+			return resolution;
 		} catch (e) {
 			systemLogStore.addLog({
 				name: "raiseIntent",
@@ -137,7 +132,7 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntentForContext(context: ContextType, app?: TargetApp ) {
+	async raiseIntentForContext(context: ContextType, app?:(TargetApp & (String | AppIdentifier)) | undefined ) {
 		if (!context) {
 			systemLogStore.addLog({
 				name: "raiseIntentForContext",

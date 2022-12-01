@@ -1,0 +1,44 @@
+import React from "react";
+import { observer } from "mobx-react";
+import { TextField } from "@material-ui/core";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		textField: {
+			marginTop: theme.spacing(2),
+			width: "100%",
+		},
+		input: {
+			fontSize: "14px",
+		},
+	})
+);
+
+export const ReceivedField = observer((metaData: any) => {
+	const classes = useStyles();
+
+    const formattedData = metaData ? 'METADATA NOT PROVIDED' : `appId: ${metaData.appId}\ninstanceId: ${metaData.instanceId}`;
+
+	return (
+		<TextField
+            disabled
+            label={"RECEIVED FROM"}
+            className={classes.textField}
+            InputLabelProps={{
+                shrink: true,
+            }}
+            contentEditable={false}
+            fullWidth
+            multiline
+            variant="outlined"
+            size="small"
+            value={formattedData}
+            InputProps={{
+                classes: {
+                    input: classes.input,
+                },
+            }}
+        />
+	);
+});
