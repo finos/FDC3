@@ -1,12 +1,11 @@
 import { makeObservable, observable, action, runInAction } from "mobx";
-import * as fdc3 from "@finos/fdc3";
+import fdc3, {Channel} from "../utility/Fdc3Api";
 import systemLogStore from "./SystemLogStore";
-import { fdc3Ready } from "@finos/fdc3";
 
 class ChannelStore {
-	userChannels: fdc3.Channel[] = [];
+	userChannels: Channel[] = [];
 
-	currentUserChannel: fdc3.Channel | null = null;
+	currentUserChannel: Channel | null = null;
 
 	constructor() {
 		makeObservable(this, {
@@ -46,7 +45,7 @@ class ChannelStore {
 
 	async getUserChannels() {
 		//defer retrieving channels until fdc3 API is ready
-		fdc3Ready(5000).then(async () => {
+		fdc3.fdc3Ready(5000).then(async () => {
 			try {
 			
 				const userChannels = await fdc3.getSystemChannels();

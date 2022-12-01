@@ -4,12 +4,13 @@ import { Button, IconButton, Tooltip, Typography, Grid, TextField } from "@mater
 import { observer } from "mobx-react";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
-import contextStore, { ContextType } from "../store/ContextStore";
+import contextStore from "../store/ContextStore";
 import appChannelStore from "../store/AppChannelStore";
 import { codeExamples } from "../fixtures/codeExamples";
 import { TemplateTextField } from "./common/TemplateTextField";
 import { copyToClipboard } from "./common/CopyToClipboard";
 import { ContextTemplates } from "./ContextTemplates";
+import { ContextType } from "../utility/Fdc3Api";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
