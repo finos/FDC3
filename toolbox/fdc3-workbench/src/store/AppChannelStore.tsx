@@ -79,37 +79,7 @@ class AppChannelStore {
 	}
 
     async broadcast(channelId: string, context: ContextType) {
-		if (context) {
-			//check that we're on a channel
-            let currentChannel = this.appChannelsList.find((channel)=>channel.id === channelId);
-			if (!currentChannel) {
-				systemLogStore.addLog({
-					name: "appbroadcast",
-					type: "warning",
-					value: "You are not currently joined to a channel (no-op)",
-					variant: "text",
-				});
-			} else {
-				try {
-					await currentChannel.channel.broadcast(toJS(context));
-					systemLogStore.addLog({
-						name: "appbroadcast",
-						type: "success",
-						body: JSON.stringify(context, null, 4),
-						variant: "code",
-                        value: channelId
-					});
-				} catch (e) {
-					systemLogStore.addLog({
-						name: "appbroadcast",
-						type: "error",
-						body: JSON.stringify(e, null, 4),
-						variant: "code",
-                        value: channelId
-					});
-				}
-			}
-		} else {
+		if (!context) {
 			systemLogStore.addLog({
 				name: "appbroadcast",
 				type: "warning",
@@ -117,6 +87,39 @@ class AppChannelStore {
 				variant: "text",
 			});
 		}
+		
+		//check that we're on a channel
+		let currentChannel = this.appChannelsList.find((channel)=>channel.id === channelId);
+
+		if (!currentChannel) {
+			systemLogStore.addLog({
+				name: "appbroadcast",
+				type: "warning",
+				value: "You are not currently joined to a channel (no-op)",
+				variant: "text",
+			});
+			return;
+		}
+		
+		try {
+			await currentChannel.channel.broadcast(toJS(context));
+			systemLogStore.addLog({
+				name: "appbroadcast",
+				type: "success",
+				body: JSON.stringify(context, null, 4),
+				variant: "code",
+				value: channelId
+			});
+		} catch (e) {
+			systemLogStore.addLog({
+				name: "appbroadcast",
+				type: "error",
+				body: JSON.stringify(e, null, 4),
+				variant: "code",
+				value: channelId
+			});
+		}
+		
 	}
 
 	async leaveChannel() {

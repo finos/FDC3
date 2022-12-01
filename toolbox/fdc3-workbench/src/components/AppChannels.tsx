@@ -128,7 +128,7 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
 
 
     const handleGetorCreateChannel = (e: FormEvent | null = null) =>{
-        e?.preventDefault()
+        e?.preventDefault();
         if (currentAppChannelId) {
            let foundChannel = appChannelStore.appChannelsList.find((currentChannel)=>currentChannel.id === currentAppChannelId);
             if (!foundChannel) {
@@ -143,64 +143,64 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
         setCurrentAppChannelId(event.target.value as string);
     };
 
-    const getOptionLabel = (option: ListenerOptionType) => {
-        if (option.type) {
-			return option.type;
-		}
-		return option.title;
-	};
-
+    const getOptionLabel = (option: ListenerOptionType) => option.type || option.title;
+		
     const handleChangeAppListener = (channelId: string) => (event: React.ChangeEvent<{}>, newValue: any) => {
             let foundChannel = appChannelStore.appChannelsList.find((currentChannel)=>currentChannel.id === channelId);
-            if (foundChannel) {
-                let newListener;
-                let foundListener = appChannelStore.appChannelListeners?.find((currentListener)=>currentListener.type === newValue && currentListener.channelId === channelId);
-
-                if(!foundListener){
-                    if (typeof newValue === "string") {
-                        newListener = {
-                            title: newValue,
-                            value: newValue,
-                            type: newValue
-                        };
-                    } else if (newValue && newValue.inputValue) {
-                        newListener = {
-                            title: newValue.inputValue,
-                            value: newValue.inputValue,
-                            type: newValue.inputValue
-                        };
-                    } else {
-                        newListener = newValue;
-                    }
-    
-                    foundChannel.currentListener = newListener;
-                    foundChannel.listenerError = "";
-                    
-                }
+            if (!foundChannel) {
+                return;
             }
-		};
+
+            let newListener;
+            let foundListener = appChannelStore.appChannelListeners?.find((currentListener)=>currentListener.type === newValue && currentListener.channelId === channelId);
+            if (foundListener) {
+                return;
+            }
+
+            if (typeof newValue === "string") {
+                newListener = {
+                    title: newValue,
+                    value: newValue,
+                    type: newValue
+                };
+            } else if (newValue && newValue.inputValue) {
+                newListener = {
+                    title: newValue.inputValue,
+                    value: newValue.inputValue,
+                    type: newValue.inputValue
+                };
+            } else {
+                newListener = newValue;
+            }
+
+            foundChannel.currentListener = newListener;
+            foundChannel.listenerError = "";
+                
+	};
     
     const handleAddContextListener = (channelId: string) => {
         let foundChannel = appChannelStore.appChannelsList.find((currentChannel)=>currentChannel.id === channelId);
-        if(foundChannel){
-            if(foundChannel?.currentListener){
-                if (appChannelStore.isContextListenerExists(channelId, foundChannel?.currentListener.type)) {
-                    foundChannel.listenerError = "Listener already added";
-                } else {
-                    appChannelStore.addChannelListener(channelId, foundChannel.currentListener.type);
-                    foundChannel.listenerError = "";
-                }
-            } else {
-                foundChannel.listenerError = "Enter context type";
-            }
-            setRender(render);
+        if (!foundChannel) {
+            return;
         }
+
+        if(foundChannel?.currentListener){
+            if (appChannelStore.isContextListenerExists(channelId, foundChannel?.currentListener.type)) {
+                foundChannel.listenerError = "Listener already added";
+            } else {
+                appChannelStore.addChannelListener(channelId, foundChannel.currentListener.type);
+                foundChannel.listenerError = "";
+            }
+        } else {
+            foundChannel.listenerError = "Enter context type";
+        }
+        setRender(render);
 	};
 
     const handleContextStateChange = (context: ContextType, channel: string) => {
         let foundChannel = appChannelStore.appChannelsList.find((currentChannel)=>currentChannel.id === channel);
 		if(foundChannel) {
-			foundChannel.context = context
+			foundChannel.context = context;
 		}
 	};
 
@@ -238,6 +238,7 @@ export const AppChannels = observer(({handleTabChange} : {handleTabChange:any}) 
                             type="text" 
                             size="small" 
                             onChange={handleChannelChange}
+                            value={currentAppChannelId}
                         />
                     </Grid>
                     <Grid item className={classes.controls}>
