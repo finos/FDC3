@@ -12,6 +12,8 @@
 		<link rel="apple-touch-icon" href="%PUBLIC_URL%/fdc3-icon-192.png" />
 		<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 		<title>FDC3 Workbench</title>
+		<!-- Polyfill to work around how json-ref-parser and react-scripts v5 aren't playing nicely. -->
+		<script>if(!("process" in window)){window.process = {}; }</script>
 	</head>
 	<body>
 		<noscript>You need to enable JavaScript to run this app.</noscript>
