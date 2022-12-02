@@ -146,7 +146,6 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | A   | 3. Promise         | - receives a rejection from the open promise with “App Timeout’ from <br>https://fdc3.finos.org/docs/api/ref/Errors#openerror |
 
 -  `AOpensBMultipleListen`:  The correct (first) context listener should receive the context, and the promise resolves successfully in **A**.
--  `AOpensBMalformedContext`: **A** tries to pass malformed context to **B** (i.e. no `type` field on the context object).  Context listeners receive nothing, promise completes successfully.
 
 ## 5. Intents
 
