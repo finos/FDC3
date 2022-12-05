@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { TextField } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { ChannelField } from "./ChannelField";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -19,60 +20,75 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-export const IntentResolutionField = observer(({data}: {data: any}) => {
+export const IntentResolutionField = observer(({ data, handleTabChange }: { data: any; handleTabChange: any }) => {
 	const classes = useStyles();
 	const [resolutionResult, setResolutionResult] = useState<any>("pending...");
-	let results = 
-	`Resolved by:\n
-		\tappId: ${data.source.appId}\n
-		\tinstanceId: ${data.source.instanceId}\n
-	Results: ${resolutionResult}`;
+	const [channel, setChannel] = useState(false);
+	const [privateChannel, setPrivateChannel] = useState(false);
+	const [channelsList, setChannelsList] = useState([]);
 
+	let results = `Resolved by:
+	appId: ${data.source.appId}
+	instanceId: ${data.source.instanceId}\n\nResults: ${resolutionResult}`;
 
-    const displayIntentResults = async () => {
+	const displayIntentResults = async () => {
+		console.log(data);
 		try {
-			if(resolutionResult.hasOwnProperty('getResult')) {
-				const result = await resolutionResult.getResult();
+			if (data.hasOwnProperty("getResult")) {
+				const result = await data.getResult();
+				console.log(result);
 				//detect whether the result is Context or a Channel
-				if (result && result.broadcast) { 
-				//render channel
-				} else if (result){
-					resolutionResult.resultContext = JSON.stringify(result, null, 2);
-				} else {
-				}
-				setResolutionResult(result);
-			}
-		} catch(error) {
-			console.error(`${resolutionResult.source} returned a result error: ${error}`);
-		}
-    }
+				if (!!result?.channel?.broadcast) {
+					setResolutionResult("");
 
-	useEffect(() => {
-		results = `Resolved by:\n
-		appId: ${data.source.appId}\n
-		instanceId: ${data.source.instanceId}\n
-	Results: ${resolutionResult}`;
-	}, [resolutionResult])
+					//App Channel
+					if (result.type === "app") {
+						setChannel(true);
+						setChannelsList(result.channel);
+					}
+
+					// Private Channel
+					if (result.type === "private") {
+						setChannel(true);
+						setPrivateChannel(true);
+					}
+				} else if (result) {
+					setResolutionResult(JSON.stringify(result.context, null, 2));
+				} else {
+					setResolutionResult("No result returned");
+				}
+			}
+		} catch (error) {
+			setResolutionResult("No result returned");
+			console.error(`${data.source.appId} returned a result error: ${error}`);
+		}
+	};
 
 	displayIntentResults();
-	
+
 	return (
-	 	<TextField
-			disabled
-			label={"RESULT CONTEXT"}
-			InputLabelProps={{
-				shrink: true,
-			}}
-			contentEditable={false}
-			fullWidth
-			multiline
-			variant="outlined"
-			size="small"
-			value={results}
-			InputProps={{
-				classes: {
-					input: classes.input,
-				},
-			}}
-		/>)
+		<div>
+			<TextField
+				disabled
+				label={"RESULT CONTEXT"}
+				InputLabelProps={{
+					shrink: true,
+				}}
+				contentEditable={false}
+				fullWidth
+				multiline
+				variant="outlined"
+				size="small"
+				value={results}
+				InputProps={{
+					classes: {
+						input: classes.input,
+					},
+				}}
+			/>
+			{channel && (
+				<ChannelField handleTabChange={handleTabChange} channelsList={channelsList} privateChannel={privateChannel} />
+			)}
+		</div>
+	);
 });

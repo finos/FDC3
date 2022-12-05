@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import fdc3, {AppIntent, AppMetadata, Context, IntentResolution} from "../utility/Fdc3Api";
+import fdc3, { AppIntent, AppMetadata, Context, IntentResolution } from "../utility/Fdc3Api";
 import { toJS } from "mobx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
@@ -138,7 +138,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const [raiseIntentContext, setRaiseIntentContext] = useState<Context | null>(null);
 	const [raiseIntentWithContextContext, setRaiseIntentWithContextContext] = useState<Context | null>(null);
 	const [intentError, setIntentError] = useState<string | false>(false);
-	const [intentResolution, setIntentResolution] = useState<IntentResolution | undefined>()
+	const [intentResolution, setIntentResolution] = useState<IntentResolution | undefined | null>(null);
 	const intentListenersOptions: ListenerOptionType[] = intentStore.intentsList;
 
 	const handleRaiseIntent = async () => {
@@ -156,19 +156,18 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			setIntentResolution(await intentStore.raiseIntent(intentValue.value, raiseIntentContext));
 			setRaiseIntentError("");
 		}
-
 	};
 
 	const handleRaiseIntentForContext = () => {
 		if (!raiseIntentWithContextContext) {
 			return;
-		  }
+		}
 		if (contextTargetApp && contextIntentObjects) {
 			let targetObject = contextIntentObjects.find((target) => target.name === contextTargetApp);
 			intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app);
 		} else {
 			intentStore.raiseIntentForContext(raiseIntentWithContextContext);
-		}	
+		}
 	};
 
 	const handleTargetChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -271,7 +270,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			}
 			try {
 				let appIntentsForContext = await fdc3.findIntentsByContext(toJS(raiseIntentWithContextContext));
-				if(!appIntentsForContext){
+				if (!appIntentsForContext) {
 					return;
 				}
 
@@ -362,10 +361,17 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 												<MenuItem key={target.appId || target.name} value={target.appId || target.name}>
 													{target.appId || target.name}
 												</MenuItem>
-										))}
+											))}
 									</Select>
 								</FormControl>
-								{intentResolution?.source && <IntentResolutionField data={intentResolution} />}
+								{intentResolution?.source && (
+									<div>
+										<IntentResolutionField data={intentResolution} handleTabChange={handleTabChange} />
+										<Button variant="contained" color="secondary" onClick={() => setIntentResolution(null)}>
+											Clear result
+										</Button>
+									</div>
+								)}
 							</Grid>
 						</Grid>
 						<Grid item className={classes.controls}>
@@ -466,7 +472,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 					<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
 						<Grid item xs={12}>
 							<Typography className={classes.bottomMargin} variant="h5">
-								Add Context Listener
+								Add Intent Listener
 							</Typography>
 						</Grid>
 						<Grid item className={`${classes.field} ${classes.removeSidePadding}`}>
