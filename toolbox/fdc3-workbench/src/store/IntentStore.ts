@@ -11,6 +11,8 @@ import fdc3, {
 import { nanoid } from "nanoid";
 import { intentTypes } from "../fixtures/intentTypes";
 import systemLogStore from "./SystemLogStore";
+import appChannelStore from "./AppChannelStore";
+import privateChannelStore from "./PrivateChannelStore";
 
 type IntentItem = { title: string; value: string };
 
@@ -36,17 +38,17 @@ class IntentStore {
 
 			const intentListener = await fdc3.addIntentListener(intent, async (context: ContextType, metaData?: any) => {
 				const currentListener = this.intentListeners.find(({ id }) => id === listenerId);
-				let channel: Channel | null = null;
+				let channel: Channel | undefined;
 
 				//app channel
 				if(channelName && !isPrivate) {
-					channel = await fdc3.getOrCreateChannel(channelName); 
-					console.log(`returning app channel:  ${channel.id}`);
+					channel = await appChannelStore.getOrCreateChannel(channelName);
+					console.log(`returning app channel:  ${channel?.id}`);
 				}
 
 				//private channel
 				if(isPrivate && channelName === null) {
-					channel = await fdc3.createPrivateChannel(); 
+					channel = await privateChannelStore.createPrivateChannel();
 					console.log(`returning private channel: ${channel?.id}`);
 				}
 

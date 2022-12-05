@@ -31,37 +31,39 @@ class PrivateChannelStore {
 			privateChannelListeners: observable,
 			createPrivateChannel: action,
 			broadcast: action,
+			onAddContextListener: action,
+			onDisconnect: action,
+			onUnsubscribe: action,
 		});
 	}
 
-	async createPrivateChannel(channelId: string) {
+	async createPrivateChannel() {
 		try {
 			const currentPrivateChannel: any = await fdc3.createPrivateChannel();
 			const isSuccess = currentPrivateChannel !== null;
 			if (isSuccess) {
 				this.currentPrivateChannel = {
-					id: channelId,
+					id: currentPrivateChannel.id,
 					channel: currentPrivateChannel,
 				};
-				let foundChannel = this.privateChannelsList.find((channel) => channel.id === channelId);
-				if (!foundChannel) {
-					this.privateChannelsList.push(this.currentPrivateChannel);
-				}
+				this.privateChannelsList.push(this.currentPrivateChannel);
 			}
 
 			runInAction(() => {
 				systemLogStore.addLog({
-					name: "getOrCreateChannel",
+					name: "createPrivateChannel",
 					type: isSuccess ? "success" : "error",
-					value: isSuccess ? currentPrivateChannel?.id : channelId,
+					value: isSuccess ? currentPrivateChannel?.id : currentPrivateChannel.id,
 					variant: "text",
 				});
 			});
+
+			return currentPrivateChannel;
 		} catch (e) {
 			systemLogStore.addLog({
-				name: "getOrCreateChannel",
+				name: "createPrivateChannel",
 				type: "error",
-				value: channelId,
+				value: "",
 				variant: "code",
 				body: JSON.stringify(e, null, 4),
 			});
@@ -209,15 +211,15 @@ class PrivateChannelStore {
 	}
 
 	onAddContextListener(channel: PrivateChannel, handler: (contextType?: string) => void) {
-		channel.onAddContextListener(handler);
+		return channel.onAddContextListener(handler);
 	}
 
 	onUnsubscribe(channel: PrivateChannel, handler: (contextType?: string) => void) {
-		channel.onUnsubscribe(handler);
+		return channel.onUnsubscribe(handler);
 	}
 
 	onDisconnect(channel: PrivateChannel, handler: () => void) {
-		channel.onDisconnect(handler);
+		return channel.onDisconnect(handler);
 	}
 }
 
