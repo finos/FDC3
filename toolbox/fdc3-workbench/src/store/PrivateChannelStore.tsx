@@ -1,5 +1,5 @@
 import { makeObservable, observable, action, runInAction, toJS } from "mobx";
-import fdc3, { ContextType, Channel, Fdc3Listener, PrivateChannel } from "../utility/Fdc3Api";
+import fdc3, { ContextType, Fdc3Listener, PrivateChannel } from "../utility/Fdc3Api";
 import systemLogStore from "./SystemLogStore";
 import { nanoid } from "nanoid";
 
