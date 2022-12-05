@@ -6,6 +6,7 @@ import fdc3, {
 	TargetApp,
 	AppMetadata,
 	AppIdentifier,
+	Channel,
 } from "../utility/Fdc3Api";
 import { nanoid } from "nanoid";
 import { intentTypes } from "../fixtures/intentTypes";
@@ -29,13 +30,13 @@ class IntentStore {
 		});
 	}
 
-	async addIntentListener(intent: string, channelName?: string | null, isPrivate?: boolean) {
+	async addIntentListener(intent: string, channelName?: string | null, isPrivate?: boolean, delay?: number) {
 		try {
 			const listenerId = nanoid();
 
 			const intentListener = await fdc3.addIntentListener(intent, async (context: ContextType, metaData?: any) => {
 				const currentListener = this.intentListeners.find(({ id }) => id === listenerId);
-				let channel;
+				let channel: Channel | null = null;
 
 				//app channel
 				if(channelName && !isPrivate) {
@@ -46,7 +47,14 @@ class IntentStore {
 				//private channel
 				if(isPrivate && channelName === null) {
 					channel = await fdc3.createPrivateChannel(); 
-					console.log(`returning private channel: ${channel.id}`);
+					console.log(`returning private channel: ${channel?.id}`);
+				}
+
+				if(channel) {
+					const broadcast = setTimeout(() => {
+						channel?.broadcast(context);
+					}, delay);
+					clearTimeout(broadcast);
 				}
 
 				runInAction(() => {
