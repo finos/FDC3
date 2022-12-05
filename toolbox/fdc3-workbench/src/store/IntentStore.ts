@@ -1,5 +1,12 @@
 import { makeObservable, observable, action, runInAction, toJS } from "mobx";
-import fdc3, {ContextType, IntentResolution, Fdc3Listener, TargetApp, AppMetadata, AppIdentifier} from "../utility/Fdc3Api";
+import fdc3, {
+	ContextType,
+	IntentResolution,
+	Fdc3Listener,
+	TargetApp,
+	AppMetadata,
+	AppIdentifier,
+} from "../utility/Fdc3Api";
 import { nanoid } from "nanoid";
 import { intentTypes } from "../fixtures/intentTypes";
 import systemLogStore from "./SystemLogStore";
@@ -22,12 +29,25 @@ class IntentStore {
 		});
 	}
 
-	async addIntentListener(intent: string) {
+	async addIntentListener(intent: string, channelName?: string | null, isPrivate?: boolean) {
 		try {
 			const listenerId = nanoid();
 
-			const intentListener = await fdc3.addIntentListener(intent, (context: ContextType, metaData?: any) => {
+			const intentListener = await fdc3.addIntentListener(intent, async (context: ContextType, metaData?: any) => {
 				const currentListener = this.intentListeners.find(({ id }) => id === listenerId);
+				let channel;
+
+				//app channel
+				if(channelName && !isPrivate) {
+					channel = await fdc3.getOrCreateChannel(channelName); 
+					console.log(`returning app channel:  ${channel.id}`);
+				}
+
+				//private channel
+				if(isPrivate && channelName === null) {
+					channel = await fdc3.createPrivateChannel(); 
+					console.log(`returning private channel: ${channel.id}`);
+				}
 
 				runInAction(() => {
 					if (currentListener) {
@@ -43,6 +63,8 @@ class IntentStore {
 					variant: "code",
 					body: JSON.stringify(context, null, 4),
 				});
+
+				return {context, channel};
 			});
 
 			runInAction(() => {
@@ -93,7 +115,7 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntent(intent: string, context: ContextType, app?: AppMetadata ) {
+	async raiseIntent(intent: string, context: ContextType, app?: AppMetadata) {
 		if (!context) {
 			systemLogStore.addLog({
 				name: "raiseIntent",
@@ -132,7 +154,7 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntentForContext(context: ContextType, app?:(TargetApp & (String | AppIdentifier)) | undefined ) {
+	async raiseIntentForContext(context: ContextType, app?: (TargetApp & (String | AppIdentifier)) | undefined) {
 		if (!context) {
 			systemLogStore.addLog({
 				name: "raiseIntentForContext",
