@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const IntentResolutionField = observer(({ data, handleTabChange }: { data: any; handleTabChange: any }) => {
 	const classes = useStyles();
 	const [resolutionResult, setResolutionResult] = useState<any>("pending...");
-	const [channel, setChannel] = useState(false);
+	const [isChannel, setIsChannel] = useState(false);
 	const [privateChannel, setPrivateChannel] = useState(false);
 	const [channelsList, setChannelsList] = useState([]);
 
@@ -43,14 +43,15 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
 
 					//App Channel
 					if (result.type === "app") {
-						setChannel(true);
+						setIsChannel(true);
 						setChannelsList(result.channel);
 					}
 
 					// Private Channel
 					if (result.type === "private") {
-						setChannel(true);
+						setIsChannel(true);
 						setPrivateChannel(true);
+						setChannelsList(result.channel);
 					}
 				} else if (result) {
 					setResolutionResult(JSON.stringify(result.context, null, 2));
@@ -86,9 +87,68 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
 					},
 				}}
 			/>
-			{channel && (
+			{isChannel && (
 				<ChannelField handleTabChange={handleTabChange} channelsList={channelsList} privateChannel={privateChannel} />
 			)}
+			{privateChannel && 
+				channelsList.map((channel:any) => (
+				<div key={channel.id}>
+					<TextField
+						disabled
+						label={"onAddContextListener"}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						contentEditable={false}
+						fullWidth
+						multiline
+						variant="outlined"
+						size="small"
+						value={channel.onAddContextListener}
+						InputProps={{
+							classes: {
+								input: classes.input,
+							},
+						}}
+					/>
+					<TextField
+						disabled
+						label={"onUnsubscribe"}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						contentEditable={false}
+						fullWidth
+						multiline
+						variant="outlined"
+						size="small"
+						value={channel.onUnsubscribe}
+						InputProps={{
+							classes: {
+								input: classes.input,
+							},
+						}}
+					/>
+					<TextField
+						disabled
+						label={"onDisconnect"}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						contentEditable={false}
+						fullWidth
+						multiline
+						variant="outlined"
+						size="small"
+						value={channel.onDisconnect}
+						InputProps={{
+							classes: {
+								input: classes.input,
+							},
+						}}
+					/>
+				</div>
+			))}
 		</div>
 	);
 });
