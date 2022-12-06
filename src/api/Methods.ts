@@ -157,6 +157,10 @@ export function leaveCurrentChannel(): Promise<void> {
   return rejectIfNoGlobal(() => window.fdc3.leaveCurrentChannel());
 }
 
+export function createPrivateChannel(): Promise<PrivateChannel> {
+  return rejectIfNoGlobal(() => window.fdc3.createPrivateChannel());
+}
+
 export function getInfo(): Promise<ImplementationMetadata> {
   return rejectIfNoGlobal(() => window.fdc3.getInfo());
 }
