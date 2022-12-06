@@ -17,11 +17,14 @@
             "type": "string"
         },
         "options": {
-            "groupRecipients": "boolean",
-            "public": "boolean",
-            "allowHistoryBrowsing": "boolean",
-            "allowMessageCopy": "boolean",
-            "allowAddUser": "boolean"
+            "type": "object",
+            "properties": {
+              "groupRecipients": {"type": "boolean"},
+              "isPublic": {"type": "boolean"},
+              "allowHistoryBrowsing":  {"type": "boolean"},
+              "allowMessageCopy":  {"type": "boolean"},
+              "allowAddUser":  {"type": "boolean"}
+            }
         }
     },
     "required": [
