@@ -9,6 +9,7 @@ import {
   Listener,
   ImplementationMetadata,
   AppMetadata,
+  PrivateChannel,
 } from '..';
 
 const DEFAULT_TIMEOUT = 5000;
@@ -167,6 +168,10 @@ export function getInfo(): Promise<ImplementationMetadata> {
 
 export function getAppMetadata(app: AppIdentifier): Promise<AppMetadata> {
   return rejectIfNoGlobal(() => window.fdc3.getAppMetadata(app));
+}
+
+export function findInstances(app: AppIdentifier): Promise<AppIdentifier[]> {
+  return rejectIfNoGlobal(() => window.fdc3.findInstances(app));
 }
 
 /**
