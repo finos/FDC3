@@ -11,6 +11,7 @@ export enum Intents {
   ViewHoldings = 'ViewHoldings',
   ViewInstrument = 'ViewInstrument',
   ViewInteractions = 'ViewInteractions',
+  ViewMessages = 'ViewMessages',
   ViewNews = 'ViewNews',
   ViewOrders = 'ViewOrders',
   ViewProfile = 'ViewProfile',

@@ -167,6 +167,7 @@ A list of standardized intents are defined in the following pages:
 * [`ViewHoldings`](ref/ViewHoldings)
 * [`ViewInstrument`](ref/ViewInstrument)
 * [`ViewInteractions`](ref/ViewInteractions)
+* [`ViewMessages`](ref/ViewMessages)
 * [`ViewNews`](ref/ViewNews)
 * [`ViewOrders`](ref/ViewOrders)
 * [`ViewProfile`](ref/ViewProfile)
