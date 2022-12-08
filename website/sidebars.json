@@ -43,6 +43,7 @@
           "intents/ref/StartEmail",
           "intents/ref/SendChatMessage",
           "intents/ref/ViewAnalysis",
+          "intents/ref/ViewChat",
           "intents/ref/ViewChart",
           "intents/ref/ViewHoldings",
           "intents/ref/ViewInstrument",

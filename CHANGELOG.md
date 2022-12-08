@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added a `SendChatMessage` intent to be used when a user wants to send a message to an existing chat room. ([#794](https://github.com/finos/FDC3/pull/794))
 * Added a context type representing a chat message (`fdc3.chat.message`). ([#794](https://github.com/finos/FDC3/pull/794))
 * Added a context type representing a chat room (`fdc3.chat.room`). ([#794](https://github.com/finos/FDC3/pull/794))
+* Added a `ViewChat` Intent to be used when a user wants to open an existing chat room. ([#796](https://github.com/finos/FDC3/pull/796))
 
 ### Changed
 
