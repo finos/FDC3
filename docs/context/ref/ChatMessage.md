@@ -21,7 +21,7 @@ A context representing a chat message. Typically used to send the message or to 
 | Property    | Type    | Required | Example Value     |
 |-------------|---------|----------|-------------------|
 | `type`      | string  | Yes      | `'fdc3.chat.message'`  |
-| `chatRoom`      | ChatRoom  | Yes       | `{ type: 'fdc3.chat.room', providerName: 'Symphony', id:{ roomId: 'j75xqXy25NBOdacUI3FNBH'} }`      |
+| `chatRoom`      | ChatRoom  | Yes       | `{ type: 'fdc3.chat.room', providerName: 'Symphony', id:{ streamIds: ['j75xqXy25NBOdacUI3FNBH']} }`      |
 | `message`  | [Message](https://fdc3.finos.org/schemas/next/message.schema.json)  | Yes       | `'A message to send'` |
 
 ## Example
@@ -33,7 +33,7 @@ const chatMessage = {
         type: 'fdc3.chat.room',
         providerName: "Symphony",
         id: {
-            roomId: "j75xqXy25NBOdacUI3FNBH"
+            streamIds: ["j75xqXy25NBOdacUI3FNBH"]
         }
     },
     message: "A message to send"
