@@ -1,4 +1,5 @@
 {
+  "Action": ["https://fdc3.finos.org/schemas/next/action.schema.json"],
   "Context": ["https://fdc3.finos.org/schemas/next/context.schema.json"],
   "Chart": ["https://fdc3.finos.org/schemas/next/chart.schema.json"],
   "ChatInitSettings": ["https://fdc3.finos.org/schemas/next/chatInitSettings.schema.json"],
@@ -12,6 +13,7 @@
   "Instrument": ["https://fdc3.finos.org/schemas/next/instrument.schema.json"],
   "InstrumentList": ["https://fdc3.finos.org/schemas/next/instrumentList.schema.json"],
   "Interaction": ["https://fdc3.finos.org/schemas/next/interaction.schema.json"],
+  "Message": ["https://fdc3.finos.org/schemas/next/message.schema.json"],
   "Nothing": ["https://fdc3.finos.org/schemas/next/nothing.schema.json"],
   "Organization": ["https://fdc3.finos.org/schemas/next/organization.schema.json"],
   "Portfolio": ["https://fdc3.finos.org/schemas/next/portfolio.schema.json"],

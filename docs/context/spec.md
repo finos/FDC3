@@ -159,6 +159,7 @@ For more details on FDC3 Standards compliance (including the versioning, depreca
 
 The following are standard FDC3 context types:
 
+- [`fdc3.action`](ref/Action) ([schema](/schemas/next/action.schema.json))
 - [`fdc3.chart`](ref/Chart) ([schema](/schemas/next/chart.schema.json))
 - [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](/schemas/next/chatInitSettings.schema.json))
 - [`fdc3.chat.room`](ref/ChatRoom) ([schema](/schemas/next/chatRoom.schema.json))

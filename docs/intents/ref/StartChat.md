@@ -38,10 +38,16 @@ fdc3.raiseIntent('StartChat', contact)
 // chat with initialization settings
 const initSettings = {
     type: 'fdc3.chat.initSettings',
-    chatName: 'Issue #123',
+    chatName: 'Chat ABCD',
     members: {
         type: 'fdc3.contactList',
         contacts: [{
+            type: 'fdc3.contact',
+            name: 'Jane Doe',
+            id: {
+                email: 'jane@mail.com'
+            }
+        },{
             type: 'fdc3.contact',
             name: 'John Doe',
             id: {
@@ -53,10 +59,23 @@ const initSettings = {
         groupRecipients: true, // one chat with both contacts
         isPublic: false, // private chat room
         allowHistoryBrowsing: true,
-        allowMessageCopy: true,
-        allowAddUser: false, // John won't be authorized to add other users to the chat
+        allowMessageCopy: true
     }
-    initMessage: 'Hello John!'
+    message: {
+      type: 'fdc3.message',
+      text: {
+        'text/plain': 'Hey all, can we discuss the issue together? I attached a screenshot'
+      },
+      entities: {
+         '0': {
+             type: 'fdc3.fileAttachment',
+              data: {
+              name: 'myImage.png',
+                    dataUri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII'
+              }
+          }
+      }
+    }
 }
 
 const resolution = fdc3.raiseIntent('StartChat', initSettings);
