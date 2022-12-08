@@ -163,6 +163,7 @@ The following are standard FDC3 context types:
 - [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](/schemas/next/chatInitSettings.schema.json))
 - [`fdc3.chat.room`](ref/ChatRoom) ([schema](/schemas/next/chatRoom.schema.json))
 - [`fdc3.chat.message`](ref/ChatMessage) ([schema](/schemas/next/chatMessage.schema.json))
+- [`fdc3.chat.searchCriteria`](ref/ChatSearchCriteria) ([schema](/schemas/next/chatSearchCriteria.schema.json))
 - [`fdc3.contact`](ref/Contact) ([schema](/schemas/next/contact.schema.json))
 - [`fdc3.contactList`](ref/ContactList) ([schema](/schemas/next/contactList.schema.json))
 - [`fdc3.country`](ref/Country) ([schema](/schemas/next/country.schema.json))

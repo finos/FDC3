@@ -297,6 +297,11 @@ export interface TimeRange {
   [property: string]: any;
 }
 
+export interface ChatSearchCriteria {
+  criteria: (Instrument | Organization | Contact | string)[];
+  type: string;
+}
+
 export interface Valuation {
   CURRENCY_ISOCODE: string;
   expiryTime?: Date;
