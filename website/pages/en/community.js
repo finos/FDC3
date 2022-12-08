@@ -103,7 +103,7 @@ function ImplementationsShowcase() {
 function Implementations(props) {
 	const { config: siteConfig } = props;
 	const { repoUrl } = siteConfig;
-	const editUrl = `https://www.finos.org/get-involved-fdc3`;
+	const editUrl = `https://github.com/finos/FDC3/edit/main/website/`;
 
 	return <Container>
 		<h1>FDC3 Community</h1>
