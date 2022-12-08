@@ -48,6 +48,7 @@
           "intents/ref/ViewHoldings",
           "intents/ref/ViewInstrument",
           "intents/ref/ViewInteractions",
+          "intents/ref/ViewMessages",
           "intents/ref/ViewNews",
           "intents/ref/ViewOrders",
           "intents/ref/ViewProfile",
@@ -77,6 +78,7 @@
           "context/ref/Organization",
           "context/ref/Portfolio",
           "context/ref/Position",
+          "context/ref/ChatSearchCriteria",
           "context/ref/TimeRange",
           "context/ref/Valuation"
         ]
