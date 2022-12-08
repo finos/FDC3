@@ -66,19 +66,22 @@ const initSettings = {
 }
 
 const res = fdc3.raiseIntent('StartChat', initSettings);
-const roomRefs = await res.getResult();
+
+// Return a reference to the room
+const chatRoom = await res.getResult();
 ```
 
 ## See Also
 
 Other Types
 
+- [ChatRoom](ChatRoom)
 - [ContactList](ContactList)
 
 Intents
-
 - [StartChat](../../intents/ref/StartChat)
 - [StartCall](../../intents/ref/StartCall)
+- [SendChatMessage](../../intents/ref/StartChat)
 - [ViewContact](../../intents/ref/ViewContact)
 
 FINOS Financial Objects
