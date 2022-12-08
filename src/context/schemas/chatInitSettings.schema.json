@@ -3,6 +3,7 @@
     "$id": "https://fdc3.finos.org/schemas/next/chatInitSettings.schema.json",
     "type": "object",
     "title": "ChatInitSettings",
+    "allOf": [{ "$ref": "context.schema.json#" }],
     "properties": {
         "type": {
             "const": "fdc3.chat.initSettings"
@@ -13,8 +14,15 @@
         "members": {
             "$ref": "contactList.schema.json#"
         },
-        "initMessage": {
-            "type": "string"
+        "message": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "message.schema.json#"
+                }
+            ]
         },
         "options": {
             "groupRecipients": "boolean",
@@ -23,8 +31,5 @@
             "allowMessageCopy": "boolean",
             "allowAddUser": "boolean"
         }
-    },
-    "required": [
-        "type"
-    ]
+    }
 }
