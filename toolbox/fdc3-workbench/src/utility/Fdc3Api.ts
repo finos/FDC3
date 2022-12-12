@@ -1,5 +1,5 @@
-import * as fdc3_1 from "fdc3-1.2";
 import * as fdc3_2 from "fdc3-2.0";
+import * as fdc3_1 from "fdc3-1.2";
 
 interface fdc3_1IntentResolution extends fdc3_1.IntentResolution {
 	getResult?: any;
@@ -39,7 +39,7 @@ export type IntentResolution = fdc3_1IntentResolution | fdc3_2IntentResolution;
 
 export type TargetApp = fdc3_1.TargetApp;
 
-export type Channel = fdc3_1.Channel | fdc3_2.Channel;
+export type Channel = fdc3_2.Channel | fdc3_1.Channel;
 
 export type ImplementationMetadata = fdc3_1ImplementationMetadata | fdc3_2ImplementationMetadata;
 
@@ -55,36 +55,30 @@ export type AppIdentifier = fdc3_2.AppIdentifier;
 
 export type PrivateChannel = fdc3_2.PrivateChannel;
 
-type FDC3_2 = typeof fdc3_2 & {
-	createPrivateChannel?: any;
-};
 class Fdc3Api {
-	fdc3: typeof fdc3_1 | typeof fdc3_2;
-
-	FDC3_2: FDC3_2;
+	fdc3Methods: typeof fdc3_1 | typeof fdc3_2;
 
 	constructor() {
-		this.fdc3 = window.fdc3Version === "2.0" ? fdc3_2 : fdc3_1;
-		this.FDC3_2 = fdc3_2;
+		this.fdc3Methods = window.fdc3Version === "2.0" ? fdc3_2 : fdc3_1;
 	}
 
 	getCurrentChannel() {
-		return this.fdc3.getCurrentChannel();
+		return this.fdc3Methods.getCurrentChannel();
 	}
 
 	broadcast(context: fdc3_1.Context | fdc3_2.Context) {
-		return this.fdc3.broadcast(context);
+		return this.fdc3Methods.broadcast(context);
 	}
 
 	async addIntentListener(intent: string, handler: fdc3_1.ContextHandler | fdc3_2.ContextHandler) {
-		return await this.fdc3.addIntentListener(intent, handler);
+		return await this.fdc3Methods.addIntentListener(intent, handler);
 	}
 
 	async addContextListener(
 		contextTypeOrHandler: string | fdc3_1.ContextHandler | fdc3_2.ContextHandler,
 		handler?: fdc3_1.ContextHandler | fdc3_2.ContextHandler | undefined
 	) {
-		return await this.fdc3.addContextListener(contextTypeOrHandler, handler);
+		return await this.fdc3Methods.addContextListener(contextTypeOrHandler, handler);
 	}
 
 	async raiseIntent(intent: string, context: fdc3_1.Context & fdc3_2.Context, app?: AppMetadata | undefined) {
@@ -102,42 +96,39 @@ class Fdc3Api {
 		context: fdc3_1.Context & fdc3_2.Context,
 		app?: (fdc3_1.TargetApp & (String | fdc3_2.AppIdentifier)) | undefined
 	) {
-		let r = <any>await this.fdc3.raiseIntentForContext(context, app);
-		console.log(r);
-		console.log(await r.getResult());
-		return r;
+		return <any>await this.fdc3Methods.raiseIntentForContext(context, app);
 	}
 
 	getSystemChannels() {
-		return this.fdc3.getSystemChannels();
+		return this.fdc3Methods.getSystemChannels();
 	}
 
 	joinChannel(channelId: string) {
-		return this.fdc3.joinChannel(channelId);
+		return this.fdc3Methods.joinChannel(channelId);
 	}
 
 	leaveCurrentChannel() {
-		return this.fdc3.leaveCurrentChannel();
+		return this.fdc3Methods.leaveCurrentChannel();
 	}
 
 	fdc3Ready(waitForMs?: number | undefined) {
-		return this.fdc3.fdc3Ready(waitForMs);
+		return this.fdc3Methods.fdc3Ready(waitForMs);
 	}
 
 	async getOrCreateChannel(channelId: string) {
-		return await this.fdc3.getOrCreateChannel(channelId);
+		return await this.fdc3Methods.getOrCreateChannel(channelId);
 	}
 
 	async getInfo() {
-		return await this.fdc3.getInfo();
+		return await this.fdc3Methods.getInfo();
 	}
 
 	findIntentsByContext(context: Context) {
-		return this.fdc3.findIntentsByContext(context);
+		return this.fdc3Methods.findIntentsByContext(context);
 	}
 
 	async createPrivateChannel() {
-		return this.FDC3_2.createPrivateChannel();
+		return fdc3_2.createPrivateChannel();
 	}
 }
 

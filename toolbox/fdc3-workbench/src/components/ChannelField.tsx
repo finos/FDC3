@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import channelStore from "../store/AppChannelStore";
+import appChannelStore from "../store/AppChannelStore";
+import privateChannelStore from "../store/PrivateChannelStore";
 import { Button, IconButton, Tooltip, Typography, Grid } from "@material-ui/core";
 import { ContextTemplates } from "./ContextTemplates";
 import { ContextType } from "../utility/Fdc3Api";
@@ -111,13 +112,19 @@ export const ChannelField = observer(
 	({
 		handleTabChange,
 		channelsList,
-		privateChannel = false,
+		isPrivateChannel = false,
+		channelName
 	}: {
 		handleTabChange: any;
 		channelsList: any;
-		privateChannel?: boolean;
+		isPrivateChannel?: boolean;
+		channelName? : string;
 	}) => {
 		const classes = useStyles();
+		const [contextItem, setContextItem] = useState<ContextType | null>(null);
+		
+		const channelStore = isPrivateChannel ? privateChannelStore : appChannelStore;
+
 		const contextListenersOptionsAll: ListenerOptionType[] = contextStore.contextsList.map(({ id, template }) => {
 			return {
 				title: id,
@@ -147,7 +154,7 @@ export const ChannelField = observer(
 				if (channelStore.isContextListenerExists(channelId, foundChannel?.currentListener.type)) {
 					foundChannel.listenerError = "Listener already added";
 				} else {
-					channelStore.addChannelListener(channelId, foundChannel.currentListener.type);
+					channelStore.addChannelListener(channelId, foundChannel.currentListener.type, isPrivateChannel && foundChannel);
 					foundChannel.listenerError = "";
 				}
 			} else {
@@ -158,13 +165,15 @@ export const ChannelField = observer(
 		const handleContextStateChange = (context: ContextType, channel: string) => {
 			let foundChannel = channelsList.find((currentChannel: any) => currentChannel.id === channel);
 			if (foundChannel) {
+				setContextItem(context);
 				foundChannel.context = context;
 			}
 		};
 
 		const handleBroadcast = (channel: any) => {
-			if (channel.context) {
-				channelStore.broadcast(channel.id, channel.context);
+			console.log(channel)
+			if (channel.context && contextItem) {
+				channelStore.broadcast(channel.id, contextItem, channel);
 			}
 		};
 
@@ -175,7 +184,7 @@ export const ChannelField = observer(
 			}
 
 			let newListener;
-			let foundListener = channelStore.appChannelListeners?.find(
+			let foundListener = channelStore.channelListeners?.find(
 				(currentListener) => currentListener.type === newValue && currentListener.channelId === channelId
 			);
 			if (foundListener) {
@@ -215,7 +224,7 @@ export const ChannelField = observer(
 		};
 
 		const handleDisconnect = (channel: any) => {
-			if(privateChannel) {
+			if(isPrivateChannel) {
 				channel.disconnect();
 				return;
 			} else {
@@ -226,7 +235,9 @@ export const ChannelField = observer(
 		return (
 			<div>
 				{channelsList.length > 0 &&
-					channelsList.map((channel: any) => (
+					channelsList.map((channel: any) => {
+						
+						const element = (
 						<Grid container key={channel.id} spacing={2} className={classes.spread}>
 							<Grid item className={classes.field}>
 								<Typography variant="h5">Channel: {channel.id}</Typography>
@@ -331,8 +342,15 @@ export const ChannelField = observer(
 								Disconnect
 							</Button>
 							<div className={classes.border}></div>
-						</Grid>
-					))}
+						</Grid>);
+
+						if(channelName) {
+							return channel.id === channelName && element
+						} else {
+							return element
+						}
+					})
+				}
 			</div>
 		);
 	}

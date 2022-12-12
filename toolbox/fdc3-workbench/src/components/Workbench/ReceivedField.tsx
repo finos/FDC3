@@ -15,30 +15,31 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-export const ReceivedField = observer((metaData: any) => {
+export const ReceivedField = observer(({metaData}: {metaData: any}) => {
 	const classes = useStyles();
-
-    const formattedData = metaData ? 'METADATA NOT PROVIDED' : `appId: ${metaData.appId}\ninstanceId: ${metaData.instanceId}`;
-
+	const formattedData = !metaData?.source
+		? "METADATA NOT PROVIDED"
+		: `appId: ${metaData.source.appId}\ninstanceId: ${metaData.source.instanceId}`;
+	
 	return (
 		<TextField
-            disabled
-            label={"RECEIVED FROM"}
-            className={classes.textField}
-            InputLabelProps={{
-                shrink: true,
-            }}
-            contentEditable={false}
-            fullWidth
-            multiline
-            variant="outlined"
-            size="small"
-            value={formattedData}
-            InputProps={{
-                classes: {
-                    input: classes.input,
-                },
-            }}
-        />
+			disabled
+			label={"RECEIVED FROM"}
+			className={classes.textField}
+			InputLabelProps={{
+				shrink: true,
+			}}
+			contentEditable={false}
+			fullWidth
+			multiline
+			variant="outlined"
+			size="small"
+			value={formattedData}
+			InputProps={{
+				classes: {
+					input: classes.input,
+				},
+			}}
+		/>
 	);
 });

@@ -23,7 +23,7 @@ export const PrivateChannelListeners = observer(() => {
 
 	let contextListeners: AccordionListItem[] = [];
 
-	privateChannelStore.privateChannelListeners.forEach(({ id, channelId, lastReceivedContext, metaData }) => {
+	privateChannelStore.channelListeners.forEach(({ id, channelId, lastReceivedContext, metaData }) => {
 		const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
 		const contextField = (
 			<div>

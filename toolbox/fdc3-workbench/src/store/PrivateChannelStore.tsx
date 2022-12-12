@@ -3,32 +3,24 @@ import fdc3, { ContextType, Fdc3Listener, PrivateChannel } from "../utility/Fdc3
 import systemLogStore from "./SystemLogStore";
 import { nanoid } from "nanoid";
 
-interface ListenerOptionType {
-	title: string;
-	value: string;
-	type: string | undefined;
-}
+// interface ListenerOptionType {
+// 	title: string;
+// 	value: string;
+// 	type: string | undefined;
+// }
 
-export interface Fdc3PrivateChannel {
-	id: string;
-	channel: PrivateChannel;
-	currentListener?: ListenerOptionType | null;
-	broadcastError?: string;
-	context?: ContextType | null;
-	listenerError?: string;
-}
 class PrivateChannelStore {
-	privateChannelsList: Fdc3PrivateChannel[] = [];
+	privateChannelsList: PrivateChannel[] = [];
 
-	currentPrivateChannel: Fdc3PrivateChannel | null = null;
+	currentPrivateChannel: PrivateChannel | null = null;
 
-	privateChannelListeners: Fdc3Listener[] = [];
+	channelListeners: Fdc3Listener[] = [];
 
 	constructor() {
 		makeObservable(this, {
 			privateChannelsList: observable,
 			currentPrivateChannel: observable,
-			privateChannelListeners: observable,
+			channelListeners: observable,
 			createPrivateChannel: action,
 			broadcast: action,
 			onAddContextListener: action,
@@ -42,11 +34,7 @@ class PrivateChannelStore {
 			const currentPrivateChannel: any = await fdc3.createPrivateChannel();
 			const isSuccess = currentPrivateChannel !== null;
 			if (isSuccess) {
-				this.currentPrivateChannel = {
-					id: currentPrivateChannel.id,
-					channel: currentPrivateChannel,
-				};
-				this.privateChannelsList.push(this.currentPrivateChannel);
+				this.privateChannelsList.push(currentPrivateChannel);
 			}
 
 			runInAction(() => {
@@ -71,7 +59,7 @@ class PrivateChannelStore {
 	}
 
 	isContextListenerExists(channelId: string, type: string | undefined) {
-		return !!this.privateChannelListeners?.find(
+		return !!this.channelListeners?.find(
 			(listener) => listener.type === type && listener.channelId === channelId
 		);
 	}
@@ -80,7 +68,7 @@ class PrivateChannelStore {
 		return !!this.privateChannelsList.find((channel) => channel.id === channelId);
 	}
 
-	async broadcast(channelId: string, context: ContextType) {
+	async broadcast(channelId: string, context: ContextType, currentChannel?: PrivateChannel) {
 		if (!context) {
 			systemLogStore.addLog({
 				name: "appbroadcast",
@@ -91,7 +79,7 @@ class PrivateChannelStore {
 		}
 
 		//check that we're on a channel
-		let currentChannel = this.privateChannelsList.find((channel) => channel.id === channelId);
+		// let currentChannel = this.privateChannelsList.find((channel) => channel.id === channelId);
 
 		if (!currentChannel) {
 			systemLogStore.addLog({
@@ -104,7 +92,7 @@ class PrivateChannelStore {
 		}
 
 		try {
-			await currentChannel.channel.broadcast(toJS(context));
+			await currentChannel.broadcast(toJS(context));
 			systemLogStore.addLog({
 				name: "appbroadcast",
 				type: "success",
@@ -123,19 +111,18 @@ class PrivateChannelStore {
 		}
 	}
 
-	async addChannelListener(channelId: string, newListener: string | undefined) {
+	async addChannelListener(channelId: string, newListener: string | undefined, currentChannel?: PrivateChannel) {
 		try {
-			let currentChannel = this.privateChannelsList.find((channel) => channel.id === channelId);
-			let foundListener = this.privateChannelListeners.find(
+			let foundListener = this.channelListeners.find(
 				(currentListener) => currentListener.type === newListener && currentListener.channelId === channelId
 			);
-
+			console.log(foundListener,currentChannel,newListener)
 			if (!foundListener && currentChannel && newListener !== undefined) {
 				const listenerId = nanoid();
-				const contactListener = await currentChannel.channel.addContextListener(
+				const contactListener = await currentChannel.addContextListener(
 					newListener?.toLowerCase() === "all" ? null : newListener,
 					(context, metaData?: any) => {
-						const currentListener = this.privateChannelListeners.find(
+						const currentListener = this.channelListeners.find(
 							(listener) => listener.type === newListener && listener.channelId === channelId
 						);
 
@@ -163,7 +150,7 @@ class PrivateChannelStore {
 						value: `A context listener for '[${newListener}]' has been added on channel [${channelId}]`,
 						variant: "text",
 					});
-					this.privateChannelListeners.push({
+					this.channelListeners.push({
 						id: listenerId,
 						type: newListener,
 						listener: contactListener,
@@ -183,11 +170,11 @@ class PrivateChannelStore {
 	}
 
 	removeContextListener(id: string) {
-		const listenerIndex = this.privateChannelListeners?.findIndex((listener) => listener.id === id);
-		const listener = this.privateChannelListeners[listenerIndex];
+		const listenerIndex = this.channelListeners?.findIndex((listener) => listener.id === id);
+		const listener = this.channelListeners[listenerIndex];
 		if (listenerIndex !== -1) {
 			try {
-				this.privateChannelListeners[listenerIndex].listener.unsubscribe();
+				this.channelListeners[listenerIndex].listener.unsubscribe();
 
 				runInAction(() => {
 					systemLogStore.addLog({
@@ -196,7 +183,7 @@ class PrivateChannelStore {
 						value: `A context listener for '[${listener.type}]' for channel [${listener.channelId}] has been removed`,
 						variant: "text",
 					});
-					this.privateChannelListeners.splice(listenerIndex, 1);
+					this.channelListeners.splice(listenerIndex, 1);
 				});
 			} catch (e) {
 				systemLogStore.addLog({

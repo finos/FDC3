@@ -22,36 +22,37 @@ export const AppChannelListeners = observer(() => {
 	const classes = useStyles();
 
 	let contextListeners: AccordionListItem[] = [];
-    
-        appChannelStore.appChannelListeners.forEach(({ id, channelId, type, lastReceivedContext, metaData }) => {
-			const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
-			const contextField = (
-				<div>
-					<TextField
-						disabled
-						label={"LAST RECEIVED CONTEXT"}
-						className={classes.textField}
-						InputLabelProps={{
-							shrink: true,
-						}}
-						contentEditable={false}
-						fullWidth
-						multiline
-						variant="outlined"
-						size="small"
-						value={receivedContextListenerValue}
-						InputProps={{
-							classes: {
-								input: classes.input,
-							},
-						}}
-					/>
-					{window.fdc3Version === '2.0' && <ReceivedField metaData={metaData} />}
-				</div>
-			);
 
-			contextListeners.push({ id, textPrimary: `${channelId}: ${type}`, afterEachElement: contextField});
-        });
+	appChannelStore.channelListeners.forEach(({ id, channelId, type, lastReceivedContext, metaData }) => {
+		const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
+		console.log(lastReceivedContext, metaData);
+		const contextField = (
+			<div>
+				<TextField
+					disabled
+					label={"LAST RECEIVED CONTEXT"}
+					className={classes.textField}
+					InputLabelProps={{
+						shrink: true,
+					}}
+					contentEditable={false}
+					fullWidth
+					multiline
+					variant="outlined"
+					size="small"
+					value={receivedContextListenerValue}
+					InputProps={{
+						classes: {
+							input: classes.input,
+						},
+					}}
+				/>
+				{window.fdc3Version === "2.0" && <ReceivedField metaData={metaData} />}
+			</div>
+		);
+
+		contextListeners.push({ id, textPrimary: `${channelId}: ${type}`, afterEachElement: contextField });
+	});
 
 	const handleDeleteListener = (id: string) => {
 		appChannelStore.removeContextListener(id);
