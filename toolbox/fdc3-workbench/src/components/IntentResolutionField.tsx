@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { TextField } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { ChannelField } from "./ChannelField";
+import appChannelStore from "../store/AppChannelStore";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -25,36 +26,42 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
 	const [resolutionResult, setResolutionResult] = useState<any>("pending...");
 	const [isChannel, setIsChannel] = useState(false);
 	const [privateChannel, setPrivateChannel] = useState(false);
-	const [channelsList, setChannelsList] = useState([]);
+	const [channelsList, setChannelsList] = useState<any[]>([]);
+	const [channelName, setChannelName] = useState<string>('');
 
 	let results = `Resolved by:
 	appId: ${data.source.appId}
-	instanceId: ${data.source.instanceId}\n\nResults: ${resolutionResult}`;
+	instanceId: ${data.source.instanceId}`;
 
 	const displayIntentResults = async () => {
-		console.log(data);
+		console.log(data, data.hasOwnProperty("getResult"));
 		try {
 			if (data.hasOwnProperty("getResult")) {
 				const result = await data.getResult();
 				console.log(result);
 				//detect whether the result is Context or a Channel
-				if (!!result?.channel?.broadcast) {
+				if (!!result?.broadcast) {
 					setResolutionResult("");
 
 					//App Channel
 					if (result.type === "app") {
+						console.log(result.type)
+						await appChannelStore.getOrCreateChannel(result.id);
+						setChannelName(result.id);
 						setIsChannel(true);
-						setChannelsList(result.channel);
+						setChannelsList(appChannelStore.appChannelsList)
 					}
 
 					// Private Channel
 					if (result.type === "private") {
+						console.log(result.type)
 						setIsChannel(true);
 						setPrivateChannel(true);
-						setChannelsList(result.channel);
+						setChannelsList([result])
 					}
+					setResolutionResult(JSON.stringify(result, null, 2));
 				} else if (result) {
-					setResolutionResult(JSON.stringify(result.context, null, 2));
+					setResolutionResult(JSON.stringify(result, null, 2));
 				} else {
 					setResolutionResult("No result returned");
 				}
@@ -65,13 +72,20 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
 		}
 	};
 
-	displayIntentResults();
-
+	
+	useEffect(() => {
+		displayIntentResults();
+	}, [])
+	
+	useEffect(() => {
+		console.log(isChannel)
+		console.log(channelsList)
+	})
 	return (
 		<div>
 			<TextField
 				disabled
-				label={"RESULT CONTEXT"}
+				label={"Resolved By"}
 				InputLabelProps={{
 					shrink: true,
 				}}
@@ -87,68 +101,27 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
 					},
 				}}
 			/>
+			<TextField
+				disabled
+				label={"Results"}
+				InputLabelProps={{
+					shrink: true,
+				}}
+				contentEditable={false}
+				fullWidth
+				multiline
+				variant="outlined"
+				size="small"
+				value={resolutionResult}
+				InputProps={{
+					classes: {
+						input: classes.input,
+					},
+				}}
+			/>
 			{isChannel && (
-				<ChannelField handleTabChange={handleTabChange} channelsList={channelsList} privateChannel={privateChannel} />
+				<ChannelField handleTabChange={handleTabChange} channelsList={channelsList} isPrivateChannel={privateChannel} channelName={channelName}/>
 			)}
-			{privateChannel && 
-				channelsList.map((channel:any) => (
-				<div key={channel.id}>
-					<TextField
-						disabled
-						label={"onAddContextListener"}
-						InputLabelProps={{
-							shrink: true,
-						}}
-						contentEditable={false}
-						fullWidth
-						multiline
-						variant="outlined"
-						size="small"
-						value={channel.onAddContextListener}
-						InputProps={{
-							classes: {
-								input: classes.input,
-							},
-						}}
-					/>
-					<TextField
-						disabled
-						label={"onUnsubscribe"}
-						InputLabelProps={{
-							shrink: true,
-						}}
-						contentEditable={false}
-						fullWidth
-						multiline
-						variant="outlined"
-						size="small"
-						value={channel.onUnsubscribe}
-						InputProps={{
-							classes: {
-								input: classes.input,
-							},
-						}}
-					/>
-					<TextField
-						disabled
-						label={"onDisconnect"}
-						InputLabelProps={{
-							shrink: true,
-						}}
-						contentEditable={false}
-						fullWidth
-						multiline
-						variant="outlined"
-						size="small"
-						value={channel.onDisconnect}
-						InputProps={{
-							classes: {
-								input: classes.input,
-							},
-						}}
-					/>
-				</div>
-			))}
 		</div>
 	);
 });

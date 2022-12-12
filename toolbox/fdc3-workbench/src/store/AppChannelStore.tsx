@@ -22,13 +22,13 @@ class AppChannelStore {
 
 	currentAppChannel: Fdc3Channel | null = null;
 
-	appChannelListeners: Fdc3Listener[] = [];
+	channelListeners: Fdc3Listener[] = [];
 
 	constructor() {
 		makeObservable(this, {
 			appChannelsList: observable,
 			currentAppChannel: observable,
-			appChannelListeners: observable,
+			channelListeners: observable,
 			getOrCreateChannel: action,
 			leaveChannel: action,
 			broadcast: action,
@@ -37,6 +37,7 @@ class AppChannelStore {
 
 	async getOrCreateChannel(channelId: string) {
 		try {
+			console.log('getcreate', channelId)
 			const currentAppChannel = await fdc3.getOrCreateChannel(channelId);
 			const isSuccess = currentAppChannel !== null;
 			if (isSuccess) {
@@ -49,7 +50,7 @@ class AppChannelStore {
 					this.appChannelsList.push(this.currentAppChannel);
 				}
 			}
-
+			console.log(this.appChannelsList);
 			runInAction(() => {
 				systemLogStore.addLog({
 					name: "getOrCreateChannel",
@@ -72,7 +73,7 @@ class AppChannelStore {
 	}
 
 	isContextListenerExists(channelId: string, type: string | undefined) {
-		return !!this.appChannelListeners?.find((listener) => listener.type === type && listener.channelId === channelId);
+		return !!this.channelListeners?.find((listener) => listener.type === type && listener.channelId === channelId);
 	}
 
 	isAppChannelExists(channelId: string) {
@@ -165,16 +166,17 @@ class AppChannelStore {
 	async addChannelListener(channelId: string, newListener: string | undefined) {
 		try {
 			let currentChannel = this.appChannelsList.find((channel) => channel.id === channelId);
-			let foundListener = this.appChannelListeners.find(
+			let foundListener = this.channelListeners.find(
 				(currentListener) => currentListener.type === newListener && currentListener.channelId === channelId
 			);
-
+			console.log(currentChannel, foundListener, this.appChannelsList)
 			if (!foundListener && currentChannel && newListener !== undefined) {
 				const listenerId = nanoid();
 				const contactListener = await currentChannel.channel.addContextListener(
 					newListener?.toLowerCase() === "all" ? null : newListener,
 					(context, metaData?: any) => {
-						const currentListener = this.appChannelListeners.find(
+						console.log(metaData);
+						const currentListener = this.channelListeners.find(
 							(listener) => listener.type === newListener && listener.channelId === channelId
 						);
 
@@ -202,7 +204,7 @@ class AppChannelStore {
 						value: `A context listener for '[${newListener}]' has been added on channel [${channelId}]`,
 						variant: "text",
 					});
-					this.appChannelListeners.push({ id: listenerId, type: newListener, listener: contactListener, channelId });
+					this.channelListeners.push({ id: listenerId, type: newListener, listener: contactListener, channelId });
 				});
 			}
 		} catch (e) {
@@ -217,11 +219,11 @@ class AppChannelStore {
 	}
 
 	removeContextListener(id: string) {
-		const listenerIndex = this.appChannelListeners?.findIndex((listener) => listener.id === id);
-		const listener = this.appChannelListeners[listenerIndex];
+		const listenerIndex = this.channelListeners?.findIndex((listener) => listener.id === id);
+		const listener = this.channelListeners[listenerIndex];
 		if (listenerIndex !== -1) {
 			try {
-				this.appChannelListeners[listenerIndex].listener.unsubscribe();
+				this.channelListeners[listenerIndex].listener.unsubscribe();
 
 				runInAction(() => {
 					systemLogStore.addLog({
@@ -230,7 +232,7 @@ class AppChannelStore {
 						value: `A context listener for '[${listener.type}]' for channel [${listener.channelId}] has been removed`,
 						variant: "text",
 					});
-					this.appChannelListeners.splice(listenerIndex, 1);
+					this.channelListeners.splice(listenerIndex, 1);
 				});
 			} catch (e) {
 				systemLogStore.addLog({

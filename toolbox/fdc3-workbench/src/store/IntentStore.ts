@@ -32,14 +32,14 @@ class IntentStore {
 		});
 	}
 
-	async addIntentListener(intent: string, channelName?: string | null, isPrivate?: boolean, delay?: number) {
+	async addIntentListener(intent: string, resultContext?: ContextType | null, channelName?: string | null, isPrivate?: boolean, delay?: number) {
 		try {
 			const listenerId = nanoid();
 
 			const intentListener = await fdc3.addIntentListener(intent, async (context: ContextType, metaData?: any) => {
 				const currentListener = this.intentListeners.find(({ id }) => id === listenerId);
 				let channel: Channel | undefined;
-
+				console.log(context, metaData)
 				//app channel
 				if(channelName && !isPrivate) {
 					channel = await appChannelStore.getOrCreateChannel(channelName);
@@ -47,16 +47,19 @@ class IntentStore {
 				}
 
 				//private channel
-				if(isPrivate && channelName === null) {
+				if(isPrivate && !channelName) {
 					channel = await privateChannelStore.createPrivateChannel();
 					console.log(`returning private channel: ${channel?.id}`);
 				}
 
 				if(channel) {
+					console.log('broadcasting...', delay)
 					const broadcast = setTimeout(() => {
 						channel?.broadcast(context);
+						console.log('done broadcasting');
+						clearTimeout(broadcast);
 					}, delay);
-					clearTimeout(broadcast);
+					
 				}
 
 				runInAction(() => {
@@ -65,6 +68,8 @@ class IntentStore {
 						currentListener.metaData = metaData;
 					}
 				});
+				console.log(context, channel);
+				if(resultContext) context = resultContext;
 
 				systemLogStore.addLog({
 					name: "receivedIntentListener",
@@ -73,8 +78,9 @@ class IntentStore {
 					variant: "code",
 					body: JSON.stringify(context, null, 4),
 				});
-
-				return {context, channel};
+				
+				
+				return channel || context;
 			});
 
 			runInAction(() => {
@@ -174,17 +180,21 @@ class IntentStore {
 		}
 
 		try {
-			if (app) {
-				await fdc3.raiseIntentForContext(toJS(context), app);
-			} else {
-				await fdc3.raiseIntentForContext(toJS(context));
-			}
+			let resolution: IntentResolution;
 
+			if (app) {
+				resolution = await fdc3.raiseIntentForContext(toJS(context), app);
+			} else {
+				resolution = await fdc3.raiseIntentForContext(toJS(context));
+			}
 			systemLogStore.addLog({
 				name: "raiseIntentForContext",
 				type: "success",
 			});
+			console.log(resolution)
+			return resolution;
 		} catch (e) {
+			console.log(e);
 			systemLogStore.addLog({
 				name: "raiseIntentForContext",
 				type: "error",
