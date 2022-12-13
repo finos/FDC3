@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import appChannelStore from "../store/AppChannelStore";
@@ -105,6 +105,10 @@ const useStyles = makeStyles((theme: Theme) =>
 		rightPadding: {
 			paddingRight: theme.spacing(0.5),
 		},
+		caption: {
+			color: "#0086bf",
+			marginTop: "10px"
+		}
 	})
 );
 
@@ -122,6 +126,7 @@ export const ChannelField = observer(
 	}) => {
 		const classes = useStyles();
 		const [contextItem, setContextItem] = useState<ContextType | null>(null);
+		const [currentChannelList, setCurrentChannelList] = useState<any>(channelsList);
 		
 		const channelStore = isPrivateChannel ? privateChannelStore : appChannelStore;
 
@@ -145,7 +150,7 @@ export const ChannelField = observer(
 		const getOptionLabel = (option: ListenerOptionType) => option.type || option.title;
 
 		const handleAddContextListener = (channelId: string) => {
-			let foundChannel = channelsList.find((currentChannel: any) => currentChannel.id === channelId);
+			let foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channelId);
 			if (!foundChannel) {
 				return;
 			}
@@ -154,7 +159,7 @@ export const ChannelField = observer(
 				if (channelStore.isContextListenerExists(channelId, foundChannel?.currentListener.type)) {
 					foundChannel.listenerError = "Listener already added";
 				} else {
-					channelStore.addChannelListener(channelId, foundChannel.currentListener.type, isPrivateChannel && foundChannel);
+					channelStore.addChannelListener(foundChannel, foundChannel.currentListener.type);
 					foundChannel.listenerError = "";
 				}
 			} else {
@@ -163,7 +168,7 @@ export const ChannelField = observer(
 		};
 
 		const handleContextStateChange = (context: ContextType, channel: string) => {
-			let foundChannel = channelsList.find((currentChannel: any) => currentChannel.id === channel);
+			let foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channel);
 			if (foundChannel) {
 				setContextItem(context);
 				foundChannel.context = context;
@@ -171,14 +176,13 @@ export const ChannelField = observer(
 		};
 
 		const handleBroadcast = (channel: any) => {
-			console.log(channel)
 			if (channel.context && contextItem) {
-				channelStore.broadcast(channel.id, contextItem, channel);
+				channelStore.broadcast(channel, contextItem);
 			}
 		};
 
 		const handleChangeAppListener = (channelId: string) => (event: React.ChangeEvent<{}>, newValue: any) => {
-			let foundChannel = channelsList.find((currentChannel: any) => currentChannel.id === channelId);
+			let foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channelId);
 			if (!foundChannel) {
 				return;
 			}
@@ -223,126 +227,133 @@ export const ChannelField = observer(
 			return filtered;
 		};
 
-		const handleDisconnect = (channel: any) => {
+		const handleRemoveOrDisconnect = (channel: any) => {
+			console.log(channel, isPrivateChannel)
 			if(isPrivateChannel) {
-				channel.disconnect();
-				return;
+				privateChannelStore.disconnect(channel);
 			} else {
-				
+				appChannelStore.remove(channel);
 			}
+			setCurrentChannelList(currentChannelList.filter((currentChannel: any) => currentChannel.id !== channel.id));
 		}
-
+		
+		useEffect(() => {
+		  setCurrentChannelList(channelsList);
+		}, [channelsList])
+		
 		return (
 			<div>
-				{channelsList.length > 0 &&
-					channelsList.map((channel: any) => {
-						
+				{currentChannelList.length > 0 &&
+					currentChannelList.map((channel: any) => {
 						const element = (
-						<Grid container key={channel.id} spacing={2} className={classes.spread}>
-							<Grid item className={classes.field}>
-								<Typography variant="h5">Channel: {channel.id}</Typography>
-							</Grid>
-
-							<Grid container className={classes.topMargin}>
-								<Grid item xs={12}>
-									<Typography variant="h5" className={classes.h6}>
-										Broadcast Context
-									</Typography>
+							<Grid container key={channel.id} spacing={2} className={classes.spread}>
+								<Grid item className={classes.field}>
+									<Typography variant="h5">Channel: {channel.id}</Typography>
+									{isPrivateChannel && <Typography variant="caption" className={classes.caption}>Check listeners once results are received</Typography>}
 								</Grid>
+								<Grid container className={classes.topMargin}>
+									<Grid item xs={12}>
+										<Typography variant="h5" className={classes.h6}>
+											Broadcast Context
+										</Typography>
+									</Grid>
 
-								<Grid item sm={7}>
-									<ContextTemplates
-										handleTabChange={handleTabChange}
-										contextStateSetter={handleContextStateChange}
-										channel={channel.id}
-									/>
-								</Grid>
-								<Grid item container className={classes.controls} sm={5} justifyContent="flex-end">
-									<Button
-										disabled={!channel.context}
-										variant="contained"
-										color="primary"
-										onClick={() => handleBroadcast(channel)}
-									>
-										Broadcast Context
-									</Button>
-
-									<Tooltip title="Copy code example" aria-label="Copy code example">
-										<IconButton
-											size="small"
-											aria-label="Copy code example"
+									<Grid item sm={7}>
+										<ContextTemplates
+											handleTabChange={handleTabChange}
+											contextStateSetter={handleContextStateChange}
+											channel={channel.id}
+										/>
+									</Grid>
+									<Grid item container className={classes.controls} sm={5} justifyContent="flex-end">
+										<Button
+											disabled={!channel.context}
+											variant="contained"
 											color="primary"
-											onClick={copyToClipboard(codeExamples.appChannelBroadcast, "channelBroadcast")}
+											onClick={() => handleBroadcast(channel)}
 										>
-											<FileCopyIcon />
-										</IconButton>
-									</Tooltip>
+											Broadcast Context
+										</Button>
+
+										<Tooltip title="Copy code example" aria-label="Copy code example">
+											<IconButton
+												size="small"
+												aria-label="Copy code example"
+												color="primary"
+												onClick={copyToClipboard(codeExamples.appChannelBroadcast, "channelBroadcast")}
+											>
+												<FileCopyIcon />
+											</IconButton>
+										</Tooltip>
+									</Grid>
 								</Grid>
-							</Grid>
-							<Grid container>
-								<Grid item xs={12}>
-									<Typography variant="h5" className={classes.h6}>
-										Add Context Listener
-									</Typography>
-								</Grid>
-								<Grid item sm={7} className={classes.rightPadding}>
-									<Autocomplete
-										size="small"
-										selectOnFocus
-										blurOnSelect
-										clearOnBlur
-										handleHomeEndKeys
-										value={channel.currentListener}
-										onChange={handleChangeAppListener(channel.id)}
-										filterOptions={filterOptions}
-										options={contextListenersOptions}
-										getOptionLabel={getOptionLabel}
-										renderOption={(option) => option.type}
-										renderInput={(params) => (
-											<TemplateTextField
-												label="CONTEXT TYPE"
-												placeholder="Enter Context Type"
-												variant="outlined"
-												{...params}
-												error={!!channel.listenerError}
-												helperText={channel.listenerError}
+								{!isPrivateChannel && 
+									<Grid container>
+										<Grid item xs={12}>
+											<Typography variant="h5" className={classes.h6}>
+												Add Context Listener
+											</Typography>
+										</Grid>
+										<Grid item sm={7} className={classes.rightPadding}>
+											<Autocomplete
+												size="small"
+												selectOnFocus
+												blurOnSelect
+												clearOnBlur
+												handleHomeEndKeys
+												value={channel.currentListener}
+												onChange={handleChangeAppListener(channel.id)}
+												filterOptions={filterOptions}
+												options={contextListenersOptions}
+												getOptionLabel={getOptionLabel}
+												renderOption={(option) => option.type}
+												renderInput={(params) => (
+													<TemplateTextField
+														label="CONTEXT TYPE"
+														placeholder="Enter Context Type"
+														variant="outlined"
+														{...params}
+														error={!!channel.listenerError}
+														helperText={channel.listenerError}
+													/>
+												)}
+												onKeyDown={(event) => {
+													if (event.key === "Enter") {
+														event.defaultPrevented = true;
+														handleAddContextListener(channel.id);
+													}
+												}}
 											/>
-										)}
-										onKeyDown={(event) => {
-											if (event.key === "Enter") {
-												event.defaultPrevented = true;
-												handleAddContextListener(channel.id);
-											}
-										}}
-									/>
-								</Grid>
+										</Grid>
 
-								<Grid item className={classes.controls} sm={5} justifyContent="flex-end">
-									<Button variant="contained" color="primary" onClick={() => handleAddContextListener(channel.id)}>
-										Add Listener
-									</Button>
+										<Grid item container className={classes.controls} sm={5} justifyContent="flex-end">
+											<Button variant="contained" color="primary" onClick={() => handleAddContextListener(channel.id)}>
+												Add Listener
+											</Button>
 
-									<Tooltip title="Copy code example" aria-label="Copy code example">
-										<IconButton
-											size="small"
-											aria-label="Copy code example"
-											color="primary"
-											onClick={copyToClipboard(codeExamples.appChannelContextListener, "addchannelContextListener")}
-										>
-											<FileCopyIcon />
-										</IconButton>
-									</Tooltip>
-								</Grid>
+											<Tooltip title="Copy code example" aria-label="Copy code example">
+												<IconButton
+													size="small"
+													aria-label="Copy code example"
+													color="primary"
+													onClick={copyToClipboard(codeExamples.appChannelContextListener, "addchannelContextListener")}
+												>
+													<FileCopyIcon />
+												</IconButton>
+											</Tooltip>
+										</Grid>
+									</Grid>
+								}
+								<Button
+									variant="contained"
+									color="secondary"
+									onClick={() => handleRemoveOrDisconnect(channel)}
+								>
+									{isPrivateChannel ? 'Disconnect' : 'Remove'}
+								</Button>
+								<div className={classes.border}></div>
 							</Grid>
-							<Button
-								variant="contained"
-								color="secondary"
-								onClick={() => handleDisconnect(channel.channel)}
-							>
-								Disconnect
-							</Button>
-							<div className={classes.border}></div>
-						</Grid>);
+						);
 
 						if(channelName) {
 							return channel.id === channelName && element
