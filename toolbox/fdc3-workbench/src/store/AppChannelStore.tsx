@@ -80,7 +80,8 @@ class AppChannelStore {
 		return !!this.appChannelsList.find((channel) => channel.id === channelId);
 	}
 
-	async broadcast(channelId: string, context: ContextType) {
+	async broadcast(channel: Channel, context: ContextType) {
+		const channelId = channel.id;
 		if (!context) {
 			systemLogStore.addLog({
 				name: "appbroadcast",
@@ -91,7 +92,7 @@ class AppChannelStore {
 		}
 
 		//check that we're on a channel
-		let currentChannel = this.appChannelsList.find((channel) => channel.id === channelId);
+		let currentChannel = this.appChannelsList.find((chan) => chan.id === channelId);
 
 		if (!currentChannel) {
 			systemLogStore.addLog({
@@ -163,7 +164,8 @@ class AppChannelStore {
 		}
 	}
 
-	async addChannelListener(channelId: string, newListener: string | undefined) {
+	async addChannelListener(currChannel: Channel, newListener: string | undefined) {
+		const channelId = currChannel.id;
 		try {
 			let currentChannel = this.appChannelsList.find((channel) => channel.id === channelId);
 			let foundListener = this.channelListeners.find(
@@ -244,6 +246,14 @@ class AppChannelStore {
 				});
 			}
 		}
+	}
+
+	remove(channel: Channel) {
+		this.channelListeners.forEach((listener) => {
+			console.log(listener.id);
+			this.removeContextListener(listener.id)
+		});
+		this.appChannelsList = this.appChannelsList.filter((chan) => chan.id !== channel.id);
 	}
 }
 

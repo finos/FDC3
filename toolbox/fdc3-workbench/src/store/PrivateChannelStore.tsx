@@ -26,6 +26,7 @@ class PrivateChannelStore {
 			onAddContextListener: action,
 			onDisconnect: action,
 			onUnsubscribe: action,
+			disconnect: action
 		});
 	}
 
@@ -68,7 +69,8 @@ class PrivateChannelStore {
 		return !!this.privateChannelsList.find((channel) => channel.id === channelId);
 	}
 
-	async broadcast(channelId: string, context: ContextType, currentChannel?: PrivateChannel) {
+	async broadcast(channel: PrivateChannel, context: ContextType) {
+		const channelId = channel.id;
 		if (!context) {
 			systemLogStore.addLog({
 				name: "appbroadcast",
@@ -78,10 +80,7 @@ class PrivateChannelStore {
 			});
 		}
 
-		//check that we're on a channel
-		// let currentChannel = this.privateChannelsList.find((channel) => channel.id === channelId);
-
-		if (!currentChannel) {
+		if (!channel) {
 			systemLogStore.addLog({
 				name: "appbroadcast",
 				type: "warning",
@@ -92,7 +91,7 @@ class PrivateChannelStore {
 		}
 
 		try {
-			await currentChannel.broadcast(toJS(context));
+			await channel.broadcast(toJS(context));
 			systemLogStore.addLog({
 				name: "appbroadcast",
 				type: "success",
@@ -111,7 +110,8 @@ class PrivateChannelStore {
 		}
 	}
 
-	async addChannelListener(channelId: string, newListener: string | undefined, currentChannel?: PrivateChannel) {
+	async addChannelListener(currentChannel: PrivateChannel, newListener: string | undefined) {
+		const channelId = currentChannel.id;
 		try {
 			let foundListener = this.channelListeners.find(
 				(currentListener) => currentListener.type === newListener && currentListener.channelId === channelId
@@ -207,6 +207,15 @@ class PrivateChannelStore {
 
 	onDisconnect(channel: PrivateChannel, handler: () => void) {
 		return channel.onDisconnect(handler);
+	}
+
+	disconnect(channel: PrivateChannel) {
+		this.channelListeners.forEach((listener) => {
+			console.log(listener.id);
+			this.removeContextListener(listener.id)
+		});
+		this.privateChannelsList = this.privateChannelsList.filter((chan) => chan.id !== channel.id);
+		channel.disconnect();
 	}
 }
 
