@@ -1,8 +1,18 @@
 import { makeObservable, observable, action, runInAction, toJS } from "mobx";
-import fdc3, {ContextType, IntentResolution, Fdc3Listener, TargetApp, AppMetadata, AppIdentifier} from "../utility/Fdc3Api";
+import fdc3, {
+	ContextType,
+	IntentResolution,
+	Fdc3Listener,
+	TargetApp,
+	AppMetadata,
+	AppIdentifier,
+	Channel,
+} from "../utility/Fdc3Api";
 import { nanoid } from "nanoid";
 import { intentTypes } from "../fixtures/intentTypes";
 import systemLogStore from "./SystemLogStore";
+import appChannelStore from "./AppChannelStore";
+import privateChannelStore from "./PrivateChannelStore";
 
 type IntentItem = { title: string; value: string };
 
@@ -22,12 +32,35 @@ class IntentStore {
 		});
 	}
 
-	async addIntentListener(intent: string) {
+	async addIntentListener(intent: string, resultContext?: ContextType | null, channelName?: string | null, isPrivate?: boolean, delay?: number) {
 		try {
 			const listenerId = nanoid();
 
-			const intentListener = await fdc3.addIntentListener(intent, (context: ContextType, metaData?: any) => {
+			const intentListener = await fdc3.addIntentListener(intent, async (context: ContextType, metaData?: any) => {
 				const currentListener = this.intentListeners.find(({ id }) => id === listenerId);
+				let channel: Channel | undefined;
+				console.log(context, metaData)
+				//app channel
+				if(channelName && !isPrivate) {
+					channel = await appChannelStore.getOrCreateChannel(channelName);
+					console.log(`returning app channel:  ${channel?.id}`);
+				}
+
+				//private channel
+				if(isPrivate && !channelName) {
+					channel = await privateChannelStore.createPrivateChannel();
+					console.log(`returning private channel: ${channel?.id}`);
+				}
+
+				if(channel) {
+					console.log('broadcasting...', delay)
+					const broadcast = setTimeout(() => {
+						channel?.broadcast(context);
+						console.log('done broadcasting');
+						clearTimeout(broadcast);
+					}, delay);
+					
+				}
 
 				runInAction(() => {
 					if (currentListener) {
@@ -35,6 +68,8 @@ class IntentStore {
 						currentListener.metaData = metaData;
 					}
 				});
+				console.log(context, channel);
+				if(resultContext) context = resultContext;
 
 				systemLogStore.addLog({
 					name: "receivedIntentListener",
@@ -43,6 +78,9 @@ class IntentStore {
 					variant: "code",
 					body: JSON.stringify(context, null, 4),
 				});
+				
+				
+				return channel || context;
 			});
 
 			runInAction(() => {
@@ -93,7 +131,7 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntent(intent: string, context: ContextType, app?: AppMetadata ) {
+	async raiseIntent(intent: string, context: ContextType, app?: AppMetadata) {
 		if (!context) {
 			systemLogStore.addLog({
 				name: "raiseIntent",
@@ -132,7 +170,7 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntentForContext(context: ContextType, app?:(TargetApp & (String | AppIdentifier)) | undefined ) {
+	async raiseIntentForContext(context: ContextType, app?: (TargetApp & (String | AppIdentifier)) | undefined) {
 		if (!context) {
 			systemLogStore.addLog({
 				name: "raiseIntentForContext",
@@ -142,17 +180,21 @@ class IntentStore {
 		}
 
 		try {
-			if (app) {
-				await fdc3.raiseIntentForContext(toJS(context), app);
-			} else {
-				await fdc3.raiseIntentForContext(toJS(context));
-			}
+			let resolution: IntentResolution;
 
+			if (app) {
+				resolution = await fdc3.raiseIntentForContext(toJS(context), app);
+			} else {
+				resolution = await fdc3.raiseIntentForContext(toJS(context));
+			}
 			systemLogStore.addLog({
 				name: "raiseIntentForContext",
 				type: "success",
 			});
+			console.log(resolution)
+			return resolution;
 		} catch (e) {
+			console.log(e);
 			systemLogStore.addLog({
 				name: "raiseIntentForContext",
 				type: "error",

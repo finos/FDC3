@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import fdc3, {AppIntent, AppMetadata, Context, IntentResolution} from "../utility/Fdc3Api";
+import fdc3, { AppIntent, AppMetadata, ContextType, IntentResolution } from "../utility/Fdc3Api";
 import { toJS } from "mobx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
@@ -12,6 +12,8 @@ import {
 	InputLabel,
 	MenuItem,
 	Select,
+	Radio,
+	TextField,
 } from "@material-ui/core";
 import { observer } from "mobx-react";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
@@ -22,6 +24,13 @@ import { codeExamples } from "../fixtures/codeExamples";
 import { TemplateTextField } from "./common/TemplateTextField";
 import { copyToClipboard } from "./common/CopyToClipboard";
 import { IntentResolutionField } from "./IntentResolutionField";
+
+import { Checkbox } from "@material-ui/core";
+import { FormGroup } from "@material-ui/core";
+import { FormControlLabel } from "@material-ui/core";
+import { RadioGroup } from "@material-ui/core";
+import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
+
 
 // interface copied from lib @material-ui/lab/Autocomplete
 interface FilterOptionsState<T> {
@@ -119,6 +128,23 @@ const useStyles = makeStyles((theme: Theme) =>
 		rightPadding: {
 			paddingRight: theme.spacing(0.5),
 		},
+		input: {
+            color: "#0086bf",
+			outline: "1px",
+			'&.Mui-checked': {
+				color: "#0086bf",
+			}
+
+        },
+		toggle: {
+			'&.Mui-selected': {
+				color: "#0086bf",
+				backgroundColor: "rgba(0, 134, 191, 0.21)",
+			}
+		},
+		indentLeft: {
+			marginLeft: "30px",
+		}
 	})
 );
 
@@ -135,11 +161,20 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const [contextTargetApp, setContextTargetApp] = useState<string | null>(null);
 	const [intentObjects, setIntentObjects] = useState<AppIntent[] | null>(null);
 	const [contextIntentObjects, setContextIntentObjects] = useState<any[] | null>(null);
-	const [raiseIntentContext, setRaiseIntentContext] = useState<Context | null>(null);
-	const [raiseIntentWithContextContext, setRaiseIntentWithContextContext] = useState<Context | null>(null);
+	const [raiseIntentContext, setRaiseIntentContext] = useState<ContextType | null>(null);
+	const [raiseIntentWithContextContext, setRaiseIntentWithContextContext] = useState<ContextType | null>(null);
 	const [intentError, setIntentError] = useState<string | false>(false);
-	const [intentResolution, setIntentResolution] = useState<IntentResolution | undefined>()
+	const [intentResolution, setIntentResolution] = useState<IntentResolution | undefined | null>(null);
+	const [intentForContextResolution, setIntentForContextResolution] = useState<IntentResolution | undefined | null>(null);
 	const intentListenersOptions: ListenerOptionType[] = intentStore.intentsList;
+
+	const [resultTypeContext, setResultTypeContext] = useState<ContextType | null>(null);
+	const [resultOverChannelContext, setResultOverChannelContext] = useState<ContextType | null>(null);
+	const [sendIntentResult, setSendIntentResult] = useState<boolean | undefined>(false);
+	const [resultType, setResultType] = useState<string | null>(null);
+	const [channelType, setChannelType] = useState<string | null>("app-channel");
+	const [sendResultOverChannel, setSendResultOverChannel] = useState<boolean | undefined>(false);
+	const [currentAppChannelId, setCurrentAppChannelId] = useState<string | null>(null);
 
 	const handleRaiseIntent = async () => {
 		if (!intentValue) {
@@ -156,19 +191,18 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			setIntentResolution(await intentStore.raiseIntent(intentValue.value, raiseIntentContext));
 			setRaiseIntentError("");
 		}
-
 	};
 
-	const handleRaiseIntentForContext = () => {
+	const handleRaiseIntentForContext = async () => {
 		if (!raiseIntentWithContextContext) {
 			return;
-		  }
+		}
 		if (contextTargetApp && contextIntentObjects) {
 			let targetObject = contextIntentObjects.find((target) => target.name === contextTargetApp);
-			intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app);
+			setIntentForContextResolution(await intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app));
 		} else {
-			intentStore.raiseIntentForContext(raiseIntentWithContextContext);
-		}	
+			setIntentForContextResolution(await intentStore.raiseIntentForContext(raiseIntentWithContextContext));
+		}
 	};
 
 	const handleTargetChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -222,12 +256,18 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	};
 
 	const handleAddIntentListener = () => {
-		if (intentListener) {
-			intentStore.addIntentListener(intentListener.value);
-			setIntentListener(null);
-		} else {
+		if(!intentListener){
 			setIntentError("Enter intent");
+			return;
+		} else {
+			console.log(channelType, resultOverChannelContext)
+			intentStore.addIntentListener(intentListener.value, toJS(resultTypeContext), currentAppChannelId, channelType === "private-channel", 1500);
+			setIntentListener(null);
 		}
+	};
+
+	const handleChannelTypeChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
+		setChannelType(nextView);
 	};
 
 	useEffect(() => {
@@ -271,7 +311,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			}
 			try {
 				let appIntentsForContext = await fdc3.findIntentsByContext(toJS(raiseIntentWithContextContext));
-				if(!appIntentsForContext){
+				if (!appIntentsForContext) {
 					return;
 				}
 
@@ -362,10 +402,9 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 												<MenuItem key={target.appId || target.name} value={target.appId || target.name}>
 													{target.appId || target.name}
 												</MenuItem>
-										))}
+											))}
 									</Select>
 								</FormControl>
-								{intentResolution?.source && <IntentResolutionField data={intentResolution} />}
 							</Grid>
 						</Grid>
 						<Grid item className={classes.controls}>
@@ -385,7 +424,18 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 							</Tooltip>
 						</Grid>
 					</Grid>
-
+					{intentResolution?.source && (
+								<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
+									<Grid item className={classes.textField}>
+										<IntentResolutionField data={intentResolution} handleTabChange={handleTabChange} />
+									</Grid>
+									<Grid item>
+										<Button variant="contained" color="secondary" onClick={() => setIntentResolution(null)}>
+											Clear result
+										</Button>
+									</Grid>
+								</Grid>
+							)}						
 					<div className={classes.border}></div>
 
 					<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
@@ -460,13 +510,24 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 							</Tooltip>
 						</Grid>
 					</Grid>
-
+					{intentForContextResolution?.source && (
+								<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
+									<Grid item>
+										<IntentResolutionField data={intentForContextResolution} handleTabChange={handleTabChange} />
+									</Grid>
+									<Grid item>
+										<Button variant="contained" color="secondary" onClick={() => setIntentResolution(null)}>
+											Clear result
+										</Button>
+									</Grid>
+								</Grid>
+							)}
 					<div className={classes.border}></div>
 
 					<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
 						<Grid item xs={12}>
 							<Typography className={classes.bottomMargin} variant="h5">
-								Add Context Listener
+								Add Intent Listener
 							</Typography>
 						</Grid>
 						<Grid item className={`${classes.field} ${classes.removeSidePadding}`}>
@@ -518,6 +579,64 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 							</Tooltip>
 						</Grid>
 					</Grid>
+					<Grid item xs={12}>
+						<FormGroup>
+							<FormControlLabel control={<Checkbox className={classes.input} color="default" checked={sendIntentResult} onChange={(e)=> setSendIntentResult(e.target.checked)}/>} label="Send Intent Result"/>
+						</FormGroup>
+					</Grid>
+					{sendIntentResult && (
+						<Grid item xs={12} className={classes.indentLeft}>
+							<RadioGroup name="intent-result-type" value={resultType} onChange={(e)=>setResultType(e.target.value)}>
+								<FormControlLabel value="context-result" control={<Radio className={classes.input}/>} label="Context result" />
+								{resultType === "context-result" && (
+									<Grid item className={classes.indentLeft}>
+										<ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setResultTypeContext} />
+									</Grid>
+								)}
+								<FormControlLabel value="channel-result" control={<Radio className={classes.input}/>} label="Channel result" />
+									{resultType === "channel-result" && (
+										<Grid item className={classes.indentLeft}>
+											<ToggleButtonGroup
+												value={channelType}
+												exclusive
+												onChange={handleChannelTypeChange}
+												aria-label="result channel type"
+												>
+												<ToggleButton className={classes.toggle} value="app-channel" aria-label="left aligned">
+													App Channel
+												</ToggleButton>
+												<ToggleButton className={classes.toggle} value="private-channel" aria-label="left aligned">
+													Private Channel
+												</ToggleButton>
+											</ToggleButtonGroup>
+
+											{channelType === "app-channel" && (
+												<Grid item className={classes.field}>
+													<TextField 
+														fullWidth 
+														variant="outlined" 
+														label="Channel Name" 
+														type="text" 
+														size="small" 
+														onChange={(e: any)=>setCurrentAppChannelId(e.target.value)}
+														value={currentAppChannelId}
+													/>
+												</Grid>
+											)}
+											<FormGroup>
+												<FormControlLabel control={<Checkbox className={classes.input} color="default" checked={sendResultOverChannel} onChange={(e)=> setSendResultOverChannel(e.target.checked)}/>} label="Send context result over channel"/>
+											</FormGroup>
+											{sendResultOverChannel && (
+												<Grid item className={classes.indentLeft}>
+													<ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setResultOverChannelContext} />
+												</Grid>
+											)}
+
+										</Grid>
+									)}
+							</RadioGroup>
+						</Grid>
+					)}
 				</Grid>
 			</form>
 		</div>

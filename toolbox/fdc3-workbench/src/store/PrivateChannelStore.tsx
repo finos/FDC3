@@ -1,86 +1,74 @@
 import { makeObservable, observable, action, runInAction, toJS } from "mobx";
-import fdc3, { ContextType, Channel, Fdc3Listener } from "../utility/Fdc3Api";
+import fdc3, { ContextType, Fdc3Listener, PrivateChannel } from "../utility/Fdc3Api";
 import systemLogStore from "./SystemLogStore";
 import { nanoid } from "nanoid";
 
-interface ListenerOptionType {
-	title: string;
-	value: string;
-	type: string | undefined;
-}
+// interface ListenerOptionType {
+// 	title: string;
+// 	value: string;
+// 	type: string | undefined;
+// }
 
-export interface Fdc3Channel {
-	id: string;
-	channel: Channel;
-	currentListener?: ListenerOptionType | null;
-	broadcastError?: string;
-	context?: ContextType | null;
-	listenerError?: string;
-}
-class AppChannelStore {
-	appChannelsList: Fdc3Channel[] = [];
+class PrivateChannelStore {
+	privateChannelsList: PrivateChannel[] = [];
 
-	currentAppChannel: Fdc3Channel | null = null;
+	currentPrivateChannel: PrivateChannel | null = null;
 
 	channelListeners: Fdc3Listener[] = [];
 
 	constructor() {
 		makeObservable(this, {
-			appChannelsList: observable,
-			currentAppChannel: observable,
+			privateChannelsList: observable,
+			currentPrivateChannel: observable,
 			channelListeners: observable,
-			getOrCreateChannel: action,
-			leaveChannel: action,
+			createPrivateChannel: action,
 			broadcast: action,
+			onAddContextListener: action,
+			onDisconnect: action,
+			onUnsubscribe: action,
 		});
 	}
 
-	async getOrCreateChannel(channelId: string) {
+	async createPrivateChannel() {
 		try {
-			console.log('getcreate', channelId)
-			const currentAppChannel = await fdc3.getOrCreateChannel(channelId);
-			const isSuccess = currentAppChannel !== null;
+			const currentPrivateChannel: any = await fdc3.createPrivateChannel();
+			const isSuccess = currentPrivateChannel !== null;
 			if (isSuccess) {
-				this.currentAppChannel = {
-					id: channelId,
-					channel: currentAppChannel,
-				};
-				let foundChannel = this.appChannelsList.find((channel) => channel.id === channelId);
-				if (!foundChannel) {
-					this.appChannelsList.push(this.currentAppChannel);
-				}
+				this.privateChannelsList.push(currentPrivateChannel);
 			}
-			console.log(this.appChannelsList);
+
 			runInAction(() => {
 				systemLogStore.addLog({
-					name: "getOrCreateChannel",
+					name: "createPrivateChannel",
 					type: isSuccess ? "success" : "error",
-					value: isSuccess ? currentAppChannel?.id : channelId,
+					value: isSuccess ? currentPrivateChannel?.id : currentPrivateChannel.id,
 					variant: "text",
 				});
 			});
-			return currentAppChannel;
+
+			return currentPrivateChannel;
 		} catch (e) {
 			systemLogStore.addLog({
-				name: "getOrCreateChannel",
+				name: "createPrivateChannel",
 				type: "error",
-				value: channelId,
+				value: "",
 				variant: "code",
 				body: JSON.stringify(e, null, 4),
 			});
-			return;
 		}
 	}
 
 	isContextListenerExists(channelId: string, type: string | undefined) {
-		return !!this.channelListeners?.find((listener) => listener.type === type && listener.channelId === channelId);
+		return !!this.channelListeners?.find(
+			(listener) => listener.type === type && listener.channelId === channelId
+		);
 	}
 
-	isAppChannelExists(channelId: string) {
-		return !!this.appChannelsList.find((channel) => channel.id === channelId);
+	isPrivateChannelExists(channelId: string) {
+		return !!this.privateChannelsList.find((channel) => channel.id === channelId);
 	}
 
-	async broadcast(channelId: string, context: ContextType) {
+	async broadcast(channelId: string, context: ContextType, currentChannel?: PrivateChannel) {
 		if (!context) {
 			systemLogStore.addLog({
 				name: "appbroadcast",
@@ -91,7 +79,7 @@ class AppChannelStore {
 		}
 
 		//check that we're on a channel
-		let currentChannel = this.appChannelsList.find((channel) => channel.id === channelId);
+		// let currentChannel = this.privateChannelsList.find((channel) => channel.id === channelId);
 
 		if (!currentChannel) {
 			systemLogStore.addLog({
@@ -104,7 +92,7 @@ class AppChannelStore {
 		}
 
 		try {
-			await currentChannel.channel.broadcast(toJS(context));
+			await currentChannel.broadcast(toJS(context));
 			systemLogStore.addLog({
 				name: "appbroadcast",
 				type: "success",
@@ -123,59 +111,17 @@ class AppChannelStore {
 		}
 	}
 
-	async leaveChannel() {
+	async addChannelListener(channelId: string, newListener: string | undefined, currentChannel?: PrivateChannel) {
 		try {
-			//check that we're on a channel
-			let currentChannel = await fdc3.getCurrentChannel();
-			if (!currentChannel) {
-				systemLogStore.addLog({
-					name: "leaveChannel",
-					type: "warning",
-					value: "",
-					variant: "text",
-				});
-			} else {
-				await fdc3.leaveCurrentChannel();
-				currentChannel = await fdc3.getCurrentChannel();
-				const isSuccess = currentChannel === null;
-
-				runInAction(() => {
-					systemLogStore.addLog({
-						name: "leaveChannel",
-						type: isSuccess ? "success" : "error",
-						value: this.currentAppChannel?.id,
-						variant: "text",
-					});
-
-					if (isSuccess) {
-						this.currentAppChannel = null;
-					}
-				});
-			}
-		} catch (e) {
-			systemLogStore.addLog({
-				name: "leaveChannel",
-				type: "error",
-				value: this.currentAppChannel?.id,
-				variant: "code",
-				body: JSON.stringify(e, null, 4),
-			});
-		}
-	}
-
-	async addChannelListener(channelId: string, newListener: string | undefined) {
-		try {
-			let currentChannel = this.appChannelsList.find((channel) => channel.id === channelId);
 			let foundListener = this.channelListeners.find(
 				(currentListener) => currentListener.type === newListener && currentListener.channelId === channelId
 			);
-			console.log(currentChannel, foundListener, this.appChannelsList)
+			console.log(foundListener,currentChannel,newListener)
 			if (!foundListener && currentChannel && newListener !== undefined) {
 				const listenerId = nanoid();
-				const contactListener = await currentChannel.channel.addContextListener(
+				const contactListener = await currentChannel.addContextListener(
 					newListener?.toLowerCase() === "all" ? null : newListener,
 					(context, metaData?: any) => {
-						console.log(metaData);
 						const currentListener = this.channelListeners.find(
 							(listener) => listener.type === newListener && listener.channelId === channelId
 						);
@@ -204,7 +150,12 @@ class AppChannelStore {
 						value: `A context listener for '[${newListener}]' has been added on channel [${channelId}]`,
 						variant: "text",
 					});
-					this.channelListeners.push({ id: listenerId, type: newListener, listener: contactListener, channelId });
+					this.channelListeners.push({
+						id: listenerId,
+						type: newListener,
+						listener: contactListener,
+						channelId,
+					});
 				});
 			}
 		} catch (e) {
@@ -245,8 +196,20 @@ class AppChannelStore {
 			}
 		}
 	}
+
+	onAddContextListener(channel: PrivateChannel, handler: (contextType?: string) => void) {
+		return channel.onAddContextListener(handler);
+	}
+
+	onUnsubscribe(channel: PrivateChannel, handler: (contextType?: string) => void) {
+		return channel.onUnsubscribe(handler);
+	}
+
+	onDisconnect(channel: PrivateChannel, handler: () => void) {
+		return channel.onDisconnect(handler);
+	}
 }
 
-const appChannelStore = new AppChannelStore();
+const privateChannelStore = new PrivateChannelStore();
 
-export default appChannelStore;
+export default privateChannelStore;

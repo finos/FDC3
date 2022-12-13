@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { TextField } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { ChannelField } from "./ChannelField";
+import appChannelStore from "../store/AppChannelStore";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -19,60 +21,107 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-export const IntentResolutionField = observer(({data}: {data: any}) => {
+export const IntentResolutionField = observer(({ data, handleTabChange }: { data: any; handleTabChange: any }) => {
 	const classes = useStyles();
 	const [resolutionResult, setResolutionResult] = useState<any>("pending...");
-	let results = 
-	`Resolved by:\n
-		\tappId: ${data.source.appId}\n
-		\tinstanceId: ${data.source.instanceId}\n
-	Results: ${resolutionResult}`;
+	const [isChannel, setIsChannel] = useState(false);
+	const [privateChannel, setPrivateChannel] = useState(false);
+	const [channelsList, setChannelsList] = useState<any[]>([]);
+	const [channelName, setChannelName] = useState<string>('');
 
+	let results = `Resolved by:
+	appId: ${data.source.appId}
+	instanceId: ${data.source.instanceId}`;
 
-    const displayIntentResults = async () => {
+	const displayIntentResults = async () => {
+		console.log(data, data.hasOwnProperty("getResult"));
 		try {
-			if(resolutionResult.hasOwnProperty('getResult')) {
-				const result = await resolutionResult.getResult();
+			if (data.hasOwnProperty("getResult")) {
+				const result = await data.getResult();
+				console.log(result);
 				//detect whether the result is Context or a Channel
-				if (result && result.broadcast) { 
-				//render channel
-				} else if (result){
-					resolutionResult.resultContext = JSON.stringify(result, null, 2);
+				if (!!result?.broadcast) {
+					setResolutionResult("");
+
+					//App Channel
+					if (result.type === "app") {
+						console.log(result.type)
+						await appChannelStore.getOrCreateChannel(result.id);
+						setChannelName(result.id);
+						setIsChannel(true);
+						setChannelsList(appChannelStore.appChannelsList)
+					}
+
+					// Private Channel
+					if (result.type === "private") {
+						console.log(result.type)
+						setIsChannel(true);
+						setPrivateChannel(true);
+						setChannelsList([result])
+					}
+					setResolutionResult(JSON.stringify(result, null, 2));
+				} else if (result) {
+					setResolutionResult(JSON.stringify(result, null, 2));
 				} else {
+					setResolutionResult("No result returned");
 				}
-				setResolutionResult(result);
 			}
-		} catch(error) {
-			console.error(`${resolutionResult.source} returned a result error: ${error}`);
+		} catch (error) {
+			setResolutionResult("No result returned");
+			console.error(`${data.source.appId} returned a result error: ${error}`);
 		}
-    }
+	};
 
-	useEffect(() => {
-		results = `Resolved by:\n
-		appId: ${data.source.appId}\n
-		instanceId: ${data.source.instanceId}\n
-	Results: ${resolutionResult}`;
-	}, [resolutionResult])
-
-	displayIntentResults();
 	
+	useEffect(() => {
+		displayIntentResults();
+	}, [])
+	
+	useEffect(() => {
+		console.log(isChannel)
+		console.log(channelsList)
+	})
 	return (
-	 	<TextField
-			disabled
-			label={"RESULT CONTEXT"}
-			InputLabelProps={{
-				shrink: true,
-			}}
-			contentEditable={false}
-			fullWidth
-			multiline
-			variant="outlined"
-			size="small"
-			value={results}
-			InputProps={{
-				classes: {
-					input: classes.input,
-				},
-			}}
-		/>)
+		<div>
+			<TextField
+				disabled
+				label={"Resolved By"}
+				InputLabelProps={{
+					shrink: true,
+				}}
+				contentEditable={false}
+				fullWidth
+				multiline
+				variant="outlined"
+				size="small"
+				value={results}
+				InputProps={{
+					classes: {
+						input: classes.input,
+					},
+				}}
+			/>
+			<TextField
+				disabled
+				label={"Results"}
+				InputLabelProps={{
+					shrink: true,
+				}}
+				contentEditable={false}
+				fullWidth
+				multiline
+				variant="outlined"
+				size="small"
+				value={resolutionResult}
+				InputProps={{
+					classes: {
+						input: classes.input,
+					},
+				}}
+			/>
+			{isChannel && (
+				<ChannelField handleTabChange={handleTabChange} channelsList={channelsList} isPrivateChannel={privateChannel} channelName={channelName}/>
+			)}
+		</div>
+	);
 });

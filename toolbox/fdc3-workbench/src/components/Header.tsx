@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Tooltip, Typography } from "@material-ui/core";
 import WarningIcon from "@material-ui/icons/Warning";
-import fdc3, {ImplementationMetadata} from "../utility/Fdc3Api";
+import fdc3, { ImplementationMetadata } from "../utility/Fdc3Api";
 
 declare global {
-    interface Window { fdc3Version: string; }
+	interface Window {
+		fdc3Version: string;
+	}
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -48,19 +50,18 @@ const useStyles = makeStyles((theme: Theme) =>
 			color: "yellow",
 			fontSize: "10px",
 			transform: "scale(1.5)",
-			marginLeft: "5px"
+			marginLeft: "5px",
 		},
 		warningText: {
-			color:"red"
+			color: "red",
 		},
 		appid: {
 			whiteSpace: "nowrap",
 			overflow: "hidden",
 			textoOverflow: "ellipsis",
 			overflowWrap: "anywhere",
-			maxWidth: "150px"
-		}
-		
+			maxWidth: "150px",
+		},
 	})
 );
 
@@ -68,44 +69,48 @@ export const Header = (props: { fdc3Available: boolean }) => {
 	const classes = useStyles();
 	const [appInfo, setAppInfo] = useState<any>();
 	const params = new URLSearchParams(window.location.search);
-	const warningText = `Your FDC3 version (${window.fdc3Version}) doesn't match the version of the FDC3 Workbench you are using (${appInfo?.appMetadata?.version})`
-	const supportedVersion = ['2.0', '1.2'];
+	const warningText = `Your FDC3 version (${window.fdc3Version}) doesn't match the version of the FDC3 Workbench you are using (${appInfo?.appMetadata?.version})`;
+	const supportedVersion = ["2.0", "1.2"];
 
 	useEffect(() => {
 		if (props.fdc3Available) {
 			//getInfo is not available in FDC3 < v1.2, handle any errors thrown when trying to use it
-				const updateInfo = async () => {
-					try {
-						let implInfo: ImplementationMetadata = await fdc3.getInfo();
-						
-						let displayInfo = {
-							fdc3Version: "not specified", 
-							provider: "not specified", 
-							providerVersion: "not specified",
-							appMetadata: {
-								appId: "not specified",
-								version: "not specified"
-							}
-						};
-						if (implInfo.fdc3Version) {
-							displayInfo.fdc3Version = params.get('fdc3Version') || implInfo.fdc3Version 
-							window.fdc3Version = displayInfo.fdc3Version;
-						} 
-						if (implInfo.provider) {displayInfo.provider = implInfo.provider; } 
-						if (implInfo.providerVersion) {displayInfo.providerVersion = implInfo.providerVersion; } 
-						if (implInfo.appMetadata) {
-							displayInfo.appMetadata = {
-								appId: implInfo.appMetadata.appId,
-								version: implInfo.appMetadata.version
-							}
-						}
-						setAppInfo(displayInfo);
-					} catch (e) {
-						console.error("Failed to retrieve FDC3 implementation info",e);
-					}
-				}
+			const updateInfo = async () => {
+				try {
+					let implInfo: ImplementationMetadata = await fdc3.getInfo();
 
-			updateInfo()
+					let displayInfo = {
+						fdc3Version: "not specified",
+						provider: "not specified",
+						providerVersion: "not specified",
+						appMetadata: {
+							appId: "not specified",
+							version: "not specified",
+						},
+					};
+					if (implInfo.fdc3Version) {
+						displayInfo.fdc3Version = params.get("fdc3Version") || implInfo.fdc3Version;
+						window.fdc3Version = displayInfo.fdc3Version;
+					}
+					if (implInfo.provider) {
+						displayInfo.provider = implInfo.provider;
+					}
+					if (implInfo.providerVersion) {
+						displayInfo.providerVersion = implInfo.providerVersion;
+					}
+					if (implInfo.appMetadata) {
+						displayInfo.appMetadata = {
+							appId: implInfo.appMetadata.appId ? implInfo.appMetadata.appId : "not specified",
+							version: implInfo.appMetadata.version ? implInfo.appMetadata.version : "not specified",
+						};
+					}
+					setAppInfo(displayInfo);
+				} catch (e) {
+					console.error("Failed to retrieve FDC3 implementation info", e);
+				}
+			};
+
+			updateInfo();
 		}
 	}, [props.fdc3Available]);
 
@@ -118,14 +123,17 @@ export const Header = (props: { fdc3Available: boolean }) => {
 						<Typography variant="h3" color="inherit" className={classes.fdc3}>
 							<img src="./fdc3-logo.svg" className={classes.headerCube} />
 						</Typography>
-						<Typography color="inherit" >
+						<Typography color="inherit">
 							{supportedVersion.map((ver, index) => (
-								<span key={index} >
-									{ver === appInfo?.fdc3Version ? 
+								<span key={index}>
+									{ver === appInfo?.fdc3Version ? (
 										<span>{ver}</span>
-										: <a className={`${classes.link}`} href={`?fdc3Version=${ver}`}>{ver}</a>
-									}	
-									{supportedVersion.length - 1 !== index && <span> | </span> }
+									) : (
+										<a className={`${classes.link}`} href={`?fdc3Version=${ver}`}>
+											{ver}
+										</a>
+									)}
+									{supportedVersion.length - 1 !== index && <span> | </span>}
 								</span>
 							))}
 						</Typography>
@@ -136,16 +144,20 @@ export const Header = (props: { fdc3Available: boolean }) => {
 							<tbody>
 								<tr>
 									<th scope="row">FDC3 Version</th>
-									{appInfo?.fdc3Version ? 
-										appInfo.appMetadata?.version.includes(appInfo.fdc3Version) ? 
-											<td>{appInfo.fdc3Version}</td> :
-											<td className={classes.warningText}>{appInfo.fdc3Version} 
+									{appInfo?.fdc3Version ? (
+										appInfo.appMetadata?.version.includes(appInfo.fdc3Version) ? (
+											<td>{appInfo.fdc3Version}</td>
+										) : (
+											<td className={classes.warningText}>
+												{appInfo.fdc3Version}
 												<Tooltip title={warningText} aria-label={warningText}>
-													<WarningIcon className={classes.warning}/>
+													<WarningIcon className={classes.warning} />
 												</Tooltip>
-											</td> 
-										: <td>unknown</td>
-									}
+											</td>
+										)
+									) : (
+										<td>unknown</td>
+									)}
 								</tr>
 								<tr>
 									<th scope="row">Provider</th>
@@ -157,7 +169,9 @@ export const Header = (props: { fdc3Available: boolean }) => {
 								</tr>
 								<tr>
 									<th scope="row">My AppId</th>
-									<td className={classes.appid}>{appInfo?.appMetadata?.appId ? appInfo.appMetadata.appId : "unknown"}</td>
+									<td className={classes.appid}>
+										{appInfo?.appMetadata?.appId ? appInfo.appMetadata.appId : "unknown"}
+									</td>
 								</tr>
 							</tbody>
 						</table>
