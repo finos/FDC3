@@ -17,11 +17,11 @@
       "description": "<p>ChartIQ is a powerful and flexible HTML5 charting library with millions of users worldwide. Written in JavaScript, it runs entirely within the browser. With state of the art integrations, including  third-party apps, educational components, analysis, and more, you can create efficient workflows and streamline the way to work.</p><p>ChartIQ works on any platform (mobile, web, desktop) and any framework (Angular, React).</p><p>Most companies have at least one financial charting library for each platform or app they target—web, C#, Java, Android, iOS, etc., so developers have multiple code bases to maintain. With ChartIQ, write your code once and use it everywhere.</p>"
     },
     {
-      "title": "Electron-FDC3",
+      "title": "FDC3 Sail",
       "publisher": "FINOS",
-      "image": "/img/users/fdc3-electron.png",
-      "infoLink": "https://github.com/finos/electron-fdc3",
-      "docsLink": "https://github.com/finos/electron-fdc3",
+      "image": "/img/community/FDC3_Sail_Horizontal.svg",
+      "infoLink": "https://github.com/finos/FDC3-Sail",
+      "docsLink": "https://github.com/finos/FDC3-Sail",
       "type": "platform-provider",
       "badges": [
         {
@@ -197,7 +197,7 @@
       "image": "/img/users/norman-and-sons.png",
       "infoLink": "https://www.normanandsons.com/",
       "docsLink": "https://www.normanandsons.com/research/",
-      "description": "Norman & Sons is a digital product studio specializing in the research, design and build of user-centered enterprise applications. The studio has led the design and delivery of some of the best-known enterprise digital platforms for world-leading financial services firms and product firms. <br /><br /> They are starting to contribute to the development of Electron FDC3.",
+      "description": "Norman & Sons is a digital product studio specializing in the research, design and build of user-centered enterprise applications. The studio has led the design and delivery of some of the best-known enterprise digital platforms for world-leading financial services firms and product firms. <br /><br /> They are starting to contribute to the development of FDC3 Sail.",
       "badges": [],
       "type": "solution-provider"
     },
