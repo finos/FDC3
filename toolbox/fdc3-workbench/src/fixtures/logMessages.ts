@@ -70,11 +70,11 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 		},
 		receivedAppContextListener: {
 			info: `${value}`,
-			error: `${value}`
+			error: `${value}`,
 		},
 		addAppContextListener: {
 			info: `${value}`,
-			error: `${value}`
+			error: `${value}`,
 		},
 		receivedIntentListener: {
 			info: `Received context via '[${value}]' listener.`,
@@ -94,7 +94,11 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 		},
 		getOrCreateChannel: {
 			success: `Successfully retrieved or created current app channel [${value}]`,
-			error: `Failed retrieve or create app channel ${value}.`,
+			error: `Failed to retrieve or create app channel ${value}.`,
+		},
+		createPrivateChannel: {
+			success: `Successfully created current private hannel [${value}]`,
+			error: `Failed to create private channel ${value}.`,
 		},
 	};
 

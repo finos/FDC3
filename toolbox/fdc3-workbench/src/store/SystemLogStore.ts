@@ -23,6 +23,7 @@ export type logMessagesName =
 	| "saveTemplate"
 	| "copyToClipboard"
 	| "getOrCreateChannel"
+	| "createPrivateChannel"
 	| "receivedAppContextListener"
 	| "addAppContextListener"
 	| "removeAppChannelContextListener";
