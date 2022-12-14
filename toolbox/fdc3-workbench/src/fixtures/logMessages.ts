@@ -97,8 +97,20 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			error: `Failed to retrieve or create app channel ${value}.`,
 		},
 		createPrivateChannel: {
-			success: `Successfully created current private hannel [${value}]`,
+			success: `Successfully created current private channel [${value}]`,
 			error: `Failed to create private channel ${value}.`,
+		},
+		pcAddContextListener: {
+			success: `${value}`,
+			error: `${value}`,
+		},
+		pcOnUnsubscribe: {
+			success: `${value}`,
+			error: `${value}`,
+		},
+		pcOnDisconnect: {
+			success: `${value}`,
+			error: `${value}`,
 		},
 	};
 
