@@ -14,15 +14,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added a `SendChatMessage` intent to be used when a user wants to send a message to an existing chat room. ([#794](https://github.com/finos/FDC3/pull/794))
 * Added a context type representing a chat message (`fdc3.chat.message`). ([#794](https://github.com/finos/FDC3/pull/794))
 * Added a context type representing a chat room (`fdc3.chat.room`). ([#794](https://github.com/finos/FDC3/pull/794))
-* Added a chat `Message` type in order to describe messages with rich content and attachments
-* Added an `Action` type, encapsulating either a `Context` or the association of a `Context` with an `Intent` inside another object
+* Added a chat `Message` type in order to describe messages with rich content and attachments. ([#779](https://github.com/finos/FDC3/pull/779))
+* Added an `Action` type, encapsulating either a `Context` or the association of a `Context` with an `Intent` inside another object.  ([#779](https://github.com/finos/FDC3/pull/779))
 * Added a `ViewChat` Intent to be used when a user wants to open an existing chat room. ([#796](https://github.com/finos/FDC3/pull/796))
 * Added a `ViewMessages` intent to be used when a user wants to search and see a list of messages. ([#797](https://github.com/finos/FDC3/pull/797))
 * Added a context type representing a ChatSearchCriteria (`fdc3.chat.searchCriteria`). ([#797](https://github.com/finos/FDC3/pull/797))
 
 ### Changed
 
-* Updated definition of the `ChatInitSettings` context type to use the new `Message` type
+* Updated definition of the `ChatInitSettings` context type to use the new `Message` type.  ([#779](https://github.com/finos/FDC3/pull/779))
 * Updated definition of the `Instrument` context type to include optional market identifiers ([#819](https://github.com/finos/FDC3/pull/819))
 * Corrected API functions and object types to always use `string` instead of `String` ([#924](https://github.com/finos/FDC3/pull/924))
 * Updated the `StartChat` intent to return a reference to the room. ([#794](https://github.com/finos/FDC3/pull/794))
