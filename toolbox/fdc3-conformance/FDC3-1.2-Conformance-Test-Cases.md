@@ -105,7 +105,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | A   | 1. createChannel        |`fdc3.getOrCreateChannel("test-channel")`       |
 | B   | 2. createChannel        | `fdc3.getOrCreateChannel("test-channel")`   |
 | B   | 3. Broadcast          | `testChannel.broadcast()` the instrument context.<br>`testChannel.broadcast()` a contact context. |
-| A   | 4. addContextListener | A adds a context listener to the channel *after* B has completed all its broadcasts. It should NOT receive any context via this listener (past context is only retrieved bya getCurrentCOntext on App channels). 
+| A   | 4. addContextListener | A adds a context listener to the channel *after* B has completed all its broadcasts. It should NOT receive any context via this listener (past context is only retrieved by a getCurrentContext on App channels). 
 | A   | 5. Receive Context    | `testChannel.getCurrentContext('fdc3.instrument')` returns the last broadcast instrument<br>`testChannel.getCurrentContext('fdc3.contact')` returns the last broadcast contact                                                              |
 
 -  `ACContextHistoryTyped`: Perform above test.
