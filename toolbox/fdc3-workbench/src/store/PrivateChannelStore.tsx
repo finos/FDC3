@@ -198,15 +198,61 @@ class PrivateChannelStore {
 	}
 
 	onAddContextListener(channel: PrivateChannel, handler: (contextType?: string) => void) {
-		return channel.onAddContextListener(handler);
+		try {
+			debugger;
+			var result = channel.onAddContextListener(handler);
+			systemLogStore.addLog({
+				name: "pcAddContextListener",
+				type: "success",
+				value: `A context listener for '[${handler}]' for channel [${channel}] has been removed`,
+			});
+			return result;
+		} catch (e) {
+			systemLogStore.addLog({
+				name: "pcAddContextListener",
+				type: "error",
+				value: `A context listener for '[${handler}]' for channel [${channel}] has been removed`,
+			});
+		}
 	}
 
 	onUnsubscribe(channel: PrivateChannel, handler: (contextType?: string) => void) {
-		return channel.onUnsubscribe(handler);
+		try {
+			debugger;
+			const result = channel.onUnsubscribe(handler);
+			systemLogStore.addLog({
+				name: "pcOnUnsubscribe",
+				type: "success",
+				value: `Sucessfully unsubscribed from listener '[${handler}]' for channel [${channel}]`,
+			});
+			return result;
+		} catch (e) {
+			systemLogStore.addLog({
+				name: "pcOnUnsubscribe",
+				type: "error",
+				value: `Could not unsubscribed listener '[${handler}]' from channel [${channel}]`,
+			});
+		}
+		
 	}
 
 	onDisconnect(channel: PrivateChannel, handler: () => void) {
-		return channel.onDisconnect(handler);
+		try {
+			debugger;
+			const result =channel.onDisconnect(handler);
+			systemLogStore.addLog({
+				name: "pcOnDisconnect",
+				type: "success",
+				value: `Sucessfully disconntected from channel [${channel}]`,
+			});
+			return result;
+		} catch (e) {
+			systemLogStore.addLog({
+				name: "pcOnDisconnect",
+				type: "error",
+				value: `Unable to disconnect from channel [${channel}]`,
+			});
+		}
 	}
 }
 

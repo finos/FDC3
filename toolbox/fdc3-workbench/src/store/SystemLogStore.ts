@@ -26,7 +26,10 @@ export type logMessagesName =
 	| "createPrivateChannel"
 	| "receivedAppContextListener"
 	| "addAppContextListener"
-	| "removeAppChannelContextListener";
+	| "removeAppChannelContextListener"
+	| "pcAddContextListener"
+	| "pcOnUnsubscribe"
+	| "pcOnDisconnect";
 
 export type logMessagesType = "error" | "success" | "warning" | "info";
 
