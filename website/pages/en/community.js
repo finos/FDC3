@@ -68,7 +68,7 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 					}
 					{
 						(conformance ? conformance :[]).map(c =>
-							<div className='conformance-element'>
+							<div className="conformance-element">
 								<div className="conformance-badge"><img src={c.src} /></div>
 								<div className="conformance-text"><ul>
 									{
