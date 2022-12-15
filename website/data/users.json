@@ -151,5 +151,12 @@
         "infoLink": "https://www.flextrade.com/",
         "pinned": true,
         "isMember": true
+    },
+    {
+        "caption": "NexJ",
+        "image": "/img/users/nexj-systems-logo.png",
+        "infoLink": "https://www.nexj.com/",
+        "pinned": true,
+        "isMember": true
     }  
 ]

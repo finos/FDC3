@@ -364,6 +364,15 @@
         "description": "FlexTrade uses the FDC3 standard for application interoperability to deliver trading teams a seamless experience across its full suite of buy and sell-side O/EMS solutions. Using FDC3 within FlexTrade’s solutions, trading teams are empowered to choose to customize their workflow with the specific tools and data unique to their needs. Further, it is visualized into a single view within their order blotter, eliminating the need to context switch between different screens or solutions within their workflow, enabling better decision-making and improving trading performance. <br/><br/>The work with OpenFin and LSEG Turquoise recently picked up “Financial Technology Innovation of the Year” in the Financial News Excellence in Trading and Tech Awards 2022. ",
         "badges": [],
         "type": "application-provider"
+    },
+    {
+      "title": "NexJ Integrated Advisor Desktop",
+      "publisher": "NexJ",
+      "image": "/img/users/nexj-systems-logo.png",
+      "infoLink": "https://www.nexj.com",
+      "docsLink": "https://www.nexj.com/resources-center/",
+      "type": "application-provider",
+      "badges": [],
+      "description": "<p>NexJ’s Integrated Advisor Desktop acts as a hub connecting best-of-breed solutions to deliver a superior seamless advisor experience that improves productivity, accelerates client acquisition, increases client retention and maximizes relationships. It contains all information about each client and household and integrates to other systems, allowing advisors to complete processes without logging into multiple applications and switching contexts.</p>"
     }
- 
 ]
