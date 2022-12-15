@@ -64,7 +64,7 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 				<div className="prose" dangerouslySetInnerHTML={{ __html: description }}></div>
 				<div className='conformance'>
 					{
-						conformance ? <h3>Conformance Details</h3> : null
+						conformance ? <h3><a title="The FDC3 Conformance Framework" href="https://github.com/finos/FDC3-Conformance-Framework">Conformance Details</a></h3> : null
 					}
 					{
 						(conformance ? conformance :[]).map(c =>
