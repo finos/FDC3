@@ -81,7 +81,7 @@
     {
       "title": "FDC3 Conformance Framework",
       "publisher": "FDC3 / FINOS / ScottLogic",
-      "image": "/img/community/conformance.png",
+      "image": "/img/community/conformance.svg",
       "infoLink": "https://github.com/finos/FDC3-conformance-framework",
       "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-conformance/README.md",
       "type": "examples-and-training",
@@ -100,8 +100,8 @@
     },
     {
       "title": "FDC3: Interoperability for the Financial Desktop (training course)",
-      "publisher": "LinuxFoundationX",
-      "image": "https://linuxfoundation.org/wp-content/uploads/Linux-Foundation-OG-Image.png",
+      "publisher": "LinuxFoundation",
+      "image": "/img/community/fdc3-training-course.png",
       "infoLink": "https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop",
       "type": "examples-and-training",
       "badges": [],
@@ -114,11 +114,7 @@
       "infoLink": "https://glue42.com/enterprise/",
       "docsLink": "https://docs.glue42.com/",
       "type": "platform-provider",
-      "badges": [
-        {
-          "text": "FDC3 1.2 Supported"
-        }
-      ],
+      "badges": [],
       "conformance" : [
         {
           "src": "/img/community/certified-1.2.png",
@@ -129,7 +125,7 @@
             },
             {
               "text": "Glue42 Core+ v1.0 Browser Extension v1.4 / Glue FDC3 v2.6.0 Certified Conformant With FDC3 1.2 Specification on 6th December 2022",
-              "link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+              "link": "https://wwxw.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
             }
           ]
         }
@@ -143,14 +139,7 @@
       "infoLink": "https://openfin.co/",
       "docsLink": "https://developers.openfin.co/of-docs",
       "type": "platform-provider",
-      "badges": [
-        {
-          "text": "FDC3 1.2 Supported"
-        },
-        {
-          "text": "FDC3 2.0 Support Coming Soon"
-        }
-      ],
+      "badges": [],
       "description": "<p>OpenFin founded the FDC3 standard in 2017 in collaboration with major banks and asset managers. Deployed at more than 2400 financial firms, OpenFin OS, allows applications from multiple providers to co-exist and interoperate on the desktop.</p><p>OpenFin OS consists of a secure, Chromium-based runtime called Container and a visual interface called <a href='https://www.openfin.co/workspace/' alt='OpenFin Workspace'>Workspace</a>. Workspace gets you running in no time, with themeable UI components for complex windowing, advanced search, actionable notifications and application discovery.</p><p>You can also build your own solutions using the <a href='https://www.openfin.co/container/' alt='OpenFin Container'>OpenFin Container</a>, native language <a href='https://www.openfin.co/container/adapters/' alt='OpenFin Native Adapters'>adapters</a> and APIs while remaining compatible with everything else built on OpenFin.</p>"
     },
     {
