@@ -320,7 +320,7 @@
         "image": "/img/users/connectifi.png",
         "infoLink": "https://www.connectifi.co",
         "description": "Connectifi provides FDC3 interop as a cloud service, empowering organizations to connect anything, anywhere, in a security-first environment that does not require installs.\n\nUse Connectifi to leverage FDC3 in standard browser and mobile environments, to expand the reach and ROI of your existing desktop tech stack, and to create secure and verifiable interop channels between mission critical applications.",
-        "badges": [{"text": "FDC3 1.2 Supported"}],
+        "badges": [],
         "type": "platform-provider"
     },
     {
