@@ -62,7 +62,7 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 					{docsLink ? <a href={docsLink} key={docsLink} className="button">Documentation</a> : null}
 				</div>
 				<div className="prose" dangerouslySetInnerHTML={{ __html: description }}></div>
-				<div className='conformance'>
+				<div className="conformance">
 					{
 						conformance ? <h3><a title="The FDC3 Conformance Framework" href="https://github.com/finos/FDC3-Conformance-Framework">Conformance Details</a></h3> : null
 					}
