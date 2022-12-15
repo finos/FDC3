@@ -29,7 +29,9 @@ const siteConfig = {
     {page: 'community', label: 'Community'},
     {doc: 'fdc3-standard', label: 'The Standard'},
     {page: 'get-involved', label: 'Get Involved'},
+    {href: 'https://directory.fdc3.finos.org', label: 'FINOS App Directory', external: true},
     {href: 'https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop', label: 'Training', external: true}
+
    //, {blog: true, label: 'News'}
   ],
 
