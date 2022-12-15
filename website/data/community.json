@@ -23,14 +23,7 @@
       "infoLink": "https://github.com/finos/FDC3-Sail",
       "docsLink": "https://github.com/finos/FDC3-Sail",
       "type": "platform-provider",
-      "badges": [
-        {
-          "text": "FDC3 1.2 Supported"
-        },
-        {
-          "text": "Open Source"
-        }
-      ],
+      "badges": [],
       "conformance" : [
         {
           "src": "/img/community/certified-1.2.png",
@@ -51,14 +44,7 @@
       "infoLink": "https://github.com/finos/fdc3-desktop-agent",
       "docsLink": "https://github.com/finos/fdc3-desktop-agent",
       "type": "platform-provider",
-      "badges": [
-        {
-          "text": "FDC3 1.2 Supported"
-        },
-        {
-          "text": "Open Source"
-        }
-      ],
+      "badges": [],
       "description": "<p>The FDC3 Desktop Agent is an open source implementation of FDC3 as a Chrome Extension. </p><p> Its purpose is to provide a quick and easy way for app developers to get started with the FDC3 APIs. </p> "
     },
     {
@@ -68,14 +54,7 @@
       "infoLink": "https://cosaic.io/finsemble/",
       "docsLink": "https://documentation.finsemble.com/",
       "type": "platform-provider",
-      "badges": [
-        {
-          "text": "FDC3 1.2 Supported"
-        },
-        {
-          "text": "FDC3 2.0 Support Coming Soon"
-        }
-      ],
+      "badges": [],
       "conformance" : [
         {
           "src": "/img/community/certified-1.2.png",
