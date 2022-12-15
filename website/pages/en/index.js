@@ -148,6 +148,13 @@ class Index extends React.Component {
       </div>
     );
 
+    const ConformanceCallout = () => (
+      <div  className="featureShowcaseSection  paddingBottom" style={{textAlign: 'center'}}>
+        <h2>FDC3 Conformance</h2>
+        <MarkdownBlock>{`FDC3 has a [conformance framework](https://github.com/finos/FDC3-Conformance-Framework) that works to ensure compatibility with the standard.  <br/><br/> Check the [community page](/community) for details of who has passed the conformance tests.`}</MarkdownBlock>
+      </div>
+    );
+
     const UserShowcase = () => {
       if ((siteConfig.users || []).length === 0) {
         return null;
@@ -180,6 +187,7 @@ class Index extends React.Component {
           <Features />
           <FeatureCallout />
           <UserShowcase />
+          <ConformanceCallout />
         </div>
       </div>
     );
