@@ -163,6 +163,7 @@ class Index extends React.Component {
       }
 
       const pinnedUsers = siteConfig.users.filter(user => user.pinned);
+      pinnedUsers.sort((a, b) => a.caption.localeCompare(b.caption))
 
       const pageUrl = page => baseUrl + (language ? `${language}/` : '') + page;
 
