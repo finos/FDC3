@@ -34,8 +34,11 @@
       "conformance" : [
         {
           "src": "/img/community/certified-1.2.png",
-          "text": [
-            "FDC3 Sail 1.0 Certified Conformant With FDC3 1.2 Specification on 6th December 2022"
+          "items": [
+            { 
+              "text": "FDC3 Sail 1.0 Certified Conformant With FDC3 1.2 Specification on 6th December 2022",
+              "link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+            }
           ]
         }
       ],
@@ -76,8 +79,11 @@
       "conformance" : [
         {
           "src": "/img/community/certified-1.2.png",
-          "text": [
-            "Finsemble v8.3.0-beta.3 Certified Conformant With FDC3 1.2 Specification on 2nd December 2022"
+          "items": [
+            {
+              "text": "Finsemble v8.3.0-beta.3 Certified Conformant With FDC3 1.2 Specification on 2nd December 2022",
+              "link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+            }
           ]
         }
       ],
@@ -137,9 +143,15 @@
       "conformance" : [
         {
           "src": "/img/community/certified-1.2.png",
-          "text": [
-            "Glue42 Enterprise v3.17.0 / Glue FDC3 v2.6.0 Certified Conformant With FDC3 1.2 Specification on 2nd December 2022",
-            "Glue42 Core+ v1.0 Browser Extension v1.4 / Glue FDC3 v2.6.0 Certified Conformant With FDC3 1.2 Specification on 6th December 2022 "
+          "items": [
+            {
+              "text": "Glue42 Enterprise v3.17.0 / Glue FDC3 v2.6.0 Certified Conformant With FDC3 1.2 Specification on 2nd December 2022",
+              "link:": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+            },
+            {
+              "text": "Glue42 Core+ v1.0 Browser Extension v1.4 / Glue FDC3 v2.6.0 Certified Conformant With FDC3 1.2 Specification on 6th December 2022 ",
+              "link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+            }
           ]
         }
       ],
