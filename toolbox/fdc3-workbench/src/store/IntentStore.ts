@@ -7,6 +7,7 @@ import fdc3, {
 	AppMetadata,
 	AppIdentifier,
 	Channel,
+	PrivateChannel,
 } from "../utility/Fdc3Api";
 import { nanoid } from "nanoid";
 import { intentTypes } from "../fixtures/intentTypes";
@@ -32,34 +33,54 @@ class IntentStore {
 		});
 	}
 
-	async addIntentListener(intent: string, resultContext?: ContextType | null, channelName?: string | null, isPrivate?: boolean, delay?: number) {
+	async addIntentListener(
+		intent: string,
+		resultContext?: ContextType | null,
+		channelName?: string | null,
+		isPrivate?: boolean,
+		channelContexts?: any,
+		channelContextDelay?: any
+	) {
 		try {
 			const listenerId = nanoid();
 
 			const intentListener = await fdc3.addIntentListener(intent, async (context: ContextType, metaData?: any) => {
 				const currentListener = this.intentListeners.find(({ id }) => id === listenerId);
 				let channel: Channel | undefined;
-				console.log(context, metaData)
+				console.log(context, metaData);
 				//app channel
-				if(channelName && !isPrivate) {
+				if (channelName && !isPrivate) {
 					channel = await appChannelStore.getOrCreateChannel(channelName);
 					console.log(`returning app channel:  ${channel?.id}`);
 				}
 
 				//private channel
-				if(isPrivate && !channelName) {
+				if (isPrivate && !channelName) {
 					channel = await privateChannelStore.createPrivateChannel();
+					privateChannelStore.addChannelListener(<PrivateChannel>channel, "all");
 					console.log(`returning private channel: ${channel?.id}`);
+					privateChannelStore.onDisconnect(<PrivateChannel>channel, () => privateChannelStore.disconnect(<PrivateChannel>channel));
 				}
 
-				if(channel) {
-					console.log('broadcasting...', delay)
-					const broadcast = setTimeout(() => {
-						channel?.broadcast(context);
-						console.log('done broadcasting');
-						clearTimeout(broadcast);
-					}, delay);
-					
+				if (channel) {
+					if (Object.keys(channelContexts).length !== 0) {
+						console.log(channelContexts, channel);
+						Object.keys(channelContexts).forEach((key) => {
+							console.log("broadcasting...", channelContextDelay[key]);
+							let broadcast = setTimeout(async () => {
+								console.log(channel);
+								if (isPrivate) {
+									privateChannelStore.broadcast(<PrivateChannel>channel, channelContexts[key]);
+								} else {
+									appChannelStore.broadcast(<Channel>channel, channelContexts[key]);
+								}
+								console.log("done broadcasting");
+								clearTimeout(broadcast);
+							}, channelContextDelay[key]);
+						});
+					} else {
+						await channel.broadcast(context);
+					}
 				}
 
 				runInAction(() => {
@@ -69,7 +90,7 @@ class IntentStore {
 					}
 				});
 				console.log(context, channel);
-				if(resultContext) context = resultContext;
+				if (resultContext) context = resultContext;
 
 				systemLogStore.addLog({
 					name: "receivedIntentListener",
@@ -78,8 +99,7 @@ class IntentStore {
 					variant: "code",
 					body: JSON.stringify(context, null, 4),
 				});
-				
-				
+
 				return channel || context;
 			});
 
@@ -191,7 +211,7 @@ class IntentStore {
 				name: "raiseIntentForContext",
 				type: "success",
 			});
-			console.log(resolution)
+			
 			return resolution;
 		} catch (e) {
 			console.log(e);
