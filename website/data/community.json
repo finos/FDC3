@@ -271,7 +271,7 @@
     {
       "title": "Provide Adaptable",
       "publisher": "Adaptable Tools",
-      "image": "https://uploads-ssl.webflow.com/617a7f56602ce8b1af560594/620514d55860251a1520d1b9_Logo-AdaptableTools-text-light%20(1).svg",
+      "image": "/img/users/adaptabletools.svg",
       "infoLink": "https://www.adaptabletools.com/",
       "docsLink": "https://docs.adaptabletools.com/",
       "description": "A powerful AG Grid add-on which includes FDC3 columns allowing users to broadcast FDC3 messages and raise FDC3 intents.  <br/><br/> We provide FDC3 columns allowing developers using AdapTable to build applications that can broadcast FDC3 messages and raise FDC3 intents. When using AdapTable inside OpenFin, Finsemble or Glue42 we enable communication between widgets using FDC3.",

@@ -158,5 +158,12 @@
         "infoLink": "https://www.nexj.com/",
         "pinned": true,
         "isMember": true
+    },
+    {
+        "caption": "Adaptable Tools",
+        "image": "/img/users/adaptabletools.svg",
+        "infoLink": "https://www.adaptabletools.com/",
+        "pinned": true,
+        "isMember": true
     }  
 ]
