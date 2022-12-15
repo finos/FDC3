@@ -343,5 +343,7 @@ article iframe {
   color:rgb(90, 90, 90);
 }
 
-.conformance-details {
+.front-conformance-logo {
+  width: 140px;
+  padding: 40px;
 }

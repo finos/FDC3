@@ -151,6 +151,8 @@ class Index extends React.Component {
     const ConformanceCallout = () => (
       <div  className="featureShowcaseSection  paddingBottom" style={{textAlign: 'center'}}>
         <h2>FDC3 Conformance</h2>
+        <img className="front-conformance-logo" src="/img/community/certified-1.2.png" />
+        <img className="front-conformance-logo" src="/img/community/certified-2.0.png" />
         <MarkdownBlock>{`FDC3 has a [conformance framework](https://github.com/finos/FDC3-Conformance-Framework) that works to ensure compatibility with the standard.  <br/><br/> Check the [community page](/community) for details of who has passed the conformance tests.`}</MarkdownBlock>
       </div>
     );
