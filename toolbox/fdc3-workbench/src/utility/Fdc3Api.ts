@@ -132,7 +132,7 @@ class Fdc3Api {
 	}
 
 	async findInstances(targetApp: any) {
-		return fdc3_2.findInstances(targetApp);
+		return await fdc3_2.findInstances(targetApp);
 	}
 }
 
