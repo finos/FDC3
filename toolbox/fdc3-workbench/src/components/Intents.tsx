@@ -188,7 +188,6 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 		} else if (!raiseIntentContext) {
 			setRaiseIntentError("enter context name");
 		} else if (targetInstance && intentInstances){
-			debugger;
 			let targetObject = intentInstances.find((target) => target.instanceId === targetInstance.instanceId);
 			if (targetObject) {
 				setIntentResolution(await intentStore.raiseIntent(intentValue.value, raiseIntentContext, targetObject));
@@ -224,19 +223,13 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 		const fetchInstances = async () => {
 			if (event.target.value === "None") {
 				setTargetApp("");
+				setIntentInstances([]);
 			} else {
 				const currentTargetApp= event.target.value as string;
 				setTargetApp(currentTargetApp);
 				if(window.fdc3Version == "2.0"){	
 					let instances = await fdc3.findInstances({appId: currentTargetApp });
-					debugger;
-					instances.forEach((instance)=>{
-						const instanceExists = intentInstances.find((currentInstance) => currentInstance.instanceId === instance.instanceId);
-						if(!instanceExists){
-							intentInstances.push(instance);
-							setIntentInstances(intentInstances);
-						}
-					});	
+					setIntentInstances(instances);
 				}
 			}
 		};
@@ -248,7 +241,6 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			setTargetInstance("");
 		} else {
 			const instanceExists = intentInstances.find((currentInstance) => currentInstance.instanceId === event.target.value);
-			debugger;
 			setTargetInstance(instanceExists);
 		}
 	};
@@ -428,11 +420,6 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 		}
 	}, [sendResultOverChannel]);
 
-	useEffect(()=>{
-		debugger;
-		console.log(intentInstances);
-	},[intentInstances]);
-
 	return (
 		<div className={classes.root}>
 			<Grid item xs={12}>
@@ -471,13 +458,13 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 							/>
 							<Grid className={classes.rightPadding}>
 								<FormControl variant="outlined" size="small" className={classes.targetSelect}>
-									<InputLabel id="intent-target-app">Target (optional)</InputLabel>
+									<InputLabel id="intent-target-app">Target App (optional)</InputLabel>
 									<Select
 										labelId="intent-target-app"
 										id="intent-target-app-select"
 										value={targetApp ?? ""}
 										onChange={handleTargetChange}
-										label="Target (optional)"
+										label="Target App (optional)"
 										MenuProps={{
 											anchorOrigin: {
 												vertical: "bottom",
@@ -507,8 +494,11 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 												</MenuItem>
 											))}
 									</Select>
-
-									{ intentInstances?.length && (
+								</FormControl>
+								
+								{intentInstances?.length > 0 && (
+									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
+										<InputLabel id="intent-target-instance">Target Instance (optional)</InputLabel>
 										<Select
 											labelId="intent-target-instance"
 											id="intent-target-instance-select"
@@ -527,11 +517,6 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 												getContentAnchorEl: null,
 											}}
 										>
-											{!intentInstances?.length && (
-												<MenuItem value="" disabled>
-													No App Instances Found
-												</MenuItem>
-											)}
 											{intentInstances?.length && (
 												<MenuItem key="" value="None">
 													None
@@ -545,8 +530,8 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 												))
 											}
 										</Select>
-									)}
-								</FormControl>
+									</FormControl>
+								)}
 							</Grid>
 						</Grid>
 						<Grid item className={classes.controls}>
