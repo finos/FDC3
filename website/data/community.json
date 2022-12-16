@@ -17,18 +17,22 @@
       "description": "<p>ChartIQ is a powerful and flexible HTML5 charting library with millions of users worldwide. Written in JavaScript, it runs entirely within the browser. With state of the art integrations, including  third-party apps, educational components, analysis, and more, you can create efficient workflows and streamline the way to work.</p><p>ChartIQ works on any platform (mobile, web, desktop) and any framework (Angular, React).</p><p>Most companies have at least one financial charting library for each platform or app they target—web, C#, Java, Android, iOS, etc., so developers have multiple code bases to maintain. With ChartIQ, write your code once and use it everywhere.</p>"
     },
     {
-      "title": "Electron-FDC3",
+      "title": "FDC3 Sail",
       "publisher": "FINOS",
-      "image": "/img/users/fdc3-electron.png",
-      "infoLink": "https://github.com/finos/electron-fdc3",
-      "docsLink": "https://github.com/finos/electron-fdc3",
+      "image": "/img/community/FDC3_Sail_Horizontal_Light.svg",
+      "infoLink": "https://github.com/finos/FDC3-Sail",
+      "docsLink": "https://github.com/finos/FDC3-Sail",
       "type": "platform-provider",
-      "badges": [
+      "badges": [],
+      "conformance" : [
         {
-          "text": "FDC3 1.2 Supported"
-        },
-        {
-          "text": "Open Source"
+          "src": "/img/community/certified-1.2.png",
+          "items": [
+            { 
+              "text": "FDC3 Sail 1.0 Certified Conformant With FDC3 1.2 Specification on 6th December 2022",
+              "link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+            }
+          ]
         }
       ],
       "description": "<p>This project provides a fully open source implementation of the FDC3 interoperability standard. </p><p>Includes a fully featured and secure electron desktop agent featuring intent resolution, channel linking, directory search and a local file-based app directory implementation. </p>"
@@ -40,14 +44,7 @@
       "infoLink": "https://github.com/finos/fdc3-desktop-agent",
       "docsLink": "https://github.com/finos/fdc3-desktop-agent",
       "type": "platform-provider",
-      "badges": [
-        {
-          "text": "FDC3 1.2 Supported"
-        },
-        {
-          "text": "Open Source"
-        }
-      ],
+      "badges": [],
       "description": "<p>The FDC3 Desktop Agent is an open source implementation of FDC3 as a Chrome Extension. </p><p> Its purpose is to provide a quick and easy way for app developers to get started with the FDC3 APIs. </p> "
     },
     {
@@ -57,12 +54,16 @@
       "infoLink": "https://cosaic.io/finsemble/",
       "docsLink": "https://documentation.finsemble.com/",
       "type": "platform-provider",
-      "badges": [
+      "badges": [],
+      "conformance" : [
         {
-          "text": "FDC3 1.2 Supported"
-        },
-        {
-          "text": "FDC3 2.0 Support Coming Soon"
+          "src": "/img/community/certified-1.2.png",
+          "items": [
+            {
+              "text": "Finsemble v8.3.0-beta.3 Certified Conformant With FDC3 1.2 Specification on 2nd December 2022",
+              "link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+            }
+          ]
         }
       ],
       "description": "<p>Finsemble is a no code/low code smart desktop platform that helps you achieve both visual and logical integration of various types of apps that you already use (web, native, in-house, and third-party, including Citrix virtual apps).</p><p>Connect apps into automated workflows to improve user efficiency and reduce error rates. With <a href='https://documentation.finsemble.com/tutorial-ControllingInformationFlow.html' alt='Controlling information flow through FDC3 in Finsemble'>SelectConnect</a>, you are in full control over which apps communicate and which are excluded.</p><p>Build a fully customizable UI to work across multiple windows and monitors.</p><p>Use our <a href='https://documentation.finsemble.com/tutorial-SDD-01-Welcome.html' alt='The Smart Desktop Designer: fast-track to interoperability'>Smart Desktop Designer</a> to create and share fully functioning, highly customized, integrated desktops in a few hours, no coding knowledge needed.</p>"
@@ -80,7 +81,7 @@
     {
       "title": "FDC3 Conformance Framework",
       "publisher": "FDC3 / FINOS / ScottLogic",
-      "image": "/img/community/conformance.png",
+      "image": "/img/community/conformance.svg",
       "infoLink": "https://github.com/finos/FDC3-conformance-framework",
       "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-conformance/README.md",
       "type": "examples-and-training",
@@ -99,8 +100,8 @@
     },
     {
       "title": "FDC3: Interoperability for the Financial Desktop (training course)",
-      "publisher": "LinuxFoundationX",
-      "image": "https://linuxfoundation.org/wp-content/uploads/Linux-Foundation-OG-Image.png",
+      "publisher": "LinuxFoundation",
+      "image": "/img/community/fdc3-training-course.png",
       "infoLink": "https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop",
       "type": "examples-and-training",
       "badges": [],
@@ -113,9 +114,20 @@
       "infoLink": "https://glue42.com/enterprise/",
       "docsLink": "https://docs.glue42.com/",
       "type": "platform-provider",
-      "badges": [
+      "badges": [],
+      "conformance" : [
         {
-          "text": "FDC3 1.2 Supported"
+          "src": "/img/community/certified-1.2.png",
+          "items": [
+            {
+              "text": "Glue42 Enterprise v3.17.0 / Glue FDC3 v2.6.0 Certified Conformant With FDC3 1.2 Specification on 2nd December 2022",
+              "link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+            },
+            {
+              "text": "Glue42 Core+ v1.0 Browser Extension v1.4 / Glue FDC3 v2.6.0 Certified Conformant With FDC3 1.2 Specification on 6th December 2022",
+              "link": "https://wwxw.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+            }
+          ]
         }
       ],
       "description": "<p>Glue42 enables organizations to build intelligent desktops that support configurable workflows between web and desktop applications. We’re working with some of the world’s biggest financial organizations to help them optimize complex processes and become more efficient.</p><p>Our flagship product, Glue42 Enterprise, is a desktop application integration platform that helps organizations create a simplified desktop experience by connecting the UI and data of any application, e.g., legacy, in-house or web. The platform supports open-source standards, including FINOS-FDC3, thus reducing delivery time and avoiding vendor lock-in.</p>"
@@ -127,14 +139,7 @@
       "infoLink": "https://openfin.co/",
       "docsLink": "https://developers.openfin.co/of-docs",
       "type": "platform-provider",
-      "badges": [
-        {
-          "text": "FDC3 1.2 Supported"
-        },
-        {
-          "text": "FDC3 2.0 Support Coming Soon"
-        }
-      ],
+      "badges": [],
       "description": "<p>OpenFin founded the FDC3 standard in 2017 in collaboration with major banks and asset managers. Deployed at more than 2400 financial firms, OpenFin OS, allows applications from multiple providers to co-exist and interoperate on the desktop.</p><p>OpenFin OS consists of a secure, Chromium-based runtime called Container and a visual interface called <a href='https://www.openfin.co/workspace/' alt='OpenFin Workspace'>Workspace</a>. Workspace gets you running in no time, with themeable UI components for complex windowing, advanced search, actionable notifications and application discovery.</p><p>You can also build your own solutions using the <a href='https://www.openfin.co/container/' alt='OpenFin Container'>OpenFin Container</a>, native language <a href='https://www.openfin.co/container/adapters/' alt='OpenFin Native Adapters'>adapters</a> and APIs while remaining compatible with everything else built on OpenFin.</p>"
     },
     {
@@ -197,7 +202,7 @@
       "image": "/img/users/norman-and-sons.png",
       "infoLink": "https://www.normanandsons.com/",
       "docsLink": "https://www.normanandsons.com/research/",
-      "description": "Norman & Sons is a digital product studio specializing in the research, design and build of user-centered enterprise applications. The studio has led the design and delivery of some of the best-known enterprise digital platforms for world-leading financial services firms and product firms. <br /><br /> They are starting to contribute to the development of Electron FDC3.",
+      "description": "Norman & Sons is a digital product studio specializing in the research, design and build of user-centered enterprise applications. The studio has led the design and delivery of some of the best-known enterprise digital platforms for world-leading financial services firms and product firms. <br /><br /> They are starting to contribute to the development of FDC3 Sail.",
       "badges": [],
       "type": "solution-provider"
     },
@@ -234,7 +239,7 @@
     {
       "title": "Provide Adaptable",
       "publisher": "Adaptable Tools",
-      "image": "https://uploads-ssl.webflow.com/617a7f56602ce8b1af560594/620514d55860251a1520d1b9_Logo-AdaptableTools-text-light%20(1).svg",
+      "image": "/img/users/adaptabletools.svg",
       "infoLink": "https://www.adaptabletools.com/",
       "docsLink": "https://docs.adaptabletools.com/",
       "description": "A powerful AG Grid add-on which includes FDC3 columns allowing users to broadcast FDC3 messages and raise FDC3 intents.  <br/><br/> We provide FDC3 columns allowing developers using AdapTable to build applications that can broadcast FDC3 messages and raise FDC3 intents. When using AdapTable inside OpenFin, Finsemble or Glue42 we enable communication between widgets using FDC3.",
@@ -315,7 +320,7 @@
         "image": "/img/users/connectifi.png",
         "infoLink": "https://www.connectifi.co",
         "description": "Connectifi provides FDC3 interop as a cloud service, empowering organizations to connect anything, anywhere, in a security-first environment that does not require installs.\n\nUse Connectifi to leverage FDC3 in standard browser and mobile environments, to expand the reach and ROI of your existing desktop tech stack, and to create secure and verifiable interop channels between mission critical applications.",
-        "badges": [{"text": "FDC3 1.2 Supported"}],
+        "badges": [],
         "type": "platform-provider"
     },
     {
@@ -327,6 +332,15 @@
         "description": "FlexTrade uses the FDC3 standard for application interoperability to deliver trading teams a seamless experience across its full suite of buy and sell-side O/EMS solutions. Using FDC3 within FlexTrade’s solutions, trading teams are empowered to choose to customize their workflow with the specific tools and data unique to their needs. Further, it is visualized into a single view within their order blotter, eliminating the need to context switch between different screens or solutions within their workflow, enabling better decision-making and improving trading performance. <br/><br/>The work with OpenFin and LSEG Turquoise recently picked up “Financial Technology Innovation of the Year” in the Financial News Excellence in Trading and Tech Awards 2022. ",
         "badges": [],
         "type": "application-provider"
+    },
+    {
+      "title": "NexJ Integrated Advisor Desktop",
+      "publisher": "NexJ",
+      "image": "/img/users/nexj-systems-logo.png",
+      "infoLink": "https://www.nexj.com",
+      "docsLink": "https://www.nexj.com/resources-center/",
+      "type": "application-provider",
+      "badges": [],
+      "description": "<p>NexJ’s Integrated Advisor Desktop acts as a hub connecting best-of-breed solutions to deliver a superior seamless advisor experience that improves productivity, accelerates client acquisition, increases client retention and maximizes relationships. It contains all information about each client and household and integrates to other systems, allowing advisors to complete processes without logging into multiple applications and switching contexts.</p>"
     }
- 
 ]
