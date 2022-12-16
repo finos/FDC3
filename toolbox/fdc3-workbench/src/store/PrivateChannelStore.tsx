@@ -116,7 +116,6 @@ class PrivateChannelStore {
 			let foundListener = this.channelListeners.find(
 				(currentListener) => currentListener.type === newListener && currentListener.channelId === channelId
 			);
-			console.log(foundListener,currentChannel,newListener)
 			if (!foundListener && currentChannel && newListener !== undefined) {
 				const listenerId = nanoid();
 				const contactListener = await currentChannel.addContextListener(
@@ -144,12 +143,6 @@ class PrivateChannelStore {
 				);
 
 				runInAction(() => {
-					systemLogStore.addLog({
-						name: "addAppContextListener",
-						type: "success",
-						value: `A context listener for '[${newListener}]' has been added on channel [${channelId}]`,
-						variant: "text",
-					});
 					this.channelListeners.push({
 						id: listenerId,
 						type: newListener,
@@ -159,13 +152,6 @@ class PrivateChannelStore {
 				});
 			}
 		} catch (e) {
-			systemLogStore.addLog({
-				name: "addAppContextListener",
-				type: "error",
-				value: `Failed to add a context listener for '[${newListener}]' on channel [${channelId}]`,
-				variant: "code",
-				body: JSON.stringify(e, null, 4),
-			});
 		}
 	}
 
@@ -197,26 +183,72 @@ class PrivateChannelStore {
 		}
 	}
 
-	onAddContextListener(channel: PrivateChannel, handler: (contextType?: string) => void) {
-		return channel.onAddContextListener(handler);
+	onAddContextListener(channel: PrivateChannel) {
+		channel.onAddContextListener(()=>{
+			try{
+				systemLogStore.addLog({
+					name: "pcAddContextListener",
+					type: "success",
+					value: `A context listener for '[all]' has been added on channel [${channel.id}]`,
+				});
+			} catch (e) {
+				systemLogStore.addLog({
+					name: "pcAddContextListener",
+					type: "error",
+					value: `Failed to add a context listener for '[all]' on channel [${channel.id}]`,
+				});
+			}
+		});
 	}
 
-	onUnsubscribe(channel: PrivateChannel, handler: (contextType?: string) => void) {
-		return channel.onUnsubscribe(handler);
+	onUnsubscribe(channel: PrivateChannel) {
+		channel.onUnsubscribe(()=>{
+			try {
+				systemLogStore.addLog({
+					name: "pcOnUnsubscribe",
+					type: "success",
+					value: `Sucessfully unsubscribed from listener '[all]' for channel [${channel.id}]`,
+				});
+			} catch (e) {
+				systemLogStore.addLog({
+					name: "pcOnUnsubscribe",
+					type: "error",
+					value: `Could not unsubscribed listener '[all]' from channel [${channel.id}]`,
+				});
+			}
+		});		
 	}
 
-	onDisconnect(channel: PrivateChannel, handler: () => void) {
-		return channel.onDisconnect(handler);
+	onDisconnect(channel: PrivateChannel) {
+		channel.onDisconnect(() => {
+			try {
+				this.channelListeners.forEach((listener) => {
+					this.removeContextListener(listener.id)
+				});
+				this.privateChannelsList = this.privateChannelsList.filter((chan) => chan.id !== channel.id);
+				systemLogStore.addLog({
+					name: "pcOnDisconnect",
+					type: "success",
+					value: `Sucessfully disconntected from channel [${channel.id}]`,
+				});
+			} catch (e) {
+				systemLogStore.addLog({
+					name: "pcOnDisconnect",
+					type: "error",
+					value: `Unable to disconnect from channel [${channel.id}]`,
+				});
+			}
+		});
 	}
 
 	disconnect(channel: PrivateChannel) {
 		this.channelListeners.forEach((listener) => {
-			console.log(listener.id);
 			this.removeContextListener(listener.id)
 		});
 		this.privateChannelsList = this.privateChannelsList.filter((chan) => chan.id !== channel.id);
 		channel.disconnect();
 	}
+
 }
 
 const privateChannelStore = new PrivateChannelStore();
