@@ -221,7 +221,7 @@ class PrivateChannelStore {
 		});		
 	}
 
-	onDisconnect(channel: PrivateChannel, handler: () => void) {
+	onDisconnect(channel: PrivateChannel) {
 		channel.onDisconnect(() => {
 			try {
 				console.log(this.channelListeners)
@@ -233,13 +233,13 @@ class PrivateChannelStore {
 				systemLogStore.addLog({
 					name: "pcOnDisconnect",
 					type: "success",
-					value: `1Sucessfully disconntected from channel [${channel.id}]`,
+					value: `Sucessfully disconntected from channel [${channel.id}]`,
 				});
 			} catch (e) {
 				systemLogStore.addLog({
 					name: "pcOnDisconnect",
 					type: "error",
-					value: `1Unable to disconnect from channel [${channel.id}]`,
+					value: `Unable to disconnect from channel [${channel.id}]`,
 				});
 			}
 		});
