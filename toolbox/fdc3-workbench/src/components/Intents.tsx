@@ -179,6 +179,8 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const [resultOverChannelContextDelays, setResultOverChannelContextDelays] = useState<any>({});
 	const [sendIntentResult, setSendIntentResult] = useState<boolean | undefined>(false);
 	const [resultType, setResultType] = useState<string | null>(null);
+	const [instanceType, setInstanceType] = useState<string | null>("resolver");
+	const [contextInstanceType, setContextInstanceType] = useState<string | null>("resolver");
 	const [channelType, setChannelType] = useState<string | null>("app-channel");
 	const [sendResultOverChannel, setSendResultOverChannel] = useState<boolean | undefined>(false);
 	const [currentAppChannelId, setCurrentAppChannelId] = useState<string>("");
@@ -334,6 +336,14 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const handleChannelTypeChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
 		setChannelType(nextView);
 	};
+	
+	const handleInstanceTypeChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
+		setInstanceType(nextView);
+	};
+
+	const handleContextInstanceTypeChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
+		setContextInstanceType(nextView);
+	};
 
 	const setChannelContextList = (context: ContextType, index: number) => {
 		console.log(index, context);
@@ -484,7 +494,22 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								)}
 							/>
 							<Grid className={classes.rightPadding}>
-								<FormControl variant="outlined" size="small" className={classes.targetSelect}>
+								<ToggleButtonGroup
+									value={instanceType}
+									exclusive
+									onChange={handleInstanceTypeChange}
+									aria-label="result channel type"
+								>
+									<ToggleButton className={classes.toggle} value="resolver" aria-label="left aligned">
+										Use Resolver
+									</ToggleButton>
+									<ToggleButton className={classes.toggle} value="dropdown" aria-label="left aligned">
+										Select Target
+									</ToggleButton>
+								</ToggleButtonGroup>
+
+								{instanceType === "dropdown" && (
+									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
 									<InputLabel id="intent-target-app">Target App (optional)</InputLabel>
 									<Select
 										labelId="intent-target-app"
@@ -521,9 +546,9 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 												</MenuItem>
 											))}
 									</Select>
-								</FormControl>
-								
-								{intentInstances?.length > 0 && (
+									</FormControl>
+								)}
+								{instanceType === "dropdown" && intentInstances?.length > 0 && (
 									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
 										<InputLabel id="intent-target-instance">Target Instance (optional)</InputLabel>
 										<Select
@@ -602,45 +627,61 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								contextStateSetter={setRaiseIntentWithContextContext}
 							/>
 							<Grid className={classes.rightPadding}>
-								<FormControl variant="outlined" size="small" className={classes.targetSelect}>
-									<InputLabel id="intent-context-target-app">Target (optional)</InputLabel>
-									<Select
-										labelId="intent-context-target-app"
-										id="intent-context-target-app-select"
-										value={contextTargetApp ?? ""}
-										onChange={handleContextTargetChange}
-										label="Target (optional)"
-										MenuProps={{
-											anchorOrigin: {
-												vertical: "bottom",
-												horizontal: "left",
-											},
-											transformOrigin: {
-												vertical: "top",
-												horizontal: "left",
-											},
-											getContentAnchorEl: null,
-										}}
-									>
-										{!contextIntentObjects?.length && (
-											<MenuItem value="" disabled>
-												No Target Apps Found
-											</MenuItem>
-										)}
-										{contextIntentObjects?.length && (
-											<MenuItem key="" value="None">
-												None
-											</MenuItem>
-										)}
-										{contextIntentObjects?.length &&
-											contextIntentObjects.map((target) => (
-												<MenuItem value={target.name} key={target.name}>
-													{target.name}
+								<ToggleButtonGroup
+									value={contextInstanceType}
+									exclusive
+									onChange={handleContextInstanceTypeChange}
+									aria-label="result channel type"
+								>
+									<ToggleButton className={classes.toggle} value="resolver" aria-label="left aligned">
+										Use Resolver
+									</ToggleButton>
+									<ToggleButton className={classes.toggle} value="dropdown" aria-label="left aligned">
+										Select Target
+									</ToggleButton>
+								</ToggleButtonGroup>
+								{contextInstanceType === "dropdown" && (
+									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
+										<InputLabel id="intent-context-target-app">Target (optional)</InputLabel>
+										<Select
+											labelId="intent-context-target-app"
+											id="intent-context-target-app-select"
+											value={contextTargetApp ?? ""}
+											onChange={handleContextTargetChange}
+											label="Target (optional)"
+											MenuProps={{
+												anchorOrigin: {
+													vertical: "bottom",
+													horizontal: "left",
+												},
+												transformOrigin: {
+													vertical: "top",
+													horizontal: "left",
+												},
+												getContentAnchorEl: null,
+											}}
+										>
+											{!contextIntentObjects?.length && (
+												<MenuItem value="" disabled>
+													No Target Apps Found
 												</MenuItem>
-											))}
-									</Select>
-								</FormControl>
-								{intentContextInstances?.length > 0 && (
+											)}
+											{contextIntentObjects?.length && (
+												<MenuItem key="" value="None">
+													None
+												</MenuItem>
+											)}
+											{contextIntentObjects?.length &&
+												contextIntentObjects.map((target) => (
+													<MenuItem value={target.name} key={target.name}>
+														{target.name}
+													</MenuItem>
+												))}
+										</Select>
+									</FormControl>
+								)}
+								
+								{contextInstanceType === "dropdown" && intentContextInstances?.length > 0 && (
 									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
 										<InputLabel id="intent-context-target-instance">Target Instance (optional)</InputLabel>
 										<Select
