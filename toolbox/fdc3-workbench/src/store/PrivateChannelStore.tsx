@@ -116,7 +116,6 @@ class PrivateChannelStore {
 			let foundListener = this.channelListeners.find(
 				(currentListener) => currentListener.type === newListener && currentListener.channelId === channelId
 			);
-			console.log(foundListener,currentChannel,newListener)
 			if (!foundListener && currentChannel && newListener !== undefined) {
 				const listenerId = nanoid();
 				const contactListener = await currentChannel.addContextListener(
@@ -187,7 +186,6 @@ class PrivateChannelStore {
 	onAddContextListener(channel: PrivateChannel) {
 		channel.onAddContextListener(()=>{
 			try{
-				console.log(channel);
 				systemLogStore.addLog({
 					name: "pcAddContextListener",
 					type: "success",
@@ -224,9 +222,7 @@ class PrivateChannelStore {
 	onDisconnect(channel: PrivateChannel) {
 		channel.onDisconnect(() => {
 			try {
-				console.log(this.channelListeners)
 				this.channelListeners.forEach((listener) => {
-					console.log(listener.id);
 					this.removeContextListener(listener.id)
 				});
 				this.privateChannelsList = this.privateChannelsList.filter((chan) => chan.id !== channel.id);
@@ -247,7 +243,6 @@ class PrivateChannelStore {
 
 	disconnect(channel: PrivateChannel) {
 		this.channelListeners.forEach((listener) => {
-			console.log(listener.id);
 			this.removeContextListener(listener.id)
 		});
 		this.privateChannelsList = this.privateChannelsList.filter((chan) => chan.id !== channel.id);
