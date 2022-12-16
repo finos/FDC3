@@ -59,7 +59,9 @@ class IntentStore {
 					channel = await privateChannelStore.createPrivateChannel();
 					privateChannelStore.addChannelListener(<PrivateChannel>channel, "all");
 					console.log(`returning private channel: ${channel?.id}`);
-					privateChannelStore.onDisconnect(<PrivateChannel>channel, () => privateChannelStore.disconnect(<PrivateChannel>channel));
+					privateChannelStore.onDisconnect(<PrivateChannel>channel);
+					privateChannelStore.onUnsubscribe(<PrivateChannel>channel);
+					privateChannelStore.onAddContextListener(<PrivateChannel>channel);
 				}
 
 				if (channel) {
