@@ -307,6 +307,19 @@
         "description": "FlexTrade uses the FDC3 standard for application interoperability to deliver trading teams a seamless experience across its full suite of buy and sell-side O/EMS solutions. Using FDC3 within FlexTrade’s solutions, trading teams are empowered to choose to customize their workflow with the specific tools and data unique to their needs. Further, it is visualized into a single view within their order blotter, eliminating the need to context switch between different screens or solutions within their workflow, enabling better decision-making and improving trading performance. <br/><br/>The work with OpenFin and LSEG Turquoise recently picked up “Financial Technology Innovation of the Year” in the Financial News Excellence in Trading and Tech Awards 2022. ",
         "badges": [],
         "type": "application-provider"
+    },
+      {
+        "title": "FactSet",
+        "publisher": "FactSet",
+        "image": "/img/users/flextrade.jpg",
+        "infoLink": "https://www.factset.com",
+        "docsLink": "https://www.factset.com/solutions/data-solutions",
+        "description": "FactSet delivers financial data, analytics, and open technology in a digital platform to help approximately 180,000 users see more, think bigger, and do their best work. We empower the financial community to acquire new insights with access to comprehensive and contextualized content and multiply their effectiveness with flexible next-generation workflow solutions powered by innovative technologies.
+
+We meet our clients wherever they work and provide a platform built for seamless interoperability to enable users to create the desktop of their choice.
+",
+        "badges": [],
+        "type": "application-provider"
     }
  
 ]
