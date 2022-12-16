@@ -366,10 +366,10 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 				<Grid item className={classes.indentLeft}>
 					<TextField
 						variant="outlined"
-						label="Delay"
+						label="Delay (ms)"
 						type="number"
 						size="small"
-						onChange={(e) => setChannelContextDelay(e.target.value, contextFields.length)}
+						onChange={(e) => setChannelContextDelay(e.target.value, contextFields.length)}			
 					/>
 				</Grid>
 				<Grid item className={`${classes.indentLeft} ${classes.field}`}>
@@ -596,7 +596,15 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									size="small"
 									aria-label="Copy code example"
 									color="primary"
-									onClick={copyToClipboard(codeExamples.raiseIntent, "raiseIntent")}
+									onClick={() => {
+										let exampleToUse = codeExamples.raiseIntent;
+										if(targetInstance?.instanceId) {
+											exampleToUse = codeExamples.raiseIntentInstance;
+										} else if(targetApp) {
+											exampleToUse = codeExamples.raiseIntentTarget;
+										}
+										copyToClipboard(exampleToUse, "raiseIntent")()
+									}}
 								>
 									<FileCopyIcon />
 								</IconButton>
@@ -734,7 +742,15 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									size="small"
 									aria-label="Copy code example"
 									color="primary"
-									onClick={copyToClipboard(codeExamples.raiseIntentForContext, "raiseIntentForContext")}
+									onClick={() => {
+										let exampleToUse = codeExamples.raiseIntentForContext;
+										if(targetContextInstance?.instanceId) {
+											exampleToUse = codeExamples.raiseIntentForContextInstance;
+										} else if(contextTargetApp) {
+											exampleToUse = codeExamples.raiseIntentForContextTarget;
+										}
+										copyToClipboard(exampleToUse, "raiseIntentForContext")()
+									}}
 								>
 									<FileCopyIcon />
 								</IconButton>
@@ -743,7 +759,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 					</Grid>
 					{intentForContextResolution?.source && (
 						<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
-							<Grid item>
+							<Grid item className={classes.textField}>
 								<IntentResolutionField data={intentForContextResolution} handleTabChange={handleTabChange} />
 							</Grid>
 							<Grid item>
@@ -803,14 +819,26 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									size="small"
 									aria-label="Copy code example"
 									color="primary"
-									onClick={copyToClipboard(codeExamples.intentListener, "addIntentListener")}
+									onClick={() => {
+										let exampleToUse = codeExamples.intentListener;
+										if(resultType === "context-result") {
+											exampleToUse = codeExamples.intentListenerWithContextResult;
+										} else if(resultType === "channel-result") {
+											if(channelType === "app-channel") {
+												exampleToUse = codeExamples.intentListenerWithAppChannel;
+											} else {
+												exampleToUse = codeExamples.intentListenerWithPrivateChannel;
+											}
+										}
+										copyToClipboard(exampleToUse, "addIntentListener")()
+									}}
 								>
 									<FileCopyIcon />
 								</IconButton>
 							</Tooltip>
 						</Grid>
 					</Grid>
-					<Grid item xs={12}>
+					{window.fdc3Version === "2.0" &&<Grid item xs={12}>
 						<FormGroup>
 							<FormControlLabel
 								control={
@@ -824,7 +852,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								label="Send Intent Result"
 							/>
 						</FormGroup>
-					</Grid>
+					</Grid>}
 					{sendIntentResult && (
 						<Grid item xs={12} className={classes.indentLeft}>
 							<RadioGroup name="intent-result-type" value={resultType} onChange={(e) => setResultType(e.target.value)}>
