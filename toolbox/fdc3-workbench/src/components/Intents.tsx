@@ -233,11 +233,13 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			if (event.target.value === "None") {
 				setTargetApp("");
 				setIntentInstances([]);
+				setTargetInstance(null);
 			} else {
 				const currentTargetApp= event.target.value as string;
 				setTargetApp(currentTargetApp);
-				if(window.fdc3Version == "2.0"){	
-					let instances = await fdc3.findInstances({appId: currentTargetApp });
+				if(window.fdc3Version == "2.0"){
+					let instances = await fdc3.findInstances({appId: currentTargetApp});
+					if (!instances) return;
 					setIntentInstances(instances);
 				}
 			}
@@ -247,7 +249,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 
 	const handleAppInstancesChange = (event: React.ChangeEvent<{ value: unknown }>) => {
 		if (event.target.value === "None") {
-			setTargetInstance("");
+			setTargetInstance(null);
 		} else {
 			const instanceExists = intentInstances.find((currentInstance) => currentInstance.instanceId === event.target.value);
 			setTargetInstance(instanceExists);
