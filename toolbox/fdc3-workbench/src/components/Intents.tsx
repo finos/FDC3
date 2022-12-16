@@ -271,7 +271,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 				setContextTargetApp(currentTargetApp);
 				if(window.fdc3Version == "2.0"){	
 					let foundAppObject = contextIntentObjects?.find((currentIntentObj)=>currentIntentObj.name === currentTargetApp);
-					let instances = await fdc3.findInstances({appId: foundAppObject.appId  });
+					let instances = await fdc3.findInstances({appId: foundAppObject.appId });
 					setIntentContextInstances(instances);
 				}
 			}
