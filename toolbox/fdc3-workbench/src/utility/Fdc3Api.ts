@@ -130,6 +130,10 @@ class Fdc3Api {
 	async createPrivateChannel() {
 		return fdc3_2.createPrivateChannel();
 	}
+
+	async findInstances(targetApp: any) {
+		return await fdc3_2.findInstances(targetApp);
+	}
 }
 
 const fdc3 = new Fdc3Api();

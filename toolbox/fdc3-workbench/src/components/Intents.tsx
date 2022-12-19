@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import fdc3, { AppIntent, AppMetadata, ContextType, IntentResolution } from "../utility/Fdc3Api";
+import fdc3, { AppIdentifier, AppIntent, AppMetadata, ContextType, IntentResolution } from "../utility/Fdc3Api";
 import { toJS } from "mobx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
@@ -156,7 +156,11 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const [intentListener, setIntentListener] = useState<ListenerOptionType | null>(null);
 	const [intentsForContext, setIntentsForContext] = useState<ListenerOptionType[] | null>(null);
 	const [intentTargets, setIntentTargets] = useState<AppMetadata[] | null>(null);
+	const [intentInstances, setIntentInstances] = useState<AppIdentifier[]>([]);
+	const [intentContextInstances, setIntentContextInstances] = useState<any[]>([]);
 	const [targetApp, setTargetApp] = useState<string | null>(null);
+	const [targetInstance, setTargetInstance] = useState<any | null>(null);
+	const [targetContextInstance, setTargetContextInstance] = useState<any | null>(null);
 	const [contextTargetApp, setContextTargetApp] = useState<string | null>(null);
 	const [intentObjects, setIntentObjects] = useState<AppIntent[] | null>(null);
 	const [contextIntentObjects, setContextIntentObjects] = useState<any[] | null>(null);
@@ -175,6 +179,8 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const [resultOverChannelContextDelays, setResultOverChannelContextDelays] = useState<any>({});
 	const [sendIntentResult, setSendIntentResult] = useState<boolean | undefined>(false);
 	const [resultType, setResultType] = useState<string | null>(null);
+	const [instanceType, setInstanceType] = useState<string | null>("resolver");
+	const [contextInstanceType, setContextInstanceType] = useState<string | null>("resolver");
 	const [channelType, setChannelType] = useState<string | null>("app-channel");
 	const [sendResultOverChannel, setSendResultOverChannel] = useState<boolean | undefined>(false);
 	const [currentAppChannelId, setCurrentAppChannelId] = useState<string>("");
@@ -185,6 +191,12 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			setRaiseIntentError("enter intent name");
 		} else if (!raiseIntentContext) {
 			setRaiseIntentError("enter context name");
+		} else if (targetInstance && intentInstances){
+			let targetObject = intentInstances.find((target) => target.instanceId === targetInstance.instanceId);
+			if (targetObject) {
+				setIntentResolution(await intentStore.raiseIntent(intentValue.value, raiseIntentContext, targetObject));
+				setRaiseIntentError("");
+			}
 		} else if (targetApp && intentTargets) {
 			let targetObject = intentTargets.find((target) => target.appId === targetApp || target.name === targetApp);
 			if (targetObject) {
@@ -201,7 +213,12 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 		if (!raiseIntentWithContextContext) {
 			return;
 		}
-		if (contextTargetApp && contextIntentObjects) {
+		if (targetContextInstance && intentContextInstances){
+			let targetObject = intentContextInstances.find((target) => target.instanceId === targetContextInstance.instanceId);
+			if (targetObject) {
+				setIntentForContextResolution(await intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject));
+			}
+		} else if (contextTargetApp && contextIntentObjects) {
 			let targetObject = contextIntentObjects.find((target) => target.name === contextTargetApp);
 			setIntentForContextResolution(
 				await intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app)
@@ -212,19 +229,58 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	};
 
 	const handleTargetChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+		const fetchInstances = async () => {
+			if (event.target.value === "None") {
+				setTargetApp("");
+				setIntentInstances([]);
+				setTargetInstance(null);
+			} else {
+				const currentTargetApp= event.target.value as string;
+				setTargetApp(currentTargetApp);
+				if(window.fdc3Version == "2.0"){
+					let instances = await fdc3.findInstances({appId: currentTargetApp});
+					if (!instances) return;
+					setIntentInstances(instances);
+				}
+			}
+		};
+		fetchInstances();
+	};
+
+	const handleAppInstancesChange = (event: React.ChangeEvent<{ value: unknown }>) => {
 		if (event.target.value === "None") {
-			setTargetApp("");
+			setTargetInstance(null);
 		} else {
-			setTargetApp(event.target.value as string);
+			const instanceExists = intentInstances.find((currentInstance) => currentInstance.instanceId === event.target.value);
+			setTargetInstance(instanceExists);
+		}
+	};
+
+	const handleAppContextInstancesChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+		if (event.target.value === "None") {
+			setTargetContextInstance("");
+		} else {
+			const instanceExists = intentContextInstances.find((currentInstance) => currentInstance.instanceId === event.target.value);
+			setTargetContextInstance(instanceExists);
 		}
 	};
 
 	const handleContextTargetChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-		if (event.target.value === "None") {
-			setContextTargetApp("");
-		} else {
-			setContextTargetApp(event.target.value as string);
-		}
+		const fetchInstances = async () => {
+			if (event.target.value === "None") {
+				setContextTargetApp("");
+				setIntentContextInstances([]);
+			} else {
+				const currentTargetApp= event.target.value as string;
+				setContextTargetApp(currentTargetApp);
+				if(window.fdc3Version == "2.0"){	
+					let foundAppObject = contextIntentObjects?.find((currentIntentObj)=>currentIntentObj.name === currentTargetApp);
+					let instances = await fdc3.findInstances({appId: foundAppObject.appId });
+					setIntentContextInstances(instances);
+				}
+			}
+		};
+		fetchInstances();
 	};
 
 	const handleChangeListener =
@@ -282,6 +338,14 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const handleChannelTypeChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
 		setChannelType(nextView);
 	};
+	
+	const handleInstanceTypeChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
+		setInstanceType(nextView);
+	};
+
+	const handleContextInstanceTypeChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
+		setContextInstanceType(nextView);
+	};
 
 	const setChannelContextList = (context: ContextType, index: number) => {
 		console.log(index, context);
@@ -304,10 +368,10 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 				<Grid item className={classes.indentLeft}>
 					<TextField
 						variant="outlined"
-						label="Delay"
+						label="Delay (ms)"
 						type="number"
 						size="small"
-						onChange={(e) => setChannelContextDelay(e.target.value, contextFields.length)}
+						onChange={(e) => setChannelContextDelay(e.target.value, contextFields.length)}			
 					/>
 				</Grid>
 				<Grid item className={`${classes.indentLeft} ${classes.field}`}>
@@ -347,6 +411,11 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	}, [raiseIntentContext]);
 
 	useEffect(() => {
+		if(!intentValue){
+			setTargetApp(null);
+			setIntentInstances([]);
+			setTargetInstance(null);
+		}
 		if (intentObjects) {
 			const targets = intentObjects.find((obj) => obj.intent.name === intentValue?.value);
 			if (targets?.apps) {
@@ -370,6 +439,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 				appIntentsForContext.forEach((intent) => {
 					intent?.apps.forEach((app) => {
 						pairObject.push({
+							appId: app.appId || app.name,
 							name: `${app.appId || app.name} - ${intent.intent.name}`,
 							app,
 						});
@@ -426,14 +496,29 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								)}
 							/>
 							<Grid className={classes.rightPadding}>
-								<FormControl variant="outlined" size="small" className={classes.targetSelect}>
-									<InputLabel id="intent-target-app">Target (optional)</InputLabel>
+								<ToggleButtonGroup
+									value={instanceType}
+									exclusive
+									onChange={handleInstanceTypeChange}
+									aria-label="result channel type"
+								>
+									<ToggleButton className={classes.toggle} value="resolver" aria-label="left aligned">
+										Use Resolver
+									</ToggleButton>
+									<ToggleButton className={classes.toggle} value="dropdown" aria-label="left aligned">
+										Select Target
+									</ToggleButton>
+								</ToggleButtonGroup>
+
+								{instanceType === "dropdown" && (
+									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
+									<InputLabel id="intent-target-app">Target App (optional)</InputLabel>
 									<Select
 										labelId="intent-target-app"
 										id="intent-target-app-select"
 										value={targetApp ?? ""}
 										onChange={handleTargetChange}
-										label="Target (optional)"
+										label="Target App (optional)"
 										MenuProps={{
 											anchorOrigin: {
 												vertical: "bottom",
@@ -463,7 +548,44 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 												</MenuItem>
 											))}
 									</Select>
-								</FormControl>
+									</FormControl>
+								)}
+								{instanceType === "dropdown" && intentInstances?.length > 0 && (
+									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
+										<InputLabel id="intent-target-instance">Target Instance (optional)</InputLabel>
+										<Select
+											labelId="intent-target-instance"
+											id="intent-target-instance-select"
+											value={targetInstance?.instanceId ?? ""}
+											onChange={handleAppInstancesChange}
+											label="Target Instance (optional)"
+											MenuProps={{
+												anchorOrigin: {
+													vertical: "bottom",
+													horizontal: "left",
+												},
+												transformOrigin: {
+													vertical: "top",
+													horizontal: "left",
+												},
+												getContentAnchorEl: null,
+											}}
+										>
+											{intentInstances?.length && (
+												<MenuItem key="" value="None">
+													None
+												</MenuItem>
+											)}
+											{intentInstances?.length && 
+												intentInstances.map((target: any) => (
+													<MenuItem key={target.instanceId} value={target.instanceId}>
+														{target.instanceId}
+													</MenuItem>
+												))
+											}
+										</Select>
+									</FormControl>
+								)}
 							</Grid>
 						</Grid>
 						<Grid item className={classes.controls}>
@@ -476,7 +598,15 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									size="small"
 									aria-label="Copy code example"
 									color="primary"
-									onClick={copyToClipboard(codeExamples.raiseIntent, "raiseIntent")}
+									onClick={() => {
+										let exampleToUse = codeExamples.raiseIntent;
+										if(targetInstance?.instanceId) {
+											exampleToUse = codeExamples.raiseIntentInstance;
+										} else if(targetApp) {
+											exampleToUse = codeExamples.raiseIntentTarget;
+										}
+										copyToClipboard(exampleToUse, "raiseIntent")()
+									}}
 								>
 									<FileCopyIcon />
 								</IconButton>
@@ -507,44 +637,96 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								contextStateSetter={setRaiseIntentWithContextContext}
 							/>
 							<Grid className={classes.rightPadding}>
-								<FormControl variant="outlined" size="small" className={classes.targetSelect}>
-									<InputLabel id="intent-context-target-app">Target (optional)</InputLabel>
-									<Select
-										labelId="intent-context-target-app"
-										id="intent-context-target-app-select"
-										value={contextTargetApp ?? ""}
-										onChange={handleContextTargetChange}
-										label="Target (optional)"
-										MenuProps={{
-											anchorOrigin: {
-												vertical: "bottom",
-												horizontal: "left",
-											},
-											transformOrigin: {
-												vertical: "top",
-												horizontal: "left",
-											},
-											getContentAnchorEl: null,
-										}}
-									>
-										{!contextIntentObjects?.length && (
-											<MenuItem value="" disabled>
-												No Target Apps Found
-											</MenuItem>
-										)}
-										{contextIntentObjects?.length && (
-											<MenuItem key="" value="None">
-												None
-											</MenuItem>
-										)}
-										{contextIntentObjects?.length &&
-											contextIntentObjects.map((target) => (
-												<MenuItem value={target.name} key={target.name}>
-													{target.name}
+								<ToggleButtonGroup
+									value={contextInstanceType}
+									exclusive
+									onChange={handleContextInstanceTypeChange}
+									aria-label="result channel type"
+								>
+									<ToggleButton className={classes.toggle} value="resolver" aria-label="left aligned">
+										Use Resolver
+									</ToggleButton>
+									<ToggleButton className={classes.toggle} value="dropdown" aria-label="left aligned">
+										Select Target
+									</ToggleButton>
+								</ToggleButtonGroup>
+								{contextInstanceType === "dropdown" && (
+									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
+										<InputLabel id="intent-context-target-app">Target (optional)</InputLabel>
+										<Select
+											labelId="intent-context-target-app"
+											id="intent-context-target-app-select"
+											value={contextTargetApp ?? ""}
+											onChange={handleContextTargetChange}
+											label="Target (optional)"
+											MenuProps={{
+												anchorOrigin: {
+													vertical: "bottom",
+													horizontal: "left",
+												},
+												transformOrigin: {
+													vertical: "top",
+													horizontal: "left",
+												},
+												getContentAnchorEl: null,
+											}}
+										>
+											{!contextIntentObjects?.length && (
+												<MenuItem value="" disabled>
+													No Target Apps Found
 												</MenuItem>
-											))}
-									</Select>
-								</FormControl>
+											)}
+											{contextIntentObjects?.length && (
+												<MenuItem key="" value="None">
+													None
+												</MenuItem>
+											)}
+											{contextIntentObjects?.length &&
+												contextIntentObjects.map((target) => (
+													<MenuItem value={target.name} key={target.name}>
+														{target.name}
+													</MenuItem>
+												))}
+										</Select>
+									</FormControl>
+								)}
+								
+								{contextInstanceType === "dropdown" && intentContextInstances?.length > 0 && (
+									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
+										<InputLabel id="intent-context-target-instance">Target Instance (optional)</InputLabel>
+										<Select
+											labelId="intent-context-target-instance"
+											id="intent-context-target-instance-select"
+											value={targetContextInstance?.instanceId ?? ""}
+											onChange={handleAppContextInstancesChange}
+											label="Target Instance (optional)"
+											MenuProps={{
+												anchorOrigin: {
+													vertical: "bottom",
+													horizontal: "left",
+												},
+												transformOrigin: {
+													vertical: "top",
+													horizontal: "left",
+												},
+												getContentAnchorEl: null,
+											}}
+										>
+											{intentContextInstances?.length && (
+												<MenuItem key="" value="None">
+													None
+												</MenuItem>
+											)}
+											{intentContextInstances?.length && 
+												intentContextInstances.map((target: any) => (
+													<MenuItem key={target.instanceId} value={target.instanceId}>
+														{target.instanceId}
+													</MenuItem>
+												))
+											}
+										</Select>
+									</FormControl>
+								)}
 							</Grid>
 						</Grid>
 						<Grid item className={classes.controls}>
@@ -562,7 +744,15 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									size="small"
 									aria-label="Copy code example"
 									color="primary"
-									onClick={copyToClipboard(codeExamples.raiseIntentForContext, "raiseIntentForContext")}
+									onClick={() => {
+										let exampleToUse = codeExamples.raiseIntentForContext;
+										if(targetContextInstance?.instanceId) {
+											exampleToUse = codeExamples.raiseIntentForContextInstance;
+										} else if(contextTargetApp) {
+											exampleToUse = codeExamples.raiseIntentForContextTarget;
+										}
+										copyToClipboard(exampleToUse, "raiseIntentForContext")()
+									}}
 								>
 									<FileCopyIcon />
 								</IconButton>
@@ -571,7 +761,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 					</Grid>
 					{intentForContextResolution?.source && (
 						<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
-							<Grid item>
+							<Grid item className={classes.textField}>
 								<IntentResolutionField data={intentForContextResolution} handleTabChange={handleTabChange} />
 							</Grid>
 							<Grid item>
@@ -631,14 +821,26 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									size="small"
 									aria-label="Copy code example"
 									color="primary"
-									onClick={copyToClipboard(codeExamples.intentListener, "addIntentListener")}
+									onClick={() => {
+										let exampleToUse = codeExamples.intentListener;
+										if(resultType === "context-result") {
+											exampleToUse = codeExamples.intentListenerWithContextResult;
+										} else if(resultType === "channel-result") {
+											if(channelType === "app-channel") {
+												exampleToUse = codeExamples.intentListenerWithAppChannel;
+											} else {
+												exampleToUse = codeExamples.intentListenerWithPrivateChannel;
+											}
+										}
+										copyToClipboard(exampleToUse, "addIntentListener")()
+									}}
 								>
 									<FileCopyIcon />
 								</IconButton>
 							</Tooltip>
 						</Grid>
 					</Grid>
-					<Grid item xs={12}>
+					{window.fdc3Version === "2.0" &&<Grid item xs={12}>
 						<FormGroup>
 							<FormControlLabel
 								control={
@@ -652,7 +854,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								label="Send Intent Result"
 							/>
 						</FormGroup>
-					</Grid>
+					</Grid>}
 					{sendIntentResult && (
 						<Grid item xs={12} className={classes.indentLeft}>
 							<RadioGroup name="intent-result-type" value={resultType} onChange={(e) => setResultType(e.target.value)}>
