@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import fdc3, { AppIntent, AppMetadata, ContextType, IntentResolution } from "../utility/Fdc3Api";
+import fdc3, { AppIdentifier, AppIntent, AppMetadata, ContextType, IntentResolution } from "../utility/Fdc3Api";
 import { toJS } from "mobx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
@@ -156,7 +156,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const [intentListener, setIntentListener] = useState<ListenerOptionType | null>(null);
 	const [intentsForContext, setIntentsForContext] = useState<ListenerOptionType[] | null>(null);
 	const [intentTargets, setIntentTargets] = useState<AppMetadata[] | null>(null);
-	const [intentInstances, setIntentInstances] = useState<any[]>([]);
+	const [intentInstances, setIntentInstances] = useState<AppIdentifier[]>([]);
 	const [intentContextInstances, setIntentContextInstances] = useState<any[]>([]);
 	const [targetApp, setTargetApp] = useState<string | null>(null);
 	const [targetInstance, setTargetInstance] = useState<any | null>(null);
