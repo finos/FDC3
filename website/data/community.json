@@ -153,7 +153,7 @@
     },
     {
       "title": "Building an FDC3-enabled Web Application",
-      "publisher": "The Linux Foundation", 
+      "publisher": "The Linux Foundation",
       "image": "/img/community/lf.png",
       "infoLink": "https://www.youtube.com/watch?v=BJvbVeL7ZJA",
       "description": "Riko Eksteen (Adaptive Financial Consulting) explains why and how to build an FDC3-enabled application at the December 2020 Open-Source Strategy Forum",
@@ -237,13 +237,17 @@
       "type": "solution-provider"
     },
     {
-      "title": "Provide Adaptable",
+      "title": "AdapTable",
       "publisher": "Adaptable Tools",
       "image": "/img/users/adaptabletools.svg",
       "infoLink": "https://www.adaptabletools.com/",
       "docsLink": "https://docs.adaptabletools.com/",
-      "description": "A powerful AG Grid add-on which includes FDC3 columns allowing users to broadcast FDC3 messages and raise FDC3 intents.  <br/><br/> We provide FDC3 columns allowing developers using AdapTable to build applications that can broadcast FDC3 messages and raise FDC3 intents. When using AdapTable inside OpenFin, Finsemble or Glue42 we enable communication between widgets using FDC3.",
-      "badges": [],
+      "description": "AdapTable is a powerful, low-code / no-code data management tool which extends AG Grid, allowing financial services users to manage, visualise and transform their data in ways not previously possible. <br /><br />AdapTable provides a range of cutting-edge DataGrid features including Alerts, Calculated Columns, Conditional Styles, Scheduled Reports, Custom Filters, full Audit, State Management, Team Sharing, Charting and much more. <br /><br />AdapTable includes full FDC3 capabilities which developers can leverage to build applications that can broadcast FDC3 messages and raise FDC3 intents.  AdapTable works with OpenFin, Finsemble, Glue42 and other platform providers to promote collaboration and communication between multiple widgets using FDC3.",
+      "badges": [
+        {
+          "text": "FDC3 1.2 Supported"
+        }
+      ],
       "type": "application-provider"
     },
     {
