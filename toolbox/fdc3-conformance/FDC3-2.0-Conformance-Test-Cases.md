@@ -127,7 +127,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 ### A Fails To Open B
 
-- `2.0-AFailsToOpenB`:  Run the above test again with a non-existent app name/app id.  Should return an error with message “App Not Found” Error from https://fdc3.finos.org/docs/api/ref/Errors#openerror
+- `2.0-AFailsToOpenB1`:  Run the above test again with a non-existent app name/app id.  Should return an error with message “App Not Found” Error from https://fdc3.finos.org/docs/api/ref/Errors#openerror
 
 ### A Opens B With Context
 

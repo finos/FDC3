@@ -127,12 +127,12 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 | App | Step            | Description                                              |
 |-----|-----------------|----------------------------------------------------------|
-| A   | 1. Opening App     | various open methods as in `AOpensB1-3` except with a `<context>` argument of type `fdc3.testReceiver` <br>check app opens    |
+| A   | 1. Opening App     | various open methods as in `AOpensB1-3` except with a `<context>` argument of type `fdc3.instrument` <br>check app opens    |
 | B   | 2. Context present | `fdc3.addContextListener()`<br>- receives `<context>` from **A** |
 
-- `AOpensB1WithContext1`:  **A** calls `fdc3.open(‘app B Name', ctx)`, check app **B** opens
-- `AOpensB2WithContext2`:  **A** calls `fdc3.open({name: “<app B Name>”}, ctx)`, check app **B** opens
-- `AOpensB3WithContext3`:  **A** calls `fdc3.open({name: “<app B Name>”, appId: “<app B ID>”}, ctx)`, check app **B** opens
+- `AOpensBWithContext1`:  **A** calls `fdc3.open(‘app B Name', ctx)`, check app **B** opens
+- `AOpensBWithContext2`:  **A** calls `fdc3.open({name: “<app B Name>”}, ctx)`, check app **B** opens
+- `AOpensBWithContext3`:  **A** calls `fdc3.open({name: “<app B Name>”, appId: “<app B ID>”}, ctx)`, check app **B** opens
 - `AOpensBWithSpecificContext1`: Perform `AOpensB1WithContext1` above but replace **B**s call with `fdc3.addContextListener('fdc3.testReceiver`)`
 
 
