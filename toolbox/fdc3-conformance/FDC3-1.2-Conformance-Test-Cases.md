@@ -13,6 +13,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 - `BasicAC1`: A call to `fdc3.getOrCreateChannel(<name>)` will return an promise resolving to an object matching the `Channel` interface, with properties of `id`, `type`, `broadcast`, `getCurrentContext` and `addContextListener`.
 - `BasicUC1`: You can call the `fdc3.getSystemChannels()` function and receive a promise containing an array of more than 1 `Channel` objects, each with `type` and `id` set.
 - `BasicJC1`: You can call `fdc3.joinChannel`, passing in the `id` of one of the system channels.  After the returned promise is resolved, `fdc3.getCurrentChannel` should then return that joined channel.
+- `BasicJC2`: You can call `fdc3.joinChannel`, passing in the `id` of one of the system channels.  `fdc3.getCurrentChannel()` will return the same channel back. 
 - `BasicLC1`: You can call `fdc3.leaveCurrentChannel` at any time without it throwing an exception.
 - `BasicRI1`: You can call `fdc3.raiseIntentForContext`, passing in a context object with some `type` field.  
 
@@ -47,7 +48,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | App | Step               | Details                                                                                                                                                              |
 |-----|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | A   | 1. addContextListener | Call `addContextListener (“fdc3.instrument”, handler)`<br>Check listener object returned<br>Check that there is an unsubscribe function on the returned object<br>Call `addContextListener (“fdc3.contact”, handler)`<br>Check listener object returned<br>Check that there is an unsubscribe function on the returned object                                                                                                                                                                                   |
-| A   | 2. joinChannel        | Check that there is an unsubscribe function on the returned object                                                                                                                                                                                                                                                                                |
+| A   | 2. joinChannel        | `fdc3.getSystemChannels()`<br>Check channels are returned.<br>Call `fdc3.joinChannel()` on first non-global channel. Check that there is an unsubscribe function on the returned object                                                                                                                                                                                                                                                                                |
 | B   | 3. joinChannel        | `fdc3.getSystemChannels()`<br>Check channels are returned.<br>Call `fdc3.joinChannel()` on first non-global channel                                                                                                                                                                                                                               |
 | B   | 4. Broadcast          | `fdc3.broadcast()` the instrument context.<br>`fdc3.broadcast()` a contact context.                                                                                                                                                                                                                                                               |
 | A   | 5. Receive Context    | Instrument object matches the one broadcast in 4 above.<br>Contact object matches the one broadcast in 4 above.          |
@@ -66,7 +67,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 |-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | A   | 1. createChannel        |`const testChannel = await fdc3.getOrCreateChannel("test-channel")`       |
 | A   | 2. addContextListener |Call `testChannel.addContextListener(null, handler)`<br>Check listener object returned<br>Check that there is an `unsubscribe` function on the returned object  |
-| B   | 3. createChannel        | `const testChannel = fdc3. getOrCreateChannel("test-channel")`   |
+| B   | 3. createChannel        | `const testChannel = fdc3.getOrCreateChannel("test-channel")`   |
 | B   | 4. Broadcast          | `testChannel.broadcast(<some instrument>)`   |
 | A   | 5. Receive Context    | Instrument object matches the one broadcast in 4 above.      |
 
@@ -93,9 +94,9 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 -  `ACFilteredContext1`: Perform above test 
 -  `ACFilteredContext2`: Perform above test, but add listeners for both `fdc3.instrument` and `fdc3.contact` in `addContextListener` step.  Both should be received. 
--  `ACFilteredContext3`: Perform above test, except creating a _different_ channel. Check that you _don't_ receive anything.
+-  `ACFilteredContext3`: Perform above test, except creating a _different_ channel in app B. Check that you _don't_ receive anything (as the channels don't match).
 -  `ACUnsubscribe`: Perform above test, except that after creating the channel **A** then `unsubscribe()`s the listener it added to the channel. Check that **A** _doesn't_ receive anything.
--  `ACFilteredContext4`: Perform above test, except that after creating the channel **A** creates another channel with a further _different_ channel id.  Check that **A** _doesn't_ receive anything.
+-  `ACFilteredContext4`: Perform above test, except that after creating the channel **A** creates another channel with a further _different_ channel id and adds a further context listener to it.  Check that **A** is still able to receive context on the first channel (i.e. it is unaffected by the additional channel) and does *NOT* receive anything on the second channel.
 
 ### App Channel History
 
@@ -116,7 +117,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 - `AOpensB1`:  **A** calls `fdc3.open(‘app B Name’)`, check app **B** opens
 - `AOpensB2`:  **A** calls `fdc3.open({name: “<app B Name>”})`, check app **B** opens
-- `AOpensB3`:  **A** calls `fdc3.open({name: “<app B Name>”, appId: “<app B ID”})`, check app **B** opens
+- `AOpensB3`:  **A** calls `fdc3.open({name: “<app B Name>”, appId: “<app B ID>”})`, check app **B** opens
 
 ### A Fails To Open B
 
@@ -129,8 +130,10 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | A   | 1. Opening App     | various open methods as in `AOpensB1-3` except with a `<context>` argument of type `fdc3.testReceiver` <br>check app opens    |
 | B   | 2. Context present | `fdc3.addContextListener()`<br>- receives `<context>` from **A** |
 
--  `AOpensBWithContext1-3`: Perform above tests
--  `AOpensBWithSpecificContext`: Perform above but replace **B**s call with `fdc3.addContextListener('fdc3.testReceiver`)`
+- `AOpensB1WithContext1`:  **A** calls `fdc3.open(‘app B Name', ctx)`, check app **B** opens
+- `AOpensB2WithContext2`:  **A** calls `fdc3.open({name: “<app B Name>”}, ctx)`, check app **B** opens
+- `AOpensB3WithContext3`:  **A** calls `fdc3.open({name: “<app B Name>”, appId: “<app B ID>”}, ctx)`, check app **B** opens
+- `AOpensBWithSpecificContext1`: Perform `AOpensB1WithContext1` above but replace **B**s call with `fdc3.addContextListener('fdc3.testReceiver`)`
 
 
 ### Specific Context
@@ -139,13 +142,10 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 | App | Step            | Description                                                                                                                   |
 |-----|-----------------|-------------------------------------------------------------------------------------------------------------------------------|
 | A   | 1. Opening App     | `fdc3.open(‘app Name’, <contact context>)` <br>check app opens                                                                |
-| B   | 2. Context present | fdc3.addContextListener()<br>- receives <context> from A                                                                      |
+| B   | 2. Context present | `fdc3.addContextListener()`<br>`fdc3.addContextListener('fdc3.instrument')`<br>- receives <context> from A                                                                      |
 | A   | 3. Promise         | - receives a rejection from the open promise with “App Timeout’ from <br>https://fdc3.finos.org/docs/api/ref/Errors#openerror |
 
--  `AOpensBWithWrongContext`: As above
--  `AOpensBNoListen`: Skip `fdc3.addContextListener()` above. 
--  `AOpensBMultipleListen`:  **B** performs `fdc3.addContextListener('fdc3.instrument') prior to the existing `addContextListener`.  The correct context listener should receive the context, and the promise resolves successfully
--  `AOpensBMalformedContext`: **A** tries to pass malformed context to **B**.  Context listener receives nothing, promise completes successfully.
+-  `AOpensBMultipleListen`:  The correct (first) context listener should receive the context, and the promise resolves successfully in **A**.
 
 ## 5. Intents
 
@@ -185,6 +185,7 @@ Also we assume a fourth app **D** that is going to discover the intents in the o
 
 -  `SingleResolve1`: Perform above test
 -  `TargetedResolve1`: Use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, <A’s App Name>)` to start app A, otherwise, as above
--  `TargetedResolve2-3` Use the other ways of addressing apps (via ID, metadata) as described in `AOpensB2-3` 
--  `FailedResolve1-3` As above, but use `fdc3.raiseIntent(‘aTestingIntent’, {testContextY}, <A’s App Name>)` and variations.  You will receive `NoAppsFound` Error
+-  `TargetedResolve2`: Use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, {name: "<A's App Name>"})` to start app A, otherwise, as above
+-  `TargetedResolve3`: Use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, {name: “<app B Name>”, appId: “<app B ID>”})` to start app A, otherwise, as above
+-  `FailedResolve1-3` As with `TargetedResolve1-3`, but use `fdc3.raiseIntent(‘aTestingIntent’, {testContextY}, <A’s App Name>)` and variations.  You will receive `NoAppsFound` Error
 -  `FailedResolve4` As above, but use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, <C’s App Name>)`.  You will receive `NoAppsFound` Error
