@@ -15,12 +15,12 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-export const ReceivedField = observer(({metaData}: {metaData: any}) => {
+export const ReceivedField = observer(({ metaData }: { metaData: any }) => {
 	const classes = useStyles();
 	const formattedData = !metaData?.source
 		? "METADATA NOT PROVIDED"
 		: `appId: ${metaData.source.appId}\ninstanceId: ${metaData.source.instanceId}`;
-	
+
 	return (
 		<TextField
 			disabled

@@ -1,5 +1,5 @@
 import { makeObservable, observable, action, runInAction } from "mobx";
-import fdc3, {Channel} from "../utility/Fdc3Api";
+import fdc3, { Channel } from "../utility/Fdc3Api";
 import systemLogStore from "./SystemLogStore";
 
 class ChannelStore {
@@ -45,36 +45,38 @@ class ChannelStore {
 
 	async getUserChannels() {
 		//defer retrieving channels until fdc3 API is ready
-		fdc3.fdc3Ready(5000).then(async () => {
-			try {
-			
-				const userChannels = await fdc3.getSystemChannels();
-				const currentUserChannel = await fdc3.getCurrentChannel();
-	
-				runInAction(() => {
+		fdc3
+			.fdc3Ready(5000)
+			.then(async () => {
+				try {
+					const userChannels = await fdc3.getSystemChannels();
+					const currentUserChannel = await fdc3.getCurrentChannel();
+
+					runInAction(() => {
+						systemLogStore.addLog({
+							name: "getChannels",
+							type: "success",
+						});
+						this.userChannels = userChannels;
+						this.currentUserChannel = currentUserChannel;
+					});
+				} catch (e) {
 					systemLogStore.addLog({
 						name: "getChannels",
-						type: "success",
+						type: "error",
+						variant: "code",
+						body: JSON.stringify(e, null, 4),
 					});
-					this.userChannels = userChannels;
-					this.currentUserChannel = currentUserChannel;
-				});
-			} catch (e) {
+				}
+			})
+			.catch((reason) => {
 				systemLogStore.addLog({
-					name: "getChannels",
+					name: "getFdc3",
 					type: "error",
-					variant: "code",
-					body: JSON.stringify(e, null, 4),
+					variant: "text",
+					value: reason,
 				});
-			}
-		}).catch((reason) => {
-			systemLogStore.addLog({
-				name: "getFdc3",
-				type: "error",
-				variant: "text",
-				value: reason,
 			});
-		});
 	}
 
 	async joinUserChannel(channelId: string) {

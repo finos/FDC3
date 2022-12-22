@@ -24,36 +24,38 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const IntentListeners = observer(() => {
 	const classes = useStyles();
-	const intentListeners: AccordionListItem[] = intentStore.intentListeners.map(({ id, type, lastReceivedContext, metaData }) => {
-		const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
+	const intentListeners: AccordionListItem[] = intentStore.intentListeners.map(
+		({ id, type, lastReceivedContext, metaData }) => {
+			const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
 
-		const contextField = (
-			<div>
-				<TextField
-					disabled
-					label={"LAST RECEIVED CONTEXT"}
-					className={classes.textField}
-					InputLabelProps={{
-						shrink: true,
-					}}
-					contentEditable={false}
-					fullWidth
-					multiline
-					variant="outlined"
-					size="small"
-					value={receivedContextListenerValue}
-					InputProps={{
-						classes: {
-							input: classes.input,
-						},
-					}}
-				/>
-				{window.fdc3Version === '2.0' && <ReceivedField metaData={metaData} />}
-			</div>
-		);
+			const contextField = (
+				<div>
+					<TextField
+						disabled
+						label={"LAST RECEIVED CONTEXT"}
+						className={classes.textField}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						contentEditable={false}
+						fullWidth
+						multiline
+						variant="outlined"
+						size="small"
+						value={receivedContextListenerValue}
+						InputProps={{
+							classes: {
+								input: classes.input,
+							},
+						}}
+					/>
+					{window.fdc3Version === "2.0" && <ReceivedField metaData={metaData} />}
+				</div>
+			);
 
-		return { id, textPrimary: `${type}`, afterEachElement: contextField };
-	});
+			return { id, textPrimary: `${type}`, afterEachElement: contextField };
+		}
+	);
 
 	const handleDeleteListener = (id: string) => {
 		intentStore.removeIntentListener(id);
