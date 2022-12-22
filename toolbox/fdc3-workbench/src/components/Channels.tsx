@@ -11,6 +11,7 @@ import {
 	IconButton,
 	Tooltip,
 	Grid,
+	Link,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
@@ -21,6 +22,7 @@ import { ContextLinking } from "./ContextLinking";
 import contextStore from "../store/ContextStore";
 import { ContextTemplates } from "./ContextTemplates";
 import { ContextType } from "../utility/Fdc3Api";
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -133,6 +135,9 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 										<FileCopyIcon />
 									</IconButton>
 								</Tooltip>
+								<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#getcurrentchannel">
+									<InfoOutlinedIcon />
+								</Link>
 							</Grid>
 						</Grid>
 					</Grid>
@@ -202,6 +207,9 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 										<FileCopyIcon />
 									</IconButton>
 								</Tooltip>
+								<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#joinuserchannel">
+									<InfoOutlinedIcon />
+								</Link>
 							</Grid>
 						</Grid>
 					</Grid>
@@ -241,6 +249,9 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 										<FileCopyIcon />
 									</IconButton>
 								</Tooltip>
+								<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#broadcast">
+									<InfoOutlinedIcon />
+								</Link>
 							</Grid>
 						</Grid>
 					</Grid>				
