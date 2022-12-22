@@ -412,19 +412,6 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 		console.log(contextFields);
 	};
 
-	useEffect(()=>{
-		if(!useTargets){
-			clearTargets();
-		}
-
-	}, [useTargets]);
-
-	useEffect(()=>{
-		if(!useContextTargets){
-			clearContextTargets();
-		}
-	}, [useContextTargets]);
-
 	useEffect(() => {
 		setIntentValue(null);
 		const fetchIntents = async () => {
