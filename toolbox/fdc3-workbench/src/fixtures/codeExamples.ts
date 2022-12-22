@@ -100,19 +100,22 @@ export const codeExamples = {
 		" const channel = await fdc3.createPrivateChannel();\n" +
 		" return channel;\n" +
 		"});",
-	raiseIntentForContext: 
-		'let context = {type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}; \n' +
-		"const intentResolution = await fdc3.raiseIntentForContext(context);",
-	raiseIntentForContextTarget: 
-		'let context = {type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}; \n' +
+	raiseIntentForContext: (context: string) => (
+		`let context = ${context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'}; \n` +
+		"const intentResolution = await fdc3.raiseIntentForContext(context);"),
+	raiseIntentForContextTarget: (context: string) => (
+		`let context = ${context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'}; \n` +
 		"//Find appId in promise result\n" +
-		"await fdc3.findIntentsByContext(context); \n" +
-		'const intentResolution = await fdc3.raiseIntentForContext(context, {appId: "ChartIQ Example App"});"',
-	raiseIntentForContextInstance: 
-		'let context = {type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}; \n' +
+		"let intent = await fdc3.findIntentsByContext(context); \n" +
+		"let appId = intent[0].apps[0].appId; \n" +
+		'const intentResolution = await fdc3.raiseIntentForContext(context, {appId});"'),
+	raiseIntentForContextInstance: (context: string) => (
+		`let context = ${context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'}; \n` +
 		"//Find appId in promise result\n" +
-		"await fdc3.findIntentsByContext(context); \n" +
+		"let intent = await fdc3.findIntentsByContext(context); \n" +
+		"let appId = intent[0].apps[0].appId; \n" +
 		"//Find instanceId is promise result" +
-		'await fdc3.findInstances({appId: "ChartIQ Example App" }); \n' +
-		'const intentResolution = await fdc3.raiseIntentForContext(context, {appId: "ChartIQ Example App", instanceId: "fdc3-instanceId-ChartIQ Example App=35a2e34e-9c18-4bec-b8bf-60d55e7050af"});',
+		'let intances = await fdc3.findInstances({appId}); \n' +
+		"let instanceId = instances[0].instanceId; \n" +
+		'const intentResolution = await fdc3.raiseIntentForContext(context, {appId, instanceId});'),
 };

@@ -601,11 +601,15 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									aria-label="Copy code example"
 									color="primary"
 									onClick={() => {
-										let exampleToUse = codeExamples.raiseIntent(JSON.stringify(raiseIntentContext, null, 2), String(intentValue));
+
+										const context = JSON.stringify(raiseIntentContext, null, 2);
+										const intent = String(intentValue);
+
+										let exampleToUse = codeExamples.raiseIntent(context, intent);
 										if(targetInstance?.instanceId) {
-											exampleToUse = codeExamples.raiseIntentInstance(JSON.stringify(raiseIntentContext, null, 2), String(intentValue));
+											exampleToUse = codeExamples.raiseIntentInstance(context, intent);
 										} else if(targetApp) {
-											exampleToUse = codeExamples.raiseIntentTarget(JSON.stringify(raiseIntentContext, null, 2), String(intentValue));
+											exampleToUse = codeExamples.raiseIntentTarget(context, intent);
 										}
 										copyToClipboard(exampleToUse, "raiseIntent")()
 									}}
@@ -747,11 +751,12 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									aria-label="Copy code example"
 									color="primary"
 									onClick={() => {
-										let exampleToUse = codeExamples.raiseIntentForContext;
+										const context = JSON.stringify(raiseIntentWithContextContext, null, 2);
+										let exampleToUse = codeExamples.raiseIntentForContext(context);
 										if(targetContextInstance?.instanceId) {
-											exampleToUse = codeExamples.raiseIntentForContextInstance;
+											exampleToUse = codeExamples.raiseIntentForContextInstance(context);
 										} else if(contextTargetApp) {
-											exampleToUse = codeExamples.raiseIntentForContextTarget;
+											exampleToUse = codeExamples.raiseIntentForContextTarget(context);
 										}
 										copyToClipboard(exampleToUse, "raiseIntentForContext")()
 									}}
