@@ -1,13 +1,14 @@
 import React, { FormEvent, useState } from "react";
 import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Typography, Grid, Button, IconButton, Tooltip } from "@material-ui/core";
+import { Typography, Grid, Button, IconButton, Tooltip, Link } from "@material-ui/core";
 import { codeExamples } from "../fixtures/codeExamples";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
 import contextStore from "../store/ContextStore";
 import { TemplateTextField } from "./common/TemplateTextField";
 import { copyToClipboard } from "./common/CopyToClipboard";
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 // interface copied from lib @material-ui/lab/Autocomplete
 interface FilterOptionsState<T> {
@@ -191,6 +192,9 @@ export const ContextLinking = observer(() => {
 								<FileCopyIcon />
 							</IconButton>
 						</Tooltip>
+						<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/Channel#addcontextlistener">
+							<InfoOutlinedIcon />
+						</Link>
 					</Grid>
 				</Grid>
 			</form>
