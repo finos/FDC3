@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import appChannelStore from "../store/AppChannelStore";
 import privateChannelStore from "../store/PrivateChannelStore";
-import { Button, IconButton, Tooltip, Typography, Grid } from "@material-ui/core";
+import { Button, IconButton, Tooltip, Typography, Grid, Link } from "@material-ui/core";
 import { ContextTemplates } from "./ContextTemplates";
 import { ContextType } from "../utility/Fdc3Api";
 import { copyToClipboard } from "./common/CopyToClipboard";
@@ -12,6 +12,7 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
 import contextStore from "../store/ContextStore";
 import { TemplateTextField } from "./common/TemplateTextField";
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 interface ListenerOptionType {
 	title: string;
@@ -285,6 +286,10 @@ export const ChannelField = observer(
 												<FileCopyIcon />
 											</IconButton>
 										</Tooltip>
+										<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/Channel#broadcast">
+											<InfoOutlinedIcon />
+										</Link>
+										
 									</Grid>
 								</Grid>
 								{!isPrivateChannel && 
@@ -341,6 +346,10 @@ export const ChannelField = observer(
 													<FileCopyIcon />
 												</IconButton>
 											</Tooltip>
+
+											<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/Channel#addcontextlistener">
+												<InfoOutlinedIcon />
+											</Link>
 										</Grid>
 									</Grid>
 								}
