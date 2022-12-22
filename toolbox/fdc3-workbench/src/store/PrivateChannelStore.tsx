@@ -183,7 +183,7 @@ class PrivateChannelStore {
 		}
 	}
 
-	onAddContextListener(channel: PrivateChannel) {
+	onAddContextListener(channel: PrivateChannel, channelContexts?: any, channelContextDelay?:any) {
 		channel.onAddContextListener(()=>{
 			try{
 				systemLogStore.addLog({
@@ -191,6 +191,16 @@ class PrivateChannelStore {
 					type: "success",
 					value: `A context listener for '[all]' has been added on channel [${channel.id}]`,
 				});
+
+				if (Object.keys(channelContexts).length !== 0) {
+					Object.keys(channelContexts).forEach((key) => {
+						let broadcast = setTimeout(async () => {
+							this.broadcast(channel, channelContexts[key]);
+							clearTimeout(broadcast);
+						}, channelContextDelay[key]);
+					});
+				}
+
 			} catch (e) {
 				systemLogStore.addLog({
 					name: "pcAddContextListener",
