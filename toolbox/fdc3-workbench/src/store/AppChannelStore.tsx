@@ -37,7 +37,6 @@ class AppChannelStore {
 
 	async getOrCreateChannel(channelId: string) {
 		try {
-			console.log('getcreate', channelId)
 			const currentAppChannel = await fdc3.getOrCreateChannel(channelId);
 			const isSuccess = currentAppChannel !== null;
 			if (isSuccess) {
@@ -50,7 +49,6 @@ class AppChannelStore {
 					this.appChannelsList.push(this.currentAppChannel);
 				}
 			}
-			console.log(this.appChannelsList);
 			runInAction(() => {
 				systemLogStore.addLog({
 					name: "getOrCreateChannel",
@@ -171,13 +169,12 @@ class AppChannelStore {
 			let foundListener = this.channelListeners.find(
 				(currentListener) => currentListener.type === newListener && currentListener.channelId === channelId
 			);
-			console.log(currentChannel, foundListener, this.appChannelsList)
+
 			if (!foundListener && currentChannel && newListener !== undefined) {
 				const listenerId = nanoid();
 				const contactListener = await currentChannel.channel.addContextListener(
 					newListener?.toLowerCase() === "all" ? null : newListener,
 					(context, metaData?: any) => {
-						console.log(metaData);
 						const currentListener = this.channelListeners.find(
 							(listener) => listener.type === newListener && listener.channelId === channelId
 						);
@@ -249,10 +246,7 @@ class AppChannelStore {
 	}
 
 	remove(channel: Channel) {
-		this.channelListeners.forEach((listener) => {
-			console.log(listener.id);
-			this.removeContextListener(listener.id)
-		});
+		this.channelListeners.forEach((listener) => this.removeContextListener(listener.id));
 		this.appChannelsList = this.appChannelsList.filter((chan) => chan.id !== channel.id);
 	}
 }

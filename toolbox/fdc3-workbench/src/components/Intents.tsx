@@ -147,6 +147,10 @@ const useStyles = makeStyles((theme: Theme) =>
 		indentLeft: {
 			marginLeft: "30px",
 		},
+		caption: {
+			color: "#0086bf",
+			marginTop: "10px"
+		}
 	})
 );
 
@@ -325,7 +329,6 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			setIntentError("Enter intent");
 			return;
 		} else {
-			console.log(channelType);
 			intentStore.addIntentListener(
 				intentListener.value,
 				toJS(resultTypeContext),
@@ -336,6 +339,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			);
 			setIntentListener(null);
 		}
+		setSendIntentResult(false)
 	};
 
 	const handleChannelTypeChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
@@ -375,16 +379,15 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	};
 
 	const setChannelContextList = (context: ContextType, index: number) => {
-		console.log(index, context);
 		setResultOverChannelContextList((curr: any) => {
 			return { ...curr, [index]: context };
 		});
 	};
 
 	const setChannelContextDelay = (delay: string, index: number) => {
-		console.log(index, delay);
 		setResultOverChannelContextDelays((curr: any) => {
-			return { ...curr, [index]: delay };
+			const lastDelay = curr[index - 1] || 0; 
+			return { ...curr, [index]: lastDelay + Number(delay) };
 		});
 	};
 
@@ -409,7 +412,6 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 				</Grid>
 			</Grid>,
 		]);
-		console.log(contextFields);
 	};
 
 	useEffect(() => {
@@ -624,11 +626,15 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									aria-label="Copy code example"
 									color="primary"
 									onClick={() => {
-										let exampleToUse = codeExamples.raiseIntent;
+
+										const context = JSON.stringify(raiseIntentContext, null, 2);
+										const intent = String(intentValue);
+
+										let exampleToUse = codeExamples.raiseIntent(context, intent);
 										if(targetInstance?.instanceId) {
-											exampleToUse = codeExamples.raiseIntentInstance;
+											exampleToUse = codeExamples.raiseIntentInstance(context, intent);
 										} else if(targetApp) {
-											exampleToUse = codeExamples.raiseIntentTarget;
+											exampleToUse = codeExamples.raiseIntentTarget(context, intent);
 										}
 										copyToClipboard(exampleToUse, "raiseIntent")()
 									}}
@@ -766,11 +772,12 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									aria-label="Copy code example"
 									color="primary"
 									onClick={() => {
-										let exampleToUse = codeExamples.raiseIntentForContext;
+										const context = JSON.stringify(raiseIntentWithContextContext, null, 2);
+										let exampleToUse = codeExamples.raiseIntentForContext(context);
 										if(targetContextInstance?.instanceId) {
-											exampleToUse = codeExamples.raiseIntentForContextInstance;
+											exampleToUse = codeExamples.raiseIntentForContextInstance(context);
 										} else if(contextTargetApp) {
-											exampleToUse = codeExamples.raiseIntentForContextTarget;
+											exampleToUse = codeExamples.raiseIntentForContextTarget(context);
 										}
 										copyToClipboard(exampleToUse, "raiseIntentForContext")()
 									}}
@@ -933,6 +940,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 											</Grid>
 										)}
 										<FormGroup>
+											{channelType === "private-channel" && <Typography variant="caption" className={classes.caption}>Context streaming will start AFTER a context listener is added to the channel</Typography>}
 											<FormControlLabel
 												control={
 													<Checkbox
@@ -951,10 +959,10 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 													<React.Fragment key={index}>{field}</React.Fragment>
 												))}
 												<Grid item className={classes.indentLeft}>
-													<Tooltip title="Add context result" aria-label="Add context result">
+													<Tooltip title="Add context result (delays will trigger sequentially)" aria-label="Add context result (delays will trigger sequentially)">
 														<IconButton
 															size="small"
-															aria-label="Add context result"
+															aria-label="Add context result (delays will trigger sequentially)"
 															color="primary"
 															onClick={handleAddContextField}
 														>

@@ -105,10 +105,6 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		rightPadding: {
 			paddingRight: theme.spacing(0.5),
-		},
-		caption: {
-			color: "#0086bf",
-			marginTop: "10px"
 		}
 	})
 );
@@ -229,7 +225,6 @@ export const ChannelField = observer(
 		};
 
 		const handleRemoveOrDisconnect = (channel: any) => {
-			console.log(channel, isPrivateChannel)
 			if(isPrivateChannel) {
 				privateChannelStore.disconnect(channel);
 			} else {
@@ -250,7 +245,6 @@ export const ChannelField = observer(
 							<Grid container key={channel.id} spacing={2} className={classes.spread}>
 								<Grid item className={classes.field}>
 									<Typography variant="h5">Channel: {channel.id}</Typography>
-									{isPrivateChannel && <Typography variant="caption" className={classes.caption}>Check listeners once results are received</Typography>}
 								</Grid>
 								<Grid container className={classes.topMargin}>
 									<Grid item xs={12}>
@@ -292,67 +286,64 @@ export const ChannelField = observer(
 										
 									</Grid>
 								</Grid>
-								{!isPrivateChannel && 
-									<Grid container>
-										<Grid item xs={12}>
-											<Typography variant="h5" className={classes.h6}>
-												Add Context Listener
-											</Typography>
-										</Grid>
-										<Grid item sm={7} className={classes.rightPadding}>
-											<Autocomplete
-												size="small"
-												selectOnFocus
-												blurOnSelect
-												clearOnBlur
-												handleHomeEndKeys
-												value={channel.currentListener}
-												onChange={handleChangeAppListener(channel.id)}
-												filterOptions={filterOptions}
-												options={contextListenersOptions}
-												getOptionLabel={getOptionLabel}
-												renderOption={(option) => option.type}
-												renderInput={(params) => (
-													<TemplateTextField
-														label="CONTEXT TYPE"
-														placeholder="Enter Context Type"
-														variant="outlined"
-														{...params}
-														error={!!channel.listenerError}
-														helperText={channel.listenerError}
-													/>
-												)}
-												onKeyDown={(event) => {
-													if (event.key === "Enter") {
-														event.defaultPrevented = true;
-														handleAddContextListener(channel.id);
-													}
-												}}
-											/>
-										</Grid>
-
-										<Grid item container className={classes.controls} sm={5} justifyContent="flex-end">
-											<Button variant="contained" color="primary" onClick={() => handleAddContextListener(channel.id)}>
-												Add Listener
-											</Button>
-
-											<Tooltip title="Copy code example" aria-label="Copy code example">
-												<IconButton
-													size="small"
-													aria-label="Copy code example"
-													color="primary"
-													onClick={copyToClipboard(codeExamples.appChannelContextListener, "addchannelContextListener")}
-												>
-													<FileCopyIcon />
-												</IconButton>
-											</Tooltip>
-
-											<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/Channel#addcontextlistener">
-												<InfoOutlinedIcon />
-											</Link>
-										</Grid>
+								<Grid container>
+									<Grid item xs={12}>
+										<Typography variant="h5" className={classes.h6}>
+											Add Context Listener
+										</Typography>
 									</Grid>
-								}
+									<Grid item sm={7} className={classes.rightPadding}>
+										<Autocomplete
+											size="small"
+											selectOnFocus
+											blurOnSelect
+											clearOnBlur
+											handleHomeEndKeys
+											value={channel.currentListener}
+											onChange={handleChangeAppListener(channel.id)}
+											filterOptions={filterOptions}
+											options={contextListenersOptions}
+											getOptionLabel={getOptionLabel}
+											renderOption={(option) => option.type}
+											renderInput={(params) => (
+												<TemplateTextField
+													label="CONTEXT TYPE"
+													placeholder="Enter Context Type"
+													variant="outlined"
+													{...params}
+													error={!!channel.listenerError}
+													helperText={channel.listenerError}
+												/>
+											)}
+											onKeyDown={(event) => {
+												if (event.key === "Enter") {
+													event.defaultPrevented = true;
+													handleAddContextListener(channel.id);
+												}
+											}}
+										/>
+									</Grid>
+
+									<Grid item container className={classes.controls} sm={5} justifyContent="flex-end">
+										<Button variant="contained" color="primary" onClick={() => handleAddContextListener(channel.id)}>
+											Add Listener
+										</Button>
+
+										<Tooltip title="Copy code example" aria-label="Copy code example">
+											<IconButton
+												size="small"
+												aria-label="Copy code example"
+												color="primary"
+												onClick={copyToClipboard(codeExamples.appChannelContextListener, "addchannelContextListener")}
+											>
+												<FileCopyIcon />
+											</IconButton>
+										</Tooltip>
+										<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/Channel#addcontextlistener">
+											<InfoOutlinedIcon />
+										</Link>
+									</Grid>
+								</Grid>
 								<Button
 									variant="contained"
 									color="secondary"
