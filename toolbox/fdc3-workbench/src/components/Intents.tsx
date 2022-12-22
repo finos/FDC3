@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import fdc3, { AppIdentifier, AppIntent, AppMetadata, ContextType, IntentResolution } from "../utility/Fdc3Api";
 import { toJS } from "mobx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -14,6 +14,8 @@ import {
 	Select,
 	Radio,
 	TextField,
+	Switch,
+	Link,
 } from "@material-ui/core";
 import { observer } from "mobx-react";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
@@ -31,6 +33,7 @@ import { FormGroup } from "@material-ui/core";
 import { FormControlLabel } from "@material-ui/core";
 import { RadioGroup } from "@material-ui/core";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 // interface copied from lib @material-ui/lab/Autocomplete
 interface FilterOptionsState<T> {
@@ -183,8 +186,8 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const [resultOverChannelContextDelays, setResultOverChannelContextDelays] = useState<any>({});
 	const [sendIntentResult, setSendIntentResult] = useState<boolean | undefined>(false);
 	const [resultType, setResultType] = useState<string | null>(null);
-	const [instanceType, setInstanceType] = useState<string | null>("resolver");
-	const [contextInstanceType, setContextInstanceType] = useState<string | null>("resolver");
+	const [useTargets, setUseTargets] = useState<boolean>(false);
+	const [useContextTargets, setUseContextTargets] = useState<boolean>(false);
 	const [channelType, setChannelType] = useState<string | null>("app-channel");
 	const [sendResultOverChannel, setSendResultOverChannel] = useState<boolean | undefined>(false);
 	const [currentAppChannelId, setCurrentAppChannelId] = useState<string>("");
@@ -342,13 +345,37 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const handleChannelTypeChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
 		setChannelType(nextView);
 	};
+
+	const clearTargets = () => {
+		setTargetApp(null);
+		setIntentInstances([]);
+		setTargetInstance(null);
+	}
+
+	const clearContextTargets = () => {
+		setContextTargetApp(null);
+		setIntentContextInstances([]);
+		setTargetContextInstance(null);
+		setUseContextTargets(false);
+	}
 	
-	const handleInstanceTypeChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
-		setInstanceType(nextView);
+	const handleTargetToggle = (event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
+		debugger;	
+		setUseTargets(checked);
+		if(!checked){
+			clearTargets();
+		}
+
 	};
 
-	const handleContextInstanceTypeChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
-		setContextInstanceType(nextView);
+	const handleContextTargetToggle = (event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
+		debugger;
+		setUseContextTargets(checked);
+		if(!checked){
+			clearContextTargets();
+		}
+
+
 	};
 
 	const setChannelContextList = (context: ContextType, index: number) => {
@@ -391,19 +418,25 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 		setIntentValue(null);
 		const fetchIntents = async () => {
 			try {
-				if (raiseIntentContext) {
-					let appIntents = await fdc3.findIntentsByContext(toJS(raiseIntentContext));
-					if (appIntents) {
-						setIntentObjects(appIntents);
-						setIntentsForContext(
-							appIntents.map(({ intent }: { intent: any }) => {
-								return {
-									title: intent.name,
-									value: intent.name,
-								};
-							})
-						);
-					}
+				if (!raiseIntentContext) {
+					return;
+				}
+				setRaiseIntentError(false);
+				let appIntents = await fdc3.findIntentsByContext(toJS(raiseIntentContext));
+				
+				setUseTargets(false);
+				clearTargets();
+
+				if (appIntents) {
+					setIntentObjects(appIntents);
+					setIntentsForContext(
+						appIntents.map(({ intent }: { intent: any }) => {
+							return {
+								title: intent.name,
+								value: intent.name,
+							};
+						})
+					);
 				}
 			} catch (e) {
 				setRaiseIntentError("no intents found");
@@ -414,9 +447,8 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 
 	useEffect(() => {
 		if(!intentValue){
-			setTargetApp(null);
-			setIntentInstances([]);
-			setTargetInstance(null);
+			setUseTargets(false);
+			clearTargets();
 		}
 		if (intentObjects) {
 			const targets = intentObjects.find((obj) => obj.intent.name === intentValue?.value);
@@ -436,6 +468,9 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 				if (!appIntentsForContext) {
 					return;
 				}
+
+				setUseContextTargets(false);
+				clearContextTargets();
 
 				let pairObject: any[] = [];
 				appIntentsForContext.forEach((intent) => {
@@ -498,21 +533,11 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								)}
 							/>
 							<Grid className={classes.rightPadding}>
-								<ToggleButtonGroup
-									value={instanceType}
-									exclusive
-									onChange={handleInstanceTypeChange}
-									aria-label="result channel type"
-								>
-									<ToggleButton className={classes.toggle} value="resolver" aria-label="left aligned">
-										Use Resolver
-									</ToggleButton>
-									<ToggleButton className={classes.toggle} value="dropdown" aria-label="left aligned">
-										Select Target
-									</ToggleButton>
-								</ToggleButtonGroup>
+								<FormGroup>
+									<FormControlLabel control={<Switch checked={useTargets} onChange={handleTargetToggle} color="primary" disabled={ !intentValue } />} label="Select Target" />
+								</FormGroup>
 
-								{instanceType === "dropdown" && (
+								{ useTargets && (
 									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
 									<InputLabel id="intent-target-app">Target App (optional)</InputLabel>
 									<Select
@@ -552,7 +577,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									</Select>
 									</FormControl>
 								)}
-								{instanceType === "dropdown" && intentInstances?.length > 0 && (
+								{ useTargets && intentInstances?.length > 0 && (
 									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
 										<InputLabel id="intent-target-instance">Target Instance (optional)</InputLabel>
 										<Select
@@ -617,6 +642,10 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									<FileCopyIcon />
 								</IconButton>
 							</Tooltip>
+
+							<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintent">
+								<InfoOutlinedIcon />
+							</Link>
 						</Grid>
 					</Grid>
 					{intentResolution?.source && (
@@ -643,20 +672,12 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								contextStateSetter={setRaiseIntentWithContextContext}
 							/>
 							<Grid className={classes.rightPadding}>
-								<ToggleButtonGroup
-									value={contextInstanceType}
-									exclusive
-									onChange={handleContextInstanceTypeChange}
-									aria-label="result channel type"
-								>
-									<ToggleButton className={classes.toggle} value="resolver" aria-label="left aligned">
-										Use Resolver
-									</ToggleButton>
-									<ToggleButton className={classes.toggle} value="dropdown" aria-label="left aligned">
-										Select Target
-									</ToggleButton>
-								</ToggleButtonGroup>
-								{contextInstanceType === "dropdown" && (
+									<FormGroup>
+										<FormControlLabel control={<Switch checked={useContextTargets} color="primary" onChange={handleContextTargetToggle} />} label="Select Target" disabled={!raiseIntentWithContextContext}/>
+									</FormGroup>
+
+								
+								{ useContextTargets && (
 									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
 										<InputLabel id="intent-context-target-app">Target (optional)</InputLabel>
 										<Select
@@ -697,7 +718,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									</FormControl>
 								)}
 								
-								{contextInstanceType === "dropdown" && intentContextInstances?.length > 0 && (
+								{ useContextTargets && intentContextInstances?.length > 0 && (
 									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
 										<InputLabel id="intent-context-target-instance">Target Instance (optional)</InputLabel>
 										<Select
@@ -764,6 +785,10 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									<FileCopyIcon />
 								</IconButton>
 							</Tooltip>
+							
+							<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintentforcontext">
+								<InfoOutlinedIcon />
+							</Link>
 						</Grid>
 					</Grid>
 					{intentForContextResolution?.source && (
@@ -845,6 +870,11 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									<FileCopyIcon />
 								</IconButton>
 							</Tooltip>
+
+							<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#addintentlistener">
+								<InfoOutlinedIcon />
+							</Link>
+
 						</Grid>
 					</Grid>
 					{window.fdc3Version === "2.0" &&<Grid item xs={12}>
@@ -939,6 +969,11 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 															<AddCircleOutlineIcon />
 														</IconButton>
 													</Tooltip>
+
+													<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#addintentlistener">
+														<InfoOutlinedIcon />
+													</Link>
+													
 												</Grid>
 											</>
 										)}
