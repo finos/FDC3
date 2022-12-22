@@ -25,7 +25,6 @@ export const AppChannelListeners = observer(() => {
 
 	appChannelStore.channelListeners.forEach(({ id, channelId, type, lastReceivedContext, metaData }) => {
 		const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
-		console.log(lastReceivedContext, metaData);
 		const contextField = (
 			<div>
 				<TextField

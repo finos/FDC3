@@ -69,7 +69,9 @@ export const Header = (props: { fdc3Available: boolean }) => {
 	const classes = useStyles();
 	const [appInfo, setAppInfo] = useState<any>();
 	const params = new URLSearchParams(window.location.search);
-	const warningText = `Your FDC3 version (${window.fdc3Version}) doesn't match the version of the FDC3 Workbench you are using (${appInfo?.appMetadata?.version})`;
+	const paramVersion = params.get("fdc3Version") || '';
+	const [chosenVersion, setChosenVersion] = useState<string>(Number(appInfo?.providerVersion.slice(0,3)) > 8.2 ? "2.0" : "1.2");
+	let warningText = `Your FDC3 version (${appInfo?.fdc3Version}) doesn't match the version of the FDC3 Workbench you are using (${chosenVersion})`;
 	const supportedVersion = ["2.0", "1.2"];
 
 	useEffect(() => {
@@ -78,7 +80,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 			const updateInfo = async () => {
 				try {
 					let implInfo: ImplementationMetadata = await fdc3.getInfo();
-
+					if(paramVersion) setChosenVersion(paramVersion);
 					let displayInfo = {
 						fdc3Version: "not specified",
 						provider: "not specified",
@@ -88,15 +90,17 @@ export const Header = (props: { fdc3Available: boolean }) => {
 							version: "not specified",
 						},
 					};
-					if (implInfo.fdc3Version) {
-						displayInfo.fdc3Version = params.get("fdc3Version") || implInfo.fdc3Version;
-						window.fdc3Version = displayInfo.fdc3Version;
-					}
+
 					if (implInfo.provider) {
 						displayInfo.provider = implInfo.provider;
 					}
 					if (implInfo.providerVersion) {
 						displayInfo.providerVersion = implInfo.providerVersion;
+						
+					}
+					if (implInfo.fdc3Version) {
+						displayInfo.fdc3Version = implInfo.fdc3Version;
+						window.fdc3Version = chosenVersion || implInfo.fdc3Version;
 					}
 					if (implInfo.appMetadata) {
 						displayInfo.appMetadata = {
@@ -104,7 +108,9 @@ export const Header = (props: { fdc3Available: boolean }) => {
 							version: implInfo.appMetadata.version ? implInfo.appMetadata.version : "not specified",
 						};
 					}
-					setAppInfo(displayInfo);
+
+					
+					setAppInfo(displayInfo);			
 				} catch (e) {
 					console.error("Failed to retrieve FDC3 implementation info", e);
 				}
@@ -112,7 +118,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 
 			updateInfo();
 		}
-	}, [props.fdc3Available]);
+	}, [props.fdc3Available, chosenVersion]);
 
 	return (
 		<div className={classes.root}>
@@ -126,10 +132,10 @@ export const Header = (props: { fdc3Available: boolean }) => {
 						<Typography color="inherit">
 							{supportedVersion.map((ver, index) => (
 								<span key={index}>
-									{ver === appInfo?.fdc3Version ? (
+									{ver === chosenVersion ? (
 										<span>{ver}</span>
 									) : (
-										<a className={`${classes.link}`} href={`?fdc3Version=${ver}`}>
+										<a className={`${classes.link}`} href={`?fdc3Version=${ver}`} >
 											{ver}
 										</a>
 									)}
@@ -145,7 +151,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 								<tr>
 									<th scope="row">FDC3 Version</th>
 									{appInfo?.fdc3Version ? (
-										appInfo.appMetadata?.version.includes(appInfo.fdc3Version) ? (
+										chosenVersion === appInfo.fdc3Version ? (
 											<td>{appInfo.fdc3Version}</td>
 										) : (
 											<td className={classes.warningText}>

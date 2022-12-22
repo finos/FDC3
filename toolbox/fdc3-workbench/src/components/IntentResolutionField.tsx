@@ -33,19 +33,16 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
 	let results = `appId: ${data.source.appId}\ninstanceId: ${data.source.instanceId}`;
 
 	const displayIntentResults = async () => {
-		console.log(data, data.hasOwnProperty("getResult"));
 		try {
 			if (data.hasOwnProperty("getResult")) {
-				console.log(data, data.hasOwnProperty("getResult"), await data.getResult());
 				const result = await data.getResult();
-				console.log(result);
+
 				//detect whether the result is Context or a Channel
 				if (!!result?.broadcast) {
 					setResolutionResult("");
 
 					//App Channel
 					if (result.type === "app") {
-						console.log(result.type);
 						await appChannelStore.getOrCreateChannel(result.id);
 						setChannelName(result.id);
 						setIsChannel(true);
@@ -54,7 +51,6 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
 
 					// Private Channel
 					if (result.type === "private") {
-						console.log(result.type);
 						setIsChannel(true);
 						setPrivateChannel(true);
 						setChannelsList([result]);
@@ -66,7 +62,8 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
 				}
 			}
 		} catch (error) {
-			setResolutionResult(`${error}`);
+			if(`${error}`.includes('NoResultReturned')) setResolutionResult('<void>')
+			else setResolutionResult(`${error}`);
 			console.error(`${data.source.appId} returned a result error: ${error}`);
 		}
 	};

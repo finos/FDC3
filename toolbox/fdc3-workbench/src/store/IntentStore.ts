@@ -47,36 +47,27 @@ class IntentStore {
 			const intentListener = await fdc3.addIntentListener(intent, async (context: ContextType, metaData?: any) => {
 				const currentListener = this.intentListeners.find(({ id }) => id === listenerId);
 				let channel: Channel | undefined;
-				console.log(context, metaData);
+
 				//app channel
 				if (channelName && !isPrivate) {
 					channel = await appChannelStore.getOrCreateChannel(channelName);
-					console.log(`returning app channel:  ${channel?.id}`);
 				}
 
 				//private channel
 				if (isPrivate && !channelName) {
 					channel = await privateChannelStore.createPrivateChannel();
 					privateChannelStore.addChannelListener(<PrivateChannel>channel, "all");
-					console.log(`returning private channel: ${channel?.id}`);
+
 					privateChannelStore.onDisconnect(<PrivateChannel>channel);
 					privateChannelStore.onUnsubscribe(<PrivateChannel>channel);
-					privateChannelStore.onAddContextListener(<PrivateChannel>channel);
+					privateChannelStore.onAddContextListener(<PrivateChannel>channel, channelContexts, channelContextDelay);
 				}
 
-				if (channel) {
+				if (!isPrivate && channel) {
 					if (Object.keys(channelContexts).length !== 0) {
-						console.log(channelContexts, channel);
 						Object.keys(channelContexts).forEach((key) => {
-							console.log("broadcasting...", channelContextDelay[key]);
 							let broadcast = setTimeout(async () => {
-								console.log(channel);
-								if (isPrivate) {
-									privateChannelStore.broadcast(<PrivateChannel>channel, channelContexts[key]);
-								} else {
-									appChannelStore.broadcast(<Channel>channel, channelContexts[key]);
-								}
-								console.log("done broadcasting");
+								appChannelStore.broadcast(<Channel>channel, channelContexts[key]);
 								clearTimeout(broadcast);
 							}, channelContextDelay[key]);
 						});
@@ -91,8 +82,6 @@ class IntentStore {
 						currentListener.metaData = metaData;
 					}
 				});
-				console.log(context, channel);
-				if (resultContext) context = resultContext;
 
 				systemLogStore.addLog({
 					name: "receivedIntentListener",
@@ -102,7 +91,7 @@ class IntentStore {
 					body: JSON.stringify(context, null, 4),
 				});
 
-				return channel || context;
+				return channel || resultContext;
 			});
 
 			runInAction(() => {
