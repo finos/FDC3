@@ -12,7 +12,7 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
 import contextStore from "../store/ContextStore";
 import { TemplateTextField } from "./common/TemplateTextField";
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 
 interface ListenerOptionType {
 	title: string;
@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		rightPadding: {
 			paddingRight: theme.spacing(0.5),
-		}
+		},
 	})
 );
 
@@ -114,17 +114,17 @@ export const ChannelField = observer(
 		handleTabChange,
 		channelsList,
 		isPrivateChannel = false,
-		channelName
+		channelName,
 	}: {
 		handleTabChange: any;
 		channelsList: any;
 		isPrivateChannel?: boolean;
-		channelName? : string;
+		channelName?: string;
 	}) => {
 		const classes = useStyles();
 		const [contextItem, setContextItem] = useState<ContextType | null>(null);
 		const [currentChannelList, setCurrentChannelList] = useState<any>(channelsList);
-		
+
 		const channelStore = isPrivateChannel ? privateChannelStore : appChannelStore;
 
 		const contextListenersOptionsAll: ListenerOptionType[] = contextStore.contextsList.map(({ id, template }) => {
@@ -225,18 +225,18 @@ export const ChannelField = observer(
 		};
 
 		const handleRemoveOrDisconnect = (channel: any) => {
-			if(isPrivateChannel) {
+			if (isPrivateChannel) {
 				privateChannelStore.disconnect(channel);
 			} else {
 				appChannelStore.remove(channel);
 			}
 			setCurrentChannelList(currentChannelList.filter((currentChannel: any) => currentChannel.id !== channel.id));
-		}
-		
+		};
+
 		useEffect(() => {
-		  setCurrentChannelList(channelsList);
-		}, [channelsList])
-		
+			setCurrentChannelList(channelsList);
+		}, [channelsList]);
+
 		return (
 			<div>
 				{currentChannelList.length > 0 &&
@@ -283,7 +283,6 @@ export const ChannelField = observer(
 										<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/Channel#broadcast">
 											<InfoOutlinedIcon />
 										</Link>
-										
 									</Grid>
 								</Grid>
 								<Grid container>
@@ -344,24 +343,19 @@ export const ChannelField = observer(
 										</Link>
 									</Grid>
 								</Grid>
-								<Button
-									variant="contained"
-									color="secondary"
-									onClick={() => handleRemoveOrDisconnect(channel)}
-								>
-									{isPrivateChannel ? 'Disconnect' : 'Remove'}
+								<Button variant="contained" color="secondary" onClick={() => handleRemoveOrDisconnect(channel)}>
+									{isPrivateChannel ? "Disconnect" : "Remove"}
 								</Button>
 								<div className={classes.border}></div>
 							</Grid>
 						);
 
-						if(channelName) {
-							return channel.id === channelName && element
+						if (channelName) {
+							return channel.id === channelName && element;
 						} else {
-							return element
+							return element;
 						}
-					})
-				}
+					})}
 			</div>
 		);
 	}

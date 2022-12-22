@@ -8,7 +8,7 @@ import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete
 import contextStore from "../store/ContextStore";
 import { TemplateTextField } from "./common/TemplateTextField";
 import { copyToClipboard } from "./common/CopyToClipboard";
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 
 // interface copied from lib @material-ui/lab/Autocomplete
 interface FilterOptionsState<T> {
@@ -71,16 +71,18 @@ export const ContextLinking = observer(() => {
 		return {
 			title: id,
 			value: id,
-			type: template?.type
+			type: template?.type,
 		};
 	});
 	contextListenersOptionsAll.unshift({
 		title: "All",
 		value: "all",
-		type: "All"
+		type: "All",
 	});
 
-	const contextListenersOptions = Array.from(new Map(contextListenersOptionsAll.reverse().map((item) => [item["type"], item])).values()).reverse();
+	const contextListenersOptions = Array.from(
+		new Map(contextListenersOptionsAll.reverse().map((item) => [item["type"], item])).values()
+	).reverse();
 
 	const handleChangeListener =
 		(setValue: ListenerSetValue, setError: ListenerSetError) => (event: React.ChangeEvent<{}>, newValue: any) => {
@@ -88,13 +90,13 @@ export const ContextLinking = observer(() => {
 				setValue({
 					title: newValue,
 					value: newValue,
-					type: newValue
+					type: newValue,
 				});
 			} else if (newValue && newValue.inputValue) {
 				setValue({
 					title: newValue.inputValue,
 					value: newValue.inputValue,
-					type: newValue.inputValue
+					type: newValue.inputValue,
 				});
 			} else {
 				setValue(newValue);
@@ -117,7 +119,7 @@ export const ContextLinking = observer(() => {
 			filtered.push({
 				value: params.inputValue,
 				title: `Add "${params.inputValue}"`,
-				type: params.inputValue
+				type: params.inputValue,
 			});
 		}
 
