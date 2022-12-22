@@ -23,7 +23,7 @@ export const PrivateChannelListeners = observer(() => {
 
 	let contextListeners: AccordionListItem[] = [];
 
-	privateChannelStore.channelListeners.forEach(({ id, channelId, lastReceivedContext, metaData }) => {
+	privateChannelStore.channelListeners.forEach(({ id, channelId, type, lastReceivedContext, metaData }) => {
 		const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
 		const contextField = (
 			<div>
@@ -50,7 +50,7 @@ export const PrivateChannelListeners = observer(() => {
 			</div>
 		);
 
-		contextListeners.push({ id, textPrimary: `Channel Id: ${channelId}`, afterEachElement: contextField });
+		contextListeners.push({ id, textPrimary: `Channel Id: ${channelId}: ${type}`, afterEachElement: contextField });
 	});
 
 	const handleDeleteListener = (id: string) => {
