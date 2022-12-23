@@ -3,7 +3,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Tooltip } from "@material-ui/core";
-import InfoIcon from '@material-ui/icons/Info';
+import InfoIcon from "@material-ui/icons/Info";
 
 export interface AccordionContentProps {
 	title: string;
@@ -55,8 +55,8 @@ const useStyles = makeStyles((theme: Theme) =>
 		icon: {
 			marginBottom: "-1px !important",
 			fontSize: "15px",
-			marginLeft: "5px"
-		}
+			marginLeft: "5px",
+		},
 	})
 );
 
@@ -74,9 +74,11 @@ export const AccordionContent: React.FC<AccordionContentProps> = ({ icon, title,
 			>
 				<Typography variant="h5" className={classes.accordionTitle}>
 					{title}
-					{icon && <Tooltip title={icon} aria-label={icon}>
-						<InfoIcon className={classes.icon}/>
-					</Tooltip>}
+					{icon && (
+						<Tooltip title={icon} aria-label={icon}>
+							<InfoIcon className={classes.icon} />
+						</Tooltip>
+					)}
 				</Typography>
 			</AccordionSummary>
 

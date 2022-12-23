@@ -62,7 +62,7 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
 				}
 			}
 		} catch (error) {
-			if(`${error}`.includes('NoResultReturned')) setResolutionResult('<void>')
+			if (`${error}`.includes("NoResultReturned")) setResolutionResult("<void>");
 			else setResolutionResult(`${error}`);
 			console.error(`${data.source.appId} returned a result error: ${error}`);
 		}

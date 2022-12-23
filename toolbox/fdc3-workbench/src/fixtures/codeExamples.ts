@@ -33,25 +33,32 @@ export const codeExamples = {
 		"\n" +
 		"appChannelID.broadcast(instrument);",
 	raiseIntent: (context: string, intent: string) =>
-		("//Raise an intent with a specified context\n" +
-		`let context = ${context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'}; \n` +
-		`fdc3.raiseIntent("${intent !== "null" ? intent: "ViewChart"}", context);`),
-	raiseIntentTarget: (context: string, intent: string) => ("//Raise an intent with a specified context\n" +
-		`let context = ${context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'}; \n` +
+		"//Raise an intent with a specified context\n" +
+		`let context = ${
+			context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'
+		}; \n` +
+		`fdc3.raiseIntent("${intent !== "null" ? intent : "ViewChart"}", context);`,
+	raiseIntentTarget: (context: string, intent: string) =>
+		"//Raise an intent with a specified context\n" +
+		`let context = ${
+			context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'
+		}; \n` +
 		"//Find appId in promise result\n" +
 		"let intent = await fdc3.findIntentsByContext(context); \n" +
 		"let appId = intent[0].apps[0].appId; \n" +
-		`fdc3.raiseIntent("${intent !== "null" ? intent: "ViewChart"}", context, {appId});`),
-	raiseIntentInstance: (context: string, intent: string) => (
+		`fdc3.raiseIntent("${intent !== "null" ? intent : "ViewChart"}", context, {appId});`,
+	raiseIntentInstance: (context: string, intent: string) =>
 		"//Raise an intent with a specified context\n" +
-		`let context = ${context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'}; \n` +
+		`let context = ${
+			context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'
+		}; \n` +
 		"//Find appId in promise result\n" +
 		"let intent = await fdc3.findIntentsByContext(context); \n" +
 		"let appId = intent[0].apps[0].appId; \n" +
 		"//Find instanceId is promise result" +
-		'let intances = await fdc3.findInstances({appId}); \n' +
+		"let intances = await fdc3.findInstances({appId}); \n" +
 		"let instanceId = instances[0].instanceId; \n" +
-		`fdc3.raiseIntent("${intent !== "null" ? intent: "ViewChart"}", context, {appId, instanceId});`),
+		`fdc3.raiseIntent("${intent !== "null" ? intent : "ViewChart"}", context, {appId, instanceId});`,
 	contextListener:
 		"// any context\n" +
 		"const listener = fdc3.addContextListener(null, context => {\n" +
@@ -100,22 +107,27 @@ export const codeExamples = {
 		" const channel = await fdc3.createPrivateChannel();\n" +
 		" return channel;\n" +
 		"});",
-	raiseIntentForContext: (context: string) => (
-		`let context = ${context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'}; \n` +
-		"const intentResolution = await fdc3.raiseIntentForContext(context);"),
-	raiseIntentForContextTarget: (context: string) => (
-		`let context = ${context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'}; \n` +
+	raiseIntentForContext: (context: string) =>
+		`let context = ${
+			context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'
+		}; \n` + "const intentResolution = await fdc3.raiseIntentForContext(context);",
+	raiseIntentForContextTarget: (context: string) =>
+		`let context = ${
+			context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'
+		}; \n` +
 		"//Find appId in promise result\n" +
 		"let intent = await fdc3.findIntentsByContext(context); \n" +
 		"let appId = intent[0].apps[0].appId; \n" +
-		'const intentResolution = await fdc3.raiseIntentForContext(context, {appId});"'),
-	raiseIntentForContextInstance: (context: string) => (
-		`let context = ${context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'}; \n` +
+		'const intentResolution = await fdc3.raiseIntentForContext(context, {appId});"',
+	raiseIntentForContextInstance: (context: string) =>
+		`let context = ${
+			context !== "null" ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'
+		}; \n` +
 		"//Find appId in promise result\n" +
 		"let intent = await fdc3.findIntentsByContext(context); \n" +
 		"let appId = intent[0].apps[0].appId; \n" +
 		"//Find instanceId is promise result" +
-		'let intances = await fdc3.findInstances({appId}); \n' +
+		"let intances = await fdc3.findInstances({appId}); \n" +
 		"let instanceId = instances[0].instanceId; \n" +
-		'const intentResolution = await fdc3.raiseIntentForContext(context, {appId, instanceId});'),
+		"const intentResolution = await fdc3.raiseIntentForContext(context, {appId, instanceId});",
 };

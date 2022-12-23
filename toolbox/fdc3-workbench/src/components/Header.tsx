@@ -69,8 +69,10 @@ export const Header = (props: { fdc3Available: boolean }) => {
 	const classes = useStyles();
 	const [appInfo, setAppInfo] = useState<any>();
 	const params = new URLSearchParams(window.location.search);
-	const paramVersion = params.get("fdc3Version") || '';
-	const [chosenVersion, setChosenVersion] = useState<string>(Number(appInfo?.providerVersion.slice(0,3)) > 8.2 ? "2.0" : "1.2");
+	const paramVersion = params.get("fdc3Version") || "";
+	const [chosenVersion, setChosenVersion] = useState<string>(
+		Number(appInfo?.providerVersion.slice(0, 3)) > 8.2 ? "2.0" : "1.2"
+	);
 	let warningText = `Your FDC3 version (${appInfo?.fdc3Version}) doesn't match the version of the FDC3 Workbench you are using (${chosenVersion})`;
 	const supportedVersion = ["2.0", "1.2"];
 
@@ -80,7 +82,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 			const updateInfo = async () => {
 				try {
 					let implInfo: ImplementationMetadata = await fdc3.getInfo();
-					if(paramVersion) setChosenVersion(paramVersion);
+					if (paramVersion) setChosenVersion(paramVersion);
 					let displayInfo = {
 						fdc3Version: "not specified",
 						provider: "not specified",
@@ -96,7 +98,6 @@ export const Header = (props: { fdc3Available: boolean }) => {
 					}
 					if (implInfo.providerVersion) {
 						displayInfo.providerVersion = implInfo.providerVersion;
-						
 					}
 					if (implInfo.fdc3Version) {
 						displayInfo.fdc3Version = implInfo.fdc3Version;
@@ -109,8 +110,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 						};
 					}
 
-					
-					setAppInfo(displayInfo);			
+					setAppInfo(displayInfo);
 				} catch (e) {
 					console.error("Failed to retrieve FDC3 implementation info", e);
 				}
@@ -135,7 +135,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 									{ver === chosenVersion ? (
 										<span>{ver}</span>
 									) : (
-										<a className={`${classes.link}`} href={`?fdc3Version=${ver}`} >
+										<a className={`${classes.link}`} href={`?fdc3Version=${ver}`}>
 											{ver}
 										</a>
 									)}
