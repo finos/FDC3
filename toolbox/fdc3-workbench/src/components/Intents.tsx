@@ -160,13 +160,13 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const handleRaiseIntentForContext = () => {
 		if (!raiseIntentWithContextContext) {
 			return;
-		  }
+		}
 		if (contextTargetApp && contextIntentObjects) {
 			let targetObject = contextIntentObjects.find((target) => target.name === contextTargetApp);
 			intentStore.raiseIntentForContext(raiseIntentWithContextContext, targetObject.app);
 		} else {
 			intentStore.raiseIntentForContext(raiseIntentWithContextContext);
-		}	
+		}
 	};
 
 	const handleTargetChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -269,7 +269,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			}
 			try {
 				let appIntentsForContext = await fdc3.findIntentsByContext(toJS(raiseIntentWithContextContext));
-				if(!appIntentsForContext){
+				if (!appIntentsForContext) {
 					return;
 				}
 
@@ -360,7 +360,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 												<MenuItem key={target.appId || target.name} value={target.appId || target.name}>
 													{target.appId || target.name}
 												</MenuItem>
-										))}
+											))}
 									</Select>
 								</FormControl>
 							</Grid>

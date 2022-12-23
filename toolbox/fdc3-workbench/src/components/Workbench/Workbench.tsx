@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Tooltip } from "@material-ui/core";
-import InfoIcon from '@material-ui/icons/Info';
+import InfoIcon from "@material-ui/icons/Info";
 import { Tabs, Tab } from "@material-ui/core";
 import { TabPanel } from "../common/TabPanel";
 import { ContextListeners } from "./ContextListeners";
@@ -12,10 +12,10 @@ import { SystemLog } from "./SystemLog";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		'@global': {
+		"@global": {
 			".MuiTab-wrapper": {
-				flexDirection: "row !important"
-			}
+				flexDirection: "row !important",
+			},
 		},
 		root: {
 			flexGrow: 1,
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		icon: {
 			marginBottom: "3px !important",
 			fontSize: "15px",
-			marginRight: "3px"
+			marginRight: "3px",
 		},
 	})
 );
@@ -76,12 +76,18 @@ export const Workbench = observer(() => {
 				}}
 				className={classes.tabs}
 			>
-				<Tab label="Listeners" {...a11yProps(0)} style={{display:'flex',alignItems:'center'}} icon={
-					<Tooltip 
-						title="Context received will be displayed here, but you will not receive your own messages back" 
-						aria-label="Context received will be displayed here, but you will not receive your own messages back" >
-						<InfoIcon className={classes.icon} />
-					</Tooltip>}
+				<Tab
+					label="Listeners"
+					{...a11yProps(0)}
+					style={{ display: "flex", alignItems: "center" }}
+					icon={
+						<Tooltip
+							title="Context received will be displayed here, but you will not receive your own messages back"
+							aria-label="Context received will be displayed here, but you will not receive your own messages back"
+						>
+							<InfoIcon className={classes.icon} />
+						</Tooltip>
+					}
 				/>
 				<Tab label="System Log" {...a11yProps(1)} />
 			</Tabs>

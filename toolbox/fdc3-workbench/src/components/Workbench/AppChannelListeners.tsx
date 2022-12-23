@@ -21,33 +21,33 @@ export const AppChannelListeners = observer(() => {
 	const classes = useStyles();
 
 	let contextListeners: AccordionListItem[] = [];
-    
-        appChannelStore.appChannelListeners.forEach(({ id, channelId, type, lastReceivedContext }) => {
-			const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
-			const contextField = (
-				<TextField
-					disabled
-					label={"LAST RECEIVED CONTEXT"}
-					className={classes.textField}
-					InputLabelProps={{
-						shrink: true,
-					}}
-					contentEditable={false}
-					fullWidth
-					multiline
-					variant="outlined"
-					size="small"
-					value={receivedContextListenerValue}
-					InputProps={{
-						classes: {
-							input: classes.input,
-						},
-					}}
-				/>
-			);
 
-			contextListeners.push({ id, textPrimary: `${channelId}: ${type}`, afterEachElement: contextField});
-        });
+	appChannelStore.appChannelListeners.forEach(({ id, channelId, type, lastReceivedContext }) => {
+		const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
+		const contextField = (
+			<TextField
+				disabled
+				label={"LAST RECEIVED CONTEXT"}
+				className={classes.textField}
+				InputLabelProps={{
+					shrink: true,
+				}}
+				contentEditable={false}
+				fullWidth
+				multiline
+				variant="outlined"
+				size="small"
+				value={receivedContextListenerValue}
+				InputProps={{
+					classes: {
+						input: classes.input,
+					},
+				}}
+			/>
+		);
+
+		contextListeners.push({ id, textPrimary: `${channelId}: ${type}`, afterEachElement: contextField });
+	});
 
 	const handleDeleteListener = (id: string) => {
 		appChannelStore.removeContextListener(id);
