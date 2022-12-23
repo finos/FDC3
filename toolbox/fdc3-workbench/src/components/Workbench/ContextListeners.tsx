@@ -45,7 +45,7 @@ export const ContextListeners = observer(() => {
 							},
 						}}
 					/>
-					{window.fdc3Version === '2.0' && <ReceivedField metaData={metaData} />}
+					{window.fdc3Version === "2.0" && <ReceivedField metaData={metaData} />}
 				</div>
 			);
 

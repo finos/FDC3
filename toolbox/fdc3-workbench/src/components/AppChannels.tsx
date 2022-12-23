@@ -159,10 +159,7 @@ export const AppChannels = observer(({ handleTabChange }: { handleTabChange: any
 				</Grid>
 			</form>
 			<div className={classes.border}></div>
-			<ChannelField
-				handleTabChange={handleTabChange}
-				channelsList={appChannelStore.appChannelsList}
-			/>
+			<ChannelField handleTabChange={handleTabChange} channelsList={appChannelStore.appChannelsList} />
 		</div>
 	);
 });
