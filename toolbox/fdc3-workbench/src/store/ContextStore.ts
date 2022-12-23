@@ -3,7 +3,7 @@ import * as fdc3 from "@finos/fdc3";
 import { nanoid } from "nanoid";
 import { contexts } from "../fixtures/contexts";
 import systemLogStore from "./SystemLogStore";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export type ContextType = {
 	type: string;
@@ -51,15 +51,14 @@ class ContextStore {
 		const localStorageContextList = localStorage.getItem("contextList");
 		let usingDefaultContexts = true;
 		try {
-			if(localStorageContextList)
-			{
+			if (localStorageContextList) {
 				const parsedListFromStorage = JSON.parse(localStorageContextList);
-				if (Array.isArray(parsedListFromStorage)){
+				if (Array.isArray(parsedListFromStorage)) {
 					this.contextsList = parsedListFromStorage;
 					usingDefaultContexts = false;
 				}
 			}
-		} catch (err){
+		} catch (err) {
 			console.log("Failed to parse context list from localstorage");
 		}
 		if (usingDefaultContexts) {
@@ -77,7 +76,9 @@ class ContextStore {
 	saveContextItem(contextItem: ContextItem, selectedId?: string) {
 		const context = this.contextsList.find(({ id }) => id === selectedId || id === contextItem.id);
 		if (context) {
-			Object.keys(contextItem).forEach((key:any) => (context[key as keyof ContextItem] as any) = contextItem[key as keyof ContextItem]);
+			Object.keys(contextItem).forEach(
+				(key: any) => ((context[key as keyof ContextItem] as any) = contextItem[key as keyof ContextItem])
+			);
 		}
 		this.updateLocalStorage(this.contextsList);
 	}
@@ -87,17 +88,17 @@ class ContextStore {
 	}
 
 	deleteContextItem(contextItem: ContextItem) {
-		this.contextsList = this.contextsList.filter((c) => c != contextItem)
+		this.contextsList = this.contextsList.filter((c) => c != contextItem);
 		this.updateLocalStorage(this.contextsList);
 	}
 
 	resetContextList() {
-		this.contextsList = contexts
+		this.contextsList = contexts;
 		this.updateLocalStorage(this.contextsList);
 	}
 
 	updateLocalStorage(data: any) {
-		localStorage.setItem('contextList', JSON.stringify(data))
+		localStorage.setItem("contextList", JSON.stringify(data));
 	}
 
 	async broadcast(context: ContextType) {
@@ -142,27 +143,30 @@ class ContextStore {
 
 	addContextListener(contextType: string | undefined) {
 		try {
-			if( typeof contextType === "string") {
+			if (typeof contextType === "string") {
 				const listenerId = nanoid();
 
 				// TODO: remove window after fixing https://github.com/finos/FDC3/issues/435
-				const contactListener = window.fdc3.addContextListener(contextType.toLowerCase() === "all" ? null : contextType, (context) => {
-					const currentListener = this.contextListeners.find(({ id }) => id === listenerId);
+				const contactListener = window.fdc3.addContextListener(
+					contextType.toLowerCase() === "all" ? null : contextType,
+					(context) => {
+						const currentListener = this.contextListeners.find(({ id }) => id === listenerId);
 
-					runInAction(() => {
-						if (currentListener) {
-							currentListener.lastReceivedContext = context;
-						}
-					});
+						runInAction(() => {
+							if (currentListener) {
+								currentListener.lastReceivedContext = context;
+							}
+						});
 
-					systemLogStore.addLog({
-						name: "receivedContextListener",
-						type: "info",
-						value: contextType,
-						variant: "code",
-						body: JSON.stringify(context, null, 4),
-					});
-				});
+						systemLogStore.addLog({
+							name: "receivedContextListener",
+							type: "info",
+							value: contextType,
+							variant: "code",
+							body: JSON.stringify(context, null, 4),
+						});
+					}
+				);
 
 				runInAction(() => {
 					systemLogStore.addLog({
