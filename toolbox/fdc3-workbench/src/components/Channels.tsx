@@ -66,11 +66,11 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => {
+export const Channels = observer(({ handleTabChange }: { handleTabChange: any }) => {
 	const classes = useStyles();
 	const [channelId, setChannelId] = useState<string>("");
 	const [isError, setIsError] = useState<boolean>(false);
-	const [broadcastContext, setBroadcastContext] = useState<ContextType | null>(null)
+	const [broadcastContext, setBroadcastContext] = useState<ContextType | null>(null);
 
 	const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
 		setChannelId(event.target.value as string);
@@ -95,7 +95,7 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 	};
 
 	const handleBroadcast = () => {
-		if(broadcastContext) contextStore.broadcast(broadcastContext);
+		if (broadcastContext) contextStore.broadcast(broadcastContext);
 	};
 
 	return (
@@ -214,39 +214,34 @@ export const Channels = observer(({handleTabChange} : {handleTabChange:any}) => 
 			</Grid>
 
 			<Grid container direction="row" spacing={1}>
-					<Grid item sm={9}>
-						<ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setBroadcastContext} />
-					</Grid>
-					<Grid item sm={3} className={classes.centerChildren}>
-						<Grid container direction="row" justifyContent="flex-end" spacing={1}>
-							<Grid item className={classes.controls} >
-								<Button
-									disabled={!broadcastContext}
-									variant="contained"
-									color="primary"
-									onClick={handleBroadcast}
-								>
-									Broadcast Context
-								</Button>
-							</Grid>
-							<Grid item className={classes.controls} >
-								<Tooltip title="Copy code example" aria-label="Copy code example">
-									<IconButton
-										size="small"
-										aria-label="Copy code example"
-										color="primary"
-										onClick={copyToClipboard(codeExamples.broadcast, "broadcast")}
-									>
-										<FileCopyIcon />
-									</IconButton>
-								</Tooltip>
-							</Grid>
-						</Grid>
-					</Grid>				
-					<div className={classes.border}></div>
-
-					<ContextLinking />
+				<Grid item sm={9}>
+					<ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setBroadcastContext} />
 				</Grid>
+				<Grid item sm={3} className={classes.centerChildren}>
+					<Grid container direction="row" justifyContent="flex-end" spacing={1}>
+						<Grid item className={classes.controls}>
+							<Button disabled={!broadcastContext} variant="contained" color="primary" onClick={handleBroadcast}>
+								Broadcast Context
+							</Button>
+						</Grid>
+						<Grid item className={classes.controls}>
+							<Tooltip title="Copy code example" aria-label="Copy code example">
+								<IconButton
+									size="small"
+									aria-label="Copy code example"
+									color="primary"
+									onClick={copyToClipboard(codeExamples.broadcast, "broadcast")}
+								>
+									<FileCopyIcon />
+								</IconButton>
+							</Tooltip>
+						</Grid>
+					</Grid>
+				</Grid>
+				<div className={classes.border}></div>
+
+				<ContextLinking />
+			</Grid>
 		</div>
 	);
 });

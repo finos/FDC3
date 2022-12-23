@@ -52,16 +52,22 @@ export const Header = (props: { fdc3Available: boolean }) => {
 			try {
 				let implInfo = fdc3.getInfo();
 				let displayInfo = {
-					fdc3Version: "not specified", 
-					provider: "not specified", 
-					providerVersion: "not specified"
+					fdc3Version: "not specified",
+					provider: "not specified",
+					providerVersion: "not specified",
 				};
-				if (implInfo.fdc3Version) {displayInfo.fdc3Version = implInfo.fdc3Version; } 
-				if (implInfo.provider) {displayInfo.provider = implInfo.provider; } 
-				if (implInfo.providerVersion) {displayInfo.providerVersion = implInfo.providerVersion; } 
+				if (implInfo.fdc3Version) {
+					displayInfo.fdc3Version = implInfo.fdc3Version;
+				}
+				if (implInfo.provider) {
+					displayInfo.provider = implInfo.provider;
+				}
+				if (implInfo.providerVersion) {
+					displayInfo.providerVersion = implInfo.providerVersion;
+				}
 				setAppInfo(displayInfo);
 			} catch (e) {
-				console.error("Failed to retrieve FDC3 implementation info",e);
+				console.error("Failed to retrieve FDC3 implementation info", e);
 			}
 		}
 	}, [props.fdc3Available]);

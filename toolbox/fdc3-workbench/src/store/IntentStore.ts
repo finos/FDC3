@@ -101,7 +101,7 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntent(intent: string, context: ContextType, app?: TargetApp ) {
+	async raiseIntent(intent: string, context: ContextType, app?: TargetApp) {
 		if (!context) {
 			systemLogStore.addLog({
 				name: "raiseIntent",
@@ -137,7 +137,7 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntentForContext(context: ContextType, app?: TargetApp ) {
+	async raiseIntentForContext(context: ContextType, app?: TargetApp) {
 		if (!context) {
 			systemLogStore.addLog({
 				name: "raiseIntentForContext",
