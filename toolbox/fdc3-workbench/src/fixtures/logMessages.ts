@@ -70,11 +70,11 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 		},
 		receivedAppContextListener: {
 			info: `${value}`,
-			error: `${value}`
+			error: `${value}`,
 		},
 		addAppContextListener: {
 			info: `${value}`,
-			error: `${value}`
+			error: `${value}`,
 		},
 		receivedIntentListener: {
 			info: `Received context via '[${value}]' listener.`,
