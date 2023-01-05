@@ -119,7 +119,7 @@ export const Intents = observer(() => {
 	};
 
 	const handleChangeListener =
-		(setValue: ListenerSetValue, setError: ListenerSetError) => (event: React.ChangeEvent<{}>, newValue: any) => {
+		(setValue: ListenerSetValue, setError: ListenerSetError) => (event: React.ChangeEvent<unknown>, newValue: any) => {
 			if (typeof newValue === "string") {
 				setValue({
 					title: newValue,

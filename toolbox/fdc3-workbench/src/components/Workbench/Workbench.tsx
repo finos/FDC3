@@ -47,7 +47,7 @@ export const Workbench = observer(() => {
 	const classes = useStyles();
 	const [tabValue, setTabValue] = useState<number>(0);
 
-	const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+	const handleTabChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
 		setTabValue(newValue);
 	};
 

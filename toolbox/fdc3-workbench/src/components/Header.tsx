@@ -50,8 +50,8 @@ export const Header = (props: { fdc3Available: boolean }) => {
 		if (props.fdc3Available) {
 			//getInfo is not available in FDC3 < v1.2, handle any errors thrown when trying to use it
 			try {
-				let implInfo = fdc3.getInfo();
-				let displayInfo = {
+				const implInfo = fdc3.getInfo();
+				const displayInfo = {
 					fdc3Version: "not specified",
 					provider: "not specified",
 					providerVersion: "not specified",

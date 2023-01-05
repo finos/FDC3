@@ -67,7 +67,7 @@ class ContextStore {
 	async broadcast() {
 		if (this.currentContext) {
 			//check that we're on a channel
-			let currentChannel = await fdc3.getCurrentChannel();
+			const currentChannel = await fdc3.getCurrentChannel();
 			if (!currentChannel) {
 				systemLogStore.addLog({
 					name: "broadcast",

@@ -152,7 +152,7 @@ export const App = observer(() => {
 	const [openSnackbar, setOpenSnackbar] = useState(false);
 	const [tabIndex, setTabIndex] = useState(0);
 
-	const handleTabChange = (event: React.ChangeEvent<{}>, newIndex: number) => {
+	const handleTabChange = (event: React.ChangeEvent<unknown>, newIndex: number) => {
 		setTabIndex(newIndex);
 	};
 
