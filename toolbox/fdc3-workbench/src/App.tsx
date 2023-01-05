@@ -30,9 +30,9 @@ const mainTheme = createTheme({
 	},
 	props: {
 		MuiLink: {
-			underline: "hover"
-		}
-	}
+			underline: "hover",
+		},
+	},
 });
 
 mainTheme.typography.h4 = {
@@ -49,10 +49,10 @@ mainTheme.typography.h5 = {
 
 mainTheme.typography.body1 = {
 	fontSize: "1rem",
-    fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-    fontWeight: 400,
-    lineHeight: 1.5,
-    letterSpacing: "0.00938em",
+	fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+	fontWeight: 400,
+	lineHeight: 1.5,
+	letterSpacing: "0.00938em",
 	marginBlockStart: "10px",
 	marginBlockEnd: "10px",
 };
@@ -234,10 +234,10 @@ export const App = observer(() => {
 									<span className={classes.code}>window.fdc3</span>.
 								</Typography>
 								<Typography variant="body1">
-									For web applications to be FDC3-enabled, they need to run in the context of an 
-									agent that makes the FDC3 API available to the application. This desktop agent is 
-									also responsible for lauching and co-ordinating applications. It could be a browser 
-									extension, web app, or full-fledged desktop container framework.
+									For web applications to be FDC3-enabled, they need to run in the context of an agent that makes the
+									FDC3 API available to the application. This desktop agent is also responsible for lauching and
+									co-ordinating applications. It could be a browser extension, web app, or full-fledged desktop
+									container framework.
 								</Typography>
 								<Typography variant="body1">
 									See the FDC3 standard documentation for details on{" "}
@@ -246,16 +246,17 @@ export const App = observer(() => {
 										href="https://fdc3.finos.org/docs/supported-platforms"
 										onClick={openSupportedPlatformsDocs}
 									>
-									supported platforms
-									</Link>
-									{" "}and{" "}
+										supported platforms
+									</Link>{" "}
+									and{" "}
 									<Link
 										className={classes.link}
 										href="https://fdc3.finos.org/docs/api/spec#api-access"
 										onClick={openSpecAccessDocs}
 									>
 										accessing the FDC3 API
-									</Link>.
+									</Link>
+									.
 								</Typography>
 							</Paper>
 						</Grid>
