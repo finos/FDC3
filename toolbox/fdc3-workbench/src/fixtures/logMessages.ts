@@ -6,7 +6,7 @@ type LogMessages = {
 	};
 };
 
-export const getLogMessage = (name: logMessagesName, type: logMessagesType, value: string = ""): string => {
+export const getLogMessage = (name: logMessagesName, type: logMessagesType, value = ""): string => {
 	const logMessages: LogMessages = {
 		getFdc3: {
 			error: `The FDC3 API is not ready${value ? ` (${value})` : ""}`,

@@ -107,7 +107,7 @@ export const ContextCreate = observer(() => {
 	};
 
 	// TODO: save template that was setup without template name
-	const handleChangeTemplate = (event: React.ChangeEvent<{}>, newValue: any) => {
+	const handleChangeTemplate = (event: React.ChangeEvent<unknown>, newValue: any) => {
 		setTemplateName(newValue);
 
 		if (newValue?.value) {

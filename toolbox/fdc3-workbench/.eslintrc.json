@@ -5,7 +5,7 @@
 		"es6": true,
 		"commonjs": true
 	},
-	"extends": ["plugin:react/recommended", "prettier"],
+	"extends": ["plugin:react/recommended", "prettier", "plugin:@typescript-eslint/recommended"],
 	"settings": {
 		"react": {
 			"version": "detect"
@@ -23,6 +23,7 @@
 	},
 	"plugins": ["react", "import", "@typescript-eslint"],
 	"rules": {
+		"@typescript-eslint/ban-types": 0,
 		"react/jsx-uses-vars": 2,
 		"class-methods-use-this": 0,
 		"no-plusplus": 0,
