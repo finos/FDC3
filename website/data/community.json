@@ -346,5 +346,15 @@
       "type": "application-provider",
       "badges": [],
       "description": "<p>NexJ’s Integrated Advisor Desktop acts as a hub connecting best-of-breed solutions to deliver a superior seamless advisor experience that improves productivity, accelerates client acquisition, increases client retention and maximizes relationships. It contains all information about each client and household and integrates to other systems, allowing advisors to complete processes without logging into multiple applications and switching contexts.</p>"
+    },
+    {
+    "title": "FactSet",
+        "publisher": "FactSet",
+        "image": "/img/users/FactSet.png",
+        "infoLink": "https://www.factset.com",
+        "docsLink": "https://www.factset.com/solutions/data-solutions",
+        "description": "FactSet delivers financial data, analytics, and open technology in a digital platform to help approximately 180,000 users see more, think bigger, and do their best work. We empower the financial community to acquire new insights with access to comprehensive and contextualized content and multiply their effectiveness with flexible next-generation workflow solutions powered by innovative technologies. We meet our clients wherever they work and provide a platform built for seamless interoperability to enable users to create the desktop of their choice.",
+        "badges": [],
+        "type": "application-provider"
     }
 ]
