@@ -9,7 +9,6 @@ updates:
     directory: "/toolbox/fdc3-workbench/" # Location of package manifests
     schedule:
       interval: "daily"
-      time: "11:05"
     open-pull-requests-limit: 20
     ignore:
       - dependency-name: "@types/node"
