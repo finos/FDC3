@@ -7,11 +7,11 @@ _NB:  User Channels were called System Channels in FDC3 1.2.  The new terminolog
 
 | App | Step               |Details                                                                           |
 |-----|--------------------|----------------------------------------------------------------------------------|
-| A   | 1.  addContextListener |A adds an _untyped_ Context Listener, and checks that it can unsubscribe it.|
-| A   | 2. joinUserChannel     |A joins the first available user channel.|
-| B   | 3. joinUserChannel     |B joins the same channel as A. |
-| B   | 4. Broadcast          | B broadcasts some `fdc3.instrument` context to the channel. |
-| A   | 5.  Receive Context    | A receives the instrument object, matching the one broadcast by B.  |
+| A   | 1.addContextListener |A adds an _untyped_ Context Listener, and checks that it can unsubscribe it.|
+| A   | 2.joinUserChannel     |A joins the first available user channel.|
+| B   | 3.joinUserChannel     |B joins the same channel as A. |
+| B   | 4.Broadcast          | B broadcasts some `fdc3.instrument` context to the channel. |
+| A   | 5.Receive Context    | A receives the instrument object, matching the one broadcast by B.  |
 
 - `UCBasicUsage1` Perform above test 
 - `UCBasicUsage2` Perform steps in order: 2,1,3,4,5
@@ -22,11 +22,11 @@ _NB:  User Channels were called System Channels in FDC3 1.2.  The new terminolog
 
 | App | Step               |Details                                                                           |
 |-----|--------------------|----------------------------------------------------------------------------------|
-| A   | 1.  addContextListener |A adds a `fdc3.instrument` _typed_ Context Listener, and checks that it can unsubscribe it.|
-| A   | 2. joinUserChannel     |A joins the first available user channel.|
-| B   | 3. joinUserChannel     |B joins the same channel as A. |
-| B   | 4. Broadcast          | B broadcasts some `fdc3.instrument` context to the channel. |
-| A   | 5.  Receive Context    | A receives the instrument object, matching the one broadcast by B.  |
+| A   | 1.addContextListener |A adds a `fdc3.instrument` _typed_ Context Listener, and checks that it can unsubscribe it.|
+| A   | 2.joinUserChannel     |A joins the first available user channel.|
+| B   | 3.joinUserChannel     |B joins the same channel as A. |
+| B   | 4.Broadcast          | B broadcasts some `fdc3.instrument` context to the channel. |
+| A   | 5.Receive Context    | A receives the instrument object, matching the one broadcast by B.  |
 
 - `UCFilteredUsage1` Perform above test 
 - `UCFilteredUsage2` Perform steps in order: 2,1,3,4,5
@@ -37,11 +37,11 @@ _NB:  User Channels were called System Channels in FDC3 1.2.  The new terminolog
 
 | App | Step               | Details                                                                                                     |
 |-----|--------------------|-------------------------------------------------------------------------------------------------------------|
-| A   | 1. addContextListeners | A sets up two Context Listeners.  One for `fdc3.instrument` and one for `fdc3.contact`.  <br/> Both should be unsubscribable.    |
-| A   | 2. joinUserChannel     |A joins the first available user channel.|
-| B   | 3. joinUserChannel     |B joins the same channel as A. |
-| B   | 4. Broadcast          | B broadcasts an `fdc3.instrument` and an `fdc3.context`.                   |
-| A   | 5. Receive Context    | A's `fdc3.instrument` object matches the one broadcast by B, and arrives on the correct listener.<br>A's `fdc3.context` object matches the one broadcast  by B, and arrives on the correct listener.   |
+| A   | 1.addContextListeners | A sets up two Context Listeners.  One for `fdc3.instrument` and one for `fdc3.contact`.  <br/> Both should be unsubscribable.    |
+| A   | 2.joinUserChannel     |A joins the first available user channel.|
+| B   | 3.joinUserChannel     |B joins the same channel as A. |
+| B   | 4.Broadcast          | B broadcasts an `fdc3.instrument` and an `fdc3.context`.                   |
+| A   | 5.Receive Context    | A's `fdc3.instrument` object matches the one broadcast by B, and arrives on the correct listener.<br>A's `fdc3.context` object matches the one broadcast  by B, and arrives on the correct listener.   |
 
  - `UCFilteredUsage5`: Perform above test
  - `UCFilteredUsage6`: Perform above test, except B will join a _different_ channel to A. Check that you _don't_ receive anything.
