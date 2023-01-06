@@ -237,4 +237,4 @@ Finally, please note that this is a larger set of apps than were required for 1.
 | Test   | 15. Disconnect | Test should (again) confirm receipt of the expected context objects, in the expected order, broadcast by K. It should then disconnect from the channel with [`privChan.disconnect().`](https://fdc3.finos.org/docs/api/ref/PrivateChannel#disconnect) |
 | K       | 16. Receive events & cleanup | The `onUnsubscribe` handler added in step 5 should (again) fire after Test calls `privChan.disconnect()`. Subsequently, the `onDisconect` handler also added in step 5 should fire. Once it has, K can unsubscribe its listeners, indicate to the test runner that all steps were completed and close. |
 
-- `2.0-PrivateChannelsLifecycleEvents`: Perform the above test**
+- `2.0-PrivateChannelsLifecycleEvents`: Perform the above test
