@@ -48,7 +48,7 @@
 | App | Step            | Description                                                                                                                   |
 |-----|-----------------|-------------------------------------------------------------------------------------------------------------------------------|
 | A   | 1. Opening App     | A opens B, sending an `fdc3.instrument` as context information    |
-| B   | 2. Context present | B opens and adds two context listeners:  first, a generic one, then second, a specific one for the `fdc3.instrument` context type.  Only the first listener will receive the `fdc3.instrument`    |
+| B   | 2. Context present | B opens and adds two context listeners:  first, a generic one, then second, a specific one for the `fdc3.instrument` context type.  <br/>Only the first listener will receive the `fdc3.instrument`    |
 
 -  `AOpensBMultipleListen`:  The correct (first) context listener should receive the context, and the promise resolves successfully in **A**.
 

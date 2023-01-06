@@ -1,21 +1,5 @@
 # FDC3 2.0 Conformance Test Cases
 
-## 1. Basic Tests
-
-_These are some basic sanity tests implemented in the FDC3 Conformance Framework.  It is expected that Desktop Agent testers will run these first before commencing the much more thorough tests in section 2 onwards._
-
-- `2.0-BasicCL1`: You can call the `fdc3.addContextListener` with the `fdc3.contact` context type. The returned promise's listener object has an `ubsubscribe` function.
-- `2.0-BasicCL2`: You can call the `fdc3.addContextListener` with a `null` context type. The returned promise's listener object has an `unsubscribe` function.
-- `2.0-BasicIL1`: You can call the `fdc3.addIntentListener` on the `DesktopAgent` for an intent, and get back promise resolving a `Listener` object with `unsubscribe` method.
-- `2.0-BasicCH1`: A call to `fdc3.getCurrentChannel()` on the `DesktopAgent` always returns a promise, resolving to either a `Channel` or `null`.
-- `2.0-BasicCH2`: A call to `fdc3.getCurrentChannel()` returns a promise resolving to _null_ if called prior to any `joinChannel`.
-- `2.0-BasicGI1`: A call to `fdc3.getInfo()` returns a promise resolving to an `ImplementationMetadata` object with `fdc3Version` and `provider` properties.
-- `2.0-BasicAC1`: A call to `fdc3.getOrCreateChannel(<name>)` will return a promise resolving an object matching the `Channel` interface, with properties of `id`, `type`, `broadcast`, `getCurrentContext` and `addContextListener`.
-- `2.0-BasicUC1`: You can call the `fdc3.getUserChannels()` function and receive a promise resolving an array of more than 1 `Channel` objects, each with type and id set.
-- `2.0-BasicJC1`: You can call `fdc3.joinUserChannel()`, passing in the `id` of one of the system channels.  After the returned promise is resolved, `fdc3.getCurrentChannel()` should then return a promise resolving to the joined `Channel`.
-- `2.0-BasicLC1`: You can call `fdc3.leaveCurrentChannel()` at any time without an exception being thrown.
-- `2.0-BasicRI1`: You can call `fdc3.raiseIntentForContext()`, passing in a context object with some `type` field.  
-
 ## 2. User Channels
 
 ### Broadcast (Basic)
@@ -112,44 +96,6 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 - `2.0-ACContextHistoryTyped`: Perform above test.
 - `2.0-ACContextHistoryMultiple`: **B** Broadcasts multiple history items of both types.  Only the last version of each type is received by **A**.
 - `2.0-ACContextHistoryLast`: **A** calls testChannel.getCurrentContext() retrieves the last broadcast context item
-
-## 4. Open API
-
-### A Opens B
-
-| App | Step            | Description                                              |
-|-----|-----------------|----------------------------------------------------------|
-| A   | 1. Opening App     |`let appIdentifier = await fdc3.open({appId: “<app B ID>”})`   |
-| B   | 2. B opens and retrieves own metadata | `const implementationMetadata = await fdc3.getInfo();`<br>`const {appId, instanceId} = implementationMetadata.appMetadata;`<br>Confirm appId matches what was opened |
-
-- `2.0-AOpensB1`:  Run above test
-- **Note** there were many more variations in FDC3 1.2 but 2.0 standardizes on this one signature (that is now async with a return type)
-
-### A Fails To Open B
-
-- `2.0-AFailsToOpenB1`:  Run the above test again with a non-existent app name/app id.  Should return an error with message “App Not Found” Error from https://fdc3.finos.org/docs/api/ref/Errors#openerror
-
-### A Opens B With Context
-
-| App | Step            | Description                                              |
-|-----|-----------------|----------------------------------------------------------|
-| A   | 1. Opening App     | Open method as in `AOpensB1` except with a `<context>` argument of type `fdc3.instrument` <br>check app opens    |
-| B   | 2. Context present | `fdc3.addContextListener(null, handler)`<br>- receives `<context>` from **A** with type `fdc3.instrument` |
-
-- `2.0-AOpensBWithContext`: Perform above test
-- `2.0-AOpensBWithSpecificContext`: Perform above but replace **B**s call with `fdc3.addContextListener('fdc3.instrument', handler)`
-- `2.0-AOpensBMultipleListen`:  Perform `AOpensBWithSpecificContext` but **B** should perform an additional `fdc3.addContextListener('fdc3.contact', handler)` prior to the existing `addContextListener` for `fdc3.instrument`.  The correct context listener should receive the context, and the promise completes successfully. 
-
-### Specific Context
-
-| App | Step            | Description                                                                                                                   |
-|-----|-----------------|-------------------------------------------------------------------------------------------------------------------------------|
-| A   | 1. Opening App     | Open method as in `AOpensBWithContext` but pass a context type that app B is NOT going to add a listener for (including NOT adding a listener for type `null`)                                                                |
-| B   | 2. Context not received | App B calls `fdc3.addContextListener(type, handler)` for the type's it is listening for but NOT for the type A is sending in this case. Confirm that NO context is received.                         |
-| A   | 3. Promise         | Receives a rejection from the open promise with `AppTimeout` from <br>https://fdc3.finos.org/docs/api/ref/Errors#openerror |
-
-- `2.0-AOpensBWithWrongContext`: Perform above test
-- `2.0-AOpensBNoListen`: Skip `fdc3.addContextListener()` above (i.e. no listener was added).  `AppTimeout` should still occur as in 3. 
 
 ## 5. Metadata & Instance Test Cases
 

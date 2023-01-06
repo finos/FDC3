@@ -8,7 +8,8 @@ There are currently 5 sections to this.  Where tests apply to a particular versi
 
 - [Basic Tests](Basic-Tests.md)
 - [Open Tests](Open-Tests.md)
-- [Channel Tests](Channel-Tests.md)
+- [User Channel Tests](User-Channel-Tests.md)
+- [App Channel Tests](App-Channel-Tests.md)
 - [Intents Tests](Intents-Tests.md)
 - [Metadata Tests](Metadata-Tests.md)
 
