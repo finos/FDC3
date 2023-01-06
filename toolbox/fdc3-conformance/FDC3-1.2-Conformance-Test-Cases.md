@@ -1,59 +1,6 @@
 # FDC3 1.2 Conformance Test Cases
 .
 
-## 3. App Channels 
-
-### App Channels Broadcast (Basic)
-
-
-| App | Step               | Details                                                                                                                                                        |
-|-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | 1. createChannel        |`const testChannel = await fdc3.getOrCreateChannel("test-channel")`       |
-| A   | 2. addContextListener |Call `testChannel.addContextListener(null, handler)`<br>Check listener object returned<br>Check that there is an `unsubscribe` function on the returned object  |
-| B   | 3. createChannel        | `const testChannel = fdc3.getOrCreateChannel("test-channel")`   |
-| B   | 4. Broadcast          | `testChannel.broadcast(<some instrument>)`   |
-| A   | 5. Receive Context    | Instrument object matches the one broadcast in 4 above.      |
-
--  `ACBasicUsage1` Perform above test 
-
-| App | Step               | Details                                                                                                                                                        |
-|-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| B   | 1. createChannel        | `const testChannel = await fdc3.getOrCreateChannel("test-channel")`   |
-| B   | 2. Broadcast          | `testChannel.broadcast(<some instrument>)`   |
-| A   | 3. createChannel        |`const testChannel = await fdc3.getOrCreateChannel("test-channel")`       |
-| A   | 4. getCurrentContext |Call `testChannel.getCurrentContext()`<br>Check that the Context object returned is of the expected type.  |
-
--  `ACBasicUsage2` Perform above test.
-
-### App Channels Broadcast (Filtered Context)
-
-| App | Step               | Details                                                                                                                                                              |
-|-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | 1. createChannel        |`const testChannel = await fdc3.getOrCreateChannel("test-channel")`       |
-| A   | 2. addContextListener | Call `testChannel.addContextListener("fdc3.instrument", handler)`<br>Check listener object returned<br>Check that there is an `unsubscribe` function on the returned object |
-| B   | 3. createChannel        | `const testChannel = await fdc3. getOrCreateChannel("test-channel")`   |
-| B   | 4. Broadcast          | `testChannel.broadcast()` the instrument context.<br>`testChannel.broadcast()` a contact context. |
-| A   | 5. Receive Context    | Instrument object matches the one broadcast in 4 above.<br>Check that the contact is not received.                                                                   |
-
--  `ACFilteredContext1`: Perform above test 
--  `ACFilteredContext2`: Perform above test, but add listeners for both `fdc3.instrument` and `fdc3.contact` in `addContextListener` step.  Both should be received. 
--  `ACFilteredContext3`: Perform above test, except creating a _different_ channel in app B. Check that you _don't_ receive anything (as the channels don't match).
--  `ACUnsubscribe`: Perform above test, except that after creating the channel **A** then `unsubscribe()`s the listener it added to the channel. Check that **A** _doesn't_ receive anything.
--  `ACFilteredContext4`: Perform above test, except that after creating the channel **A** creates another channel with a further _different_ channel id and adds a further context listener to it.  Check that **A** is still able to receive context on the first channel (i.e. it is unaffected by the additional channel) and does *NOT* receive anything on the second channel.
-
-### App Channel History
-
-| App | Step               | Details                                                                                                                                                              |
-|-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | 1. createChannel        |`fdc3.getOrCreateChannel("test-channel")`       |
-| B   | 2. createChannel        | `fdc3.getOrCreateChannel("test-channel")`   |
-| B   | 3. Broadcast          | `testChannel.broadcast()` the instrument context.<br>`testChannel.broadcast()` a contact context. |
-| A   | 4. Receive Context    | `testChannel.getCurrentContext('fdc3.instrument')` returns the last broadcast instrument<br>`testChannel.getCurrentContext('fdc3.contact')` returns the last broadcast contact                                                              |
-
--  `ACContextHistoryTyped`: Perform above test.
--  `ACContextHistoryMultiple`: **B** Broadcasts multiple history items of both types.  Only the last version of each type is received by **A**.
--  `ACContextHistoryLast`: **A** calls `testChannel.getCurrentContext()` retrieves the last broadcast context item
-
 ## 5. Intents
 
 ### Setup
