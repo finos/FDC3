@@ -38,7 +38,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | Test   | 3.FindInstances    | Retrieve details of open instances with the `findInstances` function, confirm that both `appIdentifier1` and `appIdentifier2` are both present in the array.  |
 | Test   | 4.RaiseIntent   | Use appIdentifier1 to raise an intent and target that instance. |
 | Test   | 5.Confirm1 | Check that `resolution.source` matches `appIdentifier1` |
-| A | 6. ConfirmReceipt | Ensure that the instance of app A represented by `appIdentifier1` received the raised intent |
+| A | 6.ConfirmReceipt | Ensure that the instance of app A represented by `appIdentifier1` received the raised intent |
 
 - `FindInstances`: Perform the above steps
 
