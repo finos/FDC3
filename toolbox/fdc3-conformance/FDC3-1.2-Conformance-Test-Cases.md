@@ -1,45 +1,5 @@
 # FDC3 1.2 Conformance Test Cases
-
-## 2. System / User Channels 
-
-### User Channels Broadcast (Basic)
-
-| App | Step               | Details                                                                                                                                                        |
-|-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | 1. addContextListener |Call `fdc3.addContextListener(null, handler)`<br>Check listener object returned<br>Check that there is an `unsubscribe` function on the returned object  |
-| A   | 2. joinChannel        |`fdc3.getSystemChannels()`<br>Check channels are returned.<br>Call `fdc3.joinChannel()` on first non-global channel                                      |
-| B   | 3. joinChannel        | `fdc3.getSystemChannels()`<br>Check channels are returned.<br>Call `fdc3.joinChannel()` on first non-global channel                                      |
-| B   | 4. Broadcast          | `fdc3.broadcast(<some instrument>)`                                                                   |
-| A   | 5. Receive Context    | Instrument object matches the one broadcast in 4 above.                                                      |
-
--  `UC Basic Usage 1` Perform above test 
--  `UC Basic Usage 2` Perform above test, but join channel first and then `fdc3.addContextListener()`
--  `UC Basic Usage 3` Do the app B steps first to populate the channel with context, check that A will receive the context after joining
-
-### User Channels Broadcast (Filtered Context)
-
-| App | Step               | Details                                                                                                                                                              |
-|-----|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | 1. addContextListener | Call `fdc3.addContextListener("fdc3.instrument", handler)`<br>Check listener object returned<br>Check that there is an `unsubscribe` function on the returned object |
-| A   | 2. joinChannel        | `fdc3.getSystemChannels()`<br>Check channels are returned.<br>Call `fdc3.joinChannel()` on first non-global channel                                                  |
-| B   | 3. joinChannel        | `fdc3.getSystemChannels()`<br>Check channels are returned.<br>Call `fdc3.joinChannel()` on first non-global channel                                                  |
-| B   | 4. Broadcast          | `fdc3.broadcast()` the instrument context.<br>`fdc3.broadcast()` a contact context.                                                                                  |
-| A   | 5. Receive Context    | Instrument object matches the one broadcast in 4 above.<br>Check that the contact is not received.                                                                   |
-
--  `UCFilteredContext1`: Perform above test 
-
-| App | Step               | Details                                                                                                                                                              |
-|-----|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | 1. addContextListener | Call `addContextListener (“fdc3.instrument”, handler)`<br>Check listener object returned<br>Check that there is an unsubscribe function on the returned object<br>Call `addContextListener (“fdc3.contact”, handler)`<br>Check listener object returned<br>Check that there is an unsubscribe function on the returned object                                                                                                                                                                                   |
-| A   | 2. joinChannel        | `fdc3.getSystemChannels()`<br>Check channels are returned.<br>Call `fdc3.joinChannel()` on first non-global channel. Check that there is an unsubscribe function on the returned object                                                                                                                                                                                                                                                                                |
-| B   | 3. joinChannel        | `fdc3.getSystemChannels()`<br>Check channels are returned.<br>Call `fdc3.joinChannel()` on first non-global channel                                                                                                                                                                                                                               |
-| B   | 4. Broadcast          | `fdc3.broadcast()` the instrument context.<br>`fdc3.broadcast()` a contact context.                                                                                                                                                                                                                                                               |
-| A   | 5. Receive Context    | Instrument object matches the one broadcast in 4 above.<br>Contact object matches the one broadcast in 4 above.          |
-
--  `UCFilteredContext2`: Perform above test
--  `UCFilteredContext3`: Perform above test, except joining a _different_ channel. Check that you _don't_ receive anything.
--  `UCUnsubscribe`: Perform above test, except that after joining, **A** then `unsubscribe()`s the context listener. Check that **A** _doesn't_ receive anything.
--  `UCFilteredContext4`: Perform above test, except that after joining, **A** changes channel with a further _different_ channel.  Check that **A** _doesn't_ receive anything.
+.
 
 ## 3. App Channels 
 
