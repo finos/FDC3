@@ -27,13 +27,13 @@
 
 | App | Step            | Description                                              |
 |-----|-----------------|----------------------------------------------------------|
-| A   | 1. Opening App     | various open methods as in `AOpensB1-3` except with a `<context>` argument of type `fdc3.instrument` <br>check app opens    |
-| B   | 2. Context present | `fdc3.addContextListener()`<br>- receives `<context>` from **A** |
+| A   | 1. Opening App     |App A opens app B with an `fdc3.instrument` context data item |
+| B   | 2. Context present | After adding an untyped context listener, B receives a matching piece of context data from A |
 
-- `AOpensBWithContext1`:  **A** calls `fdc3.open(‘app B Name', ctx)`, check app **B** opens
-- `AOpensBWithContext2`:  **A** calls `fdc3.open({name: “<app B Name>”}, ctx)`, check app **B** opens
-- `AOpensBWithContext3`:  **A** calls `fdc3.open({name: “<app B Name>”, appId: “<app B ID>”}, ctx)`, check app **B** opens
-- `AOpensBWithSpecificContext1`: Perform `AOpensB1WithContext1` above but replace **B**s call with `fdc3.addContextListener('fdc3.testReceiver`)`
+- `AOpensBWithContext1`:  **A** uses `fdc3.open(‘app B Name', ctx)` ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+- `AOpensBWithContext2`:  **A** calls `fdc3.open({name: “<app B Name>”}, ctx)` ![1.2](https://img.shields.io/badge/FDC3-1.2-green)
+- `AOpensBWithContext3`:  **A** calls `fdc3.open({name: “<app B Name>”, appId: “<app B ID>”}, ctx)` ![1.2](https://img.shields.io/badge/FDC3-1.2-green)
+- `AOpensBWithSpecificContext1`: Perform `AOpensB1WithContext1` but this time using a context listener with a type matching `fdc3.instrument`.  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
 
 
 ### Specific Context
