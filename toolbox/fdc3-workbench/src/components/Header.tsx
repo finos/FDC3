@@ -69,10 +69,8 @@ export const Header = (props: { fdc3Available: boolean }) => {
 	const classes = useStyles();
 	const [appInfo, setAppInfo] = useState<any>();
 	const params = new URLSearchParams(window.location.search);
-	const paramVersion = params.get("fdc3Version") || "";
-	const [chosenVersion, setChosenVersion] = useState<string>(
-		Number(appInfo?.providerVersion.slice(0, 3)) > 8.2 ? "2.0" : "1.2"
-	);
+	const paramVersion = params.get("fdc3Version") || '';
+	const [chosenVersion, setChosenVersion] = useState<string>();
 	let warningText = `Your FDC3 version (${appInfo?.fdc3Version}) doesn't match the version of the FDC3 Workbench you are using (${chosenVersion})`;
 	const supportedVersion = ["2.0", "1.2"];
 
@@ -80,9 +78,9 @@ export const Header = (props: { fdc3Available: boolean }) => {
 		if (props.fdc3Available) {
 			//getInfo is not available in FDC3 < v1.2, handle any errors thrown when trying to use it
 			const updateInfo = async () => {
+				let implInfo: ImplementationMetadata | null = null;
 				try {
-					let implInfo: ImplementationMetadata = await fdc3.getInfo();
-					if (paramVersion) setChosenVersion(paramVersion);
+					implInfo = await fdc3.getInfo();
 					let displayInfo = {
 						fdc3Version: "not specified",
 						provider: "not specified",
@@ -109,10 +107,18 @@ export const Header = (props: { fdc3Available: boolean }) => {
 							version: implInfo.appMetadata.version ? implInfo.appMetadata.version : "not specified",
 						};
 					}
-
-					setAppInfo(displayInfo);
+		
+					setAppInfo(displayInfo);		
 				} catch (e) {
 					console.error("Failed to retrieve FDC3 implementation info", e);
+				}
+
+				if(paramVersion) {
+					setChosenVersion(paramVersion);
+				} else if(implInfo?.fdc3Version) {
+					setChosenVersion(implInfo?.fdc3Version);
+				} else {
+					setChosenVersion("1.2");
 				}
 			};
 
