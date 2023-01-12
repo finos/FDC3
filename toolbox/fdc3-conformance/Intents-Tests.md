@@ -58,7 +58,7 @@ We assume 6 context types in the below tests (and associated AppD records):
 - `testContextZ`
 - `nonExistentContext` (context object with a unique type that doesn't appear in any of the apps (metadata or otherwise).
 - `privateChannelDetails`
-- `privateChannelisPrivateResult`
+- `privateChannelIsPrivateResult`
 
 These may be used in a test as a context object `{ "type": "<typeName>" }` or just the base type name.  Where the base type name is used it is surround with "quotes". If not wrapped in quotes assume it is an instance of that context type (generally just an object with a `type` field set to the type name - but occasionally with other data).
 
@@ -75,7 +75,7 @@ You will need to pre-populate the AppDirectory with the following items (some of
 | G   | Find Intent tests (never started)                     | `sharedTestingIntent2(testContextY)`                                                            | addIntentListener() for given intents                                       |
 | H   | Raise Intent (bad config/behavior)                    | `sharedTestingIntent2(testContextY) => testContextZ`                                            | - no action                                                                   |
 | I   | Raise Intent (bad config/behavior)                    | `sharedTestingIntent2(testContextY) => testContextZ`                                           | addIntentListener(‘MadeUpIntent’, handler)                          |
-| J   | PrivateChannels are private                           | `privateChannelIIsPrivate(privateChannelId) => privateChannelIsPrivateResult`                   | Tries to retrieve privateChannel sent in the privateChannelId context, fails |
+| J   | PrivateChannels are private                           | `privateChannelIsPrivate(privateChannelDetails) => privateChannelIsPrivateResult`                   | Tries to retrieve privateChannel sent in the privateChannelDetails context, fails |
 | K   | PrivateChannel lifecycle events                       | `kTestingIntent(testContextX) => channel<testContextZ>`                                         | addIntentListener() for given intents                                       |
 
 NB:
@@ -103,7 +103,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - `sharedTestingIntent2` (**D**)
   - `kTestingIntent` (**K**),
   - AND nothing else.
-- `2.0FindIntentByContextWrongIntentAppD`: Calls `fdc3.findIntentsByContext(nonExistentContext)`. Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror**
+- `2.0FindIntentByContextWrongIntentAppD`: Calls `fdc3.findIntentsByContext(nonExistentContext)`. Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
 
 ### Find Intents By Result Type
 
@@ -139,9 +139,9 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - You should receive a JavaScript Error with the message `ResolveError.NoAppsFound`.
 - `2.0-RaiseIntentFailTargetedAppResolve1`: Perform above test, but:
   - Use `fdc3.raiseIntent("aTestingIntent", testContextY, {appId: "<A's appId>"})`.
-  - You should receive a JavaScript Error with the message `ResolveError.NoAppsFound`.
+  - You should receive a JavaScript Error with the message `ResolveError.IntentDeliveryFailed`.
 - `2.0-RaiseIntentFailTargetedAppResolve2`: Perform above test, but:
-  - Use `fdc3.raiseIntent("aTestingIntent", testContextY, {appId: "NonExistentApp"})`.
+  - Use `fdc3.raiseIntent("aTestingIntent", testContextX, {appId: "NonExistentApp"})`.
   - You should receive a JavaScript Error with the message `ResolveError.TargetAppUnavailable`.
 - `2.0-RaiseIntentFailTargetedAppResolve3`: Perform above test, but:
   - Use `fdc3.raiseIntent("sharedTestingIntent2", testContextY, {appId: "<H's appId>"})`.
@@ -156,7 +156,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - Then use `fdc3.raiseIntent("aTestingIntent", testContextY, appIdentifier)` to target that instance.  
   - You should receive a JavaScript Error with the message `ResolveError.NoAppsFound` (since A doesn't support this context type).
 - `2.0-RaiseIntentFailTargetedAppInstanceResolve2`: Perform above test, but:
-  - Use `fdc3.raiseIntent("aTestingIntent", testContextY, {appId: "<A's appId>", instanceId "NonExistentInstanceId"})`.  
+  - Use `fdc3.raiseIntent("aTestingIntent", testContextX, {appId: "<A's appId>", instanceId "NonExistentInstanceId"})`.  
   - You should receive a JavaScript Error with the message `ResolveError.TargetInstanceUnavailable`.
 
 ### Raise Intent Result (void result)
@@ -216,8 +216,8 @@ Finally, please note that this is a larger set of apps than were required for 1.
 | Test   | 1. Create a private channel | Test creates a PrivateChannel with `const privChan = await fdc3.createPrivateChannel()`. Confirm that the Channel has an `id`.
 | Test   | 2. Confirm private channel `id` is unique | Test creates a second PrivateChannel with `const privChan = await fdc3.createPrivateChannel();`. Confirm that the Channel has an `id` and that it is distinct from the first channel created. |
 | Test   | 3. Retrieve as app channel | Attempt to retrieve the channels as App Channels with `const appChan = await fdc3.getOrCreateChannel(privChan.id)` this should fail with `ChannelError.AccessDenied`  |
-| Test   | 4. Raise Intent & await result | Start app J and pass it the id of the second PrivateChannel with `fdc3.raiseIntent("privateChanneliIsPrivate", privateChannelDetails)`, where the context object contains the id of the channel to attempt to retrieve. An IntentResolution should be returned and App J should start. Wait for a result to be returned via `await resolution.getResult()`.
-| J | 5. Receive Intent & Context | J should add an Intent Listener and receive the context with `fdc3.addIntentListener("privateChanneliIsPrivate", handler)` |
+| Test   | 4. Raise Intent & await result | Start app J and pass it the id of the second PrivateChannel with `fdc3.raiseIntent("privateChannelIsPrivate", privateChannelDetails)`, where the context object contains the id of the channel to attempt to retrieve. An IntentResolution should be returned and App J should start. Wait for a result to be returned via `await resolution.getResult()`.
+| J | 5. Receive Intent & Context | J should add an Intent Listener and receive the context with `fdc3.addIntentListener("privateChannelIsPrivate", handler)` |
 | J | 6. Retrieve as app channel | J should attempt to retrieve the channel as an App Channel by `id` with `const appChan = await fdc3.getOrCreateChannel("<idPassedInContext>")` this should fail with `ChannelError.AccessDenied`. Return a `privateChannelisPrivateResult` back to Test to complete the test. |
 | Test   | 7. Receive result | Test receives the result back from J and confirms that the test was passed. |
 
