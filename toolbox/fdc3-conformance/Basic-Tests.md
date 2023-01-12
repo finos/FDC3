@@ -17,4 +17,6 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
   - `fdc3.joinUserChannel()` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) 
 - `BasicJC2`: The application should be able to join a user/system channel with the channel's id (as in `BasicJC1`).  Having done this, current channel set for the application should be that channel.  Use `fdc3.getCurrentChannel()` to get the current channel.
 - `BasicLC1`: The application should be able to leave a channel it has joined using `fdc3.leaveCurrentChannel()`.
-- `BasicRI1`: The application should be able to raise an intent for some item of context by invoking `fdc3.raiseIntentForContext`.
+- `BasicRI1`: The application should be able to raise an intent for some item of context by invoking:
+  - `fdc3.raiseIntentForContext(context, name)`. ![1.2](https://img.shields.io/badge/FDC3-1.2-green) _deprecated_
+  - `fdc3.raiseIntentForContext(context)`. ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
