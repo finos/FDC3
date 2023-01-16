@@ -5,7 +5,7 @@
 | App | Step               | Details                                                                    |
 |-----|--------------------|----------------------------------------------------------------------------|
 | A   | 1.createChannel    |Get or create a user channel called `test-channel` using: <br/>`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
-| A   | 2.addContextListener |Add an _untyped_ context listener, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `const listener = await testChannel.addContextListener(null, handler)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener(null, handler)` |
+| A   | 2.addContextListener |Add an _untyped_ context listener, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener(null, handler)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener(null, handler)` |
 | B   | 3.createChannel      | Get or create the same named user channel as A- `test-channel`|
 | B   | 4.Broadcast          | Broadcast an `fdc3.instrument` to the channel with: <br/>`testChannel.broadcast(<some instrument>)`|
 | A   | 5.Receive Context    | Ensure that the instrument received by A is identical to that sent by B  |
@@ -28,7 +28,7 @@
 | App | Step               | Details                                                         |
 |-----|--------------------|-----------------------------------------------------------------|
 | A   | 1.createChannel   |Get or create a user channel called `test-channel` using: <br/>`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
-| A   | 2.addContextListener |Add an _typed_ context listener for `fdc3.instrument`, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `const listener = await testChannel.addContextListener("fdc3.instrument", handler)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener("fdc3.instrument", handler)`  <br>Check that there is an `unsubscribe` function on the listener |
+| A   | 2.addContextListener |Add an _typed_ context listener for `fdc3.instrument`, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener("fdc3.instrument", handler)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener("fdc3.instrument", handler)`  <br>Check that there is an `unsubscribe` function on the listener |
 | B   | 3.createChannel        | Get or create the same named user channel as A- `test-channel`|
 | B   | 4.Broadcast          | B broadcasts both the instrument context a contact context, using: <br /> `testChannel.broadcast(<instrument context>)` <br /> `testChannel.broadcast(<contact context>)`|
 | A   | 5.Receive Context    | Instrument object matches the one broadcast in 4 above.<br>Check that the contact is not received.                                                                   |
