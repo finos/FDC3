@@ -11,7 +11,7 @@ You will need to pre-populate the AppDirectory with the following items:
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1.getAppMetadata    | Retrieve metadata for the configured app A with `const metadata1 = fdc3.getAppMetadata({appId: "<A's appId>"})`  |
+| Test   | 1.getAppMetadata    | Retrieve metadata for the configured app A with <br/> `const metadata1 = fdc3.getAppMetadata({appId: "<A's appId>"})`  |
 | Test   | 2.Confirm    | Compare the `AppMetadata` object to the expected definition for the fields provided above during setup and ensure that the metadata matches. An `instanceId` should NOT be set  |
 
 - `GetAppMetadata`: perform the above steps
@@ -20,8 +20,8 @@ You will need to pre-populate the AppDirectory with the following items:
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1.Open1    | Open the first instance of App A using `const appIdentifier1 = await fdc3.open({appId: "<A's appId>"})` and retrieve its `AppIdentifier` with instance details.  |
-| Test   | 2.Open2    |Open a second instanceo of App A using `const appIdentifier2 = await fdc3.open({appId: "<A's appId>"})` and retrieve its `AppIdentifier` with instance details.  Confirm that the `instanceId` differs from the first instance.  |
+| Test   | 1.Open1    | Open the first instance of App A using <br/> `const appIdentifier1 = await fdc3.open({appId: "<A's appId>"})` <br/>and retrieve its `AppIdentifier` with instance details.  |
+| Test   | 2.Open2    |Open a second instanceo of App A using <br>`const appIdentifier2 = await fdc3.open({appId: "<A's appId>"})` <br/> and retrieve its `AppIdentifier` with instance details.  Confirm that the `instanceId` differs from the first instance.  |
 | Test   | 3.getAppMetadata1    | Retrieve metadata for the first instance of the app with `const metadata1 = fdc3.getAppMetadata(appIdentifier1)` |
 | Test   | 4.Confirm1 | Compare the `AppMetadata` object to the expected definition for the fields provided above during setup and ensure that the metadata matches.  An `instanceId` should be provided, confirm that it matches the one in `appIdentifier1`  |
 | Test   | 5.getAppMetadata2    | Retrieve metadata for the second instance of the app with `const metadata1 = fdc3.getAppMetadata(appIdentifier2)`  |
@@ -33,10 +33,10 @@ You will need to pre-populate the AppDirectory with the following items:
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1.Open1    |Start an instance of App A and retrieve its `AppIdentifier` with instance details.  |
-| Test   | 2.Open2 | Open a second instance of App A and retrieve its `AppIdentifier` with instance details.  Confirm that the `instanceId` differs from the first instance. |
+| Test   | 1.Open1    | Open the first instance of App A using <br/> `const appIdentifier1 = await fdc3.open({appId: "<A's appId>"})` <br/>and retrieve its `AppIdentifier` with instance details.  |
+| Test   | 2.Open2    |Open a second instanceo of App A using <br>`const appIdentifier2 = await fdc3.open({appId: "<A's appId>"})` <br/> and retrieve its `AppIdentifier` with instance details.  Confirm that the `instanceId` differs from the first instance.  |
 | Test   | 3.FindInstances    | Retrieve details of open instances with the `findInstances` function, confirm that both `appIdentifier1` and `appIdentifier2` are both present in the array.  |
-| Test   | 4.RaiseIntent   | Use appIdentifier1 to raise an intent and target that instance. |
+| Test   | 4.RaiseIntent   | Use `appIdentifier1` to raise an intent and target that instance, with<br/> `const resolution = fdc3.raiseIntent("aTestingIntent", {"type": "testContextX"}, appIdentifier1)` |
 | Test   | 5.Confirm1 | Check that `resolution.source` matches `appIdentifier1` |
 | A | 6.ConfirmReceipt | Ensure that the instance of app A represented by `appIdentifier1` received the raised intent |
 
