@@ -27,13 +27,13 @@
 | App | Step            | Description                                              |
 |-----|-----------------|----------------------------------------------------------|
 | A   | 1. Opening App     |App A opens app B with an `fdc3.instrument` context data item |
-| B   | 2. Context present | Add an untyped context listener via: <br/>`fdc3.addContextListener(null, handler)` <br />, B receives a matching piece of context data from A |
+| B   | 2. Context present | Add an untyped context listener via: <br/>`fdc3.addContextListener(null, handler)` <br /> B receives a matching piece of context data from A |
 
 - `AOpensBWithContext1`:  **A** uses `fdc3.open(‘app B Name', ctx)` ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
 - `AOpensBWithContext2`:  **A** uses `fdc3.open({name: “<app B Name>”}, ctx)` ![1.2](https://img.shields.io/badge/FDC3-1.2-green)
 - `AOpensBWithContext3`:  **A** uses `fdc3.open({name: “<app B Name>”, appId: “<app B ID>”}, ctx)` ![1.2](https://img.shields.io/badge/FDC3-1.2-green)
-- `AOpensBWithSpecificContext`: Perform above but replace **B**s call with `fdc3.addContextListener('fdc3.instrument', handler)`
-- `AOpensBMultipleListen`:  Perform `AOpensBWithSpecificContext` but **B** should perform an additional `fdc3.addContextListener('fdc3.contact', handler)` prior to the existing `addContextListener` for `fdc3.instrument`.  The correct context listener should receive the context, and the promise completes successfully. 
+- `AOpensBWithSpecificContext`: Perform above but replace **B**s call with `fdc3.addContextListener('fdc3.instrument', handler)` ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+- `AOpensBMultipleListen`:  Perform `AOpensBWithSpecificContext` but **B** should perform an additional `fdc3.addContextListener('fdc3.contact', handler)` prior to the existing `addContextListener` for `fdc3.instrument`.  The correct context listener should receive the context, and the promise completes successfully.  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
 
 
 ## Wrong Context ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
