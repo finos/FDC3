@@ -25,7 +25,11 @@ class Users extends React.Component {
     const membersToShowcase = siteConfig.users.filter(
       user => user.isMember,
     );
+
+    membersToShowcase.sort((a, b) => a.caption.localeCompare(b.caption))
+
     const othersToShowcase = siteConfig.users.filter(user => !user.isMember);
+    othersToShowcase.sort((a, b) => a.caption.localeCompare(b.caption))
 
     const showcase = siteConfig.users.map(user => (
       <a href={user.infoLink} key={user.infoLink}>
