@@ -11,7 +11,7 @@ You will need to pre-populate the AppDirectory with the following items:
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1.getAppMetadata    | Retrieve metadata for the configured app A  |
+| Test   | 1.getAppMetadata    | Retrieve metadata for the configured app A with `const metadata1 = fdc3.getAppMetadata({appId: "<A's appId>"})`  |
 | Test   | 2.Confirm    | Compare the `AppMetadata` object to the expected definition for the fields provided above during setup and ensure that the metadata matches. An `instanceId` should NOT be set  |
 
 - `GetAppMetadata`: perform the above steps
@@ -20,11 +20,11 @@ You will need to pre-populate the AppDirectory with the following items:
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1.Open1    | Open the first instance of App A using it's App ID and retrieve its `AppIdentifier` with instance details.  |
-| Test   | 2.Open2    |Open a second instanceo of App A and retrieve its `AppIdentifier` with instance details.  Confirm that the `instanceId` differs from the first instance.  |
-| Test   | 3.getAppMetadata1    | Retrieve metadata for the first instance of the app  |
+| Test   | 1.Open1    | Open the first instance of App A using `const appIdentifier1 = await fdc3.open({appId: "<A's appId>"})` and retrieve its `AppIdentifier` with instance details.  |
+| Test   | 2.Open2    |Open a second instanceo of App A using `const appIdentifier2 = await fdc3.open({appId: "<A's appId>"})` and retrieve its `AppIdentifier` with instance details.  Confirm that the `instanceId` differs from the first instance.  |
+| Test   | 3.getAppMetadata1    | Retrieve metadata for the first instance of the app with `const metadata1 = fdc3.getAppMetadata(appIdentifier1)` |
 | Test   | 4.Confirm1 | Compare the `AppMetadata` object to the expected definition for the fields provided above during setup and ensure that the metadata matches.  An `instanceId` should be provided, confirm that it matches the one in `appIdentifier1`  |
-| Test   | 5.getAppMetadata2    | Retrieve metadata for the second instance of the app  |
+| Test   | 5.getAppMetadata2    | Retrieve metadata for the second instance of the app with `const metadata1 = fdc3.getAppMetadata(appIdentifier2)`  |
 | Test   | 6.Confirm2    | An `instanceId` should be provided, confirm that it matches the one in `appIdentifier2`  |
 
 - `AppInstanceMetadata`: Perform the above steps
