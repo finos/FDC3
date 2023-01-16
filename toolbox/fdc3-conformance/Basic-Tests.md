@@ -16,7 +16,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
   - `fdc3.getUserChannels()` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
 - `BasicJC1`: The application should be able to join one of the user/system channels.  Having done so, the current channel should be set for the application.  
   - The channel is joined with:
-    - `fdc3.joinChannel(<channelId>)` ![1.2](https://img.shields.io/badge/FDC3-1.2-green) _deprecated_
+    - `fdc3.joinChannel(<channelId>)` ![1.2](https://img.shields.io/badge/FDC3-1.2-green)
     - `fdc3.joinUserChannel(<channelId>)` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
   - A `Channel` object representing the current channel is retrieved with:
     - `fdc3.getCurrentChannel()` 
