@@ -9,8 +9,8 @@ _NB:  User Channels were called System Channels in FDC3 1.2.  The new terminolog
 |-----|--------------------|----------------------------------------------------------------------------------|
 | A   | 1.addContextListener |A adds an _untyped_ Context Listene using `addContextListener(null, handler)`. <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) A `Listener` object is returned  <br />![2.0](https://img.shields.io/badge/FDC3-2.0-blue) A promise resolving a `Listener` object is returned <br />Check that this has an `unsubscribe` method. |
 | A   | 2.joinUserChannel     |A joins the first available user channel using: <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `getSystemChannels()`<br/>![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `getUserChannels()`<br/>Check channels are returned.<br/>Call `fdc3.joinChannel()` on the first non-global channel. |
-| B   | 3.joinUserChannel     |B joins the same channel as A. |
-| B   | 4.Broadcast          | B broadcasts some `fdc3.instrument` context to the channel. |
+| B   | 3.joinUserChannel     |B joins the same channel as A, via the same process in 2. |
+| B   | 4.Broadcast          | B broadcasts an `fdc3.instrument` context to the channel using<br/>`fdc3.broadcast(<the instrument>)` |
 | A   | 5.Receive Context    | A receives the instrument object, matching the one broadcast by B.  |
 
 - `UCBasicUsage1` Perform above test 
