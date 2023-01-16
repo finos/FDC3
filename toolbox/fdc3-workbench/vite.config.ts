@@ -1,14 +1,21 @@
-import { defineConfig } from "vite";
+import legacy from "@vitejs/plugin-legacy";
 import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [react()],
+	base: "/toolbox/fdc3-workbench",
+	build: { outDir: "build" },
 	define: {
 		"process.env": "import.meta.env",
+		"process.platform": "({})",
+		"global.process": "globalThis.process",
 	},
-	server: {
-		port: 3000,
-	},
-	build: { outDir: "build" },
+	plugins: [
+		react(),
+		legacy({
+			targets: ["defaults", "not IE 11"],
+		}),
+	],
+	server: { port: 3000 },
 });
