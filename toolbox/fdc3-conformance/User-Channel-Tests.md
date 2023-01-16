@@ -50,3 +50,14 @@ _NB:  User Channels were called System Channels in FDC3 1.2.  The new terminolog
  - `UCFilteredUsageLeave`: Perform above test, except that immediately after joining, **A** _leaves the channel_, and so receives nothing.
  - `UCFilteredUsageJoin`: Perform the above test except that **A** joins a different channel to **B**, and so receives nothing.
  - `UCFilteredUsageNoJoin`: Perform the above test, but skip step 2 so that **A** doesn't join a channel. Confirm that the _current channel_ for **A** is not set before continuing with the rest of the test.  **A** should receive nothing.
+
+
+## Joining The Right Channels
+
+| App | Step               | Details                                                                                                     |
+|-----|--------------------|-------------------------------------------------------------------------------------------------------------|
+| A   | 1.joinUserChannel     |A joins the first available user channel using: <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `getSystemChannels()` Check channels are returned. <br/>![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `getUserChannels()` Check **user** channels are returned.<br/>Call `fdc3.joinChannel()` on the **third** non-global channel.|
+| A   | 2.getCurrentChannel     |`fdc3.getCurrentChannel()` <br/> Check that the channel returned matches the one joined in step 1.|
+
+ - `UCFilteredUsageJoin`: Perform the above test.
+ - `UCFilteredUsageNoJoin`: Perform the above test, but skip the first step so that the app is not on a channel. Confirm that that `fdc3.getCurrentChannel()` returns null.
