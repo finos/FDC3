@@ -3,6 +3,7 @@ import * as fdc3 from "@finos/fdc3";
 import { nanoid } from "nanoid";
 import { contexts } from "../fixtures/contexts";
 import systemLogStore from "./SystemLogStore";
+import { v4 as uuidv4 } from "uuid";
 
 export type ContextType = {
 	type: string;
@@ -15,6 +16,7 @@ export type ContextType = {
 
 export type ContextItem = {
 	id: string;
+	uuid?: string; //used to determine if a duplicate id is for the same object or not
 	template: ContextType | null;
 	schemaUrl?: URL;
 };
@@ -38,34 +40,77 @@ class ContextStore {
 			contextsList: observable,
 			currentContext: observable,
 			contextListeners: observable,
-			createContext: action,
+			setContext: action,
+			deleteContextItem: action,
 			broadcast: action,
 			addContextItem: action,
 			saveContextItem: action,
 			addContextListener: action,
 			removeContextListener: action,
 		});
-	}
-
-	addContextItem(contextItem: ContextItem) {
-		this.contextsList.push(contextItem);
-		this.contextsList.sort((a, b) => (a.id > b.id ? 1 : -1));
-	}
-
-	saveContextItem(contextItem: ContextItem) {
-		const context = this.contextsList.find(({ id }) => id === contextItem.id);
-
-		if (context) {
-			context.template = contextItem.template;
+		const localStorageContextList = localStorage.getItem("contextList");
+		let usingDefaultContexts = true;
+		try {
+			if (localStorageContextList) {
+				const parsedListFromStorage = JSON.parse(localStorageContextList);
+				if (Array.isArray(parsedListFromStorage)) {
+					this.contextsList = parsedListFromStorage;
+					usingDefaultContexts = false;
+				}
+			}
+		} catch (err) {
+			console.log("Failed to parse context list from localstorage");
+		}
+		if (usingDefaultContexts) {
+			this.updateLocalStorage(JSON.stringify(contexts));
 		}
 	}
 
-	createContext(context: ContextType) {
+	addContextItem(contextItem: ContextItem) {
+		contextItem.uuid = uuidv4();
+		this.contextsList.push(contextItem);
+		this.contextsList.sort((a, b) => a.id.localeCompare(b.id));
+		this.updateLocalStorage(this.contextsList);
+	}
+
+	saveContextItem(contextItem: ContextItem, selectedId?: string) {
+		const context = this.contextsList.find(({ id }) => id === selectedId || id === contextItem.id);
+		if (context) {
+			Object.keys(contextItem).forEach(
+				(key: any) => ((context[key as keyof ContextItem] as any) = contextItem[key as keyof ContextItem])
+			);
+		}
+		this.updateLocalStorage(this.contextsList);
+	}
+
+	setContext(context: ContextType) {
 		this.currentContext = context;
 	}
 
-	async broadcast() {
-		if (this.currentContext) {
+	deleteContextItem(contextItem: ContextItem) {
+		this.contextsList = this.contextsList.filter((c) => c != contextItem);
+		this.updateLocalStorage(this.contextsList);
+	}
+
+	resetContextList() {
+		this.contextsList = contexts;
+		this.updateLocalStorage(this.contextsList);
+	}
+
+	updateLocalStorage(data: any) {
+		localStorage.setItem("contextList", JSON.stringify(data));
+	}
+
+	async broadcast(context: ContextType) {
+		if (!context) {
+			systemLogStore.addLog({
+				name: "broadcast",
+				type: "warning",
+				value: "You must set a context before you can broadcast it",
+				variant: "text",
+			});
+			return;
+		} else {
 			//check that we're on a channel
 			let currentChannel = await fdc3.getCurrentChannel();
 			if (!currentChannel) {
@@ -77,11 +122,11 @@ class ContextStore {
 				});
 			} else {
 				try {
-					await fdc3.broadcast(toJS(this.currentContext));
+					await fdc3.broadcast(toJS(context));
 					systemLogStore.addLog({
 						name: "broadcast",
 						type: "success",
-						body: JSON.stringify(this.currentContext, null, 4),
+						body: JSON.stringify(context, null, 4),
 						variant: "code",
 					});
 				} catch (e) {
@@ -93,48 +138,55 @@ class ContextStore {
 					});
 				}
 			}
-		} else {
-			systemLogStore.addLog({
-				name: "broadcast",
-				type: "warning",
-				value: "You must set a context before you can broadcast it",
-				variant: "text",
-			});
 		}
 	}
 
-	addContextListener(contextType: string) {
+	addContextListener(contextType: string | undefined) {
 		try {
-			const listenerId = nanoid();
+			if (typeof contextType === "string") {
+				const listenerId = nanoid();
 
-			// TODO: remove window after fixing https://github.com/finos/FDC3/issues/435
-			const contactListener = window.fdc3.addContextListener(contextType === "all" ? null : contextType, (context) => {
-				const currentListener = this.contextListeners.find(({ id }) => id === listenerId);
+				// TODO: remove window after fixing https://github.com/finos/FDC3/issues/435
+				const contactListener = window.fdc3.addContextListener(
+					contextType.toLowerCase() === "all" ? null : contextType,
+					(context) => {
+						const currentListener = this.contextListeners.find(({ id }) => id === listenerId);
+
+						runInAction(() => {
+							if (currentListener) {
+								currentListener.lastReceivedContext = context;
+							}
+						});
+
+						systemLogStore.addLog({
+							name: "receivedContextListener",
+							type: "info",
+							value: contextType,
+							variant: "code",
+							body: JSON.stringify(context, null, 4),
+						});
+					}
+				);
 
 				runInAction(() => {
-					if (currentListener) {
-						currentListener.lastReceivedContext = context;
-					}
+					systemLogStore.addLog({
+						name: "addContextListener",
+						type: "success",
+						value: contextType,
+						variant: "text",
+					});
+					this.contextListeners.push({ id: listenerId, type: contextType, listener: contactListener });
 				});
-
-				systemLogStore.addLog({
-					name: "receivedContextListener",
-					type: "info",
-					value: contextType,
-					variant: "code",
-					body: JSON.stringify(context, null, 4),
+			} else {
+				runInAction(() => {
+					systemLogStore.addLog({
+						name: "addContextListener",
+						type: "error",
+						value: contextType,
+						variant: "code",
+					});
 				});
-			});
-
-			runInAction(() => {
-				systemLogStore.addLog({
-					name: "addContextListener",
-					type: "success",
-					value: contextType,
-					variant: "text",
-				});
-				this.contextListeners.push({ id: listenerId, type: contextType, listener: contactListener });
-			});
+			}
 		} catch (e) {
 			systemLogStore.addLog({
 				name: "addContextListener",
@@ -174,7 +226,7 @@ class ContextStore {
 		}
 	}
 
-	isContextListenerExists(type: string) {
+	isContextListenerExists(type: string | undefined) {
 		return !!this.contextListeners.find((listener) => listener.type === type);
 	}
 }
