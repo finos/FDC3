@@ -55,8 +55,8 @@ You will need to pre-populate the AppDirectory with the following items:
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1.Open1    | Start an instance of App A with <br/>`const appIdentifier1 = await fdc3.open({appId: "<A's appId>"})` <br/ > retrieve its `AppIdentifier` with instance details. Confirm that the `AppIdentifier` contains both an `appId` and `instanceId` |
-| A | 2.getInfo     |   Retrieve the `ImplementationMetadata` for the DesktopAgent with: <br/>`fdc3.getInfo().then((implMetadata) => {  ... subsequent steps ...}` <br/> This should include `AppMetadata` for the retrieving app. |
+| Test   | 1.Open1    | Start an instance of App A with <br/>`const appIdentifier1 = await fdc3.open({appId: "<A's appId>"})` <br /> retrieve its `AppIdentifier` with instance details. Confirm that the `AppIdentifier` contains both an `appId` and `instanceId` |
+| A | 2.getInfo     |   Retrieve the `ImplementationMetadata` for the DesktopAgent with: <br  />`fdc3.getInfo().then((implMetadata) => {  ... subsequent steps ...}` <br/> This should include `AppMetadata` for the retrieving app. |
 | A + Test | 3.Confirm  | Check that `implMetadata.appMetadata` contains an `appId` and `instanceId` matching that retrieved in the first step (will require transmission of the details from A to Test or vice-versa). Also compare the `AppMetadata` object to the expected definition for the fields provided above during setup and ensure that the metadata matches. |
 
 - `GetInfo2`: Perform the above steps.
