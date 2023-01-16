@@ -63,4 +63,4 @@
 | B   | 2. Context not received | App B adds an untyped context listener, but doesn't receive the context.        |
 | A   | 3. Promise         | Receives a rejection from the open promise with `AppTimeout` from <br>https://fdc3.finos.org/docs/api/ref/Errors#openerror |
 
-- `2.0-AOpensBNoListen`: Skip `fdc3.addContextListener()` above (i.e. no listener was added).  `AppTimeout` should still occur as in 3. 
+- `2.0-AOpensBNoListen`: Perform the above test. 
