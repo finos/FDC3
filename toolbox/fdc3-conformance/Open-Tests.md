@@ -27,7 +27,7 @@
 | App | Step            | Description                                              |
 |-----|-----------------|----------------------------------------------------------|
 | A   | 1. Opening App     |App A opens app B with an `fdc3.instrument` context data item |
-| B   | 2. Context present | After adding an untyped context listener, B receives a matching piece of context data from A |
+| B   | 2. Context present | Add an untyped context listener via: <br/>`fdc3.addContextListener(null, handler)` <br />, B receives a matching piece of context data from A |
 
 - `AOpensBWithContext1`:  **A** uses `fdc3.open(‘app B Name', ctx)` ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
 - `AOpensBWithContext2`:  **A** uses `fdc3.open({name: “<app B Name>”}, ctx)` ![1.2](https://img.shields.io/badge/FDC3-1.2-green)
