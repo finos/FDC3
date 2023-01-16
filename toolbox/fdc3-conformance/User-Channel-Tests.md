@@ -26,7 +26,7 @@ _NB:  User Channels were called System Channels in FDC3 1.2.  The new terminolog
 | A   | 2.joinUserChannel     |A joins the first available user channel using: <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `getSystemChannels()` Check channels are returned. <br/>![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `getUserChannels()` Check **user** channels are returned.<br/>Call `fdc3.joinChannel()` on the first non-global channel.|
 | B   | 3.joinUserChannel     |B joins the same channel as A, via the same process in 2. |
 | B   | 4.Broadcast          | B broadcasts: <br/ >1.`fdc3.broadcast(<the instrument>)`. <br/>2. `fdc3.broadcast(<a contact>)`<br />![2.0](https://img.shields.io/badge/FDC3-2.0-blue)  Check a `void` promise is returned. |
-| A   | 5.Receive Context    | A receives the `fdc3.instrument` object, matching the one broadcast by B. <br />CHeck that the `fdc3.contact` is not received. |
+| A   | 5.Receive Context    | A receives the `fdc3.instrument` object, matching the one broadcast by B. <br />Check that the `fdc3.contact` is not received. |
 
 - `UCFilteredUsage1` Perform above test 
 - `UCFilteredUsage2` Perform steps in order: 2,1,3,4,5
@@ -37,10 +37,10 @@ _NB:  User Channels were called System Channels in FDC3 1.2.  The new terminolog
 
 | App | Step               | Details                                                                                                     |
 |-----|--------------------|-------------------------------------------------------------------------------------------------------------|
-| A   | 1.addContextListeners | A sets up two Context Listeners.  One for `fdc3.instrument` and one for `fdc3.contact`.  <br/> Both should be unsubscribable.    |
-| A   | 2.joinUserChannel     |A joins the first available user channel.|
-| B   | 3.joinUserChannel     |B joins the same channel as A. |
-| B   | 4.Broadcast          | B broadcasts an `fdc3.instrument` and an `fdc3.context`.                   |
+| A   | 1.addContextListeners | A sets up two Context Listeners.  One for `fdc3.instrument` and one for `fdc3.contact` by calling:  `addContextListener ("fdc3.instrument", handler)` <br/> `addContextListener ("fdc3.contact", handler)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) A `Listener` object is returned for each.  <br />![2.0](https://img.shields.io/badge/FDC3-2.0-blue) A promise resolving a `Listener` object is returned for each. <br />Check that this has an `unsubscribe` method for each.  |
+| A   | 2.joinUserChannel     |A joins the first available user channel using: <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `getSystemChannels()` Check channels are returned. <br/>![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `getUserChannels()` Check **user** channels are returned.<br/>Call `fdc3.joinChannel()` on the first non-global channel.|
+| B   | 3.joinUserChannel     |B joins the same channel as A, via the same process in 2. |
+| B   | 4.Broadcast          | `fdc.broadcast(<instrument context>)` <br/> `fdc3.broadcast(<contact context>)` . |
 | A   | 5.Receive Context    | A's `fdc3.instrument` object matches the one broadcast by B, and arrives on the correct listener.<br>A's `fdc3.context` object matches the one broadcast  by B, and arrives on the correct listener.   |
 
  - `UCFilteredUsage5`: Perform above test
