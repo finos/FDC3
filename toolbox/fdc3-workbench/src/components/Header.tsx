@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		fdc3: {},
 		headerCube: {
-			width: "350px",
-			height: "50px",
+			width: "325px",
+			height: "40px",
 		},
 		backgroundHeader: {
 			background: "linear-gradient(to bottom, #0086bf, #00bbe1)",
@@ -133,7 +133,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 				<Toolbar className={classes.toolbar}>
 					<div>
 						<Typography variant="h3" color="inherit" className={classes.fdc3}>
-							<img src="./fdc3-logo.svg" className={classes.headerCube} />
+							<img src="./fdc3-logo.png" className={classes.headerCube} />
 						</Typography>
 						<Typography color="inherit">
 							{supportedVersion.map((ver, index) => (
