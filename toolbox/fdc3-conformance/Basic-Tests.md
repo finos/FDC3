@@ -14,13 +14,12 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 - `BasicUC1`: An application can query the available user/system channels.  The API call is:
   - `fdc3.getSystemChannels()` ![1.2](https://img.shields.io/badge/FDC3-1.2-green)
   - `fdc3.getUserChannels()` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
-- `BasicJC1`: The application should be able to join one of the user/system channels.  Having done so, the current channel should be set for the application.  
+- `BasicJC1`: The application should be able to join one of the user/system channels with the channel's id.  Having done so, the current channel should not be null, and be set for the application _to the channel for the id given_.  
   - The channel is joined with:
     - `fdc3.joinChannel(<channelId>)` ![1.2](https://img.shields.io/badge/FDC3-1.2-green)
     - `fdc3.joinUserChannel(<channelId>)` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
   - A `Channel` object representing the current channel is retrieved with:
-    - `fdc3.getCurrentChannel()` 
-- `BasicJC2`: The application should be able to join a user/system channel with the channel's id (as in `BasicJC1`).  Having done this, current channel set for the application should be that channel.  Use `fdc3.getCurrentChannel()` to get the current channel.
+    - `fdc3.getCurrentChannel()` to get the current channel.
 - `BasicLC1`: The application should be able to leave a channel it has joined using `fdc3.leaveCurrentChannel()`.
 - `BasicRI1`: The application should be able to raise an intent for some item of context by invoking:
   - `fdc3.raiseIntentForContext(<context>)`
