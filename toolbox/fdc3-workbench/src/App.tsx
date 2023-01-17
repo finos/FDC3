@@ -39,7 +39,17 @@ const mainTheme = createTheme({
 		MuiLink: {
 			underline: "hover",
 		},
+		MuiTableCell: {
+			padding: "normal"
+		}
 	},
+	overrides: {
+		MuiTableCell: {
+			root: {
+				padding: "1px"
+			}
+		}
+	}
 });
 
 mainTheme.typography.h4 = {
@@ -79,12 +89,15 @@ const useStyles = makeStyles((theme: Theme) =>
 			},
 			".MuiGrid-item:has(> .MuiButton-root)": {
 				display: "flex",
-				alignItems: "center",
+				alignItems: "end",
 			},
 			".MuiInputBase-root.Mui-disabled": {
 				color: "rgba(0, 0, 0, 0.6)",
 				cursor: "default",
 			},
+			".MuiInputBase-root": {
+				marginBlockEnd: "0px"
+			}
 		},
 		root: {
 			flexGrow: 1,

@@ -100,7 +100,10 @@ const useStyles: any = makeStyles((theme: Theme) =>
 			margin: "0 5px",
 		},
 		tableContainer: {
-			maxHeight: 350,
+			maxHeight: 250,
+			"& > table": {
+				width: "calc(100% - 4px)"
+			}
 		},
 	})
 );
@@ -332,61 +335,63 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 				<Grid item xs={12}>
 					<Typography variant="h5">Context templates:</Typography>
 				</Grid>
-				<TableContainer className={classes.tableContainer}>
-					<Table>
-						<TableBody>
-							{contextStore.contextsList.map(({ id, template }, index) => (
-								<TableRow
-									hover
-									role="checkbox"
-									tabIndex={-1}
-									key={`row-${index}`}
-									selected={id === templateName?.value}
-									ref={id === templateName?.value ? gridRef : null}
-								>
-									<TableCell
-										key={`row-${index}-column-0`}
-										align="left"
-										onClick={() => handleChangeTemplate({ title: id, value: id })}
+				<Grid item xs={12}>
+					<TableContainer className={classes.tableContainer}>
+						<Table>
+							<TableBody>
+								{contextStore.contextsList.map(({ id, template }, index) => (
+									<TableRow
+										hover
+										role="checkbox"
+										tabIndex={-1}
+										key={`row-${index}`}
+										selected={id === templateName?.value}
+										ref={id === templateName?.value ? gridRef : null}
 									>
-										<Typography variant="subtitle1">{id}</Typography>
-									</TableCell>
-									<TableCell
-										key={`row-${index}-column-1`}
-										align="left"
-										onClick={() => handleChangeTemplate({ title: id, value: id })}
-									>
-										<Typography variant="caption">{template?.type}</Typography>
-									</TableCell>
-									<TableCell key={`row-${index}-column-2`} align="right">
-										<Tooltip title="Duplicate Template" aria-label="Copy code">
-											<IconButton
-												size="small"
-												aria-label="Copy code example"
-												color="primary"
-												onClick={() => handleDuplicateTemplate({ title: id, value: id })}
-											>
-												<FileCopyOutlinedIcon className={classes.copy} />
-											</IconButton>
-										</Tooltip>
-									</TableCell>
-									<TableCell key={`row-${index}-column-3`} align="right">
-										<Tooltip title="Delete template" aria-label="Delete template">
-											<IconButton
-												size="small"
-												aria-label="Delete template"
-												color="primary"
-												onClick={() => handleClickOpen(id, template?.name)}
-											>
-												<DeleteOutlinedIcon className={classes.delete} />
-											</IconButton>
-										</Tooltip>
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
+										<TableCell
+											key={`row-${index}-column-0`}
+											align="left"
+											onClick={() => handleChangeTemplate({ title: id, value: id })}
+										>
+											<Typography variant="body2">{id}</Typography>
+										</TableCell>
+										<TableCell
+											key={`row-${index}-column-1`}
+											align="left"
+											onClick={() => handleChangeTemplate({ title: id, value: id })}
+										>
+											<Typography variant="caption">{template?.type}</Typography>
+										</TableCell>
+										<TableCell key={`row-${index}-column-2`} align="right">
+											<Tooltip title="Duplicate Template" aria-label="Copy code">
+												<IconButton
+													size="small"
+													aria-label="Copy code example"
+													color="primary"
+													onClick={() => handleDuplicateTemplate({ title: id, value: id })}
+												>
+													<FileCopyOutlinedIcon className={classes.copy} />
+												</IconButton>
+											</Tooltip>
+										</TableCell>
+										<TableCell key={`row-${index}-column-3`} align="right">
+											<Tooltip title="Delete template" aria-label="Delete template">
+												<IconButton
+													size="small"
+													aria-label="Delete template"
+													color="primary"
+													onClick={() => handleClickOpen(id, template?.name)}
+												>
+													<DeleteOutlinedIcon className={classes.delete} />
+												</IconButton>
+											</Tooltip>
+										</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
+				</Grid>
 			</Grid>
 			<form className={classes.form} noValidate autoComplete="off">
 				<Grid container direction="row" spacing={1}>

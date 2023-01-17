@@ -30,9 +30,6 @@ const useStyles = makeStyles((theme: Theme) =>
 			flexGrow: 1,
 			minWidth: "190px",
 		},
-		topMargin: {
-			marginTop: theme.spacing(2),
-		},
 		controls: {
 			"& > *:first-child": {
 				marginLeft: 0,
@@ -44,7 +41,11 @@ const useStyles = makeStyles((theme: Theme) =>
 				marginRight: 0,
 			},
 			"& .MuiIconButton-sizeSmall": {
-				padding: "6px",
+				padding: "6px 0px 6px 0px",
+			},
+			"& > a": {
+				display: "flex",
+				padding: "6px 0px 6px 0px",
 			},
 		},
 		rightAlign: {
