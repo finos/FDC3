@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Typography, Grid, Button, IconButton, Tooltip, Link } from "@material-ui/core";
 import { codeExamples } from "../fixtures/codeExamples";
+import { openApiDocsLink } from "../fixtures/openApiDocs";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
 import contextStore from "../store/ContextStore";
@@ -41,8 +42,11 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		controls: {
 			"& .MuiIconButton-sizeSmall": {
-				padding: "6px",
-				marginLeft: theme.spacing(1),
+				padding: "6px 0px 6px 0px",
+			},
+			"& > a": {
+				display: "flex",
+				padding: "6px 0px 6px 0px",
 			},
 		},
 		spread: {
@@ -54,10 +58,14 @@ const useStyles = makeStyles((theme: Theme) =>
 			marginRight: theme.spacing(1),
 			minWidth: "190px",
 		},
+		bottomAlignChildren: {
+			display: "flex",
+			alignItems: "end",
+		},
 		rightAlign: {
 			flexDirection: "row",
 			justifyContent: "flex-end",
-		},
+		}
 	})
 );
 
@@ -145,61 +153,68 @@ export const ContextLinking = observer(() => {
 			<Grid item xs={12}>
 				<Typography variant="h5">Add Context Listener</Typography>
 			</Grid>
-			<form className={classes.form} noValidate autoComplete="off" onSubmit={(e) => handleAddContextListener(e)}>
-				<Grid
-					container
-					direction="row"
-					spacing={1}
-					justifyContent="space-between"
-					className={`${classes.controls} ${classes.rightAlign}`}
-				>
-					<Grid item className={classes.contextListenerName}>
-						<Autocomplete
-							id="context-listener"
-							size="small"
-							selectOnFocus
-							blurOnSelect
-							clearOnBlur
-							handleHomeEndKeys
-							value={contextListener}
-							onChange={handleChangeListener(setContextListener, setContextError)}
-							filterOptions={filterOptions}
-							options={contextListenersOptions}
-							getOptionLabel={getOptionLabel}
-							renderOption={(option) => option.type}
-							renderInput={(params) => (
-								<TemplateTextField
-									label="CONTEXT TYPE"
-									placeholder="Enter Context Type"
-									variant="outlined"
-									{...params}
-									error={!!contextError}
-									helperText={contextError}
-								/>
-							)}
-						/>
-					</Grid>
-					<Grid item className={classes.controls}>
-						<Button variant="contained" color="primary" onClick={handleAddContextListener}>
-							Add Listener
-						</Button>
+		
+			<Grid
+				container
+				direction="row"
+				justifyContent="space-between"
+				className={`${classes.controls} ${classes.rightAlign}`}
+			>
+				<Grid item className={classes.contextListenerName}>
+					<Autocomplete
+						id="context-listener"
+						size="small"
+						selectOnFocus
+						blurOnSelect
+						clearOnBlur
+						handleHomeEndKeys
+						value={contextListener}
+						onChange={handleChangeListener(setContextListener, setContextError)}
+						filterOptions={filterOptions}
+						options={contextListenersOptions}
+						getOptionLabel={getOptionLabel}
+						renderOption={(option) => option.type}
+						renderInput={(params) => (
+							<TemplateTextField
+								label="CONTEXT TYPE"
+								placeholder="Enter Context Type"
+								variant="outlined"
+								{...params}
+								error={!!contextError}
+								helperText={contextError}
+							/>
+						)}
+					/>
+				</Grid>
+				<Grid item className={classes.bottomAlignChildren}>
+					<Grid container direction="row" justifyContent="flex-end" spacing={1}>
+						<Grid item className={classes.controls}>
+							<Button variant="contained" color="primary" onClick={handleAddContextListener}>
+								Add Listener
+							</Button>
 
-						<Tooltip title="Copy code example" aria-label="Copy code example">
-							<IconButton
-								size="small"
-								aria-label="Copy code example"
-								color="primary"
-								onClick={copyToClipboard(codeExamples.contextListener, "addContextListener")}
-							>
-								<FileCopyIcon />
-							</IconButton>
-						</Tooltip>
-						<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/Channel#addcontextlistener">
-							<InfoOutlinedIcon />
-						</Link>
+						</Grid>
+						<Grid item className={classes.controls}>
+							<Tooltip title="Copy code example" aria-label="Copy code example">
+								<IconButton
+									size="small"
+									aria-label="Copy code example"
+									color="primary"
+									onClick={copyToClipboard(codeExamples.contextListener, "addContextListener")}
+								>
+									<FileCopyIcon />
+								</IconButton>
+							</Tooltip>
+						</Grid>
+						<Grid item className={classes.controls}>
+							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/Channel#addcontextlistener">
+								<InfoOutlinedIcon />
+							</Link>
+						</Grid>
 					</Grid>
 				</Grid>
-			</form>
+			</Grid>
+			
 		</div>
 	);
 });

@@ -24,6 +24,7 @@ import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete
 import { ContextTemplates } from "../components/ContextTemplates";
 import intentStore from "../store/IntentStore";
 import { codeExamples } from "../fixtures/codeExamples";
+import { openApiDocsLink } from "../fixtures/openApiDocs";
 import { TemplateTextField } from "./common/TemplateTextField";
 import { copyToClipboard } from "./common/CopyToClipboard";
 import { IntentResolutionField } from "./IntentResolutionField";
@@ -81,7 +82,11 @@ const useStyles = makeStyles((theme: Theme) =>
 				marginRight: 0,
 			},
 			"& .MuiIconButton-sizeSmall": {
-				padding: "6px",
+				padding: "6px 0px 6px 0px",
+			},
+			"& > a": {
+				display: "flex",
+				padding: "6px 0px 6px 0px",
 			},
 			display: "flex",
 			alignItems: "center",
@@ -658,7 +663,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								</IconButton>
 							</Tooltip>
 
-							<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintent">
+							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintent">
 								<InfoOutlinedIcon />
 							</Link>
 						</Grid>
@@ -805,7 +810,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								</IconButton>
 							</Tooltip>
 
-							<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintentforcontext">
+							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintentforcontext">
 								<InfoOutlinedIcon />
 							</Link>
 						</Grid>
@@ -890,7 +895,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								</IconButton>
 							</Tooltip>
 
-							<Link target="_blank" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#addintentlistener">
+							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#addintentlistener">
 								<InfoOutlinedIcon />
 							</Link>
 						</Grid>
@@ -998,7 +1003,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 													</Tooltip>
 
 													<Link
-														target="_blank"
+														target="FDC3APIDocs"
 														href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#addintentlistener"
 													>
 														<InfoOutlinedIcon />
