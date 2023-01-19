@@ -53,8 +53,8 @@
   },
   "devDependencies": {
     "@types/jsoneditor": "^8.6.1",
-    "@typescript-eslint/eslint-plugin": "^4.27.0",
-    "@typescript-eslint/parser": "^4.27.0",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
     "@vitejs/plugin-legacy": "^3.0.1",
     "@vitejs/plugin-react": "^3.0.1",
     "eslint": "^7.28.0",
@@ -75,16 +75,5 @@
     "*.{json,yml,css,html,md}": "prettier --write --prose-wrap never",
     "*.js": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"
-  },
-  "overrides": {
-    "css-select": "^3.1.0",
-    "css-what": "^5.0.1",
-    "shell-quote": "^1.7.3",
-    "node-forge": "^1.0.0",
-    "immer": "^9.0.6",
-    "glob-parent": "^5.1.2",
-    "ejs": "^3.1.7",
-    "browserslist": "^4.16.5",
-    "ansi-html": "^0.0.8"
   }
 }
