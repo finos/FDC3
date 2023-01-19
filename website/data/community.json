@@ -72,7 +72,7 @@
       "title": "FDC3 Workbench",
       "publisher": "FDC3 / FINOS",
       "image": "/toolbox/fdc3-workbench/fdc3-icon-256.png",
-      "infoLink": "http://fdc3.finos.org/toolbox/fdc3-workbench",
+      "infoLink": "http://fdc3.finos.org/toolbox/fdc3-workbench/",
       "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-workbench/README.md",
       "type": "examples-and-training",
       "badges": [],
