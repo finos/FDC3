@@ -20,6 +20,5 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
     - `fdc3.getCurrentChannel()` to get the current channel.
   - The channel is left with: 
     - `fdc3.leaveCurrentChannel()`
-- `BasicLC1`: The application should be able to leave a channel it has joined using `fdc3.leaveCurrentChannel()`.
 - `BasicRI1`: The application should be able to raise an intent for some item of context by invoking:
   - `fdc3.raiseIntentForContext(<context>)`
