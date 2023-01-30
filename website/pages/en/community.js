@@ -108,6 +108,9 @@ function ImplementationsShowcase() {
 			<button className="button filter" id="adopter">
 				Adopters
 			</button>
+			<button className="button filter" id="meetup">
+				Meetups
+			</button>
 			<button className="button filter" id="all">
 				All
 			</button>
