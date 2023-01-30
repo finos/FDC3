@@ -35,7 +35,7 @@ export interface PrivateChannel extends Channel {
    * Listener.unsubscribe() on a context listener that it previously added.
    *
    * Desktop Agents MUST call this when disconnect() is called by the other party, for
-   * each listner that they had added.
+   * each listener that they had added.
    */
   onUnsubscribe(handler: (contextType?: string) => void): Listener;
 
