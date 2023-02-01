@@ -6,16 +6,16 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 - `BasicCL2`: You can create an **unfiltered** context listener by calling `fdc3.addContextListener(null,<listener>)`.  A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
 - `BasicIL1`: You can create an intent listener by calling `fdc3.addIntentListener(<intent name>,<handler>)`. A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
 - `BasicGI1`: An application can retrieve an `ImplementationMetadata` object to find out the version of FDC3 it is using and the provider details by calling:
-    - `fdc3.getInfo()` ![1.2](https://img.shields.io/badge/FDC3-1.2-green) 
-    - `await fdc3.getInfo()` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+    - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `fdc3.getInfo()` 
+    - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await fdc3.getInfo()` 
 - `BasicAC1`: An application can retrieve a named 'App' channel via the `fdc3.getOrCreateChannel(<name>)` function. The `Channel` object returned conforms to the defined interface.
 - `BasicUC1`: An application can query the available user/system channels.  The API call is:
-  - `fdc3.getSystemChannels()` ![1.2](https://img.shields.io/badge/FDC3-1.2-green)
-  - `fdc3.getUserChannels()` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+  - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `fdc3.getSystemChannels()`
+  - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)`fdc3.getUserChannels()` 
 - `BasicJC1`: The application should be able to join one of the user/system channels with the channel's id.  Having done so, the current channel should not be null, and be set for the application _to the channel for the id given_.  After you leave the current channel, it should go back to being `null`.
   - The channel is joined with:
-    - `fdc3.joinChannel(<channelId>)` ![1.2](https://img.shields.io/badge/FDC3-1.2-green)
-    - `fdc3.joinUserChannel(<channelId>)` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+    - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `fdc3.joinChannel(<channelId>)` 
+    - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `fdc3.joinUserChannel(<channelId>)` 
   - A `Channel` object representing the current channel is retrieved with:
     - `fdc3.getCurrentChannel()` to get the current channel.
   - The channel is left with: 
