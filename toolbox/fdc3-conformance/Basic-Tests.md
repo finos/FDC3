@@ -8,7 +8,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 - `BasicGI1`: An application can retrieve an `ImplementationMetadata` object to find out the version of FDC3 it is using and the provider details by calling:
     - `fdc3.getInfo()` ![1.2](https://img.shields.io/badge/FDC3-1.2-green) 
     - `await fdc3.getInfo()` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
-- `BasicAC1`: An application can create a named channel via the `fdc3.getOrCreateChannel(<name>)` function. 
+- `BasicAC1`: An application can retrieve a named 'App' channel via the `fdc3.getOrCreateChannel(<name>)` function. The `Channel` object returned conforms to the defined interface.
 - `BasicUC1`: An application can query the available user/system channels.  The API call is:
   - `fdc3.getSystemChannels()` ![1.2](https://img.shields.io/badge/FDC3-1.2-green)
   - `fdc3.getUserChannels()` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
