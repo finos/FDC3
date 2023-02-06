@@ -1,30 +1,28 @@
-// check for FDC3 support
-function fdc3OnReady(success, error) {
-  window.setTimeout(error, 1000);
-  if (window.fdc3) {
-    success();
-  } else {
-    window.addEventListener('fdc3Ready', success);
-  }
-}
+document.addEventListener('DOMContentLoaded', () => {
+  fdc3OnReady(main, displayFDC3Support);
+});
 
-// Wait for the document to load
-function documentLoaded(cb) {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', cb);
-  } else {
-    cb();
-  }
+function fdc3OnReady(success, error) {
+  let fdc3Tries = 10;
+
+  const checkFDC3Ready = () => {
+    if (window.fdc3) {
+      success.call(this);
+    } else {
+      if (fdc3Tries > 0) {
+        fdc3Tries--;
+        window.setTimeout(checkFDC3Ready, 100);
+      } else {
+        error.call(this);
+      }
+    }
+  };
+  checkFDC3Ready();
 }
 
 // use this to keep track of context listener - one per system channel
 let contextListener = null;
 let appChannels = [];
-
-//  document and FDC3 have loaded start the main function
-documentLoaded(() => {
-  fdc3OnReady(main, displayFDC3Support);
-});
 
 function main() {
   try {
@@ -53,17 +51,26 @@ function displayFDC3Support() {
 }
 
 function getPlatform() {
-  const providerDetails = document.getElementById('providerDetails');
-  const fdc3Info = window.fdc3.getInfo();
-  console.log('FDC3 info', fdc3Info);
+  
+  // TODO: add G42 and FDC3 Desktop Agent to vendors
+  if (window.FSBL) {
+    window.FSBL.getFSBLInfo().then(info => updateProviderDetails('Available - Finsemble ' + info.FSBLVersion));
+  } else if (window.fin) {
+    updateProviderDetails('Available - OpenFin ' + fin.desktop.getVersion());
+  } else {
+    updateProviderDetails('Available - Unknown');
+  }
+}
 
-  providerDetails.innerHTML = `${fdc3Info.provider} ${fdc3Info.providerVersion}`;
+function updateProviderDetails(details){
+  const providerDetails = document.getElementById('providerDetails');
+  providerDetails.innerHTML = details;
 }
 
 async function populateHTML() {
   try {
     //populate available channels list with system channels
-    let channelList = document.getElementById('system-channel-list');
+    const channelList = document.getElementById('system-channel-list');
 
     const populateChannelsList = id => {
       let node = document.createElement('li');
@@ -76,7 +83,6 @@ async function populateHTML() {
 
     // for all of the system channels populate dropdowns & lists
     systemChannels.forEach(({ displayMetadata, id, type }) => {
-      //use the id field as this is what is needed to join the channel
       populateChannelsList(id);
       populateChannelsDropDown(id);
     });
@@ -104,8 +110,8 @@ function setUpEventListeners() {
   document.getElementById('raise-intent__btn').addEventListener('click', raiseIntent);
 
   document.getElementById('get_context__btn').addEventListener('click', event => {
-      let contextType = document.getElementById('context-type').value;
-      getContext(contextType);
+    let contextType = document.getElementById('context-type').value;
+    getContext(contextType);
   });
 }
 
@@ -154,12 +160,10 @@ async function getContext(contextType) {
     if (contextType) {
       contextListener = fdc3.addContextListener(
         contextType,
-        context => (contextResultBox.innerHTML = "<pre>" + JSON.stringify(context, null, 2)) + "</pre>"
+        context => (contextResultBox.value = JSON.stringify(context, null, 2))
       );
     } else {
-      contextListener = fdc3.addContextListener(
-        context => (contextResultBox.innerHTML=  "<pre>" + JSON.stringify(context, null, 2)) + "</pre>"
-      );
+      contextListener = fdc3.addContextListener(context => (contextResultBox.value = JSON.stringify(context, null, 2)));
     }
   } catch (error) {
     console.error('Unable to add a context listener', error);
