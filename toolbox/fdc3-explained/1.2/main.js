@@ -1,28 +1,30 @@
-document.addEventListener('DOMContentLoaded', () => {
-  fdc3OnReady(main, displayFDC3Support);
-});
-
+// check for FDC3 support
 function fdc3OnReady(success, error) {
-  let fdc3Tries = 10;
+  window.setTimeout(error, 1000);
+  if (window.fdc3) {
+    success();
+  } else {
+    window.addEventListener('fdc3Ready', success);
+  }
+}
 
-  const checkFDC3Ready = () => {
-    if (window.fdc3) {
-      success.call(this);
-    } else {
-      if (fdc3Tries > 0) {
-        fdc3Tries--;
-        window.setTimeout(checkFDC3Ready, 100);
-      } else {
-        error.call(this);
-      }
-    }
-  };
-  checkFDC3Ready();
+// Wait for the document to load
+function documentLoaded(cb) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', cb);
+  } else {
+    cb();
+  }
 }
 
 // use this to keep track of context listener - one per system channel
 let contextListener = null;
 let appChannels = [];
+
+//  document and FDC3 have loaded start the main function
+documentLoaded(() => {
+  fdc3OnReady(main, displayFDC3Support);
+});
 
 function main() {
   try {
@@ -51,15 +53,11 @@ function displayFDC3Support() {
 }
 
 function getPlatform() {
-  
-  // TODO: add G42 and FDC3 Desktop Agent to vendors
-  if (window.FSBL) {
-    window.FSBL.getFSBLInfo().then(info => updateProviderDetails('Available - Finsemble ' + info.FSBLVersion));
-  } else if (window.fin) {
-    updateProviderDetails('Available - OpenFin ' + fin.desktop.getVersion());
-  } else {
-    updateProviderDetails('Available - Unknown');
-  }
+  const fdc3Info = window.fdc3.getInfo();
+  console.log('FDC3 info', fdc3Info);
+
+  //providerDetails.innerHTML = `${fdc3Info.provider} ${fdc3Info.providerVersion}`;
+  updateProviderDetails(`${fdc3Info.provider} ${fdc3Info.providerVersion}`);
 }
 
 function updateProviderDetails(details){
@@ -70,7 +68,7 @@ function updateProviderDetails(details){
 async function populateHTML() {
   try {
     //populate available channels list with system channels
-    const channelList = document.getElementById('system-channel-list');
+    let channelList = document.getElementById('system-channel-list');
 
     const populateChannelsList = id => {
       let node = document.createElement('li');
@@ -83,6 +81,7 @@ async function populateHTML() {
 
     // for all of the system channels populate dropdowns & lists
     systemChannels.forEach(({ displayMetadata, id, type }) => {
+      //use the id field as this is what is needed to join the channel
       populateChannelsList(id);
       populateChannelsDropDown(id);
     });
@@ -110,8 +109,8 @@ function setUpEventListeners() {
   document.getElementById('raise-intent__btn').addEventListener('click', raiseIntent);
 
   document.getElementById('get_context__btn').addEventListener('click', event => {
-    let contextType = document.getElementById('context-type').value;
-    getContext(contextType);
+      let contextType = document.getElementById('context-type').value;
+      getContext(contextType);
   });
 }
 
@@ -153,21 +152,27 @@ async function broadcastFDC3Context() {
 
 async function getContext(contextType) {
   try {
-    let contextResultBox = document.getElementById('context-result');
     if (contextListener) contextListener.unsubscribe();
 
     // if context type is passed in then only listen on that specific context
     if (contextType) {
       contextListener = fdc3.addContextListener(
         contextType,
-        context => (contextResultBox.value = JSON.stringify(context, null, 2))
+        context => displayContext('<pre>' + JSON.stringify(context, null, 2) + '</pre>')
       );
     } else {
-      contextListener = fdc3.addContextListener(context => (contextResultBox.value = JSON.stringify(context, null, 2)));
+      contextListener = fdc3.addContextListener(
+        context => displayContext('<pre>' + JSON.stringify(context, null, 2) + '</pre>')
+      );
     }
   } catch (error) {
     console.error('Unable to add a context listener', error);
   }
+}
+
+function displayContext(text){
+  let contextResultBox = document.getElementById('context-result');
+  contextResultBox.innerHTML = text;
 }
 
 async function addAppChannel() {
