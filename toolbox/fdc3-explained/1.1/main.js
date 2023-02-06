@@ -51,16 +51,20 @@ function displayFDC3Support() {
 }
 
 function getPlatform() {
-  const providerDetails = document.getElementById('providerDetails');
-
+  
   // TODO: add G42 and FDC3 Desktop Agent to vendors
   if (window.FSBL) {
-    window.FSBL.getFSBLInfo().then(info => (providerDetails.innerHTML = 'Finsemble ' + info.FSBLVersion));
+    window.FSBL.getFSBLInfo().then(info => updateProviderDetails('Available - Finsemble ' + info.FSBLVersion));
   } else if (window.fin) {
-    providerDetails.innerHTML = 'OpenFin ' + fin.desktop.getVersion();
+    updateProviderDetails('Available - OpenFin ' + fin.desktop.getVersion());
   } else {
-    providerDetails.innerHTML = 'Unknown';
+    updateProviderDetails('Available - Unknown');
   }
+}
+
+function updateProviderDetails(details){
+  const providerDetails = document.getElementById('providerDetails');
+  providerDetails.innerHTML = details;
 }
 
 async function populateHTML() {
