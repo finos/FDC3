@@ -24,6 +24,8 @@ import {
   raiseIntent,
   raiseIntentForContext,
   versionIsAtLeast,
+  createPrivateChannel,
+  findInstances,
 } from '../src';
 
 const UnavailableError = new Error('FDC3 DesktopAgent not available at `window.fdc3`.');
@@ -52,8 +54,12 @@ beforeEach(() => {
 
 describe('test ES6 module', () => {
   describe('without `window.fdc3` global', () => {
-    test('open should reject', async () => {
+    test('open (via name) should reject', async () => {
       await expect(open(expect.any(String))).rejects.toEqual(UnavailableError);
+    });
+
+    test('open (via AppIdentifier) should reject', async () => {
+      await expect(open(expect.any(Object))).rejects.toEqual(UnavailableError);
     });
 
     test('findIntent should reject', async () => {
@@ -112,6 +118,18 @@ describe('test ES6 module', () => {
 
     test('getInfo should reject', async () => {
       await expect(() => getInfo()).rejects.toEqual(UnavailableError);
+    });
+
+    test('createPrivateChannel should reject', async () => {
+      await expect(() => createPrivateChannel()).rejects.toEqual(UnavailableError);
+    });
+
+    test('findInstances should reject', async () => {
+      await expect(() => findInstances(expect.any(Object))).rejects.toEqual(UnavailableError);
+    });
+
+    test('getAppMetadata should reject', async () => {
+      await expect(() => getAppMetadata(expect.any(Object))).rejects.toEqual(UnavailableError);
     });
   });
 
@@ -282,6 +300,20 @@ describe('test ES6 module', () => {
 
       expect(window.fdc3.getAppMetadata).toHaveBeenCalledTimes(1);
       expect(window.fdc3.getAppMetadata).toHaveBeenCalledWith(dummyApp);
+    });
+
+    test('createPrivateChannel should delegate to window.fdc3.createPrivateChannel', async () => {
+      await createPrivateChannel();
+
+      expect(window.fdc3.createPrivateChannel).toHaveBeenCalledTimes(1);
+    });
+
+    test('findInstances should delegate to window.fdc3.findInstances', async () => {
+      const dummyApp = { appId: 'dummy' };
+      await findInstances(dummyApp);
+
+      expect(window.fdc3.findInstances).toHaveBeenCalledTimes(1);
+      expect(window.fdc3.findInstances).toHaveBeenCalledWith(dummyApp);
     });
   });
 

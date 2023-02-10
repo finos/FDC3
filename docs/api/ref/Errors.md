@@ -2,7 +2,7 @@
 title: Errors
 ---
 
-Some FDC3 API operations return promises that can result in errors.
+FDC3 API operations may sometimes result in an error, which must be returned to the caller. Errors should be returned by rejecting the promise returned by the API with a JavaScript `Error` object (or equivalent for the language of the implementation). The `Error` Object's message should be chosen from the appropriate Error enumeration below.
 
 ## `ChannelError`
 

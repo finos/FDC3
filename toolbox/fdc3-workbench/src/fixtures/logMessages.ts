@@ -29,8 +29,12 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			warning: `Not currently joined to a channel`,
 		},
 		broadcast: {
-			success: "Successfully broadcasted context",
+			success: "Successfully broadcast context",
 			error: "Failed to broadcast context:",
+		},
+		appbroadcast: {
+			success: `Successfully broadcast context to channel [${value}]: `,
+			error: `Failed to broadcast context to channel [${value}]:`,
 		},
 		raiseIntent: {
 			success: `Successfully raised intent [${value}]`,
@@ -48,6 +52,10 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			success: `A context listener for '[${value}]' has been removed`,
 			error: `Failed to remove a context listener for '[${value}]'`,
 		},
+		removeAppChannelContextListener: {
+			success: `${value}`,
+			error: `${value}`,
+		},
 		addIntentListener: {
 			success: `An intent listener for '[${value}]' has been added`,
 			error: `Failed to add an intent listener for '[${value}]'`,
@@ -60,21 +68,33 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			info: `Received context via '[${value}]' listener`,
 			error: `Failed to receive context from '[${value}]' listener`,
 		},
+		receivedAppContextListener: {
+			info: `${value}`,
+			error: `${value}`,
+		},
+		addAppContextListener: {
+			info: `${value}`,
+			error: `${value}`,
+		},
 		receivedIntentListener: {
 			info: `Received context via '[${value}]' listener.`,
 			error: `Failed to receive context from '[${value}]' listener.`,
-		},
-		createContext: {
-			success: `Set my current context to type '[${value}]'.`,
-			error: `Failed to set my current context to type '[${value}]'.`,
 		},
 		saveTemplate: {
 			success: `Saved context template for '[${value}]'.`,
 			error: `Failed to save context template.`,
 		},
+		deleteTemplate: {
+			success: `Deleted context template for '[${value}]'.`,
+			error: `Failed to delete context template.`,
+		},
 		copyToClipboard: {
 			info: `${value} code snippet copied to clipboard`,
 			error: `Failed to copy code ${value} snippet to clipboard.`,
+		},
+		getOrCreateChannel: {
+			success: `Successfully retrieved or created current app channel [${value}]`,
+			error: `Failed retrieve or create app channel ${value}.`,
 		},
 	};
 

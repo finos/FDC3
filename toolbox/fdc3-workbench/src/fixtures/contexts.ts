@@ -1,8 +1,10 @@
 import { ContextItem } from "../store/ContextStore";
+import { v4 as uuidv4 } from "uuid";
 
 export const contexts: ContextItem[] = [
 	{
-		id: "fdc3.contact",
+		uuid: uuidv4(),
+		id: "Contact example",
 		template: {
 			type: "fdc3.contact",
 			name: "Jane Doe",
@@ -13,7 +15,8 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/contact.schema.json"),
 	},
 	{
-		id: "fdc3.contactList",
+		uuid: uuidv4(),
+		id: "ContactList example",
 		template: {
 			type: "fdc3.contactList",
 			contacts: [
@@ -36,7 +39,8 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/contactList.schema.json"),
 	},
 	{
-		id: "fdc3.instrument",
+		uuid: uuidv4(),
+		id: "Instrument example",
 		template: {
 			type: "fdc3.instrument",
 			name: "Microsoft",
@@ -49,7 +53,8 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/instrument.schema.json"),
 	},
 	{
-		id: "fdc3.instrumentList",
+		uuid: uuidv4(),
+		id: "InstrumentList example",
 		template: {
 			type: "fdc3.instrumentList",
 			instruments: [
@@ -70,7 +75,8 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/instrumentList.schema.json"),
 	},
 	{
-		id: "fdc3.organization",
+		uuid: uuidv4(),
+		id: "Organization example",
 		template: {
 			type: "fdc3.organization",
 			name: "Cargill, Incorporated",
@@ -82,7 +88,8 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/organization.schema.json"),
 	},
 	{
-		id: "fdc3.country",
+		uuid: uuidv4(),
+		id: "Country example",
 		template: {
 			type: "fdc3.country",
 			name: "Sweden",
@@ -93,7 +100,8 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/country.schema.json"),
 	},
 	{
-		id: "fdc3.position",
+		uuid: uuidv4(),
+		id: "Position example",
 		template: {
 			type: "fdc3.position",
 			instrument: {
@@ -107,7 +115,8 @@ export const contexts: ContextItem[] = [
 		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/position.schema.json"),
 	},
 	{
-		id: "fdc3.portfolio",
+		uuid: uuidv4(),
+		id: "Portfolio example",
 		template: {
 			type: "fdc3.portfolio",
 			positions: [

@@ -45,7 +45,7 @@ export const ContextListeners = observer(() => {
 				/>
 			);
 
-			return { id, textPrimary: `${type} Listener`, afterEachElement: contextField };
+			return { id, textPrimary: `${type}`, afterEachElement: contextField };
 		}
 	);
 
@@ -55,8 +55,9 @@ export const ContextListeners = observer(() => {
 
 	return (
 		<AccordionList
-			title="Context Listeners"
-			noItemsText="No Context Listeners"
+			title="System Channels"
+			icon="Any context already in the channel will be received automatically"
+			noItemsText="No System Channels Listeners"
 			listItems={contextListeners}
 			onDelete={handleDeleteListener}
 		/>
