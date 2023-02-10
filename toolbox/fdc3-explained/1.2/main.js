@@ -58,11 +58,17 @@ function getPlatform() {
 
   //providerDetails.innerHTML = `${fdc3Info.provider} ${fdc3Info.providerVersion}`;
   updateProviderDetails(`${fdc3Info.provider} ${fdc3Info.providerVersion}`);
+  updateFDC3Version(`${fdc3Info.fdc3Version}`);
 }
 
 function updateProviderDetails(details){
   const providerDetails = document.getElementById('providerDetails');
   providerDetails.innerText = details;
+}
+
+function updateFDC3Version(details){
+  const fdc3Details = document.getElementById('fdc3Details');
+  fdc3Details.innerText = details;
 }
 
 async function populateHTML() {
