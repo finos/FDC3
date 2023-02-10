@@ -53,11 +53,16 @@ function displayFDC3Support() {
 }
 
 function getPlatform() {
-  const providerDetails = document.getElementById('providerDetails');
   const fdc3Info = window.fdc3.getInfo();
   console.log('FDC3 info', fdc3Info);
 
-  providerDetails.innerHTML = `${fdc3Info.provider} ${fdc3Info.providerVersion}`;
+  //providerDetails.innerHTML = `${fdc3Info.provider} ${fdc3Info.providerVersion}`;
+  updateProviderDetails(`${fdc3Info.provider} ${fdc3Info.providerVersion}`);
+}
+
+function updateProviderDetails(details){
+  const providerDetails = document.getElementById('providerDetails');
+  providerDetails.innerText = details;
 }
 
 async function populateHTML() {
@@ -147,23 +152,27 @@ async function broadcastFDC3Context() {
 
 async function getContext(contextType) {
   try {
-    let contextResultBox = document.getElementById('context-result');
     if (contextListener) contextListener.unsubscribe();
 
     // if context type is passed in then only listen on that specific context
     if (contextType) {
       contextListener = fdc3.addContextListener(
         contextType,
-        context => (contextResultBox.innerHTML = "<pre>" + JSON.stringify(context, null, 2)) + "</pre>"
+        context => displayContext(JSON.stringify(context, null, 2))
       );
     } else {
       contextListener = fdc3.addContextListener(
-        context => (contextResultBox.innerHTML=  "<pre>" + JSON.stringify(context, null, 2)) + "</pre>"
+        context => displayContext(JSON.stringify(context, null, 2))
       );
     }
   } catch (error) {
     console.error('Unable to add a context listener', error);
   }
+}
+
+function displayContext(text){
+  let contextResultBox = document.getElementById('context-result');
+  contextResultBox.innerText = text;
 }
 
 async function addAppChannel() {
