@@ -28,16 +28,21 @@ const broadcastText = document.getElementById("broadcastText")
 function enablePage() {
   console.log('FDC3 is available');
 
+  // NOTE: conceptually replaced with fdc3.getInfo
   if (window.FSBL) {
-    window.FSBL.getFSBLInfo().then(info => providerDetails.innerHTML = 'Available - Finsemble ' + info.FSBLVersion);
+    window.FSBL.getFSBLInfo().then(info => updateProviderDetails('Available - Finsemble ' + info.FSBLVersion));
   } else if (window.fin) {
-    providerDetails.innerHTML = 'Available - OpenFin ' + fin.desktop.getVersion();
+    updateProviderDetails('Available - OpenFin ' + fin.desktop.getVersion());
   } else {
-    providerDetails.innerHTML = 'Available - Unknown';
+    updateProviderDetails('Available - Unknown');
   }
 
   broadcastButton.disabled = false;
   broadcastText.disabled = false;
+}
+
+function updateProviderDetails(details){
+  providerDetails.innerText = details;
 }
 
 function broadcastFDC3Context() {
