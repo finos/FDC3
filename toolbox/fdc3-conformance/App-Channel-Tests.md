@@ -16,10 +16,10 @@
 
 | App | Step               | Details                                                                    |
 |-----|--------------------|----------------------------------------------------------------------------|
-| B   | 1.createChannel        | Get or create a user channel called `test-channel` using: <br/>`const testChannel = await fdc3.getOrCreateChannel("test-channel")`|
-| B   | 2.Broadcast          | Broadcast an `fdc3.instrument` to the channel using: <br/> `testChannel.broadcast(<some instrument>)`|
-| A   | 3.createChannel   |Get or create the same channel as B- called `test-channel` |
-| A   | 4.Receive Context    | A gets the _current context_ of the user channel. Via: <br /> ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.getCurrentContext()` <br /> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.getCurrentContext()` <br /> It receives an `fdc3.instrument` identical to that sent by B.    |
+| B   | 1.Retrieve `Channel` |Retrieve a `Channel` object representing an 'App' channel called `test-channel` using: <br/>`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
+| B   | 2.Broadcast          | Broadcast an `fdc3.instrument` to the channel using: <br/> `testChannel.broadcast(<fdc3.instrument context>)`|
+| A   | 3.Retrieve `Channel`   |Retrieve a `Channel` object representing the same 'App' channel B did (`test-channel`)|
+| A   | 4.Retrieve Current Context    | A gets the _current context_ of the user channel. via:  `await testChannel.getCurrentContext()` <br />Ensure that the instrument received by A is identical to that sent by B    |
 
 -  `ACBasicUsage2` Perform above test
 
