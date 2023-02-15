@@ -31,25 +31,21 @@
 
 | App | Step            | Description                                              |
 |-----|-----------------|----------------------------------------------------------|
-| A   | 1. Opening App     |App A opens app B with an `fdc3.instrument` context data item |
-| B   | 2. Context present | Add an untyped context listener via: <br/>`fdc3.addContextListener(null, handler)` <br /> B receives a matching piece of context data from A |
+| A   | 1. Opening App     |App A opens app B with an `fdc3.instrument` Context Object by calling a function (see below) |
+| B   | 2. Receive Context | Add an untyped context listener via: <br/>`fdc3.addContextListener(null, handler)` <br /> B receives an `fdc3.instrument` Context Object matching that passed to the `fdc3.open() call made by A |
 
-- `AOpensBWithContext1`: ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) **A** uses `fdc3.open(‘app B Name', ctx)` 
-- `AOpensBWithContext2`: ![1.2](https://img.shields.io/badge/FDC3-1.2-green) **A** uses `fdc3.open({name: “<app B Name>”}, ctx)` 
-- `AOpensBWithContext3`: ![1.2](https://img.shields.io/badge/FDC3-1.2-green) **A** uses `fdc3.open({name: “<app B Name>”, appId: “<app B ID>”}, ctx)` 
-- `AOpensBWithSpecificContext`: ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) Perform above but replace **B**s call with `fdc3.addContextListener('fdc3.instrument', handler)` 
-- `AOpensBMultipleListen`: ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) Perform `AOpensBWithSpecificContext` but **B** should perform an additional `fdc3.addContextListener('fdc3.contact', handler)` prior to the existing `addContextListener` for `fdc3.instrument`.  The correct context listener should receive the context, and the promise completes successfully.  
+- `AOpensBWithContext1`:  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) **A** uses `fdc3.open(‘app B Name', <fdc3.instrument context>)` 
+- `AOpensBWithContext2`:  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) **A** uses `fdc3.open({name: “<app B Name>”}, <fdc3.instrument context>)` 
+- `AOpensBWithContext3`:  **A** uses an `AppMetadata` or `AppIdentifier` to open B, via:
+  - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `fdc3.open({name: “<app B Name>”, appId: “<app B ID>”}, <fdc3.instrument context>)` 
+  - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)  `fdc3.open({appId: “<app B ID>”}, <fdc3.instrument context>)`
+- `AOpensBWithSpecificContext`: ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) Perform AOpensBWithContext3 but replace **B**s call with `fdc3.addContextListener('fdc3.instrument', handler)` 
+- `AOpensBMultipleListen`:  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) Perform `AOpensBWithSpecificContext` but **B** should perform an additional `fdc3.addContextListener('fdc3.contact', handler)` prior to the existing `addContextListener` for `fdc3.instrument`.  The correct context listener should receive the context, and the promise completes successfully. 
+- `AOpensBWithWrongContext`: ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) Perform `AOpensBWithSpecificContext` but **B** should add a context listener for the wrong context type (e.g. `fdc3.dummyType`) instead of the expected type in step 2.
+  - Confirm that NO context is received. 
+  - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) the `fdc3.open` call throws an Error with message `AppTimeout` 
+  - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) The promise returned to **A** by `fdc3.open` rejects with an Error with message `AppTimeout`
 
-
-## Wrong Context ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
-
-| App | Step            | Description                                                                                                                   |
-|-----|-----------------|-------------------------------------------------------------------------------------------------------------------------------|
-| A   | 1. Opening App     | A opens B using `fdc3.open(‘app B Name', ctx)`, but passes a context type that app B is NOT going to add a listener for (including NOT adding a listener for type `null`)                                                                |
-| B   | 2. Context not received | App B adds a context listener for a different type than the one A is sending.  <br/>Confirm that NO context is received.                         |
-| A   | 3. Promise         | Receives a rejection from the open promise with `AppTimeout` from <br>https://fdc3.finos.org/docs/api/ref/Errors#openerror |
-
-- `AOpensBWithWrongContext`: Perform above test
 
 ## Multiple Listeners  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
 
