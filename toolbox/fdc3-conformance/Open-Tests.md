@@ -4,12 +4,14 @@
 
 | App | Step            | Description                                              |
 |-----|-----------------|----------------------------------------------------------|
-| A   | 1. Opening App  | App A calls a function to open a second app, B |
-| A   | 2. Check Metadata | ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) Ensure that the app that was opened (B) is the correct app.  Via: <br /> `const implementationMetadata = await fdc3.getInfo();`<br/>`const {appId, instanceId} = implementationMetadata.appMetadata;`<br/> Confirm appId matches what was opened |
+| A   | 1. Opening App  | App A calls a function (see below) to open a second app, B |
+| A   | 2. Check Metadata | Ensure that the correct app was opened |
 
-- `AOpensB1`: ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) **A** uses `fdc3.open(‘app B Name’)`  
+- `AOpensB1`:   ![1.2](https://img.shields.io/badge/FDC3-1.2-green) **A** uses `fdc3.open(‘app B Name’)` 
 - `AOpensB2`: ![1.2](https://img.shields.io/badge/FDC3-1.2-green) **A** uses `fdc3.open({name: “<app B Name>”})` 
-- `AOpensB3`: ![1.2](https://img.shields.io/badge/FDC3-1.2-green) **A** uses `fdc3.open({name: “<app B Name>”, appId: “<app B ID>”})` 
+- `AOpensB3`:  **A** uses an `AppMetadata` or `AppIdentifier` to open B, via<br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `fdc3.open({name: “<app B Name>”, appId: “<app B ID>”})` <br/>![2.0](https://img.shields.io/badge/FDC3-2.0-blue)  `fdc3.open({appId: “<app B ID>”})`
+- `AOpensB4`:  ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) **A** uses an `AppIdentifier` to open B and retrieves an updated `AppIdentifier` with an `instanceId` set via `const instanceIdentifier = await fdc3.open({appId: “<app B ID>”})`. Ensure that the `appId` matches that requested and that an `instanceId` property has been set.
+
 ## A Fails To Open Another App
 
 | App | Step            | Description                                              |
