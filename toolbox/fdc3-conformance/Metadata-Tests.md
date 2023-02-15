@@ -7,11 +7,11 @@ You will need to pre-populate the AppDirectory with the following items:
 |-----|------------------------------------------|
 | A   | Generic AppD Record which contains at least the following fields:<br>- `name`<br>- `version`<br>- `title`<br>- `tooltip`<br>- `description`<br>- `icons` (`Array<Icon>`)<br>- `screenshots` (`Array<Image>`)<br>- `interop.intents.listensFor` (`aTestingIntent` with at least context type `testContextX`)  |
 
-## Get App Metadata ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+## Retrieve `AppMetadata` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1.getAppMetadata    | Retrieve metadata for the configured app A with <br/> `const metadata1 = fdc3.getAppMetadata({appId: "<A's appId>"})`  |
+| Test   | 1.getAppMetadata    | Retrieve metadata for the configured app A with <br/> `const metadata1 = await fdc3.getAppMetadata({appId: "<A's appId>"})`  |
 | Test   | 2.Confirm    | Compare the `AppMetadata` object to the expected definition for the fields provided above during setup and ensure that the metadata matches. An `instanceId` should NOT be set  |
 
 - `GetAppMetadata`: perform the above steps
