@@ -16,12 +16,12 @@
 
 | App | Step            | Description                                              |
 |-----|-----------------|----------------------------------------------------------|
-| A   | 1. Opening App  | App A tries to open a non-existent app |
-| A   | 2. Check Response | A receives an "App Not Found" error  |
+| A   | 1. Opening App  | App A calls a function (see below) to try and open a non-existent app |
+| A   | 2. Check Error Response | ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `fdc3.open` throws an Error with the message "App Not Found"<br/>![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `fdc3.open` returns a promise that rejects with an Error with the message "App Not Found" |
 
-- `AFailsToOpenB1`:  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) **A** uses `fdc3.open(‘<non existent app>’)` 
-- `AFailsToOpenB2`:  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) **A** uses `fdc3.open({name: ‘<non existent app>’})`  
-- `AFailsToOpenB3`:  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) **A** uses `fdc3.open({name: ‘<non existent app>’, appId: “<non existent app id>”})` 
+- `AFailsToOpenB1`: ![1.2](https://img.shields.io/badge/FDC3-1.2-green) **A** uses `fdc3.open(‘non existent app’)` 
+- `AFailsToOpenB2`: ![1.2](https://img.shields.io/badge/FDC3-1.2-green) **A** uses `fdc3.open({name: “non existent app”})` 
+- `AFailsToOpenB3`:  **A** uses an `AppMetadata` or `AppIdentifier` to open B, via: <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `fdc3.open({name: “non existent app”, appId: “non existent app”})` <br/>![2.0](https://img.shields.io/badge/FDC3-2.0-blue)  `fdc3.open({appId: “<app B ID>”})`
 
 ## A Opens B With Context
 
