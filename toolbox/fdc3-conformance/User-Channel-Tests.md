@@ -16,9 +16,9 @@ _NB:  User Channels were called System Channels in FDC3 1.2.  The new terminolog
 | A   | 5.Receive Context    | A receives the instrument object, matching the one broadcast by B.  |
 
 - `UCBasicUsage1` Perform above test 
-- `UCBasicUsage2` Perform steps in order: 2,1,3,4,5
-- `UCBasicUsage3` Perform steps in order: 3,4,1,2,5
-- `UCBasicUsage4` Perform steps in order: 3,4,2,1,5
+- `UCBasicUsage2` Perform steps in order: 2,1,3,4,5 to confirm that the order of `joinUserChannel` and `addContextListener` calls doesn't matter
+- `UCBasicUsage3` Perform steps in order: 3,4,1,2,5 to confirm that the current context is automatically received on joining a channel.
+- `UCBasicUsage4` Perform steps in order: 3,4,2,1,5  to confirm that the current context is automatically received on adding a context listener to an already joined a channel.
 
 ## Filtered Broadcast
 
