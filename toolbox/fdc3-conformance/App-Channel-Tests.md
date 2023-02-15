@@ -4,11 +4,11 @@
 
 | App | Step               | Details                                                                    |
 |-----|--------------------|----------------------------------------------------------------------------|
-| A   | 1.createChannel    |Get or create a user channel called `test-channel` using: <br/>`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
-| A   | 2.addContextListener |Add an _untyped_ context listener, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener(null, handler)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener(null, handler)` |
-| B   | 3.createChannel      | Get or create the same named user channel as A- `test-channel`|
-| B   | 4.Broadcast          | Broadcast an `fdc3.instrument` to the channel with: <br/>`testChannel.broadcast(<some instrument>)`|
-| A   | 5.Receive Context    | Ensure that the instrument received by A is identical to that sent by B  |
+| A   | 1.Retrieve `Channel`    |Retrieve a `Channel` object representing an 'App' channel called `test-channel` using: <br/>`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
+| A   | 2.Add Context Listener |Add an _untyped_ context listener to the channel, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener(null, handler)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener(null, handler)` |
+| B   | 3.Retrieve `Channel`     | Retrieve a `Channel` object representing the same 'App' channel A did (`test-channel`)|
+| B   | 4.Broadcast          | Broadcast an `fdc3.instrument` Context to the channel with: <br/>`testChannel.broadcast(<fdc3.instrument context>)`|
+| A   | 5.Receive Context    | The handler added in step 2 will receive the instrument context. Ensure that the instrument received by A is identical to that sent by B.  |
 
 - `ACBasicUsage1` Perform above test.
 
