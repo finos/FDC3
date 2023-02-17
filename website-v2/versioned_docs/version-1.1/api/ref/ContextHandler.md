@@ -1,5 +1,4 @@
 ---
-id: version-1.1-ContextHandler
 sidebar_label: ContextHandler
 title: ContextHandler
 hide_title: true

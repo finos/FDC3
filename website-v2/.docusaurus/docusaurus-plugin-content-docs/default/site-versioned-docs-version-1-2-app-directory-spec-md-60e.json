@@ -6,7 +6,7 @@
   "source": "@site/versioned_docs/version-1.2/app-directory/spec.md",
   "sourceDirName": "app-directory",
   "slug": "/app-directory/spec",
-  "permalink": "/docs/app-directory/spec",
+  "permalink": "/docs/1.2/app-directory/spec",
   "draft": false,
   "tags": [],
   "version": "1.2",
@@ -21,6 +21,6 @@
   "sidebar": "version-1.2/docs",
   "previous": {
     "title": "App Directory Usage",
-    "permalink": "/docs/app-directory/usage"
+    "permalink": "/docs/1.2/app-directory/usage"
   }
 }

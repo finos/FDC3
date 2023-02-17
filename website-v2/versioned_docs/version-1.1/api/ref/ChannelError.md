@@ -1,5 +1,4 @@
 ---
-id: version-1.1-ChannelError
 sidebar_label: ChannelError
 title: ChannelError
 hide_title: true

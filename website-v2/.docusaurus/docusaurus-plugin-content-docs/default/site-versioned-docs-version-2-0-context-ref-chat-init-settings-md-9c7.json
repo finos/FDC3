@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/ChatInitSettings",
+  "id": "version-2.0/context/ref/ChatInitSettings",
+  "title": "ChatInitSettings",
+  "description": "A collection of settings to start a new chat conversation",
+  "source": "@site/versioned_docs/version-2.0/context/ref/ChatInitSettings.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/ChatInitSettings",
+  "permalink": "/docs/context/ref/ChatInitSettings",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "ChatInitSettings",
+    "title": "ChatInitSettings",
+    "hide_title": true,
+    "original_id": "ChatInitSettings"
+  },
+  "sidebar": "version-2.0/docs",
+  "previous": {
+    "title": "Chart",
+    "permalink": "/docs/context/ref/Chart"
+  },
+  "next": {
+    "title": "Contact",
+    "permalink": "/docs/context/ref/Contact"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "unversionedId": "intents/ref/ViewContact",
+  "id": "version-2.0/intents/ref/ViewContact",
+  "title": "ViewContact",
+  "description": "Note: ViewContact has been deprecated in FDC3 2.0 in favour of the more general ViewProfile intent.",
+  "source": "@site/versioned_docs/version-2.0/intents/ref/ViewContact.md",
+  "sourceDirName": "intents/ref",
+  "slug": "/intents/ref/ViewContact",
+  "permalink": "/docs/intents/ref/ViewContact",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "ViewContact (deprecated)",
+    "title": "ViewContact",
+    "hide_title": true,
+    "original_id": "ViewContact"
+  },
+  "sidebar": "version-2.0/docs",
+  "previous": {
+    "title": "ViewResearch",
+    "permalink": "/docs/intents/ref/ViewResearch"
+  },
+  "next": {
+    "title": "Overview",
+    "permalink": "/docs/context/spec"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "unversionedId": "intents/ref/ViewChart",
+  "id": "version-1.1/intents/ref/ViewChart",
+  "title": "ViewChart",
+  "description": "Display a chart for the provided instrument(s).",
+  "source": "@site/versioned_docs/version-1.1/intents/ref/ViewChart.md",
+  "sourceDirName": "intents/ref",
+  "slug": "/intents/ref/ViewChart",
+  "permalink": "/docs/1.1/intents/ref/ViewChart",
+  "draft": false,
+  "tags": [],
+  "version": "1.1",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "ViewChart",
+    "title": "ViewChart",
+    "hide_title": true,
+    "original_id": "ViewChart"
+  },
+  "sidebar": "version-1.1/docs",
+  "previous": {
+    "title": "StartChat",
+    "permalink": "/docs/1.1/intents/ref/StartChat"
+  },
+  "next": {
+    "title": "ViewContact",
+    "permalink": "/docs/1.1/intents/ref/ViewContact"
+  }
+}

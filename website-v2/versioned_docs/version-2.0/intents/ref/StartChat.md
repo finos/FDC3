@@ -1,5 +1,4 @@
 ---
-id: version-2.0-StartChat
 sidebar_label: StartChat
 title: StartChat
 hide_title: true

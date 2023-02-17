@@ -1,0 +1,33 @@
+{
+  "unversionedId": "use-cases/uc-4",
+  "id": "version-2.0/use-cases/uc-4",
+  "title": "Use Case 4: Client-side FX Trader Credit Check",
+  "description": "Preconditions",
+  "source": "@site/versioned_docs/version-2.0/use-cases/004-client-side-fx-trader.md",
+  "sourceDirName": "use-cases",
+  "slug": "/use-cases/uc-4",
+  "permalink": "/docs/use-cases/uc-4",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "id": "uc-4",
+    "title": "Use Case 4: Client-side FX Trader Credit Check",
+    "sidebar_label": "4. Client-side FX Trader Credit Check",
+    "layout": "use_case",
+    "original_id": "uc-4"
+  },
+  "sidebar": "version-2.0/use-cases",
+  "previous": {
+    "title": "3. Inhouse Cross Platform Launcher",
+    "permalink": "/docs/use-cases/uc-3"
+  },
+  "next": {
+    "title": "5. Buy side Treasurer - client rates across providers",
+    "permalink": "/docs/use-cases/uc-5"
+  }
+}

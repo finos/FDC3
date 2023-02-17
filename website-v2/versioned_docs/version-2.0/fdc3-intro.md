@@ -1,5 +1,4 @@
 ---
-id: version-2.0-fdc3-intro
 title: Welcome to FDC3 2.0
 sidebar_label: Introduction
 original_id: fdc3-intro

@@ -1,10 +1,9 @@
 ---
-id: version-1.0-fdc3-intro
 title: Welcome to FDC3
 sidebar_label: Introduction
 original_id: fdc3-intro
 ---
-![FDC3](assets/fdc3-logo.png)
+![FDC3](/assets/fdc3-logo.png)
 
 The mission of FDC3 is to develop specific protocols and taxonomies to advance the ability of desktop applications in financial workflows to interoperate in a plug-and-play fashion, without prior bi-lateral agreements. [Read the Charter](fdc3-charter.md).
 

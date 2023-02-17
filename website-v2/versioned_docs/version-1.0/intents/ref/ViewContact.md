@@ -1,5 +1,4 @@
 ---
-id: ViewContact
 sidebar_label: ViewContact (deprecated)
 title: ViewContact
 hide_title: true

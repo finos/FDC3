@@ -1,0 +1,675 @@
+{
+  "pluginId": "default",
+  "version": "1.0",
+  "label": "1.0",
+  "banner": "unmaintained",
+  "badge": true,
+  "noIndex": false,
+  "className": "docs-version-1.0",
+  "isLast": false,
+  "docsSidebars": {
+    "version-1.0/docs": [
+      {
+        "type": "category",
+        "label": "Getting Started",
+        "items": [
+          {
+            "type": "link",
+            "label": "Introduction",
+            "href": "/docs/1.0/fdc3-intro",
+            "docId": "fdc3-intro"
+          },
+          {
+            "type": "link",
+            "label": "Charter",
+            "href": "/docs/1.0/fdc3-charter",
+            "docId": "fdc3-charter"
+          },
+          {
+            "type": "link",
+            "label": "Why FDC3",
+            "href": "/docs/1.0/why-fdc3",
+            "docId": "why-fdc3"
+          },
+          {
+            "type": "link",
+            "label": "FDC3 Compliance",
+            "href": "/docs/1.0/fdc3-compliance",
+            "docId": "fdc3-compliance"
+          },
+          {
+            "type": "link",
+            "label": "FDC3 1.0 Abstract",
+            "href": "/docs/1.0/fdc3-standard",
+            "docId": "fdc3-standard"
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "API",
+        "items": [
+          {
+            "type": "link",
+            "label": "API Overview",
+            "href": "/docs/1.0/api/api-intro",
+            "docId": "api/api-intro"
+          },
+          {
+            "type": "link",
+            "label": "API Specification",
+            "href": "/docs/1.0/api/api-spec",
+            "docId": "api/api-spec"
+          },
+          {
+            "type": "category",
+            "label": "API Reference",
+            "items": [
+              {
+                "type": "link",
+                "label": "DesktopAgent",
+                "href": "/docs/1.0/api/DesktopAgent",
+                "docId": "api/DesktopAgent"
+              },
+              {
+                "type": "link",
+                "label": "Context",
+                "href": "/docs/1.0/api/Context",
+                "docId": "api/Context"
+              },
+              {
+                "type": "link",
+                "label": "Errors",
+                "href": "/docs/1.0/api/Errors",
+                "docId": "api/Errors"
+              }
+            ],
+            "collapsed": true,
+            "collapsible": true
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "Intents",
+        "items": [
+          {
+            "type": "link",
+            "label": "Intents Overview",
+            "href": "/docs/1.0/intents-intro",
+            "docId": "intents-intro"
+          },
+          {
+            "type": "link",
+            "label": "Intents Specification",
+            "href": "/docs/1.0/intents-spec",
+            "docId": "intents-spec"
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "Context Data",
+        "items": [
+          {
+            "type": "link",
+            "label": "Context Data Overview",
+            "href": "/docs/1.0/context-intro",
+            "docId": "context-intro"
+          },
+          {
+            "type": "link",
+            "label": "Context Data Specification",
+            "href": "/docs/1.0/context-spec",
+            "docId": "context-spec"
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "App Directory",
+        "items": [
+          {
+            "type": "link",
+            "label": "App Directory Overview",
+            "href": "/docs/1.0/appd-intro",
+            "docId": "appd-intro"
+          },
+          {
+            "type": "link",
+            "label": "App Directory Discovery",
+            "href": "/docs/1.0/appd-discovery",
+            "docId": "appd-discovery"
+          },
+          {
+            "type": "link",
+            "label": "App Directory Use",
+            "href": "/docs/1.0/appd-use",
+            "docId": "appd-use"
+          },
+          {
+            "type": "link",
+            "label": "App Directory Specification",
+            "href": "/docs/1.0/appd-spec",
+            "docId": "appd-spec"
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      }
+    ],
+    "version-1.0/use-cases": [
+      {
+        "type": "category",
+        "label": "Use Cases",
+        "items": [
+          {
+            "type": "link",
+            "label": "Overview",
+            "href": "/docs/1.0/use-cases/overview",
+            "docId": "use-cases/overview"
+          },
+          {
+            "type": "link",
+            "label": "1. Equity sell side trader",
+            "href": "/docs/1.0/use-cases/uc-1",
+            "docId": "use-cases/uc-1"
+          },
+          {
+            "type": "link",
+            "label": "2. Buy side Portfolio Manager",
+            "href": "/docs/1.0/use-cases/uc-2",
+            "docId": "use-cases/uc-2"
+          },
+          {
+            "type": "link",
+            "label": "3. Inhouse Cross Platform Launcher",
+            "href": "/docs/1.0/use-cases/uc-3",
+            "docId": "use-cases/uc-3"
+          },
+          {
+            "type": "link",
+            "label": "4. Client-side FX Trader Credit Check",
+            "href": "/docs/1.0/use-cases/uc-4",
+            "docId": "use-cases/uc-4"
+          },
+          {
+            "type": "link",
+            "label": "5. Buy side Treasurer - client rates across providers",
+            "href": "/docs/1.0/use-cases/uc-5",
+            "docId": "use-cases/uc-5"
+          },
+          {
+            "type": "link",
+            "label": "9. Call Transcription to CRM",
+            "href": "/docs/1.0/use-cases/uc-9",
+            "docId": "use-cases/uc-9"
+          },
+          {
+            "type": "link",
+            "label": "10. Real-Time voice trades -> trade ticket population",
+            "href": "/docs/1.0/use-cases/uc-10",
+            "docId": "use-cases/uc-10"
+          },
+          {
+            "type": "link",
+            "label": "13. User launches multiple apps from a single container",
+            "href": "/docs/1.0/use-cases/uc-13",
+            "docId": "use-cases/uc-13"
+          },
+          {
+            "type": "link",
+            "label": "15. Sales Floor Base Workflow",
+            "href": "/docs/1.0/use-cases/uc-15",
+            "docId": "use-cases/uc-15"
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      }
+    ]
+  },
+  "docs": {
+    "api/api-intro": {
+      "id": "api/api-intro",
+      "title": "API Overview",
+      "description": "FDC3 API standards support the following goals:",
+      "sidebar": "version-1.0/docs"
+    },
+    "api/api-spec": {
+      "id": "api/api-spec",
+      "title": "API Specification 1.0",
+      "description": "Components",
+      "sidebar": "version-1.0/docs"
+    },
+    "api/Context": {
+      "id": "api/Context",
+      "title": "Context",
+      "description": "The base object that all contexts should extend.",
+      "sidebar": "version-1.0/docs"
+    },
+    "api/DesktopAgent": {
+      "id": "api/DesktopAgent",
+      "title": "DesktopAgent",
+      "description": "A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain.",
+      "sidebar": "version-1.0/docs"
+    },
+    "api/Errors": {
+      "id": "api/Errors",
+      "title": "Errors",
+      "description": "OpenError",
+      "sidebar": "version-1.0/docs"
+    },
+    "api/ref/Channel": {
+      "id": "api/ref/Channel",
+      "title": "Channel",
+      "description": "Represents a context channel that applications can join to share context data."
+    },
+    "api/ref/DesktopAgent": {
+      "id": "api/ref/DesktopAgent",
+      "title": "DesktopAgent",
+      "description": "An FDC3 Desktop Agent is a desktop component (or aggregate of components) that serves as an orchestrator for applications in its domain."
+    },
+    "api/ref/Errors": {
+      "id": "api/ref/Errors",
+      "title": "Errors",
+      "description": "FDC3 API operations may sometimes result in an error, which must be returned to the caller. Errors should be returned by rejecting the promise returned by the API with a JavaScript Error object (or equivalent for the language of the implementation). The Error Object's message should be chosen from the appropriate Error enumeration below."
+    },
+    "api/ref/Globals": {
+      "id": "api/ref/Globals",
+      "title": "Globals",
+      "description": "Since FDC3 is typically available to the whole web application, desktop agents are expected to make the DesktopAgent interface available at a global level."
+    },
+    "api/ref/Metadata": {
+      "id": "api/ref/Metadata",
+      "title": "Metadata",
+      "description": "FDC3 API operations return various types of metadata."
+    },
+    "api/ref/PrivateChannel": {
+      "id": "api/ref/PrivateChannel",
+      "title": "PrivateChannel",
+      "description": "Object representing a private context channel, which is intended to support secure communication between applications, and extends the Channel interface with event handlers which provide information on the connection state of both parties, ensuring that desktop agents do not need to queue or retain messages that are broadcast before a context listener is added and that applications are able to stop broadcasting messages when the other party has disconnected."
+    },
+    "api/ref/Types": {
+      "id": "api/ref/Types",
+      "title": "Types",
+      "description": "FDC3 API operations make use of several type declarations."
+    },
+    "api/spec": {
+      "id": "api/spec",
+      "title": "API Overview (next)",
+      "description": "The role of FDC3 API is to establish a baseline interface for interoperability between applications. Because FDC3 is largely an agreement between existing platforms and applications, standards should be optimized for ease of adoption rather than functional completeness. Functionality absent from a FDC3 specification is in no way a commentary on its importance."
+    },
+    "app-directory/overview": {
+      "id": "app-directory/overview",
+      "title": "App Directory Overview (next)",
+      "description": "An application directory (appD) is a structured repository of information about apps that can be used in an FDC3-enabled desktop. In other words, it’s a convenient way of storing and managing metadata about apps in your ecosystem."
+    },
+    "app-directory/spec": {
+      "id": "app-directory/spec",
+      "title": "App Directory API (next)",
+      "description": "View the full specification in OpenAPI v3.0 format (generated with ReDoc)."
+    },
+    "appd-discovery": {
+      "id": "appd-discovery",
+      "title": "App Directory Discovery",
+      "description": "Simple Definition",
+      "sidebar": "version-1.0/docs"
+    },
+    "appd-intro": {
+      "id": "appd-intro",
+      "title": "App Directory Overview",
+      "description": "The FDC3 App Directory provides trusted identity for financial desktop apps. This identity can be used to prevent spoofing and man-in-the-middle attacks when apps communicate with one another and exchange data. The App Directory also enables service discovery. Apps are registered with a declaration of the intents and context data that can be used when interoperating.",
+      "sidebar": "version-1.0/docs"
+    },
+    "appd-spec": {
+      "id": "appd-spec",
+      "title": "App Directory Specification 1.0",
+      "description": "API",
+      "sidebar": "version-1.0/docs"
+    },
+    "appd-use": {
+      "id": "appd-use",
+      "title": "App Directory Use",
+      "description": "An application directory (AppD) provides information about an application's",
+      "sidebar": "version-1.0/docs"
+    },
+    "context-intro": {
+      "id": "context-intro",
+      "title": "Context Data Overview",
+      "description": "Extending APIs from one application to another is powerful. However, it requires bi-lateral agreements where implementors build to proprietary APIs. A standard language for interaction between applications allows us to create workflows on the fly, so that applications can discover and link to one another without any prior knowledge.",
+      "sidebar": "version-1.0/docs"
+    },
+    "context-spec": {
+      "id": "context-spec",
+      "title": "Context Data Specification 1.0",
+      "description": "Introduction",
+      "sidebar": "version-1.0/docs"
+    },
+    "context/ref/Chart": {
+      "id": "context/ref/Chart",
+      "title": "Chart",
+      "description": "A context type representing details of a Chart, which may be used to request plotting of a particular chart or to otherwise share details of its composition, such as:"
+    },
+    "context/ref/ChatInitSettings": {
+      "id": "context/ref/ChatInitSettings",
+      "title": "ChatInitSettings",
+      "description": "A collection of settings to start a new chat conversation"
+    },
+    "context/ref/Contact": {
+      "id": "context/ref/Contact",
+      "title": "Contact",
+      "description": "A person contact that can be engaged with through email, calling, messaging, CMS, etc."
+    },
+    "context/ref/ContactList": {
+      "id": "context/ref/ContactList",
+      "title": "ContactList",
+      "description": "A collection of contacts, e.g. for chatting to or calling multiple contacts."
+    },
+    "context/ref/Context": {
+      "id": "context/ref/Context",
+      "title": "Context",
+      "description": "The fdc3.context type defines the basic contract or \"shape\" for all data exchanged by FDC3 operations. As such, it is not"
+    },
+    "context/ref/Country": {
+      "id": "context/ref/Country",
+      "title": "Country",
+      "description": "A country entity."
+    },
+    "context/ref/Currency": {
+      "id": "context/ref/Currency",
+      "title": "Currency",
+      "description": "A context representing an individual Currency."
+    },
+    "context/ref/Email": {
+      "id": "context/ref/Email",
+      "title": "Email",
+      "description": "A collection of information to be used to initiate an email with a Contact or ContactList"
+    },
+    "context/ref/Instrument": {
+      "id": "context/ref/Instrument",
+      "title": "Instrument",
+      "description": "A financial instrument from any asset class."
+    },
+    "context/ref/InstrumentList": {
+      "id": "context/ref/InstrumentList",
+      "title": "InstrumentList",
+      "description": "A collection of instruments. Use this type for use cases that require not just a single instrument, but multiple (e.g. to populate a watchlist)."
+    },
+    "context/ref/Nothing": {
+      "id": "context/ref/Nothing",
+      "title": "Nothing",
+      "description": "A type that explicitly represents a lack of context."
+    },
+    "context/ref/Organization": {
+      "id": "context/ref/Organization",
+      "title": "Organization",
+      "description": "An entity that can be used when referencing private companies and other organizations where a specific instrument is not available or desired e.g. CRM and News workflows."
+    },
+    "context/ref/Portfolio": {
+      "id": "context/ref/Portfolio",
+      "title": "Portfolio",
+      "description": "A financial portfolio made up of multiple positions (holdings) in several instruments. Contrast this"
+    },
+    "context/ref/Position": {
+      "id": "context/ref/Position",
+      "title": "Position",
+      "description": "A financial position made up of an instrument and a holding in that instrument. This type is a good"
+    },
+    "context/ref/TimeRange": {
+      "id": "context/ref/TimeRange",
+      "title": "TimeRange",
+      "description": "A context representing a period of time. Any user interfaces that represent or visualise events or activity over time can be filtered or focused on a particular time period, e.g.:"
+    },
+    "context/ref/Valuation": {
+      "id": "context/ref/Valuation",
+      "title": "Valuation",
+      "description": "A context type representing the price and value of a holding."
+    },
+    "context/spec": {
+      "id": "context/spec",
+      "title": "Context Data (next)",
+      "description": "To interoperate, apps need to exchange commonly recognized context structures that can indicate topic with any number of identifiers or mappings to different systems. FDC3 Context Data defines a standard for passing common identifiers and data between apps to create a seamless workflow. FDC3 Context Data is not a symbology solution and is not specifically focused on modeling financial objects. The focus is on providing a standard payload structure that can be used to establish a lowest common denominator for interoperability."
+    },
+    "fdc3-charter": {
+      "id": "fdc3-charter",
+      "title": "FDC3 Charter",
+      "description": "Summary",
+      "sidebar": "version-1.0/docs"
+    },
+    "fdc3-compliance": {
+      "id": "fdc3-compliance",
+      "title": "FDC3 Specification Compliance",
+      "description": "FDC3 standards follow the IETF best practices for keywords to Indicate Requirement levels: RFC 2119.  Documentation should be updated as needed to reflect this.",
+      "sidebar": "version-1.0/docs"
+    },
+    "fdc3-glossary": {
+      "id": "fdc3-glossary",
+      "title": "Glossary of Terms",
+      "description": "For the purposes of this Standard, the following definitions apply. Other terms are defined when first used, at which place they appear in bold and italic type. Terms explicitly defined in this Standard are not to be presumed to refer implicitly to similar terms defined elsewhere. Terms not defined are assumed to be well-known in the financial services or software industries."
+    },
+    "fdc3-intro": {
+      "id": "fdc3-intro",
+      "title": "Welcome to FDC3",
+      "description": "FDC3",
+      "sidebar": "version-1.0/docs"
+    },
+    "fdc3-standard": {
+      "id": "fdc3-standard",
+      "title": "FDC3 1.0",
+      "description": "Status: Superceded",
+      "sidebar": "version-1.0/docs"
+    },
+    "guides/submit-new-intent": {
+      "id": "guides/submit-new-intent",
+      "title": "How to Submit a New Intent PR",
+      "description": "Getting Started"
+    },
+    "intents-intro": {
+      "id": "intents-intro",
+      "title": "Intents Overview",
+      "description": "Extending APIs from one application to another is powerful. However, it requires bi-lateral agreements where implementors build to proprietary APIs. A standard language for interaction between applications allows us to create workflows on the fly, so that applications can discover and link to another without any prior knowledge.",
+      "sidebar": "version-1.0/docs"
+    },
+    "intents-spec": {
+      "id": "intents-spec",
+      "title": "Intents Specification 1.0",
+      "description": "Introduction",
+      "sidebar": "version-1.0/docs"
+    },
+    "intents/ref/StartCall": {
+      "id": "intents/ref/StartCall",
+      "title": "StartCall",
+      "description": "Initiate a call with a contact or list of contacts."
+    },
+    "intents/ref/StartChat": {
+      "id": "intents/ref/StartChat",
+      "title": "StartChat",
+      "description": "Initiate a chat with a contact, a list of contacts or detailed initialization settings."
+    },
+    "intents/ref/StartEmail": {
+      "id": "intents/ref/StartEmail",
+      "title": "StartEmail",
+      "description": "Initiate an email with a contact or list of contacts provided as part of an Email context."
+    },
+    "intents/ref/ViewAnalysis": {
+      "id": "intents/ref/ViewAnalysis",
+      "title": "ViewAnalysis",
+      "description": "Display analysis on the provided context."
+    },
+    "intents/ref/ViewChart": {
+      "id": "intents/ref/ViewChart",
+      "title": "ViewChart",
+      "description": "Display a chart for the provided context."
+    },
+    "intents/ref/ViewContact": {
+      "id": "intents/ref/ViewContact",
+      "title": "ViewContact",
+      "description": "Note: ViewContact has been deprecated in FDC3 2.0 in favour of the more general ViewProfile intent."
+    },
+    "intents/ref/ViewHoldings": {
+      "id": "intents/ref/ViewHoldings",
+      "title": "ViewHoldings",
+      "description": "Display any holdings for the provided instrument, list of instruments, or organization."
+    },
+    "intents/ref/ViewInstrument": {
+      "id": "intents/ref/ViewInstrument",
+      "title": "ViewInstrument",
+      "description": "Display details for the provided instrument."
+    },
+    "intents/ref/ViewInteractions": {
+      "id": "intents/ref/ViewInteractions",
+      "title": "ViewInteractions",
+      "description": "Display interactions (calls, meetings, etc.) related to an individual, an instrument or organization provided as context."
+    },
+    "intents/ref/ViewNews": {
+      "id": "intents/ref/ViewNews",
+      "title": "ViewNews",
+      "description": "Display news stories for the provided context."
+    },
+    "intents/ref/ViewOrders": {
+      "id": "intents/ref/ViewOrders",
+      "title": "ViewOrders",
+      "description": "Display any orders related to the provided contact, instrument, or organization."
+    },
+    "intents/ref/ViewProfile": {
+      "id": "intents/ref/ViewProfile",
+      "title": "ViewProfile",
+      "description": "Display basic profile information for the individual or organization provided as context."
+    },
+    "intents/ref/ViewQuote": {
+      "id": "intents/ref/ViewQuote",
+      "title": "ViewQuote",
+      "description": "Display pricing for an instrumen."
+    },
+    "intents/ref/ViewResearch": {
+      "id": "intents/ref/ViewResearch",
+      "title": "ViewResearch",
+      "description": "Show research related to an instrument, an individual or organization provided as context."
+    },
+    "intents/spec": {
+      "id": "intents/spec",
+      "title": "Intents Overview (next)",
+      "description": "FDC3 Intents define a standard set of verbs that, in conjunction with context data acting as nouns, can be used to put together common cross-application workflows on the financial desktop."
+    },
+    "references": {
+      "id": "references",
+      "title": "References & Bibliography",
+      "description": "The following normative documents contain provisions, which, through reference in this text, constitute provisions of this Standard. For dated references, subsequent amendments to, or revisions of, any of these publications do not apply. However, parties to agreements based on this Standard are encouraged to investigate the possibility of applying the most recent editions of the normative documents indicated below. For undated references, the latest edition of the normative document referred to applies:"
+    },
+    "supported-platforms": {
+      "id": "supported-platforms",
+      "title": "Supported Platforms",
+      "description": "FDC3 is platform- and programming language-independent. An FDC3-capable platform requires a Desktop Agent that supports the FDC3 standard, and that agent is responsible for coordinating application interactions."
+    },
+    "trademarks": {
+      "id": "trademarks",
+      "title": "Trademarks",
+      "description": "The trademarks, logos, and service marks not owned on behalf of FDC3 and FINOS and that are displayed on the Site are the registered and unregistered marks of their respective owners. No rights are granted by the FDC3 or FINOS to use such marks, whether by implication, estoppel, or otherwise."
+    },
+    "use-cases/meeting-minutes/2020-01-16 uc-wg meeting notes": {
+      "id": "use-cases/meeting-minutes/2020-01-16 uc-wg meeting notes",
+      "title": "2020-01-16 uc-wg meeting notes",
+      "description": "Date: 16 January 2020"
+    },
+    "use-cases/meeting-minutes/2020-02-20 uc-wg meeting notes": {
+      "id": "use-cases/meeting-minutes/2020-02-20 uc-wg meeting notes",
+      "title": "2020-02-20 uc-wg meeting notes",
+      "description": "Date: 16 January 2020"
+    },
+    "use-cases/meeting-minutes/2020-03-19 uc-wg meeting notes": {
+      "id": "use-cases/meeting-minutes/2020-03-19 uc-wg meeting notes",
+      "title": "2020-03-19 uc-wg meeting notes",
+      "description": "Meeting not held due to low attendance"
+    },
+    "use-cases/overview": {
+      "id": "use-cases/overview",
+      "title": "Use Cases Overview",
+      "description": "Goal",
+      "sidebar": "version-1.0/use-cases"
+    },
+    "use-cases/readme": {
+      "id": "use-cases/readme",
+      "title": "Overview",
+      "description": "Here are business use cases that have been documented and ratified by the Use Cases Working Group"
+    },
+    "use-cases/uc-1": {
+      "id": "use-cases/uc-1",
+      "title": "Use Case 1: Equity sell side trader",
+      "description": "Preconditions",
+      "sidebar": "version-1.0/use-cases"
+    },
+    "use-cases/uc-10": {
+      "id": "use-cases/uc-10",
+      "title": "Use Case 10: Real-Time voice trades -> trade ticket population",
+      "description": "Persona",
+      "sidebar": "version-1.0/use-cases"
+    },
+    "use-cases/uc-13": {
+      "id": "use-cases/uc-13",
+      "title": "Use Case 13: User launches multiple apps from a single container",
+      "description": "Preconditions",
+      "sidebar": "version-1.0/use-cases"
+    },
+    "use-cases/uc-15": {
+      "id": "use-cases/uc-15",
+      "title": "Use Case 15: Sales Floor Base Workflow",
+      "description": "Overview",
+      "sidebar": "version-1.0/use-cases"
+    },
+    "use-cases/uc-16": {
+      "id": "use-cases/uc-16",
+      "title": "Use Case 16: Quantifying FDC3 Interactions",
+      "description": "Persona"
+    },
+    "use-cases/uc-17": {
+      "id": "use-cases/uc-17",
+      "title": "Use Case 17: Fine-tuning InterOp with Channels",
+      "description": "Persona"
+    },
+    "use-cases/uc-2": {
+      "id": "use-cases/uc-2",
+      "title": "Use Case 2: Buy side Portfolio Manager",
+      "description": "Preconditions",
+      "sidebar": "version-1.0/use-cases"
+    },
+    "use-cases/uc-3": {
+      "id": "use-cases/uc-3",
+      "title": "Use Case 3: Inhouse Cross Platform Launcher",
+      "description": "Preconditions",
+      "sidebar": "version-1.0/use-cases"
+    },
+    "use-cases/uc-4": {
+      "id": "use-cases/uc-4",
+      "title": "Use Case 4: Client-side FX Trader Credit Check",
+      "description": "Preconditions",
+      "sidebar": "version-1.0/use-cases"
+    },
+    "use-cases/uc-5": {
+      "id": "use-cases/uc-5",
+      "title": "Use Case 5: Buy side Treasurer - client rates across providers",
+      "description": "Preconditions",
+      "sidebar": "version-1.0/use-cases"
+    },
+    "use-cases/uc-9": {
+      "id": "use-cases/uc-9",
+      "title": "Use Case 9: Call Transcription to CRM",
+      "description": "Overview",
+      "sidebar": "version-1.0/use-cases"
+    },
+    "why-fdc3": {
+      "id": "why-fdc3",
+      "title": "Why FDC3",
+      "description": "Why look for FDC3 enabled applications?",
+      "sidebar": "version-1.0/docs"
+    }
+  }
+}

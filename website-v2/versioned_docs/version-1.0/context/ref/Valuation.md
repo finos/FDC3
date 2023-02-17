@@ -1,5 +1,4 @@
 ---
-id: Valuation
 sidebar_label: Valuation
 title: Valuation
 hide_title: true

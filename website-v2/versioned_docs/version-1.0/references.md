@@ -1,5 +1,4 @@
 ---
-id: references
 title: References & Bibliography
 sidebar_label: References
 ---

@@ -1,5 +1,4 @@
 ---
-id: ViewInteractions
 sidebar_label: ViewInteractions
 title: ViewInteractions
 hide_title: true

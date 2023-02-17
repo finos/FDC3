@@ -6,7 +6,7 @@
   "source": "@site/versioned_docs/version-1.2/fdc3-intro.md",
   "sourceDirName": ".",
   "slug": "/fdc3-intro",
-  "permalink": "/docs/fdc3-intro",
+  "permalink": "/docs/1.2/fdc3-intro",
   "draft": false,
   "tags": [],
   "version": "1.2",
@@ -21,6 +21,6 @@
   "sidebar": "version-1.2/docs",
   "next": {
     "title": "Supported Platforms",
-    "permalink": "/docs/supported-platforms"
+    "permalink": "/docs/1.2/supported-platforms"
   }
 }

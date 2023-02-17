@@ -2,11 +2,11 @@
   "pluginId": "default",
   "version": "1.2",
   "label": "1.2",
-  "banner": null,
+  "banner": "unmaintained",
   "badge": true,
   "noIndex": false,
   "className": "docs-version-1.2",
-  "isLast": true,
+  "isLast": false,
   "docsSidebars": {
     "version-1.2/docs": [
       {
@@ -16,37 +16,37 @@
           {
             "type": "link",
             "label": "Introduction",
-            "href": "/docs/fdc3-intro",
+            "href": "/docs/1.2/fdc3-intro",
             "docId": "fdc3-intro"
           },
           {
             "type": "link",
             "label": "Supported Platforms",
-            "href": "/docs/supported-platforms",
+            "href": "/docs/1.2/supported-platforms",
             "docId": "supported-platforms"
           },
           {
             "type": "link",
             "label": "Why FDC3",
-            "href": "/docs/why-fdc3",
+            "href": "/docs/1.2/why-fdc3",
             "docId": "why-fdc3"
           },
           {
             "type": "link",
             "label": "FDC3 Charter",
-            "href": "/docs/fdc3-charter",
+            "href": "/docs/1.2/fdc3-charter",
             "docId": "fdc3-charter"
           },
           {
             "type": "link",
             "label": "FDC3 Compliance",
-            "href": "/docs/fdc3-compliance",
+            "href": "/docs/1.2/fdc3-compliance",
             "docId": "fdc3-compliance"
           },
           {
             "type": "link",
             "label": "FDC3 1.2 Abstract",
-            "href": "/docs/fdc3-standard",
+            "href": "/docs/1.2/fdc3-standard",
             "docId": "fdc3-standard"
           }
         ],
@@ -60,13 +60,13 @@
           {
             "type": "link",
             "label": "API Overview",
-            "href": "/docs/api/overview",
+            "href": "/docs/1.2/api/overview",
             "docId": "api/overview"
           },
           {
             "type": "link",
             "label": "API Specification",
-            "href": "/docs/api/spec",
+            "href": "/docs/1.2/api/spec",
             "docId": "api/spec"
           },
           {
@@ -76,37 +76,37 @@
               {
                 "type": "link",
                 "label": "DesktopAgent",
-                "href": "/docs/api/ref/DesktopAgent",
+                "href": "/docs/1.2/api/ref/DesktopAgent",
                 "docId": "api/ref/DesktopAgent"
               },
               {
                 "type": "link",
                 "label": "Channel",
-                "href": "/docs/api/ref/Channel",
+                "href": "/docs/1.2/api/ref/Channel",
                 "docId": "api/ref/Channel"
               },
               {
                 "type": "link",
                 "label": "Globals",
-                "href": "/docs/api/ref/Globals",
+                "href": "/docs/1.2/api/ref/Globals",
                 "docId": "api/ref/Globals"
               },
               {
                 "type": "link",
                 "label": "Types",
-                "href": "/docs/api/ref/Types",
+                "href": "/docs/1.2/api/ref/Types",
                 "docId": "api/ref/Types"
               },
               {
                 "type": "link",
                 "label": "Metadata",
-                "href": "/docs/api/ref/Metadata",
+                "href": "/docs/1.2/api/ref/Metadata",
                 "docId": "api/ref/Metadata"
               },
               {
                 "type": "link",
                 "label": "Errors",
-                "href": "/docs/api/ref/Errors",
+                "href": "/docs/1.2/api/ref/Errors",
                 "docId": "api/ref/Errors"
               }
             ],
@@ -124,13 +124,13 @@
           {
             "type": "link",
             "label": "Intents Overview",
-            "href": "/docs/intents/overview",
+            "href": "/docs/1.2/intents/overview",
             "docId": "intents/overview"
           },
           {
             "type": "link",
             "label": "Intents Specification",
-            "href": "/docs/intents/spec",
+            "href": "/docs/1.2/intents/spec",
             "docId": "intents/spec"
           },
           {
@@ -140,49 +140,49 @@
               {
                 "type": "link",
                 "label": "StartCall",
-                "href": "/docs/intents/ref/StartCall",
+                "href": "/docs/1.2/intents/ref/StartCall",
                 "docId": "intents/ref/StartCall"
               },
               {
                 "type": "link",
                 "label": "StartChat",
-                "href": "/docs/intents/ref/StartChat",
+                "href": "/docs/1.2/intents/ref/StartChat",
                 "docId": "intents/ref/StartChat"
               },
               {
                 "type": "link",
                 "label": "ViewChart",
-                "href": "/docs/intents/ref/ViewChart",
+                "href": "/docs/1.2/intents/ref/ViewChart",
                 "docId": "intents/ref/ViewChart"
               },
               {
                 "type": "link",
                 "label": "ViewContact",
-                "href": "/docs/intents/ref/ViewContact",
+                "href": "/docs/1.2/intents/ref/ViewContact",
                 "docId": "intents/ref/ViewContact"
               },
               {
                 "type": "link",
                 "label": "ViewQuote",
-                "href": "/docs/intents/ref/ViewQuote",
+                "href": "/docs/1.2/intents/ref/ViewQuote",
                 "docId": "intents/ref/ViewQuote"
               },
               {
                 "type": "link",
                 "label": "ViewNews",
-                "href": "/docs/intents/ref/ViewNews",
+                "href": "/docs/1.2/intents/ref/ViewNews",
                 "docId": "intents/ref/ViewNews"
               },
               {
                 "type": "link",
                 "label": "ViewAnalysis",
-                "href": "/docs/intents/ref/ViewAnalysis",
+                "href": "/docs/1.2/intents/ref/ViewAnalysis",
                 "docId": "intents/ref/ViewAnalysis"
               },
               {
                 "type": "link",
                 "label": "ViewInstrument",
-                "href": "/docs/intents/ref/ViewInstrument",
+                "href": "/docs/1.2/intents/ref/ViewInstrument",
                 "docId": "intents/ref/ViewInstrument"
               }
             ],
@@ -200,13 +200,13 @@
           {
             "type": "link",
             "label": "Context Data Overview",
-            "href": "/docs/context/overview",
+            "href": "/docs/1.2/context/overview",
             "docId": "context/overview"
           },
           {
             "type": "link",
             "label": "Context Data Specification",
-            "href": "/docs/context/spec",
+            "href": "/docs/1.2/context/spec",
             "docId": "context/spec"
           },
           {
@@ -216,55 +216,55 @@
               {
                 "type": "link",
                 "label": "Context",
-                "href": "/docs/context/ref/Context",
+                "href": "/docs/1.2/context/ref/Context",
                 "docId": "context/ref/Context"
               },
               {
                 "type": "link",
                 "label": "Contact",
-                "href": "/docs/context/ref/Contact",
+                "href": "/docs/1.2/context/ref/Contact",
                 "docId": "context/ref/Contact"
               },
               {
                 "type": "link",
                 "label": "ContactList",
-                "href": "/docs/context/ref/ContactList",
+                "href": "/docs/1.2/context/ref/ContactList",
                 "docId": "context/ref/ContactList"
               },
               {
                 "type": "link",
                 "label": "Instrument",
-                "href": "/docs/context/ref/Instrument",
+                "href": "/docs/1.2/context/ref/Instrument",
                 "docId": "context/ref/Instrument"
               },
               {
                 "type": "link",
                 "label": "InstrumentList",
-                "href": "/docs/context/ref/InstrumentList",
+                "href": "/docs/1.2/context/ref/InstrumentList",
                 "docId": "context/ref/InstrumentList"
               },
               {
                 "type": "link",
                 "label": "Organization",
-                "href": "/docs/context/ref/Organization",
+                "href": "/docs/1.2/context/ref/Organization",
                 "docId": "context/ref/Organization"
               },
               {
                 "type": "link",
                 "label": "Country",
-                "href": "/docs/context/ref/Country",
+                "href": "/docs/1.2/context/ref/Country",
                 "docId": "context/ref/Country"
               },
               {
                 "type": "link",
                 "label": "Position",
-                "href": "/docs/context/ref/Position",
+                "href": "/docs/1.2/context/ref/Position",
                 "docId": "context/ref/Position"
               },
               {
                 "type": "link",
                 "label": "Portfolio",
-                "href": "/docs/context/ref/Portfolio",
+                "href": "/docs/1.2/context/ref/Portfolio",
                 "docId": "context/ref/Portfolio"
               }
             ],
@@ -282,25 +282,25 @@
           {
             "type": "link",
             "label": "App Directory Overview",
-            "href": "/docs/app-directory/overview",
+            "href": "/docs/1.2/app-directory/overview",
             "docId": "app-directory/overview"
           },
           {
             "type": "link",
             "label": "App Directory Discovery",
-            "href": "/docs/app-directory/discovery",
+            "href": "/docs/1.2/app-directory/discovery",
             "docId": "app-directory/discovery"
           },
           {
             "type": "link",
             "label": "App Directory Usage",
-            "href": "/docs/app-directory/usage",
+            "href": "/docs/1.2/app-directory/usage",
             "docId": "app-directory/usage"
           },
           {
             "type": "link",
             "label": "App Directory Specification",
-            "href": "/docs/app-directory/spec",
+            "href": "/docs/1.2/app-directory/spec",
             "docId": "app-directory/spec"
           }
         ],
@@ -316,73 +316,73 @@
           {
             "type": "link",
             "label": "Overview",
-            "href": "/docs/use-cases/overview",
+            "href": "/docs/1.2/use-cases/overview",
             "docId": "use-cases/overview"
           },
           {
             "type": "link",
             "label": "1. Equity sell side trader",
-            "href": "/docs/use-cases/uc-1",
+            "href": "/docs/1.2/use-cases/uc-1",
             "docId": "use-cases/uc-1"
           },
           {
             "type": "link",
             "label": "2. Buy side Portfolio Manager",
-            "href": "/docs/use-cases/uc-2",
+            "href": "/docs/1.2/use-cases/uc-2",
             "docId": "use-cases/uc-2"
           },
           {
             "type": "link",
             "label": "3. Inhouse Cross Platform Launcher",
-            "href": "/docs/use-cases/uc-3",
+            "href": "/docs/1.2/use-cases/uc-3",
             "docId": "use-cases/uc-3"
           },
           {
             "type": "link",
             "label": "4. Client-side FX Trader Credit Check",
-            "href": "/docs/use-cases/uc-4",
+            "href": "/docs/1.2/use-cases/uc-4",
             "docId": "use-cases/uc-4"
           },
           {
             "type": "link",
             "label": "5. Buy side Treasurer - client rates across providers",
-            "href": "/docs/use-cases/uc-5",
+            "href": "/docs/1.2/use-cases/uc-5",
             "docId": "use-cases/uc-5"
           },
           {
             "type": "link",
             "label": "9. Call Transcription to CRM",
-            "href": "/docs/use-cases/uc-9",
+            "href": "/docs/1.2/use-cases/uc-9",
             "docId": "use-cases/uc-9"
           },
           {
             "type": "link",
             "label": "10. Real-Time voice trades -> trade ticket population",
-            "href": "/docs/use-cases/uc-10",
+            "href": "/docs/1.2/use-cases/uc-10",
             "docId": "use-cases/uc-10"
           },
           {
             "type": "link",
             "label": "13. User launches multiple apps from a single container",
-            "href": "/docs/use-cases/uc-13",
+            "href": "/docs/1.2/use-cases/uc-13",
             "docId": "use-cases/uc-13"
           },
           {
             "type": "link",
             "label": "15. Sales Floor Base Workflow",
-            "href": "/docs/use-cases/uc-15",
+            "href": "/docs/1.2/use-cases/uc-15",
             "docId": "use-cases/uc-15"
           },
           {
             "type": "link",
             "label": "16. Quantifying FDC3 Interactions",
-            "href": "/docs/use-cases/uc-16",
+            "href": "/docs/1.2/use-cases/uc-16",
             "docId": "use-cases/uc-16"
           },
           {
             "type": "link",
             "label": "17. Fine-tuning InterOp with Channels",
-            "href": "/docs/use-cases/uc-17",
+            "href": "/docs/1.2/use-cases/uc-17",
             "docId": "use-cases/uc-17"
           }
         ],

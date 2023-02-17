@@ -1,0 +1,26 @@
+{
+  "unversionedId": "fdc3-intro",
+  "id": "version-2.0/fdc3-intro",
+  "title": "Welcome to FDC3 2.0",
+  "description": "The mission of the Financial Desktop Connectivity and Collaboration Consortium (FDC3) is to develop specific protocols and taxonomies to advance the ability of desktop applications in financial workflows to interoperate in a plug-and-play fashion, without prior bi-lateral agreements.",
+  "source": "@site/versioned_docs/version-2.0/fdc3-intro.md",
+  "sourceDirName": ".",
+  "slug": "/fdc3-intro",
+  "permalink": "/docs/fdc3-intro",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "title": "Welcome to FDC3 2.0",
+    "sidebar_label": "Introduction",
+    "original_id": "fdc3-intro"
+  },
+  "sidebar": "version-2.0/docs",
+  "next": {
+    "title": "Why FDC3?",
+    "permalink": "/docs/why-fdc3"
+  }
+}

@@ -1,5 +1,4 @@
 ---
-id: version-1.0-intents-intro
 sidebar_label: Intents Overview
 title: Intents Overview
 hide_title: true

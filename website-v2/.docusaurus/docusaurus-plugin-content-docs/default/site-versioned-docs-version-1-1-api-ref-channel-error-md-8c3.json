@@ -1,0 +1,31 @@
+{
+  "unversionedId": "api/ref/ChannelError",
+  "id": "version-1.1/api/ref/ChannelError",
+  "title": "ChannelError",
+  "description": "Contains constants representing the errors that can be encountered when calling channels using the joinChannel or getOrCreateChannel methods, or the getCurrentContext, broadcast or addContextListener methods on the Channel object.",
+  "source": "@site/versioned_docs/version-1.1/api/ref/ChannelError.md",
+  "sourceDirName": "api/ref",
+  "slug": "/api/ref/ChannelError",
+  "permalink": "/docs/1.1/api/ref/ChannelError",
+  "draft": false,
+  "tags": [],
+  "version": "1.1",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "ChannelError",
+    "title": "ChannelError",
+    "hide_title": true,
+    "original_id": "ChannelError"
+  },
+  "sidebar": "version-1.1/docs",
+  "previous": {
+    "title": "ResolveError",
+    "permalink": "/docs/1.1/api/ref/ResolveError"
+  },
+  "next": {
+    "title": "Intents Overview",
+    "permalink": "/docs/1.1/intents/overview"
+  }
+}

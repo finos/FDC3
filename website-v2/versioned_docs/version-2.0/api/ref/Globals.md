@@ -1,6 +1,5 @@
 ---
 title: Globals
-id: version-1.2-Globals
 original_id: Globals
 ---
 

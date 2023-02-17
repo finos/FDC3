@@ -1,5 +1,4 @@
 ---
-id: version-2.0-spec
 sidebar_label: API
 title: App Directory API 2.0
 original_id: spec
