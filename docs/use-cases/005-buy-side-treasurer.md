@@ -15,7 +15,7 @@ layout: use_case
 1. A Corporate Treasurer enters or chooses the required trade parameters in an aggregator app which then sends requests to different providers to subscribe to rates updates
 1. The aggregator app shows screen with all the rates received from the running provider apps and updates them in real-time as soon as provider sends new rate.
 
-![Use Case 5 Workflow](../assets/uc5.png)
+![Use Case 5 Workflow](/assets/uc5.png)
 
 
 ## Workflow 2
