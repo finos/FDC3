@@ -1,7 +1,7 @@
 ---
 id: version-1.0-uc-1
-title: Use Case 1: Equity sell side trader
-sidebar_label: 1. Equity sell side trader
+title: "Use Case 1: Equity sell side trader"
+sidebar_label: "1. Equity sell side trader"
 layout: use_case
 original_id: uc-1
 ---

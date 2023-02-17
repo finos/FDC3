@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/organization.schema.json",
+  "type": "object",
+  "title": "Organization",
+  "allOf": [{ "$ref": "context.schema.json#" }],
+  "properties": {
+    "type": { "const": "fdc3.organization" },
+    "id": {
+      "type": "object",
+      "properties": {
+        "LEI": { "type": "string" },
+        "PERMID": { "type": "string" },
+        "FDS_ID": { "type": "string" }
+      }
+    }
+  },
+  "required": ["id"]
+}
