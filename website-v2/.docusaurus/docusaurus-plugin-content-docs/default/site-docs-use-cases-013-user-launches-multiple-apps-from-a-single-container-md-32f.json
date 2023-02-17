@@ -1,0 +1,32 @@
+{
+  "unversionedId": "use-cases/uc-13",
+  "id": "use-cases/uc-13",
+  "title": "Use Case 13: User launches multiple apps from a single container",
+  "description": "Preconditions",
+  "source": "@site/../docs/use-cases/013-user-launches-multiple-apps-from-a-single-container.md",
+  "sourceDirName": "use-cases",
+  "slug": "/use-cases/uc-13",
+  "permalink": "/docs/next/use-cases/uc-13",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "sidebarPosition": 13,
+  "frontMatter": {
+    "id": "uc-13",
+    "title": "Use Case 13: User launches multiple apps from a single container",
+    "sidebar_label": "13. User launches multiple apps from a single container",
+    "layout": "use_case"
+  },
+  "sidebar": "use-cases",
+  "previous": {
+    "title": "10. Real-Time voice trades -> trade ticket population",
+    "permalink": "/docs/next/use-cases/uc-10"
+  },
+  "next": {
+    "title": "15. Sales Floor Base Workflow",
+    "permalink": "/docs/next/use-cases/uc-15"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "unversionedId": "intents/ref/ViewNews",
+  "id": "intents/ref/ViewNews",
+  "title": "ViewNews",
+  "description": "Display news stories for the provided context.",
+  "source": "@site/../docs/intents/ref/ViewNews.md",
+  "sourceDirName": "intents/ref",
+  "slug": "/intents/ref/ViewNews",
+  "permalink": "/docs/next/intents/ref/ViewNews",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "ViewNews",
+    "sidebar_label": "ViewNews",
+    "title": "ViewNews",
+    "hide_title": true
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "ViewInteractions",
+    "permalink": "/docs/next/intents/ref/ViewInteractions"
+  },
+  "next": {
+    "title": "ViewOrders",
+    "permalink": "/docs/next/intents/ref/ViewOrders"
+  }
+}

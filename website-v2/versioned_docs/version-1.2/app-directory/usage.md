@@ -1,5 +1,4 @@
 ---
-id: version-1.1-usage
 sidebar_label: App Directory Usage
 title: App Directory Usage
 hide_title: true
@@ -28,7 +27,7 @@ application and the metadata URI or the actual
 metadata in JSON format. If the metadata is a URI, the launcher would
 retrieve the metadata file from the URI.
 
-![img](assets/appd_launcher_embedded.png)
+![img](/assets/appd_launcher_embedded.png)
 
 
 ## Standalone Launcher
@@ -41,7 +40,7 @@ application data from the AppD and executes the desktop application that
 can run the required application. This is also convenient if you wanted
 to display all possible applications to launch in a single view.
 
-![img](assets/appd_launcher_standalone.png)
+![img](/assets/appd_launcher_standalone.png)
 
 
 ## Aggregated View
@@ -58,7 +57,7 @@ Today there is no intention to create a single registry of known AppD
 instances, so there is an assumption that the launcher will have prior
 knowledge of the AppD instance location (FQDN).
 
-![img](assets/appd_launcher_aggregated.png)
+![img](/assets/appd_launcher_aggregated.png)
 
 
 ## Enhancing controls

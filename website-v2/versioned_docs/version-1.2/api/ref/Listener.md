@@ -1,5 +1,4 @@
 ---
-id: version-1.1-Listener
 sidebar_label: Listener
 title: Listener
 hide_title: true

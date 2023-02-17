@@ -1,0 +1,21 @@
+{
+  "unversionedId": "api/api-spec",
+  "id": "version-1.2/api/api-spec",
+  "title": "API Specification 1.0",
+  "description": "Components",
+  "source": "@site/versioned_docs/version-1.2/api/api-spec.md",
+  "sourceDirName": "api",
+  "slug": "/api/api-spec",
+  "permalink": "/docs/api/api-spec",
+  "draft": false,
+  "tags": [],
+  "version": "1.2",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "API Specification",
+    "title": "API Specification 1.0",
+    "original_id": "api-spec"
+  }
+}

@@ -1,5 +1,4 @@
 ---
-id: version-1.2-spec
 sidebar_label: App Directory Specification
 title: App Directory Specification 1.2
 original_id: spec

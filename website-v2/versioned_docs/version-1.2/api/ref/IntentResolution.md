@@ -1,5 +1,4 @@
 ---
-id: version-1.1-IntentResolution
 sidebar_label: IntentResolution
 title: IntentResolution
 hide_title: true

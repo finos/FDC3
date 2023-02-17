@@ -1,5 +1,5 @@
 ---
-id: version-1.0-uc-15
+id: uc-15
 title: "Use Case 15: Sales Floor Base Workflow"
 sidebar_label: 15. Sales Floor Base Workflow
 layout: use_case
