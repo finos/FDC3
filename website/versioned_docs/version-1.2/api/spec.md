@@ -54,7 +54,7 @@ if (window.fdc3) {
 ```
 
 #### Standards vs. Implementation
-![Desktop Agent - Standards Schematic](assets/api-1.png)
+![Desktop Agent - Standards Schematic](/assets/api-1.png)
 
 The surface area of FDC3 standardization (shown in *white* above) itself is quite small in comparison to the extent of a typical desktop agent implementation (in *grey*).
 
@@ -69,7 +69,7 @@ Are all areas of functionality that any feature complete desktop agent would imp
 #### Inter-Agent Communication
 A goal of FDC3 standards is that applications running in different Desktop Agent contexts on the same desktop would be able to interoperate.  And that one Desktop Agent context would be able to discover and launch an application in another Desktop Application context.
 
-![Desktop Agent - Interop](assets/api-2.png)
+![Desktop Agent - Interop](/assets/api-2.png)
 
 Desktop Agent interop is supported by common standards for APIs for App discovery and launching.  So, an App in one Desktop Agent context would not need to know a different syntax to call an App in another Desktop Agent context.
 
@@ -173,7 +173,7 @@ const chart = await fdc3.raiseIntent('ViewChart');
 const chartApp = fin.Application.wrap(chart.source);
 // do some vendor-specific stuff
 ```
-![Upgrading Connection to Remote API](assets/api-3.png)
+![Upgrading Connection to Remote API](/assets/api-3.png)
 
 ### Register an Intent
 Applications need to let the system know the Intents they can support.  Typically, this is done via registration with the App Directory.  It is also possible for Intents to be registered at the application level as well to support ad-hoc registration which may be helpful at development time.  While, dynamic registration is not part of this specification, a Desktop Agent agent may choose to support any number of registration paths.
