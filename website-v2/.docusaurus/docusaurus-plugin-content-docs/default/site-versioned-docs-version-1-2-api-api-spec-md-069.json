@@ -6,7 +6,7 @@
   "source": "@site/versioned_docs/version-1.2/api/api-spec.md",
   "sourceDirName": "api",
   "slug": "/api/api-spec",
-  "permalink": "/docs/api/api-spec",
+  "permalink": "/docs/1.2/api/api-spec",
   "draft": false,
   "tags": [],
   "version": "1.2",

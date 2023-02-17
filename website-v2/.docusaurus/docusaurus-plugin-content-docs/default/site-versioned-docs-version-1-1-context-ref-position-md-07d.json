@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/Position",
+  "id": "version-1.1/context/ref/Position",
+  "title": "Position",
+  "description": "A financial position made up of an instrument and a holding in that instrument. This type is a good",
+  "source": "@site/versioned_docs/version-1.1/context/ref/Position.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/Position",
+  "permalink": "/docs/1.1/context/ref/Position",
+  "draft": false,
+  "tags": [],
+  "version": "1.1",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Position",
+    "title": "Position",
+    "hide_title": true,
+    "original_id": "Position"
+  },
+  "sidebar": "version-1.1/docs",
+  "previous": {
+    "title": "Country",
+    "permalink": "/docs/1.1/context/ref/Country"
+  },
+  "next": {
+    "title": "Portfolio",
+    "permalink": "/docs/1.1/context/ref/Portfolio"
+  }
+}

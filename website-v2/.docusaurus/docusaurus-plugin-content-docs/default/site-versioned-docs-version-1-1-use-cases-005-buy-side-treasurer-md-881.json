@@ -1,0 +1,33 @@
+{
+  "unversionedId": "use-cases/uc-5",
+  "id": "version-1.1/use-cases/uc-5",
+  "title": "Use Case 5: Buy side Treasurer - client rates across providers",
+  "description": "Preconditions",
+  "source": "@site/versioned_docs/version-1.1/use-cases/005-buy-side-treasurer.md",
+  "sourceDirName": "use-cases",
+  "slug": "/use-cases/uc-5",
+  "permalink": "/docs/1.1/use-cases/uc-5",
+  "draft": false,
+  "tags": [],
+  "version": "1.1",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "id": "uc-5",
+    "title": "Use Case 5: Buy side Treasurer - client rates across providers",
+    "sidebar_label": "5. Buy side Treasurer - client rates across providers",
+    "layout": "use_case",
+    "original_id": "uc-5"
+  },
+  "sidebar": "version-1.1/use-cases",
+  "previous": {
+    "title": "4. Client-side FX Trader Credit Check",
+    "permalink": "/docs/1.1/use-cases/uc-4"
+  },
+  "next": {
+    "title": "9. Call Transcription to CRM",
+    "permalink": "/docs/1.1/use-cases/uc-9"
+  }
+}

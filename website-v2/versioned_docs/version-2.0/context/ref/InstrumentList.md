@@ -1,5 +1,4 @@
 ---
-id: version-2.0-InstrumentList
 sidebar_label: InstrumentList
 title: InstrumentList
 hide_title: true

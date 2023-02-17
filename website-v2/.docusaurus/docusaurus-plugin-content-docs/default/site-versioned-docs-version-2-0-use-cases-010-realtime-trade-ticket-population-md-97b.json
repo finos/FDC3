@@ -1,0 +1,33 @@
+{
+  "unversionedId": "use-cases/uc-10",
+  "id": "version-2.0/use-cases/uc-10",
+  "title": "Use Case 10: Real-Time voice trades -> trade ticket population",
+  "description": "Persona",
+  "source": "@site/versioned_docs/version-2.0/use-cases/010-realtime-trade-ticket-population.md",
+  "sourceDirName": "use-cases",
+  "slug": "/use-cases/uc-10",
+  "permalink": "/docs/use-cases/uc-10",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "sidebarPosition": 10,
+  "frontMatter": {
+    "id": "uc-10",
+    "title": "Use Case 10: Real-Time voice trades -> trade ticket population",
+    "sidebar_label": "10. Real-Time voice trades -> trade ticket population",
+    "layout": "use_case",
+    "original_id": "uc-10"
+  },
+  "sidebar": "version-2.0/use-cases",
+  "previous": {
+    "title": "9. Call Transcription to CRM",
+    "permalink": "/docs/use-cases/uc-9"
+  },
+  "next": {
+    "title": "13. User launches multiple apps from a single container",
+    "permalink": "/docs/use-cases/uc-13"
+  }
+}

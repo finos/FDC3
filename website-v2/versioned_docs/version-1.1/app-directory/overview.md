@@ -1,5 +1,4 @@
 ---
-id: version-1.1-overview
 sidebar_label: App Directory Overview
 title: App Directory Overview
 hide_title: true

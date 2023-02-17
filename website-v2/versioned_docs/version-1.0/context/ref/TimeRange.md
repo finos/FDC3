@@ -1,5 +1,4 @@
 ---
-id: TimeRange
 sidebar_label: TimeRange
 title: TimeRange
 hide_title: true

@@ -6,7 +6,7 @@
   "source": "@site/versioned_docs/version-1.2/context/ref/Contact.md",
   "sourceDirName": "context/ref",
   "slug": "/context/ref/Contact",
-  "permalink": "/docs/context/ref/Contact",
+  "permalink": "/docs/1.2/context/ref/Contact",
   "draft": false,
   "tags": [],
   "version": "1.2",
@@ -22,10 +22,10 @@
   "sidebar": "version-1.2/docs",
   "previous": {
     "title": "Context",
-    "permalink": "/docs/context/ref/Context"
+    "permalink": "/docs/1.2/context/ref/Context"
   },
   "next": {
     "title": "ContactList",
-    "permalink": "/docs/context/ref/ContactList"
+    "permalink": "/docs/1.2/context/ref/ContactList"
   }
 }

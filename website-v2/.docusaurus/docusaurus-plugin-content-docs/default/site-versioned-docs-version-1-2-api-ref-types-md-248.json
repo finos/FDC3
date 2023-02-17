@@ -6,7 +6,7 @@
   "source": "@site/versioned_docs/version-1.2/api/ref/Types.md",
   "sourceDirName": "api/ref",
   "slug": "/api/ref/Types",
-  "permalink": "/docs/api/ref/Types",
+  "permalink": "/docs/1.2/api/ref/Types",
   "draft": false,
   "tags": [],
   "version": "1.2",
@@ -20,10 +20,10 @@
   "sidebar": "version-1.2/docs",
   "previous": {
     "title": "Globals",
-    "permalink": "/docs/api/ref/Globals"
+    "permalink": "/docs/1.2/api/ref/Globals"
   },
   "next": {
     "title": "Metadata",
-    "permalink": "/docs/api/ref/Metadata"
+    "permalink": "/docs/1.2/api/ref/Metadata"
   }
 }

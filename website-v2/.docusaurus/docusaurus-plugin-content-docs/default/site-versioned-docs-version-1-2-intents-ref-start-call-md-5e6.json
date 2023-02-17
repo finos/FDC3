@@ -6,7 +6,7 @@
   "source": "@site/versioned_docs/version-1.2/intents/ref/StartCall.md",
   "sourceDirName": "intents/ref",
   "slug": "/intents/ref/StartCall",
-  "permalink": "/docs/intents/ref/StartCall",
+  "permalink": "/docs/1.2/intents/ref/StartCall",
   "draft": false,
   "tags": [],
   "version": "1.2",
@@ -22,10 +22,10 @@
   "sidebar": "version-1.2/docs",
   "previous": {
     "title": "Intents Specification",
-    "permalink": "/docs/intents/spec"
+    "permalink": "/docs/1.2/intents/spec"
   },
   "next": {
     "title": "StartChat",
-    "permalink": "/docs/intents/ref/StartChat"
+    "permalink": "/docs/1.2/intents/ref/StartChat"
   }
 }

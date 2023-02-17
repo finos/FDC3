@@ -1,5 +1,4 @@
 ---
-id: ChatInitSettings
 sidebar_label: ChatInitSettings
 title: ChatInitSettings
 hide_title: true

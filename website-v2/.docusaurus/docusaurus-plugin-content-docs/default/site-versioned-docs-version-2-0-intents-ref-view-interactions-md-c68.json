@@ -1,0 +1,31 @@
+{
+  "unversionedId": "intents/ref/ViewInteractions",
+  "id": "version-2.0/intents/ref/ViewInteractions",
+  "title": "ViewInteractions",
+  "description": "Display interactions (calls, meetings, etc.) related to an individual, an instrument or organization provided as context.",
+  "source": "@site/versioned_docs/version-2.0/intents/ref/ViewInteractions.md",
+  "sourceDirName": "intents/ref",
+  "slug": "/intents/ref/ViewInteractions",
+  "permalink": "/docs/intents/ref/ViewInteractions",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "ViewInteractions",
+    "title": "ViewInteractions",
+    "hide_title": true,
+    "original_id": "ViewInteractions"
+  },
+  "sidebar": "version-2.0/docs",
+  "previous": {
+    "title": "ViewInstrument",
+    "permalink": "/docs/intents/ref/ViewInstrument"
+  },
+  "next": {
+    "title": "ViewNews",
+    "permalink": "/docs/intents/ref/ViewNews"
+  }
+}

@@ -1,5 +1,4 @@
 ---
-id: version-2.0-spec
 sidebar_label: Overview
 title: Intents Overview 2.0
 original_id: spec

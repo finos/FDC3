@@ -6,7 +6,7 @@
   "source": "@site/versioned_docs/version-1.2/api/spec.md",
   "sourceDirName": "api",
   "slug": "/api/spec",
-  "permalink": "/docs/api/spec",
+  "permalink": "/docs/1.2/api/spec",
   "draft": false,
   "tags": [],
   "version": "1.2",
@@ -21,10 +21,10 @@
   "sidebar": "version-1.2/docs",
   "previous": {
     "title": "API Overview",
-    "permalink": "/docs/api/overview"
+    "permalink": "/docs/1.2/api/overview"
   },
   "next": {
     "title": "DesktopAgent",
-    "permalink": "/docs/api/ref/DesktopAgent"
+    "permalink": "/docs/1.2/api/ref/DesktopAgent"
   }
 }

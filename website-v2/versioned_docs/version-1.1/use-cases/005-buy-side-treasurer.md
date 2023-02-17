@@ -1,5 +1,5 @@
 ---
-id: version-1.1-uc-5
+id: uc-5
 title: "Use Case 5: Buy side Treasurer - client rates across providers"
 sidebar_label: 5. Buy side Treasurer - client rates across providers
 layout: use_case
@@ -16,7 +16,7 @@ original_id: uc-5
 1. A Corporate Treasurer enters or chooses the required trade parameters in an aggregator app which then sends requests to different providers to subscribe to rates updates
 1. The aggregator app shows screen with all the rates received from the running provider apps and updates them in real-time as soon as provider sends new rate.
 
-![Use Case 5 Workflow](../assets/uc5.png)
+![Use Case 5 Workflow](/assets/uc5.png)
 
 
 ## Workflow 2

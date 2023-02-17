@@ -6,7 +6,7 @@
   "source": "@site/versioned_docs/version-1.2/intents/ref/ViewNews.md",
   "sourceDirName": "intents/ref",
   "slug": "/intents/ref/ViewNews",
-  "permalink": "/docs/intents/ref/ViewNews",
+  "permalink": "/docs/1.2/intents/ref/ViewNews",
   "draft": false,
   "tags": [],
   "version": "1.2",
@@ -22,10 +22,10 @@
   "sidebar": "version-1.2/docs",
   "previous": {
     "title": "ViewQuote",
-    "permalink": "/docs/intents/ref/ViewQuote"
+    "permalink": "/docs/1.2/intents/ref/ViewQuote"
   },
   "next": {
     "title": "ViewAnalysis",
-    "permalink": "/docs/intents/ref/ViewAnalysis"
+    "permalink": "/docs/1.2/intents/ref/ViewAnalysis"
   }
 }

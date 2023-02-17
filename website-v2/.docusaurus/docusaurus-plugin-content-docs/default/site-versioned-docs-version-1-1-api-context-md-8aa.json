@@ -1,0 +1,22 @@
+{
+  "unversionedId": "api/Context",
+  "id": "version-1.1/api/Context",
+  "title": "Context",
+  "description": "The base object that all contexts should extend.",
+  "source": "@site/versioned_docs/version-1.1/api/Context.md",
+  "sourceDirName": "api",
+  "slug": "/api/Context",
+  "permalink": "/docs/1.1/api/Context",
+  "draft": false,
+  "tags": [],
+  "version": "1.1",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Context",
+    "title": "Context",
+    "hide_title": true,
+    "original_id": "Context"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "unversionedId": "use-cases/uc-9",
+  "id": "version-1.0/use-cases/uc-9",
+  "title": "Use Case 9: Call Transcription to CRM",
+  "description": "Overview",
+  "source": "@site/versioned_docs/version-1.0/use-cases/009-call-transcription-to-crm.md",
+  "sourceDirName": "use-cases",
+  "slug": "/use-cases/uc-9",
+  "permalink": "/docs/1.0/use-cases/uc-9",
+  "draft": false,
+  "tags": [],
+  "version": "1.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "sidebarPosition": 9,
+  "frontMatter": {
+    "id": "uc-9",
+    "title": "Use Case 9: Call Transcription to CRM",
+    "sidebar_label": "9. Call Transcription to CRM",
+    "layout": "use_case",
+    "original_id": "uc-9"
+  },
+  "sidebar": "version-1.0/use-cases",
+  "previous": {
+    "title": "5. Buy side Treasurer - client rates across providers",
+    "permalink": "/docs/1.0/use-cases/uc-5"
+  },
+  "next": {
+    "title": "10. Real-Time voice trades -> trade ticket population",
+    "permalink": "/docs/1.0/use-cases/uc-10"
+  }
+}

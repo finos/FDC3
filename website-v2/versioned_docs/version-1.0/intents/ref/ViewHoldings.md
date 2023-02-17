@@ -1,5 +1,4 @@
 ---
-id: ViewHoldings
 sidebar_label: ViewHoldings
 title: ViewHoldings
 hide_title: true

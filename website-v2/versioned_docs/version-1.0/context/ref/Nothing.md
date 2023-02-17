@@ -1,5 +1,4 @@
 ---
-id: Nothing
 sidebar_label: Nothing
 title: Nothing
 hide_title: true

@@ -1,5 +1,4 @@
 ---
-id: version-1.1-DisplayMetadata
 sidebar_label: DisplayMetadata
 title: DisplayMetadata
 hide_title: true

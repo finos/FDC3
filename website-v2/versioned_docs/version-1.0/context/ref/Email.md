@@ -1,5 +1,4 @@
 ---
-id: Email
 sidebar_label: Email
 title: Email
 hide_title: true
