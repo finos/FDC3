@@ -1,0 +1,33 @@
+{
+  "unversionedId": "use-cases/uc-15",
+  "id": "version-1.2/use-cases/uc-15",
+  "title": "Use Case 15: Sales Floor Base Workflow",
+  "description": "Overview",
+  "source": "@site/versioned_docs/version-1.2/use-cases/015-sales-floor-base-workflow.md",
+  "sourceDirName": "use-cases",
+  "slug": "/use-cases/uc-15",
+  "permalink": "/docs/use-cases/uc-15",
+  "draft": false,
+  "tags": [],
+  "version": "1.2",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "sidebarPosition": 15,
+  "frontMatter": {
+    "id": "uc-15",
+    "title": "Use Case 15: Sales Floor Base Workflow",
+    "sidebar_label": "15. Sales Floor Base Workflow",
+    "layout": "use_case",
+    "original_id": "uc-15"
+  },
+  "sidebar": "version-1.2/use-cases",
+  "previous": {
+    "title": "13. User launches multiple apps from a single container",
+    "permalink": "/docs/use-cases/uc-13"
+  },
+  "next": {
+    "title": "16. Quantifying FDC3 Interactions",
+    "permalink": "/docs/use-cases/uc-16"
+  }
+}

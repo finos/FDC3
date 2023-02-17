@@ -1,5 +1,4 @@
 ---
-id: version-1.2-Portfolio
 sidebar_label: Portfolio
 title: Portfolio
 hide_title: true

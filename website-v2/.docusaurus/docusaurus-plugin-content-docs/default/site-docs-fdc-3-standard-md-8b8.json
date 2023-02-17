@@ -1,0 +1,30 @@
+{
+  "unversionedId": "fdc3-standard",
+  "id": "fdc3-standard",
+  "title": "FDC3 2.1 (predraft)",
+  "description": "Status: pre-draft",
+  "source": "@site/../docs/fdc3-standard.md",
+  "sourceDirName": ".",
+  "slug": "/fdc3-standard",
+  "permalink": "/docs/next/fdc3-standard",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "fdc3-standard",
+    "title": "FDC3 2.1 (predraft)",
+    "sidebar_label": "Abstract"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "FDC3 Charter",
+    "permalink": "/docs/next/fdc3-charter"
+  },
+  "next": {
+    "title": "Compliance",
+    "permalink": "/docs/next/fdc3-compliance"
+  }
+}

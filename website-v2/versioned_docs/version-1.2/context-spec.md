@@ -1,5 +1,4 @@
 ---
-id: version-1.0-context-spec
 sidebar_label: Context Data Specification
 title: Context Data Specification 1.0
 original_id: context-spec

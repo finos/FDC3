@@ -1,0 +1,31 @@
+{
+  "unversionedId": "intents/ref/ViewInstrument",
+  "id": "version-1.2/intents/ref/ViewInstrument",
+  "title": "ViewInstrument",
+  "description": "Display details for the provided instrument.",
+  "source": "@site/versioned_docs/version-1.2/intents/ref/ViewInstrument.md",
+  "sourceDirName": "intents/ref",
+  "slug": "/intents/ref/ViewInstrument",
+  "permalink": "/docs/intents/ref/ViewInstrument",
+  "draft": false,
+  "tags": [],
+  "version": "1.2",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "ViewInstrument",
+    "title": "ViewInstrument",
+    "hide_title": true,
+    "original_id": "ViewInstrument"
+  },
+  "sidebar": "version-1.2/docs",
+  "previous": {
+    "title": "ViewAnalysis",
+    "permalink": "/docs/intents/ref/ViewAnalysis"
+  },
+  "next": {
+    "title": "Context Data Overview",
+    "permalink": "/docs/context/overview"
+  }
+}

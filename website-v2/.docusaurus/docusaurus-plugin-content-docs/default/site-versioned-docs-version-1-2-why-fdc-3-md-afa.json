@@ -1,0 +1,30 @@
+{
+  "unversionedId": "why-fdc3",
+  "id": "version-1.2/why-fdc3",
+  "title": "Why FDC3",
+  "description": "Why look for FDC3-enabled applications?",
+  "source": "@site/versioned_docs/version-1.2/why-fdc3.md",
+  "sourceDirName": ".",
+  "slug": "/why-fdc3",
+  "permalink": "/docs/why-fdc3",
+  "draft": false,
+  "tags": [],
+  "version": "1.2",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Why FDC3",
+    "title": "Why FDC3",
+    "original_id": "why-fdc3"
+  },
+  "sidebar": "version-1.2/docs",
+  "previous": {
+    "title": "Supported Platforms",
+    "permalink": "/docs/supported-platforms"
+  },
+  "next": {
+    "title": "FDC3 Charter",
+    "permalink": "/docs/fdc3-charter"
+  }
+}

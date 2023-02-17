@@ -1,0 +1,30 @@
+{
+  "unversionedId": "intents/spec",
+  "id": "version-1.2/intents/spec",
+  "title": "Intents Specification 1.2",
+  "description": "Introduction",
+  "source": "@site/versioned_docs/version-1.2/intents/spec.md",
+  "sourceDirName": "intents",
+  "slug": "/intents/spec",
+  "permalink": "/docs/intents/spec",
+  "draft": false,
+  "tags": [],
+  "version": "1.2",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Intents Specification",
+    "title": "Intents Specification 1.2",
+    "original_id": "spec"
+  },
+  "sidebar": "version-1.2/docs",
+  "previous": {
+    "title": "Intents Overview",
+    "permalink": "/docs/intents/overview"
+  },
+  "next": {
+    "title": "StartCall",
+    "permalink": "/docs/intents/ref/StartCall"
+  }
+}

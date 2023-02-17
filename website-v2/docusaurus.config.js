@@ -205,7 +205,7 @@ module.exports={
           "path": "blog"
         },
         "theme": {
-          "customCss": "../src/css/customTheme.css"
+          "customCss": "./src/css/customTheme.css"
         },
         "googleAnalytics": {
           "trackingID": "UA-89349362-8"

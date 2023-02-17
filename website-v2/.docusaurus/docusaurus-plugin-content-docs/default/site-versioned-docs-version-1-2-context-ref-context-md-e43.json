@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/Context",
+  "id": "version-1.2/context/ref/Context",
+  "title": "Context",
+  "description": "The fdc3.context type defines the basic contract or \"shape\" for all data exchanged by FDC3 operations. As such, it is not",
+  "source": "@site/versioned_docs/version-1.2/context/ref/Context.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/Context",
+  "permalink": "/docs/context/ref/Context",
+  "draft": false,
+  "tags": [],
+  "version": "1.2",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Context",
+    "title": "Context",
+    "hide_title": true,
+    "original_id": "Context"
+  },
+  "sidebar": "version-1.2/docs",
+  "previous": {
+    "title": "Context Data Specification",
+    "permalink": "/docs/context/spec"
+  },
+  "next": {
+    "title": "Contact",
+    "permalink": "/docs/context/ref/Contact"
+  }
+}

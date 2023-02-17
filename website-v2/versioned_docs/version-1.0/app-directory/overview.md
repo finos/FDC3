@@ -78,7 +78,7 @@ A Desktop Agent will usually include a user interface allowing the user to selec
 
 A launcher will usually be configured with the locations of one or more AppD servers (which is necessary to implement intent resolution), however, as described in the [Service Discovery](#service-discovery) section, a fully qualified application identifier (app1@host.appd.com) may also be used to both locate the appD service and to retrieve the specific application data.
 
-![img](assets/appd_launcher_embedded.png)
+![img](../assets/appd_launcher_embedded.png)
 
 ### Aggregated View
 

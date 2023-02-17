@@ -1,5 +1,4 @@
 ---
-id: version-1.1-ResolveError
 sidebar_label: ResolveError
 title: ResolveError
 hide_title: true

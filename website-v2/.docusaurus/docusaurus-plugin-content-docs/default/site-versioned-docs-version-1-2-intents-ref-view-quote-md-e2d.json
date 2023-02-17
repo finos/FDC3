@@ -1,0 +1,31 @@
+{
+  "unversionedId": "intents/ref/ViewQuote",
+  "id": "version-1.2/intents/ref/ViewQuote",
+  "title": "ViewQuote",
+  "description": "Display pricing for an instrumen.",
+  "source": "@site/versioned_docs/version-1.2/intents/ref/ViewQuote.md",
+  "sourceDirName": "intents/ref",
+  "slug": "/intents/ref/ViewQuote",
+  "permalink": "/docs/intents/ref/ViewQuote",
+  "draft": false,
+  "tags": [],
+  "version": "1.2",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "ViewQuote",
+    "title": "ViewQuote",
+    "hide_title": true,
+    "original_id": "ViewQuote"
+  },
+  "sidebar": "version-1.2/docs",
+  "previous": {
+    "title": "ViewContact",
+    "permalink": "/docs/intents/ref/ViewContact"
+  },
+  "next": {
+    "title": "ViewNews",
+    "permalink": "/docs/intents/ref/ViewNews"
+  }
+}

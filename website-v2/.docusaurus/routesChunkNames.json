@@ -1,0 +1,677 @@
+{
+  "/__docusaurus/debug-9a6": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugc-7-f-ca0"
+    }
+  },
+  "/__docusaurus/debug/config-159": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugc-7-f-ca0"
+    }
+  },
+  "/__docusaurus/debug/content-660": {
+    "__comp": "__comp---theme-debug-contentba-8-ce7",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugc-7-f-ca0"
+    },
+    "allContent": "allContent---docusaurus-debug-content-246-9aa"
+  },
+  "/__docusaurus/debug/globalData-3d8": {
+    "__comp": "__comp---theme-debug-global-dataede-0fa",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugc-7-f-ca0"
+    }
+  },
+  "/__docusaurus/debug/metadata-18f": {
+    "__comp": "__comp---theme-debug-site-metadata-68-e-3d4",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugc-7-f-ca0"
+    }
+  },
+  "/__docusaurus/debug/registry-3a4": {
+    "__comp": "__comp---theme-debug-registry-679-501",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugc-7-f-ca0"
+    }
+  },
+  "/__docusaurus/debug/routes-50d": {
+    "__comp": "__comp---theme-debug-routes-946-699",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugc-7-f-ca0"
+    }
+  },
+  "/blog-731": {
+    "__comp": "__comp---theme-blog-list-pagea-6-a-7ba",
+    "__context": {
+      "plugin": "plugin---blogddf-e6c"
+    },
+    "sidebar": "sidebar---blog-814-8ac",
+    "items": [
+      {
+        "content": "content---blog-517-b25"
+      },
+      {
+        "content": "content---blogc-7-a-ec2"
+      }
+    ],
+    "metadata": "metadata---blogb-2-b-df1"
+  },
+  "/blog/2017/09/25/testing-rss-1ae": {
+    "__comp": "__comp---theme-blog-post-pageccc-cab",
+    "__context": {
+      "plugin": "plugin---blogddf-e6c"
+    },
+    "sidebar": "sidebar---blog-814-8ac",
+    "content": "content---blog-2017-09-25-testing-rss-4-d-8-00d"
+  },
+  "/blog/2017/09/26/adding-rss-f79": {
+    "__comp": "__comp---theme-blog-post-pageccc-cab",
+    "__context": {
+      "plugin": "plugin---blogddf-e6c"
+    },
+    "sidebar": "sidebar---blog-814-8ac",
+    "content": "content---blog-2017-09-26-adding-rssad-7-946"
+  },
+  "/blog/archive-a76": {
+    "__comp": "__comp---theme-blog-archive-page-9-e-4-1d8",
+    "__context": {
+      "plugin": "plugin---blogddf-e6c"
+    },
+    "archive": "archive---blog-archiveb-2-f-393"
+  },
+  "/docs/next-f2e": {
+    "__comp": "__comp---theme-doc-page-1-be-9be",
+    "__context": {
+      "plugin": "plugin---docs-next-01-a-a78"
+    },
+    "versionMetadata": "versionMetadata---docs-next-935-7db"
+  },
+  "/docs/next/api/ref/Channel-fde": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-api-ref-channel-455-484"
+  },
+  "/docs/next/api/ref/DesktopAgent-c08": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-api-ref-desktop-agent-480-7da"
+  },
+  "/docs/next/api/ref/Errors-895": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-api-ref-errors-17-b-7d1"
+  },
+  "/docs/next/api/ref/Globals-ebf": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-api-ref-globalsc-59-374"
+  },
+  "/docs/next/api/ref/Metadata-914": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-api-ref-metadatac-4-d-f48"
+  },
+  "/docs/next/api/ref/PrivateChannel-576": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-api-ref-private-channela-46-21f"
+  },
+  "/docs/next/api/ref/Types-f66": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-api-ref-types-31-e-608"
+  },
+  "/docs/next/api/spec-c97": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-api-spec-0-ce-5a2"
+  },
+  "/docs/next/app-directory/overview-4e2": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-app-directory-overviewf-3-e-910"
+  },
+  "/docs/next/app-directory/spec-902": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-app-directory-spec-368-af9"
+  },
+  "/docs/next/context/ref/Chart-05f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-chartb-95-374"
+  },
+  "/docs/next/context/ref/ChatInitSettings-0f3": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-chat-init-settingsceb-25c"
+  },
+  "/docs/next/context/ref/Contact-f06": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-contacta-61-283"
+  },
+  "/docs/next/context/ref/ContactList-35e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-contact-listbdd-926"
+  },
+  "/docs/next/context/ref/Context-9f4": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-context-5-ce-98c"
+  },
+  "/docs/next/context/ref/Country-c73": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-country-326-26b"
+  },
+  "/docs/next/context/ref/Currency-d06": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-currency-2-fd-995"
+  },
+  "/docs/next/context/ref/Email-1b6": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-email-21-e-a29"
+  },
+  "/docs/next/context/ref/Instrument-f1d": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-instrument-701-c95"
+  },
+  "/docs/next/context/ref/InstrumentList-911": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-instrument-list-5-bc-f6c"
+  },
+  "/docs/next/context/ref/Nothing-e13": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-nothing-738-4d4"
+  },
+  "/docs/next/context/ref/Organization-191": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-organization-676-d82"
+  },
+  "/docs/next/context/ref/Portfolio-d4f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-portfolioe-10-b4a"
+  },
+  "/docs/next/context/ref/Position-e17": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-positionc-80-979"
+  },
+  "/docs/next/context/ref/TimeRange-0a4": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-time-range-008-a67"
+  },
+  "/docs/next/context/ref/Valuation-9dc": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-ref-valuation-0-ee-192"
+  },
+  "/docs/next/context/spec-1a3": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-context-spec-400-03c"
+  },
+  "/docs/next/fdc3-charter-d31": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-fdc-3-charter-1-fd-db2"
+  },
+  "/docs/next/fdc3-compliance-df2": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-fdc-3-compliancefaf-199"
+  },
+  "/docs/next/fdc3-glossary-d23": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-fdc-3-glossaryd-08-56e"
+  },
+  "/docs/next/fdc3-intro-c70": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-fdc-3-intro-61-e-7d4"
+  },
+  "/docs/next/fdc3-standard-ad6": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-fdc-3-standard-8-b-8-500"
+  },
+  "/docs/next/guides/SubmitNewIntent-9f9": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-guides-submit-new-intent-8-ef-61e"
+  },
+  "/docs/next/intents/ref/StartCall-3a0": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-start-call-45-f-61a"
+  },
+  "/docs/next/intents/ref/StartChat-b01": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-start-chat-893-91d"
+  },
+  "/docs/next/intents/ref/StartEmail-f18": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-start-emaile-91-a57"
+  },
+  "/docs/next/intents/ref/ViewAnalysis-3c4": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-view-analysis-844-503"
+  },
+  "/docs/next/intents/ref/ViewChart-879": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-view-chartc-06-5a5"
+  },
+  "/docs/next/intents/ref/ViewContact-96a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-view-contact-531-20e"
+  },
+  "/docs/next/intents/ref/ViewHoldings-d07": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-view-holdings-367-015"
+  },
+  "/docs/next/intents/ref/ViewInstrument-f15": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-view-instrument-7-ba-d97"
+  },
+  "/docs/next/intents/ref/ViewInteractions-330": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-view-interactions-18-b-378"
+  },
+  "/docs/next/intents/ref/ViewNews-80e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-view-news-92-e-2ea"
+  },
+  "/docs/next/intents/ref/ViewOrders-4b1": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-view-orders-66-c-31d"
+  },
+  "/docs/next/intents/ref/ViewProfile-e70": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-view-profile-8-ca-23b"
+  },
+  "/docs/next/intents/ref/ViewQuote-6b6": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-view-quote-833-c98"
+  },
+  "/docs/next/intents/ref/ViewResearch-88a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-ref-view-research-074-9e6"
+  },
+  "/docs/next/intents/spec-341": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-intents-speca-72-dad"
+  },
+  "/docs/next/references-213": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-references-391-770"
+  },
+  "/docs/next/supported-platforms-50e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-supported-platforms-858-d85"
+  },
+  "/docs/next/trademarks-423": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-trademarks-9-cc-767"
+  },
+  "/docs/next/use-cases/-cd7": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-df-6-0d9"
+  },
+  "/docs/next/use-cases/meeting-minutes/2020-01-16 uc-wg meeting notes-fed": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-meeting-minutes-2020-01-16-uc-wg-meeting-notesa-1-f-996"
+  },
+  "/docs/next/use-cases/meeting-minutes/2020-02-20 uc-wg meeting notes-bdd": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-meeting-minutes-2020-02-20-uc-wg-meeting-notesf-28-4e7"
+  },
+  "/docs/next/use-cases/meeting-minutes/2020-03-19 uc-wg meeting notes-cc0": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-meeting-minutes-2020-03-19-uc-wg-meeting-notese-21-322"
+  },
+  "/docs/next/use-cases/overview-e7a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-overview-22-d-381"
+  },
+  "/docs/next/use-cases/uc-1-14b": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-uc-1-f-6-c-92b"
+  },
+  "/docs/next/use-cases/uc-10-5da": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-uc-10636-3ba"
+  },
+  "/docs/next/use-cases/uc-13-e0a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-uc-1332-f-739"
+  },
+  "/docs/next/use-cases/uc-15-4a9": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-uc-15421-cab"
+  },
+  "/docs/next/use-cases/uc-16-67a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-uc-161-d-0-ca9"
+  },
+  "/docs/next/use-cases/uc-17-c55": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-uc-17-fca-d65"
+  },
+  "/docs/next/use-cases/uc-2-6d7": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-uc-2-dfa-61d"
+  },
+  "/docs/next/use-cases/uc-3-ec5": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-uc-3734-e1f"
+  },
+  "/docs/next/use-cases/uc-4-975": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-uc-4-a-19-f9c"
+  },
+  "/docs/next/use-cases/uc-5-781": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-uc-5-f-91-6a0"
+  },
+  "/docs/next/use-cases/uc-9-377": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-use-cases-uc-9-ee-6-575"
+  },
+  "/docs/next/why-fdc3-8e8": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-next-why-fdc-3-b-9-b-3ab"
+  },
+  "/docs-c45": {
+    "__comp": "__comp---theme-doc-page-1-be-9be",
+    "__context": {
+      "plugin": "plugin---docs-next-01-a-a78"
+    },
+    "versionMetadata": "versionMetadata---docsdb-6-555"
+  },
+  "/docs/api/api-intro-e88": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-api-introf-5-e-59d"
+  },
+  "/docs/api/api-spec-aa1": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-api-spec-069-079"
+  },
+  "/docs/api/Context-f47": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-context-230-94c"
+  },
+  "/docs/api/DesktopAgent-f77": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-desktop-agente-10-4cc"
+  },
+  "/docs/api/Errors-018": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-errors-6-de-583"
+  },
+  "/docs/api/overview-d92": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-overview-74-c-ae1"
+  },
+  "/docs/api/ref/AppIntent-736": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-app-intentb-42-6a6"
+  },
+  "/docs/api/ref/AppMetadata-386": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-app-metadatab-4-f-f90"
+  },
+  "/docs/api/ref/Channel-fb7": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-channel-33-f-45c"
+  },
+  "/docs/api/ref/ChannelError-d16": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-channel-errorc-04-812"
+  },
+  "/docs/api/ref/Context-151": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-context-558-e98"
+  },
+  "/docs/api/ref/ContextHandler-eb3": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-context-handleref-5-86e"
+  },
+  "/docs/api/ref/DesktopAgent-4bf": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-desktop-agent-43-d-9ee"
+  },
+  "/docs/api/ref/DisplayMetadata-463": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-display-metadata-19-a-fe8"
+  },
+  "/docs/api/ref/Errors-64d": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-errors-21-c-b24"
+  },
+  "/docs/api/ref/Globals-950": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-globals-2-d-2-398"
+  },
+  "/docs/api/ref/IntentMetadata-d88": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-intent-metadata-262-d5e"
+  },
+  "/docs/api/ref/IntentResolution-24e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-intent-resolution-6-be-b77"
+  },
+  "/docs/api/ref/Listener-ce2": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-listener-55-f-ce4"
+  },
+  "/docs/api/ref/Metadata-04c": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-metadatad-11-028"
+  },
+  "/docs/api/ref/OpenError-39d": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-open-erroraf-4-6fc"
+  },
+  "/docs/api/ref/ResolveError-95e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-resolve-error-74-b-6ff"
+  },
+  "/docs/api/ref/Types-566": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ref-types-248-727"
+  },
+  "/docs/api/spec-e3e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-spec-3-c-6-a61"
+  },
+  "/docs/app-directory/discovery-76b": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-app-directory-discovery-744-2c5"
+  },
+  "/docs/app-directory/overview-bc4": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-app-directory-overview-2-b-6-d98"
+  },
+  "/docs/app-directory/spec-e6a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-app-directory-spec-60-e-c09"
+  },
+  "/docs/app-directory/usage-779": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-app-directory-usage-53-f-6f3"
+  },
+  "/docs/appd-discovery-3d9": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-appd-discoverya-97-721"
+  },
+  "/docs/appd-intro-60e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-appd-introa-5-f-7cf"
+  },
+  "/docs/appd-spec-048": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-appd-spec-283-084"
+  },
+  "/docs/appd-use-fb0": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-appd-use-73-c-1aa"
+  },
+  "/docs/context-intro-897": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-context-introf-74-740"
+  },
+  "/docs/context-spec-541": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-context-spec-40-d-b1f"
+  },
+  "/docs/context/overview-792": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-context-overview-315-231"
+  },
+  "/docs/context/ref/Contact-183": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-context-ref-contactc-9-a-b9b"
+  },
+  "/docs/context/ref/ContactList-60a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-context-ref-contact-list-234-77d"
+  },
+  "/docs/context/ref/Context-10f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-context-ref-contexte-43-2d8"
+  },
+  "/docs/context/ref/Country-7b7": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-context-ref-country-88-a-299"
+  },
+  "/docs/context/ref/Instrument-a3b": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-context-ref-instrumenteec-692"
+  },
+  "/docs/context/ref/InstrumentList-b0a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-context-ref-instrument-list-0-f-7-ca3"
+  },
+  "/docs/context/ref/Organization-172": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-context-ref-organization-1-ab-6d5"
+  },
+  "/docs/context/ref/Portfolio-ebd": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-context-ref-portfolioa-67-9ee"
+  },
+  "/docs/context/ref/Position-8ab": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-context-ref-position-1-b-8-c1b"
+  },
+  "/docs/context/spec-b93": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-context-specff-6-cb8"
+  },
+  "/docs/fdc3-charter-549": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-fdc-3-charterc-63-366"
+  },
+  "/docs/fdc3-compliance-8d6": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-fdc-3-compliancee-34-d87"
+  },
+  "/docs/fdc3-intro-9fd": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-fdc-3-introb-06-3bf"
+  },
+  "/docs/fdc3-standard-a63": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-fdc-3-standard-03-a-d82"
+  },
+  "/docs/intents-intro-75b": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intents-introb-96-a76"
+  },
+  "/docs/intents-spec-fe9": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intents-specb-94-62d"
+  },
+  "/docs/intents/overview-f2e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intents-overview-42-e-aca"
+  },
+  "/docs/intents/ref/StartCall-cea": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intents-ref-start-call-5-e-6-e9c"
+  },
+  "/docs/intents/ref/StartChat-4fa": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intents-ref-start-chat-7-e-7-62c"
+  },
+  "/docs/intents/ref/ViewAnalysis-fd5": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intents-ref-view-analysise-72-406"
+  },
+  "/docs/intents/ref/ViewChart-9b6": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intents-ref-view-chart-51-a-b0f"
+  },
+  "/docs/intents/ref/ViewContact-848": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intents-ref-view-contact-157-cdd"
+  },
+  "/docs/intents/ref/ViewInstrument-9af": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intents-ref-view-instrumentcf-7-c1f"
+  },
+  "/docs/intents/ref/ViewNews-e12": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intents-ref-view-news-8-d-5-9ad"
+  },
+  "/docs/intents/ref/ViewQuote-f91": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intents-ref-view-quotee-2-d-717"
+  },
+  "/docs/intents/spec-090": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intents-spec-89-d-a12"
+  },
+  "/docs/supported-platforms-a3c": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-supported-platformsafd-c10"
+  },
+  "/docs/use-cases/overview-c0c": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-use-cases-overview-6-e-7-89b"
+  },
+  "/docs/use-cases/uc-1-f8e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-use-cases-uc-1694-d86"
+  },
+  "/docs/use-cases/uc-10-980": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-use-cases-uc-10-fcc-c93"
+  },
+  "/docs/use-cases/uc-13-649": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-use-cases-uc-13-d-77-36d"
+  },
+  "/docs/use-cases/uc-15-2b2": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-use-cases-uc-159-b-4-ab6"
+  },
+  "/docs/use-cases/uc-16-57e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-use-cases-uc-16-c-79-e8f"
+  },
+  "/docs/use-cases/uc-17-2ce": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-use-cases-uc-17072-931"
+  },
+  "/docs/use-cases/uc-2-960": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-use-cases-uc-27-ba-f19"
+  },
+  "/docs/use-cases/uc-3-04a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-use-cases-uc-38-e-1-4c3"
+  },
+  "/docs/use-cases/uc-4-536": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-use-cases-uc-4-f-2-d-356"
+  },
+  "/docs/use-cases/uc-5-060": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-use-cases-uc-5966-867"
+  },
+  "/docs/use-cases/uc-9-490": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-use-cases-uc-9-c-07-827"
+  },
+  "/docs/why-fdc3-a5e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-why-fdc-3-afa-c94"
+  },
+  "/-cb1": {
+    "__comp": "__comp---site-src-pages-index-jsc-4-f-f99",
+    "__context": {
+      "plugin": "plugin---4-fd-a38"
+    },
+    "config": "config---5-e-9-4f3"
+  }
+}

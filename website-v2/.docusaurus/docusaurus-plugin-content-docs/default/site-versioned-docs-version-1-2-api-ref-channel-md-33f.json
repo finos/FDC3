@@ -1,0 +1,31 @@
+{
+  "unversionedId": "api/ref/Channel",
+  "id": "version-1.2/api/ref/Channel",
+  "title": "Channel",
+  "description": "Represents a context channel that applications can join to share context data.",
+  "source": "@site/versioned_docs/version-1.2/api/ref/Channel.md",
+  "sourceDirName": "api/ref",
+  "slug": "/api/ref/Channel",
+  "permalink": "/docs/api/ref/Channel",
+  "draft": false,
+  "tags": [],
+  "version": "1.2",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Channel",
+    "title": "Channel",
+    "hide_title": true,
+    "original_id": "Channel"
+  },
+  "sidebar": "version-1.2/docs",
+  "previous": {
+    "title": "DesktopAgent",
+    "permalink": "/docs/api/ref/DesktopAgent"
+  },
+  "next": {
+    "title": "Globals",
+    "permalink": "/docs/api/ref/Globals"
+  }
+}

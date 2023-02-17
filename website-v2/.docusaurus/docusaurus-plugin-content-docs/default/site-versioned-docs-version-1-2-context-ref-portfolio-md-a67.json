@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/Portfolio",
+  "id": "version-1.2/context/ref/Portfolio",
+  "title": "Portfolio",
+  "description": "A financial portfolio made up of multiple positions (holdings) in several instruments. Contrast this",
+  "source": "@site/versioned_docs/version-1.2/context/ref/Portfolio.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/Portfolio",
+  "permalink": "/docs/context/ref/Portfolio",
+  "draft": false,
+  "tags": [],
+  "version": "1.2",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Portfolio",
+    "title": "Portfolio",
+    "hide_title": true,
+    "original_id": "Portfolio"
+  },
+  "sidebar": "version-1.2/docs",
+  "previous": {
+    "title": "Position",
+    "permalink": "/docs/context/ref/Position"
+  },
+  "next": {
+    "title": "App Directory Overview",
+    "permalink": "/docs/app-directory/overview"
+  }
+}
