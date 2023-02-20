@@ -199,7 +199,7 @@ module.exports={
           "showLastUpdateAuthor": true,
           "showLastUpdateTime": true,
           "path": "../docs",
-          "sidebarPath": "./sidebars.json"
+          "sidebarPath": "./sidebars.json",
         },
         "blog": {
           "path": "blog"
