@@ -1,24 +1,26 @@
 import Layout from "@theme/Layout";
 import Container from "../components/Container"
+const React = require('react');
 
-const style = ```
+
+const style = `
 table.roadmap img {
-  max - width: none;
+  max-width: none;
 }
 
 table.roadmap td {
-  text - align: center;
+  text-align: center;
 }
 
 table.roadmap th {
-  text - align: left;
+  text-align: left;
 }
 
 div.centered {
   margin: auto;
   padding: 30px;
 }
-```
+`
 
 export default (props) => {
   return (
