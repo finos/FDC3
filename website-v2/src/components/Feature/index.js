@@ -1,11 +1,7 @@
 const React = require('react');
 
-export default ({ title, image, content }) => {
-
-    return (
-        <div>
-            <img src={image} />
-            <h3>{t}</h3>)
-            {content}
-        </div>)
+export default (props) => {
+    return (<div  className="featureShowcaseSection  paddingBottom" style={{textAlign: 'center'}}>
+        {props.children}
+    </div>)
 }
