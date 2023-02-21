@@ -18,14 +18,5 @@
     "title": "Context Data Overview",
     "hide_title": true,
     "original_id": "context-intro"
-  },
-  "sidebar": "version-1.0/docs",
-  "previous": {
-    "title": "Intents Specification",
-    "permalink": "/docs/1.0/intents-spec"
-  },
-  "next": {
-    "title": "Context Data Specification",
-    "permalink": "/docs/1.0/context-spec"
   }
 }

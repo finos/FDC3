@@ -17,14 +17,5 @@
     "title": "FDC3 1.1",
     "sidebar_label": "FDC3 1.1 Abstract",
     "original_id": "fdc3-standard"
-  },
-  "sidebar": "version-1.1/docs",
-  "previous": {
-    "title": "FDC3 Compliance",
-    "permalink": "/docs/1.1/fdc3-compliance"
-  },
-  "next": {
-    "title": "API Overview",
-    "permalink": "/docs/1.1/api/overview"
   }
 }

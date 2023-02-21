@@ -18,14 +18,5 @@
     "title": "App Directory Overview",
     "hide_title": true,
     "original_id": "overview"
-  },
-  "sidebar": "version-1.1/docs",
-  "previous": {
-    "title": "Portfolio",
-    "permalink": "/docs/1.1/context/ref/Portfolio"
-  },
-  "next": {
-    "title": "App Directory Discovery",
-    "permalink": "/docs/1.1/app-directory/discovery"
   }
 }

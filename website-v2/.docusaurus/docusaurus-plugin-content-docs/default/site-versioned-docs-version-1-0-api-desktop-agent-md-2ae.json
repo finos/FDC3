@@ -18,14 +18,5 @@
     "title": "DesktopAgent",
     "hide_title": true,
     "original_id": "DesktopAgent"
-  },
-  "sidebar": "version-1.0/docs",
-  "previous": {
-    "title": "API Specification",
-    "permalink": "/docs/1.0/api/api-spec"
-  },
-  "next": {
-    "title": "Context",
-    "permalink": "/docs/1.0/api/Context"
   }
 }

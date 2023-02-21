@@ -18,14 +18,5 @@
     "title": "App Directory Use",
     "hide_title": true,
     "original_id": "appd-use"
-  },
-  "sidebar": "version-1.0/docs",
-  "previous": {
-    "title": "App Directory Discovery",
-    "permalink": "/docs/1.0/appd-discovery"
-  },
-  "next": {
-    "title": "App Directory Specification",
-    "permalink": "/docs/1.0/appd-spec"
   }
 }

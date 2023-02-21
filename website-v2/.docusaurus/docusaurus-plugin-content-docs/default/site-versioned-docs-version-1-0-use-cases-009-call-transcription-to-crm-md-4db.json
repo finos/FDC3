@@ -20,14 +20,5 @@
     "sidebar_label": "9. Call Transcription to CRM",
     "layout": "use_case",
     "original_id": "uc-9"
-  },
-  "sidebar": "version-1.0/use-cases",
-  "previous": {
-    "title": "5. Buy side Treasurer - client rates across providers",
-    "permalink": "/docs/1.0/use-cases/uc-5"
-  },
-  "next": {
-    "title": "10. Real-Time voice trades -> trade ticket population",
-    "permalink": "/docs/1.0/use-cases/uc-10"
   }
 }

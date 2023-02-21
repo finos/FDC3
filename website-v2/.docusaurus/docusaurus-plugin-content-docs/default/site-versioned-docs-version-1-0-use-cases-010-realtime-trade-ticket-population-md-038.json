@@ -20,14 +20,5 @@
     "sidebar_label": "10. Real-Time voice trades -> trade ticket population",
     "layout": "use_case",
     "original_id": "uc-10"
-  },
-  "sidebar": "version-1.0/use-cases",
-  "previous": {
-    "title": "9. Call Transcription to CRM",
-    "permalink": "/docs/1.0/use-cases/uc-9"
-  },
-  "next": {
-    "title": "13. User launches multiple apps from a single container",
-    "permalink": "/docs/1.0/use-cases/uc-13"
   }
 }

@@ -18,14 +18,5 @@
     "title": "ViewAnalysis",
     "hide_title": true,
     "original_id": "ViewAnalysis"
-  },
-  "sidebar": "version-1.1/docs",
-  "previous": {
-    "title": "ViewNews",
-    "permalink": "/docs/1.1/intents/ref/ViewNews"
-  },
-  "next": {
-    "title": "ViewInstrument",
-    "permalink": "/docs/1.1/intents/ref/ViewInstrument"
   }
 }

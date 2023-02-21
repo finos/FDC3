@@ -18,14 +18,5 @@
     "title": "Contact",
     "hide_title": true,
     "original_id": "Contact"
-  },
-  "sidebar": "version-1.1/docs",
-  "previous": {
-    "title": "Context",
-    "permalink": "/docs/1.1/context/ref/Context"
-  },
-  "next": {
-    "title": "ContactList",
-    "permalink": "/docs/1.1/context/ref/ContactList"
   }
 }

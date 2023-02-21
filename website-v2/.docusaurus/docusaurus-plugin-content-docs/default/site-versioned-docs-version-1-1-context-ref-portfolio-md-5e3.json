@@ -18,14 +18,5 @@
     "title": "Portfolio",
     "hide_title": true,
     "original_id": "Portfolio"
-  },
-  "sidebar": "version-1.1/docs",
-  "previous": {
-    "title": "Position",
-    "permalink": "/docs/1.1/context/ref/Position"
-  },
-  "next": {
-    "title": "App Directory Overview",
-    "permalink": "/docs/1.1/app-directory/overview"
   }
 }

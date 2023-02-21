@@ -6,7 +6,7 @@
   "source": "@site/versioned_docs/version-1.2/context/ref/Position.md",
   "sourceDirName": "context/ref",
   "slug": "/context/ref/Position",
-  "permalink": "/docs/1.2/context/ref/Position",
+  "permalink": "/docs/context/ref/Position",
   "draft": false,
   "tags": [],
   "version": "1.2",
@@ -18,14 +18,5 @@
     "title": "Position",
     "hide_title": true,
     "original_id": "Position"
-  },
-  "sidebar": "version-1.2/docs",
-  "previous": {
-    "title": "Country",
-    "permalink": "/docs/1.2/context/ref/Country"
-  },
-  "next": {
-    "title": "Portfolio",
-    "permalink": "/docs/1.2/context/ref/Portfolio"
   }
 }

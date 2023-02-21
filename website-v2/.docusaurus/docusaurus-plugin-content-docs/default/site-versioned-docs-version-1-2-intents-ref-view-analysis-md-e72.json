@@ -6,7 +6,7 @@
   "source": "@site/versioned_docs/version-1.2/intents/ref/ViewAnalysis.md",
   "sourceDirName": "intents/ref",
   "slug": "/intents/ref/ViewAnalysis",
-  "permalink": "/docs/1.2/intents/ref/ViewAnalysis",
+  "permalink": "/docs/intents/ref/ViewAnalysis",
   "draft": false,
   "tags": [],
   "version": "1.2",
@@ -18,14 +18,5 @@
     "title": "ViewAnalysis",
     "hide_title": true,
     "original_id": "ViewAnalysis"
-  },
-  "sidebar": "version-1.2/docs",
-  "previous": {
-    "title": "ViewNews",
-    "permalink": "/docs/1.2/intents/ref/ViewNews"
-  },
-  "next": {
-    "title": "ViewInstrument",
-    "permalink": "/docs/1.2/intents/ref/ViewInstrument"
   }
 }

@@ -18,14 +18,5 @@
     "title": "Listener",
     "hide_title": true,
     "original_id": "Listener"
-  },
-  "sidebar": "version-1.1/docs",
-  "previous": {
-    "title": "Channel",
-    "permalink": "/docs/1.1/api/ref/Channel"
-  },
-  "next": {
-    "title": "AppIntent",
-    "permalink": "/docs/1.1/api/ref/AppIntent"
   }
 }

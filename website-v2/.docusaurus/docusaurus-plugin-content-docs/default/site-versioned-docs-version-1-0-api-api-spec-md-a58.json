@@ -17,14 +17,5 @@
     "sidebar_label": "API Specification",
     "title": "API Specification 1.0",
     "original_id": "api-spec"
-  },
-  "sidebar": "version-1.0/docs",
-  "previous": {
-    "title": "API Overview",
-    "permalink": "/docs/1.0/api/api-intro"
-  },
-  "next": {
-    "title": "DesktopAgent",
-    "permalink": "/docs/1.0/api/DesktopAgent"
   }
 }

@@ -20,14 +20,5 @@
     "sidebar_label": "2. Buy side Portfolio Manager",
     "layout": "use_case",
     "original_id": "uc-2"
-  },
-  "sidebar": "version-1.0/use-cases",
-  "previous": {
-    "title": "1. Equity sell side trader",
-    "permalink": "/docs/1.0/use-cases/uc-1"
-  },
-  "next": {
-    "title": "3. Inhouse Cross Platform Launcher",
-    "permalink": "/docs/1.0/use-cases/uc-3"
   }
 }
