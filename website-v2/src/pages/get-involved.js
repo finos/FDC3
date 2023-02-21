@@ -13,23 +13,8 @@ import One from '../../data/get-involved/1.mdx'
 import Two from '../../data/get-involved/2.mdx'
 import Three from '../../data/get-involved/3.mdx'
 import Four from '../../data/get-involved/4.mdx'
+import GridBlock from "../components/GridBlock";
 
-const GridBlock = ({items}) => {
-
-  return (
-    <div class="gridBlock">
-      {
-        items.map(sl =>
-          <div class="blockElement fourByGridBlock">
-            <div class="blockContent">
-              {sl}
-            </div>
-          </div>
-        )
-      }
-    </div>
-  )
-}
 
 export default () => {
 

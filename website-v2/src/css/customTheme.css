@@ -8,6 +8,29 @@
   --ifm-color-primary-darkest: #005E86;
 }
 
+/** Buttons from Docusaurus v1 */
+
+.button {
+  border: 1px solid #0086bf;
+  border-radius: 3px;
+  color: #0086bf;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2em;
+  padding: 10px;
+  text-decoration: none!important;
+  text-transform: uppercase;
+  transition: background .3s,color .3s;
+}
+
+
+.button:hover {
+  background: #0086bf;
+  color:#fff
+}
+
+
 /* your custom css */
 
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
@@ -121,6 +144,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-color: #0086BF; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
+  text-align: center;
 }
 
 .homeContainer h2{
@@ -435,4 +459,45 @@ article iframe {
       flex-direction: row;
       flex-wrap:wrap
   }
+}
+
+
+/* index page formatting */
+
+
+.promoSection {
+  display: flex;
+  flex-flow: column wrap;
+  font-size: 125%;
+  line-height: 1.6em;
+  position: relative;
+  z-index:99
+}
+
+.promoSection .promoRow {
+  padding:10px 0
+}
+
+.promoSection .promoRow .pluginWrapper {
+  display:block
+}
+
+.promoSection .promoRow .pluginWrapper.ghStarWrapper, .promoSection .promoRow .pluginWrapper.ghWatchWrapper {
+  height:28px
+}
+
+.promoSection .promoRow .pluginRowBlock {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin:0 -2px
+}
+
+.promoSection .promoRow .pluginRowBlock .pluginWrapper {
+  padding:0 2px
+}
+
+.promoSection .promoRow .pluginRowBlock iframe {
+  margin-left: 2px;
+  margin-top:5px
 }

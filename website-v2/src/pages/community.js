@@ -6,9 +6,11 @@
  */
 
 const React = require('react');
-
-const { useState, useEffect } = React;
-const implData = require(`${process.cwd()}/data/community.json`);
+import Layout from "@theme/Layout";
+import Container from "../components/Container"
+import implData from "../../data/community.json";
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import setType from '../components/implementationFilters'
 
 const badgeTitles = {
 	"Open Source": "Indicates that the project source code is available to download and modify, under an Apache 2.0 or similar license.",
@@ -18,14 +20,6 @@ const badgeTitles = {
 	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process.",
 	"FDC3 2.0 Support Coming Soon": "This product is working towards attaining the FDC3 2.0 Standard.",
 }
-
-
-//remove comments
-implData.forEach(function (item, index, object) {
-	if (item["//"]) {
-		implData.splice(index, 1);
-	}
-});
 
 //alpha sort implementations
 implData.sort((a, b) => {
@@ -43,7 +37,7 @@ implData.sort((a, b) => {
 
 function Implementation({ type, title, publisher, image, infoLink, docsLink, badges, conformance, description }) {
 
-	return <div className={"implementation hide " + type}>
+	return <div className={"implementation " + type}>
 		<div className="implementation-metadata">
 			<div className="title-and-publisher">
 				<div className="title">{infoLink ? <a href={infoLink} key={infoLink}>{title}</a> : { title }}</div>
@@ -86,30 +80,28 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 	</div>
 }
 
-//Note: docusaurus-v1 pages are pre-rendered, static HTML, so we have to use a nasty script tag for dynamic content
-function ImplementationsShowcase() {
+function ImplementationsShowcase(initialFilter) {
 	return <div>
-		<script type="text/javascript" src="/js/implementationFilters.js"></script>
 		<div className="filters">
-			<button className="button filter" id="platform-provider">
+			<button className="button filter" id="platform-provider" onClick={setType("platform-provider")}>
 				Platform Providers
 			</button>
-			<button className="button filter" id="application-provider">
+			<button className="button filter" id="application-provider" onClick={setType("application-provider")}>
 				App Providers
 			</button>
-			<button className="button filter" id="solution-provider">
+			<button className="button filter" id="solution-provider" onClick={setType("solution-provider")}>
 				Solution Providers
 			</button>
-			<button className="button filter" id="examples-and-training">
+			<button className="button filter" id="examples-and-training" onClick={setType("examples-and-training")}>
 				Examples &amp; Training
 			</button>
-			<button className="button filter" id="adopter">
+			<button className="button filter" id="adopter" onClick={setType("adopter")}>
 				Adopters
 			</button>
-			<button className="button filter" id="meetup">
+			<button className="button filter" id="meetup" onClick={setType("meetup")}>
 				Meetups
 			</button>
-			<button className="button filter" id="all">
+			<button className="button filter" id="all" onClick={setType("all")}>
 				All
 			</button>
 		</div>
@@ -121,31 +113,34 @@ function ImplementationsShowcase() {
 	</div>
 }
 
-function Implementations(props) {
-	const { config: siteConfig } = props;
-	const { repoUrl } = siteConfig;
-	const editUrl = `https://github.com/finos/FDC3/edit/master/website/data/community.json`;
+export default (props) => {
+	const context = useDocusaurusContext();
+	const siteConfig = context.siteConfig;
+	const editUrl = `${siteConfig.repoUrl}/edit/master/website/data/community.json`;
 
-	return <Container>
-		<h1>FDC3 Community</h1>
-		<div className="prose">
-			<p>
-				The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standard is maintained and used by leading organizations across the financial industry through a variety of different implementations.
-			</p>
-			<p>
-				For more detail on who's implementing the Desktop Agent (a "Platform Provider"), using FDC3 to enable interop with their apps (an "App Provider") or details on where to find tools, examples apps and training materials see below.
-			</p>
-			<p>
-				<i>
-					Are you using FDC3?
-					<a href={editUrl} className="button">
-						Add your Implementation
-					</a>
-				</i>
-			</p>
-		</div>
-		<ImplementationsShowcase initialFilter={"platform-provider"} />
-	</Container>
+	return <Layout>
+		<Container>
+			<h1>FDC3 Community</h1>
+			<div className="prose">
+				<p>
+					The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standard is maintained and used by leading organizations across the financial industry through a variety of different implementations.
+				</p>
+				<p>
+					For more detail on who's implementing the Desktop Agent (a "Platform Provider"), using FDC3 to enable interop with their apps (an "App Provider") or details on where to find tools, examples apps and training materials see below.
+				</p>
+				<p>
+					<i>
+						Are you using FDC3?
+						<a href={editUrl} className="button">
+							Add your Implementation
+						</a>
+					</i>
+				</p>
+			</div>
+
+			<ImplementationsShowcase initialFilter={"all"} />
+		</Container>
+	</Layout>
 }
 
-module.exports = Implementations;
+
