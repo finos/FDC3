@@ -1,10 +1,9 @@
 import Layout from "@theme/Layout";
-      import React from "react";
+import React from "react";
 
-      export default () => {
-        return (
-          <Layout>
-              hello baby
-          </Layout>)
-      };
-      
+export default () => {
+  return (
+    <Layout>
+      hello baby
+    </Layout>)
+};
