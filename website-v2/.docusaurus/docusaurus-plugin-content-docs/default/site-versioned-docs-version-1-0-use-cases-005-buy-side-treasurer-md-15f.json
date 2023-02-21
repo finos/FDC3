@@ -20,14 +20,5 @@
     "sidebar_label": "5. Buy side Treasurer - client rates across providers",
     "layout": "use_case",
     "original_id": "uc-5"
-  },
-  "sidebar": "version-1.0/use-cases",
-  "previous": {
-    "title": "4. Client-side FX Trader Credit Check",
-    "permalink": "/docs/1.0/use-cases/uc-4"
-  },
-  "next": {
-    "title": "9. Call Transcription to CRM",
-    "permalink": "/docs/1.0/use-cases/uc-9"
   }
 }

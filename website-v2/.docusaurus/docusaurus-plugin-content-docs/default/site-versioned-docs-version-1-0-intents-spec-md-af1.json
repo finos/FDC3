@@ -17,14 +17,5 @@
     "sidebar_label": "Intents Specification",
     "title": "Intents Specification 1.0",
     "original_id": "intents-spec"
-  },
-  "sidebar": "version-1.0/docs",
-  "previous": {
-    "title": "Intents Overview",
-    "permalink": "/docs/1.0/intents-intro"
-  },
-  "next": {
-    "title": "Context Data Overview",
-    "permalink": "/docs/1.0/context-intro"
   }
 }

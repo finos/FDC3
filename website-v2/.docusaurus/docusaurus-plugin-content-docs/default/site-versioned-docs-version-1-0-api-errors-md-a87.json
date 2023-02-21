@@ -18,14 +18,5 @@
     "title": "Errors",
     "hide_title": true,
     "original_id": "Errors"
-  },
-  "sidebar": "version-1.0/docs",
-  "previous": {
-    "title": "Context",
-    "permalink": "/docs/1.0/api/Context"
-  },
-  "next": {
-    "title": "Intents Overview",
-    "permalink": "/docs/1.0/intents-intro"
   }
 }

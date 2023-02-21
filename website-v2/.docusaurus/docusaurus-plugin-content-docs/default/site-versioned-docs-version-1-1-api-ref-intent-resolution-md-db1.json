@@ -18,14 +18,5 @@
     "title": "IntentResolution",
     "hide_title": true,
     "original_id": "IntentResolution"
-  },
-  "sidebar": "version-1.1/docs",
-  "previous": {
-    "title": "AppIntent",
-    "permalink": "/docs/1.1/api/ref/AppIntent"
-  },
-  "next": {
-    "title": "AppMetadata",
-    "permalink": "/docs/1.1/api/ref/AppMetadata"
   }
 }

@@ -18,14 +18,5 @@
     "title": "FDC3 Charter",
     "hide_title": true,
     "original_id": "fdc3-charter"
-  },
-  "sidebar": "version-1.0/docs",
-  "previous": {
-    "title": "Introduction",
-    "permalink": "/docs/1.0/fdc3-intro"
-  },
-  "next": {
-    "title": "Why FDC3",
-    "permalink": "/docs/1.0/why-fdc3"
   }
 }

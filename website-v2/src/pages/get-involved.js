@@ -7,11 +7,6 @@
 
 const React = require('react');
 
-const CompLibrary = require('../../core/CompLibrary.js');
-
-const Container = CompLibrary.Container;
-const GridBlock = CompLibrary.GridBlock;
-
 function Help(props) {
   const {config: siteConfig, language = ''} = props;
   const {baseUrl, docsUrl} = siteConfig;
@@ -62,7 +57,7 @@ function Help(props) {
 
   return (
     <div className="docMainWrapper wrapper">
-      <Container className="mainContainer documentContainer postContainer">
+      <div className="mainContainer documentContainer postContainer">
         <div className="post">
           <header className="postHeader">
             <h1>Get Involved in FDC3</h1>
@@ -71,9 +66,9 @@ function Help(props) {
           </p>
           <GridBlock contents={supportLinks} layout="fourColumn" />
         </div>
-      </Container>
+      </div>
     </div>
   );
 }
 
-module.exports = Help;
+export default Help

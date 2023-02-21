@@ -18,14 +18,5 @@
     "title": "API Overview",
     "hide_title": true,
     "original_id": "api-intro"
-  },
-  "sidebar": "version-1.0/docs",
-  "previous": {
-    "title": "FDC3 1.0 Abstract",
-    "permalink": "/docs/1.0/fdc3-standard"
-  },
-  "next": {
-    "title": "API Specification",
-    "permalink": "/docs/1.0/api/api-spec"
   }
 }

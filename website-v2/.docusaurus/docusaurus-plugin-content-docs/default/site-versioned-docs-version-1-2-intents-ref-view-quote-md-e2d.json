@@ -6,7 +6,7 @@
   "source": "@site/versioned_docs/version-1.2/intents/ref/ViewQuote.md",
   "sourceDirName": "intents/ref",
   "slug": "/intents/ref/ViewQuote",
-  "permalink": "/docs/1.2/intents/ref/ViewQuote",
+  "permalink": "/docs/intents/ref/ViewQuote",
   "draft": false,
   "tags": [],
   "version": "1.2",
@@ -18,14 +18,5 @@
     "title": "ViewQuote",
     "hide_title": true,
     "original_id": "ViewQuote"
-  },
-  "sidebar": "version-1.2/docs",
-  "previous": {
-    "title": "ViewContact",
-    "permalink": "/docs/1.2/intents/ref/ViewContact"
-  },
-  "next": {
-    "title": "ViewNews",
-    "permalink": "/docs/1.2/intents/ref/ViewNews"
   }
 }

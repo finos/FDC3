@@ -17,10 +17,5 @@
     "sidebar_label": "App Directory Specification",
     "title": "App Directory Specification 1.1",
     "original_id": "spec"
-  },
-  "sidebar": "version-1.1/docs",
-  "previous": {
-    "title": "App Directory Usage",
-    "permalink": "/docs/1.1/app-directory/usage"
   }
 }

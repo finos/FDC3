@@ -7,266 +7,32 @@
   "noIndex": false,
   "className": "docs-version-1.0",
   "isLast": false,
-  "docsSidebars": {
-    "version-1.0/docs": [
-      {
-        "type": "category",
-        "label": "Getting Started",
-        "items": [
-          {
-            "type": "link",
-            "label": "Introduction",
-            "href": "/docs/1.0/fdc3-intro",
-            "docId": "fdc3-intro"
-          },
-          {
-            "type": "link",
-            "label": "Charter",
-            "href": "/docs/1.0/fdc3-charter",
-            "docId": "fdc3-charter"
-          },
-          {
-            "type": "link",
-            "label": "Why FDC3",
-            "href": "/docs/1.0/why-fdc3",
-            "docId": "why-fdc3"
-          },
-          {
-            "type": "link",
-            "label": "FDC3 Compliance",
-            "href": "/docs/1.0/fdc3-compliance",
-            "docId": "fdc3-compliance"
-          },
-          {
-            "type": "link",
-            "label": "FDC3 1.0 Abstract",
-            "href": "/docs/1.0/fdc3-standard",
-            "docId": "fdc3-standard"
-          }
-        ],
-        "collapsed": true,
-        "collapsible": true
-      },
-      {
-        "type": "category",
-        "label": "API",
-        "items": [
-          {
-            "type": "link",
-            "label": "API Overview",
-            "href": "/docs/1.0/api/api-intro",
-            "docId": "api/api-intro"
-          },
-          {
-            "type": "link",
-            "label": "API Specification",
-            "href": "/docs/1.0/api/api-spec",
-            "docId": "api/api-spec"
-          },
-          {
-            "type": "category",
-            "label": "API Reference",
-            "items": [
-              {
-                "type": "link",
-                "label": "DesktopAgent",
-                "href": "/docs/1.0/api/DesktopAgent",
-                "docId": "api/DesktopAgent"
-              },
-              {
-                "type": "link",
-                "label": "Context",
-                "href": "/docs/1.0/api/Context",
-                "docId": "api/Context"
-              },
-              {
-                "type": "link",
-                "label": "Errors",
-                "href": "/docs/1.0/api/Errors",
-                "docId": "api/Errors"
-              }
-            ],
-            "collapsed": true,
-            "collapsible": true
-          }
-        ],
-        "collapsed": true,
-        "collapsible": true
-      },
-      {
-        "type": "category",
-        "label": "Intents",
-        "items": [
-          {
-            "type": "link",
-            "label": "Intents Overview",
-            "href": "/docs/1.0/intents-intro",
-            "docId": "intents-intro"
-          },
-          {
-            "type": "link",
-            "label": "Intents Specification",
-            "href": "/docs/1.0/intents-spec",
-            "docId": "intents-spec"
-          }
-        ],
-        "collapsed": true,
-        "collapsible": true
-      },
-      {
-        "type": "category",
-        "label": "Context Data",
-        "items": [
-          {
-            "type": "link",
-            "label": "Context Data Overview",
-            "href": "/docs/1.0/context-intro",
-            "docId": "context-intro"
-          },
-          {
-            "type": "link",
-            "label": "Context Data Specification",
-            "href": "/docs/1.0/context-spec",
-            "docId": "context-spec"
-          }
-        ],
-        "collapsed": true,
-        "collapsible": true
-      },
-      {
-        "type": "category",
-        "label": "App Directory",
-        "items": [
-          {
-            "type": "link",
-            "label": "App Directory Overview",
-            "href": "/docs/1.0/appd-intro",
-            "docId": "appd-intro"
-          },
-          {
-            "type": "link",
-            "label": "App Directory Discovery",
-            "href": "/docs/1.0/appd-discovery",
-            "docId": "appd-discovery"
-          },
-          {
-            "type": "link",
-            "label": "App Directory Use",
-            "href": "/docs/1.0/appd-use",
-            "docId": "appd-use"
-          },
-          {
-            "type": "link",
-            "label": "App Directory Specification",
-            "href": "/docs/1.0/appd-spec",
-            "docId": "appd-spec"
-          }
-        ],
-        "collapsed": true,
-        "collapsible": true
-      }
-    ],
-    "version-1.0/use-cases": [
-      {
-        "type": "category",
-        "label": "Use Cases",
-        "items": [
-          {
-            "type": "link",
-            "label": "Overview",
-            "href": "/docs/1.0/use-cases/overview",
-            "docId": "use-cases/overview"
-          },
-          {
-            "type": "link",
-            "label": "1. Equity sell side trader",
-            "href": "/docs/1.0/use-cases/uc-1",
-            "docId": "use-cases/uc-1"
-          },
-          {
-            "type": "link",
-            "label": "2. Buy side Portfolio Manager",
-            "href": "/docs/1.0/use-cases/uc-2",
-            "docId": "use-cases/uc-2"
-          },
-          {
-            "type": "link",
-            "label": "3. Inhouse Cross Platform Launcher",
-            "href": "/docs/1.0/use-cases/uc-3",
-            "docId": "use-cases/uc-3"
-          },
-          {
-            "type": "link",
-            "label": "4. Client-side FX Trader Credit Check",
-            "href": "/docs/1.0/use-cases/uc-4",
-            "docId": "use-cases/uc-4"
-          },
-          {
-            "type": "link",
-            "label": "5. Buy side Treasurer - client rates across providers",
-            "href": "/docs/1.0/use-cases/uc-5",
-            "docId": "use-cases/uc-5"
-          },
-          {
-            "type": "link",
-            "label": "9. Call Transcription to CRM",
-            "href": "/docs/1.0/use-cases/uc-9",
-            "docId": "use-cases/uc-9"
-          },
-          {
-            "type": "link",
-            "label": "10. Real-Time voice trades -> trade ticket population",
-            "href": "/docs/1.0/use-cases/uc-10",
-            "docId": "use-cases/uc-10"
-          },
-          {
-            "type": "link",
-            "label": "13. User launches multiple apps from a single container",
-            "href": "/docs/1.0/use-cases/uc-13",
-            "docId": "use-cases/uc-13"
-          },
-          {
-            "type": "link",
-            "label": "15. Sales Floor Base Workflow",
-            "href": "/docs/1.0/use-cases/uc-15",
-            "docId": "use-cases/uc-15"
-          }
-        ],
-        "collapsed": true,
-        "collapsible": true
-      }
-    ]
-  },
+  "docsSidebars": {},
   "docs": {
     "api/api-intro": {
       "id": "api/api-intro",
       "title": "API Overview",
-      "description": "FDC3 API standards support the following goals:",
-      "sidebar": "version-1.0/docs"
+      "description": "FDC3 API standards support the following goals:"
     },
     "api/api-spec": {
       "id": "api/api-spec",
       "title": "API Specification 1.0",
-      "description": "Components",
-      "sidebar": "version-1.0/docs"
+      "description": "Components"
     },
     "api/Context": {
       "id": "api/Context",
       "title": "Context",
-      "description": "The base object that all contexts should extend.",
-      "sidebar": "version-1.0/docs"
+      "description": "The base object that all contexts should extend."
     },
     "api/DesktopAgent": {
       "id": "api/DesktopAgent",
       "title": "DesktopAgent",
-      "description": "A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain.",
-      "sidebar": "version-1.0/docs"
+      "description": "A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain."
     },
     "api/Errors": {
       "id": "api/Errors",
       "title": "Errors",
-      "description": "OpenError",
-      "sidebar": "version-1.0/docs"
+      "description": "OpenError"
     },
     "api/ref/Channel": {
       "id": "api/ref/Channel",
@@ -321,38 +87,32 @@
     "appd-discovery": {
       "id": "appd-discovery",
       "title": "App Directory Discovery",
-      "description": "Simple Definition",
-      "sidebar": "version-1.0/docs"
+      "description": "Simple Definition"
     },
     "appd-intro": {
       "id": "appd-intro",
       "title": "App Directory Overview",
-      "description": "The FDC3 App Directory provides trusted identity for financial desktop apps. This identity can be used to prevent spoofing and man-in-the-middle attacks when apps communicate with one another and exchange data. The App Directory also enables service discovery. Apps are registered with a declaration of the intents and context data that can be used when interoperating.",
-      "sidebar": "version-1.0/docs"
+      "description": "The FDC3 App Directory provides trusted identity for financial desktop apps. This identity can be used to prevent spoofing and man-in-the-middle attacks when apps communicate with one another and exchange data. The App Directory also enables service discovery. Apps are registered with a declaration of the intents and context data that can be used when interoperating."
     },
     "appd-spec": {
       "id": "appd-spec",
       "title": "App Directory Specification 1.0",
-      "description": "API",
-      "sidebar": "version-1.0/docs"
+      "description": "API"
     },
     "appd-use": {
       "id": "appd-use",
       "title": "App Directory Use",
-      "description": "An application directory (AppD) provides information about an application's",
-      "sidebar": "version-1.0/docs"
+      "description": "An application directory (AppD) provides information about an application's"
     },
     "context-intro": {
       "id": "context-intro",
       "title": "Context Data Overview",
-      "description": "Extending APIs from one application to another is powerful. However, it requires bi-lateral agreements where implementors build to proprietary APIs. A standard language for interaction between applications allows us to create workflows on the fly, so that applications can discover and link to one another without any prior knowledge.",
-      "sidebar": "version-1.0/docs"
+      "description": "Extending APIs from one application to another is powerful. However, it requires bi-lateral agreements where implementors build to proprietary APIs. A standard language for interaction between applications allows us to create workflows on the fly, so that applications can discover and link to one another without any prior knowledge."
     },
     "context-spec": {
       "id": "context-spec",
       "title": "Context Data Specification 1.0",
-      "description": "Introduction",
-      "sidebar": "version-1.0/docs"
+      "description": "Introduction"
     },
     "context/ref/Chart": {
       "id": "context/ref/Chart",
@@ -442,14 +202,12 @@
     "fdc3-charter": {
       "id": "fdc3-charter",
       "title": "FDC3 Charter",
-      "description": "Summary",
-      "sidebar": "version-1.0/docs"
+      "description": "Summary"
     },
     "fdc3-compliance": {
       "id": "fdc3-compliance",
       "title": "FDC3 Specification Compliance",
-      "description": "FDC3 standards follow the IETF best practices for keywords to Indicate Requirement levels: RFC 2119.  Documentation should be updated as needed to reflect this.",
-      "sidebar": "version-1.0/docs"
+      "description": "FDC3 standards follow the IETF best practices for keywords to Indicate Requirement levels: RFC 2119.  Documentation should be updated as needed to reflect this."
     },
     "fdc3-glossary": {
       "id": "fdc3-glossary",
@@ -459,14 +217,12 @@
     "fdc3-intro": {
       "id": "fdc3-intro",
       "title": "Welcome to FDC3",
-      "description": "FDC3",
-      "sidebar": "version-1.0/docs"
+      "description": "FDC3"
     },
     "fdc3-standard": {
       "id": "fdc3-standard",
       "title": "FDC3 1.0",
-      "description": "Status: Superceded",
-      "sidebar": "version-1.0/docs"
+      "description": "Status: Superceded"
     },
     "guides/submit-new-intent": {
       "id": "guides/submit-new-intent",
@@ -476,14 +232,12 @@
     "intents-intro": {
       "id": "intents-intro",
       "title": "Intents Overview",
-      "description": "Extending APIs from one application to another is powerful. However, it requires bi-lateral agreements where implementors build to proprietary APIs. A standard language for interaction between applications allows us to create workflows on the fly, so that applications can discover and link to another without any prior knowledge.",
-      "sidebar": "version-1.0/docs"
+      "description": "Extending APIs from one application to another is powerful. However, it requires bi-lateral agreements where implementors build to proprietary APIs. A standard language for interaction between applications allows us to create workflows on the fly, so that applications can discover and link to another without any prior knowledge."
     },
     "intents-spec": {
       "id": "intents-spec",
       "title": "Intents Specification 1.0",
-      "description": "Introduction",
-      "sidebar": "version-1.0/docs"
+      "description": "Introduction"
     },
     "intents/ref/StartCall": {
       "id": "intents/ref/StartCall",
@@ -593,8 +347,7 @@
     "use-cases/overview": {
       "id": "use-cases/overview",
       "title": "Use Cases Overview",
-      "description": "Goal",
-      "sidebar": "version-1.0/use-cases"
+      "description": "Goal"
     },
     "use-cases/readme": {
       "id": "use-cases/readme",
@@ -604,26 +357,22 @@
     "use-cases/uc-1": {
       "id": "use-cases/uc-1",
       "title": "Use Case 1: Equity sell side trader",
-      "description": "Preconditions",
-      "sidebar": "version-1.0/use-cases"
+      "description": "Preconditions"
     },
     "use-cases/uc-10": {
       "id": "use-cases/uc-10",
       "title": "Use Case 10: Real-Time voice trades -> trade ticket population",
-      "description": "Persona",
-      "sidebar": "version-1.0/use-cases"
+      "description": "Persona"
     },
     "use-cases/uc-13": {
       "id": "use-cases/uc-13",
       "title": "Use Case 13: User launches multiple apps from a single container",
-      "description": "Preconditions",
-      "sidebar": "version-1.0/use-cases"
+      "description": "Preconditions"
     },
     "use-cases/uc-15": {
       "id": "use-cases/uc-15",
       "title": "Use Case 15: Sales Floor Base Workflow",
-      "description": "Overview",
-      "sidebar": "version-1.0/use-cases"
+      "description": "Overview"
     },
     "use-cases/uc-16": {
       "id": "use-cases/uc-16",
@@ -638,38 +387,32 @@
     "use-cases/uc-2": {
       "id": "use-cases/uc-2",
       "title": "Use Case 2: Buy side Portfolio Manager",
-      "description": "Preconditions",
-      "sidebar": "version-1.0/use-cases"
+      "description": "Preconditions"
     },
     "use-cases/uc-3": {
       "id": "use-cases/uc-3",
       "title": "Use Case 3: Inhouse Cross Platform Launcher",
-      "description": "Preconditions",
-      "sidebar": "version-1.0/use-cases"
+      "description": "Preconditions"
     },
     "use-cases/uc-4": {
       "id": "use-cases/uc-4",
       "title": "Use Case 4: Client-side FX Trader Credit Check",
-      "description": "Preconditions",
-      "sidebar": "version-1.0/use-cases"
+      "description": "Preconditions"
     },
     "use-cases/uc-5": {
       "id": "use-cases/uc-5",
       "title": "Use Case 5: Buy side Treasurer - client rates across providers",
-      "description": "Preconditions",
-      "sidebar": "version-1.0/use-cases"
+      "description": "Preconditions"
     },
     "use-cases/uc-9": {
       "id": "use-cases/uc-9",
       "title": "Use Case 9: Call Transcription to CRM",
-      "description": "Overview",
-      "sidebar": "version-1.0/use-cases"
+      "description": "Overview"
     },
     "why-fdc3": {
       "id": "why-fdc3",
       "title": "Why FDC3",
-      "description": "Why look for FDC3 enabled applications?",
-      "sidebar": "version-1.0/docs"
+      "description": "Why look for FDC3 enabled applications?"
     }
   }
 }

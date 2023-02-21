@@ -17,14 +17,5 @@
     "sidebar_label": "Context Data Specification",
     "title": "Context Data Specification 1.0",
     "original_id": "context-spec"
-  },
-  "sidebar": "version-1.0/docs",
-  "previous": {
-    "title": "Context Data Overview",
-    "permalink": "/docs/1.0/context-intro"
-  },
-  "next": {
-    "title": "App Directory Overview",
-    "permalink": "/docs/1.0/appd-intro"
   }
 }

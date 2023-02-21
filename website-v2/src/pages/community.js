@@ -8,8 +8,6 @@
 const React = require('react');
 
 const { useState, useEffect } = React;
-const CompLibrary = require('../../core/CompLibrary.js');
-const Container = CompLibrary.Container;
 const implData = require(`${process.cwd()}/data/community.json`);
 
 const badgeTitles = {

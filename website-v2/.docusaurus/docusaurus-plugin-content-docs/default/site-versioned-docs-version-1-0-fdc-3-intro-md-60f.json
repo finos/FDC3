@@ -17,10 +17,5 @@
     "title": "Welcome to FDC3",
     "sidebar_label": "Introduction",
     "original_id": "fdc3-intro"
-  },
-  "sidebar": "version-1.0/docs",
-  "next": {
-    "title": "Charter",
-    "permalink": "/docs/1.0/fdc3-charter"
   }
 }
