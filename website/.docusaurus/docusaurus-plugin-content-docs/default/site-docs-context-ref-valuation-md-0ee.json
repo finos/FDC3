@@ -1,0 +1,27 @@
+{
+  "unversionedId": "context/ref/Valuation",
+  "id": "context/ref/Valuation",
+  "title": "Valuation",
+  "description": "A context type representing the price and value of a holding.",
+  "source": "@site/../docs/context/ref/Valuation.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/Valuation",
+  "permalink": "/docs/next/context/ref/Valuation",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "Valuation",
+    "sidebar_label": "Valuation",
+    "title": "Valuation",
+    "hide_title": true
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "TimeRange",
+    "permalink": "/docs/next/context/ref/TimeRange"
+  }
+}

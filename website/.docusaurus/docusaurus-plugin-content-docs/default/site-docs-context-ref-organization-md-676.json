@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/Organization",
+  "id": "context/ref/Organization",
+  "title": "Organization",
+  "description": "An entity that can be used when referencing private companies and other organizations where a specific instrument is not available or desired e.g. CRM and News workflows.",
+  "source": "@site/../docs/context/ref/Organization.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/Organization",
+  "permalink": "/docs/next/context/ref/Organization",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "Organization",
+    "sidebar_label": "Organization",
+    "title": "Organization",
+    "hide_title": true
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Nothing",
+    "permalink": "/docs/next/context/ref/Nothing"
+  },
+  "next": {
+    "title": "Portfolio",
+    "permalink": "/docs/next/context/ref/Portfolio"
+  }
+}

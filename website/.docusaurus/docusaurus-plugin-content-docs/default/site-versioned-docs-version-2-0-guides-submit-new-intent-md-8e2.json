@@ -1,0 +1,21 @@
+{
+  "unversionedId": "guides/submit-new-intent",
+  "id": "version-2.0/guides/submit-new-intent",
+  "title": "How to Submit a New Intent PR",
+  "description": "Getting Started",
+  "source": "@site/versioned_docs/version-2.0/guides/submit-new-intent.md",
+  "sourceDirName": "guides",
+  "slug": "/guides/submit-new-intent",
+  "permalink": "/docs/guides/submit-new-intent",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "How To Submit New Intent",
+    "title": "How to Submit a New Intent PR",
+    "original_id": "SubmitNewIntent"
+  }
+}

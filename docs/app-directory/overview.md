@@ -78,7 +78,7 @@ A Desktop Agent will usually include a user interface allowing the user to selec
 
 A launcher will usually be configured with the locations of one or more AppD servers (which is necessary to implement intent resolution), however, as described in the [Service Discovery](#service-discovery) section, a fully qualified application identifier (app1@host.appd.com) may also be used to both locate the appD service and to retrieve the specific application data.
 
-![img](assets/appd_launcher_embedded.png)
+![img](/assets/appd_launcher_embedded.png)
 
 ### Aggregated View
 
@@ -87,7 +87,7 @@ There could be many different appD service instances in the world providing appl
 Today, there is no intention to create a single registry of known AppD instances, so there is an assumption that the launcher will have prior
 knowledge of the AppD instance location.
 
-![img](assets/appd_launcher_aggregated.png)
+![img](/assets/appd_launcher_aggregated.png)
 
 ### Authentication and Entitlements
 
@@ -109,7 +109,7 @@ Although the concept of fully qualified application IDs are useful in resolving 
 
 In order to support the discovery of applications that can be used with a Desktop Agent, it is necessary to access data stored in one or more app directory instances.
 
-![img](assets/appd_service_distribution.png)
+![img](/assets/appd_service_distribution.png)
 
 However, in order to do so, you must first discover the location of an app directory service, which you may then use to generate URIs  (e.g. "https://appd.foo.com/api/appd/v2/app1@appd.foo.com") to query a given directory instance for data. In order to construct a URI, the host location and port of a given AppD service instance is required.
 
@@ -125,7 +125,7 @@ App directory service host discovery implementations SHOULD support each of thes
 
 As the name implies, a static configuration for an appD service location is defined within a Desktop Agent or launcher application. This is the simplest and most common approach to app directory and application data discovery.
 
-![img](assets/appd_static_config.png)
+![img](/assets/appd_static_config.png)
 
 ### Fully-qualified appID namespace syntax host resolution
 
@@ -168,7 +168,7 @@ For AppD Service the SRV record MUST use the following definitions:
 
 *AppD service through DNS / SRV records:*
 
-![img](assets/appd_dns.png)
+![img](/assets/appd_dns.png)
 
 #### Known domains
 

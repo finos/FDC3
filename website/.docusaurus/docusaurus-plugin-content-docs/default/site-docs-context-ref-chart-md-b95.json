@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/Chart",
+  "id": "context/ref/Chart",
+  "title": "Chart",
+  "description": "A context type representing details of a Chart, which may be used to request plotting of a particular chart or to otherwise share details of its composition, such as:",
+  "source": "@site/../docs/context/ref/Chart.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/Chart",
+  "permalink": "/docs/next/context/ref/Chart",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "Chart",
+    "sidebar_label": "Chart",
+    "title": "Chart",
+    "hide_title": true
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Context",
+    "permalink": "/docs/next/context/ref/Context"
+  },
+  "next": {
+    "title": "ChatInitSettings",
+    "permalink": "/docs/next/context/ref/ChatInitSettings"
+  }
+}

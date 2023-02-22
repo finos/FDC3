@@ -1,0 +1,1830 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": false,
+          "path": "/docs/next",
+          "mainDocId": "fdc3-intro",
+          "docs": [
+            {
+              "id": "api/ref/Channel",
+              "path": "/docs/next/api/ref/Channel",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/DesktopAgent",
+              "path": "/docs/next/api/ref/DesktopAgent",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/Errors",
+              "path": "/docs/next/api/ref/Errors",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/Globals",
+              "path": "/docs/next/api/ref/Globals",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/Metadata",
+              "path": "/docs/next/api/ref/Metadata",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/PrivateChannel",
+              "path": "/docs/next/api/ref/PrivateChannel",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/Types",
+              "path": "/docs/next/api/ref/Types",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/spec",
+              "path": "/docs/next/api/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "app-directory/overview",
+              "path": "/docs/next/app-directory/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "app-directory/spec",
+              "path": "/docs/next/app-directory/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Chart",
+              "path": "/docs/next/context/ref/Chart",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/ChatInitSettings",
+              "path": "/docs/next/context/ref/ChatInitSettings",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Contact",
+              "path": "/docs/next/context/ref/Contact",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/ContactList",
+              "path": "/docs/next/context/ref/ContactList",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Context",
+              "path": "/docs/next/context/ref/Context",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Country",
+              "path": "/docs/next/context/ref/Country",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Currency",
+              "path": "/docs/next/context/ref/Currency",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Email",
+              "path": "/docs/next/context/ref/Email",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Instrument",
+              "path": "/docs/next/context/ref/Instrument",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/InstrumentList",
+              "path": "/docs/next/context/ref/InstrumentList",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Nothing",
+              "path": "/docs/next/context/ref/Nothing",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Organization",
+              "path": "/docs/next/context/ref/Organization",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Portfolio",
+              "path": "/docs/next/context/ref/Portfolio",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Position",
+              "path": "/docs/next/context/ref/Position",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/TimeRange",
+              "path": "/docs/next/context/ref/TimeRange",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Valuation",
+              "path": "/docs/next/context/ref/Valuation",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/spec",
+              "path": "/docs/next/context/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-charter",
+              "path": "/docs/next/fdc3-charter",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-compliance",
+              "path": "/docs/next/fdc3-compliance",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-glossary",
+              "path": "/docs/next/fdc3-glossary",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-intro",
+              "path": "/docs/next/fdc3-intro",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-standard",
+              "path": "/docs/next/fdc3-standard",
+              "sidebar": "docs"
+            },
+            {
+              "id": "guides/SubmitNewIntent",
+              "path": "/docs/next/guides/SubmitNewIntent"
+            },
+            {
+              "id": "intents/ref/StartCall",
+              "path": "/docs/next/intents/ref/StartCall",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/StartChat",
+              "path": "/docs/next/intents/ref/StartChat",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/StartEmail",
+              "path": "/docs/next/intents/ref/StartEmail",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewAnalysis",
+              "path": "/docs/next/intents/ref/ViewAnalysis",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewChart",
+              "path": "/docs/next/intents/ref/ViewChart",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewContact",
+              "path": "/docs/next/intents/ref/ViewContact",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewHoldings",
+              "path": "/docs/next/intents/ref/ViewHoldings",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewInstrument",
+              "path": "/docs/next/intents/ref/ViewInstrument",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewInteractions",
+              "path": "/docs/next/intents/ref/ViewInteractions",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewNews",
+              "path": "/docs/next/intents/ref/ViewNews",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewOrders",
+              "path": "/docs/next/intents/ref/ViewOrders",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewProfile",
+              "path": "/docs/next/intents/ref/ViewProfile",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewQuote",
+              "path": "/docs/next/intents/ref/ViewQuote",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewResearch",
+              "path": "/docs/next/intents/ref/ViewResearch",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/spec",
+              "path": "/docs/next/intents/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "references",
+              "path": "/docs/next/references",
+              "sidebar": "docs"
+            },
+            {
+              "id": "supported-platforms",
+              "path": "/docs/next/supported-platforms",
+              "sidebar": "docs"
+            },
+            {
+              "id": "trademarks",
+              "path": "/docs/next/trademarks"
+            },
+            {
+              "id": "use-cases/meeting-minutes/2020-01-16 uc-wg meeting notes",
+              "path": "/docs/next/use-cases/meeting-minutes/2020-01-16 uc-wg meeting notes"
+            },
+            {
+              "id": "use-cases/meeting-minutes/2020-02-20 uc-wg meeting notes",
+              "path": "/docs/next/use-cases/meeting-minutes/2020-02-20 uc-wg meeting notes"
+            },
+            {
+              "id": "use-cases/meeting-minutes/2020-03-19 uc-wg meeting notes",
+              "path": "/docs/next/use-cases/meeting-minutes/2020-03-19 uc-wg meeting notes"
+            },
+            {
+              "id": "use-cases/overview",
+              "path": "/docs/next/use-cases/overview",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/readme",
+              "path": "/docs/next/use-cases/"
+            },
+            {
+              "id": "use-cases/uc-1",
+              "path": "/docs/next/use-cases/uc-1",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-10",
+              "path": "/docs/next/use-cases/uc-10",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-13",
+              "path": "/docs/next/use-cases/uc-13",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-15",
+              "path": "/docs/next/use-cases/uc-15",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-16",
+              "path": "/docs/next/use-cases/uc-16",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-17",
+              "path": "/docs/next/use-cases/uc-17",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-2",
+              "path": "/docs/next/use-cases/uc-2",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-3",
+              "path": "/docs/next/use-cases/uc-3",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-4",
+              "path": "/docs/next/use-cases/uc-4",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-5",
+              "path": "/docs/next/use-cases/uc-5",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-9",
+              "path": "/docs/next/use-cases/uc-9",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "why-fdc3",
+              "path": "/docs/next/why-fdc3",
+              "sidebar": "docs"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "docs": {
+              "link": {
+                "path": "/docs/next/fdc3-intro",
+                "label": "fdc3-intro"
+              }
+            },
+            "use-cases": {
+              "link": {
+                "path": "/docs/next/use-cases/overview",
+                "label": "use-cases/overview"
+              }
+            }
+          }
+        },
+        {
+          "name": "2.0",
+          "label": "2.0",
+          "isLast": true,
+          "path": "/docs",
+          "mainDocId": "fdc3-intro",
+          "docs": [
+            {
+              "id": "api/overview",
+              "path": "/docs/api/overview"
+            },
+            {
+              "id": "api/ref/Channel",
+              "path": "/docs/api/ref/Channel",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/DesktopAgent",
+              "path": "/docs/api/ref/DesktopAgent",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/Errors",
+              "path": "/docs/api/ref/Errors",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/Globals",
+              "path": "/docs/api/ref/Globals",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/Metadata",
+              "path": "/docs/api/ref/Metadata",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/PrivateChannel",
+              "path": "/docs/api/ref/PrivateChannel",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/Types",
+              "path": "/docs/api/ref/Types",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/spec",
+              "path": "/docs/api/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "app-directory/overview",
+              "path": "/docs/app-directory/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "app-directory/spec",
+              "path": "/docs/app-directory/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Chart",
+              "path": "/docs/context/ref/Chart",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/ChatInitSettings",
+              "path": "/docs/context/ref/ChatInitSettings",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Contact",
+              "path": "/docs/context/ref/Contact",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/ContactList",
+              "path": "/docs/context/ref/ContactList",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Context",
+              "path": "/docs/context/ref/Context",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Country",
+              "path": "/docs/context/ref/Country",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Currency",
+              "path": "/docs/context/ref/Currency",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Email",
+              "path": "/docs/context/ref/Email",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Instrument",
+              "path": "/docs/context/ref/Instrument",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/InstrumentList",
+              "path": "/docs/context/ref/InstrumentList",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Nothing",
+              "path": "/docs/context/ref/Nothing",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Organization",
+              "path": "/docs/context/ref/Organization",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Portfolio",
+              "path": "/docs/context/ref/Portfolio",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Position",
+              "path": "/docs/context/ref/Position",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/TimeRange",
+              "path": "/docs/context/ref/TimeRange",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Valuation",
+              "path": "/docs/context/ref/Valuation",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/spec",
+              "path": "/docs/context/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-charter",
+              "path": "/docs/fdc3-charter",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-compliance",
+              "path": "/docs/fdc3-compliance",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-glossary",
+              "path": "/docs/fdc3-glossary",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-intro",
+              "path": "/docs/fdc3-intro",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-standard",
+              "path": "/docs/fdc3-standard",
+              "sidebar": "docs"
+            },
+            {
+              "id": "guides/submit-new-intent",
+              "path": "/docs/guides/submit-new-intent"
+            },
+            {
+              "id": "intents/overview",
+              "path": "/docs/intents/overview"
+            },
+            {
+              "id": "intents/ref/StartCall",
+              "path": "/docs/intents/ref/StartCall",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/StartChat",
+              "path": "/docs/intents/ref/StartChat",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/StartEmail",
+              "path": "/docs/intents/ref/StartEmail",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewAnalysis",
+              "path": "/docs/intents/ref/ViewAnalysis",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewChart",
+              "path": "/docs/intents/ref/ViewChart",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewContact",
+              "path": "/docs/intents/ref/ViewContact",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewHoldings",
+              "path": "/docs/intents/ref/ViewHoldings",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewInstrument",
+              "path": "/docs/intents/ref/ViewInstrument",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewInteractions",
+              "path": "/docs/intents/ref/ViewInteractions",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewNews",
+              "path": "/docs/intents/ref/ViewNews",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewOrders",
+              "path": "/docs/intents/ref/ViewOrders",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewProfile",
+              "path": "/docs/intents/ref/ViewProfile",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewQuote",
+              "path": "/docs/intents/ref/ViewQuote",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewResearch",
+              "path": "/docs/intents/ref/ViewResearch",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/spec",
+              "path": "/docs/intents/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "references",
+              "path": "/docs/references",
+              "sidebar": "docs"
+            },
+            {
+              "id": "supported-platforms",
+              "path": "/docs/supported-platforms",
+              "sidebar": "docs"
+            },
+            {
+              "id": "trademarks",
+              "path": "/docs/trademarks"
+            },
+            {
+              "id": "use-cases/overview",
+              "path": "/docs/use-cases/overview",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-1",
+              "path": "/docs/use-cases/uc-1",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-10",
+              "path": "/docs/use-cases/uc-10",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-13",
+              "path": "/docs/use-cases/uc-13",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-15",
+              "path": "/docs/use-cases/uc-15",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-16",
+              "path": "/docs/use-cases/uc-16",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-17",
+              "path": "/docs/use-cases/uc-17",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-2",
+              "path": "/docs/use-cases/uc-2",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-3",
+              "path": "/docs/use-cases/uc-3",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-4",
+              "path": "/docs/use-cases/uc-4",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-5",
+              "path": "/docs/use-cases/uc-5",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-9",
+              "path": "/docs/use-cases/uc-9",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "why-fdc3",
+              "path": "/docs/why-fdc3",
+              "sidebar": "docs"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "docs": {
+              "link": {
+                "path": "/docs/fdc3-intro",
+                "label": "fdc3-intro"
+              }
+            },
+            "use-cases": {
+              "link": {
+                "path": "/docs/use-cases/overview",
+                "label": "use-cases/overview"
+              }
+            }
+          }
+        },
+        {
+          "name": "1.2",
+          "label": "1.2",
+          "isLast": false,
+          "path": "/docs/1.2",
+          "mainDocId": "fdc3-intro",
+          "docs": [
+            {
+              "id": "api/api-intro",
+              "path": "/docs/1.2/api/api-intro"
+            },
+            {
+              "id": "api/api-spec",
+              "path": "/docs/1.2/api/api-spec"
+            },
+            {
+              "id": "api/Context",
+              "path": "/docs/1.2/api/Context"
+            },
+            {
+              "id": "api/DesktopAgent",
+              "path": "/docs/1.2/api/DesktopAgent"
+            },
+            {
+              "id": "api/Errors",
+              "path": "/docs/1.2/api/Errors"
+            },
+            {
+              "id": "api/overview",
+              "path": "/docs/1.2/api/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/AppIntent",
+              "path": "/docs/1.2/api/ref/AppIntent"
+            },
+            {
+              "id": "api/ref/AppMetadata",
+              "path": "/docs/1.2/api/ref/AppMetadata"
+            },
+            {
+              "id": "api/ref/Channel",
+              "path": "/docs/1.2/api/ref/Channel",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/ChannelError",
+              "path": "/docs/1.2/api/ref/ChannelError"
+            },
+            {
+              "id": "api/ref/Context",
+              "path": "/docs/1.2/api/ref/Context"
+            },
+            {
+              "id": "api/ref/ContextHandler",
+              "path": "/docs/1.2/api/ref/ContextHandler"
+            },
+            {
+              "id": "api/ref/DesktopAgent",
+              "path": "/docs/1.2/api/ref/DesktopAgent",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/DisplayMetadata",
+              "path": "/docs/1.2/api/ref/DisplayMetadata"
+            },
+            {
+              "id": "api/ref/Errors",
+              "path": "/docs/1.2/api/ref/Errors",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/Globals",
+              "path": "/docs/1.2/api/ref/Globals",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/IntentMetadata",
+              "path": "/docs/1.2/api/ref/IntentMetadata"
+            },
+            {
+              "id": "api/ref/IntentResolution",
+              "path": "/docs/1.2/api/ref/IntentResolution"
+            },
+            {
+              "id": "api/ref/Listener",
+              "path": "/docs/1.2/api/ref/Listener"
+            },
+            {
+              "id": "api/ref/Metadata",
+              "path": "/docs/1.2/api/ref/Metadata",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/OpenError",
+              "path": "/docs/1.2/api/ref/OpenError"
+            },
+            {
+              "id": "api/ref/ResolveError",
+              "path": "/docs/1.2/api/ref/ResolveError"
+            },
+            {
+              "id": "api/ref/Types",
+              "path": "/docs/1.2/api/ref/Types",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/spec",
+              "path": "/docs/1.2/api/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "app-directory/discovery",
+              "path": "/docs/1.2/app-directory/discovery",
+              "sidebar": "docs"
+            },
+            {
+              "id": "app-directory/overview",
+              "path": "/docs/1.2/app-directory/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "app-directory/spec",
+              "path": "/docs/1.2/app-directory/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "app-directory/usage",
+              "path": "/docs/1.2/app-directory/usage",
+              "sidebar": "docs"
+            },
+            {
+              "id": "appd-discovery",
+              "path": "/docs/1.2/appd-discovery"
+            },
+            {
+              "id": "appd-intro",
+              "path": "/docs/1.2/appd-intro"
+            },
+            {
+              "id": "appd-spec",
+              "path": "/docs/1.2/appd-spec"
+            },
+            {
+              "id": "appd-use",
+              "path": "/docs/1.2/appd-use"
+            },
+            {
+              "id": "context-intro",
+              "path": "/docs/1.2/context-intro"
+            },
+            {
+              "id": "context-spec",
+              "path": "/docs/1.2/context-spec"
+            },
+            {
+              "id": "context/overview",
+              "path": "/docs/1.2/context/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Contact",
+              "path": "/docs/1.2/context/ref/Contact",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/ContactList",
+              "path": "/docs/1.2/context/ref/ContactList",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Context",
+              "path": "/docs/1.2/context/ref/Context",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Country",
+              "path": "/docs/1.2/context/ref/Country",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Instrument",
+              "path": "/docs/1.2/context/ref/Instrument",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/InstrumentList",
+              "path": "/docs/1.2/context/ref/InstrumentList",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Organization",
+              "path": "/docs/1.2/context/ref/Organization",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Portfolio",
+              "path": "/docs/1.2/context/ref/Portfolio",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Position",
+              "path": "/docs/1.2/context/ref/Position",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/spec",
+              "path": "/docs/1.2/context/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-charter",
+              "path": "/docs/1.2/fdc3-charter",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-compliance",
+              "path": "/docs/1.2/fdc3-compliance",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-intro",
+              "path": "/docs/1.2/fdc3-intro",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-standard",
+              "path": "/docs/1.2/fdc3-standard",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents-intro",
+              "path": "/docs/1.2/intents-intro"
+            },
+            {
+              "id": "intents-spec",
+              "path": "/docs/1.2/intents-spec"
+            },
+            {
+              "id": "intents/overview",
+              "path": "/docs/1.2/intents/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/StartCall",
+              "path": "/docs/1.2/intents/ref/StartCall",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/StartChat",
+              "path": "/docs/1.2/intents/ref/StartChat",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewAnalysis",
+              "path": "/docs/1.2/intents/ref/ViewAnalysis",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewChart",
+              "path": "/docs/1.2/intents/ref/ViewChart",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewContact",
+              "path": "/docs/1.2/intents/ref/ViewContact",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewInstrument",
+              "path": "/docs/1.2/intents/ref/ViewInstrument",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewNews",
+              "path": "/docs/1.2/intents/ref/ViewNews",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewQuote",
+              "path": "/docs/1.2/intents/ref/ViewQuote",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/spec",
+              "path": "/docs/1.2/intents/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "supported-platforms",
+              "path": "/docs/1.2/supported-platforms",
+              "sidebar": "docs"
+            },
+            {
+              "id": "use-cases/overview",
+              "path": "/docs/1.2/use-cases/overview",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-1",
+              "path": "/docs/1.2/use-cases/uc-1",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-10",
+              "path": "/docs/1.2/use-cases/uc-10",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-13",
+              "path": "/docs/1.2/use-cases/uc-13",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-15",
+              "path": "/docs/1.2/use-cases/uc-15",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-16",
+              "path": "/docs/1.2/use-cases/uc-16",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-17",
+              "path": "/docs/1.2/use-cases/uc-17",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-2",
+              "path": "/docs/1.2/use-cases/uc-2",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-3",
+              "path": "/docs/1.2/use-cases/uc-3",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-4",
+              "path": "/docs/1.2/use-cases/uc-4",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-5",
+              "path": "/docs/1.2/use-cases/uc-5",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-9",
+              "path": "/docs/1.2/use-cases/uc-9",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "why-fdc3",
+              "path": "/docs/1.2/why-fdc3",
+              "sidebar": "docs"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "docs": {
+              "link": {
+                "path": "/docs/1.2/fdc3-intro",
+                "label": "fdc3-intro"
+              }
+            },
+            "use-cases": {
+              "link": {
+                "path": "/docs/1.2/use-cases/overview",
+                "label": "use-cases/overview"
+              }
+            }
+          }
+        },
+        {
+          "name": "1.1",
+          "label": "1.1",
+          "isLast": false,
+          "path": "/docs/1.1",
+          "mainDocId": "fdc3-intro",
+          "docs": [
+            {
+              "id": "api/api-intro",
+              "path": "/docs/1.1/api/api-intro"
+            },
+            {
+              "id": "api/api-spec",
+              "path": "/docs/1.1/api/api-spec"
+            },
+            {
+              "id": "api/Context",
+              "path": "/docs/1.1/api/Context"
+            },
+            {
+              "id": "api/DesktopAgent",
+              "path": "/docs/1.1/api/DesktopAgent"
+            },
+            {
+              "id": "api/Errors",
+              "path": "/docs/1.1/api/Errors"
+            },
+            {
+              "id": "api/overview",
+              "path": "/docs/1.1/api/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/AppIntent",
+              "path": "/docs/1.1/api/ref/AppIntent",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/AppMetadata",
+              "path": "/docs/1.1/api/ref/AppMetadata",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/Channel",
+              "path": "/docs/1.1/api/ref/Channel",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/ChannelError",
+              "path": "/docs/1.1/api/ref/ChannelError",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/Context",
+              "path": "/docs/1.1/api/ref/Context",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/ContextHandler",
+              "path": "/docs/1.1/api/ref/ContextHandler",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/DesktopAgent",
+              "path": "/docs/1.1/api/ref/DesktopAgent",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/DisplayMetadata",
+              "path": "/docs/1.1/api/ref/DisplayMetadata",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/IntentMetadata",
+              "path": "/docs/1.1/api/ref/IntentMetadata",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/IntentResolution",
+              "path": "/docs/1.1/api/ref/IntentResolution",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/Listener",
+              "path": "/docs/1.1/api/ref/Listener",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/OpenError",
+              "path": "/docs/1.1/api/ref/OpenError",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/ResolveError",
+              "path": "/docs/1.1/api/ref/ResolveError",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/spec",
+              "path": "/docs/1.1/api/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "app-directory/discovery",
+              "path": "/docs/1.1/app-directory/discovery",
+              "sidebar": "docs"
+            },
+            {
+              "id": "app-directory/overview",
+              "path": "/docs/1.1/app-directory/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "app-directory/spec",
+              "path": "/docs/1.1/app-directory/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "app-directory/usage",
+              "path": "/docs/1.1/app-directory/usage",
+              "sidebar": "docs"
+            },
+            {
+              "id": "appd-discovery",
+              "path": "/docs/1.1/appd-discovery"
+            },
+            {
+              "id": "appd-intro",
+              "path": "/docs/1.1/appd-intro"
+            },
+            {
+              "id": "appd-spec",
+              "path": "/docs/1.1/appd-spec"
+            },
+            {
+              "id": "appd-use",
+              "path": "/docs/1.1/appd-use"
+            },
+            {
+              "id": "context-intro",
+              "path": "/docs/1.1/context-intro"
+            },
+            {
+              "id": "context-spec",
+              "path": "/docs/1.1/context-spec"
+            },
+            {
+              "id": "context/overview",
+              "path": "/docs/1.1/context/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Contact",
+              "path": "/docs/1.1/context/ref/Contact",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/ContactList",
+              "path": "/docs/1.1/context/ref/ContactList",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Context",
+              "path": "/docs/1.1/context/ref/Context",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Country",
+              "path": "/docs/1.1/context/ref/Country",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Instrument",
+              "path": "/docs/1.1/context/ref/Instrument",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/InstrumentList",
+              "path": "/docs/1.1/context/ref/InstrumentList",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Organization",
+              "path": "/docs/1.1/context/ref/Organization",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Portfolio",
+              "path": "/docs/1.1/context/ref/Portfolio",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Position",
+              "path": "/docs/1.1/context/ref/Position",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/spec",
+              "path": "/docs/1.1/context/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-charter",
+              "path": "/docs/1.1/fdc3-charter",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-compliance",
+              "path": "/docs/1.1/fdc3-compliance",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-intro",
+              "path": "/docs/1.1/fdc3-intro",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-standard",
+              "path": "/docs/1.1/fdc3-standard",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents-intro",
+              "path": "/docs/1.1/intents-intro"
+            },
+            {
+              "id": "intents-spec",
+              "path": "/docs/1.1/intents-spec"
+            },
+            {
+              "id": "intents/overview",
+              "path": "/docs/1.1/intents/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/StartCall",
+              "path": "/docs/1.1/intents/ref/StartCall",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/StartChat",
+              "path": "/docs/1.1/intents/ref/StartChat",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewAnalysis",
+              "path": "/docs/1.1/intents/ref/ViewAnalysis",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewChart",
+              "path": "/docs/1.1/intents/ref/ViewChart",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewContact",
+              "path": "/docs/1.1/intents/ref/ViewContact",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewInstrument",
+              "path": "/docs/1.1/intents/ref/ViewInstrument",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewNews",
+              "path": "/docs/1.1/intents/ref/ViewNews",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/ViewQuote",
+              "path": "/docs/1.1/intents/ref/ViewQuote",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/spec",
+              "path": "/docs/1.1/intents/spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "use-cases/overview",
+              "path": "/docs/1.1/use-cases/overview",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-1",
+              "path": "/docs/1.1/use-cases/uc-1",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-10",
+              "path": "/docs/1.1/use-cases/uc-10",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-13",
+              "path": "/docs/1.1/use-cases/uc-13",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-15",
+              "path": "/docs/1.1/use-cases/uc-15",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-16",
+              "path": "/docs/1.1/use-cases/uc-16",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-17",
+              "path": "/docs/1.1/use-cases/uc-17",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-2",
+              "path": "/docs/1.1/use-cases/uc-2",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-3",
+              "path": "/docs/1.1/use-cases/uc-3",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-4",
+              "path": "/docs/1.1/use-cases/uc-4",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-5",
+              "path": "/docs/1.1/use-cases/uc-5",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-9",
+              "path": "/docs/1.1/use-cases/uc-9",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "why-fdc3",
+              "path": "/docs/1.1/why-fdc3",
+              "sidebar": "docs"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "docs": {
+              "link": {
+                "path": "/docs/1.1/fdc3-intro",
+                "label": "fdc3-intro"
+              }
+            },
+            "use-cases": {
+              "link": {
+                "path": "/docs/1.1/use-cases/overview",
+                "label": "use-cases/overview"
+              }
+            }
+          }
+        },
+        {
+          "name": "1.0",
+          "label": "1.0",
+          "isLast": false,
+          "path": "/docs/1.0",
+          "mainDocId": "fdc3-intro",
+          "docs": [
+            {
+              "id": "api/api-intro",
+              "path": "/docs/1.0/api/api-intro",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/api-spec",
+              "path": "/docs/1.0/api/api-spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/Context",
+              "path": "/docs/1.0/api/Context",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/DesktopAgent",
+              "path": "/docs/1.0/api/DesktopAgent",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/Errors",
+              "path": "/docs/1.0/api/Errors",
+              "sidebar": "docs"
+            },
+            {
+              "id": "api/ref/Channel",
+              "path": "/docs/1.0/api/ref/Channel"
+            },
+            {
+              "id": "api/ref/DesktopAgent",
+              "path": "/docs/1.0/api/ref/DesktopAgent"
+            },
+            {
+              "id": "api/ref/Errors",
+              "path": "/docs/1.0/api/ref/Errors"
+            },
+            {
+              "id": "api/ref/Globals",
+              "path": "/docs/1.0/api/ref/Globals"
+            },
+            {
+              "id": "api/ref/Metadata",
+              "path": "/docs/1.0/api/ref/Metadata"
+            },
+            {
+              "id": "api/ref/PrivateChannel",
+              "path": "/docs/1.0/api/ref/PrivateChannel"
+            },
+            {
+              "id": "api/ref/Types",
+              "path": "/docs/1.0/api/ref/Types"
+            },
+            {
+              "id": "api/spec",
+              "path": "/docs/1.0/api/spec"
+            },
+            {
+              "id": "app-directory/overview",
+              "path": "/docs/1.0/app-directory/overview"
+            },
+            {
+              "id": "app-directory/spec",
+              "path": "/docs/1.0/app-directory/spec"
+            },
+            {
+              "id": "appd-discovery",
+              "path": "/docs/1.0/appd-discovery",
+              "sidebar": "docs"
+            },
+            {
+              "id": "appd-intro",
+              "path": "/docs/1.0/appd-intro",
+              "sidebar": "docs"
+            },
+            {
+              "id": "appd-spec",
+              "path": "/docs/1.0/appd-spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "appd-use",
+              "path": "/docs/1.0/appd-use",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context-intro",
+              "path": "/docs/1.0/context-intro",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context-spec",
+              "path": "/docs/1.0/context-spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "context/ref/Chart",
+              "path": "/docs/1.0/context/ref/Chart"
+            },
+            {
+              "id": "context/ref/ChatInitSettings",
+              "path": "/docs/1.0/context/ref/ChatInitSettings"
+            },
+            {
+              "id": "context/ref/Contact",
+              "path": "/docs/1.0/context/ref/Contact"
+            },
+            {
+              "id": "context/ref/ContactList",
+              "path": "/docs/1.0/context/ref/ContactList"
+            },
+            {
+              "id": "context/ref/Context",
+              "path": "/docs/1.0/context/ref/Context"
+            },
+            {
+              "id": "context/ref/Country",
+              "path": "/docs/1.0/context/ref/Country"
+            },
+            {
+              "id": "context/ref/Currency",
+              "path": "/docs/1.0/context/ref/Currency"
+            },
+            {
+              "id": "context/ref/Email",
+              "path": "/docs/1.0/context/ref/Email"
+            },
+            {
+              "id": "context/ref/Instrument",
+              "path": "/docs/1.0/context/ref/Instrument"
+            },
+            {
+              "id": "context/ref/InstrumentList",
+              "path": "/docs/1.0/context/ref/InstrumentList"
+            },
+            {
+              "id": "context/ref/Nothing",
+              "path": "/docs/1.0/context/ref/Nothing"
+            },
+            {
+              "id": "context/ref/Organization",
+              "path": "/docs/1.0/context/ref/Organization"
+            },
+            {
+              "id": "context/ref/Portfolio",
+              "path": "/docs/1.0/context/ref/Portfolio"
+            },
+            {
+              "id": "context/ref/Position",
+              "path": "/docs/1.0/context/ref/Position"
+            },
+            {
+              "id": "context/ref/TimeRange",
+              "path": "/docs/1.0/context/ref/TimeRange"
+            },
+            {
+              "id": "context/ref/Valuation",
+              "path": "/docs/1.0/context/ref/Valuation"
+            },
+            {
+              "id": "context/spec",
+              "path": "/docs/1.0/context/spec"
+            },
+            {
+              "id": "fdc3-charter",
+              "path": "/docs/1.0/fdc3-charter",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-compliance",
+              "path": "/docs/1.0/fdc3-compliance",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-glossary",
+              "path": "/docs/1.0/fdc3-glossary"
+            },
+            {
+              "id": "fdc3-intro",
+              "path": "/docs/1.0/fdc3-intro",
+              "sidebar": "docs"
+            },
+            {
+              "id": "fdc3-standard",
+              "path": "/docs/1.0/fdc3-standard",
+              "sidebar": "docs"
+            },
+            {
+              "id": "guides/submit-new-intent",
+              "path": "/docs/1.0/guides/submit-new-intent"
+            },
+            {
+              "id": "intents-intro",
+              "path": "/docs/1.0/intents-intro",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents-spec",
+              "path": "/docs/1.0/intents-spec",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intents/ref/StartCall",
+              "path": "/docs/1.0/intents/ref/StartCall"
+            },
+            {
+              "id": "intents/ref/StartChat",
+              "path": "/docs/1.0/intents/ref/StartChat"
+            },
+            {
+              "id": "intents/ref/StartEmail",
+              "path": "/docs/1.0/intents/ref/StartEmail"
+            },
+            {
+              "id": "intents/ref/ViewAnalysis",
+              "path": "/docs/1.0/intents/ref/ViewAnalysis"
+            },
+            {
+              "id": "intents/ref/ViewChart",
+              "path": "/docs/1.0/intents/ref/ViewChart"
+            },
+            {
+              "id": "intents/ref/ViewContact",
+              "path": "/docs/1.0/intents/ref/ViewContact"
+            },
+            {
+              "id": "intents/ref/ViewHoldings",
+              "path": "/docs/1.0/intents/ref/ViewHoldings"
+            },
+            {
+              "id": "intents/ref/ViewInstrument",
+              "path": "/docs/1.0/intents/ref/ViewInstrument"
+            },
+            {
+              "id": "intents/ref/ViewInteractions",
+              "path": "/docs/1.0/intents/ref/ViewInteractions"
+            },
+            {
+              "id": "intents/ref/ViewNews",
+              "path": "/docs/1.0/intents/ref/ViewNews"
+            },
+            {
+              "id": "intents/ref/ViewOrders",
+              "path": "/docs/1.0/intents/ref/ViewOrders"
+            },
+            {
+              "id": "intents/ref/ViewProfile",
+              "path": "/docs/1.0/intents/ref/ViewProfile"
+            },
+            {
+              "id": "intents/ref/ViewQuote",
+              "path": "/docs/1.0/intents/ref/ViewQuote"
+            },
+            {
+              "id": "intents/ref/ViewResearch",
+              "path": "/docs/1.0/intents/ref/ViewResearch"
+            },
+            {
+              "id": "intents/spec",
+              "path": "/docs/1.0/intents/spec"
+            },
+            {
+              "id": "references",
+              "path": "/docs/1.0/references"
+            },
+            {
+              "id": "supported-platforms",
+              "path": "/docs/1.0/supported-platforms"
+            },
+            {
+              "id": "trademarks",
+              "path": "/docs/1.0/trademarks"
+            },
+            {
+              "id": "use-cases/meeting-minutes/2020-01-16 uc-wg meeting notes",
+              "path": "/docs/1.0/use-cases/meeting-minutes/2020-01-16 uc-wg meeting notes"
+            },
+            {
+              "id": "use-cases/meeting-minutes/2020-02-20 uc-wg meeting notes",
+              "path": "/docs/1.0/use-cases/meeting-minutes/2020-02-20 uc-wg meeting notes"
+            },
+            {
+              "id": "use-cases/meeting-minutes/2020-03-19 uc-wg meeting notes",
+              "path": "/docs/1.0/use-cases/meeting-minutes/2020-03-19 uc-wg meeting notes"
+            },
+            {
+              "id": "use-cases/overview",
+              "path": "/docs/1.0/use-cases/overview",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/readme",
+              "path": "/docs/1.0/use-cases/"
+            },
+            {
+              "id": "use-cases/uc-1",
+              "path": "/docs/1.0/use-cases/uc-1",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-10",
+              "path": "/docs/1.0/use-cases/uc-10",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-13",
+              "path": "/docs/1.0/use-cases/uc-13",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-15",
+              "path": "/docs/1.0/use-cases/uc-15",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-16",
+              "path": "/docs/1.0/use-cases/uc-16"
+            },
+            {
+              "id": "use-cases/uc-17",
+              "path": "/docs/1.0/use-cases/uc-17"
+            },
+            {
+              "id": "use-cases/uc-2",
+              "path": "/docs/1.0/use-cases/uc-2",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-3",
+              "path": "/docs/1.0/use-cases/uc-3",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-4",
+              "path": "/docs/1.0/use-cases/uc-4",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-5",
+              "path": "/docs/1.0/use-cases/uc-5",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "use-cases/uc-9",
+              "path": "/docs/1.0/use-cases/uc-9",
+              "sidebar": "use-cases"
+            },
+            {
+              "id": "why-fdc3",
+              "path": "/docs/1.0/why-fdc3",
+              "sidebar": "docs"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "docs": {
+              "link": {
+                "path": "/docs/1.0/fdc3-intro",
+                "label": "fdc3-intro"
+              }
+            },
+            "use-cases": {
+              "link": {
+                "path": "/docs/1.0/use-cases/overview",
+                "label": "use-cases/overview"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

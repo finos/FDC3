@@ -1,0 +1,31 @@
+{
+  "unversionedId": "intents/ref/ViewInstrument",
+  "id": "intents/ref/ViewInstrument",
+  "title": "ViewInstrument",
+  "description": "Display details for the provided instrument.",
+  "source": "@site/../docs/intents/ref/ViewInstrument.md",
+  "sourceDirName": "intents/ref",
+  "slug": "/intents/ref/ViewInstrument",
+  "permalink": "/docs/next/intents/ref/ViewInstrument",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "ViewInstrument",
+    "sidebar_label": "ViewInstrument",
+    "title": "ViewInstrument",
+    "hide_title": true
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "ViewHoldings",
+    "permalink": "/docs/next/intents/ref/ViewHoldings"
+  },
+  "next": {
+    "title": "ViewInteractions",
+    "permalink": "/docs/next/intents/ref/ViewInteractions"
+  }
+}

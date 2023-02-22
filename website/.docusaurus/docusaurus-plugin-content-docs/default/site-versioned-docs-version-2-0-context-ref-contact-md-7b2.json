@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/Contact",
+  "id": "version-2.0/context/ref/Contact",
+  "title": "Contact",
+  "description": "A person contact that can be engaged with through email, calling, messaging, CMS, etc.",
+  "source": "@site/versioned_docs/version-2.0/context/ref/Contact.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/Contact",
+  "permalink": "/docs/context/ref/Contact",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Contact",
+    "title": "Contact",
+    "hide_title": true,
+    "original_id": "Contact"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "ChatInitSettings",
+    "permalink": "/docs/context/ref/ChatInitSettings"
+  },
+  "next": {
+    "title": "ContactList",
+    "permalink": "/docs/context/ref/ContactList"
+  }
+}
