@@ -1,14 +1,14 @@
 const React = require('react');
 
-import versions_in from '../../versions.json'
+import versions from '../../versions.json'
 import Layout from "@theme/Layout";
 import Container from "../components/Container"
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
+
 export default (props) => {
   const context = useDocusaurusContext();
   const siteConfig = context.siteConfig;
-  const versions = versions_in
   const latestVersion = versions[0];
   const repoUrl = siteConfig.customFields.repoUrl
 
@@ -51,9 +51,9 @@ export default (props) => {
           <h3 id="archive">Past Versions</h3>
           <table className="versions">
             <tbody>
-              {versions.map(
-                version =>
-                  version !== latestVersion && (
+              {versions
+                .filter(version => version !== latestVersion)
+                .map(version => (
                     <tr key="{version}">
                       <th>{version}</th>
                       <td>
@@ -63,8 +63,8 @@ export default (props) => {
                         <a href={`${repoUrl}/releases/tag/v${version}`}>Release Notes</a>
                       </td>
                     </tr>
-                  ),
-              )}
+                  ))
+              }
             </tbody>
           </table>
           <p>
