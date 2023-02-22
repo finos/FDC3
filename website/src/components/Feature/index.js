@@ -1,7 +1,7 @@
 const React = require('react');
 
 export default (props) => {
-    return (<div  className="featureShowcaseSection  paddingBottom" style={{textAlign: 'center'}}>
+    return (<div  className="featureShowcaseSection padding-top--lg padding-bottom--lg" style={{textAlign: 'center'}}>
         {props.children}
     </div>)
 }
