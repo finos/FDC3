@@ -20,9 +20,6 @@ import Feature from '../components/Feature'
 import Showcase from "../../core/Showcase";
 
 import users from './../../data/users.json';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-
-
 
 const UserShowcase = () => {
 
@@ -59,7 +56,3 @@ export default () => {
       </Feature>
   </Layout>)
 }
-
-// <FeatureCallout />
-// <UserShowcase />
-// <ConformanceCallout />

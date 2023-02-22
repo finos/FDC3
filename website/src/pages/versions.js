@@ -1,16 +1,17 @@
 const React = require('react');
 
-import versions from '../../versions.json'
+import versions_in from '../../versions.json'
 import Layout from "@theme/Layout";
 import Container from "../components/Container"
-
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 export default (props) => {
-  const {config: siteConfig} = props;
+  const context = useDocusaurusContext();
+  const siteConfig = context.siteConfig;
+  const versions = versions_in
   const latestVersion = versions[0];
-  const repoUrl = `https://github.com/${siteConfig.organizationName}/${
-    siteConfig.projectName
-  }`;
+  const repoUrl = siteConfig.customFields.repoUrl
+
   return (
     <Layout title="Versions">
       <Container>
@@ -24,7 +25,7 @@ export default (props) => {
               <tr key="headers">
                 <th>{latestVersion}</th>
                 <td>
-                  <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/fdc3-intro`}>Documentation</a>
+                  <a href="/docs/fdc3-intro">Documentation</a>
                 </td>
                 <td>
                   <a href={`${repoUrl}/releases/tag/v${latestVersion}`}>Release Notes</a>
@@ -32,13 +33,13 @@ export default (props) => {
               </tr>
             </tbody>
           </table>
-          <h3 id="rc">Latest version</h3>
+          <h3 id="rc">Latest version (Unreleased)</h3>
           <table className="versions">
             <tbody>
               <tr key="latest">
                 <th>master</th>
                 <td>
-                  <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/next/fdc3-intro`}>Documentation</a>
+                  <a href={"/docs/next/fdc3-intro"}>Documentation</a>
                 </td>
                 <td>
                   <a href={repoUrl}>Source Code</a>
@@ -56,7 +57,7 @@ export default (props) => {
                     <tr key="{version}">
                       <th>{version}</th>
                       <td>
-                        <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${version}/fdc3-intro`}>Documentation</a>
+                        <a href={"/docs/"+version+"/fdc3-intro"}>Documentation</a>
                       </td>
                       <td>
                         <a href={`${repoUrl}/releases/tag/v${version}`}>Release Notes</a>

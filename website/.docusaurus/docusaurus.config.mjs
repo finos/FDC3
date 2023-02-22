@@ -98,29 +98,29 @@ export default {
         },
         {
           "label": "Version",
-          "to": "docs",
+          "to": "/versions",
           "position": "right",
           "items": [
             {
               "label": "2.0",
-              "to": "docs/",
+              "to": "/docs/fdc3-intro",
               "activeBaseRegex": "docs/(?!1.0|1.1|1.2|2.0|next)"
             },
             {
               "label": "1.2",
-              "to": "docs/1.2/"
+              "to": "/docs/1.2/fdc3-intro"
             },
             {
               "label": "1.1",
-              "to": "docs/1.1/"
+              "to": "/docs/1.1/fdc3-intro"
             },
             {
               "label": "1.0",
-              "to": "docs/1.0/"
+              "to": "/docs/1.0/fdc3-intro"
             },
             {
               "label": "Main/Unreleased",
-              "to": "docs/next/",
+              "to": "/docs/next/fdc3-intro",
               "activeBaseRegex": "docs/next/(?!support|team|resources)"
             }
           ]
@@ -189,6 +189,14 @@ export default {
             },
             {
               "html": "<a href=\"https://twitter.com/FDC3_\"><img src=\"https://img.shields.io/twitter/follow/FDC3_?style=social\" ></a>"
+            },
+            {
+              "label": "Users",
+              "to": "/users"
+            },
+            {
+              "label": "Versions",
+              "to": "/versions"
             }
           ]
         }
