@@ -78,7 +78,8 @@ jobs:
         git config --global user.name "$GIT_USERNAME"
         echo "machine github.com login $GIT_USERNAME password $GITHUB_TOKEN" > ~/.netrc
         # Run docusaurus-publish
-        GIT_USER=$GIT_USERNAME yarn --cwd website publish-gh-pages
+        GIT_USER=$GIT_USERNAME 
+        yarn --cwd website publish-gh-pages
     # Disabling for now - see https://github.com/finos/FDC3/pull/254#pullrequestreview-506250562
     # - name: Create comment
     #   if: github.event_name == 'pull_request'
