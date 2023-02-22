@@ -132,18 +132,72 @@ export default {
     "footer": {
       "links": [
         {
+          "title": "Learn",
+          "items": [
+            {
+              "label": "Getting Started",
+              "to": "/docs/fdc3-intro"
+            },
+            {
+              "label": "Supported Platforms",
+              "to": "docs/supported-platforms"
+            },
+            {
+              "label": "API Reference",
+              "to": "/docs/api/ref/DesktopAgent"
+            },
+            {
+              "label": "Use Cases",
+              "to": "/docs/use-cases/overview"
+            },
+            {
+              "label": "Training",
+              "to": "https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop"
+            }
+          ]
+        },
+        {
           "title": "Community",
           "items": [
             {
-              "label": "Twitter",
-              "to": "https://twitter.com/FDC3_"
+              "label": "FINOS",
+              "to": "https://www.finos.org/"
+            },
+            {
+              "label": "Slack",
+              "to": "https://finos-lf.slack.com/messages/fdc3/"
+            },
+            {
+              "label": "Stack Overflow",
+              "to": "https://stackoverflow.com/questions/tagged/fdc3"
+            },
+            {
+              "label": "Google Groups",
+              "to": "https://groups.google.com/a/finos.org/forum/#!forum/fdc3"
+            },
+            {
+              "label": "Trademarks",
+              "to": "/docs/next/trademarks"
+            }
+          ]
+        },
+        {
+          "title": "More",
+          "items": [
+            {
+              "html": "<a href=\"https://github.com/finos/FDC3\"><img src=\"https://img.shields.io/github/stars/finos/FDC3?label=FDC3&style=social\" /></a>"
+            },
+            {
+              "html": "<a href=\"https://twitter.com/FDC3_\"><img src=\"https://img.shields.io/twitter/follow/FDC3_?style=social\" ></a>"
             }
           ]
         }
       ],
-      "copyright": "Copyright © 2023 FDC3",
+      "copyright": "<span class=\"footer-strap\">Proud member of the Fintech Open Source Foundation</span><br/><br/><span class=\"footer-copyright\">Copyright © 2023 FDC3 - FINOS</span>",
       "logo": {
-        "src": "img/fdc3-icon-2019.svg"
+        "src": "img/finos_wordmark.svg",
+        "alt": "FINOS Logo",
+        "width": 50
       },
       "style": "light"
     },
