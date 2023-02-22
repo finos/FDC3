@@ -1,0 +1,20 @@
+{
+  "unversionedId": "app-directory/overview",
+  "id": "version-1.0/app-directory/overview",
+  "title": "App Directory Overview (next)",
+  "description": "An application directory (appD) is a structured repository of information about apps that can be used in an FDC3-enabled desktop. In other words, it’s a convenient way of storing and managing metadata about apps in your ecosystem.",
+  "source": "@site/versioned_docs/version-1.0/app-directory/overview.md",
+  "sourceDirName": "app-directory",
+  "slug": "/app-directory/overview",
+  "permalink": "/docs/1.0/app-directory/overview",
+  "draft": false,
+  "tags": [],
+  "version": "1.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Overview",
+    "title": "App Directory Overview (next)"
+  }
+}

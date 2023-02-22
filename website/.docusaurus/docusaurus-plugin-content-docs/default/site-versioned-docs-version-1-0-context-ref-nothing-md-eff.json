@@ -1,0 +1,21 @@
+{
+  "unversionedId": "context/ref/Nothing",
+  "id": "version-1.0/context/ref/Nothing",
+  "title": "Nothing",
+  "description": "A type that explicitly represents a lack of context.",
+  "source": "@site/versioned_docs/version-1.0/context/ref/Nothing.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/Nothing",
+  "permalink": "/docs/1.0/context/ref/Nothing",
+  "draft": false,
+  "tags": [],
+  "version": "1.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Nothing",
+    "title": "Nothing",
+    "hide_title": true
+  }
+}

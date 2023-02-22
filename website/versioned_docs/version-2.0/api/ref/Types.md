@@ -1,6 +1,5 @@
 ---
 title: Types
-id: version-2.0-Types
 original_id: Types
 ---
 

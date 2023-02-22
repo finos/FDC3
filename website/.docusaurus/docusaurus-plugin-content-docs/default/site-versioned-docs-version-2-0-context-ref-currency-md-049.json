@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/Currency",
+  "id": "version-2.0/context/ref/Currency",
+  "title": "Currency",
+  "description": "A context representing an individual Currency.",
+  "source": "@site/versioned_docs/version-2.0/context/ref/Currency.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/Currency",
+  "permalink": "/docs/context/ref/Currency",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Currency",
+    "title": "Currency",
+    "hide_title": true,
+    "original_id": "Currency"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Country",
+    "permalink": "/docs/context/ref/Country"
+  },
+  "next": {
+    "title": "Email",
+    "permalink": "/docs/context/ref/Email"
+  }
+}

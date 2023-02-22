@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/InstrumentList",
+  "id": "context/ref/InstrumentList",
+  "title": "InstrumentList",
+  "description": "A collection of instruments. Use this type for use cases that require not just a single instrument, but multiple (e.g. to populate a watchlist).",
+  "source": "@site/../docs/context/ref/InstrumentList.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/InstrumentList",
+  "permalink": "/docs/next/context/ref/InstrumentList",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "InstrumentList",
+    "sidebar_label": "InstrumentList",
+    "title": "InstrumentList",
+    "hide_title": true
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Instrument",
+    "permalink": "/docs/next/context/ref/Instrument"
+  },
+  "next": {
+    "title": "Nothing",
+    "permalink": "/docs/next/context/ref/Nothing"
+  }
+}

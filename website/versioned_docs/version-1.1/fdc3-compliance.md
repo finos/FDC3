@@ -1,5 +1,4 @@
 ---
-id: version-1.1-fdc3-compliance
 title: FDC3 Specification Compliance
 sidebar_label: FDC3 Compliance
 original_id: fdc3-compliance

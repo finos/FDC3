@@ -1,0 +1,22 @@
+{
+  "unversionedId": "api/overview",
+  "id": "version-2.0/api/overview",
+  "title": "API Overview",
+  "description": "The API specification of the FDC3 standard support the following goals:",
+  "source": "@site/versioned_docs/version-2.0/api/overview.md",
+  "sourceDirName": "api",
+  "slug": "/api/overview",
+  "permalink": "/docs/api/overview",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "API Overview",
+    "title": "API Overview",
+    "hide_title": true,
+    "original_id": "overview"
+  }
+}

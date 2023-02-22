@@ -1,0 +1,21 @@
+{
+  "unversionedId": "intents/ref/ViewHoldings",
+  "id": "version-1.0/intents/ref/ViewHoldings",
+  "title": "ViewHoldings",
+  "description": "Display any holdings for the provided instrument, list of instruments, or organization.",
+  "source": "@site/versioned_docs/version-1.0/intents/ref/ViewHoldings.md",
+  "sourceDirName": "intents/ref",
+  "slug": "/intents/ref/ViewHoldings",
+  "permalink": "/docs/1.0/intents/ref/ViewHoldings",
+  "draft": false,
+  "tags": [],
+  "version": "1.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "ViewHoldings",
+    "title": "ViewHoldings",
+    "hide_title": true
+  }
+}

@@ -1,5 +1,4 @@
 ---
-id: version-1.1-spec
 sidebar_label: Intents Specification
 title: Intents Specification 1.1
 original_id: spec

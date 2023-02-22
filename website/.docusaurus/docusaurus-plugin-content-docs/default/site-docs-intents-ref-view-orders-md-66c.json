@@ -1,0 +1,31 @@
+{
+  "unversionedId": "intents/ref/ViewOrders",
+  "id": "intents/ref/ViewOrders",
+  "title": "ViewOrders",
+  "description": "Display any orders related to the provided contact, instrument, or organization.",
+  "source": "@site/../docs/intents/ref/ViewOrders.md",
+  "sourceDirName": "intents/ref",
+  "slug": "/intents/ref/ViewOrders",
+  "permalink": "/docs/next/intents/ref/ViewOrders",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "ViewOrders",
+    "sidebar_label": "ViewOrders",
+    "title": "ViewOrders",
+    "hide_title": true
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "ViewNews",
+    "permalink": "/docs/next/intents/ref/ViewNews"
+  },
+  "next": {
+    "title": "ViewProfile",
+    "permalink": "/docs/next/intents/ref/ViewProfile"
+  }
+}
