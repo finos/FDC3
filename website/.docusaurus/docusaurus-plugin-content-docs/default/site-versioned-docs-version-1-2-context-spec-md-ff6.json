@@ -1,0 +1,30 @@
+{
+  "unversionedId": "context/spec",
+  "id": "version-1.2/context/spec",
+  "title": "Context Data Specification 1.2",
+  "description": "Introduction",
+  "source": "@site/versioned_docs/version-1.2/context/spec.md",
+  "sourceDirName": "context",
+  "slug": "/context/spec",
+  "permalink": "/docs/1.2/context/spec",
+  "draft": false,
+  "tags": [],
+  "version": "1.2",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Context Data Specification",
+    "title": "Context Data Specification 1.2",
+    "original_id": "spec"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Context Data Overview",
+    "permalink": "/docs/1.2/context/overview"
+  },
+  "next": {
+    "title": "Context",
+    "permalink": "/docs/1.2/context/ref/Context"
+  }
+}

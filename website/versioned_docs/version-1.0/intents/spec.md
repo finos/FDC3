@@ -1,5 +1,4 @@
 ---
-id: spec
 sidebar_label: Overview
 title: Intents Overview (next)
 ---

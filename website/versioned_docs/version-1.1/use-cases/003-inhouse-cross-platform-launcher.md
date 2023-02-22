@@ -1,5 +1,5 @@
 ---
-id: version-1.0-uc-3
+id: uc-3
 title: "Use Case 3: Inhouse Cross Platform Launcher"
 sidebar_label: 3. Inhouse Cross Platform Launcher
 layout: use_case

@@ -1,0 +1,30 @@
+{
+  "unversionedId": "references",
+  "id": "version-2.0/references",
+  "title": "References & Bibliography",
+  "description": "The following normative documents contain provisions, which, through reference in this text, constitute provisions of this Standard. For dated references, subsequent amendments to, or revisions of, any of these publications do not apply. However, parties to agreements based on this Standard are encouraged to investigate the possibility of applying the most recent editions of the normative documents indicated below. For undated references, the latest edition of the normative document referred to applies:",
+  "source": "@site/versioned_docs/version-2.0/references.md",
+  "sourceDirName": ".",
+  "slug": "/references",
+  "permalink": "/docs/references",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "title": "References & Bibliography",
+    "sidebar_label": "References",
+    "original_id": "references"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Glossary",
+    "permalink": "/docs/fdc3-glossary"
+  },
+  "next": {
+    "title": "Supported Platforms",
+    "permalink": "/docs/supported-platforms"
+  }
+}

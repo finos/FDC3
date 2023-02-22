@@ -1,5 +1,5 @@
 ---
-id: version-1.0-uc-2
+id: uc-2
 title: "Use Case 2: Buy side Portfolio Manager"
 sidebar_label: 2. Buy side Portfolio Manager
 layout: use_case

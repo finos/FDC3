@@ -1,5 +1,4 @@
 ---
-id: version-1.1-usage
 sidebar_label: App Directory Usage
 title: App Directory Usage
 hide_title: true

@@ -1,5 +1,4 @@
 ---
-id: version-1.1-ViewNews
 sidebar_label: ViewNews
 title: ViewNews
 hide_title: true

@@ -1,0 +1,98 @@
+{
+  "docs": {
+    "Getting Started": [
+      "fdc3-intro",
+      "why-fdc3",
+      "fdc3-charter"
+    ],
+    "FDC3 Standard": [
+      "fdc3-standard",
+      "fdc3-compliance",
+      "fdc3-glossary",
+      "references",
+      "supported-platforms",
+      {
+        "type": "subcategory",
+        "label": "API Part",
+        "ids": [
+          "api/spec",
+          "api/ref/DesktopAgent",
+          "api/ref/Channel",
+          "api/ref/PrivateChannel",
+          "api/ref/Globals",
+          "api/ref/Types",
+          "api/ref/Metadata",
+          "api/ref/Errors"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "App Directory Part",
+        "ids": [
+          "app-directory/overview",
+          "app-directory/spec"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Intents Part",
+        "ids": [
+          "intents/spec",
+          "intents/ref/StartCall",
+          "intents/ref/StartChat",
+          "intents/ref/StartEmail",
+          "intents/ref/ViewAnalysis",
+          "intents/ref/ViewChart",
+          "intents/ref/ViewHoldings",
+          "intents/ref/ViewInstrument",
+          "intents/ref/ViewInteractions",
+          "intents/ref/ViewNews",
+          "intents/ref/ViewOrders",
+          "intents/ref/ViewProfile",
+          "intents/ref/ViewQuote",
+          "intents/ref/ViewResearch",
+          "intents/ref/ViewContact"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Context Data Part",
+        "ids": [
+          "context/spec",
+          "context/ref/Context",
+          "context/ref/Chart",
+          "context/ref/ChatInitSettings",
+          "context/ref/Contact",
+          "context/ref/ContactList",
+          "context/ref/Country",
+          "context/ref/Currency",
+          "context/ref/Email",
+          "context/ref/Instrument",
+          "context/ref/InstrumentList",
+          "context/ref/Nothing",
+          "context/ref/Organization",
+          "context/ref/Portfolio",
+          "context/ref/Position",
+          "context/ref/TimeRange",
+          "context/ref/Valuation"
+        ]
+      }
+    ]
+  },
+  "use-cases": {
+    "Use Cases": [
+      "use-cases/overview",
+      "use-cases/uc-1",
+      "use-cases/uc-2",
+      "use-cases/uc-3",
+      "use-cases/uc-4",
+      "use-cases/uc-5",
+      "use-cases/uc-9",
+      "use-cases/uc-10",
+      "use-cases/uc-13",
+      "use-cases/uc-15",
+      "use-cases/uc-16",
+      "use-cases/uc-17"
+    ]
+  }
+}

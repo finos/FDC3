@@ -1,5 +1,4 @@
 ---
-id: version-2.0-why-fdc3
 sidebar_label: Why FDC3?
 title: Why FDC3?
 original_id: why-fdc3

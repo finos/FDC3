@@ -1,5 +1,4 @@
 ---
-id: version-2.0-ViewInteractions
 sidebar_label: ViewInteractions
 title: ViewInteractions
 hide_title: true

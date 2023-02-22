@@ -1,0 +1,31 @@
+{
+  "unversionedId": "api/ref/Listener",
+  "id": "version-1.1/api/ref/Listener",
+  "title": "Listener",
+  "description": "A Listener object is returned when an application subscribes to intents or context broadcasts via the addIntentListener or addContextListener methods on the DesktopAgent object.",
+  "source": "@site/versioned_docs/version-1.1/api/ref/Listener.md",
+  "sourceDirName": "api/ref",
+  "slug": "/api/ref/Listener",
+  "permalink": "/docs/1.1/api/ref/Listener",
+  "draft": false,
+  "tags": [],
+  "version": "1.1",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Listener",
+    "title": "Listener",
+    "hide_title": true,
+    "original_id": "Listener"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Channel",
+    "permalink": "/docs/1.1/api/ref/Channel"
+  },
+  "next": {
+    "title": "AppIntent",
+    "permalink": "/docs/1.1/api/ref/AppIntent"
+  }
+}

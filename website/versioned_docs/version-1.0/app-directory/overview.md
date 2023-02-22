@@ -1,5 +1,4 @@
 ---
-id: overview
 sidebar_label: Overview
 title: App Directory Overview (next)
 ---

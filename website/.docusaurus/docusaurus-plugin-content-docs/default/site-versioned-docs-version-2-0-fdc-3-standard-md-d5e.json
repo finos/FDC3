@@ -1,0 +1,30 @@
+{
+  "unversionedId": "fdc3-standard",
+  "id": "version-2.0/fdc3-standard",
+  "title": "FDC3 2.0",
+  "description": "Status: Current",
+  "source": "@site/versioned_docs/version-2.0/fdc3-standard.md",
+  "sourceDirName": ".",
+  "slug": "/fdc3-standard",
+  "permalink": "/docs/fdc3-standard",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "title": "FDC3 2.0",
+    "sidebar_label": "Abstract",
+    "original_id": "fdc3-standard"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "FDC3 Charter",
+    "permalink": "/docs/fdc3-charter"
+  },
+  "next": {
+    "title": "Compliance",
+    "permalink": "/docs/fdc3-compliance"
+  }
+}

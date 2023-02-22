@@ -1,5 +1,4 @@
 ---
-id: version-1.1-AppMetadata
 sidebar_label: AppMetadata
 title: AppMetadata
 hide_title: true

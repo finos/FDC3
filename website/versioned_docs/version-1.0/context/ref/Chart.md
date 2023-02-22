@@ -1,5 +1,4 @@
 ---
-id: Chart
 sidebar_label: Chart
 title: Chart
 hide_title: true

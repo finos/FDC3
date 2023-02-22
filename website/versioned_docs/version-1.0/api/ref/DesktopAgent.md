@@ -1,5 +1,4 @@
 ---
-id: DesktopAgent
 sidebar_label: DesktopAgent
 title: DesktopAgent
 hide_title: true

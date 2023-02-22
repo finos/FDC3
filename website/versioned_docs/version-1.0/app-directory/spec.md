@@ -1,5 +1,4 @@
 ---
-id: spec
 sidebar_label: API
 title: App Directory API (next)
 ---

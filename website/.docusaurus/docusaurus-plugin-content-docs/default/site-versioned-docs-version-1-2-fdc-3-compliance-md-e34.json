@@ -1,0 +1,29 @@
+{
+  "unversionedId": "fdc3-compliance",
+  "id": "version-1.2/fdc3-compliance",
+  "title": "FDC3 Compliance",
+  "description": "FDC3 standards follow the IETF best practices for keywords to Indicate Requirement levels: RFC 2119.  Documentation should be updated as needed to reflect this.",
+  "source": "@site/versioned_docs/version-1.2/fdc3-compliance.md",
+  "sourceDirName": ".",
+  "slug": "/fdc3-compliance",
+  "permalink": "/docs/1.2/fdc3-compliance",
+  "draft": false,
+  "tags": [],
+  "version": "1.2",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "title": "FDC3 Compliance",
+    "original_id": "fdc3-compliance"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "FDC3 Charter",
+    "permalink": "/docs/1.2/fdc3-charter"
+  },
+  "next": {
+    "title": "FDC3 1.2 Abstract",
+    "permalink": "/docs/1.2/fdc3-standard"
+  }
+}

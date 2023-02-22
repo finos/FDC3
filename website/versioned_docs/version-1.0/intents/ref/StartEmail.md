@@ -1,5 +1,4 @@
 ---
-id: StartEmail
 sidebar_label: StartEmail
 title: StartEmail
 hide_title: true

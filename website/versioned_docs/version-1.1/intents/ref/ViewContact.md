@@ -1,5 +1,4 @@
 ---
-id: version-1.1-ViewContact
 sidebar_label: ViewContact
 title: ViewContact
 hide_title: true

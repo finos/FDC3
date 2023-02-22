@@ -1,5 +1,4 @@
 ---
-id: version-2.0-trademarks
 title: Trademarks
 original_id: trademarks
 ---

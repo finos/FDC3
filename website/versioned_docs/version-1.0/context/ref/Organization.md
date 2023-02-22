@@ -1,5 +1,4 @@
 ---
-id: Organization
 sidebar_label: Organization
 title: Organization
 hide_title: true
