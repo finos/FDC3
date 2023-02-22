@@ -15,7 +15,7 @@ import setType from '../components/implementationFilters'
 const badgeTitles = {
 	"Open Source": "Indicates that the project source code is available to download and modify, under an Apache 2.0 or similar license.",
 	"FDC3 1.2 Supported": "Indicates that this product advertises compatibility with the FDC3 1.2 Standard. ",
-	"FDC3 2.0 Supported ": "Indicates that this product advertises compatibility with the FDC3 2.0 Standard. ", 
+	"FDC3 2.0 Supported ": "Indicates that this product advertises compatibility with the FDC3 2.0 Standard. ",
 	"FDC3 1.2 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 1.2 Conformance testing process.",
 	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process.",
 	"FDC3 2.0 Support Coming Soon": "This product is working towards attaining the FDC3 2.0 Standard.",
@@ -36,8 +36,7 @@ implData.sort((a, b) => {
 
 
 function Implementation({ type, title, publisher, image, infoLink, docsLink, badges, conformance, description }) {
-
-	return <div className={"implementation " + type}>
+	return <div key={title + type} className={"implementation " + type}>
 		<div className="implementation-metadata">
 			<div className="title-and-publisher">
 				<div className="title">{infoLink ? <a href={infoLink} key={infoLink}>{title}</a> : { title }}</div>
@@ -45,12 +44,12 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 			</div>
 			<div className="type">{type}</div>
 		</div>
-		<div className="implementation-details">
+		<div className="implementation-details padding-top--sm padding-bottom--md">
 			<img src={image} alt={title} title={title} />
 			<div className="description">
 				<div className="infoLinks">
-					{infoLink ? <a href={infoLink} key={infoLink} className="button">More info</a> : null}
-					{docsLink ? <a href={docsLink} key={docsLink} className="button">Documentation</a> : null}
+					{infoLink ? <a href={infoLink} className="button">More info</a> : null}
+					{docsLink ? <a href={docsLink} className="button">Documentation</a> : null}
 				</div>
 				<div className="prose" dangerouslySetInnerHTML={{ __html: description }}></div>
 				<div className="conformance">
@@ -58,29 +57,27 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 						conformance ? <h3><a title="The FDC3 Conformance Framework" href="https://github.com/finos/FDC3-Conformance-Framework">Conformance Details</a></h3> : null
 					}
 					{
-						(conformance ? conformance :[]).map(c =>
-							<div className="conformance-element">
+						(conformance ? conformance : []).map(c =>
+							<div key={c} className="conformance-element">
 								<div className="conformance-badge"><img src={c.src} /></div>
 								<div className="conformance-text"><ul>
 									{
-										c.items.map(ti => <li>{ti.text} (<a className="conformance-details" href={ti.link}>details</a>)</li>)
+										c.items.map(ti => <li key={ti.link}>{ti.text} (<a className="conformance-details" href={ti.link}>details</a>)</li>)
 									}
 								</ul></div>
 							</div>)
 					}
 				</div>
 				<div className="badges">
-					{ badges.map(b =><a href="#" key={b.text} title={badgeTitles[b.text]} className="button badge">{b.text}</a>)}
+					{badges.map(b => <a href="#" key={b.text} title={badgeTitles[b.text]} className="button badge">{b.text}</a>)}
 				</div>
-
-
 			</div>
 		</div>
 	</div>
 }
 
 function ImplementationsShowcase(initialFilter) {
-	return <div>
+	return <div key="is">
 		<div className="filters">
 			<button className="button filter" id="platform-provider" onClick={setType("platform-provider")}>
 				Platform Providers
@@ -106,7 +103,7 @@ function ImplementationsShowcase(initialFilter) {
 		</div>
 		<div className="implementations">
 			{implData.map(impl => (
-				<Implementation key={impl.infoLink} {...impl} />
+				<Implementation key={impl.title} {...impl} />
 			))}
 		</div>
 	</div>
