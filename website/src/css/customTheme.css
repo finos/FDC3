@@ -19,6 +19,7 @@
   font-weight: 400;
   line-height: 1.2em;
   padding: 10px;
+  margin: 10px;
   text-decoration: none!important;
   text-transform: uppercase;
   transition: background .3s,color .3s;
@@ -171,6 +172,7 @@ header.postHeader:empty + article h1 {
 }
 
 .button {
+  background: #0086bf44;
   border: 1px solid #ffffff;
 }
 
@@ -192,8 +194,12 @@ header.postHeader:empty + article h1 {
   fill: #ffffff;
 }
 
+.blockContent {
+  margin: 40px 20px;
+}
 .blockContent h2{
   color:  #0086bf;  /* DO NOT CHANGE - THIS IS THE TITLE UNDER THE ICONS IN THE 3RD BLOCK - SHOULD STAY FINOS BLUE */
+  text-align: center;
 }
 
 
@@ -401,7 +407,7 @@ article iframe {
 }
 
 .front-conformance-logo {
-  width: 140px;
+  width: 240px;
   padding: 40px;
 }
 

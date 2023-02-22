@@ -27,7 +27,7 @@ const UserShowcase = () => {
   pinnedUsers.sort((a, b) => a.caption.localeCompare(b.caption))
 
   return (
-    <div className="userShowcase productShowcaseSection paddingTop paddingBottom" style={{textAlign: 'center'}}>
+    <div className="userShowcase productShowcaseSection padding-top--lg padding-bottom--lg" style={{textAlign: 'center'}}>
       <h1>Who is Using FDC3?</h1>
       <p style={{margin: 'auto'}}>The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standards are created and used by <a href="/users">leading organizations across the financial industry</a>. For more detail on who's using FDC3, developer tools, training and examples see the <a href="/community">community page</a>.</p>
       <Showcase users={pinnedUsers} />
