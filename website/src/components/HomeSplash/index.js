@@ -6,7 +6,7 @@ export default (props) => {
 
     const context = useDocusaurusContext();
     const siteConfig = context.siteConfig;
-    const repoUrl = siteConfig.repoUrl;
+    const repoUrl = siteConfig.customFields.repoUrl;
   
     const SplashContainer = props => (
       <div className="homeContainer">

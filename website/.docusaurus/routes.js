@@ -4,87 +4,87 @@ import ComponentCreator from '@docusaurus/ComponentCreator';
 export default [
   {
     path: '/__docusaurus/debug',
-    component: ComponentCreator('/__docusaurus/debug', '9a6'),
+    component: ComponentCreator('/__docusaurus/debug', '4e0'),
     exact: true
   },
   {
     path: '/__docusaurus/debug/config',
-    component: ComponentCreator('/__docusaurus/debug/config', '159'),
+    component: ComponentCreator('/__docusaurus/debug/config', '7ea'),
     exact: true
   },
   {
     path: '/__docusaurus/debug/content',
-    component: ComponentCreator('/__docusaurus/debug/content', '660'),
+    component: ComponentCreator('/__docusaurus/debug/content', 'f4c'),
     exact: true
   },
   {
     path: '/__docusaurus/debug/globalData',
-    component: ComponentCreator('/__docusaurus/debug/globalData', '3d8'),
+    component: ComponentCreator('/__docusaurus/debug/globalData', '153'),
     exact: true
   },
   {
     path: '/__docusaurus/debug/metadata',
-    component: ComponentCreator('/__docusaurus/debug/metadata', '18f'),
+    component: ComponentCreator('/__docusaurus/debug/metadata', '09e'),
     exact: true
   },
   {
     path: '/__docusaurus/debug/registry',
-    component: ComponentCreator('/__docusaurus/debug/registry', '3a4'),
+    component: ComponentCreator('/__docusaurus/debug/registry', '070'),
     exact: true
   },
   {
     path: '/__docusaurus/debug/routes',
-    component: ComponentCreator('/__docusaurus/debug/routes', '50d'),
+    component: ComponentCreator('/__docusaurus/debug/routes', 'c75'),
     exact: true
   },
   {
     path: '/blog',
-    component: ComponentCreator('/blog', '731'),
+    component: ComponentCreator('/blog', '275'),
     exact: true
   },
   {
     path: '/blog/2017/09/25/testing-rss',
-    component: ComponentCreator('/blog/2017/09/25/testing-rss', '1ae'),
+    component: ComponentCreator('/blog/2017/09/25/testing-rss', 'cab'),
     exact: true
   },
   {
     path: '/blog/2017/09/26/adding-rss',
-    component: ComponentCreator('/blog/2017/09/26/adding-rss', 'f79'),
+    component: ComponentCreator('/blog/2017/09/26/adding-rss', '099'),
     exact: true
   },
   {
     path: '/blog/archive',
-    component: ComponentCreator('/blog/archive', 'a76'),
+    component: ComponentCreator('/blog/archive', 'd05'),
     exact: true
   },
   {
     path: '/community',
-    component: ComponentCreator('/community', '16c'),
+    component: ComponentCreator('/community', 'e47'),
     exact: true
   },
   {
     path: '/fdc3-roadmap',
-    component: ComponentCreator('/fdc3-roadmap', 'b7b'),
+    component: ComponentCreator('/fdc3-roadmap', '778'),
     exact: true
   },
   {
     path: '/get-involved',
-    component: ComponentCreator('/get-involved', '7ce'),
+    component: ComponentCreator('/get-involved', '9fa'),
     exact: true
   },
   {
     path: '/users',
-    component: ComponentCreator('/users', 'fc8'),
+    component: ComponentCreator('/users', 'bd1'),
     exact: true
   },
   {
     path: '/versions',
-    component: ComponentCreator('/versions', '6c6'),
+    component: ComponentCreator('/versions', '747'),
     exact: true
   },
   {
     path: '/docs/1.0',
-    component: ComponentCreator('/docs/1.0', 'cb3'),
+    component: ComponentCreator('/docs/1.0', '938'),
     routes: [
       {
         path: '/docs/1.0/api/api-intro',
@@ -523,7 +523,7 @@ export default [
   },
   {
     path: '/docs/1.1',
-    component: ComponentCreator('/docs/1.1', '301'),
+    component: ComponentCreator('/docs/1.1', '008'),
     routes: [
       {
         path: '/docs/1.1/api/api-intro',
@@ -936,7 +936,7 @@ export default [
   },
   {
     path: '/docs/1.2',
-    component: ComponentCreator('/docs/1.2', 'eac'),
+    component: ComponentCreator('/docs/1.2', '54a'),
     routes: [
       {
         path: '/docs/1.2/api/api-intro',
@@ -1368,7 +1368,7 @@ export default [
   },
   {
     path: '/docs/next',
-    component: ComponentCreator('/docs/next', 'f2e'),
+    component: ComponentCreator('/docs/next', '156'),
     routes: [
       {
         path: '/docs/next/api/ref/Channel',
@@ -1776,7 +1776,7 @@ export default [
   },
   {
     path: '/docs',
-    component: ComponentCreator('/docs', '678'),
+    component: ComponentCreator('/docs', 'ce1'),
     routes: [
       {
         path: '/docs/api/overview',
@@ -2174,7 +2174,7 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/', 'cb1'),
+    component: ComponentCreator('/', '67b'),
     exact: true
   },
   {

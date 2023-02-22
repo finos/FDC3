@@ -12,9 +12,9 @@
           "path": "/docs/next",
           "tagsPath": "/docs/next/tags",
           "isLast": false,
-          "sidebarFilePath": "/Users/rob/Documents/finos/FDC3/website-v2/sidebars.json",
+          "sidebarFilePath": "/Users/rob/Documents/finos/FDC3/website/sidebars.json",
           "contentPath": "/Users/rob/Documents/finos/FDC3/docs",
-          "contentPathLocalized": "/Users/rob/Documents/finos/FDC3/website-v2/i18n/en/docusaurus-plugin-content-docs/current",
+          "contentPathLocalized": "/Users/rob/Documents/finos/FDC3/website/i18n/en/docusaurus-plugin-content-docs/current",
           "docs": [
             {
               "unversionedId": "api/ref/Channel",
@@ -2339,9 +2339,9 @@
           "tagsPath": "/docs/tags",
           "isLast": true,
           "routePriority": -1,
-          "sidebarFilePath": "/Users/rob/Documents/finos/FDC3/website-v2/versioned_sidebars/version-2.0-sidebars.json",
-          "contentPath": "/Users/rob/Documents/finos/FDC3/website-v2/versioned_docs/version-2.0",
-          "contentPathLocalized": "/Users/rob/Documents/finos/FDC3/website-v2/i18n/en/docusaurus-plugin-content-docs/version-2.0",
+          "sidebarFilePath": "/Users/rob/Documents/finos/FDC3/website/versioned_sidebars/version-2.0-sidebars.json",
+          "contentPath": "/Users/rob/Documents/finos/FDC3/website/versioned_docs/version-2.0",
+          "contentPathLocalized": "/Users/rob/Documents/finos/FDC3/website/i18n/en/docusaurus-plugin-content-docs/version-2.0",
           "docs": [
             {
               "unversionedId": "api/overview",
@@ -4656,9 +4656,9 @@
           "path": "/docs/1.2",
           "tagsPath": "/docs/1.2/tags",
           "isLast": false,
-          "sidebarFilePath": "/Users/rob/Documents/finos/FDC3/website-v2/versioned_sidebars/version-1.2-sidebars.json",
-          "contentPath": "/Users/rob/Documents/finos/FDC3/website-v2/versioned_docs/version-1.2",
-          "contentPathLocalized": "/Users/rob/Documents/finos/FDC3/website-v2/i18n/en/docusaurus-plugin-content-docs/version-1.2",
+          "sidebarFilePath": "/Users/rob/Documents/finos/FDC3/website/versioned_sidebars/version-1.2-sidebars.json",
+          "contentPath": "/Users/rob/Documents/finos/FDC3/website/versioned_docs/version-1.2",
+          "contentPathLocalized": "/Users/rob/Documents/finos/FDC3/website/i18n/en/docusaurus-plugin-content-docs/version-1.2",
           "docs": [
             {
               "unversionedId": "api/api-intro",
@@ -7046,9 +7046,9 @@
           "path": "/docs/1.1",
           "tagsPath": "/docs/1.1/tags",
           "isLast": false,
-          "sidebarFilePath": "/Users/rob/Documents/finos/FDC3/website-v2/versioned_sidebars/version-1.1-sidebars.json",
-          "contentPath": "/Users/rob/Documents/finos/FDC3/website-v2/versioned_docs/version-1.1",
-          "contentPathLocalized": "/Users/rob/Documents/finos/FDC3/website-v2/i18n/en/docusaurus-plugin-content-docs/version-1.1",
+          "sidebarFilePath": "/Users/rob/Documents/finos/FDC3/website/versioned_sidebars/version-1.1-sidebars.json",
+          "contentPath": "/Users/rob/Documents/finos/FDC3/website/versioned_docs/version-1.1",
+          "contentPathLocalized": "/Users/rob/Documents/finos/FDC3/website/i18n/en/docusaurus-plugin-content-docs/version-1.1",
           "docs": [
             {
               "unversionedId": "api/api-intro",
@@ -9425,9 +9425,9 @@
           "path": "/docs/1.0",
           "tagsPath": "/docs/1.0/tags",
           "isLast": false,
-          "sidebarFilePath": "/Users/rob/Documents/finos/FDC3/website-v2/versioned_sidebars/version-1.0-sidebars.json",
-          "contentPath": "/Users/rob/Documents/finos/FDC3/website-v2/versioned_docs/version-1.0",
-          "contentPathLocalized": "/Users/rob/Documents/finos/FDC3/website-v2/i18n/en/docusaurus-plugin-content-docs/version-1.0",
+          "sidebarFilePath": "/Users/rob/Documents/finos/FDC3/website/versioned_sidebars/version-1.0-sidebars.json",
+          "contentPath": "/Users/rob/Documents/finos/FDC3/website/versioned_docs/version-1.0",
+          "contentPathLocalized": "/Users/rob/Documents/finos/FDC3/website/i18n/en/docusaurus-plugin-content-docs/version-1.0",
           "docs": [
             {
               "unversionedId": "api/api-intro",
