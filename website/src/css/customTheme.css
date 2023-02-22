@@ -351,7 +351,7 @@ article iframe {
   flex-basis: 100%;
 }
 .implementation-details  > .description > .badges {
-	padding-left: 10px;
+	padding-top: 10px;
 }
 .implementation-details  > .description > .badges > .badge {
 	background-color: rgb(239, 239, 239);

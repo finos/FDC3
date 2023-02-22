@@ -1,6 +1,6 @@
-export default (theType) => { 
+function setType(theType) { 
 	let typeToSet = theType;
-	
+
 	console.log("Setting filter type: " + typeToSet);
 	document.querySelectorAll(".button.filter").forEach((elem) => {elem.classList.remove("selected")});
 	const selectedButton = document.getElementById(typeToSet);
@@ -24,3 +24,5 @@ export default (theType) => {
 	const state = { 'type': typeToSet }
 	history.pushState(state, '', "#type-" + typeToSet);
 }
+
+export default setType;

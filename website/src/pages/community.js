@@ -79,25 +79,25 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 function ImplementationsShowcase(initialFilter) {
 	return <div key="is">
 		<div className="filters">
-			<button className="button filter" id="platform-provider" onClick={setType("platform-provider")}>
+			<button className="button filter" id="platform-provider" onClick={() => setType("platform-provider")}>
 				Platform Providers
 			</button>
-			<button className="button filter" id="application-provider" onClick={setType("application-provider")}>
+			<button className="button filter" id="application-provider" onClick={() => setType("application-provider")}>
 				App Providers
 			</button>
-			<button className="button filter" id="solution-provider" onClick={setType("solution-provider")}>
+			<button className="button filter" id="solution-provider" onClick={() => setType("solution-provider")}>
 				Solution Providers
 			</button>
-			<button className="button filter" id="examples-and-training" onClick={setType("examples-and-training")}>
+			<button className="button filter" id="examples-and-training" onClick={() => setType("examples-and-training")}>
 				Examples &amp; Training
 			</button>
-			<button className="button filter" id="adopter" onClick={setType("adopter")}>
+			<button className="button filter" id="adopter" onClick={() => setType("adopter")}>
 				Adopters
 			</button>
-			<button className="button filter" id="meetup" onClick={setType("meetup")}>
+			<button className="button filter" id="meetup" onClick={() => setType("meetup")}>
 				Meetups
 			</button>
-			<button className="button filter" id="all" onClick={setType("all")}>
+			<button className="button filter" id="all" onClick={() => setType("all")}>
 				All
 			</button>
 		</div>
