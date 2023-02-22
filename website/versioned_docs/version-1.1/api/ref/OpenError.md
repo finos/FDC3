@@ -1,5 +1,4 @@
 ---
-id: version-1.1-OpenError
 sidebar_label: OpenError
 title: OpenError
 hide_title: true

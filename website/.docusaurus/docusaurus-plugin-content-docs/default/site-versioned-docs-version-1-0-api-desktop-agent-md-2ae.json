@@ -1,0 +1,31 @@
+{
+  "unversionedId": "api/DesktopAgent",
+  "id": "version-1.0/api/DesktopAgent",
+  "title": "DesktopAgent",
+  "description": "A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain.",
+  "source": "@site/versioned_docs/version-1.0/api/DesktopAgent.md",
+  "sourceDirName": "api",
+  "slug": "/api/DesktopAgent",
+  "permalink": "/docs/1.0/api/DesktopAgent",
+  "draft": false,
+  "tags": [],
+  "version": "1.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "DesktopAgent",
+    "title": "DesktopAgent",
+    "hide_title": true,
+    "original_id": "DesktopAgent"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "API Specification",
+    "permalink": "/docs/1.0/api/api-spec"
+  },
+  "next": {
+    "title": "Context",
+    "permalink": "/docs/1.0/api/Context"
+  }
+}

@@ -1,5 +1,4 @@
 ---
-id: version-2.0-overview
 sidebar_label: Overview
 title: App Directory Overview 2.0
 original_id: overview

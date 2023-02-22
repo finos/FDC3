@@ -1,5 +1,5 @@
 ---
-id: version-1.0-uc-10
+id: uc-10
 title: "Use Case 10: Real-Time voice trades -> trade ticket population"
 sidebar_label: 10. Real-Time voice trades -> trade ticket population
 layout: use_case

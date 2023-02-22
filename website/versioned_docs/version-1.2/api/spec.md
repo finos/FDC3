@@ -1,5 +1,4 @@
 ---
-id: version-1.2-spec
 sidebar_label: API Specification
 title: API Specification 1.2
 original_id: spec

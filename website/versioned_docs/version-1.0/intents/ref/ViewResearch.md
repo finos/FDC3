@@ -1,5 +1,4 @@
 ---
-id: ViewResearch
 sidebar_label: ViewResearch
 title: ViewResearch
 hide_title: true

@@ -10,176 +10,6 @@ module.exports={
   ],
   "favicon": "img/favicon/favicon.ico",
   "customFields": {
-    "users": [
-      {
-        "caption": "Adaptive Financial Consulting",
-        "image": "/img/users/adaptive.png",
-        "infoLink": "https://weareadaptive.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "ChartIQ",
-        "image": "/img/users/ChartIQ.png",
-        "infoLink": "https://cosaic.io/chartiq/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "Citi",
-        "image": "/img/users/citi.png",
-        "infoLink": "https://www.citigroup.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "Finsemble",
-        "image": "/img/users/Finsemble.png",
-        "infoLink": "https://www.finsemble.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "FactSet",
-        "image": "/img/users/FactSet.png",
-        "infoLink": "https://www.factset.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "Genesis Global",
-        "image": "/img/users/Genesis.png",
-        "infoLink": "https://genesis.global/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "Glue42",
-        "image": "/img/users/GLUE42.png",
-        "infoLink": "https://glue42.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "GreenKey",
-        "image": "/img/users/GreenKey.png",
-        "infoLink": "https://greenkeytech.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "S&P Global",
-        "image": "/img/users/spglobal.png",
-        "infoLink": "https://spglobal.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "JP Morgan",
-        "image": "/img/users/JPMorgan.png",
-        "infoLink": "https://www.jpmorgan.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "OpenFin",
-        "image": "/img/users/Openfin.png",
-        "infoLink": "https://openfin.co/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "RBC Capital Markets",
-        "image": "/img/users/RBCCMlogo.png",
-        "infoLink": "https://www.rbccm.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "Refinitv",
-        "image": "/img/users/Refinitiv.png",
-        "infoLink": "https://www.refinitiv.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "Scott Logic",
-        "image": "/img/users/scottlogic.png",
-        "infoLink": "https://www.scottlogic.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "Singletrack",
-        "image": "/img/users/singletrack.png",
-        "infoLink": "https://www.singletrack.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "Norman & Sons",
-        "image": "/img/users/norman-and-sons.png",
-        "infoLink": "https://www.normanandsons.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "iPushPull",
-        "image": "/img/users/ipp-logo.png",
-        "infoLink": "https://www.ipushpull.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "Symphony",
-        "image": "/img/users/Symphony.png",
-        "infoLink": "https://www.symphony.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "Pictet",
-        "image": "/img/users/pictet.png",
-        "infoLink": "https://www.pictet.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "UBS",
-        "image": "/img/users/ubs.png",
-        "infoLink": "https://www.ubs.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "Connectifi",
-        "image": "/img/users/connectifi.png",
-        "infoLink": "https://www.connectifi.co/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "FlexTrade",
-        "image": "/img/users/flextrade.jpg",
-        "infoLink": "https://www.flextrade.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "NexJ",
-        "image": "/img/users/nexj-systems-logo.png",
-        "infoLink": "https://www.nexj.com/",
-        "pinned": true,
-        "isMember": true
-      },
-      {
-        "caption": "Adaptable Tools",
-        "image": "/img/users/adaptabletools.svg",
-        "infoLink": "https://www.adaptabletools.com/",
-        "pinned": true,
-        "isMember": true
-      }
-    ],
     "separateCss": [
       "static/toolbox/fdc3-workbench/static/css",
       "static/toolbox/fdc3-explained/1.0",
@@ -199,11 +29,13 @@ module.exports={
           "showLastUpdateAuthor": true,
           "showLastUpdateTime": true,
           "path": "../docs",
-          "sidebarPath": "sidebars.json"
+          "sidebarPath": "./sidebars.json",
         },
-        "blog": {},
+        "blog": {
+          "path": "blog"
+        },
         "theme": {
-          "customCss": "../src/css/customTheme.css"
+          "customCss": "./src/css/customTheme.css"
         },
         "googleAnalytics": {
           "trackingID": "UA-89349362-8"
@@ -290,22 +122,76 @@ module.exports={
         }
       ]
     },
-    "image": "assets/fdc3-logo.png",
+    "image": "/assets/fdc3-logo.png",
     "footer": {
       "links": [
+        {
+          "title": "Learn",
+          "items": [
+            {
+              "label": "Getting Started",
+              "to": "/docs/fdc3-intro"
+            },
+            {
+              "label": "Supported Platforms",
+              "to": "docs/supported-platforms"
+            },
+            {
+              "label": "API Reference",
+              "to": "/docs/api/ref/DesktopAgent"
+            },
+            {
+              "label": "Use Cases",
+              "to": "/docs/use-cases/overview"
+            },
+            {
+              "label": "Training",
+              "to": "https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop"
+            }
+          ]
+        },
         {
           "title": "Community",
           "items": [
             {
-              "label": "Twitter",
-              "to": "https://twitter.com/FDC3_"
+              "label": "FINOS",
+              "to": "https://www.finos.org/"
+            },
+            {
+              "label": "Slack",
+              "to": "https://finos-lf.slack.com/messages/fdc3/"
+            },
+            {
+              "label": "Stack Overflow",
+              "to": "https://stackoverflow.com/questions/tagged/fdc3"
+            },
+            {
+              "label": "Google Groups",
+              "to": "https://groups.google.com/a/finos.org/forum/#!forum/fdc3"
+            },
+            {
+              "label": "Trademarks",
+              "to": "/docs/next/trademarks"
+            }
+          ]
+        },
+        {
+          "title": "More",
+          "items": [
+            {
+              "html": "<a href=\"https://github.com/finos/FDC3\"><img src=\"https://img.shields.io/github/stars/finos/FDC3?label=FDC3&style=social\" /></a>"
+            },
+            {
+              "html": "<a href=\"https://twitter.com/FDC3_\"><img src=\"https://img.shields.io/twitter/follow/FDC3_?style=social\" ></a>"
             }
           ]
         }
       ],
-      "copyright": "Copyright © 2023 FDC3",
+      "copyright": "<span class=\"footer-strap\">Proud member of the Fintech Open Source Foundation</span><br/><br/><span class=\"footer-copyright\">Copyright © 2023 FDC3 - FINOS</span>",
       "logo": {
-        "src": "img/fdc3-icon-2019.svg"
+        "src": "img/finos_wordmark.svg",
+        "alt": "FINOS Logo",
+        "width": 50
       }
     }
   }

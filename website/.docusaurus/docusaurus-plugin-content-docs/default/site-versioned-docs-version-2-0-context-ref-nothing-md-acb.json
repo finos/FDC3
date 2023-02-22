@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/Nothing",
+  "id": "version-2.0/context/ref/Nothing",
+  "title": "Nothing",
+  "description": "A type that explicitly represents a lack of context.",
+  "source": "@site/versioned_docs/version-2.0/context/ref/Nothing.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/Nothing",
+  "permalink": "/docs/context/ref/Nothing",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Nothing",
+    "title": "Nothing",
+    "hide_title": true,
+    "original_id": "Nothing"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "InstrumentList",
+    "permalink": "/docs/context/ref/InstrumentList"
+  },
+  "next": {
+    "title": "Organization",
+    "permalink": "/docs/context/ref/Organization"
+  }
+}

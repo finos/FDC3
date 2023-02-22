@@ -1,5 +1,5 @@
 ---
-id: version-1.1-uc-17
+id: uc-17
 title: "Use Case 17: Fine-tuning InterOp with Channels"
 sidebar_label: 17. Fine-tuning InterOp with Channels
 layout: use_case
@@ -26,7 +26,7 @@ In vendor application 1, the user maintains a personal watchlist. When selecting
 ## Workflow 3
 In vendor application 2, the user have a tool for ad-hoc company look ups. When selecting a company there, the user wants a chart and a news component in vendor application 1 to update (not the ones from WF 1), a detailed company report in vendor application 2 and a separate trading screen in vendor application 4 (not the one in WF2).
 
-![Use Case 17 Workflow](../assets/uc17.png)
+![Use Case 17 Workflow](/assets/uc17.png)
 
 ## Interoperability Points
 - API

@@ -1,5 +1,4 @@
 ---
-id: version-1.0-overview
 title: Use Cases Overview
 hide_title: true
 sidebar_label: Overview

@@ -1,5 +1,4 @@
 ---
-id: Channel
 sidebar_label: Channel
 title: Channel
 hide_title: true

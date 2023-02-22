@@ -1,5 +1,4 @@
 ---
-id: ViewOrders
 sidebar_label: ViewOrders
 title: ViewOrders
 hide_title: true

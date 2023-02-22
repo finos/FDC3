@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/TimeRange",
+  "id": "version-2.0/context/ref/TimeRange",
+  "title": "TimeRange",
+  "description": "A context representing a period of time. Any user interfaces that represent or visualise events or activity over time can be filtered or focused on a particular time period, e.g.:",
+  "source": "@site/versioned_docs/version-2.0/context/ref/TimeRange.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/TimeRange",
+  "permalink": "/docs/context/ref/TimeRange",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "TimeRange",
+    "title": "TimeRange",
+    "hide_title": true,
+    "original_id": "TimeRange"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Position",
+    "permalink": "/docs/context/ref/Position"
+  },
+  "next": {
+    "title": "Valuation",
+    "permalink": "/docs/context/ref/Valuation"
+  }
+}

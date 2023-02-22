@@ -1,5 +1,4 @@
 ---
-id: version-1.1-ViewQuote
 sidebar_label: ViewQuote
 title: ViewQuote
 hide_title: true

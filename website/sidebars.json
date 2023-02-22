@@ -12,9 +12,9 @@
       "references",
       "supported-platforms",
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "API Part",
-        "ids": [
+        "items": [
           "api/spec",
           "api/ref/DesktopAgent",
           "api/ref/Channel",
@@ -26,17 +26,17 @@
         ]
       },
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "App Directory Part",
-        "ids": [
+        "items": [
           "app-directory/overview",
           "app-directory/spec"
         ]
       },
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Intents Part",
-        "ids": [
+        "items": [
           "intents/spec",
           "intents/ref/StartCall",
           "intents/ref/StartChat",
@@ -55,9 +55,9 @@
         ]
       },
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Context Data Part",
-        "ids": [
+        "items": [
           "context/spec",
           "context/ref/Context",
           "context/ref/Chart",

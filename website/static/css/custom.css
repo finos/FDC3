@@ -347,22 +347,3 @@ article iframe {
   width: 140px;
   padding: 40px;
 }
-
-/* Get Involved */
-
-
-.gridBlock {
-    padding:0
-}
-
-.gridBlock > * {
-    box-sizing:border-box
-}
-
-.gridBlock .fourByGridBlock img, .gridBlock .threeByGridBlock img, .gridBlock .twoByGridBlock img {
-    max-width:100%
-}
-
-.gridBlock .gridClear {
-    clear:both
-}

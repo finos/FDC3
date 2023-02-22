@@ -1,0 +1,31 @@
+{
+  "unversionedId": "intents/overview",
+  "id": "version-1.1/intents/overview",
+  "title": "Intents Overview",
+  "description": "Extending APIs from one application to another is powerful. However, it requires bi-lateral agreements where implementors build to proprietary APIs. A standard language for interaction between applications allows us to create workflows on the fly, so that applications can discover and link to another without any prior knowledge.",
+  "source": "@site/versioned_docs/version-1.1/intents/overview.md",
+  "sourceDirName": "intents",
+  "slug": "/intents/overview",
+  "permalink": "/docs/1.1/intents/overview",
+  "draft": false,
+  "tags": [],
+  "version": "1.1",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "Intents Overview",
+    "title": "Intents Overview",
+    "hide_title": true,
+    "original_id": "overview"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "ChannelError",
+    "permalink": "/docs/1.1/api/ref/ChannelError"
+  },
+  "next": {
+    "title": "Intents Specification",
+    "permalink": "/docs/1.1/intents/spec"
+  }
+}

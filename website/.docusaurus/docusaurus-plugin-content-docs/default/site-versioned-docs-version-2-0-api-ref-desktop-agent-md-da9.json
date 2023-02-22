@@ -1,0 +1,31 @@
+{
+  "unversionedId": "api/ref/DesktopAgent",
+  "id": "version-2.0/api/ref/DesktopAgent",
+  "title": "DesktopAgent",
+  "description": "An FDC3 Desktop Agent is a desktop component (or aggregate of components) that serves as an orchestrator for applications in its domain.",
+  "source": "@site/versioned_docs/version-2.0/api/ref/DesktopAgent.md",
+  "sourceDirName": "api/ref",
+  "slug": "/api/ref/DesktopAgent",
+  "permalink": "/docs/api/ref/DesktopAgent",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "DesktopAgent",
+    "title": "DesktopAgent",
+    "hide_title": true,
+    "original_id": "DesktopAgent"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Overview",
+    "permalink": "/docs/api/spec"
+  },
+  "next": {
+    "title": "Channel",
+    "permalink": "/docs/api/ref/Channel"
+  }
+}

@@ -1,5 +1,4 @@
 ---
-id: version-1.1-overview
 sidebar_label: Context Data Overview
 title: Context Data Overview
 hide_title: true

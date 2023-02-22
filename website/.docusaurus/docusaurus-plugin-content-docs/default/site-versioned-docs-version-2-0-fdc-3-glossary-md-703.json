@@ -1,0 +1,30 @@
+{
+  "unversionedId": "fdc3-glossary",
+  "id": "version-2.0/fdc3-glossary",
+  "title": "Glossary of Terms",
+  "description": "For the purposes of this Standard, the following definitions apply. Other terms are defined when first used, at which place they appear in bold and italic type. Terms explicitly defined in this Standard are not to be presumed to refer implicitly to similar terms defined elsewhere. Terms not defined are assumed to be well-known in the financial services or software industries.",
+  "source": "@site/versioned_docs/version-2.0/fdc3-glossary.md",
+  "sourceDirName": ".",
+  "slug": "/fdc3-glossary",
+  "permalink": "/docs/fdc3-glossary",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "title": "Glossary of Terms",
+    "sidebar_label": "Glossary",
+    "original_id": "fdc3-glossary"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Compliance",
+    "permalink": "/docs/fdc3-compliance"
+  },
+  "next": {
+    "title": "References",
+    "permalink": "/docs/references"
+  }
+}

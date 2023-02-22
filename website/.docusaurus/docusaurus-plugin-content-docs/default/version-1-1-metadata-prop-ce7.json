@@ -1,0 +1,847 @@
+{
+  "pluginId": "default",
+  "version": "1.1",
+  "label": "1.1",
+  "banner": "unmaintained",
+  "badge": true,
+  "noIndex": false,
+  "className": "docs-version-1.1",
+  "isLast": false,
+  "docsSidebars": {
+    "docs": [
+      {
+        "type": "category",
+        "label": "Getting Started",
+        "items": [
+          {
+            "type": "link",
+            "label": "Introduction",
+            "href": "/docs/1.1/fdc3-intro",
+            "docId": "fdc3-intro"
+          },
+          {
+            "type": "link",
+            "label": "Charter",
+            "href": "/docs/1.1/fdc3-charter",
+            "docId": "fdc3-charter"
+          },
+          {
+            "type": "link",
+            "label": "Why FDC3",
+            "href": "/docs/1.1/why-fdc3",
+            "docId": "why-fdc3"
+          },
+          {
+            "type": "link",
+            "label": "FDC3 Compliance",
+            "href": "/docs/1.1/fdc3-compliance",
+            "docId": "fdc3-compliance"
+          },
+          {
+            "type": "link",
+            "label": "FDC3 1.1 Abstract",
+            "href": "/docs/1.1/fdc3-standard",
+            "docId": "fdc3-standard"
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "API",
+        "items": [
+          {
+            "type": "link",
+            "label": "API Overview",
+            "href": "/docs/1.1/api/overview",
+            "docId": "api/overview"
+          },
+          {
+            "type": "link",
+            "label": "API Specification",
+            "href": "/docs/1.1/api/spec",
+            "docId": "api/spec"
+          },
+          {
+            "type": "category",
+            "label": "Interfaces",
+            "items": [
+              {
+                "type": "link",
+                "label": "DesktopAgent",
+                "href": "/docs/1.1/api/ref/DesktopAgent",
+                "docId": "api/ref/DesktopAgent"
+              },
+              {
+                "type": "link",
+                "label": "Channel",
+                "href": "/docs/1.1/api/ref/Channel",
+                "docId": "api/ref/Channel"
+              },
+              {
+                "type": "link",
+                "label": "Listener",
+                "href": "/docs/1.1/api/ref/Listener",
+                "docId": "api/ref/Listener"
+              },
+              {
+                "type": "link",
+                "label": "AppIntent",
+                "href": "/docs/1.1/api/ref/AppIntent",
+                "docId": "api/ref/AppIntent"
+              },
+              {
+                "type": "link",
+                "label": "IntentResolution",
+                "href": "/docs/1.1/api/ref/IntentResolution",
+                "docId": "api/ref/IntentResolution"
+              },
+              {
+                "type": "link",
+                "label": "AppMetadata",
+                "href": "/docs/1.1/api/ref/AppMetadata",
+                "docId": "api/ref/AppMetadata"
+              },
+              {
+                "type": "link",
+                "label": "IntentMetadata",
+                "href": "/docs/1.1/api/ref/IntentMetadata",
+                "docId": "api/ref/IntentMetadata"
+              },
+              {
+                "type": "link",
+                "label": "DisplayMetadata",
+                "href": "/docs/1.1/api/ref/DisplayMetadata",
+                "docId": "api/ref/DisplayMetadata"
+              }
+            ],
+            "collapsed": true,
+            "collapsible": true
+          },
+          {
+            "type": "category",
+            "label": "Types",
+            "items": [
+              {
+                "type": "link",
+                "label": "Context",
+                "href": "/docs/1.1/api/ref/Context",
+                "docId": "api/ref/Context"
+              },
+              {
+                "type": "link",
+                "label": "ContextHandler",
+                "href": "/docs/1.1/api/ref/ContextHandler",
+                "docId": "api/ref/ContextHandler"
+              },
+              {
+                "type": "link",
+                "label": "OpenError",
+                "href": "/docs/1.1/api/ref/OpenError",
+                "docId": "api/ref/OpenError"
+              },
+              {
+                "type": "link",
+                "label": "ResolveError",
+                "href": "/docs/1.1/api/ref/ResolveError",
+                "docId": "api/ref/ResolveError"
+              },
+              {
+                "type": "link",
+                "label": "ChannelError",
+                "href": "/docs/1.1/api/ref/ChannelError",
+                "docId": "api/ref/ChannelError"
+              }
+            ],
+            "collapsed": true,
+            "collapsible": true
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "Intents",
+        "items": [
+          {
+            "type": "link",
+            "label": "Intents Overview",
+            "href": "/docs/1.1/intents/overview",
+            "docId": "intents/overview"
+          },
+          {
+            "type": "link",
+            "label": "Intents Specification",
+            "href": "/docs/1.1/intents/spec",
+            "docId": "intents/spec"
+          },
+          {
+            "type": "category",
+            "label": "Reference",
+            "items": [
+              {
+                "type": "link",
+                "label": "StartCall",
+                "href": "/docs/1.1/intents/ref/StartCall",
+                "docId": "intents/ref/StartCall"
+              },
+              {
+                "type": "link",
+                "label": "StartChat",
+                "href": "/docs/1.1/intents/ref/StartChat",
+                "docId": "intents/ref/StartChat"
+              },
+              {
+                "type": "link",
+                "label": "ViewChart",
+                "href": "/docs/1.1/intents/ref/ViewChart",
+                "docId": "intents/ref/ViewChart"
+              },
+              {
+                "type": "link",
+                "label": "ViewContact",
+                "href": "/docs/1.1/intents/ref/ViewContact",
+                "docId": "intents/ref/ViewContact"
+              },
+              {
+                "type": "link",
+                "label": "ViewQuote",
+                "href": "/docs/1.1/intents/ref/ViewQuote",
+                "docId": "intents/ref/ViewQuote"
+              },
+              {
+                "type": "link",
+                "label": "ViewNews",
+                "href": "/docs/1.1/intents/ref/ViewNews",
+                "docId": "intents/ref/ViewNews"
+              },
+              {
+                "type": "link",
+                "label": "ViewAnalysis",
+                "href": "/docs/1.1/intents/ref/ViewAnalysis",
+                "docId": "intents/ref/ViewAnalysis"
+              },
+              {
+                "type": "link",
+                "label": "ViewInstrument",
+                "href": "/docs/1.1/intents/ref/ViewInstrument",
+                "docId": "intents/ref/ViewInstrument"
+              }
+            ],
+            "collapsed": true,
+            "collapsible": true
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "Context Data",
+        "items": [
+          {
+            "type": "link",
+            "label": "Context Data Overview",
+            "href": "/docs/1.1/context/overview",
+            "docId": "context/overview"
+          },
+          {
+            "type": "link",
+            "label": "Context Data Specification",
+            "href": "/docs/1.1/context/spec",
+            "docId": "context/spec"
+          },
+          {
+            "type": "category",
+            "label": "Reference",
+            "items": [
+              {
+                "type": "link",
+                "label": "Context",
+                "href": "/docs/1.1/context/ref/Context",
+                "docId": "context/ref/Context"
+              },
+              {
+                "type": "link",
+                "label": "Contact",
+                "href": "/docs/1.1/context/ref/Contact",
+                "docId": "context/ref/Contact"
+              },
+              {
+                "type": "link",
+                "label": "ContactList",
+                "href": "/docs/1.1/context/ref/ContactList",
+                "docId": "context/ref/ContactList"
+              },
+              {
+                "type": "link",
+                "label": "Instrument",
+                "href": "/docs/1.1/context/ref/Instrument",
+                "docId": "context/ref/Instrument"
+              },
+              {
+                "type": "link",
+                "label": "InstrumentList",
+                "href": "/docs/1.1/context/ref/InstrumentList",
+                "docId": "context/ref/InstrumentList"
+              },
+              {
+                "type": "link",
+                "label": "Organization",
+                "href": "/docs/1.1/context/ref/Organization",
+                "docId": "context/ref/Organization"
+              },
+              {
+                "type": "link",
+                "label": "Country",
+                "href": "/docs/1.1/context/ref/Country",
+                "docId": "context/ref/Country"
+              },
+              {
+                "type": "link",
+                "label": "Position",
+                "href": "/docs/1.1/context/ref/Position",
+                "docId": "context/ref/Position"
+              },
+              {
+                "type": "link",
+                "label": "Portfolio",
+                "href": "/docs/1.1/context/ref/Portfolio",
+                "docId": "context/ref/Portfolio"
+              }
+            ],
+            "collapsed": true,
+            "collapsible": true
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "App Directory",
+        "items": [
+          {
+            "type": "link",
+            "label": "App Directory Overview",
+            "href": "/docs/1.1/app-directory/overview",
+            "docId": "app-directory/overview"
+          },
+          {
+            "type": "link",
+            "label": "App Directory Discovery",
+            "href": "/docs/1.1/app-directory/discovery",
+            "docId": "app-directory/discovery"
+          },
+          {
+            "type": "link",
+            "label": "App Directory Usage",
+            "href": "/docs/1.1/app-directory/usage",
+            "docId": "app-directory/usage"
+          },
+          {
+            "type": "link",
+            "label": "App Directory Specification",
+            "href": "/docs/1.1/app-directory/spec",
+            "docId": "app-directory/spec"
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      }
+    ],
+    "use-cases": [
+      {
+        "type": "category",
+        "label": "Use Cases",
+        "items": [
+          {
+            "type": "link",
+            "label": "Overview",
+            "href": "/docs/1.1/use-cases/overview",
+            "docId": "use-cases/overview"
+          },
+          {
+            "type": "link",
+            "label": "1. Equity sell side trader",
+            "href": "/docs/1.1/use-cases/uc-1",
+            "docId": "use-cases/uc-1"
+          },
+          {
+            "type": "link",
+            "label": "2. Buy side Portfolio Manager",
+            "href": "/docs/1.1/use-cases/uc-2",
+            "docId": "use-cases/uc-2"
+          },
+          {
+            "type": "link",
+            "label": "3. Inhouse Cross Platform Launcher",
+            "href": "/docs/1.1/use-cases/uc-3",
+            "docId": "use-cases/uc-3"
+          },
+          {
+            "type": "link",
+            "label": "4. Client-side FX Trader Credit Check",
+            "href": "/docs/1.1/use-cases/uc-4",
+            "docId": "use-cases/uc-4"
+          },
+          {
+            "type": "link",
+            "label": "5. Buy side Treasurer - client rates across providers",
+            "href": "/docs/1.1/use-cases/uc-5",
+            "docId": "use-cases/uc-5"
+          },
+          {
+            "type": "link",
+            "label": "9. Call Transcription to CRM",
+            "href": "/docs/1.1/use-cases/uc-9",
+            "docId": "use-cases/uc-9"
+          },
+          {
+            "type": "link",
+            "label": "10. Real-Time voice trades -> trade ticket population",
+            "href": "/docs/1.1/use-cases/uc-10",
+            "docId": "use-cases/uc-10"
+          },
+          {
+            "type": "link",
+            "label": "13. User launches multiple apps from a single container",
+            "href": "/docs/1.1/use-cases/uc-13",
+            "docId": "use-cases/uc-13"
+          },
+          {
+            "type": "link",
+            "label": "15. Sales Floor Base Workflow",
+            "href": "/docs/1.1/use-cases/uc-15",
+            "docId": "use-cases/uc-15"
+          },
+          {
+            "type": "link",
+            "label": "16. Quantifying FDC3 Interactions",
+            "href": "/docs/1.1/use-cases/uc-16",
+            "docId": "use-cases/uc-16"
+          },
+          {
+            "type": "link",
+            "label": "17. Fine-tuning InterOp with Channels",
+            "href": "/docs/1.1/use-cases/uc-17",
+            "docId": "use-cases/uc-17"
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      }
+    ]
+  },
+  "docs": {
+    "api/api-intro": {
+      "id": "api/api-intro",
+      "title": "API Overview",
+      "description": "FDC3 API standards support the following goals:"
+    },
+    "api/api-spec": {
+      "id": "api/api-spec",
+      "title": "API Specification 1.0",
+      "description": "Components"
+    },
+    "api/Context": {
+      "id": "api/Context",
+      "title": "Context",
+      "description": "The base object that all contexts should extend."
+    },
+    "api/DesktopAgent": {
+      "id": "api/DesktopAgent",
+      "title": "DesktopAgent",
+      "description": "A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain."
+    },
+    "api/Errors": {
+      "id": "api/Errors",
+      "title": "Errors",
+      "description": "OpenError"
+    },
+    "api/overview": {
+      "id": "api/overview",
+      "title": "API Overview",
+      "description": "FDC3 API standards support the following goals:",
+      "sidebar": "docs"
+    },
+    "api/ref/AppIntent": {
+      "id": "api/ref/AppIntent",
+      "title": "AppIntent",
+      "description": "An interface that represents the binding of an intent to apps, returned as part of intent disocvery.",
+      "sidebar": "docs"
+    },
+    "api/ref/AppMetadata": {
+      "id": "api/ref/AppMetadata",
+      "title": "AppMetadata",
+      "description": "App metadata is provided by the FDC3 App Directory that the desktop agent connects to.",
+      "sidebar": "docs"
+    },
+    "api/ref/Channel": {
+      "id": "api/ref/Channel",
+      "title": "Channel",
+      "description": "Represents a context channel that applications can join to share context data.",
+      "sidebar": "docs"
+    },
+    "api/ref/ChannelError": {
+      "id": "api/ref/ChannelError",
+      "title": "ChannelError",
+      "description": "Contains constants representing the errors that can be encountered when calling channels using the joinChannel or getOrCreateChannel methods, or the getCurrentContext, broadcast or addContextListener methods on the Channel object.",
+      "sidebar": "docs"
+    },
+    "api/ref/Context": {
+      "id": "api/ref/Context",
+      "title": "Context",
+      "description": "The base object that all contexts should extend.",
+      "sidebar": "docs"
+    },
+    "api/ref/ContextHandler": {
+      "id": "api/ref/ContextHandler",
+      "title": "ContextHandler",
+      "description": "Describes a callback that handles a context event.",
+      "sidebar": "docs"
+    },
+    "api/ref/DesktopAgent": {
+      "id": "api/ref/DesktopAgent",
+      "title": "DesktopAgent",
+      "description": "A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain.",
+      "sidebar": "docs"
+    },
+    "api/ref/DisplayMetadata": {
+      "id": "api/ref/DisplayMetadata",
+      "title": "DisplayMetadata",
+      "description": "A desktop agent (typically for system channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.",
+      "sidebar": "docs"
+    },
+    "api/ref/IntentMetadata": {
+      "id": "api/ref/IntentMetadata",
+      "title": "IntentMetadata",
+      "description": "The Interface used to describe an Intent within the platform.",
+      "sidebar": "docs"
+    },
+    "api/ref/IntentResolution": {
+      "id": "api/ref/IntentResolution",
+      "title": "IntentResolution",
+      "description": "IntentResolution provides a standard format for data returned upon resolving an intent.",
+      "sidebar": "docs"
+    },
+    "api/ref/Listener": {
+      "id": "api/ref/Listener",
+      "title": "Listener",
+      "description": "A Listener object is returned when an application subscribes to intents or context broadcasts via the addIntentListener or addContextListener methods on the DesktopAgent object.",
+      "sidebar": "docs"
+    },
+    "api/ref/OpenError": {
+      "id": "api/ref/OpenError",
+      "title": "OpenError",
+      "description": "Contains constants representing the errors that can be encountered when calling the open method on the DesktopAgent object.",
+      "sidebar": "docs"
+    },
+    "api/ref/ResolveError": {
+      "id": "api/ref/ResolveError",
+      "title": "ResolveError",
+      "description": "Contains constants representing the errors that can be encountered when calling the findIntent or findIntentsByContext methods on the DesktopAgent.",
+      "sidebar": "docs"
+    },
+    "api/spec": {
+      "id": "api/spec",
+      "title": "API Specification 1.1",
+      "description": "Components",
+      "sidebar": "docs"
+    },
+    "app-directory/discovery": {
+      "id": "app-directory/discovery",
+      "title": "App Directory Discovery",
+      "description": "Simple Definition",
+      "sidebar": "docs"
+    },
+    "app-directory/overview": {
+      "id": "app-directory/overview",
+      "title": "App Directory Overview",
+      "description": "The FDC3 App Directory provides trusted identity for financial desktop apps. This identity can be used to prevent spoofing and man-in-the-middle attacks when apps communicate with one another and exchange data. The App Directory also enables service discovery. Apps are registered with a declaration of the intents and context data that can be used when interoperating.",
+      "sidebar": "docs"
+    },
+    "app-directory/spec": {
+      "id": "app-directory/spec",
+      "title": "App Directory Specification 1.1",
+      "description": "API",
+      "sidebar": "docs"
+    },
+    "app-directory/usage": {
+      "id": "app-directory/usage",
+      "title": "App Directory Usage",
+      "description": "An application directory (AppD) provides information about an application's",
+      "sidebar": "docs"
+    },
+    "appd-discovery": {
+      "id": "appd-discovery",
+      "title": "App Directory Discovery",
+      "description": "Simple Definition"
+    },
+    "appd-intro": {
+      "id": "appd-intro",
+      "title": "App Directory Overview",
+      "description": "The FDC3 App Directory provides trusted identity for financial desktop apps. This identity can be used to prevent spoofing and man-in-the-middle attacks when apps communicate with one another and exchange data. The App Directory also enables service discovery. Apps are registered with a declaration of the intents and context data that can be used when interoperating."
+    },
+    "appd-spec": {
+      "id": "appd-spec",
+      "title": "App Directory Specification 1.0",
+      "description": "API"
+    },
+    "appd-use": {
+      "id": "appd-use",
+      "title": "App Directory Use",
+      "description": "An application directory (AppD) provides information about an application's"
+    },
+    "context-intro": {
+      "id": "context-intro",
+      "title": "Context Data Overview",
+      "description": "Extending APIs from one application to another is powerful. However, it requires bi-lateral agreements where implementors build to proprietary APIs. A standard language for interaction between applications allows us to create workflows on the fly, so that applications can discover and link to one another without any prior knowledge."
+    },
+    "context-spec": {
+      "id": "context-spec",
+      "title": "Context Data Specification 1.0",
+      "description": "Introduction"
+    },
+    "context/overview": {
+      "id": "context/overview",
+      "title": "Context Data Overview",
+      "description": "Extending APIs from one application to another is powerful. However, it requires bi-lateral agreements where implementors build to proprietary APIs. A standard language for interaction between applications allows us to create workflows on the fly, so that applications can discover and link to one another without any prior knowledge.",
+      "sidebar": "docs"
+    },
+    "context/ref/Contact": {
+      "id": "context/ref/Contact",
+      "title": "Contact",
+      "description": "A person contact that can be engaged with through email, calling, messaging, CMS, etc.",
+      "sidebar": "docs"
+    },
+    "context/ref/ContactList": {
+      "id": "context/ref/ContactList",
+      "title": "ContactList",
+      "description": "A collection of contacts, e.g. for chatting to or calling multiple contacts.",
+      "sidebar": "docs"
+    },
+    "context/ref/Context": {
+      "id": "context/ref/Context",
+      "title": "Context",
+      "description": "The fdc3.context type defines the basic contract or \"shape\" for all data exchanged by FDC3 operations. As such, it is not",
+      "sidebar": "docs"
+    },
+    "context/ref/Country": {
+      "id": "context/ref/Country",
+      "title": "Country",
+      "description": "An entity that can be used when referencing countries that can be used on it's own as well as in other contexts when adding additional attributes e.g. when adding address details to a Contact",
+      "sidebar": "docs"
+    },
+    "context/ref/Instrument": {
+      "id": "context/ref/Instrument",
+      "title": "Instrument",
+      "description": "A financial instrument from any asset class.",
+      "sidebar": "docs"
+    },
+    "context/ref/InstrumentList": {
+      "id": "context/ref/InstrumentList",
+      "title": "InstrumentList",
+      "description": "A collection of instruments. Use this type for use cases that require not just a single instrument, but multiple (e.g. to populate a watchlist).",
+      "sidebar": "docs"
+    },
+    "context/ref/Organization": {
+      "id": "context/ref/Organization",
+      "title": "Organization",
+      "description": "An entity that can be used when referencing private companies and other organizations where a specific intrument is not availabe or desired e.g. CRM and News workflows.",
+      "sidebar": "docs"
+    },
+    "context/ref/Portfolio": {
+      "id": "context/ref/Portfolio",
+      "title": "Portfolio",
+      "description": "A financial portfolio made up of muliple positions (holdings) in several instruments. Contrast this",
+      "sidebar": "docs"
+    },
+    "context/ref/Position": {
+      "id": "context/ref/Position",
+      "title": "Position",
+      "description": "A financial position made up of an instrument and a holding in that instrument. This type is a good",
+      "sidebar": "docs"
+    },
+    "context/spec": {
+      "id": "context/spec",
+      "title": "Context Data Specification 1.1",
+      "description": "Introduction",
+      "sidebar": "docs"
+    },
+    "fdc3-charter": {
+      "id": "fdc3-charter",
+      "title": "FDC3 Charter",
+      "description": "Summary",
+      "sidebar": "docs"
+    },
+    "fdc3-compliance": {
+      "id": "fdc3-compliance",
+      "title": "FDC3 Specification Compliance",
+      "description": "FDC3 standards follow the IETF best practices for keywords to Indicate Requirement levels: RFC 2119.  Documentation should be updated as needed to reflect this.",
+      "sidebar": "docs"
+    },
+    "fdc3-intro": {
+      "id": "fdc3-intro",
+      "title": "Welcome to FDC3",
+      "description": "FDC3",
+      "sidebar": "docs"
+    },
+    "fdc3-standard": {
+      "id": "fdc3-standard",
+      "title": "FDC3 1.1",
+      "description": "Status: Superceded",
+      "sidebar": "docs"
+    },
+    "intents-intro": {
+      "id": "intents-intro",
+      "title": "Intents Overview",
+      "description": "Extending APIs from one application to another is powerful. However, it requires bi-lateral agreements where implementors build to proprietary APIs. A standard language for interaction between applications allows us to create workflows on the fly, so that applications can discover and link to another without any prior knowledge."
+    },
+    "intents-spec": {
+      "id": "intents-spec",
+      "title": "Intents Specification 1.0",
+      "description": "Introduction"
+    },
+    "intents/overview": {
+      "id": "intents/overview",
+      "title": "Intents Overview",
+      "description": "Extending APIs from one application to another is powerful. However, it requires bi-lateral agreements where implementors build to proprietary APIs. A standard language for interaction between applications allows us to create workflows on the fly, so that applications can discover and link to another without any prior knowledge.",
+      "sidebar": "docs"
+    },
+    "intents/ref/StartCall": {
+      "id": "intents/ref/StartCall",
+      "title": "StartCall",
+      "description": "Initiate a call with a contact or list of contacts.",
+      "sidebar": "docs"
+    },
+    "intents/ref/StartChat": {
+      "id": "intents/ref/StartChat",
+      "title": "StartChat",
+      "description": "Initiate a chat with a contact or list of contacts.",
+      "sidebar": "docs"
+    },
+    "intents/ref/ViewAnalysis": {
+      "id": "intents/ref/ViewAnalysis",
+      "title": "ViewAnalysis",
+      "description": "Display analysis on the provided context.",
+      "sidebar": "docs"
+    },
+    "intents/ref/ViewChart": {
+      "id": "intents/ref/ViewChart",
+      "title": "ViewChart",
+      "description": "Display a chart for the provided instrument(s).",
+      "sidebar": "docs"
+    },
+    "intents/ref/ViewContact": {
+      "id": "intents/ref/ViewContact",
+      "title": "ViewContact",
+      "description": "View details for a contact.",
+      "sidebar": "docs"
+    },
+    "intents/ref/ViewInstrument": {
+      "id": "intents/ref/ViewInstrument",
+      "title": "ViewInstrument",
+      "description": "Display details for the provided instrument.",
+      "sidebar": "docs"
+    },
+    "intents/ref/ViewNews": {
+      "id": "intents/ref/ViewNews",
+      "title": "ViewNews",
+      "description": "Display news stories for the provided context.",
+      "sidebar": "docs"
+    },
+    "intents/ref/ViewQuote": {
+      "id": "intents/ref/ViewQuote",
+      "title": "ViewQuote",
+      "description": "Display pricing for an instrumen.",
+      "sidebar": "docs"
+    },
+    "intents/spec": {
+      "id": "intents/spec",
+      "title": "Intents Specification 1.1",
+      "description": "Introduction",
+      "sidebar": "docs"
+    },
+    "use-cases/overview": {
+      "id": "use-cases/overview",
+      "title": "Use Cases Overview",
+      "description": "Goal",
+      "sidebar": "use-cases"
+    },
+    "use-cases/uc-1": {
+      "id": "use-cases/uc-1",
+      "title": "Use Case 1: Equity sell side trader",
+      "description": "Preconditions",
+      "sidebar": "use-cases"
+    },
+    "use-cases/uc-10": {
+      "id": "use-cases/uc-10",
+      "title": "Use Case 10: Real-Time voice trades -> trade ticket population",
+      "description": "Persona",
+      "sidebar": "use-cases"
+    },
+    "use-cases/uc-13": {
+      "id": "use-cases/uc-13",
+      "title": "Use Case 13: User launches multiple apps from a single container",
+      "description": "Preconditions",
+      "sidebar": "use-cases"
+    },
+    "use-cases/uc-15": {
+      "id": "use-cases/uc-15",
+      "title": "Use Case 15: Sales Floor Base Workflow",
+      "description": "Overview",
+      "sidebar": "use-cases"
+    },
+    "use-cases/uc-16": {
+      "id": "use-cases/uc-16",
+      "title": "Use Case 16: Quantifying FDC3 Interactions",
+      "description": "Persona",
+      "sidebar": "use-cases"
+    },
+    "use-cases/uc-17": {
+      "id": "use-cases/uc-17",
+      "title": "Use Case 17: Fine-tuning InterOp with Channels",
+      "description": "Persona",
+      "sidebar": "use-cases"
+    },
+    "use-cases/uc-2": {
+      "id": "use-cases/uc-2",
+      "title": "Use Case 2: Buy side Portfolio Manager",
+      "description": "Preconditions",
+      "sidebar": "use-cases"
+    },
+    "use-cases/uc-3": {
+      "id": "use-cases/uc-3",
+      "title": "Use Case 3: Inhouse Cross Platform Launcher",
+      "description": "Preconditions",
+      "sidebar": "use-cases"
+    },
+    "use-cases/uc-4": {
+      "id": "use-cases/uc-4",
+      "title": "Use Case 4: Client-side FX Trader Credit Check",
+      "description": "Preconditions",
+      "sidebar": "use-cases"
+    },
+    "use-cases/uc-5": {
+      "id": "use-cases/uc-5",
+      "title": "Use Case 5: Buy side Treasurer - client rates across providers",
+      "description": "Preconditions",
+      "sidebar": "use-cases"
+    },
+    "use-cases/uc-9": {
+      "id": "use-cases/uc-9",
+      "title": "Use Case 9: Call Transcription to CRM",
+      "description": "Overview",
+      "sidebar": "use-cases"
+    },
+    "why-fdc3": {
+      "id": "why-fdc3",
+      "title": "Why FDC3",
+      "description": "Why look for FDC3 enabled applications?",
+      "sidebar": "docs"
+    }
+  }
+}
