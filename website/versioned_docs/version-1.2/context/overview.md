@@ -10,7 +10,7 @@ Extending APIs from one application to another is powerful. However, it requires
 
 FDC3 Context Data defines a standard for passing common identifiers and data between apps to create a seamless workflow. FDC3 Context Data is not a symbology solution and is not specifically focused on modeling financial objects. The focus is on providing a standard payload structure that can be used to establish a lowest common denominator for interoperability.
 
-Context objects are used when raising [Intents](intents-intro) and when broadcasting context to other applications.
+Context objects are used when raising [Intents](../intents/overview) and when broadcasting context to other applications.
 
 ## Context Object
 
