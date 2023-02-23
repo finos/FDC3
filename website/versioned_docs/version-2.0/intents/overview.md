@@ -17,7 +17,7 @@ FDC3 Intents define a standard set of verbs that can be used to put together com
 * FDC3 Standard Intents are a limited set, organizations can create their own intents
 
 ## Using Intents
-Combined with [Context Data](context/overview) and [App Directory](app-directory/overview) standards, Intents enable rich service discovery on the desktop. For example:
+Combined with [Context Data](../context/spec) and [App Directory](../app-directory/overview) standards, Intents enable rich service discovery on the desktop. For example:
 
 ### Ask for a chart to be displayed
 ```javascript
