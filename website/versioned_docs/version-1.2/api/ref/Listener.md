@@ -25,7 +25,7 @@ unsubscribe(): void;
 Allows an application to unsubscribe from listening to intents or context broadcasts. 
 
 #### See also
-* [`DesktopAgent.addIntentListener`](DestkopAgent#addintentlistener)
+* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 * [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
 * [`Channel.addContextListener`](Channel#addcontextlistener)
 * [`ContextHandler`](ContextHandler)
