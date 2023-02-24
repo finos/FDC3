@@ -1,0 +1,23 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/next/intentResolution.schema.json",
+    "title": "IntentResolution",
+    "description": "IntentResolution provides a standard format for data returned upon resolving an intent.",
+    "type": "object",
+    "properties": {
+        "source": {
+            "$ref": "https://fdc3.finos.org/schemas/next/appIdentifier.schema.json"
+        },
+        "intent": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "source",
+        "intent"
+    ],
+    "additionalProperties": false
+}
