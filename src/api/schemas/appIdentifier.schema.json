@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/next/appIdentifier.schema.json",
+    "title": "AppIdentifier",
+    "description": "Identifies an application, or instance of an application, and is used to target FDC3 API calls at specific applications.",
+    "type": "object",
+    "properties": {
+        "appId": {
+            "type": "string"
+        },
+        "instanceId": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "appId"
+    ],
+    "additionalProperties": false
+}
