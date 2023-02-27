@@ -7,7 +7,8 @@ export default defineConfig({
 	base: "/toolbox/fdc3-workbench",
 	build: {
 		outDir: "build",
-		assetsDir: "static"
+		assetsDir: "static",
+		assetsInlineLimit: 0,
 	},
 	define: {
 		"process.env": "import.meta.env",
