@@ -21,6 +21,7 @@ import Showcase from "../../core/Showcase";
 
 import users from './../../data/users.json';
 
+
 const UserShowcase = () => {
 
   const pinnedUsers = users.filter(user => user.pinned);
@@ -34,6 +35,7 @@ const UserShowcase = () => {
     </div>
   );
 };
+
 
 
 export default () => {
