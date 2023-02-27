@@ -1,2 +1,5 @@
 [build]
    ignore = "/bin/false"
+
+[build.processing.css]
+  skip_processing = true
