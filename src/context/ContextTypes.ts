@@ -40,7 +40,6 @@ export interface Chart {
 
 export interface Instrument {
   id: InstrumentID;
-  market?: Market;
   type: string;
   name?: string;
 }
@@ -55,13 +54,6 @@ export interface InstrumentID {
   RIC?: string;
   SEDOL?: string;
   ticker?: string;
-}
-
-export interface Market {
-  BBG?: string;
-  COUNTRY_ISOALPHA2?: string;
-  MIC?: string;
-  name?: string;
 }
 
 export interface TimeRange {
@@ -497,7 +489,6 @@ const typeMap: any = {
   Instrument: o(
     [
       { json: 'id', js: 'id', typ: r('InstrumentID') },
-      { json: 'market', js: 'market', typ: u(undefined, r('Market')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -516,15 +507,6 @@ const typeMap: any = {
       { json: 'ticker', js: 'ticker', typ: u(undefined, '') },
     ],
     ''
-  ),
-  Market: o(
-    [
-      { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
-      { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
-      { json: 'MIC', js: 'MIC', typ: u(undefined, '') },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
   ),
   TimeRange: o(
     [
