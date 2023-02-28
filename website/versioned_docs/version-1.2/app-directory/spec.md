@@ -5,7 +5,7 @@ original_id: spec
 ---
 ## API
 
-View the [full specification](/schemas/1.2/app-directory) in [OpenAPI v3.0](https://www.openapis.org/) format (generated with [ReDoc](https://github.com/Redocly/redoc/)).
+View the [full specification](/schemas/1.2/app-directory.html) in [OpenAPI v3.0](https://www.openapis.org/) format (generated with [ReDoc](https://github.com/Redocly/redoc/)).
 
 ## Endpoints
 
