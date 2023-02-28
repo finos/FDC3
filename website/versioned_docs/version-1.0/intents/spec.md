@@ -80,7 +80,7 @@ As more use cases were identified it was clear further Intents were required.  F
 
 ## Using Intents
 
-Combined with [context data](../context/overview) and [App Directory](../app-directory/overview) standards, intents enable rich service discovery on the desktop. For example:
+Combined with [context data](../context/spec) and [App Directory](../app-directory/spec) standards, intents enable rich service discovery on the desktop. For example:
 
 ### Ask for a chart to be displayed
 
@@ -129,7 +129,7 @@ const intentsAndApps = await fdc3.findIntentsByContext({
 An FDC3 Standard compliant application that supports intents **MUST**:
 
 * Meet the expected context and behavior defined for any FDC3-defined standard intents used.
-* Use the [`fdc3.addIntentListener`](api/ref/DesktopAgent#addintentlistener) API call to set up a handler for each supported intent as soon as possible when it starts up. This facilitates delivery of raised intents to the application.
+* Use the [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener) API call to set up a handler for each supported intent as soon as possible when it starts up. This facilitates delivery of raised intents to the application.
 
 An FDC3 Standard compliant application that supports intents **SHOULD**:
 

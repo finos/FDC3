@@ -36,9 +36,9 @@ https://fdc3.finos.org/schemas/next/context.schema.json
 ### `type` (required)
 
 The type property is the only _required_ part of the FDC3 context data schema. 
-The FDC3 [API](../../api/overview) relies on the `type` property being present to route shared context data appropriately.
+The FDC3 [API](../../api/spec) relies on the `type` property being present to route shared context data appropriately.
 
-FDC3 [Intents](../../intents/overview) also register the context data types they support in an FDC3 [App Directory](../..app-directory/overview), used for intent discovery and routing.
+FDC3 [Intents](../../intents/spec) also register the context data types they support in an FDC3 [App Directory](../../app-directory/overview), used for intent discovery and routing.
 
 Standardised FDC3 context types have well-known `type` properties prefixed with the `fdc3` namespace, e.g. `fdc3.instrument`. 
 For non-standard types, e.g. those defined and used by a particular organisation, the convention is to prefix them with an

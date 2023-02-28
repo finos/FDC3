@@ -3,11 +3,11 @@ const React = require('react');
 export default ({items}) => {
 
     return (
-      <div class="gridBlock">
+      <div className="gridBlock">
         {
           items.map(sl =>
-            <div class="blockElement fourByGridBlock">
-              <div class="blockContent">
+            <div className="blockElement fourByGridBlock">
+              <div className="blockContent">
                 {sl}
               </div>
             </div>

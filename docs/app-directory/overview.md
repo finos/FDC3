@@ -42,7 +42,7 @@ AppD reduces fragmentation in the market and allows end-users more flexibility i
 
 #### Intent Resolution
 
-AppD provides information to the Desktop Agent on which applications can handle particular [intents](../intents/overview) and the context types they support as input to them. This allows the Desktop Agent to implement an [intent resolver](../api/spec#resolvers) that can launch applications and pass the intent and context to them to operate on, supporting workflows between applications that didn't require prior bilateral agreements between the application providers.
+AppD provides information to the Desktop Agent on which applications can handle particular [intents](../intents/spec) and the context types they support as input to them. This allows the Desktop Agent to implement an [intent resolver](../api/spec#resolvers) that can launch applications and pass the intent and context to them to operate on, supporting workflows between applications that didn't require prior bilateral agreements between the application providers.
 
 ### For an Application Provider
 
