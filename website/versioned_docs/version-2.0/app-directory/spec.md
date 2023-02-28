@@ -4,7 +4,7 @@ title: App Directory API 2.0
 original_id: spec
 ---
 
-View the [full specification](/schemas/2.0/app-directory) in [OpenAPI v3.0](https://www.openapis.org/) format (generated with [ReDoc](https://github.com/Redocly/redoc/)).
+View the [full specification](/schemas/2.0/app-directory.html) in [OpenAPI v3.0](https://www.openapis.org/) format (generated with [ReDoc](https://github.com/Redocly/redoc/)).
 
 ## Endpoints
 
