@@ -18,4 +18,4 @@ Every application that has manual user input is a candidate for being FDC3-enabl
 
 ## Why should my development team look at adopting FDC3?
 
-Deploying effective end-user workflows with as little development effort as possible, should be the goal for all internal/platform integration development teams. Implementing or developing on a platform that is FDC3-enabled, if done right, results in more bang for the buck. FDC3 is all about (re)usability and low-touch integration. With an [App directory](appd-intro) in place and a platform to develop on, each new enabled app broadens the value of the workflow offering.
+Deploying effective end-user workflows with as little development effort as possible, should be the goal for all internal/platform integration development teams. Implementing or developing on a platform that is FDC3-enabled, if done right, results in more bang for the buck. FDC3 is all about (re)usability and low-touch integration. With an [App directory](app-directory/overview) in place and a platform to develop on, each new enabled app broadens the value of the workflow offering.
