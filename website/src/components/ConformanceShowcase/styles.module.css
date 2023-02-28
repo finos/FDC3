@@ -15,7 +15,7 @@
 .conformanceImage img {
     max-width: 25rem;
     min-width: 25rem;
-    margin: 3rem;
+    max-height: 8rem;
 }
 
 
@@ -23,4 +23,5 @@
 .conformanceText {
     max-width: 35rem;
     min-width: 35rem;
+    margin: 2rem;
 }

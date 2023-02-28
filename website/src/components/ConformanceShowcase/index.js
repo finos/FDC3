@@ -28,7 +28,7 @@ export default ({ badge }) => {
                                 {
                                     c.badge.items.map(item => {
                                         return (<li class={styles.conformanceItem}>
-                                            <p>{item.text} <em><a href={item.link}>More Details</a></em></p>
+                                            <p>{item.text} {  (item.link) ? <em><a href={item.link}>More Details</a></em> :"" }</p>
                                         </li>)
                                     })
                                 }
