@@ -62,7 +62,7 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 								<div className="conformance-badge"><img src={c.src} /></div>
 								<div className="conformance-text"><ul>
 									{
-										c.items.map(ti => <li key={ti.link}>{ti.text} (<a className="conformance-details" href={ti.link}>details</a>)</li>)
+										c.items.map(ti => <li key={ti.link}>{ti.text} { ti.link ? <a className="conformance-details" href={ti.link}>details</a> : "" }</li>)
 									}
 								</ul></div>
 							</div>)
