@@ -231,7 +231,7 @@ The DAB will extract the authentication token `sub` from the JWT token's claims 
     type:  "authenticationFailed",
     meta: {
         /** Timestamp at which response was generated */
-        timestamp:  date,
+        timestamp:  Date,
         /** GUID for the handshake request */
         requestGuid: string,
         /** Unique GUID for this message */
@@ -448,16 +448,16 @@ Response messages will be differentiated from requests by the presence of a `met
         /** Array of AppIdentifiers or DesktopAgentIdentifiers for the sources that generated
          *  responses to the request. Will contain a single value for individual responses and
          *  multiple values for responses that were collated by the bridge.*/
-        sources: [AppIdentifier | DesktopAgentIdentifier],
+        sources: (AppIdentifier | DesktopAgentIdentifier)[],
         /** Array of AppIdentifiers or DesktopAgentIdentifiers for responses that were not returned
          * to the bridge before the timeout or because an error occurred. 
          * May be omitted if all sources responded. */
-        errorSources: [AppIdentifier | DesktopAgentIdentifier],
+        errorSources: (AppIdentifier | DesktopAgentIdentifier)[],
         /** Array of error message strings for responses that were not returned
          * to the bridge before the timeout or because an error occurred. 
          * Should be the same length as the `errorSources array and ordered the same.
          * May be omitted if all sources responded. */
-        errorDetails: [string]
+        errorDetails: string[]
     }
 }
 ```
@@ -1699,7 +1699,7 @@ The bridge receives and collates the responses, augmenting each appIdentifier wi
 ```JSON
 // DAB -> agent-A
 {
-    "type":  "findIntentResponse",
+    "type":  "findInstancesResponse",
     "payload": {
         "appIdentifiers":  [
             { "appId": "myApp", "instanceId": "4bf39be1-a25b-4ad5-8dbc-ce37b436a344", "desktopAgent": "agent-B"},
