@@ -6,6 +6,8 @@
   --ifm-color-primary-dark: #0079AC;
   --ifm-color-primary-darker: #0072A2;
   --ifm-color-primary-darkest: #005E86;
+  --ifm-font-weight-semibold: 300;
+  --ifm-navbar-item-padding-horizontal: 0.5rem;
 }
 
 /** Buttons from Docusaurus v1 */
@@ -112,6 +114,8 @@ header.postHeader:empty + article h1 {
   flex-flow: row wrap;
   justify-content: center;
   padding: 20px;
+  margin-top: 20px;
+  background-color: white;
 }
 
 .showcase img {
@@ -214,10 +218,18 @@ header.postHeader:empty + article h1 {
 }
 
 .featureShowcaseSection {
-  background-color: #F7F7F7; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
+  background-color: var(--showcase-background); /* CHANGE THIS TO PRIMARY PROJECT COLOR */
   padding-top: 10px;
   padding-bottom: 40px;
 }
+
+html[data=theme='light'] {
+  --showcase-background: #F7F7F7;
+}
+
+html[data-theme='dark'] {
+  --showcase-background: #232323;
+} 
 
 .surveyBanner {
   background-color: #F7F7F7; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
@@ -288,6 +300,8 @@ article iframe {
 .implementation.hide {
   display: none;
 }
+
+
 .implementation-metadata {
   padding: 6px 6px;
   display: flex;
@@ -320,18 +334,24 @@ article iframe {
   font-variant-caps: small-caps;
   flex-basis: 100%;
 }
-.implementation-details > img {
-  max-width: 285px;
-  max-height: 150px;
+.implementation-details > .implementation-image {
   padding-top: 6px;
   padding-bottom: 10px;
-  width: auto;
-  height: auto;
   object-fit: contain;
   flex-basis: 300px;
-  flex-shrink: 1;
   margin-right: 6px;
+  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
+.implementation-details > .implementation-image img {
+  max-width: 285px;
+  max-height: 150px;
+}
+
 .implementation-details > .description {
   flex-shrink: 1;
   flex-grow: 1;
@@ -349,6 +369,7 @@ article iframe {
   flex-direction: row;
   align-items: center;
   flex-basis: 100%;
+  align-items: stretch;
 }
 .implementation-details  > .description > .badges {
 	padding-top: 10px;
@@ -522,3 +543,5 @@ article iframe {
   margin-left: 2px;
   margin-top:5px
 }
+
+

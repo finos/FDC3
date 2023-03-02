@@ -62,11 +62,6 @@ module.exports={
           "position": "left"
         },
         {
-          "to": "docs/use-cases/overview",
-          "label": "Use Cases",
-          "position": "left"
-        },
-        {
           "to": "/community",
           "label": "Community",
           "position": "left"
@@ -83,7 +78,7 @@ module.exports={
         },
         {
           "href": "https://directory.fdc3.finos.org",
-          "label": "FINOS App Directory",
+          "label": "FINOS AppD",
           "position": "left"
         },
         {
