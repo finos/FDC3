@@ -117,21 +117,20 @@ export const Header = (props: { fdc3Available: boolean }) => {
 						};
 					}
 
-					if (paramVersion) {
-						setChosenVersion(paramVersion);
-					} else if(implInfo.fdc3Version && supportedVersion.includes(implInfo.fdc3Version)) {
-						setChosenVersion(implInfo.fdc3Version);
-					} else {
-						setChosenVersion("2.0");
-					}
-
-					window.fdc3Version = chosenVersion;
-		
 					setAppInfo(displayInfo);		
 				} catch (e) {
 					console.error("Failed to retrieve FDC3 implementation info", e);
 				}
 
+				if (paramVersion) {
+					setChosenVersion(paramVersion);
+				} else if(implInfo?.fdc3Version && supportedVersion.includes(implInfo?.fdc3Version)) {
+					setChosenVersion(implInfo.fdc3Version);
+				} else {
+					setChosenVersion("2.0");
+				}
+
+				window.fdc3Version = chosenVersion;
 				
 			};
 
