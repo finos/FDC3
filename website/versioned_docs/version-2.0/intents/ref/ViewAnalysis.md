@@ -1,5 +1,4 @@
 ---
-id: version-2.0-ViewAnalysis
 sidebar_label: ViewAnalysis
 title: ViewAnalysis
 hide_title: true

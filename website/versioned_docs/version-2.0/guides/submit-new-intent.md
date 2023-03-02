@@ -1,5 +1,4 @@
 ---
-id: version-2.0-SubmitNewIntent
 sidebar_label: How To Submit New Intent
 title: How to Submit a New Intent PR
 original_id: SubmitNewIntent
@@ -26,21 +25,21 @@ This will open the home page or browse to https://localhost:3000
 
 Note that the page opens on the current release version of the docs and you will be changing the latest version. Click the version selector in the top left hand corner
 
-![Version Selector](../assets/version_selector.png)
+![Version Selector](/assets/version_selector.png)
 
 and then select 'Documentation' under 'Latest Version'
 
-![Latest Version Selector](../assets/latest_version_selector.png)
+![Latest Version Selector](/assets/latest_version_selector.png)
 
 The 'next' version will be indicated in the header:
 
-![Next Version](../assets/next_version.png)
+![Next Version](/assets/next_version.png)
 
 ## Create Intent File
 
 Add the new intent markdown file to docs/intents/ref. Use one of the existing intent markdown files as a template. E.g. the [ViewResearch](../intents/ref/ViewResearch) intent was created using [ViewProfile](../intents/ref/ViewProfile) as an example:
 
-![View Research](../assets/view_research.png)
+![View Research](/assets/view_research.png)
 
 ## Link to Intent File
 

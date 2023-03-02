@@ -1,5 +1,4 @@
 ---
-id: version-2.0-spec
 sidebar_label: Overview
 title: Context Data 2.0
 original_id: spec
@@ -141,7 +140,7 @@ E.g. `"CURRENCY_ISOCODE": "GBP"`
 An FDC3 Standard compliant application that supports the use of context data **MUST**:
 
 * Ensure that any FDC3-defined standard context types used meet the interface defined for that type of context data.
-* Where Channels are supported or an app is intended to receive context from [`fdc3.open`](api/ref/DesktopAgent#open) calls, use the [`fdc3.addContextListener`](api/ref/DesktopAgent#addcontextlistener) API call to set up appropriate handlers on start-up (for User channels and for receiving context from [`fdc3.open`](api/ref/DesktopAgent#open)) or when the channel is first created or retrieved (for App and Private channels).
+* Where Channels are supported or an app is intended to receive context from [`fdc3.open`](../api/ref/DesktopAgent#open) calls, use the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call to set up appropriate handlers on start-up (for User channels and for receiving context from [`fdc3.open`](../api/ref/DesktopAgent#open)) or when the channel is first created or retrieved (for App and Private channels).
 
 An FDC3 Standard compliant application that supports the use of context data **SHOULD**:
 

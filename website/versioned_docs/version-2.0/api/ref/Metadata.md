@@ -1,6 +1,5 @@
 ---
 title: Metadata
-id: version-2.0-Metadata
 original_id: Metadata
 ---
 

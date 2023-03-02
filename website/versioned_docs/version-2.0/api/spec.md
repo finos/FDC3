@@ -1,5 +1,4 @@
 ---
-id: version-2.0-spec
 sidebar_label: Overview
 title: API Overview 2.0
 original_id: spec
@@ -70,7 +69,7 @@ if (window.fdc3) {
 
 ### Standards vs. Implementation
 
-![Desktop Agent - Standards Schematic](assets/api-1.png)
+![Desktop Agent - Standards Schematic](/assets/api-1.png)
 
 The surface area of FDC3 standardization (shown in *white* above) itself is quite small in comparison to the extent of a typical desktop agent implementation (in *grey*).
 
@@ -87,7 +86,7 @@ Are all areas of functionality that any feature-complete desktop agent would imp
 
 A goal of FDC3 standards is that applications running in different Desktop Agent contexts on the same desktop would be able to interoperate.  And that one Desktop Agent context would be able to discover and launch an application in another Desktop Application context.
 
-![Desktop Agent - Interop](assets/api-2.png)
+![Desktop Agent - Interop](/assets/api-2.png)
 
 Desktop Agent interop is supported by common standards for APIs for App discovery and launching.  So, an App in one Desktop Agent context would not need to know a different syntax to call an App in another Desktop Agent context.
 
@@ -573,7 +572,7 @@ The `PrivateChannel` type also supports synchronisation of data transmitted over
 
 ### Broadcasting and listening for multiple context types
 
-The [Context specification](../../context/spec#assumptions) recommends that complex context objects are defined using simpler context types for particular fields. For example, a `Position` is composed of an `Instrument` and a holding amount. This leads to situations where an application may be able to receive or respond to context objects that are embedded in a more complex type, but not the more complex type itself. For example, a pricing chart might respond to an `Instrument` but doesn't know how to handle a `Position`.
+The [Context specification](../context/spec#assumptions) recommends that complex context objects are defined using simpler context types for particular fields. For example, a `Position` is composed of an `Instrument` and a holding amount. This leads to situations where an application may be able to receive or respond to context objects that are embedded in a more complex type, but not the more complex type itself. For example, a pricing chart might respond to an `Instrument` but doesn't know how to handle a `Position`.
 
 To facilitate context linking in such situations it is recommended that applications `broadcast` each context type that other apps (listening on a User Channel or App Channel) may wish to process, starting with the simpler types, followed by the complex type. Doing so allows applications to filter the context types they receive by adding listeners for specific context types - but requires that the application broadcasting context make multiple broadcast calls in quick succession when sharing its context.
 

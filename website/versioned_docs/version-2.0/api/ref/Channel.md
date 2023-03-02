@@ -1,5 +1,4 @@
 ---
-id: version-2.0-Channel
 sidebar_label: Channel
 title: Channel
 hide_title: true
@@ -133,7 +132,7 @@ public broadcast(context: Context): Promise<void>;
 
 Broadcasts a context on the channel. This function can be used without first joining the channel, allowing applications to broadcast on both App Channels and User Channels that they aren't a member of.
 
-If the broadcast is denied by the channel or the channel is not available, the promise will be rejected with an `Error` with a `message` string from the [`ChannelError`](ChannelError) enumeration.
+If the broadcast is denied by the channel or the channel is not available, the promise will be rejected with an `Error` with a `message` string from the [`ChannelError`](Errors#channelerror) enumeration.
 
 Channel implementations should ensure that context messages broadcast by an application on a channel should not be delivered back to that same application if they are joined to the channel.
 
@@ -174,7 +173,7 @@ If no _context type_ is provided, the most recent context that was broadcast on 
 
 It is up to the specific Desktop Agent implementation whether and how recent contexts are stored. For example, an implementation could store context history for a channel in a single array and search through the array for the last context matching a provided type, or context could be maintained as a dictionary keyed by context types. An implementation could also choose not to support context history, in which case this method will return `null` for any context type not matching the type of the most recent context.
 
-If getting the current context fails, the promise will be rejected with an `Error` with a `message` string from the [`ChannelError`](./Errors#channelerror) enumeration.
+If getting the current context fails, the promise will be rejected with an `Error` with a `message` string from the [`ChannelError`](Errors#channelerror) enumeration.
 
 #### Examples
 

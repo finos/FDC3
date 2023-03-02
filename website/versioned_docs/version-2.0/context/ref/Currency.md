@@ -1,5 +1,4 @@
 ---
-id: version-2.0-Currency
 sidebar_label: Currency
 title: Currency
 hide_title: true
