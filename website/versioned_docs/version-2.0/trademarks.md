@@ -3,16 +3,16 @@ title: Trademarks
 original_id: trademarks
 ---
 
-The trademarks, logos, and service marks not owned on behalf of FDC3 and FINOS and that are displayed on the Site are the registered and unregistered marks of their respective owners. No rights are granted by the FDC3 or FINOS to use such marks, whether by implication, estoppel, or otherwise. 
+The trademarks, logos, and service marks not owned on behalf of FDC3 and FINOS and that are displayed on the Site are the registered and unregistered marks of their respective owners. No rights are granted by the FDC3 or FINOS to use such marks, whether by implication, estoppel, or otherwise.
 
 Trademarks used within this site and the FDC3 Standard include, but are not limited to:
+
 - Autobahn is a registered trademark of DEUTSCHE BANK AG, LONDON
 - Chromium is a trademark of Google LLC
-- Cosaic is a registered trademark of ChartIQ, Inc.
 - Eikon is a registered trademark of Refinitiv
 - FDC3 is a registered trademark and brand of The Linux Foundation
 - Excel is a Microsoft Corporation product name
-- Finsemble is a registered trademark and product name of ChartIQ, Inc.
+- Finsemble is a registered trademark and product name of Finsemble, Inc.
 - Glue42 is a trademark of Tick42
 - Java is a registered trademark of Oracle America, Inc.
 - JavaScript  is a registered trademark of Oracle America, Inc.
