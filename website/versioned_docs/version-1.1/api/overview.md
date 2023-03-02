@@ -1,5 +1,4 @@
 ---
-id: version-1.1-overview
 sidebar_label: API Overview
 title: API Overview
 hide_title: true

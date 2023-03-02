@@ -1,5 +1,4 @@
 ---
-id: version-2.0-ContactList
 sidebar_label: ContactList
 title: ContactList
 hide_title: true

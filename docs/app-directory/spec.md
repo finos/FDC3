@@ -4,7 +4,7 @@ sidebar_label: API
 title: App Directory API (next)
 ---
 
-View the [full specification](/schemas/next/app-directory) in [OpenAPI v3.0](https://www.openapis.org/) format (generated with [ReDoc](https://github.com/Redocly/redoc/)).
+View the [full specification](/schemas/next/app-directory.html) in [OpenAPI v3.0](https://www.openapis.org/) format (generated with [ReDoc](https://github.com/Redocly/redoc/)).
 
 ## Endpoints
 
