@@ -119,8 +119,8 @@ class Fdc3Api {
 		return await this.fdc3Methods.getOrCreateChannel(channelId);
 	}
 
-	async getInfo() {
-		return await this.fdc3Methods.getInfo();
+	getInfo() {
+		return this.fdc3Methods.getInfo();
 	}
 
 	findIntentsByContext(context: Context) {
