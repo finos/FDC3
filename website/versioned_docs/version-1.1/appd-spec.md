@@ -1,11 +1,11 @@
 ---
 sidebar_label: App Directory Specification
-title: App Directory Specification 1.0
+title: App Directory Specification 1.1
 original_id: appd-spec
 ---
 ## API
 
-View the [full specification](/1.0/appd-spec) in [OpenAPI v3.0](https://www.openapis.org/) format (generated with [ReDoc](https://rebilly.github.io/ReDoc/)).
+View the [full specification](/schemas/1.1/app-directory.html) in [OpenAPI v3.0](https://www.openapis.org/) format (generated with [ReDoc](https://rebilly.github.io/ReDoc/)).
 
 ## Endpoints
 
