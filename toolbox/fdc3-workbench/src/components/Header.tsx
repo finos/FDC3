@@ -69,8 +69,8 @@ export const Header = (props: { fdc3Available: boolean }) => {
 	const classes = useStyles();
 	const [appInfo, setAppInfo] = useState<any>();
 	const params = new URLSearchParams(window.location.search);
-	const paramVersion = params.get("fdc3Version") || '';
-	const [chosenVersion, setChosenVersion] = useState<string>();
+	const paramVersion = params.get("fdc3Version")?.replace(/\/$/, '') || '';
+	const [chosenVersion, setChosenVersion] = useState<string>("2.0");
 	let warningText = `Your FDC3 version (${appInfo?.fdc3Version}) doesn't match the version of the FDC3 Workbench you are using (${chosenVersion})`;
 	const supportedVersion = ["2.0", "1.2"];
 
@@ -79,8 +79,18 @@ export const Header = (props: { fdc3Available: boolean }) => {
 			//getInfo is not available in FDC3 < v1.2, handle any errors thrown when trying to use it
 			const updateInfo = async () => {
 				let implInfo: ImplementationMetadata | null = null;
+				
+				//Then if chosenVersion == "2.0"  then implInfo = await implInfoPromise   else implInfo = implInfoPromise  (with handling for <1.2 where getInfo() doesn't exist at all.
 				try {
-					implInfo = await fdc3.getInfo();
+					
+					const implInfoPromise: Promise<ImplementationMetadata> | ImplementationMetadata = fdc3.getInfo();
+					if (paramVersion == "1.2" && (implInfoPromise as unknown as ImplementationMetadata).fdc3Version){
+						//should not expect a promise if we're really working with 1.2
+						implInfo = (implInfoPromise as unknown as ImplementationMetadata);
+					} else {
+						implInfo = await implInfoPromise;
+					}
+					
 					let displayInfo = {
 						fdc3Version: "not specified",
 						provider: "not specified",
@@ -99,7 +109,6 @@ export const Header = (props: { fdc3Available: boolean }) => {
 					}
 					if (implInfo.fdc3Version) {
 						displayInfo.fdc3Version = implInfo.fdc3Version;
-						window.fdc3Version = chosenVersion || implInfo.fdc3Version;
 					}
 					if (implInfo.appMetadata) {
 						displayInfo.appMetadata = {
@@ -107,19 +116,23 @@ export const Header = (props: { fdc3Available: boolean }) => {
 							version: implInfo.appMetadata.version ? implInfo.appMetadata.version : "not specified",
 						};
 					}
+
+					if (paramVersion) {
+						setChosenVersion(paramVersion);
+					} else if(implInfo.fdc3Version && supportedVersion.includes(implInfo.fdc3Version)) {
+						setChosenVersion(implInfo.fdc3Version);
+					} else {
+						setChosenVersion("2.0");
+					}
+
+					window.fdc3Version = chosenVersion;
 		
 					setAppInfo(displayInfo);		
 				} catch (e) {
 					console.error("Failed to retrieve FDC3 implementation info", e);
 				}
 
-				if(paramVersion) {
-					setChosenVersion(paramVersion);
-				} else if(implInfo?.fdc3Version) {
-					setChosenVersion(implInfo?.fdc3Version);
-				} else {
-					setChosenVersion("1.2");
-				}
+				
 			};
 
 			updateInfo();
@@ -179,12 +192,14 @@ export const Header = (props: { fdc3Available: boolean }) => {
 									<th scope="row">Provider version</th>
 									<td>{appInfo?.providerVersion ? appInfo.providerVersion : "unknown"}</td>
 								</tr>
+								{chosenVersion != "1.2" ? (
 								<tr>
 									<th scope="row">My AppId</th>
 									<td className={classes.appid}>
 										{appInfo?.appMetadata?.appId ? appInfo.appMetadata.appId : "unknown"}
 									</td>
 								</tr>
+								) : ""}
 							</tbody>
 						</table>
 					</div>
