@@ -45,7 +45,9 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 			<div className="type">{type}</div>
 		</div>
 		<div className="implementation-details padding-top--sm padding-bottom--md">
-			<img src={image} alt={title} title={title} />
+			<div className="implementation-image">
+				<img src={image} alt={title} title={title} />
+			</div>
 			<div className="description">
 				<div className="infoLinks">
 					{infoLink ? <a href={infoLink} className="button">More info</a> : null}
