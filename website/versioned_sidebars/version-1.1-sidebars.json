@@ -1,99 +1,99 @@
 {
-  "version-1.1-docs": {
+  "docs": {
     "Getting Started": [
-      "version-1.1-fdc3-intro",
-      "version-1.1-fdc3-charter",
-      "version-1.1-why-fdc3",
-      "version-1.1-fdc3-compliance",
-      "version-1.1-fdc3-standard"
+      "fdc3-intro",
+      "fdc3-charter",
+      "why-fdc3",
+      "fdc3-compliance",
+      "fdc3-standard"
     ],
     "API": [
-      "version-1.1-api/overview",
-      "version-1.1-api/spec",
+      "api/overview",
+      "api/spec",
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Interfaces",
-        "ids": [
-          "version-1.1-api/ref/DesktopAgent",
-          "version-1.1-api/ref/Channel",
-          "version-1.1-api/ref/Listener",
-          "version-1.1-api/ref/AppIntent",
-          "version-1.1-api/ref/IntentResolution",
-          "version-1.1-api/ref/AppMetadata",
-          "version-1.1-api/ref/IntentMetadata",
-          "version-1.1-api/ref/DisplayMetadata"
+        "items": [
+          "api/ref/DesktopAgent",
+          "api/ref/Channel",
+          "api/ref/Listener",
+          "api/ref/AppIntent",
+          "api/ref/IntentResolution",
+          "api/ref/AppMetadata",
+          "api/ref/IntentMetadata",
+          "api/ref/DisplayMetadata"
         ]
       },
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Types",
-        "ids": [
-          "version-1.1-api/ref/Context",
-          "version-1.1-api/ref/ContextHandler",
-          "version-1.1-api/ref/OpenError",
-          "version-1.1-api/ref/ResolveError",
-          "version-1.1-api/ref/ChannelError"
+        "items": [
+          "api/ref/Context",
+          "api/ref/ContextHandler",
+          "api/ref/OpenError",
+          "api/ref/ResolveError",
+          "api/ref/ChannelError"
         ]
       }
     ],
     "Intents": [
-      "version-1.1-intents/overview",
-      "version-1.1-intents/spec",
+      "intents/overview",
+      "intents/spec",
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Reference",
-        "ids": [
-          "version-1.1-intents/ref/StartCall",
-          "version-1.1-intents/ref/StartChat",
-          "version-1.1-intents/ref/ViewChart",
-          "version-1.1-intents/ref/ViewContact",
-          "version-1.1-intents/ref/ViewQuote",
-          "version-1.1-intents/ref/ViewNews",
-          "version-1.1-intents/ref/ViewAnalysis",
-          "version-1.1-intents/ref/ViewInstrument"
+        "items": [
+          "intents/ref/StartCall",
+          "intents/ref/StartChat",
+          "intents/ref/ViewChart",
+          "intents/ref/ViewContact",
+          "intents/ref/ViewQuote",
+          "intents/ref/ViewNews",
+          "intents/ref/ViewAnalysis",
+          "intents/ref/ViewInstrument"
         ]
       }
     ],
     "Context Data": [
-      "version-1.1-context/overview",
-      "version-1.1-context/spec",
+      "context/overview",
+      "context/spec",
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Reference",
-        "ids": [
-          "version-1.1-context/ref/Context",
-          "version-1.1-context/ref/Contact",
-          "version-1.1-context/ref/ContactList",
-          "version-1.1-context/ref/Instrument",
-          "version-1.1-context/ref/InstrumentList",
-          "version-1.1-context/ref/Organization",
-          "version-1.1-context/ref/Country",
-          "version-1.1-context/ref/Position",
-          "version-1.1-context/ref/Portfolio"
+        "items": [
+          "context/ref/Context",
+          "context/ref/Contact",
+          "context/ref/ContactList",
+          "context/ref/Instrument",
+          "context/ref/InstrumentList",
+          "context/ref/Organization",
+          "context/ref/Country",
+          "context/ref/Position",
+          "context/ref/Portfolio"
         ]
       }
     ],
     "App Directory": [
-      "version-1.1-app-directory/overview",
-      "version-1.1-app-directory/discovery",
-      "version-1.1-app-directory/usage",
-      "version-1.1-app-directory/spec"
+      "app-directory/overview",
+      "app-directory/discovery",
+      "app-directory/usage",
+      "app-directory/spec"
     ]
   },
-  "version-1.1-use-cases": {
+  "use-cases": {
     "Use Cases": [
-      "version-1.1-use-cases/overview",
-      "version-1.1-use-cases/uc-1",
-      "version-1.1-use-cases/uc-2",
-      "version-1.1-use-cases/uc-3",
-      "version-1.1-use-cases/uc-4",
-      "version-1.1-use-cases/uc-5",
-      "version-1.1-use-cases/uc-9",
-      "version-1.1-use-cases/uc-10",
-      "version-1.1-use-cases/uc-13",
-      "version-1.1-use-cases/uc-15",
-      "version-1.1-use-cases/uc-16",
-      "version-1.1-use-cases/uc-17"
+      "use-cases/overview",
+      "use-cases/uc-1",
+      "use-cases/uc-2",
+      "use-cases/uc-3",
+      "use-cases/uc-4",
+      "use-cases/uc-5",
+      "use-cases/uc-9",
+      "use-cases/uc-10",
+      "use-cases/uc-13",
+      "use-cases/uc-15",
+      "use-cases/uc-16",
+      "use-cases/uc-17"
     ]
   }
 }

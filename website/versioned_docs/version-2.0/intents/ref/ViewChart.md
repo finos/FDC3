@@ -1,5 +1,4 @@
 ---
-id: version-2.0-ViewChart
 sidebar_label: ViewChart
 title: ViewChart
 hide_title: true
