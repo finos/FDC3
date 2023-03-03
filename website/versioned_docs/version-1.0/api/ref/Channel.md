@@ -172,7 +172,7 @@ If no _context type_ is provided, the most recent context that was broadcast on 
 
 It is up to the specific Desktop Agent implementation whether and how recent contexts are stored. For example, an implementation could store context history for a channel in a single array and search through the array for the last context matching a provided type, or context could be maintained as a dictionary keyed by context types. An implementation could also choose not to support context history, in which case this method will return `null` for any context type not matching the type of the most recent context.
 
-If getting the current context fails, the promise will be rejected with an `Error` with a `message` string from the [`ChannelError`](ChannelError) enumeration.
+If getting the current context fails, the promise will be rejected with an `Error` with a `message` string from the [`ChannelError`](Errors#channelerror) enumeration.
 
 #### Examples
 
