@@ -62,7 +62,7 @@ export default (props) => {
               <td></td>
             </tr>
             <tr>
-              <th colspan="2">Discussion Group Formed</th>
+              <th colspan="2" scope="row">Discussion Group Formed</th>
               <td>✅</td>
               <td>✅</td>
               <td></td>
