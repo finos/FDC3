@@ -56,7 +56,7 @@ export default (props) => {
                 Raised</a></td>
             </tr>
             <tr>
-              <th colspan="2">Discussed at Standards Working Group</th>
+              <th colspan="2" scope="row">Discussed at Standards Working Group</th>
               <td>✅</td>
               <td>✅</td>
               <td></td>
