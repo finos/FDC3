@@ -49,7 +49,7 @@ export default (props) => {
               <th colspan="5"><h3>Initiation</h3></th>
             </tr>
             <tr>
-              <th colspan="2">Issue Raised</th>
+              <th colspan="2" scope="row">Issue Raised</th>
               <td>✅</td>
               <td>✅</td>
               <td><a href="https://github.com/finos/FDC3/issues/684">Issue
