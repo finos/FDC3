@@ -11,7 +11,7 @@ Extending APIs from one application to another is powerful. However, it requires
 
 
 FDC3 Intents define a standard set of verbs that can be used to put together common cross-application workflows on the financial desktop.
-* Applications register the Intents & [Context Data](context/overview) combinations they support in the [App Directory](app-directory/overview)
+* Applications register the Intents & [Context Data](../context/spec) combinations they support in the [App Directory](../app-directory/overview)
 * The App Directory supports application discovery by Intents and/or Context Data
 * Intents are not full RPC, apps don’t need to enumerate every function with an intent
 * FDC3 Standard Intents are a limited set, organizations can create their own intents

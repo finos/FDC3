@@ -3,7 +3,7 @@
 # FDC3 Workbench
 When developing interoperability for your application with other apps on a Financial services desktop, using the [FDC3 standard](https://fdc3.finos.org/docs/fdc3-intro), the first step is often to develop a test harness or workbench tool with which to exchange messaging. The FDC3 Workbench is designed to provide that tooling so that you can focus on implementing FDC3 support in your application.
 
-_Created and contributed to [FDC3](http://fdc3.finos.org) by [Cosaic, Inc.](https://cosaic.io/) in 2021._
+_Created and contributed to [FDC3](http://fdc3.finos.org) by [Finsemble, Inc.](https://finsemble.com/) in 2021._
 
 ## Getting Started
 

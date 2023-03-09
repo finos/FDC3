@@ -223,7 +223,7 @@ header.postHeader:empty + article h1 {
   padding-bottom: 40px;
 }
 
-html[data=theme='light'] {
+html[data-theme='light'] {
   --showcase-background: #F7F7F7;
 }
 
@@ -334,6 +334,7 @@ article iframe {
   font-variant-caps: small-caps;
   flex-basis: 100%;
 }
+
 .implementation-details > .implementation-image {
   padding-top: 6px;
   padding-bottom: 10px;
