@@ -20,7 +20,7 @@ Until this point the existing working groups have focused on the functional requ
 
 Unlike the other working groups, 'Use Cases' should provide requirements only not solutions. The requirements and use cases defined should not be specific to a handful of products that are represented within the working group, but apply to the workflows present across the financial industry.
 
-![Use Cases diagram](assets/use-cases.png)
+![Use Cases diagram](/assets/use-cases.png)
 
 
 ## Join us

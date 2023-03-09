@@ -1,5 +1,4 @@
 ---
-id: version-1.2-Channel
 sidebar_label: Channel
 title: Channel
 hide_title: true
@@ -133,7 +132,7 @@ public broadcast(context: Context): void;
 
 Broadcasts a context on the channel. This function can be used without first joining the channel, allowing applications to broadcast on channels that they aren't a member of.
 
-If the broadcast is denied by the channel or the channel is not available, the method will return an `Error` with a string from the [`ChannelError`](ChannelError) enumeration.
+If the broadcast is denied by the channel or the channel is not available, the method will return an `Error` with a string from the [`ChannelError`](Errors#channelerror) enumeration.
 
 Channel implementations should ensure that context messages broadcast by an application on a channel should not be delivered back to that same application if they are joined to the channel.
 

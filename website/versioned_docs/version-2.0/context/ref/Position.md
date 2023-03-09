@@ -1,5 +1,4 @@
 ---
-id: version-2.0-Position
 sidebar_label: Position
 title: Position
 hide_title: true

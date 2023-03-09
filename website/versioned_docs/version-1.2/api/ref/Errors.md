@@ -1,6 +1,5 @@
 ---
 title: Errors
-id: version-1.2-Errors
 original_id: Errors
 ---
 
