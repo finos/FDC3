@@ -283,7 +283,7 @@ I know 'StartChat' exists as a concept, and want to know which apps can resolve 
 const appIntent = await fdc3.findIntent("StartChat");
 // returns a single AppIntent:
 // {
-//   intent: { name: "StartChat", displayName: "Chat" },
+//   intent: { name: "StartChat" },
 //   apps: [
 //    { appId: "Skype" }, 
 //    { appId: "Symphony" }, 
@@ -299,7 +299,7 @@ const appIntent = await fdc3.findIntent("StartChat");
 // returns an AppIntent, but with multiple options for resolution, 
 // which includes an existing instance of an application:
 // {
-//   intent: { name: "StartChat", displayName: "Chat" },
+//   intent: { name: "StartChat" },
 //   apps: [
 //    { appId: "Skype" }, 
 //    { appId: "Symphony" }, 
@@ -315,21 +315,21 @@ const appIntent = await fdc3.findIntent("StartChat", contact);
 
 // returns only apps that support the type of the specified input context:
 // {
-//     intent: { name: "StartChat", displayName: "Chat" },
+//     intent: { name: "StartChat" },
 //     apps: { name: "Symphony" }]
 // }
 
 const appIntent = await fdc3.findIntent("ViewContact", "fdc3.ContactList");
 // returns only apps that return the specified result type:
 // {
-//     intent: { name: "ViewContact", displayName: "View Contact Details" },
+//     intent: { name: "ViewContact" },
 //     apps: { appId: "MyCRM", resultType: "fdc3.ContactList"}]
 // }
 
 const appIntent = await fdc3.findIntent("QuoteStream", instrument, "channel<fdc3.Quote>");
 // returns only apps that return a channel which will receive the specified input and result types:
 // {
-//     intent: { name: "QuoteStream", displayName: "Quotes stream" },
+//     intent: { name: "QuoteStream" },
 //     apps: { appId: "MyOMS", resultType: "channel<fdc3.Quote>"}]
 // }
 ```
@@ -363,11 +363,11 @@ const appIntents = await fdc3.findIntentsByContext(context);
 // returns, for example:
 // [
 //   {
-//     intent: { name: "StartCall", displayName: "Call" },
+//     intent: { name: "StartCall" },
 //     apps: [{ appId: "Skype" }]
 //   },
 //   {
-//     intent: { name: "StartChat", displayName: "Chat" }, 
+//     intent: { name: "StartChat" }, 
 //     apps: [
 //       { appId: "Skype" }, 
 //       { appId: "Symphony" }, 
@@ -376,7 +376,7 @@ const appIntents = await fdc3.findIntentsByContext(context);
 //     ]
 //   },
 //   {
-//     intent: { name: "ViewContact", displayName: "View Contact" },
+//     intent: { name: "ViewContact" },
 //     apps: [{ appId: "Symphony" }, { appId: "MyCRM", resultType: "fdc3.ContactList"}]
 //   }
 // ];
@@ -388,7 +388,7 @@ or I look for only intents that are resolved by apps returning a particular resu
 const appIntentsForType = await fdc3.findIntentsByContext(context, "fdc3.ContactList");
 // returns for example:
 // [{
-//     intent: { name: "ViewContact", displayName: "View Contact" },
+//     intent: { name: "ViewContact" },
 //     apps: [{ appId: "Symphony" }, { appId: "MyCRM", resultType: "fdc3.ContactList"}]
 // }];
  
