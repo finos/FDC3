@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Updated definition of the `Instrument` context type to include optional market identifiers ([#819](https://github.com/finos/FDC3/pull/819))
 
 ### Deprecated
+* Deprecated the `name` field in AppD records, to match deprecation of API signatures and metadata objects using `name` (see ([#722](https://github.com/finos/FDC3/pull/722))
+)) in 2.0 ([#928])(https://github.com/finos/FDC3/pull/928))
 
 ### Fixed
 
