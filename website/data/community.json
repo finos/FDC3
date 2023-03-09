@@ -1,9 +1,9 @@
 [
   {
     "title": "ChartIQ",
-    "publisher": "Cosaic, Inc.",
+    "publisher": "S&P Global",
     "image": "/img/users/ChartIQ.png",
-    "infoLink": "https://cosaic.io/chartiq/",
+    "infoLink": "https://chartiq.com/",
     "docsLink": "https://documentation.chartiq.com/",
     "type": "application-provider",
     "badges": [
@@ -46,9 +46,9 @@
   },
   {
     "title": "Finsemble",
-    "publisher": "Cosaic, Inc.",
+    "publisher": "Finsemble, Inc.",
     "image": "/img/users/Finsemble.png",
-    "infoLink": "https://cosaic.io/finsemble/",
+    "infoLink": "https://finsemble.com/",
     "docsLink": "https://documentation.finsemble.com/",
     "type": "platform-provider",
     "badges": [],
@@ -73,7 +73,7 @@
     "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-workbench/README.md",
     "type": "examples-and-training",
     "badges": [],
-    "description": "<p>When developing an FDC3-compliant app or desktop agent, you need to test. Because FDC3 is about communicating, you need at least one other app to communicate with. You could grab an existing app, but there may not be one available that uses the messaging you need to test.</p><p>Many developers end up writing their own helper tool, which they often discard when the work on their app is done. We've seen so many devs create these throwaway apps that the Finsemble team @ Cosaic decided to build and contribute a workbench (for any FDC3-compliant platform provider) that helps develop and test your app without writing throwaway code.</p>"
+    "description": "<p>When developing an FDC3-compliant app or desktop agent, you need to test. Because FDC3 is about communicating, you need at least one other app to communicate with. You could grab an existing app, but there may not be one available that uses the messaging you need to test.</p><p>Many developers end up writing their own helper tool, which they often discard when the work on their app is done. We've seen so many devs create these throwaway apps that the Finsemble team decided to build and contribute a workbench (for any FDC3-compliant platform provider) that helps develop and test your app without writing throwaway code.</p>"
   },
   {
     "title": "FDC3 Conformance Framework",
@@ -122,7 +122,7 @@
           },
           {
             "text": "Glue42 Core+ v1.0 Browser Extension v1.4 / Glue FDC3 v2.6.0 Certified Conformant With FDC3 1.2 Specification on 6th December 2022",
-            "link": "https://wwxw.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+            "link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
           }
         ]
       }
@@ -155,7 +155,7 @@
     "publisher": "The Linux Foundation",
     "image": "/img/community/lf.png",
     "infoLink": "https://www.youtube.com/watch?v=JSEAC_1rku8",
-    "description": "Kris West (Cosaic) introduces FDC3 and the FDC3 Workbench at the October 2021 Open Source Strategy Forum in London. ",
+    "description": "Kris West (Finsemble) introduces FDC3 and the FDC3 Workbench at the October 2021 Open Source Strategy Forum in London. ",
     "badges": [],
     "type": "examples-and-training"
   },
@@ -173,7 +173,7 @@
     "publisher": "Symphony",
     "image": "/img/users/Symphony.png",
     "infoLink": "https://www.youtube.com/watch?v=wMF1h7RaAJY",
-    "description": "This demo showcases Symphony’s interoperability, flexibility and open architecture via FDC3 protocol. Leveraging FDC3, data and information can be seamlessly shared across multiple platforms on the same desktop. In this demo we showcase FX liquidity pricing via Tradefeedr, and data and trading analytics via Cosaic’s ChartIQ and Finsemble.",
+    "description": "This demo showcases Symphony’s interoperability, flexibility and open architecture via FDC3 protocol. Leveraging FDC3, data and information can be seamlessly shared across multiple platforms on the same desktop. In this demo we showcase FX liquidity pricing via Tradefeedr, and data and trading analytics via S&P Global’s ChartIQ and Finsemble.",
     "badges": [],
     "type": "examples-and-training"
   },
