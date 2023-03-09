@@ -1,5 +1,4 @@
 ---
-id: version-2.0-fdc3-compliance
 title: Compliance
 original_id: fdc3-compliance
 ---
