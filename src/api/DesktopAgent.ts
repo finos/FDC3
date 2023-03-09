@@ -72,7 +72,7 @@ export interface DesktopAgent {
    *
    * // returns a single AppIntent:
    * // {
-   * //     intent: { name: "StartChat", displayName: "Chat" },
+   * //     intent: { name: "StartChat" },
    * //   apps: [
    * //    { appId: "Skype" },
    * //    { appId: "Symphony" },
@@ -88,7 +88,7 @@ export interface DesktopAgent {
    * // returns an AppIntent, but with multiple options for resolution,
    * // which includes an existing instance of an application:
    * // {
-   * //   intent: { name: "StartChat", displayName: "Chat" },
+   * //   intent: { name: "StartChat" },
    * //   apps: [
    * //    { appId: "Skype" },
    * //    { appId: "Symphony" },
@@ -104,7 +104,7 @@ export interface DesktopAgent {
    *
    * // returns only apps that support the type of the specified input context:
    * // {
-   * //     intent: { name: "StartChat", displayName: "Chat" },
+   * //     intent: { name: "StartChat" },
    * //     apps: [{ appId: "Symphony" }]
    * // }
    *
@@ -112,7 +112,7 @@ export interface DesktopAgent {
    *
    * // returns only apps that return the specified result Context type:
    * // {
-   * //     intent: { name: "ViewContact", displayName: "View Contact Details" },
+   * //     intent: { name: "ViewContact" },
    * //     apps: { appId: "MyCRM", resultType: "fdc3.ContactList"}]
    * // }
    *
@@ -120,7 +120,7 @@ export interface DesktopAgent {
    *
    * // returns only apps that return a channel which will receive the specified input and result types:
    * // {
-   * //     intent: { name: "QuoteStream", displayName: "Quotes stream" },
+   * //     intent: { name: "QuoteStream" },
    * //     apps: [{ appId: "MyOMS", resultType: "channel<fdc3.Quote>"}]
    * // }
    * ```
@@ -148,11 +148,11 @@ export interface DesktopAgent {
    * // returns for example:
    * // [
    * //   {
-   * //     intent: { name: "StartCall", displayName: "Call" },
+   * //     intent: { name: "StartCall" },
    * //     apps: [{ name: "Skype" }]
    * //   },
    * //   {
-   * //     intent: { name: "StartChat", displayName: "Chat" },
+   * //     intent: { name: "StartChat" },
    * //     apps: [
    * //       { appId: "Skype" },
    * //       { appId: "Symphony" },
@@ -166,7 +166,7 @@ export interface DesktopAgent {
    * const appIntentsForType = await fdc3.findIntentsByContext(context, "fdc3.ContactList");
    * // returns for example:
    * // [{
-   * //     intent: { name: "ViewContact", displayName: "View Contacts" },
+   * //     intent: { name: "ViewContact" },
    * //     apps: [{ appId: "MyCRM", resultType: "fdc3.ContactList"}]
    * // }];
    *

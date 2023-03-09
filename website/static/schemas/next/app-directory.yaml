@@ -607,7 +607,8 @@ components:
       properties:
         displayName:
           type: string
-          description: An optional display name for the intent that may be used in UI instead of the name.
+          description: Optional display name for the intent. Deprecated in favour of the Intent name, which is common amongst all apps that support it, where teh display name may vary.
+          deprecated: true
         contexts:
           type: array
           items:
@@ -1028,11 +1029,9 @@ components:
           intents: 
             listensFor: 
               ViewChart: 
-                displayName: View Chart
                 contexts: 
                   - fdc3.instrument
               myApp.GetPrice: 
-                displayName: Get Price
                 contexts: 
                   - fdc3.instrument
                 resultType: myApp.quote
@@ -1143,11 +1142,9 @@ components:
               intents: 
                 listensFor: 
                   ViewChart: 
-                    displayName: View Chart
                     contexts: 
                       - fdc3.instrument
                   myApp.GetPrice: 
-                    displayName: Get Price
                     contexts: 
                       - fdc3.instrument
                     resultType: myApp.quote
