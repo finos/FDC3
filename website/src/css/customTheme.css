@@ -99,6 +99,9 @@ header.postHeader:empty + article h1 {
   color: white;
 }
 
+.menu {
+  font-weight: 400;
+}
 
 .productShowcaseSection .logos img {
   width: 200px;

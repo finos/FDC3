@@ -4,7 +4,7 @@ sidebar_label: API
 title: App Directory API (next)
 ---
 
-View the [full specification](/schemas/next/app-directory.html) in [OpenAPI v3.0](https://www.openapis.org/) format (generated with [ReDoc](https://github.com/Redocly/redoc/)).
+View the [full specification](pathname:///schemas/next/app-directory.html) in [OpenAPI v3.0](https://www.openapis.org/) format (generated with [ReDoc](https://github.com/Redocly/redoc/)).
 
 ## Endpoints
 
@@ -16,17 +16,17 @@ View the [full specification](/schemas/next/app-directory.html) in [OpenAPI v3.0
  `/v1/apps/{appId}` | GET    | (deprecated v1 API version) Retrieve an application defintion
  `/v1/apps/search`  | GET    | (deprecated v1 API version) Retrieve a list of applications
 
-App Directory implementations MAY extend the list of endpoints to provide other necessary functionality. However, FDC3 Desktop Agent implementations that connect to app direcotries MUST support connection to app directories that only provide the minimum endpoints listed here.
+App Directory implementations MAY extend the list of endpoints to provide other necessary functionality. However, FDC3 Desktop Agent implementations that connect to app directories MUST support connection to app directories that only provide the minimum endpoints listed here.
 
 ## App Directory Standard Compliance
 
 An FDC3 Standard compliant App Directory implementation **MUST**:
 
-* Implement the specified `/v2` endpoints for retrieving app definitions as defined in the [app directory OpenAPI specification](/schemas/next/app-directory#tag/Application/paths/~1v2~1apps~1{appId}/get):
+* Implement the specified `/v2` endpoints for retrieving app definitions as defined in the [app directory OpenAPI specification](pathname:///schemas/next/app-directory.html#tag/Application):
   * `/v2/apps` (GET)
   * `/v2/apps/{appId}` (GET)
 * Ensure that `appId` field values assigned to applications are unique within the directory.
-* Ensure that app directory records served meet the minimum requirements specified in the [app directory OpenAPI specification](/schemas/next/app-directory#tag/Application/paths/~1v2~1apps~1{appId}/get)
+* Ensure that app directory records served meet the minimum requirements specified in the [app directory OpenAPI specification](pathname:///schemas/next/app-directory.html#tag/Application)
 * Support retrieval of app directory records via either the raw `appId` (e.g. `myAppId`) or fully-qualified appId (e.g. `myAppId@host.domain.com`) as defined in the [app directory overview](overview#shrinking-the-uri).
 
 An FDC3 Standard compliant App Directory implementation **SHOULD**:
