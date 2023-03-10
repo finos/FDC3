@@ -18,4 +18,4 @@ website/.docusaurus/**
 
 .idea/
 *.iml
-
+website/.yarn
