@@ -3,7 +3,7 @@
 _These are some basic sanity tests implemented in the FDC3 Conformance Framework.  It is expected that Desktop Agent testers will run these first before commencing the much more thorough tests in section 2 onwards._
 
 - `BasicCL1`: You can create a context listener by calling `fdc3.addContextListener('fdc3.contact',<handler>)`.  A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
-- `BasicCL2`: You can create an **unfiltered** context listener by calling `fdc3.addContextListener(null,<listener>)`.  A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
+- `BasicCL2`: You can create an **unfiltered** context listener by calling `fdc3.addContextListener(null,<handler>)`.  A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
 - `BasicIL1`: You can create an intent listener by calling `fdc3.addIntentListener(<intent name>,<handler>)`. A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
 - `BasicGI1`: An application can retrieve an `ImplementationMetadata` object to find out the version of FDC3 it is using and the provider details by calling:
     - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `fdc3.getInfo()` 
