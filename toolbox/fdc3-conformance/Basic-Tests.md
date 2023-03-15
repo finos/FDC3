@@ -11,7 +11,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 - `BasicAC1`: An application can retrieve a named 'App' channel via the `fdc3.getOrCreateChannel(<name>)` function. The `Channel` object returned conforms to the defined interface.
 - `BasicUC1`: An application can query the available user/system channels, which are returned as an array of `Channel` Objects conforming to the defined interface.  The API call is:
   - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `fdc3.getSystemChannels()`
-  - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)`fdc3.getUserChannels()` 
+  - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)`await fdc3.getUserChannels()` 
 - `BasicJC1`: The application should be able to join one of the user/system channels with the channel's id.  Having done so, the current channel should not be null, and be set for the application _to the channel for the id given_.  After you leave the current channel, it should go back to being `null`.
   - The channel is joined with:
     - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `fdc3.joinChannel(<channelId>)` 
