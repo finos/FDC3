@@ -24,7 +24,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | Test   | 2.Open2    |Open a second instance of App A using <br>`const appIdentifier2 = await fdc3.open({appId: "<A's appId>"})` <br/>and confirm that its `AppIdentifier` contains an `instanceId` and that its value differs from that returned for the first instance. |
 | Test   | 3.getAppMetadata1    | Retrieve metadata for the first instance of the app with<br/> `const metadata1 = fdc3.getAppMetadata(appIdentifier1)` |
 | Test   | 4.Confirm1 | Compare the `AppMetadata` object to the expected definition for the fields provided above during setup and ensure that the metadata matches.  |
-| Test   | 5.getAppMetadata2    | Retrieve metadata for the second instance of the app with <br/>`const metadata1 = fdc3.getAppMetadata(appIdentifier2)`  |
+| Test   | 5.getAppMetadata2    | Retrieve metadata for the second instance of the app with <br/>`const metadata2 = fdc3.getAppMetadata(appIdentifier2)`  |
 | Test   | 6.Confirm2    | An `instanceId` should be provided, confirm that it matches the one in `appIdentifier2`  |
 
 - `AppInstanceMetadata`: Perform the above steps
