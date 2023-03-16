@@ -28,16 +28,16 @@
 | App | Step               | Details                                                         |
 |-----|--------------------|-----------------------------------------------------------------|
 | A   | 1.Retrieve `Channel` |Retrieve a `Channel` object representing an 'App' channel called `test-channel` using: <br/>`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
-| A   | 2.Add Context Listener |Add an _typed_ context listener for `fdc3.instrument`, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener("fdc3.instrument", handler)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener("fdc3.instrument", handler)`  <br>Check that there is an `unsubscribe` function on the listener |
+| A   | 2.Add Context Listener |Add an _typed_ context listener for `fdc3.instrument`, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener("fdc3.instrument", handler)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener("fdc3.instrument", handler)`
 | B   | 3.Retrieve `Channel`   |Retrieve a `Channel` object representing the same 'App' channel A did (`test-channel`)|
 | B   | 4.Broadcast          | B broadcasts both an `fdc3.instrument` context and an `fdc3.contact` context, using: <br /> `testChannel.broadcast(<fdc3.instrument context>)` <br /> `testChannel.broadcast(<fdc3.contact context>)`|
-| A   | 5.Receive Context    | An fdc3.instrument context is received by the handler added in step 2.<br />Ensure that the fdc3.instrument received by A is identical to that sent by B<br />Ensure that the fdc3.contact context is not received.                                                                   |
+| A   | 5.Receive Context    | An fdc3.instrument context is received by the handler added in step 2.<br />Ensure that the fdc3.instrument received by A is identical to that sent by B<br />Ensure that the fdc3.contact context is NOT received.                                                                   |
 
 -  `ACFilteredContext1`: Perform above test 
 -  `ACFilteredContext2`: Perform above test, but add listeners for both `fdc3.instrument` and `fdc3.contact` in step2.  Ensure that both context objects are received. 
 -  `ACFilteredContext3`: Perform above test, except creating a _different_ channel in app B. Check that you _don't_ receive anything (as the channels don't match).
--  `ACFilteredContext4`: Perform above test, except that after creating the channel **A** creates another channel with a further _different_ channel id and adds a further context listener to it.  Ensure that **A** is still able to receive context on the first channel (i.e. it is unaffected by the additional channel) and does *NOT* receive anything on the second channel.
--  `ACUnsubscribe`: Perform above test, except that after creating the channel **A** then `unsubscribe()`s the listener it added to the channel. Check that **A** _doesn't_ receive anything.
+-  `ACFilteredContext4`: Perform above test, except that after creating the channel **A** creates another channel with a further _different_ channel id and adds a further context listener to it.  Ensure that **A** is still able to receive context on the first channel (i.e. it is unaffected by the additional channel) and does NOT receive anything on the second channel.
+-  `ACUnsubscribe`: Perform above test, except that after creating the channel **A** then `unsubscribe()`s the listener it added to the channel. Check that **A** does NOT receive anything.
 
 ### App Channel History
 
