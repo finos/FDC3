@@ -56,7 +56,7 @@ We assume 6 context types in the below tests (and associated AppD records):
 - `testContextX`
 - `testContextY`
 - `testContextZ`
-- `nonExistentContext` (context object with a unique type that doesn't appear in any of the apps (metadata or otherwise).
+- `nonExistentContext` (context object with a unique type that does NOT appear in any of the apps (metadata or otherwise).
 - `privateChannelDetails`
 - `privateChannelIsPrivateResult`
 
@@ -168,11 +168,11 @@ Finally, please note that this is a larger set of apps than were required for 1.
 | Test   | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifer` as the `source field` with App A's `appId` and `instanceId` set.                     |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.                        |
 | B       | 5. return void          | A should return `void` after a short delay (e.g. 5 seconds).                        |
-| Test   | 6. receive void result          | The promise received by Test from `resolution.getResult()` should resolve to void. Confirm that the promise could be retrieved before the handler function returned and that the result was received *after* the result was returned by A, not before. I.e. confirm that `resolution.getResult()` does not block until the result is returned, but rather returns a promise that can be awaited.                      |
+| Test   | 6. receive void result          | The promise received by Test from `resolution.getResult()` should resolve to void. Confirm that the promise could be retrieved before the handler function returned and that the result was received *after* the result was returned by A, NOT before. I.e. confirm that `resolution.getResult()` does NOT block until the result is returned, but rather returns a promise that can be awaited.                      |
 
 - `2.0-RaiseIntentVoidResult5secs`: Perform above test
 - `2.0-RaiseIntentVoidResult0secs`: Perform above test, but A should return its result immediately (no delay). Ignore test step 6 (as there is too little time between the IntentResolution and IntentHandler completing).
-- `2.0-RaiseIntentVoidResult61secs`: Perform above test, but A should return its result **after 61 seconds** (arbitrary delay to test timeout doesn't occur)
+- `2.0-RaiseIntentVoidResult61secs`: Perform above test, but A should return its result **after 61 seconds** (arbitrary delay to test timeout does NOT occur)
 
 ### Raise Intent Result (Context result)
 
@@ -183,11 +183,11 @@ Finally, please note that this is a larger set of apps than were required for 1.
 | Test   | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifer` as the `source field` with App B's `appId` and `instanceId` set. |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly. |
 | B      | 5. return `testContextY`          | B should return a `testContextY` instance after a short delay (e.g. 5 seconds). |
-| Test   | 6. receive context result          | The promise received by Test from `resolution.getResult()` should resolve to the `testContextY` instance. Confirm that the promise could be retrieved before the handler function returned and that the result was received *after* the result was returned by B, not before. I.e. confirm that `resolution.getResult()` does not block until the result is returned, but rather returns a promise that can be awaited. |
+| Test   | 6. receive context result          | The promise received by Test from `resolution.getResult()` should resolve to the `testContextY` instance. Confirm that the promise could be retrieved before the handler function returned and that the result was received *after* the result was returned by B, NOT before. I.e. confirm that `resolution.getResult()` does NOT block until the result is returned, but rather returns a promise that can be awaited. |
 
 - `2.0-RaiseIntentContextResult5secs`: Perform the above test.
 - `2.0-RaiseIntentContextResult0secs`: Perform the previous test but B should return its result immediately (no delay).
-- `2.0-RaiseIntentContextResult61secs`: As above, but B should return its result **after 61 seconds** (arbitrary delay to test timeout doesn't occur)
+- `2.0-RaiseIntentContextResult61secs`: As above, but B should return its result **after 61 seconds** (arbitrary delay to test timeout does NOT occur)
 
 ### Raise Intent Result (Channel results)
 
