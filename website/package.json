@@ -9,7 +9,7 @@
     "copy-schemas": "cpy ../src/context/schemas/*.schema.json static/schemas/next",
     "copy-appd": "cpy ../src/app-directory/specification/appd.yaml static/schemas/next --rename app-directory.yaml",
     "build-workbench": "cd ../toolbox/fdc3-workbench && npm install && npm run build",
-    "copy-workbench": "del-cli static/toolbox/fdc3-workbench && npm run build-workbench && cd ../toolbox/fdc3-workbench/build && cpy ** ../../../website/static/toolbox/fdc3-workbench --parents && find ../../../website/static/toolbox/fdc3-workbench",
+    "copy-workbench": "del-cli static/toolbox/fdc3-workbench && npm run build-workbench && cd ../toolbox/fdc3-workbench/build && cpy ** ../../../website/static/toolbox/fdc3-workbench --parents",
     "copy-explained": "del-cli static/toolbox/fdc3-explained && cpy ./fdc3-explained ../website/static/toolbox --parents  --cwd=../toolbox",
     "version": "npm run version:docs && npm run version:schemas && npm run version:appd",
     "version:docs": "docusaurus-version ${VERSION}",
