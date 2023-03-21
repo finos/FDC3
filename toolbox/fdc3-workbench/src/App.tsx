@@ -15,6 +15,7 @@ import { Channels } from "./components/Channels";
 import { Workbench } from "./components/Workbench/Workbench";
 import { ContextCreate } from "./components/ContextCreate";
 import { Intents } from "./components/Intents";
+import { AppChannels } from "./components/AppChannels";
 import snackbarStore from "./store/SnackbarStore";
 import "./App.css";
 import { fdc3Ready } from "@finos/fdc3";
@@ -70,6 +71,14 @@ const useStyles = makeStyles((theme: Theme) =>
 			".MuiButton-contained": {
 				boxShadow: "none",
 			},
+			".MuiGrid-item:has(> .MuiButton-root)": {
+				display: "flex",
+				alignItems: "center",
+			},
+			".MuiInputBase-root.Mui-disabled": {
+				color: "rgba(0, 0, 0, 0.6)",
+				cursor: "default",
+			},
 		},
 		root: {
 			flexGrow: 1,
@@ -78,7 +87,6 @@ const useStyles = makeStyles((theme: Theme) =>
 			marginBottom: theme.spacing(2),
 		},
 		body: {
-			padding: theme.spacing(1),
 			height: "100%",
 		},
 		paper: {
@@ -125,6 +133,11 @@ const useStyles = makeStyles((theme: Theme) =>
 		code: {
 			fontFamily: "courier, courier new, serif",
 		},
+		workbench: {
+			[theme.breakpoints.down("sm")]: {
+				marginTop: "30px",
+			},
+		},
 	})
 );
 
@@ -151,8 +164,10 @@ export const App = observer(() => {
 	const [fdc3Available, setFdc3Available] = useState(false);
 	const [openSnackbar, setOpenSnackbar] = useState(false);
 	const [tabIndex, setTabIndex] = useState(0);
+	const [contextName, setContextName] = useState("");
 
-	const handleTabChange = (event: React.ChangeEvent<unknown>, newIndex: number) => {
+	const handleTabChange = (event: React.ChangeEvent<{}>, newIndex: number, name = "") => {
+		setContextName(name);
 		setTabIndex(newIndex);
 	};
 
@@ -188,9 +203,8 @@ export const App = observer(() => {
 				</Grid>
 				{fdc3Available ? (
 					<Grid className={classes.body} container spacing={2} item xs={12} style={{ marginLeft: "0px" }}>
-						<Grid item xs={8} style={{ flex: 1 }}>
+						<Grid item xs={12} md={8} style={{ flex: 1 }}>
 							<Paper className={classes.paper}>
-								<Typography variant="h4">{`{workbench}`}</Typography>
 								<Tabs
 									value={tabIndex}
 									indicatorColor="primary"
@@ -202,23 +216,27 @@ export const App = observer(() => {
 										indicator: classes.indicator,
 									}}
 								>
+									<Tab label="Contexts" />
+									<Tab label="Intents" />
 									<Tab label="System Channels" />
-									<Tab label="Context" />
-									<Tab label="Intent" />
+									<Tab label="App Channels" />
 								</Tabs>
 								<TabPanel value={tabIndex} index={0}>
-									<Channels />
+									<ContextCreate contextName={contextName} />
 								</TabPanel>
 								<TabPanel value={tabIndex} index={1}>
-									<ContextCreate />
+									<Intents handleTabChange={handleTabChange} />
 								</TabPanel>
 								<TabPanel value={tabIndex} index={2}>
-									<Intents />
+									<Channels handleTabChange={handleTabChange} />
+								</TabPanel>
+								<TabPanel value={tabIndex} index={3}>
+									<AppChannels handleTabChange={handleTabChange} />
 								</TabPanel>
 							</Paper>
 						</Grid>
 
-						<Grid item xs={4}>
+						<Grid item xs={12} md={4} className={classes.workbench}>
 							<Paper className={classes.paper}>
 								<Workbench />
 							</Paper>

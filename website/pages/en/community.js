@@ -42,7 +42,9 @@ implData.sort((a, b) => {
 	}
 });
 
-function Implementation({ type, title, publisher, image, infoLink, docsLink, badges, description }) {
+
+function Implementation({ type, title, publisher, image, infoLink, docsLink, badges, conformance, description }) {
+
 	return <div className={"implementation hide " + type}>
 		<div className="implementation-metadata">
 			<div className="title-and-publisher">
@@ -60,9 +62,27 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 					{docsLink ? <a href={docsLink} key={docsLink} className="button">Documentation</a> : null}
 				</div>
 				<div className="prose" dangerouslySetInnerHTML={{ __html: description }}></div>
+				<div className="conformance">
+					{
+						conformance ? <h3><a title="The FDC3 Conformance Framework" href="https://github.com/finos/FDC3-Conformance-Framework">Conformance Details</a></h3> : null
+					}
+					{
+						(conformance ? conformance :[]).map(c =>
+							<div className="conformance-element">
+								<div className="conformance-badge"><img src={c.src} /></div>
+								<div className="conformance-text"><ul>
+									{
+										c.items.map(ti => <li>{ti.text} (<a className="conformance-details" href={ti.link}>details</a>)</li>)
+									}
+								</ul></div>
+							</div>)
+					}
+				</div>
 				<div className="badges">
 					{ badges.map(b =><a href="#" key={b.text} title={badgeTitles[b.text]} className="button badge">{b.text}</a>)}
 				</div>
+
+
 			</div>
 		</div>
 	</div>
@@ -88,6 +108,9 @@ function ImplementationsShowcase() {
 			<button className="button filter" id="adopter">
 				Adopters
 			</button>
+			<button className="button filter" id="meetup">
+				Meetups
+			</button>
 			<button className="button filter" id="all">
 				All
 			</button>
@@ -103,7 +126,7 @@ function ImplementationsShowcase() {
 function Implementations(props) {
 	const { config: siteConfig } = props;
 	const { repoUrl } = siteConfig;
-	const editUrl = `https://www.finos.org/get-involved-fdc3`;
+	const editUrl = `https://github.com/finos/FDC3/edit/master/website/data/community.json`;
 
 	return <Container>
 		<h1>FDC3 Community</h1>

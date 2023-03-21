@@ -23,6 +23,15 @@ export const codeExamples = {
 		"};\n" +
 		"\n" +
 		"fdc3.broadcast(instrument);",
+	appChannelBroadcast:
+		"const instrument = {\n" +
+		"    type: 'fdc3.instrument',\n" +
+		"    id: {\n" +
+		"        ticker: 'AAPL'\n" +
+		"    }\n" +
+		"};\n" +
+		"\n" +
+		"appChannelID.broadcast(instrument);",
 	raiseIntent:
 		"//Raise an intent with a specified context\n" +
 		'let context = {type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}; \n' +
@@ -35,6 +44,16 @@ export const codeExamples = {
 		"\n" +
 		"// listener for a specific type\n" +
 		"const contactListener = fdc3.addContextListener('fdc3.contact', contact => {\n" +
+		"    //add context handling code here\n" +
+		"});",
+	appChannelContextListener:
+		"// any context\n" +
+		"const listener = appChannelID.addContextListener(null, context => {\n" +
+		"    //add context handling code here\n" +
+		"});\n" +
+		"\n" +
+		"// listener for a specific type\n" +
+		"const contactListener = appChannelID.addContextListener('fdc3.contact', contact => {\n" +
 		"    //add context handling code here\n" +
 		"});",
 	intentListener:
