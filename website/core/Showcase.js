@@ -32,4 +32,4 @@ Showcase.propTypes = {
   users: PropTypes.array.isRequired,
 };
 
-module.exports = Showcase;
+export default Showcase

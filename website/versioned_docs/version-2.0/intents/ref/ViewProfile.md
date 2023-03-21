@@ -1,5 +1,4 @@
 ---
-id: version-2.0-ViewProfile
 sidebar_label: ViewProfile
 title: ViewProfile
 hide_title: true

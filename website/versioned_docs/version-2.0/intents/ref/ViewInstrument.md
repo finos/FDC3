@@ -1,5 +1,4 @@
 ---
-id: version-2.0-ViewInstrument
 sidebar_label: ViewInstrument
 title: ViewInstrument
 hide_title: true

@@ -79,7 +79,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 				<Toolbar className={classes.toolbar}>
 					<div>
 						<Typography variant="h3" color="inherit" className={classes.fdc3}>
-							<img src="./fdc3-logo.svg" className={classes.headerCube} />
+							<img src={`${import.meta.env.BASE_URL}/fdc3-logo.svg`} className={classes.headerCube} />
 						</Typography>
 					</div>
 

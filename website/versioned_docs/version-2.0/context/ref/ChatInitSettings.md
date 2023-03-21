@@ -1,5 +1,4 @@
 ---
-id: version-2.0-ChatInitSettings
 sidebar_label: ChatInitSettings
 title: ChatInitSettings
 hide_title: true
