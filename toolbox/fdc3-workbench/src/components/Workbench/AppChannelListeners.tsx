@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
-import intentStore from "../../store/IntentStore";
+import appChannelStore from "../../store/AppChannelStore";
 import { AccordionList, AccordionListItem } from "../common/AccordionList";
 import { TextField } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -13,19 +13,17 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		input: {
 			fontSize: "14px",
-			color: "rgba(0, 0, 0, 0.6)",
-		},
-		"& .Mui-disabled": {
-			borderColor: theme.palette.text.primary,
 		},
 	})
 );
 
-export const IntentListeners = observer(() => {
+export const AppChannelListeners = observer(() => {
 	const classes = useStyles();
-	const intentListeners: AccordionListItem[] = intentStore.intentListeners.map(({ id, type, lastReceivedContext }) => {
-		const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
 
+	let contextListeners: AccordionListItem[] = [];
+
+	appChannelStore.appChannelListeners.forEach(({ id, channelId, type, lastReceivedContext }) => {
+		const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
 		const contextField = (
 			<TextField
 				disabled
@@ -48,18 +46,19 @@ export const IntentListeners = observer(() => {
 			/>
 		);
 
-		return { id, textPrimary: `${type}`, afterEachElement: contextField };
+		contextListeners.push({ id, textPrimary: `${channelId}: ${type}`, afterEachElement: contextField });
 	});
 
 	const handleDeleteListener = (id: string) => {
-		intentStore.removeIntentListener(id);
+		appChannelStore.removeContextListener(id);
 	};
 
 	return (
 		<AccordionList
-			title="Intents"
-			noItemsText="No Intent Listeners"
-			listItems={intentListeners}
+			title="App Channels"
+			icon="Any context already in the channel will NOT be received automatically"
+			noItemsText="No App Channel Listeners"
+			listItems={contextListeners}
 			onDelete={handleDeleteListener}
 		/>
 	);

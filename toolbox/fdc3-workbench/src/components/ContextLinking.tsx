@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { observer } from "mobx-react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Typography, Grid, Button, IconButton, Tooltip } from "@material-ui/core";
@@ -18,6 +18,7 @@ interface FilterOptionsState<T> {
 interface ListenerOptionType {
 	title: string;
 	value: string;
+	type: string | undefined;
 }
 
 type ListenerSetValue = (value: ListenerOptionType | null) => void;
@@ -34,7 +35,6 @@ const useStyles = makeStyles((theme: Theme) =>
 			flexWrap: "wrap",
 			marginTop: theme.spacing(1),
 			"& > *": {
-				margin: theme.spacing(1),
 				marginRight: 0,
 			},
 		},
@@ -66,16 +66,22 @@ export const ContextLinking = observer(() => {
 	const classes = useStyles();
 	const [contextListener, setContextListener] = useState<ListenerOptionType | null>(null);
 	const [contextError, setContextError] = useState<string | false>(false);
-	const contextListenersOptions: ListenerOptionType[] = contextStore.contextsList.map(({ id }) => {
+	const contextListenersOptionsAll: ListenerOptionType[] = contextStore.contextsList.map(({ id, template }) => {
 		return {
 			title: id,
 			value: id,
+			type: template?.type,
 		};
 	});
-	contextListenersOptions.unshift({
+	contextListenersOptionsAll.unshift({
 		title: "All",
 		value: "all",
+		type: "All",
 	});
+
+	const contextListenersOptions = Array.from(
+		new Map(contextListenersOptionsAll.reverse().map((item) => [item["type"], item])).values()
+	).reverse();
 
 	const handleChangeListener =
 		(setValue: ListenerSetValue, setError: ListenerSetError) => (event: React.ChangeEvent<{}>, newValue: any) => {
@@ -83,11 +89,13 @@ export const ContextLinking = observer(() => {
 				setValue({
 					title: newValue,
 					value: newValue,
+					type: newValue,
 				});
 			} else if (newValue && newValue.inputValue) {
 				setValue({
 					title: newValue.inputValue,
 					value: newValue.inputValue,
+					type: newValue.inputValue,
 				});
 			} else {
 				setValue(newValue);
@@ -97,8 +105,8 @@ export const ContextLinking = observer(() => {
 		};
 
 	const getOptionLabel = (option: ListenerOptionType) => {
-		if (option.value) {
-			return option.value;
+		if (option.type) {
+			return option.type;
 		}
 		return option.title;
 	};
@@ -110,18 +118,20 @@ export const ContextLinking = observer(() => {
 			filtered.push({
 				value: params.inputValue,
 				title: `Add "${params.inputValue}"`,
+				type: params.inputValue,
 			});
 		}
 
 		return filtered;
 	};
 
-	const handleAddContextListener = () => {
+	const handleAddContextListener = (e: FormEvent | null = null) => {
+		e?.preventDefault();
 		if (contextListener) {
-			if (contextStore.isContextListenerExists(contextListener.value)) {
+			if (contextStore.isContextListenerExists(contextListener.type)) {
 				setContextError("Listener already added");
 			} else {
-				contextStore.addContextListener(contextListener.value);
+				contextStore.addContextListener(contextListener.type);
 				setContextListener(null);
 			}
 		} else {
@@ -134,8 +144,7 @@ export const ContextLinking = observer(() => {
 			<Grid item xs={12}>
 				<Typography variant="h5">Add Context Listener</Typography>
 			</Grid>
-
-			<form className={classes.form} noValidate autoComplete="off">
+			<form className={classes.form} noValidate autoComplete="off" onSubmit={(e) => handleAddContextListener(e)}>
 				<Grid
 					container
 					direction="row"
@@ -156,10 +165,10 @@ export const ContextLinking = observer(() => {
 							filterOptions={filterOptions}
 							options={contextListenersOptions}
 							getOptionLabel={getOptionLabel}
-							renderOption={(option) => option.title}
+							renderOption={(option) => option.type}
 							renderInput={(params) => (
 								<TemplateTextField
-									label="CONTEXT LISTENER"
+									label="CONTEXT TYPE"
 									placeholder="Enter Context Type"
 									variant="outlined"
 									{...params}
