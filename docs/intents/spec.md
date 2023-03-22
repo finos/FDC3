@@ -161,6 +161,7 @@ A list of standardized intents are defined in the following pages:
 * [`ViewProfile`](ref/ViewProfile)
 * [`ViewQuote`](ref/ViewQuote)
 * [`ViewResearch`](ref/ViewResearch)
+* [`CreateInteraction`](ref/CreateInteraction)
 
 ### Deprecated Intents
 

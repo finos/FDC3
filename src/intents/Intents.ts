@@ -1,4 +1,5 @@
 export enum Intents {
+  CreateInteraction = 'CreateInteraction',
   StartCall = 'StartCall',
   StartChat = 'StartChat',
   StartEmail = 'StartEmail',
