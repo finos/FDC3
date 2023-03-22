@@ -36,7 +36,7 @@ const chatRoom = {
     type: 'fdc3.chat.room',
     providerName: "Symphony",
     id: {
-        streamIds: ["j75xqXy25NBOdacUI3FNBH"]
+        streamId: "j75xqXy25NBOdacUI3FNBH"
     }
 }
 

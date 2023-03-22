@@ -22,7 +22,7 @@ https://fdc3.finos.org/schemas/next/chatRoom.schema.json
 |-------------|---------|----------|-------------------|
 | `type`      | string  | Yes      | `'fdc3.chat.room'`  |
 | `providerName`      | string  | Yes       | `'Symphony'`      |
-| `id`  | object  | Yes       | `{ streamIds: ['j75xqXy25NBOdacUI3FNBH'], anyOtherKey: 'abcdef'}` |
+| `id`  | object  | Yes       | `{ streamId: 'j75xqXy25NBOdacUI3FNBH', anyOtherKey: 'abcdef'}` |
 | `url` | string  | No       | `'http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA'`      |
 | `name` | string  | No       | `'My new room'`      |
 
@@ -35,7 +35,7 @@ const chatRoom = {
   type: "fdc3.chat.room",
   providerName: "Symphony",
   id: {
-      streamIds: ["j75xqXy25NBOdacUI3FNBH"]
+      streamId: "j75xqXy25NBOdacUI3FNBH"
   }
   url: "http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA",
   name: 'My new room'
