@@ -1,6 +1,10 @@
 {
   "intents": [
     {
+      "name": "CreateInteraction",
+      "displayName": "Create Interaction"
+    },
+    {
       "name": "StartCall",
       "displayName": "Call"
     },
