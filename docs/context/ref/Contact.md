@@ -52,6 +52,7 @@ Intents
 - [ViewResearch](../../intents/ref/ViewResearch)
 - [ViewInteractions](../../intents/ref/ViewInteractions)
 - [ViewOrders](../../intents/ref/ViewOrders)
+- [CreateInteraction](../../intents/ref/CreateInteraction)
 
 FINOS Financial Objects
 - [Contact](https://fo.finos.org/docs/objects/contact)
