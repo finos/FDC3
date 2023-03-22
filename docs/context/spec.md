@@ -172,6 +172,7 @@ The following are standard FDC3 context types:
 - [`fdc3.position`](ref/Position) ([schema](/schemas/next/position.schema.json))
 - [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/next/nothing.schema.json))
 - [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/next/timerange.schema.json))
+- [`fdc3.transactionResult`](ref/TransactionResult) ([schema](/schemas/next/transactionresult.schema.json))
 - [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/valuation.schema.json))
 
 __Note:__ The below examples show how the base context data interface can be used to define specific context data objects.
