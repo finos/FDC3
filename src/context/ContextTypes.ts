@@ -109,18 +109,7 @@ export interface Country {
   name?: string;
 }
 
-export interface Interaction {
-  id?: { [key: string]: string };
-  type: string;
-  participants: ContactList;
-  timeRange: TimeRange;
-  interactionType: ("Instant Message" | "Email" | "Call" | "Meeting") | string;
-  description: string;
-  initiator?: Contact;
-  origin?: string;
-}
-
-  export interface CountryID {
+export interface CountryID {
   COUNTRY_ISOALPHA2?: string;
   COUNTRY_ISOALPHA3?: string;
   ISOALPHA2?: string;
@@ -165,6 +154,17 @@ export interface InstrumentList {
   name?: string;
 }
 
+export interface Interaction {
+  id?: { [key: string]: string };
+  type: string;
+  participants: ContactList;
+  timeRange: TimeRange;
+  interactionType: ("Instant Message" | "Email" | "Call" | "Meeting") | string;
+  description: string;
+  initiator?: Contact;
+  origin?: string;
+}
+
 export interface Nothing {
   type: string;
   id?: { [key: string]: string };
@@ -207,6 +207,13 @@ export interface Valuation {
   value: number;
   id?: { [key: string]: string };
   name?: string;
+}
+
+export interface TransactionResult {
+  status: ("Created" | "Deleted" | "Updated" | "Failed") | string; 
+  type: string;
+  context?: Context;
+  message?: string;
 }
 
 // Converts JSON strings to/from your types
