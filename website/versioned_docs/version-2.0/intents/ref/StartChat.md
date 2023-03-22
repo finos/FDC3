@@ -51,7 +51,7 @@ const initSettings = {
     },
     options: {
         groupRecipients: true, // one chat with both contacts
-        public: false, // private chat room
+        isPublic: false, // private chat room
         allowHistoryBrowsing: true,
         allowMessageCopy: true,
         allowAddUser: false, // John won't be authorized to add other users to the chat
