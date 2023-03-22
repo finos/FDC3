@@ -3,10 +3,9 @@
     "$id": "https://fdc3.finos.org/schemas/next/chatInitSettings.schema.json",
     "type": "object",
     "title": "ChatInitSettings",
+    "allOf": [{ "$ref": "context.schema.json#" }],
     "properties": {
-        "type": {
-            "const": "fdc3.chat.initSettings"
-        },
+        "type": { "const": "fdc3.chat.initSettings" },
         "chatName": {
             "type": "string"
         },
@@ -17,14 +16,14 @@
             "type": "string"
         },
         "options": {
-            "groupRecipients": "boolean",
-            "public": "boolean",
-            "allowHistoryBrowsing": "boolean",
-            "allowMessageCopy": "boolean",
-            "allowAddUser": "boolean"
+            "type": "object",
+            "properties": {
+              "groupRecipients": {"type": "boolean"},
+              "isPublic": {"type": "boolean"},
+              "allowHistoryBrowsing":  {"type": "boolean"},
+              "allowMessageCopy":  {"type": "boolean"},
+              "allowAddUser":  {"type": "boolean"}
+            }
         }
-    },
-    "required": [
-        "type"
-    ]
+    }
 }
