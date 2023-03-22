@@ -38,6 +38,7 @@
         "label": "Intents Part",
         "items": [
           "intents/spec",
+          "intents/ref/CreateInteraction",
           "intents/ref/StartCall",
           "intents/ref/StartChat",
           "intents/ref/StartEmail",
@@ -69,6 +70,7 @@
           "context/ref/Email",
           "context/ref/Instrument",
           "context/ref/InstrumentList",
+          "context/ref/Interaction",
           "context/ref/Nothing",
           "context/ref/Organization",
           "context/ref/Portfolio",
