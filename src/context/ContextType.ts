@@ -9,12 +9,14 @@ export enum ContextTypes {
   Email = 'fdc3.email',
   Instrument = 'fdc3.instrument',
   InstrumentList = 'fdc3.instrumentList',
+  Interaction = 'fdc3.interaction',
   Nothing = 'fdc3.nothing',
   Organization = 'fdc3.organization',
   Portfolio = 'fdc3.portfolio',
   Position = 'fdc3.position',
   ChatSearchCriteria = 'fdc3.chat.searchCriteria',
   TimeRange = 'fdc3.timerange',
+  TransactionResult = 'fdc3.transactionResult',
   Valuation = 'fdc3.valuation',
 }
 

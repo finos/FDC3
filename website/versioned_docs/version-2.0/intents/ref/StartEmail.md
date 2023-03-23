@@ -1,5 +1,4 @@
 ---
-id: version-2.0-StartEmail
 sidebar_label: StartEmail
 title: StartEmail
 hide_title: true

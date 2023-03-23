@@ -1,98 +1,98 @@
 {
-  "version-2.0-docs": {
+  "docs": {
     "Getting Started": [
-      "version-2.0-fdc3-intro",
-      "version-2.0-why-fdc3",
-      "version-2.0-fdc3-charter"
+      "fdc3-intro",
+      "why-fdc3",
+      "fdc3-charter"
     ],
     "FDC3 Standard": [
-      "version-2.0-fdc3-standard",
-      "version-2.0-fdc3-compliance",
-      "version-2.0-fdc3-glossary",
-      "version-2.0-references",
-      "version-2.0-supported-platforms",
+      "fdc3-standard",
+      "fdc3-compliance",
+      "fdc3-glossary",
+      "references",
+      "supported-platforms",
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "API Part",
-        "ids": [
-          "version-2.0-api/spec",
-          "version-2.0-api/ref/DesktopAgent",
-          "version-2.0-api/ref/Channel",
-          "version-2.0-api/ref/PrivateChannel",
-          "version-2.0-api/ref/Globals",
-          "version-2.0-api/ref/Types",
-          "version-2.0-api/ref/Metadata",
-          "version-2.0-api/ref/Errors"
+        "items": [
+          "api/spec",
+          "api/ref/DesktopAgent",
+          "api/ref/Channel",
+          "api/ref/PrivateChannel",
+          "api/ref/Globals",
+          "api/ref/Types",
+          "api/ref/Metadata",
+          "api/ref/Errors"
         ]
       },
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "App Directory Part",
-        "ids": [
-          "version-2.0-app-directory/overview",
-          "version-2.0-app-directory/spec"
+        "items": [
+          "app-directory/overview",
+          "app-directory/spec"
         ]
       },
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Intents Part",
-        "ids": [
-          "version-2.0-intents/spec",
-          "version-2.0-intents/ref/StartCall",
-          "version-2.0-intents/ref/StartChat",
-          "version-2.0-intents/ref/StartEmail",
-          "version-2.0-intents/ref/ViewAnalysis",
-          "version-2.0-intents/ref/ViewChart",
-          "version-2.0-intents/ref/ViewHoldings",
-          "version-2.0-intents/ref/ViewInstrument",
-          "version-2.0-intents/ref/ViewInteractions",
-          "version-2.0-intents/ref/ViewNews",
-          "version-2.0-intents/ref/ViewOrders",
-          "version-2.0-intents/ref/ViewProfile",
-          "version-2.0-intents/ref/ViewQuote",
-          "version-2.0-intents/ref/ViewResearch",
-          "version-2.0-intents/ref/ViewContact"
+        "items": [
+          "intents/spec",
+          "intents/ref/StartCall",
+          "intents/ref/StartChat",
+          "intents/ref/StartEmail",
+          "intents/ref/ViewAnalysis",
+          "intents/ref/ViewChart",
+          "intents/ref/ViewHoldings",
+          "intents/ref/ViewInstrument",
+          "intents/ref/ViewInteractions",
+          "intents/ref/ViewNews",
+          "intents/ref/ViewOrders",
+          "intents/ref/ViewProfile",
+          "intents/ref/ViewQuote",
+          "intents/ref/ViewResearch",
+          "intents/ref/ViewContact"
         ]
       },
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Context Data Part",
-        "ids": [
-          "version-2.0-context/spec",
-          "version-2.0-context/ref/Context",
-          "version-2.0-context/ref/Chart",
-          "version-2.0-context/ref/ChatInitSettings",
-          "version-2.0-context/ref/Contact",
-          "version-2.0-context/ref/ContactList",
-          "version-2.0-context/ref/Country",
-          "version-2.0-context/ref/Currency",
-          "version-2.0-context/ref/Email",
-          "version-2.0-context/ref/Instrument",
-          "version-2.0-context/ref/InstrumentList",
-          "version-2.0-context/ref/Nothing",
-          "version-2.0-context/ref/Organization",
-          "version-2.0-context/ref/Portfolio",
-          "version-2.0-context/ref/Position",
-          "version-2.0-context/ref/TimeRange",
-          "version-2.0-context/ref/Valuation"
+        "items": [
+          "context/spec",
+          "context/ref/Context",
+          "context/ref/Chart",
+          "context/ref/ChatInitSettings",
+          "context/ref/Contact",
+          "context/ref/ContactList",
+          "context/ref/Country",
+          "context/ref/Currency",
+          "context/ref/Email",
+          "context/ref/Instrument",
+          "context/ref/InstrumentList",
+          "context/ref/Nothing",
+          "context/ref/Organization",
+          "context/ref/Portfolio",
+          "context/ref/Position",
+          "context/ref/TimeRange",
+          "context/ref/Valuation"
         ]
       }
     ]
   },
-  "version-2.0-use-cases": {
+  "use-cases": {
     "Use Cases": [
-      "version-2.0-use-cases/overview",
-      "version-2.0-use-cases/uc-1",
-      "version-2.0-use-cases/uc-2",
-      "version-2.0-use-cases/uc-3",
-      "version-2.0-use-cases/uc-4",
-      "version-2.0-use-cases/uc-5",
-      "version-2.0-use-cases/uc-9",
-      "version-2.0-use-cases/uc-10",
-      "version-2.0-use-cases/uc-13",
-      "version-2.0-use-cases/uc-15",
-      "version-2.0-use-cases/uc-16",
-      "version-2.0-use-cases/uc-17"
+      "use-cases/overview",
+      "use-cases/uc-1",
+      "use-cases/uc-2",
+      "use-cases/uc-3",
+      "use-cases/uc-4",
+      "use-cases/uc-5",
+      "use-cases/uc-9",
+      "use-cases/uc-10",
+      "use-cases/uc-13",
+      "use-cases/uc-15",
+      "use-cases/uc-16",
+      "use-cases/uc-17"
     ]
   }
 }

@@ -1,5 +1,4 @@
 ---
-id: version-2.0-StartChat
 sidebar_label: StartChat
 title: StartChat
 hide_title: true
@@ -52,7 +51,7 @@ const initSettings = {
     },
     options: {
         groupRecipients: true, // one chat with both contacts
-        public: false, // private chat room
+        isPublic: false, // private chat room
         allowHistoryBrowsing: true,
         allowMessageCopy: true,
         allowAddUser: false, // John won't be authorized to add other users to the chat

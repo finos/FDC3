@@ -1,5 +1,4 @@
 ---
-id: version-2.0-StartCall
 sidebar_label: StartCall
 title: StartCall
 hide_title: true

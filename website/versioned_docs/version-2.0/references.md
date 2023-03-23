@@ -1,5 +1,4 @@
 ---
-id: version-2.0-references
 title: References & Bibliography
 sidebar_label: References
 original_id: references

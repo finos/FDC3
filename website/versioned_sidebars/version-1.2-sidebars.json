@@ -1,87 +1,87 @@
 {
-  "version-1.2-docs": {
+  "docs": {
     "Getting Started": [
-      "version-1.2-fdc3-intro",
-      "version-1.2-supported-platforms",
-      "version-1.2-why-fdc3",
-      "version-1.2-fdc3-charter",
-      "version-1.2-fdc3-compliance",
-      "version-1.2-fdc3-standard"
+      "fdc3-intro",
+      "supported-platforms",
+      "why-fdc3",
+      "fdc3-charter",
+      "fdc3-compliance",
+      "fdc3-standard"
     ],
     "API": [
-      "version-1.2-api/overview",
-      "version-1.2-api/spec",
+      "api/overview",
+      "api/spec",
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Reference",
-        "ids": [
-          "version-1.2-api/ref/DesktopAgent",
-          "version-1.2-api/ref/Channel",
-          "version-1.2-api/ref/Globals",
-          "version-1.2-api/ref/Types",
-          "version-1.2-api/ref/Metadata",
-          "version-1.2-api/ref/Errors"
+        "items": [
+          "api/ref/DesktopAgent",
+          "api/ref/Channel",
+          "api/ref/Globals",
+          "api/ref/Types",
+          "api/ref/Metadata",
+          "api/ref/Errors"
         ]
       }
     ],
     "Intents": [
-      "version-1.2-intents/overview",
-      "version-1.2-intents/spec",
+      "intents/overview",
+      "intents/spec",
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Reference",
-        "ids": [
-          "version-1.2-intents/ref/StartCall",
-          "version-1.2-intents/ref/StartChat",
-          "version-1.2-intents/ref/ViewChart",
-          "version-1.2-intents/ref/ViewContact",
-          "version-1.2-intents/ref/ViewQuote",
-          "version-1.2-intents/ref/ViewNews",
-          "version-1.2-intents/ref/ViewAnalysis",
-          "version-1.2-intents/ref/ViewInstrument"
+        "items": [
+          "intents/ref/StartCall",
+          "intents/ref/StartChat",
+          "intents/ref/ViewChart",
+          "intents/ref/ViewContact",
+          "intents/ref/ViewQuote",
+          "intents/ref/ViewNews",
+          "intents/ref/ViewAnalysis",
+          "intents/ref/ViewInstrument"
         ]
       }
     ],
     "Context Data": [
-      "version-1.2-context/overview",
-      "version-1.2-context/spec",
+      "context/overview",
+      "context/spec",
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Reference",
-        "ids": [
-          "version-1.2-context/ref/Context",
-          "version-1.2-context/ref/Contact",
-          "version-1.2-context/ref/ContactList",
-          "version-1.2-context/ref/Instrument",
-          "version-1.2-context/ref/InstrumentList",
-          "version-1.2-context/ref/Organization",
-          "version-1.2-context/ref/Country",
-          "version-1.2-context/ref/Position",
-          "version-1.2-context/ref/Portfolio"
+        "items": [
+          "context/ref/Context",
+          "context/ref/Contact",
+          "context/ref/ContactList",
+          "context/ref/Instrument",
+          "context/ref/InstrumentList",
+          "context/ref/Organization",
+          "context/ref/Country",
+          "context/ref/Position",
+          "context/ref/Portfolio"
         ]
       }
     ],
     "App Directory": [
-      "version-1.2-app-directory/overview",
-      "version-1.2-app-directory/discovery",
-      "version-1.2-app-directory/usage",
-      "version-1.2-app-directory/spec"
+      "app-directory/overview",
+      "app-directory/discovery",
+      "app-directory/usage",
+      "app-directory/spec"
     ]
   },
-  "version-1.2-use-cases": {
+  "use-cases": {
     "Use Cases": [
-      "version-1.2-use-cases/overview",
-      "version-1.2-use-cases/uc-1",
-      "version-1.2-use-cases/uc-2",
-      "version-1.2-use-cases/uc-3",
-      "version-1.2-use-cases/uc-4",
-      "version-1.2-use-cases/uc-5",
-      "version-1.2-use-cases/uc-9",
-      "version-1.2-use-cases/uc-10",
-      "version-1.2-use-cases/uc-13",
-      "version-1.2-use-cases/uc-15",
-      "version-1.2-use-cases/uc-16",
-      "version-1.2-use-cases/uc-17"
+      "use-cases/overview",
+      "use-cases/uc-1",
+      "use-cases/uc-2",
+      "use-cases/uc-3",
+      "use-cases/uc-4",
+      "use-cases/uc-5",
+      "use-cases/uc-9",
+      "use-cases/uc-10",
+      "use-cases/uc-13",
+      "use-cases/uc-15",
+      "use-cases/uc-16",
+      "use-cases/uc-17"
     ]
   }
 }

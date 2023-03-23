@@ -12,9 +12,9 @@
       "references",
       "supported-platforms",
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "API Part",
-        "ids": [
+        "items": [
           "api/spec",
           "api/ref/DesktopAgent",
           "api/ref/Channel",
@@ -26,18 +26,19 @@
         ]
       },
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "App Directory Part",
-        "ids": [
+        "items": [
           "app-directory/overview",
           "app-directory/spec"
         ]
       },
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Intents Part",
-        "ids": [
+        "items": [
           "intents/spec",
+          "intents/ref/CreateInteraction",
           "intents/ref/StartCall",
           "intents/ref/StartChat",
           "intents/ref/StartEmail",
@@ -58,9 +59,9 @@
         ]
       },
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Context Data Part",
-        "ids": [
+        "items": [
           "context/spec",
           "context/ref/Context",
           "context/ref/Chart",
@@ -74,12 +75,16 @@
           "context/ref/Email",
           "context/ref/Instrument",
           "context/ref/InstrumentList",
+          "context/ref/Interaction",
           "context/ref/Nothing",
+          "context/ref/Order",
+          "context/ref/OrderLeg",
           "context/ref/Organization",
           "context/ref/Portfolio",
           "context/ref/Position",
           "context/ref/ChatSearchCriteria",
           "context/ref/TimeRange",
+          "context/ref/TransactionResult",
           "context/ref/Valuation"
         ]
       }

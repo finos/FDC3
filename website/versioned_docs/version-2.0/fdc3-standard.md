@@ -1,5 +1,4 @@
 ---
-id: version-2.0-fdc3-standard
 title: FDC3 2.0
 sidebar_label: Abstract
 original_id: fdc3-standard

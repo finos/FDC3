@@ -12,12 +12,16 @@
   "Email": ["https://fdc3.finos.org/schemas/next/email.schema.json"],
   "Instrument": ["https://fdc3.finos.org/schemas/next/instrument.schema.json"],
   "InstrumentList": ["https://fdc3.finos.org/schemas/next/instrumentList.schema.json"],
+  "Interaction": ["https://fdc3.finos.org/schemas/next/interaction.schema.json"],
   "Message": ["https://fdc3.finos.org/schemas/next/message.schema.json"],
   "Nothing": ["https://fdc3.finos.org/schemas/next/nothing.schema.json"],
+  "Order": ["https://fdc3.finos.org/schemas/next/order.schema.json"],
+  "OrderLeg": ["https://fdc3.finos.org/schemas/next/orderLeg.schema.json"],
   "Organization": ["https://fdc3.finos.org/schemas/next/organization.schema.json"],
   "Portfolio": ["https://fdc3.finos.org/schemas/next/portfolio.schema.json"],
   "Position": ["https://fdc3.finos.org/schemas/next/position.schema.json"],
   "ChatSearchCriteria": ["https://fdc3.finos.org/schemas/next/chatSearchCriteria.schema.json"],
   "TimeRange": ["https://fdc3.finos.org/schemas/next/timerange.schema.json"],
+  "TransactionResult": ["https://fdc3.finos.org/schemas/next/transactionresult.schema.json"],
   "Valuation": ["https://fdc3.finos.org/schemas/next/valuation.schema.json"]
 }

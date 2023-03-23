@@ -81,7 +81,7 @@ As more use cases were identified it was clear further Intents were required.  F
 
 ## Using Intents
 
-Combined with [context data](../context/overview) and [App Directory](../app-directory/overview) standards, intents enable rich service discovery on the desktop. For example:
+Combined with [context data](../context/spec) and [App Directory](../app-directory/overview) standards, intents enable rich service discovery on the desktop. For example:
 
 ### Ask for a chart to be displayed
 
@@ -125,18 +125,25 @@ const intentsAndApps = await fdc3.findIntentsByContext({
 });
 ```
 
+## Intents that return data
+
+From FDC3 2.0, intents raised through the Desktop Agent API may return results in the form of a `Context` object or a `Channel`. Where an intent implements a transaction with another application, for example for a CRUD operation, the [`fdc3.transactionResult` context type](../context/ref/TransactionResult) SHOULD be used to provide a result status for the transaction and may wrap a context object that would otherwise be returned.
+
+For more details on retrieving a result from a raised intent, see the [documentation for `raiseIntent`](../api/ref/DesktopAgent#raiseintent).
+
 ## Intents Standard Compliance
 
 An FDC3 Standard compliant application that supports intents **MUST**:
 
 * Meet the expected context and behavior defined for any FDC3-defined standard intents used.
-* Use the [`fdc3.addIntentListener`](api/ref/DesktopAgent#addintentlistener) API call to set up a handler for each supported intent as soon as possible when it starts up. This facilitates delivery of raised intents to the application.
+* Use the [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener) API call to set up a handler for each supported intent as soon as possible when it starts up. This facilitates delivery of raised intents to the application.
 
 An FDC3 Standard compliant application that supports intents **SHOULD**:
 
 * Prefer FDC3-defined standard intents over proprietary intents, where a suitable standardized intent is available.
 * Ensure that proprietary intents follow the recommended naming conventions in the specification.
 * Apply [namespacing](#namespaces) to proprietary intent names, where it is necessary to avoid collision with those created by other applications.
+* Use the `fdc3.transactionResult` context type to return a status for any transactions relating to CRUD operations.
 
 An FDC3 Standard compliant application that supports intents **MAY**:
 
@@ -148,6 +155,7 @@ For more details on FDC3 Standards compliance (including the versioning, depreca
 
 A list of standardized intents are defined in the following pages:
 
+* [`CreateInteraction`](ref/CreateInteraction)
 * [`StartCall`](ref/StartCall)
 * [`StartChat`](ref/StartChat)
 * [`StartEmail`](ref/StartEmail)
