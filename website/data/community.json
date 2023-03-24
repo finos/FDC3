@@ -387,5 +387,22 @@
     "description": "FDC3 Sweden is organized in partnership with FINOS. The meetup aims to expand contributions to and consumption of FDC3 open standards for financial desktop technologies. The meetup also wants to grow a healthy engineering community in Sweden's financial services industry. Join the <a href='https://www.meetup.com/fdc3-sweden/' target='_blank' rel='noopener noreferrer'>FDC3 Sweden Meetup Here</a>.",
     "badges": [],
     "type": "meetup"
+  },
+ {
+    "title": "CAS Workflow",
+    "publisher": "comitFS",
+    "image": "https://www.comitfs.com/assets/img/logo@2x.png",
+    "infoLink": "https://www.comitfs.com/cas-workflow.html",
+    "docsLink": "",
+    "description": "comitFS has been delivering a Telephony Integration Middleware dedicated to the the financial community for 20 years. Recently we have been exploring how to leverage FDC3 capabilities to bring call control and call based contextual data to user's desktops.",
+        "badges": [
+      {
+        "text": "FDC3 1.2 Supported"
+      },
+      {
+        "text": "Open Source"
+      }
+    ],
+    "type": "solution-provider"
   }
 ]
