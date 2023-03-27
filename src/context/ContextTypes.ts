@@ -159,7 +159,7 @@ export interface Interaction {
   type: string;
   participants: ContactList;
   timeRange: TimeRange;
-  interactionType: ("Instant Message" | "Email" | "Call" | "Meeting") | string;
+  interactionType: ('Instant Message' | 'Email' | 'Call' | 'Meeting') | string;
   description: string;
   initiator?: Contact;
   origin?: string;
@@ -198,6 +198,11 @@ export interface Position {
   name?: string;
 }
 
+export interface ChatSearchCriteria {
+  criteria: (Instrument | Organization | Contact | string)[];
+  type: string;
+}
+
 export interface Valuation {
   CURRENCY_ISOCODE: string;
   expiryTime?: Date;
@@ -210,7 +215,7 @@ export interface Valuation {
 }
 
 export interface TransactionResult {
-  status: ("Created" | "Deleted" | "Updated" | "Failed") | string; 
+  status: ('Created' | 'Deleted' | 'Updated' | 'Failed') | string;
   type: string;
   context?: Context;
   message?: string;

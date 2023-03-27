@@ -157,8 +157,12 @@ For more details on FDC3 Standards compliance (including the versioning, depreca
 
 The following are standard FDC3 context types:
 
+- [`fdc3.action`](ref/Action) ([schema](/schemas/next/action.schema.json))
 - [`fdc3.chart`](ref/Chart) ([schema](/schemas/next/chart.schema.json))
 - [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](/schemas/next/chatInitSettings.schema.json))
+- [`fdc3.chat.message`](ref/ChatMessage) ([schema](/schemas/next/chatMessage.schema.json))
+- [`fdc3.chat.room`](ref/ChatRoom) ([schema](/schemas/next/chatRoom.schema.json))
+- [`fdc3.chat.searchCriteria`](ref/ChatSearchCriteria) ([schema](/schemas/next/chatSearchCriteria.schema.json))
 - [`fdc3.contact`](ref/Contact) ([schema](/schemas/next/contact.schema.json))
 - [`fdc3.contactList`](ref/ContactList) ([schema](/schemas/next/contactList.schema.json))
 - [`fdc3.country`](ref/Country) ([schema](/schemas/next/country.schema.json))
@@ -167,6 +171,7 @@ The following are standard FDC3 context types:
 - [`fdc3.instrument`](ref/Instrument) ([schema](/schemas/next/instrument.schema.json))
 - [`fdc3.instrumentList`](ref/InstrumentList) ([schema](/schemas/next/instrumentList.schema.json))
 - [`fdc3.interaction`](ref/Interaction) ([schema](/schemas/next/interaction.schema.json))
+- [`fdc3.message`](ref/Message) ([schema](/schemas/next/message.schema.json))
 - [`fdc3.organization`](ref/Organization) ([schema](/schemas/next/organization.schema.json))
 - [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/next/portfolio.schema.json))
 - [`fdc3.position`](ref/Position) ([schema](/schemas/next/position.schema.json))

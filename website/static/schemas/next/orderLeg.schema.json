@@ -1,0 +1,166 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/next/orderLeg.schema.json",
+    "type": "object",
+    "title": "orderLeg",
+    "allOf": [
+        {
+            "$ref": "context.schema.json#"
+        }
+    ],
+    "properties": {
+        "type": {
+            "const": "fdc3.orderLeg"
+        },
+        "id": {
+            "properties": {
+                "EMS": {
+                    "type": "string"
+                },
+                "OMS": {
+                    "type": "string"
+                },
+                "PMS": {
+                    "type": "string"
+                }
+            }
+        },
+        "product": {
+            "type": "object",
+            "properties": {
+                "oneof": {
+                    "instrument": {
+                        "$ref": "instrument.schema.json#"
+                    },
+                    "productDefinition": {
+                        "type": "object"
+                    }
+                }
+            }
+        },
+        "quantity": {
+            "type": "object",
+            "properties": {
+                "oneof": {
+                    "units": {
+                        "type": "number"
+                    },
+                    "cashValue": {
+                        "type": "number"
+                    },
+                    "proceedsFrom": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "currency": {
+            "$ref": "currency.schema.json#"
+        },
+        "side": {
+            "type": "string",
+            "enum": [
+                "B",
+                "S",
+                "P",
+                "R",
+                "BS",
+                "SS"
+            ]
+        },
+        "price": {
+            "type": "object",
+            "properties": {
+                "orderType": {
+                    "type": "string",
+                    "enum": [
+                        "limit",
+                        "market",
+                        "stopMarket",
+                        "stopLimit"
+                    ]
+                },
+                "limitPrice": {
+                    "type": "number"
+                },
+                "stopPrice": {
+                    "type": "number"
+                },
+                "priceType": {
+                    "type": "string",
+                    "enum": [
+                        "absolute",
+                        "percentage",
+                        "yield",
+                        "spread"
+                    ]
+                }
+            },
+            "required": [
+                "orderType"
+            ]
+        },
+        "settlement": {
+            "type": "object",
+            "properties": {
+                "currency": {
+                    "$ref": "currency.schema.json#"
+                },
+                "date": {
+                    "type": "string"
+                }
+            }
+        },
+        "allocations": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "account": {
+                        "type": "string"
+                    },
+                    "quantity": {
+                        "type": "number"
+                    },
+                    "positionEffect": {
+                        "type": "string",
+                        "enum": [
+                            "O",
+                            "C"
+                        ]
+                    }
+                },
+                "required": [
+                    "account"
+                ]
+            }
+        },
+        "partyIdentifiers": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "role": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "object",
+                        "properties": {
+                            "LEI": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "required": [
+        "type",
+        "id",
+        "price",
+        "side",
+        "product",
+        "quantity"
+    ]
+}

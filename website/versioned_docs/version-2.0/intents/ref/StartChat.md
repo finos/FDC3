@@ -6,7 +6,7 @@ original_id: StartChat
 ---
 # `StartChat`
 
-Initiate a chat with a contact, a list of contacts or detailed initialization settings.
+Initiate a chat with a contact, a list of contacts or detailed initialization settings.  This could be launched from within another application. For example initiating a chat from a research or OMS application.
 
 ## Intent Name
 
@@ -60,7 +60,7 @@ const initSettings = {
 }
 
 const resolution = fdc3.raiseIntent('StartChat', initSettings);
-const chatRoomRefs = await resolution.getResult();
+const chatRooms = await resolution.getResult();
 ```
 
 ## See Also
