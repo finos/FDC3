@@ -4,8 +4,6 @@
     "start": "docusaurus start",
     "prebuild": "npm run copy-appd && npm run copy-schemas && npm run copy-workbench && npm run copy-explained",
     "build": "docusaurus build",
-    "prepublish-gh-pages": "npm run copy-appd && npm run copy-schemas && npm run copy-workbench",
-    "publish-gh-pages": "docusaurus-publish",
     "copy-schemas": "cpy ../src/context/schemas/*.schema.json static/schemas/next",
     "copy-appd": "cpy ../src/app-directory/specification/appd.yaml static/schemas/next --rename app-directory.yaml",
     "build-workbench": "cd ../toolbox/fdc3-workbench && npm install && npm run build",
