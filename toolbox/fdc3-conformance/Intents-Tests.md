@@ -92,7 +92,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 - `2.0-FindIntentAppDRightContext`: Calls `fdc3.findIntent("aTestingIntent", "testContextX")`.  Receives promise containing an `AppIntent` with metadata containing `aTestingIntent` and only metadata for app **A**.
 - `2.0-FindIntentAppDWrongContext`: Calls `fdc3.findIntent("aTestingIntent", "testContextY")`.  Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
 - `2.0-FindIntentAppDMultiple1`: Calls `fdc3.findIntent("sharedTestingIntent2")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and metadata for apps  **D**, **E**, **F**, **G**, **H**  and **I** only.
-- `2.0-FindIntentAppDMultiple2`: Calls `fdc3.findIntent("sharedTestingIntent2", testContextY)`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and `AppMetadata` for apps  **E**, **F**, **G**, **H**  and **I** only.
+- `2.0-FindIntentAppDMultiple2`: Calls `fdc3.findIntent("sharedTestingIntent2", "testContextY")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and `AppMetadata` for apps  **E**, **F**, **G**, **H**  and **I** only.
 
 ### Find Intents By Context
 
