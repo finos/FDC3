@@ -607,7 +607,7 @@ components:
       properties:
         displayName:
           type: string
-         description: Optional display name for the intent. Deprecated in favour of the intent name, which is common amongst all apps that support it, where the display name may vary as it is defined in the app's AppD record.
+          description: Optional display name for the intent. Deprecated in favour of the intent name, which is common amongst all apps that support it, where the display name may vary as it is defined in the app's AppD record.
           deprecated: true
         contexts:
           type: array
