@@ -302,10 +302,10 @@ interface IntentMetadata {
   /** The unique name of the intent that can be invoked by the raiseIntent call. */
   readonly name: string;
 
-  /** Display name for the intent. Deprecated in favour of using the intent name for display as
-   *  display name may vary for each application as it is defined in the app's AppD record. 
-   *  @deprecated
-  */
+  /** Display name for the intent.
+   * @deprecated Use the intent name for display as display name may vary for
+   * each application as it is defined in the app's AppD record.
+   */
   readonly displayName: string;
 }
 ```
