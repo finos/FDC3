@@ -20,15 +20,15 @@ Also we assume a fourth app **D** that is going to discover the intents in the o
 
 -  `IntentAppD`: Calls `fdc3.findIntent(‘aTestingIntent’)`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** app metadata.
 -  `WrongIntentAppD`: Calls `fdc3.findIntent(‘nonExistentIntent’)`. Rejects with no apps found error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
--  `IntentAppDRightContext`: Calls `fdc3.findIntent(‘aTestingIntent’, ‘fdc3.testContextX’)`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** app metadata.
--  `IntentAppDWrongContext`: Calls `fdc3.findIntent(‘aTestingIntent’, ‘fdc3.testContextY’)`.  Rejects with no apps found error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
+-  `IntentAppDRightContext`: Calls `fdc3.findIntent(‘aTestingIntent’, ‘testContextX’)`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** app metadata.
+-  `IntentAppDWrongContext`: Calls `fdc3.findIntent(‘aTestingIntent’, ‘testContextY’)`.  Rejects with no apps found error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
 -  `IntentAppDMultiple1`: Calls `fdc3.findIntent(‘sharedTestingIntent1’)`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **A** and **B** app metadata.
 -  `IntentAppDMultiple2`: Calls `fdc3.findIntent(‘sharedTestingIntent1’, 'testContextX')`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **A** and **B** app metadata.
 -  `IntentAppDMultiple3`: Calls `fdc3.findIntent(‘sharedTestingIntent1’, 'testContextY')`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **B** app metadata.
 
 ### Find Intents By Context
 
--  `SingleContext`: Call `fdc3.findIntentsByContext(‘fdc3.testContextX’)`.  Should return `aTestingIntent` (app **A**), `sharedTestingIntent1` (**A**, **B**) and `cTestingIntent` (**C**) AND nothing else.
+-  `SingleContext`: Call `fdc3.findIntentsByContext(‘testContextX’)`.  Should return `aTestingIntent` (app **A**), `sharedTestingIntent1` (**A**, **B**) and `cTestingIntent` (**C**) AND nothing else.
 -  `NoContext`: Call `fdc3.findIntentsByContext()`. Throws error of `NoAppsFound`
 
 ### Raise Intent
