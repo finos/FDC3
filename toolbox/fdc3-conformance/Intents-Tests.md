@@ -164,10 +164,10 @@ Finally, please note that this is a larger set of apps than were required for 1.
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
 | Test   | 1. Raise          | `fdc3.raiseIntent("aTestingIntent", testContextX)`<br>starts app A.                       |
-| B       | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent")` to register its listener.<br>It then receives `testContextX`, matching that sent by Test |
+| A       | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent")` to register its listener.<br>It then receives `testContextX`, matching that sent by Test |
 | Test   | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifer` as the `source field` with App A's `appId` and `instanceId` set.                     |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.                        |
-| B       | 5. return void          | A should return `void` after a short delay (e.g. 5 seconds).                        |
+| A       | 5. return void          | A should return `void` after a short delay (e.g. 5 seconds).                        |
 | Test   | 6. receive void result          | The promise received by Test from `resolution.getResult()` should resolve to void. Confirm that the promise could be retrieved before the handler function returned and that the result was received *after* the result was returned by A, NOT before. I.e. confirm that `resolution.getResult()` does NOT block until the result is returned, but rather returns a promise that can be awaited.                      |
 
 - `2.0-RaiseIntentVoidResult5secs`: Perform above test
