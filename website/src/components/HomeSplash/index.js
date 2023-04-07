@@ -49,7 +49,7 @@ export default (props) => {
     return (
       <SplashContainer>
           <div className="inner">
-                <img src="/img/fdc3-logo-2019.png"></img>
+                <img src="/img/fdc3-logo-2019.png" alt="FDC3"></img>
                 <ProjectTitle siteConfig={siteConfig} />
                 <PromoSection>
                   <Button href="/docs/fdc3-intro">Get Started</Button>
