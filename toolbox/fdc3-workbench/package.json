@@ -12,7 +12,7 @@
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.59",
-    "@types/node": "^12.0.0",
+    "@types/node": "^14.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/uuid": "^8.3.4",
@@ -23,16 +23,15 @@
     "normalize.css": "^8.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
     "typescript": "^4.1.2",
     "uuid": "^9.0.0",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "dev": "vite",
+    "start": "vite",
+    "preview": "vite preview",
+    "build": "tsc && vite build",
     "lint": "eslint --cache --quiet **/*.{ts,tsx,js,jsx} && prettier --check **/*.{ts,tsx,js,jsx,json,yml,css,html,md}",
     "lint:fix": "eslint --cache --quiet --fix **/*.{ts,tsx,js,jsx} && prettier --write **/*.{ts,tsx,js,jsx} && prettier --write **/*.{json,yml,css,html,md}"
   },
@@ -55,15 +54,19 @@
   },
   "devDependencies": {
     "@types/jsoneditor": "^8.6.1",
-    "@typescript-eslint/eslint-plugin": "^4.27.0",
-    "@typescript-eslint/parser": "^4.27.0",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
+    "@vitejs/plugin-legacy": "^3.0.1",
+    "@vitejs/plugin-react": "^3.0.1",
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-react": "^7.24.0",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.1",
-    "pretty-quick": "^3.1.0"
+    "pretty-quick": "^3.1.0",
+    "terser": "^5.16.1",
+    "vite": "^4.0.4"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
@@ -73,16 +76,5 @@
     "*.{json,yml,css,html,md}": "prettier --write --prose-wrap never",
     "*.js": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"
-  },
-  "overrides": {
-    "css-select": "^3.1.0",
-    "css-what": "^5.0.1",
-    "shell-quote": "^1.7.3",
-    "node-forge": "^1.0.0",
-    "immer": "^9.0.6",
-    "glob-parent": "^5.1.2",
-    "ejs": "^3.1.7",
-    "browserslist": "^4.16.5",
-    "ansi-html": "^0.0.8"
   }
 }
