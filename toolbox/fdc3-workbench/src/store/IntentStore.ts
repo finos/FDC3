@@ -3,9 +3,7 @@ import fdc3, {
 	ContextType,
 	IntentResolution,
 	Fdc3Listener,
-	TargetApp,
 	AppMetadata,
-	AppIdentifier,
 	Channel,
 	PrivateChannel,
 } from "../utility/Fdc3Api";
@@ -181,7 +179,7 @@ class IntentStore {
 		}
 	}
 
-	async raiseIntentForContext(context: ContextType, app?: (TargetApp & (String | AppIdentifier)) | undefined) {
+	async raiseIntentForContext(context: ContextType, app?: AppMetadata) {
 		if (!context) {
 			systemLogStore.addLog({
 				name: "raiseIntentForContext",
