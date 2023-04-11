@@ -1,5 +1,4 @@
 ---
-id: version-1.2-Contact
 sidebar_label: Contact
 title: Contact
 hide_title: true

@@ -1,5 +1,4 @@
 ---
-id: version-2.0-Country
 sidebar_label: Country
 title: Country
 hide_title: true

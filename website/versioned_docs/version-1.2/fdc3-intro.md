@@ -1,7 +1,6 @@
 ---
 title: Welcome to FDC3
 sidebar_label: Introduction
-id: version-1.2-fdc3-intro
 original_id: fdc3-intro
 ---
 
@@ -47,5 +46,5 @@ FDC3 uses the Apache 2.0 open source license for all deliverables.
 - Visit FDC3 [on GitHub](https://github.com/finos/FDC3).
 - Download and install our [npm package](https://www.npmjs.com/package/@finos/fdc3).
 - Try out an FDC3-compliant implementation, e.g. this [browser extension](https://github.com/finos/fdc3-desktop-agent).
-- Join us in the [mailing list](fdc3+subscribe@finos.org) or on [Slack](https://app.slack.com/client/T01E7QRQH97/C01R0P7H5LH).
+- Join us in the [mailing list](mailto:fdc3+subscribe@finos.org) or on [Slack](https://app.slack.com/client/T01E7QRQH97/C01R0P7H5LH).
 - [Participate](https://github.com/finos/FDC3#getting-involved) in the evolution of the standard.

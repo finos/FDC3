@@ -1,6 +1,5 @@
 ---
 title: Supported Platforms
-id: version-1.2-supported-platforms
 original_id: supported-platforms
 ---
 

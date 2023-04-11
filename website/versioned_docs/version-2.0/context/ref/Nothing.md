@@ -1,5 +1,4 @@
 ---
-id: version-2.0-Nothing
 sidebar_label: Nothing
 title: Nothing
 hide_title: true
