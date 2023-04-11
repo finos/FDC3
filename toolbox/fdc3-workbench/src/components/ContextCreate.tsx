@@ -431,7 +431,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 							json={context?.template}
 							onChange={handleContextChange}
 							onJsonError={handleJsonError}
-							schemaUrl={new URL(context?.schemaUrl || "https://fdc3.finos.org/schemas/1.2/context.schema.json")}
+							schemaUrl={new URL(context?.schemaUrl || "https://fdc3.finos.org/schemas/2.0/context.schema.json")}
 							error={contextError}
 						/>
 					</Grid>

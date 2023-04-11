@@ -59,6 +59,9 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
 					setResolutionResult(null);
 				} else if (result) {
 					setResolutionResult(JSON.stringify(result, null, 2));
+				} else {
+					//void result returned
+					setResolutionResult("<void>");
 				}
 			}
 		} catch (error) {
