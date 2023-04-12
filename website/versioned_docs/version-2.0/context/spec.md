@@ -133,7 +133,9 @@ Fields representing a currency SHOULD be string encoded using the Alphabetic cod
 
 E.g. `"CURRENCY_ISOCODE": "GBP"`
 
-> Note: ISO 4217 only includes major currency codes, conversions to minor currencies is the responsibility of the consuming system (where required).
+:::note
+ISO 4217 only includes major currency codes, conversions to minor currencies is the responsibility of the consuming system (where required).
+:::
 
 ## Context Data Standard Compliance
 
@@ -173,7 +175,9 @@ The following are standard FDC3 context types:
 * [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/2.0/timerange.schema.json))
 * [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/2.0/valuation.schema.json))
 
-**Note:** The below examples show how the base context data interface can be used to define specific context data objects.
+:::note
+The below examples show how the base context data interface can be used to define specific context data objects.
+:::
 
 ### Examples
 
