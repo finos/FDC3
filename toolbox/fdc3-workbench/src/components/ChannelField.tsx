@@ -256,7 +256,7 @@ export const ChannelField = observer(
 								</Grid>
 								<Grid container className={classes.topMargin}>
 									<Grid item xs={12}>
-										<Typography variant="h5" className={classes.h6}>
+										<Typography variant="h6" className={classes.h6}>
 											Broadcast
 										</Typography>
 									</Grid>
@@ -295,8 +295,8 @@ export const ChannelField = observer(
 								</Grid>
 								<Grid container className={classes.secondMargin}>
 									<Grid item xs={12}>
-										<Typography variant="h5" className={classes.h6}>
-											Add Context Listener
+										<Typography variant="h6" className={classes.h6}>
+											Add context listener
 										</Typography>
 									</Grid>
 									<Grid item sm={7} className={classes.rightPadding}>
@@ -333,7 +333,7 @@ export const ChannelField = observer(
 
 									<Grid item container className={classes.controls} sm={5} justifyContent="flex-end">
 										<Button variant="contained" color="primary" onClick={() => handleAddContextListener(channel.id)}>
-											Add Listener
+											Add listener
 										</Button>
 
 										<Tooltip title="Copy code example" aria-label="Copy code example">

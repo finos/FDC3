@@ -118,7 +118,7 @@ export const Channels = observer(({ handleTabChange }: { handleTabChange: any })
 	return (
 		<div className={classes.root}>
 			<Grid item xs={12}>
-				<Typography variant="h5">Current Channel</Typography>
+				<Typography variant="h5">Current channel</Typography>
 			</Grid>
 			<Grid
 				container
@@ -166,7 +166,7 @@ export const Channels = observer(({ handleTabChange }: { handleTabChange: any })
 			<div className={classes.border}></div>
 
 			<Grid item xs={12}>
-				<Typography variant="h5">Join User Channels</Typography>
+				<Typography variant="h5">Join user channels</Typography>
 			</Grid>
 
 			<Grid
