@@ -97,10 +97,10 @@ addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 
 Adds a listener for incoming intents from the Desktop Agent. The handler function may return void or a promise that resolves to a [`IntentResult`](Types#intentresult), which is either a [`Context`](Types#context) object, representing any data that should be returned to the app that raised the intent, or a [`Channel`](Channel) or [`PrivateChannel`](PrivateChannel) over which data responses will be sent. The `IntentResult` will be returned to the app that raised the intent via the [`IntentResolution`](Metadata#intentresolution) and retrieved from it using the `getResult()` function.
 
-The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if: 
-1. the intent handling function's returned promise rejects.
-2. the intent handling function doesn't return a promise.
-3. the returned promise resolves to an invalid type.
+The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if any of the following is true: 
+1. The intent handling function's returned promise rejects.
+2. The intent handling function doesn't return a promise.
+3. The returned promise resolves to an invalid type.
 
 The [`PrivateChannel`](PrivateChannel) type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
 
