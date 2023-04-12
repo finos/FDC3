@@ -174,10 +174,10 @@ module.exports={
           "title": "More",
           "items": [
             {
-              "html": "<a href=\"https://github.com/finos/FDC3\"><img src=\"https://img.shields.io/github/stars/finos/FDC3?label=FDC3&style=social\" /></a>"
+              "html": "<a href=\"https://github.com/finos/FDC3\"><img alt=\"Github\" src=\"https://img.shields.io/github/stars/finos/FDC3?label=FDC3&style=social\" /></a>"
             },
             {
-              "html": "<a href=\"https://twitter.com/FDC3_\"><img src=\"https://img.shields.io/twitter/follow/FDC3_?style=social\" ></a>"
+              "html": "<a href=\"https://twitter.com/FDC3_\"><img alt=\"Twitter\" src=\"https://img.shields.io/twitter/follow/FDC3_?style=social\" ></a>"
             },
             {
               "label": "Users",
