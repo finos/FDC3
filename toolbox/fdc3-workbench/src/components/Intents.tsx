@@ -195,9 +195,9 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const handleRaiseIntent = async () => {
 		setIntentResolution(null);
 		if (!intentValue) {
-			setRaiseIntentError("enter intent name");
+			setRaiseIntentError("Enter intent name");
 		} else if (!raiseIntentContext) {
-			setRaiseIntentError("enter context name");
+			setRaiseIntentError("Select a context first");
 		} else {
 			if (targetApp && targetApp != "None") {
 				try {
@@ -305,9 +305,9 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	const handleTargetMenuOpen = () => {
 		const fetchAppsAndInstances = async () => {
 			if (!intentValue) {
-				setRaiseIntentError("enter intent name");
+				setRaiseIntentError("Enter intent name");
 			} else if (!raiseIntentContext) {
-				setRaiseIntentError("enter context name");
+				setRaiseIntentError("Select a context first");
 			} else {
 				const intentTargetOptions: IntentTargetOption[] = await fdc3.getTargetOptions(intentValue.value, toJS(raiseIntentContext))
 
@@ -322,7 +322,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 				if (intentTargetOptions.length === 0) {
 					menuItems.push(
 						<MenuItem value="" key="no-target-apps-found" disabled>
-							No Target Apps Found
+							No target apps found
 						</MenuItem>
 					);
 				} else {
@@ -411,7 +411,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			if (menuItems.length === 0) {
 				menuItems.push(
 					<MenuItem value="" key="no-target-apps-found" disabled>
-						No Target Apps Found
+						No target apps found
 					</MenuItem>
 				);
 			}
@@ -552,7 +552,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 	return (
 		<div className={classes.root}>
 			<Grid item xs={12}>
-				<Typography variant="h5">Raise Intent</Typography>
+				<Typography variant="h5">Raise intent</Typography>
 			</Grid>
 
 			<form className={classes.form} noValidate autoComplete="off">
@@ -602,7 +602,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 
 								{useTargets && (
 									<FormControl variant="outlined" size="small" className={classes.targetSelect}>
-										<InputLabel id="intent-target-app">Target App (optional)</InputLabel>
+										<InputLabel id="intent-target-app">Target app (optional)</InputLabel>
 										<Select
 											labelId="intent-target-app"
 											id="intent-target-app-select"
@@ -630,7 +630,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 						</Grid>
 						<Grid item className={classes.controls}>
 							<Button variant="contained" color="primary" onClick={handleRaiseIntent} disabled={!intentValue}>
-								Raise Intent
+								Raise intent
 							</Button>
 
 							<Tooltip title="Copy code example" aria-label="Copy code example">
@@ -676,7 +676,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 
 					<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
 						<Grid item xs={12} className={classes.bottomMargin}>
-							<Typography variant="h5">Raise Intent for Context</Typography>
+							<Typography variant="h5">Raise intent for context</Typography>
 						</Grid>
 						<Grid item className={`${classes.field} ${classes.removeSidePadding}`}>
 							<ContextTemplates
@@ -774,7 +774,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 					<Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
 						<Grid item xs={12}>
 							<Typography className={classes.bottomMargin} variant="h5">
-								Add Intent Listener
+								Add intent listener
 							</Typography>
 						</Grid>
 						<Grid item className={`${classes.field} ${classes.removeSidePadding}`}>
@@ -811,7 +811,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								onClick={handleAddIntentListener}
 								disabled={intentListener === null}
 							>
-								Add Listener
+								Add listener
 							</Button>
 
 							<Tooltip title="Copy code example" aria-label="Copy code example">
@@ -854,7 +854,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 											onChange={(e) => setSendIntentResult(e.target.checked)}
 										/>
 									}
-									label="Send Intent Result"
+									label="Send intent result"
 								/>
 							</FormGroup>
 						</Grid>
@@ -886,10 +886,10 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 											aria-label="result channel type"
 										>
 											<ToggleButton className={classes.toggle} value="app-channel" aria-label="left aligned">
-												App Channel
+												App channel
 											</ToggleButton>
 											<ToggleButton className={classes.toggle} value="private-channel" aria-label="left aligned">
-												Private Channel
+												Private channel
 											</ToggleButton>
 										</ToggleButtonGroup>
 
@@ -929,7 +929,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 												{contextFields.map((field, index) => (
 													<React.Fragment key={index}>{field}</React.Fragment>
 												))}
-												<Grid item className={classes.indentLeft}>
+												<Grid item className={`${classes.indentLeft} ${classes.controls}`}>
 													<Tooltip
 														title="Add context result (delays will trigger sequentially)"
 														aria-label="Add context result (delays will trigger sequentially)"

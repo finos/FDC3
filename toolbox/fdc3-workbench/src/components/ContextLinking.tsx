@@ -151,7 +151,7 @@ export const ContextLinking = observer(() => {
 	return (
 		<div className={classes.root}>
 			<Grid item xs={12}>
-				<Typography variant="h5">Add Context Listener</Typography>
+				<Typography variant="h5">Add context listener</Typography>
 			</Grid>
 		
 			<Grid
@@ -190,7 +190,7 @@ export const ContextLinking = observer(() => {
 					<Grid container direction="row" justifyContent="flex-end" spacing={1}>
 						<Grid item className={classes.controls}>
 							<Button variant="contained" color="primary" onClick={handleAddContextListener}>
-								Add Listener
+								Add listener
 							</Button>
 
 						</Grid>

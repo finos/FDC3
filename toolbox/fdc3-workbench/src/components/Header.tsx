@@ -148,10 +148,11 @@ export const Header = (props: { fdc3Available: boolean }) => {
 							<img src="./fdc3-logo.png" className={classes.headerCube} />
 						</Typography>
 						<Typography color="inherit">
+							version:&nbsp;  
 							{supportedVersion.map((ver, index) => (
 								<span key={index}>
 									{ver === chosenVersion ? (
-										<span>{ver}</span>
+										<span><b>{ver}</b></span>
 									) : (
 										<a className={`${classes.link}`} href={`?fdc3Version=${ver}`}>
 											{ver}

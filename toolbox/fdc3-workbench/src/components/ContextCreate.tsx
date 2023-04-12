@@ -60,7 +60,7 @@ const useStyles: any = makeStyles((theme: Theme) =>
 				marginLeft: theme.spacing(1),
 			},
 		},
-		templateSelect: {
+		exampleSelect: {
 			flexGrow: 1,
 			// marginRight: theme.spacing(1),
 			minWidth: "190px",
@@ -115,7 +115,7 @@ const emptyJson: ContextType = {
 
 export const ContextCreate = observer(({ contextName }: { contextName: string }) => {
 	const classes = useStyles();
-	const [templateName, setTemplateName] = useState<OptionType | null>({
+	const [exampleName, setExampleName] = useState<OptionType | null>({
 		title: contextName,
 		value: contextName,
 	});
@@ -145,8 +145,8 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 		setContextError(errors[0]);
 	};
 
-	const handleChangeTemplate = (newValue: any) => {
-		setTemplateName(newValue);
+	const handleChangeExample = (newValue: any) => {
+		setExampleName(newValue);
 
 		if (newValue?.value) {
 			const selectedContext = contextStore.contextsList.find(({ id }) => id === newValue?.value);
@@ -167,10 +167,10 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 			return count;
 		}, 0);
 
-	const handleChangeTemplateName = (newValue: any) => {
+	const handleChangeExampleName = (newValue: any) => {
 		setDisabled(false);
 		setContextError(false);
-		setTemplateName(newValue);
+		setExampleName(newValue);
 
 		if (context && !found(newValue.value, context.uuid)) setDuplicateName(false);
 		else if (found(newValue.value) >= 1) setDuplicateName(true);
@@ -197,7 +197,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 			return false;
 		}
 
-		if (!templateName) {
+		if (!exampleName) {
 			setContextError("Template name is required");
 			return false;
 		}
@@ -205,24 +205,24 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 		return true;
 	};
 
-	const handleCreateTemplate = () => {
-		setTemplateName(null);
+	const handleCreateExample = () => {
+		setExampleName(null);
 		setContext(null);
 		setContextValue(null);
 		setDisabled(true);
 	};
 
-	const handleSaveTemplate = (e: FormEvent | null = null) => {
+	const handleSaveExample = (e: FormEvent | null = null) => {
 		e?.preventDefault();
 		if (disabled) {
 			return;
 		} else {
 			const isValid: boolean = validate();
 
-			if (isValid && context && templateName) {
+			if (isValid && context && exampleName) {
 				const selectedContext = contextStore.contextsList.find(({ id }) => id === context.id);
 				const currContext = {
-					id: templateName.value,
+					id: exampleName.value,
 					schemaUrl: context.schemaUrl,
 					template: contextValue,
 				};
@@ -230,17 +230,17 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 				if (!selectedContext) contextStore.addContextItem(currContext);
 
 				contextStore.saveContextItem(currContext, context.id);
-				handleChangeTemplate({ title: currContext.id, value: currContext.id });
+				handleChangeExample({ title: currContext.id, value: currContext.id });
 
 				systemLogStore.addLog({
-					name: "saveTemplate",
+					name: "saveExample",
 					type: "success",
 					value: currContext?.id,
 					variant: "text",
 				});
 			} else {
 				systemLogStore.addLog({
-					name: "saveTemplate",
+					name: "saveExample",
 					type: "error",
 					value: undefined,
 					variant: "text",
@@ -250,10 +250,10 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 		}
 	};
 
-	const handleDuplicateTemplate = (newValue: any, count = 0) => {
+	const handleDuplicateExample = (newValue: any, count = 0) => {
 		const copyName = `${newValue.value}-copy${count > 0 ? ` (${count})` : ""}`;
 		if (newValue?.value && !found(copyName)) {
-			setTemplateName({ value: copyName, title: copyName });
+			setExampleName({ value: copyName, title: copyName });
 			const selectedContext = contextStore.contextsList.find(({ id }) => id === newValue.value);
 
 			if (selectedContext) {
@@ -270,37 +270,37 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 				setContext(newContext);
 
 				systemLogStore.addLog({
-					name: "saveTemplate",
+					name: "saveExample",
 					type: "success",
 					value: newContext.id,
 					variant: "text",
 				});
 			}
 		} else if (found(copyName)) {
-			handleDuplicateTemplate(newValue, ++count);
+			handleDuplicateExample(newValue, ++count);
 		}
 
 		setContextError(false);
 	};
 
-	const handleResetTemplate = () => {
+	const handleResetExample = () => {
 		contextStore.resetContextList();
-		handleCreateTemplate();
+		handleCreateExample();
 	};
 
-	const handleDeleteTemplate = (contextId: any) => {
+	const handleDeleteExample = (contextId: any) => {
 		const selectedContext = contextStore.contextsList.find(({ id }) => id === contextId);
 		if (selectedContext) {
 			contextStore.deleteContextItem(selectedContext);
 			systemLogStore.addLog({
-				name: "deleteTemplate",
+				name: "deleteExample",
 				type: "success",
 				value: selectedContext?.id,
 				variant: "text",
 			});
 		} else {
 			systemLogStore.addLog({
-				name: "deleteTemplate",
+				name: "deleteExample",
 				type: "error",
 				value: undefined,
 				variant: "text",
@@ -311,7 +311,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 	useEffect(() => {
 		if (duplicateName) {
 			setDisabled(true);
-			setContextError("Template name already exists");
+			setContextError("Example name already exists");
 		} else setDisabled(false);
 	}, [duplicateName, contextValue]);
 
@@ -330,10 +330,10 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 
 	return (
 		<div className={classes.root}>
-			<DialogModal open={open} onClose={handleClose} onAgree={handleDeleteTemplate} selectedValue={deleteContext} />
+			<DialogModal open={open} onClose={handleClose} onAgree={handleDeleteExample} selectedValue={deleteContext} />
 			<Grid container spacing={1}>
 				<Grid item xs={12}>
-					<Typography variant="h5">Context templates:</Typography>
+					<Typography variant="h5">Context examples:</Typography>
 				</Grid>
 				<Grid item xs={12}>
 					<TableContainer className={classes.tableContainer}>
@@ -345,40 +345,40 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 										role="checkbox"
 										tabIndex={-1}
 										key={`row-${index}`}
-										selected={id === templateName?.value}
-										ref={id === templateName?.value ? gridRef : null}
+										selected={id === exampleName?.value}
+										ref={id === exampleName?.value ? gridRef : null}
 									>
 										<TableCell
 											key={`row-${index}-column-0`}
 											align="left"
-											onClick={() => handleChangeTemplate({ title: id, value: id })}
+											onClick={() => handleChangeExample({ title: id, value: id })}
 										>
 											<Typography variant="body2">{id}</Typography>
 										</TableCell>
 										<TableCell
 											key={`row-${index}-column-1`}
 											align="left"
-											onClick={() => handleChangeTemplate({ title: id, value: id })}
+											onClick={() => handleChangeExample({ title: id, value: id })}
 										>
 											<Typography variant="caption">{template?.type}</Typography>
 										</TableCell>
 										<TableCell key={`row-${index}-column-2`} align="right">
-											<Tooltip title="Duplicate Template" aria-label="Copy code">
+											<Tooltip title="Duplicate example" aria-label="Copy code">
 												<IconButton
 													size="small"
 													aria-label="Copy code example"
 													color="primary"
-													onClick={() => handleDuplicateTemplate({ title: id, value: id })}
+													onClick={() => handleDuplicateExample({ title: id, value: id })}
 												>
 													<FileCopyOutlinedIcon className={classes.copy} />
 												</IconButton>
 											</Tooltip>
 										</TableCell>
 										<TableCell key={`row-${index}-column-3`} align="right">
-											<Tooltip title="Delete template" aria-label="Delete template">
+											<Tooltip title="Delete example" aria-label="Delete example">
 												<IconButton
 													size="small"
-													aria-label="Delete template"
+													aria-label="Delete example"
 													color="primary"
 													onClick={() => handleClickOpen(id, template?.name)}
 												>
@@ -396,32 +396,32 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 			<form className={classes.form} noValidate autoComplete="off">
 				<Grid container direction="row" spacing={1}>
 					<Grid item className={classes.controls}>
-						<Button className={classes.button} variant="contained" color="primary" onClick={handleCreateTemplate}>
-							Create new template
+						<Button className={classes.button} variant="contained" color="primary" onClick={handleCreateExample}>
+							Create new example
 						</Button>
 					</Grid>
 					<Grid item className={classes.controls}>
-						<Button className={classes.button} variant="contained" color="primary" onClick={handleResetTemplate}>
-							Reset templates
+						<Button className={classes.button} variant="contained" color="primary" onClick={handleResetExample}>
+							Reset examples
 						</Button>
 					</Grid>
 				</Grid>
 			</form>
 
-			<form className={classes.form} noValidate autoComplete="off" onSubmit={(e) => handleSaveTemplate(e)}>
+			<form className={classes.form} noValidate autoComplete="off" onSubmit={(e) => handleSaveExample(e)}>
 				<Grid container direction="row" spacing={1} className={classes.rightAlign}>
-					<Grid item xs={12} className={`${classes.controls} ${classes.templateSelect}`}>
+					<Grid item xs={12} className={`${classes.controls} ${classes.exampleSelect}`}>
 						<Grid item xs={6} className={classes.field}>
 							<Grid item xs={12} className={classes.textField}>
-								<Typography variant="h5">Edit template:</Typography>
+								<Typography variant="h5">Edit example:</Typography>
 							</Grid>
 							<TemplateTextField
-								label="Template name"
+								label="Example name"
 								variant="outlined"
 								className={classes.textField}
-								placeholder="Choose Context Template"
-								value={templateName?.value || ""}
-								onChange={(e) => handleChangeTemplateName({ title: e.target.value, value: e.target.value })}
+								placeholder="Choose Context Example"
+								value={exampleName?.value || ""}
+								onChange={(e) => handleChangeExampleName({ title: e.target.value, value: e.target.value })}
 							/>
 						</Grid>
 					</Grid>
@@ -452,7 +452,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 							className={classes.button}
 							variant="contained"
 							color="primary"
-							onClick={handleSaveTemplate}
+							onClick={handleSaveExample}
 							disabled={disabled}
 						>
 							Save Changes
