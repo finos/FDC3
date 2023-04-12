@@ -47,9 +47,9 @@ interface DesktopAgent {
   addContextListener(handler: ContextHandler): Promise<Listener>;
   getSystemChannels(): Promise<Array<Channel>>;
   joinChannel(channelId: string) : Promise<void>;
-  open(name: String, context?: Context): Promise<AppIdentifier>;
-  raiseIntent(intent: string, context: Context, name: String): Promise<IntentResolution>;
-  raiseIntentForContext(context: Context, name: String): Promise<IntentResolution>;
+  open(name: string, context?: Context): Promise<AppIdentifier>;
+  raiseIntent(intent: string, context: Context, name: string): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;
 }
 ```
 
@@ -752,12 +752,13 @@ joinChannel(channelId: string) : Promise<void>;
 Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
 
 #### See also
+
 * [`joinUserChannel`](#joinuserchannel)
 
 ### `open` (deprecated)
 
 ```ts
-open(name: String, context?: Context): Promise<AppIdentifier>;
+open(name: string, context?: Context): Promise<AppIdentifier>;
 ```
 
 Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
@@ -769,7 +770,7 @@ Version of `open` that launches an app by name rather than `AppIdentifier`. Prov
 ### `raiseIntent` (deprecated)
 
 ```ts
-raiseIntent(intent: string, context: Context, name: String): Promise<IntentResolution>;
+raiseIntent(intent: string, context: Context, name: string): Promise<IntentResolution>;
 ```
 
 Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
@@ -781,7 +782,7 @@ Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`
 ### `raiseIntentForContext` (deprecated)
 
 ```ts
-raiseIntentForContext(context: Context, name: String): Promise<IntentResolution>;;
+raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;;
 ```
 
 Version of `raiseIntentForContext` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
