@@ -46,7 +46,7 @@ If you are using the `@finos/fdc3` NPM package, it includes a handy wrapper func
 
 It returns a promise that will resolve immediately if the `window.fdc3` global is already defined, or reject with an error if the `fdc3Ready` event doesn't fire after a specified timeout period (default: 5 seconds).
 
-### Example
+### Example
 
 ```ts
 import { fdc3Ready, broadcast } from '@finos/fdc3'
