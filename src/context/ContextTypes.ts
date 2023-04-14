@@ -1,12 +1,12 @@
 // To parse this data:
 //
-//   import { Convert, Context, Chart, ChatInitSettings, Contact, ContactList, Country, Currency, Email, Instrument, InstrumentList, Nothing, Organization, Portfolio, Position, TimeRange, Valuation } from "./file";
+//   import { Convert, Chart, ChatInitSettings, Contact, ContactList, Context, Country, Currency, Email, Instrument, InstrumentList, Nothing, Organization, Portfolio, Position, TimeRange, Valuation } from "./file";
 //
-//   const context = Convert.toContext(json);
 //   const chart = Convert.toChart(json);
 //   const chatInitSettings = Convert.toChatInitSettings(json);
 //   const contact = Convert.toContact(json);
 //   const contactList = Convert.toContactList(json);
+//   const context = Convert.toContext(json);
 //   const country = Convert.toCountry(json);
 //   const currency = Convert.toCurrency(json);
 //   const email = Convert.toEmail(json);
@@ -22,33 +22,26 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-export interface Context {
-  id?: { [key: string]: string };
-  name?: string;
-  type: string;
-  [property: string]: any;
-}
-
 export interface Chart {
-  instruments: Instrument[];
+  instruments: InstrumentElement[];
   otherConfig?: { [key: string]: any };
-  range?: TimeRange;
+  range?: TimeRangeObject;
   style?: Style;
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
 
-export interface Instrument {
-  id: InstrumentID;
-  market?: Market;
+export interface InstrumentElement {
+  id: PurpleId;
+  market?: PurpleMarket;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface InstrumentID {
+export interface PurpleId {
   BBG?: string;
   CUSIP?: string;
   FDS_ID?: string;
@@ -58,10 +51,10 @@ export interface InstrumentID {
   RIC?: string;
   SEDOL?: string;
   ticker?: string;
-  [property: string]: string;
+  [property: string]: any;
 }
 
-export interface Market {
+export interface PurpleMarket {
   BBG?: string;
   COUNTRY_ISOALPHA2?: string;
   MIC?: string;
@@ -69,11 +62,11 @@ export interface Market {
   [property: string]: any;
 }
 
-export interface TimeRange {
+export interface TimeRangeObject {
   endTime?: Date;
   startTime?: Date;
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
@@ -94,58 +87,86 @@ export enum Style {
 export interface ChatInitSettings {
   chatName?: string;
   initMessage?: string;
-  members?: ContactList;
+  members?: ContactListObject;
   options?: any;
   type: any;
   [property: string]: any;
 }
 
-export interface ContactList {
-  contacts: Contact[];
+export interface ContactListObject {
+  contacts: ContactElement[];
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
+  [property: string]: any;
+}
+
+export interface ContactElement {
+  id: FluffyId;
+  type: string;
+  name?: string;
+  [property: string]: any;
+}
+
+export interface FluffyId {
+  email?: string;
+  FDS_ID?: string;
   [property: string]: any;
 }
 
 export interface Contact {
-  id: ContactID;
+  id: TentacledId;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface ContactID {
+export interface TentacledId {
   email?: string;
   FDS_ID?: string;
-  [property: string]: string;
+  [property: string]: any;
+}
+
+export interface ContactList {
+  contacts: ContactElement[];
+  type: string;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+export interface Context {
+  id?: { [key: string]: any };
+  name?: string;
+  type: string;
+  [property: string]: any;
 }
 
 export interface Country {
-  id: CountryID;
+  id: CountryId;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface CountryID {
+export interface CountryId {
   COUNTRY_ISOALPHA2?: string;
   COUNTRY_ISOALPHA3?: string;
   ISOALPHA2?: string;
   ISOALPHA3?: string;
-  [property: string]: string;
+  [property: string]: any;
 }
 
 export interface Currency {
-  id: CurrencyID;
+  id: CurrencyId;
   name?: string;
   type: string;
   [property: string]: any;
 }
 
-export interface CurrencyID {
+export interface CurrencyId {
   CURRENCY_ISOCODE?: string;
-  [property: string]: string;
+  [property: string]: any;
 }
 
 export interface Email {
@@ -153,67 +174,114 @@ export interface Email {
   subject?: string;
   textBody?: string;
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
 
 export interface RecipientsObject {
-  id?: RecipientsID;
+  id?: RecipientsId;
   type: string;
   name?: string;
-  contacts?: Contact[];
+  contacts?: ContactElement[];
   [property: string]: any;
 }
 
-export interface RecipientsID {
+export interface RecipientsId {
   email?: string;
   FDS_ID?: string;
-  [property: string]: string;
+  [property: string]: any;
+}
+
+export interface Instrument {
+  id: StickyId;
+  market?: FluffyMarket;
+  type: string;
+  name?: string;
+  [property: string]: any;
+}
+
+export interface StickyId {
+  BBG?: string;
+  CUSIP?: string;
+  FDS_ID?: string;
+  FIGI?: string;
+  ISIN?: string;
+  PERMID?: string;
+  RIC?: string;
+  SEDOL?: string;
+  ticker?: string;
+  [property: string]: any;
+}
+
+export interface FluffyMarket {
+  BBG?: string;
+  COUNTRY_ISOALPHA2?: string;
+  MIC?: string;
+  name?: string;
+  [property: string]: any;
 }
 
 export interface InstrumentList {
-  instruments: Instrument[];
+  instruments: InstrumentElement[];
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
 
 export interface Nothing {
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
 
 export interface Organization {
-  id: OrganizationID;
+  id: OrganizationId;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface OrganizationID {
+export interface OrganizationId {
   FDS_ID?: string;
   LEI?: string;
   PERMID?: string;
-  [property: string]: string;
+  [property: string]: any;
 }
 
 export interface Portfolio {
-  positions: Position[];
+  positions: PositionElement[];
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+export interface PositionElement {
+  holding: number;
+  instrument: InstrumentElement;
+  type: string;
+  id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
 
 export interface Position {
   holding: number;
-  instrument: Instrument;
+  instrument: InstrumentElement;
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+export interface TimeRange {
+  endTime?: Date;
+  startTime?: Date;
+  type: string;
+  id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
@@ -225,7 +293,7 @@ export interface Valuation {
   type: string;
   valuationTime?: Date;
   value: number;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
@@ -233,14 +301,6 @@ export interface Valuation {
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
-  public static toContext(json: string): Context {
-    return cast(JSON.parse(json), r('Context'));
-  }
-
-  public static contextToJson(value: Context): string {
-    return JSON.stringify(uncast(value, r('Context')), null, 2);
-  }
-
   public static toChart(json: string): Chart {
     return cast(JSON.parse(json), r('Chart'));
   }
@@ -271,6 +331,14 @@ export class Convert {
 
   public static contactListToJson(value: ContactList): string {
     return JSON.stringify(uncast(value, r('ContactList')), null, 2);
+  }
+
+  public static toContext(json: string): Context {
+    return cast(JSON.parse(json), r('Context'));
+  }
+
+  public static contextToJson(value: Context): string {
+    return JSON.stringify(uncast(value, r('Context')), null, 2);
   }
 
   public static toCountry(json: string): Country {
@@ -529,36 +597,28 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-  Context: o(
-    [
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
-    ],
-    'any'
-  ),
   Chart: o(
     [
-      { json: 'instruments', js: 'instruments', typ: a(r('Instrument')) },
+      { json: 'instruments', js: 'instruments', typ: a(r('InstrumentElement')) },
       { json: 'otherConfig', js: 'otherConfig', typ: u(undefined, m('any')) },
-      { json: 'range', js: 'range', typ: u(undefined, r('TimeRange')) },
+      { json: 'range', js: 'range', typ: u(undefined, r('TimeRangeObject')) },
       { json: 'style', js: 'style', typ: u(undefined, r('Style')) },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  Instrument: o(
+  InstrumentElement: o(
     [
-      { json: 'id', js: 'id', typ: r('InstrumentID') },
-      { json: 'market', js: 'market', typ: u(undefined, r('Market')) },
+      { json: 'id', js: 'id', typ: r('PurpleId') },
+      { json: 'market', js: 'market', typ: u(undefined, r('PurpleMarket')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  InstrumentID: o(
+  PurpleId: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
@@ -570,13 +630,236 @@ const typeMap: any = {
       { json: 'SEDOL', js: 'SEDOL', typ: u(undefined, '') },
       { json: 'ticker', js: 'ticker', typ: u(undefined, '') },
     ],
-    ''
+    'any'
   ),
-  Market: o(
+  PurpleMarket: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
       { json: 'MIC', js: 'MIC', typ: u(undefined, '') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  TimeRangeObject: o(
+    [
+      { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
+      { json: 'startTime', js: 'startTime', typ: u(undefined, Date) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  ChatInitSettings: o(
+    [
+      { json: 'chatName', js: 'chatName', typ: u(undefined, '') },
+      { json: 'initMessage', js: 'initMessage', typ: u(undefined, '') },
+      { json: 'members', js: 'members', typ: u(undefined, r('ContactListObject')) },
+      { json: 'options', js: 'options', typ: u(undefined, 'any') },
+      { json: 'type', js: 'type', typ: 'any' },
+    ],
+    'any'
+  ),
+  ContactListObject: o(
+    [
+      { json: 'contacts', js: 'contacts', typ: a(r('ContactElement')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  ContactElement: o(
+    [
+      { json: 'id', js: 'id', typ: r('FluffyId') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  FluffyId: o(
+    [
+      { json: 'email', js: 'email', typ: u(undefined, '') },
+      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Contact: o(
+    [
+      { json: 'id', js: 'id', typ: r('TentacledId') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  TentacledId: o(
+    [
+      { json: 'email', js: 'email', typ: u(undefined, '') },
+      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  ContactList: o(
+    [
+      { json: 'contacts', js: 'contacts', typ: a(r('ContactElement')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Context: o(
+    [
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    'any'
+  ),
+  Country: o(
+    [
+      { json: 'id', js: 'id', typ: r('CountryId') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  CountryId: o(
+    [
+      { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
+      { json: 'COUNTRY_ISOALPHA3', js: 'COUNTRY_ISOALPHA3', typ: u(undefined, '') },
+      { json: 'ISOALPHA2', js: 'ISOALPHA2', typ: u(undefined, '') },
+      { json: 'ISOALPHA3', js: 'ISOALPHA3', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Currency: o(
+    [
+      { json: 'id', js: 'id', typ: r('CurrencyId') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    'any'
+  ),
+  CurrencyId: o([{ json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: u(undefined, '') }], 'any'),
+  Email: o(
+    [
+      { json: 'recipients', js: 'recipients', typ: r('RecipientsObject') },
+      { json: 'subject', js: 'subject', typ: u(undefined, '') },
+      { json: 'textBody', js: 'textBody', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  RecipientsObject: o(
+    [
+      { json: 'id', js: 'id', typ: u(undefined, r('RecipientsId')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'contacts', js: 'contacts', typ: u(undefined, a(r('ContactElement'))) },
+    ],
+    'any'
+  ),
+  RecipientsId: o(
+    [
+      { json: 'email', js: 'email', typ: u(undefined, '') },
+      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Instrument: o(
+    [
+      { json: 'id', js: 'id', typ: r('StickyId') },
+      { json: 'market', js: 'market', typ: u(undefined, r('FluffyMarket')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  StickyId: o(
+    [
+      { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
+      { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
+      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
+      { json: 'FIGI', js: 'FIGI', typ: u(undefined, '') },
+      { json: 'ISIN', js: 'ISIN', typ: u(undefined, '') },
+      { json: 'PERMID', js: 'PERMID', typ: u(undefined, '') },
+      { json: 'RIC', js: 'RIC', typ: u(undefined, '') },
+      { json: 'SEDOL', js: 'SEDOL', typ: u(undefined, '') },
+      { json: 'ticker', js: 'ticker', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  FluffyMarket: o(
+    [
+      { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
+      { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
+      { json: 'MIC', js: 'MIC', typ: u(undefined, '') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  InstrumentList: o(
+    [
+      { json: 'instruments', js: 'instruments', typ: a(r('InstrumentElement')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Nothing: o(
+    [
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Organization: o(
+    [
+      { json: 'id', js: 'id', typ: r('OrganizationId') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  OrganizationId: o(
+    [
+      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
+      { json: 'LEI', js: 'LEI', typ: u(undefined, '') },
+      { json: 'PERMID', js: 'PERMID', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Portfolio: o(
+    [
+      { json: 'positions', js: 'positions', typ: a(r('PositionElement')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  PositionElement: o(
+    [
+      { json: 'holding', js: 'holding', typ: 3.14 },
+      { json: 'instrument', js: 'instrument', typ: r('InstrumentElement') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Position: o(
+    [
+      { json: 'holding', js: 'holding', typ: 3.14 },
+      { json: 'instrument', js: 'instrument', typ: r('InstrumentElement') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -586,146 +869,7 @@ const typeMap: any = {
       { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
       { json: 'startTime', js: 'startTime', typ: u(undefined, Date) },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  ChatInitSettings: o(
-    [
-      { json: 'chatName', js: 'chatName', typ: u(undefined, '') },
-      { json: 'initMessage', js: 'initMessage', typ: u(undefined, '') },
-      { json: 'members', js: 'members', typ: u(undefined, r('ContactList')) },
-      { json: 'options', js: 'options', typ: u(undefined, 'any') },
-      { json: 'type', js: 'type', typ: 'any' },
-    ],
-    'any'
-  ),
-  ContactList: o(
-    [
-      { json: 'contacts', js: 'contacts', typ: a(r('Contact')) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  Contact: o(
-    [
-      { json: 'id', js: 'id', typ: r('ContactID') },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  ContactID: o(
-    [
-      { json: 'email', js: 'email', typ: u(undefined, '') },
-      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
-    ],
-    ''
-  ),
-  Country: o(
-    [
-      { json: 'id', js: 'id', typ: r('CountryID') },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  CountryID: o(
-    [
-      { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
-      { json: 'COUNTRY_ISOALPHA3', js: 'COUNTRY_ISOALPHA3', typ: u(undefined, '') },
-      { json: 'ISOALPHA2', js: 'ISOALPHA2', typ: u(undefined, '') },
-      { json: 'ISOALPHA3', js: 'ISOALPHA3', typ: u(undefined, '') },
-    ],
-    ''
-  ),
-  Currency: o(
-    [
-      { json: 'id', js: 'id', typ: r('CurrencyID') },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
-    ],
-    'any'
-  ),
-  CurrencyID: o([{ json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: u(undefined, '') }], ''),
-  Email: o(
-    [
-      { json: 'recipients', js: 'recipients', typ: r('RecipientsObject') },
-      { json: 'subject', js: 'subject', typ: u(undefined, '') },
-      { json: 'textBody', js: 'textBody', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  RecipientsObject: o(
-    [
-      { json: 'id', js: 'id', typ: u(undefined, r('RecipientsID')) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'contacts', js: 'contacts', typ: u(undefined, a(r('Contact'))) },
-    ],
-    'any'
-  ),
-  RecipientsID: o(
-    [
-      { json: 'email', js: 'email', typ: u(undefined, '') },
-      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
-    ],
-    ''
-  ),
-  InstrumentList: o(
-    [
-      { json: 'instruments', js: 'instruments', typ: a(r('Instrument')) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  Nothing: o(
-    [
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  Organization: o(
-    [
-      { json: 'id', js: 'id', typ: r('OrganizationID') },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  OrganizationID: o(
-    [
-      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
-      { json: 'LEI', js: 'LEI', typ: u(undefined, '') },
-      { json: 'PERMID', js: 'PERMID', typ: u(undefined, '') },
-    ],
-    ''
-  ),
-  Portfolio: o(
-    [
-      { json: 'positions', js: 'positions', typ: a(r('Position')) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  Position: o(
-    [
-      { json: 'holding', js: 'holding', typ: 3.14 },
-      { json: 'instrument', js: 'instrument', typ: r('Instrument') },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -738,7 +882,7 @@ const typeMap: any = {
       { json: 'type', js: 'type', typ: '' },
       { json: 'valuationTime', js: 'valuationTime', typ: u(undefined, Date) },
       { json: 'value', js: 'value', typ: 3.14 },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
