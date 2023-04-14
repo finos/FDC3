@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3",
-  "version": "2.0.0-beta.5",
+  "version": "2.0.0",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -27,7 +27,7 @@
     "test": "tsdx test --verbose",
     "lint": "tsdx lint src/api test",
     "prepare": "tsdx build",
-    "typegen": "cd src/context && quicktype -s schema --src-urls schemas.json -o ContextTypes.ts && cd ../.. && tsdx lint src/context --fix"
+    "typegen": "node quicktypeUtil.js src/context/schemas src/context/ContextTypes.ts && tsdx lint src/context --fix"
   },
   "peerDependencies": {},
   "husky": {
