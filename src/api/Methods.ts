@@ -58,11 +58,11 @@ export const fdc3Ready = async (waitForMs = DEFAULT_TIMEOUT): Promise<void> => {
   });
 };
 
-function isString(app: AppIdentifier | String): app is String {
-  return typeof app === 'string';
+function isString(app: AppIdentifier | string | undefined): app is string {
+  return !!app && typeof app === 'string';
 }
 
-export function open(app: AppIdentifier | String, context?: Context): Promise<AppIdentifier> {
+export function open(app: AppIdentifier | string, context?: Context): Promise<AppIdentifier> {
   if (isString(app)) {
     return rejectIfNoGlobal(() => window.fdc3.open(app, context));
   } else {
@@ -82,16 +82,16 @@ export function broadcast(context: Context): Promise<void> {
   return rejectIfNoGlobal(() => window.fdc3.broadcast(context));
 }
 
-export function raiseIntent(intent: string, context: Context, app?: AppIdentifier | String): Promise<IntentResolution> {
-  if (app && isString(app)) {
+export function raiseIntent(intent: string, context: Context, app?: AppIdentifier | string): Promise<IntentResolution> {
+  if (isString(app)) {
     return rejectIfNoGlobal(() => window.fdc3.raiseIntent(intent, context, app));
   } else {
     return rejectIfNoGlobal(() => window.fdc3.raiseIntent(intent, context, app));
   }
 }
 
-export function raiseIntentForContext(context: Context, app?: AppIdentifier | String): Promise<IntentResolution> {
-  if (app && isString(app)) {
+export function raiseIntentForContext(context: Context, app?: AppIdentifier | string): Promise<IntentResolution> {
+  if (isString(app)) {
     return rejectIfNoGlobal(() => window.fdc3.raiseIntentForContext(context, app));
   } else {
     return rejectIfNoGlobal(() => window.fdc3.raiseIntentForContext(context, app));
