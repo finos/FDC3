@@ -543,7 +543,7 @@ export interface DesktopAgent {
    * let instanceMetadata = await fdc3.open('myApp');
    * ```
    */
-  open(name: String, context?: Context): Promise<AppIdentifier>;
+  open(name: string, context?: Context): Promise<AppIdentifier>;
 
   /**
    * @deprecated version of `raiseIntent` that targets an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
@@ -553,7 +553,7 @@ export interface DesktopAgent {
    * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
    * ```
    */
-  raiseIntent(intent: string, context: Context, name: String): Promise<IntentResolution>;
+  raiseIntent(intent: string, context: Context, name: string): Promise<IntentResolution>;
 
   /**
    * @deprecated version of `raiseIntentForContext` that targets an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
@@ -563,5 +563,5 @@ export interface DesktopAgent {
    * await fdc3.raiseIntentForContext(context, targetAppName);
    * ```
    */
-  raiseIntentForContext(context: Context, name: String): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;
 }
