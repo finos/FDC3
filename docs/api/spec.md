@@ -378,11 +378,11 @@ There are three types of channels, which have different visibility and discovera
   * can be 'joined' (via the [`joinUserChannel()`](ref/DesktopAgent#joinuserchannel) API call).
 
   :::note
-  Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels).
+Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels).
   :::
 
   :::note
-  Earlier versions of FDC3 included the concept of a 'global' system channel
+Earlier versions of FDC3 included the concept of a 'global' system channel
   which was deprecated in FDC3 1.2 and removed in FDC3 2.0.
   :::
 
