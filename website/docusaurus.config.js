@@ -174,7 +174,7 @@ module.exports={
           "title": "More",
           "items": [
             {
-              "html": "<a href=\"https://github.com/finos/FDC3\"><img src=\"https://img.shields.io/github/stars/finos/FDC3?label=FDC3&style=social\" /></a>"
+              "html": "<a href=\"https://github.com/finos/FDC3\"><img alt=\"Github\" src=\"https://img.shields.io/github/stars/finos/FDC3?label=FDC3&style=social\" /></a>"
             },
             {
               "label": "Users",
