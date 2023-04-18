@@ -15,19 +15,19 @@ export default ({ badge }) => {
             });
     });
 
-    return <div class={styles.conformanceShowcase}>
+    return <div className={styles.conformanceShowcase}>
         {
-            relevant.map(c => {
+            relevant.map((c, key) => {
                 return (
-                    <div className={styles.conformanceShowcaseItem}>
-                        <div class={styles.conformanceImage}>
+                    <div className={styles.conformanceShowcaseItem} key={key}>
+                        <div className={styles.conformanceImage}>
                             <img src={c.conf.image} alt={c.conf.title} title={c.conf.title} />
                         </div>
-                        <div class={styles.conformanceText}>
+                        <div className={styles.conformanceText}>
                             <a href={c.conf.infoLink}><div className="showcase-title">{c.conf.title}</div></a><ul>
                                 {
-                                    c.badge.items.map(item => {
-                                        return (<li class={styles.conformanceItem}>
+                                    c.badge.items.map((item, key2) => {
+                                        return (<li className={styles.conformanceItem} key={key2}>
                                             <p>{item.text} {  (item.link) ? <em><a href={item.link}>More Details</a></em> :"" }</p>
                                         </li>)
                                     })
