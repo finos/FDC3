@@ -24,7 +24,7 @@ export default ({ badge }) => {
                             <img src={c.conf.image} alt={c.conf.title} title={c.conf.title} />
                         </div>
                         <div className={styles.conformanceText}>
-                            <a href={c.conf.infoLink}><h3>{c.conf.title}</h3></a><ul>
+                            <a href={c.conf.infoLink}><div className="showcase-title">{c.conf.title}</div></a><ul>
                                 {
                                     c.badge.items.map((item, key2) => {
                                         return (<li className={styles.conformanceItem} key={key2}>
