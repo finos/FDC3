@@ -162,19 +162,19 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const openAPIDocs = (event: React.MouseEvent<HTMLElement>) => {
 	event.preventDefault();
-	window.open("https://fdc3.finos.org/docs/api/overview", "FDC3ApiDocs");
+	window.open("https://fdc3.finos.org/docs/api/overview", "FDC3APIDocs");
 	return false;
 };
 
 const openSpecAccessDocs = (event: React.MouseEvent<HTMLElement>) => {
 	event.preventDefault();
-	window.open("https://fdc3.finos.org/docs/api/spec#api-access", "FDC3ApiDocs");
+	window.open("https://fdc3.finos.org/docs/api/spec#api-access", "FDC3APIDocs");
 	return false;
 };
 
 const openSupportedPlatformsDocs = (event: React.MouseEvent<HTMLElement>) => {
 	event.preventDefault();
-	window.open("https://fdc3.finos.org/docs/supported-platforms", "FDC3ApiDocs");
+	window.open("https://fdc3.finos.org/docs/supported-platforms", "FDC3APIDocs");
 	return false;
 };
 
