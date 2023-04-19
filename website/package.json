@@ -9,8 +9,8 @@
     "copy-schemas": "cpy ../src/context/schemas/*.schema.json static/schemas/next",
     "copy-appd": "cpy ../src/app-directory/specification/appd.yaml static/schemas/next --rename app-directory.yaml",
     "build-workbench": "cd ../toolbox/fdc3-workbench && npm install && npm run build",
-    "copy-workbench": "del-cli static/toolbox/fdc3-workbench && npm run build-workbench && cd ../toolbox/fdc3-workbench/build && cpy ** ../../../website/static/toolbox/fdc3-workbench --parents",
-    "copy-explained": "del-cli static/toolbox/fdc3-explained && cpy ./fdc3-explained ../website/static/toolbox --parents  --cwd=../toolbox",
+    "copy-workbench": "del-cli static/toolbox/fdc3-workbench && npm run build-workbench && cpy ../toolbox/fdc3-workbench/build/** static/toolbox/fdc3-workbench",
+    "copy-explained": "del-cli static/toolbox/fdc3-explained && cpy ./fdc3-explained ../website/static/toolbox --parents --cwd=../toolbox",
     "version": "npm run version:docs && npm run version:schemas && npm run version:appd",
     "version:docs": "docusaurus-version ${VERSION}",
     "version:schemas": "cpy static/schemas/next/*.schema.json static/schemas/${VERSION} && replace-in-files --string=/schemas/next --replacement=/schemas/${VERSION} static/schemas/${VERSION}/*.schema.json",
@@ -25,13 +25,12 @@
     "docusaurus": "docusaurus"
   },
   "devDependencies": {
-    "cpy-cli": "3.1.1",
-    "del-cli": "4.0.1",
+    "cpy-cli": "4.2.0",
+    "del-cli": "5.0.0",
     "docusaurus-delete-version": "0.1.1",
-    "redoc-cli": "0.13.10",
-    "replace-in-files-cli": "1.0.0",
-    "replace-json-property": "1.6.3",
-    "rimraf": "3.0.2"
+    "replace-in-files-cli": "2.0.0",
+    "replace-json-property": "1.8.0",
+    "rimraf": "5.0.0"
   },
   "resolutions": {
     "immer": "^8.0.1",
@@ -39,9 +38,9 @@
     "is-svg": "4.2.2"
   },
   "dependencies": {
-    "@docusaurus/core": "2.3.1",
-    "@docusaurus/preset-classic": "2.3.1",
-    "clsx": "^1.1.1",
+    "@docusaurus/core": "2.4.0",
+    "@docusaurus/preset-classic": "2.4.0",
+    "clsx": "^1.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   }
