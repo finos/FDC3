@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 * Updated definition of the `Instrument` context type to include optional market identifiers ([#819](https://github.com/finos/FDC3/pull/819))
+* Corrected API functions and object types to always use `string` instead of `String` ([#924](https://github.com/finos/FDC3/pull/924))
 
 ### Deprecated
 
