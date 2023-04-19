@@ -1,5 +1,4 @@
 ---
-id: version-2.0-ViewResearch
 sidebar_label: ViewResearch
 title: ViewResearch
 hide_title: true

@@ -1,6 +1,5 @@
 ---
 title: FDC3 Charter
-id: version-1.2-fdc3-charter
 original_id: fdc3-charter
 ---
 
