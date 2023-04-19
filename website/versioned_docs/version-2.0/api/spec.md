@@ -377,10 +377,14 @@ There are three types of channels, which have different visibility and discovera
   * are discoverable (via the [`getUserChannels()`](ref/DesktopAgent#getuserchannels) API call),
   * can be 'joined' (via the [`joinUserChannel()`](ref/DesktopAgent#joinuserchannel) API call).
 
-  > **Note:** Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels).
+  :::note
+Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels).
+  :::
 
-  > **Note:** Earlier versions of FDC3 included the concept of a 'global' system channel
+  :::note
+Earlier versions of FDC3 included the concept of a 'global' system channel
   which was deprecated in FDC3 1.2 and removed in FDC3 2.0.
+  :::
 
 2. **_App channels_**, which:
 
@@ -438,7 +442,9 @@ Channel implementations SHOULD ensure that context messages broadcast by an appl
 
 Desktop Agent implementations SHOULD use the following set of channels, to enable a consistent user experience across different implementations. Desktop Agent implementation MAY support configuration of the user channels.
 
-> Note: Future versions of the FDC3 Standard may support connections between desktop agents, where differing user channel sets may cause user experience issues.
+:::note
+Future versions of the FDC3 Standard may support connections between desktop agents, where differing user channel sets may cause user experience issues.
+:::
 
 ```javascript
 const recommendedChannels = [

@@ -5,7 +5,9 @@ title: ViewContact
 hide_title: true
 ---
 # `ViewContact`
-> **Note:** ViewContact has been deprecated in FDC3 2.0 in favour of the more general [ViewProfile](ViewProfile) intent.
+:::caution
+ViewContact has been deprecated in FDC3 2.0 in favour of the more general [ViewProfile](ViewProfile) intent.
+:::
 
 
 View details for a contact.
