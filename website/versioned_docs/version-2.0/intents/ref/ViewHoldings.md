@@ -1,5 +1,4 @@
 ---
-id: version-2.0-ViewHoldings
 sidebar_label: ViewHoldings
 title: ViewHoldings
 hide_title: true

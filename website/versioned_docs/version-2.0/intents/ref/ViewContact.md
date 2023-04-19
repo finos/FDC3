@@ -1,12 +1,13 @@
 ---
-id: version-2.0-ViewContact
 sidebar_label: ViewContact (deprecated)
 title: ViewContact
 hide_title: true
 original_id: ViewContact
 ---
 # `ViewContact`
-> **Note:** ViewContact has been deprecated in FDC3 2.0 in favour of the more general [ViewProfile](ViewProfile) intent.
+:::caution
+ViewContact has been deprecated in FDC3 2.0 in favour of the more general [ViewProfile](ViewProfile) intent.
+:::
 
 
 View details for a contact.

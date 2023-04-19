@@ -1,7 +1,7 @@
 ---
 id: uc-13
-title:  "Use Case 13: User launches multiple apps from a single container"
-sidebar_label:  13. User launches multiple apps from a single container
+title: "Use Case 13: User launches multiple apps from a single container"
+sidebar_label: 13. User launches multiple apps from a single container
 layout: use_case
 ---
 

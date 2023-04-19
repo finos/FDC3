@@ -1,5 +1,4 @@
 ---
-id: version-2.0-PrivateChannel
 sidebar_label: PrivateChannel
 title: PrivateChannel
 hide_title: true

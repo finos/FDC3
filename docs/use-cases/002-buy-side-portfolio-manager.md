@@ -1,6 +1,6 @@
 ---
 id: uc-2
-title:  "Use Case 2: Buy side Portfolio Manager"
+title: "Use Case 2: Buy side Portfolio Manager"
 sidebar_label: 2. Buy side Portfolio Manager
 layout: use_case
 ---

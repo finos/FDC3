@@ -1,5 +1,4 @@
 ---
-id: version-2.0-spec
 sidebar_label: Overview
 title: Intents Overview 2.0
 original_id: spec
@@ -20,7 +19,9 @@ Naming of Intents SHOULD follow the below guidelines:
 * ‘.’ will be used to namespace the intent (see below).
 * Intent names should be in UpperCamelCase.
 
-> **Note:** The naming guidelines should be adhered to when creating future Intents.  This is to ensure they meet the criteria for addition to the FDC3 standard and to provide a consistent user experience.
+:::note
+The naming guidelines should be adhered to when creating future Intents.  This is to ensure they meet the criteria for addition to the FDC3 standard and to provide a consistent user experience.
+:::
 
 ### Characteristics
 
@@ -82,7 +83,7 @@ As more use cases were identified it was clear further Intents were required.  F
 
 ## Using Intents
 
-Combined with [context data](../context/overview) and [App Directory](../app-directory/overview) standards, intents enable rich service discovery on the desktop. For example:
+Combined with [context data](../context/spec) and [App Directory](../app-directory/overview) standards, intents enable rich service discovery on the desktop. For example:
 
 ### Ask for a chart to be displayed
 
@@ -131,7 +132,7 @@ const intentsAndApps = await fdc3.findIntentsByContext({
 An FDC3 Standard compliant application that supports intents **MUST**:
 
 * Meet the expected context and behavior defined for any FDC3-defined standard intents used.
-* Use the [`fdc3.addIntentListener`](api/ref/DesktopAgent#addintentlistener) API call to set up a handler for each supported intent as soon as possible when it starts up. This facilitates delivery of raised intents to the application.
+* Use the [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener) API call to set up a handler for each supported intent as soon as possible when it starts up. This facilitates delivery of raised intents to the application.
 
 An FDC3 Standard compliant application that supports intents **SHOULD**:
 
