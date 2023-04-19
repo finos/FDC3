@@ -47,9 +47,9 @@ interface DesktopAgent {
   addContextListener(handler: ContextHandler): Promise<Listener>;
   getSystemChannels(): Promise<Array<Channel>>;
   joinChannel(channelId: string) : Promise<void>;
-  open(name: String, context?: Context): Promise<AppIdentifier>;
-  raiseIntent(intent: string, context: Context, name: String): Promise<IntentResolution>;
-  raiseIntentForContext(context: Context, name: String): Promise<IntentResolution>;
+  open(name: string, context?: Context): Promise<AppIdentifier>;
+  raiseIntent(intent: string, context: Context, name: string): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;
 }
 ```
 
@@ -97,7 +97,10 @@ addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 
 Adds a listener for incoming intents from the Desktop Agent. The handler function may return void or a promise that resolves to a [`IntentResult`](Types#intentresult), which is either a [`Context`](Types#context) object, representing any data that should be returned to the app that raised the intent, or a [`Channel`](Channel) or [`PrivateChannel`](PrivateChannel) over which data responses will be sent. The `IntentResult` will be returned to the app that raised the intent via the [`IntentResolution`](Metadata#intentresolution) and retrieved from it using the `getResult()` function.
 
-The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.
+The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if any of the following is true: 
+1. The intent handling function's returned promise rejects.
+2. The intent handling function doesn't return a promise.
+3. The returned promise resolves to an invalid type.
 
 The [`PrivateChannel`](PrivateChannel) type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
 
@@ -752,12 +755,13 @@ joinChannel(channelId: string) : Promise<void>;
 Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
 
 #### See also
+
 * [`joinUserChannel`](#joinuserchannel)
 
 ### `open` (deprecated)
 
 ```ts
-open(name: String, context?: Context): Promise<AppIdentifier>;
+open(name: string, context?: Context): Promise<AppIdentifier>;
 ```
 
 Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
@@ -769,7 +773,7 @@ Version of `open` that launches an app by name rather than `AppIdentifier`. Prov
 ### `raiseIntent` (deprecated)
 
 ```ts
-raiseIntent(intent: string, context: Context, name: String): Promise<IntentResolution>;
+raiseIntent(intent: string, context: Context, name: string): Promise<IntentResolution>;
 ```
 
 Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
@@ -781,7 +785,7 @@ Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`
 ### `raiseIntentForContext` (deprecated)
 
 ```ts
-raiseIntentForContext(context: Context, name: String): Promise<IntentResolution>;;
+raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;;
 ```
 
 Version of `raiseIntentForContext` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
