@@ -102,7 +102,7 @@ try {
 } catch (resolverError) {
     console.error(`Error: Intent was not resolved: ${resolverError}`);
 }
-
+```
 
 ## Methods
 
