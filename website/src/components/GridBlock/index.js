@@ -6,7 +6,7 @@ export default ({items}) => {
       <div className="gridBlock">
         {
           items.map((sl, key) =>
-            <div className="blockElement fourByGridBlock" key={key}>
+            <div className="blockElement fiveByGridBlock" key={key}>
               <div className="blockContent">
                 {sl}
               </div>

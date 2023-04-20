@@ -9,6 +9,7 @@ const React = require('react');
 import Layout from "@theme/Layout";
 import HomeSplash from '../components/HomeSplash';
 import Api from '../../data/features/api.mdx'
+import Bridging from '../../data/features/bridging.mdx'
 import Intents from '../../data/features/intents.mdx'
 import Directory from '../../data/features/app-directory.mdx'
 import ContextData from '../../data/features/context-data.mdx'
@@ -44,6 +45,7 @@ export default () => {
     <Container>
       <GridBlock items={[
         <Api />,
+        <Bridging />,
         <Intents />,
         <ContextData />,
         <Directory />
