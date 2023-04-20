@@ -1,12 +1,12 @@
 // To parse this data:
 //
-//   import { Convert, Context, Chart, ChatInitSettings, Contact, ContactList, Country, Currency, Email, Instrument, InstrumentList, Nothing, Organization, Portfolio, Position, TimeRange, Valuation } from "./file";
+//   import { Convert, Chart, ChatInitSettings, Contact, ContactList, Context, Country, Currency, Email, Instrument, InstrumentList, Nothing, Organization, Portfolio, Position, TimeRange, Valuation } from "./file";
 //
-//   const context = Convert.toContext(json);
 //   const chart = Convert.toChart(json);
 //   const chatInitSettings = Convert.toChatInitSettings(json);
 //   const contact = Convert.toContact(json);
 //   const contactList = Convert.toContactList(json);
+//   const context = Convert.toContext(json);
 //   const country = Convert.toCountry(json);
 //   const currency = Convert.toCurrency(json);
 //   const email = Convert.toEmail(json);
@@ -22,29 +22,26 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-export interface Context {
-  id?: { [key: string]: string };
-  name?: string;
-  type: string;
-}
-
 export interface Chart {
-  instruments: Instrument[];
+  instruments: InstrumentElement[];
   otherConfig?: { [key: string]: any };
-  range?: TimeRange;
+  range?: TimeRangeObject;
   style?: Style;
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
+  [property: string]: any;
 }
 
-export interface Instrument {
-  id: InstrumentID;
+export interface InstrumentElement {
+  id: PurpleId;
+  market?: PurpleMarket;
   type: string;
   name?: string;
+  [property: string]: any;
 }
 
-export interface InstrumentID {
+export interface PurpleId {
   BBG?: string;
   CUSIP?: string;
   FDS_ID?: string;
@@ -54,14 +51,24 @@ export interface InstrumentID {
   RIC?: string;
   SEDOL?: string;
   ticker?: string;
+  [property: string]: any;
 }
 
-export interface TimeRange {
+export interface PurpleMarket {
+  BBG?: string;
+  COUNTRY_ISOALPHA2?: string;
+  MIC?: string;
+  name?: string;
+  [property: string]: any;
+}
+
+export interface TimeRangeObject {
   endTime?: Date;
   startTime?: Date;
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
+  [property: string]: any;
 }
 
 export enum Style {
@@ -80,50 +87,86 @@ export enum Style {
 export interface ChatInitSettings {
   chatName?: string;
   initMessage?: string;
-  members?: ContactList;
+  members?: ContactListObject;
   options?: any;
   type: any;
+  [property: string]: any;
 }
 
-export interface ContactList {
-  contacts: Contact[];
+export interface ContactListObject {
+  contacts: ContactElement[];
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
+  [property: string]: any;
+}
+
+export interface ContactElement {
+  id: FluffyId;
+  type: string;
+  name?: string;
+  [property: string]: any;
+}
+
+export interface FluffyId {
+  email?: string;
+  FDS_ID?: string;
+  [property: string]: any;
 }
 
 export interface Contact {
-  id: ContactID;
+  id: TentacledId;
   type: string;
   name?: string;
+  [property: string]: any;
 }
 
-export interface ContactID {
+export interface TentacledId {
   email?: string;
   FDS_ID?: string;
+  [property: string]: any;
+}
+
+export interface ContactList {
+  contacts: ContactElement[];
+  type: string;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+export interface Context {
+  id?: { [key: string]: any };
+  name?: string;
+  type: string;
+  [property: string]: any;
 }
 
 export interface Country {
-  id: CountryID;
+  id: CountryId;
   type: string;
   name?: string;
+  [property: string]: any;
 }
 
-export interface CountryID {
+export interface CountryId {
   COUNTRY_ISOALPHA2?: string;
   COUNTRY_ISOALPHA3?: string;
   ISOALPHA2?: string;
   ISOALPHA3?: string;
+  [property: string]: any;
 }
 
 export interface Currency {
-  id: CurrencyID;
+  id: CurrencyId;
   name?: string;
   type: string;
+  [property: string]: any;
 }
 
-export interface CurrencyID {
+export interface CurrencyId {
   CURRENCY_ISOCODE?: string;
+  [property: string]: any;
 }
 
 export interface Email {
@@ -131,60 +174,116 @@ export interface Email {
   subject?: string;
   textBody?: string;
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
+  [property: string]: any;
 }
 
 export interface RecipientsObject {
-  id?: RecipientsID;
+  id?: RecipientsId;
   type: string;
   name?: string;
-  contacts?: Contact[];
+  contacts?: ContactElement[];
+  [property: string]: any;
 }
 
-export interface RecipientsID {
+export interface RecipientsId {
   email?: string;
   FDS_ID?: string;
+  [property: string]: any;
+}
+
+export interface Instrument {
+  id: StickyId;
+  market?: FluffyMarket;
+  type: string;
+  name?: string;
+  [property: string]: any;
+}
+
+export interface StickyId {
+  BBG?: string;
+  CUSIP?: string;
+  FDS_ID?: string;
+  FIGI?: string;
+  ISIN?: string;
+  PERMID?: string;
+  RIC?: string;
+  SEDOL?: string;
+  ticker?: string;
+  [property: string]: any;
+}
+
+export interface FluffyMarket {
+  BBG?: string;
+  COUNTRY_ISOALPHA2?: string;
+  MIC?: string;
+  name?: string;
+  [property: string]: any;
 }
 
 export interface InstrumentList {
-  instruments: Instrument[];
+  instruments: InstrumentElement[];
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
+  [property: string]: any;
 }
 
 export interface Nothing {
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
+  [property: string]: any;
 }
 
 export interface Organization {
-  id: OrganizationID;
+  id: OrganizationId;
   type: string;
   name?: string;
+  [property: string]: any;
 }
 
-export interface OrganizationID {
+export interface OrganizationId {
   FDS_ID?: string;
   LEI?: string;
   PERMID?: string;
+  [property: string]: any;
 }
 
 export interface Portfolio {
-  positions: Position[];
+  positions: PositionElement[];
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
+  [property: string]: any;
+}
+
+export interface PositionElement {
+  holding: number;
+  instrument: InstrumentElement;
+  type: string;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
 }
 
 export interface Position {
   holding: number;
-  instrument: Instrument;
+  instrument: InstrumentElement;
   type: string;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
+  [property: string]: any;
+}
+
+export interface TimeRange {
+  endTime?: Date;
+  startTime?: Date;
+  type: string;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
 }
 
 export interface Valuation {
@@ -194,21 +293,14 @@ export interface Valuation {
   type: string;
   valuationTime?: Date;
   value: number;
-  id?: { [key: string]: string };
+  id?: { [key: string]: any };
   name?: string;
+  [property: string]: any;
 }
 
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
-  public static toContext(json: string): Context {
-    return cast(JSON.parse(json), r('Context'));
-  }
-
-  public static contextToJson(value: Context): string {
-    return JSON.stringify(uncast(value, r('Context')), null, 2);
-  }
-
   public static toChart(json: string): Chart {
     return cast(JSON.parse(json), r('Chart'));
   }
@@ -239,6 +331,14 @@ export class Convert {
 
   public static contactListToJson(value: ContactList): string {
     return JSON.stringify(uncast(value, r('ContactList')), null, 2);
+  }
+
+  public static toContext(json: string): Context {
+    return cast(JSON.parse(json), r('Context'));
+  }
+
+  public static contextToJson(value: Context): string {
+    return JSON.stringify(uncast(value, r('Context')), null, 2);
   }
 
   public static toCountry(json: string): Country {
@@ -330,11 +430,29 @@ export class Convert {
   }
 }
 
-function invalidValue(typ: any, val: any, key: any = ''): never {
-  if (key) {
-    throw Error(`Invalid value for key "${key}". Expected type ${JSON.stringify(typ)} but got ${JSON.stringify(val)}`);
+function invalidValue(typ: any, val: any, key: any, parent: any = ''): never {
+  const prettyTyp = prettyTypeName(typ);
+  const parentText = parent ? ` on ${parent}` : '';
+  const keyText = key ? ` for key "${key}"` : '';
+  throw Error(`Invalid value${keyText}${parentText}. Expected ${prettyTyp} but got ${JSON.stringify(val)}`);
+}
+
+function prettyTypeName(typ: any): string {
+  if (Array.isArray(typ)) {
+    if (typ.length === 2 && typ[0] === undefined) {
+      return `an optional ${prettyTypeName(typ[1])}`;
+    } else {
+      return `one of [${typ
+        .map(a => {
+          return prettyTypeName(a);
+        })
+        .join(', ')}]`;
+    }
+  } else if (typeof typ === 'object' && typ.literal !== undefined) {
+    return typ.literal;
+  } else {
+    return typeof typ;
   }
-  throw Error(`Invalid value ${JSON.stringify(val)} for type ${JSON.stringify(typ)}`);
 }
 
 function jsonToJSProps(typ: any): any {
@@ -355,10 +473,10 @@ function jsToJSONProps(typ: any): any {
   return typ.jsToJSON;
 }
 
-function transform(val: any, typ: any, getProps: any, key: any = ''): any {
+function transform(val: any, typ: any, getProps: any, key: any = '', parent: any = ''): any {
   function transformPrimitive(typ: string, val: any): any {
     if (typeof typ === typeof val) return val;
-    return invalidValue(typ, val, key);
+    return invalidValue(typ, val, key, parent);
   }
 
   function transformUnion(typs: any[], val: any): any {
@@ -370,17 +488,24 @@ function transform(val: any, typ: any, getProps: any, key: any = ''): any {
         return transform(val, typ, getProps);
       } catch (_) {}
     }
-    return invalidValue(typs, val);
+    return invalidValue(typs, val, key, parent);
   }
 
   function transformEnum(cases: string[], val: any): any {
     if (cases.indexOf(val) !== -1) return val;
-    return invalidValue(cases, val);
+    return invalidValue(
+      cases.map(a => {
+        return l(a);
+      }),
+      val,
+      key,
+      parent
+    );
   }
 
   function transformArray(typ: any, val: any): any {
     // val must be an array with no invalid elements
-    if (!Array.isArray(val)) return invalidValue('array', val);
+    if (!Array.isArray(val)) return invalidValue(l('array'), val, key, parent);
     return val.map(el => transform(el, typ, getProps));
   }
 
@@ -390,24 +515,24 @@ function transform(val: any, typ: any, getProps: any, key: any = ''): any {
     }
     const d = new Date(val);
     if (isNaN(d.valueOf())) {
-      return invalidValue('Date', val);
+      return invalidValue(l('Date'), val, key, parent);
     }
     return d;
   }
 
   function transformObject(props: { [k: string]: any }, additional: any, val: any): any {
     if (val === null || typeof val !== 'object' || Array.isArray(val)) {
-      return invalidValue('object', val);
+      return invalidValue(l(ref || 'object'), val, key, parent);
     }
     const result: any = {};
     Object.getOwnPropertyNames(props).forEach(key => {
       const prop = props[key];
       const v = Object.prototype.hasOwnProperty.call(val, key) ? val[key] : undefined;
-      result[prop.key] = transform(v, prop.typ, getProps, prop.key);
+      result[prop.key] = transform(v, prop.typ, getProps, key, ref);
     });
     Object.getOwnPropertyNames(val).forEach(key => {
       if (!Object.prototype.hasOwnProperty.call(props, key)) {
-        result[key] = transform(val[key], additional, getProps, key);
+        result[key] = transform(val[key], additional, getProps, key, ref);
       }
     });
     return result;
@@ -416,10 +541,12 @@ function transform(val: any, typ: any, getProps: any, key: any = ''): any {
   if (typ === 'any') return val;
   if (typ === null) {
     if (val === null) return val;
-    return invalidValue(typ, val);
+    return invalidValue(typ, val, key, parent);
   }
-  if (typ === false) return invalidValue(typ, val);
+  if (typ === false) return invalidValue(typ, val, key, parent);
+  let ref: any = undefined;
   while (typeof typ === 'object' && typ.ref !== undefined) {
+    ref = typ.ref;
     typ = typeMap[typ.ref];
   }
   if (Array.isArray(typ)) return transformEnum(typ, val);
@@ -430,7 +557,7 @@ function transform(val: any, typ: any, getProps: any, key: any = ''): any {
       ? transformArray(typ.arrayItems, val)
       : typ.hasOwnProperty('props')
       ? transformObject(getProps(typ), typ.additional, val)
-      : invalidValue(typ, val);
+      : invalidValue(typ, val, key, parent);
   }
   // Numbers can be parsed by Date but shouldn't be.
   if (typ === Date && typeof val !== 'number') return transformDate(val);
@@ -443,6 +570,10 @@ function cast<T>(val: any, typ: any): T {
 
 function uncast<T>(val: T, typ: any): any {
   return transform(val, typ, jsToJSONProps);
+}
+
+function l(typ: any) {
+  return { literal: typ };
 }
 
 function a(typ: any) {
@@ -466,35 +597,28 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-  Context: o(
-    [
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
-    ],
-    'any'
-  ),
   Chart: o(
     [
-      { json: 'instruments', js: 'instruments', typ: a(r('Instrument')) },
+      { json: 'instruments', js: 'instruments', typ: a(r('InstrumentElement')) },
       { json: 'otherConfig', js: 'otherConfig', typ: u(undefined, m('any')) },
-      { json: 'range', js: 'range', typ: u(undefined, r('TimeRange')) },
+      { json: 'range', js: 'range', typ: u(undefined, r('TimeRangeObject')) },
       { json: 'style', js: 'style', typ: u(undefined, r('Style')) },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  Instrument: o(
+  InstrumentElement: o(
     [
-      { json: 'id', js: 'id', typ: r('InstrumentID') },
+      { json: 'id', js: 'id', typ: r('PurpleId') },
+      { json: 'market', js: 'market', typ: u(undefined, r('PurpleMarket')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  InstrumentID: o(
+  PurpleId: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
@@ -506,14 +630,23 @@ const typeMap: any = {
       { json: 'SEDOL', js: 'SEDOL', typ: u(undefined, '') },
       { json: 'ticker', js: 'ticker', typ: u(undefined, '') },
     ],
-    ''
+    'any'
   ),
-  TimeRange: o(
+  PurpleMarket: o(
+    [
+      { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
+      { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
+      { json: 'MIC', js: 'MIC', typ: u(undefined, '') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  TimeRangeObject: o(
     [
       { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
       { json: 'startTime', js: 'startTime', typ: u(undefined, Date) },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -522,94 +655,158 @@ const typeMap: any = {
     [
       { json: 'chatName', js: 'chatName', typ: u(undefined, '') },
       { json: 'initMessage', js: 'initMessage', typ: u(undefined, '') },
-      { json: 'members', js: 'members', typ: u(undefined, r('ContactList')) },
+      { json: 'members', js: 'members', typ: u(undefined, r('ContactListObject')) },
       { json: 'options', js: 'options', typ: u(undefined, 'any') },
       { json: 'type', js: 'type', typ: 'any' },
     ],
     'any'
   ),
-  ContactList: o(
+  ContactListObject: o(
     [
-      { json: 'contacts', js: 'contacts', typ: a(r('Contact')) },
+      { json: 'contacts', js: 'contacts', typ: a(r('ContactElement')) },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  ContactElement: o(
+    [
+      { json: 'id', js: 'id', typ: r('FluffyId') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  FluffyId: o(
+    [
+      { json: 'email', js: 'email', typ: u(undefined, '') },
+      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
     ],
     'any'
   ),
   Contact: o(
     [
-      { json: 'id', js: 'id', typ: r('ContactID') },
+      { json: 'id', js: 'id', typ: r('TentacledId') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  ContactID: o(
+  TentacledId: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
     ],
-    ''
+    'any'
+  ),
+  ContactList: o(
+    [
+      { json: 'contacts', js: 'contacts', typ: a(r('ContactElement')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Context: o(
+    [
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    'any'
   ),
   Country: o(
     [
-      { json: 'id', js: 'id', typ: r('CountryID') },
+      { json: 'id', js: 'id', typ: r('CountryId') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  CountryID: o(
+  CountryId: o(
     [
       { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
       { json: 'COUNTRY_ISOALPHA3', js: 'COUNTRY_ISOALPHA3', typ: u(undefined, '') },
       { json: 'ISOALPHA2', js: 'ISOALPHA2', typ: u(undefined, '') },
       { json: 'ISOALPHA3', js: 'ISOALPHA3', typ: u(undefined, '') },
     ],
-    ''
+    'any'
   ),
   Currency: o(
     [
-      { json: 'id', js: 'id', typ: r('CurrencyID') },
+      { json: 'id', js: 'id', typ: r('CurrencyId') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
     ],
     'any'
   ),
-  CurrencyID: o([{ json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: u(undefined, '') }], ''),
+  CurrencyId: o([{ json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: u(undefined, '') }], 'any'),
   Email: o(
     [
       { json: 'recipients', js: 'recipients', typ: r('RecipientsObject') },
       { json: 'subject', js: 'subject', typ: u(undefined, '') },
       { json: 'textBody', js: 'textBody', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
   RecipientsObject: o(
     [
-      { json: 'id', js: 'id', typ: u(undefined, r('RecipientsID')) },
+      { json: 'id', js: 'id', typ: u(undefined, r('RecipientsId')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'contacts', js: 'contacts', typ: u(undefined, a(r('Contact'))) },
+      { json: 'contacts', js: 'contacts', typ: u(undefined, a(r('ContactElement'))) },
     ],
     'any'
   ),
-  RecipientsID: o(
+  RecipientsId: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
     ],
-    ''
+    'any'
+  ),
+  Instrument: o(
+    [
+      { json: 'id', js: 'id', typ: r('StickyId') },
+      { json: 'market', js: 'market', typ: u(undefined, r('FluffyMarket')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  StickyId: o(
+    [
+      { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
+      { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
+      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
+      { json: 'FIGI', js: 'FIGI', typ: u(undefined, '') },
+      { json: 'ISIN', js: 'ISIN', typ: u(undefined, '') },
+      { json: 'PERMID', js: 'PERMID', typ: u(undefined, '') },
+      { json: 'RIC', js: 'RIC', typ: u(undefined, '') },
+      { json: 'SEDOL', js: 'SEDOL', typ: u(undefined, '') },
+      { json: 'ticker', js: 'ticker', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  FluffyMarket: o(
+    [
+      { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
+      { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
+      { json: 'MIC', js: 'MIC', typ: u(undefined, '') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
   ),
   InstrumentList: o(
     [
-      { json: 'instruments', js: 'instruments', typ: a(r('Instrument')) },
+      { json: 'instruments', js: 'instruments', typ: a(r('InstrumentElement')) },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -617,32 +814,42 @@ const typeMap: any = {
   Nothing: o(
     [
       { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
   Organization: o(
     [
-      { json: 'id', js: 'id', typ: r('OrganizationID') },
+      { json: 'id', js: 'id', typ: r('OrganizationId') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  OrganizationID: o(
+  OrganizationId: o(
     [
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
       { json: 'LEI', js: 'LEI', typ: u(undefined, '') },
       { json: 'PERMID', js: 'PERMID', typ: u(undefined, '') },
     ],
-    ''
+    'any'
   ),
   Portfolio: o(
     [
-      { json: 'positions', js: 'positions', typ: a(r('Position')) },
+      { json: 'positions', js: 'positions', typ: a(r('PositionElement')) },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  PositionElement: o(
+    [
+      { json: 'holding', js: 'holding', typ: 3.14 },
+      { json: 'instrument', js: 'instrument', typ: r('InstrumentElement') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -650,9 +857,19 @@ const typeMap: any = {
   Position: o(
     [
       { json: 'holding', js: 'holding', typ: 3.14 },
-      { json: 'instrument', js: 'instrument', typ: r('Instrument') },
+      { json: 'instrument', js: 'instrument', typ: r('InstrumentElement') },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  TimeRange: o(
+    [
+      { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
+      { json: 'startTime', js: 'startTime', typ: u(undefined, Date) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -665,7 +882,7 @@ const typeMap: any = {
       { json: 'type', js: 'type', typ: '' },
       { json: 'valuationTime', js: 'valuationTime', typ: u(undefined, Date) },
       { json: 'value', js: 'value', typ: 3.14 },
-      { json: 'id', js: 'id', typ: u(undefined, m('')) },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
