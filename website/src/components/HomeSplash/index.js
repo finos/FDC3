@@ -23,10 +23,10 @@ export default (props) => {
     );
   
     const ProjectTitle = () => (
-      <h2 className="projectTitle">
+      <div className="projectTitle">
         {/*siteConfig.title*/}
         <small>{siteConfig.tagline}</small>
-      </h2>
+      </div>
       
     );
   
@@ -49,7 +49,7 @@ export default (props) => {
     return (
       <SplashContainer>
           <div className="inner">
-                <img src="/img/fdc3-logo-2019.png"></img>
+                <img src="/img/fdc3-logo-2019.png" aria-label="FDC3" role="heading" aria-level="1" />
                 <ProjectTitle siteConfig={siteConfig} />
                 <PromoSection>
                   <Button href="/docs/fdc3-intro">Get Started</Button>
