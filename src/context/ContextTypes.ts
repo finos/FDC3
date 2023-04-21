@@ -22,7 +22,7 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-export interface Chart {
+export type Chart = {
   instruments: InstrumentElement[];
   otherConfig?: { [key: string]: any };
   range?: TimeRangeObject;
@@ -31,17 +31,17 @@ export interface Chart {
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface InstrumentElement {
-  id: PurpleId;
+export type InstrumentElement = {
+  id: PurpleID;
   market?: PurpleMarket;
   type: string;
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface PurpleId {
+export type PurpleID = {
   BBG?: string;
   CUSIP?: string;
   FDS_ID?: string;
@@ -52,24 +52,24 @@ export interface PurpleId {
   SEDOL?: string;
   ticker?: string;
   [property: string]: any;
-}
+};
 
-export interface PurpleMarket {
+export type PurpleMarket = {
   BBG?: string;
   COUNTRY_ISOALPHA2?: string;
   MIC?: string;
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface TimeRangeObject {
+export type TimeRangeObject = {
   endTime?: Date;
   startTime?: Date;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-}
+};
 
 export enum Style {
   Bar = 'bar',
@@ -84,92 +84,92 @@ export enum Style {
   StackedBar = 'stacked-bar',
 }
 
-export interface ChatInitSettings {
+export type ChatInitSettings = {
   chatName?: string;
   initMessage?: string;
   members?: ContactListObject;
   options?: any;
   type: any;
   [property: string]: any;
-}
+};
 
-export interface ContactListObject {
+export type ContactListObject = {
   contacts: ContactElement[];
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface ContactElement {
-  id: FluffyId;
+export type ContactElement = {
+  id: FluffyID;
   type: string;
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface FluffyId {
+export type FluffyID = {
   email?: string;
   FDS_ID?: string;
   [property: string]: any;
-}
+};
 
-export interface Contact {
-  id: TentacledId;
+export type Contact = {
+  id: TentacledID;
   type: string;
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface TentacledId {
+export type TentacledID = {
   email?: string;
   FDS_ID?: string;
   [property: string]: any;
-}
+};
 
-export interface ContactList {
+export type ContactList = {
   contacts: ContactElement[];
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface Context {
+export type Context = {
   id?: { [key: string]: any };
   name?: string;
   type: string;
   [property: string]: any;
-}
+};
 
-export interface Country {
-  id: CountryId;
+export type Country = {
+  id: CountryID;
   type: string;
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface CountryId {
+export type CountryID = {
   COUNTRY_ISOALPHA2?: string;
   COUNTRY_ISOALPHA3?: string;
   ISOALPHA2?: string;
   ISOALPHA3?: string;
   [property: string]: any;
-}
+};
 
-export interface Currency {
-  id: CurrencyId;
+export type Currency = {
+  id: CurrencyID;
   name?: string;
   type: string;
   [property: string]: any;
-}
+};
 
-export interface CurrencyId {
+export type CurrencyID = {
   CURRENCY_ISOCODE?: string;
   [property: string]: any;
-}
+};
 
-export interface Email {
+export type Email = {
   recipients: RecipientsObject;
   subject?: string;
   textBody?: string;
@@ -177,31 +177,31 @@ export interface Email {
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface RecipientsObject {
-  id?: RecipientsId;
+export type RecipientsObject = {
+  id?: RecipientsID;
   type: string;
   name?: string;
   contacts?: ContactElement[];
   [property: string]: any;
-}
+};
 
-export interface RecipientsId {
+export type RecipientsID = {
   email?: string;
   FDS_ID?: string;
   [property: string]: any;
-}
+};
 
-export interface Instrument {
-  id: StickyId;
+export type Instrument = {
+  id: StickyID;
   market?: FluffyMarket;
   type: string;
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface StickyId {
+export type StickyID = {
   BBG?: string;
   CUSIP?: string;
   FDS_ID?: string;
@@ -212,81 +212,81 @@ export interface StickyId {
   SEDOL?: string;
   ticker?: string;
   [property: string]: any;
-}
+};
 
-export interface FluffyMarket {
+export type FluffyMarket = {
   BBG?: string;
   COUNTRY_ISOALPHA2?: string;
   MIC?: string;
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface InstrumentList {
+export type InstrumentList = {
   instruments: InstrumentElement[];
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface Nothing {
+export type Nothing = {
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface Organization {
-  id: OrganizationId;
+export type Organization = {
+  id: OrganizationID;
   type: string;
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface OrganizationId {
+export type OrganizationID = {
   FDS_ID?: string;
   LEI?: string;
   PERMID?: string;
   [property: string]: any;
-}
+};
 
-export interface Portfolio {
+export type Portfolio = {
   positions: PositionElement[];
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface PositionElement {
+export type PositionElement = {
   holding: number;
   instrument: InstrumentElement;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface Position {
+export type Position = {
   holding: number;
   instrument: InstrumentElement;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface TimeRange {
+export type TimeRange = {
   endTime?: Date;
   startTime?: Date;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-}
+};
 
-export interface Valuation {
+export type Valuation = {
   CURRENCY_ISOCODE: string;
   expiryTime?: Date;
   price?: number;
@@ -296,7 +296,7 @@ export interface Valuation {
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-}
+};
 
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
@@ -611,14 +611,14 @@ const typeMap: any = {
   ),
   InstrumentElement: o(
     [
-      { json: 'id', js: 'id', typ: r('PurpleId') },
+      { json: 'id', js: 'id', typ: r('PurpleID') },
       { json: 'market', js: 'market', typ: u(undefined, r('PurpleMarket')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  PurpleId: o(
+  PurpleID: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
@@ -672,13 +672,13 @@ const typeMap: any = {
   ),
   ContactElement: o(
     [
-      { json: 'id', js: 'id', typ: r('FluffyId') },
+      { json: 'id', js: 'id', typ: r('FluffyID') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  FluffyId: o(
+  FluffyID: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
@@ -687,13 +687,13 @@ const typeMap: any = {
   ),
   Contact: o(
     [
-      { json: 'id', js: 'id', typ: r('TentacledId') },
+      { json: 'id', js: 'id', typ: r('TentacledID') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  TentacledId: o(
+  TentacledID: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
@@ -719,13 +719,13 @@ const typeMap: any = {
   ),
   Country: o(
     [
-      { json: 'id', js: 'id', typ: r('CountryId') },
+      { json: 'id', js: 'id', typ: r('CountryID') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  CountryId: o(
+  CountryID: o(
     [
       { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
       { json: 'COUNTRY_ISOALPHA3', js: 'COUNTRY_ISOALPHA3', typ: u(undefined, '') },
@@ -736,13 +736,13 @@ const typeMap: any = {
   ),
   Currency: o(
     [
-      { json: 'id', js: 'id', typ: r('CurrencyId') },
+      { json: 'id', js: 'id', typ: r('CurrencyID') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
     ],
     'any'
   ),
-  CurrencyId: o([{ json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: u(undefined, '') }], 'any'),
+  CurrencyID: o([{ json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: u(undefined, '') }], 'any'),
   Email: o(
     [
       { json: 'recipients', js: 'recipients', typ: r('RecipientsObject') },
@@ -756,14 +756,14 @@ const typeMap: any = {
   ),
   RecipientsObject: o(
     [
-      { json: 'id', js: 'id', typ: u(undefined, r('RecipientsId')) },
+      { json: 'id', js: 'id', typ: u(undefined, r('RecipientsID')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'contacts', js: 'contacts', typ: u(undefined, a(r('ContactElement'))) },
     ],
     'any'
   ),
-  RecipientsId: o(
+  RecipientsID: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
@@ -772,14 +772,14 @@ const typeMap: any = {
   ),
   Instrument: o(
     [
-      { json: 'id', js: 'id', typ: r('StickyId') },
+      { json: 'id', js: 'id', typ: r('StickyID') },
       { json: 'market', js: 'market', typ: u(undefined, r('FluffyMarket')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  StickyId: o(
+  StickyID: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
@@ -821,13 +821,13 @@ const typeMap: any = {
   ),
   Organization: o(
     [
-      { json: 'id', js: 'id', typ: r('OrganizationId') },
+      { json: 'id', js: 'id', typ: r('OrganizationID') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  OrganizationId: o(
+  OrganizationID: o(
     [
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
       { json: 'LEI', js: 'LEI', typ: u(undefined, '') },
