@@ -22,7 +22,7 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-export type Chart = {
+export interface Chart {
   instruments: InstrumentElement[];
   otherConfig?: { [key: string]: any };
   range?: TimeRangeObject;
@@ -31,17 +31,17 @@ export type Chart = {
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-};
+}
 
-export type InstrumentElement = {
+export interface InstrumentElement {
   id: PurpleID;
   market?: PurpleMarket;
   type: string;
   name?: string;
   [property: string]: any;
-};
+}
 
-export type PurpleID = {
+export interface PurpleID {
   BBG?: string;
   CUSIP?: string;
   FDS_ID?: string;
@@ -52,24 +52,24 @@ export type PurpleID = {
   SEDOL?: string;
   ticker?: string;
   [property: string]: any;
-};
+}
 
-export type PurpleMarket = {
+export interface PurpleMarket {
   BBG?: string;
   COUNTRY_ISOALPHA2?: string;
   MIC?: string;
   name?: string;
   [property: string]: any;
-};
+}
 
-export type TimeRangeObject = {
+export interface TimeRangeObject {
   endTime?: Date;
   startTime?: Date;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-};
+}
 
 export enum Style {
   Bar = 'bar',
@@ -84,92 +84,92 @@ export enum Style {
   StackedBar = 'stacked-bar',
 }
 
-export type ChatInitSettings = {
+export interface ChatInitSettings {
   chatName?: string;
   initMessage?: string;
   members?: ContactListObject;
   options?: any;
   type: any;
   [property: string]: any;
-};
+}
 
-export type ContactListObject = {
+export interface ContactListObject {
   contacts: ContactElement[];
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-};
+}
 
-export type ContactElement = {
+export interface ContactElement {
   id: FluffyID;
   type: string;
   name?: string;
   [property: string]: any;
-};
+}
 
-export type FluffyID = {
+export interface FluffyID {
   email?: string;
   FDS_ID?: string;
   [property: string]: any;
-};
+}
 
-export type Contact = {
+export interface Contact {
   id: TentacledID;
   type: string;
   name?: string;
   [property: string]: any;
-};
+}
 
-export type TentacledID = {
+export interface TentacledID {
   email?: string;
   FDS_ID?: string;
   [property: string]: any;
-};
+}
 
-export type ContactList = {
+export interface ContactList {
   contacts: ContactElement[];
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-};
+}
 
-export type Context = {
+export interface Context {
   id?: { [key: string]: any };
   name?: string;
   type: string;
   [property: string]: any;
-};
+}
 
-export type Country = {
+export interface Country {
   id: CountryID;
   type: string;
   name?: string;
   [property: string]: any;
-};
+}
 
-export type CountryID = {
+export interface CountryID {
   COUNTRY_ISOALPHA2?: string;
   COUNTRY_ISOALPHA3?: string;
   ISOALPHA2?: string;
   ISOALPHA3?: string;
   [property: string]: any;
-};
+}
 
-export type Currency = {
+export interface Currency {
   id: CurrencyID;
   name?: string;
   type: string;
   [property: string]: any;
-};
+}
 
-export type CurrencyID = {
+export interface CurrencyID {
   CURRENCY_ISOCODE?: string;
   [property: string]: any;
-};
+}
 
-export type Email = {
+export interface Email {
   recipients: RecipientsObject;
   subject?: string;
   textBody?: string;
@@ -177,31 +177,31 @@ export type Email = {
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-};
+}
 
-export type RecipientsObject = {
+export interface RecipientsObject {
   id?: RecipientsID;
   type: string;
   name?: string;
   contacts?: ContactElement[];
   [property: string]: any;
-};
+}
 
-export type RecipientsID = {
+export interface RecipientsID {
   email?: string;
   FDS_ID?: string;
   [property: string]: any;
-};
+}
 
-export type Instrument = {
+export interface Instrument {
   id: StickyID;
   market?: FluffyMarket;
   type: string;
   name?: string;
   [property: string]: any;
-};
+}
 
-export type StickyID = {
+export interface StickyID {
   BBG?: string;
   CUSIP?: string;
   FDS_ID?: string;
@@ -212,81 +212,81 @@ export type StickyID = {
   SEDOL?: string;
   ticker?: string;
   [property: string]: any;
-};
+}
 
-export type FluffyMarket = {
+export interface FluffyMarket {
   BBG?: string;
   COUNTRY_ISOALPHA2?: string;
   MIC?: string;
   name?: string;
   [property: string]: any;
-};
+}
 
-export type InstrumentList = {
+export interface InstrumentList {
   instruments: InstrumentElement[];
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-};
+}
 
-export type Nothing = {
+export interface Nothing {
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-};
+}
 
-export type Organization = {
+export interface Organization {
   id: OrganizationID;
   type: string;
   name?: string;
   [property: string]: any;
-};
+}
 
-export type OrganizationID = {
+export interface OrganizationID {
   FDS_ID?: string;
   LEI?: string;
   PERMID?: string;
   [property: string]: any;
-};
+}
 
-export type Portfolio = {
+export interface Portfolio {
   positions: PositionElement[];
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-};
+}
 
-export type PositionElement = {
+export interface PositionElement {
   holding: number;
   instrument: InstrumentElement;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-};
+}
 
-export type Position = {
+export interface Position {
   holding: number;
   instrument: InstrumentElement;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-};
+}
 
-export type TimeRange = {
+export interface TimeRange {
   endTime?: Date;
   startTime?: Date;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-};
+}
 
-export type Valuation = {
+export interface Valuation {
   CURRENCY_ISOCODE: string;
   expiryTime?: Date;
   price?: number;
@@ -296,7 +296,7 @@ export type Valuation = {
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
-};
+}
 
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
