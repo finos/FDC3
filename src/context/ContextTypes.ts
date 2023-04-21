@@ -34,14 +34,14 @@ export interface Chart {
 }
 
 export interface InstrumentElement {
-  id: PurpleId;
+  id: PurpleID;
   market?: PurpleMarket;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface PurpleId {
+export interface PurpleID {
   BBG?: string;
   CUSIP?: string;
   FDS_ID?: string;
@@ -102,26 +102,26 @@ export interface ContactListObject {
 }
 
 export interface ContactElement {
-  id: FluffyId;
+  id: FluffyID;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface FluffyId {
+export interface FluffyID {
   email?: string;
   FDS_ID?: string;
   [property: string]: any;
 }
 
 export interface Contact {
-  id: TentacledId;
+  id: TentacledID;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface TentacledId {
+export interface TentacledID {
   email?: string;
   FDS_ID?: string;
   [property: string]: any;
@@ -143,13 +143,13 @@ export interface Context {
 }
 
 export interface Country {
-  id: CountryId;
+  id: CountryID;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface CountryId {
+export interface CountryID {
   COUNTRY_ISOALPHA2?: string;
   COUNTRY_ISOALPHA3?: string;
   ISOALPHA2?: string;
@@ -158,13 +158,13 @@ export interface CountryId {
 }
 
 export interface Currency {
-  id: CurrencyId;
+  id: CurrencyID;
   name?: string;
   type: string;
   [property: string]: any;
 }
 
-export interface CurrencyId {
+export interface CurrencyID {
   CURRENCY_ISOCODE?: string;
   [property: string]: any;
 }
@@ -180,28 +180,28 @@ export interface Email {
 }
 
 export interface RecipientsObject {
-  id?: RecipientsId;
+  id?: RecipientsID;
   type: string;
   name?: string;
   contacts?: ContactElement[];
   [property: string]: any;
 }
 
-export interface RecipientsId {
+export interface RecipientsID {
   email?: string;
   FDS_ID?: string;
   [property: string]: any;
 }
 
 export interface Instrument {
-  id: StickyId;
+  id: StickyID;
   market?: FluffyMarket;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface StickyId {
+export interface StickyID {
   BBG?: string;
   CUSIP?: string;
   FDS_ID?: string;
@@ -238,13 +238,13 @@ export interface Nothing {
 }
 
 export interface Organization {
-  id: OrganizationId;
+  id: OrganizationID;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface OrganizationId {
+export interface OrganizationID {
   FDS_ID?: string;
   LEI?: string;
   PERMID?: string;
@@ -611,14 +611,14 @@ const typeMap: any = {
   ),
   InstrumentElement: o(
     [
-      { json: 'id', js: 'id', typ: r('PurpleId') },
+      { json: 'id', js: 'id', typ: r('PurpleID') },
       { json: 'market', js: 'market', typ: u(undefined, r('PurpleMarket')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  PurpleId: o(
+  PurpleID: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
@@ -672,13 +672,13 @@ const typeMap: any = {
   ),
   ContactElement: o(
     [
-      { json: 'id', js: 'id', typ: r('FluffyId') },
+      { json: 'id', js: 'id', typ: r('FluffyID') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  FluffyId: o(
+  FluffyID: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
@@ -687,13 +687,13 @@ const typeMap: any = {
   ),
   Contact: o(
     [
-      { json: 'id', js: 'id', typ: r('TentacledId') },
+      { json: 'id', js: 'id', typ: r('TentacledID') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  TentacledId: o(
+  TentacledID: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
@@ -719,13 +719,13 @@ const typeMap: any = {
   ),
   Country: o(
     [
-      { json: 'id', js: 'id', typ: r('CountryId') },
+      { json: 'id', js: 'id', typ: r('CountryID') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  CountryId: o(
+  CountryID: o(
     [
       { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
       { json: 'COUNTRY_ISOALPHA3', js: 'COUNTRY_ISOALPHA3', typ: u(undefined, '') },
@@ -736,13 +736,13 @@ const typeMap: any = {
   ),
   Currency: o(
     [
-      { json: 'id', js: 'id', typ: r('CurrencyId') },
+      { json: 'id', js: 'id', typ: r('CurrencyID') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
     ],
     'any'
   ),
-  CurrencyId: o([{ json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: u(undefined, '') }], 'any'),
+  CurrencyID: o([{ json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: u(undefined, '') }], 'any'),
   Email: o(
     [
       { json: 'recipients', js: 'recipients', typ: r('RecipientsObject') },
@@ -756,14 +756,14 @@ const typeMap: any = {
   ),
   RecipientsObject: o(
     [
-      { json: 'id', js: 'id', typ: u(undefined, r('RecipientsId')) },
+      { json: 'id', js: 'id', typ: u(undefined, r('RecipientsID')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'contacts', js: 'contacts', typ: u(undefined, a(r('ContactElement'))) },
     ],
     'any'
   ),
-  RecipientsId: o(
+  RecipientsID: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
@@ -772,14 +772,14 @@ const typeMap: any = {
   ),
   Instrument: o(
     [
-      { json: 'id', js: 'id', typ: r('StickyId') },
+      { json: 'id', js: 'id', typ: r('StickyID') },
       { json: 'market', js: 'market', typ: u(undefined, r('FluffyMarket')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  StickyId: o(
+  StickyID: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
@@ -821,13 +821,13 @@ const typeMap: any = {
   ),
   Organization: o(
     [
-      { json: 'id', js: 'id', typ: r('OrganizationId') },
+      { json: 'id', js: 'id', typ: r('OrganizationID') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  OrganizationId: o(
+  OrganizationID: o(
     [
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
       { json: 'LEI', js: 'LEI', typ: u(undefined, '') },
