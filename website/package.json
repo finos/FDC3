@@ -25,7 +25,7 @@
     "docusaurus": "docusaurus"
   },
   "devDependencies": {
-    "cpy-cli": "3.1.1",
+    "cpy-cli": "4.2.0",
     "del-cli": "4.0.1",
     "docusaurus-delete-version": "0.1.1",
     "redoc-cli": "0.13.10",
