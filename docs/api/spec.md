@@ -84,13 +84,13 @@ Are all areas of functionality that any feature-complete desktop agent would imp
 
 ### Inter-Agent Communication
 
-A goal of FDC3 standards is that applications running in different Desktop Agent contexts on the same desktop would be able to interoperate.  And that one Desktop Agent context would be able to discover and launch an application in another Desktop Application context.
+A goal of the FDC3 Standard is that applications running in different Desktop Agent contexts on the same desktop, or operated by the same user, would be able to interoperate.  And that one Desktop Agent context would be able to discover and launch an application in another Desktop Application context. As Desktop Agent interop is supported by common standards for APIs for App discovery and launching.  So, an App in one Desktop Agent context would not need to know a different syntax to call an App in another Desktop Agent context.
+
+Inter-agent communication at the API layer may be achieved via the [Desktop Agent Bridging Part of the FDC3 Standard](../api-bridging/spec) *(Experimental)*, which defines an independent service that Desktop Agents may connect to, and a protocol for the exchange of messages relating to FDC3 API calls that are currently in-flight. Hence, by implementing support for Desktop Agent Bridging a platform may extend interop across applications running in multiple Desktop Agent contexts.
+
+Desktop Agent Bridging provide message exchanges and a workflow for performing intent resolution across multiple agents, allowing programmatic or UI based access to intent resolution options across multiple agents. Hence, app discovery is supported across the agents for intent-based workflows. Further, as channels are also supported by bridging, context sharing also works across multiple agents. However, as there is no method of discovering all the apps supported by a Desktop Agent in the FDC3 API nor bridging application details must be known in advance to support `fdc3.open` calls.
 
 ![Desktop Agent - Interop](/assets/api-2.png)
-
-Desktop Agent interop is supported by common standards for APIs for App discovery and launching.  So, an App in one Desktop Agent context would not need to know a different syntax to call an App in another Desktop Agent context.
-
-An actual connection protocol between Desktop Agents is not currently available in the FDC3 standard, but work on creating one for a future version of the standard is underway (see [GitHub discussion #544](https://github.com/finos/FDC3/discussions/544) for details).
 
 ### Desktop Agent API Standard Compliance
 
@@ -399,8 +399,8 @@ There are three types of channels, which have different visibility and discovera
 
 3. **Private** channels, which:
 
-  - facilitate private communication between two parties, 
-  - have an auto-generated identity and can only be retrieved via a raised intent.
+- facilitate private communication between two parties, 
+- have an auto-generated identity and can only be retrieved via a raised intent.
 
 Channels are interacted with via `broadcast` and `addContextListener` functions, allowing an application to send and receive Context objects via the channel. For User channels, these functions are provided on the Desktop Agent, e.g. [`fdc3.broadcast(context)`](ref/DesktopAgent#broadcast), and apply to channels joined via [`fdc3.joinUserChannel`](ref/DesktopAgent#joinuserchannel). For App channels, a channel object must be retrieved, via [`fdc3.getOrCreateChannel(channelName)`](ref/DesktopAgent#getorcreatechannel), which provides the functions, i.e. [`myChannel.broadcast(context)`](ref/Channel#broadcast) and [`myChannel.addContextListener(context)`](ref/Channel#addcontextlistener). For `PrivateChannels`, a channel object must also be retrieved, but via an intent raised with [`fdc3.raiseIntent(intent, context)`](ref/DesktopAgent#raiseintent) and returned as an [`IntentResult`](ref/Types#intentresult).
 
@@ -408,7 +408,7 @@ Channel implementations SHOULD ensure that context messages broadcast by an appl
 
 ### Joining User Channels
 
-Apps can join _User channels_.  An app can only be joined to one User channel at a time.  
+Apps can join *User channels*.  An app can only be joined to one User channel at a time.  
 
 When an app is joined to a User channel, calls to [`fdc3.broadcast`](ref/DesktopAgent#broadcast) will be routed to that channel and listeners added through [`fdc3.addContextListener`](ref/DesktopAgent#addcontextlistener) will receive context broadcasts from other apps also joined to that channel. If an app is not joined to a User channel [`fdc3.broadcast`](ref/DesktopAgent#broadcast) will be a no-op and handler functions added with  [`fdc3.addContextListener`](ref/DesktopAgent#addcontextlistener) will not receive any broadcasts. However, apps can still choose to listen and broadcast to specific channels (both User and App channels) via the methods on the [`Channel`](ref/Channel) class.
 
