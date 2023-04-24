@@ -265,3 +265,9 @@ If the `IntentHandler` returned `void` rather than an intent result `payload.int
     }
 }
 ```
+
+:::note
+
+In the event that an agent referred to in the API call is not connected to the bridge, it is connected but times out or returns an error, its `DesktopAgentIdentifier` should be added to the `meta.errorSources` element instead of `meta.sources` in the `raiseIntentResponse` and the appropriate error (which might include any error from the [`ResolveError`](../../api/ref/Errors#resolveerror) enumeration, [`BridgingError.ResponseTimedOut`](../../api/ref/Errors#bridgingerror) or [`BridgingError.AgentDisconnected`](../../api/ref/Errors#bridgingerror)) should be added to `meta.errorDetails`.
+
+:::
