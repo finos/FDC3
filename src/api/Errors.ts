@@ -13,7 +13,7 @@ export enum OpenError {
   AppTimeout = 'AppTimeout',
   /** Returned if the FDC3 desktop agent implementation is not currently able to handle the request.*/
   ResolverUnavailable = 'ResolverUnavailable',
-  /** Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
+  /** (Experimental) Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
   DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
 
@@ -33,7 +33,7 @@ export enum ResolveError {
   TargetInstanceUnavailable = 'TargetInstanceUnavailable',
   /** Returned if the intent and context could not be delivered to the selected application or instance, for example because it has not added an intent handler within a timeout.*/
   IntentDeliveryFailed = 'IntentDeliveryFailed',
-  /** Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
+  /** (Experimental) Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
   DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
 
@@ -54,10 +54,10 @@ export enum ChannelError {
 }
 
 export enum BridgingError {
-  /** Returned if a Desktop Agent did not return a response, via Desktop Agent Bridging, within the alloted timeout. */
+  /** (Experimental) Returned if a Desktop Agent did not return a response, via Desktop Agent Bridging, within the alloted timeout. */
   ResponseTimedOut = 'ResponseToBridgeTimedOut',
-  /** Returned if a Desktop Agent that has been targeted by a particular request has been disconnected from the Bridge before a response has been received from it. */
+  /** (Experimental) Returned if a Desktop Agent that has been targeted by a particular request has been disconnected from the Bridge before a response has been received from it. */
   AgentDisconnected = 'AgentDisconnected',
-  /** Returned for FDC3 API calls that are specified with arguments indicating that a remote Desktop agent should be targeted (e.g. raiseIntent with an app on a remote DesktopAgent targeted), when the local Desktop Agent is not connected to a bridge. */
+  /** (Experimental) Returned for FDC3 API calls that are specified with arguments indicating that a remote Desktop agent should be targeted (e.g. raiseIntent with an app on a remote DesktopAgent targeted), when the local Desktop Agent is not connected to a bridge. */
   NotConnectedToBridge = 'NotConnectedToBridge'
 }

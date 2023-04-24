@@ -21,6 +21,10 @@ interface AppIdentifier {
    *  specific instance of the application described.
    */
   readonly instanceId?: string;
+
+  /** (Experimental) Field that represents the Desktop Agent that the app is 
+   *  available on. Used in Desktop Agent Bridging.**/
+  readonly desktopAgent?: string;
 }
 ```
 
@@ -80,6 +84,22 @@ Optional metadata about the context message, including the app that originated t
 * [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
 * [`Channel.addContextListener`](Channel#addcontextlistener)
 
+## `DesktopAgentIdentifier`
+
+```typescript
+interface DesktopAgentIdentifier {
+  /** (Experimental) Field that represents the Desktop Agent that the app is 
+   *  available on.**/
+  readonly desktopAgent: string;
+}
+```
+
+(Experimental) Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios where a request needs to be directed to a Desktop Agent rather than a specific app, or a response message is returned by the Desktop Agent (or more specifically its resolver) rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no app details are available or are appropriate.
+
+**See also:**
+
+* [API Bridging - Identifying Desktop Agents Identity and Message Sources](../../api-bridging/spec#identifying-desktop-agents-identity-and-message-sources)
+
 ## `IntentHandler`
 
 ```typescript
@@ -121,7 +141,7 @@ Represented as a union type in TypeScript, however, this type may be rendered as
 
 ## `Listener`
 
-A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](#addintentlistener) or [`addContextListener`](#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
+A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](DesktopAgent#addintentlistener) or [`addContextListener`](DesktopAgent#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
 
 ```typescript
 interface Listener {

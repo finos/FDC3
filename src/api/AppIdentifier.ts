@@ -16,4 +16,7 @@ export interface AppIdentifier {
 
   /** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/
   readonly instanceId?: string;
+
+  /** (Experimental) Field that represents the Desktop Agent that the app is available on. Used in Desktop Agent Bridging.**/
+  readonly desktopAgent?: string;
 }
