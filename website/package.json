@@ -31,16 +31,17 @@
     "rimraf": "5.0.0"
   },
   "resolutions": {
-    "got": "^11.8.5", 
+    "got": "^11.8.5",
     "trim": "1.0.1"
   },
   "overrides": {
-    "got": "^11.8.5", 
+    "got": "^11.8.5",
     "trim": "1.0.1"
   },
   "dependencies": {
     "@docusaurus/core": "^2.4.0",
     "@docusaurus/preset-classic": "^2.4.0",
+    "@docusaurus/theme-mermaid": "^2.4.0",
     "clsx": "^1.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
