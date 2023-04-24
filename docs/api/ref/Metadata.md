@@ -21,7 +21,7 @@ interface AppIntent {
 An interface that represents the binding of an intent to apps, returned as part of intent disocvery.
 For each intent, it reference the applications that support that intent.
 
-#### See also
+**See also:**
 
 * [`AppMetadata`](#appmetadata)
 * [`IntentMetadata`](#intentmetadata)
@@ -87,7 +87,7 @@ The additional information from an app directory can aid in rendering UI element
 
 Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc..
 
-#### See also
+**See also:**
 
 * [`AppIdentifier`](Types#AppIdentifier)
 * [`AppIntent.apps`](#appintent)
@@ -112,7 +112,7 @@ Metadata relating to a context or intent & context received through the `addCont
 
 [`@experimental`](../../fdc3-compliance#experimental-features) Introduced in FDC3 2.0 and may be refined by further changes outside the normal FDC3 versioning policy.
 
-#### See also
+**See also:**
 
 * [`AppMetadata`](#appmetadata)
 * [`ContextHandler`](Types#contexthandler)
@@ -143,7 +143,7 @@ interface DisplayMetadata {
 
 A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
 
-#### See also
+**See also:**
 
 * [`Channel`](Channel)
 * [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
@@ -162,7 +162,7 @@ Metadata relating to a single icon image at a remote URL, used to represent an a
 
 AppMetadata includes an icons property allowing multiple icon types to be specified. Various properties may be used by the Desktop Agent to decide which icon is the most suitable to be used considering the application chooser UI, device DPI and formats supported by the system.
 
-#### Example
+**Example:**
 
 ```js
 "icons": [
@@ -179,7 +179,7 @@ AppMetadata includes an icons property allowing multiple icon types to be specif
 ]
 ```
 
-#### Properties
+### Properties
 
 #### `src`
 
@@ -193,7 +193,7 @@ The dimensions of the Icon formatted as `<height>x<width>`.
 
 The media type of the icon. If not provided the Desktop Agent may refer to the src file extension.
 
-#### See also
+**See also:**
 
 * [`AppMetadata`](Metadata#appmetadata)
 
@@ -212,7 +212,7 @@ Metadata relating to a single image at a remote URL, used to represent screensho
 
 AppMetadata includes a screenshots property allowing multiple images to be specified. Various properties may be used by the Desktop Agent to decide which image(s) are the most suitable to be used considering the application chooser UI, device DPI and formats supported by the system.
 
-#### Example
+**Example:**
 
 ```js
 "screenshots": [
@@ -231,7 +231,7 @@ AppMetadata includes a screenshots property allowing multiple images to be speci
 ]
 ```
 
-#### Properties
+### Properties
 
 #### `src`
 
@@ -245,7 +245,7 @@ The dimensions of the image formatted as `<height>x<width>`.
 
 The media type of the image. If not provided the Desktop Agent may refer to the src file extension.
 
-#### See also
+**See also:**
 
 * [`AppMetadata`](Metadata#appmetadata)
 
@@ -290,7 +290,7 @@ interface ImplementationMetadata {
 
 Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number and the metadata of the calling application according to the desktop agent.
 
-#### See also
+**See also:**
 
 * [`AppMetadata`](#appmetadata)
 * [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
@@ -311,7 +311,7 @@ interface IntentMetadata {
 
 The interface used to describe an intent within the platform.
 
-#### See also
+**See also:**
 
 * [`AppIntent.intent`](#appintent)
 
@@ -355,7 +355,7 @@ interface IntentResolution {
 
 IntentResolution provides a standard format for data returned upon resolving an intent.
 
-#### Examples
+**Examples:**
 
 ```js
 // Resolve a "Chain" type intent
@@ -387,7 +387,7 @@ try {
 }
 ```
 
-#### See also
+**See also:**
 
 * [`IntentResult`](Types#intentresult)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
