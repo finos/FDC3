@@ -4,17 +4,18 @@ sidebar_label: Overview
 title: API Bridging Overview (next)
 ---
 
-The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent (DA), facilitating cross-application workflows. Desktop Agent API Bridging addresses the interconnection of Desktop Agents (DAs) such that apps running under different Desktop Agents can also interoperate, allowing workflows to span multiple Desktop Agents.
+(Experimental) The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent (DA), facilitating cross-application workflows. Desktop Agent Bridging addresses the interconnection of Desktop Agents (DAs) such that apps running under different Desktop Agents can also interoperate, allowing workflows to span multiple Desktop Agents.
 
-In any Desktop Agent bridging scenario, it is expected that each DA is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although DAs may be run on different machines operated by the same user.
+In any Desktop Agent Bridging scenario, it is expected that each DA is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although DAs may be run on different machines operated by the same user.
 
 ## TODO list
 
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
 * To create final PR:
-  * Add DesktopAgentIdentifier to API types page and adjust docs for existing types that will need it.
-  * Add DesktopAgentIdentifier to API sources and adjust existing types that will need it.
-  * Add new Errors to API sources.
+  * Reference DAB from the API spec, updating previous content about interconnecting desktop agents.
+  * Link to BackPlane project
+  * Apply Experimental labels where needed
+* Refactor spec to separate channel (websocket) and protocol.
 
 ## Implementing a Desktop Agent Bridge
 
@@ -487,13 +488,11 @@ interface AppIdentifier {
 }
 ```
 
-Further, a new `DesktopAgentIdentifier` type is introduced to handle cases where a response message is returned by the Desktop Agent (or more specifically its resolver) rather than a specific app. This is particularly relevant for `findIntent` responses:
+Further, a new `DesktopAgentIdentifier` type is introduced to handle cases where a request needs to be directed to a Desktop Agent rather than a specific app, or a response message is returned by the Desktop Agent (or more specifically its resolver) rather than a specific app. This is particularly relevant for `findIntent` message exchanges:
 
 ```typescript
 interface DesktopAgentIdentifier {
-  /** A string filled in by the Desktop Agent Bridge on receipt of a message, that represents 
-   * the Desktop Agent Identifier that is the source of the message. 
-   **/
+  /** A field that represents the Desktop Agent that should be targeted or that a response was received from. **/ 
   readonly desktopAgent: string;
 }
 ```

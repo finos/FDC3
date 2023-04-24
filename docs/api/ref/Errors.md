@@ -57,7 +57,7 @@ enum OpenError {
    */
   ResolverUnavailable = 'ResolverUnavailable',
 
-  /** Returned if the specified Desktop Agent is not found, via a connected 
+  /** (Experimental) Returned if the specified Desktop Agent is not found, via a connected 
    *  Desktop Agent Bridge. */
   DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
@@ -110,7 +110,7 @@ export enum ResolveError {
    */
   IntentDeliveryFailed = 'IntentDeliveryFailed',
 
-  /** Returned if the specified Desktop Agent is not found, via a connected 
+  /** (Experimental) Returned if the specified Desktop Agent is not found, via a connected 
    *  Desktop Agent Bridge. */
   DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
@@ -150,6 +150,8 @@ Contains constants representing the errors that can be encountered when calling 
 * [`IntentResolution`](Metadata#intentresolution)
 
 ## `BridgingError`
+
+_(Experimental)_
 
 ```typescript
 enum BridgingError {
