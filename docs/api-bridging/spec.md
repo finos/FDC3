@@ -277,14 +277,18 @@ The `connectedAgentsUpdate` message will take the form:
     type:  "connectedAgentsUpdate",
     /** Request body, containing the arguments to the function called.*/
     payload: {
-        /** Should be set when an agent first connects to the bridge and provide its assigned name. */
+        /** Should be set when an agent first connects to the bridge and provide 
+         * its assigned name. */
         addAgent?: string,
-        /** Should be set when an agent disconnects from the bridge and provide the name that no longer is assigned. */
+        /** Should be set when an agent disconnects from the bridge and provide 
+         * the name that no longer is assigned. */
         removeAgent?: string,
         /** Desktop Agent Bridge implementation metadata of all connected agents. 
-         *  Note that this object is extended to include a `desktopAgent` field with the name assigned by the DAB. */
+         *  Note that this object is extended to include a `desktopAgent` field 
+         *  with the name assigned by the DAB. */
         allAgents: ImplementationMetadata[],
-        /** The updated state of channels that should be adopted by the agents. SHOULD only be set when an agent is connecting to the bridge. */
+        /** The updated state of channels that should be adopted by the agents. 
+         *  SHOULD only be set when an agent is connecting to the bridge. */
         channelsState?: ChannelState[] // see step4
     },
     meta: {
@@ -363,17 +367,20 @@ Request messages use the following format:
 
 ```typescript
 {
-    /** Typically set to the FDC3 function name that the message relates to, e.g. "findIntent" */
+    /** Typically set to the FDC3 function name that the message relates to, e.g.
+     * "findIntent" */
     type:  string,
     /** Request body, typically containing the arguments to the function called.*/
     payload: {
-        /** Used to indicate which channel `broadcast` functions were called on. */
+        /** Used to indicate which channel `broadcast` functions were called on.*/
         channel?: string,
         /** Used as an argument to `findIntent` and `raiseIntent` functions.`*/
         intent?: string,
-        /** Used as an argument to `broadcast`, `findIntent` and `raiseIntent` functions. */
+        /** Used as an argument to `broadcast`, `findIntent` and `raiseIntent` 
+         * functions.*/
         context?: Context,
-        /** Used as an argument to `open`, `raiseIntent`, `getAppMetadata`, and `findInstances` functions */
+        /** Used as an argument to `open`, `raiseIntent`, `getAppMetadata`, and 
+         * `findInstances` functions.*/
         app?: AppIdentifier,
         /** Used as an argument to `findIntent` functions. */
         resultType?: string,
@@ -386,14 +393,15 @@ Request messages use the following format:
         requestGuid: string,
         /** Timestamp at which request was generated */
         timestamp:  date,
-         /** AppIdentifier OR DesktopAgentIdentifier for the source application that the request was 
-          *  received from and will be augmented with the assigned name of the 
-          *  Desktop Agent by the Desktop Agent Bridge, rather than the sender. */
+         /** AppIdentifier OR DesktopAgentIdentifier for the source application
+          *  that the request was received from and will be augmented with the
+          *  assigned name of the Desktop Agent by the Desktop Agent Bridge, 
+          *  rather than the sender. */
         source: AppIdentifier | DesktopAgentIdentifier,
-        /** Optional AppIdentifier or DesktopAgentIdentifier for the destination that the request should be 
-         *  routed to, which MUST be set by the Desktop Agent for API calls that 
-         *  include a target (`app`) parameter. MUST include the name of the 
-         *  Desktop Agent hosting the target application. */
+        /** Optional AppIdentifier or DesktopAgentIdentifier for the destination
+         *  that the request should be routed to, which MUST be set by the Desktop
+         *  Agent for API calls that include a target (`app`) parameter. MUST 
+         *  include the name of the Desktop Agent hosting the target application. */
         destination?: AppIdentifier | DesktopAgentIdentifier
     }
 }
@@ -409,11 +417,12 @@ Response messages will be differentiated from requests by the presence of a `met
 
 ```typescript
 {
-    /** FDC3 function name the original request related to, e.g. "findIntent" */
+    /** FDC3 function name the original request related to, e.g. "findIntent"*/
     type:  string,
     /** Response body, containing the actual response data. */
     payload: {
-        /** Standardized error strings from an appropriate FDC3 API Error enumeration. */
+        /** Standardized error strings from an appropriate FDC3 API Error 
+         *  enumeration. */
         error?: string,
         /** Response to `open` */
         appIdentifier?: AppIdentifier,
@@ -425,12 +434,16 @@ Response messages will be differentiated from requests by the presence of a `met
         appIntent?:  AppIntent,
         /** Response to `findIntentsByContext`*/
         appIntents?:  AppIntent[],
-        /** Response to `raiseIntent` functions, returned on delivery of the intent and context to the target app.
+        /** Response to `raiseIntent` functions, returned on delivery of the
+         * intent and context to the target app.
          *  Note `getResult()` function should not / can not be included in JSON. */
         intentResolution?: IntentResolution,
-        /** Secondary response to `raiseIntent`, sent when the `IntentHandler` has returned.
-         *  Note return an empty object if the `IntentHandler` returned void. 
-         *  Note `Channel` functions (`broadcast`, `getCurrentContext`, `addContextListener` should not / can not be included in JSON)*/
+        /** Secondary response to `raiseIntent`, sent when the `IntentHandler` 
+         *  has returned.
+         *  Note:
+         *  - return an empty object if the `IntentHandler` returned void. 
+         *  - `Channel` functions (`broadcast`, `getCurrentContext`, 
+         * `addContextListener` do not need to be included in JSON).*/
         intentResult?: {context?: Context, channel?: Channel},
     },
     meta: {
@@ -440,18 +453,19 @@ Response messages will be differentiated from requests by the presence of a `met
         responseGuid:  string,
         /** Timestamp at which request was generated */
         timestamp:  Date,
-        /** Array of AppIdentifiers or DesktopAgentIdentifiers for the sources that generated
-         *  responses to the request. Will contain a single value for individual responses and
-         *  multiple values for responses that were collated by the bridge.*/
+        /** Array of AppIdentifiers or DesktopAgentIdentifiers for the sources
+         *  that generated responses to the request. Will contain a single value 
+         *  for individual responses and multiple values for responses that were 
+         *  collated by the bridge.*/
         sources: (AppIdentifier | DesktopAgentIdentifier)[],
-        /** Array of AppIdentifiers or DesktopAgentIdentifiers for responses that were not returned
-         * to the bridge before the timeout or because an error occurred. 
-         * May be omitted if all sources responded. */
+        /** Array of AppIdentifiers or DesktopAgentIdentifiers for responses that 
+         * were not returned to the bridge before the timeout or because an error 
+         * occurred. May be omitted if all sources responded. */
         errorSources: (AppIdentifier | DesktopAgentIdentifier)[],
         /** Array of error message strings for responses that were not returned
          * to the bridge before the timeout or because an error occurred. 
-         * Should be the same length as the `errorSources array and ordered the same.
-         * May be omitted if all sources responded. */
+         * Should be the same length as the `errorSources` array and ordered the
+         * same. May be omitted if all sources responded. */
         errorDetails: string[]
     }
 }
@@ -475,7 +489,7 @@ There are several types of GUIDs, which vary how they are generated. As Desktop 
 
 ### Identifying Desktop Agents Identity and Message Sources
 
-Desktop Agents will prepare messages in the above format and transmit them to the bridge. However, to target intents and perform other actions that require specific routing between DAs, DAs need to have an identity. Identities should be assigned to clients when they connect to the bridge. This allows for multiple copies of the same underlying Desktop Agent implementation to be bridged and ensures that id clashes can be avoided.
+Desktop Agents will prepare messages in the above format and transmit them to the bridge. However, to target intents and perform other actions that require specific routing between DAs, DAs need to have an identity. Identities should be assigned to Desktop Agents when they connect to the bridge. This allows for multiple copies of the same underlying Desktop Agent implementation to be bridged and ensures that identity clashes can be avoided.
 
 To facilitate routing of messages between agents, the `AppIdentifier` is expanded to contain an optional `desktopAgent` field:
 
@@ -492,7 +506,8 @@ Further, a new `DesktopAgentIdentifier` type is introduced to handle cases where
 
 ```typescript
 interface DesktopAgentIdentifier {
-  /** A field that represents the Desktop Agent that should be targeted or that a response was received from. **/ 
+  /** A field that represents the Desktop Agent that should be targeted or that
+   *  a response was received from. **/ 
   readonly desktopAgent: string;
 }
 ```
