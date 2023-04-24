@@ -5,8 +5,8 @@ export default ({items}) => {
     return (
       <div className="gridBlock">
         {
-          items.map(sl =>
-            <div className="blockElement fourByGridBlock">
+          items.map((sl, key) =>
+            <div className="blockElement fourByGridBlock" key={key}>
               <div className="blockContent">
                 {sl}
               </div>
