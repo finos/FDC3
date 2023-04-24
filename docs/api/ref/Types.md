@@ -24,7 +24,7 @@ interface AppIdentifier {
 }
 ```
 
-#### See also
+**See also:**
 
 * [`AppMetadata`](Metadata#appmetadata)
 * [`DesktopAgent.open`](DesktopAgent#open)
@@ -46,7 +46,7 @@ The base interface that all contexts should extend: a context data object adheri
 
 This means that it must at least have a `type` property that indicates what type of data it represents, e.g. `'fdc3.contact'`. The `type` property of context objects is important for certain FDC3 operations, like [`Channel.getCurrentContext`](Channel#getCurrentContext) and [`DesktopAgent.addContextListener`](DesktopAgent#addContextListener), which allows you to filter contexts by their type.
 
-#### See also
+**See also:**
 
 * [`ContextHandler`](#contexthandler)
 * [`DesktopAgent.open`](DesktopAgent#open)
@@ -73,7 +73,7 @@ Used when attaching listeners for context broadcasts.
 
 Optional metadata about the context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
 
-#### See also
+**See also:**
 
 * [`Context`](#context)
 * [`ContextMetadata`](Metadata#contextmetadata)
@@ -92,7 +92,7 @@ Used when attaching listeners for raised intents.
 
 Optional metadata about the intent & context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
 
-#### See also
+**See also:**
 
 * [`Context`](#context)
 * [`ContextMetadata`](Metadata#contextmetadata)
@@ -110,7 +110,7 @@ Describes results that an Intent handler may optionally return that should be co
 
 Represented as a union type in TypeScript, however, this type may be rendered as an interface in other languages that both the `Context` and `Channel` types implement, allowing either to be returned by an `IntentHandler`.
 
-#### See also
+**See also:**
 
 * [`Context`](#context)
 * [`Channel`](Channel)
@@ -137,7 +137,7 @@ unsubscribe(): void;
 
 Allows an application to unsubscribe from listening to intents or context broadcasts.
 
-#### See also
+**See also:**
 
 * [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 * [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)

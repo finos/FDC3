@@ -24,7 +24,7 @@ interface  PrivateChannel extends Channel {
 }
 ```
 
-#### See also
+**See also:**
 
 - [`Channel`](Channel)
 - [`Listener`](Types#listener)
@@ -116,7 +116,7 @@ Adds a listener that will be called each time that the remote app invokes addCon
 
 Desktop Agents MUST call this for each invocation of addContextListener on this channel, including those that occurred before this handler was registered (to prevent race conditions).
 
-#### See also
+**See also:**
 
 - [`Channel.addContextListener`](Channel#addcontextlistener)
 
@@ -130,7 +130,7 @@ Adds a listener that will be called whenever the remote app invokes `Listener.un
 
 Desktop Agents MUST call this when disconnect() is called by the other party, for each listener that they had added.
 
-#### See also
+**See also:**
 
 - [`Listener`](Types#listener)
 
@@ -142,7 +142,7 @@ onDisconnect(handler: () => void): Listener;
 
 Adds a listener that will be called when the remote app terminates, for example when its window is closed or because disconnect was called. This is in addition to calls that will be made to onUnsubscribe listeners.
 
-#### See also
+**See also:**
 
 - [`disconnect`](#disconnect)
 
@@ -156,7 +156,7 @@ May be called to indicate that a participant will no longer interact with this c
 
 After this function has been called, Desktop Agents SHOULD prevent apps from broadcasting on this channel and MUST automatically call Listener.unsubscribe() for each listener that they've added (causing any `onUnsubscribe` handler added by the other party to be called) before triggering any onDisconnect handler added by the other party.
 
-#### See also
+**See also:**
 
 - [`onUnsubscribe`](#onunsubscribe)
 - [`Listener`](Types#listener)
