@@ -206,7 +206,9 @@ The bridge receives and collates the responses, producing the following collated
 ```
 
 :::note
-In the event that an agent times out or returns an error, where others respond, its `DesktopAgentIdentifier` should be added to the `meta.errorSources` element instead of `meta.sources`.
+
+In the event that an agent referred to in the API call is not connected to the bridge, an agent that was connected times out or returns an error, its `DesktopAgentIdentifier` should be added to the `meta.errorSources` element instead of `meta.sources` and the appropriate error ([`ResolveError.DesktopAgentNotFound`](../../api/ref/Errors#resolveerror), [`BridgingError.ResponseTimedOut`](../../api/ref/Errors#bridgingerror) or [`BridgingError.AgentDisconnected`](../../api/ref/Errors#bridgingerror)) should be added to `meta.errorDetails`.
+
 :::
 
 Finally, agent-A combines the data received from the bridge, with its own local response to produce the response to the requesting application:

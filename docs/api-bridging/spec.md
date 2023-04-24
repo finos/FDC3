@@ -12,10 +12,7 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
 
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
 * To create final PR:
-  * Create schema files defining messages
   * Add new terms and acronyms to FDC3 glossary and ensure they are defined in this spec's introduction
-  * Add new errors to Error enumerations specified in this proposal
-  * Add RFC 4122 - https://datatracker.ietf.org/doc/html/rfc4122 to FDC3 references page
 
 ## Implementing a Desktop Agent Bridge
 
@@ -624,7 +621,7 @@ The latter two types embody workflows that may be broken by an agent disconnecti
 When processing the disconnection of an agent from the bridge, the bridge MUST examine requests currently 'in-flight' and:
 
 * For requests that require the bridge to collate multiple responses:
-  * add the disconnected Desktop Agent's details to the `errorSources` array in teh response and the `BridgingError.AgentDisconnected` message to the `errorDetails` array.
+  * add the disconnected Desktop Agent's details to the `errorSources` array in the response and the `BridgingError.AgentDisconnected` message to the `errorDetails` array.
   * complete requests that no longer require further responses (all other agents have responded), or
   * continue to await the timeout (if other agents are yet to respond), or
   * return an 'empty' response in the expected format (if no other agents are connected and no data will be received).

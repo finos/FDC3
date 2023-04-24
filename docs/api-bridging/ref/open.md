@@ -32,7 +32,9 @@ let instanceMetadata = await fdc3.open(AppIdentifier);
 
 should always be processed locally without be passed to the bridge.
 
-The `fdc3.open` command should result in a single copy of the specified app being opened and its instance data returned, or an error if it could not be opened. When receiving a response from invoking `fdc3.open` via the Desktop Agent Bridge, the new app instances MUST be  initialized before responding as the responding Desktop Agent will need to return an `AppIdentifier` with an `instanceId` field set.
+The `fdc3.open` command should result in a single copy of the specified app being opened and its instance data returned, or an error if it could not be opened. When receiving a response from invoking `fdc3.open` via the Desktop Agent Bridge, the new app instances MUST be initialized before responding as the responding Desktop Agent will need to return an `AppIdentifier` with an `instanceId` field set.
+
+If the remote Desktop Agent is not currently connected from the bridge, the [`OpenError.DesktopAgentNotFound` error](../../api/ref/Errors#openerror) should be returned in the response from the bridge and the promise returned  from the call to `fdc3.open` rejected with it.
 
 ## Message exchange
 

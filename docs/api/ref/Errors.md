@@ -56,6 +56,10 @@ enum OpenError {
    *  to handle the request.
    */
   ResolverUnavailable = 'ResolverUnavailable',
+
+  /** Returned if the specified Desktop Agent is not found, via a connected 
+    Desktop Agent Bridge. */
+  DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
 ```
 
@@ -105,6 +109,10 @@ export enum ResolveError {
    *  handler within a timeout.
    */
   IntentDeliveryFailed = 'IntentDeliveryFailed',
+
+  /** Returned if the specified Desktop Agent is not found, via a connected 
+    Desktop Agent Bridge. */
+  DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
 ```
 
@@ -140,3 +148,22 @@ Contains constants representing the errors that can be encountered when calling 
 * [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`IntentResolution`](Metadata#intentresolution)
+
+## `BridgingError`
+
+```typescript
+enum BridgingError {
+  /** Returned if a Desktop Agent did not return a response, via Desktop Agent Bridging,
+   * within the alloted timeout. */
+  ResponseTimedOut = 'ResponseToBridgeTimedOut',
+  /** Returned if a Desktop Agent that has been targeted by a particular request has
+   * been disconnected from the Bridge before a response has been received from it. */
+  AgentDisconnected = 'AgentDisconnected' 
+}
+```
+
+Contains constants representing the errors that can be encountered when queries are forwarded to a Desktop Agent bridge, but one or more remote Desktop Agents connected to it disconnects or times-out while a particular request is in flight.
+
+**See also:**
+
+* [API Bridging - Workflows broken by disconnects](../../api-bridging/spec##workflows-broken-by-disconnects)
