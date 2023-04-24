@@ -201,7 +201,7 @@ If requested by the server, the JWT auth token payload should take the form:
 
 ```typescript
 {
-    "sub": string, // GUID for the keypair used to sign the token
+    "sub": string, // GUID for the key pair used to sign the token
     "iat": date    // timestamp at which the the token was generated as specified in ISO 8601
 }
 ```
@@ -215,7 +215,7 @@ e.g.
 }
 ```
 
-Note that the `sub` SHOULD be a GUID that does NOT need to match the name requested by the Desktop Agent. It will be used to identify the keypair that should be used to validate the JWT token. Further, multiple Desktop Agent's MAY share the same keys for authentication and hence the same `sub`, but they will be assigned different names for routing purposes by the DAB. If an agent disconnects from the bridge and later re-connects it MAY request and be assigned the same name it connected with before.
+Note that the `sub` SHOULD be a GUID that does NOT need to match the name requested by the Desktop Agent. It will be used to identify the key pair that should be used to validate the JWT token. Further, multiple Desktop Agent's MAY share the same keys for authentication and hence the same `sub`, but they will be assigned different names for routing purposes by the DAB. If an agent disconnects from the bridge and later re-connects it MAY request and be assigned the same name it connected with before.
 
 ### Step 4. Auth Confirmation and Name Assignment
 
