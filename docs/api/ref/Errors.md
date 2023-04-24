@@ -58,7 +58,7 @@ enum OpenError {
   ResolverUnavailable = 'ResolverUnavailable',
 
   /** Returned if the specified Desktop Agent is not found, via a connected 
-    Desktop Agent Bridge. */
+   *  Desktop Agent Bridge. */
   DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
 ```
@@ -111,7 +111,7 @@ export enum ResolveError {
   IntentDeliveryFailed = 'IntentDeliveryFailed',
 
   /** Returned if the specified Desktop Agent is not found, via a connected 
-    Desktop Agent Bridge. */
+   *  Desktop Agent Bridge. */
   DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
 ```
@@ -154,11 +154,16 @@ Contains constants representing the errors that can be encountered when calling 
 ```typescript
 enum BridgingError {
   /** Returned if a Desktop Agent did not return a response, via Desktop Agent Bridging,
-   * within the alloted timeout. */
+   *  within the alloted timeout. */
   ResponseTimedOut = 'ResponseToBridgeTimedOut',
   /** Returned if a Desktop Agent that has been targeted by a particular request has
-   * been disconnected from the Bridge before a response has been received from it. */
-  AgentDisconnected = 'AgentDisconnected' 
+   *  been disconnected from the Bridge before a response has been received from it. */
+  AgentDisconnected = 'AgentDisconnected',
+  /** Returned for FDC3 API calls that are specified with arguments indicating that
+   *  a remote Desktop agent should be targeted (e.g. raiseIntent with an app on a
+   *  remote DesktopAgent targeted), when the local Desktop Agent is not connected to
+   *  a bridge. */
+  NotConnectedToBridge = 'NotConnectedToBridge'
 }
 ```
 

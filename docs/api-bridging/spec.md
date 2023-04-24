@@ -12,7 +12,9 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
 
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
 * To create final PR:
-  * Add DesktopAgentIdentifier to API types page and adjust relevant API types.
+  * Add DesktopAgentIdentifier to API types page and adjust docs for existing types that will need it.
+  * Add DesktopAgentIdentifier to API sources and adjust existing types that will need it.
+  * Add new Errors to API sources.
 
 ## Implementing a Desktop Agent Bridge
 
@@ -552,7 +554,12 @@ enum BridgingError {
   ResponseTimedOut = 'ResponseToBridgeTimedOut',
   /** Returned if a Desktop Agent that has been targeted by a particular request has
    * been disconnected from the Bridge before a response has been received from it. */
-  AgentDisconnected = 'AgentDisconnected' 
+  AgentDisconnected = 'AgentDisconnected',
+  /** Returned for FDC3 API calls that are specified with arguments indicating that
+   *  a remote Desktop agent should be targeted (e.g. raiseIntent with an app on a
+   *  remote DesktopAgent targeted), when the local Desktop Agent is not connected to
+   *  a bridge. */
+  NotConnectedToBridge = 'NotConnectedToBridge'
 }
 ```
 
