@@ -12,7 +12,7 @@ In any Desktop Agent bridging scenario, it is expected that each DA is being ope
 
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
 * To create final PR:
-  * Add new terms and acronyms to FDC3 glossary and ensure they are defined in this spec's introduction
+  * Add DesktopAgentIdentifier to API types page and adjust relevant API types.
 
 ## Implementing a Desktop Agent Bridge
 
