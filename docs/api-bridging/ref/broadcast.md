@@ -11,7 +11,7 @@ Desktop Agent bridging message exchange for a `broadcast()` API call on the [`De
 
 :::caution
 
-Broadcasts on a [`PrivateChannel`](../../api/ref/PrivateChannel) have a separate message exchange, see [`PrivateChannel.broadcast`](ref/PrivateChannel.broadcast).
+Broadcasts on a [`PrivateChannel`](../../api/ref/PrivateChannel) have a separate message exchange, see [`PrivateChannel.broadcast`](PrivateChannel.broadcast).
 
 :::
 

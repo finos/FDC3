@@ -25,7 +25,7 @@ Notes:
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/nothing.schema.json](g/schemas/next/context/nothing.schema.json)
+[https://fdc3.finos.org/schemas/next/context/nothing.schema.json](/schemas/next/context/nothing.schema.json)
 
 ## Example
 
