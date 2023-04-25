@@ -115,9 +115,9 @@ Connections between Desktop Agents and the Desktop Agent Bridge will be made via
 
 The bridge MUST run on the same machine as the Desktop Agents, and the websocket MUST be bound to the loopback adapter IP address (127.0.0.1), ensuring that the websocket is not exposed to wider networks.
 
-Bridge implementations SHOULD default to binding the websocket server to a port in the recommended port range 4475 - 4575, enabling simple discovery of a running bridge via attempting socket connections to ports in that range and attempting a handshake (as defined later in this proposal) that will identify the websocket as belong to a Desktop Agent Bridge. A port range is used, in preference to a single nominated port, in order to enable the automatic resolution of port clashes with other services.
+Bridge implementations SHOULD default to binding the websocket server to a port in the recommended port range 4475 - 4575, enabling simple discovery of a running bridge via attempting socket connections to ports in that range and attempting a handshake (as defined later in this proposal) that will identify the websocket as belong to a Desktop Agent Bridge. A port range MAY be used, in preference to a single nominated port, in order to enable the automatic resolution of port clashes with other services.
 
-Both DAs and bridge implementations MUST support at least connection to the recommended port range and MAY also support configuration for connection to an alternative bridging port range.
+Both DAs and bridge implementations SHOULD support at least connection to the recommended port range and MAY also support configuration for connection to an alternative bridging port or port range.
 
 ### Bridging Desktop Agents on Multiple Machines
 
