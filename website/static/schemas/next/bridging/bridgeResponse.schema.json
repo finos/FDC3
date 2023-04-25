@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/bridgeResponse.schema.json",
+  "title": "BridgeResponse",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Response' appended."
+    },
+    "payload": {
+      "type": "object",
+      "description": "The message payload typically contains return values for FDC3 API functions."
+    },
+    "meta": {
+      "$ref": "#/$defs/ResponseMeta"
+    }
+  },
+  "additionalProperties": false,
+  "required": ["type", "payload", "meta"],
+  "$defs": {
+    "ResponseMeta": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "bridgeRequest.schema.json#/$defs/RequestMeta"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "requestGuid": true,
+            "timestamp": true,
+            "responseGuid": {
+              "type": "string",
+              "description": "Unique GUID for the response"
+            },
+            "sources": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "$ref": "../api/appIdentifier.schema.json"
+                  },
+                  {
+                    "$ref": "../api/desktopAgentIdentifier.schema.json"
+                  }
+                ]
+              },
+              "description": "Array of AppIdentifiers or DesktopAgentIdentifiers for the sources that generated responses to the request. Will contain a single value for individual responses and multiple values for responses that were collated by the bridge. May be omitted if all sources errored."
+            },
+            "errorSources": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "$ref": "../api/appIdentifier.schema.json"
+                  },
+                  {
+                    "$ref": "../api/desktopAgentIdentifier.schema.json"
+                  }
+                ]
+              },
+              "description": "Array of AppIdentifiers or DesktopAgentIdentifiers for responses that were not returned to the bridge before the timeout or because an error occurred. May be omitted if all sources responded without errors."
+            },
+            "errorDetails": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Array of error message strings for responses that were not returned to the bridge before the timeout or because an error occurred. Should be the same length as the `errorSources` array and ordered the same. May be omitted if all sources responded without errors."
+            }
+          },
+          "required": ["requestGuid", "responseGuid", "timestamp"],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

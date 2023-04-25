@@ -1,0 +1,16 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/next/api/desktopAgentIdentifier.schema.json",
+    "title": "DesktopAgentIdentifier",
+    "description": "Identifies a particular Desktop Agent. Used by Desktop Agent Bridging to indicate the source or destination of a message which was produced by or should be processed by the Desktop Agent itself rather than a specific application. Often added to messages by the Desktop Agent Bridge.",
+    "type": "object",
+    "properties": {
+        "desktopAgent": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "desktopAgent"
+    ],
+    "additionalProperties": false
+}

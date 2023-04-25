@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/openResponse.schema.json",
+  "title": "OpenResponse",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "bridgeResponse.schema.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "openResponse"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "appIdentifier": {
+              "$ref": "../api/appIdentifier.schema.json"
+            }
+          },
+          "required": ["appIdentifier"],
+          "additionalProperties": false
+        },
+        "meta": {
+          "type": "object",
+          "properties": {
+            "sources": {
+              "type": "array",
+              "items": {
+                "$ref": "../api/desktopAgentIdentifier.schema.json"
+              }
+            },
+            "errorSources": {
+              "type": "array",
+              "items": {
+                "$ref": "../api/desktopAgentIdentifier.schema.json"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

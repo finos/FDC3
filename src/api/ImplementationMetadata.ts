@@ -31,6 +31,9 @@ export interface ImplementationMetadata {
      *  `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
      *  the Desktop Agent.*/
     UserChannelMembershipAPIs: boolean;
+    /** Used to indicate whether the experimental Desktop Agent Bridging
+     *  feature is implemented by the Desktop Agent.*/
+    DesktopAgentBridging: boolean;
   };
 
   /** The calling application instance's own metadata, according to the Desktop Agent (MUST include at least the `appId` and `instanceId`). */

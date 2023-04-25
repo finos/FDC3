@@ -1,0 +1,57 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/next/api/errors.schema.json",
+    "definitions": {
+        "OpenError": {
+            "type": "string",
+            "description": "Contains constants representing the errors that can be encountered when calling the open method on the DesktopAgent object.",
+            "enum": [
+                "AppNotFound",
+                "ErrorOnLaunch",
+                "AppTimeout",
+                "ResolverUnavailable",
+                "DesktopAgentNotFound"
+            ]
+        },
+        "ResolveError": {
+            "type": "string",
+            "description": "Contains constants representing the errors that can be encountered when calling the findIntent, findIntentsByContext, raiseIntent or raiseIntentForContext methods on the DesktopAgent.",
+            "enum": [
+                "NoAppsFound",
+                "ResolverUnavailable",
+                "UserCancelledResolution",
+                "ResolverTimeout",
+                "TargetAppUnavailable",
+                "TargetInstanceUnavailable",
+                "IntentDeliveryFailed",
+                "DesktopAgentNotFound"
+            ]
+        },
+        "ResultError": {
+            "type": "string",
+            "description": "Contains constants representing the errors that can be encountered when calling the getResult method on the IntentResolution Object.",
+            "enum": [
+                "NoResultReturned",
+                "IntentHandlerRejected"
+            ]
+        },
+        "ChannelError": {
+            "type": "string",
+            "description": "Contains constants representing the errors that can be encountered when calling channels using the joinUserChannel or getOrCreateChannel methods, or the getCurrentContext, broadcast or addContextListener methods on the Channel object.",
+            "enum": [
+                "NoChannelFound",
+                "AccessDenied",
+                "CreationFailed"
+            ]
+        },
+        "BridgingError": {
+            "type": "string",
+            "description": "Contains constants representing the errors that can be encountered by Desktop Agents when exchanging bridging messages.",
+            "enum": [
+                "ResponseToBridgeTimedOut",
+                "AgentDisconnected",
+                "NotConnectedToBridge"
+            ]
+        }
+    }
+}
