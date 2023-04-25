@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/privateChannelOnAddContextListener.schema.json",
+  "title": "PrivateChannel.onAddContextListener",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "bridgeRequest.schema.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "PrivateChannel.onAddContextListener"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "channel": {
+              "type": "string"
+            },
+            "contextType": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["channel", "contextType"]
+        },
+        "meta": {
+          "properties": {
+            "requestGuid": true,
+            "timestamp": true,
+            "source": {
+              "$ref": "../api/appIdentifier.schema.json"
+            },
+            "destination": {
+              "$ref": "../api/appIdentifier.schema.json"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}
