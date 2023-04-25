@@ -27,7 +27,9 @@
           "properties": {
             "requestGuid": true,
             "timestamp": true,
-            "destination": true,
+            "destination": {
+              "$ref": "../api/desktopAgentIdentifier.schema.json"
+            },
             "source": {
               "$ref": "../api/appIdentifier.schema.json"
             }
