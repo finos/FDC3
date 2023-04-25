@@ -421,7 +421,7 @@ describe('test version comparison functions', () => {
       optionalFeatures: {
         OriginatingAppMetadata: true,
         UserChannelMembershipAPIs: false,
-        DesktopAgentBridging: false
+        DesktopAgentBridging: false,
       },
     };
     expect(versionIsAtLeast(metaOneTwo, '1.1')).toBe(true);
@@ -436,7 +436,7 @@ describe('test version comparison functions', () => {
       optionalFeatures: {
         OriginatingAppMetadata: true,
         UserChannelMembershipAPIs: false,
-        DesktopAgentBridging: false
+        DesktopAgentBridging: false,
       },
     };
     expect(versionIsAtLeast(metaOneTwoOne, '1.1')).toBe(true);
