@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, AppIdentifier, AppIntent, AppMetadata, Channel, ContextMetadata, DesktopAgentIdentifier, DisplayMetadata, Icon, Image, ImplementationMetadata, IntentMetadata, IntentResolution, IntentResult, BridgeRequest, BridgeResponse, BroadcastRequest, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsForContextRequest, FindIntentsForContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, OpenRequest, OpenResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, Context } from "./file";
+//   import { Convert, AppIdentifier, AppIntent, AppMetadata, Channel, ContextMetadata, DesktopAgentIdentifier, DisplayMetadata, Icon, Image, ImplementationMetadata, IntentMetadata, IntentResolution, IntentResult, BridgeRequest, BridgeResponse, BroadcastRequest, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsForContextRequest, FindIntentsForContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, OpenRequest, OpenResponse, PrivateChannelBroadcast, PrivateChannelEventListenerAdded, PrivateChannelEventListenerRemoved, PrivateChannelOnAddContextListener, PrivateChannelOnDisconnect, PrivateChannelOnUnsubscribe, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, Context } from "./file";
 //
 //   const appIdentifier = Convert.toAppIdentifier(json);
 //   const appIntent = Convert.toAppIntent(json);
@@ -29,6 +29,12 @@
 //   const getAppMetadataResponse = Convert.toGetAppMetadataResponse(json);
 //   const openRequest = Convert.toOpenRequest(json);
 //   const openResponse = Convert.toOpenResponse(json);
+//   const privateChannelBroadcast = Convert.toPrivateChannelBroadcast(json);
+//   const privateChannelEventListenerAdded = Convert.toPrivateChannelEventListenerAdded(json);
+//   const privateChannelEventListenerRemoved = Convert.toPrivateChannelEventListenerRemoved(json);
+//   const privateChannelOnAddContextListener = Convert.toPrivateChannelOnAddContextListener(json);
+//   const privateChannelOnDisconnect = Convert.toPrivateChannelOnDisconnect(json);
+//   const privateChannelOnUnsubscribe = Convert.toPrivateChannelOnUnsubscribe(json);
 //   const raiseIntentRequest = Convert.toRaiseIntentRequest(json);
 //   const raiseIntentResponse = Convert.toRaiseIntentResponse(json);
 //   const raiseIntentResultResponse = Convert.toRaiseIntentResultResponse(json);
@@ -938,6 +944,257 @@ export interface OpenResponsePayload {
   appIdentifier: SourceElement;
 }
 
+export interface PrivateChannelBroadcast {
+  meta: PrivateChannelBroadcastMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: PrivateChannelBroadcastPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: string;
+}
+
+export interface PrivateChannelBroadcastMeta {
+  /**
+   * Optional field that represents the destination that the request should be routed to. Must
+   * be set by the Desktop Agent for API calls that include a target app parameter and must
+   * include the name of the Desktop Agent hosting the target application.
+   */
+  destination?: PurpleIdentifier;
+  /**
+   * Unique GUID for the request
+   */
+  requestGuid: string;
+  /**
+   * Field that represents the source application that the request was received from.
+   */
+  source: PurpleIdentifier;
+  /**
+   * Timestamp at which request or response was generated
+   */
+  timestamp: Date;
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface PrivateChannelBroadcastPayload {
+  channel: string;
+  context: string;
+}
+
+export interface PrivateChannelEventListenerAdded {
+  meta: PrivateChannelEventListenerAddedMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: PrivateChannelEventListenerAddedPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: string;
+}
+
+export interface PrivateChannelEventListenerAddedMeta {
+  /**
+   * Optional field that represents the destination that the request should be routed to. Must
+   * be set by the Desktop Agent for API calls that include a target app parameter and must
+   * include the name of the Desktop Agent hosting the target application.
+   */
+  destination?: PurpleIdentifier;
+  /**
+   * Unique GUID for the request
+   */
+  requestGuid: string;
+  /**
+   * Field that represents the source application that the request was received from.
+   */
+  source: PurpleIdentifier;
+  /**
+   * Timestamp at which request or response was generated
+   */
+  timestamp: Date;
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface PrivateChannelEventListenerAddedPayload {
+  channel: string;
+  context: string;
+}
+
+export interface PrivateChannelEventListenerRemoved {
+  meta: PrivateChannelEventListenerRemovedMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: PrivateChannelEventListenerRemovedPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: string;
+}
+
+export interface PrivateChannelEventListenerRemovedMeta {
+  /**
+   * Optional field that represents the destination that the request should be routed to. Must
+   * be set by the Desktop Agent for API calls that include a target app parameter and must
+   * include the name of the Desktop Agent hosting the target application.
+   */
+  destination?: PurpleIdentifier;
+  /**
+   * Unique GUID for the request
+   */
+  requestGuid: string;
+  /**
+   * Field that represents the source application that the request was received from.
+   */
+  source: PurpleIdentifier;
+  /**
+   * Timestamp at which request or response was generated
+   */
+  timestamp: Date;
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface PrivateChannelEventListenerRemovedPayload {
+  channel: string;
+  listenerType: string;
+}
+
+export interface PrivateChannelOnAddContextListener {
+  meta: PrivateChannelOnAddContextListenerMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: PrivateChannelOnAddContextListenerPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: string;
+}
+
+export interface PrivateChannelOnAddContextListenerMeta {
+  /**
+   * Optional field that represents the destination that the request should be routed to. Must
+   * be set by the Desktop Agent for API calls that include a target app parameter and must
+   * include the name of the Desktop Agent hosting the target application.
+   */
+  destination?: PurpleIdentifier;
+  /**
+   * Unique GUID for the request
+   */
+  requestGuid: string;
+  /**
+   * Field that represents the source application that the request was received from.
+   */
+  source: PurpleIdentifier;
+  /**
+   * Timestamp at which request or response was generated
+   */
+  timestamp: Date;
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface PrivateChannelOnAddContextListenerPayload {
+  channel: string;
+  contextType: string;
+}
+
+export interface PrivateChannelOnDisconnect {
+  meta: PrivateChannelOnDisconnectMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: PrivateChannelOnDisconnectPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: string;
+}
+
+export interface PrivateChannelOnDisconnectMeta {
+  /**
+   * Optional field that represents the destination that the request should be routed to. Must
+   * be set by the Desktop Agent for API calls that include a target app parameter and must
+   * include the name of the Desktop Agent hosting the target application.
+   */
+  destination?: PurpleIdentifier;
+  /**
+   * Unique GUID for the request
+   */
+  requestGuid: string;
+  /**
+   * Field that represents the source application that the request was received from.
+   */
+  source: PurpleIdentifier;
+  /**
+   * Timestamp at which request or response was generated
+   */
+  timestamp: Date;
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface PrivateChannelOnDisconnectPayload {
+  channel: string;
+}
+
+export interface PrivateChannelOnUnsubscribe {
+  meta: PrivateChannelOnUnsubscribeMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: PrivateChannelOnUnsubscribePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: string;
+}
+
+export interface PrivateChannelOnUnsubscribeMeta {
+  /**
+   * Optional field that represents the destination that the request should be routed to. Must
+   * be set by the Desktop Agent for API calls that include a target app parameter and must
+   * include the name of the Desktop Agent hosting the target application.
+   */
+  destination?: PurpleIdentifier;
+  /**
+   * Unique GUID for the request
+   */
+  requestGuid: string;
+  /**
+   * Field that represents the source application that the request was received from.
+   */
+  source: PurpleIdentifier;
+  /**
+   * Timestamp at which request or response was generated
+   */
+  timestamp: Date;
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface PrivateChannelOnUnsubscribePayload {
+  channel: string;
+  contextType: string;
+}
+
 export interface RaiseIntentRequest {
   meta: RaiseIntentRequestMeta;
   /**
@@ -1326,6 +1583,54 @@ export class Convert {
 
   public static openResponseToJson(value: OpenResponse): string {
     return JSON.stringify(uncast(value, r('OpenResponse')), null, 2);
+  }
+
+  public static toPrivateChannelBroadcast(json: string): PrivateChannelBroadcast {
+    return cast(JSON.parse(json), r('PrivateChannelBroadcast'));
+  }
+
+  public static privateChannelBroadcastToJson(value: PrivateChannelBroadcast): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelBroadcast')), null, 2);
+  }
+
+  public static toPrivateChannelEventListenerAdded(json: string): PrivateChannelEventListenerAdded {
+    return cast(JSON.parse(json), r('PrivateChannelEventListenerAdded'));
+  }
+
+  public static privateChannelEventListenerAddedToJson(value: PrivateChannelEventListenerAdded): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelEventListenerAdded')), null, 2);
+  }
+
+  public static toPrivateChannelEventListenerRemoved(json: string): PrivateChannelEventListenerRemoved {
+    return cast(JSON.parse(json), r('PrivateChannelEventListenerRemoved'));
+  }
+
+  public static privateChannelEventListenerRemovedToJson(value: PrivateChannelEventListenerRemoved): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelEventListenerRemoved')), null, 2);
+  }
+
+  public static toPrivateChannelOnAddContextListener(json: string): PrivateChannelOnAddContextListener {
+    return cast(JSON.parse(json), r('PrivateChannelOnAddContextListener'));
+  }
+
+  public static privateChannelOnAddContextListenerToJson(value: PrivateChannelOnAddContextListener): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelOnAddContextListener')), null, 2);
+  }
+
+  public static toPrivateChannelOnDisconnect(json: string): PrivateChannelOnDisconnect {
+    return cast(JSON.parse(json), r('PrivateChannelOnDisconnect'));
+  }
+
+  public static privateChannelOnDisconnectToJson(value: PrivateChannelOnDisconnect): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelOnDisconnect')), null, 2);
+  }
+
+  public static toPrivateChannelOnUnsubscribe(json: string): PrivateChannelOnUnsubscribe {
+    return cast(JSON.parse(json), r('PrivateChannelOnUnsubscribe'));
+  }
+
+  public static privateChannelOnUnsubscribeToJson(value: PrivateChannelOnUnsubscribe): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelOnUnsubscribe')), null, 2);
   }
 
   public static toRaiseIntentRequest(json: string): RaiseIntentRequest {
@@ -2000,6 +2305,144 @@ const typeMap: any = {
     false
   ),
   OpenResponsePayload: o([{ json: 'appIdentifier', js: 'appIdentifier', typ: r('SourceElement') }], false),
+  PrivateChannelBroadcast: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('PrivateChannelBroadcastMeta') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelBroadcastPayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  PrivateChannelBroadcastMeta: o(
+    [
+      { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleIdentifier')) },
+      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  PrivateChannelBroadcastPayload: o(
+    [
+      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'context', js: 'context', typ: '' },
+    ],
+    false
+  ),
+  PrivateChannelEventListenerAdded: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('PrivateChannelEventListenerAddedMeta') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelEventListenerAddedPayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  PrivateChannelEventListenerAddedMeta: o(
+    [
+      { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleIdentifier')) },
+      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  PrivateChannelEventListenerAddedPayload: o(
+    [
+      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'context', js: 'context', typ: '' },
+    ],
+    false
+  ),
+  PrivateChannelEventListenerRemoved: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('PrivateChannelEventListenerRemovedMeta') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelEventListenerRemovedPayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  PrivateChannelEventListenerRemovedMeta: o(
+    [
+      { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleIdentifier')) },
+      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  PrivateChannelEventListenerRemovedPayload: o(
+    [
+      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'listenerType', js: 'listenerType', typ: '' },
+    ],
+    false
+  ),
+  PrivateChannelOnAddContextListener: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('PrivateChannelOnAddContextListenerMeta') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelOnAddContextListenerPayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  PrivateChannelOnAddContextListenerMeta: o(
+    [
+      { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleIdentifier')) },
+      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  PrivateChannelOnAddContextListenerPayload: o(
+    [
+      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'contextType', js: 'contextType', typ: '' },
+    ],
+    false
+  ),
+  PrivateChannelOnDisconnect: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('PrivateChannelOnDisconnectMeta') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelOnDisconnectPayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  PrivateChannelOnDisconnectMeta: o(
+    [
+      { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleIdentifier')) },
+      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  PrivateChannelOnDisconnectPayload: o([{ json: 'channel', js: 'channel', typ: '' }], false),
+  PrivateChannelOnUnsubscribe: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('PrivateChannelOnUnsubscribeMeta') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelOnUnsubscribePayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  PrivateChannelOnUnsubscribeMeta: o(
+    [
+      { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleIdentifier')) },
+      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  PrivateChannelOnUnsubscribePayload: o(
+    [
+      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'contextType', js: 'contextType', typ: '' },
+    ],
+    false
+  ),
   RaiseIntentRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentRequestMeta') },

@@ -59,5 +59,5 @@ export enum BridgingError {
   /** (Experimental) Returned if a Desktop Agent that has been targeted by a particular request has been disconnected from the Bridge before a response has been received from it. */
   AgentDisconnected = 'AgentDisconnected',
   /** (Experimental) Returned for FDC3 API calls that are specified with arguments indicating that a remote Desktop agent should be targeted (e.g. raiseIntent with an app on a remote DesktopAgent targeted), when the local Desktop Agent is not connected to a bridge. */
-  NotConnectedToBridge = 'NotConnectedToBridge'
+  NotConnectedToBridge = 'NotConnectedToBridge',
 }
