@@ -22,6 +22,9 @@
                 },
                 "UserChannelMembershipAPIs": {
                     "type": "boolean"
+                },
+                "DesktopAgentBridging": {
+                    "type": "boolean"
                 }
             },
             "required": [

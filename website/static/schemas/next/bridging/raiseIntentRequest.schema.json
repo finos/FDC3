@@ -30,12 +30,15 @@
           "properties": {
             "requestGuid": true,
             "timestamp": true,
-            "destination": true,
+            "destination": {
+              "$ref": "../api/appIdentifier.schema.json"
+            },
             "source": {
               "$ref": "../api/appIdentifier.schema.json"
             }
           },
-          "additionalProperties": false
+          "additionalProperties": false,
+          "required": ["requestGuid","timestamp","destination","source"] 
         }
       },
       "additionalProperties": false

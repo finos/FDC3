@@ -51,8 +51,7 @@
             {
               "$ref": "../api/desktopAgentIdentifier.schema.json"
             }
-          ],
-          "additionalProperties": false
+          ]
         }
       },
       "required": ["requestGuid", "timestamp", "source"]
