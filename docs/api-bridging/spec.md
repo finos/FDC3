@@ -18,7 +18,7 @@ In any Desktop Agent Bridging scenario, it is expected that each DA is being ope
 
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
 * To create final PR:
-  * Add schema links to each message exchange (done BroadcastRequest as an example - note the schema and example heading will need adding to each request and response section)
+  * Create schemas for connection flow messages and link in spec document (see ref documents for styling)
   * Check if advice on imported BridgingTypes (last section in this spec) from the npm module is accurate.
   * Refactor spec introduction to separate channel (websocket) and protocol.
   * Link to BackPlane project somewhere
@@ -465,7 +465,7 @@ Response messages will be differentiated from requests by the presence of a `met
         /** Array of AppIdentifiers or DesktopAgentIdentifiers for the sources
          *  that generated responses to the request. Will contain a single value 
          *  for individual responses and multiple values for responses that were 
-         *  collated by the bridge. May be ommitted if all sources returned an 
+         *  collated by the bridge. May be omitted if all sources returned an 
          *  error. */
         sources?: (AppIdentifier | DesktopAgentIdentifier)[],
         /** Array of AppIdentifiers or DesktopAgentIdentifiers for responses that 

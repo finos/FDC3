@@ -20,6 +20,26 @@ Some additional tracking of PrivateChannel metadata is required on the Desktop A
 
 Private channels support a number of additional event listeners (`onAddContextListener`, `onUnsubscribe`, `onDisconnect`), when an application adds one of these event listeners to a private channel that was created remotely and returned as an `IntentResult` (which should be tracked by the Desktop Agent Bridge client) a message needs to be sent to the agent that created the channel to facilitate routing of event messages. A single message type is used for this with a `payload.listenerType` field.
 
+## Message exchange
+
+```mermaid
+sequenceDiagram
+    participant DA as Desktop Agent A
+    participant DAB as Desktop Agent Bridge
+    participant DB as Desktop Agent B
+    participant DC as Desktop Agent C
+    DA ->>+ DAB: PrivateChannel.eventListenerAdded
+    DAB ->>+ DB: PrivateChannel.eventListenerAdded
+```
+
+## Request format
+
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerAdded.schema.json](/schemas/next/bridging/privateChannelEventListenerAdded.schema.json)
+
+### Example
+
 ```json
 // agent-A -> DAB
 {

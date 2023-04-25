@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/findIntentsForContextResponse.schema.json",
-  "title": "FindIntentsForContextResponse",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextResponse.schema.json",
+  "title": "findIntentsByContextResponse",
   "allOf": [
     {
       "$ref": "bridgeResponse.schema.json"
@@ -9,7 +9,7 @@
     {
       "properties": {
         "type": {
-          "const": "findIntentsForContextResponse"
+          "const": "findIntentsByContextResponse"
         },
         "payload": {
           "type": "object",

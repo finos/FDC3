@@ -24,22 +24,28 @@ sequenceDiagram
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: findIntent
-    DAB ->>+ DB: findIntent
+    DA ->>+ DAB: findIntentRequest
+    DAB ->>+ DB: findIntentRequest
+    DAB ->>+ DC: findIntentRequest
     DB -->>- DAB: findIntentResponse (B)
-    DAB ->>+ DC: findIntent
     DC -->>- DAB: findIntentResponse (C)
     DAB -->>- DA: findIntentResponse (B + C)
 ```
 
 ## Request format
 
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/findIntentRequest.schema.json](/schemas/next/bridging/findIntentRequest.schema.json)
+
+### Example
+
 Outward message to the DAB:
 
 ```json
 // agent-A -> DAB
 {
-    "type": "findIntent",
+    "type": "findIntentRequest",
     "payload": {
         "intent": "StartChat",
         "context": {/*contextObj*/}
@@ -61,7 +67,7 @@ The DAB fills in the `source.desktopAgent` field and forwards the request to the
 // DAB -> agent-B
 // DAB -> agent-C
 {
-    "type": "findIntent",
+    "type": "findIntentRequest",
     "payload": {
         "intent": "StartChat",
         "context": {/*contextObj*/}
@@ -81,6 +87,12 @@ The DAB fills in the `source.desktopAgent` field and forwards the request to the
 Note that the `source.desktopAgent` field has been populated with the id of the agent that raised the requests, enabling the routing of responses.
 
 ## Response format
+
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/findIntentResponse.schema.json](/schemas/next/bridging/findIntentResponse.schema.json)
+
+### Example
 
 Normal response from agent-A, where the request was raised.
 

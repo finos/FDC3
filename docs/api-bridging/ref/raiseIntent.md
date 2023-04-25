@@ -45,8 +45,8 @@ sequenceDiagram
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: raiseIntent
-    DAB ->>+ DB: raiseIntent
+    DA ->>+ DAB: raiseIntentRequest
+    DAB ->>+ DB: raiseIntentRequest
     DB -->>- DAB: raiseIntentResponse
     DAB -->>- DA: raiseIntentResponse
     DB ->>+ DAB: raiseIntentResultResponse
@@ -55,12 +55,18 @@ sequenceDiagram
 
 ## Request format
 
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/raiseIntentRequest.schema.json](/schemas/next/bridging/raiseIntentRequest.schema.json)
+
+### Example
+
 Outward message to the DAB:
 
 ```json
 // agent-A -> DAB
 {
-    "type": "raiseIntent",
+    "type": "raiseIntentRequest",
     "payload": {
         "intent": "StartChat",
         "context": {/*contextObj*/},
@@ -90,7 +96,7 @@ The bridge fills in the `source.desktopAgent` field and forwards the request to 
 ```json
 // DAB -> agent-B
 {
-    "type": "raiseIntent",
+    "type": "raiseIntentRequest",
     "payload": {
        "intent": "StartChat",
         "context": {/*contextObj*/},
@@ -117,6 +123,13 @@ The bridge fills in the `source.desktopAgent` field and forwards the request to 
 ```
 
 ## Response format
+
+### Schemas
+
+[https://fdc3.finos.org/schemas/next/bridging/raiseIntentResponse.schema.json](/schemas/next/bridging/raiseIntentResponse.schema.json)
+[https://fdc3.finos.org/schemas/next/bridging/raiseIntentResultResponse.schema.json](/schemas/next/bridging/raiseIntentResultResponse.schema.json)
+
+### Example
 
 If the `raiseIntent` request were made locally, agent-B would deliver the intent and context to the target app's `IntentHandler` and respond to the raising application with an `IntentResolution`:
 
@@ -154,9 +167,9 @@ This is encoded and sent to the bridge (omitting the `getResult()` function) as:
 }
 ```
 
-:::note
+:::tip
 
-When producing a response to a `raiseIntent` request, the instance of the receiving application MUST be initialized and an `instanceId` generated for it before the `IntentResolution` is generated so that it may include the `instanceId`.
+When producing a response to a `raiseIntent` request, the instance of the receiving application MUST be initialized and an `instanceId` generated for it before the `IntentResolution` is generated so that it can include the `instanceId`.
 
 :::
 

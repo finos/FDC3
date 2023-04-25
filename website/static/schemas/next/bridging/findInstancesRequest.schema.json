@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/bridging/findInstancesRequest.schema.json",
-  "title": "FindInstancesRequest",
+  "title": "findInstancesRequest",
   "type": "object",
   "allOf": [
     {

@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, AppIdentifier, AppIntent, AppMetadata, Channel, ContextMetadata, DesktopAgentIdentifier, DisplayMetadata, Icon, Image, ImplementationMetadata, IntentMetadata, IntentResolution, IntentResult, BridgeRequest, BridgeResponse, BroadcastRequest, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsForContextRequest, FindIntentsForContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, OpenRequest, OpenResponse, PrivateChannelBroadcast, PrivateChannelEventListenerAdded, PrivateChannelEventListenerRemoved, PrivateChannelOnAddContextListener, PrivateChannelOnDisconnect, PrivateChannelOnUnsubscribe, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, Context } from "./file";
+//   import { Convert, AppIdentifier, AppIntent, AppMetadata, Channel, ContextMetadata, DesktopAgentIdentifier, DisplayMetadata, Icon, Image, ImplementationMetadata, IntentMetadata, IntentResolution, IntentResult, BridgeRequest, BridgeResponse, BroadcastRequest, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, OpenRequest, OpenResponse, PrivateChannelBroadcast, PrivateChannelEventListenerAdded, PrivateChannelEventListenerRemoved, PrivateChannelOnAddContextListener, PrivateChannelOnDisconnect, PrivateChannelOnUnsubscribe, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, Context } from "./file";
 //
 //   const appIdentifier = Convert.toAppIdentifier(json);
 //   const appIntent = Convert.toAppIntent(json);
@@ -23,8 +23,8 @@
 //   const findInstancesResponse = Convert.toFindInstancesResponse(json);
 //   const findIntentRequest = Convert.toFindIntentRequest(json);
 //   const findIntentResponse = Convert.toFindIntentResponse(json);
-//   const findIntentsForContextRequest = Convert.toFindIntentsForContextRequest(json);
-//   const findIntentsForContextResponse = Convert.toFindIntentsForContextResponse(json);
+//   const findIntentsByContextRequest = Convert.toFindIntentsByContextRequest(json);
+//   const findIntentsByContextResponse = Convert.toFindIntentsByContextResponse(json);
 //   const getAppMetadataRequest = Convert.toGetAppMetadataRequest(json);
 //   const getAppMetadataResponse = Convert.toGetAppMetadataResponse(json);
 //   const openRequest = Convert.toOpenRequest(json);
@@ -664,12 +664,12 @@ export interface AppIntentElement {
   intent: IntentClass;
 }
 
-export interface FindIntentsForContextRequest {
-  meta: FindIntentsForContextRequestMeta;
+export interface FindIntentsByContextRequest {
+  meta: FindIntentsByContextRequestMeta;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
-  payload: FindIntentsForContextRequestPayload;
+  payload: FindIntentsByContextRequestPayload;
   /**
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -677,7 +677,7 @@ export interface FindIntentsForContextRequest {
   type: string;
 }
 
-export interface FindIntentsForContextRequestMeta {
+export interface FindIntentsByContextRequestMeta {
   /**
    * Unique GUID for the request
    */
@@ -695,16 +695,16 @@ export interface FindIntentsForContextRequestMeta {
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
-export interface FindIntentsForContextRequestPayload {
+export interface FindIntentsByContextRequestPayload {
   context: ContextObject;
 }
 
-export interface FindIntentsForContextResponse {
-  meta: FindIntentsForContextResponseMeta;
+export interface FindIntentsByContextResponse {
+  meta: FindIntentsByContextResponseMeta;
   /**
    * The message payload typically contains return values for FDC3 API functions.
    */
-  payload: FindIntentsForContextResponsePayload;
+  payload: FindIntentsByContextResponsePayload;
   /**
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -712,7 +712,7 @@ export interface FindIntentsForContextResponse {
   type: string;
 }
 
-export interface FindIntentsForContextResponseMeta {
+export interface FindIntentsByContextResponseMeta {
   /**
    * Unique GUID for the request
    */
@@ -749,7 +749,7 @@ export interface FindIntentsForContextResponseMeta {
 /**
  * The message payload typically contains return values for FDC3 API functions.
  */
-export interface FindIntentsForContextResponsePayload {
+export interface FindIntentsByContextResponsePayload {
   appIntents: AppIntentElement[];
 }
 
@@ -1537,20 +1537,20 @@ export class Convert {
     return JSON.stringify(uncast(value, r('FindIntentResponse')), null, 2);
   }
 
-  public static toFindIntentsForContextRequest(json: string): FindIntentsForContextRequest {
-    return cast(JSON.parse(json), r('FindIntentsForContextRequest'));
+  public static toFindIntentsByContextRequest(json: string): FindIntentsByContextRequest {
+    return cast(JSON.parse(json), r('FindIntentsByContextRequest'));
   }
 
-  public static findIntentsForContextRequestToJson(value: FindIntentsForContextRequest): string {
-    return JSON.stringify(uncast(value, r('FindIntentsForContextRequest')), null, 2);
+  public static findIntentsByContextRequestToJson(value: FindIntentsByContextRequest): string {
+    return JSON.stringify(uncast(value, r('FindIntentsByContextRequest')), null, 2);
   }
 
-  public static toFindIntentsForContextResponse(json: string): FindIntentsForContextResponse {
-    return cast(JSON.parse(json), r('FindIntentsForContextResponse'));
+  public static toFindIntentsByContextResponse(json: string): FindIntentsByContextResponse {
+    return cast(JSON.parse(json), r('FindIntentsByContextResponse'));
   }
 
-  public static findIntentsForContextResponseToJson(value: FindIntentsForContextResponse): string {
-    return JSON.stringify(uncast(value, r('FindIntentsForContextResponse')), null, 2);
+  public static findIntentsByContextResponseToJson(value: FindIntentsByContextResponse): string {
+    return JSON.stringify(uncast(value, r('FindIntentsByContextResponse')), null, 2);
   }
 
   public static toGetAppMetadataRequest(json: string): GetAppMetadataRequest {
@@ -2183,15 +2183,15 @@ const typeMap: any = {
     ],
     false
   ),
-  FindIntentsForContextRequest: o(
+  FindIntentsByContextRequest: o(
     [
-      { json: 'meta', js: 'meta', typ: r('FindIntentsForContextRequestMeta') },
-      { json: 'payload', js: 'payload', typ: r('FindIntentsForContextRequestPayload') },
+      { json: 'meta', js: 'meta', typ: r('FindIntentsByContextRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('FindIntentsByContextRequestPayload') },
       { json: 'type', js: 'type', typ: '' },
     ],
     false
   ),
-  FindIntentsForContextRequestMeta: o(
+  FindIntentsByContextRequestMeta: o(
     [
       { json: 'requestGuid', js: 'requestGuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
@@ -2199,16 +2199,16 @@ const typeMap: any = {
     ],
     false
   ),
-  FindIntentsForContextRequestPayload: o([{ json: 'context', js: 'context', typ: r('ContextObject') }], false),
-  FindIntentsForContextResponse: o(
+  FindIntentsByContextRequestPayload: o([{ json: 'context', js: 'context', typ: r('ContextObject') }], false),
+  FindIntentsByContextResponse: o(
     [
-      { json: 'meta', js: 'meta', typ: r('FindIntentsForContextResponseMeta') },
-      { json: 'payload', js: 'payload', typ: r('FindIntentsForContextResponsePayload') },
+      { json: 'meta', js: 'meta', typ: r('FindIntentsByContextResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('FindIntentsByContextResponsePayload') },
       { json: 'type', js: 'type', typ: '' },
     ],
     false
   ),
-  FindIntentsForContextResponseMeta: o(
+  FindIntentsByContextResponseMeta: o(
     [
       { json: 'requestGuid', js: 'requestGuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -2219,7 +2219,7 @@ const typeMap: any = {
     ],
     false
   ),
-  FindIntentsForContextResponsePayload: o(
+  FindIntentsByContextResponsePayload: o(
     [{ json: 'appIntents', js: 'appIntents', typ: a(r('AppIntentElement')) }],
     false
   ),
