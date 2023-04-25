@@ -23,7 +23,7 @@ is for at least one standardised identifier to be provided
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/country.schema.json
+[https://fdc3.finos.org/schemas/next/context/country.schema.json](/schemas/next/context/country.schema.json)
 
 ## Details
 
