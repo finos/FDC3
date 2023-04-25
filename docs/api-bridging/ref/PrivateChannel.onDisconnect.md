@@ -22,7 +22,9 @@ When the `disconnect` function is is called on a `PrivateChannel` any applicatio
 // agent-A -> DAB
 {
     "type": "PrivateChannel.onDisconnect",
-    "payload": {},
+    "payload": {
+        "channel": "private-channel-ABC123"
+    },
     "meta": {
         "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",

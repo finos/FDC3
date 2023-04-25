@@ -25,7 +25,10 @@ When a `ContextListener` is removed from a `PrivateChannel` (via `listener.unsub
 // DAB -> agent-B
 {
     "type": "PrivateChannel.onUnsubscribe",
-    "payload": {},
+    "payload": {
+        "channel": "private-channel-ABC123",
+        "contextType": "fdc3.instrument"
+    },
     "meta": {
         "requestGuid": "<requestGuid>",
         "timestamp": "2020-03-...",
