@@ -4,7 +4,7 @@ sidebar_label: Overview
 title: API Bridging Overview (next)
 ---
 
-:::info _[Experimental](../fdc3-compliance#experimental-features)_
+:::info _[@experimental](../fdc3-compliance#experimental-features)_
 
 Desktop Agent Bridging in an experimental feature added to FDC3 in 2.1, hence, it's design may change in future and it is exempted from the FDC3 Standards's normal versioning and deprecation polices in order to facilitate any necessary change.
 
@@ -20,10 +20,29 @@ In any Desktop Agent Bridging scenario, it is expected that each DA is being ope
 * To create final PR:
   * Create schemas for connection flow messages and link in spec document (see ref documents for styling)
   * Check if advice on imported BridgingTypes (last section in this spec) from the npm module is accurate.
-  * Refactor spec introduction to separate channel (websocket) and protocol.
   * Link to BackPlane project somewhere
 
-## Implementing a Desktop Agent Bridge
+## Bridging Desktop Agents
+
+The Desktop Agent Bridge Part of the FDC3 Standard is composed of three components:
+
+* **[Connection](#connection)**: A means for Desktop Agents to communicate with a bridge, and through that bridge, with each other.
+* **[Connection Protocol](#connection-protocol)**: A protocol defining message exchanges necessary to connect to a Bridge and to perform initial state synchronization.
+* **[Messaging Protocol](#messaging-protocol)**: A protocol defining message exchanges that allow FDC3 API interop to extend across multiple Desktop Agents.
+
+Detail on each of these components is defined in the following sections.
+
+:::info
+
+Although this specification defines a particular [connection](#connection) type (based on websockets), it has been divided into parts so that the protocol definitions might be reused to implement a bridge over an alternative connection.
+
+:::
+
+### API Bridging Compliance
+
+API Bridging is introduced in FDC3 2.1 as an [@experimental](../fdc3-compliance#experimental-features) feature of the FDC3 Standard, included to enable implementation by and feedback from the FDC3 community. As such, it is currently optional for the purposes of compliance and is exempted from the normal versioning and deprecation polices in order to facilitate any refinement needed.
+
+## Connection
 
 ### Topology
 
@@ -36,11 +55,10 @@ flowchart TD;
     C[DA C]
     D[DA D]
     E{Bridge} 
-    A <--> |websocket| E
+    E <--> |websocket| A
     E <--> |websocket| B
-    E <--> |websocket| C
+    C <--> |websocket| E
     D <--> |websocket| E
-    E --> |loopback - 127.0.0.1| E
 ```
 
 Other possible topologies include peer-to-peer or client/server networks, however, these introduce significant additional complexity into multiple aspects of the bridging protocol that must be implemented by Desktop Agents, (including discovery, authentication and message routing), where a star topology/standalone bridge enables a relatively simple set of protocols, with the most difficult parts being implemented in the bridge itself.
@@ -49,17 +67,29 @@ Whilst the standalone bridge represents a single point of failure for the interc
 
 In Financial services it is not unusual for a single user to be working with applications on more than one desktop. As Desktop Agents do not span desktops bridging Desktop Agents across multiple machines is an additional use case for Desktop Agent bridging. However, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user.
 
-### Technology & Service Discovery
+```mermaid
+flowchart LR;
+    A[DA A]
+    B[DA B]
+    B1{Bridge 1} 
+    C[DA C]
+    D[DA D]
+    B2{Bridge 2}
 
-Connections between Desktop Agents and the Desktop Agent Bridge will be made via websocket connections, with the bridge acting as the websocket server and each connected Desktop Agent as a client.
+    subgraph PC1 [PC 1]
+      direction RL
+      B1 <--> |websocket| A
+      B1 <--> |websocket| B
+    end
+    subgraph PC2 [PC 2]
+      direction LR
+      B2 <--> |websocket| C
+      B2 <--> |websocket| D
+    end
+    PC1 .- |Bridge interconnect| PC2
+```
 
-The bridge MUST run on the same machine as the Desktop Agents, and the websocket MUST be bound to the loopback adapter IP address (127.0.0.1), ensuring that the websocket is not exposed to wider networks.
-
-Bridge implementations SHOULD default to binding the websocket server to a port in the recommended port range 4475 - 4575, enabling simple discovery of a running bridge via attempting socket connections to ports in that range and attempting a handshake (as defined later in this proposal) that will identify the websocket as belong to a Desktop Agent Bridge. A port range is used, in preference to a single nominated port, in order to enable the automatic resolution of port clashes with other services.
-
-Both DAs and bridge implementations MUST support at least connection to the recommended port range and MAY also support configuration for connection to an alternative bridging port range.
-
-As part of the Desktop Agent Bridging protocol, a bridge will implement "server" behavior by:
+By using the Desktop Agent Bridging Connection and Messaging protocols, a bridge will implement "server" behavior by:
 
 * Accepting connections from client Desktop Agents, receiving and authenticating credentials and assigning a name (for routing purposes)
 * Receiving requests from client Desktop Agents.
@@ -77,29 +107,17 @@ A Desktop Agent will implement "client" behavior by:
 
 Hence, message paths and propagation are simple. All messages to other Desktop Agents are passed to the bridge for routing and all messages (both requests and responses) are received back from it, i.e. the bridge is responsible for all message routing.
 
-#### Collating Responses
+### Websocket Connection
 
-Whilst some FDC3 requests are 'fire and forget' (e.g. broadcast) the main requests such as `findIntent` or `raiseIntent` expect a response. In a bridging scenario, the response can come from multiple Desktop Agents and therefore need to be aggregated and augmented before they are sent back to the requesting DA.
+Connections between Desktop Agents and the Desktop Agent Bridge will be made via websocket connections, with the bridge acting as the websocket server and each connected Desktop Agent as a client.
 
-:::note
-A set of classifications for message exchange types are provided in the [Individual message exchanges](#individual-message-exchanges) section.
-:::
+The bridge MUST run on the same machine as the Desktop Agents, and the websocket MUST be bound to the loopback adapter IP address (127.0.0.1), ensuring that the websocket is not exposed to wider networks.
 
-The Desktop Agent Bridge is the responsible entity for collating responses together from all DAs. Whilst this approach may add some complexity to bridge implementations, it will simplify DA implementations since they only need to handle one response.
+Bridge implementations SHOULD default to binding the websocket server to a port in the recommended port range 4475 - 4575, enabling simple discovery of a running bridge via attempting socket connections to ports in that range and attempting a handshake (as defined later in this proposal) that will identify the websocket as belong to a Desktop Agent Bridge. A port range is used, in preference to a single nominated port, in order to enable the automatic resolution of port clashes with other services.
 
-The Desktop Agent Bridge MUST allow for timeout configuration.
+Both DAs and bridge implementations MUST support at least connection to the recommended port range and MAY also support configuration for connection to an alternative bridging port range.
 
-The Bridge SHOULD also implement timeout for waiting on DA responses. Assuming the message exchange will be all intra-machine, a recommended timeout of 1500ms SHOULD be used. Similarly, Desktop Agents SHOULD apply a timeout to requests made to the bridge that require a response (collated or otherwise), to handle situations where the bridge is not responding as expected. A recommended timeout of 3000ms SHOULD be used in this case.
-
-#### Channels
-
-It is assumed that Desktop Agents SHOULD adopt the recommended 8 channel set (and the respective display metadata). Desktop Agents MAY support channel customization through configuration.
-
-The Desktop Agent Bridge MAY support channel mapping ability, to deal with issues caused by differing channel sets.
-
-A key responsibility of the Desktop Agent Bridge is ensuring that the channel state of the connected agents is kept in-sync, which requires an initial synchronization step as part of the connection protocol.
-
-#### Bridging Desktop Agent on Multiple Machines
+### Bridging Desktop Agents on Multiple Machines
 
 As the bridge binds its websocket on the loopback address (127.0.0.1) it cannot be connected to from another device. Hence, an instance of the standalone bridge may be run on each device and those instances exchange messages in order to implement the bridge cross-device.
 
@@ -327,6 +345,14 @@ This procedure is the same for both previously connected and connecting agents, 
 
 After applying the `connectedAgentsUpdate` message, the newly connected Desktop Agent and other already connected agents are able to begin communicating through the bridge.
 
+#### Channels
+
+It is assumed that Desktop Agents SHOULD adopt the recommended 8 channel set (and the respective display metadata). Desktop Agents MAY support channel customization through configuration.
+
+The Desktop Agent Bridge MAY support channel mapping ability, to deal with issues caused by differing channel sets.
+
+A key responsibility of the Desktop Agent Bridge is ensuring that the channel state of the connected agents is kept in-sync, which requires an initial synchronization step as part of the connection protocol.
+
 #### Atomicity and handling concurrent operations
 
 Handling by the Desktop Agent of the synchronization message from the Desktop Agent Bridge in step 6 of the connection protocol should be atomic to prevent message overlap with `fdc3.broadcast`, `channel.broadcast`, `fdc3.addContextListener` or `channel.getCurrentContext`. I.e. the `connectedAgentsUpdate` message must be processed immediately on receipt by Desktop Agents and updates applied before any other messages are sent or responses processed.
@@ -344,6 +370,20 @@ Although not part of the connection protocol, it should be noted that the `conne
 ## Messaging Protocol
 
 In order for Desktop Agents to communicate with the Desktop Agent Bridge and thereby other Desktop Agents, a messaging protocol is required. FDC3 supports both 'fire and forget' interactions (such as the broadcast of context messages) and interactions with specific responses (such as raising intents and returning a resolution and optional result), both of which must be handled by that messaging protocol and message formats it defines, as described in this section.
+
+### Collating Responses
+
+Whilst some FDC3 requests are 'fire and forget' (e.g. broadcast) the main requests such as `findIntent` or `raiseIntent` expect a response. In a bridging scenario, the response can come from multiple Desktop Agents and therefore need to be aggregated and augmented before they are sent back to the requesting DA.
+
+:::note
+A set of classifications for message exchange types are provided in the [Individual message exchanges](#individual-message-exchanges) section.
+:::
+
+The Desktop Agent Bridge is the responsible entity for collating responses together from all DAs. Whilst this approach may add some complexity to bridge implementations, it will simplify DA implementations since they only need to handle one response.
+
+The Desktop Agent Bridge MUST allow for timeout configuration.
+
+The Bridge SHOULD also implement timeout for waiting on DA responses. Assuming the message exchange will be all intra-machine, a recommended timeout of 1500ms SHOULD be used. Similarly, Desktop Agents SHOULD apply a timeout to requests made to the bridge that require a response (collated or otherwise), to handle situations where the bridge is not responding as expected. A recommended timeout of 3000ms SHOULD be used in this case.
 
 ### Message Format
 
@@ -677,28 +717,7 @@ In the event that a Desktop Agent repeatedly times out, the bridge SHOULD discon
 
 In the event that the bridge repeatedly times out, connected Desktop Agents MAY disconnect from the bridge and attempt to reconnect by returning to Step 1 of the connection protocol.
 
-### FDC3 API calls that do NOT generate bridge messages
-
-Some FDC3 API calls can be handled locally and do not need to generate request messages to the Desktop Agent Bridge, but are likely to be involved in other exchanges that do generate messages to the bridge (for example adding context or intent handlers). Those calls include:
-
-* `addContextListener` functions (excluding those for `PrivateChannel` instances)
-* `listener.unsubscribe` (excluding those for `PrivateChannel` instances)
-* `addIntentListener`
-* `getOrCreateChannel`
-* `createPrivateChannel`
-* `getUserChannels` and `getSystemChannels`
-* `joinUserChannel` and `joinChannel`
-* `getCurrentChannel`
-* `leaveCurrentChannel`
-* `getInfo`
-
-However, `PrivateChannel` instances allow the registration of additional event handlers (for the addition or removal of context listeners) that may be used to manage streaming data sent over them by starting or stopping the stream in response to those events. Hence, the following calls DO generate request messages when used on a PrivateChannel instance:
-
-* `addContextListener`
-* `listener.unsubscribe`
-* `disconnect`
-
-## Individual message exchanges
+### Individual message exchanges
 
 Individual message exchanges are defined for each of the Desktop Agent methods that require bridging in the reference section of this Part.
 
@@ -731,7 +750,7 @@ The message exchanges defined are:
 * [`PrivateChannel.onUnsubscribe`](ref/PrivateChannel.onUnsubscribe)
 * [`PrivateChannel.onDisconnect`](ref/PrivateChannel.onDisconnect)
 
-### PrivateChannels
+#### PrivateChannels
 
 `PrivateChannels` are intended to provide a private communication channel for applications. In order to do so, there are differences in how their broadcasts and event messages (used to manage the channel's lifecycle) MUST be handled.
 
@@ -739,7 +758,28 @@ Broadcasts and event messages should be addressed to the Desktop Agent that crea
 
 To facilitate the addressing of messages to the relevant Desktop Agent and `AppIdentifier` some additional tracking of private channel metadata is necessary in each Desktop Agent (or Desktop Agent Bridge Client implementation). For applications receiving a private channel as an `IntentResult`, the `AppIdentifier` with `desktopAgent` field MUST be tracked against the private channel's id. This data MUST be retained until the receiving application sends a `disconnect` message, after which it can be discarded. For applications that have created and returned a private channel, and have subsequently received event messages subscriptions (`onAddContextListener`, `onSubscribe`, `onDisconnect`) the `appIdentifier` with `desktopAgent` field MUST be tracked against the private channel's id and listener type, which will facilitate repeating of messages to registered listeners. This data MUST be retained until the remote application sends a `disconnect` message or a message indicating that the listener has been removed.
 
-### Message Schemas and generated sources
+#### FDC3 API calls that do NOT generate bridge messages
+
+Some FDC3 API calls can be handled locally and do not need to generate request messages to the Desktop Agent Bridge, but are likely to be involved in other exchanges that do generate messages to the bridge (for example adding context or intent handlers). Those calls include:
+
+* `addContextListener` functions (excluding those for `PrivateChannel` instances)
+* `listener.unsubscribe` (excluding those for `PrivateChannel` instances)
+* `addIntentListener`
+* `getOrCreateChannel`
+* `createPrivateChannel`
+* `getUserChannels` and `getSystemChannels`
+* `joinUserChannel` and `joinChannel`
+* `getCurrentChannel`
+* `leaveCurrentChannel`
+* `getInfo`
+
+However, `PrivateChannel` instances allow the registration of additional event handlers (for the addition or removal of context listeners) that may be used to manage streaming data sent over them by starting or stopping the stream in response to those events. Hence, the following calls DO generate request messages when used on a PrivateChannel instance:
+
+* `addContextListener`
+* `listener.unsubscribe`
+* `disconnect`
+
+#### Message Schemas and generated sources
 
 JSONSchema definitions are provided for all Desktop Agent Bridging message exchanges (see links in each reference page), which may be used to validate the correct generation of messages to or from a bridge.
 
