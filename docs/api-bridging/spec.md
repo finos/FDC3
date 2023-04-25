@@ -18,10 +18,10 @@ In any Desktop Agent Bridging scenario, it is expected that each DA is being ope
 
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
 * To create final PR:
-  * Link to BackPlane project
-  * Refactor spec to separate channel (websocket) and protocol.
-  * Add schema links to each message exchange
-  * Add detail about Typescript generated from the schemas
+  * Add schema links to each message exchange (done BroadcastRequest as an example - note the schema and example heading will need adding to each request and response section)
+  * Check if advice on imported BridgingTypes (last section in this spec) from the npm module is accurate.
+  * Refactor spec introduction to separate channel (websocket) and protocol.
+  * Link to BackPlane project somewhere
 
 ## Implementing a Desktop Agent Bridge
 
@@ -738,3 +738,23 @@ The message exchanges defined are:
 Broadcasts and event messages should be addressed to the Desktop Agent that created the channel, which will route it to the relevant application and any other listeners. If any of those listeners are remote, the message should be repeated back to the bridge, once for each listener with the destination set as a full `AppIdentifier`. Both these messages and broadcast messages MUST NOT be repeated back to the application that generated them. The source information on repeated messages should be unmodified to ensure that the message is attributed to the original source.
 
 To facilitate the addressing of messages to the relevant Desktop Agent and `AppIdentifier` some additional tracking of private channel metadata is necessary in each Desktop Agent (or Desktop Agent Bridge Client implementation). For applications receiving a private channel as an `IntentResult`, the `AppIdentifier` with `desktopAgent` field MUST be tracked against the private channel's id. This data MUST be retained until the receiving application sends a `disconnect` message, after which it can be discarded. For applications that have created and returned a private channel, and have subsequently received event messages subscriptions (`onAddContextListener`, `onSubscribe`, `onDisconnect`) the `appIdentifier` with `desktopAgent` field MUST be tracked against the private channel's id and listener type, which will facilitate repeating of messages to registered listeners. This data MUST be retained until the remote application sends a `disconnect` message or a message indicating that the listener has been removed.
+
+### Message Schemas and generated sources
+
+JSONSchema definitions are provided for all Desktop Agent Bridging message exchanges (see links in each reference page), which may be used to validate the correct generation of messages to or from a bridge.
+
+The JSONSchema definitions are also used to generate TypeScript interfaces for the messages to aid in implementation of a Desktop Agent Bridge or Client library. These may be imported from the FDC3 npm module:
+
+```typescript
+import { BridgingTypes } from "@finos/fdc3";
+const aMessage: BridgingTypes.BroadcastRequest
+```
+
+or
+
+```typescript
+import { BroadcastRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+const aMessage: BroadcastRequest
+```
+
+Sources may also be generated from the JSONSchema source for other languages.
