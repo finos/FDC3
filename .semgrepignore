@@ -1,1 +1,4 @@
 website/**
+
+# Just used for build so ignoring
+quicktypeUtil.js
