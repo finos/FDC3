@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/bridging/findIntentResponse.schema.json",
-  "title": "FindIntentResponse",
+  "title": "findIntentResponse",
   "allOf": [
     {
       "$ref": "bridgeResponse.schema.json"

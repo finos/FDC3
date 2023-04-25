@@ -10,7 +10,31 @@ Desktop Agent bridging message exchange for a `broadcast` API call on a [`Privat
 
 [Message Exchange Type](../spec#individual-message-exchanges): **Request only**
 
-E.g.
+:::caution
+
+Some additional tracking of PrivateChannel metadata is required on the Desktop Agent that created each PrivateChannel and on any Desktop Agent interacting with it, in order to use these message exchanges. Please see the [relevant section of the API Bridging overview](../spec#privatechannels) for more details.
+
+:::
+
+## Message exchange
+
+```mermaid
+sequenceDiagram
+    participant DA as Desktop Agent A
+    participant DAB as Desktop Agent Bridge
+    participant DB as Desktop Agent B
+    participant DC as Desktop Agent C
+    DA ->>+ DAB: PrivateChannel.broadcast
+    DAB ->>+ DB: PrivateChannel.broadcast
+```
+
+## Request format
+
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/privateChannelBroadcast.schema.json](/schemas/next/bridging/privateChannelBroadcast.schema.json)
+
+### Example
 
 ```javascript
 fdc3.addIntentListener("QuoteStream", async (context) => {

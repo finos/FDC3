@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/bridging/getAppMetadataResponse.schema.json",
-  "title": "GetAppMetadataResponse",
+  "title": "getAppMetadataResponse",
   "type": "object",
   "allOf": [
     {

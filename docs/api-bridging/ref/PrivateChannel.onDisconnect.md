@@ -18,6 +18,26 @@ Some additional tracking of PrivateChannel metadata is required on the Desktop A
 
 When the `disconnect` function is is called on a `PrivateChannel` any applications that have added an `onDisconnect` handler or an `onUnsubscribe` handler (which is automatically called when an application disconnects) MUST be notified. If the listener is on the agent that created that channel, it should forward the message onto all the registered listeners. If the listener is added on a remote agent it MUST send the message to the agent that created the channel which will repeat it onto the other listeners without modifying the source information. If the `PrivateChannel` was created by a remote agent, only the single `PrivateChannel.onDisconnect` is required. It is the responsibility of the Desktop Agent that created the channel to ensure that any relevant `onUnsubscribe` handlers are also called by sending additional `PrivateChannel.onUnsubscribe` messages to them before forwarding the `PrivateChannel.onDisconnect`. This applies whether the disconnection occurred on that agent or on a remote agent.
 
+## Message exchange
+
+```mermaid
+sequenceDiagram
+    participant DA as Desktop Agent A
+    participant DAB as Desktop Agent Bridge
+    participant DB as Desktop Agent B
+    participant DC as Desktop Agent C
+    DA ->>+ DAB: PrivateChannel.onDisconnect
+    DAB ->>+ DB: PrivateChannel.onDisconnect
+```
+
+## Request format
+
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/privateChannelOnDisconnect.schema.json](/schemas/next/bridging/privateChannelOnDisconnect.schema.json)
+
+### Example
+
 ```json
 // agent-A -> DAB
 {

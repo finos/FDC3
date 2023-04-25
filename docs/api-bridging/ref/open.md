@@ -44,20 +44,26 @@ sequenceDiagram
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: open
-    DAB ->>+ DB: open
+    DA ->>+ DAB: openRequest
+    DAB ->>+ DB: openRequest
     DB -->>- DAB: openResponse
     DAB -->>- DA: openResponse
 ```
 
 ## Request format
 
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/openRequest.schema.json](/schemas/next/bridging/openRequest.schema.json)
+
+### Example
+
 Outward message to the bridge:
 
 ```json
 // agent-A -> DAB
 {
-    "type": "open",
+    "type": "openRequest",
     "payload": {
         "app": {
             "appId": "myApp",
@@ -81,7 +87,7 @@ which is repeated on to the target agent as:
 ```json
 // DAB -> agent-B
 {
-    "type": "open",
+    "type": "openRequest",
     "payload": {
         "app": {
             "appId": "myApp",
@@ -102,6 +108,12 @@ which is repeated on to the target agent as:
 ```
 
 ## Response format
+
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/openResponse.schema.json](/schemas/next/bridging/openResponse.schema.json)
+
+### Example
 
 Response message from target Desktop Agent:
 

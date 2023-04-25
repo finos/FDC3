@@ -28,9 +28,9 @@ sequenceDiagram
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: findInstances
-    DAB ->>+ DB: findInstances
-    DAB ->>+ DC: findInstances
+    DA ->>+ DAB: findInstancesRequest
+    DAB ->>+ DB: findInstancesRequest
+    DAB ->>+ DC: findInstancesRequest
     DB ->> DAB: findInstancesResponse (B)
     DC ->> DAB: findInstancesResponse (C)
     DAB -->>- DA: findInstancesResponse (B + C)
@@ -38,12 +38,18 @@ sequenceDiagram
 
 ## Request format
 
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/findInstancesRequest.schema.json](/schemas/next/bridging/findInstancesRequest.schema.json)
+
+### Example
+
 Outward message to the bridge:
 
 ```json
 // agent-A -> DAB
 {
-    "type": "findInstances",
+    "type": "findInstancesRequest",
     "payload": {
         "app": {
             "appId": "myApp"
@@ -65,7 +71,7 @@ which is repeated on to the target agent as:
 ```json
 // DAB -> agent-B
 {
-    "type": "findInstances",
+    "type": "findInstancesRequest",
     "payload": {
         "app": {
             "appId": "myApp"
@@ -88,7 +94,7 @@ If results should be constrained to a particular Desktop Agent, then set a `desk
 ```json
 // agent-A -> DAB
 {
-    "type": "findInstances",
+    "type": "findInstancesRequest",
     "payload": {
         "app": {
             "appId": "myApp",
@@ -110,6 +116,12 @@ If results should be constrained to a particular Desktop Agent, then set a `desk
 The Desktop Agent Bridge should only forward the request to the requested Desktop Agent and handle the message exchange as a **Request Response (single)**.
 
 ## Response format
+
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/findInstancesResponse.schema.json](/schemas/next/bridging/findInstancesResponse.schema.json)
+
+### Example
 
 Response message from a Desktop Agent:
 

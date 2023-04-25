@@ -29,20 +29,26 @@ sequenceDiagram
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: getAppMetadata
-    DAB ->>+ DB: getAppMetadata
+    DA ->>+ DAB: getAppMetadataRequest
+    DAB ->>+ DB: getAppMetadataRequest
     DB ->> DAB: getAppMetadataResponse (B)
     DAB -->>- DA: getAppMetadataResponse (B)
 ```
 
 ## Request format
 
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/getAppMetadataRequest.schema.json](/schemas/next/bridging/getAppMetadataRequest.schema.json)
+
+### Example
+
 Outward message to the bridge:
 
 ```json
 // agent-A -> DAB
 {
-    "type": "getAppMetadata",
+    "type": "getAppMetadataRequest",
     "payload": {
         "app": {
             { "appId": "myApp@my.appd.com", "desktopAgent": "agent-B" }
@@ -64,7 +70,7 @@ which is repeated on to the target agent as:
 ```json
 // DAB -> agent-B
 {
-    "type": "getAppMetadata",
+    "type": "getAppMetadataRequest",
     "payload": {
         "app": {
             { "appId": "myApp@my.appd.com", "desktopAgent": "agent-B" }
@@ -83,6 +89,12 @@ which is repeated on to the target agent as:
 ```
 
 ## Response format
+
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/getAppMetadataResponse.schema.json](/schemas/next/bridging/getAppMetadataResponse.schema.json)
+
+### Example
 
 Response message from a Desktop Agent:
 

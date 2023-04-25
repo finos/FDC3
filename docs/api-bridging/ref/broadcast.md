@@ -37,9 +37,9 @@ sequenceDiagram
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: broadcast
-    DAB ->>+ DB: broadcast
-    DAB ->>+ DC: broadcast
+    DA ->>+ DAB: broadcastRequest
+    DAB ->>+ DB: broadcastRequest
+    DAB ->>+ DC: broadcastRequest
 ```
 
 ## Request format
@@ -55,7 +55,7 @@ Outward message to the DAB:
 ```json
 // agent-A -> DAB
 {
-    "type": "broadcast",
+    "type": "broadcastRequest",
     "payload": {
         "channel": "myChannel",
         "context": { /*contextObj*/ }
@@ -77,7 +77,7 @@ which it repeats on to agent-B AND agent-C with the `source.desktopAgent` metada
 // DAB -> agent-B
 // DAB -> agent-C
 {
-    "type": "broadcast",
+    "type": "broadcastRequest",
     "payload": {
         "channel": "myChannel",
         "context": { /*contextObj*/}

@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/findIntentsForContextRequest.schema.json",
-  "title": "FindIntentsForContextRequest",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextRequest.schema.json",
+  "title": "findIntentsByContextRequest",
   "type": "object",
   "allOf": [
     {
@@ -11,7 +11,7 @@
       "type": "object",
       "properties": {
         "type": {
-          "const": "findIntentsForContextRequest"
+          "const": "findIntentsByContextRequest"
         },
         "payload": {
           "type": "object",

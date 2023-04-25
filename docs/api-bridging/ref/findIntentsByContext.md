@@ -28,22 +28,28 @@ sequenceDiagram
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: findInfindIntentsByContexttent
-    DAB ->>+ DB: findIntentsByContext
+    DA ->>+ DAB: findIntentsByContextRequest
+    DAB ->>+ DB: findIntentsByContextRequest
+    DAB ->>+ DC: findIntentsByContextRequest
     DB -->>- DAB: findIntentsByContextResponse (B)
-    DAB ->>+ DC: findIntentsByContext
     DC -->>- DAB: findIntentsByContextResponse (C)
     DAB -->>- DA: findIntentsByContextResponse (B + C)
 ```
 
 ## Request format
 
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextRequest.schema.json](/schemas/next/bridging/findIntentsByContextRequest.schema.json)
+
+### Example
+
 Outward message to the DAB:
 
 ```json
 // agent-A -> DAB
 {
-    "type": "findIntentsForContext",
+    "type": "findIntentsByContextRequest",
     "payload": {
         "context": {/*contextObj*/}
     },
@@ -64,7 +70,7 @@ The DAB fills in the `source.desktopAgent` field and forwards the request to the
 // DAB -> agent-B
 // DAB -> agent-C
 {
-    "type": "findIntentsForContext",
+    "type": "findIntentsByContextRequest",
     "payload": {
         "context": {/*contextObj*/}
     },
@@ -81,6 +87,12 @@ The DAB fills in the `source.desktopAgent` field and forwards the request to the
 ```
 
 ## Response format
+
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextResponse.schema.json](/schemas/next/bridging/findIntentsByContextResponse.schema.json)
+
+### Example
 
 An individual agent (for example agentB) would generate a local response as an array of `AppIntent` objects:
 
@@ -114,7 +126,7 @@ This response is encoded and sent to the bridge as:
 ```json
 // agent-B -> DAB
 {
-    "type":  "findIntentsForContextResponse",
+    "type":  "findIntentsByContextResponse",
     "payload": {
         "appIntents": [
             {
@@ -152,7 +164,7 @@ Each `AppMetadata` object is augmented by the bridge with a `desktopAgent` field
 ```json
 // DAB -> agent-A
 {
-    "type":  "findIntentsForContextResponse",
+    "type":  "findIntentsByContextResponse",
     "payload": {
         "appIntents": [
             {
