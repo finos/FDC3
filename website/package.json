@@ -4,7 +4,7 @@
     "start": "docusaurus start",
     "prebuild": "npm run copy-appd && npm run copy-schemas && npm run copy-workbench && npm run copy-explained",
     "build": "docusaurus build",
-    "copy-schemas": "cpy \"../src/context/schemas/*.json\" \"static/schemas/next/\"",
+    "copy-schemas": "del-cli static/schemas/next/*/ && cpy \"../schemas/**\" static/schemas/next/",
     "copy-appd": "cpy \"../src/app-directory/specification/*.yaml\" \"static/schemas/next/\" --rename app-directory.yaml",
     "build-workbench": "cd ../toolbox/fdc3-workbench && npm install && npm run build",
     "copy-workbench": "del-cli static/toolbox/fdc3-workbench && npm run build-workbench && cpy \"../toolbox/fdc3-workbench/build/**\" static/toolbox/fdc3-workbench",

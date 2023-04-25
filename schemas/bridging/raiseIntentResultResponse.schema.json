@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/raiseIntentResultResponse.schema.json",
+  "title": "RaiseIntentResultResponse",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "bridgeResponse.schema.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "raiseIntentResultResponse"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "intentResult": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "context": {
+                      "$ref": "../context/context.schema.json"
+                    }
+                  },
+                  "required": ["context"],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "channel": {
+                      "$ref": "../api/channel.schema.json"
+                    }
+                  },
+                  "required": ["channel"],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": ["intentResult"],
+          "additionalProperties": false
+        },
+        "meta": {
+          "type": "object",
+          "properties": {
+            "sources": {
+              "type": "array",
+              "items": {
+                "$ref": "../api/appIdentifier.schema.json"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

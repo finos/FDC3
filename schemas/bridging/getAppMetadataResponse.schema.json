@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/getAppMetadataResponse.schema.json",
+  "title": "GetAppMetadataResponse",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "bridgeResponse.schema.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "getAppMetadataResponse"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "appMetadata": {
+              "$ref": "../api/appMetadata.schema.json"
+            }
+          },
+          "required": ["appMetadata"],
+          "additionalProperties": false
+        },
+        "meta": {
+          "type": "object",
+          "properties": {
+            "sources": {
+              "type": "array",
+              "items": {
+                "$ref": "../api/desktopAgentIdentifier.schema.json"
+              }
+            },
+            "errorSources": {
+              "type": "array",
+              "items": {
+                "$ref": "../api/desktopAgentIdentifier.schema.json"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

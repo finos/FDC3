@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/findInstancesRequest.schema.json",
+  "title": "FindInstancesRequest",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "bridgeRequest.schema.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "findInstancesRequest"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "app": {
+              "$ref": "../api/appIdentifier.schema.json"
+            }
+          },
+          "required": ["app"],
+          "additionalProperties": false
+        },
+        "meta": {
+          "properties": {
+            "requestGuid": true,
+            "timestamp": true,
+            "destination": true,
+            "source": {
+              "$ref": "../api/appIdentifier.schema.json"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}
