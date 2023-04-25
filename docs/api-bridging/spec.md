@@ -65,6 +65,26 @@ Other possible topologies include peer-to-peer or client/server networks, howeve
 
 Whilst the standalone bridge represents a single point of failure for the interconnection of Desktop Agents, it will also be significantly simpler than a full Desktop Agent implementation. Further, failures may be mitigated by setting the bridge up as a system service, such that it is started when the user's computer is started and may be restarted automatically if it fails. In the event of a bridge failure or manual shutdown, then Desktop Agents will no longer be bridged and should act as single agents.
 
+By using the Desktop Agent Bridging Connection and Messaging protocols, a bridge will implement "server" behavior by:
+
+* Accepting connections from client Desktop Agents, receiving and authenticating credentials and assigning a name (for routing purposes)
+* Receiving requests from client Desktop Agents.
+* Routing requests to client Desktop Agents.
+* Receiving responses from client Desktop Agents and collating them.
+* Routing responses to client Desktop Agents.
+
+A Desktop Agent will implement "client" behavior by:
+
+* Connecting to the bridge, providing authentication credentials and receiving an assigned named (for purposes)
+* Forwarding requests to the bridge.
+* Awaiting response(s) from the bridge.
+* Receiving requests from the bridge.
+* Sending responses to the bridge.
+
+Hence, message paths and propagation are simple. All messages to other Desktop Agents are passed to the bridge for routing and all messages (both requests and responses) are received back from it, i.e. the bridge is responsible for all message routing.
+
+#### Multi-Machine Use Cases
+
 In Financial services it is not unusual for a single user to be working with applications on more than one desktop. As Desktop Agents do not span desktops bridging Desktop Agents across multiple machines is an additional use case for Desktop Agent bridging. However, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user.
 
 ```mermaid
@@ -88,24 +108,6 @@ flowchart LR;
     end
     PC1 .- |Bridge interconnect| PC2
 ```
-
-By using the Desktop Agent Bridging Connection and Messaging protocols, a bridge will implement "server" behavior by:
-
-* Accepting connections from client Desktop Agents, receiving and authenticating credentials and assigning a name (for routing purposes)
-* Receiving requests from client Desktop Agents.
-* Routing requests to client Desktop Agents.
-* Receiving responses from client Desktop Agents and collating them.
-* Routing responses to client Desktop Agents.
-
-A Desktop Agent will implement "client" behavior by:
-
-* Connecting to the bridge, providing authentication credentials and receiving an assigned named (for purposes)
-* Forwarding requests to the bridge.
-* Awaiting response(s) from the bridge.
-* Receiving requests from the bridge.
-* Sending responses to the bridge.
-
-Hence, message paths and propagation are simple. All messages to other Desktop Agents are passed to the bridge for routing and all messages (both requests and responses) are received back from it, i.e. the bridge is responsible for all message routing.
 
 ### Websocket Connection
 
