@@ -14,13 +14,13 @@ The FDC3 Desktop Agent API addresses interoperability between apps running withi
 
 In any Desktop Agent Bridging scenario, it is expected that each DA is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although DAs may be run on different machines operated by the same user.
 
-## TODO list
+<!-- ## TODO list
 
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
 * To create final PR:
   * Create schemas for connection flow messages and link in spec document (see ref documents for styling)
   * Check if advice on imported BridgingTypes (last section in this spec) from the npm module is accurate.
-  * Link to BackPlane project somewhere
+  * Link to BackPlane project somewhere -->
 
 ## Bridging Desktop Agents
 
