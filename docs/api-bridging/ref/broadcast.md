@@ -44,6 +44,12 @@ sequenceDiagram
 
 ## Request format
 
+### Schema
+
+[https://fdc3.finos.org/schemas/next/bridging/broadcastRequest.schema.json](/schemas/next/bridging/broadcastRequest.schema.json)
+
+### Example
+
 Outward message to the DAB:
 
 ```json

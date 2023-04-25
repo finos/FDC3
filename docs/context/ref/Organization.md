@@ -19,7 +19,7 @@ is for at least one specified identifier to be provided.
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/organization.schema.json
+[https://fdc3.finos.org/schemas/next/context/organization.schema.json](/schemas/next/context/organization.schema.json)
 
 ## Details
 
