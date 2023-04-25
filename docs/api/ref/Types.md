@@ -22,8 +22,10 @@ interface AppIdentifier {
    */
   readonly instanceId?: string;
 
-  /** (Experimental) Field that represents the Desktop Agent that the app is 
-   *  available on. Used in Desktop Agent Bridging.**/
+  /** The Desktop Agent that the app is available on. Used in Desktop Agent 
+   *  Bridging to identify the Desktop Agent to target.
+   *  @experimental
+   **/
   readonly desktopAgent?: string;
 }
 ```
@@ -87,9 +89,10 @@ Optional metadata about the context message, including the app that originated t
 ## `DesktopAgentIdentifier`
 
 ```typescript
+/** @experimental */
 interface DesktopAgentIdentifier {
-  /** (Experimental) Field that represents the Desktop Agent that the app is 
-   *  available on.**/
+  /** Used in Desktop Agent Bridging to attribute or target a message to a 
+   *  particular Desktop Agent.**/
   readonly desktopAgent: string;
 }
 ```

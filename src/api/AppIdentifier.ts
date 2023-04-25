@@ -17,6 +17,8 @@ export interface AppIdentifier {
   /** An optional instance identifier, indicating that this object represents a specific instance of the application described.*/
   readonly instanceId?: string;
 
-  /** (Experimental) Field that represents the Desktop Agent that the app is available on. Used in Desktop Agent Bridging.**/
+  /** The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to identify the Desktop Agent to target.
+   *  @experimental Introduced in FDC3 2.1 and may be refined by further changes outside the normal FDC3 versioning policy.
+   **/
   readonly desktopAgent?: string;
 }

@@ -4,7 +4,13 @@ sidebar_label: Overview
 title: API Bridging Overview (next)
 ---
 
-(Experimental) The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent (DA), facilitating cross-application workflows. Desktop Agent Bridging addresses the interconnection of Desktop Agents (DAs) such that apps running under different Desktop Agents can also interoperate, allowing workflows to span multiple Desktop Agents.
+:::info _[Experimental](../fdc3-compliance#experimental-features)_
+
+Desktop Agent Bridging in an experimental feature added to FDC3 in 2.1, hence, it's design may change in future and it is exempted from the FDC3 Standards's normal versioning and deprecation polices in order to facilitate any necessary change.
+
+:::
+
+The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent (DA), facilitating cross-application workflows. Desktop Agent Bridging addresses the interconnection of Desktop Agents (DAs) such that apps running under different Desktop Agents can also interoperate, allowing workflows to span multiple Desktop Agents.
 
 In any Desktop Agent Bridging scenario, it is expected that each DA is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although DAs may be run on different machines operated by the same user.
 
@@ -12,10 +18,10 @@ In any Desktop Agent Bridging scenario, it is expected that each DA is being ope
 
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
 * To create final PR:
-  * Reference DAB from the API spec, updating previous content about interconnecting desktop agents.
   * Link to BackPlane project
-  * Apply Experimental labels where needed
-* Refactor spec to separate channel (websocket) and protocol.
+  * Refactor spec to separate channel (websocket) and protocol.
+  * Add schema links to each message exchange
+  * Add detail about Typescript generated from the schemas
 
 ## Implementing a Desktop Agent Bridge
 
@@ -441,10 +447,13 @@ Response messages will be differentiated from requests by the presence of a `met
         /** Secondary response to `raiseIntent`, sent when the `IntentHandler` 
          *  has returned.
          *  Note:
-         *  - return an empty object if the `IntentHandler` returned void. 
+         *  - return an empty payload object if the `IntentHandler` returned void. 
          *  - `Channel` functions (`broadcast`, `getCurrentContext`, 
-         * `addContextListener` do not need to be included in JSON).*/
-        intentResult?: {context?: Context, channel?: Channel},
+         *    `addContextListener` do not need to be included in JSON).*/
+        intentResult?: {
+            context?: Context, 
+            channel?: Channel
+        }
     },
     meta: {
         /** requestGuid from the original request being responded to*/
@@ -456,17 +465,18 @@ Response messages will be differentiated from requests by the presence of a `met
         /** Array of AppIdentifiers or DesktopAgentIdentifiers for the sources
          *  that generated responses to the request. Will contain a single value 
          *  for individual responses and multiple values for responses that were 
-         *  collated by the bridge.*/
-        sources: (AppIdentifier | DesktopAgentIdentifier)[],
+         *  collated by the bridge. May be ommitted if all sources returned an 
+         *  error. */
+        sources?: (AppIdentifier | DesktopAgentIdentifier)[],
         /** Array of AppIdentifiers or DesktopAgentIdentifiers for responses that 
          * were not returned to the bridge before the timeout or because an error 
          * occurred. May be omitted if all sources responded. */
-        errorSources: (AppIdentifier | DesktopAgentIdentifier)[],
+        errorSources?: (AppIdentifier | DesktopAgentIdentifier)[],
         /** Array of error message strings for responses that were not returned
          * to the bridge before the timeout or because an error occurred. 
          * Should be the same length as the `errorSources` array and ordered the
          * same. May be omitted if all sources responded. */
-        errorDetails: string[]
+        errorDetails?: string[]
     }
 }
 ```
@@ -497,7 +507,11 @@ To facilitate routing of messages between agents, the `AppIdentifier` is expande
 interface AppIdentifier {
   readonly appId: string;
   readonly instanceId?: string;
-  /** Field that represents the Desktop Agent that the app is available on.**/
+  /** The Desktop Agent that the app is available on. Used in Desktop Agent 
+   *  Bridging to identify the Desktop Agent to target.
+   *  @experimental Introduced in FDC3 2.1 and may be refined by further changes
+   *  outside the normal FDC3 versioning policy.
+   **/
   readonly desktopAgent?: string;
 }
 ```
@@ -505,9 +519,11 @@ interface AppIdentifier {
 Further, a new `DesktopAgentIdentifier` type is introduced to handle cases where a request needs to be directed to a Desktop Agent rather than a specific app, or a response message is returned by the Desktop Agent (or more specifically its resolver) rather than a specific app. This is particularly relevant for `findIntent` message exchanges:
 
 ```typescript
+/** @experimental Introduced in FDC3 2.1 and may be refined by further changes
+ *  outside the normal FDC3 versioning policy.
 interface DesktopAgentIdentifier {
-  /** A field that represents the Desktop Agent that should be targeted or that
-   *  a response was received from. **/ 
+  /** Used in Desktop Agent Bridging to attribute or target a message to a 
+   *  particular Desktop Agent. */ 
   readonly desktopAgent: string;
 }
 ```
@@ -598,34 +614,39 @@ Collated response messages generated by the bridge use the same format as indivi
 
 The following pseudo-code defines how messages should be forwarded or collated by the bridge:
 
-* if the message is a request (`meta.requestGuid` is set, but `meta.responseGuid` is not),
-  * and the message does not include a `meta.destination` field,
-    * forward it to all other Desktop Agents (not including the source),
-    * annotate the request as requiring responses from all other connected agents,
-    * await responses or the specified timeout.
-  * else if a `meta.destination` was included,
+* **if** the message is a request (`meta.requestGuid` is set, but `meta.responseGuid` is not),
+  * **if** the message includes a `meta.destination` field,
     * forward it to the specified destination agent,
     * annotate the request as requiring only a response from the specified agent,
     * await the response or the specified timeout.
-* else if the message is a response (both `meta.requestGuid` and `meta.responseGuid` are set)
-  * if the `meta.requestGuid` is known,
+  * **else**
+    * forward it to all other Desktop Agents (not including the source),
+    * annotate the request as requiring responses from all other connected agents,
+    * await responses or the specified timeout.
+* **else if** the message is a response (both `meta.requestGuid` and `meta.responseGuid` are set)
+  * **if** the `meta.requestGuid` is known,
     * augment any `AppIdentifier` types in the response message with a `desktopAgent` field matching that of the responding Desktop Agent,
-    * if `payload.error` is set in the response add the DesktopAgentIdentifier to the `meta.errorSources` element.
-    * else add the DesktopAgentIdentifier to the `meta.sources` element.
-    * if the message exchange requires collation,
+    * **if** `payload.error` is set in the response add the DesktopAgentIdentifier to the `meta.errorSources` element.
+    * **else**
+      * add the DesktopAgentIdentifier to the `meta.sources` element.
+    * **if** the message exchange requires collation,
       * add the message to the collated responses for the request,
-      * if all expected responses have been received (i.e. all connected agents or the specified agent has responded, as appropriate),
+      * **if** all expected responses have been received (i.e. all connected agents or the specified agent has responded, as appropriate),
         * produce the collated response message and return to the requesting Desktop Agent.
-      * else await the configured response timeout or further responses,
-        * if the timeout is reached without any responses being received
+      * **else**
+        * await the configured response timeout or further responses,
+        * **if** the timeout is reached without any responses being received
           * produce and return an appropriate [error response](../api/ref/Errors), including details of all Desktop Agents in `errorSources` and the `BridgingError.ResponseTimeOut` message for each in the `errorDetails` array.
           * log the timeout for each Desktop Agent that did not respond and check disconnection criteria.
-        * else if the timeout is reached with a partial set of responses,
+        * **else if** the timeout is reached with a partial set of responses,
           * produce and return, to requesting Desktop Agent, a collated response and include details of Desktop Agents that timed out in `errorSources` and the `BridgingError.ResponseTimeOut` message for each in the `errorDetails` array.
           * log the timeout for each Desktop Agent that did not respond and check disconnection criteria.
-    * else forward the response message on to requesting Desktop Agent.
-  * else discard the response message (as it is a delayed to a request that has timed out or is otherwise invalid).
-* else the message is invalid and should be discarded.
+    * **else**
+      * forward the response message on to requesting Desktop Agent.
+  * **else**
+    * discard the response message (as it is a delayed to a request that has timed out or is otherwise invalid).
+* **else**
+  * the message is invalid and should be discarded.
 
 ### Workflows Broken By Disconnects
 
@@ -696,7 +717,7 @@ Message exchanges come in a number of formats, which are known as:
 The message exchanges defined are:
 
 * [`broadcast`](ref/broadcast)
-* [`findInstances](ref/findInstances)
+* [`findInstances`](ref/findInstances)
 * [`findIntent`](ref/findIntent)
 * [`findIntentsByContext`](ref/findIntentsByContext)
 * [`getAppMetadata`](ref/getAppMetadata)
