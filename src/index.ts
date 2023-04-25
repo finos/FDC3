@@ -26,6 +26,7 @@ export * from './api/Types';
 export * from './context/ContextType';
 export * from './context/ContextTypes';
 export * from './intents/Intents';
+export * as BridgingTypes from './bridging/BridgingTypes';
 
 declare global {
   interface Window {
