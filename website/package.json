@@ -28,7 +28,12 @@
     "docusaurus-delete-version": "0.1.1",
     "replace-in-files-cli": "2.0.0",
     "replace-json-property": "1.8.0",
-    "rimraf": "5.0.0"
+    "rimraf": "5.0.0",
+    "@docusaurus/core": "^2.4.0",
+    "@docusaurus/preset-classic": "^2.4.0",
+    "clsx": "^1.2.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "resolutions": {
     "got": "^11.8.5", 
@@ -37,12 +42,5 @@
   "overrides": {
     "got": "^11.8.5", 
     "trim": "1.0.1"
-  },
-  "dependencies": {
-    "@docusaurus/core": "^2.4.0",
-    "@docusaurus/preset-classic": "^2.4.0",
-    "clsx": "^1.2.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
   }
 }
