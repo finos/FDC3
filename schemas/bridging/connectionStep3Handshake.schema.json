@@ -11,13 +11,16 @@
       "type": "object",
       "properties": {
         "implementationMetadata": {
+          "description": "DesktopAgent implementationMetadata trying to connect to the bridge.",
           "$ref": "../api/implementationMetadata.schema.json"
         },
         "requestedName": {
+          "description": "The requested Desktop Agent name",
           "type": "string"
         },
         "channelsState": {
           "type": "object",
+          "description": "The current state of the Desktop Agent's channels, excluding any private channels, as a mapping of channel id to an array of Context objects, most recent first.",
           "additionalProperties": {
             "type": "array",
               "items": {
