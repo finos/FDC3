@@ -11,19 +11,23 @@
       "type": "object",
       "properties": {
         "addAgent": {
-          "type": "string"
+          "type": "string",
+          "description": "Should be set when an agent first connects to the bridge and provide its assigned name."
         },
         "removeAgent": {
-          "type": "string"
+          "type": "string",
+          "description": "Should be set when an agent disconnects from the bridge and provide the name that no longer is assigned."
         },
         "allAgents": {
           "type": "array",
+          "description": "Desktop Agent Bridge implementation metadata of all connected agents.",
           "items": {
             "$ref": "../api/implementationMetadata.schema.json"
           }
         },
         "channelsState": {
           "type": "object",
+          "description": "The updated state of channels that should be adopted by the agents. Should only be set when an agent is connecting to the bridge.",
           "additionalProperties": {
             "type": "array",
               "items": {
