@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, AppIdentifier, AppIntent, AppMetadata, Channel, ContextMetadata, DesktopAgentIdentifier, DisplayMetadata, Icon, Image, ImplementationMetadata, IntentMetadata, IntentResolution, IntentResult, BridgeRequest, BridgeResponse, BroadcastRequest, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, OpenRequest, OpenResponse, PrivateChannelBroadcast, PrivateChannelEventListenerAdded, PrivateChannelEventListenerRemoved, PrivateChannelOnAddContextListener, PrivateChannelOnDisconnect, PrivateChannelOnUnsubscribe, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, Context } from "./file";
+//   import { Convert, AppIdentifier, AppIntent, AppMetadata, Channel, ContextMetadata, DesktopAgentIdentifier, DisplayMetadata, Icon, Image, ImplementationMetadata, IntentMetadata, IntentResolution, IntentResult, BridgeRequest, BridgeResponse, BroadcastRequest, ConnectionStep2Hello, ConnectionStep3Handshake, ConnectionStep4AuthenticationFailed, ConnectionStep6ConnectedAgentsUpdate, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, OpenRequest, OpenResponse, PrivateChannelBroadcast, PrivateChannelEventListenerAdded, PrivateChannelEventListenerRemoved, PrivateChannelOnAddContextListener, PrivateChannelOnDisconnect, PrivateChannelOnUnsubscribe, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, Context } from "./file";
 //
 //   const appIdentifier = Convert.toAppIdentifier(json);
 //   const appIntent = Convert.toAppIntent(json);
@@ -19,6 +19,10 @@
 //   const bridgeRequest = Convert.toBridgeRequest(json);
 //   const bridgeResponse = Convert.toBridgeResponse(json);
 //   const broadcastRequest = Convert.toBroadcastRequest(json);
+//   const connectionStep2Hello = Convert.toConnectionStep2Hello(json);
+//   const connectionStep3Handshake = Convert.toConnectionStep3Handshake(json);
+//   const connectionStep4AuthenticationFailed = Convert.toConnectionStep4AuthenticationFailed(json);
+//   const connectionStep6ConnectedAgentsUpdate = Convert.toConnectionStep6ConnectedAgentsUpdate(json);
 //   const findInstancesRequest = Convert.toFindInstancesRequest(json);
 //   const findInstancesResponse = Convert.toFindInstancesResponse(json);
 //   const findIntentRequest = Convert.toFindIntentRequest(json);
@@ -222,12 +226,12 @@ export interface Image {
 export interface ImplementationMetadata {
   appMetadata: AppMetadataElement;
   fdc3Version: string;
-  optionalFeatures: OptionalFeatures;
+  optionalFeatures: ImplementationMetadataOptionalFeatures;
   provider: string;
   providerVersion?: string;
 }
 
-export interface OptionalFeatures {
+export interface ImplementationMetadataOptionalFeatures {
   DesktopAgentBridging?: boolean;
   OriginatingAppMetadata: boolean;
   UserChannelMembershipAPIs: boolean;
@@ -423,7 +427,7 @@ export interface PurpleIdentifier {
  */
 export interface BroadcastRequestPayload {
   channel: ChannelClass;
-  context: ContextObject;
+  context: ContextElement;
 }
 
 /**
@@ -435,11 +439,125 @@ export interface ChannelClass {
   type: Type;
 }
 
-export interface ContextObject {
+export interface ContextElement {
   id?: { [key: string]: any };
   name?: string;
   type: string;
   [property: string]: any;
+}
+
+export interface ConnectionStep2Hello {
+  meta: ConnectionStep2HelloMeta;
+  payload: ConnectionStep2HelloPayload;
+  type: any;
+}
+
+export interface ConnectionStep2HelloMeta {
+  /**
+   * Timestamp at which request or response was generated
+   */
+  timestamp: Date;
+}
+
+export interface ConnectionStep2HelloPayload {
+  authRequired: boolean;
+  authToken?: string;
+  desktopAgentBridgeVersion: string;
+  supportedFDC3Versions: string[];
+}
+
+export interface ConnectionStep3Handshake {
+  meta: ConnectionStep3HandshakeMeta;
+  payload: ConnectionStep3HandshakePayload;
+  type: any;
+}
+
+export interface ConnectionStep3HandshakeMeta {
+  /**
+   * Unique GUID for the request
+   */
+  requestGuid: string;
+  /**
+   * Timestamp at which request or response was generated
+   */
+  timestamp: Date;
+}
+
+export interface ConnectionStep3HandshakePayload {
+  authToken?: string;
+  channelsState: { [key: string]: ContextElement[] };
+  implementationMetadata: ImplementationMetadataElement;
+  requestedName: string;
+}
+
+/**
+ * Metadata relating to the FDC3 DesktopAgent object and its provider
+ */
+export interface ImplementationMetadataElement {
+  appMetadata: AppMetadataElement;
+  fdc3Version: string;
+  optionalFeatures: AllAgentOptionalFeatures;
+  provider: string;
+  providerVersion?: string;
+}
+
+export interface AllAgentOptionalFeatures {
+  DesktopAgentBridging?: boolean;
+  OriginatingAppMetadata: boolean;
+  UserChannelMembershipAPIs: boolean;
+}
+
+export interface ConnectionStep4AuthenticationFailed {
+  meta: ConnectionStep4AuthenticationFailedMeta;
+  payload?: ConnectionStep4AuthenticationFailedPayload;
+  type: any;
+}
+
+export interface ConnectionStep4AuthenticationFailedMeta {
+  /**
+   * Unique GUID for the request
+   */
+  requestGuid: string;
+  /**
+   * Unique GUID for the response
+   */
+  responseGuid: string;
+  /**
+   * Timestamp at which request or response was generated
+   */
+  timestamp: Date;
+}
+
+export interface ConnectionStep4AuthenticationFailedPayload {
+  message?: string;
+}
+
+export interface ConnectionStep6ConnectedAgentsUpdate {
+  meta: ConnectionStep6ConnectedAgentsUpdateMeta;
+  payload: ConnectionStep6ConnectedAgentsUpdatePayload;
+  type: any;
+}
+
+export interface ConnectionStep6ConnectedAgentsUpdateMeta {
+  /**
+   * Unique GUID for the request
+   */
+  requestGuid: string;
+  /**
+   * Unique GUID for the response
+   */
+  responseGuid: string;
+  /**
+   * Timestamp at which request or response was generated
+   */
+  timestamp: Date;
+}
+
+export interface ConnectionStep6ConnectedAgentsUpdatePayload {
+  addAgent?: string;
+  allAgents: ImplementationMetadataElement[];
+  channelsState?: { [key: string]: ContextElement[] };
+  removeAgent?: string;
 }
 
 export interface FindInstancesRequest {
@@ -598,7 +716,7 @@ export interface FindIntentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentRequestPayload {
-  context: ContextObject;
+  context: ContextElement;
   intent: string;
 }
 
@@ -696,7 +814,7 @@ export interface FindIntentsByContextRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextRequestPayload {
-  context: ContextObject;
+  context: ContextElement;
 }
 
 export interface FindIntentsByContextResponse {
@@ -887,7 +1005,7 @@ export interface OpenRequestMeta {
  */
 export interface OpenRequestPayload {
   app: SourceElement;
-  context?: ContextObject;
+  context?: ContextElement;
 }
 
 export interface OpenResponse {
@@ -1234,7 +1352,7 @@ export interface RaiseIntentRequestMeta {
  */
 export interface RaiseIntentRequestPayload {
   app: SourceElement;
-  context: ContextObject;
+  context: ContextElement;
 }
 
 export interface RaiseIntentResponse {
@@ -1355,7 +1473,7 @@ export interface RaiseIntentResultResponsePayload {
 }
 
 export interface IntentResultClass {
-  context?: ContextObject;
+  context?: ContextElement;
   channel?: ChannelClass;
 }
 
@@ -1503,6 +1621,38 @@ export class Convert {
 
   public static broadcastRequestToJson(value: BroadcastRequest): string {
     return JSON.stringify(uncast(value, r('BroadcastRequest')), null, 2);
+  }
+
+  public static toConnectionStep2Hello(json: string): ConnectionStep2Hello {
+    return cast(JSON.parse(json), r('ConnectionStep2Hello'));
+  }
+
+  public static connectionStep2HelloToJson(value: ConnectionStep2Hello): string {
+    return JSON.stringify(uncast(value, r('ConnectionStep2Hello')), null, 2);
+  }
+
+  public static toConnectionStep3Handshake(json: string): ConnectionStep3Handshake {
+    return cast(JSON.parse(json), r('ConnectionStep3Handshake'));
+  }
+
+  public static connectionStep3HandshakeToJson(value: ConnectionStep3Handshake): string {
+    return JSON.stringify(uncast(value, r('ConnectionStep3Handshake')), null, 2);
+  }
+
+  public static toConnectionStep4AuthenticationFailed(json: string): ConnectionStep4AuthenticationFailed {
+    return cast(JSON.parse(json), r('ConnectionStep4AuthenticationFailed'));
+  }
+
+  public static connectionStep4AuthenticationFailedToJson(value: ConnectionStep4AuthenticationFailed): string {
+    return JSON.stringify(uncast(value, r('ConnectionStep4AuthenticationFailed')), null, 2);
+  }
+
+  public static toConnectionStep6ConnectedAgentsUpdate(json: string): ConnectionStep6ConnectedAgentsUpdate {
+    return cast(JSON.parse(json), r('ConnectionStep6ConnectedAgentsUpdate'));
+  }
+
+  public static connectionStep6ConnectedAgentsUpdateToJson(value: ConnectionStep6ConnectedAgentsUpdate): string {
+    return JSON.stringify(uncast(value, r('ConnectionStep6ConnectedAgentsUpdate')), null, 2);
   }
 
   public static toFindInstancesRequest(json: string): FindInstancesRequest {
@@ -1961,13 +2111,13 @@ const typeMap: any = {
     [
       { json: 'appMetadata', js: 'appMetadata', typ: r('AppMetadataElement') },
       { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
-      { json: 'optionalFeatures', js: 'optionalFeatures', typ: r('OptionalFeatures') },
+      { json: 'optionalFeatures', js: 'optionalFeatures', typ: r('ImplementationMetadataOptionalFeatures') },
       { json: 'provider', js: 'provider', typ: '' },
       { json: 'providerVersion', js: 'providerVersion', typ: u(undefined, '') },
     ],
     false
   ),
-  OptionalFeatures: o(
+  ImplementationMetadataOptionalFeatures: o(
     [
       { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: u(undefined, true) },
       { json: 'OriginatingAppMetadata', js: 'OriginatingAppMetadata', typ: true },
@@ -2070,7 +2220,7 @@ const typeMap: any = {
   BroadcastRequestPayload: o(
     [
       { json: 'channel', js: 'channel', typ: r('ChannelClass') },
-      { json: 'context', js: 'context', typ: r('ContextObject') },
+      { json: 'context', js: 'context', typ: r('ContextElement') },
     ],
     false
   ),
@@ -2082,13 +2232,115 @@ const typeMap: any = {
     ],
     false
   ),
-  ContextObject: o(
+  ContextElement: o(
     [
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
     ],
     'any'
+  ),
+  ConnectionStep2Hello: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('ConnectionStep2HelloMeta') },
+      { json: 'payload', js: 'payload', typ: r('ConnectionStep2HelloPayload') },
+      { json: 'type', js: 'type', typ: 'any' },
+    ],
+    false
+  ),
+  ConnectionStep2HelloMeta: o([{ json: 'timestamp', js: 'timestamp', typ: Date }], false),
+  ConnectionStep2HelloPayload: o(
+    [
+      { json: 'authRequired', js: 'authRequired', typ: true },
+      { json: 'authToken', js: 'authToken', typ: u(undefined, '') },
+      { json: 'desktopAgentBridgeVersion', js: 'desktopAgentBridgeVersion', typ: '' },
+      { json: 'supportedFDC3Versions', js: 'supportedFDC3Versions', typ: a('') },
+    ],
+    false
+  ),
+  ConnectionStep3Handshake: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('ConnectionStep3HandshakeMeta') },
+      { json: 'payload', js: 'payload', typ: r('ConnectionStep3HandshakePayload') },
+      { json: 'type', js: 'type', typ: 'any' },
+    ],
+    false
+  ),
+  ConnectionStep3HandshakeMeta: o(
+    [
+      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  ConnectionStep3HandshakePayload: o(
+    [
+      { json: 'authToken', js: 'authToken', typ: u(undefined, '') },
+      { json: 'channelsState', js: 'channelsState', typ: m(a(r('ContextElement'))) },
+      { json: 'implementationMetadata', js: 'implementationMetadata', typ: r('ImplementationMetadataElement') },
+      { json: 'requestedName', js: 'requestedName', typ: '' },
+    ],
+    false
+  ),
+  ImplementationMetadataElement: o(
+    [
+      { json: 'appMetadata', js: 'appMetadata', typ: r('AppMetadataElement') },
+      { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
+      { json: 'optionalFeatures', js: 'optionalFeatures', typ: r('AllAgentOptionalFeatures') },
+      { json: 'provider', js: 'provider', typ: '' },
+      { json: 'providerVersion', js: 'providerVersion', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  AllAgentOptionalFeatures: o(
+    [
+      { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: u(undefined, true) },
+      { json: 'OriginatingAppMetadata', js: 'OriginatingAppMetadata', typ: true },
+      { json: 'UserChannelMembershipAPIs', js: 'UserChannelMembershipAPIs', typ: true },
+    ],
+    false
+  ),
+  ConnectionStep4AuthenticationFailed: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('ConnectionStep4AuthenticationFailedMeta') },
+      { json: 'payload', js: 'payload', typ: u(undefined, r('ConnectionStep4AuthenticationFailedPayload')) },
+      { json: 'type', js: 'type', typ: 'any' },
+    ],
+    false
+  ),
+  ConnectionStep4AuthenticationFailedMeta: o(
+    [
+      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'responseGuid', js: 'responseGuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  ConnectionStep4AuthenticationFailedPayload: o([{ json: 'message', js: 'message', typ: u(undefined, '') }], false),
+  ConnectionStep6ConnectedAgentsUpdate: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('ConnectionStep6ConnectedAgentsUpdateMeta') },
+      { json: 'payload', js: 'payload', typ: r('ConnectionStep6ConnectedAgentsUpdatePayload') },
+      { json: 'type', js: 'type', typ: 'any' },
+    ],
+    false
+  ),
+  ConnectionStep6ConnectedAgentsUpdateMeta: o(
+    [
+      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'responseGuid', js: 'responseGuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  ConnectionStep6ConnectedAgentsUpdatePayload: o(
+    [
+      { json: 'addAgent', js: 'addAgent', typ: u(undefined, '') },
+      { json: 'allAgents', js: 'allAgents', typ: a(r('ImplementationMetadataElement')) },
+      { json: 'channelsState', js: 'channelsState', typ: u(undefined, m(a(r('ContextElement')))) },
+      { json: 'removeAgent', js: 'removeAgent', typ: u(undefined, '') },
+    ],
+    false
   ),
   FindInstancesRequest: o(
     [
@@ -2151,7 +2403,7 @@ const typeMap: any = {
   ),
   FindIntentRequestPayload: o(
     [
-      { json: 'context', js: 'context', typ: r('ContextObject') },
+      { json: 'context', js: 'context', typ: r('ContextElement') },
       { json: 'intent', js: 'intent', typ: '' },
     ],
     false
@@ -2199,7 +2451,7 @@ const typeMap: any = {
     ],
     false
   ),
-  FindIntentsByContextRequestPayload: o([{ json: 'context', js: 'context', typ: r('ContextObject') }], false),
+  FindIntentsByContextRequestPayload: o([{ json: 'context', js: 'context', typ: r('ContextElement') }], false),
   FindIntentsByContextResponse: o(
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextResponseMeta') },
@@ -2281,7 +2533,7 @@ const typeMap: any = {
   OpenRequestPayload: o(
     [
       { json: 'app', js: 'app', typ: r('SourceElement') },
-      { json: 'context', js: 'context', typ: u(undefined, r('ContextObject')) },
+      { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
     ],
     false
   ),
@@ -2463,7 +2715,7 @@ const typeMap: any = {
   RaiseIntentRequestPayload: o(
     [
       { json: 'app', js: 'app', typ: r('SourceElement') },
-      { json: 'context', js: 'context', typ: r('ContextObject') },
+      { json: 'context', js: 'context', typ: r('ContextElement') },
     ],
     false
   ),
@@ -2523,7 +2775,7 @@ const typeMap: any = {
   ),
   IntentResultClass: o(
     [
-      { json: 'context', js: 'context', typ: u(undefined, r('ContextObject')) },
+      { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
       { json: 'channel', js: 'channel', typ: u(undefined, r('ChannelClass')) },
     ],
     false
