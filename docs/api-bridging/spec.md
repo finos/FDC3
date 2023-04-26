@@ -109,6 +109,10 @@ flowchart LR;
     PC1 .- |Bridge interconnect| PC2
 ```
 
+However, cross-machine routing is currently considered to be an internal concern of a Desktop Agent Bridge implementation, with each Desktop Agent simply communicating with a bridge instance located on the same machine. Hence, the connection protocol between bridges themselves is currently beyond the scope of this standard and my be implemented via any suitable means. 
+
+Further, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user. However, methods of verifying the identity of user are currently beyond the scope of the Standard.
+
 ### Websocket Connection
 
 Connections between Desktop Agents and the Desktop Agent Bridge will be made via websocket connections, with the bridge acting as the websocket server and each connected Desktop Agent as a client.
@@ -119,11 +123,9 @@ Bridge implementations SHOULD default to binding the websocket server to a port 
 
 Both DAs and bridge implementations SHOULD support at least connection to the recommended port range and MAY also support configuration for connection to an alternative bridging port or port range.
 
-### Bridging Desktop Agents on Multiple Machines
+#### Websockets and Multiple Machines
 
-As the bridge binds its websocket on the loopback address (127.0.0.1) it cannot be connected to from another device. Hence, an instance of the standalone bridge may be run on each device and those instances exchange messages in order to implement the bridge cross-device.
-
-However, cross-machine routing is an internal concern of the Desktop Agent Bridge, with each Desktop Agent simply communicating with a bridge instance located on the same machine. The connection protocol between bridges themselves is implementation specific and beyond the scope of this standard. Further, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user. However, methods of verifying the identity of user are currently beyond the scope of this Standard.
+As the bridge binds its websocket on the loopback address (127.0.0.1) it cannot be connected to from another device. Hence, an instance of the standalone bridge may be run on each device and those instances exchange messages by other means in order to implement the bridge cross-device.
 
 ## Connection Protocol
 
