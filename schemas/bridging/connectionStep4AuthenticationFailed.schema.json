@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/connectionStep4AuthenticationFailed.schema.json",
+  "title": "connectionStep4AuthenticationFailed",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "authenticationFailed"
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "requestGuid": {
+          "type": "string",
+          "description": "Unique GUID for the request"
+        },
+        "responseGuid": {
+          "type": "string",
+          "description": "Unique GUID for the response"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp at which request or response was generated"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["requestGuid", "responseGuid", "timestamp"]
+    }
+  },
+  "required": ["type", "meta"],
+  "additionalProperties": false
+}
