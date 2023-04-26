@@ -250,6 +250,9 @@ The Desktop Agent Bridge will extract the authentication token `sub` from the JW
 ```typescript
 {
     type:  "authenticationFailed",
+    payload: {
+        message: string
+    },
     meta: {
         /** Timestamp at which response was generated */
         timestamp:  Date,
@@ -405,9 +408,9 @@ All messages sent or received by the Desktop Agent Bridge will be encoded in JSO
 Messages can be divided into two categories:
 
 * Requests: Messages that initiate a particular interaction
-* Responses: Messages that later to a prior request
+* Responses: Messages that respond to a prior request
 
-Details specific to each are provided below:
+Details specific to each are provided in the following sections.
 
 #### Request Messages
 
@@ -454,6 +457,8 @@ Request messages use the following format:
     }
 }
 ```
+
+**Schema**: [https://fdc3.finos.org/schemas/next/bridging/broadcastRequest.schema.json](/schemas/next/bridging/bridgeRequest.schema.json)
 
 If the FDC3 API call underlying the request message includes a target (typically defined by an `app` argument, in the form of an AppIdentifier object) it is the responsibility of the Desktop Agent to copy that argument into the `meta.destination` field of the message and to ensure that it includes a `meta.destination.desktopAgent` value. If the target is provided in the FDC3 API call, but without a `meta.destination.desktopAgent` value, the Desktop Agent should assume that the call relates to a local application and does not need to send it to the bridge.
 
@@ -523,6 +528,8 @@ Response messages will be differentiated from requests by the presence of a `met
     }
 }
 ```
+
+**Schema**: [https://fdc3.finos.org/schemas/next/bridging/bridgeResponse.schema.json](/schemas/next/bridging/bridgeResponse.schema.json)
 
 Response messages do not include a `meta.destination` as the routing of responses is handled by the bridge via the `meta.requestGuid` field.
 
