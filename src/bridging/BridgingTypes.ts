@@ -460,9 +460,22 @@ export interface ConnectionStep2HelloMeta {
 }
 
 export interface ConnectionStep2HelloPayload {
+  /**
+   * A flag indicating whether the Desktop Agent Bridge requires authentication or not.
+   */
   authRequired: boolean;
+  /**
+   * An optional Desktop Agent Bridge JWT authentication token if the Desktop Agent want to
+   * authenticate a bridge.
+   */
   authToken?: string;
+  /**
+   * The version of the Bridge
+   */
   desktopAgentBridgeVersion: string;
+  /**
+   * The FDC3 versions supported by the Bridge
+   */
   supportedFDC3Versions: string[];
 }
 
@@ -485,12 +498,24 @@ export interface ConnectionStep3HandshakeMeta {
 
 export interface ConnectionStep3HandshakePayload {
   authToken?: string;
+  /**
+   * The current state of the Desktop Agent's channels, excluding any private channels, as a
+   * mapping of channel id to an array of Context objects, most recent first.
+   */
   channelsState: { [key: string]: ContextElement[] };
+  /**
+   * DesktopAgent implementationMetadata trying to connect to the bridge.
+   */
   implementationMetadata: ImplementationMetadataElement;
+  /**
+   * The requested Desktop Agent name
+   */
   requestedName: string;
 }
 
 /**
+ * DesktopAgent implementationMetadata trying to connect to the bridge.
+ *
  * Metadata relating to the FDC3 DesktopAgent object and its provider
  */
 export interface ImplementationMetadataElement {
@@ -554,9 +579,23 @@ export interface ConnectionStep6ConnectedAgentsUpdateMeta {
 }
 
 export interface ConnectionStep6ConnectedAgentsUpdatePayload {
+  /**
+   * Should be set when an agent first connects to the bridge and provide its assigned name.
+   */
   addAgent?: string;
+  /**
+   * Desktop Agent Bridge implementation metadata of all connected agents.
+   */
   allAgents: ImplementationMetadataElement[];
+  /**
+   * The updated state of channels that should be adopted by the agents. Should only be set
+   * when an agent is connecting to the bridge.
+   */
   channelsState?: { [key: string]: ContextElement[] };
+  /**
+   * Should be set when an agent disconnects from the bridge and provide the name that no
+   * longer is assigned.
+   */
   removeAgent?: string;
 }
 
