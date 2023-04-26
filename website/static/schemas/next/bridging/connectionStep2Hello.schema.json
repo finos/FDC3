@@ -11,19 +11,23 @@
       "type": "object",
       "properties": {
         "desktopAgentBridgeVersion": {
+          "description": "The version of the Bridge",
           "type": "string"
         },
         "supportedFDC3Versions": {
           "type": "array",
+          "description": "The FDC3 versions supported by the Bridge",
           "items": {
             "type": "string"
           }
         },
         "authRequired": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag indicating whether the Desktop Agent Bridge requires authentication or not."
         },
         "authToken": {
-          "type": "string"
+          "type": "string",
+          "description": "An optional Desktop Agent Bridge JWT authentication token if the Desktop Agent want to authenticate a bridge."
         }
       },
       "additionalProperties": false,

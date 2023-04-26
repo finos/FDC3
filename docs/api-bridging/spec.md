@@ -531,7 +531,6 @@ Response messages will be differentiated from requests by the presence of a `met
          * to the bridge before the timeout or because an error occurred. 
          * Should be the same length as the `errorSources` array and ordered the
          * same. May be omitted if all sources responded. */
-
         errorDetails?: string[]
     }
 }
