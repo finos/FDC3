@@ -209,7 +209,7 @@ export interface DesktopAgent {
    * each individual type (starting with the simpler types, followed by the complex type) that you want other
    * apps to be able to respond to. Doing so allows applications to filter the context types they receive by
    * adding listeners for specific context types.
-   * 
+   *
    * If an application attempts to broadcast an invalid context argument the Promise returned by this function should reject with the `ChannelError.MalformedContext` error.
    *
    * ```javascript
