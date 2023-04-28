@@ -13,6 +13,8 @@ export enum OpenError {
   AppTimeout = 'AppTimeout',
   /** Returned if the FDC3 desktop agent implementation is not currently able to handle the request.*/
   ResolverUnavailable = 'ResolverUnavailable',
+  /** Returned if a call to the `open` function is made with an invalid context argument. Contexts should be Objects with at least a `type` field that has a `string` value.*/
+  MalformedContext = 'MalformedContext',
 }
 
 /** Constants representing the errors that can be encountered when calling the `findIntent`, `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the DesktopAgent (`fdc3`). */
@@ -31,6 +33,8 @@ export enum ResolveError {
   TargetInstanceUnavailable = 'TargetInstanceUnavailable',
   /** Returned if the intent and context could not be delivered to the selected application or instance, for example because it has not added an intent handler within a timeout.*/
   IntentDeliveryFailed = 'IntentDeliveryFailed',
+  /** Returned if a call to one of the `raiseIntent` functions is made with an invalid context argument. Contexts should be Objects with at least a `type` field that has a `string` value.*/
+  MalformedContext = 'MalformedContext',
 }
 
 export enum ResultError {
@@ -47,4 +51,6 @@ export enum ChannelError {
   AccessDenied = 'AccessDenied',
   /** SHOULD be returned when a channel cannot be created or retrieved via the `getOrCreateChannel` method of the DesktopAgent (`fdc3`).*/
   CreationFailed = 'CreationFailed',
+  /** Returned if a call to the `broadcast` functions is made with an invalid context argument. Contexts should be Objects with at least a `type` field that has a `string` value.*/
+  MalformedContext = 'MalformedContext',
 }
