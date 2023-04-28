@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added a `MalformedContext` error to the `OpenError`, `ChannelError` and `ResolveError` enumerations, to be used when `broadcast`, `open`, `findIntents`, `raiseIntents` and other related functions are passed an invalid context Object. ([#972](https://github.com/finos/FDC3/pull/972))
+
 ### Changed
 
 * Updated definition of the `Instrument` context type to include optional market identifiers ([#819](https://github.com/finos/FDC3/pull/819))
