@@ -9,7 +9,18 @@ import { DisplayMetadata } from './DisplayMetadata';
 import { Listener } from './Listener';
 
 /**
- * Object representing a context channel.
+ * Represents a context channel that applications can use to send and receive
+ * context data.
+ * 
+ * Please note that There are differences in behavior when you interact with a
+ * User channel via the `DesktopAgent` interface and the `Channel` interface. 
+ * Specifically, when 'joining' a User channel or adding a context listener 
+ * when already joined to a channel via the `DesktopAgent` interface, existing 
+ * context (matching the type of the context listener) on the channel is 
+ * received by the context listener immediately. Whereas, when a context 
+ * listener is added via the Channel interface, context is not received
+ * automatically, but may be retrieved manually via the `getCurrentContext()`
+ * function.
  */
 export interface Channel {
   /**
