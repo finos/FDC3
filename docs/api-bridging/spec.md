@@ -18,9 +18,9 @@ Desktop Agent Bridging in an experimental feature added to FDC3 in 2.1, hence, i
 
 -->
 
-The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent (DA), facilitating cross-application workflows. Desktop Agent Bridging addresses the interconnection of Desktop Agents (DAs) such that apps running under different Desktop Agents can also interoperate, allowing workflows to span multiple Desktop Agents.
+The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent (DA), enabling cross-application workflows and context sharing. Desktop Agent Bridging addresses the interconnection of Desktop Agents (DAs) such that apps running under different Desktop Agents can also interoperate, allowing workflows to span multiple Desktop Agents. This is achieved, without implementation changes or special handling in the apps, by providing a protocol and service for the Desktop Agents to interoperate with each other instead, allowing application interop to extend across the bridged agents, seamlessly.
 
-In any Desktop Agent Bridging scenario, it is expected that each DA is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although DAs may be run on different machines operated by the same user.
+In any Desktop Agent Bridging scenario, it is expected that each DA is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although DAs may be run on different machines operated by the same user. Whether a bridge is running for Desktop Agents to connect to, whether it requires the agents to authenticate etc., is in the hands of the user (and their local IT team).
 
 ## Bridging Desktop Agents
 
@@ -153,7 +153,7 @@ sequenceDiagram
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: connect (step 1)
+    DA -->>+ DAB: connect (step 1)
     DAB ->>+ DA: hello (step 2)
     DA ->>+ DAB: handshake (steps 3-5)
     DAB ->>+ DA: connectedAgentsUpdate (step 6)

@@ -45,10 +45,10 @@ export default () => {
     <Container>
       <GridBlock items={[
         <Api />,
-        <Bridging />,
         <Intents />,
         <ContextData />,
-        <Directory />
+        <Directory />,
+        <Bridging />
       ]} />
     </Container>
       <Feature>
