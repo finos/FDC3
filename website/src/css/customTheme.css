@@ -202,7 +202,7 @@ header.postHeader:empty + article h1 {
 }
 
 .blockContent {
-  margin: 40px 10px;
+  margin: 20px 10px;
 }
  
 .blockTitle {
@@ -214,6 +214,16 @@ header.postHeader:empty + article h1 {
   line-height: var(--ifm-heading-line-height);
   margin: var(--ifm-heading-margin-top) 0 0 0;
   padding-bottom: var(--ifm-heading-margin-bottom);
+}
+.blockSubLabel {
+  color:  #0086bf;  /* DO NOT CHANGE - THIS IS THE TITLE UNDER THE ICONS IN THE 3RD BLOCK - SHOULD STAY FINOS BLUE */
+  text-align: center;
+  font-size: var(--ifm-font-size-base);
+  font-family: var(--ifm-heading-font-family);
+  font-weight: var(--ifm-heading-font-weight);
+  /* line-height: var(--ifm-heading-line-height);
+  margin: var(--ifm-heading-margin-top) 0 0 0;
+  padding-bottom: var(--ifm-heading-margin-bottom); */
 }
 
 .featureShowcaseSection .logos img {
