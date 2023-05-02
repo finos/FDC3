@@ -75,7 +75,7 @@ By using the Desktop Agent Bridging Connection and Messaging protocols, a bridge
 
 A Desktop Agent will implement "client" behavior by:
 
-* Connecting to the bridge, providing authentication credentials and receiving an assigned named (for purposes)
+* Connecting to the bridge, providing authentication credentials and receiving an assigned named (for routing purposes).
 * Forwarding requests to the bridge.
 * Awaiting response(s) from the bridge.
 * Receiving requests from the bridge.
