@@ -404,5 +404,14 @@
       }
     ],
     "type": "solution-provider"
+  },
+  {
+    "title": "Bank of Montreal",
+    "publisher": "BMO",
+    "image": "/img/users/bmo.png",
+    "infoLink": "https://www.bmo.com",
+    "description": "BMO is a strong advocate for interoperability and is developing multiple internal applications using FDC3. We contribute to the FDC3-related meetings and discussions around the standards, contexts and intents.",
+    "badges": [],
+    "type": "adopter"
   }
 ]
