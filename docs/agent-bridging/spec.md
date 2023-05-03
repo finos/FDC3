@@ -1,7 +1,7 @@
 ---
 id: spec
 sidebar_label: Overview
-title: API Bridging Overview (next)
+title: Agent Bridging Overview (next)
 ---
 
 :::info _[@experimental](../fdc3-compliance#experimental-features)_
@@ -13,7 +13,7 @@ Desktop Agent Bridging in an experimental feature added to FDC3 in 2.1, hence, i
 <!-- ## TODO list
 
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
-* Check if advice on imported BridgingTypes (last section in this spec) from the npm module is accurate.
+* Check if advice on imported BridgingTypes (last section in this spec) from the npm module is accurate
 * Link to BackPlane project somewhere 
 
 -->
@@ -34,13 +34,13 @@ Detail on each of these components is defined in the following sections.
 
 :::info
 
-Although this specification defines a particular [connection](#connection) type (based on websockets), it has been divided into parts so that the protocol definitions might be reused to implement a bridge over an alternative connection.
+Although this specification defines a particular [connection](#connection) type (based on a websocket server), it has been divided into parts so that the protocol definitions might be reused to implement a bridge over an alternative connection.
 
 :::
 
-### API Bridging Compliance
+### Agent Bridging Compliance
 
-API Bridging is introduced in FDC3 2.1 as an [@experimental](../fdc3-compliance#experimental-features) feature of the FDC3 Standard, included to enable implementation by and feedback from the FDC3 community. As such, it is currently optional for the purposes of compliance and is exempted from the normal versioning and deprecation polices in order to facilitate any refinement needed.
+Agent Bridging is introduced in FDC3 2.1 as an [@experimental](../fdc3-compliance#experimental-features) feature of the FDC3 Standard, included to enable implementation by and feedback from the FDC3 community. As such, it is currently optional for the purposes of compliance and is exempted from the normal versioning and deprecation polices in order to facilitate any refinement needed.
 
 ## Connection
 

@@ -79,22 +79,22 @@
       },
       {
         "type": "category",
-        "label": "API Bridging Part",
+        "label": "Agent Bridging Part",
         "items": [
-          "api-bridging/spec",
-          "api-bridging/ref/broadcast",
-          "api-bridging/ref/findIntent",
-          "api-bridging/ref/findIntentsByContext",
-          "api-bridging/ref/raiseIntent",
-          "api-bridging/ref/open",
-          "api-bridging/ref/findInstances",
-          "api-bridging/ref/getAppMetadata",
-          "api-bridging/ref/PrivateChannel.broadcast",
-          "api-bridging/ref/PrivateChannel.eventListenerAdded",
-          "api-bridging/ref/PrivateChannel.eventListenerRemoved",
-          "api-bridging/ref/PrivateChannel.onAddContextListener",
-          "api-bridging/ref/PrivateChannel.onDisconnect",
-          "api-bridging/ref/PrivateChannel.onUnsubscribe"
+          "agent-bridging/spec",
+          "agent-bridging/ref/broadcast",
+          "agent-bridging/ref/findIntent",
+          "agent-bridging/ref/findIntentsByContext",
+          "agent-bridging/ref/raiseIntent",
+          "agent-bridging/ref/open",
+          "agent-bridging/ref/findInstances",
+          "agent-bridging/ref/getAppMetadata",
+          "agent-bridging/ref/PrivateChannel.broadcast",
+          "agent-bridging/ref/PrivateChannel.eventListenerAdded",
+          "agent-bridging/ref/PrivateChannel.eventListenerRemoved",
+          "agent-bridging/ref/PrivateChannel.onAddContextListener",
+          "agent-bridging/ref/PrivateChannel.onDisconnect",
+          "agent-bridging/ref/PrivateChannel.onUnsubscribe"
         ]
       }
     ]

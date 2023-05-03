@@ -101,7 +101,7 @@ interface DesktopAgentIdentifier {
 
 **See also:**
 
-* [API Bridging - Identifying Desktop Agents Identity and Message Sources](../../api-bridging/spec#identifying-desktop-agents-identity-and-message-sources)
+* [Agent Bridging - Identifying Desktop Agents Identity and Message Sources](../../agent-bridging/spec#identifying-desktop-agents-identity-and-message-sources)
 
 ## `IntentHandler`
 

@@ -14,7 +14,7 @@ Desktop Agent bridging message exchange for the addition of an event handler to 
 
 :::caution
 
-Some additional tracking of PrivateChannel metadata is required on the Desktop Agent that created each PrivateChannel and on any Desktop Agent interacting with it, in order to use these message exchanges. Please see the [relevant section of the API Bridging overview](../spec#privatechannels) for more details.
+Some additional tracking of PrivateChannel metadata is required on the Desktop Agent that created each PrivateChannel and on any Desktop Agent interacting with it, in order to use these message exchanges. Please see the [relevant section of the Agent Bridging overview](../spec#privatechannels) for more details.
 
 :::
 
