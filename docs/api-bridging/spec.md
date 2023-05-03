@@ -579,7 +579,7 @@ Further, a new `DesktopAgentIdentifier` type is introduced to handle cases where
 
 ```typescript
 /** @experimental Introduced in FDC3 2.1 and may be refined by further changes
- *  outside the normal FDC3 versioning policy.
+ *  outside the normal FDC3 versioning policy. */
 interface DesktopAgentIdentifier {
   /** Used in Desktop Agent Bridging to attribute or target a message to a 
    *  particular Desktop Agent. */ 
