@@ -11,9 +11,15 @@ Desktop Agent bridging message exchange for a `raiseIntent` API call on the [`De
 
 [Message Exchange Type](../spec#individual-message-exchanges): **Request Multiple Response (single)**
 
-For Desktop Agent Bridging, a `raiseIntent` message exchange MUST always pass a `app: AppIdentifier` argument to target the intent. Further, if no `instanceId` is set in the `AppIdentifier` in the message then it should be interpreted to mean *'spawn a new instance of the target application'*. A local API call would normally defer to a resolver UI or similar if there are multiple options for resolving a specified app id (existing instances + spawning a new one), whereas this message exchange assumes that resolution has already taken place on the source Desktop Agent and either a new instance or existing instance selected as the target.
+For Desktop Agent Bridging, a `raiseIntent` message exchange MUST always pass an `app: AppIdentifier` argument to target the intent. Further, if no `instanceId` is set in the `AppIdentifier`, then it should be interpreted to mean *'spawn a new instance of the target application'*. A local FDC3 API implementation call would normally defer to a resolver UI or similar if there are multiple options for resolving a specified `appId` (i.e. existing instance(s) and the option spawning a new instance), whereas this message exchange assumes that resolution has already taken place on the source Desktop Agent.
 
-Hence, if a target [`AppIdentifier`](/api/ref/Types#appidentifier) is not passed in the original API call, then the `findIntent` message exchange should be used to collect options for the local resolver to use. Once an option has been selected (for example because there is only one option, or because the user selected an option in a local intent resolver UI), the `raiseIntent` message exchange may then be used (if a remote option was selected as the resolution) to raise the intent.
+Hence, if a target [`AppIdentifier`](/api/ref/Types#appidentifier) is not passed in the original `DesktopAgent` API call, then the [`findIntent`](findIntent) message exchange should be used to collect options for the local resolver to use. Once an option has been selected (for example because there is only one option, or because the user selected an option in a local intent resolver UI), the `raiseIntent` message exchange may then be used (if a remote option was selected as the resolution) to raise the intent.
+
+:::info
+
+The same approach applies to `fdc3.raiseIntentForContext` calls, in that a [`findIntentByContext`](findIntentsByContext) message exchange should be used to collect options for the local resolver to use. Once an option has been selected (for example because there is only one option, or because the user selected an option in a local intent resolver UI), the `raiseIntent` message exchange is then used (if a remote option was selected as the resolution) to raise the intent.
+
+:::
 
 e.g. An application with appId `agentA-app1` makes the following API call:
 
@@ -27,17 +33,15 @@ Agent A should then conduct the `findIntent` message exchange as described above
 let appIntent = await fdc3.raiseIntent("StartChat", context, {"appId": "Slack", "desktopAgent": "agent-B"});
 ```
 
-:::info
-
-The same approach applies to `fdc3.raiseIntentForContext` calls, in that a `findIntentByContext` message exchange should be used to collect options for the local resolver to use. Once an option has been selected (for example because there is only one option, or because the user selected an option in a local intent resolver UI), the `raiseIntent` message exchange is then used (if a remote option was selected as the resolution) to raise the intent.
-
-:::
+In the event that an agent referred to in the API call is not connected to the bridge, it is connected but times out or returns an error, its `DesktopAgentIdentifier` should be added to the `meta.errorSources` element instead of `meta.sources` in the `raiseIntentResponse` and the appropriate error (which might include any error from the [`ResolveError`](../../api/ref/Errors#resolveerror) enumeration, [`BridgingError.ResponseTimedOut`](../../api/ref/Errors#bridgingerror) or [`BridgingError.AgentDisconnected`](../../api/ref/Errors#bridgingerror)) should be added to `meta.errorDetails`.
 
 :::tip
 
 Desktop Agents MAY support the deprecated `raiseIntent` signature that uses the app `name` field by using the `findIntent` message exchange to attempt to resolve the `name` to an `AppIdentifier`.
 
 :::
+
+
 
 ## Message exchange
 
@@ -280,9 +284,3 @@ If the `IntentHandler` returned `void` rather than an intent result `payload` sh
     }
 }
 ```
-
-:::note
-
-In the event that an agent referred to in the API call is not connected to the bridge, it is connected but times out or returns an error, its `DesktopAgentIdentifier` should be added to the `meta.errorSources` element instead of `meta.sources` in the `raiseIntentResponse` and the appropriate error (which might include any error from the [`ResolveError`](../../api/ref/Errors#resolveerror) enumeration, [`BridgingError.ResponseTimedOut`](../../api/ref/Errors#bridgingerror) or [`BridgingError.AgentDisconnected`](../../api/ref/Errors#bridgingerror)) should be added to `meta.errorDetails`.
-
-:::
