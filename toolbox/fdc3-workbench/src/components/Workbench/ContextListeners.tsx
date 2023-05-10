@@ -59,9 +59,9 @@ export const ContextListeners = observer(() => {
 
 	return (
 		<AccordionList
-			title="System Channels"
+			title="User Channels"
 			icon="Any context already in the channel will be received automatically"
-			noItemsText="No System Channels Listeners"
+			noItemsText="No User Channel Listeners"
 			listItems={contextListeners}
 			onDelete={handleDeleteListener}
 		/>
