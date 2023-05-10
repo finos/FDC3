@@ -341,7 +341,7 @@ export const ChannelField = observer(
 												size="small"
 												aria-label="Copy code example"
 												color="primary"
-												onClick={copyToClipboard(codeExamples.appChannelContextListener, "addchannelContextListener")}
+												onClick={copyToClipboard(codeExamples.appChannelContextListener, "addChannelContextListener")}
 											>
 												<FileCopyIcon />
 											</IconButton>
