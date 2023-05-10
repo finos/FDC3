@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
+import { runInAction } from "mobx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import appChannelStore from "../store/AppChannelStore";
 import privateChannelStore from "../store/PrivateChannelStore";
 import { Button, IconButton, Tooltip, Typography, Grid, Link } from "@material-ui/core";
 import { ContextTemplates } from "./ContextTemplates";
-import { ContextType } from "../utility/Fdc3Api";
+import { ContextType, Fdc3Listener } from "../utility/Fdc3Api";
 import { copyToClipboard } from "./common/CopyToClipboard";
 import { codeExamples } from "../fixtures/codeExamples";
 import { openApiDocsLink } from "../fixtures/openApiDocs";
@@ -152,7 +153,7 @@ export const ChannelField = observer(
 			new Map(contextListenersOptionsAll.reverse().map((item) => [item["type"], item])).values()
 		).reverse();
 
-		const getOptionLabel = (option: ListenerOptionType) => option.type || option.title;
+		const getOptionLabel = (option: ListenerOptionType) => option.type ?? option.title ?? option;
 
 		const handleAddContextListener = (channelId: string) => {
 			let foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channelId);
@@ -176,7 +177,7 @@ export const ChannelField = observer(
 			let foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channel);
 			if (foundChannel) {
 				setContextItem(context);
-				foundChannel.context = context;
+				runInAction(() => { foundChannel.context = context });
 			}
 		};
 
@@ -192,7 +193,7 @@ export const ChannelField = observer(
 				return;
 			}
 
-			let newListener;
+			let newListener: ListenerOptionType | undefined;
 			let foundListener = channelStore.channelListeners?.find(
 				(currentListener) => currentListener.type === newValue && currentListener.channelId === channelId
 			);
@@ -216,7 +217,7 @@ export const ChannelField = observer(
 				newListener = newValue;
 			}
 
-			foundChannel.currentListener = newListener;
+			runInAction(() => { foundChannel.currentListener = newListener });
 			foundChannel.listenerError = "";
 		};
 
@@ -306,11 +307,13 @@ export const ChannelField = observer(
 											blurOnSelect
 											clearOnBlur
 											handleHomeEndKeys
-											value={channel.currentListener}
+											value={channel.currentListener ?? null}
 											onChange={handleChangeAppListener(channel.id)}
 											filterOptions={filterOptions}
 											options={contextListenersOptions}
 											getOptionLabel={getOptionLabel}
+											getOptionSelected={(option, value) => option.type === value.type }
+											freeSolo={true}
 											renderOption={(option) => option.type}
 											renderInput={(params) => (
 												<TemplateTextField
@@ -341,7 +344,7 @@ export const ChannelField = observer(
 												size="small"
 												aria-label="Copy code example"
 												color="primary"
-												onClick={copyToClipboard(codeExamples.appChannelContextListener, "addChannelContextListener")}
+												onClick={copyToClipboard(codeExamples.appChannelContextListener, "addAppContextListener")}
 											>
 												<FileCopyIcon />
 											</IconButton>

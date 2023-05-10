@@ -32,7 +32,7 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			success: "Broadcast context",
 			error: "Failed to broadcast context:",
 		},
-		appbroadcast: {
+		appBroadcast: {
 			success: `Broadcast context to channel [${value}]: `,
 			error: `Failed to broadcast context to channel [${value}]:`,
 		},

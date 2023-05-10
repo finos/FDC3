@@ -9,7 +9,7 @@ interface ListenerOptionType {
 	type: string | undefined;
 }
 
-export interface Fdc3Channel {
+export interface Fdc3ChannelRecord {
 	id: string;
 	channel: Channel;
 	currentListener?: ListenerOptionType | null;
@@ -18,9 +18,9 @@ export interface Fdc3Channel {
 	listenerError?: string;
 }
 class AppChannelStore {
-	appChannelsList: Fdc3Channel[] = [];
+	appChannelsList: Fdc3ChannelRecord[] = [];
 
-	currentAppChannel: Fdc3Channel | null = null;
+	currentAppChannel: Fdc3ChannelRecord | null = null;
 
 	channelListeners: Fdc3Listener[] = [];
 
@@ -37,27 +37,29 @@ class AppChannelStore {
 
 	async getOrCreateChannel(channelId: string) {
 		try {
-			const currentAppChannel = await fdc3.getOrCreateChannel(channelId);
-			const isSuccess = currentAppChannel !== null;
-			if (isSuccess) {
-				this.currentAppChannel = {
+			const currentAppChannelObj = await fdc3.getOrCreateChannel(channelId);
+			if (currentAppChannelObj) {
+				const record = {
 					id: channelId,
-					channel: currentAppChannel,
+					channel: currentAppChannelObj,
 				};
+				this.currentAppChannel = record;
 				let foundChannel = this.appChannelsList.find((channel) => channel.id === channelId);
 				if (!foundChannel) {
-					this.appChannelsList.push(this.currentAppChannel);
+					runInAction(() => {
+						this.appChannelsList.push(record);
+					});
 				}
 			}
 			runInAction(() => {
 				systemLogStore.addLog({
 					name: "getOrCreateChannel",
-					type: isSuccess ? "success" : "error",
-					value: isSuccess ? currentAppChannel?.id : channelId,
+					type: currentAppChannelObj ? "success" : "error",
+					value: currentAppChannelObj ? currentAppChannelObj?.id : channelId,
 					variant: "text",
 				});
 			});
-			return currentAppChannel;
+			return currentAppChannelObj;
 		} catch (e) {
 			systemLogStore.addLog({
 				name: "getOrCreateChannel",
@@ -82,7 +84,7 @@ class AppChannelStore {
 		const channelId = channel.id;
 		if (!context) {
 			systemLogStore.addLog({
-				name: "appbroadcast",
+				name: "appBroadcast",
 				type: "warning",
 				value: `You must set a context before you can broadcast it to channel: ${channelId}`,
 				variant: "text",
@@ -94,7 +96,7 @@ class AppChannelStore {
 
 		if (!currentChannel) {
 			systemLogStore.addLog({
-				name: "appbroadcast",
+				name: "appBroadcast",
 				type: "warning",
 				value: "You are not currently joined to a channel (no-op)",
 				variant: "text",
@@ -105,7 +107,7 @@ class AppChannelStore {
 		try {
 			await currentChannel.channel.broadcast(toJS(context));
 			systemLogStore.addLog({
-				name: "appbroadcast",
+				name: "appBroadcast",
 				type: "success",
 				body: JSON.stringify(context, null, 4),
 				variant: "code",
@@ -113,7 +115,7 @@ class AppChannelStore {
 			});
 		} catch (e) {
 			systemLogStore.addLog({
-				name: "appbroadcast",
+				name: "appBroadcast",
 				type: "error",
 				body: JSON.stringify(e, null, 4),
 				variant: "code",
@@ -247,7 +249,9 @@ class AppChannelStore {
 
 	remove(channel: Channel) {
 		this.channelListeners.forEach((listener) => this.removeContextListener(listener.id));
-		this.appChannelsList = this.appChannelsList.filter((chan) => chan.id !== channel.id);
+		runInAction(() => {
+			this.appChannelsList = this.appChannelsList.filter((chan) => chan.id !== channel.id);
+		});
 	}
 }
 
