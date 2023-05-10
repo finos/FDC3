@@ -125,14 +125,14 @@ class ContextStore {
 		}
 	}
 
-	async addContextListener(contextType: string | undefined) {
+	async addContextListener(contextType: string | null | undefined) {
 		try {
 			if (typeof contextType === "string") {
 				const listenerId = nanoid();
 
 				// TODO: remove window after fixing https://github.com/finos/FDC3/issues/435
-				const contactListener = await fdc3.addContextListener(
-					contextType.toLowerCase() === "all" ? "null" : contextType,
+				const contextListener = await fdc3.addContextListener(
+					contextType.toLowerCase() === "all" ? null : contextType,
 					(context: ContextType, metaData?: any) => {
 						const currentListener = this.contextListeners.find(({ id }) => id === listenerId);
 
@@ -160,14 +160,14 @@ class ContextStore {
 						value: contextType,
 						variant: "text",
 					});
-					this.contextListeners.push({ id: listenerId, type: contextType, listener: contactListener });
+					this.contextListeners.push({ id: listenerId, type: contextType, listener: contextListener });
 				});
 			} else {
 				runInAction(() => {
 					systemLogStore.addLog({
 						name: "addContextListener",
 						type: "error",
-						value: contextType,
+						value: contextType ?? "null",
 						variant: "code",
 					});
 				});
@@ -176,7 +176,7 @@ class ContextStore {
 			systemLogStore.addLog({
 				name: "addContextListener",
 				type: "error",
-				value: contextType,
+				value: contextType ?? "null",
 				variant: "code",
 				body: JSON.stringify(e, null, 4),
 			});

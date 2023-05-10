@@ -81,10 +81,19 @@ class Fdc3Api {
 	}
 
 	async addContextListener(
-		contextTypeOrHandler: string | fdc3_1.ContextHandler | fdc3_2.ContextHandler,
-		handler?: fdc3_1.ContextHandler | fdc3_2.ContextHandler | undefined
+		contextTypeOrNull: string | null,
+		handler: fdc3_1.ContextHandler | fdc3_2.ContextHandler
 	) {
-		return await this.fdc3Methods.addContextListener(contextTypeOrHandler, handler);
+		if (window.fdc3Version === "2.0") {
+			return await fdc3_2.addContextListener(contextTypeOrNull, handler);
+		} else {
+			if (contextTypeOrNull === null) {
+				return await fdc3_1.addContextListener(handler);
+			} else {
+				return await fdc3_1.addContextListener(contextTypeOrNull, handler);
+			}
+		}
+		
 	}
 
 	async raiseIntent(intent: string, context: fdc3_1.Context | fdc3_2.Context, app?: AppMetadata | undefined) {
