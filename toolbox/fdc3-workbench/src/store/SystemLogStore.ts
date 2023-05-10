@@ -10,7 +10,7 @@ export type logMessagesName =
 	| "joinUserChannel"
 	| "leaveChannel"
 	| "broadcast"
-	| "appbroadcast"
+	| "appBroadcast"
 	| "raiseIntent"
 	| "raiseIntentForContext"
 	| "addContextListener"
