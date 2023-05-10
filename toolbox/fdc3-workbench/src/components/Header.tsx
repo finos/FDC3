@@ -101,21 +101,8 @@ export const Header = (props: { fdc3Available: boolean }) => {
 						},
 					};
 
-					if (implInfo.provider) {
-						displayInfo.provider = implInfo.provider;
-					}
-					if (implInfo.providerVersion) {
-						displayInfo.providerVersion = implInfo.providerVersion;
-					}
-					if (implInfo.fdc3Version) {
-						displayInfo.fdc3Version = implInfo.fdc3Version;
-					}
-					if (implInfo.appMetadata) {
-						displayInfo.appMetadata = {
-							appId: implInfo.appMetadata.appId ? implInfo.appMetadata.appId : "not specified",
-							version: implInfo.appMetadata.version ? implInfo.appMetadata.version : "not specified",
-						};
-					}
+					let mergedAppMetaData = Object.assign({}, displayInfo.appMetadata, implInfo.appMetadata);
+					displayInfo = Object.assign(displayInfo, implInfo, {appMetadata: mergedAppMetaData});
 
 					setAppInfo(displayInfo);		
 				} catch (e) {
