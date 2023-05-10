@@ -71,7 +71,7 @@ class PrivateChannelStore {
 		const channelId = channel.id;
 		if (!context) {
 			systemLogStore.addLog({
-				name: "appbroadcast",
+				name: "appBroadcast",
 				type: "warning",
 				value: `You must set a context before you can broadcast it to channel: ${channelId}`,
 				variant: "text",
@@ -80,7 +80,7 @@ class PrivateChannelStore {
 
 		if (!channel) {
 			systemLogStore.addLog({
-				name: "appbroadcast",
+				name: "appBroadcast",
 				type: "warning",
 				value: "You are not currently joined to a channel (no-op)",
 				variant: "text",
@@ -91,7 +91,7 @@ class PrivateChannelStore {
 		try {
 			await channel.broadcast(toJS(context));
 			systemLogStore.addLog({
-				name: "appbroadcast",
+				name: "appBroadcast",
 				type: "success",
 				body: JSON.stringify(context, null, 4),
 				variant: "code",
@@ -99,7 +99,7 @@ class PrivateChannelStore {
 			});
 		} catch (e) {
 			systemLogStore.addLog({
-				name: "appbroadcast",
+				name: "appBroadcast",
 				type: "error",
 				body: JSON.stringify(e, null, 4),
 				variant: "code",
