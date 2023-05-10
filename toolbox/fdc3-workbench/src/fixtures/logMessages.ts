@@ -12,8 +12,8 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			error: `The FDC3 API is not ready${value ? ` (${value})` : ""}`,
 		},
 		getChannels: {
-			success: `Retrieved System channels`,
-			error: `Failed to retrieve System channels`,
+			success: `Retrieved User channels`,
+			error: `Failed to retrieve User channels`,
 		},
 		getCurrentChannel: {
 			success: `Retrieved current channel [${value}]`,
