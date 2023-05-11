@@ -319,6 +319,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 
 				const menuItems: ReactElement[] = [];
 	
+				//check if there are any target options
 				if (intentTargetOptions.length === 0) {
 					menuItems.push(
 						<MenuItem value="" key="no-target-apps-found" disabled>
@@ -331,30 +332,37 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 							None
 						</MenuItem>
 					);
-				}
 
-				intentTargetOptions.forEach((option) => {
-					const targetLabel: string = option.metadata.title ?? option.appId;
-					if(option.launchNew) {
-						menuItems.push(
-							<MenuItem className="app" key={option.appId} value={JSON.stringify(option.metadata)}>
-								{targetLabel}
-							</MenuItem>
-						);
-					}
-
-					if(option.instances?.length) {
-						menuItems.push(<ListSubheader key={`subheading-${targetLabel}`}>Target existing &quot;{targetLabel}&quot;</ListSubheader>);
-					}
-					option?.instances.forEach((instance) => {
-						menuItems.push(
-						<MenuItem className="instance" key={instance.instanceId} value={JSON.stringify(instance)}>
-							{instance.instanceId}
-						</MenuItem>
-						);
+					//add app targets
+					menuItems.push(<ListSubheader key={`subheading-app-targets`}>Target apps</ListSubheader>);
+					intentTargetOptions.forEach((option) => {
+						const targetLabel: string = option.metadata.title ?? option.appId;
+						if(option.launchNew) {
+							menuItems.push(
+								<MenuItem className="app" key={option.appId} value={JSON.stringify(option.metadata)}>
+									{targetLabel}
+								</MenuItem>
+							);
+						}
 					});
 					
-				});
+					//check if there are any target options
+					if (intentTargetOptions.find((value) => value?.instances.length > 0)){
+						//add app instance targets
+						menuItems.push(<ListSubheader key={`subheading-app-instance-targets`}>Target app instances</ListSubheader>);
+						intentTargetOptions.forEach((option) => {
+							const targetLabel: string = option.metadata.title ?? option.appId;
+							option?.instances.forEach((instance) => {
+								menuItems.push(
+								<MenuItem className="instance" key={instance.instanceId} value={JSON.stringify(instance)}>
+									{`${targetLabel} (${instance.instanceId})`}
+								</MenuItem>
+								);
+							});
+						});
+					}
+				}
+
 				setTargetOptions(menuItems);
 			}
 			
@@ -379,6 +387,8 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 							</MenuItem>
 						);
 
+						//add app targets
+						menuItems.push(<ListSubheader key={`subheading-app-targets`}>Target apps</ListSubheader>);
 						contextTargetOptions.forEach((option) => {
 							const targetLabel: string = option.metadata.title ?? option.appId;
 							if(option.launchNew) {
@@ -388,18 +398,24 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 									</MenuItem>
 								);
 							}
-
-							if(option.instances?.length) {
-								menuItems.push(<ListSubheader key={`subheading-${targetLabel}`}>Target existing &quot;{targetLabel}&quot;</ListSubheader>);
-							}
-							option?.instances.forEach((instance) => {
-								menuItems.push(
-								<MenuItem className="instance" key={instance.instanceId} value={JSON.stringify(instance)}>
-									{instance.instanceId}
-								</MenuItem>
-								);
-							});
 						});
+
+						//check if there are any target options
+						//check if there are any target options
+					if (contextTargetOptions.find((value) => value.instances.length > 0)){
+							//add app instance targets
+							menuItems.push(<ListSubheader key={`subheading-app-instance-targets`}>Target app instances</ListSubheader>);
+							contextTargetOptions.forEach((option) => {
+								const targetLabel: string = option.metadata.title ?? option.appId;
+								option?.instances.forEach((instance) => {
+									menuItems.push(
+									<MenuItem className="instance" key={instance.instanceId} value={JSON.stringify(instance)}>
+										{`${targetLabel} (${instance.instanceId})`}
+									</MenuItem>
+									);
+								});
+							});
+						}
 						
 					}
 				}

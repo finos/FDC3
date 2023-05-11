@@ -97,6 +97,15 @@ const useStyles = makeStyles((theme: Theme) =>
 			},
 			".MuiInputBase-root": {
 				marginBlockEnd: "0px"
+			},
+			".MuiListSubheader-root": {
+				lineHeight: "24px",
+				marginBlockStart: "10px"
+			},
+			".MuiMenuItem-root": {
+				fontSize: "0.9rem",
+				marginBlockEnd: "5px",
+				marginBlockStart: "5px"
 			}
 		},
 		root: {
