@@ -247,7 +247,7 @@ export const ChannelField = observer(
 		}, [channelsList]);
 
 		return (
-			<div>
+			<div className={classes.topMargin}>
 				{currentChannelList.length > 0 &&
 					currentChannelList.map((channel: any) => {
 						const element = (
