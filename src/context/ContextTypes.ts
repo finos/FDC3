@@ -24,7 +24,7 @@
 
 export interface Chart {
   instruments: InstrumentElement[];
-  otherConfig?: { [key: string]: any };
+  otherConfig?: OtherConfigElement[];
   range?: TimeRangeObject;
   style?: Style;
   type: string;
@@ -59,6 +59,13 @@ export interface PurpleMarket {
   COUNTRY_ISOALPHA2?: string;
   MIC?: string;
   name?: string;
+  [property: string]: any;
+}
+
+export interface OtherConfigElement {
+  id?: { [key: string]: any };
+  name?: string;
+  type: string;
   [property: string]: any;
 }
 
@@ -600,7 +607,7 @@ const typeMap: any = {
   Chart: o(
     [
       { json: 'instruments', js: 'instruments', typ: a(r('InstrumentElement')) },
-      { json: 'otherConfig', js: 'otherConfig', typ: u(undefined, m('any')) },
+      { json: 'otherConfig', js: 'otherConfig', typ: u(undefined, a(r('OtherConfigElement'))) },
       { json: 'range', js: 'range', typ: u(undefined, r('TimeRangeObject')) },
       { json: 'style', js: 'style', typ: u(undefined, r('Style')) },
       { json: 'type', js: 'type', typ: '' },
@@ -638,6 +645,14 @@ const typeMap: any = {
       { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
       { json: 'MIC', js: 'MIC', typ: u(undefined, '') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  OtherConfigElement: o(
+    [
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
     ],
     'any'
   ),
