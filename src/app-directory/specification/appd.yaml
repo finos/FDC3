@@ -34,25 +34,32 @@ paths:
                 FDC3WorkbenchAppDefinition:
                   $ref: '#/components/examples/FDC3WorkbenchAppDefinition'
         '400':
-          description: Bad request.
+          description: Bad request
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+              examples:
+                Error400Example:
+                  $ref: '#/components/examples/Error400Example'
         '403':
-          description: >-
-            Forbidden: Certificate authentication is not allowed for the
-            requested user.
+          description: Forbidden
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+              examples:
+                Error403Example:
+                  $ref: '#/components/examples/Error403Example'
         '500':
-          description: 'Server error, see response body for further details.'
+          description: Server error
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+              examples:
+                Error500Example:
+                  $ref: '#/components/examples/Error500Example'
       tags:
         - Application
   /v2/apps:
@@ -69,25 +76,32 @@ paths:
                 AllAppsResponse:
                   $ref: '#/components/examples/AllAppsResponse'
         '400':
-          description: Bad request.
+          description: Bad request
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+              examples:
+                Error400Example:
+                  $ref: '#/components/examples/Error400Example'
         '403':
-          description: >-
-            Forbidden: Certificate authentication is not allowed for the
-            requested user.
+          description: Forbidden
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+              examples:
+                Error403Example:
+                  $ref: '#/components/examples/Error403Example'
         '500':
-          description: 'Server error, see response body for further details.'
+          description: Server error
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+              examples:
+                Error500Example:
+                  $ref: '#/components/examples/Error500Example'
       tags:
         - Application
   '/v1/apps/{appId}':
@@ -379,7 +393,7 @@ components:
             - training
             - travel
             - video
-            - visualisation
+            - visualization
             - weather
           type: array
           items:
@@ -409,7 +423,7 @@ components:
         moreInfo:
           type: string
           format: uri
-          description: Optional URL that provides more infomation about the application
+          description: Optional URL that provides more information about the application
         publisher:
           type: string
           description: >-
@@ -533,7 +547,7 @@ components:
       properties:
         url:
           type: string
-          formt: uri
+          format: uri
           description: Application start URL.
       additionalProperties: false
     NativeAppDetails:
@@ -750,7 +764,7 @@ components:
           items:
             type: string
           description: >-
-            A comma sepaarted list of the types of contexts the intent offered by the application can process. 
+            A comma separated list of the types of contexts the intent offered by the application can process. 
             where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
         customConfig:
           type: object
@@ -947,7 +961,7 @@ components:
             description: Outil de développement et de test pour les desktop agents et applications FDC3
           }
         }
-      summary: A sample app definition for the FDC3 Workbench application
+      summary: A sample app definition for the FDC3 Workbench
     MyAppDefinition:
       value:
         appId: my-application
@@ -1061,7 +1075,7 @@ components:
           fr-FR: 
             title: Mon application,
             description: Un exemple d'application qui utilise FDC3 et se décrit entièrement dans un enregistrement AppD.
-      summary: A sample app definition for an application that describes its use of interop.
+      summary: A sample app definition that describes the app's use of interop.
     AllAppsResponse:
       value:
         applications: # you can't $ref inside a $ref so example is repeated here for search response
@@ -1253,3 +1267,18 @@ components:
             }
         message: OK
       summary: A sample 'all applications' listing response
+    Error400Example:
+      value:
+        code: 400
+        message: There was an error in your request.
+      summary: A sample Bad Request error.
+    Error403Example:
+      value:
+        code: 403
+        message: Certificate authentication failed for the requested user.
+      summary: A sample Forbidden error.
+    Error500Example:
+      value:
+        code: 500
+        message: An internal server error occurred. See the response body for further details.
+      summary: A sample Server error.
