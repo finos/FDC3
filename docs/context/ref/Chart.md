@@ -33,7 +33,7 @@ In addition to handling requests to plot charts, a charting application may use 
 | `style`    | string  | No       | one of: `'line'`, `'bar'`, `'stacked-bar'`, `'mountain'`, `'candle'`, `'pie'`, `'scatter'`, `'histogram'`, `'heatmap'`, `'custom'`      |
 | `otherConfig`* | array  | No |  `[ {/* additional config context objects */} ]`  |
 
-\* It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` element.
+\* It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` array as context objects.
 
 ## Example
 
