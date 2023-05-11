@@ -714,11 +714,13 @@ components:
           items:
             type: object
             required:
-              - name
+              - id
             properties:
-              name:
+              id:
                 type: string
-                description: The name of the App Channel.
+                description: >
+                  The id of the App Channel. 
+                  N.b. in FDC3 2.0 this field was incorrectly  called `name`.
               description:
                 type: string
                 description: A description of how the channel is used.
@@ -894,7 +896,7 @@ components:
         tooltip: FDC3 Workbench
         lang: en-US
         icons:
-          - src: http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png
+          - src: https://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png
         screenshots:
           - src: https://fdc3.finos.org/docs/assets/fdc3-logo.png
             label: FDC3 logo
@@ -1064,7 +1066,7 @@ components:
               - fdc3.instrument
               - fdc3.organization
           appChannels: 
-            - name: myApp.quotes,
+            - id: myApp.quotes,
               description: >-
                 Used to share a stream of quotes for currently displayed instrument and may be used to change the currently displayed symbol,
               broadcasts: 
@@ -1179,7 +1181,7 @@ components:
                   - fdc3.instrument
                   - fdc3.organization
               appChannels: 
-                - name: myApp.quotes,
+                - id: myApp.quotes,
                   description: >-
                     Used to share a stream of quotes for currently displayed instrument and may be used to change the currently displayed symbol,
                   broadcasts:
@@ -1199,7 +1201,7 @@ components:
             tooltip: FDC3 Workbench
             lang: en-US
             icons:
-              - src: http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png
+              - src: https://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png
             screenshots:
               - src: https://fdc3.finos.org/docs/assets/fdc3-logo.png,
                 label: FDC3 logo
