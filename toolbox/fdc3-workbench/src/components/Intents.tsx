@@ -443,11 +443,11 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 		} else {
 			intentStore.addIntentListener(
 				intentListener.value,
-				toJS(resultTypeContext),
-				currentAppChannelId,
-				channelType === "private-channel",
-				resultOverChannelContextList,
-				resultOverChannelContextDelays
+				sendIntentResult && resultType === "context-result" ? toJS(resultTypeContext) : null,
+				sendIntentResult && resultType === "channel-result" ? currentAppChannelId : undefined,
+				sendIntentResult && resultType === "channel-result" ? channelType === "private-channel" : undefined,
+				sendIntentResult && resultType === "channel-result" ? resultOverChannelContextList : undefined,
+				sendIntentResult && resultType === "channel-result" ? resultOverChannelContextDelays : undefined
 			);
 			setIntentListener(null);
 		}
