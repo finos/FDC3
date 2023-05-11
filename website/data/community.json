@@ -105,9 +105,9 @@
     "description": "The FDC3 standard for application interoperability has become a key fintech enabler for transformation as financial organizations embrace micro-frontend-oriented workflows. Learn about the vision and key concepts of FDC3, the benefits it provides, and how workflow-driven design makes it easy to get started with FDC3."
   },
   {
-    "title": "Glue42 Enterprise",
-    "publisher": "Glue42",
-    "image": "/img/users/Glue42 Enterprise Positive.svg",
+    "title": "Glue42",
+    "publisher": "Tick42",
+    "image": "/img/users/Glue42_Logo.png",
     "infoLink": "https://glue42.com/enterprise/",
     "docsLink": "https://docs.glue42.com/",
     "type": "platform-provider",
@@ -123,6 +123,10 @@
           {
             "text": "Glue42 Core+ v1.0 Browser Extension v1.4 / Glue FDC3 v2.6.0 Certified Conformant With FDC3 1.2 Specification on 6th December 2022",
             "link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+          },
+          {
+            "text": "Glue42 Core v2.6.1 Certified Conformant With FDC3 1.2 Specification on 13th March 2023",
+            "link": "tbd"
           }
         ]
       }
@@ -144,7 +148,7 @@
         "items": [
           {
             "text": "OpenFin - 31.111.74.3 Certified Conformant With FDC3 1.2 Specification on 22nd February 2023",
-            "link": ""
+            "link": "https://www.finos.org/blog/fdc3-news-march-2023"
           }
         ]
       }  
@@ -347,7 +351,18 @@
     "infoLink": "https://www.connectifi.co",
     "description": "Connectifi provides FDC3 interop as a cloud service, empowering organizations to connect anything, anywhere, in a security-first environment that does not require installs.\n\nUse Connectifi to leverage FDC3 in standard browser and mobile environments, to expand the reach and ROI of your existing desktop tech stack, and to create secure and verifiable interop channels between mission critical applications.",
     "badges": [],
-    "type": "platform-provider"
+    "type": "platform-provider",
+     "conformance": [
+      {
+        "src": "/img/community/certified-1.2.png",
+        "items": [
+          {
+            "text": "Connectifi v1.1.0 Certified Conformant With FDC3 1.2 Specification on 26th April 2023",
+            "link": "tbd"
+          }
+        ]
+      }  
+    ]
   },
   {
     "title": "FlexTrade Buy and Sell-Side O/EMS Solutions",
