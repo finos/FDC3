@@ -98,12 +98,12 @@ class Fdc3Api {
 
 	async raiseIntent(intent: string, context: fdc3_1.Context | fdc3_2.Context, app?: AppMetadata | undefined) {
 		if (window.fdc3Version === "2.0") {
-			return await fdc3_2.raiseIntent(intent, context, {
+			return await fdc3_2.raiseIntent(intent, context, app ? {
 				appId: app?.appId ? app.appId : "",
 				instanceId: (app as fdc3_2.AppMetadata)?.instanceId,
-			});
+			} : undefined);
 		} else {
-			return fdc3_1.raiseIntent(intent, context, app?.appId);
+			return fdc3_1.raiseIntent(intent, context, app?.appId ?? app?.name ?? undefined);
 		}
 	}
 
