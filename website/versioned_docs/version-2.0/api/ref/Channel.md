@@ -12,7 +12,7 @@ A channel can be either a ["User" channel](../api/spec#joining-user-channels) (r
 
 :::note
 
-There are differences in behavior when you interact with a User channel via the `DesktopAgent` interface and the `Channel` interface. Specifically, when 'joining' a User channel or adding a context listener when already joined to a channel via the `DesktopAgent` interface, existing context (matching the type of the context listener) on the channel is received by the context listener immediately. Whereas, when a context listener is added via the Channel interface, context is not received automatically, but may be retrieved manually via the [`getCurrentContext()`](#getcurrentcontext) function.
+There are differences in behavior when you interact with a User channel via the `DesktopAgent` interface and the `Channel` interface. Specifically, when 'joining' a User channel or adding a context listener when already joined to a channel via the `DesktopAgent` interface, existing context (matching the type of the context listener) on the channel is received by the context listener immediately. Whereas, when a context listener is added via the `Channel` interface, context is not received automatically, but may be retrieved manually via the [`getCurrentContext()`](#getcurrentcontext) function.
 
 :::
 
