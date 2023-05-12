@@ -121,6 +121,8 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Provide an ID for each [`PrivateChannel`](ref/PrivateChannel) created via [`createPrivateChannel`](ref/DesktopAgent#createprivatechannel) and prevent them from being retrieved via [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) by ID.
 - Only require app directories that they connect to to have implemented only the minimum requirements specified in the [App Directory API Part](../app-directory/spec) of this Standard.
 - Provide details of whether they implement optional features of the Desktop Agent API in the `optionalFeatures` property of the [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned by the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function.
+- Allow up to 30 seconds for an application, launched via [`fdc3.open`](../api/ref/DesktopAgent#open) with a context argument, to add a context listener via the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call, so that it can deliver context to it.
+- Allow up to 30 seconds for an application, launched via [`fdc3.raiseIntent`](../api/ref/DesktopAgent#raiseintent), to add an intent listener via the [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener) API call, so that it can deliver the intent and context to it.
 
 An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 
@@ -148,6 +150,8 @@ An FDC3 Standard compliant Desktop Agent implementation **MAY**:
   - [`open`](ref/DesktopAgent#open-deprecated) (deprecated version that addresses apps via `name` field)
   - [`raiseIntent`](ref/DesktopAgent#raiseintent-deprecated) (deprecated version that addresses apps via `name` field)
   - [`raiseIntentForContext`](ref/DesktopAgent#raiseintentforcontext-deprecated) (deprecated version that addresses apps via `name` field)
+- Allow up to 90 seconds for an application, launched via [`fdc3.open`](../api/ref/DesktopAgent#open) with a context argument, to add a context listener via the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call, so that it can deliver context to it.
+- Allow up to 90 seconds for an application, launched via [`fdc3.raiseIntent`](../api/ref/DesktopAgent#raiseintent), to add an intent listener via the [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener) API call, so that it can deliver the intent and context to it.
 
 For more details on FDC3 Standards compliance (including the versioning, deprecation and experimental features policies) please see the [FDC3 Compliance page](../fdc3-compliance).
 
@@ -352,6 +356,8 @@ Applications need to let the system know the intents they can support.  Typicall
 
 When an instance of an application is launched, it is expected to add an [`IntentHandler`](ref/Types#intenthandler) function to the Desktop Agent for each intent it has registered by calling the [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) function of the Desktop Agent. Doing so allows the Desktop Agent to pass incoming intents and contexts to that instance of the application. Hence, if the application instance was spawned in response to the raised intent, then the Desktop Agent must wait for the relevant intent listener to be added by that instance before it can deliver the intent and context to it. In order to facilitate accurate error responses, calls to `fdc3.raiseIntent` should not return an `IntentResolution` until the intent handler has been added and the intent delivered to the target app.
 
+Intent handlers SHOULD be registered via [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) within 30 seconds of the application launch and MUST be added within 90 seconds.
+
 ### Originating App Metadata
 
 Optional metadata about each intent & context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation to registered intent handlers. As this metadata is optional, apps making use of it MUST handle cases where it is not provided.
@@ -370,28 +376,31 @@ Context channels allows a set of apps to share a stateful piece of data between 
 
 There are three types of channels, which have different visibility and discoverability semantics:
 
-1. **User channels**, which:
+1. ***User channels***, which:
+
     - facilitate the creation of user-controlled context links between applications (often via the selection of a color channel),
     - are created and named by the desktop agent,
     - are discoverable (via the [`getUserChannels()`](ref/DesktopAgent#getuserchannels) API call),
     - can be 'joined' (via the [`joinUserChannel()`](ref/DesktopAgent#joinuserchannel) API call).
 
     :::note
-    Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels).
+  Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels).
     :::
 
     :::note
-    Earlier versions of FDC3 included the concept of a 'global' system channel
+  Earlier versions of FDC3 included the concept of a 'global' system channel
     which was deprecated in FDC3 1.2 and removed in FDC3 2.0.
     :::
 
-2. **App channels**, which:
+2. ***App channels***, which:
+
     - facilitate developer controlled messaging between applications,
     - are created and named by applications (via the [`getOrCreateChannel()`](ref/DesktopAgent#getorcreatechannel) API call),
     - are not discoverable,
     - are interacted with via the [Channel API](ref/Channel) (accessed via the desktop agent [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API call)
 
-3. **Private** channels, which:
+3. ***Private*** channels, which:
+
     - facilitate private communication between two parties,
     - have an auto-generated identity and can only be retrieved via a raised intent.
 

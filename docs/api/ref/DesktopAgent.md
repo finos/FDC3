@@ -61,9 +61,11 @@ interface DesktopAgent {
 addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 ```
 
-Adds a listener for incoming context broadcasts from the Desktop Agent on the current User Channel. If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
+Adds a listener for incoming context broadcasts from the Desktop Agent (via a User channel or [`fdc3.open`](#open) API call). If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
 
-Context broadcasts are only received from apps that are joined to the same User Channel as the listening application, hence, if the application is not currently joined to a User Channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
+Context broadcasts are primarily received from apps that are joined to the same User Channel as the listening application, hence, if the application is not currently joined to a User Channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
+
+Context may also be received via this listener if the application was launched via a call to the [`fdc3.open`](#open) API, where context was passed as an argument. In order to receive this, applications SHOULD add their context listener within 30 seconds of launch and MUST add it within 90 seconds of launch, or an error will be returned to the caller and the context may not be delivered. The exact timeout used (between 30 and 90 seconds) is set by the Desktop Agent implementation.
 
 Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the Desktop Agent implementation.
 
@@ -95,9 +97,12 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, 
 addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 ```
 
-Adds a listener for incoming intents from the Desktop Agent. The handler function may return void or a promise that resolves to a [`IntentResult`](Types#intentresult), which is either a [`Context`](Types#context) object, representing any data that should be returned to the app that raised the intent, or a [`Channel`](Channel) or [`PrivateChannel`](PrivateChannel) over which data responses will be sent. The `IntentResult` will be returned to the app that raised the intent via the [`IntentResolution`](Metadata#intentresolution) and retrieved from it using the `getResult()` function.
+Adds a listener for incoming intents raised by other applications, via calls to [`fdc3.raiseIntent`](#raiseintent) or [`fdc3.raiseIntentForContext`](#raiseintentforcontext). Applications SHOULD add their intent listeners within 30 seconds of launch and MUST add them within 90 seconds of launch, or an error will be returned to the caller and the intent and context may not be delivered. The exact timeout used (between 30 and 90 seconds) is set by the Desktop Agent implementation.
 
-The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if any of the following is true: 
+The handler function may return void or a promise that resolves to a [`IntentResult`](Types#intentresult), which is either a [`Context`](Types#context) object, representing any data that should be returned to the app that raised the intent, or a [`Channel`](Channel) or [`PrivateChannel`](PrivateChannel) over which data responses will be sent. The `IntentResult` will be returned to the app that raised the intent via the [`IntentResolution`](Metadata#intentresolution) and retrieved from it using the `getResult()` function.
+
+The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if any of the following is true:
+
 1. The intent handling function's returned promise rejects.
 2. The intent handling function doesn't return a promise.
 3. The returned promise resolves to an invalid type.
