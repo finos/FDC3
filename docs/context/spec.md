@@ -142,12 +142,14 @@ ISO 4217 only includes major currency codes, conversions to minor currencies is 
 An FDC3 Standard compliant application that supports the use of context data **MUST**:
 
 * Ensure that any FDC3-defined standard context types used meet the interface defined for that type of context data.
-* Where Channels are supported or an app is intended to receive context from [`fdc3.open`](../api/ref/DesktopAgent#open) calls, use the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call to set up appropriate handlers on start-up (for User channels and for receiving context from [`fdc3.open`](../api/ref/DesktopAgent#open)) or when the channel is first created or retrieved (for App and Private channels).
+* Where User channels are supported, or an app is intended to receive context from [`fdc3.open`](../api/ref/DesktopAgent#open) calls, use the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call to set up appropriate handlers within **90 seconds** of it being launched.
+* Where App or Private channels are supported, use the [`Channel.addContextListener`](../api/ref/Channel#addcontextlistener) API call to set up appropriate handlers.
 
 An FDC3 Standard compliant application that supports the use of context data **SHOULD**:
 
 * Prefer FDC3-defined standard context types over proprietary contexts, where a suitable FDC3-defined standard context type is available.
 * Ensure that any proprietary context data types defined follow any the recommended [namespacing](#namespacing) and [field type conventions](#field-type-conventions) in the specification.
+* Where User channels are supported, or an app is intended to receive context from [`fdc3.open`](../api/ref/DesktopAgent#open) calls, use the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call to set up appropriate handlers within **30 seconds** of it being launched.
 
 An FDC3 Standard compliant application that supports the use of context data **MAY**:
 

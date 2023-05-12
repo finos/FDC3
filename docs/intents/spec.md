@@ -132,13 +132,14 @@ const intentsAndApps = await fdc3.findIntentsByContext({
 An FDC3 Standard compliant application that supports intents **MUST**:
 
 * Meet the expected context and behavior defined for any FDC3-defined standard intents used.
-* Use the [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener) API call to set up a handler for each supported intent as soon as possible when it starts up. This facilitates delivery of raised intents to the application.
+* Use the [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener) API call to set up a handler for each supported intent within **90 seconds** of it being launched. This facilitates delivery of raised intents to the application.
 
 An FDC3 Standard compliant application that supports intents **SHOULD**:
 
 * Prefer FDC3-defined standard intents over proprietary intents, where a suitable standardized intent is available.
 * Ensure that proprietary intents follow the recommended naming conventions in the specification.
 * Apply [namespacing](#namespaces) to proprietary intent names, where it is necessary to avoid collision with those created by other applications.
+* Use the [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener) API call to set up a handler for each supported intent within **30 seconds** of it being launched.
 
 An FDC3 Standard compliant application that supports intents **MAY**:
 
