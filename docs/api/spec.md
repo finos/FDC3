@@ -122,7 +122,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Only require app directories that they connect to to have implemented only the minimum requirements specified in the [App Directory API Part](../app-directory/spec) of this Standard.
 - Provide details of whether they implement optional features of the Desktop Agent API in the `optionalFeatures` property of the [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned by the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function.
 - Allow up to 30 seconds for an application, launched via [`fdc3.open`](../api/ref/DesktopAgent#open) with a context argument, to add a context listener via the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call, so that it can deliver context to it.
-- Allow up to 30 seconds for an application, launched via [`fdc3.raiseIntent`](../api/ref/DesktopAgent#raiseintent), to add an intent listener via the [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener) API call, so that it can deliver the intent and context to it.
+- Allow up to 30 seconds for an application, launched via [`fdc3.raiseIntent`](../api/ref/DesktopAgent#raiseintent) or [`fdc3.raiseIntentForContext`](../api/ref/DesktopAgent#raiseintentforcontext), to add an intent listener via the [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener) API call, so that it can deliver the intent and context to it.
 
 An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 
