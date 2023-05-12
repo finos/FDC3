@@ -49,6 +49,10 @@ html[data-theme='light'] .footer-copyright {
   font-size: smaller;
 }
 
+html[data-theme='light'] body {
+  background-color: #fff;
+}
+
 .dropdown__menu {
   background-color:  #009ADC;
 }
