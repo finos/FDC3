@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 * Added error examples to the /v2 App Directory API routes ([#973](https://github.com/finos/FDC3/pull/973))
+* Added details of timeouts after launch within which applications SHOULD (30 seconds) and MUST (90 seconds) add their context or intent listeners via the API, and details of the same timeouts being allowed for by Desktop Agents (MUST 30 seconds, SHOULD 90 seconds) ([#987](https://github.com/finos/FDC3/pull/987))
 
 ### Changed
 
