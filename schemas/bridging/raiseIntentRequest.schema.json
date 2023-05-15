@@ -16,14 +16,17 @@
         "payload": {
           "type": "object",
           "properties": {
-            "app": {
-              "$ref": "../api/appIdentifier.schema.json"
+            "intent": {
+              "type": "string"
             },
             "context": {
               "$ref": "../context/context.schema.json"
+            },
+            "app": {
+              "$ref": "../api/appIdentifier.schema.json"
             }
           },
-          "required": ["app", "context"],
+          "required": ["intent", "context", "app"],
           "additionalProperties": false
         },
         "meta": {
