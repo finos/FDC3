@@ -1392,6 +1392,7 @@ export interface RaiseIntentRequestMeta {
 export interface RaiseIntentRequestPayload {
   app: SourceElement;
   context: ContextElement;
+  intent: string;
 }
 
 export interface RaiseIntentResponse {
@@ -2755,6 +2756,7 @@ const typeMap: any = {
     [
       { json: 'app', js: 'app', typ: r('SourceElement') },
       { json: 'context', js: 'context', typ: r('ContextElement') },
+      { json: 'intent', js: 'intent', typ: '' },
     ],
     false
   ),

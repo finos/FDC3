@@ -41,8 +41,6 @@ Desktop Agents MAY support the deprecated `raiseIntent` signature that uses the 
 
 :::
 
-
-
 ## Message exchange
 
 :::note
@@ -110,7 +108,7 @@ The bridge fills in the `source.desktopAgent` field and forwards the request to 
 {
     "type": "raiseIntentRequest",
     "payload": {
-       "intent": "StartChat",
+        "intent": "StartChat",
         "context": {/*contextObj*/},
         "app": {
             "appId": "Slack",
