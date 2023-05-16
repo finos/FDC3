@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/baseImplementationMetadata.schema.json",
+  "title": "BaseImplementationMetadata",
+  "description": "Base of Implementation Metadata used by Bridging that leaves out the metadata of the calling application (appMetadata)",
+  "type": "object",
+  "properties": {
+    "fdc3Version": {
+        "type": "string"
+    },
+    "provider": {
+        "type": "string"
+    },
+    "providerVersion": {
+        "type": "string"
+    },
+    "optionalFeatures": {
+      "type": "object",
+      "properties": {
+        "OriginatingAppMetadata": {
+            "type": "boolean"
+        },
+        "UserChannelMembershipAPIs": {
+            "type": "boolean"
+        },
+        "DesktopAgentBridging": {
+            "type": "boolean"
+        }
+      },
+      "required": [
+        "OriginatingAppMetadata",
+        "UserChannelMembershipAPIs",
+        "DesktopAgentBridging"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+      "fdc3Version",
+      "provider",
+      "optionalFeatures"
+  ],
+  "additionalProperties": false
+}
