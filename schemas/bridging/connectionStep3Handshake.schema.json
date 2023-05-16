@@ -12,7 +12,7 @@
       "properties": {
         "implementationMetadata": {
           "description": "DesktopAgent implementationMetadata trying to connect to the bridge.",
-          "$ref": "../api/implementationMetadata.schema.json"
+          "$ref": "../api/baseImplementationMetadata.schema.json"
         },
         "requestedName": {
           "description": "The requested Desktop Agent name",

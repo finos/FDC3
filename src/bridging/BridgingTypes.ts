@@ -1,10 +1,11 @@
 // To parse this data:
 //
-//   import { Convert, AppIdentifier, AppIntent, AppMetadata, Channel, ContextMetadata, DesktopAgentIdentifier, DisplayMetadata, Icon, Image, ImplementationMetadata, IntentMetadata, IntentResolution, IntentResult, BridgeRequest, BridgeResponse, BroadcastRequest, ConnectionStep2Hello, ConnectionStep3Handshake, ConnectionStep4AuthenticationFailed, ConnectionStep6ConnectedAgentsUpdate, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, OpenRequest, OpenResponse, PrivateChannelBroadcast, PrivateChannelEventListenerAdded, PrivateChannelEventListenerRemoved, PrivateChannelOnAddContextListener, PrivateChannelOnDisconnect, PrivateChannelOnUnsubscribe, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, Context } from "./file";
+//   import { Convert, AppIdentifier, AppIntent, AppMetadata, BaseImplementationMetadata, Channel, ContextMetadata, DesktopAgentIdentifier, DisplayMetadata, Icon, Image, ImplementationMetadata, IntentMetadata, IntentResolution, IntentResult, BridgeRequest, BridgeResponse, BroadcastRequest, ConnectionStep2Hello, ConnectionStep3Handshake, ConnectionStep4AuthenticationFailed, ConnectionStep6ConnectedAgentsUpdate, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, OpenRequest, OpenResponse, PrivateChannelBroadcast, PrivateChannelEventListenerAdded, PrivateChannelEventListenerRemoved, PrivateChannelOnAddContextListener, PrivateChannelOnDisconnect, PrivateChannelOnUnsubscribe, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, Context } from "./file";
 //
 //   const appIdentifier = Convert.toAppIdentifier(json);
 //   const appIntent = Convert.toAppIntent(json);
 //   const appMetadata = Convert.toAppMetadata(json);
+//   const baseImplementationMetadata = Convert.toBaseImplementationMetadata(json);
 //   const channel = Convert.toChannel(json);
 //   const contextMetadata = Convert.toContextMetadata(json);
 //   const desktopAgentIdentifier = Convert.toDesktopAgentIdentifier(json);
@@ -137,6 +138,23 @@ export interface AppMetadata {
 }
 
 /**
+ * Base of Implementation Metadata used by Bridging that leaves out the metadata of the
+ * calling application (appMetadata)
+ */
+export interface BaseImplementationMetadata {
+  fdc3Version: string;
+  optionalFeatures: BaseImplementationMetadataOptionalFeatures;
+  provider: string;
+  providerVersion?: string;
+}
+
+export interface BaseImplementationMetadataOptionalFeatures {
+  DesktopAgentBridging: boolean;
+  OriginatingAppMetadata: boolean;
+  UserChannelMembershipAPIs: boolean;
+}
+
+/**
  * Represents a context channel that applications can join to share context data.
  */
 export interface Channel {
@@ -221,10 +239,16 @@ export interface Image {
 }
 
 /**
- * Metadata relating to the FDC3 DesktopAgent object and its provider
+ * Metadata relating to the FDC3 DesktopAgent object and its provider. Includes all fields
+ * from BaseImplementationMetadata and the metadata of the calling application according to
+ * the desktop agent.
+ *
+ * Base of Implementation Metadata used by Bridging that leaves out the metadata of the
+ * calling application (appMetadata)
+ *
+ * DesktopAgent implementationMetadata trying to connect to the bridge.
  */
 export interface ImplementationMetadata {
-  appMetadata: AppMetadataElement;
   fdc3Version: string;
   optionalFeatures: ImplementationMetadataOptionalFeatures;
   provider: string;
@@ -232,7 +256,7 @@ export interface ImplementationMetadata {
 }
 
 export interface ImplementationMetadataOptionalFeatures {
-  DesktopAgentBridging?: boolean;
+  DesktopAgentBridging: boolean;
   OriginatingAppMetadata: boolean;
   UserChannelMembershipAPIs: boolean;
 }
@@ -506,7 +530,7 @@ export interface ConnectionStep3HandshakePayload {
   /**
    * DesktopAgent implementationMetadata trying to connect to the bridge.
    */
-  implementationMetadata: ImplementationMetadataElement;
+  implementationMetadata: ImplementationMetadataClass;
   /**
    * The requested Desktop Agent name
    */
@@ -514,22 +538,16 @@ export interface ConnectionStep3HandshakePayload {
 }
 
 /**
- * DesktopAgent implementationMetadata trying to connect to the bridge.
+ * Base of Implementation Metadata used by Bridging that leaves out the metadata of the
+ * calling application (appMetadata)
  *
- * Metadata relating to the FDC3 DesktopAgent object and its provider
+ * DesktopAgent implementationMetadata trying to connect to the bridge.
  */
-export interface ImplementationMetadataElement {
-  appMetadata: AppMetadataElement;
+export interface ImplementationMetadataClass {
   fdc3Version: string;
-  optionalFeatures: AllAgentOptionalFeatures;
+  optionalFeatures: ImplementationMetadataOptionalFeatures;
   provider: string;
   providerVersion?: string;
-}
-
-export interface AllAgentOptionalFeatures {
-  DesktopAgentBridging?: boolean;
-  OriginatingAppMetadata: boolean;
-  UserChannelMembershipAPIs: boolean;
 }
 
 export interface ConnectionStep4AuthenticationFailed {
@@ -597,6 +615,23 @@ export interface ConnectionStep6ConnectedAgentsUpdatePayload {
    * longer is assigned.
    */
   removeAgent?: string;
+}
+
+/**
+ * Metadata relating to the FDC3 DesktopAgent object and its provider. Includes all fields
+ * from BaseImplementationMetadata and the metadata of the calling application according to
+ * the desktop agent.
+ *
+ * Base of Implementation Metadata used by Bridging that leaves out the metadata of the
+ * calling application (appMetadata)
+ *
+ * DesktopAgent implementationMetadata trying to connect to the bridge.
+ */
+export interface ImplementationMetadataElement {
+  fdc3Version: string;
+  optionalFeatures: ImplementationMetadataOptionalFeatures;
+  provider: string;
+  providerVersion?: string;
 }
 
 export interface FindInstancesRequest {
@@ -1551,6 +1586,14 @@ export class Convert {
     return JSON.stringify(uncast(value, r('AppMetadata')), null, 2);
   }
 
+  public static toBaseImplementationMetadata(json: string): BaseImplementationMetadata {
+    return cast(JSON.parse(json), r('BaseImplementationMetadata'));
+  }
+
+  public static baseImplementationMetadataToJson(value: BaseImplementationMetadata): string {
+    return JSON.stringify(uncast(value, r('BaseImplementationMetadata')), null, 2);
+  }
+
   public static toChannel(json: string): Channel {
     return cast(JSON.parse(json), r('Channel'));
   }
@@ -2096,6 +2139,23 @@ const typeMap: any = {
     ],
     false
   ),
+  BaseImplementationMetadata: o(
+    [
+      { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
+      { json: 'optionalFeatures', js: 'optionalFeatures', typ: r('BaseImplementationMetadataOptionalFeatures') },
+      { json: 'provider', js: 'provider', typ: '' },
+      { json: 'providerVersion', js: 'providerVersion', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  BaseImplementationMetadataOptionalFeatures: o(
+    [
+      { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: true },
+      { json: 'OriginatingAppMetadata', js: 'OriginatingAppMetadata', typ: true },
+      { json: 'UserChannelMembershipAPIs', js: 'UserChannelMembershipAPIs', typ: true },
+    ],
+    false
+  ),
   Channel: o(
     [
       { json: 'displayMetadata', js: 'displayMetadata', typ: u(undefined, r('DisplayMetadataClass')) },
@@ -2149,7 +2209,6 @@ const typeMap: any = {
   ),
   ImplementationMetadata: o(
     [
-      { json: 'appMetadata', js: 'appMetadata', typ: r('AppMetadataElement') },
       { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
       { json: 'optionalFeatures', js: 'optionalFeatures', typ: r('ImplementationMetadataOptionalFeatures') },
       { json: 'provider', js: 'provider', typ: '' },
@@ -2159,7 +2218,7 @@ const typeMap: any = {
   ),
   ImplementationMetadataOptionalFeatures: o(
     [
-      { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: u(undefined, true) },
+      { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: true },
       { json: 'OriginatingAppMetadata', js: 'OriginatingAppMetadata', typ: true },
       { json: 'UserChannelMembershipAPIs', js: 'UserChannelMembershipAPIs', typ: true },
     ],
@@ -2317,26 +2376,17 @@ const typeMap: any = {
     [
       { json: 'authToken', js: 'authToken', typ: u(undefined, '') },
       { json: 'channelsState', js: 'channelsState', typ: m(a(r('ContextElement'))) },
-      { json: 'implementationMetadata', js: 'implementationMetadata', typ: r('ImplementationMetadataElement') },
+      { json: 'implementationMetadata', js: 'implementationMetadata', typ: r('ImplementationMetadataClass') },
       { json: 'requestedName', js: 'requestedName', typ: '' },
     ],
     false
   ),
-  ImplementationMetadataElement: o(
+  ImplementationMetadataClass: o(
     [
-      { json: 'appMetadata', js: 'appMetadata', typ: r('AppMetadataElement') },
       { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
-      { json: 'optionalFeatures', js: 'optionalFeatures', typ: r('AllAgentOptionalFeatures') },
+      { json: 'optionalFeatures', js: 'optionalFeatures', typ: r('ImplementationMetadataOptionalFeatures') },
       { json: 'provider', js: 'provider', typ: '' },
       { json: 'providerVersion', js: 'providerVersion', typ: u(undefined, '') },
-    ],
-    false
-  ),
-  AllAgentOptionalFeatures: o(
-    [
-      { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: u(undefined, true) },
-      { json: 'OriginatingAppMetadata', js: 'OriginatingAppMetadata', typ: true },
-      { json: 'UserChannelMembershipAPIs', js: 'UserChannelMembershipAPIs', typ: true },
     ],
     false
   ),
@@ -2379,6 +2429,15 @@ const typeMap: any = {
       { json: 'allAgents', js: 'allAgents', typ: a(r('ImplementationMetadataElement')) },
       { json: 'channelsState', js: 'channelsState', typ: u(undefined, m(a(r('ContextElement')))) },
       { json: 'removeAgent', js: 'removeAgent', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  ImplementationMetadataElement: o(
+    [
+      { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
+      { json: 'optionalFeatures', js: 'optionalFeatures', typ: r('ImplementationMetadataOptionalFeatures') },
+      { json: 'provider', js: 'provider', typ: '' },
+      { json: 'providerVersion', js: 'providerVersion', typ: u(undefined, '') },
     ],
     false
   ),

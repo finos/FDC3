@@ -1,47 +1,31 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://fdc3.finos.org/schemas/next/api/implementationMetadata.schema.json",
-    "title": "ImplementationMetadata",
-    "description": "Metadata relating to the FDC3 DesktopAgent object and its provider",
-    "type": "object",
-    "properties": {
-        "fdc3Version": {
-            "type": "string"
-        },
-        "provider": {
-            "type": "string"
-        },
-        "providerVersion": {
-            "type": "string"
-        },
-        "optionalFeatures": {
-            "type": "object",
-            "properties": {
-                "OriginatingAppMetadata": {
-                    "type": "boolean"
-                },
-                "UserChannelMembershipAPIs": {
-                    "type": "boolean"
-                },
-                "DesktopAgentBridging": {
-                    "type": "boolean"
-                }
-            },
-            "required": [
-                "OriginatingAppMetadata",
-                "UserChannelMembershipAPIs"
-            ],
-            "additionalProperties": false
-        },
-        "appMetadata": {
-            "$ref": "appMetadata.schema.json"
-        }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/implementationMetadata.schema.json",
+  "title": "ImplementationMetadata",
+  "description": "Metadata relating to the FDC3 DesktopAgent object and its provider. Includes all fields from BaseImplementationMetadata and the metadata of the calling application according to the desktop agent.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "baseImplementationMetadata.schema.json"
     },
-    "required": [
+    {
+      "type":"object",
+      "properties": {
+        "fdc3Version":true,
+        "provider": true,
+        "providerVersion": true,
+        "optionalFeatures": true, 
+        "appMetadata": {
+          "$ref": "appMetadata.schema.json"
+        }
+      },
+      "required": [
         "fdc3Version",
         "provider",
         "optionalFeatures",
         "appMetadata"
-    ],
-    "additionalProperties": false
+      ],
+      "additionalProperties": false
+    }
+  ]
 }

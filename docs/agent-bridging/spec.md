@@ -208,8 +208,25 @@ The DA must then respond to the `hello` message with a `handshake` request to th
     payload: {
         /** The JWT authentication token */
         authToken?: string,
-        /** DesktopAgent implementationMetadata trying to connect to the bridge */
-        implementationMetadata: ImplementationMetadata,
+         /** The version number of the FDC3 specification that the implementation
+          *  provides. The string must be a numeric semver version, e.g. 1.2 or 1.2.1. */
+        fdc3Version: string,
+        /** The name of the provider of the FDC3 Desktop Agent Implementation
+         *  (e.g.Finsemble, Glue42, OpenFin etc.). */
+        provider: string,
+        /** The version of the provider of the FDC3 Desktop Agent Implementation (e.g. 5.3.0). */
+        providerVersion: string,
+        /** Metadata indicating whether the Desktop Agent implements optional features of
+         *  the Desktop Agent API. */
+        readonly optionalFeatures: {
+          /** Used to indicate whether the exposure of 'origninating app metadata' for
+           *  context and intent messages is supported by the Desktop Agent.*/
+          "OriginatingAppMetadata": boolean;
+          /** Used to indicate whether the optional `fdc3.joinUserChannel`,
+           *  `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
+           *  the Desktop Agent.*/
+          "UserChannelMembershipAPIs": boolean;
+        };
         /** The requested DA name */
         requestedName: string,
         /** The current state of the Desktop Agent's channels, excluding any private channels,
