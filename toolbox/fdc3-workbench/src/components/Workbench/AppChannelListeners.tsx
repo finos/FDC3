@@ -4,6 +4,7 @@ import appChannelStore from "../../store/AppChannelStore";
 import { AccordionList, AccordionListItem } from "../common/AccordionList";
 import { TextField } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { ReceivedField } from "./ReceivedField";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -22,28 +23,31 @@ export const AppChannelListeners = observer(() => {
 
 	let contextListeners: AccordionListItem[] = [];
 
-	appChannelStore.appChannelListeners.forEach(({ id, channelId, type, lastReceivedContext }) => {
+	appChannelStore.channelListeners.forEach(({ id, channelId, type, lastReceivedContext, metaData }) => {
 		const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
 		const contextField = (
-			<TextField
-				disabled
-				label={"LAST RECEIVED CONTEXT"}
-				className={classes.textField}
-				InputLabelProps={{
-					shrink: true,
-				}}
-				contentEditable={false}
-				fullWidth
-				multiline
-				variant="outlined"
-				size="small"
-				value={receivedContextListenerValue}
-				InputProps={{
-					classes: {
-						input: classes.input,
-					},
-				}}
-			/>
+			<div>
+				<TextField
+					disabled
+					label={"LAST RECEIVED CONTEXT"}
+					className={classes.textField}
+					InputLabelProps={{
+						shrink: true,
+					}}
+					contentEditable={false}
+					fullWidth
+					multiline
+					variant="outlined"
+					size="small"
+					value={receivedContextListenerValue}
+					InputProps={{
+						classes: {
+							input: classes.input,
+						},
+					}}
+				/>
+				{window.fdc3Version === "2.0" && <ReceivedField metaData={metaData} />}
+			</div>
 		);
 
 		contextListeners.push({ id, textPrimary: `${channelId}: ${type}`, afterEachElement: contextField });

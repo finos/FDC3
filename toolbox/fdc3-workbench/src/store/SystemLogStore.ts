@@ -7,10 +7,10 @@ export type logMessagesName =
 	| "getFdc3"
 	| "getChannels"
 	| "getCurrentChannel"
-	| "joinChannel"
+	| "joinUserChannel"
 	| "leaveChannel"
 	| "broadcast"
-	| "appbroadcast"
+	| "appBroadcast"
 	| "raiseIntent"
 	| "raiseIntentForContext"
 	| "addContextListener"
@@ -19,13 +19,17 @@ export type logMessagesName =
 	| "removeIntentListener"
 	| "receivedContextListener"
 	| "receivedIntentListener"
-	| "deleteTemplate"
-	| "saveTemplate"
+	| "deleteExample"
+	| "saveExample"
 	| "copyToClipboard"
 	| "getOrCreateChannel"
+	| "createPrivateChannel"
 	| "receivedAppContextListener"
 	| "addAppContextListener"
-	| "removeAppChannelContextListener";
+	| "removeAppChannelContextListener"
+	| "pcAddContextListener"
+	| "pcOnUnsubscribe"
+	| "pcOnDisconnect";
 
 export type logMessagesType = "error" | "success" | "warning" | "info";
 
