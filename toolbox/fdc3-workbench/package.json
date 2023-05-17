@@ -1,11 +1,9 @@
 {
   "name": "fdc3-workbench",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "private": true,
   "homepage": ".",
-  "dependencies": {
- 
-  },
+  "dependencies": {},
   "scripts": {
     "dev": "vite",
     "start": "vite",
@@ -47,7 +45,6 @@
     "terser": "^5.16.1",
     "vite": "^4.0.4",
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
-    "@finos/fdc3": "^1.2.0",
     "@fontsource/roboto": "^4.4.5",
     "@fontsource/source-code-pro": "^4.5.0",
     "@material-ui/core": "^4.11.4",
@@ -57,6 +54,8 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/uuid": "^8.3.4",
+    "fdc3-1.2": "npm:@finos/fdc3@1.2.x",
+    "fdc3-2.0": "npm:@finos/fdc3@2.0.x",
     "jsoneditor": "^9.5.6",
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
