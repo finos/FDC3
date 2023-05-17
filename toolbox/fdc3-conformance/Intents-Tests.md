@@ -245,3 +245,14 @@ Finally, please note that this is a larger set of apps than were required for 1.
 | K       | 16. Receive events & cleanup | The `onUnsubscribe` handler added in step 5 should (again) fire after Test calls `privChan.disconnect()`. Subsequently, the `onDisconect` handler also added in step 5 should fire. Once it has, K can unsubscribe its listeners, indicate to the test runner that all steps were completed and close. |
 
 - `2.0-PrivateChannelsLifecycleEvents`: Perform the above test.
+
+### Resolving Ambiguous Intents
+
+FDC3 Desktop Agent MUST provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to raiseIntentForContext that return multiple options). This is often accomplished by providing a user interface allowing the user to select the desired target application or intent and application. 
+
+As the methods of resolving ambiguous intents are often user interactive, it is either difficult or impossible to implement an automated test for this. Hence, manual tests should be performed as a final step in a conformance test. These tests are based on the same applications defined for and used in other intent tests - however a separate manual test app should be provided to enable the test.
+
+- `2.0-ResolveAmbiguousIntentTarget`: `use fdc3.raiseIntent("sharedTestingIntent2", testContextY) to invoke intent resolution for an unspecified target with multiple options. Confirm that an application target can be selected (via whatever mechanism is provided).
+- `2.0-ResolveAmbiguousIntentTargetMultiInstance`: Repeat the previous test, but first spawn several instances apps E & F (which are options for resolution). Confirm that an application instance target can be selected (via whatever mechanism is provided).
+- `2.0-ResolveAmbiguousContextTarget`: `use fdc3.raiseIntentForContext(testContextY) to invoke intent resolution for an unspecified target with multiple options. Confirm that multiple intent options are offered and that both an intent and application target can be selected (via whatever mechanism is provided).
+- `2.0-ResolveAmbiguousContextTargetMultiInstance`: Repeat the previous test, but first spawn several instances apps E & F (which are options for resolution). Confirm that multiple intent options are offered and that both an intent and application instance target can be selected (via whatever mechanism is provided).
