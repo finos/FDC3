@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/action.schema.json",
+  "type": "object",
+  "title": "Action",
+  "allOf": [{ "$ref": "context.schema.json#" }],
+  "properties": {
+    "type": { "const": "fdc3.action" },
+    "title": {
+      "type": "string"
+    },
+    "intent": {
+      "type": "string",
+      "$comment": "Should reference an intent type name, such as those defined in the FDC3 Standard'"
+    },
+    "context": {
+      "type": "object",
+      "$ref": "context.schema.json#"
+    },
+    "app": {
+      "type": "object",
+      "properties": {
+        "appId": { "type": "string" },
+        "instanceId": { "type": "string" }
+      },
+      "required": ["appId"]
+    },
+    "customConfig": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "title", "context"
+  ]
+}
