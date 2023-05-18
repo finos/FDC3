@@ -237,6 +237,17 @@ export interface InstrumentList {
   [property: string]: any;
 }
 
+export interface Interaction {
+  id?: { [key: string]: string };
+  type: string;
+  participants: ContactList;
+  timeRange: TimeRange;
+  interactionType: ('Instant Message' | 'Email' | 'Call' | 'Meeting') | string;
+  description: string;
+  initiator?: Contact;
+  origin?: string;
+}
+
 export interface Nothing {
   type: string;
   id?: { [key: string]: any };
@@ -293,6 +304,11 @@ export interface TimeRange {
   [property: string]: any;
 }
 
+export interface ChatSearchCriteria {
+  criteria: (Instrument | Organization | Contact | string)[];
+  type: string;
+}
+
 export interface Valuation {
   CURRENCY_ISOCODE: string;
   expiryTime?: Date;
@@ -303,6 +319,13 @@ export interface Valuation {
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
+}
+
+export interface TransactionResult {
+  status: ('Created' | 'Deleted' | 'Updated' | 'Failed') | string;
+  type: string;
+  context?: Context;
+  message?: string;
 }
 
 // Converts JSON strings to/from your types

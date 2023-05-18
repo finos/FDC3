@@ -8,10 +8,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added `CreateInteraction` intent. To be used when a user wants to record an interaction into a system.  New context `Interaction` also introduced. An interaction might be a call, IM, email, a meeting (physical or virtual) or the preparation of some specialist data. ([#747](https://github.com/finos/FDC3/pull/747))
+* Added `TransactionResult` context. A context type representing the result of a transaction initiated via FDC3. Its purpose is to provide a status and message (where needed) for the transaction and MAY wrap a returned context object. ([#761] (https://github.com/finos/FDC3/pull/761))
 * Added error examples to the /v2 App Directory API routes ([#973](https://github.com/finos/FDC3/pull/973))
+* Added a `SendChatMessage` intent to be used when a user wants to send a message to an existing chat room. ([#794](https://github.com/finos/FDC3/pull/794))
+* Added a context type representing a chat message (`fdc3.chat.message`). ([#794](https://github.com/finos/FDC3/pull/794))
+* Added a context type representing a chat room (`fdc3.chat.room`). ([#794](https://github.com/finos/FDC3/pull/794))
+* Added a chat `Message` type in order to describe messages with rich content and attachments. ([#779](https://github.com/finos/FDC3/pull/779))
+* Added an `Action` type, encapsulating either a `Context` or the association of a `Context` with an `Intent` inside another object.  ([#779](https://github.com/finos/FDC3/pull/779))
+* Added a `ViewChat` Intent to be used when a user wants to open an existing chat room. ([#796](https://github.com/finos/FDC3/pull/796))
+* Added a `ViewMessages` intent to be used when a user wants to search and see a list of messages. ([#797](https://github.com/finos/FDC3/pull/797))
+* Added a context type representing a ChatSearchCriteria (`fdc3.chat.searchCriteria`). ([#797](https://github.com/finos/FDC3/pull/797))
 
 ### Changed
 
+* Updated definition of the `ChatInitSettings` context type to use the new `Message` type.  ([#779](https://github.com/finos/FDC3/pull/779))
+* Updated the `StartChat` intent to return a reference to the room. ([#794](https://github.com/finos/FDC3/pull/794))
 * Updated definition of the `Instrument` context type to include optional market identifiers ([#819](https://github.com/finos/FDC3/pull/819))
 * Corrected API functions and object types to always use `string` instead of `String` ([#924](https://github.com/finos/FDC3/pull/924))
 * Updated definition of the `otherConfig` element of the `Chart` context type from an Object to an array of Contexts as this allows the `type` of each additional item of config to be examined before it is used ([#985](https://github.com/finos/FDC3/pull/985))

@@ -62,6 +62,7 @@ Other Types
 - [Contact](Contact)
 
 Intents
+- [CreateInteraction](../../intents/ref/CreateInteraction)
 - [StartChat](../../intents/ref/StartChat)
 - [StartCall](../../intents/ref/StartCall)
 
