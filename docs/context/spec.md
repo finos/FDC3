@@ -133,7 +133,9 @@ Fields representing a currency SHOULD be string encoded using the Alphabetic cod
 
 E.g. `"CURRENCY_ISOCODE": "GBP"`
 
-> Note: ISO 4217 only includes major currency codes, conversions to minor currencies is the responsibility of the consuming system (where required).
+:::note
+ISO 4217 only includes major currency codes, conversions to minor currencies is the responsibility of the consuming system (where required).
+:::
 
 ## Context Data Standard Compliance
 

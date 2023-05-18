@@ -19,7 +19,9 @@ Naming of Intents SHOULD follow the below guidelines:
 * ‘.’ will be used to namespace the intent (see below).
 * Intent names should be in UpperCamelCase.
 
-> **Note:** The naming guidelines should be adhered to when creating future Intents.  This is to ensure they meet the criteria for addition to the FDC3 standard and to provide a consistent user experience.
+:::note
+The naming guidelines should be adhered to when creating future Intents.  This is to ensure they meet the criteria for addition to the FDC3 standard and to provide a consistent user experience.
+:::
 
 ### Characteristics
 

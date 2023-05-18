@@ -11,15 +11,19 @@ import {
 	IconButton,
 	Tooltip,
 	Grid,
+	Link,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import channelStore from "../store/ChannelStore";
 import { codeExamples } from "../fixtures/codeExamples";
 import { copyToClipboard } from "./common/CopyToClipboard";
+import { openApiDocsLink } from "../fixtures/openApiDocs";
 import { ContextLinking } from "./ContextLinking";
-import contextStore, { ContextType } from "../store/ContextStore";
+import contextStore from "../store/ContextStore";
 import { ContextTemplates } from "./ContextTemplates";
+import { ContextType } from "../utility/Fdc3Api";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -49,7 +53,11 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		controls: {
 			"& .MuiIconButton-sizeSmall": {
-				padding: "6px",
+				padding: "6px 0px 6px 0px",
+			},
+			"& > a": {
+				display: "flex",
+				padding: "6px 0px 6px 0px",
 			},
 		},
 		border: {
@@ -59,10 +67,19 @@ const useStyles = makeStyles((theme: Theme) =>
 			marginTop: "24px",
 			marginBottom: "16px",
 		},
-		centerChildren: {
+		bottomAlignChildren: {
 			display: "flex",
-			alignItems: "center",
+			alignItems: "end",
 		},
+		dropDown: {
+			flexGrow: 1,
+			marginRight: theme.spacing(1),
+			minWidth: "190px",
+		},
+		rightAlign: {
+			flexDirection: "row",
+			justifyContent: "flex-end",
+		}
 	})
 );
 
@@ -77,21 +94,21 @@ export const Channels = observer(({ handleTabChange }: { handleTabChange: any })
 		setIsError(false);
 	};
 
-	const handleJoinChannel = () => {
+	const handleJoinUserChannel = () => {
 		if (channelId) {
-			channelStore.joinChannel(channelId);
+			channelStore.joinUserChannel(channelId);
 			setChannelId("");
 		} else {
 			setIsError(true);
 		}
 	};
 
-	const handleLeaveChannel = () => {
-		channelStore.leaveChannel();
+	const handleLeaveUserChannel = () => {
+		channelStore.leaveUserChannel();
 	};
 
-	const handleRefreshChannel = () => {
-		channelStore.getCurrentChannel();
+	const handleRefreshUserChannel = () => {
+		channelStore.getCurrentUserChannel();
 	};
 
 	const handleBroadcast = () => {
@@ -101,111 +118,127 @@ export const Channels = observer(({ handleTabChange }: { handleTabChange: any })
 	return (
 		<div className={classes.root}>
 			<Grid item xs={12}>
-				<Typography variant="h5">Current Channel</Typography>
+				<Typography variant="h5">Current channel</Typography>
 			</Grid>
-
-			<form className={classes.form} noValidate autoComplete="off">
-				<Grid container direction="row" spacing={1}>
-					<Grid item xs={12} sm={5}>
-						<Typography variant="body1">{channelStore.currentChannel?.id ?? "None"}</Typography>
-					</Grid>
-					<Grid item xs={12} sm={7}>
-						<Grid container direction="row" justifyContent="flex-end" spacing={1}>
-							<Grid item className={classes.controls}>
-								<Button variant="contained" color="primary" onClick={handleRefreshChannel}>
-									Refresh
-								</Button>
-							</Grid>
-							<Grid item className={classes.controls}>
-								<Button variant="contained" color="primary" onClick={handleLeaveChannel}>
-									Leave
-								</Button>
-							</Grid>
-							<Grid item className={classes.controls}>
-								<Tooltip title="Copy code example" aria-label="Copy code example">
-									<IconButton
-										size="small"
-										aria-label="Copy code example"
-										color="primary"
-										onClick={copyToClipboard(codeExamples.getCurrentChannel, "getCurrentChannel")}
-									>
-										<FileCopyIcon />
-									</IconButton>
-								</Tooltip>
-							</Grid>
+			<Grid
+				container
+				direction="row"
+				justifyContent="space-between"
+				className={`${classes.controls} ${classes.rightAlign}`}
+			>
+				<Grid item className={classes.dropDown}>
+					<Typography variant="body1">{channelStore.currentUserChannel?.id ?? "None"}</Typography>
+				</Grid>
+				<Grid item>
+					<Grid container direction="row" justifyContent="flex-end" spacing={1}>
+						<Grid item className={classes.controls}>
+							<Button variant="contained" color="primary" onClick={handleRefreshUserChannel}>
+								Refresh
+							</Button>
+						</Grid>
+						<Grid item className={classes.controls}>
+							<Button variant="contained" color="primary" onClick={handleLeaveUserChannel}>
+								Leave
+							</Button>
+						</Grid>
+						<Grid item className={classes.controls}>
+							<Tooltip title="Copy code example" aria-label="Copy code example">
+								<IconButton
+									size="small"
+									aria-label="Copy code example"
+									color="primary"
+									onClick={copyToClipboard(codeExamples.getCurrentUserChannel, "getCurrentUserChannel")}
+								>
+									<FileCopyIcon />
+								</IconButton>
+							</Tooltip>
+						</Grid>
+						<Grid item className={classes.controls}>
+							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#getcurrentchannel">
+								<InfoOutlinedIcon />
+							</Link>
 						</Grid>
 					</Grid>
 				</Grid>
-			</form>
+			</Grid>
+			
 
 			<div className={classes.border}></div>
 
 			<Grid item xs={12}>
-				<Typography variant="h5">Join System Channels</Typography>
+				<Typography variant="h5">Join user channels</Typography>
 			</Grid>
 
-			<form className={classes.form} noValidate autoComplete="off">
-				<Grid container spacing={1}>
-					<Grid item xs={12} sm={9}>
-						<FormControl variant="outlined" className={classes.channelsSelect} size="small" error={isError}>
-							<InputLabel id="channel">Channel</InputLabel>
-							<Select
-								labelId="channel"
-								id="channel-select"
-								value={channelId ?? ""}
-								onChange={handleSelectChange}
-								label="Channel"
-								MenuProps={{
-									anchorOrigin: {
-										vertical: "bottom",
-										horizontal: "left",
-									},
-									transformOrigin: {
-										vertical: "top",
-										horizontal: "left",
-									},
-									getContentAnchorEl: null,
-								}}
-							>
-								{!channelStore.systemChannels.length && (
-									<MenuItem value="" disabled>
-										No channels received
+			<Grid
+				container
+				direction="row"
+				justifyContent="space-between"
+				className={`${classes.controls} ${classes.rightAlign}`}
+			>
+				<Grid item className={classes.dropDown}>
+					<FormControl variant="outlined" className={classes.channelsSelect} size="small" error={isError}>
+						<InputLabel id="channel">Channel</InputLabel>
+						<Select
+							labelId="channel"
+							id="channel-select"
+							value={channelId ?? ""}
+							onChange={handleSelectChange}
+							label="User Channel"
+							MenuProps={{
+								anchorOrigin: {
+									vertical: "bottom",
+									horizontal: "left",
+								},
+								transformOrigin: {
+									vertical: "top",
+									horizontal: "left",
+								},
+								getContentAnchorEl: null,
+							}}
+						>
+							{!channelStore.userChannels.length && (
+								<MenuItem value="" disabled>
+									No channels received
+								</MenuItem>
+							)}
+							{channelStore.userChannels.length && <MenuItem value="" style={{ height: "0", padding: "0" }} />}
+							{channelStore.userChannels.length &&
+								channelStore.userChannels.map(({ id }) => (
+									<MenuItem key={id} value={id}>
+										{id}
 									</MenuItem>
-								)}
-								{channelStore.systemChannels.length && <MenuItem value="" style={{ height: "0", padding: "0" }} />}
-								{channelStore.systemChannels.length &&
-									channelStore.systemChannels.map(({ id }) => (
-										<MenuItem key={id} value={id}>
-											{id}
-										</MenuItem>
-									))}
-							</Select>
-							{isError && <FormHelperText>Select channel from list</FormHelperText>}
-						</FormControl>
-					</Grid>
-					<Grid item xs={12} sm={3} className={classes.centerChildren}>
-						<Grid container direction="row" justifyContent="flex-end" spacing={1}>
-							<Grid item className={classes.controls}>
-								<Button variant="contained" color="primary" onClick={handleJoinChannel}>
-									Join
-								</Button>
-							</Grid>
-							<Grid item className={classes.controls}>
-								<Tooltip title="Copy code example" aria-label="Copy code example">
-									<IconButton
-										size="small"
-										aria-label="Copy code example"
-										color="primary"
-										onClick={copyToClipboard(codeExamples.channels, "joinChannel")}
-									>
-										<FileCopyIcon />
-									</IconButton>
-								</Tooltip>
-							</Grid>
+								))}
+						</Select>
+						{isError && <FormHelperText>Select channel from list</FormHelperText>}
+					</FormControl>
+				</Grid>
+				<Grid item xs={12} sm={3} className={classes.bottomAlignChildren}>
+					<Grid container direction="row" justifyContent="flex-end" spacing={1}>
+						<Grid item className={classes.controls}>
+							<Button variant="contained" color="primary" onClick={handleJoinUserChannel}>
+								Join
+							</Button>
+						</Grid>
+						<Grid item className={classes.controls}>
+							<Tooltip title="Copy code example" aria-label="Copy code example">
+								<IconButton
+									size="small"
+									aria-label="Copy code example"
+									color="primary"
+									onClick={copyToClipboard(codeExamples.userChannels, "joinUserChannel")}
+								>
+									<FileCopyIcon />
+								</IconButton>
+							</Tooltip>
+						</Grid>
+						<Grid item className={classes.controls}>
+							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#joinuserchannel">
+								<InfoOutlinedIcon />
+							</Link>
 						</Grid>
 					</Grid>
 				</Grid>
-			</form>
+			</Grid>
 
 			<div className={classes.border}></div>
 
@@ -213,15 +246,20 @@ export const Channels = observer(({ handleTabChange }: { handleTabChange: any })
 				<Typography variant="h5">Broadcast context</Typography>
 			</Grid>
 
-			<Grid container direction="row" spacing={1}>
-				<Grid item sm={9}>
+			<Grid
+				container
+				direction="row"
+				justifyContent="space-between"
+				className={`${classes.controls} ${classes.rightAlign}`}
+			>
+				<Grid item className={classes.dropDown}>
 					<ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setBroadcastContext} />
 				</Grid>
-				<Grid item sm={3} className={classes.centerChildren}>
+				<Grid item className={classes.bottomAlignChildren}>
 					<Grid container direction="row" justifyContent="flex-end" spacing={1}>
 						<Grid item className={classes.controls}>
 							<Button disabled={!broadcastContext} variant="contained" color="primary" onClick={handleBroadcast}>
-								Broadcast Context
+								Broadcast
 							</Button>
 						</Grid>
 						<Grid item className={classes.controls}>
@@ -236,8 +274,14 @@ export const Channels = observer(({ handleTabChange }: { handleTabChange: any })
 								</IconButton>
 							</Tooltip>
 						</Grid>
+						<Grid item className={classes.controls}>
+							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#broadcast">
+								<InfoOutlinedIcon />
+							</Link>
+						</Grid>
 					</Grid>
 				</Grid>
+				
 				<div className={classes.border}></div>
 
 				<ContextLinking />
