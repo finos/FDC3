@@ -12,36 +12,36 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			error: `The FDC3 API is not ready${value ? ` (${value})` : ""}`,
 		},
 		getChannels: {
-			success: `Successfully retrieved System channels`,
-			error: `Failed to retrieve System channels`,
+			success: `Retrieved User channels`,
+			error: `Failed to retrieve User channels`,
 		},
 		getCurrentChannel: {
-			success: `Successfully retrieved current channel [${value}]`,
+			success: `Retrieved current channel [${value}]`,
 			error: `Failed to retrieve current channel`,
 		},
-		joinChannel: {
-			success: `Successfully joined the [${value}] channel`,
+		joinUserChannel: {
+			success: `Joined the [${value}] channel`,
 			error: `Failed to join the [${value}] channel`,
 		},
 		leaveChannel: {
-			success: `Successfully left the [${value}] channel`,
+			success: `Left the [${value}] channel`,
 			error: `Failed to leave the [${value}] channel`,
 			warning: `Not currently joined to a channel`,
 		},
 		broadcast: {
-			success: "Successfully broadcast context",
+			success: "Broadcast context",
 			error: "Failed to broadcast context:",
 		},
-		appbroadcast: {
-			success: `Successfully broadcast context to channel [${value}]: `,
+		appBroadcast: {
+			success: `Broadcast context to channel [${value}]: `,
 			error: `Failed to broadcast context to channel [${value}]:`,
 		},
 		raiseIntent: {
-			success: `Successfully raised intent [${value}]`,
+			success: `Raised intent [${value}]`,
 			error: `Failed to raise intent [${value}]`,
 		},
 		raiseIntentForContext: {
-			success: `Successfully raised intent for context`,
+			success: `Raised intent for context`,
 			error: `Failed to raise intent for context`,
 		},
 		addContextListener: {
@@ -80,21 +80,37 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
 			info: `Received context via '[${value}]' listener.`,
 			error: `Failed to receive context from '[${value}]' listener.`,
 		},
-		saveTemplate: {
-			success: `Saved context template for '[${value}]'.`,
-			error: `Failed to save context template.`,
+		saveExample: {
+			success: `Saved context example for '[${value}]'.`,
+			error: `Failed to save context example.`,
 		},
-		deleteTemplate: {
-			success: `Deleted context template for '[${value}]'.`,
-			error: `Failed to delete context template.`,
+		deleteExample: {
+			success: `Deleted context example for '[${value}]'.`,
+			error: `Failed to delete context example.`,
 		},
 		copyToClipboard: {
 			info: `${value} code snippet copied to clipboard`,
 			error: `Failed to copy code ${value} snippet to clipboard.`,
 		},
 		getOrCreateChannel: {
-			success: `Successfully retrieved or created current app channel [${value}]`,
-			error: `Failed retrieve or create app channel ${value}.`,
+			success: `Retrieved or created current app channel [${value}]`,
+			error: `Failed to retrieve or create app channel ${value}.`,
+		},
+		createPrivateChannel: {
+			success: `Created current private channel [${value}]`,
+			error: `Failed to create private channel ${value}.`,
+		},
+		pcAddContextListener: {
+			success: `${value}`,
+			error: `${value}`,
+		},
+		pcOnUnsubscribe: {
+			success: `${value}`,
+			error: `${value}`,
+		},
+		pcOnDisconnect: {
+			success: `${value}`,
+			error: `${value}`,
 		},
 	};
 

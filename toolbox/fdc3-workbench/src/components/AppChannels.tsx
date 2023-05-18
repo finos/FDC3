@@ -1,15 +1,10 @@
 import React, { FormEvent, useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Button, IconButton, Tooltip, Typography, Grid, TextField } from "@material-ui/core";
+import { Button, Typography, Grid, TextField } from "@material-ui/core";
 import { observer } from "mobx-react";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
-import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
-import contextStore, { ContextType } from "../store/ContextStore";
+import contextStore from "../store/ContextStore";
 import appChannelStore from "../store/AppChannelStore";
-import { codeExamples } from "../fixtures/codeExamples";
-import { TemplateTextField } from "./common/TemplateTextField";
-import { copyToClipboard } from "./common/CopyToClipboard";
-import { ContextTemplates } from "./ContextTemplates";
+import { ChannelField } from "./ChannelField";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -35,9 +30,6 @@ const useStyles = makeStyles((theme: Theme) =>
 			flexGrow: 1,
 			minWidth: "190px",
 		},
-		topMargin: {
-			marginTop: theme.spacing(2),
-		},
 		controls: {
 			"& > *:first-child": {
 				marginLeft: 0,
@@ -49,7 +41,11 @@ const useStyles = makeStyles((theme: Theme) =>
 				marginRight: 0,
 			},
 			"& .MuiIconButton-sizeSmall": {
-				padding: "6px",
+				padding: "6px 0px 6px 0px",
+			},
+			"& > a": {
+				display: "flex",
+				padding: "6px 0px 6px 0px",
 			},
 		},
 		rightAlign: {
@@ -99,16 +95,8 @@ interface ListenerOptionType {
 	type: string | undefined;
 }
 
-interface FilterOptionsState<T> {
-	inputValue: string;
-	getOptionLabel: (option: T) => string;
-}
-
-const listenerFilter = createFilterOptions<ListenerOptionType>();
-
 export const AppChannels = observer(({ handleTabChange }: { handleTabChange: any }) => {
 	const classes = useStyles();
-	const [render, setRender] = useState<boolean>(false);
 	const [currentAppChannelId, setCurrentAppChannelId] = useState<string>("");
 	const contextListenersOptionsAll: ListenerOptionType[] = contextStore.contextsList.map(({ id, template }) => {
 		return {
@@ -122,10 +110,6 @@ export const AppChannels = observer(({ handleTabChange }: { handleTabChange: any
 		value: "all",
 		type: "All",
 	});
-
-	const contextListenersOptions = Array.from(
-		new Map(contextListenersOptionsAll.reverse().map((item) => [item["type"], item])).values()
-	).reverse();
 
 	const handleGetorCreateChannel = (e: FormEvent | null = null) => {
 		e?.preventDefault();
@@ -142,86 +126,6 @@ export const AppChannels = observer(({ handleTabChange }: { handleTabChange: any
 
 	const handleChannelChange = (event: React.ChangeEvent<{ value: unknown }>) => {
 		setCurrentAppChannelId(event.target.value as string);
-	};
-
-	const getOptionLabel = (option: ListenerOptionType) => option.type || option.title;
-
-	const handleChangeAppListener = (channelId: string) => (event: React.ChangeEvent<{}>, newValue: any) => {
-		let foundChannel = appChannelStore.appChannelsList.find((currentChannel) => currentChannel.id === channelId);
-		if (!foundChannel) {
-			return;
-		}
-
-		let newListener;
-		let foundListener = appChannelStore.appChannelListeners?.find(
-			(currentListener) => currentListener.type === newValue && currentListener.channelId === channelId
-		);
-		if (foundListener) {
-			return;
-		}
-
-		if (typeof newValue === "string") {
-			newListener = {
-				title: newValue,
-				value: newValue,
-				type: newValue,
-			};
-		} else if (newValue && newValue.inputValue) {
-			newListener = {
-				title: newValue.inputValue,
-				value: newValue.inputValue,
-				type: newValue.inputValue,
-			};
-		} else {
-			newListener = newValue;
-		}
-
-		foundChannel.currentListener = newListener;
-		foundChannel.listenerError = "";
-	};
-
-	const handleAddContextListener = (channelId: string) => {
-		let foundChannel = appChannelStore.appChannelsList.find((currentChannel) => currentChannel.id === channelId);
-		if (!foundChannel) {
-			return;
-		}
-
-		if (foundChannel?.currentListener) {
-			if (appChannelStore.isContextListenerExists(channelId, foundChannel?.currentListener.type)) {
-				foundChannel.listenerError = "Listener already added";
-			} else {
-				appChannelStore.addChannelListener(channelId, foundChannel.currentListener.type);
-				foundChannel.listenerError = "";
-			}
-		} else {
-			foundChannel.listenerError = "Enter context type";
-		}
-		setRender(render);
-	};
-
-	const handleContextStateChange = (context: ContextType, channel: string) => {
-		let foundChannel = appChannelStore.appChannelsList.find((currentChannel) => currentChannel.id === channel);
-		if (foundChannel) {
-			foundChannel.context = context;
-		}
-	};
-
-	const handleBroadcast = (channel: any) => {
-		if (channel.context) {
-			appChannelStore.broadcast(channel.id, channel.context);
-		}
-	};
-
-	const filterOptions = (options: ListenerOptionType[], params: FilterOptionsState<ListenerOptionType>) => {
-		const filtered = listenerFilter(options, params);
-		if (params.inputValue !== "") {
-			filtered.push({
-				value: params.inputValue,
-				title: `Add "${params.inputValue}"`,
-				type: params.inputValue,
-			});
-		}
-		return filtered;
 	};
 
 	return (
@@ -256,107 +160,7 @@ export const AppChannels = observer(({ handleTabChange }: { handleTabChange: any
 				</Grid>
 			</form>
 			<div className={classes.border}></div>
-			{appChannelStore.appChannelsList.length > 0 &&
-				appChannelStore.appChannelsList.map((channel) => (
-					<Grid container key={channel.id} spacing={2} className={classes.spread}>
-						<Grid item className={classes.field}>
-							<Typography variant="h5">Channel: {channel.id}</Typography>
-						</Grid>
-
-						<Grid container className={classes.topMargin}>
-							<Grid item xs={12}>
-								<Typography variant="h5" className={classes.h6}>
-									Broadcast Context
-								</Typography>
-							</Grid>
-
-							<Grid item sm={7}>
-								<ContextTemplates
-									handleTabChange={handleTabChange}
-									contextStateSetter={handleContextStateChange}
-									channel={channel.id}
-								/>
-							</Grid>
-							<Grid item container className={classes.controls} sm={5} justifyContent="flex-end">
-								<Button
-									disabled={!channel.context}
-									variant="contained"
-									color="primary"
-									onClick={() => handleBroadcast(channel)}
-								>
-									Broadcast Context
-								</Button>
-
-								<Tooltip title="Copy code example" aria-label="Copy code example">
-									<IconButton
-										size="small"
-										aria-label="Copy code example"
-										color="primary"
-										onClick={copyToClipboard(codeExamples.appChannelBroadcast, "appChannelBroadcast")}
-									>
-										<FileCopyIcon />
-									</IconButton>
-								</Tooltip>
-							</Grid>
-						</Grid>
-						<Grid container>
-							<Grid item xs={12}>
-								<Typography variant="h5" className={classes.h6}>
-									Add Context Listener
-								</Typography>
-							</Grid>
-							<Grid item sm={7} className={classes.rightPadding}>
-								<Autocomplete
-									size="small"
-									selectOnFocus
-									blurOnSelect
-									clearOnBlur
-									handleHomeEndKeys
-									value={channel.currentListener}
-									onChange={handleChangeAppListener(channel.id)}
-									filterOptions={filterOptions}
-									options={contextListenersOptions}
-									getOptionLabel={getOptionLabel}
-									renderOption={(option) => option.type}
-									renderInput={(params) => (
-										<TemplateTextField
-											label="CONTEXT TYPE"
-											placeholder="Enter Context Type"
-											variant="outlined"
-											{...params}
-											error={!!channel.listenerError}
-											helperText={channel.listenerError}
-										/>
-									)}
-									onKeyDown={(event) => {
-										if (event.key === "Enter") {
-											event.defaultPrevented = true;
-											handleAddContextListener(channel.id);
-										}
-									}}
-								/>
-							</Grid>
-
-							<Grid item className={classes.controls} sm={5} justifyContent="flex-end">
-								<Button variant="contained" color="primary" onClick={() => handleAddContextListener(channel.id)}>
-									Add Listener
-								</Button>
-
-								<Tooltip title="Copy code example" aria-label="Copy code example">
-									<IconButton
-										size="small"
-										aria-label="Copy code example"
-										color="primary"
-										onClick={copyToClipboard(codeExamples.appChannelContextListener, "addAppChannelContextListener")}
-									>
-										<FileCopyIcon />
-									</IconButton>
-								</Tooltip>
-							</Grid>
-						</Grid>
-						<div className={classes.border}></div>
-					</Grid>
-				))}
+			<ChannelField handleTabChange={handleTabChange} channelsList={appChannelStore.appChannelsList} />
 		</div>
 	);
 });

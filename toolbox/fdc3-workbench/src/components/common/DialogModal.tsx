@@ -28,7 +28,7 @@ export function DialogModal(props: DialogModalProps) {
 			aria-describedby="alert-dialog-description"
 		>
 			<DialogTitle id="alert-dialog-title">
-				{`Delete context template: ${selectedValue?.name || selectedValue?.id}`}
+				{`Delete context example: ${selectedValue?.name || selectedValue?.id}`}
 			</DialogTitle>
 			<DialogActions>
 				<Button onClick={handleClose}>Disagree</Button>
