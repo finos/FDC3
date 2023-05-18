@@ -76,6 +76,7 @@
           "context/ref/Instrument",
           "context/ref/InstrumentList",
           "context/ref/Interaction",
+          "context/ref/Message",
           "context/ref/Nothing",
           "context/ref/Organization",
           "context/ref/Portfolio",
