@@ -173,6 +173,7 @@ The following are standard FDC3 context types:
 - [`fdc3.instrument`](ref/Instrument) ([schema](/schemas/next/instrument.schema.json))
 - [`fdc3.instrumentList`](ref/InstrumentList) ([schema](/schemas/next/instrumentList.schema.json))
 - [`fdc3.interaction`](ref/Interaction) ([schema](/schemas/next/interaction.schema.json))
+- [`fdc3.message`](ref/Message) ([schema](/schemas/next/message.schema.json))
 - [`fdc3.organization`](ref/Organization) ([schema](/schemas/next/organization.schema.json))
 - [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/next/portfolio.schema.json))
 - [`fdc3.position`](ref/Position) ([schema](/schemas/next/position.schema.json))
