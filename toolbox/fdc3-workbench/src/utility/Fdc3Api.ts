@@ -120,17 +120,17 @@ class Fdc3Api {
 
 	getUserChannels() {
 		if (window.fdc3Version === "2.0") {
-			return this.fdc3Methods.getUserChannels();
+			return fdc3_2.getUserChannels();
 		} else {
-			return this.fdc3Methods.getSystemChannels();
+			return fdc3_1.getSystemChannels();
 		}
 	}
 
 	joinUserChannel(channelId: string) {
 		if (window.fdc3Version === "2.0") {
-			return this.fdc3Methods.joinUserChannel(channelId);
+			return fdc3_2.joinUserChannel(channelId);
 		} else {
-			return this.fdc3Methods.joinChannel(channelId);
+			return fdc3_1.joinChannel(channelId);
 		}
 	}
 
