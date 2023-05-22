@@ -118,12 +118,20 @@ class Fdc3Api {
 		}
 	}
 
-	getSystemChannels() {
-		return this.fdc3Methods.getSystemChannels();
+	getUserChannels() {
+		if (window.fdc3Version === "2.0") {
+			return fdc3_2.getUserChannels();
+		} else {
+			return fdc3_1.getSystemChannels();
+		}
 	}
 
-	joinChannel(channelId: string) {
-		return this.fdc3Methods.joinChannel(channelId);
+	joinUserChannel(channelId: string) {
+		if (window.fdc3Version === "2.0") {
+			return fdc3_2.joinUserChannel(channelId);
+		} else {
+			return fdc3_1.joinChannel(channelId);
+		}
 	}
 
 	leaveCurrentChannel() {
