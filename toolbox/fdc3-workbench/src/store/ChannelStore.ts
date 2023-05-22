@@ -49,7 +49,7 @@ class ChannelStore {
 			.fdc3Ready(5000)
 			.then(async () => {
 				try {
-					const userChannels = await fdc3.getSystemChannels();
+					const userChannels = await fdc3.getUserChannels();
 					const currentUserChannel = await fdc3.getCurrentChannel();
 
 					runInAction(() => {
@@ -81,7 +81,7 @@ class ChannelStore {
 
 	async joinUserChannel(channelId: string) {
 		try {
-			await fdc3.joinChannel(channelId);
+			await fdc3.joinUserChannel(channelId);
 			const currentUserChannel = await fdc3.getCurrentChannel();
 			const isSuccess = currentUserChannel !== null;
 
