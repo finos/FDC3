@@ -291,7 +291,7 @@ export interface DesktopAgent {
   raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<IntentResolution>;
 
   /**
-   * Adds a listener for incoming intents raised by other applications, via calls to `fdc3.raiseIntent` or `fdc3.raiseIntentForContext. Applications SHOULD add their intent listeners within 30 seconds of launch and MUST add them within 90 seconds of launch, or an error will be returned to the caller and the intent and context may not be delivered. The exact timeout used (between 30 and 90 seconds) is set by the Desktop Agent implementation.
+   * Adds a listener for incoming intents raised by other applications, via calls to `fdc3.raiseIntent` or `fdc3.raiseIntentForContext. If the application is intended to be launched to resolve raised intents, it SHOULD add its intent listeners within 30 seconds of launch and MUST add them within 90 seconds of launch, or an error will be returned to the caller and the intent and context may not be delivered. The exact timeout used is set by the Desktop Agent implementation and MAY be extended for individual apps via configuration.
    *
    * The handler function may return void or a promise that should resolve to an `IntentResult`, which is either a `Context` object, representing any data that should be returned, or a `Channel` over which data responses will be sent. The IntentResult will be returned to app that raised the intent via the `IntentResolution` and retrieved from it using the `getResult()` function.
    *
@@ -351,7 +351,7 @@ export interface DesktopAgent {
    *
    * Context broadcasts are primarily received from apps that are joined to the same User channel as the listening application, hence, if the application is not currently joined to a channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
    *
-   * Context may also be received via this listener if the application was launched via a call to  `fdc3.open`, where context was passed as an argument. In order to receive this, applications SHOULD add their context listener within 30 seconds of launch and MUST add it within 90 seconds of launch, or an error will be returned to the caller and the context may not be delivered. The exact timeout used (between 30 and 90 seconds) is set by the Desktop Agent implementation.
+   * Context may also be received via this listener if the application was launched via a call to  `fdc3.open`, where context was passed as an argument. In order to receive this, applications SHOULD add their context listener within 30 seconds of launch and MUST add it within 90 seconds of launch, or an error will be returned to the caller and the context may not be delivered. The exact timeout used (between 30 and 90 seconds) is set by the Desktop Agent implementation and MAY be extended for individual apps via configuration.
    *
    * Optional metadata about the context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
    *
