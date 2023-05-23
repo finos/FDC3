@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
-* Further clarified the difference between the behavior of User channels and other channel types on join/addContextListener. ([#971](https://github.com/finos/FDC3/pull/971))
+* Further clarified the difference between the behavior of User channels and other channel types on joinUserChannel/addContextListener. ([#971](https://github.com/finos/FDC3/pull/971))
 
 ## [FDC3 Standard 2.0](https://github.com/finos/FDC3/compare/v1.2..v2.0) - 2022-07-01
 
