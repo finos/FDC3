@@ -522,7 +522,7 @@ const recommendedChannels = [
 
 ### Direct Listening and Broadcast on Channels
 
-While joining User channels (using fdc3.joinUserChannel) automates a lot of the channel behavior for an app, it has the limitation that an app can only be 'joined' to one channel at a time.  However, an app may instead retrieve a `Channel` Object via the [`fdc3.getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API, or by raising an intent that returns a channel. The `Channel` object may then be used to listen to and broadcast on that channel directly using the [`Channel.addContextListener`](ref/Channel#addcontextlistener) and the [`Channel.broadcast`](ref/Channel#broadcast) APIs. This is especially useful for working with dynamic *App Channels*. FDC3 imposes no restriction on adding context listeners or broadcasting to multiple channels.
+While joining User channels (using [`fdc3.joinUserChannel`](ref/DesktopAgent#joinuserchannel)) automates a lot of the channel behaviour for an app, it has the limitation that an app can only be 'joined' to one channel at a time.  However, an app may instead retrieve an App [`Channel`](ref/Channel) Object via the [`fdc3.getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API, create a [`PrivateChannel`](ref/PrivateChannel) via the [`fdc3.createPrivateChannel`](ref/DesktopAgent#createprivatechannel) API, or by raising an intent that returns a channel created by another app. The `Channel` object may then be used to listen to and broadcast on that channel directly using the [`Channel.addContextListener`](ref/Channel#addcontextlistener) and the [`Channel.broadcast`](ref/Channel#broadcast) APIs. FDC3 imposes no restriction on adding context listeners or broadcasting to multiple channels.
 
 ### App Channels
 
