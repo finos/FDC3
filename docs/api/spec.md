@@ -522,13 +522,13 @@ const recommendedChannels = [
 
 ### Direct Listening and Broadcast on Channels
 
-While joining User channels (using [`fdc3.joinUserChannel`](ref/DesktopAgent#joinuserchannel)) automates a lot of the channel behaviour for an app, it has the limitation that an app can only be 'joined' to one channel at a time.  However, an app may instead retrieve an App [`Channel`](ref/Channel) Object via the [`fdc3.getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API, create a [`PrivateChannel`](ref/PrivateChannel) via the [`fdc3.createPrivateChannel`](ref/DesktopAgent#createprivatechannel) API, or by raising an intent that returns a channel created by another app. The `Channel` object may then be used to listen to and broadcast on that channel directly using the [`Channel.addContextListener`](ref/Channel#addcontextlistener) and the [`Channel.broadcast`](ref/Channel#broadcast) APIs. FDC3 imposes no restriction on adding context listeners or broadcasting to multiple channels.
+While joining User channels (using [`fdc3.joinUserChannel`](ref/DesktopAgent#joinuserchannel)) automates a lot of the channel behavior for an app, it has the limitation that an app can only be 'joined' to one channel at a time.  However, an app may instead retrieve an App [`Channel`](ref/Channel) Object via the [`fdc3.getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API, create a [`PrivateChannel`](ref/PrivateChannel) via the [`fdc3.createPrivateChannel`](ref/DesktopAgent#createprivatechannel) API, or by raising an intent that returns a channel created by another app. The `Channel` object may then be used to listen to and broadcast on that channel directly using the [`Channel.addContextListener`](ref/Channel#addcontextlistener) and the [`Channel.broadcast`](ref/Channel#broadcast) APIs. FDC3 imposes no restriction on adding context listeners or broadcasting to multiple channels.
 
 ### App Channels
 
 App Channels are topics dynamically created by applications connected via FDC3. For example, an app may create a named App Channel to broadcast data or status that is specific to that app to other apps that know to connect to the channel with that name.
 
-To get (or create) a channel reference, then interact with it:
+To get (or create) a [`Channel`](ref/Channel) reference, then interact with it:
 
 ```js
 const appChannel = await fdc3.getOrCreateChannel('my_custom_channel');
@@ -540,7 +540,7 @@ await appChannel.addContextListener(null, context => {...});
 await appChannel.broadcast(context);
 ```
 
-An app can still explicitly receive context events on any channel, regardless of the channel it is currently joined to.
+An app can still explicitly receive context events on any [`Channel`](ref/Channel), regardless of the channel it is currently joined to.
 
 ```js
 // check for current fdc3 channel
@@ -563,7 +563,7 @@ if another application broadcasts to "my_custom_channel" (by retrieving it and b
 
 ### Private Channels
 
-`PrivateChannels` are created to support the return of a stream of responses from a raised intent, or private dialog between two applications.
+A [`PrivateChannel`](ref/PrivateChannel) is created to support the return of a stream of responses from a raised intent, or private dialog between two applications.
 
 It is intended that Desktop Agent implementations:
 
