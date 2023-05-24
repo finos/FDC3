@@ -26,6 +26,6 @@ export type IntentResult = Context | Channel | void;
  * Used when attaching listeners for raised intents.
  *
  * Optional metadata about the raised intent, including the app that originated
- * the message, SHOULD be provided by the desktop agent implementation. 
+ * the message, SHOULD be provided by the desktop agent implementation.
  */
 export type IntentHandler = (context: Context, metadata?: ContextMetadata) => Promise<IntentResult> | void;
