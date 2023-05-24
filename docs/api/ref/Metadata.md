@@ -181,11 +181,9 @@ AppMetadata includes an icons property allowing multiple icon types to be specif
 
 **Properties:**
 
-**`src`:** The fully qualified url to the icon.
-
-**`size`:** The dimensions of the Icon formatted as `<height>x<width>`.
-
-**`type`:** The media type of the icon. If not provided the Desktop Agent may refer to the src file extension.
+* **`src`:** The fully qualified url to the icon.
+* **`size`:** The dimensions of the Icon formatted as `<height>x<width>`.
+* **`type`:** The media type of the icon. If not provided the Desktop Agent may refer to the src file extension.
 
 **See also:**
 
@@ -227,11 +225,9 @@ AppMetadata includes a screenshots property allowing multiple images to be speci
 
 **Properties:**
 
-**`src`:** The fully qualified url to the image.
-
-**`size`:** The dimensions of the image formatted as `<height>x<width>`.
-
-**`type`:** The media type of the image. If not provided the Desktop Agent may refer to the src file extension.
+* **`src`:** The fully qualified url to the image.
+* **`size`:** The dimensions of the image formatted as `<height>x<width>`.
+* **`type`:** The media type of the image. If not provided the Desktop Agent may refer to the src file extension.
 
 **See also:**
 
