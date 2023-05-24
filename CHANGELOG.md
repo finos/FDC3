@@ -20,6 +20,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 * Further clarified the difference between the behavior of User channels and other channel types on joinUserChannel/addContextListener. ([#971](https://github.com/finos/FDC3/pull/971))
+## [npm v2.0.2] - 2023-05-24
+
+### Changed
+
+* Removed source files from teh NPM module as they are not necessary, increase the bundle size and include POM files that lack license info, causing issues for enterprise onboarding. ([#999](https://github.com/finos/FDC3/pull/999))
 
 ## [FDC3 Standard 2.0](https://github.com/finos/FDC3/compare/v1.2..v2.0) - 2022-07-01
 
