@@ -20,7 +20,6 @@ Display details for the provided instrument.
 
 * [Instrument](../../context/ref/Instrument)
 
-
 ## Example
 
 ```js
@@ -38,9 +37,10 @@ fdc3.raiseIntent('ViewInstrument', instrument)
 ## See Also
 
 Context
-- [Instrument](../../context/ref/Instrument)
 
+* [Instrument](../../context/ref/Instrument)
 
 Intents
-- [ViewChart](ViewChart)
-- [ViewOrders](ViewOrders)
+
+* [ViewChart](ViewChart)
+* [ViewOrders](ViewOrders)

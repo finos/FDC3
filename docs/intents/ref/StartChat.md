@@ -66,10 +66,12 @@ const chatRoomRefs = await resolution.getResult();
 ## See Also
 
 Context
-- [Contact](../../context/ref/Contact)
-- [ContactList](../../context/ref/ContactList)
-- [ChatInitSettings](../../context/ref/ChatInitSettings)
+
+* [Contact](../../context/ref/Contact)
+* [ContactList](../../context/ref/ContactList)
+* [ChatInitSettings](../../context/ref/ChatInitSettings)
 
 Intents
+
 * [StartCall](StartCall)
 * [StartEmail](StartEmail)

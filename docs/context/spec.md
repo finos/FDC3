@@ -34,7 +34,7 @@ FDC3 recognizes that there are other object definitions for providing context be
 
 ## The Context Interface
 
-Context can be summarised as:
+Context can be summarized as:
 
 * Having a unique _type_ identifier, used for routing.
 * Optionally providing a name.
@@ -54,11 +54,11 @@ interface Context {
 
 ### Namespacing
 
-All well-known types at FDC3 level should be prefixed with `fdc3`. For private type definitions, or type definitions issued by other organisations, different namespaces can be used, e.g. `blackrock.fund`, etc.
+All well-known types at FDC3 level should be prefixed with `fdc3`. For private type definitions, or type definitions issued by other organizations, different namespaces can be used, e.g. `blackrock.fund`, etc.
 
 ### Versioning
 
-The specification recognises that evolving context data definitions over time, and helping applications to deal with changes to types, are very important.
+The specification recognizes that evolving context data definitions over time, and helping applications to deal with changes to types, are very important.
 
 It may be as simple as adding an optional `$version` property to types, but it could also be a set of guidelines for adding new properties, without removing or changing existing ones. For example, web technologies like REST or GraphQL do not take a particular opinion about versioning.
 
@@ -70,7 +70,7 @@ This Standard defines a number of conventions for the fields of context types th
 
 An `id` field with type `object` is defined in the base [fdc3.context](ref/Context) type, from which all other context objects are derived, and SHOULD be used to encapsulate identifiers. Specific context types may define subfields for specific identifiers as needed.
 
-Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifer is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.
+Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifier is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.
 
 All standard identifier names are reserved names. Applications may use their own identifiers ad hoc. For example:
 

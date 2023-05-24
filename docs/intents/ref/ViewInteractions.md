@@ -39,10 +39,12 @@ fdc3.raiseIntent('ViewInteractions', contact)
 ## See Also
 
 Context
+
 * [Contact](../../context/ref/Contact)
 * [Instrument](../../context/ref/Instrument)
 * [Organization](../../context/ref/Organization)
 
 Intents
+
 * [ViewProfile](ViewProfile)
 * [ViewResearch](ViewResearch)

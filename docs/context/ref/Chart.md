@@ -21,7 +21,7 @@ In addition to handling requests to plot charts, a charting application may use 
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/chart.schema.json
+<https://fdc3.finos.org/schemas/next/chart.schema.json>
 
 ## Details
 
@@ -33,7 +33,7 @@ https://fdc3.finos.org/schemas/next/chart.schema.json
 | `style`    | string  | No       | one of: `'line'`, `'bar'`, `'stacked-bar'`, `'mountain'`, `'candle'`, `'pie'`, `'scatter'`, `'histogram'`, `'heatmap'`, `'custom'`      |
 | `otherConfig`* | object  | No |  `{ /* unstandardized additional config */}`  |
 
-\* It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standarized formats, but may be included in the `otherConfig` element.
+\* It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` element.
 
 ## Example
 

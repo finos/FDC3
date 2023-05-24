@@ -27,6 +27,7 @@ Display a chart for the provided context.
 ## Example
 
 Request a chart for an instrument:
+
 ```js
 const instrument = {
     type: 'fdc3.instrument',
