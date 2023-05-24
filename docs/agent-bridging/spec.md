@@ -226,6 +226,8 @@ The DA must then respond to the `hello` message with a `handshake` request to th
     payload: {
         /** The JWT authentication token */
         authToken?: string,
+        /** Metadata about the Desktop Agent connecting, normally retrieved within the 
+         *  context of the Desktop Agent via `fdc3.getInfo()`.*/
         implementationMetadata: {
           /** The version number of the FDC3 specification that the implementation
           *  provides. The string must be a numeric semver version, e.g. 1.2 or 1.2.1. */
