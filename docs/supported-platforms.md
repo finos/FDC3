@@ -38,25 +38,29 @@ if (window.fdc3) {
 
 FDC3 offers the [`@finos/fdc3` npm package](https://www.npmjs.com/package/@finos/fdc3) that can by used by web applications to target operations from the [API Specification](api/spec) in a consistent way. Each FDC3-compliant desktop agent that the application runs in, can then provide an implementation of the FDC3 API operations.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--npm -->
+<Tabs>
+<TabItem value="npm" label="npm">
 
-```sh
+```bash
 npm install @finos/fdc3
 ```
-<!--yarn-->
 
-```sh
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
 yarn add @finos/fdc3
 ```
 
-<!--pnpm-->
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
 
-```sh
+```bash
 pnpm install @finos/fdc3
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 The npm package provides a wrapper around FDC3, allowing you to use it with ES6 import syntax:
 
