@@ -40,8 +40,10 @@ window.fdc3.raiseIntent('fdc3.StartEmail', {
 ## See Also
 
 Context
+
 * [Email](../../context/ref/Email)
 
 Intents
+
 * [StartCall](StartCall)
 * [StartChat](StartChat)

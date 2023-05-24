@@ -8,7 +8,7 @@ Since FDC3 is typically available to the whole web application, desktop agents a
 
 The global `fdc3` object can be used to access FDC3 API operations, if the current desktop agent supports FDC3.
 
-### Example
+**Example:**
 
 ```ts
 // check if fdc3 is available
@@ -25,7 +25,7 @@ if (window.fdc3) {
 
 The global `window.fdc3` should only be available after the API is ready to use. To prevent the API from being used before it is ready, implementors should provide an `fdc3Ready` event.
 
-### Example
+**Example:**
 
 ```ts
 function fdc3Action() {
@@ -45,7 +45,7 @@ If you are using the `@finos/fdc3` NPM package, it includes a handy wrapper func
 
 It returns a promise that will resolve immediately if the `window.fdc3` global is already defined, or reject with an error if the `fdc3Ready` event doesn't fire after a specified timeout period (default: 5 seconds).
 
-### Example
+**Example:**
 
 ```ts
 import { fdc3Ready, broadcast } from '@finos/fdc3'
@@ -62,6 +62,3 @@ async function fdc3Action() {
   }
 }
 ```
-
-
-

@@ -34,8 +34,8 @@ if (window.fdc3) {
 }
 ```
 
-
 #### 2. NPM Wrapper
+
 FDC3 offers the [`@finos/fdc3` npm package](https://www.npmjs.com/package/@finos/fdc3) that can by used by web applications to target operations from the [API Specification](api/spec) in a consistent way. Each FDC3-compliant desktop agent that the application runs in, can then provide an implementation of the FDC3 API operations.
 
 <!--DOCUSAURUS_CODE_TABS-->
@@ -81,7 +81,8 @@ const listener = await addIntentListener('ViewAnalysis', instrument => {
 });
 ```
 
-##### See also
+**See also:**
+
 * [`fdc3Ready() Function`](api/ref/Globals#fdc3ready-function)
 
 ## Native
@@ -91,9 +92,11 @@ The FDC3 standard does not define wire formats for communication, nor does it de
 Despite this limitation, implementing support for FDC3 in a native application can allow it to interact with a wide variety of FDC3-enabled web applications.
 
 ## Hybrid
+
 In a hybrid application, a standalone native application incorporates a web view, within which a web application runs. This may be considered a special case of the web platform where all platform-provider requirements for web applications must be satisfied, but it is the responsibility of the associated native application, rather than a platform provider, to ensure they are fulfilled. This may be achieved, for example, by injecting an implementation of the DesktopAgent API and ensuring that it is accessible at the usual location, `window.fdc3`.
 
 ## Compliance
+
 Support for each platform is optional and compliance with the FDC3 standard should be assessed for each platform implemented independently of any other, with the exception of ensuring that where applications running on multiple platforms are used together, communication between them still complies with the standard.
 
 The web API binding is expressed using TypeScript syntax that defines the API interface (for both TypeScript and JavaScript). Adherence to the specific binding is required for web application platforms. No specific API binding for native platforms is currently expressed in the standard. Hence, native applications may be implemented with any programming language binding that supports the constructs required by the API specification, until such time that the FDC3 standard introduces an appropriate language-specific binding.

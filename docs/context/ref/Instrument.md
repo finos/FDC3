@@ -20,8 +20,8 @@ In general, the more identifiers an application can provide, the easier it will 
 - It is valid to include extra properties and metadata as part of the instrument payload, but the minimum requirement
 is for at least one instrument identifier to be provided.
 
-- Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant for tickers as used by an exhange.
-If the identifier you want to share is not a ticker or one of the other standardised fields, define
+- Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant for tickers as used by an exchange.
+If the identifier you want to share is not a ticker or one of the other standardized fields, define
 a property that makes it clear what value represents. Doing so will make interpretation easier for the developers of target applications.
 
 ## Type
@@ -30,27 +30,27 @@ a property that makes it clear what value represents. Doing so will make interpr
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/instrument.schema.json
+<https://fdc3.finos.org/schemas/next/instrument.schema.json>
 
 ## Details
 
-| Property                    | Type    | Required | Example Value            | More Info                                               |
+| Property                    | Type    | Required | Example Value            | More Info                                              |
 |-----------------------------|---------|----------|--------------------------|--------------------------------------------------------|
 | `type`                      | string  | Yes      | `"fdc3.instrument"`      |                                                        |
 | `name`                      | string  | No       | `"Microsoft"`            |                                                        |
 | `id.ticker`                 | string  | No       | `"MSFT"`                 |                                                        |
-| `id.BBG`                    | string  | No       | `"MSFT:US"`              | https://www.bloomberg.com/                             |
-| `id.CUSIP`                  | string  | No       | `"594918104"`            | https://www.cusip.com/                                 |
-| `id.FDS_ID`                 | string  | No       | `"P8R3C2-R"`             | https://www.factset.com/                               |
-| `id.FIGI`                   | string  | No       | `"BBG000BPH459"`         | https://www.openfigi.com/                              |
-| `id.ISIN`                   | string  | No       | `"US5949181045"`         | https://www.isin.org/                                  |
-| `id.PERMID`                 | string  | No       | `"4295907168"`           | https://permid.org/                                    |
-| `id.RIC`                    | string  | No       | `"MSFT.OQ"`              | https://www.refinitiv.com/                             |
-| `id.SEDOL`                  | string  | No       | `"2588173"`              | https://www.lseg.com/sedol                             |
-| `market.MIC`                | string  | No       | `"XNAS"`                 | https://en.wikipedia.org/wiki/Market_Identifier_Code   |
+| `id.BBG`                    | string  | No       | `"MSFT:US"`              | <https://www.bloomberg.com/>                           |
+| `id.CUSIP`                  | string  | No       | `"594918104"`            | <https://www.cusip.com/>                               |
+| `id.FDS_ID`                 | string  | No       | `"P8R3C2-R"`             | <https://www.factset.com/>                             |
+| `id.FIGI`                   | string  | No       | `"BBG000BPH459"`         | <https://www.openfigi.com/>                            |
+| `id.ISIN`                   | string  | No       | `"US5949181045"`         | <https://www.isin.org/>                                |
+| `id.PERMID`                 | string  | No       | `"4295907168"`           | <https://permid.org/>                                  |
+| `id.RIC`                    | string  | No       | `"MSFT.OQ"`              | <https://www.refinitiv.com/>                           |
+| `id.SEDOL`                  | string  | No       | `"2588173"`              | <https://www.lseg.com/sedol>                           |
+| `market.MIC`                | string  | No       | `"XNAS"`                 | <https://en.wikipedia.org/wiki/Market_Identifier_Code> |
 | `market.name`               | string  | No       | `"NASDAQ - All Markets"` |                                                        |
 | `market.COUNTRY_ISOALPHA2`  | string  | No       | `"US"`                   |                                                        |
-| `market.BBG`                | string  | No       | `"US"`                   | https://www.bloomberg.com/                             |
+| `market.BBG`                | string  | No       | `"US"`                   | <https://www.bloomberg.com/>                           |
 
 ## Example
 
@@ -93,4 +93,5 @@ Intents
 - [ViewOrders](../../intents/ref/ViewOrders)
 
 FINOS Financial Objects
+
 - [Instrument](https://fo.finos.org/docs/objects/instrument)

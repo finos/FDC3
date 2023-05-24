@@ -38,9 +38,11 @@ fdc3.raiseIntent('StartCall', contact)
 ## See Also
 
 Context
-- [Contact](../../context/ref/Contact)
-- [ContactList](../../context/ref/ContactList)
+
+* [Contact](../../context/ref/Contact)
+* [ContactList](../../context/ref/ContactList)
 
 Intents
+
 * [StartChat](StartChat)
 * [StartEmail](StartEmail)

@@ -49,37 +49,37 @@ Early versions of the FDC3 standard included 8 intents, which used one of two di
 
 #### `View___`
 
-* Expected behaviour: Content should be displayed to the user.
+* Expected behavior: Content should be displayed to the user.
 
 #### `Start___`
   
-* Expected behaviour: An interaction, such as a chat room or email thread, should be initiated.
+* Expected behavior: An interaction, such as a chat room or email thread, should be initiated.
 
 As more use cases were identified it was clear further Intents were required.  FDC3 2.0 expanded this set to include the following:
 
 #### `Create___`
 
-* Expected behaviour: A new record or entity should be created. The operation should fail if it already exists.
+* Expected behavior: A new record or entity should be created. The operation should fail if it already exists.
 
 #### `Update___`
 
-* Expected behaviour: An existing record or entity should be updated. The operation should fail if it does not exist.
+* Expected behavior: An existing record or entity should be updated. The operation should fail if it does not exist.
 
 #### `CreateOrUpdate___`
 
-* Expected behaviour: A new record or entity should be created, or an existing one updated if it exists.
+* Expected behavior: A new record or entity should be created, or an existing one updated if it exists.
 
 #### `Delete___`
 
-* Expected behaviour: An existing record or entity should be deleted. The operation should fail if it does not exist.
+* Expected behavior: An existing record or entity should be deleted. The operation should fail if it does not exist.
 
 #### `Get___`
 
-* Expected behaviour: A record or entity should be retrieved and returned as an intent result. The operation should fail if the record does not exist.
+* Expected behavior: A record or entity should be retrieved and returned as an intent result. The operation should fail if the record does not exist.
 
 #### `Share___`
 
-* Expected behaviour: A record or entity should shared. The operation should fail if it does not exist
+* Expected behavior: A record or entity should shared. The operation should fail if it does not exist
 
 ## Using Intents
 

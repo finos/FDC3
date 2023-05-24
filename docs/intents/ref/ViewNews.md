@@ -24,7 +24,6 @@ Display news stories for the provided context.
 * [Organization](../../context/ref/Organization)
 * [Portfolio](../../context/ref/Portfolio)
 
-
 ## Example
 
 ```js
@@ -45,13 +44,14 @@ fdc3.raiseIntent('ViewNews', instrument)
 ## See Also
 
 Context
-- [Country](../../context/ref/Country)
-- [Instrument](../../context/ref/Instrument)
-- [InstrumentList](../../context/ref/InstrumentList)
-- [Organization](../../context/ref/Organization)
-- [Portfolio](../../context/ref/Portfolio)
-- [Position](../../context/ref/Position)
 
+* [Country](../../context/ref/Country)
+* [Instrument](../../context/ref/Instrument)
+* [InstrumentList](../../context/ref/InstrumentList)
+* [Organization](../../context/ref/Organization)
+* [Portfolio](../../context/ref/Portfolio)
+* [Position](../../context/ref/Position)
 
 Intents
-- [ViewAnalysis](ViewAnalysis)
+
+* [ViewAnalysis](ViewAnalysis)

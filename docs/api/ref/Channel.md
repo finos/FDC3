@@ -38,7 +38,7 @@ interface Channel {
 }
 ```
 
-#### See also
+**See also:**
 
 * [`Context`](Types#context)
 * [`Listener`](Types#listener)
@@ -72,7 +72,7 @@ public readonly displayMetadata?: DisplayMetadata;
 
 DisplayMetadata can be used to provide display hints for User Channels intended to be visualized and selectable by end users.
 
-#### See also
+**See also:**
 
 * [`DisplayMetadata`](Metadata#displaymetadata)
 
@@ -90,7 +90,7 @@ If, when this function is called, the channel already contains context that woul
 
 Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
 
-#### Examples
+**Examples:**
 
 Add a listener for any context that is broadcast on the channel:
 
@@ -123,7 +123,7 @@ contactListener.unsubscribe();
 instrumentListener.unsubscribe();
 ```
 
-#### See also
+**See also:**
 
 * [`Listener`](Types#listener)
 * [`ContextHandler`](Types#contexthandler)
@@ -144,7 +144,7 @@ Channel implementations should ensure that context messages broadcast by an appl
 
 If you are working with complex context types composed of other simpler types (as recommended by the [FDC3 Context Data specification](../../context/spec#assumptions)) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.
 
-#### Example
+**Example:**
 
 ```javascript
 const instrument = {
@@ -161,7 +161,7 @@ try {
 }
 ```
 
-#### See also
+**See also:**
 
 * [`ChannelError`](Errors#channelerror)
 * [`getCurrentContext`](#getcurrentcontext)
@@ -181,7 +181,7 @@ It is up to the specific Desktop Agent implementation whether and how recent con
 
 If getting the current context fails, the promise will be rejected with an `Error` with a `message` string from the [`ChannelError`](Errors#channelerror) enumeration.
 
-#### Examples
+**Examples:**
 
 Without specifying a context type:
 
@@ -203,7 +203,7 @@ try {
 }
 ```
 
-#### See also
+**See also:**
 
 * [`ChannelError`](Errors#channelerror)
 * [`broadcast`](#broadcast)
@@ -222,6 +222,6 @@ public addContextListener(handler: ContextHandler): Promise<Listener>;
 
 Adds a listener for incoming contexts whenever a broadcast happens on the channel.
 
-#### See also
+**See also:**
 
 * [`addContextListener`](#addcontextlistener)

@@ -39,10 +39,12 @@ fdc3.raiseIntent('ViewOrders', instrument)
 ## See Also
 
 Context
-- [Contact](../../context/ref/Contact)
-- [Instrument](../../context/ref/Instrument)
-- [Organization](../../context/ref/Organization)
+
+* [Contact](../../context/ref/Contact)
+* [Instrument](../../context/ref/Instrument)
+* [Organization](../../context/ref/Organization)
 
 Intents
-- [ViewHoldings](ViewHoldings)
-- [ViewInstrument](ViewInstrument)
+
+* [ViewHoldings](ViewHoldings)
+* [ViewInstrument](ViewInstrument)
