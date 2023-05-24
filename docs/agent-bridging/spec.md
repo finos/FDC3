@@ -311,7 +311,7 @@ The Desktop Agent Bridge will extract the authentication token `sub` from the JW
 
 **Schema**: [https://fdc3.finos.org/schemas/next/bridging/connectionStep4AuthenticationFailed.schema.json](/schemas/next/bridging/connectionStep4AuthenticationFailed.schema.json)
 
-If authentication succeeds (or is not required), then the Desktop Agent Bridge should assign the Desktop Agent the name requested in the `handshake` message, unless another agent is already connected with that name in which case it should generate a new name which MAY be derived from the requested name. Note that the assigned name is not communicated to the connecting agent until step 5.
+If authentication succeeds (or is not required), then the Desktop Agent Bridge should assign the Desktop Agent the name requested in the `handshake` message, unless another agent is already connected with that name in which case it should generate a new name which MAY be derived from the requested name. Note that the assigned name is not communicated to the connecting agent until step 6.
 
 ### Step 5. Synchronize the Bridge's Channel State
 
