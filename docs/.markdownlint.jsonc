@@ -7,5 +7,11 @@
 	//We have repeated headings, like 'Properties' or 'Fields' in reference docs.
 	"no-duplicate-header": {
 		"siblings_only": true
+	},
+	"no-inline-html": {
+		"allowed_elements": [
+			"Tabs",
+			"TabItem"
+		]
 	}
 }
