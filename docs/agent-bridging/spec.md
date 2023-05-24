@@ -18,7 +18,25 @@ Desktop Agent Bridging in an experimental feature added to FDC3 in 2.1, hence, i
 
 -->
 
-The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent (DA), enabling cross-application workflows and context sharing. Desktop Agent Bridging addresses the interconnection of Desktop Agents (DAs) such that apps running under different Desktop Agents can also interoperate, allowing workflows to span multiple Desktop Agents. This is achieved, without implementation changes or special handling in the apps, by providing a protocol and service for the Desktop Agents to interoperate with each other instead, allowing application interop to extend across the bridged agents, seamlessly.
+The FDC3 Desktop Agent API addresses interoperability between apps running within the context of a single Desktop Agent (DA), enabling cross-application workflows and context sharing.
+
+![A single desktop and FDC3 Desktop Agent](/assets/dab-overview-1.png)
+
+It is clear, however, that user desktops are substantially more complicated in reality. Some Desktop Agent implementations already provide additional features allowing "external" applications (e.g. those not launched by the Desktop Agent) to connect in order to participate in interoperability.
+
+![A single desktop and Desktop Agent, with external apps](/assets/dab-overview-2.png)
+
+Firms that make extensive use of FDC3 have also identified use cases where interoperability workflows span different physical desktops, and have built proprietary bridging solutions (e.g. [Backplane](https://backplane.finos.org/) was originally developed as an in-house solution to this problem).
+
+![Two physical desktops with a desktop agent each](/assets/dab-overview-3.png)
+
+With the success of FDC3, usage of vendor-provided Desktop Agents has increased substantially among banks and buy-side institutions. Buy-side firms who are clients of multiple banks' platforms have multiple desktop agents delivered to their desktops. Several software vendors also deliver FDC3-compatible software: some as apps that can run in any Desktop Agent, but some as self-contained applications running in their own desktop agent. They are often multi-component suites of functionality with a customized user experience, and are not simple to export to a different Desktop Agent. In these cases, being able to provide a single installable platform bundled with a Desktop Agent is a far more practical solution for the vendor and customer. 
+
+![Two physical desktops, one with multiple desktop agents](/assets/dab-overview-4.png)
+
+However, unless the Desktop Agents themselves can interoperate, unfortunately, this approach prevents interoperability rather than promoting it. To support user workflows spanning the whole environment there needs to be some form of network connectivity between Desktop Agents.
+
+Desktop Agent Bridging addresses the interconnection of Desktop Agents (DAs) such that apps running under different Desktop Agents can also interoperate, allowing workflows to span multiple Desktop Agents. This is achieved, without implementation changes or special handling in the apps, by providing a protocol and service for the Desktop Agents to interoperate with each other instead, allowing application interop to extend across the bridged agents, seamlessly.
 
 In any Desktop Agent Bridging scenario, it is expected that each DA is being operated by the same user (as the scope of FDC3 contemplates cross-application workflows for a single user, rather than cross-user workflows), although DAs may be run on different machines operated by the same user. Whether a bridge is running for Desktop Agents to connect to, whether it requires the agents to authenticate etc., is in the hands of the user (and their local IT team).
 
@@ -219,7 +237,7 @@ The DA must then respond to the `hello` message with a `handshake` request to th
         /** Metadata indicating whether the Desktop Agent implements optional features of
          *  the Desktop Agent API. */
         readonly optionalFeatures: {
-          /** Used to indicate whether the exposure of 'origninating app metadata' for
+          /** Used to indicate whether the exposure of 'originating app metadata' for
            *  context and intent messages is supported by the Desktop Agent.*/
           "OriginatingAppMetadata": boolean;
           /** Used to indicate whether the optional `fdc3.joinUserChannel`,
