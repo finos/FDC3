@@ -291,7 +291,7 @@ export interface DesktopAgent {
   raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<IntentResolution>;
 
   /**
-   * Adds a listener for incoming intents from the Desktop Agent. The handler function may return void or a promise that resolves to a `IntentResult`, which is either a `Context` object, representing any data that should be returned to the app that raised the intent, a `Channel` Object, a `PrivateChannel` over which data responses will be sent, or `void`. The `IntentResult` will be returned to the app that raised the intent via the `IntentResolution` and retrieved from it using the `getResult()` function.
+   * Adds a listener for incoming intents from the Desktop Agent. The handler function may return void or a promise that resolves to an `IntentResult`, which is either a `Context` object, representing any data that should be returned to the app that raised the intent, a `Channel` Object, a `PrivateChannel` over which data responses will be sent, or `void`. The `IntentResult` will be returned to the app that raised the intent via the `IntentResolution` and retrieved from it using the `getResult()` function.
    *
    * The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.
    *
