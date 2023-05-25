@@ -18,10 +18,10 @@ export type ContextHandler = (context: Context, metadata?: ContextMetadata) => v
  * Intents can return results that are either context data objects
  * or a reference to a Channel.
  */
-export type IntentResult = Context | Channel;
+export type IntentResult = Context | Channel | void;
 /**
  * Describes a callback that handles a context event and may return a
- * promise of a Context or Channel object to be returned to the
+ * promise of a Context, Channel object or void to be returned to the
  * application that raised the intent.
  * Used when attaching listeners for raised intents.
  *

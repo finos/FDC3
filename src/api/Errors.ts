@@ -38,7 +38,7 @@ export enum ResolveError {
 }
 
 export enum ResultError {
-  /** Returned if the intent handler exited without returning a Promise or that Promise was not resolved with a Context or Channel object. */
+  /** Returned if the intent handler exited without returning a valid result (a promise resolving to a Context, Channel object or void). */
   NoResultReturned = 'NoResultReturned',
   /** Returned if the Intent handler function processing the raised intent throws an error or rejects the Promise it returned. */
   IntentHandlerRejected = 'IntentHandlerRejected',
