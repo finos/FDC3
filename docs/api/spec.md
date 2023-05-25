@@ -121,7 +121,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Provide an ID for each [`PrivateChannel`](ref/PrivateChannel) created via [`createPrivateChannel`](ref/DesktopAgent#createprivatechannel) and prevent them from being retrieved via [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) by ID.
 - Only require app directories that they connect to to have implemented only the minimum requirements specified in the [App Directory API Part](../app-directory/spec) of this Standard.
 - Provide details of whether they implement optional features of the Desktop Agent API in the `optionalFeatures` property of the [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned by the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function.
-- Allow, by default, at least a 30 second timeout for an application, launched via [`fdc3.open`](../api/ref/DesktopAgent#open), [`fdc3.raiseIntent`](../api/ref/DesktopAgent#raiseintent) or [`fdc3.raiseIntentForContext`](../api/ref/DesktopAgent#raiseintentforcontext) to add any any context listener (via [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener)) or intent listener (via [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener)) necessary to deliver context or intent and context to it on launch. This timeout only applies to listeners need to receive context on launch; further intent and context listeners not required on launch may be added later. 
+- Allow, by default, at least a 15 second timeout for an application, launched via [`fdc3.open`](../api/ref/DesktopAgent#open), [`fdc3.raiseIntent`](../api/ref/DesktopAgent#raiseintent) or [`fdc3.raiseIntentForContext`](../api/ref/DesktopAgent#raiseintentforcontext) to add any  context listener (via [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener)) or intent listener (via [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener)) necessary to deliver context or intent and context to it on launch. This timeout only applies to listeners needed to receive context on launch; further intent and context listeners not required on launch MAY be added later.
 
 An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 
@@ -149,9 +149,6 @@ An FDC3 Standard compliant Desktop Agent implementation **MAY**:
   - [`open`](ref/DesktopAgent#open-deprecated) (deprecated version that addresses apps via `name` field)
   - [`raiseIntent`](ref/DesktopAgent#raiseintent-deprecated) (deprecated version that addresses apps via `name` field)
   - [`raiseIntentForContext`](ref/DesktopAgent#raiseintentforcontext-deprecated) (deprecated version that addresses apps via `name` field)
-- Allow up to 90 seconds, by default, for an application, launched via [`fdc3.open`](../api/ref/DesktopAgent#open), to add a context listener via the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call, so that it can deliver context to it.
-- Allow, by default, up to a 90 second timeout for an application, launched via [`fdc3.open`](../api/ref/DesktopAgent#open), [`fdc3.raiseIntent`](../api/ref/DesktopAgent#raiseintent) or [`fdc3.raiseIntentForContext`](../api/ref/DesktopAgent#raiseintentforcontext), to add any any context listener (via [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener)) or intent listener (via [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener)) necessary to deliver context or intent and context to it on launch.
-- Support configuration (for example as part of a `hostManifest` entry in an appD record) to extend the default timeouts for adding intent and context listeners for individual applications beyond 90 seconds.
 
 For more details on FDC3 Standards compliance (including the versioning, deprecation and experimental features policies) please see the [FDC3 Compliance page](../fdc3-compliance).
 
@@ -356,7 +353,7 @@ Applications need to let the system know the intents they can support.  Typicall
 
 When an instance of an application is launched, it is expected to add an [`IntentHandler`](ref/Types#intenthandler) function to the Desktop Agent for each intent it has registered by calling the [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) function of the Desktop Agent. Doing so allows the Desktop Agent to pass incoming intents and contexts to that instance of the application. Hence, if the application instance was spawned in response to the raised intent, then the Desktop Agent must wait for the relevant intent listener to be added by that instance before it can deliver the intent and context to it. In order to facilitate accurate error responses, calls to `fdc3.raiseIntent` should not return an `IntentResolution` until the intent handler has been added and the intent delivered to the target app.
 
-Intent handlers SHOULD be registered via [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) within 30 seconds of the application launch and MUST be added within 90 seconds.
+Intent handlers SHOULD be registered via [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) within 15 seconds of the application launch (the minimum timeout Desktop Agents are required to provide) in order to be widely compatible with Desktop Agent implementations. Individual Desktop Agent Implementations MAY support longer timeouts or configuration to control or extend timeouts.
 
 ### Originating App Metadata
 
