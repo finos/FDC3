@@ -9,6 +9,7 @@ import { ContextListeners } from "./ContextListeners";
 import { IntentListeners } from "./IntentListeners";
 import { AppChannelListeners } from "./AppChannelListeners";
 import { SystemLog } from "./SystemLog";
+import { PrivateChannelListeners } from "./PrivateChannelListeners";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -96,6 +97,7 @@ export const Workbench = observer(() => {
 				<ContextListeners />
 				<IntentListeners />
 				<AppChannelListeners />
+				<PrivateChannelListeners />
 			</TabPanel>
 
 			<div className={classes.systemLog}>
