@@ -49,9 +49,9 @@ fdc3.raiseIntent("StartEmail", email)
 
 Other Types
 
-* [Contact](Contact)
-* [ContactList](ContactList)
+- [Contact](Contact)
+- [ContactList](ContactList)
 
 Intents
 
-* [StartEmail](../../intents/ref/StartEmail)
+- [StartEmail](../../intents/ref/StartEmail)

@@ -22,7 +22,7 @@ View details for a contact.
 
 ## Possible Contexts
 
-* [Contact](../../context/ref/Contact)
+- [Contact](../../context/ref/Contact)
 
 ## Example
 
@@ -42,8 +42,8 @@ fdc3.raiseIntent('ViewContact', contact)
 
 Context
 
-* [Contact](../../context/ref/Contact)
+- [Contact](../../context/ref/Contact)
 
 Intents
 
-* [StartChat](StartChat)
+- [StartChat](StartChat)

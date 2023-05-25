@@ -31,15 +31,15 @@ Depending on persona, implementation compliance with FDC3 will mean different th
 
 For platform providers FDC3 compliance requires that they meet the requirements of the APIs that they implement:
 
-* [Desktop Agent API compliance requirements](api/spec#desktop-agent-api-standard-compliance).
-* [App Directory compliance requirements](app-directory/spec#app-directory-standard-compliance).
+- [Desktop Agent API compliance requirements](api/spec#desktop-agent-api-standard-compliance).
+- [App Directory compliance requirements](app-directory/spec#app-directory-standard-compliance).
 
 ### Application Provider
 
 For application providers FDC3 compliance requires that they interact with the FDC3 APIs as intended and meet the requirements of the Intents and Context Data Standards. Specifically:
 
-* [Intents Standard compliance requirements](intents/spec#intents-standard-compliance)
-* [Context Data Standard compliance requirements](context/spec#context-data-standard-compliance)
+- [Intents Standard compliance requirements](intents/spec#intents-standard-compliance)
+- [Context Data Standard compliance requirements](context/spec#context-data-standard-compliance)
 
 ## Versioning
 

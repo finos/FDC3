@@ -23,10 +23,10 @@ For each intent, it reference the applications that support that intent.
 
 **See also:**
 
-* [`AppMetadata`](#appmetadata)
-* [`IntentMetadata`](#intentmetadata)
-* [`DesktopAgent.findIntent`](DesktopAgent#findintent)
-* [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
+- [`AppMetadata`](#appmetadata)
+- [`IntentMetadata`](#intentmetadata)
+- [`DesktopAgent.findIntent`](DesktopAgent#findintent)
+- [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
 
 ## `AppMetadata`
 
@@ -89,13 +89,13 @@ Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passe
 
 **See also:**
 
-* [`AppIdentifier`](Types#AppIdentifier)
-* [`AppIntent.apps`](#appintent)
-* [`Icon`](#icon)
-* [`Image`](#image)
-* [`DesktopAgent.open`](DesktopAgent#open)
-* [`DesktopAgent.findIntent`](DesktopAgent#findintent)
-* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+- [`AppIdentifier`](Types#AppIdentifier)
+- [`AppIntent.apps`](#appintent)
+- [`Icon`](#icon)
+- [`Image`](#image)
+- [`DesktopAgent.open`](DesktopAgent#open)
+- [`DesktopAgent.findIntent`](DesktopAgent#findintent)
+- [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 
 ## `ContextMetadata`
 
@@ -114,12 +114,12 @@ Metadata relating to a context or intent & context received through the `addCont
 
 **See also:**
 
-* [`AppMetadata`](#appmetadata)
-* [`ContextHandler`](Types#contexthandler)
-* [`IntentHandler`](Types#intenthandler)
-* [`addIntentListener`](DesktopAgent#addintentlistener)
-* [`addContextListener`](DesktopAgent#addcontextlistener)
-* [`Channel.addContextListener`](Channel#addcontextlistener)
+- [`AppMetadata`](#appmetadata)
+- [`ContextHandler`](Types#contexthandler)
+- [`IntentHandler`](Types#intenthandler)
+- [`addIntentListener`](DesktopAgent#addintentlistener)
+- [`addContextListener`](DesktopAgent#addcontextlistener)
+- [`Channel.addContextListener`](Channel#addcontextlistener)
 
 ## `DisplayMetadata`
 
@@ -145,8 +145,8 @@ A desktop agent (typically for _system_ channels) may want to provide additional
 
 **See also:**
 
-* [`Channel`](Channel)
-* [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
+- [`Channel`](Channel)
+- [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
 
 ## `Icon`
 
@@ -181,13 +181,13 @@ AppMetadata includes an icons property allowing multiple icon types to be specif
 
 **Properties:**
 
-* **`src`:** The fully qualified url to the icon.
-* **`size`:** The dimensions of the Icon formatted as `<height>x<width>`.
-* **`type`:** The media type of the icon. If not provided the Desktop Agent may refer to the src file extension.
+- **`src`:** The fully qualified url to the icon.
+- **`size`:** The dimensions of the Icon formatted as `<height>x<width>`.
+- **`type`:** The media type of the icon. If not provided the Desktop Agent may refer to the src file extension.
 
 **See also:**
 
-* [`AppMetadata`](Metadata#appmetadata)
+- [`AppMetadata`](Metadata#appmetadata)
 
 ## `Image`
 
@@ -225,13 +225,13 @@ AppMetadata includes a screenshots property allowing multiple images to be speci
 
 **Properties:**
 
-* **`src`:** The fully qualified url to the image.
-* **`size`:** The dimensions of the image formatted as `<height>x<width>`.
-* **`type`:** The media type of the image. If not provided the Desktop Agent may refer to the src file extension.
+- **`src`:** The fully qualified url to the image.
+- **`size`:** The dimensions of the image formatted as `<height>x<width>`.
+- **`type`:** The media type of the image. If not provided the Desktop Agent may refer to the src file extension.
 
 **See also:**
 
-* [`AppMetadata`](Metadata#appmetadata)
+- [`AppMetadata`](Metadata#appmetadata)
 
 ## `ImplementationMetadata`
 
@@ -276,8 +276,8 @@ Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provid
 
 **See also:**
 
-* [`AppMetadata`](#appmetadata)
-* [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
+- [`AppMetadata`](#appmetadata)
+- [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
 
 ## `IntentMetadata`
 
@@ -297,7 +297,7 @@ The interface used to describe an intent within the platform.
 
 **See also:**
 
-* [`AppIntent.intent`](#appintent)
+- [`AppIntent.intent`](#appintent)
 
 ## `IntentResolution`
 
@@ -373,7 +373,7 @@ try {
 
 **See also:**
 
-* [`IntentResult`](Types#intentresult)
-* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-* [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
-* [`AppIdentifier`](Types#appidentifier)
+- [`IntentResult`](Types#intentresult)
+- [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+- [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
+- [`AppIdentifier`](Types#appidentifier)

@@ -10,12 +10,12 @@ Context objects are used when raising [intents](../intents/spec) and when broadc
 
 There are two main use cases for exchanging context data:
 
-* **Transmitting reference data between applications.**
+- **Transmitting reference data between applications.**
   The source application will send as many known identifiers as possible, and the target application will try to match the entity based on the identifiers. It may then choose to map to its own internal domain representation for rendering purposes.
 
   An example of this is sending an instrument or contact, when only an ISIN or email is required to reference the same data in another application.
 
-* **Transferring information between applications.**
+- **Transferring information between applications.**
   The source application may have data required to compose a workflow with another application, e.g. a list of contacts that have been selected, or a complex object representing an RFQ request.
 
   In many such cases there aren't any sensible reference identifiers that can be shared, it is instead the data itself being transferred.
@@ -36,10 +36,10 @@ FDC3 recognizes that there are other object definitions for providing context be
 
 Context can be summarized as:
 
-* Having a unique _type_ identifier, used for routing.
-* Optionally providing a name.
-* Optionally providing a map of equivalent identifiers.
-* Any other properties or metadata.
+- Having a unique _type_ identifier, used for routing.
+- Optionally providing a name.
+- Optionally providing a map of equivalent identifiers.
+- Any other properties or metadata.
 
 ```typescript
 interface Context {
@@ -94,14 +94,14 @@ The identifier "foo" is proprietary, an application that can use it is free to d
 
 Fields representing a point in time SHOULD be string encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included, e.g.:
 
-* Time in UTC: `"2022-03-30T15:44:44Z"`
-* Also time in UTC: `"2022-03-30T15:44:44+00:00"`
-* Same time in EDT: `"2022-03-30T11:44:44-04:00"`
+- Time in UTC: `"2022-03-30T15:44:44Z"`
+- Also time in UTC: `"2022-03-30T15:44:44+00:00"`
+- Same time in EDT: `"2022-03-30T11:44:44-04:00"`
 
 Times MAY be expressed with millisecond precision, e.g.:
 
-* `"2022-03-30T11:44:44.123-04:00"`
-* `"2022-03-30T11:44:44.123Z"`
+- `"2022-03-30T11:44:44.123-04:00"`
+- `"2022-03-30T11:44:44.123Z"`
 
 Parsing in JavaScript:
 
@@ -141,17 +141,17 @@ ISO 4217 only includes major currency codes, conversions to minor currencies is 
 
 An FDC3 Standard compliant application that supports the use of context data **MUST**:
 
-* Ensure that any FDC3-defined standard context types used meet the interface defined for that type of context data.
-* Where Channels are supported or an app is intended to receive context from [`fdc3.open`](../api/ref/DesktopAgent#open) calls, use the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call to set up appropriate handlers on start-up (for User channels and for receiving context from [`fdc3.open`](../api/ref/DesktopAgent#open)) or when the channel is first created or retrieved (for App and Private channels).
+- Ensure that any FDC3-defined standard context types used meet the interface defined for that type of context data.
+- Where Channels are supported or an app is intended to receive context from [`fdc3.open`](../api/ref/DesktopAgent#open) calls, use the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call to set up appropriate handlers on start-up (for User channels and for receiving context from [`fdc3.open`](../api/ref/DesktopAgent#open)) or when the channel is first created or retrieved (for App and Private channels).
 
 An FDC3 Standard compliant application that supports the use of context data **SHOULD**:
 
-* Prefer FDC3-defined standard context types over proprietary contexts, where a suitable FDC3-defined standard context type is available.
-* Ensure that any proprietary context data types defined follow any the recommended [namespacing](#namespacing) and [field type conventions](#field-type-conventions) in the specification.
+- Prefer FDC3-defined standard context types over proprietary contexts, where a suitable FDC3-defined standard context type is available.
+- Ensure that any proprietary context data types defined follow any the recommended [namespacing](#namespacing) and [field type conventions](#field-type-conventions) in the specification.
 
 An FDC3 Standard compliant application that supports the use of context data **MAY**:
 
-* Define proprietary context data types to support use cases not currently supported via FDC3-defined standard context types.
+- Define proprietary context data types to support use cases not currently supported via FDC3-defined standard context types.
 
 For more details on FDC3 Standards compliance (including the versioning, deprecation and experimental features policies) please see the [FDC3 Compliance page](../fdc3-compliance).
 
@@ -159,21 +159,21 @@ For more details on FDC3 Standards compliance (including the versioning, depreca
 
 The following are standard FDC3 context types:
 
-* [`fdc3.chart`](ref/Chart) ([schema](/schemas/next/chart.schema.json))
-* [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](/schemas/next/chatInitSettings.schema.json))
-* [`fdc3.contact`](ref/Contact) ([schema](/schemas/next/contact.schema.json))
-* [`fdc3.contactList`](ref/ContactList) ([schema](/schemas/next/contactList.schema.json))
-* [`fdc3.country`](ref/Country) ([schema](/schemas/next/country.schema.json))
-* [`fdc3.currency`](ref/Currency) ([schema](/schemas/next/currency.schema.json))
-* [`fdc3.email`](ref/Email) ([schema](/schemas/next/email.schema.json))
-* [`fdc3.instrument`](ref/Instrument) ([schema](/schemas/next/instrument.schema.json))
-* [`fdc3.instrumentList`](ref/InstrumentList) ([schema](/schemas/next/instrumentList.schema.json))
-* [`fdc3.organization`](ref/Organization) ([schema](/schemas/next/organization.schema.json))
-* [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/next/portfolio.schema.json))
-* [`fdc3.position`](ref/Position) ([schema](/schemas/next/position.schema.json))
-* [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/next/nothing.schema.json))
-* [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/next/timerange.schema.json))
-* [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/valuation.schema.json))
+- [`fdc3.chart`](ref/Chart) ([schema](/schemas/next/chart.schema.json))
+- [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](/schemas/next/chatInitSettings.schema.json))
+- [`fdc3.contact`](ref/Contact) ([schema](/schemas/next/contact.schema.json))
+- [`fdc3.contactList`](ref/ContactList) ([schema](/schemas/next/contactList.schema.json))
+- [`fdc3.country`](ref/Country) ([schema](/schemas/next/country.schema.json))
+- [`fdc3.currency`](ref/Currency) ([schema](/schemas/next/currency.schema.json))
+- [`fdc3.email`](ref/Email) ([schema](/schemas/next/email.schema.json))
+- [`fdc3.instrument`](ref/Instrument) ([schema](/schemas/next/instrument.schema.json))
+- [`fdc3.instrumentList`](ref/InstrumentList) ([schema](/schemas/next/instrumentList.schema.json))
+- [`fdc3.organization`](ref/Organization) ([schema](/schemas/next/organization.schema.json))
+- [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/next/portfolio.schema.json))
+- [`fdc3.position`](ref/Position) ([schema](/schemas/next/position.schema.json))
+- [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/next/nothing.schema.json))
+- [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/next/timerange.schema.json))
+- [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/valuation.schema.json))
 
 **Note:** The below examples show how the base context data interface can be used to define specific context data objects.
 

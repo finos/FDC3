@@ -90,7 +90,7 @@ const listener = await addIntentListener('ViewAnalysis', instrument => {
 
 **See also:**
 
-* [`fdc3Ready() Function`](api/ref/Globals#fdc3ready-function)
+- [`fdc3Ready() Function`](api/ref/Globals#fdc3ready-function)
 
 ## Native
 

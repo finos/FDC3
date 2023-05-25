@@ -40,11 +40,11 @@ interface Channel {
 
 **See also:**
 
-* [`Context`](Types#context)
-* [`Listener`](Types#listener)
-* [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
-* [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
-* [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
+- [`Context`](Types#context)
+- [`Listener`](Types#listener)
+- [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
+- [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
+- [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
 
 ## Properties
 
@@ -74,7 +74,7 @@ DisplayMetadata can be used to provide display hints for User Channels intended 
 
 **See also:**
 
-* [`DisplayMetadata`](Metadata#displaymetadata)
+- [`DisplayMetadata`](Metadata#displaymetadata)
 
 ## Functions
 
@@ -125,10 +125,10 @@ instrumentListener.unsubscribe();
 
 **See also:**
 
-* [`Listener`](Types#listener)
-* [`ContextHandler`](Types#contexthandler)
-* [`broadcast`](#broadcast)
-* [`getCurrentContext`](#getcurrentcontext)
+- [`Listener`](Types#listener)
+- [`ContextHandler`](Types#contexthandler)
+- [`broadcast`](#broadcast)
+- [`getCurrentContext`](#getcurrentcontext)
 
 ### `broadcast`
 
@@ -163,9 +163,9 @@ try {
 
 **See also:**
 
-* [`ChannelError`](Errors#channelerror)
-* [`getCurrentContext`](#getcurrentcontext)
-* [`addContextListener`](#addcontextlistener)
+- [`ChannelError`](Errors#channelerror)
+- [`getCurrentContext`](#getcurrentcontext)
+- [`addContextListener`](#addcontextlistener)
 
 ### `getCurrentContext`
 
@@ -205,9 +205,9 @@ try {
 
 **See also:**
 
-* [`ChannelError`](Errors#channelerror)
-* [`broadcast`](#broadcast)
-* [`addContextListener`](#addcontextlistener)
+- [`ChannelError`](Errors#channelerror)
+- [`broadcast`](#broadcast)
+- [`addContextListener`](#addcontextlistener)
 
 ## Deprecated Functions
 
@@ -224,4 +224,4 @@ Adds a listener for incoming contexts whenever a broadcast happens on the channe
 
 **See also:**
 
-* [`addContextListener`](#addcontextlistener)
+- [`addContextListener`](#addcontextlistener)

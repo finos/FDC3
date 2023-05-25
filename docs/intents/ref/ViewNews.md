@@ -18,11 +18,11 @@ Display news stories for the provided context.
 
 ## Possible Contexts
 
-* [Country](../../context/ref/Country)
-* [Instrument](../../context/ref/Instrument)
-* [InstrumentList](../../context/ref/InstrumentList)
-* [Organization](../../context/ref/Organization)
-* [Portfolio](../../context/ref/Portfolio)
+- [Country](../../context/ref/Country)
+- [Instrument](../../context/ref/Instrument)
+- [InstrumentList](../../context/ref/InstrumentList)
+- [Organization](../../context/ref/Organization)
+- [Portfolio](../../context/ref/Portfolio)
 
 ## Example
 
@@ -45,13 +45,13 @@ fdc3.raiseIntent('ViewNews', instrument)
 
 Context
 
-* [Country](../../context/ref/Country)
-* [Instrument](../../context/ref/Instrument)
-* [InstrumentList](../../context/ref/InstrumentList)
-* [Organization](../../context/ref/Organization)
-* [Portfolio](../../context/ref/Portfolio)
-* [Position](../../context/ref/Position)
+- [Country](../../context/ref/Country)
+- [Instrument](../../context/ref/Instrument)
+- [InstrumentList](../../context/ref/InstrumentList)
+- [Organization](../../context/ref/Organization)
+- [Portfolio](../../context/ref/Portfolio)
+- [Position](../../context/ref/Position)
 
 Intents
 
-* [ViewAnalysis](ViewAnalysis)
+- [ViewAnalysis](ViewAnalysis)

@@ -18,9 +18,9 @@ Display analysis on the provided context.
 
 ## Possible Contexts
 
-* [Instrument](../../context/ref/Instrument)
-* [Organization](../../context/ref/Organization)
-* [Portfolio](../../context/ref/Portfolio)
+- [Instrument](../../context/ref/Instrument)
+- [Organization](../../context/ref/Organization)
+- [Portfolio](../../context/ref/Portfolio)
 
 ## Example
 
@@ -40,12 +40,12 @@ fdc3.raiseIntent('ViewAnalysis', instrument)
 
 Context
 
-* [Instrument](../../context/ref/Instrument)
-* [Organization](../../context/ref/Organization)
-* [Portfolio](../../context/ref/Portfolio)
-* [Position](../../context/ref/Position)
+- [Instrument](../../context/ref/Instrument)
+- [Organization](../../context/ref/Organization)
+- [Portfolio](../../context/ref/Portfolio)
+- [Position](../../context/ref/Position)
 
 Intents
 
-* [ViewChart](ViewChart)
-* [ViewResearch](ViewResearch)
+- [ViewChart](ViewChart)
+- [ViewResearch](ViewResearch)

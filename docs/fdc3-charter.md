@@ -7,17 +7,17 @@ title: FDC3 Charter
 
 Financial desktop applications include any app used in common financial workflows:
 
-* Traditional native applications implemented in C++, .NET, Java, Python, etc.
-* Hybrid web/native applications - stand-alone native apps embedding Chromium (e.g. a .NET application embedding WebView using CEF or WebView2)
-* Desktop web applications - Web applications running in a desktop container (e.g. OpenFin, Finsemble, Glue42, Electron, FDC3-Sail)
-* Common desktop applications not specific to finance, but critical to workflows - such as Excel, Outlook, etc.
-* PWAs & Web applications running in a commercial browser
+- Traditional native applications implemented in C++, .NET, Java, Python, etc.
+- Hybrid web/native applications - stand-alone native apps embedding Chromium (e.g. a .NET application embedding WebView using CEF or WebView2)
+- Desktop web applications - Web applications running in a desktop container (e.g. OpenFin, Finsemble, Glue42, Electron, FDC3-Sail)
+- Common desktop applications not specific to finance, but critical to workflows - such as Excel, Outlook, etc.
+- PWAs & Web applications running in a commercial browser
 
 This Standard is focused specifically on the desktop.  Activities of the desktop interoperability group do not include:
 
-* Defining financial objects - where existing standards are well established
-* Interoperability between mobile apps
-* Interoperability via REST or other client to server communication
+- Defining financial objects - where existing standards are well established
+- Interoperability between mobile apps
+- Interoperability via REST or other client to server communication
 
 :::note
 While these areas are out of scope, compatibility with Mobile and/or REST are still valid points of consideration for FDC3.
@@ -25,17 +25,17 @@ While these areas are out of scope, compatibility with Mobile and/or REST are st
 
 ### Success Criteria
 
-* Commitment from major banks and application vendors to support the standards set out by the FDC3
-* Workflow integrations in the wild leveraging the standards
+- Commitment from major banks and application vendors to support the standards set out by the FDC3
+- Workflow integrations in the wild leveraging the standards
 
 ### Deliverables
 
-* Define criteria and mechanics for secure communication between apps
-* Define key functions that require specific standards for interoperability
-* Create an agreed taxonomy for common app “intents” within financial desktop workflows
-* Create an agreed taxonomy for common data to be shared across apps within financial desktop workflows
-* Provide reference implementations of all standards
-* Maintain the above standards and reference implementations
+- Define criteria and mechanics for secure communication between apps
+- Define key functions that require specific standards for interoperability
+- Create an agreed taxonomy for common app “intents” within financial desktop workflows
+- Create an agreed taxonomy for common data to be shared across apps within financial desktop workflows
+- Provide reference implementations of all standards
+- Maintain the above standards and reference implementations
 
 ## Participation
 

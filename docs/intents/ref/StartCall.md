@@ -18,8 +18,8 @@ Initiate a call with a contact or list of contacts.
 
 ## Possible Contexts
 
-* [Contact](../../context/ref/Contact)
-* [ContactList](../../context/ref/ContactList)
+- [Contact](../../context/ref/Contact)
+- [ContactList](../../context/ref/ContactList)
 
 ## Example
 
@@ -39,10 +39,10 @@ fdc3.raiseIntent('StartCall', contact)
 
 Context
 
-* [Contact](../../context/ref/Contact)
-* [ContactList](../../context/ref/ContactList)
+- [Contact](../../context/ref/Contact)
+- [ContactList](../../context/ref/ContactList)
 
 Intents
 
-* [StartChat](StartChat)
-* [StartEmail](StartEmail)
+- [StartChat](StartChat)
+- [StartEmail](StartEmail)

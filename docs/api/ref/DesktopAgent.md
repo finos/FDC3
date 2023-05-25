@@ -85,9 +85,9 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, 
 
 **See also:**
 
-* [`Listener`](Types#listener)
-* [`Context`](Types#context)
-* [`ContextHandler`](Types#contexthandler)
+- [`Listener`](Types#listener)
+- [`Context`](Types#context)
+- [`ContextHandler`](Types#contexthandler)
 
 ### `addIntentListener`
 
@@ -154,11 +154,11 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 
 **See also:**
 
-* [Register an Intent Handler](../spec#register-an-intent-handler)
-* [`PrivateChannel`](PrivateChannel)
-* [`Listener`](Types#listener)
-* [`Context`](Types#context)
-* [`IntentHandler`](Types#intenthandler)
+- [Register an Intent Handler](../spec#register-an-intent-handler)
+- [`PrivateChannel`](PrivateChannel)
+- [`Listener`](Types#listener)
+- [`Context`](Types#context)
+- [`IntentHandler`](Types#intenthandler)
 
 ### `broadcast`
 
@@ -187,7 +187,7 @@ fdc3.broadcast(instrument);
 
 **See also:**
 
-* [addContextListener](#addcontextlistener)
+- [addContextListener](#addcontextlistener)
 
 ### `createPrivateChannel`
 
@@ -203,9 +203,9 @@ The `PrivateChannel` type is provided to support synchronization of data transmi
 
 It is intended that Desktop Agent implementations:
 
-* SHOULD restrict external apps from listening or publishing on this channel.
-* MUST prevent `PrivateChannels` from being retrieved via fdc3.getOrCreateChannel.
-* MUST provide the `id` value for the channel as required by the `Channel` interface.
+- SHOULD restrict external apps from listening or publishing on this channel.
+- MUST prevent `PrivateChannels` from being retrieved via fdc3.getOrCreateChannel.
+- MUST provide the `id` value for the channel as required by the `Channel` interface.
 
 **Example:**
 
@@ -238,9 +238,9 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 
 **See also:**
 
-* [`PrivateChannel`](PrivateChannel)
-* [`raiseIntent`](#raiseintent)
-* [`addIntentListener`](#addintentlistener)
+- [`PrivateChannel`](PrivateChannel)
+- [`raiseIntent`](#raiseintent)
+- [`addIntentListener`](#addintentlistener)
 
 ### `findInstances`
 
@@ -340,7 +340,7 @@ const appIntent = await fdc3.findIntent("QuoteStream", instrument, "channel<fdc3
 
 **See also:**
 
-* [`ResolveError`](Errors#resolveerror)
+- [`ResolveError`](Errors#resolveerror)
 
 ### `findIntentsByContext`
 
@@ -408,8 +408,8 @@ await fdc3.raiseIntent(startChat.intent.name, context, selectedApp);
 
 **See also:**
 
-* [`findIntent()`](#findintent)
-* [`ResolveError`](Errors#resolveerror)
+- [`findIntent()`](#findintent)
+- [`ResolveError`](Errors#resolveerror)
 
 ### `getAppMetadata`
 
@@ -428,8 +428,8 @@ let appMetadata = await fdc3.getAppMetadata(appIdentifier);
 
 **See also:**
 
-* [`AppMetadata`](Metadata#appmetadata)
-* [`AppIdentifier`](Types#appidentifier)
+- [`AppMetadata`](Metadata#appmetadata)
+- [`AppIdentifier`](Types#appidentifier)
 
 ### `getCurrentChannel`
 
@@ -450,7 +450,7 @@ let current = await fdc3.getCurrentChannel();
 
 **See also:**
 
-* [`Channel`](Channel)
+- [`Channel`](Channel)
 
 ### `getInfo`
 
@@ -483,8 +483,8 @@ let {appId, instanceId} = implementationMetadata.appMetadata;
 
 **See also:**
 
-* [`ImplementationMetadata`](Metadata#implementationmetadata)
-* [`AppMetadata`](Metadata#appmetadata)
+- [`ImplementationMetadata`](Metadata#implementationmetadata)
+- [`AppMetadata`](Metadata#appmetadata)
 
 ### `getOrCreateChannel`
 
@@ -510,7 +510,7 @@ catch (err){
 
 **See also:**
 
-* [`Channel`](Channel)
+- [`Channel`](Channel)
 
 ### `getUserChannels`
 
@@ -529,7 +529,7 @@ const redChannel = userChannels.find(c => c.id === 'red');
 
 **See also:**
 
-* [`Channel`](Channel)
+- [`Channel`](Channel)
 
 ### `joinUserChannel`
 
@@ -562,7 +562,7 @@ fdc3.joinUserChannel(selectedChannel.id);
 
 **See also:**
 
-* [`getUserChannels`](#getuserchannels)
+- [`getUserChannels`](#getuserchannels)
 
 ### `leaveCurrentChannel`
 
@@ -619,10 +619,10 @@ let instanceIdentifier = await fdc3.open(appIdentifier, context);
 
 **See also:**
 
-* [`Context`](Types#context)
-* [`AppIdentifier`](Types#appidentifier)
-* [`AppMetadata`](Metadata#appmetadata)
-* [`OpenError`](Errors#openerror)
+- [`Context`](Types#context)
+- [`AppIdentifier`](Types#appidentifier)
+- [`AppMetadata`](Metadata#appmetadata)
+- [`OpenError`](Errors#openerror)
 
 ### `raiseIntent`
 
@@ -678,13 +678,13 @@ try {
 
 **See also:**
 
-* [Raising Intents](../spec#raising-intents)
-* [`Context`](Types#context)
-* [`AppIdentifier`](Types#AppIdentifier)
-* [`IntentResult`](Types#intentresult)
-* [`IntentResolution`](Metadata#intentresolution)
-* [`ResolveError`](Errors#resolveerror)
-* [`ResultError`](Errors#resulterror)
+- [Raising Intents](../spec#raising-intents)
+- [`Context`](Types#context)
+- [`AppIdentifier`](Types#AppIdentifier)
+- [`IntentResult`](Types#intentresult)
+- [`IntentResolution`](Metadata#intentresolution)
+- [`ResolveError`](Errors#resolveerror)
+- [`ResultError`](Errors#resulterror)
 
 ### `raiseIntentForContext`
 
@@ -715,12 +715,12 @@ await fdc3.raiseIntentForContext(context, targetAppIdentifier);
 
 **See also:**
 
-* [Raising Intents](../spec#raising-intents)
-* [`raiseIntent()`](#raiseintent)
-* [`Context`](Types#context)
-* [`AppIdentifier`](Types#appidentifier)
-* [`IntentResolution`](Metadata#intentresolution)
-* [`ResolveError`](Errors#resolveerror)
+- [Raising Intents](../spec#raising-intents)
+- [`raiseIntent()`](#raiseintent)
+- [`Context`](Types#context)
+- [`AppIdentifier`](Types#appidentifier)
+- [`IntentResolution`](Metadata#intentresolution)
+- [`ResolveError`](Errors#resolveerror)
 
 ## Deprecated Functions
 
@@ -734,7 +734,7 @@ Adds a listener for incoming context broadcasts from the Desktop Agent. Provided
 
 **See also:**
 
-* [`addContextListener`](#addcontextlistener)
+- [`addContextListener`](#addcontextlistener)
 
 ### `getSystemChannels` (deprecated)
 
@@ -745,7 +745,7 @@ getSystemChannels() : Promise<Array<Channel>>;
 Alias to the [`getUserChannels`](#getuserchannels) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
 **See also:**
 
-* [`getUserChannels`](#getuserchannels)
+- [`getUserChannels`](#getuserchannels)
 
 ### `joinChannel` (deprecated)
 
@@ -757,7 +757,7 @@ Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwar
 
 **See also:**
 
-* [`joinUserChannel`](#joinuserchannel)
+- [`joinUserChannel`](#joinuserchannel)
 
 ### `open` (deprecated)
 
@@ -769,7 +769,7 @@ Version of `open` that launches an app by name rather than `AppIdentifier`. Prov
 
 **See also:**
 
-* [`open`](#open)
+- [`open`](#open)
 
 ### `raiseIntent` (deprecated)
 
@@ -781,7 +781,7 @@ Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`
 
 **See also:**
 
-* [`raiseIntent`](#raiseintent)
+- [`raiseIntent`](#raiseintent)
 
 ### `raiseIntentForContext` (deprecated)
 
@@ -793,4 +793,4 @@ Version of `raiseIntentForContext` that targets an app by name rather than `AppI
 
 **See also:**
 
-* [`raiseIntentForContext`](#raiseintentforcontext)
+- [`raiseIntentForContext`](#raiseintentforcontext)
