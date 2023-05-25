@@ -165,5 +165,12 @@
         "infoLink": "https://www.adaptabletools.com/",
         "pinned": true,
         "isMember": true
-    }  
+    },
+    {
+        "caption": "BMO",
+        "image": "/img/users/bmo.png",
+        "infoLink": "https://www.bmo.com/",
+        "pinned": true,
+        "isMember": true
+    } 
 ]

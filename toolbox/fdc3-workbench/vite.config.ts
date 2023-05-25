@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	base: "/toolbox/fdc3-workbench",
+	base: "/toolbox/fdc3-workbench/",
 	build: {
 		outDir: "build",
 	},

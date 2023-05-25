@@ -14,7 +14,7 @@ security:
 paths:
   '/v1/apps/{appId}':
     get:
-      summary: Retrieve an application defintion
+      summary: Retrieve an application definition
       parameters:
         - name: appId
           in: path
@@ -374,7 +374,7 @@ components:
           items:
             type: string
           description: >-
-            A comma sepaarted list of the types of contexts the intent offered by the application can process. 
+            A comma separated list of the types of contexts the intent offered by the application can process. 
             where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
         customConfig:
           type: object
