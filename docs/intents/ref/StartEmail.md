@@ -18,7 +18,7 @@ Initiate an email with a contact or list of contacts provided as part of an Emai
 
 ## Possible Contexts
 
-* [Email](../../context/ref/Email)
+- [Email](../../context/ref/Email)
 
 ## Example
 
@@ -41,9 +41,9 @@ window.fdc3.raiseIntent('fdc3.StartEmail', {
 
 Context
 
-* [Email](../../context/ref/Email)
+- [Email](../../context/ref/Email)
 
 Intents
 
-* [StartCall](StartCall)
-* [StartChat](StartChat)
+- [StartCall](StartCall)
+- [StartChat](StartChat)

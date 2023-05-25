@@ -26,11 +26,11 @@ interface AppIdentifier {
 
 **See also:**
 
-* [`AppMetadata`](Metadata#appmetadata)
-* [`DesktopAgent.open`](DesktopAgent#open)
-* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-* [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
-* [`IntentResolution`](Metadata#intentresolution)
+- [`AppMetadata`](Metadata#appmetadata)
+- [`DesktopAgent.open`](DesktopAgent#open)
+- [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+- [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
+- [`IntentResolution`](Metadata#intentresolution)
 
 ## `Context`
 
@@ -48,18 +48,18 @@ This means that it must at least have a `type` property that indicates what type
 
 **See also:**
 
-* [`ContextHandler`](#contexthandler)
-* [`DesktopAgent.open`](DesktopAgent#open)
-* [`DesktopAgent.broadcast`](DesktopAgent#broadcast)
-* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
-* [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
-* [`DesktopAgent.findIntent`](DesktopAgent#findintent)
-* [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
-* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-* [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
-* [`Channel.broadcast`](Channel#broadcast)
-* [`Channel.getCurrentContext`](Channel#getcurrentcontext)
-* [`Channel.addContextListener`](Channel#addcontextlistener)
+- [`ContextHandler`](#contexthandler)
+- [`DesktopAgent.open`](DesktopAgent#open)
+- [`DesktopAgent.broadcast`](DesktopAgent#broadcast)
+- [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+- [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
+- [`DesktopAgent.findIntent`](DesktopAgent#findintent)
+- [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
+- [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+- [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
+- [`Channel.broadcast`](Channel#broadcast)
+- [`Channel.getCurrentContext`](Channel#getcurrentcontext)
+- [`Channel.addContextListener`](Channel#addcontextlistener)
 
 ## `ContextHandler`
 
@@ -75,10 +75,10 @@ Optional metadata about the context message, including the app that originated t
 
 **See also:**
 
-* [`Context`](#context)
-* [`ContextMetadata`](Metadata#contextmetadata)
-* [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
-* [`Channel.addContextListener`](Channel#addcontextlistener)
+- [`Context`](#context)
+- [`ContextMetadata`](Metadata#contextmetadata)
+- [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
+- [`Channel.addContextListener`](Channel#addcontextlistener)
 
 ## `IntentHandler`
 
@@ -94,11 +94,11 @@ Optional metadata about the intent & context message, including the app that ori
 
 **See also:**
 
-* [`Context`](#context)
-* [`ContextMetadata`](Metadata#contextmetadata)
-* [`PrivateChannel`](PrivateChannel)
-* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
-* [`Channel.addContextListener`](Channel#addcontextlistener)
+- [`Context`](#context)
+- [`ContextMetadata`](Metadata#contextmetadata)
+- [`PrivateChannel`](PrivateChannel)
+- [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+- [`Channel.addContextListener`](Channel#addcontextlistener)
 
 ## `IntentResult`
 
@@ -112,12 +112,12 @@ Represented as a union type in TypeScript, however, this type may be rendered as
 
 **See also:**
 
-* [`Context`](#context)
-* [`Channel`](Channel)
-* [`PrivateChannel`](PrivateChannel)
-* [`IntentHandler`](#intenthandler)
-* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
-* [`IntentResolution`](Metadata#intentresolution)
+- [`Context`](#context)
+- [`Channel`](Channel)
+- [`PrivateChannel`](PrivateChannel)
+- [`IntentHandler`](#intenthandler)
+- [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+- [`IntentResolution`](Metadata#intentresolution)
 
 ## `Listener`
 
@@ -139,7 +139,7 @@ Allows an application to unsubscribe from listening to intents or context broadc
 
 **See also:**
 
-* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
-* [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
-* [`Channel.addContextListener`](Channel#addcontextlistener)
-* [`ContextHandler`](Types#contexthandler)
+- [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+- [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
+- [`Channel.addContextListener`](Channel#addcontextlistener)
+- [`ContextHandler`](Types#contexthandler)

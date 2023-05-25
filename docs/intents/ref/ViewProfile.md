@@ -18,8 +18,8 @@ Display basic profile information for the individual or organization provided as
 
 ## Possible Contexts
 
-* [Contact](../../context/ref/Contact)
-* [Organization](../../context/ref/Organization)
+- [Contact](../../context/ref/Contact)
+- [Organization](../../context/ref/Organization)
 
 ## Example
 
@@ -39,10 +39,10 @@ fdc3.raiseIntent('ViewProfile', contact)
 
 Context
 
-* [Contact](../../context/ref/Contact)
-* [Organization](../../context/ref/Organization)
+- [Contact](../../context/ref/Contact)
+- [Organization](../../context/ref/Organization)
 
 Intents
 
-* [ViewHoldings](ViewHoldings)
-* [ViewInteractions](ViewInteractions)
+- [ViewHoldings](ViewHoldings)
+- [ViewInteractions](ViewInteractions)

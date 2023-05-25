@@ -18,7 +18,7 @@ Display pricing for an [Instrument](../../context/ref/Instrument).
 
 ## Possible Contexts
 
-* [Instrument](../../context/ref/Instrument)
+- [Instrument](../../context/ref/Instrument)
 
 ## Example
 
@@ -38,8 +38,8 @@ fdc3.raiseIntent('ViewQuote', instrument)
 
 Context
 
-* [Instrument](../../context/ref/Instrument)
+- [Instrument](../../context/ref/Instrument)
 
 Intents
 
-* [ViewChart](ViewChart)
+- [ViewChart](ViewChart)
