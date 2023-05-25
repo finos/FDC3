@@ -13,5 +13,8 @@
 			"Tabs",
 			"TabItem"
 		]
+	},
+	"ul-style": {
+		"style": "dash"
 	}
 }
