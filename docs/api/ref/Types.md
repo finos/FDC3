@@ -86,7 +86,7 @@ Optional metadata about the context message, including the app that originated t
 type IntentHandler = (context: Context, metadata?: ContextMetadata) => Promise<IntentResult> | void;
 ```
 
-Describes a callback that handles a context event and may return a promise of a Context or Channel object to be returned to the application that raised the intent.
+Describes a callback that handles a context event and may return a promise of a Context, Channel object or `void` to be returned to the application that raised the intent.
 
 Used when attaching listeners for raised intents.
 
@@ -103,10 +103,10 @@ Optional metadata about the intent & context message, including the app that ori
 ## `IntentResult`
 
 ```typescript
-type IntentResult = Context | Channel;
+type IntentResult = Context | Channel | void;
 ```
 
-Describes results that an Intent handler may optionally return that should be communicated back to the app that raised the intent, via the [`IntentResolution`](Metadata#intentresolution).
+Describes results that an Intent handler may return that should be communicated back to the app that raised the intent, via the [`IntentResolution`](Metadata#intentresolution).
 
 Represented as a union type in TypeScript, however, this type may be rendered as an interface in other languages that both the `Context` and `Channel` types implement, allowing either to be returned by an `IntentHandler`.
 
