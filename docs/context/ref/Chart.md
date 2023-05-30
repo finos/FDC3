@@ -21,7 +21,7 @@ In addition to handling requests to plot charts, a charting application may use 
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/chart.schema.json
+[https://fdc3.finos.org/schemas/next/chart.schema.json](https://fdc3.finos.org/schemas/next/chart.schema.json)
 
 ## Details
 
@@ -31,9 +31,9 @@ https://fdc3.finos.org/schemas/next/chart.schema.json
 | `instruments`    | Instrument[]  | Yes      | <pre>[<br/>&emsp;&emsp;{<br/>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.instrument",<br/>&emsp;&emsp;&emsp;&emsp;"id": {<br/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"ticker": "AAPL"<br/>&emsp;&emsp;&emsp;&emsp;}<br/>&emsp;&emsp;},<br/>&emsp;&emsp;{<br/>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.instrument",<br/>&emsp;&emsp;&emsp;&emsp;"id": {<br/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"ticker": "MSFT"<br/>&emsp;&emsp;&emsp;&emsp;}<br/>&emsp;&emsp;}<br/>]</pre> |
 | `range` | TimeRange  | No       | <pre>{<br/>&emsp;&emsp;"type": "fdc3.timerange",<br/>&emsp;&emsp;"startTime": "2022-03-30T15:44:44+00:00",<br/>&emsp;&emsp;"endTime": "2022-04-30T23:59:59+00:00"<br/>}</pre>            |
 | `style`    | string  | No       | one of: `'line'`, `'bar'`, `'stacked-bar'`, `'mountain'`, `'candle'`, `'pie'`, `'scatter'`, `'histogram'`, `'heatmap'`, `'custom'`      |
-| `otherConfig`* | object  | No |  `{ /* unstandardized additional config */}`  |
+| `otherConfig`* | array  | No |  `[ {/* additional config context objects */} ]`  |
 
-\* It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standarized formats, but may be included in the `otherConfig` element.
+\* It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` array as context objects.
 
 ## Example
 
@@ -60,20 +60,24 @@ const chart = {
         endTime: "2020-10-31T08:00:00.000Z"
     },
     style: "line",
-    otherConfig: {
-        indicators: [
-            {
-                name: "ma",
-                parameters: {
-                    period: 14,
-                    type: "ema"
-                }
-            },
-            {
-                name: "volume"
+    otherConfig: [
+        {
+            type: "somevendor.someproduct.indicator",
+            name: "stddev",
+            parameters: {
+                period: 10,
+                matype: "exponential"
             }
-        ]
-    }
+        },
+        {
+            type: "someothervendor.someotherproduct.formula",
+            formula: "standard-deviation",
+            fields: {
+                lookback: 10,
+                type: "ema"
+            }
+        }
+    ]
 };
 
 fdc3.raiseIntent("ViewChart", chart);

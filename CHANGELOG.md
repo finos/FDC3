@@ -23,9 +23,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 * Updated definition of the `ChatInitSettings` context type to use the new `Message` type.  ([#779](https://github.com/finos/FDC3/pull/779))
+* Updated the `StartChat` intent to return a reference to the room. ([#794](https://github.com/finos/FDC3/pull/794))
 * Updated definition of the `Instrument` context type to include optional market identifiers ([#819](https://github.com/finos/FDC3/pull/819))
 * Corrected API functions and object types to always use `string` instead of `String` ([#924](https://github.com/finos/FDC3/pull/924))
-* Updated the `StartChat` intent to return a reference to the room. ([#794](https://github.com/finos/FDC3/pull/794))
+* Updated definition of the `otherConfig` element of the `Chart` context type from an Object to an array of Contexts as this allows the `type` of each additional item of config to be examined before it is used ([#985](https://github.com/finos/FDC3/pull/985))
 
 ### Deprecated
 
