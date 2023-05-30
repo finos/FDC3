@@ -313,9 +313,20 @@ components:
           description: >
             The unique application identifier located within a specific
             application directory instance.
+        title:
+          type: string
+          description: >-
+            Title for the application, typically used in a launcher UI.
+        type:
+          $ref: '#/components/schemas/Type'
+        details:
+          $ref: '#/components/schemas/LaunchDetails'
         name:
           type: string
           description: >
+            Deprecated in favour of using `appId` to identify apps and `title`
+            for their display names.
+            
             The name of the application.
 
             The name should be unique within an FDC3 App Directory instance. The
@@ -324,21 +335,13 @@ components:
 
             The same appName could occur in other directories. We are not
             currently specifying app name conventions in the document.
-        type:
-          $ref: '#/components/schemas/Type'
-        details:
-          $ref: '#/components/schemas/LaunchDetails'
+          deprecated: true
         version:
           type: string
           description: >-
             Version of the application. This allows multiple app versions to be
             defined using the same app name. This can be a triplet but can also
             include things like 1.2.5 (BETA)
-        title:
-          type: string
-          description: >-
-            Optional title for the application, if missing use appName,
-            typically used in a launcher UI.
         tooltip:
           type: string
           description: Optional tooltip description e.g. for a launcher
@@ -450,7 +453,7 @@ components:
         discussed elsewhere in the FDC3 App Directory spec.
       required:
         - appId
-        - name
+        - title
         - type
         - details
       allOf:
@@ -886,7 +889,6 @@ components:
     FDC3WorkbenchAppDefinition:
       value:
         appId: fdc3-workbench
-        name: fdc3-workbench
         title: FDC3 Workbench
         description: Development and test tool for FDC3 desktop agents and apps
         categories: [developer tools, training]
@@ -965,7 +967,6 @@ components:
     MyAppDefinition:
       value:
         appId: my-application
-        name: my-application
         title: My Application
         description: An example application that uses FDC3 and fully describes itself in an AppD record.
         categories: [market data, research, news]
@@ -1080,7 +1081,6 @@ components:
       value:
         applications: # you can't $ref inside a $ref so example is repeated here for search response
           - appId: my-application
-            name: my-application
             title: My Application
             description: An example application that uses FDC3 and fully describes itself in an AppD record.
             categories: [market data, research, news]
@@ -1191,7 +1191,6 @@ components:
                 title: Mon application,
                 description: Un exemple d'application qui utilise FDC3 et se décrit entièrement dans un enregistrement AppD.
           - appId: fdc3-workbench
-            name: fdc3-workbench
             title: FDC3 Workbench
             description: Development and test tool for FDC3 desktop agents and apps
             categories: [developer tools, training]
