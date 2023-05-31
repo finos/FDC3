@@ -26,6 +26,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 * Further clarified the difference between the behavior of User channels and other channel types on joinUserChannel/addContextListener. ([#971](https://github.com/finos/FDC3/pull/971))
+
+## [npm v2.0.3] - 2023-05-31
+
+### Changed
+
+* Applied missing `readonly` tags to `ImplementationMetadata.optionalFeatures` sub-properties. ([#1008](https://github.com/finos/FDC3/pull/1008))
+
 ## [npm v2.0.2] - 2023-05-24
 
 ### Changed

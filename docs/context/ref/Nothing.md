@@ -10,7 +10,7 @@ A type that explicitly represents a lack of context.
 
 Notes:
 
-- Intended to be used in situations where no context is desired. 
+- Intended to be used in situations where no context is desired.
 - For example:
   - Raising an intent without context (e.g. opening a blank order form, or chat
     interface without a contact selected).
@@ -25,7 +25,7 @@ Notes:
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/nothing.schema.json](/schemas/next/context/nothing.schema.json)
+<https://fdc3.finos.org/schemas/next/context/nothing.schema.json>
 
 ## Example
 

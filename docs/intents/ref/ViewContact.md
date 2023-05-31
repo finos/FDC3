@@ -5,10 +5,10 @@ title: ViewContact
 hide_title: true
 ---
 # `ViewContact`
+
 :::caution
 ViewContact has been deprecated in FDC3 2.0 in favour of the more general [ViewProfile](ViewProfile) intent.
 :::
-
 
 View details for a contact.
 
@@ -22,7 +22,7 @@ View details for a contact.
 
 ## Possible Contexts
 
-* [Contact](../../context/ref/Contact)
+- [Contact](../../context/ref/Contact)
 
 ## Example
 
@@ -41,7 +41,9 @@ fdc3.raiseIntent('ViewContact', contact)
 ## See Also
 
 Context
+
 - [Contact](../../context/ref/Contact)
 
 Intents
+
 - [StartChat](StartChat)

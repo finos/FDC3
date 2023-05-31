@@ -6,18 +6,18 @@ title: Intents Overview (next)
 
 FDC3 Intents define a standard set of verbs that, in conjunction with context data acting as nouns, can be used to put together common cross-application workflows on the financial desktop.
 
-* Applications register the intents and [context data](../context/spec) combinations they support in the [App Directory](../app-directory/spec).
-* The App Directory supports application discovery by intents and/or context data.
-* Intents are not full RPC, apps don’t need to enumerate every function with an intent.
-* FDC3 standard intents are a limited set, organizations can create their own intents.
+- Applications register the intents and [context data](../context/spec) combinations they support in the [App Directory](../app-directory/spec).
+- The App Directory supports application discovery by intents and/or context data.
+- Intents are not full RPC, apps don’t need to enumerate every function with an intent.
+- FDC3 standard intents are a limited set, organizations can create their own intents.
 
 ## Naming Conventions
 
 Naming of Intents SHOULD follow the below guidelines:
 
-* Intent names should be free of non-alphanumeric characters.
-* ‘.’ will be used to namespace the intent (see below).
-* Intent names should be in UpperCamelCase.
+- Intent names should be free of non-alphanumeric characters.
+- ‘.’ will be used to namespace the intent (see below).
+- Intent names should be in UpperCamelCase.
 
 :::note
 The naming guidelines should be adhered to when creating future Intents.  This is to ensure they meet the criteria for addition to the FDC3 standard and to provide a consistent user experience.
@@ -27,16 +27,16 @@ The naming guidelines should be adhered to when creating future Intents.  This i
 
 When creating Intents they should be:
 
-* Recognizable
-  * Generally self-evident what the thing is
-* Repeatable
-  * Many instances across the industry
-* Stateless
-  * Workflows should not require callbacks or endpoints to maintain references to each other.  Once an Intent is passed to an endpoint - it controls the rest of that workflow.
-* Specific
-  * Terms should not be so open-ended that one endpoint could fulfill the Intent in a completely different way than another
-* Distinct
-  * Granular enough that Intent handlers can communicate key functional differences
+- Recognizable
+  - Generally self-evident what the thing is
+- Repeatable
+  - Many instances across the industry
+- Stateless
+  - Workflows should not require callbacks or endpoints to maintain references to each other.  Once an Intent is passed to an endpoint - it controls the rest of that workflow.
+- Specific
+  - Terms should not be so open-ended that one endpoint could fulfill the Intent in a completely different way than another
+- Distinct
+  - Granular enough that Intent handlers can communicate key functional differences
 
 ### Namespaces
 
@@ -49,37 +49,37 @@ Early versions of the FDC3 standard included 8 intents, which used one of two di
 
 #### `View___`
 
-* Expected behaviour: Content should be displayed to the user.
+- Expected behavior: Content should be displayed to the user.
 
 #### `Start___`
   
-* Expected behaviour: An interaction, such as a chat room or email thread, should be initiated.
+- Expected behavior: An interaction, such as a chat room or email thread, should be initiated.
 
 As more use cases were identified it was clear further Intents were required.  FDC3 2.0 expanded this set to include the following:
 
 #### `Create___`
 
-* Expected behaviour: A new record or entity should be created. The operation should fail if it already exists.
+- Expected behavior: A new record or entity should be created. The operation should fail if it already exists.
 
 #### `Update___`
 
-* Expected behaviour: An existing record or entity should be updated. The operation should fail if it does not exist.
+- Expected behavior: An existing record or entity should be updated. The operation should fail if it does not exist.
 
 #### `CreateOrUpdate___`
 
-* Expected behaviour: A new record or entity should be created, or an existing one updated if it exists.
+- Expected behavior: A new record or entity should be created, or an existing one updated if it exists.
 
 #### `Delete___`
 
-* Expected behaviour: An existing record or entity should be deleted. The operation should fail if it does not exist.
+- Expected behavior: An existing record or entity should be deleted. The operation should fail if it does not exist.
 
 #### `Get___`
 
-* Expected behaviour: A record or entity should be retrieved and returned as an intent result. The operation should fail if the record does not exist.
+- Expected behavior: A record or entity should be retrieved and returned as an intent result. The operation should fail if the record does not exist.
 
 #### `Share___`
 
-* Expected behaviour: A record or entity should shared. The operation should fail if it does not exist
+- Expected behavior: A record or entity should shared. The operation should fail if it does not exist
 
 ## Using Intents
 
@@ -131,18 +131,18 @@ const intentsAndApps = await fdc3.findIntentsByContext({
 
 An FDC3 Standard compliant application that supports intents **MUST**:
 
-* Meet the expected context and behavior defined for any FDC3-defined standard intents used.
-* Use the [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener) API call to set up a handler for each supported intent as soon as possible when it starts up. This facilitates delivery of raised intents to the application.
+- Meet the expected context and behavior defined for any FDC3-defined standard intents used.
+- Use the [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener) API call to set up a handler for each supported intent as soon as possible when it starts up. This facilitates delivery of raised intents to the application.
 
 An FDC3 Standard compliant application that supports intents **SHOULD**:
 
-* Prefer FDC3-defined standard intents over proprietary intents, where a suitable standardized intent is available.
-* Ensure that proprietary intents follow the recommended naming conventions in the specification.
-* Apply [namespacing](#namespaces) to proprietary intent names, where it is necessary to avoid collision with those created by other applications.
+- Prefer FDC3-defined standard intents over proprietary intents, where a suitable standardized intent is available.
+- Ensure that proprietary intents follow the recommended naming conventions in the specification.
+- Apply [namespacing](#namespaces) to proprietary intent names, where it is necessary to avoid collision with those created by other applications.
 
 An FDC3 Standard compliant application that supports intents **MAY**:
 
-* Define proprietary intents to support use cases not currently supported via FDC3-defined standard intents.
+- Define proprietary intents to support use cases not currently supported via FDC3-defined standard intents.
 
 For more details on FDC3 Standards compliance (including the versioning, deprecation and experimental features policies) please see the [FDC3 Compliance page](../fdc3-compliance).
 
@@ -150,23 +150,23 @@ For more details on FDC3 Standards compliance (including the versioning, depreca
 
 A list of standardized intents are defined in the following pages:
 
-* [`StartCall`](ref/StartCall)
-* [`StartChat`](ref/StartChat)
-* [`StartEmail`](ref/StartEmail)
-* [`ViewAnalysis`](ref/ViewAnalysis)
-* [`ViewChart`](ref/ViewChart)
-* [`ViewHoldings`](ref/ViewHoldings)
-* [`ViewInstrument`](ref/ViewInstrument)
-* [`ViewInteractions`](ref/ViewInteractions)
-* [`ViewNews`](ref/ViewNews)
-* [`ViewOrders`](ref/ViewOrders)
-* [`ViewProfile`](ref/ViewProfile)
-* [`ViewQuote`](ref/ViewQuote)
-* [`ViewResearch`](ref/ViewResearch)
+- [`StartCall`](ref/StartCall)
+- [`StartChat`](ref/StartChat)
+- [`StartEmail`](ref/StartEmail)
+- [`ViewAnalysis`](ref/ViewAnalysis)
+- [`ViewChart`](ref/ViewChart)
+- [`ViewHoldings`](ref/ViewHoldings)
+- [`ViewInstrument`](ref/ViewInstrument)
+- [`ViewInteractions`](ref/ViewInteractions)
+- [`ViewNews`](ref/ViewNews)
+- [`ViewOrders`](ref/ViewOrders)
+- [`ViewProfile`](ref/ViewProfile)
+- [`ViewQuote`](ref/ViewQuote)
+- [`ViewResearch`](ref/ViewResearch)
 
 ### Deprecated Intents
 
-* [`ViewContact`](ref/ViewContact)
+- [`ViewContact`](ref/ViewContact)
 
 ## Using Intents without a context
 

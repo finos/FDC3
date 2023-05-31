@@ -24,7 +24,7 @@ can be expected to have, but this can always be extended with custom fields as a
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/context.schema.json](/schemas/next/context/context.schema.json)
+<https://fdc3.finos.org/schemas/next/context/context.schema.json>
 
 ## Details
 
@@ -36,13 +36,13 @@ can be expected to have, but this can always be extended with custom fields as a
 
 ### `type` (required)
 
-The type property is the only _required_ part of the FDC3 context data schema. 
+The type property is the only _required_ part of the FDC3 context data schema.
 The FDC3 [API](../../api/spec) relies on the `type` property being present to route shared context data appropriately.
 
 FDC3 [Intents](../../intents/spec) also register the context data types they support in an FDC3 [App Directory](../../app-directory/overview), used for intent discovery and routing.
 
-Standardised FDC3 context types have well-known `type` properties prefixed with the `fdc3` namespace, e.g. `fdc3.instrument`. 
-For non-standard types, e.g. those defined and used by a particular organisation, the convention is to prefix them with an
+Standardized FDC3 context types have well-known `type` properties prefixed with the `fdc3` namespace, e.g. `fdc3.instrument`.
+For non-standard types, e.g. those defined and used by a particular organization, the convention is to prefix them with an
 organization-specific namespace, e.g. `blackrock.fund`.
 
 See the [Context Data Specification](../../context/spec) for more information about context data types.
@@ -62,12 +62,14 @@ Identifiers do not make sense for all types of data, so the `id` property is the
 ## See Also
 
 FDC3 Specifications
+
 - [Context Data](../../context/spec)
 - [Intents](../../intents/spec)
 - [API](../../api/spec)
 - [App Directory](../../app-directory/spec)
 
 FDC3 Context Types
+
 - [Contact](Contact)
 - [ContactList](ContactList)
 - [Country](Country)

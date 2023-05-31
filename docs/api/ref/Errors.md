@@ -36,12 +36,12 @@ Contains constants representing the errors that can be encountered when calling 
 
 **See also:**
 
-* [`DesktopAgent.createPrivateChannel`](DesktopAgent#createprivatechannel)
-* [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
-* [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
-* [`Channel.broadcast`](Channel#broadcast)
-* [`Channel.addContextListener`](Channel#addcontextlistener)
-* [`Channel.getCurrentContext`](Channel#getcurrentcontext)
+- [`DesktopAgent.createPrivateChannel`](DesktopAgent#createprivatechannel)
+- [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
+- [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
+- [`Channel.broadcast`](Channel#broadcast)
+- [`Channel.addContextListener`](Channel#addcontextlistener)
+- [`Channel.getCurrentContext`](Channel#getcurrentcontext)
 
 ## `OpenError`
 
@@ -79,7 +79,7 @@ Contains constants representing the errors that can be encountered when calling 
 
 **See also:**
 
-* [`DesktopAgent.open`](DesktopAgent#open)
+- [`DesktopAgent.open`](DesktopAgent#open)
 
 ## `ResolveError`
 
@@ -138,10 +138,10 @@ Contains constants representing the errors that can be encountered when calling 
 
 **See also:**
 
-* [`DesktopAgent.findIntent`](DesktopAgent#findintent)
-* [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
-* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-* [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
+- [`DesktopAgent.findIntent`](DesktopAgent#findintent)
+- [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
+- [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+- [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 
 ## `ResultError`
 
@@ -163,9 +163,9 @@ Contains constants representing the errors that can be encountered when calling 
 
 **See also:**
 
-* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
-* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-* [`IntentResolution`](Metadata#intentresolution)
+- [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+- [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+- [`IntentResolution`](Metadata#intentresolution)
 
 ## `BridgingError`
 
@@ -191,4 +191,4 @@ Contains constants representing the errors that can be encountered when queries 
 
 **See also:**
 
-* [Agent Bridging - Workflows broken by disconnects](../../agent-bridging/spec##workflows-broken-by-disconnects)
+- [Agent Bridging - Workflows broken by disconnects](../../agent-bridging/spec##workflows-broken-by-disconnects)

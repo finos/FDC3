@@ -18,9 +18,9 @@ Display interactions (calls, meetings, etc.) related to an individual, an instru
 
 ## Possible Contexts
 
-* [Contact](../../context/ref/Contact)
-* [Instrument](../../context/ref/Instrument)
-* [Organization](../../context/ref/Organization)
+- [Contact](../../context/ref/Contact)
+- [Instrument](../../context/ref/Instrument)
+- [Organization](../../context/ref/Organization)
 
 ## Example
 
@@ -39,10 +39,12 @@ fdc3.raiseIntent('ViewInteractions', contact)
 ## See Also
 
 Context
-* [Contact](../../context/ref/Contact)
-* [Instrument](../../context/ref/Instrument)
-* [Organization](../../context/ref/Organization)
+
+- [Contact](../../context/ref/Contact)
+- [Instrument](../../context/ref/Instrument)
+- [Organization](../../context/ref/Organization)
 
 Intents
-* [ViewProfile](ViewProfile)
-* [ViewResearch](ViewResearch)
+
+- [ViewProfile](ViewProfile)
+- [ViewResearch](ViewResearch)

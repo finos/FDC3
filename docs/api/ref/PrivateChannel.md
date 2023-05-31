@@ -56,7 +56,7 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
     });
 
     // This gets called when the remote side calls Listener.unsubscribe()
-    const unsubscriberListener = channel.onUnsubscribe((contextType) => {
+    const unsubscribeListener = channel.onUnsubscribe((contextType) => {
         feed.stop(symbol);
     });
 
@@ -71,7 +71,7 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 
 ### 'Client-side' example
 
-The 'client' application retrieves a `Channel` by raising an intent with context and awaiting the result. It adds a `ContextListener` so that it can receive messages from it. If a `PrivateChannel` was returned this may in turn trigger a handler added on the 'server-side' with `onAddContextListener()` and start the stream. A listener may also be to clear up if the 'server-side' disconnects from the stream. 
+The 'client' application retrieves a `Channel` by raising an intent with context and awaiting the result. It adds a `ContextListener` so that it can receive messages from it. If a `PrivateChannel` was returned this may in turn trigger a handler added on the 'server-side' with `onAddContextListener()` and start the stream. A listener may also be to clear up if the 'server-side' disconnects from the stream.
 
 Although this interaction occurs entirely in frontend code, we refer to it as the 'client-side' interaction as it requests and receives a stream of responses.
 

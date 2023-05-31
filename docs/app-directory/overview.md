@@ -76,7 +76,7 @@ The following provides a summary of use cases.
 
 A Desktop Agent will usually include a user interface allowing the user to select from a set of launchable applications and then allow them to manually launch one. It is also responsible for launching applications necessary to resolve a raised intent. However, it must first retrieve the necessary metadata about the available applications. An app directory provides an endpoint to retrieve a list of the available applications along with their metadata, which may include or link to additional information necessary to launch the application in a specific Desktop Agent.
 
-A launcher will usually be configured with the locations of one or more AppD servers (which is necessary to implement intent resolution), however, as described in the [Service Discovery](#service-discovery) section, a fully qualified application identifier (app1@host.appd.com) may also be used to both locate the appD service and to retrieve the specific application data.
+A launcher will usually be configured with the locations of one or more AppD servers (which is necessary to implement intent resolution), however, as described in the [Service Discovery](#service-discovery) section, a fully qualified application identifier (e.g. `app1@host.appd.com`) may also be used to both locate the appD service and to retrieve the specific application data.
 
 ![img](/assets/appd_launcher_embedded.png)
 
@@ -97,13 +97,13 @@ The specification does not define or make mandatory any authorizations or roles 
 
 ## Application Identifiers
 
-Application Records served by an app directory are each labelled with an identifer, `appId`, which should be unique within the app directory instance and may be used to refer to or retrieve the application's record via the [app directory API](spec). This identifier may be made globally unique through a nested namespace approach and email address construction (`appId@fqdn`) where `@` followed by the app directory instance's host name is appended to it. The resulting globally unique identifier is known as a 'fully qualified application identifier'.
+Application Records served by an app directory are each labelled with an identifier, `appId`, which should be unique within the app directory instance and may be used to refer to or retrieve the application's record via the [app directory API](spec). This identifier may be made globally unique through a nested namespace approach and email address construction (`appId@fqdn`) where `@` followed by the app directory instance's host name is appended to it. The resulting globally unique identifier is known as a 'fully qualified application identifier'.
 
 Fully qualified appIds may be used to locate the appD instance hosting the application's record. See the [Service Discovery](#service-discovery) section for details.
 
 ### Shrinking the URI
 
-Although the concept of fully qualified application IDs are useful in resolving the actual host of the application directory, there is no requirement for an application directory to use this fully qualified application ID as the resolver for a record.  An application ID is unique to given application directory, but there is no requirement to use the fully qualified representation when querying an interface.  Taking the prior example, the fully qualified application ID "app1@appd.foo.com" is represented as "app1" within the application directory.  As a result a launcher can use a shortened URI construct `"https://appd.foo.com/api/appd/v2/app1"` to resolve the application data vs `"https://appd.foo.com/api/appd/v2/app1@appd.foo.com"`.
+Although the concept of fully qualified application IDs are useful in resolving the actual host of the application directory, there is no requirement for an application directory to use this fully qualified application ID as the resolver for a record.  An application ID is unique to given application directory, but there is no requirement to use the fully qualified representation when querying an interface.  Taking the prior example, the fully qualified application ID `app1@appd.foo.com` is represented as `app1` within the application directory.  As a result a launcher can use a shortened URI construct `https://appd.foo.com/api/appd/v2/app1` to resolve the application data vs `https://appd.foo.com/api/appd/v2/app1@appd.foo.com`.
 
 ## Service Discovery
 
@@ -111,7 +111,7 @@ In order to support the discovery of applications that can be used with a Deskto
 
 ![img](/assets/appd_service_distribution.png)
 
-However, in order to do so, you must first discover the location of an app directory service, which you may then use to generate URIs  (e.g. "https://appd.foo.com/api/appd/v2/app1@appd.foo.com") to query a given directory instance for data. In order to construct a URI, the host location and port of a given AppD service instance is required.
+However, in order to do so, you must first discover the location of an app directory service, which you may then use to generate URIs  (e.g. `https://appd.foo.com/api/appd/v2/app1@appd.foo.com`) to query a given directory instance for data. In order to construct a URI, the host location and port of a given AppD service instance is required.
 
 Three methods for discovering app directory services are defined in this Standard:
 
@@ -129,16 +129,16 @@ As the name implies, a static configuration for an appD service location is defi
 
 ### Fully-qualified appID namespace syntax host resolution
 
-An app directory URI can be constructed using a [fully qualified application ID](spec#applicationidentifiers) (email address syntax) by using fqdn part of the ID as the host location and the name part as the application name. Given an application id "app1" with a fully qualified identifier of "app1@appd.foo.com" an application directory host location can be derived by simply extracting the fqdn "appd.foo.com" from the email syntax. The extracted fqdn "app.foo.com" MUST resolve to the actual host location where the application directory is running.
+An app directory URI can be constructed using a [fully qualified application ID](spec#applicationidentifiers) (email address syntax) by using fqdn part of the ID as the host location and the name part as the application name. Given an application id `app1` with a fully qualified identifier of `app1@appd.foo.com` an application directory host location can be derived by simply extracting the fqdn "appd.foo.com" from the email syntax. The extracted fqdn "app.foo.com" MUST resolve to the actual host location where the application directory is running.
 
 A launcher can then easily construct a URI by:
 
 1. URI protocol is defaulted to `https`, but can be overridden by the launcher.
 2. URI hostname is the fully qualified domain of the application ID.
 3. URI port is default `https/443`, but can be overridden by the launcher
-4. URI url is by default `"/api/appd/(version)"` . Calls that are made without version MUST automatically default to latest, i.e. `"/api/appd/app1"` should return the same result as `"/api/appd/v2/app1"`.
+4. URI url is by default `/api/appd/(version)` . Calls that are made without version MUST automatically default to latest, i.e. `/api/appd/app1` should return the same result as `/api/appd/v2/app1".
 
-The resulting URI to retrieve application data for "app1" would be "[https://appd.foo.com/api/appd/v2/app1@appd.foo.com](https://appd.foo.com/api/appd/v2/app1@appd.foo.com)"  
+The resulting URI to retrieve application data for `app1` would be <https://appd.foo.com/api/appd/v2/app1@appd.foo.com>  
 
 ### DNS/SRV Records
 
@@ -146,25 +146,25 @@ Another approach to support app directory service discovery (resolution) is thro
 
 More specifically, resolution of an appD service instance (host location) can be implemented using DNS "service records" (SRV) providing the host instance, protocol and associated port. The following is a well-known description of a SRV record ([RFC2782](https://tools.ietf.org/html/rfc2782)):
 
-```
+```text
 zone name { _service._proto.name. TTL  class  SRV priority weight port target.}
 ```
 
-- *service*: the symbolic name of the desired service.  For AppD service, this must be identified as "**_appd**"
-- *proto*: the transport protocol of the desired service; this is usually either [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) or [UDP](https://en.wikipedia.org/wiki/User_Datagram_Protocol).  For AppD service **_tcp** must be used.
-- *name*: the domain name for which this record is valid, ending in a dot.  For AppD service,  the name should directly map to the application identifier domain.
-- *TTL*: standard DNS [time to live](https://en.wikipedia.org/wiki/Time_to_live) field.
-- *class*: standard DNS class field (this is always *IN*).
-- *priority*: the priority of the target host, lower value means more preferred.
-- *weight*: A relative weight for records with the same priority, higher value means more preferred.
-- *port*: the TCP or UDP port on which the service is to be found. For AppD service, TCP should always be used.
-- *target*: the canonical hostname of the machine providing the service, ending in a dot. This would be the host where the AppD service is running.
+- *`service`*: the symbolic name of the desired service.  For AppD service, this must be identified as **`_appd`**
+- *`proto`*: the transport protocol of the desired service; this is usually either [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) or [UDP](https://en.wikipedia.org/wiki/User_Datagram_Protocol).  For AppD service **_tcp** must be used.
+- *`name`*: the domain name for which this record is valid, ending in a dot.  For AppD service,  the name should directly map to the application identifier domain.
+- *`TTL`*: standard DNS [time to live](https://en.wikipedia.org/wiki/Time_to_live) field.
+- *`class`*: standard DNS class field (this is always *IN*).
+- *`priority`*: the priority of the target host, lower value means more preferred.
+- *`weight`*: A relative weight for records with the same priority, higher value means more preferred.
+- *`port`*: the TCP or UDP port on which the service is to be found. For AppD service, TCP should always be used.
+- *`target`*: the canonical hostname of the machine providing the service, ending in a dot. This would be the host where the AppD service is running.
 
 For AppD Service the SRV record MUST use the following definitions:
 
-- service = **_appd**
-- proto = **_tcp**
-- name = must map to the domain of the application identifier . Example:  the **name** for application identifier **"app1@appd.foo.com"** would be **"appd.foo.com"**
+- `service` = **`_appd`**
+- `proto` = **`_tcp`**
+- `name` = must map to the domain of the application identifier . Example:  the `name` for application identifier `app1@appd.foo.com` would be `appd.foo.com`
 
 *AppD service through DNS / SRV records:*
 

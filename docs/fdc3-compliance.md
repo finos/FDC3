@@ -14,7 +14,7 @@ In general, the ratified FDC3 specs represent a lowest common denominator interf
 >    actually required for interoperation or to limit behavior which has
 >    potential for causing harm (e.g., limiting retransmisssions)  For
 >    example, they must not be used to try to impose a particular method
->    on implementors where the method is not required for 
+>    on implementors where the method is not required for
 >    interoperability.
 
 These rules would apply only to standards work within FDC3. Today, this covers the API, App Directory, Context Data, and Intents specifications.
@@ -31,15 +31,15 @@ Depending on persona, implementation compliance with FDC3 will mean different th
 
 For platform providers FDC3 compliance requires that they meet the requirements of the APIs that they implement:
 
-* [Desktop Agent API compliance requirements](api/spec#desktop-agent-api-standard-compliance).
-* [App Directory compliance requirements](app-directory/spec#app-directory-standard-compliance).
+- [Desktop Agent API compliance requirements](api/spec#desktop-agent-api-standard-compliance).
+- [App Directory compliance requirements](app-directory/spec#app-directory-standard-compliance).
 
 ### Application Provider
 
 For application providers FDC3 compliance requires that they interact with the FDC3 APIs as intended and meet the requirements of the Intents and Context Data Standards. Specifically:
 
-* [Intents Standard compliance requirements](intents/spec#intents-standard-compliance)
-* [Context Data Standard compliance requirements](context/spec#context-data-standard-compliance)
+- [Intents Standard compliance requirements](intents/spec#intents-standard-compliance)
+- [Context Data Standard compliance requirements](context/spec#context-data-standard-compliance)
 
 ## Versioning
 
@@ -59,11 +59,11 @@ FDC3 adopts the following deprecation policy:
 
 ## Experimental Features
 
-Occasionally, a change to FDC3 may be proposed where the design is tentative, and because of this, we need feedback from the community to finalise its inclusion in the Standard. In such cases, a feature may be designated as _experimental_ to indicate that its design may change in future and that it is exempted from the normal versioning and deprecation polices in order to facilitate that change.  However, designating a feature as experimental is likely to reduce its uptake by the community, hence, this designation should be used sparingly.
+Occasionally, a change to FDC3 may be proposed where the design is tentative, and because of this, we need feedback from the community to finalize its inclusion in the Standard. In such cases, a feature may be designated as _experimental_ to indicate that its design may change in future and that it is exempted from the normal versioning and deprecation polices in order to facilitate that change.  However, designating a feature as experimental is likely to reduce its uptake by the community, hence, this designation should be used sparingly.
 
 FDC3 adopts the following experimental features policy:
 
-1. A feature may be designated as experimental where feedback is needed to confirm the final design of that feature, with the goal of including it as a full part of the Standard without the experimental label. 
+1. A feature may be designated as experimental where feedback is needed to confirm the final design of that feature, with the goal of including it as a full part of the Standard without the experimental label.
 2. A feature should only be designated as experimental where there is a reasonable chance that breaking changes to its design may be applied, based on feedback received; non-breaking changes (refinements) may already be applied to features defined in the Standard without the experimental designation.
 3. Experimental features are clearly marked with an `@experimental` tag and comment in both the documentation and docs applied to the TypeScript sources.
 4. Unless otherwise stated, experimental features should be considered optional for compliance purposes, but recommended for implementation (i.e. the SHOULD keyword is implied).
@@ -74,7 +74,7 @@ FDC3 adopts the following experimental features policy:
 
 Recipients of this document are requested to submit, with their comments, notification of
 any relevant patent claims or other intellectual property rights of which they may be aware that
-might be infringed by any implementation of the standard set forth in this document, and to provide 
+might be infringed by any implementation of the standard set forth in this document, and to provide
 supporting documentation.
 
 THIS STANDARD IS BEING OFFERED WITHOUT ANY WARRANTY
