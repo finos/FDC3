@@ -18,9 +18,9 @@ Display any holdings for the provided instrument, list of instruments, or organi
 
 ## Possible Contexts
 
-* [Instrument](../../context/ref/Instrument)
-* [InstrumentList](../../context/ref/InstrumentList)
-* [Organization](../../context/ref/Organization)
+- [Instrument](../../context/ref/Instrument)
+- [InstrumentList](../../context/ref/InstrumentList)
+- [Organization](../../context/ref/Organization)
 
 ## Example
 
@@ -39,11 +39,13 @@ fdc3.raiseIntent('ViewHoldings', instrument)
 ## See Also
 
 Context
+
 - [Instrument](../../context/ref/Instrument)
 - [InstrumentList](../../context/ref/InstrumentList)
 - [Organization](../../context/ref/Organization)
 
 Intents
+
 - [ViewInstrument](ViewInstrument)
 - [ViewAnalysis](ViewAnalysis)
 - [ViewOrders](ViewOrders)
