@@ -12,7 +12,7 @@ export const contexts: ContextItem[] = [
 				email: "jane.doe@mail.com",
 			},
 		},
-		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/contact.schema.json"),
+		schemaUrl: new URL("https://fdc3.finos.org/schemas/next/contact.schema.json"),
 	},
 	{
 		uuid: uuidv4(),
@@ -36,7 +36,7 @@ export const contexts: ContextItem[] = [
 				},
 			],
 		},
-		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/contactList.schema.json"),
+		schemaUrl: new URL("https://fdc3.finos.org/schemas/next/contactList.schema.json"),
 	},
 	{
 		uuid: uuidv4(),
@@ -50,7 +50,7 @@ export const contexts: ContextItem[] = [
 				ISIN: "US5949181045",
 			},
 		},
-		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/instrument.schema.json"),
+		schemaUrl: new URL("https://fdc3.finos.org/schemas/next/instrument.schema.json"),
 	},
 	{
 		uuid: uuidv4(),
@@ -72,7 +72,7 @@ export const contexts: ContextItem[] = [
 				},
 			],
 		},
-		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/instrumentList.schema.json"),
+		schemaUrl: new URL("https://fdc3.finos.org/schemas/next/instrumentList.schema.json"),
 	},
 	{
 		uuid: uuidv4(),
@@ -85,7 +85,7 @@ export const contexts: ContextItem[] = [
 				FDS_ID: "00161G-E",
 			},
 		},
-		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/organization.schema.json"),
+		schemaUrl: new URL("https://fdc3.finos.org/schemas/next/organization.schema.json"),
 	},
 	{
 		uuid: uuidv4(),
@@ -97,7 +97,7 @@ export const contexts: ContextItem[] = [
 				ISOALPHA3: "SWE",
 			},
 		},
-		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/country.schema.json"),
+		schemaUrl: new URL("https://fdc3.finos.org/schemas/next/country.schema.json"),
 	},
 	{
 		uuid: uuidv4(),
@@ -112,7 +112,7 @@ export const contexts: ContextItem[] = [
 			},
 			holding: 2000000,
 		},
-		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/position.schema.json"),
+		schemaUrl: new URL("https://fdc3.finos.org/schemas/next/position.schema.json"),
 	},
 	{
 		uuid: uuidv4(),
@@ -152,6 +152,6 @@ export const contexts: ContextItem[] = [
 				},
 			],
 		},
-		schemaUrl: new URL("https://fdc3.finos.org/schemas/1.2/portfolio.schema.json"),
+		schemaUrl: new URL("https://fdc3.finos.org/schemas/next/portfolio.schema.json"),
 	},
 ];

@@ -8,14 +8,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added a `MalformedContext` error to the `OpenError`, `ChannelError` and `ResolveError` enumerations, to be used when `broadcast`, `open`, `findIntents`, `raiseIntents` and other related functions are passed an invalid context Object. ([#972](https://github.com/finos/FDC3/pull/972))
+* Added error examples to the /v2 App Directory API routes ([#973](https://github.com/finos/FDC3/pull/973))
+
 ### Changed
 
 * Updated definition of the `Instrument` context type to include optional market identifiers ([#819](https://github.com/finos/FDC3/pull/819))
 * Corrected API functions and object types to always use `string` instead of `String` ([#924](https://github.com/finos/FDC3/pull/924))
+* Corrected the appD `interop.appChannels` metadata to use an `id` field to identify channels, rather than `name` ([#981](https://github.com/finos/FDC3/pull/981))
 
 ### Deprecated
+* Deprecated the `name` field in AppD records, to match deprecation of API signatures and metadata objects using `name` (see ([#722](https://github.com/finos/FDC3/pull/722))
+)) in 2.0 ([#928])(https://github.com/finos/FDC3/pull/928))
+
+* Deprecated `IntentMetadata.displayName` and the appD record's `interop.intents.listensFor[].displayName` field in favour of using intent names for display (which are required to be recognizable) as it can be set differently for each application in the appD ([#926](https://github.com/finos/FDC3/pull/926))
 
 ### Fixed
+
+* Further clarified the difference between the behavior of User channels and other channel types on joinUserChannel/addContextListener. ([#971](https://github.com/finos/FDC3/pull/971))
+## [npm v2.0.2] - 2023-05-24
+
+### Changed
+
+* Removed source files from the NPM module as they are not necessary, increase the bundle size and include POM files that lack license info, causing issues for enterprise onboarding. ([#999](https://github.com/finos/FDC3/pull/999))
 
 ## [FDC3 Standard 2.0](https://github.com/finos/FDC3/compare/v1.2..v2.0) - 2022-07-01
 

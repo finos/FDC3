@@ -40,7 +40,7 @@ Examples of endpoints include:
 
 ## Desktop Agent Implementation
 
-The FDC3 API specification consists of interfaces.  It is expected that each Desktop Agent will implement these interfaces, and those referenced by them:
+The FDC3 API specification consists of interfaces.  It is expected that each Desktop Agent will implement these interfaces.  A Desktop Agent MUST provide implementations for the following interfaces:
 
 - [`DesktopAgent`](ref/DesktopAgent)
 - [`Channel`](ref/Channel)
@@ -373,36 +373,33 @@ Context channels allows a set of apps to share a stateful piece of data between 
 There are three types of channels, which have different visibility and discoverability semantics:
 
 1. **User channels**, which:
+    - facilitate the creation of user-controlled context links between applications (often via the selection of a color channel),
+    - are created and named by the desktop agent,
+    - are discoverable (via the [`getUserChannels()`](ref/DesktopAgent#getuserchannels) API call),
+    - can be 'joined' (via the [`joinUserChannel()`](ref/DesktopAgent#joinuserchannel) API call).
 
-- facilitate the creation of user-controlled context links between applications (often via the selection of a color channel),
-- are created and named by the desktop agent,
-- are discoverable (via the [`getUserChannels()`](ref/DesktopAgent#getuserchannels) API call),
-- can be 'joined' (via the [`joinUserChannel()`](ref/DesktopAgent#joinuserchannel) API call).
+    :::note
 
-  :::note
+    Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels).
 
-  Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels).
+    :::
 
-  :::
+    :::note
 
-  :::note
+    Earlier versions of FDC3 included the concept of a 'global' system channel
+    which was deprecated in FDC3 1.2 and removed in FDC3 2.0.
 
-  Earlier versions of FDC3 included the concept of a 'global' system channel
-  which was deprecated in FDC3 1.2 and removed in FDC3 2.0.
-
-  :::
+    :::
 
 2. **App channels**, which:
-
-- facilitate developer controlled messaging between applications,
-- are created and named by applications (via the [`getOrCreateChannel()`](ref/DesktopAgent#getorcreatechannel) API call),
-- are not discoverable,
-- are interacted with via the [Channel API](ref/Channel) (accessed via the desktop agent [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API call)
+    - facilitate developer controlled messaging between applications,
+    - are created and named by applications (via the [`getOrCreateChannel()`](ref/DesktopAgent#getorcreatechannel) API call),
+    - are not discoverable,
+    - are interacted with via the [Channel API](ref/Channel) (accessed via the desktop agent [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API call)
 
 3. **Private** channels, which:
-
-- facilitate private communication between two parties, 
-- have an auto-generated identity and can only be retrieved via a raised intent.
+    - facilitate private communication between two parties,
+    - have an auto-generated identity and can only be retrieved via a raised intent.
 
 Channels are interacted with via `broadcast` and `addContextListener` functions, allowing an application to send and receive Context objects via the channel. For User channels, these functions are provided on the Desktop Agent, e.g. [`fdc3.broadcast(context)`](ref/DesktopAgent#broadcast), and apply to channels joined via [`fdc3.joinUserChannel`](ref/DesktopAgent#joinuserchannel). For App channels, a channel object must be retrieved, via [`fdc3.getOrCreateChannel(channelName)`](ref/DesktopAgent#getorcreatechannel), which provides the functions, i.e. [`myChannel.broadcast(context)`](ref/Channel#broadcast) and [`myChannel.addContextListener(context)`](ref/Channel#addcontextlistener). For `PrivateChannels`, a channel object must also be retrieved, but via an intent raised with [`fdc3.raiseIntent(intent, context)`](ref/DesktopAgent#raiseintent) and returned as an [`IntentResult`](ref/Types#intentresult).
 
@@ -531,13 +528,13 @@ const recommendedChannels = [
 
 ### Direct Listening and Broadcast on Channels
 
-While joining User channels (using fdc3.joinUserChannel) automates a lot of the channel behavior for an app, it has the limitation that an app can only be 'joined' to one channel at a time.  However, an app may instead retrieve a `Channel` Object via the [`fdc3.getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API, or by raising an intent that returns a channel. The `Channel` object may then be used to listen to and broadcast on that channel directly using the [`Channel.addContextListener`](ref/Channel#addcontextlistener) and the [`Channel.broadcast`](ref/Channel#broadcast) APIs. This is especially useful for working with dynamic *App Channels*. FDC3 imposes no restriction on adding context listeners or broadcasting to multiple channels.
+While joining User channels (using [`fdc3.joinUserChannel`](ref/DesktopAgent#joinuserchannel)) automates a lot of the channel behavior for an app, it has the limitation that an app can only be 'joined' to one channel at a time.  However, an app may instead retrieve an App [`Channel`](ref/Channel) Object via the [`fdc3.getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) API, create a [`PrivateChannel`](ref/PrivateChannel) via the [`fdc3.createPrivateChannel`](ref/DesktopAgent#createprivatechannel) API, or by raising an intent that returns a channel created by another app. The `Channel` object may then be used to listen to and broadcast on that channel directly using the [`Channel.addContextListener`](ref/Channel#addcontextlistener) and the [`Channel.broadcast`](ref/Channel#broadcast) APIs. FDC3 imposes no restriction on adding context listeners or broadcasting to multiple channels.
 
 ### App Channels
 
 App Channels are topics dynamically created by applications connected via FDC3. For example, an app may create a named App Channel to broadcast data or status that is specific to that app to other apps that know to connect to the channel with that name.
 
-To get (or create) a channel reference, then interact with it:
+To get (or create) a [`Channel`](ref/Channel) reference, then interact with it:
 
 ```js
 const appChannel = await fdc3.getOrCreateChannel('my_custom_channel');
@@ -549,7 +546,7 @@ await appChannel.addContextListener(null, context => {...});
 await appChannel.broadcast(context);
 ```
 
-An app can still explicitly receive context events on any channel, regardless of the channel it is currently joined to.
+An app can still explicitly receive context events on any [`Channel`](ref/Channel), regardless of the channel it is currently joined to.
 
 ```js
 // check for current fdc3 channel
@@ -572,7 +569,7 @@ if another application broadcasts to "my_custom_channel" (by retrieving it and b
 
 ### Private Channels
 
-`PrivateChannels` are created to support the return of a stream of responses from a raised intent, or private dialog between two applications.
+A [`PrivateChannel`](ref/PrivateChannel) is created to support the return of a stream of responses from a raised intent, or private dialog between two applications.
 
 It is intended that Desktop Agent implementations:
 

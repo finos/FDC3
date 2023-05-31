@@ -17,8 +17,8 @@ import { ContextCreate } from "./components/ContextCreate";
 import { Intents } from "./components/Intents";
 import { AppChannels } from "./components/AppChannels";
 import snackbarStore from "./store/SnackbarStore";
+import fdc3 from "./utility/Fdc3Api";
 import "./App.css";
-import { fdc3Ready } from "@finos/fdc3";
 
 const mainTheme = createTheme({
 	palette: {
@@ -28,12 +28,28 @@ const mainTheme = createTheme({
 			dark: "#339ecb",
 			contrastText: "#fff",
 		},
+		secondary: {
+			light: "#ff7961",
+			main: "#f44336",
+			dark: "#ba000d",
+			contrastText: "#fff",
+		},
 	},
 	props: {
 		MuiLink: {
 			underline: "hover",
 		},
+		MuiTableCell: {
+			padding: "normal"
+		}
 	},
+	overrides: {
+		MuiTableCell: {
+			root: {
+				padding: "1px"
+			}
+		}
+	}
 });
 
 mainTheme.typography.h4 = {
@@ -73,12 +89,24 @@ const useStyles = makeStyles((theme: Theme) =>
 			},
 			".MuiGrid-item:has(> .MuiButton-root)": {
 				display: "flex",
-				alignItems: "center",
+				alignItems: "end",
 			},
 			".MuiInputBase-root.Mui-disabled": {
 				color: "rgba(0, 0, 0, 0.6)",
 				cursor: "default",
 			},
+			".MuiInputBase-root": {
+				marginBlockEnd: "0px"
+			},
+			".MuiListSubheader-root": {
+				lineHeight: "24px",
+				marginBlockStart: "10px"
+			},
+			".MuiMenuItem-root": {
+				fontSize: "0.9rem",
+				marginBlockEnd: "5px",
+				marginBlockStart: "5px"
+			}
 		},
 		root: {
 			flexGrow: 1,
@@ -143,19 +171,19 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const openAPIDocs = (event: React.MouseEvent<HTMLElement>) => {
 	event.preventDefault();
-	window.open("https://fdc3.finos.org/docs/api/overview", "FDC3ApiDocs");
+	window.open("https://fdc3.finos.org/docs/api/overview", "FDC3APIDocs");
 	return false;
 };
 
 const openSpecAccessDocs = (event: React.MouseEvent<HTMLElement>) => {
 	event.preventDefault();
-	window.open("https://fdc3.finos.org/docs/api/spec#api-access", "FDC3ApiDocs");
+	window.open("https://fdc3.finos.org/docs/api/spec#api-access", "FDC3APIDocs");
 	return false;
 };
 
 const openSupportedPlatformsDocs = (event: React.MouseEvent<HTMLElement>) => {
 	event.preventDefault();
-	window.open("https://fdc3.finos.org/docs/supported-platforms", "FDC3ApiDocs");
+	window.open("https://fdc3.finos.org/docs/supported-platforms", "FDC3APIDocs");
 	return false;
 };
 
@@ -185,7 +213,7 @@ export const App = observer(() => {
 	useEffect(() => {
 		(async () => {
 			try {
-				await fdc3Ready(5000);
+				await fdc3.fdc3Ready(5000);
 				setFdc3Available(true);
 			} catch (e) {}
 		})();
@@ -218,7 +246,7 @@ export const App = observer(() => {
 								>
 									<Tab label="Contexts" />
 									<Tab label="Intents" />
-									<Tab label="System Channels" />
+									<Tab label="User Channels" />
 									<Tab label="App Channels" />
 								</Tabs>
 								<TabPanel value={tabIndex} index={0}>

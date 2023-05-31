@@ -13,8 +13,11 @@ export enum OpenError {
   AppTimeout = 'AppTimeout',
   /** Returned if the FDC3 desktop agent implementation is not currently able to handle the request.*/
   ResolverUnavailable = 'ResolverUnavailable',
-  /** (Experimental) Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
+  /** Returned if a call to the `open` function is made with an invalid context argument. Contexts should be Objects with at least a `type` field that has a `string` value.*/
+  MalformedContext = 'MalformedContext',
+  /** @experimental Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
   DesktopAgentNotFound = 'DesktopAgentNotFound',
+  
 }
 
 /** Constants representing the errors that can be encountered when calling the `findIntent`, `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the DesktopAgent (`fdc3`). */
@@ -33,12 +36,15 @@ export enum ResolveError {
   TargetInstanceUnavailable = 'TargetInstanceUnavailable',
   /** Returned if the intent and context could not be delivered to the selected application or instance, for example because it has not added an intent handler within a timeout.*/
   IntentDeliveryFailed = 'IntentDeliveryFailed',
-  /** (Experimental) Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
+  /** Returned if a call to one of the `raiseIntent` functions is made with an invalid context argument. Contexts should be Objects with at least a `type` field that has a `string` value.*/
+  MalformedContext = 'MalformedContext',
+  /** @experimental Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
   DesktopAgentNotFound = 'DesktopAgentNotFound',
+  
 }
 
 export enum ResultError {
-  /** Returned if the intent handler exited without returning a Promise or that Promise was not resolved with a Context or Channel object. */
+  /** Returned if the intent handler exited without returning a valid result (a promise resolving to a Context, Channel object or void). */
   NoResultReturned = 'NoResultReturned',
   /** Returned if the Intent handler function processing the raised intent throws an error or rejects the Promise it returned. */
   IntentHandlerRejected = 'IntentHandlerRejected',
@@ -51,13 +57,15 @@ export enum ChannelError {
   AccessDenied = 'AccessDenied',
   /** SHOULD be returned when a channel cannot be created or retrieved via the `getOrCreateChannel` method of the DesktopAgent (`fdc3`).*/
   CreationFailed = 'CreationFailed',
+  /** Returned if a call to the `broadcast` functions is made with an invalid context argument. Contexts should be Objects with at least a `type` field that has a `string` value.*/
+  MalformedContext = 'MalformedContext',
 }
 
 export enum BridgingError {
-  /** (Experimental) Returned if a Desktop Agent did not return a response, via Desktop Agent Bridging, within the alloted timeout. */
+  /** @experimental Returned if a Desktop Agent did not return a response, via Desktop Agent Bridging, within the alloted timeout. */
   ResponseTimedOut = 'ResponseToBridgeTimedOut',
-  /** (Experimental) Returned if a Desktop Agent that has been targeted by a particular request has been disconnected from the Bridge before a response has been received from it. */
+  /** @experimental Returned if a Desktop Agent that has been targeted by a particular request has been disconnected from the Bridge before a response has been received from it. */
   AgentDisconnected = 'AgentDisconnected',
-  /** (Experimental) Returned for FDC3 API calls that are specified with arguments indicating that a remote Desktop agent should be targeted (e.g. raiseIntent with an app on a remote DesktopAgent targeted), when the local Desktop Agent is not connected to a bridge. */
+  /** @experimental Returned for FDC3 API calls that are specified with arguments indicating that a remote Desktop agent should be targeted (e.g. raiseIntent with an app on a remote DesktopAgent targeted), when the local Desktop Agent is not connected to a bridge. */
   NotConnectedToBridge = 'NotConnectedToBridge',
 }

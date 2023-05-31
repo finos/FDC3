@@ -55,7 +55,7 @@ addContextListener(contextType: string | null, handler: ContextHandler): Listene
  */
 addContextListener(handler: ContextHandler): Listener;
 ```
-Adds a listener for incoming context broadcast from the Desktop Agent. If the consumer is only interested in
+Adds a listener for incoming context broadcast from the Desktop Agent on the current System Channel. If the consumer is only interested in
 a context of a particular type, they can use the relevant overload that allows the type to be specified.
 
 #### Examples
