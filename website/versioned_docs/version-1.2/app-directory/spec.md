@@ -5,7 +5,13 @@ original_id: spec
 ---
 ## API
 
-View the [full specification](pathname:///schemas/1.2/app-directory.html) in [OpenAPI v3.0](https://www.openapis.org/) format (generated with [ReDoc](https://github.com/Redocly/redoc/)).
+View the [full specification][1] in [OpenAPI v3.0][2] format (generated with [ReDoc][3]),
+or explore with the [Swagger Editor][4].
+
+[1]: pathname:///schemas/1.2/app-directory.html
+[2]: https://www.openapis.org/
+[3]: https://github.com/Redocly/redoc/
+[4]: https://editor.swagger.io/?url=https://fdc3.finos.org/schemas/1.2/app-directory.yaml
 
 ## Endpoints
 
