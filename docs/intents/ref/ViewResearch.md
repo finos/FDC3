@@ -18,9 +18,9 @@ Show research related to an instrument, an individual or organization provided a
 
 ## Possible Contexts
 
-* [Contact](../../context/ref/Contact)
-* [Instrument](../../context/ref/Instrument)
-* [Organization](../../context/ref/Organization)
+- [Contact](../../context/ref/Contact)
+- [Instrument](../../context/ref/Instrument)
+- [Organization](../../context/ref/Organization)
 
 ## Example
 
@@ -39,9 +39,11 @@ fdc3.raiseIntent('ViewResearch', contact)
 ## See Also
 
 Context
-* [Contact](../../context/ref/Contact)
-* [Instrument](../../context/ref/Instrument)
-* [Organization](../../context/ref/Organization)
+
+- [Contact](../../context/ref/Contact)
+- [Instrument](../../context/ref/Instrument)
+- [Organization](../../context/ref/Organization)
 
 Intents
-* [ViewAnalysis](ViewAnalysis)
+
+- [ViewAnalysis](ViewAnalysis)

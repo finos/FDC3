@@ -8,10 +8,10 @@ hide_title: true
 
 A context type representing details of a Chart, which may be used to request plotting of a particular chart or to otherwise share details of its composition, such as:
 
-* A list of instruments for comparison
-* The time period to plot the chart over
-* The style of chart (line, bar, mountain, candle etc.)
-* Other settings such as indicators to calculate, or data representing drawings and annotations
+- A list of instruments for comparison
+- The time period to plot the chart over
+- The style of chart (line, bar, mountain, candle etc.)
+- Other settings such as indicators to calculate, or data representing drawings and annotations
 
 In addition to handling requests to plot charts, a charting application may use this type to output a representation of what it is currently displaying so that it can be recorded by another application.
 
@@ -21,7 +21,7 @@ In addition to handling requests to plot charts, a charting application may use 
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/chart.schema.json](https://fdc3.finos.org/schemas/next/chart.schema.json)
+<https://fdc3.finos.org/schemas/next/chart.schema.json>
 
 ## Details
 
@@ -33,7 +33,11 @@ In addition to handling requests to plot charts, a charting application may use 
 | `style`    | string  | No       | one of: `'line'`, `'bar'`, `'stacked-bar'`, `'mountain'`, `'candle'`, `'pie'`, `'scatter'`, `'histogram'`, `'heatmap'`, `'custom'`      |
 | `otherConfig`* | array  | No |  `[ {/* additional config context objects */} ]`  |
 
-\* It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` array as context objects.
+::: info
+
+It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` array as context objects.
+
+:::
 
 ## Example
 
@@ -87,9 +91,9 @@ fdc3.raiseIntent("ViewChart", chart);
 
 Other Types
 
-* [Instrument](Instrument)
-* [TimeRange](TimeRange)
+- [Instrument](Instrument)
+- [TimeRange](TimeRange)
 
 Intents
 
-* [ViewChart](../../intents/ref/ViewChart)
+- [ViewChart](../../intents/ref/ViewChart)

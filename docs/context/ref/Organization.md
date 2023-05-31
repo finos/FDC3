@@ -19,7 +19,7 @@ is for at least one specified identifier to be provided.
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/organization.schema.json
+<https://fdc3.finos.org/schemas/next/organization.schema.json>
 
 ## Details
 
@@ -49,9 +49,11 @@ fdc3.broadcast(organization)
 ## See Also
 
 Other Types
+
 - [Instrument](Instrument)
 
 Intents
+
 - [ViewNews](../../intents/ref/ViewNews)
 - [ViewAnalysis](../../intents/ref/viewAnalysis)
 - [ViewProfile](../../intents/ref/ViewProfile)
@@ -60,4 +62,5 @@ Intents
 - [ViewOrders](../../intents/ref/ViewOrders)
 
 FINOS Financial Objects
+
 - [Organization](https://fo.finos.org/docs/objects/organization)

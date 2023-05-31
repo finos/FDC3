@@ -6,9 +6,15 @@ hide_title: true
 ---
 # `Channel`
 
-Represents a context channel that applications can join to share context data.
+Represents a context channel that applications can join to share context data and provides functions for interacting with it.
 
-A channel can be either a "User" channel (retrieved with [`getUserChannels`](DesktopAgent#getuserchannels)) or a custom "App" channel (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)).
+A channel can be either a ["User" channel](../api/spec#joining-user-channels) (retrieved with [`getUserChannels`](DesktopAgent#getuserchannels)), a custom ["App" channel](../api/spec#app-channels) (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)) or a ["Private" channel](../api/spec#private-channels) (obtained via an intent result).
+
+:::note
+
+There are differences in behavior when you interact with a User channel via the Desktop Agent interface and the Channel interface. Specifically, when 'joining' a User channel or adding a context listener when already joined to a channel via the `DesktopAgent` interface, existing context (matching the type of the context listener) on the channel is received by the context listener immediately. Whereas, when add a context listener via the Channel interface, context is not received automatically, but may be retrieved manually via the [`getCurrentContext()`](#getcurrentcontext) function.
+
+:::
 
 Channels each have a unique identifier, some display metadata and operations for broadcasting context to other applications, or receiving context from other applications.
 
@@ -32,13 +38,13 @@ interface Channel {
 }
 ```
 
-#### See also
+**See also:**
 
-* [`Context`](Types#context)
-* [`Listener`](Types#listener)
-* [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
-* [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
-* [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
+- [`Context`](Types#context)
+- [`Listener`](Types#listener)
+- [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
+- [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
+- [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
 
 ## Properties
 
@@ -66,9 +72,9 @@ public readonly displayMetadata?: DisplayMetadata;
 
 DisplayMetadata can be used to provide display hints for User Channels intended to be visualized and selectable by end users.
 
-#### See also
+**See also:**
 
-* [`DisplayMetadata`](Metadata#displaymetadata)
+- [`DisplayMetadata`](Metadata#displaymetadata)
 
 ## Functions
 
@@ -84,7 +90,7 @@ If, when this function is called, the channel already contains context that woul
 
 Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
 
-#### Examples
+**Examples:**
 
 Add a listener for any context that is broadcast on the channel:
 
@@ -117,12 +123,12 @@ contactListener.unsubscribe();
 instrumentListener.unsubscribe();
 ```
 
-#### See also
+**See also:**
 
-* [`Listener`](Types#listener)
-* [`ContextHandler`](Types#contexthandler)
-* [`broadcast`](#broadcast)
-* [`getCurrentContext`](#getcurrentcontext)
+- [`Listener`](Types#listener)
+- [`ContextHandler`](Types#contexthandler)
+- [`broadcast`](#broadcast)
+- [`getCurrentContext`](#getcurrentcontext)
 
 ### `broadcast`
 
@@ -138,7 +144,9 @@ Channel implementations should ensure that context messages broadcast by an appl
 
 If you are working with complex context types composed of other simpler types (as recommended by the [FDC3 Context Data specification](../../context/spec#assumptions)) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.
 
-#### Example
+If an application attempts to broadcast an invalid context argument the Promise returned by this function should reject with the [`ChannelError.MalformedContext` error](Errors#channelerror).
+
+**Example:**
 
 ```javascript
 const instrument = {
@@ -155,11 +163,11 @@ try {
 }
 ```
 
-#### See also
+**See also:**
 
-* [`ChannelError`](Errors#channelerror)
-* [`getCurrentContext`](#getcurrentcontext)
-* [`addContextListener`](#addcontextlistener)
+- [`ChannelError`](Errors#channelerror)
+- [`getCurrentContext`](#getcurrentcontext)
+- [`addContextListener`](#addcontextlistener)
 
 ### `getCurrentContext`
 
@@ -175,7 +183,7 @@ It is up to the specific Desktop Agent implementation whether and how recent con
 
 If getting the current context fails, the promise will be rejected with an `Error` with a `message` string from the [`ChannelError`](Errors#channelerror) enumeration.
 
-#### Examples
+**Examples:**
 
 Without specifying a context type:
 
@@ -197,11 +205,11 @@ try {
 }
 ```
 
-#### See also
+**See also:**
 
-* [`ChannelError`](Errors#channelerror)
-* [`broadcast`](#broadcast)
-* [`addContextListener`](#addcontextlistener)
+- [`ChannelError`](Errors#channelerror)
+- [`broadcast`](#broadcast)
+- [`addContextListener`](#addcontextlistener)
 
 ## Deprecated Functions
 
@@ -216,6 +224,6 @@ public addContextListener(handler: ContextHandler): Promise<Listener>;
 
 Adds a listener for incoming contexts whenever a broadcast happens on the channel.
 
-#### See also
+**See also:**
 
-* [`addContextListener`](#addcontextlistener)
+- [`addContextListener`](#addcontextlistener)

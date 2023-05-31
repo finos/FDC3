@@ -18,8 +18,7 @@ Display details for the provided instrument.
 
 ## Possible Contexts
 
-* [Instrument](../../context/ref/Instrument)
-
+- [Instrument](../../context/ref/Instrument)
 
 ## Example
 
@@ -38,9 +37,10 @@ fdc3.raiseIntent('ViewInstrument', instrument)
 ## See Also
 
 Context
+
 - [Instrument](../../context/ref/Instrument)
 
-
 Intents
+
 - [ViewChart](ViewChart)
 - [ViewOrders](ViewOrders)
