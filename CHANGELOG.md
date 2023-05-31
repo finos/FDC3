@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Added a `MalformedContext` error to the `OpenError`, `ChannelError` and `ResolveError` enumerations, to be used when `broadcast`, `open`, `findIntents`, `raiseIntents` and other related functions are passed an invalid context Object. ([#972](https://github.com/finos/FDC3/pull/972))
 * Added error examples to the /v2 App Directory API routes ([#973](https://github.com/finos/FDC3/pull/973))
-* Added details of timeouts after launch within which applications SHOULD (30 seconds) and MUST (90 seconds) add their context or intent listeners via the API, and details of the same timeouts being allowed for by Desktop Agents (MUST 30 seconds, SHOULD 90 seconds) ([#987](https://github.com/finos/FDC3/pull/987))
+* Added an indication that applications, that can be launched to receive intents or context via a raised intent or open with context, SHOULD add their context or intent listeners via the API within 15 seconds, and that Desktop Agents MUST allow at least a 15 second timeout for them to do so, and MAY set a longer timeout ([#987](https://github.com/finos/FDC3/pull/987))
 
 ### Changed
 
