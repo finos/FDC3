@@ -18,15 +18,16 @@ Display a chart for the provided context.
 
 ## Possible Contexts
 
-* [Chart](../../context/ref/Chart)
-* [Instrument](../../context/ref/Instrument)
-* [InstrumentList](../../context/ref/InstrumentList)
-* [Portfolio](../../context/ref/Portfolio)
-* [Position](../../context/ref/Position)
+- [Chart](../../context/ref/Chart)
+- [Instrument](../../context/ref/Instrument)
+- [InstrumentList](../../context/ref/InstrumentList)
+- [Portfolio](../../context/ref/Portfolio)
+- [Position](../../context/ref/Position)
 
 ## Example
 
 Request a chart for an instrument:
+
 ```js
 const instrument = {
     type: 'fdc3.instrument',
@@ -87,12 +88,12 @@ fdc3.raiseIntent("ViewChart", chart);
 
 Context
 
-* [Chart](../../context/ref/Chart)
-* [Instrument](../../context/ref/Instrument)
-* [InstrumentList](../../context/ref/InstrumentList)
-* [Portfolio](../../context/ref/Portfolio)
-* [Position](../../context/ref/Position)
+- [Chart](../../context/ref/Chart)
+- [Instrument](../../context/ref/Instrument)
+- [InstrumentList](../../context/ref/InstrumentList)
+- [Portfolio](../../context/ref/Portfolio)
+- [Position](../../context/ref/Position)
 
 Intents
 
-* [ViewQuote](ViewQuote)
+- [ViewQuote](ViewQuote)

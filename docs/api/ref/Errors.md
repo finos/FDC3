@@ -34,14 +34,14 @@ enum ChannelError {
 
 Contains constants representing the errors that can be encountered when calling channels using the [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`getOrCreateChannel`](DesktopAgent#getorcreatechannel) methods, or the [`getCurrentContext`](Channel#getcurrentcontext), [`broadcast`](Channel#broadcast) or [`addContextListener`](Channel#addcontextlistener) methods on the `Channel` object.
 
-#### See also
+**See also:**
 
-* [`DesktopAgent.createPrivateChannel`](DesktopAgent#createprivatechannel)
-* [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
-* [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
-* [`Channel.broadcast`](Channel#broadcast)
-* [`Channel.addContextListener`](Channel#addcontextlistener)
-* [`Channel.getCurrentContext`](Channel#getcurrentcontext)
+- [`DesktopAgent.createPrivateChannel`](DesktopAgent#createprivatechannel)
+- [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
+- [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
+- [`Channel.broadcast`](Channel#broadcast)
+- [`Channel.addContextListener`](Channel#addcontextlistener)
+- [`Channel.getCurrentContext`](Channel#getcurrentcontext)
 
 ## `OpenError`
 
@@ -73,9 +73,9 @@ enum OpenError {
 
 Contains constants representing the errors that can be encountered when calling the [`open`](DesktopAgent#open) method on the [DesktopAgent](DesktopAgent) object.
 
-#### See also
+**See also:**
 
-* [`DesktopAgent.open`](DesktopAgent#open)
+- [`DesktopAgent.open`](DesktopAgent#open)
 
 ## `ResolveError`
 
@@ -128,12 +128,12 @@ export enum ResolveError {
 
 Contains constants representing the errors that can be encountered when calling the [`findIntent`](DesktopAgent#findintent), [`findIntentsByContext`](DesktopAgent#findintentsbycontext), [`raiseIntent`](DesktopAgent#raiseintent) or [`raiseIntentForContext`](DesktopAgent#raiseintentforcontext) methods on the [DesktopAgent](DesktopAgent).
 
-#### See also
+**See also:**
 
-* [`DesktopAgent.findIntent`](DesktopAgent#findintent)
-* [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
-* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-* [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
+- [`DesktopAgent.findIntent`](DesktopAgent#findintent)
+- [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
+- [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+- [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 
 ## `ResultError`
 
@@ -153,8 +153,8 @@ enum ResultError {
 
 Contains constants representing the errors that can be encountered when calling the [`getResult`](DesktopAgent#findintent) method on the [IntentResolution](Metadata#intentresolution) Object.
 
-#### See also
+**See also:**
 
-* [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
-* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-* [`IntentResolution`](Metadata#intentresolution)
+- [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+- [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+- [`IntentResolution`](Metadata#intentresolution)

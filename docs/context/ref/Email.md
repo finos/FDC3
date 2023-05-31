@@ -14,14 +14,14 @@ A collection of information to be used to initiate an email with a Contact or Co
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/email.schema.json
+<https://fdc3.finos.org/schemas/next/email.schema.json>
 
 ## Details
 
 | Property          | Type                                  | Required | Example Value       |
 |-------------------|---------------------------------------|----------|---------------------|
 | `type`            | string                                | Yes      | `'fdc3.email'` |
-| `recipients`      | fdc3.contact or fdc3.contactList      | Yes      | { type: "fdc3.contact", name: "John Doe", id: { "email": "john@sample.com"}} |
+| `recipients`      | fdc3.contact or fdc3.contactList      | Yes      | `{ type: "fdc3.contact", name: "John Doe", id: { "email": "john@sample.com" } }` |
 | `subject`         | string                                | No       | `'The information you requested'`            |
 | `textBody`        | string                                | No       | `'Blah, blah, bah`         |
 
@@ -48,8 +48,10 @@ fdc3.raiseIntent("StartEmail", email)
 ## See Also
 
 Other Types
-* [Contact](Contact)
-* [ContactList](ContactList)
+
+- [Contact](Contact)
+- [ContactList](ContactList)
 
 Intents
-* [StartEmail](../../intents/ref/StartEmail)
+
+- [StartEmail](../../intents/ref/StartEmail)
