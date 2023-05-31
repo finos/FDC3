@@ -17,7 +17,6 @@ export enum OpenError {
   MalformedContext = 'MalformedContext',
   /** @experimental Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
   DesktopAgentNotFound = 'DesktopAgentNotFound',
-  
 }
 
 /** Constants representing the errors that can be encountered when calling the `findIntent`, `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the DesktopAgent (`fdc3`). */
@@ -40,7 +39,6 @@ export enum ResolveError {
   MalformedContext = 'MalformedContext',
   /** @experimental Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
   DesktopAgentNotFound = 'DesktopAgentNotFound',
-  
 }
 
 export enum ResultError {
