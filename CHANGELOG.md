@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Added `CreateInteraction` intent. To be used when a user wants to record an interaction into a system.  New context `Interaction` also introduced. An interaction might be a call, IM, email, a meeting (physical or virtual) or the preparation of some specialist data. ([#747](https://github.com/finos/FDC3/pull/747))
 * Added `TransactionResult` context. A context type representing the result of a transaction initiated via FDC3. Its purpose is to provide a status and message (where needed) for the transaction and MAY wrap a returned context object. ([#761] (https://github.com/finos/FDC3/pull/761))
+* Added a `MalformedContext` error to the `OpenError`, `ChannelError` and `ResolveError` enumerations, to be used when `broadcast`, `open`, `findIntents`, `raiseIntents` and other related functions are passed an invalid context Object. ([#972](https://github.com/finos/FDC3/pull/972))
 * Added error examples to the /v2 App Directory API routes ([#973](https://github.com/finos/FDC3/pull/973))
 * Added a `SendChatMessage` intent to be used when a user wants to send a message to an existing chat room. ([#794](https://github.com/finos/FDC3/pull/794))
 * Added a context type representing a chat message (`fdc3.chat.message`). ([#794](https://github.com/finos/FDC3/pull/794))
@@ -27,10 +28,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Updated definition of the `Instrument` context type to include optional market identifiers ([#819](https://github.com/finos/FDC3/pull/819))
 * Corrected API functions and object types to always use `string` instead of `String` ([#924](https://github.com/finos/FDC3/pull/924))
 * Updated definition of the `otherConfig` element of the `Chart` context type from an Object to an array of Contexts as this allows the `type` of each additional item of config to be examined before it is used ([#985](https://github.com/finos/FDC3/pull/985))
+* Corrected the appD `interop.appChannels` metadata to use an `id` field to identify channels, rather than `name` ([#981](https://github.com/finos/FDC3/pull/981))
 
 ### Deprecated
 
+* Deprecated the `name` field in AppD records, to match deprecation of API signatures and metadata objects using `name` (see ([#722](https://github.com/finos/FDC3/pull/722))
+)) in 2.0 ([#928])(https://github.com/finos/FDC3/pull/928))
+* Deprecated `IntentMetadata.displayName` and the appD record's `interop.intents.listensFor[].displayName` field in favour of using intent names for display (which are required to be recognizable) as it can be set differently for each application in the appD ([#926](https://github.com/finos/FDC3/pull/926))
+
 ### Fixed
+
+* Further clarified the difference between the behavior of User channels and other channel types on joinUserChannel/addContextListener. ([#971](https://github.com/finos/FDC3/pull/971))
+
+## [npm v2.0.3] - 2023-05-31
+
+### Changed
+
+* Applied missing `readonly` tags to `ImplementationMetadata.optionalFeatures` sub-properties. ([#1008](https://github.com/finos/FDC3/pull/1008))
+
+## [npm v2.0.2] - 2023-05-24
+
+### Changed
+
+* Removed source files from the NPM module as they are not necessary, increase the bundle size and include POM files that lack license info, causing issues for enterprise onboarding. ([#999](https://github.com/finos/FDC3/pull/999))
 
 ## [FDC3 Standard 2.0](https://github.com/finos/FDC3/compare/v1.2..v2.0) - 2022-07-01
 

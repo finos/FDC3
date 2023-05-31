@@ -16,7 +16,7 @@ refers to a single [Instrument](Instrument) and a holding amount for that instru
 
 Notes:
 
-- Like all other FDC3 context types, extra properties for the portfolio can be added, the schema just 
+- Like all other FDC3 context types, extra properties for the portfolio can be added, the schema just
 specifies the minimum contract.
 
 - The portfolio schema does not explicitly include identifiers in the `id` section, as there
@@ -29,7 +29,7 @@ this part of the contract with custom identifiers if so desired.
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/portfolio.schema.json
+<https://fdc3.finos.org/schemas/next/portfolio.schema.json>
 
 ## Details
 
@@ -84,14 +84,17 @@ fdc3.raiseIntent("ViewAnalysis", portfolio)
 ## See Also
 
 Other Types
+
 - [Instrument](Instrument)
 - [InstrumentList](InstrumentList)
 - [Position](Position)
 
 Intents
+
 - [ViewAnalysis](../../intents/ref/ViewAnalysis)
 - [ViewChart](../../intents/ref/ViewChart)
 - [ViewNews](../../intents/ref/ViewNews)
 
 FINOS Financial Objects
+
 - [Position](https://fo.finos.org/docs/objects/portfolio)

@@ -20,7 +20,7 @@ this part of the contract with custom identifiers if so desired.
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/contactList.schema.json
+<https://fdc3.finos.org/schemas/next/contactList.schema.json>
 
 ## Details
 
@@ -59,12 +59,15 @@ fdc3.raiseIntent("StartChat", contacts)
 ## See Also
 
 Other Types
+
 - [Contact](Contact)
 
 Intents
+
 - [CreateInteraction](../../intents/ref/CreateInteraction)
 - [StartChat](../../intents/ref/StartChat)
 - [StartCall](../../intents/ref/StartCall)
 
 FINOS Financial Objects
+
 - [ContactList](https://fo.finos.org/docs/objects/contactlist)

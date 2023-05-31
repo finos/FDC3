@@ -6,9 +6,15 @@ original_id: Channel
 ---
 # `Channel`
 
-Represents a context channel that applications can join to share context data.
+Represents a context channel that applications can use to send and receive context data.
 
-A channel can be either a "User" channel (retrieved with [`getUserChannels`](DesktopAgent#getuserchannels)) or a custom "App" channel (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)).
+A channel can be either a ["User" channel](../api/spec#joining-user-channels) (retrieved with [`getUserChannels`](DesktopAgent#getuserchannels)), a custom ["App" channel](../api/spec#app-channels) (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)) or a ["Private" channel](../api/spec#private-channels) (obtained via an intent result).
+
+:::note
+
+There are differences in behavior when you interact with a User channel via the `DesktopAgent` interface and the `Channel` interface. Specifically, when 'joining' a User channel or adding a context listener when already joined to a channel via the `DesktopAgent` interface, existing context (matching the type of the context listener) on the channel is received by the context listener immediately. Whereas, when a context listener is added via the `Channel` interface, context is not received automatically, but may be retrieved manually via the [`getCurrentContext()`](#getcurrentcontext) function.
+
+:::
 
 Channels each have a unique identifier, some display metadata and operations for broadcasting context to other applications, or receiving context from other applications.
 

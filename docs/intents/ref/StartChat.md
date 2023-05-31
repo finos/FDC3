@@ -18,9 +18,9 @@ Initiate a chat with a contact, a list of contacts or detailed initialization se
 
 ## Possible Contexts
 
-* [Contact](../../context/ref/Contact)
-* [ContactList](../../context/ref/ContactList)
-* [ChatInitSettings](../../context/ref/ChatInitSettings)
+- [Contact](../../context/ref/Contact)
+- [ContactList](../../context/ref/ContactList)
+- [ChatInitSettings](../../context/ref/ChatInitSettings)
 
 ## Example
 
@@ -87,12 +87,14 @@ const chatRoom = await resolution.getResult();
 ## See Also
 
 Context
+
 - [ChatRoom](../../context/ref/ChatRoom)
 - [Contact](../../context/ref/Contact)
 - [ContactList](../../context/ref/ContactList)
 - [ChatInitSettings](../../context/ref/ChatInitSettings)
 
 Intents
-* [SendChatMessage](SendChatMessage)
-* [StartCall](StartCall)
-* [StartEmail](StartEmail)
+
+- [SendChatMessage](SendChatMessage)
+- [StartCall](StartCall)
+- [StartEmail](StartEmail)
