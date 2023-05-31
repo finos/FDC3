@@ -31,7 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-* Applied missing `readonly` tags to `ImplementationMetadata.optionalFeatures` sub-properties. ([#XXXX](https://github.com/finos/FDC3/pull/XXX))
+* Applied missing `readonly` tags to `ImplementationMetadata.optionalFeatures` sub-properties. ([#1008](https://github.com/finos/FDC3/pull/1008))
 
 ## [npm v2.0.2] - 2023-05-24
 
