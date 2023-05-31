@@ -3,7 +3,7 @@ id: trademarks
 title: Trademarks
 ---
 
-The trademarks, logos, and service marks not owned on behalf of FDC3 and FINOS and that are displayed on the Site are the registered and unregistered marks of their respective owners. No rights are granted by the FDC3 or FINOS to use such marks, whether by implication, estoppel, or otherwise. 
+The trademarks, logos, and service marks not owned on behalf of FDC3 and FINOS and that are displayed on the Site are the registered and unregistered marks of their respective owners. No rights are granted by the FDC3 or FINOS to use such marks, whether by implication, estoppel, or otherwise.
 
 Trademarks used within this site and the FDC3 Standard include, but are not limited to:
 

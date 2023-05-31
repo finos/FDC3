@@ -18,15 +18,15 @@ interface AppIntent {
 }
 ```
 
-An interface that represents the binding of an intent to apps, returned as part of intent disocvery.
+An interface that represents the binding of an intent to apps, returned as part of intent discovery.
 For each intent, it reference the applications that support that intent.
 
-#### See also
+**See also:**
 
-* [`AppMetadata`](#appmetadata)
-* [`IntentMetadata`](#intentmetadata)
-* [`DesktopAgent.findIntent`](DesktopAgent#findintent)
-* [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
+- [`AppMetadata`](#appmetadata)
+- [`IntentMetadata`](#intentmetadata)
+- [`DesktopAgent.findIntent`](DesktopAgent#findintent)
+- [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
 
 ## `AppMetadata`
 
@@ -87,15 +87,15 @@ The additional information from an app directory can aid in rendering UI element
 
 Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc..
 
-#### See also
+**See also:**
 
-* [`AppIdentifier`](Types#AppIdentifier)
-* [`AppIntent.apps`](#appintent)
-* [`Icon`](#icon)
-* [`Image`](#image)
-* [`DesktopAgent.open`](DesktopAgent#open)
-* [`DesktopAgent.findIntent`](DesktopAgent#findintent)
-* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+- [`AppIdentifier`](Types#AppIdentifier)
+- [`AppIntent.apps`](#appintent)
+- [`Icon`](#icon)
+- [`Image`](#image)
+- [`DesktopAgent.open`](DesktopAgent#open)
+- [`DesktopAgent.findIntent`](DesktopAgent#findintent)
+- [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 
 ## `ContextMetadata`
 
@@ -112,14 +112,14 @@ Metadata relating to a context or intent & context received through the `addCont
 
 [`@experimental`](../../fdc3-compliance#experimental-features) Introduced in FDC3 2.0 and may be refined by further changes outside the normal FDC3 versioning policy.
 
-#### See also
+**See also:**
 
-* [`AppMetadata`](#appmetadata)
-* [`ContextHandler`](Types#contexthandler)
-* [`IntentHandler`](Types#intenthandler)
-* [`addIntentListener`](DesktopAgent#addintentlistener)
-* [`addContextListener`](DesktopAgent#addcontextlistener)
-* [`Channel.addContextListener`](Channel#addcontextlistener)
+- [`AppMetadata`](#appmetadata)
+- [`ContextHandler`](Types#contexthandler)
+- [`IntentHandler`](Types#intenthandler)
+- [`addIntentListener`](DesktopAgent#addintentlistener)
+- [`addContextListener`](DesktopAgent#addcontextlistener)
+- [`Channel.addContextListener`](Channel#addcontextlistener)
 
 ## `DisplayMetadata`
 
@@ -143,10 +143,10 @@ interface DisplayMetadata {
 
 A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
 
-#### See also
+**See also:**
 
-* [`Channel`](Channel)
-* [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
+- [`Channel`](Channel)
+- [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
 
 ## `Icon`
 
@@ -162,7 +162,7 @@ Metadata relating to a single icon image at a remote URL, used to represent an a
 
 AppMetadata includes an icons property allowing multiple icon types to be specified. Various properties may be used by the Desktop Agent to decide which icon is the most suitable to be used considering the application chooser UI, device DPI and formats supported by the system.
 
-#### Example
+**Example:**
 
 ```js
 "icons": [
@@ -179,23 +179,15 @@ AppMetadata includes an icons property allowing multiple icon types to be specif
 ]
 ```
 
-#### Properties
+**Properties:**
 
-#### `src`
+- **`src`:** The fully qualified url to the icon.
+- **`size`:** The dimensions of the Icon formatted as `<height>x<width>`.
+- **`type`:** The media type of the icon. If not provided the Desktop Agent may refer to the src file extension.
 
-The fully qualified url to the icon.
+**See also:**
 
-#### `size`
-
-The dimensions of the Icon formatted as `<height>x<width>`.
-
-#### `type`
-
-The media type of the icon. If not provided the Desktop Agent may refer to the src file extension.
-
-#### See also
-
-* [`AppMetadata`](Metadata#appmetadata)
+- [`AppMetadata`](Metadata#appmetadata)
 
 ## `Image`
 
@@ -212,7 +204,7 @@ Metadata relating to a single image at a remote URL, used to represent screensho
 
 AppMetadata includes a screenshots property allowing multiple images to be specified. Various properties may be used by the Desktop Agent to decide which image(s) are the most suitable to be used considering the application chooser UI, device DPI and formats supported by the system.
 
-#### Example
+**Example:**
 
 ```js
 "screenshots": [
@@ -231,23 +223,15 @@ AppMetadata includes a screenshots property allowing multiple images to be speci
 ]
 ```
 
-#### Properties
+**Properties:**
 
-#### `src`
+- **`src`:** The fully qualified url to the image.
+- **`size`:** The dimensions of the image formatted as `<height>x<width>`.
+- **`type`:** The media type of the image. If not provided the Desktop Agent may refer to the src file extension.
 
-The fully qualified url to the image.
+**See also:**
 
-#### `size`
-
-The dimensions of the image formatted as `<height>x<width>`.
-
-#### `type`
-
-The media type of the image. If not provided the Desktop Agent may refer to the src file extension.
-
-#### See also
-
-* [`AppMetadata`](Metadata#appmetadata)
+- [`AppMetadata`](Metadata#appmetadata)
 
 ## `ImplementationMetadata`
 
@@ -272,13 +256,13 @@ interface ImplementationMetadata {
    *  the Desktop Agent API.
    */
   readonly optionalFeatures: {
-    /** Used to indicate whether the exposure of 'origninating app metadata' for
+    /** Used to indicate whether the exposure of 'originating app metadata' for
      *  context and intent messages is supported by the Desktop Agent.*/
-    "OriginatingAppMetadata": boolean;
+    readonly OriginatingAppMetadata: boolean;
     /** Used to indicate whether the optional `fdc3.joinUserChannel`,
      *  `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
      *  the Desktop Agent.*/
-    "UserChannelMembershipAPIs": boolean;
+    readonly UserChannelMembershipAPIs: boolean;
   };
 
   /** The calling application instance's own metadata, according to the 
@@ -290,10 +274,10 @@ interface ImplementationMetadata {
 
 Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number and the metadata of the calling application according to the desktop agent.
 
-#### See also
+**See also:**
 
-* [`AppMetadata`](#appmetadata)
-* [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
+- [`AppMetadata`](#appmetadata)
+- [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
 
 ## `IntentMetadata`
 
@@ -312,9 +296,9 @@ interface IntentMetadata {
 
 The interface used to describe an intent within the platform.
 
-#### See also
+**See also:**
 
-* [`AppIntent.intent`](#appintent)
+- [`AppIntent.intent`](#appintent)
 
 ## `IntentResolution`
 
@@ -356,7 +340,7 @@ interface IntentResolution {
 
 IntentResolution provides a standard format for data returned upon resolving an intent.
 
-#### Examples
+**Examples:**
 
 ```js
 // Resolve a "Chain" type intent
@@ -388,9 +372,9 @@ try {
 }
 ```
 
-#### See also
+**See also:**
 
-* [`IntentResult`](Types#intentresult)
-* [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-* [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
-* [`AppIdentifier`](Types#appidentifier)
+- [`IntentResult`](Types#intentresult)
+- [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+- [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
+- [`AppIdentifier`](Types#appidentifier)
