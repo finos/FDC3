@@ -22,7 +22,7 @@ this part of the contract with custom identifiers if so desired.
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/instrumentList.schema.json](/schemas/next/context/instrumentList.schema.json)
+<https://fdc3.finos.org/schemas/next/context/instrumentList.schema.json>
 
 ## Details
 
@@ -64,11 +64,13 @@ fdc3.broadcast(instruments)
 ## See Also
 
 Other Types
+
 - [Instrument](Instrument)
 - [Position](Position)
 - [Portfolio](Portfolio)
 
 Intents
+
 - [ViewAnalysis](../../intents/ref/ViewAnalysis)
 - [ViewChart](../../intents/ref/ViewChart)
 - [ViewInstrument](../../intents/ref/ViewInstrument)
@@ -76,4 +78,5 @@ Intents
 - [ViewQuote](../../intents/ref/ViewQuote)
 
 FINOS Financial Objects
+
 - [InstrumentList](https://fo.finos.org/docs/objects/instrumentlist)

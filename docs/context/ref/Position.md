@@ -16,7 +16,7 @@ multiple holdings in a combination of instruments.
 
 Notes:
 
-- Like all other FDC3 context types, extra properties for the position can be added, the schema just 
+- Like all other FDC3 context types, extra properties for the position can be added, the schema just
 specifies the minimum contract.
 
 - The position schema does not explicitly include identifiers in the `id` section, as there
@@ -29,7 +29,7 @@ this part of the contract with custom identifiers if so desired.
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/position.schema.json](/schemas/next/context/position.schema.json)
+<https://fdc3.finos.org/schemas/next/context/position.schema.json>
 
 ## Details
 
@@ -61,13 +61,16 @@ fdc3.raiseIntent("ViewChart", position)
 ## See Also
 
 Other Types
+
 - [Instrument](Instrument)
 - [Portfolio](Portfolio)
 
 Intents
+
 - [ViewAnalysis](../../intents/ref/ViewAnalysis)
 - [ViewChart](../../intents/ref/ViewChart)
 - [ViewNews](../../intents/ref/ViewNews)
 
 FINOS Financial Objects
+
 - [Position](https://fo.finos.org/docs/objects/position)
