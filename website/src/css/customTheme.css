@@ -67,19 +67,39 @@ html[data-theme='light'] body {
 
 /* your custom css */
 
-@media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
+@media only screen and (max-width: 1023px) {
+  article p img,FeatureCallout
+  article iframe {
+    max-width: 75%;
+  }
+}
+
+@media only screen and (max-width: 736px) {
+  article p img,FeatureCallout
+  article iframe {
+    max-width: 85%;
+  }
 }
 
 @media only screen and (min-width: 1024px) {
+  article p img,FeatureCallout
+  article iframe {
+    max-width: 70%;
+  }
 }
 
-@media only screen and (max-width: 1023px) {
+@media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
+  article p img,FeatureCallout
+  article iframe {
+    max-width: 85%;
+  }
 }
 
 @media only screen and (min-width: 1400px) {
-}
-
-@media only screen and (min-width: 1500px) {
+  article p img,FeatureCallout
+  article iframe {
+    max-width: 55%;
+  }
 }
 
 header.postHeader:empty {
@@ -206,7 +226,7 @@ header.postHeader:empty + article h1 {
 }
 
 .blockContent {
-  margin: 40px 20px;
+  margin: 20px 10px;
 }
  
 .blockTitle {
@@ -218,6 +238,14 @@ header.postHeader:empty + article h1 {
   line-height: var(--ifm-heading-line-height);
   margin: var(--ifm-heading-margin-top) 0 0 0;
   padding-bottom: var(--ifm-heading-margin-bottom);
+}
+
+.blockSubLabel {
+  color:  #0086bf;  /* DO NOT CHANGE - THIS IS THE TITLE UNDER THE ICONS IN THE 3RD BLOCK - SHOULD STAY FINOS BLUE */
+  text-align: center;
+  font-size: var(--ifm-font-size-base);
+  font-family: var(--ifm-heading-font-family);
+  font-weight: var(--ifm-heading-font-weight);
 }
 
 .featureShowcaseSection .logos img {
@@ -282,7 +310,6 @@ article iframe {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  max-width: 50%;
 }
 
 .nav-footer {
@@ -469,7 +496,7 @@ article iframe {
   box-sizing:border-box
 }
 
-.gridBlock .fourByGridBlock img, .gridBlock .threeByGridBlock img, .gridBlock .twoByGridBlock img {
+.gridBlock .fiveByGridBlock img, .fourByGridBlock img, .gridBlock .threeByGridBlock img, .gridBlock .twoByGridBlock img {
   max-width:100%
 }
 
@@ -513,6 +540,10 @@ article iframe {
 
   .gridBlock .fourByGridBlock {
       flex:1 0 20%
+  }
+
+  .gridBlock .fiveByGridBlock {
+    flex:1 0 16%
   }
 
   h2 + .gridBlock {

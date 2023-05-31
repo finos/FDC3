@@ -23,6 +23,12 @@ enum ChannelError {
    *  `getOrCreateChannel` method of the DesktopAgent (`fdc3`).
    */
   CreationFailed = 'CreationFailed',
+
+  /** Returned if a call to the `broadcast` functions is made with an invalid
+   *  context argument. Contexts should be Objects with at least a `type` field
+   *  that has a `string` value.
+   */
+  MalformedContext = 'MalformedContext',
 }
 ```
 
@@ -56,6 +62,12 @@ enum OpenError {
    *  to handle the request.
    */
   ResolverUnavailable = 'ResolverUnavailable',
+
+  /** Returned if a call to the `open` function is made with an invalid
+   *  context argument. Contexts should be Objects with at least a `type` field
+   *  that has a `string` value.
+   */
+  MalformedContext = 'MalformedContext',
 }
 ```
 
@@ -105,6 +117,12 @@ export enum ResolveError {
    *  handler within a timeout.
    */
   IntentDeliveryFailed = 'IntentDeliveryFailed',
+
+  /** Returned if a call to one of the `raiseIntent` functions is made with an 
+   *  invalid context argument. Contexts should be Objects with at least a `type`
+   *  field that has a `string` value.
+   */
+  MalformedContext = 'MalformedContext',
 }
 ```
 
@@ -121,8 +139,8 @@ Contains constants representing the errors that can be encountered when calling 
 
 ```typescript
 enum ResultError {
-  /** Returned if the `IntentHandler` exited without returning a Promise or that
-   *  Promise was not resolved with a Context or Channel object. 
+  /** Returned if the intent handler exited without returning a valid result 
+   * (a promise resolving to a Context, Channel object or void).
    */
   NoResultReturned = 'NoResultReturned',
 
