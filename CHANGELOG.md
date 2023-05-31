@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Updated definition of the `Instrument` context type to include optional market identifiers ([#819](https://github.com/finos/FDC3/pull/819))
 * Corrected API functions and object types to always use `string` instead of `String` ([#924](https://github.com/finos/FDC3/pull/924))
+* Corrected the appD `interop.appChannels` metadata to use an `id` field to identify channels, rather than `name` ([#981](https://github.com/finos/FDC3/pull/981))
 
 ### Deprecated
 * Deprecated the `name` field in AppD records, to match deprecation of API signatures and metadata objects using `name` (see ([#722](https://github.com/finos/FDC3/pull/722))
