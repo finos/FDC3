@@ -10,7 +10,7 @@ An FDC3 Desktop Agent is a desktop component (or aggregate of components) that s
 
 A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.
 
-It is expected that the `DesktopAgent` interface is made availabe via the [`window.fdc3`](Globals#windowfdc3-object) global object, and that the [`fdc3Ready`](Globals#fdc3ready-event) event fires when it is ready to be used.
+It is expected that the `DesktopAgent` interface is made available via the [`window.fdc3`](Globals#windowfdc3-object) global object, and that the [`fdc3Ready`](Globals#fdc3ready-event) event fires when it is ready to be used.
 
 ```ts
 interface DesktopAgent {
@@ -67,7 +67,7 @@ Context broadcasts are only received from apps that are joined to the same User 
 
 Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the Desktop Agent implementation.
 
-#### Examples
+**Examples:**
 
 ```js
 // any context
@@ -83,11 +83,11 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, 
 });
 ```
 
-#### See also
+**See also:**
 
-* [`Listener`](Types#listener)
-* [`Context`](Types#context)
-* [`ContextHandler`](Types#contexthandler)
+- [`Listener`](Types#listener)
+- [`Context`](Types#context)
+- [`ContextHandler`](Types#contexthandler)
 
 ### `addIntentListener`
 
@@ -97,16 +97,17 @@ addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 
 Adds a listener for incoming intents from the Desktop Agent. The handler function may return void or a promise that resolves to a [`IntentResult`](Types#intentresult), which is either a [`Context`](Types#context) object (representing any data that should be returned to the app that raised the intent),  a [`Channel`](Channel), a [`PrivateChannel`](PrivateChannel) over which data responses will be sent, or `void`. The `IntentResult` will be returned to the app that raised the intent via the [`IntentResolution`](Metadata#intentresolution) and retrieved from it using the `getResult()` function.
 
-The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if any of the following is true: 
+The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if any of the following is true:
+
 1. The intent handling function's returned promise rejects.
 2. The intent handling function doesn't return a promise.
 3. The returned promise resolves to an invalid type.
 
-The [`PrivateChannel`](PrivateChannel) type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
+The [`PrivateChannel`](PrivateChannel) type is provided to support synchronization of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
 
 Optional metadata about each intent & context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
 
-#### Examples
+**Examples:**
 
 ```js
 //Handle a raised intent
@@ -151,13 +152,13 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 });
 ```
 
-#### See also
+**See also:**
 
-* [Register an Intent Handler](../spec#register-an-intent-handler)
-* [`PrivateChannel`](PrivateChannel)
-* [`Listener`](Types#listener)
-* [`Context`](Types#context)
-* [`IntentHandler`](Types#intenthandler)
+- [Register an Intent Handler](../spec#register-an-intent-handler)
+- [`PrivateChannel`](PrivateChannel)
+- [`Listener`](Types#listener)
+- [`Context`](Types#context)
+- [`IntentHandler`](Types#intenthandler)
 
 ### `broadcast`
 
@@ -173,7 +174,7 @@ If you are working with complex context types composed of other simpler types (a
 
 If an application attempts to broadcast an invalid context argument the Promise returned by this function should reject with the [`ChannelError.MalformedContext` error](Errors#channelerror).
 
-#### Example
+**Example:**
 
 ```js
 const instrument = {
@@ -186,9 +187,9 @@ const instrument = {
 fdc3.broadcast(instrument);
 ```
 
-#### See also
+**See also:**
 
-* [addContextListener](#addcontextlistener)
+- [addContextListener](#addcontextlistener)
 
 ### `createPrivateChannel`
 
@@ -200,15 +201,15 @@ Returns a `Channel` with an auto-generated identity that is intended for private
 
 If the `PrivateChannel` cannot be created, the returned promise MUST be rejected with an `Error` object with a `message` chosen from the [`ChannelError`](Errors#channelerror) enumeration.
 
-The `PrivateChannel` type is provided to support synchronisation of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
+The `PrivateChannel` type is provided to support synchronization of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
 
 It is intended that Desktop Agent implementations:
 
-* SHOULD restrict external apps from listening or publishing on this channel.
-* MUST prevent `PrivateChannels` from being retrieved via fdc3.getOrCreateChannel.
-* MUST provide the `id` value for the channel as required by the `Channel` interface.
+- SHOULD restrict external apps from listening or publishing on this channel.
+- MUST prevent `PrivateChannels` from being retrieved via fdc3.getOrCreateChannel.
+- MUST provide the `id` value for the channel as required by the `Channel` interface.
 
-#### Example
+**Example:**
 
 ```js
 fdc3.addIntentListener("QuoteStream", async (context) => {
@@ -224,7 +225,7 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
   });
 
   // This gets called when the remote side calls Listener.unsubscribe()
-  const unsubscriberListener = channel.onUnsubscribe((contextType) => {
+  const unsubscribeListener = channel.onUnsubscribe((contextType) => {
     feed.stop(symbol);
   });
 
@@ -237,11 +238,11 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 });
 ```
 
-#### See also
+**See also:**
 
-* [`PrivateChannel`](PrivateChannel)
-* [`raiseIntent`](#raiseintent)
-* [`addIntentListener`](#addintentlistener)
+- [`PrivateChannel`](PrivateChannel)
+- [`raiseIntent`](#raiseintent)
+- [`addIntentListener`](#addintentlistener)
 
 ### `findInstances`
 
@@ -255,7 +256,7 @@ If there are no instances of the specified application the returned promise shou
 
 If the request fails for another reason, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `ResolveError` enumeration.
 
-#### Example
+**Example:**
 
 ```js
 // Retrieve a list of instances of an application
@@ -280,7 +281,7 @@ If the resolution fails, the promise MUST be rejected with an `Error` Object wit
 
 Result types may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
 
-#### Examples
+**Examples:**
 
 I know 'StartChat' exists as a concept, and want to know which apps can resolve it:
 
@@ -339,9 +340,9 @@ const appIntent = await fdc3.findIntent("QuoteStream", instrument, "channel<fdc3
 // }
 ```
 
-#### See also
+**See also:**
 
-* [`ResolveError`](Errors#resolveerror)
+- [`ResolveError`](Errors#resolveerror)
 
 ### `findIntentsByContext`
 
@@ -358,7 +359,7 @@ If the resolution fails, the promise MUST be rejected with an `Error` Object wit
 
 The optional `resultType` argument may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested without a specified context type, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
 
-#### Example
+**Example:**
 
 I have a context object, and I want to know what I can do with it, hence, I look for intents and apps to resolve them...
 
@@ -407,10 +408,10 @@ const selectedApp = startChat.apps[2];
 await fdc3.raiseIntent(startChat.intent.name, context, selectedApp);
 ```
 
-#### See also
+**See also:**
 
-* [`findIntent()`](#findintent)
-* [`ResolveError`](Errors#resolveerror)
+- [`findIntent()`](#findintent)
+- [`ResolveError`](Errors#resolveerror)
 
 ### `getAppMetadata`
 
@@ -420,17 +421,17 @@ getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
 
 Retrieves the [`AppMetadata`](Metadata#appmetadata) for an [`AppIdentifier`](Types#appidentifier), which provides additional metadata (such as icons, a title and description) from the App Directory record for the application, that may be used for display purposes.
 
-#### Examples
+**Examples:**
 
 ```js
 let appIdentifier = { appId: "MyAppId@my.appd.com" }
 let appMetadata = await fdc3.getAppMetadata(appIdentifier);
 ```
 
-#### See also
+**See also:**
 
-* [`AppMetadata`](Metadata#appmetadata)
-* [`AppIdentifier`](Types#appidentifier)
+- [`AppMetadata`](Metadata#appmetadata)
+- [`AppIdentifier`](Types#appidentifier)
 
 ### `getCurrentChannel`
 
@@ -442,16 +443,16 @@ OPTIONAL function that returns the `Channel` object for the current User channel
 
 Returns `null` if the app is not joined to a channel.
 
-#### Examples
+**Examples:**
 
 ```js
 // get the current channel membership
 let current = await fdc3.getCurrentChannel();
 ```
 
-#### See also
+**See also:**
 
-* [`Channel`](Channel)
+- [`Channel`](Channel)
 
 ### `getInfo`
 
@@ -463,7 +464,7 @@ Retrieves information about the FDC3 Desktop Agent implementation, including the
 
 Returns an [`ImplementationMetadata`](Metadata#implementationmetadata) object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.
 
-#### Example
+**Example:**
 
 ```js
 import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
@@ -482,10 +483,10 @@ let implementationMetadata = await fdc3.getInfo();
 let {appId, instanceId} = implementationMetadata.appMetadata;
 ```
 
-#### See also
+**See also:**
 
-* [`ImplementationMetadata`](Metadata#implementationmetadata)
-* [`AppMetadata`](Metadata#appmetadata)
+- [`ImplementationMetadata`](Metadata#implementationmetadata)
+- [`AppMetadata`](Metadata#appmetadata)
 
 ### `getOrCreateChannel`
 
@@ -497,7 +498,7 @@ Returns a `Channel` object for the specified channel, creating it (as an _App_ c
 
 If the Channel cannot be created or access was denied, the returned promise MUST be rejected with an `Error` Object with a `message` chosen from the `ChannelError` enumeration.
 
-#### Example
+**Example:**
 
 ```js
 try {
@@ -509,9 +510,9 @@ catch (err){
 }
 ```
 
-#### See also
+**See also:**
 
-* [`Channel`](Channel)
+- [`Channel`](Channel)
 
 ### `getUserChannels`
 
@@ -521,16 +522,16 @@ getUserChannels() : Promise<Array<Channel>>;
 
 Retrieves a list of the User Channels available for the app to join.
 
-#### Example
+**Example:**
 
 ```js
 const userChannels = await fdc3.getUserChannels();
 const redChannel = userChannels.find(c => c.id === 'red');
 ```
 
-#### See also
+**See also:**
 
-* [`Channel`](Channel)
+- [`Channel`](Channel)
 
 ### `joinUserChannel`
 
@@ -548,7 +549,7 @@ An app can only be joined to one channel at a time.
 
 If an error occurs (such as the channel is unavailable or the join request is denied) the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`ChannelError`](Errors#channelerror) enumeration.
 
-#### Examples
+**Examples:**
 
 ```js
 // get all user channels
@@ -561,9 +562,9 @@ fdc3.joinUserChannel(selectedChannel.id);
 
 ```
 
-#### See also
+**See also:**
 
-* [`getUserChannels`](#getuserchannels)
+- [`getUserChannels`](#getuserchannels)
 
 ### `leaveCurrentChannel`
 
@@ -575,7 +576,7 @@ OPTIONAL function that removes the app from any User channel membership.  In mos
 
 Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not joined to a User channel.
 
-#### Examples
+**Examples:**
 
 ```js
 //desktop-agent scope context listener
@@ -607,7 +608,7 @@ Returns an [`AppIdentifier`](Types#appidentifier) object with the `instanceId` f
 
 If an error occurs while opening the app, the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`OpenError`](Errors#openerror) enumeration.
 
-#### Example
+**Example:**
 
  ```js
 // Open an app without context, using an AppIdentifier object to specify the target
@@ -618,12 +619,12 @@ let instanceIdentifier = await fdc3.open(appIdentifier);
 let instanceIdentifier = await fdc3.open(appIdentifier, context);
 ```
 
-#### See also
+**See also:**
 
-* [`Context`](Types#context)
-* [`AppIdentifier`](Types#appidentifier)
-* [`AppMetadata`](Metadata#appmetadata)
-* [`OpenError`](Errors#openerror)
+- [`Context`](Types#context)
+- [`AppIdentifier`](Types#appidentifier)
+- [`AppMetadata`](Metadata#appmetadata)
+- [`OpenError`](Errors#openerror)
 
 ### `raiseIntent`
 
@@ -644,7 +645,7 @@ Returns an [`IntentResolution`](Metadata#intentresolution) object with details o
 
 Issuing apps may optionally wait on the promise that is returned by the `getResult()` member of the `IntentResolution`. This promise will resolve when the _receiving app's_ intent handler function returns and resolves a promise. The Desktop Agent resolves the issuing app's promise with the Context object, Channel object or void that is provided as resolution within the receiving app. The Desktop Agent MUST reject the issuing app's promise, with a string from the [`ResultError`](Errors#resulterror) enumeration, if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a valid response (a promise or void), or (3) the returned promise resolves to an invalid type.
 
-#### Example
+**Example:**
 
 ```js
 // raise an intent for resolution by the desktop agent
@@ -677,15 +678,15 @@ try {
 }
 ```
 
-#### See also
+**See also:**
 
-* [Raising Intents](../spec#raising-intents)
-* [`Context`](Types#context)
-* [`AppIdentifier`](Types#AppIdentifier)
-* [`IntentResult`](Types#intentresult)
-* [`IntentResolution`](Metadata#intentresolution)
-* [`ResolveError`](Errors#resolveerror)
-* [`ResultError`](Errors#resulterror)
+- [Raising Intents](../spec#raising-intents)
+- [`Context`](Types#context)
+- [`AppIdentifier`](Types#AppIdentifier)
+- [`IntentResult`](Types#intentresult)
+- [`IntentResolution`](Metadata#intentresolution)
+- [`ResolveError`](Errors#resolveerror)
+- [`ResultError`](Errors#resulterror)
 
 ### `raiseIntentForContext`
 
@@ -704,7 +705,7 @@ Returns an `IntentResolution` object, see [`raiseIntent()`](#raiseintent) for de
 
 If a target intent and app cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the [`ResolveError`](Errors#resolveerror) enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`. If an invalid context object is passed as an argument the promise MUST be rejected with an `Error` object with the [`ResolveError.MalformedContext`](Errors#resolveerror) string as its `message`.
 
-#### Example
+**Example:**
 
 ```js
 // Display a resolver UI for the user to select an intent and application to resolve it
@@ -714,14 +715,14 @@ const intentResolution = await fdc3.raiseIntentForContext(context);
 await fdc3.raiseIntentForContext(context, targetAppIdentifier);
 ```
 
-#### See also
+**See also:**
 
-* [Raising Intents](../spec#raising-intents)
-* [`raiseIntent()`](#raiseintent)
-* [`Context`](Types#context)
-* [`AppIdentifier`](Types#appidentifier)
-* [`IntentResolution`](Metadata#intentresolution)
-* [`ResolveError`](Errors#resolveerror)
+- [Raising Intents](../spec#raising-intents)
+- [`raiseIntent()`](#raiseintent)
+- [`Context`](Types#context)
+- [`AppIdentifier`](Types#appidentifier)
+- [`IntentResolution`](Metadata#intentresolution)
+- [`ResolveError`](Errors#resolveerror)
 
 ## Deprecated Functions
 
@@ -733,9 +734,9 @@ addContextListener(handler: ContextHandler): Promise<Listener>;
 
 Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard <2.0.
 
-#### See also
+**See also:**
 
-* [`addContextListener`](#addcontextlistener)
+- [`addContextListener`](#addcontextlistener)
 
 ### `getSystemChannels` (deprecated)
 
@@ -744,9 +745,9 @@ getSystemChannels() : Promise<Array<Channel>>;
 ```
 
 Alias to the [`getUserChannels`](#getuserchannels) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
-#### See also
+**See also:**
 
-* [`getUserChannels`](#getuserchannels)
+- [`getUserChannels`](#getuserchannels)
 
 ### `joinChannel` (deprecated)
 
@@ -756,9 +757,9 @@ joinChannel(channelId: string) : Promise<void>;
 
 Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
 
-#### See also
+**See also:**
 
-* [`joinUserChannel`](#joinuserchannel)
+- [`joinUserChannel`](#joinuserchannel)
 
 ### `open` (deprecated)
 
@@ -768,9 +769,9 @@ open(name: string, context?: Context): Promise<AppIdentifier>;
 
 Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
 
-#### See also
+**See also:**
 
-* [`open`](#open)
+- [`open`](#open)
 
 ### `raiseIntent` (deprecated)
 
@@ -780,9 +781,9 @@ raiseIntent(intent: string, context: Context, name: string): Promise<IntentResol
 
 Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
 
-#### See also
+**See also:**
 
-* [`raiseIntent`](#raiseintent)
+- [`raiseIntent`](#raiseintent)
 
 ### `raiseIntentForContext` (deprecated)
 
@@ -792,6 +793,6 @@ raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>
 
 Version of `raiseIntentForContext` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
 
-#### See also
+**See also:**
 
-* [`raiseIntentForContext`](#raiseintentforcontext)
+- [`raiseIntentForContext`](#raiseintentforcontext)

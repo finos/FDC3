@@ -38,13 +38,13 @@ interface Channel {
 }
 ```
 
-#### See also
+**See also:**
 
-* [`Context`](Types#context)
-* [`Listener`](Types#listener)
-* [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
-* [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
-* [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
+- [`Context`](Types#context)
+- [`Listener`](Types#listener)
+- [`DesktopAgent.getUserChannels`](DesktopAgent#getuserchannels)
+- [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
+- [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
 
 ## Properties
 
@@ -72,9 +72,9 @@ public readonly displayMetadata?: DisplayMetadata;
 
 DisplayMetadata can be used to provide display hints for User Channels intended to be visualized and selectable by end users.
 
-#### See also
+**See also:**
 
-* [`DisplayMetadata`](Metadata#displaymetadata)
+- [`DisplayMetadata`](Metadata#displaymetadata)
 
 ## Functions
 
@@ -90,7 +90,7 @@ If, when this function is called, the channel already contains context that woul
 
 Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
 
-#### Examples
+**Examples:**
 
 Add a listener for any context that is broadcast on the channel:
 
@@ -123,12 +123,12 @@ contactListener.unsubscribe();
 instrumentListener.unsubscribe();
 ```
 
-#### See also
+**See also:**
 
-* [`Listener`](Types#listener)
-* [`ContextHandler`](Types#contexthandler)
-* [`broadcast`](#broadcast)
-* [`getCurrentContext`](#getcurrentcontext)
+- [`Listener`](Types#listener)
+- [`ContextHandler`](Types#contexthandler)
+- [`broadcast`](#broadcast)
+- [`getCurrentContext`](#getcurrentcontext)
 
 ### `broadcast`
 
@@ -146,7 +146,7 @@ If you are working with complex context types composed of other simpler types (a
 
 If an application attempts to broadcast an invalid context argument the Promise returned by this function should reject with the [`ChannelError.MalformedContext` error](Errors#channelerror).
 
-#### Example
+**Example:**
 
 ```javascript
 const instrument = {
@@ -163,11 +163,11 @@ try {
 }
 ```
 
-#### See also
+**See also:**
 
-* [`ChannelError`](Errors#channelerror)
-* [`getCurrentContext`](#getcurrentcontext)
-* [`addContextListener`](#addcontextlistener)
+- [`ChannelError`](Errors#channelerror)
+- [`getCurrentContext`](#getcurrentcontext)
+- [`addContextListener`](#addcontextlistener)
 
 ### `getCurrentContext`
 
@@ -183,7 +183,7 @@ It is up to the specific Desktop Agent implementation whether and how recent con
 
 If getting the current context fails, the promise will be rejected with an `Error` with a `message` string from the [`ChannelError`](Errors#channelerror) enumeration.
 
-#### Examples
+**Examples:**
 
 Without specifying a context type:
 
@@ -205,11 +205,11 @@ try {
 }
 ```
 
-#### See also
+**See also:**
 
-* [`ChannelError`](Errors#channelerror)
-* [`broadcast`](#broadcast)
-* [`addContextListener`](#addcontextlistener)
+- [`ChannelError`](Errors#channelerror)
+- [`broadcast`](#broadcast)
+- [`addContextListener`](#addcontextlistener)
 
 ## Deprecated Functions
 
@@ -224,6 +224,6 @@ public addContextListener(handler: ContextHandler): Promise<Listener>;
 
 Adds a listener for incoming contexts whenever a broadcast happens on the channel.
 
-#### See also
+**See also:**
 
-* [`addContextListener`](#addcontextlistener)
+- [`addContextListener`](#addcontextlistener)
