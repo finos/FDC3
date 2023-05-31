@@ -61,11 +61,11 @@ interface DesktopAgent {
 addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 ```
 
-Adds a listener for incoming context broadcasts from the Desktop Agent. If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
+Adds a listener for incoming context broadcasts from the Desktop Agent on the current User Channel. If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
 
 Context broadcasts are only received from apps that are joined to the same User Channel as the listening application, hence, if the application is not currently joined to a User Channel no broadcasts will be received. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.
 
-Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the Desktop Agent implementation.
 
 #### Examples
 

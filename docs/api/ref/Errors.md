@@ -23,6 +23,12 @@ enum ChannelError {
    *  `getOrCreateChannel` method of the DesktopAgent (`fdc3`).
    */
   CreationFailed = 'CreationFailed',
+
+  /** Returned if a call to the `broadcast` functions is made with an invalid
+   *  context argument. Contexts should be Objects with at least a `type` field
+   *  that has a `string` value.
+   */
+  MalformedContext = 'MalformedContext',
 }
 ```
 
@@ -57,7 +63,13 @@ enum OpenError {
    */
   ResolverUnavailable = 'ResolverUnavailable',
 
-  /** (Experimental) Returned if the specified Desktop Agent is not found, via a connected 
+  /** Returned if a call to the `open` function is made with an invalid
+   *  context argument. Contexts should be Objects with at least a `type` field
+   *  that has a `string` value.
+   */
+  MalformedContext = 'MalformedContext',
+
+    /** @experimental Returned if the specified Desktop Agent is not found, via a connected 
    *  Desktop Agent Bridge. */
   DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
@@ -110,7 +122,13 @@ export enum ResolveError {
    */
   IntentDeliveryFailed = 'IntentDeliveryFailed',
 
-  /** (Experimental) Returned if the specified Desktop Agent is not found, via a connected 
+  /** Returned if a call to one of the `raiseIntent` functions is made with an 
+   *  invalid context argument. Contexts should be Objects with at least a `type`
+   *  field that has a `string` value.
+   */
+  MalformedContext = 'MalformedContext',
+
+    /** @experimental Returned if the specified Desktop Agent is not found, via a connected 
    *  Desktop Agent Bridge. */
   DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
@@ -129,8 +147,8 @@ Contains constants representing the errors that can be encountered when calling 
 
 ```typescript
 enum ResultError {
-  /** Returned if the `IntentHandler` exited without returning a Promise or that
-   *  Promise was not resolved with a Context or Channel object. 
+  /** Returned if the intent handler exited without returning a valid result 
+   * (a promise resolving to a Context, Channel object or void).
    */
   NoResultReturned = 'NoResultReturned',
 
@@ -151,7 +169,7 @@ Contains constants representing the errors that can be encountered when calling 
 
 ## `BridgingError`
 
-_(Experimental)_
+`@experimental`
 
 ```typescript
 enum BridgingError {

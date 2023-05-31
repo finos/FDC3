@@ -6,9 +6,15 @@ hide_title: true
 ---
 # `Channel`
 
-Represents a context channel that applications can join to share context data.
+Represents a context channel that applications can join to share context data and provides functions for interacting with it.
 
-A channel can be either a "User" channel (retrieved with [`getUserChannels`](DesktopAgent#getuserchannels)) or a custom "App" channel (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)).
+A channel can be either a ["User" channel](../api/spec#joining-user-channels) (retrieved with [`getUserChannels`](DesktopAgent#getuserchannels)), a custom ["App" channel](../api/spec#app-channels) (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)) or a ["Private" channel](../api/spec#private-channels) (obtained via an intent result).
+
+:::note
+
+There are differences in behavior when you interact with a User channel via the Desktop Agent interface and the Channel interface. Specifically, when 'joining' a User channel or adding a context listener when already joined to a channel via the `DesktopAgent` interface, existing context (matching the type of the context listener) on the channel is received by the context listener immediately. Whereas, when add a context listener via the Channel interface, context is not received automatically, but may be retrieved manually via the [`getCurrentContext()`](#getcurrentcontext) function.
+
+:::
 
 Channels each have a unique identifier, some display metadata and operations for broadcasting context to other applications, or receiving context from other applications.
 
@@ -138,6 +144,8 @@ Channel implementations should ensure that context messages broadcast by an appl
 
 If you are working with complex context types composed of other simpler types (as recommended by the [FDC3 Context Data specification](../../context/spec#assumptions)) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.
 
+If an application attempts to broadcast an invalid context argument the Promise returned by this function should reject with the [`ChannelError.MalformedContext` error](Errors#channelerror).
+
 **Example:**
 
 ```javascript
@@ -151,7 +159,7 @@ const instrument = {
 try {
     channel.broadcast(instrument);
 } catch (err: ChannelError) {
-    // handler errror
+    // handle error
 }
 ```
 
@@ -183,7 +191,7 @@ Without specifying a context type:
 try {
     const context = await channel.getCurrentContext();
 } catch (err: ChannelError) {
-    // handler errror
+    // handle error
 }
 ```
 
@@ -193,7 +201,7 @@ Specifying a context type:
 try {
     const contact = await channel.getCurrentContext('fdc3.contact');
 } catch (err: ChannelError) {
-    // handler errror
+    // handler error
 }
 ```
 
