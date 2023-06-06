@@ -139,7 +139,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - You should receive a JavaScript Error with the message `ResolveError.NoAppsFound`.
 - `2.0-RaiseIntentFailTargetedAppResolve1`: Perform above test, but:
   - Use `fdc3.raiseIntent("aTestingIntent", testContextY, {appId: "<A's appId>"})`.
-  - You should receive a JavaScript Error with the message `ResolveError.IntentDeliveryFailed`.
+  - You should receive a JavaScript Error with the message `ResolveError.NoAppsFound`.
 - `2.0-RaiseIntentFailTargetedAppResolve2`: Perform above test, but:
   - Use `fdc3.raiseIntent("aTestingIntent", testContextX, {appId: "NonExistentApp"})`.
   - You should receive a JavaScript Error with the message `ResolveError.TargetAppUnavailable`.
