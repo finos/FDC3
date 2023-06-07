@@ -255,29 +255,29 @@ As the methods of resolving ambiguous intents are often user interactive, it is 
 | App | Step | Details |
 |---|---|---|
 | Test | 1. Raise Ambiguous Intent | `fdc3.raiseIntent("sharedTestingIntent2", testContextY)` |
-| User | 2. Assert Chooser Appears | Assert a chooser contains apps `E`,`F`,`G`,`H` and `I`. |
+| User | 2. Chooser Interaction | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E`,`F`,`G`,`H` and `I`. |
 
-- `2.0-ResolveAmbiguousIntentTarget`: Perform above steps to invoke intent resolution for an unspecified target with multiple options. Confirm that an application target can be selected (via whatever mechanism is provided).
+- `2.0-ResolveAmbiguousIntentTarget`: Perform above steps to invoke intent resolution for an unspecified target with multiple options. Confirm that test is able to complete successfully.
 
 | App | Step | Details |
 |---|---|---|
 | Test | 1. Raise Ambiguous Intent | `fdc3.raiseIntentForContext(testContextY)` |
-| User | 2. Assert Chooser Appears | Assert a chooser contains apps `E`,`F`,`G`,`H` and `I`. |
+| User | 2.  Chooser Interaction | Chooser Interaction | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E`,`F`,`G`,`H` and `I`. |
 
-- `2.0-ResolveAmbiguousContextTarget`:  Perform above steps  to invoke intent resolution for an unspecified target with multiple options. Confirm that multiple intent options are offered and that both an intent and application target can be selected (via whatever mechanism is provided).
+- `2.0-ResolveAmbiguousContextTarget`:  Perform above steps  to invoke intent resolution for an unspecified target with multiple options. Confirm that test is able to complete successfully.
 
 | App | Step | Details |
 |---|---|---|
 | Test | 1. Open 4 Apps | Use `fdc3.open()` to open 2 instances of App `E` and 2 instances of `F`. |
 | Test | 2. Raise Ambiguous Intent | `fdc3.raiseIntent("sharedTestingIntent2", testContextY)` |
-| User | 3. Assert Chooser Appears | Assert a chooser contains apps `E (1)`,`F (1)`,`E (2)`,`F (2)` and options to open `G`, `H` and `I` |
+| User | 3. Chooser Interaction | Chooser Interaction | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E (1)`,`F (1)`,`E (2)`,`F (2)` and options to open `G`, `H` and `I` |
 
-- `2.0-ResolveAmbiguousIntentTargetMultiInstance`:  Perform above steps and confirm that an application instance target can be selected (via whatever mechanism is provided).
+- `2.0-ResolveAmbiguousIntentTargetMultiInstance`:  Perform above steps  to invoke intent resolution for an unspecified target with multiple options. Confirm that test is able to complete successfully.
 
 | App | Step | Details |
 |---|---|---|
 | Test | 1. Open 4 Apps | Use `fdc3.open()` to open 2 instances of App `E` and 2 instances of `F`. |
 | Test | 2. Raise Ambiguous Intent | `fdc3.raiseIntentForContext(testContextY)` |
-| User | 3. Assert Chooser Appears | Assert a chooser contains apps `E (1)`,`F (1)`,`E (2)`,`F (2)` and options to open `G`, `H` and `I` |
+| User | 3.  Chooser Interaction | Chooser Interaction | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E (1)`,`F (1)`,`E (2)`,`F (2)` and options to open `G`, `H` and `I` |
 
-- `2.0-ResolveAmbiguousContextTargetMultiInstance`: Perform above steps and confirm that multiple intent options are offered and that both an intent and application instance target can be selected (via whatever mechanism is provided).
+- `2.0-ResolveAmbiguousContextTargetMultiInstance`: Perform above steps  to invoke intent resolution for an unspecified target with multiple options. Confirm that test is able to complete successfully.
