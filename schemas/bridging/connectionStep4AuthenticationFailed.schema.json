@@ -19,13 +19,13 @@
     "meta": {
       "type": "object",
       "properties": {
-        "requestGuid": {
+        "requestUuid": {
           "type": "string",
-          "description": "Unique GUID for the request"
+          "description": "Unique UUID for the request"
         },
-        "responseGuid": {
+        "responseUuid": {
           "type": "string",
-          "description": "Unique GUID for the response"
+          "description": "Unique UUID for the response"
         },
         "timestamp": {
           "type": "string",
@@ -34,7 +34,7 @@
         }
       },
       "additionalProperties": false,
-      "required": ["requestGuid", "responseGuid", "timestamp"]
+      "required": ["requestUuid", "responseUuid", "timestamp"]
     }
   },
   "required": ["type", "meta"],

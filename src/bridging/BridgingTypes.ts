@@ -313,9 +313,9 @@ export interface MetaObject {
    */
   destination?: DestinationElement;
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -364,9 +364,9 @@ export interface BridgeResponse {
 
 export interface BridgeResponseMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Timestamp at which request or response was generated
    */
@@ -384,9 +384,9 @@ export interface BridgeResponseMeta {
    */
   errorSources?: DestinationElement[];
   /**
-   * Unique GUID for the response
+   * Unique UUID for the response
    */
-  responseGuid: string;
+  responseUuid: string;
   /**
    * Array of AppIdentifiers or DesktopAgentIdentifiers for the sources that generated
    * responses to the request. Will contain a single value for individual responses and
@@ -411,9 +411,9 @@ export interface BroadcastRequest {
 
 export interface BroadcastRequestMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -511,9 +511,9 @@ export interface ConnectionStep3Handshake {
 
 export interface ConnectionStep3HandshakeMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Timestamp at which request or response was generated
    */
@@ -558,13 +558,13 @@ export interface ConnectionStep4AuthenticationFailed {
 
 export interface ConnectionStep4AuthenticationFailedMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
-   * Unique GUID for the response
+   * Unique UUID for the response
    */
-  responseGuid: string;
+  responseUuid: string;
   /**
    * Timestamp at which request or response was generated
    */
@@ -583,13 +583,13 @@ export interface ConnectionStep6ConnectedAgentsUpdate {
 
 export interface ConnectionStep6ConnectedAgentsUpdateMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
-   * Unique GUID for the response
+   * Unique UUID for the response
    */
-  responseGuid: string;
+  responseUuid: string;
   /**
    * Timestamp at which request or response was generated
    */
@@ -655,9 +655,9 @@ export interface FindInstancesRequestMeta {
    */
   destination?: DestinationClass;
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -709,9 +709,9 @@ export interface FindInstancesResponse {
 
 export interface FindInstancesResponseMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Timestamp at which request or response was generated
    */
@@ -729,9 +729,9 @@ export interface FindInstancesResponseMeta {
    */
   errorSources?: DestinationElement[];
   /**
-   * Unique GUID for the response
+   * Unique UUID for the response
    */
-  responseGuid: string;
+  responseUuid: string;
   /**
    * Array of AppIdentifiers or DesktopAgentIdentifiers for the sources that generated
    * responses to the request. Will contain a single value for individual responses and
@@ -773,9 +773,9 @@ export interface FindIntentRequest {
 
 export interface FindIntentRequestMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -809,9 +809,9 @@ export interface FindIntentResponse {
 
 export interface FindIntentResponseMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Timestamp at which request or response was generated
    */
@@ -829,9 +829,9 @@ export interface FindIntentResponseMeta {
    */
   errorSources?: ErrorSourceElement[];
   /**
-   * Unique GUID for the response
+   * Unique UUID for the response
    */
-  responseGuid: string;
+  responseUuid: string;
   /**
    * Array of AppIdentifiers or DesktopAgentIdentifiers for the sources that generated
    * responses to the request. Will contain a single value for individual responses and
@@ -871,9 +871,9 @@ export interface FindIntentsByContextRequest {
 
 export interface FindIntentsByContextRequestMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -906,9 +906,9 @@ export interface FindIntentsByContextResponse {
 
 export interface FindIntentsByContextResponseMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Timestamp at which request or response was generated
    */
@@ -926,9 +926,9 @@ export interface FindIntentsByContextResponseMeta {
    */
   errorSources?: ErrorSourceElement[];
   /**
-   * Unique GUID for the response
+   * Unique UUID for the response
    */
-  responseGuid: string;
+  responseUuid: string;
   /**
    * Array of AppIdentifiers or DesktopAgentIdentifiers for the sources that generated
    * responses to the request. Will contain a single value for individual responses and
@@ -966,9 +966,9 @@ export interface GetAppMetadataRequestMeta {
    */
   destination?: DestinationClass;
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -1001,9 +1001,9 @@ export interface GetAppMetadataResponse {
 
 export interface GetAppMetadataResponseMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Timestamp at which request or response was generated
    */
@@ -1021,9 +1021,9 @@ export interface GetAppMetadataResponseMeta {
    */
   errorSources?: ErrorSourceElement[];
   /**
-   * Unique GUID for the response
+   * Unique UUID for the response
    */
-  responseGuid: string;
+  responseUuid: string;
   /**
    * Array of AppIdentifiers or DesktopAgentIdentifiers for the sources that generated
    * responses to the request. Will contain a single value for individual responses and
@@ -1061,9 +1061,9 @@ export interface OpenRequestMeta {
    */
   destination?: DestinationClass;
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -1097,9 +1097,9 @@ export interface OpenResponse {
 
 export interface OpenResponseMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Timestamp at which request or response was generated
    */
@@ -1117,9 +1117,9 @@ export interface OpenResponseMeta {
    */
   errorSources?: ErrorSourceElement[];
   /**
-   * Unique GUID for the response
+   * Unique UUID for the response
    */
-  responseGuid: string;
+  responseUuid: string;
   /**
    * Array of AppIdentifiers or DesktopAgentIdentifiers for the sources that generated
    * responses to the request. Will contain a single value for individual responses and
@@ -1157,9 +1157,9 @@ export interface PrivateChannelBroadcastMeta {
    */
   destination?: PurpleIdentifier;
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -1199,9 +1199,9 @@ export interface PrivateChannelEventListenerAddedMeta {
    */
   destination?: PurpleIdentifier;
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -1241,9 +1241,9 @@ export interface PrivateChannelEventListenerRemovedMeta {
    */
   destination?: PurpleIdentifier;
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -1283,9 +1283,9 @@ export interface PrivateChannelOnAddContextListenerMeta {
    */
   destination?: PurpleIdentifier;
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -1325,9 +1325,9 @@ export interface PrivateChannelOnDisconnectMeta {
    */
   destination?: PurpleIdentifier;
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -1366,9 +1366,9 @@ export interface PrivateChannelOnUnsubscribeMeta {
    */
   destination?: PurpleIdentifier;
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -1408,9 +1408,9 @@ export interface RaiseIntentRequestMeta {
    */
   destination: PurpleIdentifier;
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Field that represents the source application that the request was received from.
    */
@@ -1445,9 +1445,9 @@ export interface RaiseIntentResponse {
 
 export interface RaiseIntentResponseMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Timestamp at which request or response was generated
    */
@@ -1465,9 +1465,9 @@ export interface RaiseIntentResponseMeta {
    */
   errorSources?: DestinationElement[];
   /**
-   * Unique GUID for the response
+   * Unique UUID for the response
    */
-  responseGuid: string;
+  responseUuid: string;
   /**
    * Array of AppIdentifiers or DesktopAgentIdentifiers for the sources that generated
    * responses to the request. Will contain a single value for individual responses and
@@ -1508,9 +1508,9 @@ export interface RaiseIntentResultResponse {
 
 export interface RaiseIntentResultResponseMeta {
   /**
-   * Unique GUID for the request
+   * Unique UUID for the request
    */
-  requestGuid: string;
+  requestUuid: string;
   /**
    * Timestamp at which request or response was generated
    */
@@ -1528,9 +1528,9 @@ export interface RaiseIntentResultResponseMeta {
    */
   errorSources?: DestinationElement[];
   /**
-   * Unique GUID for the response
+   * Unique UUID for the response
    */
-  responseGuid: string;
+  responseUuid: string;
   /**
    * Array of AppIdentifiers or DesktopAgentIdentifiers for the sources that generated
    * responses to the request. Will contain a single value for individual responses and
@@ -2259,7 +2259,7 @@ const typeMap: any = {
   MetaObject: o(
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('DestinationElement')) },
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('DestinationElement') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2283,11 +2283,11 @@ const typeMap: any = {
   ),
   BridgeResponseMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'errorDetails', js: 'errorDetails', typ: u(undefined, a('')) },
       { json: 'errorSources', js: 'errorSources', typ: u(undefined, a(r('DestinationElement'))) },
-      { json: 'responseGuid', js: 'responseGuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
       { json: 'sources', js: 'sources', typ: u(undefined, a(r('DestinationElement'))) },
     ],
     false
@@ -2302,7 +2302,7 @@ const typeMap: any = {
   ),
   BroadcastRequestMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2367,7 +2367,7 @@ const typeMap: any = {
   ),
   ConnectionStep3HandshakeMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -2400,8 +2400,8 @@ const typeMap: any = {
   ),
   ConnectionStep4AuthenticationFailedMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
-      { json: 'responseGuid', js: 'responseGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -2417,8 +2417,8 @@ const typeMap: any = {
   ),
   ConnectionStep6ConnectedAgentsUpdateMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
-      { json: 'responseGuid', js: 'responseGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -2452,7 +2452,7 @@ const typeMap: any = {
   FindInstancesRequestMeta: o(
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('DestinationClass')) },
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2470,11 +2470,11 @@ const typeMap: any = {
   ),
   FindInstancesResponseMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'errorDetails', js: 'errorDetails', typ: u(undefined, a('')) },
       { json: 'errorSources', js: 'errorSources', typ: u(undefined, a(r('DestinationElement'))) },
-      { json: 'responseGuid', js: 'responseGuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
       { json: 'sources', js: 'sources', typ: u(undefined, a(r('ErrorSourceElement'))) },
     ],
     false
@@ -2494,7 +2494,7 @@ const typeMap: any = {
   ),
   FindIntentRequestMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2517,11 +2517,11 @@ const typeMap: any = {
   ),
   FindIntentResponseMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'errorDetails', js: 'errorDetails', typ: u(undefined, a('')) },
       { json: 'errorSources', js: 'errorSources', typ: u(undefined, a(r('ErrorSourceElement'))) },
-      { json: 'responseGuid', js: 'responseGuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
       { json: 'sources', js: 'sources', typ: u(undefined, a(r('ErrorSourceElement'))) },
     ],
     false
@@ -2544,7 +2544,7 @@ const typeMap: any = {
   ),
   FindIntentsByContextRequestMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2561,11 +2561,11 @@ const typeMap: any = {
   ),
   FindIntentsByContextResponseMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'errorDetails', js: 'errorDetails', typ: u(undefined, a('')) },
       { json: 'errorSources', js: 'errorSources', typ: u(undefined, a(r('ErrorSourceElement'))) },
-      { json: 'responseGuid', js: 'responseGuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
       { json: 'sources', js: 'sources', typ: u(undefined, a(r('ErrorSourceElement'))) },
     ],
     false
@@ -2585,7 +2585,7 @@ const typeMap: any = {
   GetAppMetadataRequestMeta: o(
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('DestinationClass')) },
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2602,11 +2602,11 @@ const typeMap: any = {
   ),
   GetAppMetadataResponseMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'errorDetails', js: 'errorDetails', typ: u(undefined, a('')) },
       { json: 'errorSources', js: 'errorSources', typ: u(undefined, a(r('ErrorSourceElement'))) },
-      { json: 'responseGuid', js: 'responseGuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
       { json: 'sources', js: 'sources', typ: u(undefined, a(r('ErrorSourceElement'))) },
     ],
     false
@@ -2623,7 +2623,7 @@ const typeMap: any = {
   OpenRequestMeta: o(
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('DestinationClass')) },
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2646,11 +2646,11 @@ const typeMap: any = {
   ),
   OpenResponseMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'errorDetails', js: 'errorDetails', typ: u(undefined, a('')) },
       { json: 'errorSources', js: 'errorSources', typ: u(undefined, a(r('ErrorSourceElement'))) },
-      { json: 'responseGuid', js: 'responseGuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
       { json: 'sources', js: 'sources', typ: u(undefined, a(r('ErrorSourceElement'))) },
     ],
     false
@@ -2667,7 +2667,7 @@ const typeMap: any = {
   PrivateChannelBroadcastMeta: o(
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleIdentifier')) },
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2691,7 +2691,7 @@ const typeMap: any = {
   PrivateChannelEventListenerAddedMeta: o(
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleIdentifier')) },
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2715,7 +2715,7 @@ const typeMap: any = {
   PrivateChannelEventListenerRemovedMeta: o(
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleIdentifier')) },
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2739,7 +2739,7 @@ const typeMap: any = {
   PrivateChannelOnAddContextListenerMeta: o(
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleIdentifier')) },
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2763,7 +2763,7 @@ const typeMap: any = {
   PrivateChannelOnDisconnectMeta: o(
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleIdentifier')) },
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2781,7 +2781,7 @@ const typeMap: any = {
   PrivateChannelOnUnsubscribeMeta: o(
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleIdentifier')) },
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2805,7 +2805,7 @@ const typeMap: any = {
   RaiseIntentRequestMeta: o(
     [
       { json: 'destination', js: 'destination', typ: r('PurpleIdentifier') },
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('PurpleIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
@@ -2829,11 +2829,11 @@ const typeMap: any = {
   ),
   RaiseIntentResponseMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'errorDetails', js: 'errorDetails', typ: u(undefined, a('')) },
       { json: 'errorSources', js: 'errorSources', typ: u(undefined, a(r('DestinationElement'))) },
-      { json: 'responseGuid', js: 'responseGuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
       { json: 'sources', js: 'sources', typ: u(undefined, a(r('ErrorSourceElement'))) },
     ],
     false
@@ -2860,11 +2860,11 @@ const typeMap: any = {
   ),
   RaiseIntentResultResponseMeta: o(
     [
-      { json: 'requestGuid', js: 'requestGuid', typ: '' },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'errorDetails', js: 'errorDetails', typ: u(undefined, a('')) },
       { json: 'errorSources', js: 'errorSources', typ: u(undefined, a(r('DestinationElement'))) },
-      { json: 'responseGuid', js: 'responseGuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
       { json: 'sources', js: 'sources', typ: u(undefined, a(r('SourceElement'))) },
     ],
     false

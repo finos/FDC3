@@ -28,7 +28,7 @@
         },
         "meta":  {
           "properties": {
-            "requestGuid": true,
+            "requestUuid": true,
             "timestamp": true,
             "destination": {
               "$ref": "../api/desktopAgentIdentifier.schema.json"

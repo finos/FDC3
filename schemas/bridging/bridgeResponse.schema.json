@@ -28,11 +28,11 @@
         {
           "type": "object",
           "properties": {
-            "requestGuid": true,
+            "requestUuid": true,
             "timestamp": true,
-            "responseGuid": {
+            "responseUuid": {
               "type": "string",
-              "description": "Unique GUID for the response"
+              "description": "Unique UUID for the response"
             },
             "sources": {
               "type": "array",
@@ -70,7 +70,7 @@
               "description": "Array of error message strings for responses that were not returned to the bridge before the timeout or because an error occurred. Should be the same length as the `errorSources` array and ordered the same. May be omitted if all sources responded without errors."
             }
           },
-          "required": ["requestGuid", "responseGuid", "timestamp"],
+          "required": ["requestUuid", "responseUuid", "timestamp"],
           "additionalProperties": false
         }
       ]
