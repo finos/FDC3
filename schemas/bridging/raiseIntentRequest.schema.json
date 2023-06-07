@@ -31,7 +31,7 @@
         },
         "meta": {
           "properties": {
-            "requestGuid": true,
+            "requestUuid": true,
             "timestamp": true,
             "destination": {
               "$ref": "../api/appIdentifier.schema.json"
@@ -41,7 +41,7 @@
             }
           },
           "additionalProperties": false,
-          "required": ["requestGuid","timestamp","destination","source"] 
+          "required": ["requestUuid","timestamp","destination","source"] 
         }
       },
       "additionalProperties": false

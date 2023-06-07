@@ -28,7 +28,7 @@
         },
         "meta": {
           "properties": {
-            "requestGuid": true,
+            "requestUuid": true,
             "timestamp": true,
             "source": {
               "$ref": "../api/appIdentifier.schema.json"

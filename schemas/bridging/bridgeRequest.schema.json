@@ -22,9 +22,9 @@
     "RequestMeta": {
       "type": "object",
       "properties": {
-        "requestGuid": {
+        "requestUuid": {
           "type": "string",
-          "description": "Unique GUID for the request"
+          "description": "Unique UUID for the request"
         },
         "timestamp": {
           "type": "string",
@@ -54,7 +54,7 @@
           ]
         }
       },
-      "required": ["requestGuid", "timestamp", "source"]
+      "required": ["requestUuid", "timestamp", "source"]
     }
   }
 }

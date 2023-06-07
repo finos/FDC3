@@ -38,9 +38,9 @@
     "meta": {
       "type": "object",
       "properties": {
-        "requestGuid": {
+        "requestUuid": {
           "type": "string",
-          "description": "Unique GUID for the request"
+          "description": "Unique UUID for the request"
         },
         "timestamp": {
           "type": "string",
@@ -49,7 +49,7 @@
         }
       },
       "additionalProperties": false,
-      "required": ["requestGuid", "timestamp"]
+      "required": ["requestUuid", "timestamp"]
     }
   },
   "required": ["type", "payload", "meta"],
