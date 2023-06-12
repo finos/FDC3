@@ -1,0 +1,177 @@
+[
+	{
+		"conf": {
+			"title": "FDC3 Sail",
+			"publisher": "FINOS",
+			"image": "/img/community/FDC3_Sail_Horizontal_Light.svg",
+			"infoLink": "https://github.com/finos/FDC3-Sail",
+			"docsLink": "https://github.com/finos/FDC3-Sail",
+			"type": "platform-provider",
+			"badges": [],
+			"conformance": [
+				{
+					"src": "/img/community/certified-1.2.png",
+					"items": [
+						{
+							"text": "FDC3 Sail 1.0 Certified Conformant With FDC3 1.2 Specification on 6th December 2022",
+							"link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+						}
+					]
+				}
+			],
+			"description": "<p>This project provides a fully open source implementation of the FDC3 interoperability standard. </p><p>Includes a fully featured and secure electron desktop agent featuring intent resolution, channel linking, directory search and a local file-based app directory implementation. </p>"
+		},
+		"badge": {
+			"src": "/img/community/certified-1.2.png",
+			"items": [
+				{
+					"text": "FDC3 Sail 1.0 Certified Conformant With FDC3 1.2 Specification on 6th December 2022",
+					"link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+				}
+			]
+		}
+	},
+	{
+		"conf": {
+			"title": "Finsemble",
+			"publisher": "Finsemble, Inc.",
+			"image": "/img/users/Finsemble.png",
+			"infoLink": "https://finsemble.com/",
+			"docsLink": "https://documentation.finsemble.com/",
+			"type": "platform-provider",
+			"badges": [],
+			"conformance": [
+				{
+					"src": "/img/community/certified-1.2.png",
+					"items": [
+						{
+							"text": "Finsemble v8.3.0-beta.3 Certified Conformant With FDC3 1.2 Specification on 2nd December 2022",
+							"link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+						}
+					]
+				}
+			],
+			"description": "<p>Finsemble is a no code/low code smart desktop platform that helps you achieve both visual and logical integration of various types of apps that you already use (web, native, in-house, and third-party, including Citrix virtual apps).</p><p>Connect apps into automated workflows to improve user efficiency and reduce error rates. With <a href='https://documentation.finsemble.com/tutorial-ControllingInformationFlow.html' alt='Controlling information flow through FDC3 in Finsemble'>SelectConnect</a>, you are in full control over which apps communicate and which are excluded.</p><p>Build a fully customizable UI to work across multiple windows and monitors.</p><p>Use our <a href='https://documentation.finsemble.com/tutorial-SDD-01-Welcome.html' alt='The Smart Desktop Designer: fast-track to interoperability'>Smart Desktop Designer</a> to create and share fully functioning, highly customized, integrated desktops in a few hours, no coding knowledge needed.</p>"
+		},
+		"badge": {
+			"src": "/img/community/certified-1.2.png",
+			"items": [
+				{
+					"text": "Finsemble v8.3.0-beta.3 Certified Conformant With FDC3 1.2 Specification on 2nd December 2022",
+					"link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+				}
+			]
+		}
+	},
+	{
+		"conf": {
+			"title": "Glue42",
+			"publisher": "Tick42",
+			"image": "/img/users/Glue42_Logo.png",
+			"infoLink": "https://glue42.com/enterprise/",
+			"docsLink": "https://docs.glue42.com/",
+			"type": "platform-provider",
+			"badges": [],
+			"conformance": [
+				{
+					"src": "/img/community/certified-1.2.png",
+					"items": [
+						{
+							"text": "Glue42 Enterprise v3.17.0 / Glue FDC3 v2.6.0 Certified Conformant With FDC3 1.2 Specification on 2nd December 2022",
+							"link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+						},
+						{
+							"text": "Glue42 Core+ v1.0 Browser Extension v1.4 / Glue FDC3 v2.6.0 Certified Conformant With FDC3 1.2 Specification on 6th December 2022",
+							"link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+						},
+						{
+							"text": "Glue42 Core v2.6.1 Certified Conformant With FDC3 1.2 Specification on 13th March 2023",
+							"link": "https://www.finos.org/blog/fdc3-news-1.2-agent-conformance-language-bindings"
+						}
+					]
+				}
+			],
+			"description": "<p>Glue42 enables organizations to build intelligent desktops that support configurable workflows between web and desktop applications. We’re working with some of the world’s biggest financial organizations to help them optimize complex processes and become more efficient.</p><p>Our flagship product, Glue42 Enterprise, is a desktop application integration platform that helps organizations create a simplified desktop experience by connecting the UI and data of any application, e.g., legacy, in-house or web. The platform supports open-source standards, including FINOS-FDC3, thus reducing delivery time and avoiding vendor lock-in.</p>"
+		},
+		"badge": {
+			"src": "/img/community/certified-1.2.png",
+			"items": [
+				{
+					"text": "Glue42 Enterprise v3.17.0 / Glue FDC3 v2.6.0 Certified Conformant With FDC3 1.2 Specification on 2nd December 2022",
+					"link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+				},
+				{
+					"text": "Glue42 Core+ v1.0 Browser Extension v1.4 / Glue FDC3 v2.6.0 Certified Conformant With FDC3 1.2 Specification on 6th December 2022",
+					"link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
+				},
+				{
+					"text": "Glue42 Core v2.6.1 Certified Conformant With FDC3 1.2 Specification on 13th March 2023",
+					"link": "https://www.finos.org/blog/fdc3-news-1.2-agent-conformance-language-bindings"
+				}
+			]
+		}
+	},
+	{
+		"conf": {
+			"title": "OpenFin",
+			"publisher": "OpenFin Inc.",
+			"image": "/img/users/Openfin.png",
+			"infoLink": "https://openfin.co/",
+			"docsLink": "https://developers.openfin.co/of-docs",
+			"type": "platform-provider",
+			"badges": [],
+			"description": "<p>OpenFin founded the FDC3 standard in 2017 in collaboration with major banks and asset managers. Deployed at more than 2400 financial firms, OpenFin OS, allows applications from multiple providers to co-exist and interoperate on the desktop.</p><p>OpenFin OS consists of a secure, Chromium-based runtime called Container and a visual interface called <a href='https://www.openfin.co/workspace/' alt='OpenFin Workspace'>Workspace</a>. Workspace gets you running in no time, with themeable UI components for complex windowing, advanced search, actionable notifications and application discovery.</p><p>You can also build your own solutions using the <a href='https://www.openfin.co/container/' alt='OpenFin Container'>OpenFin Container</a>, native language <a href='https://www.openfin.co/container/adapters/' alt='OpenFin Native Adapters'>adapters</a> and APIs while remaining compatible with everything else built on OpenFin.</p>",
+			"conformance": [
+				{
+					"src": "/img/community/certified-1.2.png",
+					"items": [
+						{
+							"text": "OpenFin - 31.111.74.3 Certified Conformant With FDC3 1.2 Specification on 22nd February 2023",
+							"link": "https://www.finos.org/blog/fdc3-news-march-2023"
+						}
+					]
+				}
+			]
+		},
+		"badge": {
+			"src": "/img/community/certified-1.2.png",
+			"items": [
+				{
+					"text": "OpenFin - 31.111.74.3 Certified Conformant With FDC3 1.2 Specification on 22nd February 2023",
+					"link": "https://www.finos.org/blog/fdc3-news-march-2023"
+				}
+			]
+		}
+	},
+	{
+		"conf": {
+			"title": "Connectifi",
+			"publisher": "Connectifi Co.",
+			"image": "/img/users/connectifi.png",
+			"infoLink": "https://www.connectifi.co",
+			"description": "Connectifi provides FDC3 interop as a cloud service, empowering organizations to connect anything, anywhere, in a security-first environment that does not require installs.\n\nUse Connectifi to leverage FDC3 in standard browser and mobile environments, to expand the reach and ROI of your existing desktop tech stack, and to create secure and verifiable interop channels between mission critical applications.",
+			"badges": [],
+			"type": "platform-provider",
+			"conformance": [
+				{
+					"src": "/img/community/certified-1.2.png",
+					"items": [
+						{
+							"text": "Connectifi v1.1.0 Certified Conformant With FDC3 1.2 Specification on 26th April 2023",
+							"link": "https://www.finos.org/blog/fdc3-news-1.2-agent-conformance-language-bindings"
+						}
+					]
+				}
+			]
+		},
+		"badge": {
+			"src": "/img/community/certified-1.2.png",
+			"items": [
+				{
+					"text": "Connectifi v1.1.0 Certified Conformant With FDC3 1.2 Specification on 26th April 2023",
+					"link": "https://www.finos.org/blog/fdc3-news-1.2-agent-conformance-language-bindings"
+				}
+			]
+		}
+	}
+]
