@@ -18,18 +18,19 @@ export default ({ badge }) => {
     return <div className={styles.conformanceShowcase}>
         {
             relevant.map((c, key) => {
+            	const conf = c.conf;
+            	const badge = c.badge;
                 return (
                     <div className={styles.conformanceShowcaseItem} key={key}>
-                       	{JSON.stringify(c.conf)}
+                       	{JSON.stringify(conf)}
                         <div className={styles.conformanceImage}>
-                            <img src={c.conf.image} alt={c.conf.title} title={c.conf.title} />
+                            <img src={conf.image} alt={conf.title} title={conf.title} />
                         </div>
-                       	{JSON.stringify(c.conf)}
                         <div className={styles.conformanceText}>
-                            <a title={c.conf.title} href={c.conf.infoLink}>{c.conf.title}<div className="showcase-title">{c.conf.title}</div></a>
+                            <a title={conf.title} href={conf.infoLink}><div className="showcase-title">{conf.title}</div></a>
                             <ul>
                                 {
-                                    c.badge.items.map((item, key2) => {
+                                    badge.items.map((item, key2) => {
                                         return (<li key={key2}>
                                             <p>{item.text} {  (item.link) ? <em><a href={item.link}>More Details</a></em> :"" }</p>
                                         </li>)
