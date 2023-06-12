@@ -20,11 +20,12 @@ export default ({ badge }) => {
             relevant.map((c, key) => {
                 return (
                     <div className={styles.conformanceShowcaseItem} key={key}>
+                       	{JSON.stringify(c.conf)}
                         <div className={styles.conformanceImage}>
                             <img src={c.conf.image} alt={c.conf.title} title={c.conf.title} />
                         </div>
+                       	{JSON.stringify(c.conf)}
                         <div className={styles.conformanceText}>
-                        	{JSON.stringify(c.conf)}
                             <a title={c.conf.title} href={c.conf.infoLink}>{c.conf.title}<div className="showcase-title">{c.conf.title}</div></a>
                             <ul>
                                 {
