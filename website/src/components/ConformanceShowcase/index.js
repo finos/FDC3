@@ -29,7 +29,7 @@ export default ({ badge }) => {
 		)
 	}
 
-	function transformItem(conf, badge) {
+	function transformItem(conf, badge, key) {
 		return (
 			<div className={styles.conformanceShowcaseItem} key={key}>
 				{JSON.stringify(conf)}
@@ -52,7 +52,7 @@ export default ({ badge }) => {
             relevant.map((c, key) => {
             	const conf = c.conf;
             	const badge = c.badge;
-                return transformItem(conf, badge)
+                return transformItem(conf, badge, key)
             })
         }
 
