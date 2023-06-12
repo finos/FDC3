@@ -16,6 +16,9 @@ export default ({ badge }) => {
     });
 
     return <div className={styles.conformanceShowcase}>
+    	{
+    		JSON.stringify(relevant)
+    	}
         {
             relevant.map((c, key) => {
                 return (
