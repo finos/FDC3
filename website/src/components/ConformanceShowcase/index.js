@@ -23,7 +23,7 @@ export default ({ badge }) => {
                 return (
                     <div className={styles.conformanceShowcaseItem} key={key}>
                        	{JSON.stringify(conf)}
-                        <div className={styles.conformanceImage}>
+                        <div className={styles.conformanceImage} someTag={conf.title + " "+conf.image}>
                             <img src={conf.image} alt={conf.title} title={conf.title} />
                         </div>
                         <div className={styles.conformanceText}>
