@@ -126,7 +126,7 @@
           },
           {
             "text": "Glue42 Core v2.6.1 Certified Conformant With FDC3 1.2 Specification on 13th March 2023",
-            "link": "tbd"
+            "link": "https://www.finos.org/blog/fdc3-news-1.2-agent-conformance-language-bindings"
           }
         ]
       }
@@ -358,7 +358,7 @@
         "items": [
           {
             "text": "Connectifi v1.1.0 Certified Conformant With FDC3 1.2 Specification on 26th April 2023",
-            "link": "tbd"
+            "link": "https://www.finos.org/blog/fdc3-news-1.2-agent-conformance-language-bindings"
           }
         ]
       }  
