@@ -16,9 +16,6 @@ export default ({ badge }) => {
     });
 
     return <div className={styles.conformanceShowcase}>
-    	{
-    		JSON.stringify(relevant)
-    	}
         {
             relevant.map((c, key) => {
                 return (
@@ -27,10 +24,12 @@ export default ({ badge }) => {
                             <img src={c.conf.image} alt={c.conf.title} title={c.conf.title} />
                         </div>
                         <div className={styles.conformanceText}>
-                            <a href={c.conf.infoLink}><div className="showcase-title">{c.conf.title}</div></a><ul>
+                        	{JSON.stringify(c.conf)}
+                            <a title={c.conf.title} href={c.conf.infoLink}>{c.conf.title}<div className="showcase-title">{c.conf.title}</div></a>
+                            <ul>
                                 {
                                     c.badge.items.map((item, key2) => {
-                                        return (<li className={styles.conformanceItem} key={key2}>
+                                        return (<li key={key2}>
                                             <p>{item.text} {  (item.link) ? <em><a href={item.link}>More Details</a></em> :"" }</p>
                                         </li>)
                                     })
