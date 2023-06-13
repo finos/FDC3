@@ -20,9 +20,8 @@ export default ({ badge }) => {
     return <div className={styles.conformanceShowcase}>
         {
             relevant.map((c, key) => {
-                console.log("c:", c);
                 return (
-                    <div className={styles.conformanceShowcaseItem} key={key}>
+                    <div className={styles.conformanceShowcaseItem} key={"conformance-item-" + key}>
                         <div className={styles.conformanceImage}>
                             <img src={c.conf.image} alt={c.conf.title} title={c.conf.title} />
                         </div>
@@ -30,7 +29,7 @@ export default ({ badge }) => {
                             <a href={c.conf.infoLink}><div className="showcase-title">{c.conf.title}</div></a><ul>
                                 {
                                     c.badge.items.map((item, key2) => {
-                                        return (<li className={styles.conformanceItem} key={key2}>
+                                        return (<li className={styles.conformanceItem} key={"conformance-item-" + key + "-badge" + key2}>
                                             <p>{item.text} {  (item.link) ? <em><a href={item.link}>More Details</a></em> :"" }</p>
                                         </li>)
                                     })
