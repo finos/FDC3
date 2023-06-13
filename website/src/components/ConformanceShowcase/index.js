@@ -4,28 +4,37 @@ import styles from './styles.module.css'
 
 export default ({ badge }) => {
 
-    const relevant = community.flatMap(c => {
-        return (c.conformance ?? [])
-            .filter(i => i.src == badge)
-            .map(i => {
-                return {
-                    "conf": c,
-                    "badge": i
-                }
-            });
-    });
+    let relevant = community
+    	.flatMap(c => {
+	        return (c.conformance ?? [])
+	            .filter(i => i.src == badge)
+	            .map(i => {
+	                return {
+	                    "conf": c,
+	                    "badge": i
+	                }
+	            })
+   		 });
 
-    console.log("filtered data: ",relevant);
+    
+	relevant = relevant.sort(function(a, b) {
+		let x = a.conf.title.toLowerCase();
+		let y = b.conf.title.toLowerCase();
+		if (x < y) { return -1; }
+		if (x > y) { return 1; }
+		return 0;
+	})
+
 
     return <div className={styles.conformanceShowcase}>
         {
             relevant.map((c, key) => {
                 return (
                     <div className={styles.conformanceShowcaseItem} key={"conformance-item-" + key}>
-                        <div className={styles.conformanceImage} key={key + "_1"} id={key + "_1"}>
+                        <div className={styles.conformanceImage} key={key + "_1"}>
                             <img src={c.conf.image} alt={c.conf.title} title={c.conf.title} />
                         </div>
-                        <div className={styles.conformanceText} key={key + "_2"} id={key + "_2"}>
+                        <div className={styles.conformanceText} key={key + "_2"}>
                             <a href={c.conf.infoLink}><div className="showcase-title">{c.conf.title}</div></a><ul>
                                 {
                                     c.badge.items.map((item, key2) => {
