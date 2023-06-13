@@ -22,10 +22,10 @@ export default ({ badge }) => {
             relevant.map((c, key) => {
                 return (
                     <div className={styles.conformanceShowcaseItem} key={"conformance-item-" + key}>
-                        <div className={styles.conformanceImage} key={key + "_1"}>
+                        <div className={styles.conformanceImage} key={key + "_1"} id={key + "_1"}>
                             <img src={c.conf.image} alt={c.conf.title} title={c.conf.title} />
                         </div>
-                        <div className={styles.conformanceText} key={key + "_2"}>
+                        <div className={styles.conformanceText} key={key + "_2"} id={key + "_2"}>
                             <a href={c.conf.infoLink}><div className="showcase-title">{c.conf.title}</div></a><ul>
                                 {
                                     c.badge.items.map((item, key2) => {
