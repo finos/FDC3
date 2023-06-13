@@ -15,9 +15,12 @@ export default ({ badge }) => {
             });
     });
 
+    console.log("filtered data: ",relevant);
+
     return <div className={styles.conformanceShowcase}>
         {
             relevant.map((c, key) => {
+                console.log("c:", c);
                 return (
                     <div className={styles.conformanceShowcaseItem} key={key}>
                         <div className={styles.conformanceImage}>
