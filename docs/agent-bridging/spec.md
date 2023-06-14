@@ -437,7 +437,7 @@ The Desktop Agent Bridge is the responsible entity for collating responses toget
 
 The Desktop Agent Bridge MUST allow for timeout configuration.
 
-The Bridge SHOULD also implement timeout for waiting on DA responses. Assuming the message exchange will be all intra-machine, a recommended timeout of 1500ms SHOULD be used. Similarly, Desktop Agents SHOULD apply a timeout to requests made to the bridge that require a response (collated or otherwise), to handle situations where the bridge is not responding as expected. A recommended timeout of 3000ms SHOULD be used in this case.
+The Bridge SHOULD also implement timeout for waiting on DA responses. Assuming the message exchange will be all intra-machine, a recommended maximum timeout of 1500ms SHOULD be used. Similarly, Desktop Agents SHOULD apply a timeout to requests made to the bridge that require a response (collated or otherwise), to handle situations where the bridge is not responding as expected. A recommended maximum timeout of 3000ms SHOULD be used in this case.
 
 ### Message Format
 
@@ -454,21 +454,24 @@ All messages sent or received by the Desktop Agent Bridge will be encoded in JSO
 }
 ```
 
-Messages can be divided into two categories:
+Messages can be divided into four categories:
 
-- Requests: Messages that initiate a particular interaction
-- Responses: Messages that respond to a prior request
+- Requests from a Desktop Agent: Messages that initiate a particular interaction.
+- Requests forwarded by the Bridge: Messages augmented and forwarded on by the Bridge.
+- Responses from a Desktop Agent: Messages from a single Desktop Agent that respond to a prior request from the Bridge.
+- Responses collated and forwarded by the Bridge: Messages from the Bridge back to the Desktop Agent that initiated an interaction, which may combine the responses from multiple other Desktop Agents.
 
 Details specific to each are provided in the following sections.
 
 #### Request Messages
 
-Request messages use the following format:
+Request messages from a Desktop Agent use the following format:
 
 ```typescript
 {
-    /** Typically set to the FDC3 function name that the message relates to, e.g.
-     * "findIntent" */
+    /** Identifies the type of the message and it is typically set to the FDC3
+     * function name that the message relates to, e.g. 'findIntent', with 
+     * 'Request' appended. */
     type:  string,
     /** Request body, typically containing the arguments to the function called.*/
     payload: {
@@ -493,33 +496,40 @@ Request messages use the following format:
         requestUuid: string,
         /** Timestamp at which request was generated */
         timestamp:  date,
-         /** AppIdentifier OR DesktopAgentIdentifier for the source application
-          *  that the request was received from and will be augmented with the
-          *  assigned name of the Desktop Agent by the Desktop Agent Bridge, 
-          *  rather than the sender. */
+         /** Field that represents the source application that the request was 
+          * received from, or the source Desktop Agent if it issued the request 
+          * itself. */
         source: AppIdentifier | DesktopAgentIdentifier,
-        /** Optional AppIdentifier or DesktopAgentIdentifier for the destination
-         *  that the request should be routed to, which MUST be set by the Desktop
-         *  Agent for API calls that include a target (`app`) parameter. MUST 
-         *  include the name of the Desktop Agent hosting the target application. */
+        /** Optional field that represents the destination that the request
+         * should be routed to. Must be set by the Desktop Agent for API calls
+         * that include a target app parameter and must include the name of the
+         * Desktop Agent hosting the target application. */
         destination?: AppIdentifier | DesktopAgentIdentifier
     }
 }
 ```
 
-**Schema**: [https://fdc3.finos.org/schemas/next/bridging/broadcastRequest.schema.json](/schemas/next/bridging/bridgeRequest.schema.json)
+**Schema**: [https://fdc3.finos.org/schemas/next/bridging/agentRequest.schema.json](/schemas/next/bridging/agentRequest.schema.json)
 
 If the FDC3 API call underlying the request message includes a target (typically defined by an `app` argument, in the form of an AppIdentifier object) it is the responsibility of the Desktop Agent to copy that argument into the `meta.destination` field of the message and to ensure that it includes a `meta.destination.desktopAgent` value. If the target is provided in the FDC3 API call, but without a `meta.destination.desktopAgent` value, the Desktop Agent should assume that the call relates to a local application and does not need to send it to the bridge.
 
 Requests without a `meta.destination` field will be forwarded to all other agents by the bridge, which will also handle the collation of responses which quote the `meta.requestUuid`.
 
+##### Request Messages Forwarded by the Bridge
+
+Request messages forwarded by the Bridge onto other Desktop Agents use the same format as incoming requests from Desktop Agents, with the exception that the `desktopAgent` properties of the `meta.source` field MUST be provided, and should be overwritten by the Bridge (based on the connection that the message was received from) to prevent spoofing of request message origins.
+
+**Schema**: [https://fdc3.finos.org/schemas/next/bridging/bridgeRequest.schema.json](/schemas/next/bridging/bridgeRequest.schema.json)
+
 #### Response Messages
 
-Response messages will be differentiated from requests by the presence of a `meta.responseUuid` field and MUST quote the `meta.requestUuid` that they are responding to.
+Response messages from a Desktop Agent back to the Bridge use a similar format that is differentiated from requests by the presence of a `meta.responseUuid` field. They MUST also quote the `meta.requestUuid` that they are responding to.
 
 ```typescript
 {
-    /** FDC3 function name the original request related to, e.g. "findIntent"*/
+    /** Identifies the type of the message and it is typically set to the
+     * FDC3 function name that the message relates to, e.g. 'findIntent', 
+     * with 'Response' appended.*/
     type:  string,
     /** Response body, containing the actual response data. */
     payload: {
@@ -552,21 +562,83 @@ Response messages will be differentiated from requests by the presence of a `met
         }
     },
     meta: {
-        /** requestUuid from the original request being responded to*/
+        /** UUID for the request this message is responding to.*/
         requestUuid: string,
-        /** Unique UUID for this response */
+        /** UUID for this specific response message. */
         responseUuid:  string,
         /** Timestamp at which request was generated */
         timestamp:  Date,
+        /** AppIdentifiers or DesktopAgentIdentifiers for the source
+         *  that generated the response to the request. */
+        source?: (AppIdentifier | DesktopAgentIdentifier),
+    }
+}
+```
+
+**Schema**: [https://fdc3.finos.org/schemas/next/bridging/agentResponse.schema.json](/schemas/next/bridging/agentResponse.schema.json)
+
+Response messages do not include a `meta.destination` as the routing of responses is handled by the Bridge via the `meta.requestUuid` field.
+
+##### Response Messages Collated and Forwarded by the Bridge
+
+Responses from individual Desktop Agents are collated by the Bridge and are forwarded on to the the Desktop Agent that initiated the interaction. The format used is very similar to that used for responses by the Desktop Agents, with the exception of the source information in the `meta` field. Specifically, the `meta.source` field is replaced by two arrays, `meta.sources` and `meta.errorSources`, which provide details on the Desktop agents that responded normally or responded with errors. The detail of any errors returned (in the `payload.error` field of a Desktop Agent's response) is collected up into a `meta.errorDetails` field. Moving the error details from the `payload` to the `meta` field enables the return of a valid response to the originating Desktop Agent in cases where some agents produced valid responses, and others produced errors.
+
+Hence, response messages from the Bridge returned to agents use the following format:
+
+```typescript
+{
+    /** Identifies the type of the message and it is typically set to the
+     * FDC3 function name that the message relates to, e.g. 'findIntent', 
+     * with 'Response' appended.*/
+    type:  string,
+    /** Response body, containing the actual response data. */
+    payload: {
+        /** Standardized error strings from an appropriate FDC3 API Error 
+         *  enumeration. */
+        error?: string,
+        /** Response to `open` */
+        appIdentifier?: AppIdentifier,
+        /** Response to `findInstances` */
+        appIdentifiers?: Array<AppIdentifier>,
+        /** Response to `getAppMetadata` */
+        appMetadata?: AppMetadata,
+        /** Response to `findIntent`*/
+        appIntent?:  AppIntent,
+        /** Response to `findIntentsByContext`*/
+        appIntents?:  AppIntent[],
+        /** Response to `raiseIntent` functions, returned on delivery of the
+         * intent and context to the target app.
+         *  Note `getResult()` function should not / can not be included in JSON. */
+        intentResolution?: IntentResolution,
+        /** Secondary response to `raiseIntent`, sent when the `IntentHandler` 
+         *  has returned.
+         *  Note:
+         *  - return an empty payload object if the `IntentHandler` returned void. 
+         *  - `Channel` functions (`broadcast`, `getCurrentContext`, 
+         *    `addContextListener` do not need to be included in JSON).*/
+        intentResult?: {
+            context?: Context, 
+            channel?: Channel
+        }
+    },
+    meta: {
+        /** UUID for the request this message is responding to.*/
+        requestUuid: string,
+        /** Unique UUID for this collated response (generated by the bridge). */
+        responseUuid:  string,
+        /** Timestamp at which the collated response was generated */
+        timestamp:  Date,
         /** Array of AppIdentifiers or DesktopAgentIdentifiers for the sources
-         *  that generated responses to the request. Will contain a single value 
-         *  for individual responses and multiple values for responses that were 
-         *  collated by the bridge. May be omitted if all sources returned an 
-         *  error. */
+         * that generated responses to the request. Will contain a single value
+         * for individual responses and multiple values for responses that were
+         * collated by the bridge. May be omitted if all sources errored. MUST
+         * include the `desktopAgent` field when returned by the bridge. */
         sources?: (AppIdentifier | DesktopAgentIdentifier)[],
-        /** Array of AppIdentifiers or DesktopAgentIdentifiers for responses that 
-         * were not returned to the bridge before the timeout or because an error 
-         * occurred. May be omitted if all sources responded. */
+        /** Array of AppIdentifiers or DesktopAgentIdentifiers for responses
+         * that were not returned to the bridge before the timeout or because
+         * an error occurred. May be omitted if all sources responded without
+         * errors. MUST include the `desktopAgent` field when returned by the
+         * bridge. */
         errorSources?: (AppIdentifier | DesktopAgentIdentifier)[],
         /** Array of error message strings for responses that were not returned
          * to the bridge before the timeout or because an error occurred. 
@@ -578,8 +650,6 @@ Response messages will be differentiated from requests by the presence of a `met
 ```
 
 **Schema**: [https://fdc3.finos.org/schemas/next/bridging/bridgeResponse.schema.json](/schemas/next/bridging/bridgeResponse.schema.json)
-
-Response messages do not include a `meta.destination` as the routing of responses is handled by the bridge via the `meta.requestUuid` field.
 
 ### Identifying Individual Messages
 
@@ -838,20 +908,20 @@ However, `PrivateChannel` instances allow the registration of additional event h
 
 #### Message Schemas and generated sources
 
-JSONSchema definitions are provided for all Desktop Agent Bridging message exchanges (see links in each reference page), which may be used to validate the correct generation of messages to or from a bridge.
+JSONSchema definitions are provided for all Desktop Agent Bridging message exchanges (see links in each reference page), which may be used to validate the correct generation of messages to or from a bridge (a separate schema is provided for the agent and bridge versions of each message).
 
 The JSONSchema definitions are also used to generate TypeScript interfaces for the messages to aid in implementation of a Desktop Agent Bridge or Client library. These may be imported from the FDC3 npm module:
 
 ```typescript
 import { BridgingTypes } from "@finos/fdc3";
-const aMessage: BridgingTypes.BroadcastRequest
+const aMessage: BridgingTypes.BroadcastAgentRequest
 ```
 
 or
 
 ```typescript
-import { BroadcastRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
-const aMessage: BroadcastRequest
+import { BroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+const aMessage: BroadcastAgentRequest
 ```
 
-Sources may also be generated from the JSONSchema source for other languages.
+Sources may also be generated from the JSONSchema files for other languages.

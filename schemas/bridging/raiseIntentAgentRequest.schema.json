@@ -1,17 +1,23 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/findIntentRequest.schema.json",
-  "title": "findIntentRequest",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/raiseIntentAgentRequest.schema.json",
+  "title": "raiseIntent Agent Request",
   "type": "object",
   "allOf": [
     {
-      "$ref": "bridgeRequest.schema.json"
+      "$ref": "agentRequest.schema.json"
     },
     {
+      "$ref": "#/$defs/RaiseIntentRequestBase"
+    }
+  ],
+  "$defs": {
+    "RaiseIntentRequestBase": {
       "type": "object",
+      "description": "A request to raise an intent.",
       "properties": {
         "type": {
-          "const": "findIntentRequest"
+          "const": "raiseIntentRequest"
         },
         "payload": {
           "type": "object",
@@ -21,23 +27,30 @@
             },
             "context": {
               "$ref": "../context/context.schema.json"
+            },
+            "app": {
+              "$ref": "../api/appIdentifier.schema.json"
             }
           },
-          "required": ["intent", "context"],
+          "required": ["intent", "context", "app"],
           "additionalProperties": false
         },
         "meta": {
           "properties": {
             "requestUuid": true,
             "timestamp": true,
+            "destination": {
+              "$ref": "../api/appIdentifier.schema.json"
+            },
             "source": {
               "$ref": "../api/appIdentifier.schema.json"
             }
           },
-          "additionalProperties": false
+          "unevaluatedProperties": false,
+          "required": ["requestUuid","timestamp","destination","source"] 
         }
       },
       "additionalProperties": false
     }
-  ]
+  }
 }

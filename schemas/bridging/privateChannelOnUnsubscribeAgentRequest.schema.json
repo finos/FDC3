@@ -1,32 +1,41 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerAdded.schema.json",
-  "title": "PrivateChannel.eventListenerAdded",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/privateChannelOnUnsubscribeAgentRequest.schema.json",
+  "title": "privateChannelOnUnsubscribe Agent Request",
   "type": "object",
   "allOf": [
     {
-      "$ref": "bridgeRequest.schema.json"
+      "$ref": "agentRequest.schema.json"
     },
     {
+      "$ref": "#/$defs/PrivateChannelOnUnsubscribeRequestBase"
+    }
+  ],
+  "$defs": {
+    "PrivateChannelOnUnsubscribeRequestBase": {
       "type": "object",
+      "description": "A request to forward on an Unsubscribe event, relating to a PrivateChannel",
       "properties": {
         "type": {
-          "const": "PrivateChannel.eventListenerAdded"
+          "const": "PrivateChannel.onUnsubscribe"
         },
         "payload": {
           "type": "object",
+          "title": "privateChannel onUnsubscribe request payload",
           "properties": {
             "channel": {
               "type": "string"
             },
-            "context": {
+            "contextType": {
               "type": "string"
             }
           },
           "additionalProperties": false,
-          "required": ["channel", "context"]
+          "required": ["channel", "contextType"]
         },
         "meta": {
+          "type": "object",
+          "title": "privateChannel onUnsubscribe request metadata",
           "properties": {
             "requestUuid": true,
             "timestamp": true,
@@ -37,9 +46,9 @@
               "$ref": "../api/appIdentifier.schema.json"
             }
           },
-          "additionalProperties": false
+          "unevaluatedProperties": false
         }
       }
     }
-  ]
+  }
 }

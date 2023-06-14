@@ -37,9 +37,10 @@ sequenceDiagram
 
 ## Request format
 
-### Schema
+### Request message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/getAppMetadataRequest.schema.json](/schemas/next/bridging/getAppMetadataRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataAgentRequest.schema.json](/schemas/next/bridging/getAppMetadataAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataBridgeRequest.schema.json](/schemas/next/bridging/getAppMetadataBridgeRequest.schema.json)
 
 ### Example
 
@@ -90,9 +91,10 @@ which is repeated on to the target agent as:
 
 ## Response format
 
-### Schema
+### Response message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/getAppMetadataResponse.schema.json](/schemas/next/bridging/getAppMetadataResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataAgentResponse.schema.json](/schemas/next/bridging/getAppMetadataAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataBridgeResponse.schema.json](/schemas/next/bridging/getAppMetadataBridgeResponse.schema.json)
 
 ### Example
 

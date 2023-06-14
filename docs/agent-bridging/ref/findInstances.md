@@ -38,9 +38,10 @@ sequenceDiagram
 
 ## Request format
 
-### Schema
+### Request message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/findInstancesRequest.schema.json](/schemas/next/bridging/findInstancesRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findInstancesAgentRequest.schema.json](/schemas/next/bridging/findInstancesAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findInstancesBridgeRequest.schema.json](/schemas/next/bridging/findInstancesBridgeRequest.schema.json)
 
 ### Example
 
@@ -117,9 +118,10 @@ The Desktop Agent Bridge should only forward the request to the requested Deskto
 
 ## Response format
 
-### Schema
+### Response message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/findInstancesResponse.schema.json](/schemas/next/bridging/findInstancesResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findInstancesAgentResponse.schema.json](/schemas/next/bridging/findInstancesAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findInstancesBridgeResponse.schema.json](/schemas/next/bridging/findInstancesBridgeResponse.schema.json)
 
 ### Example
 

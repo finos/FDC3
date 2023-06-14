@@ -65,9 +65,10 @@ sequenceDiagram
 
 ## Request format
 
-### Schema
+### Request message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/raiseIntentRequest.schema.json](/schemas/next/bridging/raiseIntentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/raiseIntentAgentRequest.schema.json](/schemas/next/bridging/raiseIntentAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/raiseIntentBridgeRequest.schema.json](/schemas/next/bridging/raiseIntentBridgeRequest.schema.json)
 
 ### Example
 
@@ -134,10 +135,12 @@ The bridge fills in the `source.desktopAgent` field and forwards the request to 
 
 ## Response format
 
-### Schemas
+### Response message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/raiseIntentResponse.schema.json](/schemas/next/bridging/raiseIntentResponse.schema.json)
-[https://fdc3.finos.org/schemas/next/bridging/raiseIntentResultResponse.schema.json](/schemas/next/bridging/raiseIntentResultResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/raiseIntentAgentResponse.schema.json](/schemas/next/bridging/raiseIntentAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/raiseIntentResultAgentResponse.schema.json](/schemas/next/bridging/raiseIntentResultAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/raiseIntentBridgeResponse.schema.json](/schemas/next/bridging/raiseIntentBridgeResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/raiseIntentResultBridgeResponse.schema.json](/schemas/next/bridging/raiseIntentResultBridgeResponse.schema.json)
 
 ### Example
 

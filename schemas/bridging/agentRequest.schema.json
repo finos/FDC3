@@ -1,9 +1,9 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/bridgeRequest.schema.json",
-  "title": "Bridge Request Message",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/agentRequest.schema.json",
+  "title": "Agent Request Message",
   "type": "object",
-  "description": "A request message forwarded from the Bridge onto a Desktop Agent connected to it.",
+  "description": "A request message from a Desktop Agent to the Bridge.",
   "properties": {
     "type": {
       "title": "Message type",
@@ -16,15 +16,15 @@
       "description": "The message payload typically contains the arguments to FDC3 API functions."
     },
     "meta": {
-      "$ref": "#/$defs/BridgeRequestMeta"
+      "$ref": "#/$defs/AgentRequestMeta"
     }
   },
   "required": ["type", "payload", "meta"],
   "additionalProperties": false,
   "$defs": {
-    "BridgeRequestMeta": {
-      "title": "Bridge Request Metadata",
-      "description": "Metadata required in a request message forwarded on by the Bridge",
+    "AgentRequestMeta": {
+      "title": "Agent Request Metadata",
+      "description": "Metadata for a request message sent by Desktop Agents to the Bridge.",
       "type": "object",
       "properties": {
         "requestUuid": {
@@ -39,7 +39,14 @@
         "source": {
           "title": "Source identifier",
           "description": "Field that represents the source application that the request was received from, or the source Desktop Agent if it issued the request itself.",
-          "$ref": "bridgeParticipantIdentifier.schema.json"
+          "oneOf": [
+            {
+              "$ref": "../api/appIdentifier.schema.json"
+            },
+            {
+              "$ref": "../api/desktopAgentIdentifier.schema.json"
+            }
+          ]
         },
         "destination": {
           "title": "Destination identifier",
@@ -47,7 +54,7 @@
           "$ref": "bridgeParticipantIdentifier.schema.json"
         }
       },
-      "required": ["requestUuid", "timestamp", "source"],
+      "required": ["requestUuid", "timestamp"],
       "additionalProperties": false
     }
   }

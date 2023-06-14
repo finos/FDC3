@@ -38,7 +38,7 @@ while (dirIndex < inputs.length) {
 // Normalise path to local quicktype executable.
 const quicktypeExec = ['.', 'node_modules', '.bin', 'quicktype'].join(path.sep);
 
-const command = `${quicktypeExec} -s schema -o ${outputFile} ${sources}`;
+const command = `${quicktypeExec} --no-combine-classes -s schema -o ${outputFile} ${sources}`;
 console.log('command to run: ' + command);
 
 exec(command, function(error, stdout, stderr) {

@@ -33,11 +33,12 @@ sequenceDiagram
     DAB ->>+ DB: PrivateChannel.onUnsubscribe
 ```
 
-## Request format
+### Request message schemas
 
 ### Schema
 
-[https://fdc3.finos.org/schemas/next/bridging/privateChannelOnUnsubscribe.schema.json](/schemas/next/bridging/privateChannelOnUnsubscribe.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelOnUnsubscribeAgentRequest.schema.json](/schemas/next/bridging/privateChannelOnUnsubscribeAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelOnUnsubscribeBridgeRequest.schema.json](/schemas/next/bridging/privateChannelOnUnsubscribeBridgeRequest.schema.json)
 
 ### Example
 

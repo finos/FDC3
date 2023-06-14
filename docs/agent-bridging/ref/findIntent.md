@@ -34,9 +34,10 @@ sequenceDiagram
 
 ## Request format
 
-### Schema
+### Request message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/findIntentRequest.schema.json](/schemas/next/bridging/findIntentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentAgentRequest.schema.json](/schemas/next/bridging/findIntentAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentBridgeRequest.schema.json](/schemas/next/bridging/findIntentBridgeRequest.schema.json)
 
 ### Example
 
@@ -88,9 +89,10 @@ Note that the `source.desktopAgent` field has been populated with the id of the 
 
 ## Response format
 
-### Schema
+### Response message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/findIntentResponse.schema.json](/schemas/next/bridging/findIntentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentAgentResponse.schema.json](/schemas/next/bridging/findIntentAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentBridgeResponse.schema.json](/schemas/next/bridging/findIntentBridgeResponse.schema.json)
 
 ### Example
 

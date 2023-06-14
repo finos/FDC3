@@ -30,9 +30,10 @@ sequenceDiagram
 
 ## Request format
 
-### Schema
+### Request message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/privateChannelBroadcast.schema.json](/schemas/next/bridging/privateChannelBroadcast.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelBroadcastAgentRequest.schema.json](/schemas/next/bridging/privateChannelBroadcastAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelBroadcastBridgeRequest.schema.json](/schemas/next/bridging/privateChannelBroadcastBridgeRequest.schema.json)
 
 ### Example
 

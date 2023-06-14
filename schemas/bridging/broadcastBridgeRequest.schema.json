@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/broadcastBridgeRequest.schema.json",
+  "title": "broadcast Bridge Request",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "bridgeRequest.schema.json"
+    },
+    {
+      "$ref": "broadcastAgentRequest.schema.json#/$defs/BroadcastRequestBase"
+    }
+  ]
+}
