@@ -1,14 +1,20 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/raiseIntentResultResponse.schema.json",
-  "title": "raiseIntentResultResponse",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/raiseIntentResultAgentResponse.schema.json",
+  "title": "raiseIntentResult Agent Response",
   "type": "object",
   "allOf": [
     {
-      "$ref": "bridgeResponse.schema.json"
+      "$ref": "agentResponse.schema.json"
     },
     {
+      "$ref": "#/$defs/RaiseIntentResultResponseBase"
+    }
+  ],
+  "$defs": {
+    "RaiseIntentResultResponseBase": {
       "type": "object",
+      "description": "A secondary response to a request to raise an intent used to deliver the intent result",
       "properties": {
         "type": {
           "const": "raiseIntentResultResponse"
@@ -44,18 +50,9 @@
           "required": ["intentResult"],
           "additionalProperties": false
         },
-        "meta": {
-          "type": "object",
-          "properties": {
-            "sources": {
-              "type": "array",
-              "items": {
-                "$ref": "../api/appIdentifier.schema.json"
-              }
-            }
-          }
-        }
-      }
+        "meta": true
+      },
+      "additionalProperties": false
     }
-  ]
+  }
 }

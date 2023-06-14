@@ -34,9 +34,10 @@ sequenceDiagram
 
 ## Request format
 
-### Schema
+### Request message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerAdded.schema.json](/schemas/next/bridging/privateChannelEventListenerAdded.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerAddedAgentRequest.schema.json](/schemas/next/bridging/privateChannelEventListenerAddedAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerAddedBridgeRequest.schema.json](/schemas/next/bridging/privateChannelEventListenerAddedBridgeRequest.schema.json)
 
 ### Example
 

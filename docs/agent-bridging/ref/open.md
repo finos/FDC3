@@ -52,9 +52,10 @@ sequenceDiagram
 
 ## Request format
 
-### Schema
+### Request message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/openRequest.schema.json](/schemas/next/bridging/openRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/openAgentRequest.schema.json](/schemas/next/bridging/openAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/openBridgeRequest.schema.json](/schemas/next/bridging/openBridgeRequest.schema.json)
 
 ### Example
 
@@ -109,9 +110,10 @@ which is repeated on to the target agent as:
 
 ## Response format
 
-### Schema
+### Response message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/openResponse.schema.json](/schemas/next/bridging/openResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/openAgentResponse.schema.json](/schemas/next/bridging/openAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/openBridgeResponse.schema.json](/schemas/next/bridging/openBridgeResponse.schema.json)
 
 ### Example
 

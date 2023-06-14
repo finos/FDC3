@@ -38,9 +38,10 @@ sequenceDiagram
 
 ## Request format
 
-### Schema
+### Request message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextRequest.schema.json](/schemas/next/bridging/findIntentsByContextRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextAgentRequest.schema.json](/schemas/next/bridging/findIntentsByContextAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextBridgeRequest.schema.json](/schemas/next/bridging/findIntentsByContextBridgeRequest.schema.json)
 
 ### Example
 
@@ -88,9 +89,10 @@ The DAB fills in the `source.desktopAgent` field and forwards the request to the
 
 ## Response format
 
-### Schema
+### Response message schemas
 
-[https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextResponse.schema.json](/schemas/next/bridging/findIntentsByContextResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextAgentResponse.schema.json](/schemas/next/bridging/findIntentsByContextAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextBridgeResponse.schema.json](/schemas/next/bridging/findIntentsByContextBridgeResponse.schema.json)
 
 ### Example
 

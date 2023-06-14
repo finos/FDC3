@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextAgentRequest.schema.json",
+  "title": "findIntentsByContext Agent Request",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "agentRequest.schema.json"
+    },
+    {
+      "$ref": "#/$defs/FindIntentsByContextRequestBase"
+    }
+  ],
+  "$defs": {
+    "FindIntentsByContextRequestBase": {
+      "type": "object",
+      "description": "A request for details of intents and apps available to resolve them for a particular context.",
+      "properties": {
+        "type": {
+          "const": "findIntentsByContextRequest"
+        },
+        "payload": {
+          "type": "object",
+          "title": "findIntentsByContext request payload",
+          "properties": {
+            "context": {
+              "$ref": "../context/context.schema.json"
+            }
+          },
+          "required": ["context"],
+          "additionalProperties": false
+        },
+        "meta": {
+          "type": "object",
+          "title": "findIntentsByContext request metadata",
+          "properties": {
+            "requestUuid": true,
+            "timestamp": true,
+            "source": {
+              "$ref": "../api/appIdentifier.schema.json"
+            }
+          },
+          "unevaluatedProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

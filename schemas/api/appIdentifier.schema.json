@@ -18,5 +18,5 @@
     "required": [
         "appId"
     ],
-    "unevaluatedProperties": false
+    "additionalProperties": false
 }

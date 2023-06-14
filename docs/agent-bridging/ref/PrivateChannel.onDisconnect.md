@@ -30,11 +30,12 @@ sequenceDiagram
     DAB ->>+ DB: PrivateChannel.onDisconnect
 ```
 
-## Request format
+### Request message schemas
 
 ### Schema
 
-[https://fdc3.finos.org/schemas/next/bridging/privateChannelOnDisconnect.schema.json](/schemas/next/bridging/privateChannelOnDisconnect.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelOnDisconnectAgentRequest.schema.json](/schemas/next/bridging/privateChannelOnDisconnectAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelOnDisconnectBridgeRequest.schema.json](/schemas/next/bridging/privateChannelOnDisconnectBridgeRequest.schema.json)
 
 ### Example
 
