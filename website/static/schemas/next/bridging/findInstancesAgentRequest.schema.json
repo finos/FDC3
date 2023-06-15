@@ -1,32 +1,38 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/openRequest.schema.json",
-  "title": "openRequest",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/findInstancesAgentRequest.schema.json",
+  "title": "findInstances Agent Request",
   "type": "object",
   "allOf": [
     {
-      "$ref": "bridgeRequest.schema.json"
+      "$ref": "agentRequest.schema.json"
     },
     {
+      "$ref": "#/$defs/FindInstancesRequestBase"
+    }
+  ],
+  "$defs": {
+    "FindInstancesRequestBase": {
       "type": "object",
-      "properties": {
+      "description": "A request for details of instances of a particular app",
+      "properties":{
         "type": {
-          "const": "openRequest"
+          "const": "findInstancesRequest"
         },
         "payload": {
           "type": "object",
+          "title": "findInstances request payload",
           "properties": {
             "app": {
               "$ref": "../api/appIdentifier.schema.json"
-            },
-            "context": {
-              "$ref": "../context/context.schema.json"
             }
           },
           "required": ["app"],
           "additionalProperties": false
         },
-        "meta":  {
+        "meta": {
+          "type": "object",
+          "title": "findInstances request metadata",
           "properties": {
             "requestUuid": true,
             "timestamp": true,
@@ -37,10 +43,10 @@
               "$ref": "../api/appIdentifier.schema.json"
             }
           },
-          "additionalProperties": false
+          "unevaluatedProperties": false
         }
       },
       "additionalProperties": false
     }
-  ]
+  }
 }

@@ -1,27 +1,20 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/findIntentResponse.schema.json",
-  "title": "findIntentResponse",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/getAppMetadataBridgeResponse.schema.json",
+  "title": "getAppMetadata Bridge Response",
+  "type": "object",
   "allOf": [
     {
       "$ref": "bridgeResponse.schema.json"
     },
     {
+      "$ref": "getAppMetadataAgentResponse.schema.json#/$defs/GetAppMetadataResponseBase"
+    },
+    {
       "type": "object",
       "properties": {
-        "type": {
-          "const": "findIntentResponse"
-        },
-        "payload": {
-          "type": "object",
-          "properties": {
-            "appIntent": {
-              "$ref": "../api/appIntent.schema.json"
-            }
-          },
-          "required": ["appIntent"],
-          "additionalProperties": false
-        },
+        "type": true,
+        "payload": true,
         "meta": {
           "type": "object",
           "properties": {

@@ -12,5 +12,5 @@
     "required": [
         "desktopAgent"
     ],
-    "additionalProperties": false
+    "unevaluatedProperties": false
 }

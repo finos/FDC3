@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextBridgeResponse.schema.json",
+  "title": "findIntentsByContext Bridge Response",
+    "type": "object",
+  "allOf": [
+    {
+      "$ref": "bridgeResponse.schema.json"
+    },
+    {
+      "$ref": "findIntentsByContextAgentResponse.schema.json#/$defs/FindIntentsByContextResponseBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": true,
+        "payload": true,
+        "meta": {
+          "type": "object",
+          "title": "findIntentsByContext response metadata",
+          "properties": {
+            "sources": {
+              "type": "array",
+              "items": {
+                "$ref": "../api/desktopAgentIdentifier.schema.json"
+              }
+            },
+            "errorSources": {
+              "type": "array",
+              "items": {
+                "$ref": "../api/desktopAgentIdentifier.schema.json"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,20 +1,27 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerRemoved.schema.json",
-  "title": "PrivateChannel.eventListenerRemoved",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerRemovedAgentRequest.schema.json",
+  "title": "privateChannelEventListenerRemoved Agent Request",
   "type": "object",
   "allOf": [
     {
-      "$ref": "bridgeRequest.schema.json"
+      "$ref": "agentRequest.schema.json"
     },
     {
+      "$ref": "#/$defs/PrivateChannelEventListenerRemovedRequestBase"
+    }
+  ],
+  "$defs": {
+    "PrivateChannelEventListenerRemovedRequestBase": {
       "type": "object",
+      "description": "A request to forward on an EventListenerRemoved event, relating to a PrivateChannel",
       "properties": {
         "type": {
           "const": "PrivateChannel.eventListenerRemoved"
         },
         "payload": {
           "type": "object",
+          "title": "privateChannel eventListenerRemoved request payload",
           "properties": {
             "channel": {
               "type": "string"
@@ -27,6 +34,8 @@
           "required": ["channel", "listenerType"]
         },
         "meta": {
+          "type": "object",
+          "title": "privateChannel eventListenerRemoved request metadata",
           "properties": {
             "requestUuid": true,
             "timestamp": true,
@@ -37,9 +46,10 @@
               "$ref": "../api/appIdentifier.schema.json"
             }
           },
-          "additionalProperties": false
+          "unevaluatedProperties": false
         }
-      }
+      },
+      "additionalProperties": false
     }
-  ]
+  }
 }

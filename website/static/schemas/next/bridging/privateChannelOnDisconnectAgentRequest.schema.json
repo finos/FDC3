@@ -1,20 +1,27 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/privateChannelOnDisconnect.schema.json",
-  "title": "PrivateChannel.onDisconnect",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/privateChannelOnDisconnectAgentRequest.schema.json",
+  "title": "privateChannelOnDisconnect Agent Request",
   "type": "object",
   "allOf": [
     {
-      "$ref": "bridgeRequest.schema.json"
+      "$ref": "agentRequest.schema.json"
     },
     {
+      "$ref": "#/$defs/PrivateChannelOnDisconnectRequestBase"
+    }
+  ],
+  "$defs": {
+    "PrivateChannelOnDisconnectRequestBase": {
       "type": "object",
+      "description": "A request to forward on a Disconnect event, relating to a PrivateChannel",
       "properties": {
         "type": {
           "const": "PrivateChannel.onDisconnect"
         },
         "payload": {
           "type": "object",
+          "title": "privateChannel onDisconnect request payload",
           "properties": {
             "channel": {
               "type": "string"
@@ -24,6 +31,8 @@
           "required": ["channel"]
         },
         "meta": {
+          "type": "object",
+          "title": "privateChannel onDisconnect request metadata",
           "properties": {
             "requestUuid": true,
             "timestamp": true,
@@ -34,9 +43,10 @@
               "$ref": "../api/appIdentifier.schema.json"
             }
           },
-          "additionalProperties": false
+          "unevaluatedProperties": false
         }
-      }
+      },
+      "additionalProperties": false
     }
-  ]
+  }
 }
