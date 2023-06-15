@@ -1,19 +1,26 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/raiseIntentRequest.schema.json",
-  "title": "raiseIntentRequest",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/findIntentAgentRequest.schema.json",
+  "title": "findIntents Agent Request",
   "type": "object",
   "allOf": [
     {
-      "$ref": "bridgeRequest.schema.json"
+      "$ref": "agentRequest.schema.json"
     },
     {
+      "$ref": "#/$defs/FindIntentRequestBase"
+    }
+  ],
+  "$defs": {
+    "FindIntentRequestBase": {
       "type": "object",
+      "description": "A request for details of apps available to resolve a particular intent and context pair.",
       "properties": {
         "type": {
-          "const": "raiseIntentRequest"
+          "const": "findIntentRequest"
         },
         "payload": {
+          "title": "findIntent request payload",
           "type": "object",
           "properties": {
             "intent": {
@@ -21,30 +28,25 @@
             },
             "context": {
               "$ref": "../context/context.schema.json"
-            },
-            "app": {
-              "$ref": "../api/appIdentifier.schema.json"
             }
           },
-          "required": ["intent", "context", "app"],
+          "required": ["intent", "context"],
           "additionalProperties": false
         },
         "meta": {
+          "type": "object",
+          "title" : "findIntent request metadata",
           "properties": {
             "requestUuid": true,
             "timestamp": true,
-            "destination": {
-              "$ref": "../api/appIdentifier.schema.json"
-            },
             "source": {
               "$ref": "../api/appIdentifier.schema.json"
             }
           },
-          "additionalProperties": false,
-          "required": ["requestUuid","timestamp","destination","source"] 
+          "unevaluatedProperties": false
         }
       },
       "additionalProperties": false
     }
-  ]
+  }
 }

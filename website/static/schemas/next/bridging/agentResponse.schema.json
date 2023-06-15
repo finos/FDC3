@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/agentResponse.schema.json",
+  "title": "Agent Response Message",
+  "type": "object",
+  "description": "A response message from a Desktop Agent to the Bridge.",
+  "properties": {
+    "type": {
+      "title": "Response Message Type",
+      "type": "string",
+      "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Response' appended."
+    },
+    "payload": {
+      "title": "Response Message Payload",
+      "type": "object",
+      "description": "The message payload typically contains return values for FDC3 API functions."
+    },
+    "meta": {
+      "$ref": "#/$defs/AgentResponseMeta"
+    }
+  },
+  "additionalProperties": false,
+  "required": ["type", "payload", "meta"],
+  "$defs": {
+    "AgentResponseMeta": {
+      "title": "Agent Response Metadata",
+      "description": "Metadata for a response messages sent by a Desktop Agent to the Bridge",
+      "type": "object",
+      "properties": {
+        "requestUuid": {
+          "type": "string",
+          "description": "UUID for the request this message is responding to."
+        },
+        "responseUuid": {
+          "type": "string",
+          "description": "UUID for this specific response message."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp at which the response was generated"
+        },
+        "source": {
+          "title": "Response Source identifier",
+          "description": "Field that represents the source application instance that the response was produced by, or the Desktop Agent if it produced the response without an application.",
+          "oneOf": [
+            {
+              "$ref": "../api/appIdentifier.schema.json"
+            },
+            {
+              "$ref": "../api/desktopAgentIdentifier.schema.json"
+            }
+          ]
+        }
+      },
+      "required": ["requestUuid", "responseUuid", "timestamp", "source"],
+      "additionalProperties": false
+    }
+  }
+}

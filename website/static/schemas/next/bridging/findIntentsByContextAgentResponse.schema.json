@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextAgentResponse.schema.json",
+  "title": "findIntentsByContext Agent Response",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "agentResponse.schema.json"
+    },
+    {
+      "$ref": "#/$defs/FindIntentsByContextResponseBase"
+    }
+  ],
+  "$defs": {
+    "FindIntentsByContextResponseBase": {
+      "type": "object",
+      "description": "A response to a findIntentsByContext request.",
+      "properties": {
+        "type": {
+          "const": "findIntentsByContextResponse"
+        },
+        "payload": {
+          "type": "object",
+          "title": "findIntentsByContext response payload",
+          "properties": {
+            "appIntents": {
+              "type": "array",
+              "items": {
+                "$ref": "../api/appIntent.schema.json"
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false,
+          "required": ["appIntents"]
+        },
+        "meta": true
+      },
+      "additionalProperties": false
+    }
+  }
+}

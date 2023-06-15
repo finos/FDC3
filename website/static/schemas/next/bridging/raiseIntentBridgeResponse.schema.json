@@ -1,31 +1,20 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/findInstancesResponse.schema.json",
-  "title": "findInstancesResponse",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/raiseIntentBridgeResponse.schema.json",
+  "title": "raiseIntent Bridge Response",
   "type": "object",
   "allOf": [
     {
       "$ref": "bridgeResponse.schema.json"
     },
     {
+      "$ref": "raiseIntentAgentResponse.schema.json#/$defs/RaiseIntentResponseBase"
+    },
+    {
       "type": "object",
       "properties": {
-        "type": {
-          "const": "findInstancesResponse"
-        },
-        "payload": {
-          "type": "object",
-          "properties": {
-            "appIdentifiers": {
-              "type": "array",
-              "items": {
-                "$ref": "../api/appMetadata.schema.json"
-              }
-            }
-          },
-          "required": ["appIdentifiers"],
-          "additionalProperties": false
-        },
+        "type": true,
+        "payload": true,
         "meta": {
           "type": "object",
           "properties": {
