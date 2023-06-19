@@ -138,7 +138,7 @@ It may be as simple as adding an optional `$version` property to types, but it c
 
 ### Identifiers
 
-Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifer is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.
+Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifier is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.
 
 All standard identifier names are reserved names. Applications may use their own identifiers ad hoc. For example:
 ```json

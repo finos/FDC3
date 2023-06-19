@@ -81,7 +81,11 @@ The next section contains more information on the workflow followed for Pull Req
 
 - The Maintainers will apply the proper labels for the issue. This may include an indication of the subject area or type (e.g. `deprecation`).
 
-**4.3.	Reviewing/Discussion.**
+**4.3.	Unit Test Policy**
+
+- Any change to the FDC3 specification typescript codebase must be supoorted by accompanying unit tests.
+
+**4.4.	Reviewing/Discussion.**
 
 - All PRs will be reviewed by at least one of the FDC3 Maintainers and any appointed Editors. PRs are also open to review by FDC3 Participants.
 
@@ -97,9 +101,9 @@ The next section contains more information on the workflow followed for Pull Req
 
 - When a review is approved, the reviewer should add LGTM as a comment.
 
-**4.4.	Responsive.** Pull request owner should try to be responsive to comments by answering questions or changing text. Once all comments have been addressed, the pull request is ready to be merged.
+**4.5.	Responsive.** Pull request owner should try to be responsive to comments by answering questions or changing text. Once all comments have been addressed, the pull request is ready to be merged.
 
-**4.5.	Merge or Close.**
+**4.6.	Merge or Close.**
 
 - A pull request should stay open until a Maintainer has marked the pull request as approved.
 
