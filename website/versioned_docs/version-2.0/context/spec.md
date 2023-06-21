@@ -70,7 +70,7 @@ This Standard defines a number of conventions for the fields of context types th
 
 An `id` field with type `object` is defined in the base [fdc3.context](ref/Context) type, from which all other context objects are derived, and SHOULD be used to encapsulate identifiers. Specific context types may define subfields for specific identifiers as needed.
 
-Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifer is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.
+Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifier is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.
 
 All standard identifier names are reserved names. Applications may use their own identifiers ad hoc. For example:
 
