@@ -9,7 +9,18 @@ import { DisplayMetadata } from './DisplayMetadata';
 import { Listener } from './Listener';
 
 /**
- * Object representing a context channel.
+ * Represents a context channel that applications can use to send and receive
+ * context data.
+ *
+ * Please note that There are differences in behavior when you interact with a
+ * User channel via the `DesktopAgent` interface and the `Channel` interface.
+ * Specifically, when 'joining' a User channel or adding a context listener
+ * when already joined to a channel via the `DesktopAgent` interface, existing
+ * context (matching the type of the context listener) on the channel is
+ * received by the context listener immediately. Whereas, when a context
+ * listener is added via the Channel interface, context is not received
+ * automatically, but may be retrieved manually via the `getCurrentContext()`
+ * function.
  */
 export interface Channel {
   /**
@@ -37,6 +48,8 @@ export interface Channel {
    * Channel implementations should ensure that context messages broadcast by an application on a channel should not be delivered back to that same application if they are joined to the channel.
    *
    * If you are working with complex context types composed of other simpler types (as recommended by the FDC3 Context Data specification) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.
+   *
+   * If an application attempts to broadcast an invalid context argument the Promise returned by this function should reject with the `ChannelError.MalformedContext` error.
    */
   broadcast(context: Context): Promise<void>;
 

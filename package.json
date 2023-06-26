@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -15,8 +15,7 @@
   "typings": "dist/index.d.ts",
   "module": "dist/fdc3.esm.js",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "start": "tsdx watch",
