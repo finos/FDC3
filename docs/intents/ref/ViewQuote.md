@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `ViewQuote`
 
-Display pricing for an instrumen.
+Display pricing for an [Instrument](../../context/ref/Instrument).
 
 ## Intent Name
 
@@ -18,8 +18,7 @@ Display pricing for an instrumen.
 
 ## Possible Contexts
 
-* [Instrument](../../context/ref/Instrument)
-
+- [Instrument](../../context/ref/Instrument)
 
 ## Example
 
@@ -38,8 +37,9 @@ fdc3.raiseIntent('ViewQuote', instrument)
 ## See Also
 
 Context
+
 - [Instrument](../../context/ref/Instrument)
 
-
 Intents
+
 - [ViewChart](ViewChart)

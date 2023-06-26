@@ -14,7 +14,7 @@ A person contact that can be engaged with through email, calling, messaging, CMS
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/contact.schema.json
+<https://fdc3.finos.org/schemas/next/contact.schema.json>
 
 ## Details
 
@@ -43,9 +43,11 @@ fdc3.broadcast(contact)
 ## See Also
 
 Other Types
+
 - [ContactList](ContactList)
 
 Intents
+
 - [StartChat](../../intents/ref/StartChat)
 - [StartCall](../../intents/ref/StartCall)
 - [ViewProfile](../../intents/ref/ViewProfile)
@@ -54,4 +56,5 @@ Intents
 - [ViewOrders](../../intents/ref/ViewOrders)
 
 FINOS Financial Objects
+
 - [Contact](https://fo.finos.org/docs/objects/contact)

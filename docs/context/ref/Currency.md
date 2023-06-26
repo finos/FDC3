@@ -7,7 +7,7 @@ hide_title: true
 
 # `Currency`
 
-A context representing an individual Currency. 
+A context representing an individual Currency.
 
 ## Type
 
@@ -15,7 +15,7 @@ A context representing an individual Currency.
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/currency.schema.json
+<https://fdc3.finos.org/schemas/next/currency.schema.json>
 
 ## Details
 

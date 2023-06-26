@@ -5,7 +5,13 @@ original_id: appd-spec
 ---
 ## API
 
-View the [full specification](/schemas/1.0/app-directory) in [OpenAPI v3.0](https://www.openapis.org/) format (generated with [ReDoc](https://rebilly.github.io/ReDoc/)).
+View the [full specification][1] in [OpenAPI v3.0][2] format (generated with [ReDoc][3]),
+or explore with the [Swagger Editor][4].
+
+[1]: pathname:///schemas/1.0/app-directory.html
+[2]: https://www.openapis.org/
+[3]: https://github.com/Redocly/redoc/
+[4]: https://editor.swagger.io/?url=https://raw.githubusercontent.com/finos/FDC3/v1.0/src/app-directory/specification/appd.yaml
 
 ## Endpoints
 
