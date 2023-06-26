@@ -434,7 +434,11 @@ components:
           type: array
           description: >-
             An optional set of name value pairs that can be used to deliver
-            custom data from an App Directory to a launcher.
+            custom data from an App Directory to a launcher. Deprecated due to a 
+            lack of a standard means of retrieval via the Desktop Agent API. To 
+            be replaced in a future version with an `applicationConfig` element 
+            and standard API to retrieve it. See issue 
+            [#1006](https://github.com/finos/FDC3/issues/1006) for details.
           items:
             $ref: '#/components/schemas/NameValuePair'
         hostManifests:
@@ -642,7 +646,7 @@ components:
           type: object
           description: >-
             Custom configuration for the intent that may be required for a
-            particular desktop agent.
+            particular desktop agent. Deprecated due to a lack of defined use cases.
     Interop:
       type: object
       description: |
@@ -773,7 +777,7 @@ components:
           type: object
           description: >-
             Custom configuration for the intent that may be required for a
-            particular desktop agent.
+            particular desktop agent. Deprecated due to a lack of defined use cases.
     ApplicationV1:
       description: >
         (Deprecated v1 API version) Defines an application retrieved from an FDC3 App Directory, which can
