@@ -61,6 +61,15 @@
             "link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
           }
         ]
+      },
+      {
+        "src": "/img/community/certified-2.0.png",
+        "items": [
+          {
+            "text": "Finsemble Version 8.9.0-beta.2 Certified Conformant With FDC3 2.0 Specification on 9th June 2023",
+            "link": "https://www.finos.org/blog/fdc3-news-2.0-conformance-a-merger"
+          }
+        ]
       }
     ],
     "description": "<p>interop.io was formed in June 2023 through the merger of Finsemble and Glue42 to create the global powerhouse driving application interoperability in capital markets and beyond. Leveraging FDC3 and workflow automation, interop.io allows clients to create Straight Through Workflows™ and benefit from unparalleled levels of business agility, a more productive workforce and better operational control.</p><p>The firm employs over 170 people including 110 full time R&D and implementation engineers located in New York, Charlottesville, London, and Sofia. For more information, visit <a href='https://interop.io' alt='interop.io website'>interop.io</a>.</p>"
@@ -127,6 +136,23 @@
           {
             "text": "Glue42 Core v2.6.1 Certified Conformant With FDC3 1.2 Specification on 13th March 2023",
             "link": "https://www.finos.org/blog/fdc3-news-1.2-agent-conformance-language-bindings"
+          }
+        ]
+      },
+       {
+        "src": "/img/community/certified-2.0.png",
+        "items": [
+          {
+            "text": "Glue42 Enterprise v3.20.0.19 / Glue FDC3 v3.2.2 Certified Conformant With FDC3 2.0 Specification on 9th June 2023",
+            "link": "https://www.finos.org/blog/fdc3-news-2.0-conformance-a-merger"
+          },
+          {
+            "text": "Glue42 Core+ v1.5.5 / Glue FDC3 v3.2.2 Certified Conformant With FDC3 2.0 Specification on 9th June 2023",
+            "link": "https://www.finos.org/blog/fdc3-news-2.0-conformance-a-merger"
+          },
+          {
+            "text": "Glue42 Core (@glue42/web-platform - v1.26.1, @glue42/web - v2.21.0, @glue42/fdc3 - v3.2.2) Certified Conformant With FDC3 2.0 Specification on 9th June 2023",
+            "link": "https://www.finos.org/blog/fdc3-news-2.0-conformance-a-merger"
           }
         ]
       }
