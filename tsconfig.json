@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "module": "esnext",
+      "lib": ["dom", "esnext"],
+      "allowSyntheticDefaultImports": true,
+      "noImplicitAny": false,
+      "target": "es5",
+      "allowJs": true,
+      "moduleResolution":"Node",
+      "esModuleInterop": true,
+      "sourceMap": true
+    },
+    "include": ["src/**/*.ts"],
+}
