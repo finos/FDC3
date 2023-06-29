@@ -17,8 +17,7 @@ const badgeTitles = {
 	"FDC3 1.2 Supported": "Indicates that this product advertises compatibility with the FDC3 1.2 Standard. ",
 	"FDC3 2.0 Supported ": "Indicates that this product advertises compatibility with the FDC3 2.0 Standard. ",
 	"FDC3 1.2 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 1.2 Conformance testing process.",
-	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process.",
-	"FDC3 2.0 Support Coming Soon": "This product is working towards attaining the FDC3 2.0 Standard.",
+	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process."
 }
 
 //alpha sort implementations

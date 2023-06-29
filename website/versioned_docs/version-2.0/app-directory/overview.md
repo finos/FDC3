@@ -97,7 +97,7 @@ The specification does not define or make mandatory any authorizations or roles 
 
 ## Application Identifiers
 
-Application Records served by an app directory are each labelled with an identifer, `appId`, which should be unique within the app directory instance and may be used to refer to or retrieve the application's record via the [app directory API](spec). This identifier may be made globally unique through a nested namespace approach and email address construction (`appId@fqdn`) where `@` followed by the app directory instance's host name is appended to it. The resulting globally unique identifier is known as a 'fully qualified application identifier'.
+Application Records served by an app directory are each labelled with an identifier, `appId`, which should be unique within the app directory instance and may be used to refer to or retrieve the application's record via the [app directory API](spec). This identifier may be made globally unique through a nested namespace approach and email address construction (`appId@fqdn`) where `@` followed by the app directory instance's host name is appended to it. The resulting globally unique identifier is known as a 'fully qualified application identifier'.
 
 Fully qualified appIds may be used to locate the appD instance hosting the application's record. See the [Service Discovery](#service-discovery) section for details.
 
