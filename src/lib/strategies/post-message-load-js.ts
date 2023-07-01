@@ -1,5 +1,5 @@
 import { AppIdentifier, DesktopAgent} from '@finos/fdc3'
-import { APIResponseMessage, AppIdentifierResolver, Options, Strategy } from '../types'
+import { APIResponseMessage, AppIdentifierResolver, DesktopAgentDetailResolver, Options, Strategy } from '../types'
 import { load } from '../loaders/load-with-import';
 
 const FDC3_API_REQUEST_MESSAGE_TYPE = 'FDC3-API-Request';
@@ -8,7 +8,7 @@ const FDC3_API_RESPONSE_MESSAGE_TYPE = 'FDC3-API-Response';
 
 export const strategy : Strategy = {
 
- supply : (url: string, resolver: AppIdentifierResolver) => {
+ supply : (url: string, resolver: AppIdentifierResolver, detailsResolver: DesktopAgentDetailResolver) => {
     function createResponseMessage(appIdentifier: AppIdentifier) : APIResponseMessage {
         return {
             type: FDC3_API_RESPONSE_MESSAGE_TYPE,
@@ -16,7 +16,8 @@ export const strategy : Strategy = {
             appIdentifier : {
                 appId: appIdentifier.appId,
                 instanceId: appIdentifier.instanceId
-            }
+            },
+            daDetails: detailsResolver(appIdentifier)
         }
     }
     window.addEventListener(
@@ -39,10 +40,6 @@ export const strategy : Strategy = {
     load : (options: Options) => {
 
         function handleOptions(da: DesktopAgent) {
-            if ((options.setWindowGlobal) && (window.fdc3 == null)) {
-                window.fdc3 = da;
-            }
-
             return da;
         }
 
