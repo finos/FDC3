@@ -1,5 +1,5 @@
 import { AppIdentifier, DesktopAgent} from '@finos/fdc3'
-import { APIResponseMessage, AppIdentifierResolver, Strategy } from '../types'
+import { APIResponseMessage, AppIdentifierResolver, Options, Strategy } from '../types'
 import { load } from '../loaders/load-with-import';
 
 const FDC3_API_REQUEST_MESSAGE_TYPE = 'FDC3-API-Request';
@@ -36,14 +36,24 @@ export const strategy : Strategy = {
         });
     },
 
-    load : (options: any) => {
+    load : (options: Options) => {
+
+        function handleOptions(da: DesktopAgent) {
+            if ((options.setWindowGlobal) && (window.fdc3 == null)) {
+                window.fdc3 = da;
+            }
+
+            return da;
+        }
 
         const out = new Promise<DesktopAgent>((resolve, reject) => {
             // setup listener for message and retrieve JS URL from it
             window.addEventListener("message", (event) => {
                 const data : APIResponseMessage = event.data ;
                 if (data.type == FDC3_API_RESPONSE_MESSAGE_TYPE) {
-                    load(resolve, data);
+                    load(data)
+                        .then(da => handleOptions(da))
+                        .then(da => resolve(da))
                 } else {
                     reject("Incorrect API Response Message");
                 }
