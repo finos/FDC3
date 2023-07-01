@@ -1,9 +1,5 @@
 import { load } from '../lib/webc3'
 
-const options = {
-
-};
-
 function createContext(i: number) {
     return {
         type: "demo.counter",
@@ -18,7 +14,7 @@ function createContext(i: number) {
  * Can be called any number of times.
  */
 async function startBroadcasting() {
-    const fdc3 = await load(options); 
+    const fdc3 = await load(); 
     for (let index = 0; index < 50; index++) {
         setTimeout(() => fdc3.broadcast(createContext(index)), index*1000);
     }

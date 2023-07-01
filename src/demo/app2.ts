@@ -1,13 +1,9 @@
 import { load } from '../lib/webc3'
 
-const options = {
-
-};
-
 /**
  * This demonstrates using the API via a promise
  */
-load(options).then(fdc3 => {
+load().then(fdc3 => {
     console.log("in promise")
     const log = document.getElementById("log");
     const msg = document.createElement("p");
