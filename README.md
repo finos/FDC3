@@ -12,10 +12,11 @@ This is a minimal proof-of-concept for FDC3 For the Web.
 
 2. Point browser at http://localhost:5000/static/da/
 
-3. This is your dummy desktop agent, which has two apps you can launch:
+3. This is your dummy desktop agent, which has three apps you can launch:
 
     - App1 Can Broadcast via FDC3.
     - App2 Listens.
+    - App3 is the use case where an app has two separate APIs and uses them for intra-app comms.
 
 4. Launch the apps, press the button, watch messages pass between them.
 

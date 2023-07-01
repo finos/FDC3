@@ -1,39 +1,48 @@
 import { AppIdentifier } from "@finos/fdc3";
 import { supply } from "../lib/webc3";
-import { AppIdentifierResolver } from "../lib/types";
+import { AppIdentifierResolver, DesktopAgentDetailResolver } from "../lib/types";
+
 
 window.addEventListener("load", () => {
     
     let currentInstance = 0;
+    let currentApiInstance = 0;
 
     type AppIdentifierAndWindow = AppIdentifier & { window: Window, url: string }
 
-    const instances : { [key: string] : AppIdentifierAndWindow } = {}
+    const instances : AppIdentifierAndWindow[] = []
 
     function launch(url: string, appId: string) {
         const w : Window = window.open(url, "_blank")!!;
         const instance = currentInstance++;
         w.name = "App"+instance;
-        instances[w.name] = {
+        instances.push({
             appId,
             instanceId: ""+instance,
             window: w,
             url: w.location.href
-        }  
+        })
     }
 
     // for a given window, allows us to determine which app it is (if any)
-    const appIdentifierResolver : AppIdentifierResolver = o => instances[o.name];
+    const appIdentifierResolver : AppIdentifierResolver = o => instances.find(i => i.window ==o);
+    const daDetailResolver : DesktopAgentDetailResolver = () => { 
+        return { 
+            apiId : currentApiInstance++, 
+            key: "Abc"
+        } 
+    }
 
     // set up desktop agent handler here using FDC3 Web Loader (or whatever we call it)
-    supply("/src/demo/implementation.js", appIdentifierResolver);
+    supply("/src/demo/implementation.js", appIdentifierResolver, daDetailResolver);
 
     // hook up the buttons
     document.getElementById("app1")?.addEventListener("click", () => launch("/static/app1/index.html", "1"));
     document.getElementById("app2")?.addEventListener("click", () => launch("/static/app2/index.html", "2"));
+    document.getElementById("app3")?.addEventListener("click", () => launch("/static/app3/index.html", "3"));
 
 
-    // allow apps opened by this desktop agent to broadcast to each other
+    // implementation of broadcast, desktop-agent side
     window.addEventListener(
         "message",
         (event) => {
@@ -41,11 +50,10 @@ window.addEventListener("load", () => {
           if (data.type == "Broadcast") {
             const origin = event.origin;
             const source = event.source as Window
-            console.log(`Broadcast Origin:  ${origin} Source: ${source} `);
+            console.log(`Broadcast Origin:  ${origin} Source: ${source} From ${JSON.stringify(data.from)}`);
             const appIdentifier = appIdentifierResolver(source);
-            if (appIdentifier != null) {
-                Object.values(instances)
-                    .filter(i => i.window != source)
+            if (appIdentifier != undefined) {
+                instances
                     .forEach(i => {
                         i.window.postMessage(data, "*")
                     })
