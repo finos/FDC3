@@ -7,7 +7,7 @@ This is a minimal proof-of-concept for FDC3 For the Web.
 1.  From the Command Line:
     ```
     yarn install
-    yarn vite dev
+    yarn dev
     ```
 
 2. Point browser at http://localhost:5000/static/da/
