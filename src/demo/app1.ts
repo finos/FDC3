@@ -1,4 +1,4 @@
-import { load } from '../WebC3'
+import { load } from '../lib/webc3'
 
 const options = {
 
@@ -20,11 +20,11 @@ function createContext(i: number) {
 async function startBroadcasting() {
     const fdc3 = await load(options); 
     for (let index = 0; index < 50; index++) {
-        setInterval(() => fdc3.broadcast(createContext(index)), index*1000);
+        setTimeout(() => fdc3.broadcast(createContext(index)), index*1000);
     }
 }
 
 window.addEventListener("load", () => {
     const broadcast = document.getElementById("broadcast");
-    broadcast.addEventListener("click", () => startBroadcasting());
+    broadcast?.addEventListener("click", () => startBroadcasting());
 })

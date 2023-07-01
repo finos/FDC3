@@ -1,27 +1,18 @@
 {
+  "name": "fdc3-for-the-web",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "compile": "webpack build",
-    "serve": "npx http-server . -p 3001 -c-1",
-    "start": "npm run compile && npm run serve"
-  },
-  "dependencies": {
-    "@finos/fdc3": "^2.0.3",
-    "source-map-support": "^0.5.21",
-    "stream-browserify": "^3.0.0",
-    "util": "^0.12.4",
-    "window": "^1.0.0"
+    "dev": "vite --port 5000",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "buffer": "^6.0.3",
-    "css-loader": "^6.7.2",
-    "http-server": "^14.1.1",
-    "prettier": "^2.5.1",
-    "shx": "^0.3.4",
-    "style-loader": "^3.3.1",
-    "ts-loader": "^9.2.7",
-    "typescript": "^4.6.2",
-    "webpack": "^5.69.1",
-    "webpack-cli": "^4.9.2"
+    "typescript": "^5.0.2",
+    "vite": "^4.3.9"
+  },
+  "dependencies": {
+    "@finos/fdc3": "^2.0.3"
   }
 }
