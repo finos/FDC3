@@ -31,4 +31,6 @@ class DummyDesktopAgent {
     }
 }
 
-window.fdc3 = new DummyDesktopAgent() 
+export default (id) => {
+    return new DummyDesktopAgent();
+}

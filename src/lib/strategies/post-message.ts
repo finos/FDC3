@@ -1,14 +1,10 @@
 import { AppIdentifier, DesktopAgent} from '@finos/fdc3'
-import { AppIdentifierResolver, Strategy } from '../types'
+import { APIResponseMessage, AppIdentifierResolver, Strategy } from '../types'
+import { load } from '../loaders/load-with-import';
 
 const FDC3_API_REQUEST_MESSAGE_TYPE = 'FDC3-API-Request';
 const FDC3_API_RESPONSE_MESSAGE_TYPE = 'FDC3-API-Response';
 
-type APIResponseMessage = {
-    type: string,
-    url: string,
-    appIdentifier: AppIdentifier
-}
 
 export const strategy : Strategy = {
 
@@ -47,17 +43,11 @@ export const strategy : Strategy = {
             window.addEventListener("message", (event) => {
                 const data : APIResponseMessage = event.data ;
                 if (data.type == FDC3_API_RESPONSE_MESSAGE_TYPE) {
-                    // next, load the javascript into a script
-                    const script = document.createElement('script');
-                    script.onload = function () {
-                        console.log(`FDC3 API Initialised ${JSON.stringify(data)}`);
-                        resolve(window.fdc3);
-                        document.head.removeChild(script);
-                    };
-                    script.src=data.url;
-                    document.head.appendChild(script);
+                    load(resolve, data);
+                } else {
+                    reject("Incorrect API Response Message");
                 }
-            });
+            }, {once: true});
         });
  
         const da = window.opener;
