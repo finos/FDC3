@@ -29,7 +29,7 @@ window.addEventListener("load", () => {
     const daDetailResolver : DesktopAgentDetailResolver = () => { 
         return { 
             apiId : currentApiInstance++, 
-            key: "Abc"
+            apikey: "Abc"
         } 
     }
 
