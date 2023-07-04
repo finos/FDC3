@@ -1,6 +1,6 @@
 import { AppIdentifier } from "@finos/fdc3";
-import { supply } from "../lib/webc3";
-import { AppIdentifierResolver, DesktopAgentDetailResolver } from "../lib/types";
+import { supply } from "../lib/supply";
+import { AppChecker, DesktopAgentDetailResolver } from "../lib/types";
 
 
 window.addEventListener("load", () => {
@@ -25,16 +25,19 @@ window.addEventListener("load", () => {
     }
 
     // for a given window, allows us to determine which app it is (if any)
-    const appIdentifierResolver : AppIdentifierResolver = o => instances.find(i => i.window ==o);
-    const daDetailResolver : DesktopAgentDetailResolver = () => { 
+    const appChecker : AppChecker = o => instances.find(i => i.window ==o) != undefined;
+    const daDetailResolver : DesktopAgentDetailResolver = (o) => { 
+        const appIdentifier = instances.find(i => i.window ==o)!!
         return { 
             apiId : currentApiInstance++, 
-            apikey: "Abc"
-        } 
+            apikey: "Abc",
+            appId: appIdentifier.appId,
+            instanceId: appIdentifier.instanceId!!
+        }
     }
 
     // set up desktop agent handler here using FDC3 Web Loader (or whatever we call it)
-    supply("/src/demo/implementation.js", appIdentifierResolver, daDetailResolver);
+    supply("/src/demo/implementation.js", appChecker, daDetailResolver);
 
     // hook up the buttons
     document.getElementById("app1")?.addEventListener("click", () => launch("/static/app1/index.html", "1"));
@@ -51,8 +54,7 @@ window.addEventListener("load", () => {
             const origin = event.origin;
             const source = event.source as Window
             console.log(`Broadcast Origin:  ${origin} Source: ${source} From ${JSON.stringify(data.from)}`);
-            const appIdentifier = appIdentifierResolver(source);
-            if (appIdentifier != undefined) {
+            if (appChecker(source)) {
                 instances
                     .forEach(i => {
                         i.window.postMessage(data, "*")

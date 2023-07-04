@@ -1,4 +1,4 @@
-import { load } from '../lib/webc3'
+import { load } from '../lib/load'
 
 function createContext(i: number) {
     return {

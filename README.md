@@ -22,11 +22,14 @@ This is a minimal proof-of-concept for FDC3 For the Web.
 
 ## What This Project Contains
 
- - In `\lib`:  A minimal implementation called `webc3.ts`.  This relies on the `post-message` strategy for communicating between apps and the desktop agent.  This supports two functions:
+ - In `\lib`:  A minimal implementation of web api retrieval.  This relies on the `post-message` strategy for communicating between apps and the desktop agent.  This supports two functions:
 
-   - `supply`:  Called by the desktop agent on startup, allows it to supply FDC3 APIs to apps when they ask for one.  This takes a parameter of a url of a piece of javascript that the App will load in order to initialise it's API.
+   - `supply` (in `supply.ts`):  Called by the desktop agent on startup, allows it to supply FDC3 APIs to apps when they ask for one.  This takes the following parameters:
+     - A `url` of a piece of javascript that the App will load in order to initialise it's API.
+     - A `checker`, which checks the origin window for the API request.  It should be a window that the Desktop Agent is aware of.
+     - A `detailsResolver`, which returns a map of properties to send to the API requestor that should be used to instantiate the API.
 
-   - `load`: Called (with options) by an FDC3 Aoo to retrieve the API.
+   - `load` (in `load.ts`): Called (with options) by an FDC3 Aoo to retrieve the API.  This retrieves the `url` and `details` from the desktop agent and initialises a `DesktopAgent` implementation, returning it in a promise.
 
  - In `\demo`:  A fixture for demonstrating the above, containing two apps, `app1` and `app2` and a rudimentary `dummy-desktop-agent` all of which use the `webc3.ts` library.
 
@@ -43,5 +46,7 @@ This is a minimal proof-of-concept for FDC3 For the Web.
  - Figure out options, setting global
  - Fallback strategy in case FDC3 API isn't available (currently promise never resolves)
  - Sanitisation of response from the Desktop Agent
+ - Handing of fdc3Ready
+ - Handling of Electron container injection approach
 
 
