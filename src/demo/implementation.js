@@ -4,9 +4,12 @@
  */
 class DummyDesktopAgent {
 
-    constructor(id, details) {
-        this.id = id;
+    constructor(details) {
         this.details = details;
+        this.id = {
+            appId: this.details.appId,
+            instanceId: this.details.instanceId
+        }
     }
 
     broadcast(context) {
@@ -31,11 +34,12 @@ class DummyDesktopAgent {
 
     getInfo() {
         return {
-            fdc3Version: "2.0"
+            fdc3Version: "2.0",
+            id: this.id
         }
     }
 }
 
-export default (id, details) => {
-    return new DummyDesktopAgent(id, details);
+export default (details) => {
+    return new DummyDesktopAgent(details);
 }
