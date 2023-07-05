@@ -3,34 +3,110 @@
   "$id": "https://fdc3.finos.org/schemas/next/instrument.schema.json",
   "type": "object",
   "title": "Instrument",
-  "allOf": [{ "$ref": "context.schema.json#" }],
+  "description": "A financial instrument from any asset class.\n\nAny combination of instrument identifiers can be used together to resolve ambiguity, or for a better match.\n\nNotes:\n\n- Not all applications will use the same instrument identifiers, which is why FDC3 allows for multiple to be specified. In general, the more identifiers an application can provide, the easier it will be to achieve interoperability.\n\n- The `market` map can be used to further specify the instrument and help achieve interoperability between disparate data sources. This is especially useful when using an `id` field that is not globally unique.\n\n- It is valid to include extra properties and metadata as part of the instrument payload, but the minimum requirement is for at least one instrument identifier to be provided.\n\n- Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant for tickers as used by an exchange.\nIf the identifier you want to share is not a ticker or one of the other standardized fields, define a property that makes it clear what value represents. Doing so will make interpretation easier for the developers of target applications.",
+  "allOf": [
+    {
+      "$ref": "context.schema.json#"
+    }
+  ],
   "properties": {
-    "type": { "const": "fdc3.instrument" },
+    "type": {
+      "const": "fdc3.instrument"
+    },
     "id": {
       "type": "object",
       "properties": {
-        "BBG": { "type": "string" },
-        "CUSIP": { "type": "string" },
-        "FDS_ID": { "type": "string" },
-        "FIGI": { "type": "string" },
-        "ISIN": { "type": "string" },
-        "PERMID": { "type": "string" },
-        "RIC": { "type": "string" },
-        "SEDOL": { "type": "string" },
-        "ticker": { "type": "string" }
+        "BBG": {
+          "type": "string",
+          "title": "Bloomberg security",
+          "description": "<https://www.bloomberg.com/>"
+        },
+        "CUSIP": {
+          "type": "string",
+          "title": "CUSIP",
+          "description": "<https://www.cusip.com/>"
+        },
+        "FDS_ID": {
+          "type": "string",
+          "title": "Factset Security Identifier",
+          "description": "<https://www.factset.com/>"
+        },
+        "FIGI": {
+          "type": "string",
+          "title": "Open FIGI",
+          "description": "<https://www.openfigi.com/>"
+        },
+        "ISIN": {
+          "type": "string",
+          "title": "ISIN",
+          "description": "<https://www.isin.org/>"
+        },
+        "PERMID": {
+          "type": "string",
+          "title": "Refinitiv PERMID",
+          "description": "<https://permid.org/>"
+        },
+        "RIC": {
+          "type": "string",
+          "title": "Refinitiv Identification Code",
+          "description": " <https://www.refinitiv.com/>"
+        },
+        "SEDOL": {
+          "type": "string",
+          "title": "SEDOL",
+          "description": "<https://www.lseg.com/sedol>"
+        },
+        "ticker": {
+          "type": "string",
+          "title": "Stock ticker",
+          "description": "Unstandardized stock tickers"
+        }
       }
     },
     "market": {
       "type": "object",
       "properties": {
-        "MIC": { "type": "string" },
-        "name": { "type": "string" },
-        "COUNTRY_ISOALPHA2": { "type": "string" },
-        "BBG": { "type": "string" }
+        "MIC": {
+          "type": "string",
+          "title": "Market Identifier Code",
+          "description": "<https://en.wikipedia.org/wiki/Market_Identifier_Code>"
+        },
+        "name": {
+          "type": "string",
+          "title": "Market Name",
+          "description": "Human readable market name"
+        },
+        "COUNTRY_ISOALPHA2": {
+          "type": "string",
+          "title": "Country ISO Code",
+          "description": "<https://www.iso.org/iso-3166-country-codes.html>"
+        },
+        "BBG": {
+          "type": "string",
+          "title": "Bloomberg Market Identifier",
+          "description": "<https://www.bloomberg.com/>"
+        }
       },
-      "unevaluatedProperties": { "type": "string" }
+      "unevaluatedProperties": {
+        "type": "string"
+      }
     }
-    
   },
-  "required": ["id"]
+  "required": [
+    "type","id"
+  ],
+  "examples": [
+    {
+      "type": "fdc3.instrument",
+      "name": "Microsoft",
+      "id": {
+          "ticker": "MSFT",
+          "RIC": "MSFT.OQ",
+          "ISIN": "US5949181045"
+      },
+      "market": {
+          "MIC": "XNAS"
+      }
+    }
+  ]
 }
