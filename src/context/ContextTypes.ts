@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, Chart, ChatInitSettings, Contact, ContactList, Context, Country, Currency, Email, Instrument, InstrumentList, Nothing, Order, Organization, Portfolio, Position, Product, TimeRange, Trade, Valuation } from "./file";
+//   import { Convert, Chart, ChatInitSettings, Contact, ContactList, Context, Country, Currency, Email, Instrument, InstrumentList, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, TimeRange, Trade, TradeList, Valuation } from "./file";
 //
 //   const chart = Convert.toChart(json);
 //   const chatInitSettings = Convert.toChatInitSettings(json);
@@ -14,12 +14,14 @@
 //   const instrumentList = Convert.toInstrumentList(json);
 //   const nothing = Convert.toNothing(json);
 //   const order = Convert.toOrder(json);
+//   const orderList = Convert.toOrderList(json);
 //   const organization = Convert.toOrganization(json);
 //   const portfolio = Convert.toPortfolio(json);
 //   const position = Convert.toPosition(json);
 //   const product = Convert.toProduct(json);
 //   const timeRange = Convert.toTimeRange(json);
 //   const trade = Convert.toTrade(json);
+//   const tradeList = Convert.toTradeList(json);
 //   const valuation = Convert.toValuation(json);
 //
 // These functions will throw an error if the JSON doesn't
@@ -256,7 +258,7 @@ export interface Order {
    * Optional additional details about the order, which may include a product element that is
    * an, as yet undefined but extensible, Context
    */
-  details?: OrderDetails;
+  details?: PurpleOrderDetails;
   /**
    * One or more identifiers that refer to the order in an OMS, EMS or related system.
    * Specific key names for systems are expected to be standardized in future.
@@ -274,7 +276,7 @@ export interface Order {
  * Optional additional details about the order, which may include a product element that is
  * an, as yet undefined but extensible, Context
  */
-export interface OrderDetails {
+export interface PurpleOrderDetails {
   product?: ProductObject;
   [property: string]: any;
 }
@@ -298,6 +300,56 @@ export interface ProductObject {
   name?: string;
   type: string;
   instrument?: InstrumentElement;
+  [property: string]: any;
+}
+
+/**
+ * @experimental A list of orders
+ */
+export interface OrderList {
+  orders: OrderElement[];
+  type: string;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+/**
+ * @experimental context type representing an order. To be used with OMS and EMS systems.
+ *
+ * This type currently only defines a required `id` field, which should provide a reference
+ * to the order in one or more systems, an optional human readable `name` field to be used
+ * to summarize the order and an optional `details` field that may be used to provide
+ * additional detail about the order, including a context representing a `product`, which
+ * may be extended with arbitrary properties. The `details.product` field is currently typed
+ * as a unspecified Context type, but both `details` and `details.product` are expected to
+ * be standardized in future.
+ */
+export interface OrderElement {
+  /**
+   * Optional additional details about the order, which may include a product element that is
+   * an, as yet undefined but extensible, Context
+   */
+  details?: FluffyOrderDetails;
+  /**
+   * One or more identifiers that refer to the order in an OMS, EMS or related system.
+   * Specific key names for systems are expected to be standardized in future.
+   */
+  id: { [key: string]: string };
+  /**
+   * A human-readable summary of the order.
+   */
+  name?: string;
+  type: string;
+  [property: string]: any;
+}
+
+/**
+ * Optional additional details about the order, which may include a product element that is
+ * an, as yet undefined but extensible, Context
+ */
+export interface FluffyOrderDetails {
+  product?: ProductObject;
   [property: string]: any;
 }
 
@@ -382,6 +434,41 @@ export interface TimeRange {
  * type, but `product` is expected to be standardized in future.
  */
 export interface Trade {
+  /**
+   * One or more identifiers that refer to the trade in an OMS, EMS or related system.
+   * Specific key names for systems are expected to be standardized in future.
+   */
+  id: { [key: string]: string };
+  /**
+   * A human-readable summary of the order.
+   */
+  name?: string;
+  product: ProductObject;
+  type: string;
+  [property: string]: any;
+}
+
+/**
+ * @experimental A list of trades.
+ */
+export interface TradeList {
+  trades: TradeElement[];
+  type: string;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+/**
+ * @experimental context type representing a trade. To be used with execution systems.
+ *
+ * This type currently only defines a required `id` field, which should provide a reference
+ * to the trade in one or more systems, an optional human readable `name` field to be used
+ * to summarize the trade and a required `product` field that may be used to provide
+ * additional detail about the trade, which is currently typed as a unspecified Context
+ * type, but `product` is expected to be standardized in future.
+ */
+export interface TradeElement {
   /**
    * One or more identifiers that refer to the trade in an OMS, EMS or related system.
    * Specific key names for systems are expected to be standardized in future.
@@ -507,6 +594,14 @@ export class Convert {
     return JSON.stringify(uncast(value, r('Order')), null, 2);
   }
 
+  public static toOrderList(json: string): OrderList {
+    return cast(JSON.parse(json), r('OrderList'));
+  }
+
+  public static orderListToJson(value: OrderList): string {
+    return JSON.stringify(uncast(value, r('OrderList')), null, 2);
+  }
+
   public static toOrganization(json: string): Organization {
     return cast(JSON.parse(json), r('Organization'));
   }
@@ -553,6 +648,14 @@ export class Convert {
 
   public static tradeToJson(value: Trade): string {
     return JSON.stringify(uncast(value, r('Trade')), null, 2);
+  }
+
+  public static toTradeList(json: string): TradeList {
+    return cast(JSON.parse(json), r('TradeList'));
+  }
+
+  public static tradeListToJson(value: TradeList): string {
+    return JSON.stringify(uncast(value, r('TradeList')), null, 2);
   }
 
   public static toValuation(json: string): Valuation {
@@ -955,14 +1058,14 @@ const typeMap: any = {
   ),
   Order: o(
     [
-      { json: 'details', js: 'details', typ: u(undefined, r('OrderDetails')) },
+      { json: 'details', js: 'details', typ: u(undefined, r('PurpleOrderDetails')) },
       { json: 'id', js: 'id', typ: m('') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
     ],
     'any'
   ),
-  OrderDetails: o([{ json: 'product', js: 'product', typ: u(undefined, r('ProductObject')) }], 'any'),
+  PurpleOrderDetails: o([{ json: 'product', js: 'product', typ: u(undefined, r('ProductObject')) }], 'any'),
   ProductObject: o(
     [
       { json: 'id', js: 'id', typ: m('') },
@@ -972,6 +1075,25 @@ const typeMap: any = {
     ],
     'any'
   ),
+  OrderList: o(
+    [
+      { json: 'orders', js: 'orders', typ: a(r('OrderElement')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  OrderElement: o(
+    [
+      { json: 'details', js: 'details', typ: u(undefined, r('FluffyOrderDetails')) },
+      { json: 'id', js: 'id', typ: m('') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    'any'
+  ),
+  FluffyOrderDetails: o([{ json: 'product', js: 'product', typ: u(undefined, r('ProductObject')) }], 'any'),
   Organization: o(
     [
       { json: 'id', js: 'id', typ: r('OrganizationID') },
@@ -1037,6 +1159,24 @@ const typeMap: any = {
     'any'
   ),
   Trade: o(
+    [
+      { json: 'id', js: 'id', typ: m('') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'product', js: 'product', typ: r('ProductObject') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    'any'
+  ),
+  TradeList: o(
+    [
+      { json: 'trades', js: 'trades', typ: a(r('TradeElement')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  TradeElement: o(
     [
       { json: 'id', js: 'id', typ: m('') },
       { json: 'name', js: 'name', typ: u(undefined, '') },

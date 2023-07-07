@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/orderList.schema.json",
+  "type": "object",
+  "title": "OrderList",
+  "description": "@experimental A list of orders",
+  "allOf": [{ "$ref": "context.schema.json#" }],
+  "properties": {
+    "type": { "const": "fdc3.orderList" },
+    "orders": {
+      "type": "array",
+      "items": { "$ref": "order.schema.json#" }
+    }
+  },
+  "required": ["type", "orders"]
+}
