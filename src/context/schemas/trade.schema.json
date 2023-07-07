@@ -39,7 +39,7 @@
 			"type": "fdc3.trade",
 			"name": "...",
 			"id": {
-				"myEMS": "12345",
+				"myEMS": "12345"
 			},
 			"product": {
 				"type": "fdc3.product",
@@ -49,12 +49,6 @@
 						"ticker": "MSFT"
 					}
 				}
-			}
-		},
-		{
-			"type": "fdc3.trade",
-			"id": {
-				"myEMS": "ABC123"
 			}
 		}
 	]

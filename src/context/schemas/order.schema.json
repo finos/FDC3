@@ -47,11 +47,11 @@
 			"type": "fdc3.order",
 			"name": "...",
 			"id": {
-				"myOMS": "12345",
+				"myOMS": "12345"
 			},
 			"details": {
 				"product": {
-					"type": "myFirm.product",
+					"type": "fdc3.product",
 					"instrument": {
 						"type": "fdc3.instrument",
 						"id": {
