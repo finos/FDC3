@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, Chart, ChatInitSettings, Contact, ContactList, Context, Country, Currency, Email, Instrument, InstrumentList, Nothing, Organization, Portfolio, Position, TimeRange, Valuation } from "./file";
+//   import { Convert, Chart, ChatInitSettings, Contact, ContactList, Context, Country, Currency, Email, Instrument, InstrumentList, Nothing, Order, Organization, Portfolio, Position, Product, TimeRange, Trade, Valuation } from "./file";
 //
 //   const chart = Convert.toChart(json);
 //   const chatInitSettings = Convert.toChatInitSettings(json);
@@ -13,10 +13,13 @@
 //   const instrument = Convert.toInstrument(json);
 //   const instrumentList = Convert.toInstrumentList(json);
 //   const nothing = Convert.toNothing(json);
+//   const order = Convert.toOrder(json);
 //   const organization = Convert.toOrganization(json);
 //   const portfolio = Convert.toPortfolio(json);
 //   const position = Convert.toPosition(json);
+//   const product = Convert.toProduct(json);
 //   const timeRange = Convert.toTimeRange(json);
+//   const trade = Convert.toTrade(json);
 //   const valuation = Convert.toValuation(json);
 //
 // These functions will throw an error if the JSON doesn't
@@ -237,6 +240,67 @@ export interface Nothing {
   [property: string]: any;
 }
 
+/**
+ * @experimental context type representing an order. To be used with OMS and EMS systems.
+ *
+ * This type currently only defines a required `id` field, which should provide a reference
+ * to the order in one or more systems, an optional human readable `name` field to be used
+ * to summarize the order and an optional `details` field that may be used to provide
+ * additional detail about the order, including a context representing a `product`, which
+ * may be extended with arbitrary properties. The `details.product` field is currently typed
+ * as a unspecified Context type, but both `details` and `details.product` are expected to
+ * be standardized in future.
+ */
+export interface Order {
+  /**
+   * Optional additional details about the order, which may include a product element that is
+   * an, as yet undefined but extensible, Context
+   */
+  details?: OrderDetails;
+  /**
+   * One or more identifiers that refer to the order in an OMS, EMS or related system.
+   * Specific key names for systems are expected to be standardized in future.
+   */
+  id: { [key: string]: string };
+  /**
+   * A human-readable summary of the order.
+   */
+  name?: string;
+  type: string;
+  [property: string]: any;
+}
+
+/**
+ * Optional additional details about the order, which may include a product element that is
+ * an, as yet undefined but extensible, Context
+ */
+export interface OrderDetails {
+  product?: ProductObject;
+  [property: string]: any;
+}
+
+/**
+ * @experimental context type representing a tradable product. To be used with OMS and EMS
+ * systems.
+ *
+ * This type is currently only loosely defined as an extensible context object, with an
+ * optional instrument field.
+ */
+export interface ProductObject {
+  /**
+   * One or more identifiers that refer to the product. Specific key names for systems are
+   * expected to be standardized in future.
+   */
+  id: { [key: string]: string };
+  /**
+   * A human-readable summary of the product.
+   */
+  name?: string;
+  type: string;
+  instrument?: InstrumentElement;
+  [property: string]: any;
+}
+
 export interface Organization {
   id: OrganizationID;
   type: string;
@@ -277,12 +341,58 @@ export interface Position {
   [property: string]: any;
 }
 
+/**
+ * @experimental context type representing a tradable product. To be used with OMS and EMS
+ * systems.
+ *
+ * This type is currently only loosely defined as an extensible context object, with an
+ * optional instrument field.
+ */
+export interface Product {
+  /**
+   * One or more identifiers that refer to the product. Specific key names for systems are
+   * expected to be standardized in future.
+   */
+  id: { [key: string]: string };
+  /**
+   * A human-readable summary of the product.
+   */
+  name?: string;
+  type: string;
+  instrument?: InstrumentElement;
+  [property: string]: any;
+}
+
 export interface TimeRange {
   endTime?: Date;
   startTime?: Date;
   type: string;
   id?: { [key: string]: any };
   name?: string;
+  [property: string]: any;
+}
+
+/**
+ * @experimental context type representing a trade. To be used with execution systems.
+ *
+ * This type currently only defines a required `id` field, which should provide a reference
+ * to the trade in one or more systems, an optional human readable `name` field to be used
+ * to summarize the trade and a required `product` field that may be used to provide
+ * additional detail about the trade, which is currently typed as a unspecified Context
+ * type, but `product` is expected to be standardized in future.
+ */
+export interface Trade {
+  /**
+   * One or more identifiers that refer to the trade in an OMS, EMS or related system.
+   * Specific key names for systems are expected to be standardized in future.
+   */
+  id: { [key: string]: string };
+  /**
+   * A human-readable summary of the order.
+   */
+  name?: string;
+  product: ProductObject;
+  type: string;
   [property: string]: any;
 }
 
@@ -389,6 +499,14 @@ export class Convert {
     return JSON.stringify(uncast(value, r('Nothing')), null, 2);
   }
 
+  public static toOrder(json: string): Order {
+    return cast(JSON.parse(json), r('Order'));
+  }
+
+  public static orderToJson(value: Order): string {
+    return JSON.stringify(uncast(value, r('Order')), null, 2);
+  }
+
   public static toOrganization(json: string): Organization {
     return cast(JSON.parse(json), r('Organization'));
   }
@@ -413,12 +531,28 @@ export class Convert {
     return JSON.stringify(uncast(value, r('Position')), null, 2);
   }
 
+  public static toProduct(json: string): Product {
+    return cast(JSON.parse(json), r('Product'));
+  }
+
+  public static productToJson(value: Product): string {
+    return JSON.stringify(uncast(value, r('Product')), null, 2);
+  }
+
   public static toTimeRange(json: string): TimeRange {
     return cast(JSON.parse(json), r('TimeRange'));
   }
 
   public static timeRangeToJson(value: TimeRange): string {
     return JSON.stringify(uncast(value, r('TimeRange')), null, 2);
+  }
+
+  public static toTrade(json: string): Trade {
+    return cast(JSON.parse(json), r('Trade'));
+  }
+
+  public static tradeToJson(value: Trade): string {
+    return JSON.stringify(uncast(value, r('Trade')), null, 2);
   }
 
   public static toValuation(json: string): Valuation {
@@ -819,6 +953,25 @@ const typeMap: any = {
     ],
     'any'
   ),
+  Order: o(
+    [
+      { json: 'details', js: 'details', typ: u(undefined, r('OrderDetails')) },
+      { json: 'id', js: 'id', typ: m('') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    'any'
+  ),
+  OrderDetails: o([{ json: 'product', js: 'product', typ: u(undefined, r('ProductObject')) }], 'any'),
+  ProductObject: o(
+    [
+      { json: 'id', js: 'id', typ: m('') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
+    ],
+    'any'
+  ),
   Organization: o(
     [
       { json: 'id', js: 'id', typ: r('OrganizationID') },
@@ -864,6 +1017,15 @@ const typeMap: any = {
     ],
     'any'
   ),
+  Product: o(
+    [
+      { json: 'id', js: 'id', typ: m('') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
+    ],
+    'any'
+  ),
   TimeRange: o(
     [
       { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
@@ -871,6 +1033,15 @@ const typeMap: any = {
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Trade: o(
+    [
+      { json: 'id', js: 'id', typ: m('') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'product', js: 'product', typ: r('ProductObject') },
+      { json: 'type', js: 'type', typ: '' },
     ],
     'any'
   ),

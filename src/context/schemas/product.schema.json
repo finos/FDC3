@@ -1,0 +1,37 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/product.schema.json",
+	"type": "object",
+	"title": "Product",
+	"description": "@experimental context type representing a tradable product. To be used with OMS and EMS systems.\n\nThis type is currently only loosely defined as an extensible context object, with an optional instrument field.",
+	"allOf": [
+		{
+			"$ref": "context.schema.json#"
+		},{
+			"type": "object",
+			"properties": {
+				"type": {
+					"const": "fdc3.product"
+				},
+				"id": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
+					"title": "Product Identifiers",
+					"description": "One or more identifiers that refer to the product. Specific key names for systems are expected to be standardized in future."
+				},
+				"name": {
+					"type": "string",
+					"title": "Name",
+					"description": "A human-readable summary of the product."
+				}, 
+				"instrument": {
+					"$ref": "instrument.schema.json"
+				}
+			},
+			"required": ["type","id"],
+			"additionalProperties": true
+		}
+	]
+}
