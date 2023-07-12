@@ -1,36 +1,41 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/bridging/findIntentAgentResponse.schema.json",
-  "title": "findIntent Agent Response",
+  "title": "FindIntent Agent Response",
   "type": "object",
   "allOf": [
     {
-      "$ref": "agentResponse.schema.json"
+      "$ref": "#/$defs/FindIntentResponseBase"
     },
     {
-      "$ref": "#/$defs/FindIntentResponseBase"
+      "$ref": "agentResponse.schema.json"
     }
   ],
   "$defs": {
     "FindIntentResponseBase": {
+      "title": "FindIntent Response",
       "type": "object",
       "description": "A response to a findIntent request.",
       "properties": {
         "type": {
+          "title": "FindIntent Response Message Type",
           "const": "findIntentResponse"
         },
         "payload": {
+          "title": "FindIntent Response Payload",
           "type": "object",
-          "title": "findIntent response payload",
           "properties": {
             "appIntent": {
-              "$ref": "../api/appIntent.schema.json"
+              "$ref": "../api/api.schema.json#/definitions/AppIntent"
             }
           },
           "required": ["appIntent"],
           "additionalProperties": false
         },
-        "meta": true
+        "meta": {
+          "title": "FindIntent Response Metadata",
+          "type": "object"
+        }
       },
       "additionalProperties": false
     }

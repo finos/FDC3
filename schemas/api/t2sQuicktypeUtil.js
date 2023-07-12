@@ -10,25 +10,38 @@ const fs = require('fs');
 const exec = require('child_process').exec;
 
 const args = process.argv.slice(2);
-const outputFile = args.pop();
+const outputPath = args.pop();
 const inputs = args;
 
 console.log('Inputs: ' + inputs.join(' | '));
-console.log('Output file argument: ' + outputFile);
+console.log('Output path argument: ' + outputPath);
 
-let sources = '';
+let source = '';
 
 let dirIndex = 0;
 
+const excludedTypes = [
+  'DesktopAgent.ts',
+  'Listener.ts',
+  'Methods.ts',
+  'PrivateChannel.ts',
+  'Types.ts',
+  'RecommendedChannels.ts',
+];
+
+let sources = '';
+
 while (dirIndex < inputs.length) {
-  if (inputs[dirIndex].endsWith('.schema.json')) {
+  if (inputs[dirIndex].endsWith('.ts')) {
     sources += `--src ${path.join(inputs[dirIndex])} `;
   } else {
     fs.readdirSync(inputs[dirIndex], { withFileTypes: true }).forEach(file => {
       if (file.isDirectory()) {
         inputs.push(path.join(inputs[dirIndex], file.name));
       } else {
-        sources += `--src ${path.join(inputs[dirIndex], file.name)} `;
+        if (!excludedTypes.includes(file.name)) {
+          sources += `--src ${path.join(inputs[dirIndex], file.name)} `;
+        }
       }
     });
   }
@@ -38,7 +51,7 @@ while (dirIndex < inputs.length) {
 // Normalise path to local quicktype executable.
 const quicktypeExec = ['.', 'node_modules', '.bin', 'quicktype'].join(path.sep);
 
-const command = `${quicktypeExec} --no-combine-classes -s schema -o ${outputFile} ${sources}`;
+const command = `${quicktypeExec} -l schema -o ${outputPath} ${sources}`;
 console.log('command to run: ' + command);
 
 exec(command, function(error, stdout, stderr) {

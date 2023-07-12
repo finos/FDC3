@@ -1,31 +1,36 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/bridging/raiseIntentResultAgentResponse.schema.json",
-  "title": "raiseIntentResult Agent Response",
+  "title": "RaiseIntent Result Agent Response",
   "type": "object",
   "allOf": [
     {
-      "$ref": "agentResponse.schema.json"
+      "$ref": "#/$defs/RaiseIntentResultResponseBase"
     },
     {
-      "$ref": "#/$defs/RaiseIntentResultResponseBase"
+      "$ref": "agentResponse.schema.json"
     }
   ],
   "$defs": {
     "RaiseIntentResultResponseBase": {
+      "title": "RaiseIntent Result Response",
       "type": "object",
       "description": "A secondary response to a request to raise an intent used to deliver the intent result",
       "properties": {
         "type": {
+          "title": "RaiseIntent Result Response Message type",
           "const": "raiseIntentResultResponse"
         },
         "payload": {
+          "title": "RaiseIntent Result Response Payload",
           "type": "object",
           "properties": {
             "intentResult": {
+              "title": "IntentResult",
               "oneOf": [
                 {
                   "type": "object",
+                  "title": "IntentResult Context",
                   "properties": {
                     "context": {
                       "$ref": "../context/context.schema.json"
@@ -36,9 +41,10 @@
                 },
                 {
                   "type": "object",
+                  "title": "IntentResult Channel",
                   "properties": {
                     "channel": {
-                      "$ref": "../api/channel.schema.json"
+                      "$ref": "../api/api.schema.json#/definitions/Channel"
                     }
                   },
                   "required": ["channel"],
@@ -50,7 +56,10 @@
           "required": ["intentResult"],
           "additionalProperties": false
         },
-        "meta": true
+        "meta": {
+          "title": "RaiseIntent Result Response Metadata",
+          "type": "object"
+        }
       },
       "additionalProperties": false
     }
