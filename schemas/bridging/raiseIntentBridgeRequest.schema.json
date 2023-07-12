@@ -1,14 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/bridging/raiseIntentBridgeRequest.schema.json",
-  "title": "raiseIntent Bridge Request",
+  "title": "RaiseIntent Bridge Request",
   "type": "object",
   "allOf": [
     {
-      "$ref": "bridgeRequest.schema.json"
+      "$ref": "raiseIntentAgentRequest.schema.json#/$defs/RaiseIntentRequestBase"
     },
     {
-      "$ref": "raiseIntentAgentRequest.schema.json#/$defs/RaiseIntentRequestBase"
+      "$ref": "bridgeRequest.schema.json"
     }
   ]
 }

@@ -28,23 +28,20 @@
       "type": "object",
       "properties": {
         "requestUuid": {
-          "type": "string",
-          "description": "UUID for the request"
+          "$ref": "common.schema.json#/$defs/RequestUuid"
         },
         "timestamp": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp at which request or response was generated"
+          "$ref": "common.schema.json#/$defs/Timestamp"
         },
         "source": {
           "title": "Source identifier",
           "description": "Field that represents the source application that the request was received from, or the source Desktop Agent if it issued the request itself.",
-          "$ref": "bridgeParticipantIdentifier.schema.json"
+          "$ref": "common.schema.json#/$defs/RequestSource"
         },
         "destination": {
           "title": "Destination identifier",
           "description": "Optional field that represents the destination that the request should be routed to. Must be set by the Desktop Agent for API calls that include a target app parameter and must include the name of the Desktop Agent hosting the target application.",
-          "$ref": "bridgeParticipantIdentifier.schema.json"
+          "$ref": "common.schema.json#/$defs/Destination"
         }
       },
       "required": ["requestUuid", "timestamp", "source"],
