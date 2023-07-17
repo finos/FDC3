@@ -49,6 +49,7 @@
               "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
             }
           },
+          "required": ["source"],
           "additionalProperties": false
         }
       },

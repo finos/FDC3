@@ -23,7 +23,7 @@
                     "title": "desktopAgent"
                 }
             },
-            "additionalProperties": false,
+            "unevaluatedProperties": false,
             "required": [
                 "appId"
             ]
@@ -295,7 +295,7 @@
                     "title": "desktopAgent"
                 }
             },
-            "additionalProperties": false,
+            "unevaluatedProperties": false,
             "required": [
                 "desktopAgent"
             ]

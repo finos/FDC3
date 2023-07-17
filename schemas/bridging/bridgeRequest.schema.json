@@ -36,7 +36,7 @@
         "source": {
           "title": "Source identifier",
           "description": "Field that represents the source application that the request was received from, or the source Desktop Agent if it issued the request itself.",
-          "$ref": "common.schema.json#/$defs/RequestSource"
+          "$ref": "common.schema.json#/$defs/BridgeRequestSource"
         },
         "destination": {
           "title": "Destination identifier",
