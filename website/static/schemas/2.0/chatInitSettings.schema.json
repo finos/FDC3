@@ -20,7 +20,7 @@
             "type": "object",
             "properties": {
               "groupRecipients": {"type": "boolean"},
-              "public": {"type": "boolean"},
+              "isPublic": {"type": "boolean"},
               "allowHistoryBrowsing":  {"type": "boolean"},
               "allowMessageCopy":  {"type": "boolean"},
               "allowAddUser":  {"type": "boolean"}
