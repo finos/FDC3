@@ -64,6 +64,7 @@ const action = {
         instanceId: 'instance1'
     }
 }
+```
 
 ## See Also
 
