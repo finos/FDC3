@@ -97,11 +97,20 @@
       ],
       "description": "Array of DesktopAgentIdentifiers for responses that were not returned to the bridge before the timeout or because an error occurred. May be omitted if all sources responded without errors. MUST include the `desktopAgent` field when returned by the bridge."
     },
+    "ErrorMessages": {
+      "oneOf": [
+        { "$ref": "../api/api.schema.json#/definitions/ChannelError" },
+        { "$ref": "../api/api.schema.json#/definitions/OpenError" },
+        { "$ref": "../api/api.schema.json#/definitions/ResolveError" },
+        { "$ref": "../api/api.schema.json#/definitions/ResultError" },
+        { "$ref": "../api/api.schema.json#/definitions/BridgingError" }
+      ]
+    },
     "ResponseErrorDetails": {
       "title": "Response Error Details",
       "type": "array",
       "items": {
-        "type": "string"
+        "$ref": "#/$defs/ErrorMessages"
       },
       "description": "Array of error message strings for responses that were not returned to the bridge before the timeout or because an error occurred. Should be the same length as the `errorSources` array and ordered the same. May be omitted if all sources responded without errors."
     }
