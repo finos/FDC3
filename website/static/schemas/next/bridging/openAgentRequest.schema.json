@@ -1,29 +1,32 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/bridging/openAgentRequest.schema.json",
-  "title": "open Agent Request",
+  "title": "Open Agent Request",
   "type": "object",
   "allOf": [
     {
-      "$ref": "agentRequest.schema.json"
+      "$ref": "#/$defs/OpenRequestBase"
     },
     {
-      "$ref": "#/$defs/OpenRequestBase"
+      "$ref": "agentRequest.schema.json"
     }
   ],
   "$defs": {
     "OpenRequestBase": {
+      "title": "Open Request",
       "type": "object",
       "description": "A request to open an application",
       "properties": {
         "type": {
+          "title": "Open Request Message Type",
           "const": "openRequest"
         },
         "payload": {
+          "title": "Open Request Payload",
           "type": "object",
           "properties": {
             "app": {
-              "$ref": "../api/appIdentifier.schema.json"
+              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
             },
             "context": {
               "$ref": "../context/context.schema.json"
@@ -33,16 +36,18 @@
           "additionalProperties": false
         },
         "meta":  {
+          "title": "Open Request Metadata",
           "properties": {
             "requestUuid": true,
             "timestamp": true,
             "destination": {
-              "$ref": "../api/desktopAgentIdentifier.schema.json"
+              "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
             },
             "source": {
-              "$ref": "../api/appIdentifier.schema.json"
+              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
             }
           },
+          "required": ["source"],
           "additionalProperties": false
         }
       },

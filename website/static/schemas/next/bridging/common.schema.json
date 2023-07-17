@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/common.schema.json",
+  "title": "Bridging Commons",
+  "type": "object",
+  "description": "Common elements referenced by other schemas",
+  "$defs": {
+    "AgentRequestMeta": {
+      "title": "Agent Request Metadata",
+      "description": "Metadata for a request message sent by Desktop Agents to the Bridge.",
+      "type": "object",
+      "properties": {
+        "requestUuid": {
+          "$ref": "#/$defs/RequestUuid"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "destination": {
+          "$ref": "#/$defs/Destination"
+        }
+      },
+      "required": ["requestUuid", "timestamp"],
+      "additionalProperties": false
+    },
+    "RequestUuid": {
+      "title": "Request UUID",
+      "type": "string",
+      "description": "UUID for the request"
+    },
+    "ResponseUuid": {
+      "title": "Response UUID",
+      "type": "string",
+      "description": "UUID for this specific response message."
+    },
+    "Timestamp": {
+      "title": "Timestamp",
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp at which request was generated"
+    },
+    "RequestSource": {
+      "title": "Source identifier",
+      "description": "Field that represents the source application that a request or response was received from, or the source Desktop Agent if it issued the request or response itself.",
+      "oneOf": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+        },
+        {
+          "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+        }
+      ]
+    },
+    "ResponseSource": {
+      "title": "Source identifier",
+      "description": "Field that represents the source Desktop Agent that a response was received from.",
+      "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+    },
+    "BridgeRequestSource": {
+      "title": "Bridge Source identifier",
+      "description": "Field that represents the source application that a request or response was received from, or the source Desktop Agent if it issued the request or response itself.",
+      "oneOf": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+            },
+            {
+              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+            }
+          ]
+        }
+      ]
+    },
+    "BridgeParticipantIdentifier": {
+      "title": "Bridge Participant Identifier",
+      "description": "Represents Identifiers that MUST include the Desktop Agent name and MAY identify a specific app or instance.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+        },
+        {
+          "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+        }
+      ]
+    },
+    "Destination": {
+      "title": "Destination identifier",
+      "description": "Optional field that represents the destination that the request should be routed to. Must be set by the Desktop Agent for API calls that include a target app parameter and must include the name of the Desktop Agent hosting the target application.",
+      "$ref": "#/$defs/BridgeParticipantIdentifier"
+    },
+    "ResponseSources": {
+      "title": "Desktop Agents that responded",
+      "type": "array",
+      "items": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+        }
+      ],
+      "description": "Array of DesktopAgentIdentifiers for the sources that generated responses to the request. Will contain a single value for individual responses and multiple values for responses that were collated by the bridge. May be omitted if all sources errored. MUST include the `desktopAgent` field when returned by the bridge."
+    },
+    "ResponseErrorSources": {
+      "title": "Desktop Agents that errored",
+      "type": "array",
+      "items": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+        }
+      ],
+      "description": "Array of DesktopAgentIdentifiers for responses that were not returned to the bridge before the timeout or because an error occurred. May be omitted if all sources responded without errors. MUST include the `desktopAgent` field when returned by the bridge."
+    },
+    "ErrorMessages": {
+      "oneOf": [
+        { "$ref": "../api/api.schema.json#/definitions/ChannelError" },
+        { "$ref": "../api/api.schema.json#/definitions/OpenError" },
+        { "$ref": "../api/api.schema.json#/definitions/ResolveError" },
+        { "$ref": "../api/api.schema.json#/definitions/ResultError" },
+        { "$ref": "../api/api.schema.json#/definitions/BridgingError" }
+      ]
+    },
+    "ResponseErrorDetails": {
+      "title": "Response Error Details",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ErrorMessages"
+      },
+      "description": "Array of error message strings for responses that were not returned to the bridge before the timeout or because an error occurred. Should be the same length as the `errorSources` array and ordered the same. May be omitted if all sources responded without errors."
+    }
+  }
+}

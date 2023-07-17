@@ -1,49 +1,55 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/bridging/privateChannelBroadcastAgentRequest.schema.json",
-  "title": "privateChannelBroadcast Agent Request",
+  "title": "PrivateChannelBroadcast Agent Request",
   "type": "object",
   "allOf": [
     {
-      "$ref": "agentRequest.schema.json"
+      "$ref": "#/$defs/PrivateChannelBroadcastRequestBase"
     },
     {
-      "$ref": "#/$defs/PrivateChannelBroadcastRequestBase"
+      "$ref": "agentRequest.schema.json"
     }
   ],
   "$defs": {
     "PrivateChannelBroadcastRequestBase": {
+      "title": "PrivateChannelBroadcast Request",
       "type": "object",
       "description": "A request to broadcast on a PrivateChannel.",
       "properties": {
         "type": {
+          "title": "Private Channel Broadcast Message type",
           "const": "PrivateChannel.broadcast"
         },
         "payload": {
+          "title": "PrivateChannelBroadcast Request Payload",
           "type": "object",
-          "title": "privateChannel broadcast request payload",
           "properties": {
-            "channel": {
-              "type": "string"
+            "channelId": {
+              "type": "string",
+              "title": "Channel Id",
+              "description": "The Id of the PrivateChannel that the broadcast was sent on"
             },
             "context": {
-              "type": "string"
+              "$ref": "../context/context.schema.json",
+              "title": "Context",
+              "description": "The context object that was the payload of a broadcast message."
             }
           },
           "additionalProperties": false,
-          "required": ["channel", "context"]
+          "required": ["channelId", "context"]
         },
         "meta": {
+          "title": "PrivateChannelBroadcast Request Metadata",
           "type": "object",
-          "title": "privateChannel broadcast request metadata",
           "properties": {
             "requestUuid": true,
             "timestamp": true,
             "source": {
-              "$ref": "../api/appIdentifier.schema.json"
+              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
             },
             "destination": {
-              "$ref": "../api/appIdentifier.schema.json"
+              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
             }
           },
           "unevaluatedProperties": false

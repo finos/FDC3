@@ -1,46 +1,48 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/bridging/findInstancesAgentRequest.schema.json",
-  "title": "findInstances Agent Request",
+  "title": "FindInstances Agent Request",
   "type": "object",
   "allOf": [
     {
-      "$ref": "agentRequest.schema.json"
+      "$ref": "#/$defs/FindInstancesRequestBase"
     },
     {
-      "$ref": "#/$defs/FindInstancesRequestBase"
+      "$ref": "agentRequest.schema.json"
     }
   ],
   "$defs": {
     "FindInstancesRequestBase": {
+      "title": "FindInstances Request",
       "type": "object",
       "description": "A request for details of instances of a particular app",
       "properties":{
         "type": {
+          "title": "FindInstances Request Message Type",
           "const": "findInstancesRequest"
         },
         "payload": {
           "type": "object",
-          "title": "findInstances request payload",
+          "title": "FindInstances Request Payload",
           "properties": {
             "app": {
-              "$ref": "../api/appIdentifier.schema.json"
+              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
             }
           },
           "required": ["app"],
           "additionalProperties": false
         },
         "meta": {
+          "title": "FindInstances request metadata",
           "type": "object",
-          "title": "findInstances request metadata",
           "properties": {
             "requestUuid": true,
             "timestamp": true,
             "destination": {
-              "$ref": "../api/desktopAgentIdentifier.schema.json"
+              "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
             },
             "source": {
-              "$ref": "../api/appIdentifier.schema.json"
+              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
             }
           },
           "unevaluatedProperties": false

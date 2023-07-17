@@ -1,27 +1,29 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerRemovedAgentRequest.schema.json",
-  "title": "privateChannelEventListenerRemoved Agent Request",
+  "title": "PrivateChannelEventListenerRemoved Agent Request",
   "type": "object",
   "allOf": [
     {
-      "$ref": "agentRequest.schema.json"
+      "$ref": "#/$defs/PrivateChannelEventListenerRemovedRequestBase"
     },
     {
-      "$ref": "#/$defs/PrivateChannelEventListenerRemovedRequestBase"
+      "$ref": "agentRequest.schema.json"
     }
   ],
   "$defs": {
     "PrivateChannelEventListenerRemovedRequestBase": {
+      "title": "PrivateChannelEventListenerRemoved Request",
       "type": "object",
       "description": "A request to forward on an EventListenerRemoved event, relating to a PrivateChannel",
       "properties": {
         "type": {
+          "title": "Private Channel EventListenerRemoved Message type",
           "const": "PrivateChannel.eventListenerRemoved"
         },
         "payload": {
+          "title": "PrivateChannelEventListenerRemoved Request Payload",
           "type": "object",
-          "title": "privateChannel eventListenerRemoved request payload",
           "properties": {
             "channel": {
               "type": "string"
@@ -34,16 +36,16 @@
           "required": ["channel", "listenerType"]
         },
         "meta": {
+          "title": "PrivateChannelEventListenerRemoved Request Metadata",
           "type": "object",
-          "title": "privateChannel eventListenerRemoved request metadata",
           "properties": {
             "requestUuid": true,
             "timestamp": true,
             "source": {
-              "$ref": "../api/appIdentifier.schema.json"
+              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
             },
             "destination": {
-              "$ref": "../api/appIdentifier.schema.json"
+              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
             }
           },
           "unevaluatedProperties": false
