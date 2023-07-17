@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added a `ViewChat` Intent to be used when a user wants to open an existing chat room. ([#796](https://github.com/finos/FDC3/pull/796))
 * Added a `ViewMessages` intent to be used when a user wants to search and see a list of messages. ([#797](https://github.com/finos/FDC3/pull/797))
 * Added a context type representing a ChatSearchCriteria (`fdc3.chat.searchCriteria`). ([#797](https://github.com/finos/FDC3/pull/797))
+* Added an indication that applications, that can be launched to receive intents or context via a raised intent or open with context, SHOULD add their context or intent listeners via the API within 15 seconds, and that Desktop Agents MUST allow at least a 15 second timeout for them to do so, and MAY set a longer timeout ([#987](https://github.com/finos/FDC3/pull/987))
 
 ### Changed
 

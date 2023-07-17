@@ -23,7 +23,7 @@
         "caption": "Finsemble",
         "image": "/img/users/Finsemble.png",
         "infoLink": "https://www.finsemble.com/",
-        "pinned": true,
+        "pinned": false,
         "isMember": true
     },
     {
@@ -44,13 +44,20 @@
         "caption": "Glue42",
         "image": "/img/users/GLUE42.png",
         "infoLink": "https://glue42.com/",
-        "pinned": true,
+        "pinned": false,
         "isMember": true
     },
     {
         "caption": "GreenKey",
         "image": "/img/users/GreenKey.png",
         "infoLink": "https://greenkeytech.com/",
+        "pinned": true,
+        "isMember": true
+    },
+    {
+        "caption": "interop.io",
+        "image": "/img/users/interop.io-primary-1.svg",
+        "infoLink": "https://interop.io/",
         "pinned": true,
         "isMember": true
     },
