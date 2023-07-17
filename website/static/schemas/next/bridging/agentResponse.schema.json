@@ -8,6 +8,15 @@
     "type": {
       "title": "Response Message Type",
       "type": "string",
+      "enum": [
+        "findInstancesResponse",
+        "findIntentResponse",
+        "findIntentsByContextResponse",
+        "getAppMetadataResponse",
+        "openResponse",
+        "raiseIntentResponse",
+        "raiseIntentResultResponse"
+      ],
       "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Response' appended."
     },
     "payload": {
@@ -28,29 +37,18 @@
       "type": "object",
       "properties": {
         "requestUuid": {
-          "type": "string",
-          "description": "UUID for the request this message is responding to."
+          "$ref": "common.schema.json#/$defs/RequestUuid"
         },
         "responseUuid": {
-          "type": "string",
-          "description": "UUID for this specific response message."
+          "$ref": "common.schema.json#/$defs/ResponseUuid"
         },
         "timestamp": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp at which the response was generated"
+          "$ref": "common.schema.json#/$defs/Timestamp"
         },
         "source": {
           "title": "Response Source identifier",
           "description": "Field that represents the source application instance that the response was produced by, or the Desktop Agent if it produced the response without an application.",
-          "oneOf": [
-            {
-              "$ref": "../api/appIdentifier.schema.json"
-            },
-            {
-              "$ref": "../api/desktopAgentIdentifier.schema.json"
-            }
-          ]
+          "$ref": "common.schema.json#/$defs/ResponseSource"
         }
       },
       "required": ["requestUuid", "responseUuid", "timestamp", "source"],

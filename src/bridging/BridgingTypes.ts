@@ -181,6 +181,7 @@ export interface DesktopAgentIdentifier {
    * particular Desktop Agent.
    */
   desktopAgent: string;
+  [property: string]: any;
 }
 
 /**
@@ -464,13 +465,12 @@ export interface BridgeErrorResponseMessage {
 /**
  * Metadata required in a response message collated and/or forwarded on by the Bridge
  */
-export interface DesktopAgentIdentifier {
-  /**
-   * Used in Desktop Agent Bridging to attribute or target a message to a
-   * particular Desktop Agent.
-   */
-  desktopAgent: string;
-  [property: string]: any;
+export interface BridgeErrorResponseMessageMeta {
+  errorDetails: ResponseErrorDetail[];
+  errorSources: DesktopAgentIdentifier[];
+  requestUuid: string;
+  responseUuid: string;
+  timestamp: Date;
 }
 
 /**
@@ -524,16 +524,16 @@ export interface BridgeRequestMetadata {
  * Field that represents the source application that a request or response was received
  * from, or the source Desktop Agent if it issued the request or response itself.
  *
+ * Field that represents the source application instance that the response was produced by,
+ * or the Desktop Agent if it produced the response without an application.
+ *
+ * Field that represents the source Desktop Agent that a response was received from.
+ *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
  * response message is returned by the Desktop Agent (or more specifically its resolver)
  * rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no
  * app details are available or are appropriate.
- *
- * Field that represents the source application instance that the response was produced by,
- * or the Desktop Agent if it produced the response without an application.
- *
- * Field that represents the source Desktop Agent that a response was received from.
  *
  * Array of DesktopAgentIdentifiers for responses that were not returned to the bridge
  * before the timeout or because an error occurred. May be omitted if all sources responded
@@ -776,16 +776,16 @@ export interface BroadcastBridgeRequestMeta {
  * Field that represents the source application that a request or response was received
  * from, or the source Desktop Agent if it issued the request or response itself.
  *
+ * Field that represents the source application instance that the response was produced by,
+ * or the Desktop Agent if it produced the response without an application.
+ *
+ * Field that represents the source Desktop Agent that a response was received from.
+ *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
  * response message is returned by the Desktop Agent (or more specifically its resolver)
  * rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no
  * app details are available or are appropriate.
- *
- * Field that represents the source application instance that the response was produced by,
- * or the Desktop Agent if it produced the response without an application.
- *
- * Field that represents the source Desktop Agent that a response was received from.
  *
  * Array of DesktopAgentIdentifiers for responses that were not returned to the bridge
  * before the timeout or because an error occurred. May be omitted if all sources responded
@@ -4582,7 +4582,7 @@ const typeMap: any = {
     ],
     false
   ),
-  DesktopAgentIdentifier: o([{ json: 'desktopAgent', js: 'desktopAgent', typ: '' }], false),
+  DesktopAgentIdentifier: o([{ json: 'desktopAgent', js: 'desktopAgent', typ: '' }], 'any'),
   ErrorResponseMessagePayload: o([{ json: 'error', js: 'error', typ: r('ResponseErrorDetail') }], 'any'),
   AgentRequestMessage: o(
     [
@@ -4643,7 +4643,7 @@ const typeMap: any = {
     ],
     false
   ),
-  DesktopAgentIdentifier: o([{ json: 'desktopAgent', js: 'desktopAgent', typ: '' }], 'any'),
+  ResponseErrorMessagePayload: o([{ json: 'error', js: 'error', typ: u(undefined, r('ResponseErrorDetail')) }], 'any'),
   BridgeRequestMessage: o(
     [
       { json: 'meta', js: 'meta', typ: r('BridgeRequestMetadata') },

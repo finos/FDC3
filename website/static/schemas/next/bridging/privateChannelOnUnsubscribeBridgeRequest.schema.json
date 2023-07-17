@@ -5,10 +5,10 @@
   "type": "object",
   "allOf": [
     {
-      "$ref": "bridgeRequest.schema.json"
+      "$ref": "privateChannelOnUnsubscribeAgentRequest.schema.json#/$defs/PrivateChannelOnUnsubscribeRequestBase"
     },
     {
-      "$ref": "privateChannelOnUnsubscribeAgentRequest.schema.json#/$defs/PrivateChannelOnUnsubscribeRequestBase"
+      "$ref": "bridgeRequest.schema.json"
     }
   ]
 }

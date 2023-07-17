@@ -1,27 +1,29 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerAddedAgentRequest.schema.json",
-  "title": "privateChannelEventListenerAdded Agent Request",
+  "title": "PrivateChannelEventListenerAdded Agent Request",
   "type": "object",
   "allOf": [
     {
-      "$ref": "agentRequest.schema.json"
+      "$ref": "#/$defs/PrivateChannelEventListenerAddedRequestBase"
     },
     {
-      "$ref": "#/$defs/PrivateChannelEventListenerAddedRequestBase"
+      "$ref": "agentRequest.schema.json"
     }
   ],
   "$defs": {
     "PrivateChannelEventListenerAddedRequestBase": {
+      "title": "PrivateChannelEventListenerAdded Request",
       "type": "object",
       "description": "A request to forward on an EventListenerAdded event, relating to a PrivateChannel",
       "properties": {
         "type": {
+          "title": "Private Channel EventListenerAdded Message type",
           "const": "PrivateChannel.eventListenerAdded"
         },
         "payload": {
+          "title": "PrivateChannelEventListenerAdded Request Payload",
           "type": "object",
-          "title": "privateChannel eventListenerAdded request payload",
           "properties": {
             "channel": {
               "type": "string"
@@ -34,16 +36,16 @@
           "required": ["channel", "context"]
         },
         "meta": {
+          "title": "PrivateChannelEventListenerAdded Request Metadata",
           "type": "object",
-          "title": "privateChannel eventListenerAdded request metadata",
           "properties": {
             "requestUuid": true,
             "timestamp": true,
             "source": {
-              "$ref": "../api/appIdentifier.schema.json"
+              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
             },
             "destination": {
-              "$ref": "../api/appIdentifier.schema.json"
+              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
             }
           },
           "unevaluatedProperties": false
