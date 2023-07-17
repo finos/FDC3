@@ -513,7 +513,7 @@ export interface DesktopAgent {
    * Retrieves the `AppMetadata` for an `AppIdentifier`, which provides additional metadata (such as icons,
    * a title and description) from the App Directory record for the application, that may be used for display
    * purposes.
-   * 
+   *
    * If the app is not found, the promise MUST be rejected with an `Error` Object with the `message` given by `ResolveError.TargetAppUnavailable`, or (if connected to a Desktop Agent Bridge) an error from the `BridgingError` enumeration.
    *
    * ```js
