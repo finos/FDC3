@@ -21,7 +21,7 @@ https://fdc3.finos.org/schemas/next/transactionresult.schema.json
 | Property   | Type    | Required | Example Value     |
 |------------|---------|----------|-------------------|
 | `type`     | string  | Yes      | 'fdc3.transactionResult' |
-| `status`   | string  | Yes      | `"Created" | "Deleted" | "Updated" | "Failed"` |
+| `status`   | string  | Yes      | `"Created" \| "Deleted" \| "Updated" \| "Failed"` |
 | `context`  | Context | No       | See Below |
 | `message`  | string  | No       | See Below |
 
