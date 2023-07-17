@@ -26,7 +26,7 @@ https://fdc3.finos.org/schemas/next/chatRoom.schema.json
 | `url` | string  | No       | `'http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA'`      |
 | `name` | string  | No       | `'My new room'`      |
 
-The `url` is an universal url to access to the room. It could be opened from a browser, a mobile app, etc...
+The `url` is a universal url to access to the room. It could be opened from a browser, a mobile app, etc...
 
 ## Example
 
