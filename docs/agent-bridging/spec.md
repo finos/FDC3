@@ -821,7 +821,11 @@ enum ResolveError {
       Desktop Agent Bridge. */
   DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
+```
 
+And an error enumeration is created for errors related to bridging that may occur on any request, and are returnable through the FDC3 API.
+
+```typescript
 enum BridgingError {
   /** Returned if a Desktop Agent did not return a response, via Desktop Agent Bridging,
    * within the alloted timeout. */
@@ -833,7 +837,11 @@ enum BridgingError {
    *  a remote Desktop agent should be targeted (e.g. raiseIntent with an app on a
    *  remote DesktopAgent targeted), when the local Desktop Agent is not connected to
    *  a bridge. */
-  NotConnectedToBridge = 'NotConnectedToBridge'
+  NotConnectedToBridge = 'NotConnectedToBridge',
+  /** Returned if a message to a Bridge deviates from the schema for that message
+   * sufficiently that it could not be processed.
+   */
+  MalformedMessage = 'MalformedMessage'
 }
 ```
 
