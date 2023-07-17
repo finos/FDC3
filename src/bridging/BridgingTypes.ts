@@ -342,6 +342,7 @@ export interface BridgeParticipantIdentifier {
    * instance of the application described.
    */
   instanceId?: string;
+  [property: string]: any;
 }
 
 /**
@@ -403,6 +404,7 @@ export interface SourceIdentifier {
    * instance of the application described.
    */
   instanceId?: string;
+  [property: string]: any;
 }
 
 /**
@@ -462,12 +464,13 @@ export interface BridgeErrorResponseMessage {
 /**
  * Metadata required in a response message collated and/or forwarded on by the Bridge
  */
-export interface BridgeErrorResponseMessageMeta {
-  errorDetails: ResponseErrorDetail[];
-  errorSources: DesktopAgentIdentifier[];
-  requestUuid: string;
-  responseUuid: string;
-  timestamp: Date;
+export interface DesktopAgentIdentifier {
+  /**
+   * Used in Desktop Agent Bridging to attribute or target a message to a
+   * particular Desktop Agent.
+   */
+  desktopAgent: string;
+  [property: string]: any;
 }
 
 /**
@@ -510,8 +513,70 @@ export interface BridgeRequestMetadata {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceIdentifier;
+  source: BridgeSourceIdentifier;
   timestamp: Date;
+}
+
+/**
+ * Field that represents the source application that the request was received from, or the
+ * source Desktop Agent if it issued the request itself.
+ *
+ * Field that represents the source application that a request or response was received
+ * from, or the source Desktop Agent if it issued the request or response itself.
+ *
+ * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
+ * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
+ * response message is returned by the Desktop Agent (or more specifically its resolver)
+ * rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no
+ * app details are available or are appropriate.
+ *
+ * Field that represents the source application instance that the response was produced by,
+ * or the Desktop Agent if it produced the response without an application.
+ *
+ * Field that represents the source Desktop Agent that a response was received from.
+ *
+ * Array of DesktopAgentIdentifiers for responses that were not returned to the bridge
+ * before the timeout or because an error occurred. May be omitted if all sources responded
+ * without errors. MUST include the `desktopAgent` field when returned by the bridge.
+ *
+ * Array of DesktopAgentIdentifiers for the sources that generated responses to the request.
+ * Will contain a single value for individual responses and multiple values for responses
+ * that were collated by the bridge. May be omitted if all sources errored. MUST include the
+ * `desktopAgent` field when returned by the bridge.
+ *
+ * Identifies an application, or instance of an application, and is used to target FDC3 API
+ * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
+ * instances.
+ *
+ * Will always include at least an `appId` field, which uniquely identifies a specific app.
+ *
+ * If the `instanceId` field is set then the `AppMetadata` object represents a specific
+ * instance of the application that may be addressed using that Id.
+ *
+ * Identifier for the app instance that was selected (or started) to resolve the intent.
+ * `source.instanceId` MUST be set, indicating the specific app instance that
+ * received the intent.
+ */
+export interface BridgeSourceIdentifier {
+  /**
+   * Used in Desktop Agent Bridging to attribute or target a message to a
+   * particular Desktop Agent.
+   *
+   * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+   * identify the Desktop Agent to target.
+   */
+  desktopAgent: string;
+  /**
+   * The unique application identifier located within a specific application directory
+   * instance. An example of an appId might be 'app@sub.root'
+   */
+  appId?: string;
+  /**
+   * An optional instance identifier, indicating that this object represents a specific
+   * instance of the application described.
+   */
+  instanceId?: string;
+  [property: string]: any;
 }
 
 /**
@@ -570,7 +635,7 @@ export interface BroadcastAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceClass;
+  source: SourceObject;
   timestamp: Date;
 }
 
@@ -614,7 +679,7 @@ export interface BroadcastAgentRequestMeta {
  * that were collated by the bridge. May be omitted if all sources errored. MUST include the
  * `desktopAgent` field when returned by the bridge.
  */
-export interface SourceClass {
+export interface SourceObject {
   /**
    * The unique application identifier located within a specific application directory
    * instance. An example of an appId might be 'app@sub.root'
@@ -633,6 +698,7 @@ export interface SourceClass {
    * instance of the application described.
    */
   instanceId?: string;
+  [property: string]: any;
 }
 
 /**
@@ -686,8 +752,70 @@ export interface BroadcastBridgeRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: MetaSource;
   timestamp: Date;
+}
+
+/**
+ * Identifies an application, or instance of an application, and is used to target FDC3 API
+ * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
+ * instances.
+ *
+ * Will always include at least an `appId` field, which uniquely identifies a specific app.
+ *
+ * If the `instanceId` field is set then the `AppMetadata` object represents a specific
+ * instance of the application that may be addressed using that Id.
+ *
+ * Identifier for the app instance that was selected (or started) to resolve the intent.
+ * `source.instanceId` MUST be set, indicating the specific app instance that
+ * received the intent.
+ *
+ * Field that represents the source application that the request was received from, or the
+ * source Desktop Agent if it issued the request itself.
+ *
+ * Field that represents the source application that a request or response was received
+ * from, or the source Desktop Agent if it issued the request or response itself.
+ *
+ * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
+ * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
+ * response message is returned by the Desktop Agent (or more specifically its resolver)
+ * rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no
+ * app details are available or are appropriate.
+ *
+ * Field that represents the source application instance that the response was produced by,
+ * or the Desktop Agent if it produced the response without an application.
+ *
+ * Field that represents the source Desktop Agent that a response was received from.
+ *
+ * Array of DesktopAgentIdentifiers for responses that were not returned to the bridge
+ * before the timeout or because an error occurred. May be omitted if all sources responded
+ * without errors. MUST include the `desktopAgent` field when returned by the bridge.
+ *
+ * Array of DesktopAgentIdentifiers for the sources that generated responses to the request.
+ * Will contain a single value for individual responses and multiple values for responses
+ * that were collated by the bridge. May be omitted if all sources errored. MUST include the
+ * `desktopAgent` field when returned by the bridge.
+ */
+export interface MetaSource {
+  /**
+   * The unique application identifier located within a specific application directory
+   * instance. An example of an appId might be 'app@sub.root'
+   */
+  appId: string;
+  /**
+   * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+   * identify the Desktop Agent to target.
+   *
+   * Used in Desktop Agent Bridging to attribute or target a message to a
+   * particular Desktop Agent.
+   */
+  desktopAgent: string;
+  /**
+   * An optional instance identifier, indicating that this object represents a specific
+   * instance of the application described.
+   */
+  instanceId?: string;
+  [property: string]: any;
 }
 
 /**
@@ -1073,7 +1201,7 @@ export interface FindInstancesAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceClass;
+  source?: SourceObject;
   timestamp: Date;
 }
 
@@ -1133,6 +1261,17 @@ export interface PurpleBridgeParticipantIdentifier {
    * identify the Desktop Agent to target.
    */
   desktopAgent: string;
+  /**
+   * The unique application identifier located within a specific application directory
+   * instance. An example of an appId might be 'app@sub.root'
+   */
+  appId?: string;
+  /**
+   * An optional instance identifier, indicating that this object represents a specific
+   * instance of the application described.
+   */
+  instanceId?: string;
+  [property: string]: any;
 }
 
 /**
@@ -1172,6 +1311,7 @@ export interface AppIdentifier {
    * instance of the application described.
    */
   instanceId?: string;
+  [property: string]: any;
 }
 
 /**
@@ -1402,7 +1542,7 @@ export interface FindInstancesBridgeRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: MetaSource;
   timestamp: Date;
 }
 
@@ -1518,7 +1658,7 @@ export interface FindIntentsAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceClass;
+  source?: SourceObject;
   timestamp: Date;
   /**
    * Optional field that represents the destination that the request should be routed to. Must
@@ -1671,7 +1811,7 @@ export interface FindIntentBridgeRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: MetaSource;
   timestamp: Date;
   /**
    * Optional field that represents the destination that the request should be routed to. Must
@@ -1795,7 +1935,7 @@ export interface FindIntentsByContextAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceClass;
+  source?: SourceObject;
   timestamp: Date;
   /**
    * Optional field that represents the destination that the request should be routed to. Must
@@ -1918,7 +2058,7 @@ export interface FindIntentsByContextBridgeRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: MetaSource;
   timestamp: Date;
   /**
    * Optional field that represents the destination that the request should be routed to. Must
@@ -2046,7 +2186,7 @@ export interface GetAppMetadataAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceClass;
+  source?: SourceObject;
   timestamp: Date;
 }
 
@@ -2168,7 +2308,7 @@ export interface GetAppMetadataBridgeRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: MetaSource;
   timestamp: Date;
 }
 
@@ -2315,7 +2455,7 @@ export interface OpenAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceClass;
+  source: SourceObject;
   timestamp: Date;
 }
 
@@ -2438,7 +2578,7 @@ export interface OpenBridgeRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: MetaSource;
   timestamp: Date;
 }
 
@@ -2521,7 +2661,7 @@ export interface PrivateChannelBroadcastAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceClass;
+  source?: SourceObject;
   timestamp: Date;
 }
 
@@ -2591,6 +2731,7 @@ export interface FluffyBridgeParticipantIdentifier {
    * instance of the application described.
    */
   instanceId?: string;
+  [property: string]: any;
 }
 
 /**
@@ -2640,7 +2781,7 @@ export interface PrivateChannelBroadcastBridgeRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: MetaSource;
   timestamp: Date;
 }
 
@@ -2691,7 +2832,7 @@ export interface PrivateChannelEventListenerAddedAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceClass;
+  source?: SourceObject;
   timestamp: Date;
 }
 
@@ -2736,7 +2877,7 @@ export interface PrivateChannelEventListenerAddedBridgeRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: MetaSource;
   timestamp: Date;
 }
 
@@ -2781,7 +2922,7 @@ export interface PrivateChannelEventListenerRemovedAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceClass;
+  source?: SourceObject;
   timestamp: Date;
 }
 
@@ -2826,7 +2967,7 @@ export interface PrivateChannelEventListenerRemovedBridgeRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: MetaSource;
   timestamp: Date;
 }
 
@@ -2871,7 +3012,7 @@ export interface PrivateChannelOnAddContextListenerAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceClass;
+  source?: SourceObject;
   timestamp: Date;
 }
 
@@ -2916,7 +3057,7 @@ export interface PrivateChannelOnAddContextListenerBridgeRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: MetaSource;
   timestamp: Date;
 }
 
@@ -2961,7 +3102,7 @@ export interface PrivateChannelOnDisconnectAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceClass;
+  source?: SourceObject;
   timestamp: Date;
 }
 
@@ -3005,7 +3146,7 @@ export interface PrivateChannelOnDisconnectBridgeRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: MetaSource;
   timestamp: Date;
 }
 
@@ -3049,7 +3190,7 @@ export interface PrivateChannelOnUnsubscribeAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceClass;
+  source?: SourceObject;
   timestamp: Date;
 }
 
@@ -3094,7 +3235,7 @@ export interface ERequestMetadata {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: MetaSource;
   timestamp: Date;
 }
 
@@ -3179,7 +3320,7 @@ export interface RaiseIntentAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: SourceObject;
   timestamp: Date;
 }
 
@@ -3347,7 +3488,7 @@ export interface RaiseIntentBridgeRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: SourceClass;
+  source: MetaSource;
   timestamp: Date;
 }
 
@@ -4466,7 +4607,7 @@ const typeMap: any = {
       { json: 'desktopAgent', js: 'desktopAgent', typ: u(undefined, '') },
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
     ],
-    false
+    'any'
   ),
   SourceIdentifier: o(
     [
@@ -4474,7 +4615,7 @@ const typeMap: any = {
       { json: 'desktopAgent', js: 'desktopAgent', typ: u(undefined, '') },
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
     ],
-    false
+    'any'
   ),
   AgentResponseMessage: o(
     [
@@ -4502,7 +4643,7 @@ const typeMap: any = {
     ],
     false
   ),
-  ResponseErrorMessagePayload: o([{ json: 'error', js: 'error', typ: u(undefined, r('ResponseErrorDetail')) }], 'any'),
+  DesktopAgentIdentifier: o([{ json: 'desktopAgent', js: 'desktopAgent', typ: '' }], 'any'),
   BridgeRequestMessage: o(
     [
       { json: 'meta', js: 'meta', typ: r('BridgeRequestMetadata') },
@@ -4515,10 +4656,18 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('BridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceIdentifier') },
+      { json: 'source', js: 'source', typ: r('BridgeSourceIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
+  ),
+  BridgeSourceIdentifier: o(
+    [
+      { json: 'desktopAgent', js: 'desktopAgent', typ: '' },
+      { json: 'appId', js: 'appId', typ: u(undefined, '') },
+      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
+    ],
+    'any'
   ),
   BridgeResponseMessage: o(
     [
@@ -4550,18 +4699,18 @@ const typeMap: any = {
   BroadcastAgentRequestMeta: o(
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceClass')) },
+      { json: 'source', js: 'source', typ: r('SourceObject') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
   ),
-  SourceClass: o(
+  SourceObject: o(
     [
       { json: 'appId', js: 'appId', typ: '' },
       { json: 'desktopAgent', js: 'desktopAgent', typ: u(undefined, '') },
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
     ],
-    false
+    'any'
   ),
   BroadcastAgentRequestPayload: o(
     [
@@ -4589,10 +4738,18 @@ const typeMap: any = {
   BroadcastBridgeRequestMeta: o(
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
+  ),
+  MetaSource: o(
+    [
+      { json: 'appId', js: 'appId', typ: '' },
+      { json: 'desktopAgent', js: 'desktopAgent', typ: '' },
+      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
+    ],
+    'any'
   ),
   BroadcastBridgeRequestPayload: o(
     [
@@ -4748,12 +4905,19 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceClass')) },
+      { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
   ),
-  PurpleBridgeParticipantIdentifier: o([{ json: 'desktopAgent', js: 'desktopAgent', typ: '' }], false),
+  PurpleBridgeParticipantIdentifier: o(
+    [
+      { json: 'desktopAgent', js: 'desktopAgent', typ: '' },
+      { json: 'appId', js: 'appId', typ: u(undefined, '') },
+      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
   FindInstancesAgentRequestPayload: o([{ json: 'app', js: 'app', typ: r('AppIdentifier') }], false),
   AppIdentifier: o(
     [
@@ -4761,7 +4925,7 @@ const typeMap: any = {
       { json: 'desktopAgent', js: 'desktopAgent', typ: u(undefined, '') },
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
     ],
-    false
+    'any'
   ),
   FindInstancesAgentResponse: o(
     [
@@ -4849,7 +5013,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -4907,7 +5071,7 @@ const typeMap: any = {
   FindIntentsAgentRequestMeta: o(
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceClass')) },
+      { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'destination', js: 'destination', typ: u(undefined, r('BridgeParticipantIdentifier')) },
     ],
@@ -4982,7 +5146,7 @@ const typeMap: any = {
   FindIntentBridgeRequestMeta: o(
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'destination', js: 'destination', typ: u(undefined, r('BridgeParticipantIdentifier')) },
     ],
@@ -5044,7 +5208,7 @@ const typeMap: any = {
   FindIntentsByContextAgentRequestMeta: o(
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceClass')) },
+      { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'destination', js: 'destination', typ: u(undefined, r('BridgeParticipantIdentifier')) },
     ],
@@ -5102,7 +5266,7 @@ const typeMap: any = {
   FindIntentsByContextBridgeRequestMeta: o(
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'destination', js: 'destination', typ: u(undefined, r('BridgeParticipantIdentifier')) },
     ],
@@ -5162,7 +5326,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceClass')) },
+      { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5217,7 +5381,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5273,7 +5437,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceClass')) },
+      { json: 'source', js: 'source', typ: r('SourceObject') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5334,7 +5498,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5378,7 +5542,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceClass')) },
+      { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5389,7 +5553,7 @@ const typeMap: any = {
       { json: 'desktopAgent', js: 'desktopAgent', typ: u(undefined, '') },
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
     ],
-    false
+    'any'
   ),
   PrivateChannelBroadcastAgentRequestPayload: o(
     [
@@ -5410,7 +5574,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5434,7 +5598,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceClass')) },
+      { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5458,7 +5622,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5482,7 +5646,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceClass')) },
+      { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5506,7 +5670,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5530,7 +5694,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceClass')) },
+      { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5554,7 +5718,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5578,7 +5742,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceClass')) },
+      { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5596,7 +5760,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5614,7 +5778,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceClass')) },
+      { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5638,7 +5802,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5680,7 +5844,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: r('FluffyBridgeParticipantIdentifier') },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('SourceObject') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5753,7 +5917,7 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: r('FluffyBridgeParticipantIdentifier') },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('SourceClass') },
+      { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false

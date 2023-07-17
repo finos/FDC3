@@ -59,6 +59,25 @@
       "description": "Field that represents the source Desktop Agent that a response was received from.",
       "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
     },
+    "BridgeRequestSource": {
+      "title": "Bridge Source identifier",
+      "description": "Field that represents the source application that a request or response was received from, or the source Desktop Agent if it issued the request or response itself.",
+      "oneOf": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+            },
+            {
+              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+            }
+          ]
+        }
+      ]
+    },
     "BridgeParticipantIdentifier": {
       "title": "Bridge Participant Identifier",
       "description": "Represents Identifiers that MUST include the Desktop Agent name and MAY identify a specific app or instance.",
