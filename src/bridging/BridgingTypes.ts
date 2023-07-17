@@ -524,79 +524,19 @@ export interface SourceClass {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface BroadcastAgentRequestPayload {
-  channel: Channel;
+  /**
+   * The Id of the PrivateChannel that the broadcast was sent on
+   */
+  channelId: string;
+  /**
+   * The context object that was the payload of a broadcast message.
+   */
   context: ContextElement;
 }
 
 /**
- * Represents a context channel that applications can use to send and receive
- * context data.
- *
- * Please note that There are differences in behavior when you interact with a
- * User channel via the `DesktopAgent` interface and the `Channel` interface.
- * Specifically, when 'joining' a User channel or adding a context listener
- * when already joined to a channel via the `DesktopAgent` interface, existing
- * context (matching the type of the context listener) on the channel is
- * received by the context listener immediately. Whereas, when a context
- * listener is added via the Channel interface, context is not received
- * automatically, but may be retrieved manually via the `getCurrentContext()`
- * function.
+ * The context object that was the payload of a broadcast message.
  */
-export interface Channel {
-  /**
-   * Channels may be visualized and selectable by users. DisplayMetadata may be used to
-   * provide hints on how to see them.
-   * For App channels, displayMetadata would typically not be present.
-   */
-  displayMetadata?: DisplayMetadata;
-  /**
-   * Constant that uniquely identifies this channel.
-   */
-  id: string;
-  /**
-   * Uniquely defines each channel type.
-   * Can be "user", "app" or "private".
-   */
-  type: Type;
-}
-
-/**
- * Channels may be visualized and selectable by users. DisplayMetadata may be used to
- * provide hints on how to see them.
- * For App channels, displayMetadata would typically not be present.
- *
- * A system channel will be global enough to have a presence across many apps. This gives us
- * some hints
- * to render them in a standard way. It is assumed it may have other properties too, but if
- * it has these,
- * this is their meaning.
- */
-export interface DisplayMetadata {
-  /**
-   * The color that should be associated within this channel when displaying this channel in a
-   * UI, e.g: `0xFF0000`.
-   */
-  color?: string;
-  /**
-   * A URL of an image that can be used to display this channel
-   */
-  glyph?: string;
-  /**
-   * A user-readable name for this channel, e.g: `"Red"`
-   */
-  name?: string;
-}
-
-/**
- * Uniquely defines each channel type.
- * Can be "user", "app" or "private".
- */
-export enum Type {
-  App = 'app',
-  Private = 'private',
-  User = 'user',
-}
-
 export interface ContextElement {
   id?: { [key: string]: any };
   name?: string;
@@ -639,7 +579,13 @@ export interface BroadcastBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface BroadcastBridgeRequestPayload {
-  channel: Channel;
+  /**
+   * The Id of the PrivateChannel that the broadcast was sent on
+   */
+  channelId: string;
+  /**
+   * The context object that was the payload of a broadcast message.
+   */
   context: ContextElement;
 }
 
@@ -2088,8 +2034,14 @@ export interface FluffyBridgeParticipantIdentifier {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelBroadcastAgentRequestPayload {
-  channel: string;
-  context: string;
+  /**
+   * The Id of the PrivateChannel that the broadcast was sent on
+   */
+  channelId: string;
+  /**
+   * The context object that was the payload of a broadcast message.
+   */
+  context: ContextElement;
 }
 
 /**
@@ -2133,8 +2085,14 @@ export interface PrivateChannelBroadcastBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelBroadcastBridgeRequestPayload {
-  channel: string;
-  context: string;
+  /**
+   * The Id of the PrivateChannel that the broadcast was sent on
+   */
+  channelId: string;
+  /**
+   * The context object that was the payload of a broadcast message.
+   */
+  context: ContextElement;
 }
 
 /**
@@ -2840,6 +2798,75 @@ export interface RaiseIntentResultAgentResponsePayload {
 export interface IntentResult {
   context?: ContextElement;
   channel?: Channel;
+}
+
+/**
+ * Represents a context channel that applications can use to send and receive
+ * context data.
+ *
+ * Please note that There are differences in behavior when you interact with a
+ * User channel via the `DesktopAgent` interface and the `Channel` interface.
+ * Specifically, when 'joining' a User channel or adding a context listener
+ * when already joined to a channel via the `DesktopAgent` interface, existing
+ * context (matching the type of the context listener) on the channel is
+ * received by the context listener immediately. Whereas, when a context
+ * listener is added via the Channel interface, context is not received
+ * automatically, but may be retrieved manually via the `getCurrentContext()`
+ * function.
+ */
+export interface Channel {
+  /**
+   * Channels may be visualized and selectable by users. DisplayMetadata may be used to
+   * provide hints on how to see them.
+   * For App channels, displayMetadata would typically not be present.
+   */
+  displayMetadata?: DisplayMetadata;
+  /**
+   * Constant that uniquely identifies this channel.
+   */
+  id: string;
+  /**
+   * Uniquely defines each channel type.
+   * Can be "user", "app" or "private".
+   */
+  type: Type;
+}
+
+/**
+ * Channels may be visualized and selectable by users. DisplayMetadata may be used to
+ * provide hints on how to see them.
+ * For App channels, displayMetadata would typically not be present.
+ *
+ * A system channel will be global enough to have a presence across many apps. This gives us
+ * some hints
+ * to render them in a standard way. It is assumed it may have other properties too, but if
+ * it has these,
+ * this is their meaning.
+ */
+export interface DisplayMetadata {
+  /**
+   * The color that should be associated within this channel when displaying this channel in a
+   * UI, e.g: `0xFF0000`.
+   */
+  color?: string;
+  /**
+   * A URL of an image that can be used to display this channel
+   */
+  glyph?: string;
+  /**
+   * A user-readable name for this channel, e.g: `"Red"`
+   */
+  name?: string;
+}
+
+/**
+ * Uniquely defines each channel type.
+ * Can be "user", "app" or "private".
+ */
+export enum Type {
+  App = 'app',
+  Private = 'private',
+  User = 'user',
 }
 
 /**
@@ -3638,24 +3665,8 @@ const typeMap: any = {
   ),
   BroadcastAgentRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: r('Channel') },
+      { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'context', js: 'context', typ: r('ContextElement') },
-    ],
-    false
-  ),
-  Channel: o(
-    [
-      { json: 'displayMetadata', js: 'displayMetadata', typ: u(undefined, r('DisplayMetadata')) },
-      { json: 'id', js: 'id', typ: '' },
-      { json: 'type', js: 'type', typ: r('Type') },
-    ],
-    false
-  ),
-  DisplayMetadata: o(
-    [
-      { json: 'color', js: 'color', typ: u(undefined, '') },
-      { json: 'glyph', js: 'glyph', typ: u(undefined, '') },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     false
   ),
@@ -3685,7 +3696,7 @@ const typeMap: any = {
   ),
   BroadcastBridgeRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: r('Channel') },
+      { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'context', js: 'context', typ: r('ContextElement') },
     ],
     false
@@ -4297,8 +4308,8 @@ const typeMap: any = {
   ),
   PrivateChannelBroadcastAgentRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: '' },
-      { json: 'context', js: 'context', typ: '' },
+      { json: 'channelId', js: 'channelId', typ: '' },
+      { json: 'context', js: 'context', typ: r('ContextElement') },
     ],
     false
   ),
@@ -4321,8 +4332,8 @@ const typeMap: any = {
   ),
   PrivateChannelBroadcastBridgeRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: '' },
-      { json: 'context', js: 'context', typ: '' },
+      { json: 'channelId', js: 'channelId', typ: '' },
+      { json: 'context', js: 'context', typ: r('ContextElement') },
     ],
     false
   ),
@@ -4684,6 +4695,22 @@ const typeMap: any = {
     ],
     false
   ),
+  Channel: o(
+    [
+      { json: 'displayMetadata', js: 'displayMetadata', typ: u(undefined, r('DisplayMetadata')) },
+      { json: 'id', js: 'id', typ: '' },
+      { json: 'type', js: 'type', typ: r('Type') },
+    ],
+    false
+  ),
+  DisplayMetadata: o(
+    [
+      { json: 'color', js: 'color', typ: u(undefined, '') },
+      { json: 'glyph', js: 'glyph', typ: u(undefined, '') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    false
+  ),
   RaiseIntentResultBridgeResponse: o(
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentResultBridgeResponseMeta') },
@@ -4739,6 +4766,6 @@ const typeMap: any = {
     'raiseIntentResponse',
     'raiseIntentResultResponse',
   ],
-  Type: ['app', 'private', 'user'],
   ConnectionStepMessageType: ['authenticationFailed', 'connectedAgentsUpdate', 'handshake', 'hello'],
+  Type: ['app', 'private', 'user'],
 };
