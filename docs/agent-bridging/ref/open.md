@@ -113,6 +113,7 @@ which is repeated on to the target agent as:
 ### Response message schemas
 
 - [https://fdc3.finos.org/schemas/next/bridging/openAgentResponse.schema.json](/schemas/next/bridging/openAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/openAgentErrorResponse.schema.json](/schemas/next/bridging/openAgentErrorResponse.schema.json)
 - [https://fdc3.finos.org/schemas/next/bridging/openBridgeResponse.schema.json](/schemas/next/bridging/openBridgeResponse.schema.json)
 
 ### Example

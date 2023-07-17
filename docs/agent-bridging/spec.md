@@ -575,9 +575,14 @@ Response messages from a Desktop Agent back to the Bridge use a similar format t
 }
 ```
 
-**Schema**: [https://fdc3.finos.org/schemas/next/bridging/agentResponse.schema.json](/schemas/next/bridging/agentResponse.schema.json)
+**Response Schema**: [https://fdc3.finos.org/schemas/next/bridging/agentResponse.schema.json](/schemas/next/bridging/agentResponse.schema.json)
 
+**Error Response Schema**: [https://fdc3.finos.org/schemas/next/bridging/agentErrorResponse.schema.json](/schemas/next/bridging/agentErrorResponse.schema.json)
+
+
+:::info
 Response messages do not include a `meta.destination` as the routing of responses is handled by the Bridge via the `meta.requestUuid` field.
+:::
 
 ##### Response Messages Collated and Forwarded by the Bridge
 

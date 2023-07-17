@@ -138,7 +138,9 @@ The bridge fills in the `source.desktopAgent` field and forwards the request to 
 ### Response message schemas
 
 - [https://fdc3.finos.org/schemas/next/bridging/raiseIntentAgentResponse.schema.json](/schemas/next/bridging/raiseIntentAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/raiseIntentAgentErrorResponse.schema.json](/schemas/next/bridging/raiseIntentAgentErrorResponse.schema.json)
 - [https://fdc3.finos.org/schemas/next/bridging/raiseIntentResultAgentResponse.schema.json](/schemas/next/bridging/raiseIntentResultAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/raiseIntentResultAgentErrorResponse.schema.json](/schemas/next/bridging/raiseIntentResultAgentErrorResponse.schema.json)
 - [https://fdc3.finos.org/schemas/next/bridging/raiseIntentBridgeResponse.schema.json](/schemas/next/bridging/raiseIntentBridgeResponse.schema.json)
 - [https://fdc3.finos.org/schemas/next/bridging/raiseIntentResultBridgeResponse.schema.json](/schemas/next/bridging/raiseIntentResultBridgeResponse.schema.json)
 

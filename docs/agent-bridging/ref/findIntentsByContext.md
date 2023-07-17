@@ -92,6 +92,7 @@ The DAB fills in the `source.desktopAgent` field and forwards the request to the
 ### Response message schemas
 
 - [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextAgentResponse.schema.json](/schemas/next/bridging/findIntentsByContextAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextAgentErrorResponse.schema.json](/schemas/next/bridging/findIntentsByContextAgentErrorResponse.schema.json)
 - [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextBridgeResponse.schema.json](/schemas/next/bridging/findIntentsByContextBridgeResponse.schema.json)
 
 ### Example

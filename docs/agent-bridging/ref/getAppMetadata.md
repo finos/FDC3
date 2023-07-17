@@ -94,6 +94,7 @@ which is repeated on to the target agent as:
 ### Response message schemas
 
 - [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataAgentResponse.schema.json](/schemas/next/bridging/getAppMetadataAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataAgentErrorResponse.schema.json](/schemas/next/bridging/getAppMetadataAgentErrorResponse.schema.json)
 - [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataBridgeResponse.schema.json](/schemas/next/bridging/getAppMetadataBridgeResponse.schema.json)
 
 ### Example
