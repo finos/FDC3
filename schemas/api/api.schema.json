@@ -352,7 +352,8 @@
             "enum": [
                 "AgentDisconnected",
                 "NotConnectedToBridge",
-                "ResponseToBridgeTimedOut"
+                "ResponseToBridgeTimedOut",
+                "MalformedMessage"
             ],
             "type": "string"
         },

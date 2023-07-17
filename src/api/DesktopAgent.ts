@@ -36,7 +36,7 @@ export interface DesktopAgent {
    *
    * Returns an `AppIdentifier` object with the `instanceId` field set identifying the instance of the application opened by this call.
    *
-   * If an error occurs while opening the app, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `OpenError` enumeration.
+   * If an error occurs while opening the app, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `OpenError` enumeration, or (if connected to a Desktop Agent Bridge) the `BridgingError` enumeration.
    *
    * ```javascript
    * //Open an app without context, using an AppIdentifier object to specify the target by `appId`.
@@ -56,7 +56,7 @@ export interface DesktopAgent {
    * It returns a promise resolving to the intent, its metadata and metadata about the apps and app instances that registered that intent.
    * This can be used to raise the intent against a specific app or app instance.
    *
-   * If the resolution fails, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `ResolveError` enumeration. This includes the case where no apps are found that resolve the intent, when the `ResolveError.NoAppsFound` message should be used, and when an invalid context object is passed as an argument, when the `ResolveError.MalformedContext` message should be used.
+   * If the resolution fails, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `ResolveError` enumeration, or (if connected to a Desktop Agent Bridge) the `BridgingError` enumeration. This includes the case where no apps are found that resolve the intent, when the `ResolveError.NoAppsFound` message should be used, and when an invalid context object is passed as an argument, when the `ResolveError.MalformedContext` message should be used.
    *
    * Result types may be a type name, the string "channel" (which indicates that the app
    * will return a channel) or a string indicating a channel that returns a specific type,
@@ -133,7 +133,7 @@ export interface DesktopAgent {
    * `findIntentsByContext` is effectively granting programmatic access to the Desktop Agent's resolver.
    * It returns a promise resolving to an `AppIntent` which provides details of the intent, its metadata and metadata about the apps and app instances that are registered to handle it. This can be used to raise the intent against a specific app or app instance.
    *
-   * If the resolution fails, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `ResolveError` enumeration. This includes the case where no intents with associated apps are found, when the `ResolveError.NoAppsFound` message should be used, and when an invalid context object is passed as an argument, when the `ResolveError.MalformedContext` message should be used.
+   * If the resolution fails, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `ResolveError` enumeration, or (if connected to a Desktop Agent Bridge) the `BridgingError` enumeration. This includes the case where no intents with associated apps are found, when the `ResolveError.NoAppsFound` message should be used, and when an invalid context object is passed as an argument, when the `ResolveError.MalformedContext` message should be used.
    *
    * The optional `resultType` argument may be a type name, the string "channel" (which indicates that the app
    * should return a channel) or a string indicating a channel that returns a specific type,
@@ -187,7 +187,7 @@ export interface DesktopAgent {
    *
    * If there are no instances of the specified application the returned promise should resolve to an empty array.
    *
-   * If the request fails for another reason, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `ResolveError` enumeration.
+   * If the request fails for another reason, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `ResolveError` enumeration, or (if connected to a Desktop Agent Bridge) the `BridgingError` enumeration.
    *
    * ```javascript
    * // Retrieve a list of instances of an application
@@ -225,12 +225,12 @@ export interface DesktopAgent {
   broadcast(context: Context): Promise<void>;
 
   /**
-   * Raises a specific intent for resolution against apps registered with the desktop agent.
+   * Raises a specific intent for resolution against apps registered with the Desktop Agent.
    *
    * The desktop agent MUST resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, the user MAY be presented with a Resolver UI allowing them to pick one, or another method of Resolution applied to select an app.
    * Alternatively, the specific app or app instance to target can also be provided. A list of valid target applications and instances can be retrieved via `findIntent`.
    *
-   * If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the `ResolveError` enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`. If an invalid context object is passed as an argument the promise MUST be rejected with an `Error` object with the `ResolveError.MalformedContext` string as its `message`.
+   * If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the `ResolveError` enumeration, or (if connected to a Desktop Agent Bridge) the `BridgingError` enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`. If an invalid context object is passed as an argument the promise MUST be rejected with an `Error` object with the `ResolveError.MalformedContext` string as its `message`.
    *
    * If you wish to raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
    *
@@ -280,7 +280,7 @@ export interface DesktopAgent {
    *
    * Returns an `IntentResolution` object, see `raiseIntent()` for details.
    *
-   * If a target intent and app cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the `ResolveError` enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`.  If an invalid context object is passed as an argument the promise MUST be rejected with an `Error` object with the `ResolveError.MalformedContext` string as its `message`.
+   * If a target intent and app cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the `ResolveError` enumeration, or (if connected to a Desktop Agent Bridge) the `BridgingError` enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`.  If an invalid context object is passed as an argument the promise MUST be rejected with an `Error` object with the `ResolveError.MalformedContext` string as its `message`.
    *
    * ```javascript
    * // Resolve against all intents registered for the type of the specified context
@@ -513,6 +513,8 @@ export interface DesktopAgent {
    * Retrieves the `AppMetadata` for an `AppIdentifier`, which provides additional metadata (such as icons,
    * a title and description) from the App Directory record for the application, that may be used for display
    * purposes.
+   * 
+   * If the app is not found, the promise MUST be rejected with an `Error` Object with the `message` given by `ResolveError.TargetAppUnavailable`, or (if connected to a Desktop Agent Bridge) an error from the `BridgingError` enumeration.
    *
    * ```js
    * let appIdentifier = { appId: "MyAppId@my.appd.com" }
