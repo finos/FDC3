@@ -58,7 +58,7 @@ Outward message to the DAB:
 {
     "type": "broadcastRequest",
     "payload": {
-        "channel": "myChannel",
+        "channelId": "myChannel",
         "context": { /*contextObj*/ }
     },
     "meta": {
@@ -80,7 +80,7 @@ which it repeats on to agent-B AND agent-C with the `source.desktopAgent` metada
 {
     "type": "broadcastRequest",
     "payload": {
-        "channel": "myChannel",
+        "channelId": "myChannel",
         "context": { /*contextObj*/}
     },
     "meta": {

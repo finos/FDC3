@@ -25,15 +25,19 @@
           "title": "PrivateChannelBroadcast Request Payload",
           "type": "object",
           "properties": {
-            "channel": {
-              "type": "string"
+            "channelId": {
+              "type": "string",
+              "title": "Channel Id",
+              "description": "The Id of the PrivateChannel that the broadcast was sent on"
             },
             "context": {
-              "type": "string"
+              "$ref": "../context/context.schema.json",
+              "title": "Context",
+              "description": "The context object that was the payload of a broadcast message."
             }
           },
           "additionalProperties": false,
-          "required": ["channel", "context"]
+          "required": ["channelId", "context"]
         },
         "meta": {
           "title": "PrivateChannelBroadcast Request Metadata",
