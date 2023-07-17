@@ -23,10 +23,10 @@
                 "message": {
                     "oneOf": [
                         {
-                            "$ref": "#/components/messages/broadcastRequest-Agent"
+                            "$ref": "#/components/messages/handshake"
                         },
                         {
-                            "$ref": "#/components/messages/handshake"
+                            "$ref": "#/components/messages/broadcastRequest-Agent"
                         },
                         {
                             "$ref": "#/components/messages/findInstancesRequest-Agent"
@@ -130,22 +130,43 @@
                             "$ref": "#/components/messages/findInstancesResponse-Bridge"
                         },
                         {
+                            "$ref": "#/components/messages/findInstancesErrorResponse-Bridge"
+                        },
+                        {
                             "$ref": "#/components/messages/findIntentResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/findIntentErrorResponse-Bridge"
                         },
                         {
                             "$ref": "#/components/messages/findIntentsByContextResponse-Bridge"
                         },
                         {
+                            "$ref": "#/components/messages/findIntentsByContextErrorResponse-Bridge"
+                        },
+                        {
                             "$ref": "#/components/messages/getAppMetadataResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/getAppMetadataErrorResponse-Bridge"
                         },
                         {
                             "$ref": "#/components/messages/openResponse-Bridge"
                         },
                         {
+                            "$ref": "#/components/messages/openErrorResponse-Bridge"
+                        },
+                        {
                             "$ref": "#/components/messages/raiseIntentResponse-Bridge"
                         },
                         {
+                            "$ref": "#/components/messages/raiseIntentErrorResponse-Bridge"
+                        },
+                        {
                             "$ref": "#/components/messages/raiseIntentResultResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/raiseIntentResultErrorResponse-Bridge"
                         }
                     ]
                 },
@@ -201,6 +222,11 @@
                     "$ref": "../bridging/findInstancesBridgeResponse.schema.json#"
                 }
             },
+            "findInstancesErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/findInstancesBridgeErrorResponse.schema.json#"
+                }
+            },
             "findIntentRequest-Agent": {
                 "payload": {
                     "$ref": "../bridging/findIntentAgentRequest.schema.json#"
@@ -219,6 +245,11 @@
             "findIntentResponse-Bridge": {
                 "payload": {
                     "$ref": "../bridging/findIntentBridgeResponse.schema.json#"
+                }
+            },
+            "findIntentErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/findIntentBridgeErrorResponse.schema.json#"
                 }
             },
             "findIntentsByContextRequest-Agent": {
@@ -241,6 +272,11 @@
                     "$ref": "../bridging/findIntentsByContextBridgeResponse.schema.json#"
                 }
             },
+            "findIntentsByContextErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/findIntentsByContextBridgeErrorResponse.schema.json#"
+                }
+            },
             "getAppMetadataRequest-Agent": {
                 "payload": {
                     "$ref": "../bridging/getAppMetadataAgentRequest.schema.json#"
@@ -261,6 +297,11 @@
                     "$ref": "../bridging/getAppMetadataBridgeResponse.schema.json#"
                 }
             },
+            "getAppMetadataErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/getAppMetadataBridgeErrorResponse.schema.json#"
+                }
+            },
             "openRequest-Agent": {
                 "payload": {
                     "$ref": "../bridging/openAgentRequest.schema.json#"
@@ -279,6 +320,11 @@
             "openResponse-Bridge": {
                 "payload": {
                     "$ref": "../bridging/openBridgeResponse.schema.json#"
+                }
+            },
+            "openErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/openBridgeErrorResponse.schema.json#"
                 }
             },
             "privateChannelBroadcast-Agent": {
@@ -331,6 +377,11 @@
                     "$ref": "../bridging/raiseIntentBridgeResponse.schema.json#"
                 }
             },
+            "raiseIntentErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/raiseIntentBridgeErrorResponse.schema.json#"
+                }
+            },
             "raiseIntentResultResponse-Agent": {
                 "payload": {
                     "$ref": "../bridging/raiseIntentResultAgentResponse.schema.json#"
@@ -344,6 +395,11 @@
             "raiseIntentResultResponse-Bridge": {
                 "payload": {
                     "$ref": "../bridging/raiseIntentResultBridgeResponse.schema.json#"
+                }
+            },
+            "raiseIntentResultErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/raiseIntentResultBridgeErrorResponse.schema.json#"
                 }
             }
         }

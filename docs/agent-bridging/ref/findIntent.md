@@ -94,6 +94,7 @@ Note that the `source.desktopAgent` field has been populated with the id of the 
 - [https://fdc3.finos.org/schemas/next/bridging/findIntentAgentResponse.schema.json](/schemas/next/bridging/findIntentAgentResponse.schema.json)
 - [https://fdc3.finos.org/schemas/next/bridging/findIntentAgentErrorResponse.schema.json](/schemas/next/bridging/findIntentAgentErrorResponse.schema.json)
 - [https://fdc3.finos.org/schemas/next/bridging/findIntentBridgeResponse.schema.json](/schemas/next/bridging/findIntentBridgeResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentBridgeErrorResponse.schema.json](/schemas/next/bridging/findIntentBridgeErrorResponse.schema.json)
 
 ### Example
 
