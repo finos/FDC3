@@ -476,7 +476,7 @@ Request messages from a Desktop Agent use the following format:
     /** Request body, typically containing the arguments to the function called.*/
     payload: {
         /** Used to indicate which channel `broadcast` functions were called on.*/
-        channel?: string,
+        channelId?: string,
         /** Used as an argument to `findIntent` and `raiseIntent` functions.`*/
         intent?: string,
         /** Used as an argument to `broadcast`, `findIntent` and `raiseIntent` 
@@ -525,6 +525,14 @@ Request messages forwarded by the Bridge onto other Desktop Agents use the same 
 
 Response messages from a Desktop Agent back to the Bridge use a similar format that is differentiated from requests by the presence of a `meta.responseUuid` field. They MUST also quote the `meta.requestUuid` that they are responding to.
 
+:::info
+Response messages do not include a `meta.destination` as the routing of responses is handled by the Bridge via the `meta.requestUuid` field.
+:::
+
+There are two types of each response message, a successful response and an error response.
+
+##### Successful Responses
+
 ```typescript
 {
     /** Identifies the type of the message and it is typically set to the
@@ -533,9 +541,6 @@ Response messages from a Desktop Agent back to the Bridge use a similar format t
     type:  string,
     /** Response body, containing the actual response data. */
     payload: {
-        /** Standardized error strings from an appropriate FDC3 API Error 
-         *  enumeration. */
-        error?: string,
         /** Response to `open` */
         appIdentifier?: AppIdentifier,
         /** Response to `findInstances` */
@@ -577,18 +582,7 @@ Response messages from a Desktop Agent back to the Bridge use a similar format t
 
 **Response Schema**: [https://fdc3.finos.org/schemas/next/bridging/agentResponse.schema.json](/schemas/next/bridging/agentResponse.schema.json)
 
-**Error Response Schema**: [https://fdc3.finos.org/schemas/next/bridging/agentErrorResponse.schema.json](/schemas/next/bridging/agentErrorResponse.schema.json)
-
-
-:::info
-Response messages do not include a `meta.destination` as the routing of responses is handled by the Bridge via the `meta.requestUuid` field.
-:::
-
-##### Response Messages Collated and Forwarded by the Bridge
-
-Responses from individual Desktop Agents are collated by the Bridge and are forwarded on to the the Desktop Agent that initiated the interaction. The format used is very similar to that used for responses by the Desktop Agents, with the exception of the source information in the `meta` field. Specifically, the `meta.source` field is replaced by two arrays, `meta.sources` and `meta.errorSources`, which provide details on the Desktop agents that responded normally or responded with errors. The detail of any errors returned (in the `payload.error` field of a Desktop Agent's response) is collected up into a `meta.errorDetails` field. Moving the error details from the `payload` to the `meta` field enables the return of a valid response to the originating Desktop Agent in cases where some agents produced valid responses, and others produced errors.
-
-Hence, response messages from the Bridge returned to agents use the following format:
+##### Error Responses
 
 ```typescript
 {
@@ -601,6 +595,39 @@ Hence, response messages from the Bridge returned to agents use the following fo
         /** Standardized error strings from an appropriate FDC3 API Error 
          *  enumeration. */
         error?: string,
+    },
+    meta: {
+        /** UUID for the request this message is responding to.*/
+        requestUuid: string,
+        /** UUID for this specific response message. */
+        responseUuid:  string,
+        /** Timestamp at which request was generated */
+        timestamp:  Date,
+        /** AppIdentifiers or DesktopAgentIdentifiers for the source
+         *  that generated the response to the request. */
+        source?: (AppIdentifier | DesktopAgentIdentifier),
+    }
+}
+```
+
+**Error Response Schema**: [https://fdc3.finos.org/schemas/next/bridging/agentErrorResponse.schema.json](/schemas/next/bridging/agentErrorResponse.schema.json)
+
+##### Response Messages Collated and Forwarded by the Bridge
+
+Responses from individual Desktop Agents are collated by the Bridge and are forwarded on to the the Desktop Agent that initiated the interaction. The format used is very similar to that used for responses by the Desktop Agents, with the exception of the source information in the `meta` field. Specifically, the `meta.source` field is replaced by two arrays, `meta.sources` and `meta.errorSources`, which provide details on the Desktop agents that responded normally or responded with errors. The detail of any errors returned (in the `payload.error` field of a Desktop Agent's response) is collected up into a `meta.errorDetails` field. Moving the error details from the `payload` to the `meta` field enables the return of a valid response to the originating Desktop Agent in cases where some agents produced valid responses, and others produced errors.
+
+Hence, for responses forwarded by the bridge there is only a single type of response messages from the Bridge returned to agents, one for requests that received at least one successful response, and another for use when all agents (or the targeted agent) returned an error.
+
+##### At Least One Successful Response
+
+```typescript
+{
+    /** Identifies the type of the message and it is typically set to the
+     * FDC3 function name that the message relates to, e.g. 'findIntent', 
+     * with 'Response' appended.*/
+    type:  string,
+    /** Response body, containing the actual response data. */
+    payload: {
         /** Response to `open` */
         appIdentifier?: AppIdentifier,
         /** Response to `findInstances` */
@@ -654,7 +681,49 @@ Hence, response messages from the Bridge returned to agents use the following fo
 }
 ```
 
-**Schema**: [https://fdc3.finos.org/schemas/next/bridging/bridgeResponse.schema.json](/schemas/next/bridging/bridgeResponse.schema.json)
+**Response Schema**: [https://fdc3.finos.org/schemas/next/bridging/bridgeResponse.schema.json](/schemas/next/bridging/bridgeResponse.schema.json)
+
+##### All Responses are Errors
+
+:::info
+In this case there are no successful response and the bridge must populate the `payload.error` field in the response to the agent with one of the error messages returned, so that the receiving Desktop Agent may return it to the app that made the original call.
+:::
+
+```typescript
+{
+    /** Identifies the type of the message and it is typically set to the
+     * FDC3 function name that the message relates to, e.g. 'findIntent', 
+     * with 'Response' appended.*/
+    type:  string,
+    /** Response body, containing the actual response data. */
+    payload: {
+        /** Standardized error string from an appropriate FDC3 API Error 
+         *  enumeration. This should also appear in `meta.errorDetails`.*/
+        error?: string,
+    },
+    meta: {
+        /** UUID for the request this message is responding to.*/
+        requestUuid: string,
+        /** Unique UUID for this collated response (generated by the bridge). */
+        responseUuid:  string,
+        /** Timestamp at which the collated response was generated */
+        timestamp:  Date,
+        /** Array of AppIdentifiers or DesktopAgentIdentifiers for responses
+         * that were not returned to the bridge before the timeout or because
+         * an error occurred. May be omitted if all sources responded without
+         * errors. MUST include the `desktopAgent` field when returned by the
+         * bridge. */
+        errorSources?: (AppIdentifier | DesktopAgentIdentifier)[],
+        /** Array of error message strings for responses that were not returned
+         * to the bridge before the timeout or because an error occurred. 
+         * Should be the same length as the `errorSources` array and ordered the
+         * same. */
+        errorDetails?: string[]
+    }
+}
+```
+
+**Error Response Schema**: [https://fdc3.finos.org/schemas/next/bridging/bridgeErrorResponse.schema.json](/schemas/next/bridging/bridgeErrorResponse.schema.json)
 
 ### Identifying Individual Messages
 
@@ -731,6 +800,8 @@ For example, a `raiseIntent` targeted at an app instance that no longer exists m
 ```
 
 For messages that target a specific agent, the Desktop Agent Bridge will augment the message with a `source` field and return it to the calling agent and the app that made the original request.
+
+If all agents (or the targeted agent) return errors, then a suitable error string should be forwarded in the `payload.error` field as returned by at least one of the agents. This allows the agent that made the original request to return that error to the app that made the original API call. All agents that returned errors should be listed in the `errorSources` array and the error message strings they returned (or that were applied because they timed out) listed in the `errorDetails` array (in the same order as `errorSources`).
 
 However, API calls that require a collated response from all agents where at least one agent returns a successful response, will result in a successful response from the Desktop Agent Bridge (i.e. no `error` element should be included), with the agents returning errors listed in the `errorSources` array and the error message strings they returned (or that were applied because they timed out) listed in the `errorDetails` array (in the same order as `errorSources`). This allows for successful exchanges on API calls such as `fdc3.findIntent` where some agents do not have options to return and would normally respond with (for example) `ResolveError.NoAppsFound`.
 

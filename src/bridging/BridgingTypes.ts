@@ -1,12 +1,13 @@
 // To parse this data:
 //
-//   import { Convert, BaseImplementationMetadata, AgentErrorResponseMessage, AgentRequestMessage, AgentResponseMessage, BridgeRequestMessage, BridgeResponseMessage, BroadcastAgentRequest, BroadcastBridgeRequest, ConnectionStepMessage, ConnectionStep2Hello, ConnectionStep3Handshake, ConnectionStep4AuthenticationFailed, ConnectionStep6ConnectedAgentsUpdate, FindInstancesAgentErrorResponse, FindInstancesAgentRequest, FindInstancesAgentResponse, FindInstancesBridgeRequest, FindInstancesBridgeResponse, FindIntentAgentErrorResponse, FindIntentsAgentRequest, FindIntentAgentResponse, FindIntentBridgeRequest, FindIntentBridgeResponse, FindIntentsByContextAgentErrorResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, FindIntentsByContextBridgeRequest, FindIntentsByContextBridgeResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataBridgeRequest, GetAppMetadataBridgeResponse, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenBridgeRequest, OpenBridgeResponse, PrivateChannelBroadcastAgentRequest, PrivateChannelBroadcastBridgeRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelEventListenerAddedBridgeRequest, PrivateChannelEventListenerRemovedAgentRequest, PrivateChannelEventListenerRemovedBridgeRequest, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerBridgeRequest, PrivateChannelOnDisconnectAgentRequest, PrivateChannelOnDisconnectBridgeRequest, PrivateChannelOnUnsubscribeAgentRequest, PrivateChannelOnUnsubscribeBridgeRequest, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentBridgeRequest, RaiseIntentBridgeResponse, RaiseIntentResultAgentErrorResponse, RaiseIntentResultAgentResponse, RaiseIntentResultBridgeResponse, Context } from "./file";
+//   import { Convert, BaseImplementationMetadata, AgentErrorResponseMessage, AgentRequestMessage, AgentResponseMessage, BridgeErrorResponseMessage, BridgeRequestMessage, BridgeResponseMessage, BroadcastAgentRequest, BroadcastBridgeRequest, ConnectionStepMessage, ConnectionStep2Hello, ConnectionStep3Handshake, ConnectionStep4AuthenticationFailed, ConnectionStep6ConnectedAgentsUpdate, FindInstancesAgentErrorResponse, FindInstancesAgentRequest, FindInstancesAgentResponse, FindInstancesBridgeErrorResponse, FindInstancesBridgeRequest, FindInstancesBridgeResponse, FindIntentAgentErrorResponse, FindIntentsAgentRequest, FindIntentAgentResponse, FindIntentBridgeErrorResponse, FindIntentBridgeRequest, FindIntentBridgeResponse, FindIntentsByContextAgentErrorResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, FindIntentsByContextBridgeErrorResponse, FindIntentsByContextBridgeRequest, FindIntentsByContextBridgeResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataBridgeErrorResponse, GetAppMetadataBridgeRequest, GetAppMetadataBridgeResponse, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenBridgeErrorResponse, OpenBridgeRequest, OpenBridgeResponse, PrivateChannelBroadcastAgentRequest, PrivateChannelBroadcastBridgeRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelEventListenerAddedBridgeRequest, PrivateChannelEventListenerRemovedAgentRequest, PrivateChannelEventListenerRemovedBridgeRequest, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerBridgeRequest, PrivateChannelOnDisconnectAgentRequest, PrivateChannelOnDisconnectBridgeRequest, PrivateChannelOnUnsubscribeAgentRequest, PrivateChannelOnUnsubscribeBridgeRequest, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentBridgeErrorResponse, RaiseIntentBridgeRequest, RaiseIntentBridgeResponse, RaiseIntentResultAgentErrorResponse, RaiseIntentResultAgentResponse, RaiseIntentResultBridgeErrorResponse, RaiseIntentResultBridgeResponse, Context } from "./file";
 //
 //   const schemasAPIAPISchema = Convert.toSchemasAPIAPISchema(json);
 //   const baseImplementationMetadata = Convert.toBaseImplementationMetadata(json);
 //   const agentErrorResponseMessage = Convert.toAgentErrorResponseMessage(json);
 //   const agentRequestMessage = Convert.toAgentRequestMessage(json);
 //   const agentResponseMessage = Convert.toAgentResponseMessage(json);
+//   const bridgeErrorResponseMessage = Convert.toBridgeErrorResponseMessage(json);
 //   const bridgeRequestMessage = Convert.toBridgeRequestMessage(json);
 //   const bridgeResponseMessage = Convert.toBridgeResponseMessage(json);
 //   const broadcastAgentRequest = Convert.toBroadcastAgentRequest(json);
@@ -20,26 +21,31 @@
 //   const findInstancesAgentErrorResponse = Convert.toFindInstancesAgentErrorResponse(json);
 //   const findInstancesAgentRequest = Convert.toFindInstancesAgentRequest(json);
 //   const findInstancesAgentResponse = Convert.toFindInstancesAgentResponse(json);
+//   const findInstancesBridgeErrorResponse = Convert.toFindInstancesBridgeErrorResponse(json);
 //   const findInstancesBridgeRequest = Convert.toFindInstancesBridgeRequest(json);
 //   const findInstancesBridgeResponse = Convert.toFindInstancesBridgeResponse(json);
 //   const findIntentAgentErrorResponse = Convert.toFindIntentAgentErrorResponse(json);
 //   const findIntentsAgentRequest = Convert.toFindIntentsAgentRequest(json);
 //   const findIntentAgentResponse = Convert.toFindIntentAgentResponse(json);
+//   const findIntentBridgeErrorResponse = Convert.toFindIntentBridgeErrorResponse(json);
 //   const findIntentBridgeRequest = Convert.toFindIntentBridgeRequest(json);
 //   const findIntentBridgeResponse = Convert.toFindIntentBridgeResponse(json);
 //   const findIntentsByContextAgentErrorResponse = Convert.toFindIntentsByContextAgentErrorResponse(json);
 //   const findIntentsByContextAgentRequest = Convert.toFindIntentsByContextAgentRequest(json);
 //   const findIntentsByContextAgentResponse = Convert.toFindIntentsByContextAgentResponse(json);
+//   const findIntentsByContextBridgeErrorResponse = Convert.toFindIntentsByContextBridgeErrorResponse(json);
 //   const findIntentsByContextBridgeRequest = Convert.toFindIntentsByContextBridgeRequest(json);
 //   const findIntentsByContextBridgeResponse = Convert.toFindIntentsByContextBridgeResponse(json);
 //   const getAppMetadataAgentErrorResponse = Convert.toGetAppMetadataAgentErrorResponse(json);
 //   const getAppMetadataAgentRequest = Convert.toGetAppMetadataAgentRequest(json);
 //   const getAppMetadataAgentResponse = Convert.toGetAppMetadataAgentResponse(json);
+//   const getAppMetadataBridgeErrorResponse = Convert.toGetAppMetadataBridgeErrorResponse(json);
 //   const getAppMetadataBridgeRequest = Convert.toGetAppMetadataBridgeRequest(json);
 //   const getAppMetadataBridgeResponse = Convert.toGetAppMetadataBridgeResponse(json);
 //   const openAgentErrorResponse = Convert.toOpenAgentErrorResponse(json);
 //   const openAgentRequest = Convert.toOpenAgentRequest(json);
 //   const openAgentResponse = Convert.toOpenAgentResponse(json);
+//   const openBridgeErrorResponse = Convert.toOpenBridgeErrorResponse(json);
 //   const openBridgeRequest = Convert.toOpenBridgeRequest(json);
 //   const openBridgeResponse = Convert.toOpenBridgeResponse(json);
 //   const privateChannelBroadcastAgentRequest = Convert.toPrivateChannelBroadcastAgentRequest(json);
@@ -57,10 +63,12 @@
 //   const raiseIntentAgentErrorResponse = Convert.toRaiseIntentAgentErrorResponse(json);
 //   const raiseIntentAgentRequest = Convert.toRaiseIntentAgentRequest(json);
 //   const raiseIntentAgentResponse = Convert.toRaiseIntentAgentResponse(json);
+//   const raiseIntentBridgeErrorResponse = Convert.toRaiseIntentBridgeErrorResponse(json);
 //   const raiseIntentBridgeRequest = Convert.toRaiseIntentBridgeRequest(json);
 //   const raiseIntentBridgeResponse = Convert.toRaiseIntentBridgeResponse(json);
 //   const raiseIntentResultAgentErrorResponse = Convert.toRaiseIntentResultAgentErrorResponse(json);
 //   const raiseIntentResultAgentResponse = Convert.toRaiseIntentResultAgentResponse(json);
+//   const raiseIntentResultBridgeErrorResponse = Convert.toRaiseIntentResultBridgeErrorResponse(json);
 //   const raiseIntentResultBridgeResponse = Convert.toRaiseIntentResultBridgeResponse(json);
 //   const context = Convert.toContext(json);
 //
@@ -433,6 +441,44 @@ export interface AgentResponseMessage {
 }
 
 /**
+ * A response message from the Bridge back to the original Desktop Agent that raised the
+ * request, used where all connected agents returned errors.
+ */
+export interface BridgeErrorResponseMessage {
+  meta: BridgeErrorResponseMessageMeta;
+  /**
+   * The error message payload contains details of an error return to the app or agent that
+   * raised the original request.
+   */
+  payload: ResponseErrorMessagePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: string;
+}
+
+/**
+ * Metadata required in a response message collated and/or forwarded on by the Bridge
+ */
+export interface BridgeErrorResponseMessageMeta {
+  errorDetails: ResponseErrorDetail[];
+  errorSources: DesktopAgentIdentifier[];
+  requestUuid: string;
+  responseUuid: string;
+  timestamp: Date;
+}
+
+/**
+ * The error message payload contains details of an error return to the app or agent that
+ * raised the original request.
+ */
+export interface ResponseErrorMessagePayload {
+  error?: ResponseErrorDetail;
+  [property: string]: any;
+}
+
+/**
  * A request message forwarded from the Bridge onto a Desktop Agent connected to it.
  */
 export interface BridgeRequestMessage {
@@ -472,7 +518,7 @@ export interface BridgeRequestMetadata {
  * request.
  */
 export interface BridgeResponseMessage {
-  meta: BridgeResponseMetadata;
+  meta: BridgeResponseMessageMeta;
   /**
    * The message payload typically contains return values for FDC3 API functions.
    */
@@ -487,7 +533,7 @@ export interface BridgeResponseMessage {
 /**
  * Metadata required in a response message collated and/or forwarded on by the Bridge
  */
-export interface BridgeResponseMetadata {
+export interface BridgeResponseMessageMeta {
   errorDetails?: ResponseErrorDetail[];
   errorSources?: DesktopAgentIdentifier[];
   requestUuid: string;
@@ -1283,6 +1329,45 @@ export interface Image {
 }
 
 /**
+ * A response to a findInstances request that contains an error.
+ *
+ * A response message from the Bridge back to the original Desktop Agent that raised the
+ * request, used where all connected agents returned errors.
+ */
+export interface FindInstancesBridgeErrorResponse {
+  meta: FindInstancesBridgeErrorResponseMeta;
+  /**
+   * The error message payload contains details of an error return to the app or agent that
+   * raised the original request.
+   */
+  payload: FindInstancesBridgeErrorResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: string;
+}
+
+/**
+ * Metadata required in a response message collated and/or forwarded on by the Bridge
+ */
+export interface FindInstancesBridgeErrorResponseMeta {
+  errorDetails: ResponseErrorDetail[];
+  errorSources: DesktopAgentIdentifier[];
+  requestUuid: string;
+  responseUuid: string;
+  timestamp: Date;
+}
+
+/**
+ * The error message payload contains details of an error return to the app or agent that
+ * raised the original request.
+ */
+export interface FindInstancesBridgeErrorResponsePayload {
+  error: ErrorMessage;
+}
+
+/**
  * A request for details of instances of a particular app
  *
  * A request message forwarded from the Bridge onto a Desktop Agent connected to it.
@@ -1519,6 +1604,45 @@ export interface IntentMetadata {
 }
 
 /**
+ * A response to a findIntent request that contains an error.
+ *
+ * A response message from the Bridge back to the original Desktop Agent that raised the
+ * request, used where all connected agents returned errors.
+ */
+export interface FindIntentBridgeErrorResponse {
+  meta: FindIntentBridgeErrorResponseMeta;
+  /**
+   * The error message payload contains details of an error return to the app or agent that
+   * raised the original request.
+   */
+  payload: FindIntentBridgeErrorResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: string;
+}
+
+/**
+ * Metadata required in a response message collated and/or forwarded on by the Bridge
+ */
+export interface FindIntentBridgeErrorResponseMeta {
+  errorDetails: ResponseErrorDetail[];
+  errorSources: DesktopAgentIdentifier[];
+  requestUuid: string;
+  responseUuid: string;
+  timestamp: Date;
+}
+
+/**
+ * The error message payload contains details of an error return to the app or agent that
+ * raised the original request.
+ */
+export interface FindIntentBridgeErrorResponsePayload {
+  error: ErrorMessage;
+}
+
+/**
  * A request for details of apps available to resolve a particular intent and context pair.
  *
  * A request message forwarded from the Bridge onto a Desktop Agent connected to it.
@@ -1726,6 +1850,45 @@ export interface FindIntentsByContextAgentResponsePayload {
 }
 
 /**
+ * A response to a findIntentsByContext request that contains an error.
+ *
+ * A response message from the Bridge back to the original Desktop Agent that raised the
+ * request, used where all connected agents returned errors.
+ */
+export interface FindIntentsByContextBridgeErrorResponse {
+  meta: FindIntentsByContextBridgeErrorResponseMeta;
+  /**
+   * The error message payload contains details of an error return to the app or agent that
+   * raised the original request.
+   */
+  payload: FindIntentsByContextBridgeErrorResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: string;
+}
+
+/**
+ * Metadata required in a response message collated and/or forwarded on by the Bridge
+ */
+export interface FindIntentsByContextBridgeErrorResponseMeta {
+  errorDetails: ResponseErrorDetail[];
+  errorSources: DesktopAgentIdentifier[];
+  requestUuid: string;
+  responseUuid: string;
+  timestamp: Date;
+}
+
+/**
+ * The error message payload contains details of an error return to the app or agent that
+ * raised the original request.
+ */
+export interface FindIntentsByContextBridgeErrorResponsePayload {
+  error: ErrorMessage;
+}
+
+/**
  * A request for details of intents and apps available to resolve them for a particular
  * context.
  *
@@ -1929,6 +2092,45 @@ export interface GetAppMetadataAgentResponseMeta {
  */
 export interface GetAppMetadataAgentResponsePayload {
   appMetadata: AppMetadata;
+}
+
+/**
+ * A response to a getAppMetadata request that contains an error.
+ *
+ * A response message from the Bridge back to the original Desktop Agent that raised the
+ * request, used where all connected agents returned errors.
+ */
+export interface GetAppMetadataBridgeErrorResponse {
+  meta: GetAppMetadataBridgeErrorResponseMeta;
+  /**
+   * The error message payload contains details of an error return to the app or agent that
+   * raised the original request.
+   */
+  payload: GetAppMetadataBridgeErrorResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: string;
+}
+
+/**
+ * Metadata required in a response message collated and/or forwarded on by the Bridge
+ */
+export interface GetAppMetadataBridgeErrorResponseMeta {
+  errorDetails: ResponseErrorDetail[];
+  errorSources: DesktopAgentIdentifier[];
+  requestUuid: string;
+  responseUuid: string;
+  timestamp: Date;
+}
+
+/**
+ * The error message payload contains details of an error return to the app or agent that
+ * raised the original request.
+ */
+export interface GetAppMetadataBridgeErrorResponsePayload {
+  error: ErrorMessage;
 }
 
 /**
@@ -2159,6 +2361,45 @@ export interface OpenAgentResponseMeta {
  */
 export interface OpenAgentResponsePayload {
   appIdentifier: AppIdentifier;
+}
+
+/**
+ * A response to an open request that contains an error
+ *
+ * A response message from the Bridge back to the original Desktop Agent that raised the
+ * request, used where all connected agents returned errors.
+ */
+export interface OpenBridgeErrorResponse {
+  meta: OpenBridgeErrorResponseMeta;
+  /**
+   * The error message payload contains details of an error return to the app or agent that
+   * raised the original request.
+   */
+  payload: OpenBridgeErrorResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: string;
+}
+
+/**
+ * Metadata required in a response message collated and/or forwarded on by the Bridge
+ */
+export interface OpenBridgeErrorResponseMeta {
+  errorDetails: ResponseErrorDetail[];
+  errorSources: DesktopAgentIdentifier[];
+  requestUuid: string;
+  responseUuid: string;
+  timestamp: Date;
+}
+
+/**
+ * The error message payload contains details of an error return to the app or agent that
+ * raised the original request.
+ */
+export interface OpenBridgeErrorResponsePayload {
+  error: OpenErrorMessage;
 }
 
 /**
@@ -3032,6 +3273,45 @@ export interface IntentResolution {
 }
 
 /**
+ * A response to a request to raise an intent that contains an error.
+ *
+ * A response message from the Bridge back to the original Desktop Agent that raised the
+ * request, used where all connected agents returned errors.
+ */
+export interface RaiseIntentBridgeErrorResponse {
+  meta: RaiseIntentBridgeErrorResponseMeta;
+  /**
+   * The error message payload contains details of an error return to the app or agent that
+   * raised the original request.
+   */
+  payload: RaiseIntentBridgeErrorResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: string;
+}
+
+/**
+ * Metadata required in a response message collated and/or forwarded on by the Bridge
+ */
+export interface RaiseIntentBridgeErrorResponseMeta {
+  errorDetails: ResponseErrorDetail[];
+  errorSources: DesktopAgentIdentifier[];
+  requestUuid: string;
+  responseUuid: string;
+  timestamp: Date;
+}
+
+/**
+ * The error message payload contains details of an error return to the app or agent that
+ * raised the original request.
+ */
+export interface RaiseIntentBridgeErrorResponsePayload {
+  error: ErrorMessage;
+}
+
+/**
  * A request to raise an intent.
  *
  * A request message forwarded from the Bridge onto a Desktop Agent connected to it.
@@ -3290,6 +3570,46 @@ export enum Type {
 }
 
 /**
+ * A secondary response to a request to raise an intent used to deliver the intent result,
+ * which contains an error
+ *
+ * A response message from the Bridge back to the original Desktop Agent that raised the
+ * request, used where all connected agents returned errors.
+ */
+export interface RaiseIntentResultBridgeErrorResponse {
+  meta: RaiseIntentResultBridgeErrorResponseMeta;
+  /**
+   * The error message payload contains details of an error return to the app or agent that
+   * raised the original request.
+   */
+  payload: RaiseIntentResultBridgeErrorResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: string;
+}
+
+/**
+ * Metadata required in a response message collated and/or forwarded on by the Bridge
+ */
+export interface RaiseIntentResultBridgeErrorResponseMeta {
+  errorDetails: ResponseErrorDetail[];
+  errorSources: DesktopAgentIdentifier[];
+  requestUuid: string;
+  responseUuid: string;
+  timestamp: Date;
+}
+
+/**
+ * The error message payload contains details of an error return to the app or agent that
+ * raised the original request.
+ */
+export interface RaiseIntentResultBridgeErrorResponsePayload {
+  error: RaiseIntentResultErrorMessage;
+}
+
+/**
  * A secondary response to a request to raise an intent used to deliver the intent result
  *
  * A response message from the Bridge back to the original Desktop Agent that raised the
@@ -3375,6 +3695,14 @@ export class Convert {
 
   public static agentResponseMessageToJson(value: AgentResponseMessage): string {
     return JSON.stringify(uncast(value, r('AgentResponseMessage')), null, 2);
+  }
+
+  public static toBridgeErrorResponseMessage(json: string): BridgeErrorResponseMessage {
+    return cast(JSON.parse(json), r('BridgeErrorResponseMessage'));
+  }
+
+  public static bridgeErrorResponseMessageToJson(value: BridgeErrorResponseMessage): string {
+    return JSON.stringify(uncast(value, r('BridgeErrorResponseMessage')), null, 2);
   }
 
   public static toBridgeRequestMessage(json: string): BridgeRequestMessage {
@@ -3481,6 +3809,14 @@ export class Convert {
     return JSON.stringify(uncast(value, r('FindInstancesAgentResponse')), null, 2);
   }
 
+  public static toFindInstancesBridgeErrorResponse(json: string): FindInstancesBridgeErrorResponse {
+    return cast(JSON.parse(json), r('FindInstancesBridgeErrorResponse'));
+  }
+
+  public static findInstancesBridgeErrorResponseToJson(value: FindInstancesBridgeErrorResponse): string {
+    return JSON.stringify(uncast(value, r('FindInstancesBridgeErrorResponse')), null, 2);
+  }
+
   public static toFindInstancesBridgeRequest(json: string): FindInstancesBridgeRequest {
     return cast(JSON.parse(json), r('FindInstancesBridgeRequest'));
   }
@@ -3519,6 +3855,14 @@ export class Convert {
 
   public static findIntentAgentResponseToJson(value: FindIntentAgentResponse): string {
     return JSON.stringify(uncast(value, r('FindIntentAgentResponse')), null, 2);
+  }
+
+  public static toFindIntentBridgeErrorResponse(json: string): FindIntentBridgeErrorResponse {
+    return cast(JSON.parse(json), r('FindIntentBridgeErrorResponse'));
+  }
+
+  public static findIntentBridgeErrorResponseToJson(value: FindIntentBridgeErrorResponse): string {
+    return JSON.stringify(uncast(value, r('FindIntentBridgeErrorResponse')), null, 2);
   }
 
   public static toFindIntentBridgeRequest(json: string): FindIntentBridgeRequest {
@@ -3561,6 +3905,14 @@ export class Convert {
     return JSON.stringify(uncast(value, r('FindIntentsByContextAgentResponse')), null, 2);
   }
 
+  public static toFindIntentsByContextBridgeErrorResponse(json: string): FindIntentsByContextBridgeErrorResponse {
+    return cast(JSON.parse(json), r('FindIntentsByContextBridgeErrorResponse'));
+  }
+
+  public static findIntentsByContextBridgeErrorResponseToJson(value: FindIntentsByContextBridgeErrorResponse): string {
+    return JSON.stringify(uncast(value, r('FindIntentsByContextBridgeErrorResponse')), null, 2);
+  }
+
   public static toFindIntentsByContextBridgeRequest(json: string): FindIntentsByContextBridgeRequest {
     return cast(JSON.parse(json), r('FindIntentsByContextBridgeRequest'));
   }
@@ -3601,6 +3953,14 @@ export class Convert {
     return JSON.stringify(uncast(value, r('GetAppMetadataAgentResponse')), null, 2);
   }
 
+  public static toGetAppMetadataBridgeErrorResponse(json: string): GetAppMetadataBridgeErrorResponse {
+    return cast(JSON.parse(json), r('GetAppMetadataBridgeErrorResponse'));
+  }
+
+  public static getAppMetadataBridgeErrorResponseToJson(value: GetAppMetadataBridgeErrorResponse): string {
+    return JSON.stringify(uncast(value, r('GetAppMetadataBridgeErrorResponse')), null, 2);
+  }
+
   public static toGetAppMetadataBridgeRequest(json: string): GetAppMetadataBridgeRequest {
     return cast(JSON.parse(json), r('GetAppMetadataBridgeRequest'));
   }
@@ -3639,6 +3999,14 @@ export class Convert {
 
   public static openAgentResponseToJson(value: OpenAgentResponse): string {
     return JSON.stringify(uncast(value, r('OpenAgentResponse')), null, 2);
+  }
+
+  public static toOpenBridgeErrorResponse(json: string): OpenBridgeErrorResponse {
+    return cast(JSON.parse(json), r('OpenBridgeErrorResponse'));
+  }
+
+  public static openBridgeErrorResponseToJson(value: OpenBridgeErrorResponse): string {
+    return JSON.stringify(uncast(value, r('OpenBridgeErrorResponse')), null, 2);
   }
 
   public static toOpenBridgeRequest(json: string): OpenBridgeRequest {
@@ -3803,6 +4171,14 @@ export class Convert {
     return JSON.stringify(uncast(value, r('RaiseIntentAgentResponse')), null, 2);
   }
 
+  public static toRaiseIntentBridgeErrorResponse(json: string): RaiseIntentBridgeErrorResponse {
+    return cast(JSON.parse(json), r('RaiseIntentBridgeErrorResponse'));
+  }
+
+  public static raiseIntentBridgeErrorResponseToJson(value: RaiseIntentBridgeErrorResponse): string {
+    return JSON.stringify(uncast(value, r('RaiseIntentBridgeErrorResponse')), null, 2);
+  }
+
   public static toRaiseIntentBridgeRequest(json: string): RaiseIntentBridgeRequest {
     return cast(JSON.parse(json), r('RaiseIntentBridgeRequest'));
   }
@@ -3833,6 +4209,14 @@ export class Convert {
 
   public static raiseIntentResultAgentResponseToJson(value: RaiseIntentResultAgentResponse): string {
     return JSON.stringify(uncast(value, r('RaiseIntentResultAgentResponse')), null, 2);
+  }
+
+  public static toRaiseIntentResultBridgeErrorResponse(json: string): RaiseIntentResultBridgeErrorResponse {
+    return cast(JSON.parse(json), r('RaiseIntentResultBridgeErrorResponse'));
+  }
+
+  public static raiseIntentResultBridgeErrorResponseToJson(value: RaiseIntentResultBridgeErrorResponse): string {
+    return JSON.stringify(uncast(value, r('RaiseIntentResultBridgeErrorResponse')), null, 2);
   }
 
   public static toRaiseIntentResultBridgeResponse(json: string): RaiseIntentResultBridgeResponse {
@@ -4096,6 +4480,25 @@ const typeMap: any = {
     ],
     false
   ),
+  BridgeErrorResponseMessage: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('BridgeErrorResponseMessageMeta') },
+      { json: 'payload', js: 'payload', typ: r('ResponseErrorMessagePayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  BridgeErrorResponseMessageMeta: o(
+    [
+      { json: 'errorDetails', js: 'errorDetails', typ: a(r('ResponseErrorDetail')) },
+      { json: 'errorSources', js: 'errorSources', typ: a(r('DesktopAgentIdentifier')) },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  ResponseErrorMessagePayload: o([{ json: 'error', js: 'error', typ: u(undefined, r('ResponseErrorDetail')) }], 'any'),
   BridgeRequestMessage: o(
     [
       { json: 'meta', js: 'meta', typ: r('BridgeRequestMetadata') },
@@ -4115,13 +4518,13 @@ const typeMap: any = {
   ),
   BridgeResponseMessage: o(
     [
-      { json: 'meta', js: 'meta', typ: r('BridgeResponseMetadata') },
+      { json: 'meta', js: 'meta', typ: r('BridgeResponseMessageMeta') },
       { json: 'payload', js: 'payload', typ: m('any') },
       { json: 'type', js: 'type', typ: '' },
     ],
     false
   ),
-  BridgeResponseMetadata: o(
+  BridgeResponseMessageMeta: o(
     [
       { json: 'errorDetails', js: 'errorDetails', typ: u(undefined, a(r('ResponseErrorDetail'))) },
       { json: 'errorSources', js: 'errorSources', typ: u(undefined, a(r('DesktopAgentIdentifier'))) },
@@ -4411,6 +4814,25 @@ const typeMap: any = {
     ],
     false
   ),
+  FindInstancesBridgeErrorResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('FindInstancesBridgeErrorResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('FindInstancesBridgeErrorResponsePayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  FindInstancesBridgeErrorResponseMeta: o(
+    [
+      { json: 'errorDetails', js: 'errorDetails', typ: a(r('ResponseErrorDetail')) },
+      { json: 'errorSources', js: 'errorSources', typ: a(r('DesktopAgentIdentifier')) },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  FindInstancesBridgeErrorResponsePayload: o([{ json: 'error', js: 'error', typ: r('ErrorMessage') }], false),
   FindInstancesBridgeRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('FindInstancesBridgeRequestMeta') },
@@ -4526,6 +4948,25 @@ const typeMap: any = {
     ],
     false
   ),
+  FindIntentBridgeErrorResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('FindIntentBridgeErrorResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('FindIntentBridgeErrorResponsePayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  FindIntentBridgeErrorResponseMeta: o(
+    [
+      { json: 'errorDetails', js: 'errorDetails', typ: a(r('ResponseErrorDetail')) },
+      { json: 'errorSources', js: 'errorSources', typ: a(r('DesktopAgentIdentifier')) },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  FindIntentBridgeErrorResponsePayload: o([{ json: 'error', js: 'error', typ: r('ErrorMessage') }], false),
   FindIntentBridgeRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentBridgeRequestMeta') },
@@ -4627,6 +5068,25 @@ const typeMap: any = {
     [{ json: 'appIntents', js: 'appIntents', typ: a(r('AppIntent')) }],
     false
   ),
+  FindIntentsByContextBridgeErrorResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('FindIntentsByContextBridgeErrorResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('FindIntentsByContextBridgeErrorResponsePayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  FindIntentsByContextBridgeErrorResponseMeta: o(
+    [
+      { json: 'errorDetails', js: 'errorDetails', typ: a(r('ResponseErrorDetail')) },
+      { json: 'errorSources', js: 'errorSources', typ: a(r('DesktopAgentIdentifier')) },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  FindIntentsByContextBridgeErrorResponsePayload: o([{ json: 'error', js: 'error', typ: r('ErrorMessage') }], false),
   FindIntentsByContextBridgeRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextBridgeRequestMeta') },
@@ -4722,6 +5182,25 @@ const typeMap: any = {
     false
   ),
   GetAppMetadataAgentResponsePayload: o([{ json: 'appMetadata', js: 'appMetadata', typ: r('AppMetadata') }], false),
+  GetAppMetadataBridgeErrorResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('GetAppMetadataBridgeErrorResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('GetAppMetadataBridgeErrorResponsePayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  GetAppMetadataBridgeErrorResponseMeta: o(
+    [
+      { json: 'errorDetails', js: 'errorDetails', typ: a(r('ResponseErrorDetail')) },
+      { json: 'errorSources', js: 'errorSources', typ: a(r('DesktopAgentIdentifier')) },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  GetAppMetadataBridgeErrorResponsePayload: o([{ json: 'error', js: 'error', typ: r('ErrorMessage') }], false),
   GetAppMetadataBridgeRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('GetAppMetadataBridgeRequestMeta') },
@@ -4820,6 +5299,25 @@ const typeMap: any = {
     false
   ),
   OpenAgentResponsePayload: o([{ json: 'appIdentifier', js: 'appIdentifier', typ: r('AppIdentifier') }], false),
+  OpenBridgeErrorResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('OpenBridgeErrorResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('OpenBridgeErrorResponsePayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  OpenBridgeErrorResponseMeta: o(
+    [
+      { json: 'errorDetails', js: 'errorDetails', typ: a(r('ResponseErrorDetail')) },
+      { json: 'errorSources', js: 'errorSources', typ: a(r('DesktopAgentIdentifier')) },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  OpenBridgeErrorResponsePayload: o([{ json: 'error', js: 'error', typ: r('OpenErrorMessage') }], false),
   OpenBridgeRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('OpenBridgeRequestMeta') },
@@ -5220,6 +5718,25 @@ const typeMap: any = {
     ],
     false
   ),
+  RaiseIntentBridgeErrorResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('RaiseIntentBridgeErrorResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('RaiseIntentBridgeErrorResponsePayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  RaiseIntentBridgeErrorResponseMeta: o(
+    [
+      { json: 'errorDetails', js: 'errorDetails', typ: a(r('ResponseErrorDetail')) },
+      { json: 'errorSources', js: 'errorSources', typ: a(r('DesktopAgentIdentifier')) },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  RaiseIntentBridgeErrorResponsePayload: o([{ json: 'error', js: 'error', typ: r('ErrorMessage') }], false),
   RaiseIntentBridgeRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentBridgeRequestMeta') },
@@ -5331,6 +5848,28 @@ const typeMap: any = {
       { json: 'glyph', js: 'glyph', typ: u(undefined, '') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
+    false
+  ),
+  RaiseIntentResultBridgeErrorResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('RaiseIntentResultBridgeErrorResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('RaiseIntentResultBridgeErrorResponsePayload') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    false
+  ),
+  RaiseIntentResultBridgeErrorResponseMeta: o(
+    [
+      { json: 'errorDetails', js: 'errorDetails', typ: a(r('ResponseErrorDetail')) },
+      { json: 'errorSources', js: 'errorSources', typ: a(r('DesktopAgentIdentifier')) },
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  RaiseIntentResultBridgeErrorResponsePayload: o(
+    [{ json: 'error', js: 'error', typ: r('RaiseIntentResultErrorMessage') }],
     false
   ),
   RaiseIntentResultBridgeResponse: o(

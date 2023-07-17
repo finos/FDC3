@@ -123,6 +123,7 @@ The Desktop Agent Bridge should only forward the request to the requested Deskto
 - [https://fdc3.finos.org/schemas/next/bridging/findInstancesAgentResponse.schema.json](/schemas/next/bridging/findInstancesAgentResponse.schema.json)
 - [https://fdc3.finos.org/schemas/next/bridging/findInstancesAgentErrorResponse.schema.json](/schemas/next/bridging/findInstancesAgentErrorResponse.schema.json)
 - [https://fdc3.finos.org/schemas/next/bridging/findInstancesBridgeResponse.schema.json](/schemas/next/bridging/findInstancesBridgeResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findInstancesBridgeErrorResponse.schema.json](/schemas/next/bridging/findInstancesBridgeErrorResponse.schema.json)
 
 ### Example
 
