@@ -111,7 +111,7 @@
                         }
                     ]
                 },
-                "description": "Messages sent by desktop agent to bridge",
+                "description": "Messages sent by A Desktop Agent to a Bridge",
                 "operationId": "Send"
             },
             "subscribe": {
@@ -136,20 +136,20 @@
                             "$ref": "#/components/messages/findIntentsByContextResponse-Bridge"
                         },
                         {
-                            "$ref": "#/components/messages/raiseIntentResponse-Bridge"
-                        },
-                        {
-                            "$ref": "#/components/messages/raiseIntentResultResponse-Bridge"
+                            "$ref": "#/components/messages/getAppMetadataResponse-Bridge"
                         },
                         {
                             "$ref": "#/components/messages/openResponse-Bridge"
                         },
                         {
-                            "$ref": "#/components/messages/getAppMetadataResponse-Bridge"
+                            "$ref": "#/components/messages/raiseIntentResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/raiseIntentResultResponse-Bridge"
                         }
                     ]
                 },
-                "description": "Messages sent by bridge to desktop agent",
+                "description": "Messages sent by a Bridge to a Desktop Agent",
                 "operationId": "Receive"
             }
         }
