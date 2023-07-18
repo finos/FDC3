@@ -36,6 +36,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Deprecated the `name` field in AppD records, to match deprecation of API signatures and metadata objects using `name` (see ([#722](https://github.com/finos/FDC3/pull/722))
 )) in 2.0 ([#928])(https://github.com/finos/FDC3/pull/928))
 * Deprecated `IntentMetadata.displayName` and the appD record's `interop.intents.listensFor[].displayName` field in favour of using intent names for display (which are required to be recognizable) as it can be set differently for each application in the appD ([#926](https://github.com/finos/FDC3/pull/926))
+* Deprecated the `customConfig` field in an AppD record due to the lack of a standard API to retrieve it. To be replaced with an `applicationConfig` element with a Desktop Agent API call to retrieve it in a future version (see [#1006](https://github.com/finos/FDC3/issues/1006) for more details). Also deprecates the `customCOnfig` element of an Intent configuration due to a lack of documented use cases. ([#982](https://github.com/finos/FDC3/pull/982))
 
 ### Fixed
 
