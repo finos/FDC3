@@ -20,7 +20,10 @@
       "enum": [	"line", "bar", "stacked-bar", "mountain", "candle", "pie", "scatter", "histogram", "heatmap", "custom"]
     },
     "otherConfig": {
-      "type": "object"
+      "type": "array",
+      "items": {
+        "$ref": "context.schema.json#"
+      }
     }
   },
   "required": ["instruments"]

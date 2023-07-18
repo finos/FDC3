@@ -184,6 +184,14 @@ The following are standard FDC3 context types:
 - [`fdc3.transactionResult`](ref/TransactionResult) ([schema](/schemas/next/transactionresult.schema.json))
 - [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/valuation.schema.json))
 
+The following are [`@experimental`](/docs/fdc3-compliance#experimental-features) types, which are in the process of being defined:
+
+- [`fdc3.order`](ref/Order) ([schema](/schemas/next/order.schema.json))
+- [`fdc3.orderList`](ref/OrderList) ([schema](/schemas/next/orderList.schema.json))
+- [`fdc3.product`](ref/Product) ([schema](/schemas/next/product.schema.json))
+- [`fdc3.trade`](ref/Trade) ([schema](/schemas/next/trade.schema.json))
+- [`fdc3.tradeList`](ref/TradeList) ([schema](/schemas/next/tradeList.schema.json))
+
 ### Examples
 
 The below examples show how the base context data interface can be used to define specific context data objects.

@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/tradeList.schema.json",
+  "type": "object",
+  "title": "TradeList",
+  "description": "@experimental A list of trades.",
+  "allOf": [{ "$ref": "context.schema.json#" }],
+  "properties": {
+    "type": { "const": "fdc3.tradeList" },
+    "trades": {
+      "type": "array",
+      "items": { "$ref": "trade.schema.json#" }
+    }
+  },
+  "required": ["type", "trades"]
+}
