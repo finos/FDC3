@@ -428,5 +428,15 @@
     "description": "BMO is a strong advocate for interoperability and is developing multiple internal applications using FDC3. We contribute to the FDC3-related meetings and discussions around the standards, contexts and intents.",
     "badges": [],
     "type": "adopter"
+  },
+    {
+    "title": "Dow Jones Newswires",
+    "publisher": "Dow Jones",
+    "image": "/img/users/Dow_Jones_Logo.png",
+    "infoLink": "https://www.dowjones.com/professional/newswires/",
+    "docsLink": "https://www.dowjones.com/press-room/openfin-adds-real-time-news-coverage-from-dow-jones-to-its-workspace-platform/",
+    "description": "Dow Jones has built out a selection of news modules within the FDC3 framework. This is to ensure that we're able to provide customers and prospects with news in a delivery format that is easy to access, shortening development time and managing integration costs.",
+    "badges": [],
+    "type": "adopter"
   }
 ]
