@@ -10,7 +10,7 @@ Further, quicktype doesn't always perfectly replicate polymorphic fields specifi
 
 Hence, the Types provided here can be used to provide valid Context objects and to read/write their JSON encodings, but may not detect or prevent a limited set of invalid objects that would be identified by JSONSchema.
 
-Finally, quicktype will generate types or interfaces representing subunits of the schema, which are then referenced in the main interface definition. These often do not have unique names (e.g. fields of the `id` object in the Context schema, defined for a specific context type such as fdc3.instrument). Quicktype will generate a random name for such an interface, to use to reference it, and as it is randomly generated it may appear oddly named (e.g. PurpleId, FluffyMarket, TentacledIdentifer etc.). Please ignore such names as these types/interfaces will not normally be used outside of the composition of the main type, e.g.:
+Finally, quicktype will generate types or interfaces representing subunits of the schema, which are then referenced in the main interface definition. These often do not have unique names (e.g. fields of the `id` object in the Context schema, defined for a specific context type such as fdc3.instrument). Quicktype will generate a random name for such an interface, to use to reference it, and as it is randomly generated it may appear oddly named (e.g. PurpleId, FluffyMarket, TentacledIdentifier etc.). Please ignore such names as these types/interfaces will not normally be used outside of the composition of the main type, e.g.:
 
 ```TypeScript
 export interface Instrument {
