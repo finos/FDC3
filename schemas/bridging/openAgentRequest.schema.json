@@ -26,7 +26,17 @@
           "type": "object",
           "properties": {
             "app": {
-              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+              "type": "object",
+              "title": "App to open",
+              "description": "The application to open on the specified Desktop Agent",
+              "allOf": [
+                {
+                  "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+                },
+                {
+                  "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+                }
+              ]
             },
             "context": {
               "$ref": "../context/context.schema.json"
