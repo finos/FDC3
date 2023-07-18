@@ -7,6 +7,7 @@
 [![Stack Overflow](https://img.shields.io/badge/stackoverflow-fdc3-orange.svg)](https://stackoverflow.com/questions/tagged/fdc3)
 [![npm-build](https://github.com/finos/FDC3/workflows/npm-build/badge.svg)](https://github.com/finos/FDC3/actions?query=workflow%3Anpm-build)
 [![Slack](https://img.shields.io/badge/slack-@finos/fdc3-green.svg?logo=slack)](https://finos-lf.slack.com/messages/fdc3/)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6579/badge)](https://bestpractices.coreinfrastructure.org/projects/6579)
 
 # FDC3 - Financial Desktop Connectivity and Collaboration Consortium
 
