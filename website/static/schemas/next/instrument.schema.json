@@ -27,8 +27,10 @@
         "name": { "type": "string" },
         "COUNTRY_ISOALPHA2": { "type": "string" },
         "BBG": { "type": "string" }
-      }
+      },
+      "unevaluatedProperties": { "type": "string" }
     }
+    
   },
   "required": ["id"]
 }
