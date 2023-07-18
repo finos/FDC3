@@ -433,10 +433,15 @@ components:
             The name of the company that owns the application. The publisher has
             control over their namespace/app/signature.
         customConfig:
+          deprecated: true
           type: array
           description: >-
             An optional set of name value pairs that can be used to deliver
-            custom data from an App Directory to a launcher.
+            custom data from an App Directory to a launcher. Deprecated due to a 
+            lack of a standard means of retrieval via the Desktop Agent API. To 
+            be replaced in a future version with an `applicationConfig` element 
+            and standard API to retrieve it. See issue 
+            [#1006](https://github.com/finos/FDC3/issues/1006) for details.
           items:
             $ref: '#/components/schemas/NameValuePair'
         hostManifests:
@@ -611,7 +616,7 @@ components:
       type: object # keys should be constrained to valid language tags '^[a-z]{2}(-[a-zA-Z0-9]{2,8}){0,1}$' - not possible to express in OpenAPI without moving to v3.1.0 and the javascript/jsonschema version
       description: >
         Provides localized alternatives to any field of the AppD record, which may also refer to an alternative
-        version of the application that is also localized (e.g. by providing customConfig or an alternative URL). 
+        version of the application that is also localized (e.g. by providing an alternative URL). 
         The keys to this object should be language tags as defined by IETF RFC 5646, e.g. en, en-GB or fr-FR.
       additionalProperties:
         x-additionalPropertiesName: Language tag
@@ -641,10 +646,11 @@ components:
             or a combination that indicates a channel that returns a particular context type 
             (e.g. "channel<fdc3.instrument>").
         customConfig:
+          deprecated: true
           type: object
           description: >-
             Custom configuration for the intent that may be required for a
-            particular desktop agent.
+            particular desktop agent. Deprecated due to a lack of defined use cases.
     Interop:
       type: object
       description: |
@@ -773,10 +779,11 @@ components:
             A comma separated list of the types of contexts the intent offered by the application can process. 
             where the first part of the context type is the namespace e.g."fdc3.contact, org.symphony.contact"
         customConfig:
+          deprecated: true
           type: object
           description: >-
             Custom configuration for the intent that may be required for a
-            particular desktop agent.
+            particular desktop agent. Deprecated due to a lack of defined use cases.
     ApplicationV1:
       description: >
         (Deprecated v1 API version) Defines an application retrieved from an FDC3 App Directory, which can
@@ -863,6 +870,7 @@ components:
           items:
             $ref: '#/components/schemas/IconV1'
         customConfig:
+          deprecated: true
           type: array
           description: >-
             An optional set of name value pairs that can be used to deliver
