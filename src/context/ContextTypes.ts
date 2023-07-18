@@ -24,7 +24,7 @@
 
 export interface Chart {
   instruments: InstrumentElement[];
-  otherConfig?: { [key: string]: any };
+  otherConfig?: OtherConfigElement[];
   range?: TimeRangeObject;
   style?: Style;
   type: string;
@@ -59,6 +59,13 @@ export interface PurpleMarket {
   COUNTRY_ISOALPHA2?: string;
   MIC?: string;
   name?: string;
+  [property: string]: any;
+}
+
+export interface OtherConfigElement {
+  id?: { [key: string]: any };
+  name?: string;
+  type: string;
   [property: string]: any;
 }
 
@@ -230,6 +237,17 @@ export interface InstrumentList {
   [property: string]: any;
 }
 
+export interface Interaction {
+  id?: { [key: string]: string };
+  type: string;
+  participants: ContactList;
+  timeRange: TimeRange;
+  interactionType: ('Instant Message' | 'Email' | 'Call' | 'Meeting') | string;
+  description: string;
+  initiator?: Contact;
+  origin?: string;
+}
+
 export interface Nothing {
   type: string;
   id?: { [key: string]: any };
@@ -286,6 +304,11 @@ export interface TimeRange {
   [property: string]: any;
 }
 
+export interface ChatSearchCriteria {
+  criteria: (Instrument | Organization | Contact | string)[];
+  type: string;
+}
+
 export interface Valuation {
   CURRENCY_ISOCODE: string;
   expiryTime?: Date;
@@ -296,6 +319,13 @@ export interface Valuation {
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
+}
+
+export interface TransactionResult {
+  status: ('Created' | 'Deleted' | 'Updated' | 'Failed') | string;
+  type: string;
+  context?: Context;
+  message?: string;
 }
 
 // Converts JSON strings to/from your types
@@ -600,7 +630,7 @@ const typeMap: any = {
   Chart: o(
     [
       { json: 'instruments', js: 'instruments', typ: a(r('InstrumentElement')) },
-      { json: 'otherConfig', js: 'otherConfig', typ: u(undefined, m('any')) },
+      { json: 'otherConfig', js: 'otherConfig', typ: u(undefined, a(r('OtherConfigElement'))) },
       { json: 'range', js: 'range', typ: u(undefined, r('TimeRangeObject')) },
       { json: 'style', js: 'style', typ: u(undefined, r('Style')) },
       { json: 'type', js: 'type', typ: '' },
@@ -638,6 +668,14 @@ const typeMap: any = {
       { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
       { json: 'MIC', js: 'MIC', typ: u(undefined, '') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  OtherConfigElement: o(
+    [
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
     ],
     'any'
   ),
