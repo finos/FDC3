@@ -1,3 +1,7 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */
 export enum ContextTypes {
   Chart = 'fdc3.chart',
   ChatInitSettings = 'fdc3.chat.initSettings',
