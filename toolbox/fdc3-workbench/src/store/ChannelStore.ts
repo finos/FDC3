@@ -1,3 +1,7 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */
 import { makeObservable, observable, action, runInAction } from "mobx";
 import * as fdc3 from "@finos/fdc3";
 import systemLogStore from "./SystemLogStore";

@@ -1,0 +1,31 @@
+{
+  "unversionedId": "app-directory/usage",
+  "id": "version-1.2/app-directory/usage",
+  "title": "App Directory Usage",
+  "description": "An application directory (AppD) provides information about an application's",
+  "source": "@site/versioned_docs/version-1.2/app-directory/usage.md",
+  "sourceDirName": "app-directory",
+  "slug": "/app-directory/usage",
+  "permalink": "/docs/1.2/app-directory/usage",
+  "draft": false,
+  "tags": [],
+  "version": "1.2",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "App Directory Usage",
+    "title": "App Directory Usage",
+    "hide_title": true,
+    "original_id": "usage"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "App Directory Discovery",
+    "permalink": "/docs/1.2/app-directory/discovery"
+  },
+  "next": {
+    "title": "App Directory Specification",
+    "permalink": "/docs/1.2/app-directory/spec"
+  }
+}

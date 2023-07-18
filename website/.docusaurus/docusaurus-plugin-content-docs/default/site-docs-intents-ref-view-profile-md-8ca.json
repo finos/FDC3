@@ -1,0 +1,31 @@
+{
+  "unversionedId": "intents/ref/ViewProfile",
+  "id": "intents/ref/ViewProfile",
+  "title": "ViewProfile",
+  "description": "Display basic profile information for the individual or organization provided as context.",
+  "source": "@site/../docs/intents/ref/ViewProfile.md",
+  "sourceDirName": "intents/ref",
+  "slug": "/intents/ref/ViewProfile",
+  "permalink": "/docs/next/intents/ref/ViewProfile",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "ViewProfile",
+    "sidebar_label": "ViewProfile",
+    "title": "ViewProfile",
+    "hide_title": true
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "ViewOrders",
+    "permalink": "/docs/next/intents/ref/ViewOrders"
+  },
+  "next": {
+    "title": "ViewQuote",
+    "permalink": "/docs/next/intents/ref/ViewQuote"
+  }
+}

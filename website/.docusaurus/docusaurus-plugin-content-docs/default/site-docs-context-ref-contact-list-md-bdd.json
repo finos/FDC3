@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/ContactList",
+  "id": "context/ref/ContactList",
+  "title": "ContactList",
+  "description": "A collection of contacts, e.g. for chatting to or calling multiple contacts.",
+  "source": "@site/../docs/context/ref/ContactList.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/ContactList",
+  "permalink": "/docs/next/context/ref/ContactList",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "ContactList",
+    "sidebar_label": "ContactList",
+    "title": "ContactList",
+    "hide_title": true
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Contact",
+    "permalink": "/docs/next/context/ref/Contact"
+  },
+  "next": {
+    "title": "Country",
+    "permalink": "/docs/next/context/ref/Country"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "unversionedId": "use-cases/readme",
+  "id": "use-cases/readme",
+  "title": "Overview",
+  "description": "Here are business use cases that have been documented and ratified by the Use Cases Working Group",
+  "source": "@site/../docs/use-cases/readme.md",
+  "sourceDirName": "use-cases",
+  "slug": "/use-cases/",
+  "permalink": "/docs/next/use-cases/",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {}
+}

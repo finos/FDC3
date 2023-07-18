@@ -1,0 +1,22 @@
+{
+  "unversionedId": "appd-intro",
+  "id": "version-1.1/appd-intro",
+  "title": "App Directory Overview",
+  "description": "The FDC3 App Directory provides trusted identity for financial desktop apps. This identity can be used to prevent spoofing and man-in-the-middle attacks when apps communicate with one another and exchange data. The App Directory also enables service discovery. Apps are registered with a declaration of the intents and context data that can be used when interoperating.",
+  "source": "@site/versioned_docs/version-1.1/appd-intro.md",
+  "sourceDirName": ".",
+  "slug": "/appd-intro",
+  "permalink": "/docs/1.1/appd-intro",
+  "draft": false,
+  "tags": [],
+  "version": "1.1",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "App Directory Overview",
+    "title": "App Directory Overview",
+    "hide_title": true,
+    "original_id": "appd-intro"
+  }
+}

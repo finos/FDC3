@@ -1,0 +1,31 @@
+{
+  "unversionedId": "intents/ref/ViewAnalysis",
+  "id": "intents/ref/ViewAnalysis",
+  "title": "ViewAnalysis",
+  "description": "Display analysis on the provided context.",
+  "source": "@site/../docs/intents/ref/ViewAnalysis.md",
+  "sourceDirName": "intents/ref",
+  "slug": "/intents/ref/ViewAnalysis",
+  "permalink": "/docs/next/intents/ref/ViewAnalysis",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "ViewAnalysis",
+    "sidebar_label": "ViewAnalysis",
+    "title": "ViewAnalysis",
+    "hide_title": true
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "StartEmail",
+    "permalink": "/docs/next/intents/ref/StartEmail"
+  },
+  "next": {
+    "title": "ViewChart",
+    "permalink": "/docs/next/intents/ref/ViewChart"
+  }
+}

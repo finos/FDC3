@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/Instrument",
+  "id": "context/ref/Instrument",
+  "title": "Instrument",
+  "description": "A financial instrument from any asset class.",
+  "source": "@site/../docs/context/ref/Instrument.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/Instrument",
+  "permalink": "/docs/next/context/ref/Instrument",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "Instrument",
+    "sidebar_label": "Instrument",
+    "title": "Instrument",
+    "hide_title": true
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Email",
+    "permalink": "/docs/next/context/ref/Email"
+  },
+  "next": {
+    "title": "InstrumentList",
+    "permalink": "/docs/next/context/ref/InstrumentList"
+  }
+}

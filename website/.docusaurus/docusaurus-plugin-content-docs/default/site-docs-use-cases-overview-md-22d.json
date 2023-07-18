@@ -1,0 +1,28 @@
+{
+  "unversionedId": "use-cases/overview",
+  "id": "use-cases/overview",
+  "title": "Use Cases Overview",
+  "description": "Goal",
+  "source": "@site/../docs/use-cases/overview.md",
+  "sourceDirName": "use-cases",
+  "slug": "/use-cases/overview",
+  "permalink": "/docs/next/use-cases/overview",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "overview",
+    "title": "Use Cases Overview",
+    "hide_title": true,
+    "sidebar_label": "Overview",
+    "layout": "default"
+  },
+  "sidebar": "use-cases",
+  "next": {
+    "title": "1. Equity sell side trader",
+    "permalink": "/docs/next/use-cases/uc-1"
+  }
+}

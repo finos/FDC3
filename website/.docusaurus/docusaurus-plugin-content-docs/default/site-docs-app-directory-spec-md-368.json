@@ -1,0 +1,30 @@
+{
+  "unversionedId": "app-directory/spec",
+  "id": "app-directory/spec",
+  "title": "App Directory API (next)",
+  "description": "View the full specification in OpenAPI v3.0 format (generated with ReDoc),",
+  "source": "@site/../docs/app-directory/spec.md",
+  "sourceDirName": "app-directory",
+  "slug": "/app-directory/spec",
+  "permalink": "/docs/next/app-directory/spec",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "spec",
+    "sidebar_label": "API",
+    "title": "App Directory API (next)"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Overview",
+    "permalink": "/docs/next/app-directory/overview"
+  },
+  "next": {
+    "title": "Overview",
+    "permalink": "/docs/next/intents/spec"
+  }
+}

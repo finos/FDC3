@@ -1,0 +1,31 @@
+{
+  "unversionedId": "intents/ref/StartChat",
+  "id": "version-2.0/intents/ref/StartChat",
+  "title": "StartChat",
+  "description": "Initiate a chat with a contact, a list of contacts or detailed initialization settings.",
+  "source": "@site/versioned_docs/version-2.0/intents/ref/StartChat.md",
+  "sourceDirName": "intents/ref",
+  "slug": "/intents/ref/StartChat",
+  "permalink": "/docs/intents/ref/StartChat",
+  "draft": false,
+  "tags": [],
+  "version": "2.0",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "StartChat",
+    "title": "StartChat",
+    "hide_title": true,
+    "original_id": "StartChat"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "StartCall",
+    "permalink": "/docs/intents/ref/StartCall"
+  },
+  "next": {
+    "title": "StartEmail",
+    "permalink": "/docs/intents/ref/StartEmail"
+  }
+}

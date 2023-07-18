@@ -1,0 +1,22 @@
+{
+  "unversionedId": "api/ref/DisplayMetadata",
+  "id": "version-1.2/api/ref/DisplayMetadata",
+  "title": "DisplayMetadata",
+  "description": "A desktop agent (typically for system channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.",
+  "source": "@site/versioned_docs/version-1.2/api/ref/DisplayMetadata.md",
+  "sourceDirName": "api/ref",
+  "slug": "/api/ref/DisplayMetadata",
+  "permalink": "/docs/1.2/api/ref/DisplayMetadata",
+  "draft": false,
+  "tags": [],
+  "version": "1.2",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "sidebar_label": "DisplayMetadata",
+    "title": "DisplayMetadata",
+    "hide_title": true,
+    "original_id": "DisplayMetadata"
+  }
+}

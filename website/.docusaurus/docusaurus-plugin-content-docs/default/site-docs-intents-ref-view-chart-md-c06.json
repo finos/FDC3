@@ -1,0 +1,31 @@
+{
+  "unversionedId": "intents/ref/ViewChart",
+  "id": "intents/ref/ViewChart",
+  "title": "ViewChart",
+  "description": "Display a chart for the provided context.",
+  "source": "@site/../docs/intents/ref/ViewChart.md",
+  "sourceDirName": "intents/ref",
+  "slug": "/intents/ref/ViewChart",
+  "permalink": "/docs/next/intents/ref/ViewChart",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "ViewChart",
+    "sidebar_label": "ViewChart",
+    "title": "ViewChart",
+    "hide_title": true
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "ViewAnalysis",
+    "permalink": "/docs/next/intents/ref/ViewAnalysis"
+  },
+  "next": {
+    "title": "ViewHoldings",
+    "permalink": "/docs/next/intents/ref/ViewHoldings"
+  }
+}

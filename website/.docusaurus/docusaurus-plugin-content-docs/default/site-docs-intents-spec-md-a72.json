@@ -1,0 +1,30 @@
+{
+  "unversionedId": "intents/spec",
+  "id": "intents/spec",
+  "title": "Intents Overview (next)",
+  "description": "FDC3 Intents define a standard set of verbs that, in conjunction with context data acting as nouns, can be used to put together common cross-application workflows on the financial desktop.",
+  "source": "@site/../docs/intents/spec.md",
+  "sourceDirName": "intents",
+  "slug": "/intents/spec",
+  "permalink": "/docs/next/intents/spec",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "spec",
+    "sidebar_label": "Overview",
+    "title": "Intents Overview (next)"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "API",
+    "permalink": "/docs/next/app-directory/spec"
+  },
+  "next": {
+    "title": "StartCall",
+    "permalink": "/docs/next/intents/ref/StartCall"
+  }
+}

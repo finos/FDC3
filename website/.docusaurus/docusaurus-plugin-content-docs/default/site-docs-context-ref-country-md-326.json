@@ -1,0 +1,31 @@
+{
+  "unversionedId": "context/ref/Country",
+  "id": "context/ref/Country",
+  "title": "Country",
+  "description": "A country entity.",
+  "source": "@site/../docs/context/ref/Country.md",
+  "sourceDirName": "context/ref",
+  "slug": "/context/ref/Country",
+  "permalink": "/docs/next/context/ref/Country",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "Country",
+    "sidebar_label": "Country",
+    "title": "Country",
+    "hide_title": true
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "ContactList",
+    "permalink": "/docs/next/context/ref/ContactList"
+  },
+  "next": {
+    "title": "Currency",
+    "permalink": "/docs/next/context/ref/Currency"
+  }
+}

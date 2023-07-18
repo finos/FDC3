@@ -1,0 +1,28 @@
+{
+  "unversionedId": "use-cases/uc-17",
+  "id": "use-cases/uc-17",
+  "title": "Use Case 17: Fine-tuning InterOp with Channels",
+  "description": "Persona",
+  "source": "@site/../docs/use-cases/017-fine-tuning-interop-with-channels.md",
+  "sourceDirName": "use-cases",
+  "slug": "/use-cases/uc-17",
+  "permalink": "/docs/next/use-cases/uc-17",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "sidebarPosition": 17,
+  "frontMatter": {
+    "id": "uc-17",
+    "title": "Use Case 17: Fine-tuning InterOp with Channels",
+    "sidebar_label": "17. Fine-tuning InterOp with Channels",
+    "layout": "use_case"
+  },
+  "sidebar": "use-cases",
+  "previous": {
+    "title": "16. Quantifying FDC3 Interactions",
+    "permalink": "/docs/next/use-cases/uc-16"
+  }
+}
