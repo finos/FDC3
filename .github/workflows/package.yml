@@ -41,7 +41,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+        uses: bahmutov/npm-install@c5482d70ec8706408996e31ac94075030694993f #v1.8.32
 
       - name: Lint
         run: yarn lint
@@ -78,7 +78,7 @@ jobs:
 
     - name: Check package version
       id: check-version
-      uses: PostHog/check-package-version@v2
+      uses: PostHog/check-package-version@adccce0ed9759513476413668bd2a5c995450bde #v2.0.0
 
     - name: Package version info
       run: |
@@ -88,7 +88,7 @@ jobs:
 
     - name: Install dependencies
       if: steps.check-version.outputs.is-new-version == 'true'
-      uses: bahmutov/npm-install@v1
+      uses: bahmutov/npm-install@c5482d70ec8706408996e31ac94075030694993f #v1.8.32
 
     - name: Publish
       if: steps.check-version.outputs.is-new-version == 'true'
