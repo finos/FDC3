@@ -64,6 +64,7 @@ Other Types
 
 Intents
 
+- [CreateInteraction](../../intents/ref/CreateInteraction)
 - [StartChat](../../intents/ref/StartChat)
 - [StartCall](../../intents/ref/StartCall)
 

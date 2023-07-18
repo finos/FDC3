@@ -80,3 +80,6 @@ const timeRange = {
 Other Types
 
 - [Chart](Chart)
+
+Intents
+- [CreateInteraction](../../intents/ref/CreateInteraction)
