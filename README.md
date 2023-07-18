@@ -179,13 +179,13 @@ Participants in FINOS standards projects should follow the FINOS Code of Conduct
 
 # License
 
-Copyright 2017-2022 FINOS and FDC3 Participants.
+Copyright 2017-2022 FINOS and FDC3 Participants
 
-Please see the [license](LICENSE.md).
+Version 1.0 of the FDC3 specification is licensed under the [FDC3 1.0 Final Specification License](PATENTS-FDC3-1.0.md).
 
-SPDX-License-Identifiers:
-- [Apache-2.0](https://spdx.org/licenses/Apache-2.0) (Software)
-- [Community-Spec-1.0](https://spdx.org/licenses/Community-Spec-1.0)  (Specification)
+Subsequent FDC3 specifications and draft specifications are subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/website/static/governance-docs/IP-Policy.pdf), which authorizes implementation of FDC3 specifications without charge, on a RAND basis, subject to the terms of the policy. For details of the IP commitments made by contributors to FDC3, please refer to the policy.
+
+Reference implementations and other software contained in FDC3 repositories is licensed under the [Apache License, Version 2.0](LICENSE) unless otherwise noted. SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0).
 
 # Vulnerabilities / Security
 
