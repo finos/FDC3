@@ -2463,8 +2463,69 @@ export interface OpenAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface OpenAgentRequestPayload {
-  app: AppIdentifier;
+  /**
+   * The application to open on the specified Desktop Agent
+   */
+  app: AppToOpen;
   context?: ContextElement;
+}
+
+/**
+ * The application to open on the specified Desktop Agent
+ *
+ * Field that represents the source application instance that the response was produced by,
+ * or the Desktop Agent if it produced the response without an application.
+ *
+ * Field that represents the source Desktop Agent that a response was received from.
+ *
+ * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
+ * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
+ * response message is returned by the Desktop Agent (or more specifically its resolver)
+ * rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no
+ * app details are available or are appropriate.
+ *
+ * Array of DesktopAgentIdentifiers for responses that were not returned to the bridge
+ * before the timeout or because an error occurred. May be omitted if all sources responded
+ * without errors. MUST include the `desktopAgent` field when returned by the bridge.
+ *
+ * Array of DesktopAgentIdentifiers for the sources that generated responses to the request.
+ * Will contain a single value for individual responses and multiple values for responses
+ * that were collated by the bridge. May be omitted if all sources errored. MUST include the
+ * `desktopAgent` field when returned by the bridge.
+ *
+ * Identifies an application, or instance of an application, and is used to target FDC3 API
+ * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
+ * instances.
+ *
+ * Will always include at least an `appId` field, which uniquely identifies a specific app.
+ *
+ * If the `instanceId` field is set then the `AppMetadata` object represents a specific
+ * instance of the application that may be addressed using that Id.
+ *
+ * Identifier for the app instance that was selected (or started) to resolve the intent.
+ * `source.instanceId` MUST be set, indicating the specific app instance that
+ * received the intent.
+ */
+export interface AppToOpen {
+  /**
+   * Used in Desktop Agent Bridging to attribute or target a message to a
+   * particular Desktop Agent.
+   *
+   * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+   * identify the Desktop Agent to target.
+   */
+  desktopAgent: string;
+  /**
+   * The unique application identifier located within a specific application directory
+   * instance. An example of an appId might be 'app@sub.root'
+   */
+  appId: string;
+  /**
+   * An optional instance identifier, indicating that this object represents a specific
+   * instance of the application described.
+   */
+  instanceId?: string;
+  [property: string]: any;
 }
 
 /**
@@ -2586,7 +2647,10 @@ export interface OpenBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface OpenBridgeRequestPayload {
-  app: AppIdentifier;
+  /**
+   * The application to open on the specified Desktop Agent
+   */
+  app: AppToOpen;
   context?: ContextElement;
 }
 
@@ -5444,10 +5508,18 @@ const typeMap: any = {
   ),
   OpenAgentRequestPayload: o(
     [
-      { json: 'app', js: 'app', typ: r('AppIdentifier') },
+      { json: 'app', js: 'app', typ: r('AppToOpen') },
       { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
     ],
     false
+  ),
+  AppToOpen: o(
+    [
+      { json: 'desktopAgent', js: 'desktopAgent', typ: '' },
+      { json: 'appId', js: 'appId', typ: '' },
+      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
+    ],
+    'any'
   ),
   OpenAgentResponse: o(
     [
@@ -5505,7 +5577,7 @@ const typeMap: any = {
   ),
   OpenBridgeRequestPayload: o(
     [
-      { json: 'app', js: 'app', typ: r('AppIdentifier') },
+      { json: 'app', js: 'app', typ: r('AppToOpen') },
       { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
     ],
     false
