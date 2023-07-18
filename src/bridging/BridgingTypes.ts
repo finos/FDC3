@@ -1658,7 +1658,7 @@ export interface FindIntentsAgentRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceObject;
+  source?: SourceIdentifier;
   timestamp: Date;
   /**
    * Optional field that represents the destination that the request should be routed to. Must
@@ -1811,7 +1811,7 @@ export interface FindIntentBridgeRequestMeta {
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source: MetaSource;
+  source: BridgeSourceIdentifier;
   timestamp: Date;
   /**
    * Optional field that represents the destination that the request should be routed to. Must
@@ -5135,7 +5135,7 @@ const typeMap: any = {
   FindIntentsAgentRequestMeta: o(
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
+      { json: 'source', js: 'source', typ: u(undefined, r('SourceIdentifier')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'destination', js: 'destination', typ: u(undefined, r('BridgeParticipantIdentifier')) },
     ],
@@ -5210,7 +5210,7 @@ const typeMap: any = {
   FindIntentBridgeRequestMeta: o(
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('MetaSource') },
+      { json: 'source', js: 'source', typ: r('BridgeSourceIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'destination', js: 'destination', typ: u(undefined, r('BridgeParticipantIdentifier')) },
     ],
