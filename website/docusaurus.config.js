@@ -45,6 +45,11 @@ module.exports={
   ],
   "plugins": [],
   "themeConfig": {
+    "algolia": {
+      "appId": "tbd",
+      "apiKey": "tbd",
+      "indexName": "fdc3-finos",
+    },
     "navbar": {
       "title": "FDC3",
       "logo": {
