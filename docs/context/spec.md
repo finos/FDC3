@@ -142,12 +142,14 @@ ISO 4217 only includes major currency codes, conversions to minor currencies is 
 An FDC3 Standard compliant application that supports the use of context data **MUST**:
 
 - Ensure that any FDC3-defined standard context types used meet the interface defined for that type of context data.
-- Where Channels are supported or an app is intended to receive context from [`fdc3.open`](../api/ref/DesktopAgent#open) calls, use the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call to set up appropriate handlers on start-up (for User channels and for receiving context from [`fdc3.open`](../api/ref/DesktopAgent#open)) or when the channel is first created or retrieved (for App and Private channels).
+- Where an app is intended to receive context from [`fdc3.open`](../api/ref/DesktopAgent#open) calls, use the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call to set up appropriate handlers.
+- Where App or Private channels are supported, use the [`Channel.addContextListener`](../api/ref/Channel#addcontextlistener) API call to set up appropriate handlers.
 
 An FDC3 Standard compliant application that supports the use of context data **SHOULD**:
 
 - Prefer FDC3-defined standard context types over proprietary contexts, where a suitable FDC3-defined standard context type is available.
 - Ensure that any proprietary context data types defined follow any the recommended [namespacing](#namespacing) and [field type conventions](#field-type-conventions) in the specification.
+- Where an app is intended to receive context from [`fdc3.open`](../api/ref/DesktopAgent#open) calls, use the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call to set up appropriate handlers within 15 seconds of the application launch (the minimum timeout Desktop Agents are required to provide) in order to be widely compatible with Desktop Agent implementations.
 
 An FDC3 Standard compliant application that supports the use of context data **MAY**:
 
@@ -159,8 +161,12 @@ For more details on FDC3 Standards compliance (including the versioning, depreca
 
 The following are standard FDC3 context types:
 
+- [`fdc3.action`](ref/Action) ([schema](/schemas/next/action.schema.json))
 - [`fdc3.chart`](ref/Chart) ([schema](/schemas/next/chart.schema.json))
 - [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](/schemas/next/chatInitSettings.schema.json))
+- [`fdc3.chat.message`](ref/ChatMessage) ([schema](/schemas/next/chatMessage.schema.json))
+- [`fdc3.chat.room`](ref/ChatRoom) ([schema](/schemas/next/chatRoom.schema.json))
+- [`fdc3.chat.searchCriteria`](ref/ChatSearchCriteria) ([schema](/schemas/next/chatSearchCriteria.schema.json))
 - [`fdc3.contact`](ref/Contact) ([schema](/schemas/next/contact.schema.json))
 - [`fdc3.contactList`](ref/ContactList) ([schema](/schemas/next/contactList.schema.json))
 - [`fdc3.country`](ref/Country) ([schema](/schemas/next/country.schema.json))
@@ -168,16 +174,19 @@ The following are standard FDC3 context types:
 - [`fdc3.email`](ref/Email) ([schema](/schemas/next/email.schema.json))
 - [`fdc3.instrument`](ref/Instrument) ([schema](/schemas/next/instrument.schema.json))
 - [`fdc3.instrumentList`](ref/InstrumentList) ([schema](/schemas/next/instrumentList.schema.json))
+- [`fdc3.interaction`](ref/Interaction) ([schema](/schemas/next/interaction.schema.json))
+- [`fdc3.message`](ref/Message) ([schema](/schemas/next/message.schema.json))
 - [`fdc3.organization`](ref/Organization) ([schema](/schemas/next/organization.schema.json))
 - [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/next/portfolio.schema.json))
 - [`fdc3.position`](ref/Position) ([schema](/schemas/next/position.schema.json))
 - [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/next/nothing.schema.json))
 - [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/next/timerange.schema.json))
+- [`fdc3.transactionResult`](ref/TransactionResult) ([schema](/schemas/next/transactionresult.schema.json))
 - [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/valuation.schema.json))
 
-**Note:** The below examples show how the base context data interface can be used to define specific context data objects.
-
 ### Examples
+
+The below examples show how the base context data interface can be used to define specific context data objects.
 
 #### Contact
 
