@@ -87,7 +87,7 @@ For installation and usage instructions, see: https://fdc3.finos.org/docs/suppor
 
 If you are an existing individual or corporate user of the FDC3 standard, we would love to hear from you: just email [fdc3@finos.org](mailto:fdc3@finos.org) with details about how you are using the standard.
 
-- If you'd like to be listed as a user of the standard, let us know by using the form at: https://www.finos.org/get-involved-fdc3
+- If you'd like to be listed as on the community page, please fill out the [Usage Form](https://share.hsforms.com/1gOo0_A70QqyahOygzryVQg1fux8). 
 - If listing your logo publicly requires legal evaluation, you can reach out **privately** to [FDC3 Maintainers](mailto:fdc3-maintainers-private@finos.org).
 
 ## Interact with the FDC3 community
