@@ -46,9 +46,9 @@
   },
   {
     "title": "Finsemble",
-    "publisher": "Finsemble, Inc.",
-    "image": "/img/users/Finsemble.png",
-    "infoLink": "https://finsemble.com/",
+    "publisher": "interop.io",
+    "image": "/img/users/interop.io-primary-1.svg",
+    "infoLink": "https://interop.io/",
     "docsLink": "https://documentation.finsemble.com/",
     "type": "platform-provider",
     "badges": [],
@@ -61,9 +61,18 @@
             "link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
           }
         ]
+      },
+      {
+        "src": "/img/community/certified-2.0.png",
+        "items": [
+          {
+            "text": "Finsemble Version 8.9.0-beta.2 Certified Conformant With FDC3 2.0 Specification on 9th June 2023",
+            "link": "https://www.finos.org/blog/fdc3-news-2.0-conformance-a-merger"
+          }
+        ]
       }
     ],
-    "description": "<p>Finsemble is a no code/low code smart desktop platform that helps you achieve both visual and logical integration of various types of apps that you already use (web, native, in-house, and third-party, including Citrix virtual apps).</p><p>Connect apps into automated workflows to improve user efficiency and reduce error rates. With <a href='https://documentation.finsemble.com/tutorial-ControllingInformationFlow.html' alt='Controlling information flow through FDC3 in Finsemble'>SelectConnect</a>, you are in full control over which apps communicate and which are excluded.</p><p>Build a fully customizable UI to work across multiple windows and monitors.</p><p>Use our <a href='https://documentation.finsemble.com/tutorial-SDD-01-Welcome.html' alt='The Smart Desktop Designer: fast-track to interoperability'>Smart Desktop Designer</a> to create and share fully functioning, highly customized, integrated desktops in a few hours, no coding knowledge needed.</p>"
+    "description": "<p>interop.io was formed in June 2023 through the merger of Finsemble and Glue42 to create the global powerhouse driving application interoperability in capital markets and beyond. Leveraging FDC3 and workflow automation, interop.io allows clients to create Straight Through Workflows™ and benefit from unparalleled levels of business agility, a more productive workforce and better operational control.</p><p>The firm employs over 170 people including 110 full time R&D and implementation engineers located in New York, Charlottesville, London, and Sofia. For more information, visit <a href='https://interop.io' alt='interop.io website'>interop.io</a>.</p>"
   },
   {
     "title": "FDC3 Workbench",
@@ -106,9 +115,9 @@
   },
   {
     "title": "Glue42",
-    "publisher": "Tick42",
-    "image": "/img/users/Glue42_Logo.png",
-    "infoLink": "https://glue42.com/enterprise/",
+    "publisher": "interop.io",
+    "image": "/img/users/interop.io-primary-1.svg",
+    "infoLink": "https://interop.io/",
     "docsLink": "https://docs.glue42.com/",
     "type": "platform-provider",
     "badges": [],
@@ -129,9 +138,26 @@
             "link": "https://www.finos.org/blog/fdc3-news-1.2-agent-conformance-language-bindings"
           }
         ]
+      },
+       {
+        "src": "/img/community/certified-2.0.png",
+        "items": [
+          {
+            "text": "Glue42 Enterprise v3.20.0.19 / Glue FDC3 v3.2.2 Certified Conformant With FDC3 2.0 Specification on 9th June 2023",
+            "link": "https://www.finos.org/blog/fdc3-news-2.0-conformance-a-merger"
+          },
+          {
+            "text": "Glue42 Core+ v1.5.5 / Glue FDC3 v3.2.2 Certified Conformant With FDC3 2.0 Specification on 9th June 2023",
+            "link": "https://www.finos.org/blog/fdc3-news-2.0-conformance-a-merger"
+          },
+          {
+            "text": "Glue42 Core (@glue42/web-platform - v1.26.1, @glue42/web - v2.21.0, @glue42/fdc3 - v3.2.2) Certified Conformant With FDC3 2.0 Specification on 9th June 2023",
+            "link": "https://www.finos.org/blog/fdc3-news-2.0-conformance-a-merger"
+          }
+        ]
       }
     ],
-    "description": "<p>Glue42 enables organizations to build intelligent desktops that support configurable workflows between web and desktop applications. We’re working with some of the world’s biggest financial organizations to help them optimize complex processes and become more efficient.</p><p>Our flagship product, Glue42 Enterprise, is a desktop application integration platform that helps organizations create a simplified desktop experience by connecting the UI and data of any application, e.g., legacy, in-house or web. The platform supports open-source standards, including FINOS-FDC3, thus reducing delivery time and avoiding vendor lock-in.</p>"
+    "description": "<p>interop.io was formed in June 2023 through the merger of Finsemble and Glue42 to create the global powerhouse driving application interoperability in capital markets and beyond. Leveraging FDC3 and workflow automation, interop.io allows clients to create Straight Through Workflows™ and benefit from unparalleled levels of business agility, a more productive workforce and better operational control.</p><p>The firm employs over 170 people including 110 full time R&D and implementation engineers located in New York, Charlottesville, London, and Sofia. For more information, visit <a href='https://interop.io' alt='interop.io website'>interop.io</a>.</p>"
   },
   {
     "title": "OpenFin",
