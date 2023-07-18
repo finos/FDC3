@@ -509,7 +509,7 @@ Request messages from a Desktop Agent use the following format:
 }
 ```
 
-**Schema**: [https://fdc3.finos.org/schemas/next/bridging/agentRequest.schema.json](/schemas/next/bridging/agentRequest.schema.json)
+**Request Schema**: [https://fdc3.finos.org/schemas/next/bridging/agentRequest.schema.json](/schemas/next/bridging/agentRequest.schema.json)
 
 If the FDC3 API call underlying the request message includes a target (typically defined by an `app` argument, in the form of an AppIdentifier object) it is the responsibility of the Desktop Agent to copy that argument into the `meta.destination` field of the message and to ensure that it includes a `meta.destination.desktopAgent` value. If the target is provided in the FDC3 API call, but without a `meta.destination.desktopAgent` value, the Desktop Agent should assume that the call relates to a local application and does not need to send it to the bridge.
 
@@ -519,7 +519,7 @@ Requests without a `meta.destination` field will be forwarded to all other agent
 
 Request messages forwarded by the Bridge onto other Desktop Agents use the same format as incoming requests from Desktop Agents, with the exception that the `desktopAgent` properties of the `meta.source` field MUST be provided, and should be overwritten by the Bridge (based on the connection that the message was received from) to prevent spoofing of request message origins.
 
-**Schema**: [https://fdc3.finos.org/schemas/next/bridging/bridgeRequest.schema.json](/schemas/next/bridging/bridgeRequest.schema.json)
+**Bridge Request Schema**: [https://fdc3.finos.org/schemas/next/bridging/bridgeRequest.schema.json](/schemas/next/bridging/bridgeRequest.schema.json)
 
 #### Response Messages
 
