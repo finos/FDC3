@@ -1,3 +1,7 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */
 import { ContextItem } from "../store/ContextStore";
 import { v4 as uuidv4 } from "uuid";
 
