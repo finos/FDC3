@@ -117,8 +117,12 @@ If you are an existing individual or corporate user of the FDC3 standard, we wou
 
 ## Roadmap
 
-Work on FDC3 is split into several "streams".  You can view details of the streams on our [Roadmap page](https://fdc3.finos.org/fdc3-roadmap).  All standardization work is carried out in this GitHub repo.
+Work on FDC3 is split into several working groups and releases.  
 
+- Working groups each have their own regular meetings in the [FINOS Community Calendar](https://calendar.google.com/calendar/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig%40group.calendar.google.com).  
+
+- Releases can be tracked on the [FDC3 Milestones](https://github.com/finos/FDC3/milestones) page.
+ 
 ## Contributing
 
 If you'd like to contribute to the FDC3 standard, or have noticed something that needs correcting, the first step is to [raise an issue on the FDC3 Github Repo](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) and describe what you'd like to see changed. There are a number of issue templates that you can choose from [here](https://github.com/finos/FDC3/issues/new/choose).

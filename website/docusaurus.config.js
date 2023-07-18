@@ -57,11 +57,6 @@ module.exports={
           "position": "left"
         },
         {
-          "to": "/fdc3-roadmap",
-          "label": "Roadmap",
-          "position": "left"
-        },
-        {
           "to": "/community",
           "label": "Community",
           "position": "left"
