@@ -146,42 +146,7 @@ export interface AgentErrorResponseMessage {
 export interface AgentResponseMetadata {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
-}
-
-/**
- * Field that represents the source application instance that the response was produced by,
- * or the Desktop Agent if it produced the response without an application.
- *
- * Field that represents the source Desktop Agent that a response was received from.
- *
- * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
- * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
- * response message is returned by the Desktop Agent (or more specifically its resolver)
- * rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no
- * app details are available or are appropriate.
- *
- * Array of DesktopAgentIdentifiers for responses that were not returned to the bridge
- * before the timeout or because an error occurred. May be omitted if all sources responded
- * without errors. MUST include the `desktopAgent` field when returned by the bridge.
- *
- * Array of DesktopAgentIdentifiers for the sources that generated responses to the request.
- * Will contain a single value for individual responses and multiple values for responses
- * that were collated by the bridge. May be omitted if all sources errored. MUST include the
- * `desktopAgent` field when returned by the bridge.
- */
-export interface DesktopAgentIdentifier {
-  /**
-   * Used in Desktop Agent Bridging to attribute or target a message to a
-   * particular Desktop Agent.
-   */
-  desktopAgent: string;
-  [property: string]: any;
 }
 
 /**
@@ -304,11 +269,6 @@ export interface AgentRequestMetadata {
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
  *
- * Field that represents the source application instance that the response was produced by,
- * or the Desktop Agent if it produced the response without an application.
- *
- * Field that represents the source Desktop Agent that a response was received from.
- *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
  * response message is returned by the Desktop Agent (or more specifically its resolver)
@@ -365,11 +325,6 @@ export interface BridgeParticipantIdentifier {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
- *
- * Field that represents the source application instance that the response was produced by,
- * or the Desktop Agent if it produced the response without an application.
- *
- * Field that represents the source Desktop Agent that a response was received from.
  *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
@@ -474,6 +429,31 @@ export interface BridgeErrorResponseMessageMeta {
 }
 
 /**
+ * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
+ * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
+ * response message is returned by the Desktop Agent (or more specifically its resolver)
+ * rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no
+ * app details are available or are appropriate.
+ *
+ * Array of DesktopAgentIdentifiers for responses that were not returned to the bridge
+ * before the timeout or because an error occurred. May be omitted if all sources responded
+ * without errors. MUST include the `desktopAgent` field when returned by the bridge.
+ *
+ * Array of DesktopAgentIdentifiers for the sources that generated responses to the request.
+ * Will contain a single value for individual responses and multiple values for responses
+ * that were collated by the bridge. May be omitted if all sources errored. MUST include the
+ * `desktopAgent` field when returned by the bridge.
+ */
+export interface DesktopAgentIdentifier {
+  /**
+   * Used in Desktop Agent Bridging to attribute or target a message to a
+   * particular Desktop Agent.
+   */
+  desktopAgent: string;
+  [property: string]: any;
+}
+
+/**
  * The error message payload contains details of an error return to the app or agent that
  * raised the original request.
  */
@@ -523,11 +503,6 @@ export interface BridgeRequestMetadata {
  *
  * Field that represents the source application that a request or response was received
  * from, or the source Desktop Agent if it issued the request or response itself.
- *
- * Field that represents the source application instance that the response was produced by,
- * or the Desktop Agent if it produced the response without an application.
- *
- * Field that represents the source Desktop Agent that a response was received from.
  *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
@@ -659,11 +634,6 @@ export interface BroadcastAgentRequestMeta {
  * Field that represents the source application that a request or response was received
  * from, or the source Desktop Agent if it issued the request or response itself.
  *
- * Field that represents the source application instance that the response was produced by,
- * or the Desktop Agent if it produced the response without an application.
- *
- * Field that represents the source Desktop Agent that a response was received from.
- *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
  * response message is returned by the Desktop Agent (or more specifically its resolver)
@@ -775,11 +745,6 @@ export interface BroadcastBridgeRequestMeta {
  *
  * Field that represents the source application that a request or response was received
  * from, or the source Desktop Agent if it issued the request or response itself.
- *
- * Field that represents the source application instance that the response was produced by,
- * or the Desktop Agent if it produced the response without an application.
- *
- * Field that represents the source Desktop Agent that a response was received from.
  *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
@@ -1125,11 +1090,6 @@ export interface FindInstancesAgentErrorResponse {
 export interface FindInstancesAgentErrorResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -1206,11 +1166,6 @@ export interface FindInstancesAgentRequestMeta {
 }
 
 /**
- * Field that represents the source application instance that the response was produced by,
- * or the Desktop Agent if it produced the response without an application.
- *
- * Field that represents the source Desktop Agent that a response was received from.
- *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
  * response message is returned by the Desktop Agent (or more specifically its resolver)
@@ -1338,11 +1293,6 @@ export interface FindInstancesAgentResponse {
 export interface FindInstancesAgentResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -1616,11 +1566,6 @@ export interface FindIntentAgentErrorResponse {
 export interface FindIntentAgentErrorResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -1700,11 +1645,6 @@ export interface FindIntentAgentResponse {
 export interface FindIntentAgentResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -1892,11 +1832,6 @@ export interface FindIntentsByContextAgentErrorResponse {
 export interface FindIntentsByContextAgentErrorResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -1976,11 +1911,6 @@ export interface FindIntentsByContextAgentResponse {
 export interface FindIntentsByContextAgentResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -2138,11 +2068,6 @@ export interface GetAppMetadataAgentErrorResponse {
 export interface GetAppMetadataAgentErrorResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -2221,11 +2146,6 @@ export interface GetAppMetadataAgentResponse {
 export interface GetAppMetadataAgentResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -2382,11 +2302,6 @@ export interface OpenAgentErrorResponse {
 export interface OpenAgentErrorResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -2473,11 +2388,6 @@ export interface OpenAgentRequestPayload {
 /**
  * The application to open on the specified Desktop Agent
  *
- * Field that represents the source application instance that the response was produced by,
- * or the Desktop Agent if it produced the response without an application.
- *
- * Field that represents the source Desktop Agent that a response was received from.
- *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
  * response message is returned by the Desktop Agent (or more specifically its resolver)
@@ -2552,11 +2462,6 @@ export interface OpenAgentResponse {
 export interface OpenAgentResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -2755,11 +2660,6 @@ export interface PrivateChannelBroadcastAgentRequestMeta {
  *
  * Field that represents the source application that a request or response was received
  * from, or the source Desktop Agent if it issued the request or response itself.
- *
- * Field that represents the source application instance that the response was produced by,
- * or the Desktop Agent if it produced the response without an application.
- *
- * Field that represents the source Desktop Agent that a response was received from.
  *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
@@ -3336,11 +3236,6 @@ export interface RaiseIntentAgentErrorResponse {
 export interface RaiseIntentAgentErrorResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -3421,11 +3316,6 @@ export interface RaiseIntentAgentResponse {
 export interface RaiseIntentAgentResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -3629,11 +3519,6 @@ export interface RaiseIntentResultAgentErrorResponse {
 export interface RaiseIntentResultAgentErrorResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -3689,11 +3574,6 @@ export interface RaiseIntentResultAgentResponse {
 export interface RaiseIntentResultAgentResponseMeta {
   requestUuid: string;
   responseUuid: string;
-  /**
-   * Field that represents the source application instance that the response was produced by,
-   * or the Desktop Agent if it produced the response without an application.
-   */
-  source: DesktopAgentIdentifier;
   timestamp: Date;
 }
 
@@ -4641,12 +4521,10 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
   ),
-  DesktopAgentIdentifier: o([{ json: 'desktopAgent', js: 'desktopAgent', typ: '' }], 'any'),
   ErrorResponseMessagePayload: o([{ json: 'error', js: 'error', typ: r('ResponseErrorDetail') }], 'any'),
   AgentRequestMessage: o(
     [
@@ -4707,6 +4585,7 @@ const typeMap: any = {
     ],
     false
   ),
+  DesktopAgentIdentifier: o([{ json: 'desktopAgent', js: 'desktopAgent', typ: '' }], 'any'),
   ResponseErrorMessagePayload: o([{ json: 'error', js: 'error', typ: u(undefined, r('ResponseErrorDetail')) }], 'any'),
   BridgeRequestMessage: o(
     [
@@ -4951,7 +4830,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5003,7 +4881,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5118,7 +4995,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5160,7 +5036,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5255,7 +5130,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5291,7 +5165,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5372,7 +5245,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5408,7 +5280,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5483,7 +5354,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5533,7 +5403,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5898,7 +5767,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5941,7 +5809,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -6037,7 +5904,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -6058,7 +5924,6 @@ const typeMap: any = {
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'responseUuid', js: 'responseUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('DesktopAgentIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
