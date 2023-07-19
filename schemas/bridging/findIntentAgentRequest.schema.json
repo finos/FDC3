@@ -34,7 +34,7 @@
               "$ref": "../context/context.schema.json"
             }
           },
-          "required": ["intent", "context"],
+          "required": ["intent"],
           "additionalProperties": false
         },
         "meta": {
