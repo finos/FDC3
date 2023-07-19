@@ -54,11 +54,6 @@
         }
       ]
     },
-    "ResponseSource": {
-      "title": "Source identifier",
-      "description": "Field that represents the source Desktop Agent that a response was received from.",
-      "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
-    },
     "BridgeRequestSource": {
       "title": "Bridge Source identifier",
       "description": "Field that represents the source application that a request or response was received from, or the source Desktop Agent if it issued the request or response itself.",

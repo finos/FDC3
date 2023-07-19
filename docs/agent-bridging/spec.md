@@ -526,7 +526,7 @@ Request messages forwarded by the Bridge onto other Desktop Agents use the same 
 Response messages from a Desktop Agent back to the Bridge use a similar format that is differentiated from requests by the presence of a `meta.responseUuid` field. They MUST also quote the `meta.requestUuid` that they are responding to.
 
 :::info
-Response messages do not include a `meta.destination` as the routing of responses is handled by the Bridge via the `meta.requestUuid` field.
+Response messages do not include a `meta.destination` as the routing of responses is handled by the Bridge via the `meta.requestUuid` field. They also do not include a `source` field as responses are currently always from the Desktop Agent, and the bridge is required to provide this information itself to prevent spoofing.
 :::
 
 There are two types of each response message, a successful response and an error response.
@@ -572,10 +572,7 @@ There are two types of each response message, a successful response and an error
         /** UUID for this specific response message. */
         responseUuid:  string,
         /** Timestamp at which request was generated */
-        timestamp:  Date,
-        /** AppIdentifiers or DesktopAgentIdentifiers for the source
-         *  that generated the response to the request. */
-        source?: (AppIdentifier | DesktopAgentIdentifier),
+        timestamp:  Date
     }
 }
 ```
@@ -602,10 +599,7 @@ There are two types of each response message, a successful response and an error
         /** UUID for this specific response message. */
         responseUuid:  string,
         /** Timestamp at which request was generated */
-        timestamp:  Date,
-        /** AppIdentifiers or DesktopAgentIdentifiers for the source
-         *  that generated the response to the request. */
-        source?: (AppIdentifier | DesktopAgentIdentifier),
+        timestamp:  Date
     }
 }
 ```
@@ -614,9 +608,9 @@ There are two types of each response message, a successful response and an error
 
 ##### Response Messages Collated and Forwarded by the Bridge
 
-Responses from individual Desktop Agents are collated by the Bridge and are forwarded on to the the Desktop Agent that initiated the interaction. The format used is very similar to that used for responses by the Desktop Agents, with the exception of the source information in the `meta` field. Specifically, the `meta.source` field is replaced by two arrays, `meta.sources` and `meta.errorSources`, which provide details on the Desktop agents that responded normally or responded with errors. The detail of any errors returned (in the `payload.error` field of a Desktop Agent's response) is collected up into a `meta.errorDetails` field. Moving the error details from the `payload` to the `meta` field enables the return of a valid response to the originating Desktop Agent in cases where some agents produced valid responses, and others produced errors.
+Responses from individual Desktop Agents are collated by the Bridge and are forwarded on to the the Desktop Agent that initiated the interaction. The format used is very similar to that used for responses by the Desktop Agents, with the exception of the source information in the `meta` field. Specifically, the `meta.source` field does not need to be provided by agents, as responses are currently always provided by the desktop agent, whose details will be provided by the  bridge when it receives the response. In responses from the bridge, the `meta.source` is replaced by two arrays, `meta.sources` and `meta.errorSources`, which provide details on the Desktop agents that responded normally or responded with errors. The detail of any errors returned (in the `payload.error` field of a Desktop Agent's response) is collected up into a `meta.errorDetails` field. Moving the error details from the `payload` to the `meta` field enables the return of a valid response to the originating Desktop Agent in cases where some agents produced valid responses, and others produced errors.
 
-Hence, for responses forwarded by the bridge there is only a single type of response messages from the Bridge returned to agents, one for requests that received at least one successful response, and another for use when all agents (or the targeted agent) returned an error.
+Hence, for responses forwarded by the bridge there are two type of response messages from the Bridge returned to agents, one for requests that received at least one successful response, and another for use when all agents (or the targeted agent) returned an error.
 
 ##### At Least One Successful Response
 
@@ -799,7 +793,7 @@ For example, a `raiseIntent` targeted at an app instance that no longer exists m
 }
 ```
 
-For messages that target a specific agent, the Desktop Agent Bridge will augment the message with a `source` field and return it to the calling agent and the app that made the original request.
+For messages that target a specific agent, the Desktop Agent Bridge will augment the message with source information and return it to the calling agent, which will then respond to the app that made the original request.
 
 If all agents (or the targeted agent) return errors, then a suitable error string should be forwarded in the `payload.error` field as returned by at least one of the agents. This allows the agent that made the original request to return that error to the app that made the original API call. All agents that returned errors should be listed in the `errorSources` array and the error message strings they returned (or that were applied because they timed out) listed in the `errorDetails` array (in the same order as `errorSources`).
 

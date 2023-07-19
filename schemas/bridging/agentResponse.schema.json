@@ -44,14 +44,9 @@
         },
         "timestamp": {
           "$ref": "common.schema.json#/$defs/Timestamp"
-        },
-        "source": {
-          "title": "Response Source identifier",
-          "description": "Field that represents the source application instance that the response was produced by, or the Desktop Agent if it produced the response without an application.",
-          "$ref": "common.schema.json#/$defs/ResponseSource"
         }
       },
-      "required": ["requestUuid", "responseUuid", "timestamp", "source"],
+      "required": ["requestUuid", "responseUuid", "timestamp"],
       "additionalProperties": false
     }
   }
