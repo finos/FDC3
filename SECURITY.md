@@ -14,6 +14,6 @@ Use this section to tell people about which versions of your project are current
 
 If you uncover vulnerabilities in this software, please contact `help@finos.org` privately.  We aim to respond within 3 working days.
 
-## Mend
+## FINOS Security Scanning
 
-All project maintainers should be able to view vulnerabilities on [Mend.io](https://mend.io).  If you can't access this, please contact [FINOS Help](mailto:help@finos.org).
+The FDC3 project is scanned using [GitHub Actions](https://github.com/finos/FDC3/actions) provided by the [FINOS Security Scanning](https://github.com/finos/security-scanning) project. If, as a maintainer, you can't access the results of these, please contact [FINOS Help](mailto:help@finos.org).
