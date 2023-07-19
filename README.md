@@ -51,17 +51,17 @@
 
 # How Does It Work?
 
-FDC3 includes a standardized API for a Desktop agent, an OpenAPI App Directory, standard verbs to invoke actions between applications (called "intents") and standard formats for data passed between applications (called "context data").
+FDC3 includes a standardized API for a Desktop agent, an OpenAPI App Directory, standard verbs to invoke actions between applications (called "intents"), standard formats for data passed between applications (called "context data") and a wire-protocol for Desktop Agents to communicate with each other (called "Desktop Agent Bridging").
 
-Hence, the standard currently consists of four parts:
+Hence, the standard currently consists of five parts:
 
 1. [API Part](https://fdc3.finos.org/docs/api/spec)
 2. [App Directory Part](https://fdc3.finos.org/docs/app-directory/overview)
 3. [Intents part](https://fdc3.finos.org/docs/intents/spec)
 4. [Context Data Part](https://fdc3.finos.org/docs/context/spec)
+5. [Agent Bridging Part](https://fdc3.finos.org/docs/next/agent-bridging/spec) [`@experimental`](https://fdc3.finos.org/docs/fdc3-compliance#experimental-features)
 
-The specifications are informed by agreed [business use cases](https://fdc3.finos.org/docs/use-cases/overview),
-and implemented and used by leading [financial industry participants](https://fdc3.finos.org/community#type-all).
+The specifications are informed by agreed [business use cases](https://fdc3.finos.org/docs/use-cases/overview), and implemented and used by leading [financial industry participants](https://fdc3.finos.org/community#type-all).
 
 ## More Resources
 
