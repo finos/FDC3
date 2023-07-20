@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, BaseImplementationMetadata, AgentErrorResponseMessage, AgentRequestMessage, AgentResponseMessage, BridgeErrorResponseMessage, BridgeRequestMessage, BridgeResponseMessage, BroadcastAgentRequest, BroadcastBridgeRequest, ConnectionStepMessage, ConnectionStep2Hello, ConnectionStep3Handshake, ConnectionStep4AuthenticationFailed, ConnectionStep6ConnectedAgentsUpdate, FindInstancesAgentErrorResponse, FindInstancesAgentRequest, FindInstancesAgentResponse, FindInstancesBridgeErrorResponse, FindInstancesBridgeRequest, FindInstancesBridgeResponse, FindIntentAgentErrorResponse, FindIntentsAgentRequest, FindIntentAgentResponse, FindIntentBridgeErrorResponse, FindIntentBridgeRequest, FindIntentBridgeResponse, FindIntentsByContextAgentErrorResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, FindIntentsByContextBridgeErrorResponse, FindIntentsByContextBridgeRequest, FindIntentsByContextBridgeResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataBridgeErrorResponse, GetAppMetadataBridgeRequest, GetAppMetadataBridgeResponse, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenBridgeErrorResponse, OpenBridgeRequest, OpenBridgeResponse, PrivateChannelBroadcastAgentRequest, PrivateChannelBroadcastBridgeRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelEventListenerAddedBridgeRequest, PrivateChannelEventListenerRemovedAgentRequest, PrivateChannelEventListenerRemovedBridgeRequest, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerBridgeRequest, PrivateChannelOnDisconnectAgentRequest, PrivateChannelOnDisconnectBridgeRequest, PrivateChannelOnUnsubscribeAgentRequest, PrivateChannelOnUnsubscribeBridgeRequest, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentBridgeErrorResponse, RaiseIntentBridgeRequest, RaiseIntentBridgeResponse, RaiseIntentResultAgentErrorResponse, RaiseIntentResultAgentResponse, RaiseIntentResultBridgeErrorResponse, RaiseIntentResultBridgeResponse, Context } from "./file";
+//   import { Convert, BaseImplementationMetadata, AgentErrorResponseMessage, AgentRequestMessage, AgentResponseMessage, BridgeErrorResponseMessage, BridgeRequestMessage, BridgeResponseMessage, BroadcastAgentRequest, BroadcastBridgeRequest, ConnectionStepMessage, ConnectionStep2Hello, ConnectionStep3Handshake, ConnectionStep4AuthenticationFailed, ConnectionStep6ConnectedAgentsUpdate, FindInstancesAgentErrorResponse, FindInstancesAgentRequest, FindInstancesAgentResponse, FindInstancesBridgeErrorResponse, FindInstancesBridgeRequest, FindInstancesBridgeResponse, FindIntentAgentErrorResponse, FindIntentAgentRequest, FindIntentAgentResponse, FindIntentBridgeErrorResponse, FindIntentBridgeRequest, FindIntentBridgeResponse, FindIntentsByContextAgentErrorResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, FindIntentsByContextBridgeErrorResponse, FindIntentsByContextBridgeRequest, FindIntentsByContextBridgeResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataBridgeErrorResponse, GetAppMetadataBridgeRequest, GetAppMetadataBridgeResponse, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenBridgeErrorResponse, OpenBridgeRequest, OpenBridgeResponse, PrivateChannelBroadcastAgentRequest, PrivateChannelBroadcastBridgeRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelEventListenerAddedBridgeRequest, PrivateChannelEventListenerRemovedAgentRequest, PrivateChannelEventListenerRemovedBridgeRequest, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerBridgeRequest, PrivateChannelOnDisconnectAgentRequest, PrivateChannelOnDisconnectBridgeRequest, PrivateChannelOnUnsubscribeAgentRequest, PrivateChannelOnUnsubscribeBridgeRequest, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentBridgeErrorResponse, RaiseIntentBridgeRequest, RaiseIntentBridgeResponse, RaiseIntentResultAgentErrorResponse, RaiseIntentResultAgentResponse, RaiseIntentResultBridgeErrorResponse, RaiseIntentResultBridgeResponse, Context } from "./file";
 //
 //   const schemasAPIAPISchema = Convert.toSchemasAPIAPISchema(json);
 //   const baseImplementationMetadata = Convert.toBaseImplementationMetadata(json);
@@ -25,7 +25,7 @@
 //   const findInstancesBridgeRequest = Convert.toFindInstancesBridgeRequest(json);
 //   const findInstancesBridgeResponse = Convert.toFindInstancesBridgeResponse(json);
 //   const findIntentAgentErrorResponse = Convert.toFindIntentAgentErrorResponse(json);
-//   const findIntentsAgentRequest = Convert.toFindIntentsAgentRequest(json);
+//   const findIntentAgentRequest = Convert.toFindIntentAgentRequest(json);
 //   const findIntentAgentResponse = Convert.toFindIntentAgentResponse(json);
 //   const findIntentBridgeErrorResponse = Convert.toFindIntentBridgeErrorResponse(json);
 //   const findIntentBridgeRequest = Convert.toFindIntentBridgeRequest(json);
@@ -1581,12 +1581,12 @@ export interface FindIntentAgentErrorResponsePayload {
  *
  * A request message from a Desktop Agent to the Bridge.
  */
-export interface FindIntentsAgentRequest {
-  meta: FindIntentsAgentRequestMeta;
+export interface FindIntentAgentRequest {
+  meta: FindIntentAgentRequestMeta;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
-  payload: FindIntentsAgentRequestPayload;
+  payload: FindIntentAgentRequestPayload;
   /**
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -1597,7 +1597,7 @@ export interface FindIntentsAgentRequest {
 /**
  * Metadata for a request message sent by Desktop Agents to the Bridge.
  */
-export interface FindIntentsAgentRequestMeta {
+export interface FindIntentAgentRequestMeta {
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
@@ -1616,7 +1616,7 @@ export interface FindIntentsAgentRequestMeta {
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
-export interface FindIntentsAgentRequestPayload {
+export interface FindIntentAgentRequestPayload {
   context?: ContextElement;
   intent: string;
 }
@@ -3930,12 +3930,12 @@ export class Convert {
     return JSON.stringify(uncast(value, r('FindIntentAgentErrorResponse')), null, 2);
   }
 
-  public static toFindIntentsAgentRequest(json: string): FindIntentsAgentRequest {
-    return cast(JSON.parse(json), r('FindIntentsAgentRequest'));
+  public static toFindIntentAgentRequest(json: string): FindIntentAgentRequest {
+    return cast(JSON.parse(json), r('FindIntentAgentRequest'));
   }
 
-  public static findIntentsAgentRequestToJson(value: FindIntentsAgentRequest): string {
-    return JSON.stringify(uncast(value, r('FindIntentsAgentRequest')), null, 2);
+  public static findIntentAgentRequestToJson(value: FindIntentAgentRequest): string {
+    return JSON.stringify(uncast(value, r('FindIntentAgentRequest')), null, 2);
   }
 
   public static toFindIntentAgentResponse(json: string): FindIntentAgentResponse {
@@ -5000,15 +5000,15 @@ const typeMap: any = {
     false
   ),
   FindIntentAgentErrorResponsePayload: o([{ json: 'error', js: 'error', typ: r('ErrorMessage') }], false),
-  FindIntentsAgentRequest: o(
+  FindIntentAgentRequest: o(
     [
-      { json: 'meta', js: 'meta', typ: r('FindIntentsAgentRequestMeta') },
-      { json: 'payload', js: 'payload', typ: r('FindIntentsAgentRequestPayload') },
+      { json: 'meta', js: 'meta', typ: r('FindIntentAgentRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('FindIntentAgentRequestPayload') },
       { json: 'type', js: 'type', typ: r('RequestMessageType') },
     ],
     false
   ),
-  FindIntentsAgentRequestMeta: o(
+  FindIntentAgentRequestMeta: o(
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: u(undefined, r('SourceIdentifier')) },
@@ -5017,7 +5017,7 @@ const typeMap: any = {
     ],
     false
   ),
-  FindIntentsAgentRequestPayload: o(
+  FindIntentAgentRequestPayload: o(
     [
       { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
       { json: 'intent', js: 'intent', typ: '' },

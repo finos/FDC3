@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/bridging/findIntentAgentRequest.schema.json",
-  "title": "FindIntents Agent Request",
+  "title": "FindIntent Agent Request",
   "type": "object",
   "allOf": [
     {
