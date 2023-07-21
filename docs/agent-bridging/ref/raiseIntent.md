@@ -215,7 +215,7 @@ The bridge will fill in the `intentResolution.source.DesktopAgent` & `source.des
 }
 ```
 
-When `Slack` produces an `IntentResult` from its `IntentHandler`, or the intent handler finishes running without returning a result, it should send a further `raiseIntentResultResponse` message to indicate that its finished running and to pass any `IntentResult` onto the raising application (setting either `payload.context` or `payload.channel` to indicate the type of the `IntentResult`).
+When `Slack` produces an `IntentResult` from its `IntentHandler`, or the intent handler finishes running without returning a result, it should send a further `raiseIntentResultResponse` message to indicate that its finished running and to pass any `IntentResult` onto the raising application (setting either `payload.context` or `payload.channel` to indicate the type of the `IntentResult`). There is no need to provide a `source` field in this response as the source information was already provided in the `raiseIntentResponse` message preceeding it.
 
 ```json
 // agent-B -> DAB
@@ -233,11 +233,7 @@ When `Slack` produces an `IntentResult` from its `IntentHandler`, or the intent 
     "meta": {
         "requestUuid": "<requestUuid>",
         "responseUuid": "<responseUuid 2>", //a different UUID should be used for the result response
-        "timestamp": "2020-03-...",
-        "sources": [{
-            "appId": "Slack",
-            "instanceId": "e36d43e1-4fd3-447a-a227-38ec48a92706" //instance Id should be included now that its known
-        }]
+        "timestamp": "2020-03-..."
     }
 }
 ```
@@ -261,11 +257,7 @@ Finally, the bridge augments the response with `sources[0].desktopAgent` and pas
         "requestUuid": "<requestUuid>",
         "responseUuid": "<responseUuid 2>",
         "timestamp": "2020-03-...",
-        "sources": [{
-            "appId": "Slack",
-            "instanceId": "e36d43e1-4fd3-447a-a227-38ec48a92706",
-            "desktopAgent": "agent-B" // added by DAB
-        }]
+        "sources": [{ "desktopAgent": "agent-B" }] // added by DAB
     }
 }
 ```
@@ -281,11 +273,7 @@ If the `IntentHandler` returned `void` rather than an intent result `payload` sh
         "requestUuid": "<requestUuid>",
         "responseUuid": "<responseUuid 2>",
         "timestamp": "2020-03-...",
-        "sources": [{
-            "appId": "Slack",
-            "instanceId": "e36d43e1-4fd3-447a-a227-38ec48a92706",
-            "desktopAgent": "agent-B" // added by DAB
-        }]
+        "sources": [{ "desktopAgent": "agent-B" }] // added by DAB
     }
 }
 ```
