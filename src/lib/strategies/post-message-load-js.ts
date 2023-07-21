@@ -24,7 +24,7 @@ export const supplier: Supplier = (url: string, checker: AppChecker, detailsReso
                 const origin = event.origin;
                 const source = event.source as Window
                 if (checker(source)) {
-                    console.log(`API Request Origin:  ${origin} Source: ${source}`);
+                    console.log(`API Request Origin:  ${origin}`);
                     source.postMessage(createResponseMessage(source), origin);
                 }
             }
