@@ -26,7 +26,7 @@
           "type": "object",
           "properties": {
             "app": {
-              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+              "$ref": "common.schema.json#/$defs/AppDestination"
             }
           },
           "required": ["app"],
