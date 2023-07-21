@@ -149,6 +149,7 @@ The bridge receives the response, augments the appMetadata with a `desktopAgent`
         "requestUuid": "<requestUuid>",
         "responseUuid":  "<responseUuidAgentB>",
         "timestamp":  "2020-03-...",
+        "sources": [{ "desktopAgent": "agent-B" }]
     }
 }
 ```
