@@ -18,7 +18,7 @@ let appMetadata = await fdc3.getAppMetadata(appIdentifier);
 ```
 
 :::info
-`fdc3.getAppMetadata` calls should only involve the Desktop Agent Bridge where a `desktopAgent` field appears in the AppIdentifier being queried, all other calls should be handled locally by the Desktop Agent.
+`fdc3.getAppMetadata` calls should only involve the Desktop Agent Bridge where a `desktopAgent` field appears in the AppIdentifier being queried, all other calls should be handled locally by the Desktop Agent. Hence, the `payload.app.desktopAgent` is required on all requests.
 :::
 
 ## Message exchange
