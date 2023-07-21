@@ -5,27 +5,6 @@
   "type": "object",
   "description": "Common elements referenced by other schemas",
   "$defs": {
-    "AgentRequestMeta": {
-      "title": "Agent Request Metadata",
-      "description": "Metadata for a request message sent by Desktop Agents to the Bridge.",
-      "type": "object",
-      "properties": {
-        "requestUuid": {
-          "$ref": "#/$defs/RequestUuid"
-        },
-        "timestamp": {
-          "$ref": "#/$defs/Timestamp"
-        },
-        "source": {
-          "$ref": "#/$defs/Source"
-        },
-        "destination": {
-          "$ref": "#/$defs/Destination"
-        }
-      },
-      "required": ["requestUuid", "timestamp"],
-      "additionalProperties": false
-    },
     "RequestUuid": {
       "title": "Request UUID",
       "type": "string",
@@ -54,9 +33,31 @@
         }
       ]
     },
-    "BridgeRequestSource": {
-      "title": "Bridge Source identifier",
-      "description": "Field that represents the source application that a request or response was received from, or the source Desktop Agent if it issued the request or response itself.",
+    "AppRequestSource": {
+      "title": "App Source identifier",
+      "description": "Field that represents the source application that a request or response was received from.",
+      "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+    },
+    "AgentDestination": {
+      "title": "Agent Destination identifier",
+      "description": "Field that represents a destination Desktop Agent that a request is to be sent to.",
+      "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+    },
+    "AppDestination": {
+      "title": "App Destination identifier",
+      "description": "Field that represents a destination App on a remote Desktop Agent that a request is to be sent to.",
+      "allOf": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+        },
+        {
+          "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+        }
+      ]
+    },
+    "BridgeParticipantIdentifier": {
+      "title": "Bridge Participant Identifier",
+      "description": "Represents Identifiers that MUST include the Desktop Agent name and MAY identify a specific app or instance.",
       "oneOf": [
         {
           "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
@@ -73,25 +74,7 @@
         }
       ]
     },
-    "BridgeParticipantIdentifier": {
-      "title": "Bridge Participant Identifier",
-      "description": "Represents Identifiers that MUST include the Desktop Agent name and MAY identify a specific app or instance.",
-      "type": "object",
-      "oneOf": [
-        {
-          "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
-        },
-        {
-          "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
-        }
-      ]
-    },
-    "Destination": {
-      "title": "Destination identifier",
-      "description": "Optional field that represents the destination that the request should be routed to. Must be set by the Desktop Agent for API calls that include a target app parameter and must include the name of the Desktop Agent hosting the target application.",
-      "$ref": "#/$defs/BridgeParticipantIdentifier"
-    },
-    "ResponseSources": {
+    "BridgeResponseSources": {
       "title": "Desktop Agents that responded",
       "type": "array",
       "items": [
@@ -101,7 +84,7 @@
       ],
       "description": "Array of DesktopAgentIdentifiers for the sources that generated responses to the request. Will contain a single value for individual responses and multiple values for responses that were collated by the bridge. May be omitted if all sources errored. MUST include the `desktopAgent` field when returned by the bridge."
     },
-    "ResponseErrorSources": {
+    "BridgeResponseErrorSources": {
       "title": "Desktop Agents that errored",
       "type": "array",
       "items": [
@@ -120,7 +103,7 @@
         { "$ref": "../api/api.schema.json#/definitions/BridgingError" }
       ]
     },
-    "ResponseErrorDetails": {
+    "BridgeResponseErrorDetails": {
       "title": "Response Error Details",
       "type": "array",
       "items": {

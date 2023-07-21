@@ -251,23 +251,8 @@ export interface AgentRequestMetadata {
  * specific app or instance.
  *
  * Field that represents the source application that the request was received from, or the
- * source Desktop Agent if it issued the request itself.
- *
- * Field that represents the source application that a request or response was received
- * from, or the source Desktop Agent if it issued the request or response itself.
- *
- * Identifies an application, or instance of an application, and is used to target FDC3 API
- * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
- * instances.
- *
- * Will always include at least an `appId` field, which uniquely identifies a specific app.
- *
- * If the `instanceId` field is set then the `AppMetadata` object represents a specific
- * instance of the application that may be addressed using that Id.
- *
- * Identifier for the app instance that was selected (or started) to resolve the intent.
- * `source.instanceId` MUST be set, indicating the specific app instance that
- * received the intent.
+ * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+ * be set by the bridge.
  *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
@@ -283,21 +268,42 @@ export interface AgentRequestMetadata {
  * Will contain a single value for individual responses and multiple values for responses
  * that were collated by the bridge. May be omitted if all sources errored. MUST include the
  * `desktopAgent` field when returned by the bridge.
+ *
+ * Field that represents a destination Desktop Agent that a request is to be sent to.
+ *
+ * Field that represents a destination App on a remote Desktop Agent that a request is to be
+ * sent to.
+ *
+ * Identifies an application, or instance of an application, and is used to target FDC3 API
+ * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
+ * instances.
+ *
+ * Will always include at least an `appId` field, which uniquely identifies a specific app.
+ *
+ * If the `instanceId` field is set then the `AppMetadata` object represents a specific
+ * instance of the application that may be addressed using that Id.
+ *
+ * Field that represents the source application that a request or response was received
+ * from.
+ *
+ * Identifier for the app instance that was selected (or started) to resolve the intent.
+ * `source.instanceId` MUST be set, indicating the specific app instance that
+ * received the intent.
  */
 export interface BridgeParticipantIdentifier {
+  /**
+   * Used in Desktop Agent Bridging to attribute or target a message to a
+   * particular Desktop Agent.
+   *
+   * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+   * identify the Desktop Agent to target.
+   */
+  desktopAgent: string;
   /**
    * The unique application identifier located within a specific application directory
    * instance. An example of an appId might be 'app@sub.root'
    */
   appId?: string;
-  /**
-   * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
-   * identify the Desktop Agent to target.
-   *
-   * Used in Desktop Agent Bridging to attribute or target a message to a
-   * particular Desktop Agent.
-   */
-  desktopAgent?: string;
   /**
    * An optional instance identifier, indicating that this object represents a specific
    * instance of the application described.
@@ -322,6 +328,9 @@ export interface BridgeParticipantIdentifier {
  * If the `instanceId` field is set then the `AppMetadata` object represents a specific
  * instance of the application that may be addressed using that Id.
  *
+ * Field that represents the source application that a request or response was received
+ * from.
+ *
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
@@ -340,6 +349,8 @@ export interface BridgeParticipantIdentifier {
  * Will contain a single value for individual responses and multiple values for responses
  * that were collated by the bridge. May be omitted if all sources errored. MUST include the
  * `desktopAgent` field when returned by the bridge.
+ *
+ * Field that represents a destination Desktop Agent that a request is to be sent to.
  */
 export interface SourceIdentifier {
   /**
@@ -443,6 +454,8 @@ export interface BridgeErrorResponseMessageMeta {
  * Will contain a single value for individual responses and multiple values for responses
  * that were collated by the bridge. May be omitted if all sources errored. MUST include the
  * `desktopAgent` field when returned by the bridge.
+ *
+ * Field that represents a destination Desktop Agent that a request is to be sent to.
  */
 export interface DesktopAgentIdentifier {
   /**
@@ -491,67 +504,11 @@ export interface BridgeRequestMetadata {
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
-  source: BridgeSourceIdentifier;
+  source: BridgeParticipantIdentifier;
   timestamp: Date;
-}
-
-/**
- * Field that represents the source application that the request was received from, or the
- * source Desktop Agent if it issued the request itself.
- *
- * Field that represents the source application that a request or response was received
- * from, or the source Desktop Agent if it issued the request or response itself.
- *
- * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
- * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
- * response message is returned by the Desktop Agent (or more specifically its resolver)
- * rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no
- * app details are available or are appropriate.
- *
- * Array of DesktopAgentIdentifiers for responses that were not returned to the bridge
- * before the timeout or because an error occurred. May be omitted if all sources responded
- * without errors. MUST include the `desktopAgent` field when returned by the bridge.
- *
- * Array of DesktopAgentIdentifiers for the sources that generated responses to the request.
- * Will contain a single value for individual responses and multiple values for responses
- * that were collated by the bridge. May be omitted if all sources errored. MUST include the
- * `desktopAgent` field when returned by the bridge.
- *
- * Identifies an application, or instance of an application, and is used to target FDC3 API
- * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
- * instances.
- *
- * Will always include at least an `appId` field, which uniquely identifies a specific app.
- *
- * If the `instanceId` field is set then the `AppMetadata` object represents a specific
- * instance of the application that may be addressed using that Id.
- *
- * Identifier for the app instance that was selected (or started) to resolve the intent.
- * `source.instanceId` MUST be set, indicating the specific app instance that
- * received the intent.
- */
-export interface BridgeSourceIdentifier {
-  /**
-   * Used in Desktop Agent Bridging to attribute or target a message to a
-   * particular Desktop Agent.
-   *
-   * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
-   * identify the Desktop Agent to target.
-   */
-  desktopAgent: string;
-  /**
-   * The unique application identifier located within a specific application directory
-   * instance. An example of an appId might be 'app@sub.root'
-   */
-  appId?: string;
-  /**
-   * An optional instance identifier, indicating that this object represents a specific
-   * instance of the application described.
-   */
-  instanceId?: string;
-  [property: string]: any;
 }
 
 /**
@@ -624,6 +581,9 @@ export interface BroadcastAgentRequestMeta {
  * If the `instanceId` field is set then the `AppMetadata` object represents a specific
  * instance of the application that may be addressed using that Id.
  *
+ * Field that represents the source application that a request or response was received
+ * from.
+ *
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
@@ -648,6 +608,8 @@ export interface BroadcastAgentRequestMeta {
  * Will contain a single value for individual responses and multiple values for responses
  * that were collated by the bridge. May be omitted if all sources errored. MUST include the
  * `desktopAgent` field when returned by the bridge.
+ *
+ * Field that represents a destination Desktop Agent that a request is to be sent to.
  */
 export interface SourceObject {
   /**
@@ -720,7 +682,8 @@ export interface BroadcastBridgeRequestMeta {
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
   source: MetaSource;
   timestamp: Date;
@@ -736,15 +699,23 @@ export interface BroadcastBridgeRequestMeta {
  * If the `instanceId` field is set then the `AppMetadata` object represents a specific
  * instance of the application that may be addressed using that Id.
  *
+ * Field that represents the source application that a request or response was received
+ * from.
+ *
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
  *
- * Field that represents the source application that the request was received from, or the
- * source Desktop Agent if it issued the request itself.
+ * Optional field that represents the destination that the request should be routed to. Must
+ * be set by the Desktop Agent for API calls that include a target app parameter and must
+ * include the name of the Desktop Agent hosting the target application.
  *
- * Field that represents the source application that a request or response was received
- * from, or the source Desktop Agent if it issued the request or response itself.
+ * Represents Identifiers that MUST include the Desktop Agent name and MAY identify a
+ * specific app or instance.
+ *
+ * Field that represents the source application that the request was received from, or the
+ * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+ * be set by the bridge.
  *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
@@ -760,6 +731,11 @@ export interface BroadcastBridgeRequestMeta {
  * Will contain a single value for individual responses and multiple values for responses
  * that were collated by the bridge. May be omitted if all sources errored. MUST include the
  * `desktopAgent` field when returned by the bridge.
+ *
+ * Field that represents a destination Desktop Agent that a request is to be sent to.
+ *
+ * Field that represents a destination App on a remote Desktop Agent that a request is to be
+ * sent to.
  */
 export interface MetaSource {
   /**
@@ -1155,7 +1131,7 @@ export interface FindInstancesAgentRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: PurpleBridgeParticipantIdentifier;
+  destination?: DestinationObject;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
@@ -1181,6 +1157,8 @@ export interface FindInstancesAgentRequestMeta {
  * that were collated by the bridge. May be omitted if all sources errored. MUST include the
  * `desktopAgent` field when returned by the bridge.
  *
+ * Field that represents a destination Desktop Agent that a request is to be sent to.
+ *
  * Optional field that represents the destination that the request should be routed to. Must
  * be set by the Desktop Agent for API calls that include a target app parameter and must
  * include the name of the Desktop Agent hosting the target application.
@@ -1189,10 +1167,11 @@ export interface FindInstancesAgentRequestMeta {
  * specific app or instance.
  *
  * Field that represents the source application that the request was received from, or the
- * source Desktop Agent if it issued the request itself.
+ * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+ * be set by the bridge.
  *
- * Field that represents the source application that a request or response was received
- * from, or the source Desktop Agent if it issued the request or response itself.
+ * Field that represents a destination App on a remote Desktop Agent that a request is to be
+ * sent to.
  *
  * Identifies an application, or instance of an application, and is used to target FDC3 API
  * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
@@ -1203,11 +1182,14 @@ export interface FindInstancesAgentRequestMeta {
  * If the `instanceId` field is set then the `AppMetadata` object represents a specific
  * instance of the application that may be addressed using that Id.
  *
+ * Field that represents the source application that a request or response was received
+ * from.
+ *
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
  */
-export interface PurpleBridgeParticipantIdentifier {
+export interface DestinationObject {
   /**
    * Used in Desktop Agent Bridging to attribute or target a message to a
    * particular Desktop Agent.
@@ -1245,6 +1227,9 @@ export interface FindInstancesAgentRequestPayload {
  *
  * If the `instanceId` field is set then the `AppMetadata` object represents a specific
  * instance of the application that may be addressed using that Id.
+ *
+ * Field that represents the source application that a request or response was received
+ * from.
  *
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
@@ -1486,11 +1471,12 @@ export interface FindInstancesBridgeRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: PurpleBridgeParticipantIdentifier;
+  destination?: DestinationObject;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
   source: MetaSource;
   timestamp: Date;
@@ -1749,9 +1735,10 @@ export interface FindIntentBridgeRequestMeta {
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
-  source: BridgeSourceIdentifier;
+  source: BridgeParticipantIdentifier;
   timestamp: Date;
   /**
    * Optional field that represents the destination that the request should be routed to. Must
@@ -1986,7 +1973,8 @@ export interface FindIntentsByContextBridgeRequestMeta {
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
   source: MetaSource;
   timestamp: Date;
@@ -2105,13 +2093,13 @@ export interface GetAppMetadataAgentRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: PurpleBridgeParticipantIdentifier;
+  destination?: DestinationObject;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
    * source Desktop Agent if it issued the request itself.
    */
-  source?: SourceObject;
+  source?: SourceIdentifier;
   timestamp: Date;
 }
 
@@ -2222,14 +2210,91 @@ export interface GetAppMetadataBridgeRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: PurpleBridgeParticipantIdentifier;
+  destination?: DestinationObject;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
-  source: MetaSource;
+  source: MetaSourceObject;
   timestamp: Date;
+}
+
+/**
+ * Field that represents the source application that the request was received from, or the
+ * source Desktop Agent if it issued the request itself.
+ *
+ * Field that represents the source application that a request or response was received
+ * from, or the source Desktop Agent if it issued the request or response itself.
+ *
+ * Identifies an application, or instance of an application, and is used to target FDC3 API
+ * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
+ * instances.
+ *
+ * Will always include at least an `appId` field, which uniquely identifies a specific app.
+ *
+ * If the `instanceId` field is set then the `AppMetadata` object represents a specific
+ * instance of the application that may be addressed using that Id.
+ *
+ * Field that represents the source application that a request or response was received
+ * from.
+ *
+ * Identifier for the app instance that was selected (or started) to resolve the intent.
+ * `source.instanceId` MUST be set, indicating the specific app instance that
+ * received the intent.
+ *
+ * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
+ * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
+ * response message is returned by the Desktop Agent (or more specifically its resolver)
+ * rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no
+ * app details are available or are appropriate.
+ *
+ * Array of DesktopAgentIdentifiers for responses that were not returned to the bridge
+ * before the timeout or because an error occurred. May be omitted if all sources responded
+ * without errors. MUST include the `desktopAgent` field when returned by the bridge.
+ *
+ * Array of DesktopAgentIdentifiers for the sources that generated responses to the request.
+ * Will contain a single value for individual responses and multiple values for responses
+ * that were collated by the bridge. May be omitted if all sources errored. MUST include the
+ * `desktopAgent` field when returned by the bridge.
+ *
+ * Field that represents a destination Desktop Agent that a request is to be sent to.
+ *
+ * Optional field that represents the destination that the request should be routed to. Must
+ * be set by the Desktop Agent for API calls that include a target app parameter and must
+ * include the name of the Desktop Agent hosting the target application.
+ *
+ * Represents Identifiers that MUST include the Desktop Agent name and MAY identify a
+ * specific app or instance.
+ *
+ * Field that represents the source application that the request was received from, or the
+ * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+ * be set by the bridge.
+ *
+ * Field that represents a destination App on a remote Desktop Agent that a request is to be
+ * sent to.
+ */
+export interface MetaSourceObject {
+  /**
+   * The unique application identifier located within a specific application directory
+   * instance. An example of an appId might be 'app@sub.root'
+   */
+  appId?: string;
+  /**
+   * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+   * identify the Desktop Agent to target.
+   *
+   * Used in Desktop Agent Bridging to attribute or target a message to a
+   * particular Desktop Agent.
+   */
+  desktopAgent: string;
+  /**
+   * An optional instance identifier, indicating that this object represents a specific
+   * instance of the application described.
+   */
+  instanceId?: string;
+  [property: string]: any;
 }
 
 /**
@@ -2364,7 +2429,7 @@ export interface OpenAgentRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: PurpleBridgeParticipantIdentifier;
+  destination?: DestinationObject;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
@@ -2403,6 +2468,8 @@ export interface OpenAgentRequestPayload {
  * that were collated by the bridge. May be omitted if all sources errored. MUST include the
  * `desktopAgent` field when returned by the bridge.
  *
+ * Field that represents a destination Desktop Agent that a request is to be sent to.
+ *
  * Identifies an application, or instance of an application, and is used to target FDC3 API
  * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
  * instances.
@@ -2411,6 +2478,9 @@ export interface OpenAgentRequestPayload {
  *
  * If the `instanceId` field is set then the `AppMetadata` object represents a specific
  * instance of the application that may be addressed using that Id.
+ *
+ * Field that represents the source application that a request or response was received
+ * from.
  *
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
@@ -2538,11 +2608,12 @@ export interface OpenBridgeRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: PurpleBridgeParticipantIdentifier;
+  destination?: DestinationObject;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
   source: MetaSource;
   timestamp: Date;
@@ -2624,7 +2695,7 @@ export interface PrivateChannelBroadcastAgentRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: FluffyBridgeParticipantIdentifier;
+  destination?: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
@@ -2635,31 +2706,8 @@ export interface PrivateChannelBroadcastAgentRequestMeta {
 }
 
 /**
- * Identifies an application, or instance of an application, and is used to target FDC3 API
- * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
- * instances.
- *
- * Will always include at least an `appId` field, which uniquely identifies a specific app.
- *
- * If the `instanceId` field is set then the `AppMetadata` object represents a specific
- * instance of the application that may be addressed using that Id.
- *
- * Identifier for the app instance that was selected (or started) to resolve the intent.
- * `source.instanceId` MUST be set, indicating the specific app instance that
- * received the intent.
- *
- * Optional field that represents the destination that the request should be routed to. Must
- * be set by the Desktop Agent for API calls that include a target app parameter and must
- * include the name of the Desktop Agent hosting the target application.
- *
- * Represents Identifiers that MUST include the Desktop Agent name and MAY identify a
- * specific app or instance.
- *
- * Field that represents the source application that the request was received from, or the
- * source Desktop Agent if it issued the request itself.
- *
- * Field that represents the source application that a request or response was received
- * from, or the source Desktop Agent if it issued the request or response itself.
+ * Field that represents a destination App on a remote Desktop Agent that a request is to be
+ * sent to.
  *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
@@ -2675,21 +2723,50 @@ export interface PrivateChannelBroadcastAgentRequestMeta {
  * Will contain a single value for individual responses and multiple values for responses
  * that were collated by the bridge. May be omitted if all sources errored. MUST include the
  * `desktopAgent` field when returned by the bridge.
+ *
+ * Field that represents a destination Desktop Agent that a request is to be sent to.
+ *
+ * Identifies an application, or instance of an application, and is used to target FDC3 API
+ * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
+ * instances.
+ *
+ * Will always include at least an `appId` field, which uniquely identifies a specific app.
+ *
+ * If the `instanceId` field is set then the `AppMetadata` object represents a specific
+ * instance of the application that may be addressed using that Id.
+ *
+ * Field that represents the source application that a request or response was received
+ * from.
+ *
+ * Identifier for the app instance that was selected (or started) to resolve the intent.
+ * `source.instanceId` MUST be set, indicating the specific app instance that
+ * received the intent.
+ *
+ * Optional field that represents the destination that the request should be routed to. Must
+ * be set by the Desktop Agent for API calls that include a target app parameter and must
+ * include the name of the Desktop Agent hosting the target application.
+ *
+ * Represents Identifiers that MUST include the Desktop Agent name and MAY identify a
+ * specific app or instance.
+ *
+ * Field that represents the source application that the request was received from, or the
+ * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+ * be set by the bridge.
  */
-export interface FluffyBridgeParticipantIdentifier {
+export interface MetaDestination {
+  /**
+   * Used in Desktop Agent Bridging to attribute or target a message to a
+   * particular Desktop Agent.
+   *
+   * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+   * identify the Desktop Agent to target.
+   */
+  desktopAgent: string;
   /**
    * The unique application identifier located within a specific application directory
    * instance. An example of an appId might be 'app@sub.root'
    */
   appId: string;
-  /**
-   * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
-   * identify the Desktop Agent to target.
-   *
-   * Used in Desktop Agent Bridging to attribute or target a message to a
-   * particular Desktop Agent.
-   */
-  desktopAgent?: string;
   /**
    * An optional instance identifier, indicating that this object represents a specific
    * instance of the application described.
@@ -2739,11 +2816,12 @@ export interface PrivateChannelBroadcastBridgeRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: FluffyBridgeParticipantIdentifier;
+  destination?: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
   source: MetaSource;
   timestamp: Date;
@@ -2790,7 +2868,7 @@ export interface PrivateChannelEventListenerAddedAgentRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: FluffyBridgeParticipantIdentifier;
+  destination?: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
@@ -2835,11 +2913,12 @@ export interface PrivateChannelEventListenerAddedBridgeRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: FluffyBridgeParticipantIdentifier;
+  destination?: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
   source: MetaSource;
   timestamp: Date;
@@ -2880,7 +2959,7 @@ export interface PrivateChannelEventListenerRemovedAgentRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: FluffyBridgeParticipantIdentifier;
+  destination?: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
@@ -2925,11 +3004,12 @@ export interface PrivateChannelEventListenerRemovedBridgeRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: FluffyBridgeParticipantIdentifier;
+  destination?: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
   source: MetaSource;
   timestamp: Date;
@@ -2970,7 +3050,7 @@ export interface PrivateChannelOnAddContextListenerAgentRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: FluffyBridgeParticipantIdentifier;
+  destination?: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
@@ -3015,11 +3095,12 @@ export interface PrivateChannelOnAddContextListenerBridgeRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: FluffyBridgeParticipantIdentifier;
+  destination?: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
   source: MetaSource;
   timestamp: Date;
@@ -3060,7 +3141,7 @@ export interface PrivateChannelOnDisconnectAgentRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: FluffyBridgeParticipantIdentifier;
+  destination?: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
@@ -3104,11 +3185,12 @@ export interface PrivateChannelOnDisconnectBridgeRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: FluffyBridgeParticipantIdentifier;
+  destination?: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
   source: MetaSource;
   timestamp: Date;
@@ -3148,7 +3230,7 @@ export interface PrivateChannelOnUnsubscribeAgentRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: FluffyBridgeParticipantIdentifier;
+  destination?: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
@@ -3193,11 +3275,12 @@ export interface ERequestMetadata {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination?: FluffyBridgeParticipantIdentifier;
+  destination?: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
   source: MetaSource;
   timestamp: Date;
@@ -3273,7 +3356,7 @@ export interface RaiseIntentAgentRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination: FluffyBridgeParticipantIdentifier;
+  destination: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
@@ -3287,9 +3370,68 @@ export interface RaiseIntentAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentAgentRequestPayload {
-  app: AppIdentifier;
+  app: AppDestinationIdentifier;
   context: ContextElement;
   intent: string;
+}
+
+/**
+ * Field that represents a destination App on a remote Desktop Agent that a request is to be
+ * sent to.
+ *
+ * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
+ * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
+ * response message is returned by the Desktop Agent (or more specifically its resolver)
+ * rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no
+ * app details are available or are appropriate.
+ *
+ * Array of DesktopAgentIdentifiers for responses that were not returned to the bridge
+ * before the timeout or because an error occurred. May be omitted if all sources responded
+ * without errors. MUST include the `desktopAgent` field when returned by the bridge.
+ *
+ * Array of DesktopAgentIdentifiers for the sources that generated responses to the request.
+ * Will contain a single value for individual responses and multiple values for responses
+ * that were collated by the bridge. May be omitted if all sources errored. MUST include the
+ * `desktopAgent` field when returned by the bridge.
+ *
+ * Field that represents a destination Desktop Agent that a request is to be sent to.
+ *
+ * Identifies an application, or instance of an application, and is used to target FDC3 API
+ * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
+ * instances.
+ *
+ * Will always include at least an `appId` field, which uniquely identifies a specific app.
+ *
+ * If the `instanceId` field is set then the `AppMetadata` object represents a specific
+ * instance of the application that may be addressed using that Id.
+ *
+ * Field that represents the source application that a request or response was received
+ * from.
+ *
+ * Identifier for the app instance that was selected (or started) to resolve the intent.
+ * `source.instanceId` MUST be set, indicating the specific app instance that
+ * received the intent.
+ */
+export interface AppDestinationIdentifier {
+  /**
+   * Used in Desktop Agent Bridging to attribute or target a message to a
+   * particular Desktop Agent.
+   *
+   * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+   * identify the Desktop Agent to target.
+   */
+  desktopAgent: string;
+  /**
+   * The unique application identifier located within a specific application directory
+   * instance. An example of an appId might be 'app@sub.root'
+   */
+  appId: string;
+  /**
+   * An optional instance identifier, indicating that this object represents a specific
+   * instance of the application described.
+   */
+  instanceId?: string;
+  [property: string]: any;
 }
 
 /**
@@ -3436,11 +3578,12 @@ export interface RaiseIntentBridgeRequestMeta {
    * be set by the Desktop Agent for API calls that include a target app parameter and must
    * include the name of the Desktop Agent hosting the target application.
    */
-  destination: FluffyBridgeParticipantIdentifier;
+  destination: MetaDestination;
   requestUuid: string;
   /**
    * Field that represents the source application that the request was received from, or the
-   * source Desktop Agent if it issued the request itself.
+   * source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST
+   * be set by the bridge.
    */
   source: MetaSource;
   timestamp: Date;
@@ -3450,7 +3593,7 @@ export interface RaiseIntentBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentBridgeRequestPayload {
-  app: AppIdentifier;
+  app: AppDestinationIdentifier;
   context: ContextElement;
   intent: string;
 }
@@ -4545,8 +4688,8 @@ const typeMap: any = {
   ),
   BridgeParticipantIdentifier: o(
     [
+      { json: 'desktopAgent', js: 'desktopAgent', typ: '' },
       { json: 'appId', js: 'appId', typ: u(undefined, '') },
-      { json: 'desktopAgent', js: 'desktopAgent', typ: u(undefined, '') },
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
     ],
     'any'
@@ -4599,18 +4742,10 @@ const typeMap: any = {
     [
       { json: 'destination', js: 'destination', typ: u(undefined, r('BridgeParticipantIdentifier')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('BridgeSourceIdentifier') },
+      { json: 'source', js: 'source', typ: r('BridgeParticipantIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
-  ),
-  BridgeSourceIdentifier: o(
-    [
-      { json: 'desktopAgent', js: 'desktopAgent', typ: '' },
-      { json: 'appId', js: 'appId', typ: u(undefined, '') },
-      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
-    ],
-    'any'
   ),
   BridgeResponseMessage: o(
     [
@@ -4845,14 +4980,14 @@ const typeMap: any = {
   ),
   FindInstancesAgentRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('DestinationObject')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
   ),
-  PurpleBridgeParticipantIdentifier: o(
+  DestinationObject: o(
     [
       { json: 'desktopAgent', js: 'desktopAgent', typ: '' },
       { json: 'appId', js: 'appId', typ: u(undefined, '') },
@@ -4952,7 +5087,7 @@ const typeMap: any = {
   ),
   FindInstancesBridgeRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('DestinationObject')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5085,7 +5220,7 @@ const typeMap: any = {
   FindIntentBridgeRequestMeta: o(
     [
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('BridgeSourceIdentifier') },
+      { json: 'source', js: 'source', typ: r('BridgeParticipantIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'destination', js: 'destination', typ: u(undefined, r('BridgeParticipantIdentifier')) },
     ],
@@ -5260,9 +5395,9 @@ const typeMap: any = {
   ),
   GetAppMetadataAgentRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('DestinationObject')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
+      { json: 'source', js: 'source', typ: u(undefined, r('SourceIdentifier')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
@@ -5314,12 +5449,20 @@ const typeMap: any = {
   ),
   GetAppMetadataBridgeRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('DestinationObject')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
-      { json: 'source', js: 'source', typ: r('MetaSource') },
+      { json: 'source', js: 'source', typ: r('MetaSourceObject') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
+  ),
+  MetaSourceObject: o(
+    [
+      { json: 'appId', js: 'appId', typ: u(undefined, '') },
+      { json: 'desktopAgent', js: 'desktopAgent', typ: '' },
+      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
+    ],
+    'any'
   ),
   GetAppMetadataBridgeRequestPayload: o([{ json: 'app', js: 'app', typ: r('AppIdentifier') }], false),
   GetAppMetadataBridgeResponse: o(
@@ -5369,7 +5512,7 @@ const typeMap: any = {
   ),
   OpenAgentRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('DestinationObject')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('SourceObject') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5437,7 +5580,7 @@ const typeMap: any = {
   ),
   OpenBridgeRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('PurpleBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('DestinationObject')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5481,17 +5624,17 @@ const typeMap: any = {
   ),
   PrivateChannelBroadcastAgentRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('MetaDestination')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
     ],
     false
   ),
-  FluffyBridgeParticipantIdentifier: o(
+  MetaDestination: o(
     [
+      { json: 'desktopAgent', js: 'desktopAgent', typ: '' },
       { json: 'appId', js: 'appId', typ: '' },
-      { json: 'desktopAgent', js: 'desktopAgent', typ: u(undefined, '') },
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
     ],
     'any'
@@ -5513,7 +5656,7 @@ const typeMap: any = {
   ),
   PrivateChannelBroadcastBridgeRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('MetaDestination')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5537,7 +5680,7 @@ const typeMap: any = {
   ),
   PrivateChannelEventListenerAddedAgentRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('MetaDestination')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5561,7 +5704,7 @@ const typeMap: any = {
   ),
   PrivateChannelEventListenerAddedBridgeRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('MetaDestination')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5585,7 +5728,7 @@ const typeMap: any = {
   ),
   PrivateChannelEventListenerRemovedAgentRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('MetaDestination')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5609,7 +5752,7 @@ const typeMap: any = {
   ),
   PrivateChannelEventListenerRemovedBridgeRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('MetaDestination')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5633,7 +5776,7 @@ const typeMap: any = {
   ),
   PrivateChannelOnAddContextListenerAgentRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('MetaDestination')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5657,7 +5800,7 @@ const typeMap: any = {
   ),
   PrivateChannelOnAddContextListenerBridgeRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('MetaDestination')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5681,7 +5824,7 @@ const typeMap: any = {
   ),
   PrivateChannelOnDisconnectAgentRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('MetaDestination')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5699,7 +5842,7 @@ const typeMap: any = {
   ),
   PrivateChannelOnDisconnectBridgeRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('MetaDestination')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5717,7 +5860,7 @@ const typeMap: any = {
   ),
   PrivateChannelOnUnsubscribeAgentRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('MetaDestination')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: u(undefined, r('SourceObject')) },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5741,7 +5884,7 @@ const typeMap: any = {
   ),
   ERequestMetadata: o(
     [
-      { json: 'destination', js: 'destination', typ: u(undefined, r('FluffyBridgeParticipantIdentifier')) },
+      { json: 'destination', js: 'destination', typ: u(undefined, r('MetaDestination')) },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5782,7 +5925,7 @@ const typeMap: any = {
   ),
   RaiseIntentAgentRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: r('FluffyBridgeParticipantIdentifier') },
+      { json: 'destination', js: 'destination', typ: r('MetaDestination') },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('SourceObject') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5791,11 +5934,19 @@ const typeMap: any = {
   ),
   RaiseIntentAgentRequestPayload: o(
     [
-      { json: 'app', js: 'app', typ: r('AppIdentifier') },
+      { json: 'app', js: 'app', typ: r('AppDestinationIdentifier') },
       { json: 'context', js: 'context', typ: r('ContextElement') },
       { json: 'intent', js: 'intent', typ: '' },
     ],
     false
+  ),
+  AppDestinationIdentifier: o(
+    [
+      { json: 'desktopAgent', js: 'desktopAgent', typ: '' },
+      { json: 'appId', js: 'appId', typ: '' },
+      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
+    ],
+    'any'
   ),
   RaiseIntentAgentResponse: o(
     [
@@ -5854,7 +6005,7 @@ const typeMap: any = {
   ),
   RaiseIntentBridgeRequestMeta: o(
     [
-      { json: 'destination', js: 'destination', typ: r('FluffyBridgeParticipantIdentifier') },
+      { json: 'destination', js: 'destination', typ: r('MetaDestination') },
       { json: 'requestUuid', js: 'requestUuid', typ: '' },
       { json: 'source', js: 'source', typ: r('MetaSource') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
@@ -5863,7 +6014,7 @@ const typeMap: any = {
   ),
   RaiseIntentBridgeRequestPayload: o(
     [
-      { json: 'app', js: 'app', typ: r('AppIdentifier') },
+      { json: 'app', js: 'app', typ: r('AppDestinationIdentifier') },
       { json: 'context', js: 'context', typ: r('ContextElement') },
       { json: 'intent', js: 'intent', typ: '' },
     ],

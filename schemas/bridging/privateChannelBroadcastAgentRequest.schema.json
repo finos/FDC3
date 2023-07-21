@@ -46,10 +46,10 @@
             "requestUuid": true,
             "timestamp": true,
             "source": {
-              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+              "$ref": "common.schema.json#/$defs/AppRequestSource"
             },
             "destination": {
-              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+              "$ref": "common.schema.json#/$defs/AppDestination"
             }
           },
           "unevaluatedProperties": false

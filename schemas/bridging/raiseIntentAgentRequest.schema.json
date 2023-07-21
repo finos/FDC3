@@ -32,7 +32,7 @@
               "$ref": "../context/context.schema.json"
             },
             "app": {
-              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+              "$ref": "common.schema.json#/$defs/AppDestination"
             }
           },
           "required": ["intent", "context", "app"],
@@ -45,10 +45,10 @@
             "requestUuid": true,
             "timestamp": true,
             "destination": {
-              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+              "$ref": "common.schema.json#/$defs/AppDestination"
             },
             "source": {
-              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+              "$ref": "common.schema.json#/$defs/AppRequestSource"
             }
           },
           "unevaluatedProperties": false,
