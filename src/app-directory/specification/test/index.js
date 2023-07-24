@@ -6,7 +6,7 @@ const exampleApplication2 = require('../examples/application/fdc3-workbench.json
 
 (async () => {
   try {
-    const api = await SwaggerParser.validate('../appd.yaml');
+    const api = await SwaggerParser.validate('../appd.schema.json');
 
     console.log(`API name: ${api.info.title}, Version: ${api.info.version}`);
 
