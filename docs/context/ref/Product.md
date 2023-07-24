@@ -34,11 +34,14 @@ Notes:
 ```js
 const product = {
     "type": "fdc3.product",
+    "id": {
+      "productId": "ABC123"
+    },
     "instrument": {
-        "type": "fdc3.instrument",
-        "id": {
-            "ticker": "MSFT"
-        }
+      "type": "fdc3.instrument",
+      "id": {
+        "ticker": "MSFT"
+      }
     }
 };
 ```
