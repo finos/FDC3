@@ -647,7 +647,7 @@
 		  ]
 		},
 		"LaunchDetails": {
-		  "description": "The type specific launch details of the application. These details are intended to be  vendor-agnostic and MAY be duplicated or overridden by details provided in the hostManifests  object for a specific host.",
+		  "description": "The type specific launch details of the application. These details are intended to be vendor-agnostic and MAY be duplicated or overridden by details provided in the hostManifests object for a specific host.",
 		  "anyOf": [
 			{
 			  "$ref": "#/components/schemas/WebAppDetails"
@@ -776,7 +776,7 @@
 			  "items": {
 				"type": "string"
 			  },
-			  "description": "A comma separated list of the types of contexts the intent offered by the application can process,   where the first part of the context type is the namespace e.g.\"fdc3.contact, org.symphony.contact\""
+			  "description": "A comma separated list of the types of contexts the intent offered by the application can process, where the first part of the context type is the namespace e.g.\"fdc3.contact, org.symphony.contact\""
 			},
 			"resultType": {
 			  "type": "string",
@@ -850,7 +850,7 @@
 				"properties": {
 				  "id": {
 					"type": "string",
-					"description": "The id of the App Channel.  N.b. in FDC3 2.0 this field was incorrectly  called `name`.\n"
+					"description": "The id of the App Channel. N.b. in FDC3 2.0 this field was incorrectly called `name`.\n"
 				  },
 				  "description": {
 					"type": "string",
@@ -914,7 +914,7 @@
 			  "items": {
 				"type": "string"
 			  },
-			  "description": "A comma separated list of the types of contexts the intent offered by the application can process.  where the first part of the context type is the namespace e.g.\"fdc3.contact, org.symphony.contact\""
+			  "description": "A comma separated list of the types of contexts the intent offered by the application can process, where the first part of the context type is the namespace e.g.\"fdc3.contact, org.symphony.contact\""
 			},
 			"customConfig": {
 			  "deprecated": true,
@@ -924,7 +924,7 @@
 		  }
 		},
 		"ApplicationV1": {
-		  "description": "(Deprecated v1 API version) Defines an application retrieved from an FDC3 App Directory, which can then be launched. Launching typically means running for a user on a desktop.  The details around 'launching' including who or what might do it, and how the launch action is initiated are discussed elsewhere in the FDC3 App Directory spec.\n",
+		  "description": "(Deprecated v1 API version) Defines an application retrieved from an FDC3 App Directory, which can then be launched. Launching typically means running for a user on a desktop. The details around 'launching' including who or what might do it, and how the launch action is initiated are discussed elsewhere in the FDC3 App Directory spec.\n",
 		  "required": [
 			"appId",
 			"name",
