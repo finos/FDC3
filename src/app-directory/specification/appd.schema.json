@@ -611,7 +611,11 @@
 			  "type": "string",
 			  "description": "Image media type. If not present the Desktop Agent may use the src file extension"
 			}
-		  }
+		  },
+		  "required": [
+		    "src"
+		  ],
+		  "additionalProperties": false
 		},
 		"Screenshot": {
 		  "description": "Images representing the app in common usage scenarios",
@@ -633,7 +637,11 @@
 			  "type": "string",
 			  "description": "Optional caption for the image"
 			}
-		  }
+		  },
+		  "required": [
+			"src"
+		  ],
+		  "additionalProperties": false
 		},
 		"Type": {
 		  "type": "string",
