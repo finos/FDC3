@@ -3,7 +3,7 @@
 	"info": {
 	  "title": "FDC3 Application Directory",
 	  "version": "next",
-	  "description": "Application Directory specification providing both interface definition and objects necessary to construct an application directory service.\n",
+	  "description": "Application Directory specification providing both interface definition and objects necessary to construct an application directory service.",
 	  "x-logo": {
 		"url": "/img/fdc3-logo-2019-color.png",
 		"altText": "FDC3 logo"
@@ -302,7 +302,7 @@
 				"type": "string"
 			  },
 			  "required": false,
-			  "description": "The unique application identifier located within a specific application directory instance.\n"
+			  "description": "The unique application identifier located within a specific application directory instance."
 			},
 			{
 			  "in": "query",
@@ -311,7 +311,7 @@
 				"type": "string"
 			  },
 			  "required": false,
-			  "description": "The name of the application.\nThe name should be unique within an FDC3 App Directory instance. The exception to the uniqueness constraint is that an App Directory can hold definitions for multiple versions of the same app.\nThe same appName could occur in other directories. We are not currently specifying app name conventions in the document.\n"
+			  "description": "The name of the application. The name should be unique within an FDC3 App Directory instance. The exception to the uniqueness constraint is that an App Directory can hold definitions for multiple versions of the same app. The same appName could occur in other directories. We are not currently specifying app name conventions in the document."
 			},
 			{
 			  "in": "query",
@@ -455,7 +455,7 @@
 		  "properties": {
 			"appId": {
 			  "type": "string",
-			  "description": "The unique application identifier located within a specific application directory instance.\n"
+			  "description": "The unique application identifier located within a specific application directory instance."
 			},
 			"title": {
 			  "type": "string",
@@ -469,7 +469,7 @@
 			},
 			"name": {
 			  "type": "string",
-			  "description": "Deprecated in favour of using `appId` to identify apps and `title` for their display names.\nThe name of the application.\nThe name should be unique within an FDC3 App Directory instance. The exception to the uniqueness constraint is that an App Directory can hold definitions for multiple versions of the same app.\nThe same appName could occur in other directories. We are not currently specifying app name conventions in the document.\n",
+			  "description": "Deprecated in favour of using `appId` to identify apps and `title` for their display names. The name of the application. The name should be unique within an FDC3 App Directory instance. The exception to the uniqueness constraint is that an App Directory can hold definitions for multiple versions of the same app. The same appName could occur in other directories. We are not currently specifying app name conventions in the document.",
 			  "deprecated": true
 			},
 			"version": {
@@ -490,7 +490,7 @@
 			  "description": "Description of the application. This will typically be a 1-2 paragraph style blurb about the application. "
 			},
 			"categories": {
-			  "description": "An array of string categories that describe the application. \nThese are meant as a hint to catalogs or stores listing FDC3-enabled \napps and it is expected that these will make a best effort to find \nappropriate categories (or category) under which to list the app. \nAppD record authors are encouraged to use lower-case and, where \npossible, to select categories from the following list:\n\n- allocations\n- analytics\n- charts\n- chat\n- communication\n- compliance\n- crm\n- developer tools\n- events\n- execution management\n- file sharing\n- market data\n- news\n- networking\n- office apps\n- order management\n- other\n- portfolio management\n- presentation\n- pricing\n- productivity\n- research\n- risk\n- screen sharing\n- security\n- spreadsheet\n- trade cost analysis\n- trading system\n- training\n- travel\n- video\n- visualization\n- weather\n",
+			  "description": "An array of string categories that describe the application. These are meant as a hint to catalogs or stores listing FDC3-enabled apps and it is expected that these will make a best effort to find appropriate categories (or category) under which to list the app. AppD record authors are encouraged to use lower-case and, where possible, to select categories from the following list:\n\n- allocations\n- analytics\n- charts\n- chat\n- communication\n- compliance\n- crm\n- developer tools\n- events\n- execution management\n- file sharing\n- market data\n- news\n- networking\n- office apps\n- order management\n- other\n- portfolio management\n- presentation\n- pricing\n- productivity\n- research\n- risk\n- screen sharing\n- security\n- spreadsheet\n- trade cost analysis\n- trading system\n- training\n- travel\n- video\n- visualization\n- weather\n",
 			  "type": "array",
 			  "items": {
 				"type": "string"
@@ -546,7 +546,7 @@
 		  }
 		},
 		"Application": {
-		  "description": "Defines an application retrieved from an FDC3 App Directory, which can then be launched.\nLaunching typically means running for a user on a desktop. The details around 'launching' including who or what might do it, and how the launch action is initiated are discussed elsewhere in the FDC3 App Directory spec.\n",
+		  "description": "Defines an application retrieved from an FDC3 App Directory, which can then be launched. Launching typically means running for a user on a desktop. The details around 'launching' including who or what might do it, and how the launch action is initiated are discussed elsewhere in the FDC3 App Directory spec.",
 		  "required": [
 			"appId",
 			"title",
@@ -571,14 +571,14 @@
 		  "properties": {
 			"applications": {
 			  "type": "array",
-			  "description": "List of applications\n",
+			  "description": "List of applications",
 			  "items": {
 				"$ref": "#/components/schemas/Application"
 			  }
 			},
 			"message": {
 			  "type": "string",
-			  "description": "Response message providing status of query\n"
+			  "description": "Response message providing status of query"
 			}
 		  }
 		},
@@ -637,7 +637,7 @@
 		},
 		"Type": {
 		  "type": "string",
-		  "description": "The technology type that is used to launch and run the application. \nEach application type implies a particular set of launch `details`.\nThe supported types include:\n\n- `web`: Web applications launched via a URL\n- `native`: Native applications pre-installed on a device and launch via a filesystem path\n- `citrix`: Apps virtualized via Citrix\n- `onlineNative`: Native apps that have an online launcher, e.g. online ClickOnce app deployments.\n- `other`: Used to represent apps that do not conform to or cannot be launched via the other types, and are likely to be defined solely by a hostManifest.\n\nFDC3 Desktop Agents MUST support at least the `web` application type and MAY support any or all of the other types.\n",
+		  "description": "The technology type that is used to launch and run the application. Each application type implies a particular set of launch `details`.\nThe supported types include:\n\n- `web`: Web applications launched via a URL\n- `native`: Native applications pre-installed on a device and launch via a filesystem path\n- `citrix`: Apps virtualized via Citrix\n- `onlineNative`: Native apps that have an online launcher, e.g. online ClickOnce app deployments.\n- `other`: Used to represent apps that do not conform to or cannot be launched via the other types, and are likely to be defined solely by a hostManifest.\n\nFDC3 Desktop Agents MUST support at least the `web` application type and MAY support any or all of the other types.",
 		  "enum": [
 			"web",
 			"native",
@@ -791,7 +791,7 @@
 		},
 		"Interop": {
 		  "type": "object",
-		  "description": "Metadata that describes how the application uses FDC3 APIs. This metadata serves multiple purposes:\n\n- It supports intent resolution by a desktop agent, by declaring what intents an app listens for.\n- It may be used, for example in an app catalog UI, to find apps that 'interoperate with' other apps. \n- It provides a standard location to document how the app interacts with user channels, app channels, \n  and intents, for use by other app developers and desktop assemblers.\n",
+		  "description": "Metadata that describes how the application uses FDC3 APIs. This metadata serves multiple purposes:\n\n- It supports intent resolution by a desktop agent, by declaring what intents an app listens for.\n- It may be used, for example in an app catalog UI, to find apps that 'interoperate with' other apps. \n- It provides a standard location to document how the app interacts with user channels, app channels, and intents, for use by other app developers and desktop assemblers.",
 		  "properties": {
 			"intents": {
 			  "type": "object",
@@ -799,7 +799,7 @@
 			  "properties": {
 				"listensFor": {
 				  "type": "object",
-				  "description": "A mapping of Intents names that an app listens for via `fdc3.addIntentListener()` to their \nconfiguration. \n\nUsed to support intent resolution by desktop agents. Replaces the `intents` element used in appD records prior to FDC3 2.0. \n",
+				  "description": "A mapping of Intents names that an app listens for via `fdc3.addIntentListener()` to their configuration. \n\nUsed to support intent resolution by desktop agents. Replaces the `intents` element used in appD records prior to FDC3 2.0.",
 				  "additionalProperties": {
 					"x-additionalPropertiesName": "Intent name",
 					"$ref": "#/components/schemas/Intent"
@@ -807,7 +807,7 @@
 				},
 				"raises": {
 				  "type": "object",
-				  "description": "A mapping of Intent names that an app raises (via `fdc3.raiseIntent`) to an array of context \ntype names that it may be raised with.\n\nUse the intent name \"any\" to represent use of the `fdc3.raiseIntentForContext` and \n`fdc3.findIntentForContext` functions, which allow the user to select from intents available for a \nspecified context type.\n\nThis metadata is not currently used by the desktop agent, but is provided to help find apps\nthat will interoperate with this app and to document API interactions for use by other app\ndevelopers.\n",
+				  "description": "A mapping of Intent names that an app raises (via `fdc3.raiseIntent`) to an array of context type names that it may be raised with.\n\nUse the intent name \"any\" to represent use of the `fdc3.raiseIntentForContext` and `fdc3.findIntentForContext` functions, which allow the user to select from intents available for a specified context type.\n\nThis metadata is not currently used by the desktop agent, but is provided to help find apps that will interoperate with this app and to document API interactions for use by other app developers.",
 				  "additionalProperties": {
 					"x-additionalPropertiesName": "Intent name",
 					"type": "array",
@@ -821,7 +821,7 @@
 			},
 			"userChannels": {
 			  "type": "object",
-			  "description": "Describes the application's use of context types on User Channels.\n\nThis metadata is not currently used by the desktop agent, but is provided to help find apps\nthat will interoperate with this app and to document API interactions for use by other app\ndevelopers.\n",
+			  "description": "Describes the application's use of context types on User Channels.\n\nThis metadata is not currently used by the desktop agent, but is provided to help find apps that will interoperate with this app and to document API interactions for use by other app developers.",
 			  "properties": {
 				"broadcasts": {
 				  "type": "array",
@@ -841,7 +841,7 @@
 			},
 			"appChannels": {
 			  "type": "array",
-			  "description": "Describes the application's use of App Channels.\n\nThis metadata is not currently used by the desktop agent, but is provided to help find apps \nthat will interoperate with this app and to document API interactions for use by other app \ndevelopers.\n",
+			  "description": "Describes the application's use of App Channels.\n\nThis metadata is not currently used by the desktop agent, but is provided to help find apps that will interoperate with this app and to document API interactions for use by other app developers.",
 			  "items": {
 				"type": "object",
 				"required": [
@@ -850,7 +850,7 @@
 				"properties": {
 				  "id": {
 					"type": "string",
-					"description": "The id of the App Channel.  N.b. in FDC3 2.0 this field was incorrectly  called `name`.\n"
+					"description": "The id of the App Channel.  N.b. in FDC3 2.0 this field was incorrectly  called `name`."
 				  },
 				  "description": {
 					"type": "string",
@@ -924,7 +924,7 @@
 		  }
 		},
 		"ApplicationV1": {
-		  "description": "(Deprecated v1 API version) Defines an application retrieved from an FDC3 App Directory, which can then be launched. Launching typically means running for a user on a desktop.  The details around 'launching' including who or what might do it, and how the launch action is initiated are discussed elsewhere in the FDC3 App Directory spec.\n",
+		  "description": "(Deprecated v1 API version) Defines an application retrieved from an FDC3 App Directory, which can then be launched. Launching typically means running for a user on a desktop.  The details around 'launching' including who or what might do it, and how the launch action is initiated are discussed elsewhere in the FDC3 App Directory spec.",
 		  "required": [
 			"appId",
 			"name",
@@ -934,19 +934,19 @@
 		  "properties": {
 			"appId": {
 			  "type": "string",
-			  "description": "The unique application identifier located within a specific application directory instance.\n"
+			  "description": "The unique application identifier located within a specific application directory instance."
 			},
 			"name": {
 			  "type": "string",
-			  "description": "The name of the application. The name should be unique within an FDC3 App Directory instance. The exception to the uniqueness constraint is that an App Directory can hold definitions for multiple versions of the same app. The same appName could occur in other directories. We are not currently specifying app name conventions in the document.\n"
+			  "description": "The name of the application. The name should be unique within an FDC3 App Directory instance. The exception to the uniqueness constraint is that an App Directory can hold definitions for multiple versions of the same app. The same appName could occur in other directories. We are not currently specifying app name conventions in the document."
 			},
 			"manifest": {
 			  "type": "string",
-			  "description": "URI or full JSON of the application manifest providing all details related to launch and use requirements as described by the vendor. The format of this manifest is vendor specific, but can be identified by the manifestType attribute.\n"
+			  "description": "URI or full JSON of the application manifest providing all details related to launch and use requirements as described by the vendor. The format of this manifest is vendor specific, but can be identified by the manifestType attribute."
 			},
 			"manifestType": {
 			  "type": "string",
-			  "description": "The manifest type which relates to the format and structure of the manifest content. The definition is based on the vendor specific format and definition outside of this specification.\n"
+			  "description": "The manifest type which relates to the format and structure of the manifest content. The definition is based on the vendor specific format and definition outside of this specification."
 			},
 			"version": {
 			  "type": "string",
@@ -1002,7 +1002,7 @@
 			},
 			"intents": {
 			  "type": "array",
-			  "description": "The list of intents implemented by the application as defined by https://github.com/FDC3/Intents/blob/master/src/Intent.yaml\n",
+			  "description": "The list of intents implemented by the application as defined by https://github.com/FDC3/Intents/blob/master/src/Intent.yaml",
 			  "items": {
 				"$ref": "#/components/schemas/IntentV1"
 			  }
@@ -1013,14 +1013,14 @@
 		  "properties": {
 			"applications": {
 			  "type": "array",
-			  "description": "List of applications\n",
+			  "description": "List of applications",
 			  "items": {
 				"$ref": "#/components/schemas/ApplicationV1"
 			  }
 			},
 			"message": {
 			  "type": "string",
-			  "description": "Response message providing status of query\n"
+			  "description": "Response message providing status of query"
 			}
 		  }
 		}
