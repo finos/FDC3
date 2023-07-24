@@ -46,7 +46,6 @@ const tradeList = {
                 "id": {
                     "productId": "ABC123"
                 },
-				
                 "instrument": {
                     "type": "fdc3.instrument",
                     "id": {
