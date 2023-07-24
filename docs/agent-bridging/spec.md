@@ -13,7 +13,6 @@ Desktop Agent Bridging in an experimental feature added to FDC3 in 2.1, hence, i
 <!-- ## TODO list
 
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
-* Check if advice on imported BridgingTypes (last section in this spec) from the npm module is accurate
 * Link to BackPlane project somewhere 
 
 -->
@@ -50,9 +49,17 @@ The Desktop Agent Bridge Part of the FDC3 Standard is composed of three componen
 
 Detail on each of these components is defined in the following sections.
 
-:::info
+:::note
 
-Although this specification defines a particular [connection](#connection) type (based on a websocket server), it has been divided into parts so that the protocol definitions might be reused to implement a bridge over an alternative connection.
+Although this specification defines a particular [connection](#connection) type (based on a websocket server), it has been divided into parts so that the protocol definitions might be reused to implement a bridge over an alternative connection in future.
+
+:::
+
+:::tip
+
+The Desktop Agent Bridging protocol has been designed such that an application using the FDC3 API does not need to make any significant changes in order to make use of the Bridging connection between its Desktop Agent and another agent. This is achieved via messaging workflows that allow the bridged agents to cooperate on behalf of the applications, for example, by retrieving options for intent resolution from other agent or forwarding on messages that were broadcast on channels.
+
+However, Bridging should still be visible to applications, which is achieved through the addition of a `desktopAgent` field to the `AppIdentifier` type allowing it to indicate that an app or app instance exists on another agent, as well as a number of new error messages that may be returned to indicate bridging issues.
 
 :::
 
