@@ -532,7 +532,7 @@
 			"customConfig": {
 			  "deprecated": true,
 			  "type": "array",
-			  "description": "An optional set of name value pairs that can be used to deliver custom data from an App Directory to a launcher. Deprecated due to a  lack of a standard means of retrieval via the Desktop Agent API. To  be replaced in a future version with an `applicationConfig` element  and standard API to retrieve it. See issue  [#1006](https://github.com/finos/FDC3/issues/1006) for details.",
+			  "description": "An optional set of name value pairs that can be used to deliver custom data from an App Directory to a launcher. Deprecated due to a lack of a standard means of retrieval via the Desktop Agent API. To be replaced in a future version with an `applicationConfig` element and standard API to retrieve it. See issue  [#1006](https://github.com/finos/FDC3/issues/1006) for details.",
 			  "items": {
 				"$ref": "#/components/schemas/NameValuePair"
 			  }
