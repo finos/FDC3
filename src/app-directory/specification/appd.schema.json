@@ -780,7 +780,7 @@
 			},
 			"resultType": {
 			  "type": "string",
-			  "description": "An optional type for output returned by the application, if any, when resolving this intent.  May indicate a context type by type name (e.g. \"fdc3.instrument\"), a channel (e.g. \"channel\")  or a combination that indicates a channel that returns a particular context type  (e.g. \"channel<fdc3.instrument>\")."
+			  "description": "An optional type for output returned by the application, if any, when resolving this intent. May indicate a context type by type name (e.g. \"fdc3.instrument\"), a channel (e.g. \"channel\") or a combination that indicates a channel that returns a particular context type (e.g. \"channel<fdc3.instrument>\")."
 			},
 			"customConfig": {
 			  "deprecated": true,
