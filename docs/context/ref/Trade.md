@@ -42,7 +42,10 @@ const trade = {
     },
     "product": {
         "type": "fdc3.product",
-        "instrument": {
+        "id": {
+          "productId": "ABC123"
+        },
+				"instrument": {
             "type": "fdc3.instrument",
             "id": {
                 "ticker": "MSFT"
