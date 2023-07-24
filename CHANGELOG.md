@@ -41,6 +41,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 * Further clarified the difference between the behavior of User channels and other channel types on joinUserChannel/addContextListener. ([#971](https://github.com/finos/FDC3/pull/971))
+* An error was fixed in the appD schema where launch details subschemas were combined with `oneOf`, rather than `anyOf`. This causes validation errors for web or online native apps as their details elements overlap on a `url` field. ([#1034](https://github.com/finos/FDC3/pull/1034))
 
 ## [npm v2.0.3] - 2023-05-31
 
