@@ -43,6 +43,10 @@ const tradeList = {
             },
             "product": {
                 "type": "fdc3.product",
+                "id": {
+                    "productId": "ABC123"
+                },
+				
                 "instrument": {
                     "type": "fdc3.instrument",
                     "id": {
@@ -58,6 +62,9 @@ const tradeList = {
             },
             "product": {
                 "type": "fdc3.product",
+                "id": {
+                    "productId": "DEF456"
+                },
                 "instrument": {
                     "type": "fdc3.instrument",
                     "id": {
