@@ -3,32 +3,28 @@
   "name": "fdc3-workbench",
   "title": "FDC3 Workbench",
   "description": "Development and test tool for FDC3 desktop agents and apps",
+  "categories": [
+    "developer tools",
+    "training"
+  ],
   "version": "1.0.0",
   "tooltip": "FDC3 Workbench",
+  "lang": "en-US",
   "icons": [
     {
       "src": "http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png"
     }
   ],
-  "images": [
+  "screenshots": [
     {
-      "url": "https://fdc3.finos.org/docs/assets/fdc3-logo.png",
-      "tooltip": "FDC3 logo"
+      "src": "https://fdc3.finos.org/docs/assets/fdc3-logo.png",
+      "label": "FDC3 logo"
     }
   ],
   "contactEmail": "fdc3@finos.org",
   "supportEmail": "fdc3-maintainers@finos.org",
-  "publisher": "FDC3",
-  "intents": [
-    {
-      "name": "ViewChart",
-      "displayName": "View Chart",
-      "contexts": [
-        "fdc3.instrument"
-      ]
-    }
-  ],
-  "type": "browser",
+  "publisher": "FDC3,",
+  "type": "web",
   "details": {
     "url": "https://fdc3.finos.org/toolbox/fdc3-workbench/"
   },
@@ -81,5 +77,11 @@
       }
     },
     "Web App Manifest": "https://example.com/fdc3-workbench.json"
+  },
+  "localizedVersions": {
+    "fr-FR": {
+      "title": "FDC3 Table de travail",
+      "description": "Outil de développement et de test pour les desktop agents et applications FDC3"
+    }
   }
 }
