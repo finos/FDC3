@@ -1,0 +1,145 @@
+{
+	"appId": "my-application",
+	"name": "my-application",
+	"title": "My Application",
+	"description": "An example application that uses FDC3 and fully describes itself in an AppD record.",
+	"categories": [
+	  "market data",
+	  "research",
+	  "news"
+	],
+	"version": "1.0.0",
+	"tooltip": "My example application definition",
+	"lang": "en-US",
+	"icons": [
+	  {
+		"src": "http://example.domain.com/assets/my-app-icon.png",
+		"size": "256x256",
+		"type": "image/png"
+	  }
+	],
+	"screenshots": [
+	  {
+		"src": "http://example.domain.com/assets/my-app-screenshot-1.png",
+		"label": "The first screenshot of my example app",
+		"type": "image/png",
+		"size": "800x600"
+	  },
+	  {
+		"src": "http://example.domain.com/assets/my-app-screenshot-2.png",
+		"label": "The second screenshot of my example app",
+		"type": "image/png",
+		"size": "800x600"
+	  }
+	],
+	"contactEmail": "fdc3@finos.org",
+	"supportEmail": "fdc3-maintainers@finos.org",
+	"moreInfo": "http://example.domain.com/",
+	"publisher": "Example App, Inc.",
+	"type": "web",
+	"details": {
+	  "url": "http://example.domain.com/app.html"
+	},
+	"hostManifests": {
+	  "Finsemble": {
+		"window": {
+		  "left": 120,
+		  "top": 120,
+		  "width": 600,
+		  "height": 800,
+		  "options": {
+			"minWidth": 75
+		  }
+		},
+		"foreign": {
+		  "components": {
+			"App Launcher": {
+			  "launchableByUser": true
+			},
+			"Window Manager": {
+			  "FSBLHeader": true,
+			  "persistWindowState": true
+			}
+		  }
+		},
+		"interop": {
+		  "autoConnect": true
+		}
+	  },
+	  "Glue42": {
+		"type": "window",
+		"details": {
+		  "height": 800,
+		  "width": 600,
+		  "left": 120,
+		  "top": 120,
+		  "mode": "tab",
+		  "allowChannels": true,
+		  "loader": {
+			"enabled": true,
+			"hideOnLoad": true
+		  }
+		},
+		"customProperties": {
+		  "folder": "FDC3 Toolbox"
+		}
+	  },
+	  "Web App Manifest": "http://example.domain.com/my-app.json"
+	},
+	"interop": {
+	  "intents": {
+		"listensFor": {
+		  "ViewChart": {
+			"displayName": "View Chart",
+			"contexts": [
+			  "fdc3.instrument"
+			]
+		  },
+		  "myApp.GetPrice": {
+			"displayName": "Get Price",
+			"contexts": [
+			  "fdc3.instrument"
+			],
+			"resultType": "myApp.quote"
+		  }
+		},
+		"raises": {
+		  "ViewOrders": [
+			"fdc3.instrument",
+			"fdc3.organization"
+		  ],
+		  "StartEmail": [
+			"fdc3.email"
+		  ]
+		}
+	  },
+	  "userChannels": {
+		"broadcasts": [
+		  "fdc3.instrument",
+		  "fdc3.organization"
+		],
+		"listensFor": [
+		  "fdc3.instrument",
+		  "fdc3.organization"
+		]
+	  },
+	  "appChannels": [
+		{
+		  "id": "myApp.quotes,",
+		  "description": "Used to share a stream of quotes for currently displayed instrument and may be used to change the currently displayed symbol,",
+		  "broadcasts": [
+			"myApp.quote"
+		  ],
+		  "listensFor": [
+			"fdc3.instrument"
+		  ]
+		}
+	  ]
+	},
+	"localizedVersions": {
+	  "fr-FR": {
+		"title": "Mon application,",
+		"description": "Un exemple d'application qui utilise FDC3 et se décrit entièrement dans un enregistrement AppD."
+	  }
+	}
+  }
