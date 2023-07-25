@@ -22,7 +22,7 @@ Examples of Desktop Agents include:
 - OpenFin
 - Refinitiv Eikon
 
-An FDC3-compliant Desktop Agent exposes an FDC3 standard API to applications they have launched.  When an App is launched by a Desktop Agent and is given access to the Agent's API to interoperate, it is running in that Desktop Agent's *context*.
+An FDC3-compliant Desktop Agent exposes an FDC3 Standard API to applications they have launched.  When an App is launched by a Desktop Agent and is given access to the Agent's API to interoperate, it is running in that Desktop Agent's *context*.
 
 ### Application
 
@@ -86,11 +86,11 @@ Are all areas of functionality that any feature-complete desktop agent would imp
 
 A goal of the FDC3 Standard is that applications running in different Desktop Agent contexts on the same desktop, or operated by the same user, would be able to interoperate and that one Desktop Agent context would be able to discover and launch an application in another Desktop Application context. As Desktop Agent interop is supported by common standards for APIs an app in one Desktop Agent context would not need to know a different syntax to launch or interact with an app in another Desktop Agent context.
 
-Inter-agent communication at the API layer may be achieved via the [Desktop Agent Bridging Part of the FDC3 Standard](../agent-bridging/spec) *([Experimental](../fdc3-compliance#experimental-features))*, which defines an independent service that Desktop Agents may connect to, and a protocol for the exchange of messages relating to FDC3 API calls. Hence, by implementing support for Desktop Agent Bridging, a platform may extend interop across applications running in multiple Desktop Agent contexts.
+Inter-agent communication at the API layer may be achieved via the [Desktop Agent Bridging Part of the FDC3 Standard](../agent-bridging/spec) ([@experimental](../fdc3-compliance#experimental-features)), which defines an independent service that Desktop Agents may connect to, and a protocol for the exchange of messages relating to FDC3 API calls. Hence, by implementing support for Desktop Agent Bridging, a platform may extend interop across applications running in multiple Desktop Agent contexts.
 
 Desktop Agent Bridging provides message exchanges and a workflow for performing intent resolution across multiple agents. Hence, app discovery is supported across the agents connected to the bridge for intent-based workflows. Further, as channels are also supported by bridging, context sharing also works across multiple agents.
 
-There is currently no method of discovering all the apps supported by a Desktop Agent in the FDC3 API nor bridging. Hence, to support launching, vis `fdc3.open` across the connected Desktop Agents, application details must be known in advance. This may be achieved by connecting Desktop Agents to the same App Directories.
+There is currently no method of discovering all the apps supported by a Desktop Agent in the FDC3 API nor bridging. Hence, to support launching, via `fdc3.open` across the connected Desktop Agents, application details must be known in advance. This may be achieved by connecting Desktop Agents to the same App Directories.
 
 ![Desktop Agent - Interop](/assets/api-2.png)
 
