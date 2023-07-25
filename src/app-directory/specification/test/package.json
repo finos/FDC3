@@ -23,7 +23,7 @@
     "test": "node index.js"
   },
   "dependencies": {
-    "@apidevtools/swagger-parser": "^10.0.2",
+    "@apidevtools/swagger-parser": "^10.0.3",
     "jsonschema": "^1.4.0"
   }
 }
