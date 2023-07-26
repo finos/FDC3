@@ -30,6 +30,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Corrected API functions and object types to always use `string` instead of `String` ([#924](https://github.com/finos/FDC3/pull/924))
 * Updated definition of the `otherConfig` element of the `Chart` context type from an Object to an array of Contexts as this allows the `type` of each additional item of config to be examined before it is used ([#985](https://github.com/finos/FDC3/pull/985))
 * Corrected the appD `interop.appChannels` metadata to use an `id` field to identify channels, rather than `name` ([#981](https://github.com/finos/FDC3/pull/981))
+* The App Directory OpenAPI schema was converted from YAML to JSON Schema, containing the same definitions. ([#1035](https://github.com/finos/FDC3/pull/1035))
 
 ### Deprecated
 
@@ -41,6 +42,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 * Further clarified the difference between the behavior of User channels and other channel types on joinUserChannel/addContextListener. ([#971](https://github.com/finos/FDC3/pull/971))
+* An error was fixed in the appD schema where launch details sub-schemas were combined with `oneOf`, rather than `anyOf`. This causes validation errors for web or online native apps as their details elements overlap on a `url` field. ([#1034](https://github.com/finos/FDC3/pull/1034))
 
 ## [npm v2.0.3] - 2023-05-31
 
