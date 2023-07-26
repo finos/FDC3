@@ -15,7 +15,7 @@
     "PrivateChannelOnAddContextListenerRequestBase": {
       "title": "PrivateChannelOnAddContextListener Request",
       "type": "object",
-      "description": "A request to forward on an AddCOntextListener event, relating to a PrivateChannel",
+      "description": "A request to forward on an AddContextListener event, relating to a PrivateChannel",
       "properties": {
         "type": {
           "title": "Private Channel OnAddContextListener Message type",
@@ -42,10 +42,10 @@
             "requestUuid": true,
             "timestamp": true,
             "source": {
-              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+              "$ref": "common.schema.json#/$defs/AppRequestSource"
             },
             "destination": {
-              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+              "$ref": "common.schema.json#/$defs/AppDestination"
             }
           },
           "unevaluatedProperties": false

@@ -42,10 +42,10 @@
           "$ref": "common.schema.json#/$defs/Timestamp"
         },
         "errorSources": {
-         "$ref": "common.schema.json#/$defs/ResponseErrorSources"
+         "$ref": "common.schema.json#/$defs/BridgeResponseErrorSources"
         },
         "errorDetails": {
-          "$ref": "common.schema.json#/$defs/ResponseErrorDetails"
+          "$ref": "common.schema.json#/$defs/BridgeResponseErrorDetails"
         }
       },
       "required": ["requestUuid", "responseUuid", "timestamp", "errorSources", "errorDetails"],
