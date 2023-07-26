@@ -247,7 +247,7 @@ export interface AgentRequestMetadata {
  * be set by the Desktop Agent for API calls that include a target app parameter and must
  * include the name of the Desktop Agent hosting the target application.
  *
- * Represents Identifiers that MUST include the Desktop Agent name and MAY identify a
+ * Represents identifiers that MUST include the Desktop Agent name and MAY identify a
  * specific app or instance.
  *
  * Field that represents the source application that the request was received from, or the
@@ -710,7 +710,7 @@ export interface BroadcastBridgeRequestMeta {
  * be set by the Desktop Agent for API calls that include a target app parameter and must
  * include the name of the Desktop Agent hosting the target application.
  *
- * Represents Identifiers that MUST include the Desktop Agent name and MAY identify a
+ * Represents identifiers that MUST include the Desktop Agent name and MAY identify a
  * specific app or instance.
  *
  * Field that represents the source application that the request was received from, or the
@@ -1163,7 +1163,7 @@ export interface FindInstancesAgentRequestMeta {
  * be set by the Desktop Agent for API calls that include a target app parameter and must
  * include the name of the Desktop Agent hosting the target application.
  *
- * Represents Identifiers that MUST include the Desktop Agent name and MAY identify a
+ * Represents identifiers that MUST include the Desktop Agent name and MAY identify a
  * specific app or instance.
  *
  * Field that represents the source application that the request was received from, or the
@@ -2324,7 +2324,7 @@ export interface GetAppMetadataBridgeRequestMeta {
  * be set by the Desktop Agent for API calls that include a target app parameter and must
  * include the name of the Desktop Agent hosting the target application.
  *
- * Represents Identifiers that MUST include the Desktop Agent name and MAY identify a
+ * Represents identifiers that MUST include the Desktop Agent name and MAY identify a
  * specific app or instance.
  *
  * Field that represents the source application that the request was received from, or the
@@ -2805,7 +2805,7 @@ export interface PrivateChannelBroadcastAgentRequestMeta {
  * be set by the Desktop Agent for API calls that include a target app parameter and must
  * include the name of the Desktop Agent hosting the target application.
  *
- * Represents Identifiers that MUST include the Desktop Agent name and MAY identify a
+ * Represents identifiers that MUST include the Desktop Agent name and MAY identify a
  * specific app or instance.
  *
  * Field that represents the source application that the request was received from, or the
@@ -3083,7 +3083,7 @@ export interface PrivateChannelEventListenerRemovedBridgeRequestPayload {
 }
 
 /**
- * A request to forward on an AddCOntextListener event, relating to a PrivateChannel
+ * A request to forward on an AddContextListener event, relating to a PrivateChannel
  *
  * A request message from a Desktop Agent to the Bridge.
  */
@@ -3128,7 +3128,7 @@ export interface PrivateChannelOnAddContextListenerAgentRequestPayload {
 }
 
 /**
- * A request to forward on an AddCOntextListener event, relating to a PrivateChannel
+ * A request to forward on an AddContextListener event, relating to a PrivateChannel
  *
  * A request message forwarded from the Bridge onto a Desktop Agent connected to it.
  */
