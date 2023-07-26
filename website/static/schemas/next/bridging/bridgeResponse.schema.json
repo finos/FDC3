@@ -37,13 +37,13 @@
           "$ref": "common.schema.json#/$defs/Timestamp"
         },
         "sources": {
-          "$ref": "common.schema.json#/$defs/ResponseSources"
+          "$ref": "common.schema.json#/$defs/BridgeResponseSources"
         },
         "errorSources": {
-         "$ref": "common.schema.json#/$defs/ResponseErrorSources"
+         "$ref": "common.schema.json#/$defs/BridgeResponseErrorSources"
         },
         "errorDetails": {
-          "$ref": "common.schema.json#/$defs/ResponseErrorDetails"
+          "$ref": "common.schema.json#/$defs/BridgeResponseErrorDetails"
         }
       },
       "required": ["requestUuid", "responseUuid", "timestamp"],

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/chatMessage.schema.json",
+  "$id": "https://fdc3.finos.org/schemas/next/context/chatMessage.schema.json",
   "type": "object",
   "title": "ChatMessage",
   "allOf": [{ "$ref": "context.schema.json#" }],

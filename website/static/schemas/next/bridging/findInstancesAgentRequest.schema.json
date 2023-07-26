@@ -39,10 +39,10 @@
             "requestUuid": true,
             "timestamp": true,
             "destination": {
-              "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+              "$ref": "common.schema.json#/$defs/AgentDestination"
             },
             "source": {
-              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+              "$ref": "common.schema.json#/$defs/AppRequestSource"
             }
           },
           "unevaluatedProperties": false
