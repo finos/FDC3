@@ -51,16 +51,23 @@ Agent-C is not involved in the diagram below as the `raiseIntent` is always spec
 
 ```mermaid
 sequenceDiagram
+    box Desktop Agent A
+    participant AA as App A
     participant DA as Desktop Agent A
+    end
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: raiseIntentRequest
-    DAB ->>+ DB: raiseIntentRequest
-    DB -->>- DAB: raiseIntentResponse
-    DAB -->>- DA: raiseIntentResponse
-    DB ->>+ DAB: raiseIntentResultResponse
-    DAB ->>+ DA: raiseIntentResultResponse
+    AA --) DA: fdc3.raiseIntent 
+    DA ->> DAB: raiseIntentRequest
+    DAB ->> DB: raiseIntentRequest
+    DB ->> DAB: raiseIntentResponse
+    DAB ->> DA: raiseIntentResponse
+    DA -->> AA: resolve (IntentResolution)
+    AA --) DA: resolution.getResult()
+    DB ->> DAB: raiseIntentResultResponse
+    DAB ->> DA: raiseIntentResultResponse
+    DA --) AA: resolve (IntentResult)
 ```
 
 ## Request format

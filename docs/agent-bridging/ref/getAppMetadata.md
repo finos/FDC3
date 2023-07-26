@@ -25,14 +25,19 @@ let appMetadata = await fdc3.getAppMetadata(appIdentifier);
 
 ```mermaid
 sequenceDiagram
+    box Desktop Agent A
+    participant AA as App A
     participant DA as Desktop Agent A
+    end
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: getAppMetadataRequest
-    DAB ->>+ DB: getAppMetadataRequest
+    AA --) DA: fdc3.getAppMetadata()
+    DA ->> DAB: getAppMetadataRequest
+    DAB ->> DB: getAppMetadataRequest
     DB ->> DAB: getAppMetadataResponse (B)
-    DAB -->>- DA: getAppMetadataResponse (B)
+    DAB ->> DA: getAppMetadataResponse (B)
+    DA --) AA: resolve (AppMetadata)
 ```
 
 ## Request format

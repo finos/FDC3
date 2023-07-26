@@ -24,16 +24,21 @@ The message exchanges for this API call are nearly identical to that used for [`
 
 ```mermaid
 sequenceDiagram
+    box Desktop Agent A
+    participant AA as App A
     participant DA as Desktop Agent A
+    end
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: findIntentsByContextRequest
-    DAB ->>+ DB: findIntentsByContextRequest
-    DAB ->>+ DC: findIntentsByContextRequest
-    DB -->>- DAB: findIntentsByContextResponse (B)
-    DC -->>- DAB: findIntentsByContextResponse (C)
-    DAB -->>- DA: findIntentsByContextResponse (B + C)
+    AA --) DA: fdc3.findIntentsByContext
+    DA ->> DAB: findIntentsByContextRequest
+    DAB ->> DB: findIntentsByContextRequest
+    DAB ->> DC: findIntentsByContextRequest
+    DB ->> DAB: findIntentsByContextResponse (B)
+    DC ->> DAB: findIntentsByContextResponse (C)
+    DAB ->> DA: findIntentsByContextResponse (B + C)
+    DA --) AA: resolve (AppIntent[])
 ```
 
 ## Request format

@@ -20,12 +20,16 @@ Some additional tracking of PrivateChannel metadata is required on the Desktop A
 
 ```mermaid
 sequenceDiagram
+    box Desktop Agent A
+    participant AA as App A
     participant DA as Desktop Agent A
+    end
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: PrivateChannel.broadcast
-    DAB ->>+ DB: PrivateChannel.broadcast
+    AA --) DA: privateChannel.broadcast()
+    DA ->> DAB: PrivateChannel.broadcast
+    DAB ->> DB: PrivateChannel.broadcast
 ```
 
 ## Request format

@@ -33,13 +33,17 @@ or
 
 ```mermaid
 sequenceDiagram
+    box Desktop Agent A
+    participant AA as App A
     participant DA as Desktop Agent A
+    end
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: broadcastRequest
-    DAB ->>+ DB: broadcastRequest
-    DAB ->>+ DC: broadcastRequest
+    AA --) DA: fdc3.broadcast() / channel.broadcast()
+    DA ->> DAB: broadcastRequest
+    DAB ->> DB: broadcastRequest
+    DAB ->> DC: broadcastRequest
 ```
 
 ## Request format

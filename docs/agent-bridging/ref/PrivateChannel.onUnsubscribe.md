@@ -25,10 +25,14 @@ When a `ContextListener` is removed from a `PrivateChannel` (via `listener.unsub
 
 ```mermaid
 sequenceDiagram
+    box Desktop Agent A
+    participant AA as App A
     participant DA as Desktop Agent A
+    end
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
+    AA --) DA: listener.unsubscribe()
     DA ->>+ DAB: PrivateChannel.onUnsubscribe
     DAB ->>+ DB: PrivateChannel.onUnsubscribe
 ```

@@ -20,16 +20,21 @@ let appIntent = await fdc3.findIntent("StartChat", context);
 
 ```mermaid
 sequenceDiagram
+    box Desktop Agent A 
+    participant AA as App A
     participant DA as Desktop Agent A
+    end
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: findIntentRequest
-    DAB ->>+ DB: findIntentRequest
-    DAB ->>+ DC: findIntentRequest
-    DB -->>- DAB: findIntentResponse (B)
-    DC -->>- DAB: findIntentResponse (C)
-    DAB -->>- DA: findIntentResponse (B + C)
+    AA --) DA: fdc3.findIntent()
+    DA ->> DAB: findIntentRequest
+    DAB ->> DB: findIntentRequest
+    DAB ->> DC: findIntentRequest
+    DB ->> DAB: findIntentResponse (B)
+    DC ->> DAB: findIntentResponse (C)
+    DAB ->> DA: findIntentResponse (B + C)
+    DA --) AA: resolve (AppIntent)
 ```
 
 ## Request format
