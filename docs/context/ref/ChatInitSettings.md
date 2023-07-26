@@ -61,7 +61,7 @@ const initSettings = {
         isPublic: false, // private chat room
         allowHistoryBrowsing: true,
         allowMessageCopy: true
-    }
+    },
     message: {
       type: 'fdc3.message',
       text: {
