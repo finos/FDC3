@@ -27,7 +27,7 @@
           "properties": {
             "intentResult": {
               "title": "IntentResult",
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "object",
                   "title": "IntentResult Context",
@@ -48,6 +48,12 @@
                     }
                   },
                   "required": ["channel"],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "title": "IntentResult Void",
+                  "properties": {},
                   "additionalProperties": false
                 }
               ]
