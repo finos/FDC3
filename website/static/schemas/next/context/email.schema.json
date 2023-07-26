@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/context/email.schema.json",
+  "type": "object",
+  "title": "Email",
+  "allOf": [{ "$ref": "context.schema.json#" }],
+  "properties": {
+    "type": { "const": "fdc3.email" },
+    "recipients": {
+      "oneOf": [
+        { "$ref": "contact.schema.json#" },
+        { "$ref": "contactList.schema.json#" }
+      ]
+    },
+    "subject": { "type": "string" },
+    "textBody": { "type": "string" }
+  },
+  "required": ["recipients"]
+}

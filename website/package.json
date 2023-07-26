@@ -4,7 +4,7 @@
     "start": "docusaurus start",
     "prebuild": "npm run copy-appd && npm run copy-schemas && npm run copy-workbench && npm run copy-explained",
     "build": "docusaurus build",
-    "copy-schemas": "cpy \"../src/context/schemas/*.json\" \"static/schemas/next/\"",
+    "copy-schemas": "del-cli static/schemas/next/*/ && cpy \"../schemas/**\" static/schemas/next/",
     "copy-appd": "cpy \"../src/app-directory/specification/*.schema.json\" \"static/schemas/next/\"",
     "build-workbench": "cd ../toolbox/fdc3-workbench && npm install && npm run build",
     "copy-workbench": "del-cli static/toolbox/fdc3-workbench && npm run build-workbench && cpy \"../toolbox/fdc3-workbench/build/**\" static/toolbox/fdc3-workbench",
@@ -31,16 +31,17 @@
     "rimraf": "5.0.0",
     "@docusaurus/core": "^2.4.0",
     "@docusaurus/preset-classic": "^2.4.0",
+    "@docusaurus/theme-mermaid": "^2.4.0",
     "clsx": "^1.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "resolutions": {
-    "got": "^11.8.5", 
+    "got": "^11.8.5",
     "trim": "1.0.1"
   },
   "overrides": {
-    "got": "^11.8.5", 
+    "got": "^11.8.5",
     "trim": "1.0.1"
   }
 }
