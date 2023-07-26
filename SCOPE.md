@@ -10,11 +10,11 @@ Financial desktop applications include any app used in common financial workflow
 * Common desktop applications not specific to finance, but critical to workflows - such as Excel, Outlook, etc.
 * PWAs & Web applications running in a commercial browser
 
-This standards group is focused specifically on the desktop, hence, it's activities do not include:
+This standards group is focused specifically on the desktop, hence, its activities do not include:
 
 * Defining financial objects - where existing standards are well established
 * Interoperability between mobile apps
-* Interoperability via REST or other client to server communication, except where  used locally for Desktop Agents to communicate with each other in support of desktop interoperability (Agent Bridging)
+* Interoperability via REST or other client to server communication, except where used locally for Desktop Agents to communicate with each other in support of desktop interoperability (Agent Bridging)
 
 Note: While these areas are out of scope, compatibility with Mobile and/or REST are still valid points of consideration for the FDC3 Standard.
 

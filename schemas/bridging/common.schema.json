@@ -57,7 +57,7 @@
     },
     "BridgeParticipantIdentifier": {
       "title": "Bridge Participant Identifier",
-      "description": "Represents Identifiers that MUST include the Desktop Agent name and MAY identify a specific app or instance.",
+      "description": "Represents identifiers that MUST include the Desktop Agent name and MAY identify a specific app or instance.",
       "oneOf": [
         {
           "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"

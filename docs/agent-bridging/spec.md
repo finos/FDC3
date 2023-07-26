@@ -6,7 +6,7 @@ title: Agent Bridging Overview (next)
 
 :::info _[@experimental](../fdc3-compliance#experimental-features)_
 
-Desktop Agent Bridging in an experimental feature added to FDC3 in 2.1, hence, it's design may change in future and it is exempted from the FDC3 Standards's normal versioning and deprecation polices in order to facilitate any necessary change.
+Desktop Agent Bridging is an experimental feature added to FDC3 in 2.1, hence, its design may change in the future and it is exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
 
 :::
 
@@ -110,7 +110,7 @@ Hence, message paths and propagation are simple. All messages to other Desktop A
 
 #### Multi-Machine Use Cases
 
-In Financial services it is not unusual for a single user to be working with applications on more than one desktop. As Desktop Agents do not span desktops bridging Desktop Agents across multiple machines is an additional use case for Desktop Agent bridging. However, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user.
+In financial services it is not unusual for a single user to be working with applications on more than one desktop. As Desktop Agents do not span desktops bridging Desktop Agents across multiple machines is an additional use case for Desktop Agent bridging. However, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user.
 
 ```mermaid
 flowchart LR;
@@ -136,7 +136,7 @@ flowchart LR;
 
 However, cross-machine routing is currently considered to be an internal concern of a Desktop Agent Bridge implementation, with each Desktop Agent simply communicating with a bridge instance located on the same machine. Hence, the connection protocol between bridges themselves is currently beyond the scope of this standard and my be implemented via any suitable means.
 
-Further, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user. However, methods of verifying the identity of user are currently beyond the scope of the Standard.
+Further, as FDC3 only contemplates interoperability between apps for a single user, it is expected that in multi-machine use cases each machine is being operated by the same user. However, methods of verifying the identity of users are currently beyond the scope of the Standard.
 
 ### Websocket Connection
 
@@ -154,9 +154,9 @@ As the bridge binds its websocket on the loopback address (127.0.0.1) it cannot 
 
 ## Connection Protocol
 
-On connection to the bridge's websocket, a handshake must be completed that may include an authentication step before a name is assigned  to the Desktop Agent for use in routing messages. The purpose of the handshake is to allow:
+On connection to the bridge's websocket, a handshake must be completed that may include an authentication step before a name is assigned to the Desktop Agent for use in routing messages. The purpose of the handshake is to allow:
 
-- The Desktop Agent to confirm that it is connecting to Desktop Agent Bridge, rather than another service exposed via a websocket.
+- The Desktop Agent to confirm that it is connecting to the Desktop Agent Bridge, rather than another service exposed via a websocket.
 - The Desktop Agent Bridge to require that the Desktop Agent authenticate itself, allowing it to control access to the network of bridged Desktop Agents.
 - The Desktop Agent to request a particular name by which it will be addressed by other agents and for the bridge to assign the requested name, after confirming that no other agent is connected with that name, or a derivative of that name if it is already in use.
 
@@ -615,7 +615,7 @@ There are two types of each response message, a successful response and an error
 
 ##### Response Messages Collated and Forwarded by the Bridge
 
-Responses from individual Desktop Agents are collated by the Bridge and are forwarded on to the the Desktop Agent that initiated the interaction. The format used is very similar to that used for responses by the Desktop Agents, with the exception of the source information in the `meta` field. Specifically, the `meta.source` field does not need to be provided by agents, as responses are currently always provided by the desktop agent, whose details will be provided by the  bridge when it receives the response. In responses from the bridge, the `meta.source` is replaced by two arrays, `meta.sources` and `meta.errorSources`, which provide details on the Desktop agents that responded normally or responded with errors. The detail of any errors returned (in the `payload.error` field of a Desktop Agent's response) is collected up into a `meta.errorDetails` field. Moving the error details from the `payload` to the `meta` field enables the return of a valid response to the originating Desktop Agent in cases where some agents produced valid responses, and others produced errors.
+Responses from individual Desktop Agents are collated by the Bridge and are forwarded on to the the Desktop Agent that initiated the interaction. The format used is very similar to that used for responses by the Desktop Agents, with the exception of the source information in the `meta` field. Specifically, the `meta.source` field does not need to be provided by agents, as responses are currently always provided by the Desktop Agent, whose details will be provided by the bridge when it receives the response. In responses from the bridge, the `meta.source` is replaced by two arrays, `meta.sources` and `meta.errorSources`, which provide details on the Desktop Agents that responded normally or responded with errors. The detail of any errors returned (in the `payload.error` field of a Desktop Agent's response) is collected up into a `meta.errorDetails` field. Moving the error details from the `payload` to the `meta` field enables the return of a valid response to the originating Desktop Agent in cases where some agents produced valid responses, and others produced errors.
 
 Hence, for responses forwarded by the bridge there are two type of response messages from the Bridge returned to agents, one for requests that received at least one successful response, and another for use when all agents (or the targeted agent) returned an error.
 
@@ -687,7 +687,7 @@ Hence, for responses forwarded by the bridge there are two type of response mess
 ##### All Responses are Errors
 
 :::info
-In this case there are no successful response and the bridge must populate the `payload.error` field in the response to the agent with one of the error messages returned, so that the receiving Desktop Agent may return it to the app that made the original call.
+In this case there are no successful responses and the bridge must populate the `payload.error` field in the response to the agent with one of the error messages returned, so that the receiving Desktop Agent may return it to the app that made the original call.
 :::
 
 ```typescript
@@ -728,7 +728,7 @@ In this case there are no successful response and the bridge must populate the `
 
 ### Identifying Individual Messages
 
-There are a variety of message types need to be sent between bridged Desktop Agents, several of which will need to be replied to specifically (e.g. a `fdc3.raiseIntent` call should receive an `IntentResolution` when an app has been chosen, and may subsequently receive an `IntentResult` after the intent handler has run). Hence, messages also need a unique identity, which should be generated at the Desktop Agent that is the source of that message, in the form of a Universally Unique Identifier (UUID). Response messages will include the identity of the request message they are related to, allowing multiple message exchanges to be 'in-flight' at the same time.
+There are a variety of message types that need to be sent between bridged Desktop Agents, several of which will need to be replied to specifically (e.g. a `fdc3.raiseIntent` call should receive an `IntentResolution` when an app has been chosen, and may subsequently receive an `IntentResult` after the intent handler has run). Hence, messages also need a unique identity, which should be generated at the Desktop Agent that is the source of that message, in the form of a Universally Unique Identifier (UUID). Response messages will include the identity of the request message they are related to, allowing multiple message exchanges to be 'in-flight' at the same time.
 
 Hence, whenever a request message is generated by a Desktop Agent it should contain a unique `meta.requestUuid` value. Response messages should quote that same value in the `meta.requestUuid` field and generate a further unique identity for their response, which is included in the `meta.responseUuid` field. Where a response is collated by the Desktop Agent Bridge, the Bridge should generate its own `meta.responseUuid` for the collated response message.
 
@@ -835,7 +835,7 @@ enum BridgingError {
    * been disconnected from the Bridge before a response has been received from it. */
   AgentDisconnected = 'AgentDisconnected',
   /** Returned for FDC3 API calls that are specified with arguments indicating that
-   *  a remote Desktop agent should be targeted (e.g. raiseIntent with an app on a
+   *  a remote Desktop Agent should be targeted (e.g. raiseIntent with an app on a
    *  remote DesktopAgent targeted), when the local Desktop Agent is not connected to
    *  a bridge. */
   NotConnectedToBridge = 'NotConnectedToBridge',
@@ -995,7 +995,7 @@ However, `PrivateChannel` instances allow the registration of additional event h
 
 JSONSchema definitions are provided for all Desktop Agent Bridging message exchanges (see links in each reference page), which may be used to validate the correct generation of messages to or from a bridge (a separate schema is provided for the agent and bridge versions of each message).
 
-The JSONSchema definitions are also used to generate TypeScript interfaces for the messages to aid in implementation of a Desktop Agent Bridge or Client library. These may be imported from the FDC3 npm module:
+The JSONSchema definitions are also used to generate TypeScript interfaces for the messages to aid in implementation of a Desktop Agent Bridge or client library. These may be imported from the FDC3 npm module:
 
 ```typescript
 import { BridgingTypes } from "@finos/fdc3";
