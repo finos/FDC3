@@ -105,7 +105,7 @@ If results should be constrained to a particular Desktop Agent, then set a `desk
     "meta": {
         "requestUuid": "<requestUuid>",
         "timestamp": "2020-03-...",
-        "destination": { "desktopAgent": "agent-B"}, //destination agent
+        "destination": { "desktopAgent": "agent-B" }, //destination agent
         "source": {
             "appId": "AChatApp",
             "instanceId": "02e575aa-4c3a-4b66-acad-155073be21f6"
@@ -135,8 +135,8 @@ Response message from a Desktop Agent:
     "type":  "findInstancesResponse",
     "payload": {
         "appIdentifiers":  [
-            { "appId": "myApp", "instanceId": "4bf39be1-a25b-4ad5-8dbc-ce37b436a344"},
-            { "appId": "myApp", "instanceId": "4f10abb7-4df4-4fc6-8813-bbf0dc1b393d"},
+            { "appId": "myApp", "instanceId": "4bf39be1-a25b-4ad5-8dbc-ce37b436a344" },
+            { "appId": "myApp", "instanceId": "4f10abb7-4df4-4fc6-8813-bbf0dc1b393d" },
         ]
     },
     "meta": {
@@ -155,7 +155,7 @@ The bridge receives and collates the responses, augmenting each appIdentifier wi
     "type":  "findInstancesResponse",
     "payload": {
         "appIdentifiers":  [
-            { "appId": "myApp", "instanceId": "4bf39be1-a25b-4ad5-8dbc-ce37b436a344", "desktopAgent": "agent-B"},
+            { "appId": "myApp", "instanceId": "4bf39be1-a25b-4ad5-8dbc-ce37b436a344", "desktopAgent": "agent-B" },
             //"desktopAgent" added by DAB
             { "appId": "myApp", "instanceId": "4f10abb7-4df4-4fc6-8813-bbf0dc1b393d", "desktopAgent": "agent-B" },
             { "appId": "myApp", "instanceId": "920b74f7-1fef-4076-adef-63b82bae0dd9", "desktopAgent": "agent-C" },
@@ -174,7 +174,7 @@ The bridge receives and collates the responses, augmenting each appIdentifier wi
 ```
 
 :::info
-If a target Desktop Agent was specified in the request (via a `desktopAgent` field in `payload.app`), then the DAB is not collating responses and does not need to generate a unique `meta.responseUuid` and can quote that given by the responding Desktop Agent.
+If a target Desktop Agent was specified in the request (via a `desktopAgent` field in `payload.app`), then the DAB is not collating responses and does not need to generate a unique `meta.responseUuid` and MUST quote that given by the responding Desktop Agent.
 :::
 
 :::note
@@ -186,7 +186,7 @@ Finally, agent-A combines the data received from the bridge, with its own local 
 ```json
 // DAB -> agent-A
 [
-    { "appId": "myApp", "instanceId": "4bf39be1-a25b-4ad5-8dbc-ce37b436a344", "desktopAgent": "agent-B"},
+    { "appId": "myApp", "instanceId": "4bf39be1-a25b-4ad5-8dbc-ce37b436a344", "desktopAgent": "agent-B" },
     { "appId": "myApp", "instanceId": "4f10abb7-4df4-4fc6-8813-bbf0dc1b393d", "desktopAgent": "agent-B" },
     { "appId": "myApp", "instanceId": "920b74f7-1fef-4076-adef-63b82bae0dd9", "desktopAgent": "agent-C" },
     { "appId": "myApp", "instanceId": "688dbd5e-21dc-4469-b8cf-4b6a606f9a27" } //local response
