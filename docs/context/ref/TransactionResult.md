@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `TransactionResult`
 
-A context type representing the result of a transaction initiated via FDC3, which SHOULD be returned as an [`IntentResult`](../../api/Types#intentresult) by intents that create, retrieve, update or delete content or records in another application. Its purpose is to provide a status and message (where needed) for the transaction and MAY wrap a returned context object.
+A context type representing the result of a transaction initiated via FDC3, which SHOULD be returned as an [`IntentResult`](../../api/ref/Types#intentresult) by intents that create, retrieve, update or delete content or records in another application. Its purpose is to provide a status and message (where needed) for the transaction and MAY wrap a returned context object.
 
 ## Type
 
