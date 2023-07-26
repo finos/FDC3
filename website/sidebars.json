@@ -86,6 +86,26 @@
           "context/ref/TransactionResult",
           "context/ref/Valuation"
         ]
+      },
+      {
+        "type": "category",
+        "label": "Agent Bridging Part",
+        "items": [
+          "agent-bridging/spec",
+          "agent-bridging/ref/broadcast",
+          "agent-bridging/ref/findIntent",
+          "agent-bridging/ref/findIntentsByContext",
+          "agent-bridging/ref/raiseIntent",
+          "agent-bridging/ref/open",
+          "agent-bridging/ref/findInstances",
+          "agent-bridging/ref/getAppMetadata",
+          "agent-bridging/ref/PrivateChannel.broadcast",
+          "agent-bridging/ref/PrivateChannel.eventListenerAdded",
+          "agent-bridging/ref/PrivateChannel.eventListenerRemoved",
+          "agent-bridging/ref/PrivateChannel.onAddContextListener",
+          "agent-bridging/ref/PrivateChannel.onDisconnect",
+          "agent-bridging/ref/PrivateChannel.onUnsubscribe"
+        ]
       }
     ]
   },

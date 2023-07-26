@@ -14,7 +14,7 @@ A context representing a chat message. Typically used to send the message or to 
 
 ## Schema
 
-- https://fdc3.finos.org/schemas/next/chatMessage.schema.json
+<https://fdc3.finos.org/schemas/next/context/chatMessage.schema.json>
 
 ## Details
 

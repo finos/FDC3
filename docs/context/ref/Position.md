@@ -29,7 +29,7 @@ this part of the contract with custom identifiers if so desired.
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/next/position.schema.json>
+<https://fdc3.finos.org/schemas/next/context/position.schema.json>
 
 ## Details
 

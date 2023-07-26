@@ -8,7 +8,7 @@ hide_title: true
 
 Represents a context channel that applications can join to share context data and provides functions for interacting with it.
 
-A channel can be either a ["User" channel](../api/spec#joining-user-channels) (retrieved with [`getUserChannels`](DesktopAgent#getuserchannels)), a custom ["App" channel](../api/spec#app-channels) (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)) or a ["Private" channel](../api/spec#private-channels) (obtained via an intent result).
+A channel can be either a ["User" channel](../spec#joining-user-channels) (retrieved with [`getUserChannels`](DesktopAgent#getuserchannels)), a custom ["App" channel](../spec#app-channels) (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)) or a ["Private" channel](../spec#private-channels) (obtained via an intent result).
 
 :::note
 
@@ -159,7 +159,7 @@ const instrument = {
 try {
     channel.broadcast(instrument);
 } catch (err: ChannelError) {
-    // handler errror
+    // handle error
 }
 ```
 
@@ -191,7 +191,7 @@ Without specifying a context type:
 try {
     const context = await channel.getCurrentContext();
 } catch (err: ChannelError) {
-    // handler errror
+    // handle error
 }
 ```
 
@@ -201,7 +201,7 @@ Specifying a context type:
 try {
     const contact = await channel.getCurrentContext('fdc3.contact');
 } catch (err: ChannelError) {
-    // handler errror
+    // handler error
 }
 ```
 
