@@ -8,7 +8,7 @@ Desktop Agent bridging message exchange for the removal of a [`ContextHandler`](
 
 - [`listener.unsubscribe()`](../../api/ref/Types#listener)
   - for [`Listener`](../../api/ref/Types#listener) objects returned by [`PrivateChannel`](../../api/ref/PrivateChannel) functions:
-    - [addContextListener(handler: (contextType?: string)](../../api/ref/Channel#addcontextlistener) (inherited from `Channel`)
+    - [addContextListener(handler: (contextType?: string) => void): Promise<Listener>](../../api/ref/Channel#addcontextlistener) (inherited from `Channel`)
 - [`PrivateChannel.disconnect()`](../../api/ref/PrivateChannel#disconnect)
 
 [Message Exchange Type](../spec#individual-message-exchanges): **Request only**
