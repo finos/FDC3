@@ -13,7 +13,7 @@ Desktop Agent bridging message exchange for a `raiseIntent` API call on the [`De
 
 For Desktop Agent Bridging, a `raiseIntent` message exchange MUST always pass an `app: AppIdentifier` argument to target the intent. Further, if no `instanceId` is set in the `AppIdentifier`, then it should be interpreted to mean *'spawn a new instance of the target application'*. A local FDC3 API implementation call would normally defer to a resolver UI or similar if there are multiple options for resolving a specified `appId` (i.e. existing instance(s) and the option spawning a new instance), whereas this message exchange assumes that resolution has already taken place on the source Desktop Agent.
 
-Hence, if a target [`AppIdentifier`](/api/ref/Types#appidentifier) is not passed in the original `DesktopAgent` API call, then the [`findIntent`](findIntent) message exchange should be used to collect options for the local resolver to use. Once an option has been selected (for example because there is only one option, or because the user selected an option in a local intent resolver UI), the `raiseIntent` message exchange may then be used (if a remote option was selected as the resolution) to raise the intent.
+Hence, if a target [`AppIdentifier`](../../api/ref/Types#appidentifier) is not passed in the original `DesktopAgent` API call, then the [`findIntent`](findIntent) message exchange should be used to collect options for the local resolver to use. Once an option has been selected (for example because there is only one option, or because the user selected an option in a local intent resolver UI), the `raiseIntent` message exchange may then be used (if a remote option was selected as the resolution) to raise the intent.
 
 :::info
 
@@ -222,20 +222,24 @@ The bridge will fill in the `intentResolution.source.DesktopAgent` & `source.des
 }
 ```
 
-When `Slack` produces an `IntentResult` from its `IntentHandler`, or the intent handler finishes running without returning a result, it should send a further `raiseIntentResultResponse` message to indicate that it's finished running and to pass any `IntentResult` onto the raising application (setting either `payload.context` or `payload.channel` to indicate the type of the `IntentResult`). There is no need to provide a `source` field in this response as the source information was already provided in the `raiseIntentResponse` message preceding it.
+When `Slack` produces an `IntentResult` from its `IntentHandler`, or the intent handler finishes running without returning a result, it should send a further `raiseIntentResultResponse` message to indicate that it's finished running and to pass any `IntentResult` onto the raising application (setting either `payload.intentResult.context` or `payload.intentResult.channel` to indicate the type of the `IntentResult`, or leaving `payload.intentResult` empty to indicate a `void` result). There is no need to provide a `source` field in this response as the source information was already provided in the `raiseIntentResponse` message preceding it.
 
 ```json
 // agent-B -> DAB
 {
     "type": "raiseIntentResultResponse",
     "payload": {
-        "context": {/*contextObj*/}
-        /* for a channel IntentResult use:
-        "channel": {
-            "id": "app-channel xyz",
-            "type": "user"
-        }
-        */
+        "intentResult": {
+            "context": {/*contextObj*/}
+            /* for a channel IntentResult use:
+            "channel": {
+                "id": "app-channel xyz",
+                "type": "user"
+            }
+
+            or for a void result use leave this object empty.
+            */
+
     },
     "meta": {
         "requestUuid": "<requestUuid>",
