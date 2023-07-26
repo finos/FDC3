@@ -24,16 +24,21 @@ let instances = await fdc3.findInstances({appId: "MyAppId", desktopAgent: "agent
 
 ```mermaid
 sequenceDiagram
+    box Desktop Agent A
+    participant AA as App A
     participant DA as Desktop Agent A
+    end
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: findInstancesRequest
-    DAB ->>+ DB: findInstancesRequest
-    DAB ->>+ DC: findInstancesRequest
+    AA --) DA: fdc3.findInstances()
+    DA ->> DAB: findInstancesRequest
+    DAB ->> DB: findInstancesRequest
+    DAB ->> DC: findInstancesRequest
     DB ->> DAB: findInstancesResponse (B)
     DC ->> DAB: findInstancesResponse (C)
-    DAB -->>- DA: findInstancesResponse (B + C)
+    DAB ->> DA: findInstancesResponse (B + C)
+    DA --) AA: resolve (AppIdentifier[])
 ```
 
 ## Request format

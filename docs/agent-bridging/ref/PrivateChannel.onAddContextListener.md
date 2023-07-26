@@ -22,12 +22,16 @@ When a `ContextListener` is added to a `PrivateChannel` any applications that ha
 
 ```mermaid
 sequenceDiagram
+    box Desktop Agent A
+    participant AA as App A
     participant DA as Desktop Agent A
+    end
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: PrivateChannel.onAddContextListener
-    DAB ->>+ DB: PrivateChannel.onAddContextListener
+    AA --) DA: privateChannel.addContextListener()
+    DA ->> DAB: PrivateChannel.onAddContextListener
+    DAB ->> DB: PrivateChannel.onAddContextListener
 ```
 
 ## Request format

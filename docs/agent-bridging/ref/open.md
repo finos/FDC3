@@ -40,14 +40,19 @@ If the remote Desktop Agent is not currently connected from the bridge, the [`Op
 
 ```mermaid
 sequenceDiagram
+    box Desktop Agent A
+    participant AA as App A
     participant DA as Desktop Agent A
+    end
     participant DAB as Desktop Agent Bridge
     participant DB as Desktop Agent B
     participant DC as Desktop Agent C
-    DA ->>+ DAB: openRequest
-    DAB ->>+ DB: openRequest
-    DB -->>- DAB: openResponse
-    DAB -->>- DA: openResponse
+    AA --) DA: fdc3.open()
+    DA ->> DAB: openRequest
+    DAB ->> DB: openRequest
+    DB ->> DAB: openResponse
+    DAB ->> DA: openResponse
+    DA --) AA: resolve (AppIdentifier)
 ```
 
 ## Request format
