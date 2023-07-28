@@ -18,7 +18,7 @@ Notes:
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/next/tradeList.schema.json>
+<https://fdc3.finos.org/schemas/next/context/tradeList.schema.json>
 
 ## Details
 
