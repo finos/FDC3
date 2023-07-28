@@ -27,7 +27,7 @@ Notes:
 | `type`       | string     | Yes      | `'fdc3.product'`        |
 | `id`         | object     | Yes      | One or more identifiers that refer to the product. Specific key names for systems are expected to be standardized in future. |
 | `name`       | string     | No       | A human-readable summary of the product. |
-| `instrument` | Product[]  | No       | A financial instrument that relates to the definition of this product. |
+| `instrument` | Instrument | No       | A financial instrument that relates to the definition of this product. |
 
 ## Example
 

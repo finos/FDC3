@@ -20,13 +20,13 @@ This type currently only defines a required `id` field, which should provide a r
 
 ## Details
 
-| Property     | Type       | Required | Details             |
-|--------------|------------|----------|---------------------------|
-| `type`       | string     | Yes      | `'fdc3.order'`        |
-| `id`         | object     | Yes      | One or more identifiers that refer to the order in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future. E.g.:`{ myOMS: '12345' }` |
-| `name`       | string     | No       | An optional human-readable summary of the order.    |
-| `details`    | object     | No       | Optional additional details about the order, which may include a product element that is an, as yet undefined but extensible, Context  |
-| `details.product`    | Product     | No       | The product that the order relates to  |
+| Property          | Type       | Required | Details                   |
+|-------------------|------------|----------|---------------------------|
+| `type`            | string     | Yes      | `'fdc3.order'`            |
+| `id`              | object     | Yes      | One or more identifiers that refer to the order in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future. E.g.:`{ myOMS: '12345' }` |
+| `name`            | string     | No       | An optional human-readable summary of the order.    |
+| `details`         | object     | No       | Optional additional details about the order, which may include a product element that is an, as yet undefined but extensible, Context  |
+| `details.product` | Product    | No       | The product that the order relates to  |
 
 ## Examples
 
