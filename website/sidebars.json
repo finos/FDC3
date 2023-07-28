@@ -78,11 +78,16 @@
           "context/ref/Interaction",
           "context/ref/Message",
           "context/ref/Nothing",
+          "context/ref/Order",
+          "context/ref/OrderList",
           "context/ref/Organization",
           "context/ref/Portfolio",
           "context/ref/Position",
+          "context/ref/Product",
           "context/ref/ChatSearchCriteria",
           "context/ref/TimeRange",
+          "context/ref/Trade",
+          "context/ref/TradeList",
           "context/ref/TransactionResult",
           "context/ref/Valuation"
         ]
