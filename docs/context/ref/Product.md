@@ -51,6 +51,5 @@ const product = {
 Other Types
 
 - [Instrument](Instrument)
-- [ProductList](ProductList)
 - [Order](Order)
 - [Trade](Trade)
