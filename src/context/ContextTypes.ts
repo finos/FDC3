@@ -1,9 +1,13 @@
 // To parse this data:
 //
-//   import { Convert, Chart, ChatInitSettings, Contact, ContactList, Context, Country, Currency, Email, Instrument, InstrumentList, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, TimeRange, Trade, TradeList, Valuation } from "./file";
+//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
 //
+//   const action = Convert.toAction(json);
 //   const chart = Convert.toChart(json);
 //   const chatInitSettings = Convert.toChatInitSettings(json);
+//   const chatMessage = Convert.toChatMessage(json);
+//   const chatRoom = Convert.toChatRoom(json);
+//   const chatSearchCriteria = Convert.toChatSearchCriteria(json);
 //   const contact = Convert.toContact(json);
 //   const contactList = Convert.toContactList(json);
 //   const context = Convert.toContext(json);
@@ -12,6 +16,8 @@
 //   const email = Convert.toEmail(json);
 //   const instrument = Convert.toInstrument(json);
 //   const instrumentList = Convert.toInstrumentList(json);
+//   const interaction = Convert.toInteraction(json);
+//   const message = Convert.toMessage(json);
 //   const nothing = Convert.toNothing(json);
 //   const order = Convert.toOrder(json);
 //   const orderList = Convert.toOrderList(json);
@@ -22,14 +28,43 @@
 //   const timeRange = Convert.toTimeRange(json);
 //   const trade = Convert.toTrade(json);
 //   const tradeList = Convert.toTradeList(json);
+//   const transactionResult = Convert.toTransactionResult(json);
 //   const valuation = Convert.toValuation(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
+export interface Action {
+  app?: ActionApp;
+  context: ActionContext;
+  customConfig?: { [key: string]: any };
+  /**
+   * A reference an intent type name, such as those defined in the FDC3 Standard
+   */
+  intent?: string;
+  title: string;
+  type: string;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+export interface ActionApp {
+  appId: string;
+  instanceId?: string;
+  [property: string]: any;
+}
+
+export interface ActionContext {
+  id?: { [key: string]: any };
+  name?: string;
+  type: string;
+  [property: string]: any;
+}
+
 export interface Chart {
   instruments: InstrumentElement[];
-  otherConfig?: OtherConfigElement[];
+  otherConfig?: ContextElement[];
   range?: TimeRangeObject;
   style?: Style;
   type: string;
@@ -40,7 +75,7 @@ export interface Chart {
 
 export interface InstrumentElement {
   id: PurpleID;
-  market?: PurpleMarket;
+  market?: OrganizationMarket;
   type: string;
   name?: string;
   [property: string]: any;
@@ -59,7 +94,7 @@ export interface PurpleID {
   [property: string]: any;
 }
 
-export interface PurpleMarket {
+export interface OrganizationMarket {
   BBG?: string;
   COUNTRY_ISOALPHA2?: string;
   MIC?: string;
@@ -67,7 +102,7 @@ export interface PurpleMarket {
   [property: string]: any;
 }
 
-export interface OtherConfigElement {
+export interface ContextElement {
   id?: { [key: string]: any };
   name?: string;
   type: string;
@@ -98,10 +133,12 @@ export enum Style {
 
 export interface ChatInitSettings {
   chatName?: string;
-  initMessage?: string;
   members?: ContactListObject;
-  options?: any;
-  type: any;
+  message?: MessageObject | string;
+  options?: Options;
+  type: string;
+  id?: { [key: string]: any };
+  name?: string;
   [property: string]: any;
 }
 
@@ -126,14 +163,131 @@ export interface FluffyID {
   [property: string]: any;
 }
 
-export interface Contact {
+export interface MessageObject {
+  entities?: { [key: string]: PurpleAction };
+  text?: PurpleText;
+  type: string;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+export interface PurpleAction {
+  app?: EntityApp;
+  context?: EntityContext;
+  customConfig?: { [key: string]: any };
+  /**
+   * A reference an intent type name, such as those defined in the FDC3 Standard
+   */
+  intent?: string;
+  title?: string;
+  type: any;
+  id?: { [key: string]: any };
+  name?: string;
+  data?: PurpleData;
+  [property: string]: any;
+}
+
+export interface EntityApp {
+  appId: string;
+  instanceId?: string;
+  [property: string]: any;
+}
+
+export interface EntityContext {
+  id?: { [key: string]: any };
+  name?: string;
+  type: string;
+  [property: string]: any;
+}
+
+export interface PurpleData {
+  dataUri: string;
+  name: string;
+  [property: string]: any;
+}
+
+export interface PurpleText {
+  'text/markdown'?: string;
+  'text/plain'?: string;
+  [property: string]: any;
+}
+
+export interface Options {
+  allowAddUser?: boolean;
+  allowHistoryBrowsing?: boolean;
+  allowMessageCopy?: boolean;
+  groupRecipients?: boolean;
+  isPublic?: boolean;
+  [property: string]: any;
+}
+
+export interface ChatMessage {
+  chatRoom: ChatRoomObject;
+  message: MessageObject;
+  type: string;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+export interface ChatRoomObject {
+  id: { [key: string]: any };
+  name?: string;
+  providerName: string;
+  type: string;
+  url?: string;
+  [property: string]: any;
+}
+
+export interface ChatRoom {
+  id: { [key: string]: any };
+  name?: string;
+  providerName: string;
+  type: string;
+  url?: string;
+  [property: string]: any;
+}
+
+export interface ChatSearchCriteria {
+  criteria: Array<OrganizationObject | string>;
+  type: string;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+export interface OrganizationObject {
   id: TentacledID;
+  market?: OrganizationMarket;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
 export interface TentacledID {
+  BBG?: string;
+  CUSIP?: string;
+  FDS_ID?: string;
+  FIGI?: string;
+  ISIN?: string;
+  PERMID?: string;
+  RIC?: string;
+  SEDOL?: string;
+  ticker?: string;
+  LEI?: string;
+  email?: string;
+  [property: string]: any;
+}
+
+export interface Contact {
+  id: StickyID;
+  type: string;
+  name?: string;
+  [property: string]: any;
+}
+
+export interface StickyID {
   email?: string;
   FDS_ID?: string;
   [property: string]: any;
@@ -206,14 +360,14 @@ export interface RecipientsID {
 }
 
 export interface Instrument {
-  id: StickyID;
-  market?: FluffyMarket;
+  id: IndigoID;
+  market?: PurpleMarket;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface StickyID {
+export interface IndigoID {
   BBG?: string;
   CUSIP?: string;
   FDS_ID?: string;
@@ -226,7 +380,7 @@ export interface StickyID {
   [property: string]: any;
 }
 
-export interface FluffyMarket {
+export interface PurpleMarket {
   BBG?: string;
   COUNTRY_ISOALPHA2?: string;
   MIC?: string;
@@ -243,14 +397,53 @@ export interface InstrumentList {
 }
 
 export interface Interaction {
-  id?: { [key: string]: string };
-  type: string;
-  participants: ContactList;
-  timeRange: TimeRange;
-  interactionType: ('Instant Message' | 'Email' | 'Call' | 'Meeting') | string;
   description: string;
-  initiator?: Contact;
+  initiator?: ContactElement;
+  interactionType: string;
   origin?: string;
+  participants: ContactListObject;
+  timeRange: TimeRangeObject;
+  type: string;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+export interface Message {
+  entities?: { [key: string]: FluffyAction };
+  text?: FluffyText;
+  type: string;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+export interface FluffyAction {
+  app?: EntityApp;
+  context?: EntityContext;
+  customConfig?: { [key: string]: any };
+  /**
+   * A reference an intent type name, such as those defined in the FDC3 Standard
+   */
+  intent?: string;
+  title?: string;
+  type: any;
+  id?: { [key: string]: any };
+  name?: string;
+  data?: FluffyData;
+  [property: string]: any;
+}
+
+export interface FluffyData {
+  dataUri: string;
+  name: string;
+  [property: string]: any;
+}
+
+export interface FluffyText {
+  'text/markdown'?: string;
+  'text/plain'?: string;
+  [property: string]: any;
 }
 
 export interface Nothing {
@@ -283,7 +476,7 @@ export interface Order {
    */
   id: { [key: string]: string };
   /**
-   * A human-readable summary of the order.
+   * An optional human-readable summary of the order.
    */
   name?: string;
   type: string;
@@ -355,7 +548,7 @@ export interface OrderElement {
    */
   id: { [key: string]: string };
   /**
-   * A human-readable summary of the order.
+   * An optional human-readable summary of the order.
    */
   name?: string;
   type: string;
@@ -372,13 +565,13 @@ export interface FluffyOrderDetails {
 }
 
 export interface Organization {
-  id: OrganizationID;
+  id: IndecentID;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface OrganizationID {
+export interface IndecentID {
   FDS_ID?: string;
   LEI?: string;
   PERMID?: string;
@@ -458,7 +651,7 @@ export interface Trade {
    */
   id: { [key: string]: string };
   /**
-   * A human-readable summary of the order.
+   * A human-readable summary of the trade.
    */
   name?: string;
   product: ProductObject;
@@ -493,7 +686,7 @@ export interface TradeElement {
    */
   id: { [key: string]: string };
   /**
-   * A human-readable summary of the order.
+   * A human-readable summary of the trade.
    */
   name?: string;
   product: ProductObject;
@@ -501,9 +694,20 @@ export interface TradeElement {
   [property: string]: any;
 }
 
-export interface ChatSearchCriteria {
-  criteria: (Instrument | Organization | Contact | string)[];
+export interface TransactionResult {
+  context?: ContextElement;
+  status: Status;
   type: string;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+export enum Status {
+  Created = 'Created',
+  Deleted = 'Deleted',
+  Failed = 'Failed',
+  Updated = 'Updated',
 }
 
 export interface Valuation {
@@ -518,16 +722,17 @@ export interface Valuation {
   [property: string]: any;
 }
 
-export interface TransactionResult {
-  status: ('Created' | 'Deleted' | 'Updated' | 'Failed') | string;
-  type: string;
-  context?: Context;
-  message?: string;
-}
-
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
+  public static toAction(json: string): Action {
+    return cast(JSON.parse(json), r('Action'));
+  }
+
+  public static actionToJson(value: Action): string {
+    return JSON.stringify(uncast(value, r('Action')), null, 2);
+  }
+
   public static toChart(json: string): Chart {
     return cast(JSON.parse(json), r('Chart'));
   }
@@ -542,6 +747,30 @@ export class Convert {
 
   public static chatInitSettingsToJson(value: ChatInitSettings): string {
     return JSON.stringify(uncast(value, r('ChatInitSettings')), null, 2);
+  }
+
+  public static toChatMessage(json: string): ChatMessage {
+    return cast(JSON.parse(json), r('ChatMessage'));
+  }
+
+  public static chatMessageToJson(value: ChatMessage): string {
+    return JSON.stringify(uncast(value, r('ChatMessage')), null, 2);
+  }
+
+  public static toChatRoom(json: string): ChatRoom {
+    return cast(JSON.parse(json), r('ChatRoom'));
+  }
+
+  public static chatRoomToJson(value: ChatRoom): string {
+    return JSON.stringify(uncast(value, r('ChatRoom')), null, 2);
+  }
+
+  public static toChatSearchCriteria(json: string): ChatSearchCriteria {
+    return cast(JSON.parse(json), r('ChatSearchCriteria'));
+  }
+
+  public static chatSearchCriteriaToJson(value: ChatSearchCriteria): string {
+    return JSON.stringify(uncast(value, r('ChatSearchCriteria')), null, 2);
   }
 
   public static toContact(json: string): Contact {
@@ -606,6 +835,22 @@ export class Convert {
 
   public static instrumentListToJson(value: InstrumentList): string {
     return JSON.stringify(uncast(value, r('InstrumentList')), null, 2);
+  }
+
+  public static toInteraction(json: string): Interaction {
+    return cast(JSON.parse(json), r('Interaction'));
+  }
+
+  public static interactionToJson(value: Interaction): string {
+    return JSON.stringify(uncast(value, r('Interaction')), null, 2);
+  }
+
+  public static toMessage(json: string): Message {
+    return cast(JSON.parse(json), r('Message'));
+  }
+
+  public static messageToJson(value: Message): string {
+    return JSON.stringify(uncast(value, r('Message')), null, 2);
   }
 
   public static toNothing(json: string): Nothing {
@@ -686,6 +931,14 @@ export class Convert {
 
   public static tradeListToJson(value: TradeList): string {
     return JSON.stringify(uncast(value, r('TradeList')), null, 2);
+  }
+
+  public static toTransactionResult(json: string): TransactionResult {
+    return cast(JSON.parse(json), r('TransactionResult'));
+  }
+
+  public static transactionResultToJson(value: TransactionResult): string {
+    return JSON.stringify(uncast(value, r('TransactionResult')), null, 2);
   }
 
   public static toValuation(json: string): Valuation {
@@ -864,10 +1117,38 @@ function r(name: string) {
 }
 
 const typeMap: any = {
+  Action: o(
+    [
+      { json: 'app', js: 'app', typ: u(undefined, r('ActionApp')) },
+      { json: 'context', js: 'context', typ: r('ActionContext') },
+      { json: 'customConfig', js: 'customConfig', typ: u(undefined, m('any')) },
+      { json: 'intent', js: 'intent', typ: u(undefined, '') },
+      { json: 'title', js: 'title', typ: '' },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  ActionApp: o(
+    [
+      { json: 'appId', js: 'appId', typ: '' },
+      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  ActionContext: o(
+    [
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    'any'
+  ),
   Chart: o(
     [
       { json: 'instruments', js: 'instruments', typ: a(r('InstrumentElement')) },
-      { json: 'otherConfig', js: 'otherConfig', typ: u(undefined, a(r('OtherConfigElement'))) },
+      { json: 'otherConfig', js: 'otherConfig', typ: u(undefined, a(r('ContextElement'))) },
       { json: 'range', js: 'range', typ: u(undefined, r('TimeRangeObject')) },
       { json: 'style', js: 'style', typ: u(undefined, r('Style')) },
       { json: 'type', js: 'type', typ: '' },
@@ -879,7 +1160,7 @@ const typeMap: any = {
   InstrumentElement: o(
     [
       { json: 'id', js: 'id', typ: r('PurpleID') },
-      { json: 'market', js: 'market', typ: u(undefined, r('PurpleMarket')) },
+      { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -899,7 +1180,7 @@ const typeMap: any = {
     ],
     'any'
   ),
-  PurpleMarket: o(
+  OrganizationMarket: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
@@ -908,7 +1189,7 @@ const typeMap: any = {
     ],
     'any'
   ),
-  OtherConfigElement: o(
+  ContextElement: o(
     [
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -929,10 +1210,12 @@ const typeMap: any = {
   ChatInitSettings: o(
     [
       { json: 'chatName', js: 'chatName', typ: u(undefined, '') },
-      { json: 'initMessage', js: 'initMessage', typ: u(undefined, '') },
       { json: 'members', js: 'members', typ: u(undefined, r('ContactListObject')) },
-      { json: 'options', js: 'options', typ: u(undefined, 'any') },
-      { json: 'type', js: 'type', typ: 'any' },
+      { json: 'message', js: 'message', typ: u(undefined, u(r('MessageObject'), '')) },
+      { json: 'options', js: 'options', typ: u(undefined, r('Options')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
@@ -960,15 +1243,142 @@ const typeMap: any = {
     ],
     'any'
   ),
-  Contact: o(
+  MessageObject: o(
+    [
+      { json: 'entities', js: 'entities', typ: u(undefined, m(r('PurpleAction'))) },
+      { json: 'text', js: 'text', typ: u(undefined, r('PurpleText')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  PurpleAction: o(
+    [
+      { json: 'app', js: 'app', typ: u(undefined, r('EntityApp')) },
+      { json: 'context', js: 'context', typ: u(undefined, r('EntityContext')) },
+      { json: 'customConfig', js: 'customConfig', typ: u(undefined, m('any')) },
+      { json: 'intent', js: 'intent', typ: u(undefined, '') },
+      { json: 'title', js: 'title', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: 'any' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'data', js: 'data', typ: u(undefined, r('PurpleData')) },
+    ],
+    'any'
+  ),
+  EntityApp: o(
+    [
+      { json: 'appId', js: 'appId', typ: '' },
+      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  EntityContext: o(
+    [
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    'any'
+  ),
+  PurpleData: o(
+    [
+      { json: 'dataUri', js: 'dataUri', typ: '' },
+      { json: 'name', js: 'name', typ: '' },
+    ],
+    'any'
+  ),
+  PurpleText: o(
+    [
+      { json: 'text/markdown', js: 'text/markdown', typ: u(undefined, '') },
+      { json: 'text/plain', js: 'text/plain', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Options: o(
+    [
+      { json: 'allowAddUser', js: 'allowAddUser', typ: u(undefined, true) },
+      { json: 'allowHistoryBrowsing', js: 'allowHistoryBrowsing', typ: u(undefined, true) },
+      { json: 'allowMessageCopy', js: 'allowMessageCopy', typ: u(undefined, true) },
+      { json: 'groupRecipients', js: 'groupRecipients', typ: u(undefined, true) },
+      { json: 'isPublic', js: 'isPublic', typ: u(undefined, true) },
+    ],
+    'any'
+  ),
+  ChatMessage: o(
+    [
+      { json: 'chatRoom', js: 'chatRoom', typ: r('ChatRoomObject') },
+      { json: 'message', js: 'message', typ: r('MessageObject') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  ChatRoomObject: o(
+    [
+      { json: 'id', js: 'id', typ: m('any') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'providerName', js: 'providerName', typ: '' },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'url', js: 'url', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  ChatRoom: o(
+    [
+      { json: 'id', js: 'id', typ: m('any') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'providerName', js: 'providerName', typ: '' },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'url', js: 'url', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  ChatSearchCriteria: o(
+    [
+      { json: 'criteria', js: 'criteria', typ: a(u(r('OrganizationObject'), '')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  OrganizationObject: o(
     [
       { json: 'id', js: 'id', typ: r('TentacledID') },
+      { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
   TentacledID: o(
+    [
+      { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
+      { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
+      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
+      { json: 'FIGI', js: 'FIGI', typ: u(undefined, '') },
+      { json: 'ISIN', js: 'ISIN', typ: u(undefined, '') },
+      { json: 'PERMID', js: 'PERMID', typ: u(undefined, '') },
+      { json: 'RIC', js: 'RIC', typ: u(undefined, '') },
+      { json: 'SEDOL', js: 'SEDOL', typ: u(undefined, '') },
+      { json: 'ticker', js: 'ticker', typ: u(undefined, '') },
+      { json: 'LEI', js: 'LEI', typ: u(undefined, '') },
+      { json: 'email', js: 'email', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Contact: o(
+    [
+      { json: 'id', js: 'id', typ: r('StickyID') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  StickyID: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
@@ -1047,14 +1457,14 @@ const typeMap: any = {
   ),
   Instrument: o(
     [
-      { json: 'id', js: 'id', typ: r('StickyID') },
-      { json: 'market', js: 'market', typ: u(undefined, r('FluffyMarket')) },
+      { json: 'id', js: 'id', typ: r('IndigoID') },
+      { json: 'market', js: 'market', typ: u(undefined, r('PurpleMarket')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  StickyID: o(
+  IndigoID: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
@@ -1068,7 +1478,7 @@ const typeMap: any = {
     ],
     'any'
   ),
-  FluffyMarket: o(
+  PurpleMarket: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
@@ -1083,6 +1493,58 @@ const typeMap: any = {
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Interaction: o(
+    [
+      { json: 'description', js: 'description', typ: '' },
+      { json: 'initiator', js: 'initiator', typ: u(undefined, r('ContactElement')) },
+      { json: 'interactionType', js: 'interactionType', typ: '' },
+      { json: 'origin', js: 'origin', typ: u(undefined, '') },
+      { json: 'participants', js: 'participants', typ: r('ContactListObject') },
+      { json: 'timeRange', js: 'timeRange', typ: r('TimeRangeObject') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Message: o(
+    [
+      { json: 'entities', js: 'entities', typ: u(undefined, m(r('FluffyAction'))) },
+      { json: 'text', js: 'text', typ: u(undefined, r('FluffyText')) },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  FluffyAction: o(
+    [
+      { json: 'app', js: 'app', typ: u(undefined, r('EntityApp')) },
+      { json: 'context', js: 'context', typ: u(undefined, r('EntityContext')) },
+      { json: 'customConfig', js: 'customConfig', typ: u(undefined, m('any')) },
+      { json: 'intent', js: 'intent', typ: u(undefined, '') },
+      { json: 'title', js: 'title', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: 'any' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'data', js: 'data', typ: u(undefined, r('FluffyData')) },
+    ],
+    'any'
+  ),
+  FluffyData: o(
+    [
+      { json: 'dataUri', js: 'dataUri', typ: '' },
+      { json: 'name', js: 'name', typ: '' },
+    ],
+    'any'
+  ),
+  FluffyText: o(
+    [
+      { json: 'text/markdown', js: 'text/markdown', typ: u(undefined, '') },
+      { json: 'text/plain', js: 'text/plain', typ: u(undefined, '') },
     ],
     'any'
   ),
@@ -1134,13 +1596,13 @@ const typeMap: any = {
   FluffyOrderDetails: o([{ json: 'product', js: 'product', typ: u(undefined, r('ProductObject')) }], 'any'),
   Organization: o(
     [
-      { json: 'id', js: 'id', typ: r('OrganizationID') },
+      { json: 'id', js: 'id', typ: r('IndecentID') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  OrganizationID: o(
+  IndecentID: o(
     [
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
       { json: 'LEI', js: 'LEI', typ: u(undefined, '') },
@@ -1223,6 +1685,16 @@ const typeMap: any = {
     ],
     'any'
   ),
+  TransactionResult: o(
+    [
+      { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
+      { json: 'status', js: 'status', typ: r('Status') },
+      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
   Valuation: o(
     [
       { json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: '' },
@@ -1237,4 +1709,5 @@ const typeMap: any = {
     'any'
   ),
   Style: ['bar', 'candle', 'custom', 'heatmap', 'histogram', 'line', 'mountain', 'pie', 'scatter', 'stacked-bar'],
+  Status: ['Created', 'Deleted', 'Failed', 'Updated'],
 };
