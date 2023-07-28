@@ -11,7 +11,7 @@
     },
     "intent": {
       "type": "string",
-      "$comment": "Should reference an intent type name, such as those defined in the FDC3 Standard'"
+      "description": "A reference an intent type name, such as those defined in the FDC3 Standard"
     },
     "context": {
       "type": "object",

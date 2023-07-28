@@ -1,0 +1,58 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/context/trade.schema.json",
+	"type": "object",
+	"title": "Trade",
+	"description": "@experimental context type representing a trade. To be used with execution systems.\n\nThis type currently only defines a required `id` field, which should provide a reference to the trade in one or more systems, an optional human readable `name` field to be used to summarize the trade and a required `product` field that may be used to provide additional detail about the trade, which is currently typed as a unspecified Context type, but `product` is expected to be standardized in future.",
+	"allOf": [
+		{
+			"$ref": "context.schema.json#"
+		}
+	],
+	"properties": {
+		"type": {
+			"const": "fdc3.trade"
+		},
+		"id": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "string"
+			},
+			"title": "Trade Identifiers",
+			"description": "One or more identifiers that refer to the trade in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future."
+		},
+		"name": {
+			"type": "string",
+			"title": "Name",
+			"description": "A human-readable summary of the trade."
+		},
+		"product": {
+			"$ref": "product.schema.json"
+		}
+	},
+	"required": [
+		"type", "id", "product"
+	],
+	"additionalProperties": true,
+	"examples": [
+		{
+			"type": "fdc3.trade",
+			"name": "...",
+			"id": {
+				"myEMS": "12345"
+			},
+			"product": {
+				"type": "fdc3.product",
+				"id": {
+					"productId": "ABC123"
+				},
+				"instrument": {
+					"type": "fdc3.instrument",
+					"id": {
+						"ticker": "MSFT"
+					}
+				}
+			}
+		}
+	]
+}
