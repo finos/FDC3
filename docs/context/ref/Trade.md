@@ -20,7 +20,7 @@ Notes:
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/next/trade.schema.json>
+<https://fdc3.finos.org/schemas/next/context/trade.schema.json>
 
 ## Details
 

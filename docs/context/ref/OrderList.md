@@ -18,7 +18,7 @@ Notes:
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/next/orderList.schema.json>
+<https://fdc3.finos.org/schemas/next/context/orderList.schema.json>
 
 ## Details
 
