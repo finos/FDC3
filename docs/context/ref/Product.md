@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `Product`
 
-[`@experimental`](/docs/fdc3-compliance#experimental-features) context type representing a tradable product. To be used with OMS and EMS systems.\n\nThis type is currently only loosely defined as an extensible context object, with an optional instrument field.
+[`@experimental`](/docs/fdc3-compliance#experimental-features) context type representing a tradable product. To be used with OMS and EMS systems. This type is currently only loosely defined as an extensible context object, with an optional instrument field.
 
 Notes:
 
