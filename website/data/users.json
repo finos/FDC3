@@ -179,5 +179,12 @@
         "infoLink": "https://www.bmo.com/",
         "pinned": true,
         "isMember": true
-    } 
+    },
+    {
+        "caption": "Dow Jones",
+        "image": "/img/users/Dow_Jones_Logo.png",
+        "infoLink": "https://www.dowjones.com/",
+        "pinned": true,
+        "isMember": true
+    }    
 ]

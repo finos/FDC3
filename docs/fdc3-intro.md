@@ -18,12 +18,13 @@ For more information, see [Why FDC3?](why-fdc3)
 
 ## Parts of the Standard
 
-The [Standard](fdc3-standard) currently consists of four complementary parts:
+The [Standard](fdc3-standard) currently consists of five complementary parts:
 
 - [API](api/spec)
 - [Intents](intents/spec)
 - [Context Data](context/spec)
 - [App Directory](app-directory/spec)
+- [Agent Bridging](agent-bridging/spec)
 
 ## Use Cases
 

@@ -22,7 +22,7 @@ Notes:
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/interaction.schema.json
+<https://fdc3.finos.org/schemas/next/context/interaction.schema.json>
 
 ## Details
 

@@ -520,7 +520,7 @@ components:
         The type specific launch details of the application. These details are intended to be 
         vendor-agnostic and MAY be duplicated or overridden by details provided in the hostManifests 
         object for a specific host.
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/WebAppDetails'
         - $ref: '#/components/schemas/NativeAppDetails'
         - $ref: '#/components/schemas/CitrixAppDetails'
@@ -1187,10 +1187,10 @@ components:
             icons:
               - src: http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png
             screenshots:
-              - src: https://fdc3.finos.org/docs/assets/fdc3-logo.png,
+              - src: https://fdc3.finos.org/docs/assets/fdc3-logo.png
                 label: FDC3 logo
-            contactEmail: fdc3@finos.org,
-            supportEmail: fdc3-maintainers@finos.org,
+            contactEmail: fdc3@finos.org
+            supportEmail: fdc3-maintainers@finos.org
             publisher: FDC3,
             type: web
             details:
