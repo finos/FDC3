@@ -57,8 +57,6 @@ html[data-theme='light'] body {
   background-color:  #009ADC;
 }
 
-
-
 .button:hover {
   background: #0086bf;
   color:#fff
@@ -238,6 +236,16 @@ header.postHeader:empty + article h1 {
   line-height: var(--ifm-heading-line-height);
   margin: var(--ifm-heading-margin-top) 0 0 0;
   padding-bottom: var(--ifm-heading-margin-bottom);
+}
+.blockSubLabel {
+  color:  #0086bf;  /* DO NOT CHANGE - THIS IS THE TITLE UNDER THE ICONS IN THE 3RD BLOCK - SHOULD STAY FINOS BLUE */
+  text-align: center;
+  font-size: var(--ifm-font-size-base);
+  font-family: var(--ifm-heading-font-family);
+  font-weight: var(--ifm-heading-font-weight);
+  /* line-height: var(--ifm-heading-line-height);
+  margin: var(--ifm-heading-margin-top) 0 0 0;
+  padding-bottom: var(--ifm-heading-margin-bottom); */
 }
 
 .blockSubLabel {
@@ -504,13 +512,6 @@ article iframe {
   clear:both
 }
 
-
-@media only screen and (max-width: 735px) {
-  .gridBlock .fourByGridBlock {
-      flex:1 0 26%
-  }
-}
-
 @media only screen and (min-width: 736px) {
   .gridBlock {
       display: flex;
@@ -543,7 +544,7 @@ article iframe {
   }
 
   .gridBlock .fiveByGridBlock {
-    flex:1 0 16%
+      flex:1 0 16%
   }
 
   h2 + .gridBlock {

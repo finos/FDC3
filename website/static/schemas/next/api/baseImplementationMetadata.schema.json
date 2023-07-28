@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/baseImplementationMetadata.schema.json",
+  "title": "BaseImplementationMetadata",
+  "description": "Metadata relating to the FDC3 Desktop Agent implementation and its provider.",
+  "type": "object",
+  "properties": {
+      "fdc3Version": {
+          "description": "The version number of the FDC3 specification that the implementation provides.\nThe string must be a numeric semver version, e.g. 1.2 or 1.2.1.",
+          "type": "string",
+          "title": "fdc3Version"
+      },
+      "provider": {
+          "description": "The name of the provider of the Desktop Agent implementation (e.g. Finsemble, Glue42, OpenFin etc.).",
+          "type": "string",
+          "title": "provider"
+      },
+      "providerVersion": {
+          "description": "The version of the provider of the Desktop Agent implementation (e.g. 5.3.0).",
+          "type": "string",
+          "title": "providerVersion"
+      },
+      "optionalFeatures": {
+          "description": "Metadata indicating whether the Desktop Agent implements optional features of\nthe Desktop Agent API.",
+          "type": "object",
+          "properties": {
+              "OriginatingAppMetadata": {
+                  "description": "Used to indicate whether the exposure of 'originating app metadata' for\ncontext and intent messages is supported by the Desktop Agent.",
+                  "type": "boolean",
+                  "title": "OriginatingAppMetadata"
+              },
+              "UserChannelMembershipAPIs": {
+                  "description": "Used to indicate whether the optional `fdc3.joinUserChannel`,\n`fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by\nthe Desktop Agent.",
+                  "type": "boolean",
+                  "title": "UserChannelMembershipAPIs"
+              },
+              "DesktopAgentBridging": {
+                  "description": "Used to indicate whether the experimental Desktop Agent Bridging\nfeature is implemented by the Desktop Agent.",
+                  "type": "boolean",
+                  "title": "DesktopAgentBridging"
+              }
+          },
+          "additionalProperties": false,
+          "required": [
+              "DesktopAgentBridging",
+              "OriginatingAppMetadata",
+              "UserChannelMembershipAPIs"
+          ],
+          "title": "optionalFeatures"
+      }
+  },
+  "additionalProperties": false,
+  "required": [
+      "fdc3Version",
+      "optionalFeatures",
+      "provider"
+  ]
+}

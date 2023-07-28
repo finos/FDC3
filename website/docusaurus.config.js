@@ -43,6 +43,10 @@ module.exports={
       }
     ]
   ],
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
   "plugins": [],
   "themeConfig": {
     "navbar": {
@@ -54,11 +58,6 @@ module.exports={
         {
           "to": "docs/fdc3-intro",
           "label": "Getting Started",
-          "position": "left"
-        },
-        {
-          "to": "/fdc3-roadmap",
-          "label": "Roadmap",
           "position": "left"
         },
         {
