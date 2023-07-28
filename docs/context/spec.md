@@ -186,11 +186,11 @@ The following are standard FDC3 context types:
 
 The following are [`@experimental`](/docs/fdc3-compliance#experimental-features) types, which are in the process of being defined:
 
-- [`fdc3.order`](ref/Order) ([schema](/schemas/next/order.schema.json))
-- [`fdc3.orderList`](ref/OrderList) ([schema](/schemas/next/orderList.schema.json))
-- [`fdc3.product`](ref/Product) ([schema](/schemas/next/product.schema.json))
-- [`fdc3.trade`](ref/Trade) ([schema](/schemas/next/trade.schema.json))
-- [`fdc3.tradeList`](ref/TradeList) ([schema](/schemas/next/tradeList.schema.json))
+- [`fdc3.order`](ref/Order) ([schema](/schemas/next/context/order.schema.json))
+- [`fdc3.orderList`](ref/OrderList) ([schema](/schemas/next/context/orderList.schema.json))
+- [`fdc3.product`](ref/Product) ([schema](/schemas/next/context/product.schema.json))
+- [`fdc3.trade`](ref/Trade) ([schema](/schemas/next/context/trade.schema.json))
+- [`fdc3.tradeList`](ref/TradeList) ([schema](/schemas/next/context/tradeList.schema.json))
 
 ### Examples
 
