@@ -45,7 +45,7 @@ const trade = {
         "id": {
           "productId": "ABC123"
         },
-				"instrument": {
+ "instrument": {
             "type": "fdc3.instrument",
             "id": {
                 "ticker": "MSFT"
