@@ -92,7 +92,7 @@ I certify that I am authorized to execute this agreement on behalf of the Bound 
 
 * Adaptive Financial Consulting, 110 Bishopsgate, London EC2N 4AY, UK (2019-03-13)
 * ChartIQ, Inc., 609 East Market St, Suite 111, Charlottesville, VA 22902 (2019-03-12)
-* Cloud9 Tehnologies LLC, 565 5th Avenue, 18th Floor, NY, NY 10017 (2019-03-21)
+* Cloud9 Technologies LLC, 565 5th Avenue, 18th Floor, NY, NY 10017 (2019-03-21)
 * FactSet Research Systems Inc., 601 Merritt 7, 3rd Floor, Norwalk, CT 06851 (2019-05-28)
 * Green Key Technologies, 55 W Monroe St Suite 1650, Chicago IL 60603 (2019-04-04)
 * IHS Markit, 450 West 33rd Street, New York, NY 10001 (2019-04-05)
