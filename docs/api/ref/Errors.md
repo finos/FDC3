@@ -68,6 +68,10 @@ enum OpenError {
    *  that has a `string` value.
    */
   MalformedContext = 'MalformedContext',
+
+    /** @experimental Returned if the specified Desktop Agent is not found, via a connected 
+   *  Desktop Agent Bridge. */
+  DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
 ```
 
@@ -123,6 +127,10 @@ export enum ResolveError {
    *  field that has a `string` value.
    */
   MalformedContext = 'MalformedContext',
+
+    /** @experimental Returned if the specified Desktop Agent is not found, via a connected 
+   *  Desktop Agent Bridge. */
+  DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
 ```
 
@@ -158,3 +166,34 @@ Contains constants representing the errors that can be encountered when calling 
 - [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 - [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 - [`IntentResolution`](Metadata#intentresolution)
+
+## `BridgingError`
+
+`@experimental`
+
+```typescript
+enum BridgingError {
+  /** @experimental Returned if a Desktop Agent did not return a response, via 
+   *  Desktop Agent Bridging, within the alloted timeout. */
+  ResponseTimedOut = 'ResponseToBridgeTimedOut',
+  /** @experimental Returned if a Desktop Agent that has been targeted by a 
+   *  particular request has been disconnected from the Bridge before a 
+   *  response has been received from it. */
+  AgentDisconnected = 'AgentDisconnected',
+  /** @experimental Returned for FDC3 API calls that are specified with
+   *  arguments indicating that a remote Desktop agent should be targeted
+   *  (e.g. raiseIntent with an app on a remote DesktopAgent targeted), 
+   *  when the local Desktop Agent is not connected to a bridge. */
+  NotConnectedToBridge = 'NotConnectedToBridge',
+  /** @experimental Returned if a message to a Bridge deviates from the schema
+   *  for that message sufficiently that it could not be processed.
+   */
+  MalformedMessage = 'MalformedMessage'
+}
+```
+
+Contains constants representing the errors that can be encountered when queries are forwarded to a Desktop Agent Bridge, but one or more remote Desktop Agents connected to it disconnects, times-out or a malformed message is encountered while a particular request is in flight. These errors may be returned via the FDC3 API when a Desktop Agent is (or was) connected to a Desktop Agent Bridge.
+
+**See also:**
+
+- [Agent Bridging - Workflows broken by disconnects](../../agent-bridging/spec##workflows-broken-by-disconnects)
