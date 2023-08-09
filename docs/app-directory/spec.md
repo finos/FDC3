@@ -10,7 +10,7 @@ or explore with the [Swagger Editor][4].
 [1]: pathname:///schemas/next/app-directory.html
 [2]: https://www.openapis.org/
 [3]: https://github.com/Redocly/redoc/
-[4]: https://editor.swagger.io/?url=https://fdc3.finos.org/schemas/next/app-directory.yaml
+[4]: https://editor.swagger.io/?url=https://fdc3.finos.org/schemas/next/appd.schema.json
 
 ## Endpoints
 

@@ -9,7 +9,7 @@ There are two main categories of platform: web and native, both of which are des
 
 ## Web
 
-For a web application to be FDC3-enabled, it needs to run in the context of an environment or **_Platform Provider_** that makes the FDC3 API available to the application. This environment could be a browser extension, a web or native app, or fully-fledged desktop container framework.
+For a web application to be FDC3-enabled, it needs to run in the context of an environment or **_Platform Provider_** that makes the FDC3 API available to the application. This environment could be a browser extension, a web or native app, or a fully-fledged desktop container framework.
 
 ### Usage
 
@@ -94,9 +94,10 @@ const listener = await addIntentListener('ViewAnalysis', instrument => {
 
 ## Native
 
-The FDC3 standard does not define wire formats for communication, nor does it define language specific API bindings, other than JavaScript and TypeScript. Hence, for a native application to be FDC3-enabled, it needs to make use of a shared library (such as a .NET DLL or JAR file) that provides it with an implementation of the FDC3 API. Therefore, an FDC3-enabled native application is currently specific to a particular desktop container framework (or other suitable environment) that provides the necessary library.
+The FDC3 Standard does not currently define wire formats for an app to communicate with a Desktop Agent, nor does it define language specific API bindings, other than JavaScript and TypeScript. Hence, for a native application to be FDC3-enabled, it needs to either:
 
-Despite this limitation, implementing support for FDC3 in a native application can allow it to interact with a wide variety of FDC3-enabled web applications.
+- Make use of a shared library (such as a .NET DLL or JAR file) that provides it with an implementation of the FDC3 API (which ties it to a specific desktop agent implementation).
+- Model itself as a Desktop Agent (rather than just an app working with one) and use the Agent Bridging protocol to connect to a Desktop Agent Bridge and work through it to interoperate with apps managed by other Desktop Agents.
 
 ## Hybrid
 
@@ -106,4 +107,4 @@ In a hybrid application, a standalone native application incorporates a web view
 
 Support for each platform is optional and compliance with the FDC3 standard should be assessed for each platform implemented independently of any other, with the exception of ensuring that where applications running on multiple platforms are used together, communication between them still complies with the standard.
 
-The web API binding is expressed using TypeScript syntax that defines the API interface (for both TypeScript and JavaScript). Adherence to the specific binding is required for web application platforms. No specific API binding for native platforms is currently expressed in the standard. Hence, native applications may be implemented with any programming language binding that supports the constructs required by the API specification, until such time that the FDC3 standard introduces an appropriate language-specific binding.
+The Web API binding is expressed using TypeScript syntax that defines the API interface (for both TypeScript and JavaScript). Adherence to the specific binding is required for Web application platforms. No specific API binding for native platforms is currently expressed in the Standard. Hence, native applications may be implemented with any programming language binding that supports the constructs required by the API specification, until such time that the FDC3 Standard introduces an appropriate language-specific binding.

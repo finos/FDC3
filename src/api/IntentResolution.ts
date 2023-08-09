@@ -61,7 +61,8 @@ export interface IntentResolution {
    * the promise it returns is rejected, or the promise resolved to an invalid
    * type) then the Desktop Agent MUST reject the promise returned by the
    * `getResult()` function of the `IntentResolution` with a string from
-   * the `ResultError` enumeration.
+   * the `ResultError` enumeration, or (if connected to a Desktop Agent
+   * Bridge) the `BridgingError` enumeration.
    */
   getResult(): Promise<IntentResult>;
 }
