@@ -53,10 +53,10 @@ export const loader: Loader = (_options: Options) => {
         }, { once: true });
     });
 
-    const da = window.opener;
+    const da = window.opener ?? window.parent;
 
     if (da != null) {
-        window.opener.postMessage(FDC3_API_REQUEST_MESSAGE_TYPE, "*");
+        da.postMessage(FDC3_API_REQUEST_MESSAGE_TYPE, "*");
     }
 
     return out;
