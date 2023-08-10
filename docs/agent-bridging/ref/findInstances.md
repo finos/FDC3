@@ -10,6 +10,12 @@ Desktop Agent bridging message exchange for a `findInstances` API call on the [`
 
 [Message Exchange Type](../spec#individual-message-exchanges): **Request Response (collated)** or **Request Response (single)**
 
+In the event where the application is known but there are no instances of the specified application a promise resolving to an empty array is returned which still means that the responding agent is added to the sources array since it returned a valid response. If the application is not known to the agent a promise resolving to an error `ResolveError.NoAppsFound` is returned and the responding Desktop Agent should be added to the `meta.errorSources` of the bridge response.
+
+In a scenario where the application is known, but no instances of the specific application exist, a promise that resolves to an empty array will be returned. This outcome implies that the responding Desktop Agent is included in the sources array, as it provided a valid response.
+
+However, if the agent is unfamiliar with the application, a promise resolving to an error `ResolveError.NoAppsFound` will be returned. In such cases, the responding Desktop Agent must be added into the `meta.errorSources` of the bridge response.
+
 E.g.
 
 ```javascript
@@ -94,6 +100,10 @@ which is repeated on to the target agent as:
     }
 }
 ```
+
+:::note
+If the `findInstancesRequest` does not have a `meta.source` set the Bridge MUST still set the `meta.source.desktopAgent` field with the value of the Desktop Agent name that sent the request in.
+:::
 
 If results should be constrained to a particular Desktop Agent, then set a `desktopAgent` field in `payload.app` and a matching `destination` field in `meta`:
 
