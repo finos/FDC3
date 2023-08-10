@@ -24,7 +24,7 @@ export const supplier: Supplier = (url: string, checker: AppChecker, detailsReso
                 const origin = event.origin;
                 const source = event.source as Window
                 if (checker(source)) {
-                    console.log(`API Request Origin:  ${origin} Source: ${source}`);
+                    console.log(`API Request Origin:  ${origin}`);
                     source.postMessage(createResponseMessage(source), origin);
                 }
             }
@@ -53,10 +53,10 @@ export const loader: Loader = (_options: Options) => {
         }, { once: true });
     });
 
-    const da = window.opener;
+    const da = window.opener ?? window.parent;
 
     if (da != null) {
-        window.opener.postMessage(FDC3_API_REQUEST_MESSAGE_TYPE, "*");
+        da.postMessage(FDC3_API_REQUEST_MESSAGE_TYPE, "*");
     }
 
     return out;

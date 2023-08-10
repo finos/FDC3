@@ -10,15 +10,25 @@ class DummyDesktopAgent {
             appId: this.details.appId,
             instanceId: this.details.instanceId
         }
+
+        const img = document.createElement("img");
+        img.setAttribute("width", 70);
+        img.setAttribute("height", 70);
+        img.src= "https://cosaic.io/wp-content/uploads/2022/09/fdc3-check.png"
+        img.style = "position: absolute; bottom: 0px; right: 0px;"
+        document.body.appendChild(img)
     }
 
     broadcast(context) {
         console.log("Broadcasting: "+JSON.stringify(context))
-        window.opener.postMessage({
-            type: "Broadcast",
-            context: context,
-            from: this.id
-        }, "*") // in a real desktop agent, don't use *
+        const da = window.opener ?? window.parent;
+        if (da) {
+            da.postMessage({
+                type: "Broadcast",
+                context: context,
+                from: this.id
+            }, "*") // in a real desktop agent, don't use *
+        }
     }
 
     addContextListener(type, callback) {
