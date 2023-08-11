@@ -99,7 +99,7 @@ which is repeated on to the target agent as:
 ```
 
 :::note
-If the `findInstancesRequest` does not have a `meta.source` set the Bridge MUST still set the `meta.source.desktopAgent` field with the value of the Desktop Agent name that sent the request in.
+If the `findInstancesRequest` from the requesting agent does not include a `meta.source` field then the Bridge MUST set the `meta.source.desktopAgent` field to attribute the request to the requesting agent. This is the case for all agent request messages that don't require application details.
 :::
 
 If results should be constrained to a particular Desktop Agent, then set a `desktopAgent` field in `payload.app` and a matching `destination` field in `meta`:
