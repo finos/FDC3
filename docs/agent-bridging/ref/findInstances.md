@@ -10,12 +10,9 @@ Desktop Agent bridging message exchange for a `findInstances` API call on the [`
 
 [Message Exchange Type](../spec#individual-message-exchanges): **Request Response (collated)** or **Request Response (single)**
 
-In the event where the application is known but there are no instances of the specified application a promise resolving to an empty array is returned which still means that the responding agent is added to the sources array since it returned a valid response. If the application is not known to the agent a promise resolving to an error `ResolveError.NoAppsFound` is returned and the responding Desktop Agent should be added to the `meta.errorSources` of the bridge response.
+A Desktop Agent's [`findInstances`](../../api/ref/DesktopAgent#findinstances) API call should return an empty array for known applications and [`ResolveError.NoAppsFound`](../../api/ref/Errors#resolveerror) for unknown apps. Hence, if a findInstances request is received through bridging for a known app with no instances then a normal response should be returned with an empty array. The bridge should add the responding agent to the `sources` array in the collated response as this is a valid response. If the application is not known to the agent an error response should be used instead with the `ResolveError.NoAppsFound` message and the responding Desktop Agent should be added to the `meta.errorSources` of the bridge response.
 
-In a scenario where the application is known, but no instances of the specific application exist, a promise that resolves to an empty array will be returned. This outcome implies that the responding Desktop Agent is included in the sources array, as it provided a valid response.
-
-However, if the agent is unfamiliar with the application, a promise resolving to an error `ResolveError.NoAppsFound` will be returned. In such cases, the responding Desktop Agent must be added into the `meta.errorSources` of the bridge response.
-
+In the event that all agents returned an error response, then the bridge will also return an error response, which I in turn passed back to the calling application. However, if any agent returned a valid response (including with an empty array) then the application was known, but has no instances, resulting in an empty array being returned to the calling application.
 E.g.
 
 ```javascript
