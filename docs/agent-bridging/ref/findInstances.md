@@ -12,7 +12,7 @@ Desktop Agent bridging message exchange for a `findInstances` API call on the [`
 
 A Desktop Agent's [`findInstances`](../../api/ref/DesktopAgent#findinstances) API call should return an empty array for known applications and [`ResolveError.NoAppsFound`](../../api/ref/Errors#resolveerror) for unknown apps. Hence, if a findInstances request is received through bridging for a known app with no instances then a normal response should be returned with an empty array. The bridge should add the responding agent to the `sources` array in the collated response as this is a valid response. If the application is not known to the agent an error response should be used instead with the `ResolveError.NoAppsFound` message and the responding Desktop Agent should be added to the `meta.errorSources` of the bridge response.
 
-In the event that all agents returned an error response, then the bridge will also return an error response, which I in turn passed back to the calling application. However, if any agent returned a valid response (including with an empty array) then the application was known, but has no instances, resulting in an empty array being returned to the calling application.
+In the event that all agents returned an error response, then the bridge will also return an error response, which is passed back to the calling application. However, if any agent returned a valid response (including with an empty array) then the application was known, but had no instances, resulting in an empty array being returned to the calling application.
 E.g.
 
 ```javascript
