@@ -850,8 +850,6 @@ enum BridgingError {
 
 It is the Bridge responsibility to validate the all messages that flow to and from Desktop Agents. When a request message is malformed the bridge MUST send a bridge error response message with  `BridgingError.MalformedMessage` to the sender. Where responses to requests from other agents are malformed, the bridge MUST send a bridge error response message with  `BridgingError.MalformedMessage` to the sender and record `BridgingError.MalformedMessage` as the error response from the responder that sent the malformed message.
 
-The Bridge holds the responsibility of validating all messages exchanged between Desktop Agents. In the case of a malformed Desktop Agent Request, the bridge is MUST dispatch a `BridgingError.MalformedMessage` to the sender. If the malformed message is a Desktop Agent Response, the bridge should transmit a `BridgingError.MalformedMessage` to both the sender and the requesting Desktop Agents.
-
 ### Forwarding of Messages and Collating Responses
 
 When handling request messages, it is the responsibility of the Desktop Agent Bridge to:
