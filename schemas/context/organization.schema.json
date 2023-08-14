@@ -39,9 +39,7 @@
         "id"
       ]
     },
-    {
-      "$ref": "context.schema.json#"
-    }
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
   ],
   "examples": [
     {

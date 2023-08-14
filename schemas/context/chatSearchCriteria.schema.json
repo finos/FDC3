@@ -12,7 +12,7 @@
           "const": "fdc3.chat.searchCriteria"
         },
         "criteria": {
-          "title": "Criteria",
+          "title": "Criteria array",
           "description": "An array of criteria that should match chats returned from by a search.\n\n⚠️ Operators (and/or/not) are not defined in `fdc3.chat.searchCriteria`. It is up to the application that processes the FDC3 Intent to choose and apply the operators between the criteria.\n\nEmpty search criteria can be supported to allow resetting of filters.",
           "type": "array",
           "items": {
@@ -27,7 +27,9 @@
                 "$ref": "contact.schema.json#"
               },
               {
-                "type": "string"
+                "type": "string",
+                "title": "Free text",
+                "description": "Free text to be used for a keyword search"
               }
             ]
           }
@@ -37,9 +39,7 @@
         "criteria"
       ]
     },
-    {
-      "$ref": "context.schema.json#"
-    }
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
   ],
   "examples": [
     {

@@ -13,6 +13,8 @@
         },
         "id": {
           "type": "object",
+          "title": "Contact Identifiers",
+          "description": "Identifiers that relate to the Contact represented by this context",
           "properties": {
             "email": {
               "type": "string",
@@ -32,9 +34,7 @@
         "id"
       ]
     },
-    {
-      "$ref": "context.schema.json#"
-    }
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
   ],
   "examples": [
     {

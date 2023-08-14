@@ -16,7 +16,7 @@
           "title": "Interaction Id",
           "description": "Can be used by a target application to pass an identifier back to the originating application after an interaction record has been created, updated or deleted. An interaction ID does not need to be populated by the originating application, however the target application could store it for future reference and SHOULD return it in a `TransactionResult`.",
           "properties": {
-            "URI"{
+            "URI": {
               "type": "string",
               "title": "Interaction URI",
               "description": "Can be used by a target application to pass a record's link back to the originating application. This offers the originating application a way to open the record for a user to view."
@@ -84,9 +84,7 @@
         "description"
       ]
     },
-    {
-      "$ref": "context.schema.json#"
-    }
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
   ],
   "examples": [
     {
@@ -107,7 +105,7 @@
             "id": {
               "email": "john.doe@mail.com"
             }
-          },
+          }
         ]
       },
       "interactionType": "Instant Message",
