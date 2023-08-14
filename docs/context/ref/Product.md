@@ -10,7 +10,7 @@ hide_title: true
 
 Notes:
 
-- The Product schema does not explicitly include identifiers in the id section, as there is not a common standard for such identifiers. Applications can, however, populate this part of the contract with custom identifiers if so desired.
+- The Product schema does not explicitly include identifiers in the `id`` section, as there is not a common standard for such identifiers. Applications can, however, populate this part of the contract with custom identifiers if so desired.
 
 ## Type
 

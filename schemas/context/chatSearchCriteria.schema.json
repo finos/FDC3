@@ -3,27 +3,43 @@
   "$id": "https://fdc3.finos.org/schemas/next/context/chatSearchCriteria.schema.json",
   "type": "object",
   "title": "Chat Search Criteria",
-  "allOf": [{
+  "description": "A context type that represents a simple search criterion, based on a list of other context objects, that can be used to search or filter messages in a chat application.",
+  "allOf": [
+    {
       "type": "object",
       "properties": {
-        "type": { "const": "fdc3.chat.searchCriteria" },
+        "type": {
+          "const": "fdc3.chat.searchCriteria"
+        },
         "criteria": {
           "title": "Criteria",
-          "description": "An array of criteria that should match chats returned from by a search",
+          "description": "An array of criteria that should match chats returned from by a search.\n\n⚠️ Operators (and/or/not) are not defined in `fdc3.chat.searchCriteria`. It is up to the application that processes the FDC3 Intent to choose and apply the operators between the criteria.\n\nEmpty search criteria can be supported to allow resetting of filters.",
           "type": "array",
-          "items": { 
+          "items": {
             "anyOf": [
-              { "$ref": "instrument.schema.json#" },
-              { "$ref": "organization.schema.json#" },
-              { "$ref": "contact.schema.json#" },
-              { "type": "string" }
+              {
+                "$ref": "instrument.schema.json#"
+              },
+              {
+                "$ref": "organization.schema.json#"
+              },
+              {
+                "$ref": "contact.schema.json#"
+              },
+              {
+                "type": "string"
+              }
             ]
           }
         }
       },
-      "required": ["criteria"]
+      "required": [
+        "criteria"
+      ]
     },
-    { "$ref": "context.schema.json#" }
+    {
+      "$ref": "context.schema.json#"
+    }
   ],
   "examples": [
     {
@@ -33,7 +49,7 @@
           "type": "fdc3.contact",
           "name": "Jane Doe",
           "id": {
-              "email": "jane.doe@mail.com"
+            "email": "jane.doe@mail.com"
           }
         },
         {

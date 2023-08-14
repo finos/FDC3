@@ -6,6 +6,7 @@
   "description": "A collection of information to be used to initiate an email with a Contact or ContactList.",
   "allOf": [
     {
+      "type": "object",
       "properties": {
         "type": {
           "const": "fdc3.email"
