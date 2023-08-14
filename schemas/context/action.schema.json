@@ -8,7 +8,7 @@
       "properties": {
         "type": { "const": "fdc3.action" },
         "title": {
-          "title": "Title",
+          "title": "Action Title",
           "description": "A human readable display name for the action",
           "type": "string"
         },
@@ -23,10 +23,10 @@
           "$ref": "context.schema.json#"
         },
         "app": {
-          "title": "Target App",
+          "title": "Action Target App",
           "description": "An optional target application identifier that should perform the action",
           "allOf": [
-            { "$ref": "../api/AppIdentifier.schema.json" }
+            { "$ref": "../api/api.schema.json#/definitions/AppIdentifier" }
           ]
         }
       },
@@ -34,14 +34,14 @@
         "title", "context"
       ]
     },
-    { "$ref": "context.schema.json#" }
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
   ],
   "examples": [
     {
       "type": "fdc3.action",
       "title": "Click to view Chart",
       "intent": "ViewChart",
-      "context" {
+      "context": {
           "type": "fdc3.chart",
           "instruments": [
               {
@@ -58,7 +58,7 @@
           },
           "style": "candle"
       },
-      "app" {
+      "app" :{
           "appId": "MyChartViewingApp",
           "instanceId": "instance1"
       }

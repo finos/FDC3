@@ -23,7 +23,8 @@
         }
       },
       "required": ["type", "chatRoom", "message"]
-    },{ "$ref": "context.schema.json#" }
+    },
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
   ],
   "examples": [{
       "type": "fdc3.chat.message",
