@@ -29,9 +29,9 @@ The issue lifecycle is mainly driven by the Maintainer.  All issue types follow 
 
 **Prerequisites**
 
-* [ ] Have you [searched for duplicates](https://github.com/finos/FDC3/issues?utf8=%E2%9C%93&q=)?  A simple search for exception error messages or a summary of the unexpected behaviour should suffice.
-* [ ] Are you running the latest version?
-* [ ] Are you sure this is a bug or missing capability?
+ * Have you [searched for duplicates](https://github.com/finos/FDC3/issues?utf8=%E2%9C%93&q=)?  A simple search for exception error messages or a summary of the unexpected behaviour should suffice.
+ * Are you running the latest version?
+ * Are you sure this is a bug or missing capability?
 
 **2.1.	Issue Creation.**
 
@@ -89,22 +89,28 @@ The next section contains more information on the workflow followed for Pull Req
 - We welcome pull requests that are currently in progress. They are a great way to keep track of important work that is in-flight, but useful for others to see. If a pull request is a work in progress, it should be prefaced with "WIP: [title]". Once the pull request is ready for review, remove "WIP" from the title and label.
 
 - It is preferred, but not required, to have a pull request tied to a specific issue. Prefix your PR's description with `resolves #<issue number>` to link it to your issue.
-  - There can be circumstances where if it is a quick fix then an issue might be overkill. The details provided in the pull request description would suffice in this case.
+
+- There can be circumstances where if it is a quick fix then an issue might be overkill. The details provided in the pull request description would suffice in this case.
 
 - Ensure that pull requests include a proposed update to the [FDC3 Changelog (CHANGELOG.md)](CHANGELOG.md)
 
 To make review of PRs easier, please:
 
  * Please make sure your PRs will merge cleanly - PRs that don't are unlikely to be accepted.
+ 
  * For code contributions, follow the existing code layout.
+ 
  * For documentation contributions, follow the general structure, language, and tone of the [existing docs](https://github.com/finos/FDC3/wiki).
+ 
  * Keep commits small and cohesive - if you have multiple contributions, please submit them as independent commits (and ideally as independent PRs too).
+ 
  * Reference issue #s if your PR has anything to do with an issue (even if it doesn't address it).
+ 
  * Minimise non-functional changes (e.g. whitespace shenanigans).
+ 
  * Ensure all new files include a header comment block containing the [Apache License v2.0 and your copyright information](http://www.apache.org/licenses/LICENSE-2.0#apply).
+ 
  * If necessary (e.g. due to 3rd party dependency licensing requirements), update the [NOTICE file](https://github.com/finos/FDC3/blob/master/NOTICE) with any new attribution or other notices
-
-
 
 **4.2.	Triage**
 

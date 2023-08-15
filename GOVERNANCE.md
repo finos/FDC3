@@ -8,7 +8,7 @@ Working Group contributors include the following roles:
 
 ### 1.1. Participants
 
-“Participants” are those that have made Contributions to the Working Group subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/website/static/governance-docs/IP-Policy.pdf).  The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the Standard. In practice, that means people that attend and contribute to meetings, raise issues, pull requests (to submit patches to the Standard) and reviews.
+“Participants” are those that have made Contributions to the Working Group subject to the [Community Specification Contribution Policy 1.0](https://github.com/finos/standards-project-blueprint/blob/master/governance-documents/6._Contributing.md).  The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the Standard. In practice, that means people that attend and contribute to meetings, raise issues, pull requests (to submit patches to the Standard) and reviews.
 
 #### How do you become a Participant?
 
