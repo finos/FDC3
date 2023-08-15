@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/context/transactionresult.schema.json",
+  "type": "object",
+  "title": "TransactionResult",
+  "allOf": [{ "$ref": "context.schema.json#" }],
+  "properties": {
+    "type": { "const": "fdc3.transactionResult" },
+    "status": {
+          "type": "string",
+          "enum": ["Created", "Deleted", "Updated", "Failed"]
+        },
+    "context": { "$ref": "context.schema.json#" }
+  },
+    "message": {
+      "type": "string"
+    },
+  "required": ["type", "status"]
+}
