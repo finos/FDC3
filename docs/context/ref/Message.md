@@ -15,7 +15,7 @@ as well as attached entities (either arbitrary file attachments or FDC3 actions 
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/message.schema.json
+<https://fdc3.finos.org/schemas/next/context/message.schema.json>
 
 ## Details
 

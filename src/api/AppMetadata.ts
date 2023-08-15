@@ -26,7 +26,7 @@ export interface AppMetadata extends AppIdentifier {
   readonly version?: string;
 
   /** An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set. */
-  readonly instanceMetadata?: Record<string, any>;
+  readonly instanceMetadata?: { [key: string]: any };
 
   /** A more user-friendly application title that can be used to render UI elements  */
   readonly title?: string;

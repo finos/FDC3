@@ -14,7 +14,7 @@ Reference to the chat room(s) (which could be used later to send a message to th
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/chatRoom.schema.json
+<https://fdc3.finos.org/schemas/next/context/chatRoom.schema.json>
 
 ## Details
 
