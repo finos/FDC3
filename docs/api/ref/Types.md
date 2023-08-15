@@ -21,6 +21,12 @@ interface AppIdentifier {
    *  specific instance of the application described.
    */
   readonly instanceId?: string;
+
+  /** The Desktop Agent that the app is available on. Used in Desktop Agent 
+   *  Bridging to identify the Desktop Agent to target.
+   *  @experimental
+   **/
+  readonly desktopAgent?: string;
 }
 ```
 
@@ -79,6 +85,23 @@ Optional metadata about the context message, including the app that originated t
 - [`ContextMetadata`](Metadata#contextmetadata)
 - [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
 - [`Channel.addContextListener`](Channel#addcontextlistener)
+
+## `DesktopAgentIdentifier`
+
+```typescript
+/** @experimental */
+interface DesktopAgentIdentifier {
+  /** Used in Desktop Agent Bridging to attribute or target a message to a 
+   *  particular Desktop Agent.**/
+  readonly desktopAgent: string;
+}
+```
+
+(Experimental) Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios where a request needs to be directed to a Desktop Agent rather than a specific app, or a response message is returned by the Desktop Agent (or more specifically its resolver) rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no app details are available or are appropriate.
+
+**See also:**
+
+* [Agent Bridging - Identifying Desktop Agents Identity and Message Sources](../../agent-bridging/spec#identifying-desktop-agents-identity-and-message-sources)
 
 ## `IntentHandler`
 

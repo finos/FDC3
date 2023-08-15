@@ -14,7 +14,7 @@ A context type that represents a simple search criterion, based on a list of oth
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/chatSearchCriteria.schema.json
+<https://fdc3.finos.org/schemas/next/context/chatSearchCriteria.schema.json>
 
 ## Details
 

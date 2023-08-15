@@ -1,4 +1,8 @@
 website/**
 
 # Just used for build so ignoring
-quicktypeUtil.js
+s2tQuicktypeUtil.js
+schemas/api/t2sQuicktypeUtil.js
+
+# API schema set for localhost gets picked up by semgrep rule
+schemas/bridgingAsyncAPI/bridgingAsyncAPI.json 
