@@ -28,7 +28,7 @@
             },
             "FDS_ID": {
               "type": "string",
-              "title": "Factset Security Identifier",
+              "title": "FactSet Permanent Security Identifier",
               "description": "<https://www.factset.com/>"
             },
             "FIGI": {
