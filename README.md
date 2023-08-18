@@ -126,7 +126,7 @@ Work on FDC3 is split into several working groups and releases.
 
 ### Contributing
 
-Please see the [Contributing](CONTRIBUTING) guide for details on how to contribute to FDC3.
+Please see the [Contributing](CONTRIBUTING.md) guide for details on how to contribute to FDC3.
 
 _NOTE:_
 
