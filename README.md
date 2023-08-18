@@ -141,7 +141,7 @@ If you or your firm are new to contributing to open source projects, please see 
 
 ### What roles do contributors hold?
 
-Please refer to the FDC3 [Governance document](GOVERNANCE.md) for details of the different roles on the FDC3 project.
+Please refer to the FDC3 [Governance document](GOVERNANCE.md#1roles) for details of the different roles on the FDC3 project.
 
 ### FINOS Code of Conduct
 
