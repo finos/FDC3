@@ -4,7 +4,7 @@ This document provides the governance policy for the development of the FDC3 spe
 
 ## 1.	Roles.
 
-Working Group contributors include the following roles:
+Working Groups include the following roles:
 
 ### 1.1. Participants
 
