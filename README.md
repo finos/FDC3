@@ -139,13 +139,13 @@ If you or your firm intends to make use of the FDC3 Standard (by implementing a 
 
 If you or your firm are new to contributing to open source projects, please see the variety of resources available from FINOS, (such as the [Open Source readiness project](https://www.finos.org/open-source-readiness)), Linux Foundation ([Participating in Open Source communities](https://www.linuxfoundation.org/tools/participating-in-open-source-communities/)) and others (e.g. [opensource.guide](https://opensource.guide/)).
 
-### What roles do contributors hold?
+### What Roles Do Participants Hold?
 
 Please refer to the FDC3 [Governance document](GOVERNANCE.md#1roles) for details of the different roles on the FDC3 project.
 
 ### FINOS Code of Conduct
 
-Contributors to FINOS standards projects should follow the FINOS Code of Conduct, which can be found at: <https://community.finos.org/docs/governance/code-of-conduct>
+Participants of FINOS standards projects should follow the FINOS Code of Conduct, which can be found at: <https://community.finos.org/docs/governance/code-of-conduct>
 
 ## License
 
