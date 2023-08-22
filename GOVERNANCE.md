@@ -1,10 +1,10 @@
 # FDC3 Governance Policy
 
-This document provides the governance policy for the development of the FDC3 specification and related materials in the FDC3 Standard Working Group (the “Working Group”).
+This document provides the governance policy for the development of the FDC3 specification and related materials in the FDC3 Standard (the “Working Group”).
 
 ## 1.	Roles.
 
-Working Groups include the following roles:
+The Working Group includes the following roles:
 
 ### 1.1. Participants
 

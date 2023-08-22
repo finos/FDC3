@@ -118,9 +118,9 @@ If you are an existing individual or corporate user of the FDC3 standard, we wou
 
 ### Roadmap
 
-Work on FDC3 is split into several working groups and releases.  
+Work on FDC3 is split into several [discussion groups](GOVERNANCE.md#1roles) and releases.  
 
-- Working groups each have their own regular meetings in the [FINOS Community Calendar](https://calendar.google.com/calendar/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig%40group.calendar.google.com).  
+- Discussion groups each have their own regular meetings in the [FINOS Community Calendar](https://calendar.google.com/calendar/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig%40group.calendar.google.com).  
 
 - Releases can be tracked on the [FDC3 Milestones](https://github.com/finos/FDC3/milestones) page.
 
