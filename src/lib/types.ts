@@ -1,4 +1,4 @@
-import { AppIdentifier, DesktopAgent} from '@finos/fdc3'
+import { DesktopAgent} from '@finos/fdc3'
 
 /** 
  * We need to add options here. 
