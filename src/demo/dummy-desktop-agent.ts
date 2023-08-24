@@ -47,6 +47,7 @@ window.addEventListener("load", () => {
     const daDetailResolver : DesktopAgentDetailResolver = (o) => { 
         const appIdentifier = instances.find(i => i.window ==o)!!
         return { 
+            url: "/src/demo/implementation.js",
             apiId : currentApiInstance++, 
             apikey: "Abc",
             appId: appIdentifier.appId,
@@ -55,7 +56,9 @@ window.addEventListener("load", () => {
     }
 
     // set up desktop agent handler here using FDC3 Web Loader (or whatever we call it)
-    supply("/src/demo/implementation.js", appChecker, daDetailResolver);
+    supply(appChecker, {
+        "js-inject": daDetailResolver
+    });
 
     // hook up the buttons
     document.getElementById("app1")?.addEventListener("click", () => launch("/static/app1/index.html", "1"));

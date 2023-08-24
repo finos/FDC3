@@ -6,7 +6,7 @@ import { fdc3Ready } from "@finos/fdc3";
  * This approach will resolve the loader promise if the fdc3Ready event occurs.
  * This is done by electron implementations setting window.fdc3.
  */
-export const loader: Loader = (_options: Options) => {
+const loader: Loader = (_options: Options) => {
 
     const out = new Promise<DesktopAgent>((resolve) => {
         fdc3Ready().then(() => {
@@ -17,3 +17,5 @@ export const loader: Loader = (_options: Options) => {
 
     return out;
 }
+
+export default loader;

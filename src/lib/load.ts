@@ -1,7 +1,4 @@
 import { DesktopAgent} from '@finos/fdc3'
-import { loader as loader1 } from './strategies/post-message-load-js'
-import { loader as loader2 } from './strategies/electron-event';
-
 import { DEFAULT_OPTIONS, Options } from './types';
 
 /**
@@ -17,7 +14,7 @@ export function load(options: Options = DEFAULT_OPTIONS) : Promise<DesktopAgent>
         return da;
     }
 
-    const strategies = [ loader1(options), loader2(options) ];
+    const strategies = options.strategies.map(s => s(options));
 
     return Promise.any(strategies)
         .then(da => handleGenericOptions(da)) 
