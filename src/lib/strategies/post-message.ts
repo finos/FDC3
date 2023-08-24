@@ -1,5 +1,5 @@
 import { DesktopAgent } from '@finos/fdc3'
-import { APIResponseMessage, Loader, Options, Method, FDC3_API_RESPONSE_MESSAGE_TYPE, FDC3_API_REQUEST_MESSAGE_TYPE } from '../types'
+import { APIResponseMessage, Loader, Options, Method, FDC3_API_RESPONSE_MESSAGE_TYPE, FDC3_API_REQUEST_MESSAGE_TYPE, DEFAULT_OPTIONS } from '../types'
 import jsInject from '../methods/js-inject';
 import postMessageProtocol from '../methods/post-message-protocol'
 
@@ -20,7 +20,7 @@ const loader: Loader = (options: Options) => {
             const data: APIResponseMessage = event.data;
             if (data.type == FDC3_API_RESPONSE_MESSAGE_TYPE) {
                 const method = METHOD_MAP[data.method];
-                method(data)
+                method(data, options)
                     .then(da => handleOptions(da))
                     .then(da => resolve(da))
             } else {
@@ -28,8 +28,8 @@ const loader: Loader = (options: Options) => {
             }
         }, { once: true });
     });
-
-    const da = window.opener ?? window.parent;
+    
+    const da = options.frame;
 
     if (da != null) {
         const requestMessage = {

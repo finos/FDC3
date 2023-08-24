@@ -1,10 +1,12 @@
 import { DesktopAgent } from "@finos/fdc3";
-import { APIResponseMessage, Method } from "../../types";
+import { APIResponseMessage, Method, Options } from "../../types";
+import { PostMessageDesktopAgent } from "./PostMessageDesktopAgent";
 
-const method : Method = (r: APIResponseMessage) => {
+const method : Method = (r: APIResponseMessage, options: Options) => {
 
     return new Promise<DesktopAgent>((resolve, _reject) => {
-        resolve('s' as any as DesktopAgent)
+        // nasty bit of casting to avoid the problem we've only implemented 3 methods.
+        resolve(new PostMessageDesktopAgent(r.details, options) as any as DesktopAgent)
     });
 }
 
