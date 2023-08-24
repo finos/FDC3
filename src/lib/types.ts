@@ -18,17 +18,19 @@ export const DEFAULT_METHODS = [ POST_MESSAGE_PROTOCOL, JS_INJECT];
  * We need to add options here. 
  */
 export type Options = {
-    setWindowGlobal: boolean,
-    fireFdc3Ready: boolean,
-    methods: string[],
-    strategies: Loader[]
+    setWindowGlobal?: boolean,
+    fireFdc3Ready?: boolean,
+    methods?: string[],
+    strategies?: Loader[],
+    frame?: Window
 }
 
 export const DEFAULT_OPTIONS : Options = {
     setWindowGlobal: false,
     fireFdc3Ready: false,
     methods: DEFAULT_METHODS,
-    strategies: [postMessage, electronEvent]
+    strategies: [postMessage, electronEvent],
+    frame: window.opener ?? window.parent
 }
 
 export type AppChecker = (o: Window) => boolean;
@@ -50,7 +52,7 @@ export type DesktopAgentDetailResolver = (o: Window) => DesktopAgentDetails
  */
 export type DesktopAgentDetailResolverMap = { [key: string] : DesktopAgentDetailResolver }
 
-export type Method = (r: APIResponseMessage) => Promise<DesktopAgent>
+export type Method = (r: APIResponseMessage, options: Options) => Promise<DesktopAgent>
 
 /**
  * This is the object that the desktop agent must get back to the App.

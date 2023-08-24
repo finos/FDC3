@@ -1,4 +1,4 @@
-import { APIResponseMessage, AppChecker, DesktopAgentDetailResolver, DesktopAgentDetailResolverMap, Supplier, FDC3_API_RESPONSE_MESSAGE_TYPE, FDC3_API_REQUEST_MESSAGE_TYPE } from './types';
+import { APIResponseMessage, AppChecker, DesktopAgentDetailResolver, DesktopAgentDetailResolverMap, Supplier, FDC3_API_RESPONSE_MESSAGE_TYPE, FDC3_API_REQUEST_MESSAGE_TYPE } from '../types';
 
 /**
  * This configures the postMessage listener to respond to requests for desktop agent APIs.
