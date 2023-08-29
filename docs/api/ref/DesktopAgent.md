@@ -283,7 +283,7 @@ It returns a promise resolving to an `AppIntent` which provides details of the i
 
 If the resolution fails, the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`ResolveError`](Errors#resolveerror) enumeration, or (if connected to a Desktop Agent Bridge) the [`BridgingError`](Errors#bridgingerror) enumeration. This includes the case where no apps are found that resolve the intent, when the [`ResolveError.NoAppsFound`](Errors#resolveerror) message should be used, and when an invalid context object is passed as an argument, when the [`ResolveError.MalformedContext`](Errors#resolveerror) message should be used.
 
-Result types may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3,instrument>"`. If intent resolution to an app returning a channel is requested, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
+Result types may be a type name, the string `"channel"` (which indicates that the app will return a channel) or a string indicating a channel that returns a specific type, e.g. `"channel<fdc3.instrument>"`. If intent resolution to an app returning a channel is requested, the desktop agent MUST include both apps that are registered as returning a channel and those registered as returning a channel with a specific type in the response.
 
 **Examples:**
 
