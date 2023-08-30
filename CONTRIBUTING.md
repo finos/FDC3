@@ -29,7 +29,8 @@ The issue lifecycle is mainly driven by the Maintainer.  All issue types follow 
 **Prerequisites**
 
  * Have you [searched for duplicates](https://github.com/finos/FDC3/issues?utf8=%E2%9C%93&q=)?  A simple search for exception error messages or a summary of the unexpected behaviour should suffice.
- * Are you running the latest version?
+ * Are you using the latest version of the Standard?
+   * Changes that have been merged but not yet released can be found in the [next](https://fdc3.finos.org/docs/next/fdc3-standard) version of the website and details found in the [CHANGELOG](https://github.com/finos/FDC3/blob/master/CHANGELOG.md)
  * Are you sure this is a bug or missing capability?
 
 **2.1.	Issue Creation.**
