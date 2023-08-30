@@ -14,17 +14,12 @@ The Working Group includes the following roles:
 
 Becoming an FDC3 Participant is as easy as attending a meeting and/or raising issues for changes you'd like see in the Standard, commenting on issues others have raised or even asking questions (which can often result in the clarification of the Standard's documentation to help others with the same questions in future).
 
-### 1.2. Voting Participants
-
-Voting participants are able to vote on changes to the FDC3 Standard (see [Section 2](#2decision-making) below).
-
-- [View the FDC3 Participants GitHub Team](https://github.com/orgs/finos/teams/fdc3-participants)
-
-#### How do you become a Voting Participant?
-
-Participants can become Voting participants by using this link: [fdc3-participants+subscribe@finos.org](mailto:fdc3-participants+subscribe@finos.org?subject=Please%20enroll%20me%20as%20FDC3%20standard%20participant&amp;cc=fdc3-pmc%40finos.org&amp;body=HI%2C%20my%20name%20is%20%3CFirstName%20LastName%3E%20and%20I%27d%20like%20to%20formally%20participate%20to%20the%20FDC3%20standard%20process.%20I%20plan%20to%20contribute%20as%20%3Cindividual%7Con%20behalf%20of%20organizationName%3E%20and%20I%20have%20reviewed%20the%20policies%20described%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2Fcommunity%2Ftree%2Fmaster%2Fgovernance%2FStandards-Projects%20.%20Thank%20you!) to send a templated email email to join the enrolled voting participants group.
+#### Register to vote
+Participants may register to vote on changes to the FDC3 Standard (see [Section 2](#2decision-making) below). To do so use this link: [fdc3-participants+subscribe@finos.org](mailto:fdc3-participants+subscribe@finos.org?subject=Please%20enroll%20me%20as%20FDC3%20standard%20participant&amp;cc=fdc3-pmc%40finos.org&amp;body=HI%2C%20my%20name%20is%20%3CFirstName%20LastName%3E%20and%20I%27d%20like%20to%20formally%20participate%20to%20the%20FDC3%20standard%20process.%20I%20plan%20to%20contribute%20as%20%3Cindividual%7Con%20behalf%20of%20organizationName%3E%20and%20I%20have%20reviewed%20the%20policies%20described%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2Fcommunity%2Ftree%2Fmaster%2Fgovernance%2FStandards-Projects%20.%20Thank%20you!) to send a templated email email to join the enrolled voting participants group.
 
 Upon enrollment as an [FDC3 voting participant](https://github.com/orgs/finos/teams/fdc3-participants), you will be invited to join the [FINOS GitHub organization](https://github.com/orgs/finos/people) and the [fdc3-participants](https://github.com/orgs/finos/teams/fdc3-participants) GitHub team.
+
+- [View the FDC3 Participants GitHub Team](https://github.com/orgs/finos/teams/fdc3-participants)
 
 ### 1.3. Discussion Groups
 
