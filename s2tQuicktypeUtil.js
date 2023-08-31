@@ -1,3 +1,8 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */  
+
 /** Utility for preparing arguments to quicktype, which workaround a specific
  * quicktype bug in command line argument handling (where a directory is used
  * as input the source language argument is ignored which causes our schemas
