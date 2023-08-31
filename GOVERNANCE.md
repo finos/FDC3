@@ -25,7 +25,7 @@ Upon enrollment as an [FDC3 voting participant](https://github.com/orgs/finos/te
 
 The Working Group may form one or more "Discussion Groups" to organize collaboration around a particular aspect of a specification. Discussion Groups are for discussion only.  Approval of all portions of a specification is subject to the consensus-based decision-making process of the FDC3 Standard Working Group.
 
-### 1.4.	 Maintainers
+### 1.3.	 Maintainers
 
 “Maintainers” are responsible for organizing activities around developing, maintaining, and updating the specification(s) developed by the Working Group.  Maintainers are also responsible for determining consensus and coordinating appeals.  The Working Group will designate one or more Maintainer(s). The Working Group may select a new or additional Maintainer(s) upon Approval of the Working Group Participants.  
 
