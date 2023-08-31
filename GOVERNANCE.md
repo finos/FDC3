@@ -21,7 +21,7 @@ Upon enrollment as an [FDC3 voting participant](https://github.com/orgs/finos/te
 
 - [View the FDC3 Participants GitHub Team](https://github.com/orgs/finos/teams/fdc3-participants)
 
-### 1.3. Discussion Groups
+### 1.2. Discussion Groups
 
 The Working Group may form one or more "Discussion Groups" to organize collaboration around a particular aspect of a specification. Discussion Groups are for discussion only.  Approval of all portions of a specification is subject to the consensus-based decision-making process of the FDC3 Standard Working Group.
 
