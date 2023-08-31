@@ -1,3 +1,9 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */
+
+
 // enable application when FDC3 is available
 document.addEventListener('DOMContentLoaded', () => {
   fdc3Init(enablePage);
