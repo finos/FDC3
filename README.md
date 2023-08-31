@@ -153,7 +153,7 @@ Participants of FINOS standards projects should follow the FINOS Code of Conduct
 
 - Reference implementations and other software contained in FDC3 repositories is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html) unless otherwise noted. SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0). 
 
-- See [Licenses in the FDC3 Charter](https://fdc3.finos.org/docs/fdc3-charter) for details of licensing for previous versions of the FDC3 Standard. 
+- See [Licenses in the FDC3 Charter](https://fdc3.finos.org/docs/fdc3-charter) for details of licensing for previous versions of the FDC3 Standard and [NOTICES.md](./NOTICES.md) for details of license acceptance, withdrawals and exclusions. 
 
 ## Vulnerabilities / Security
 
