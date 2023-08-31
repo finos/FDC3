@@ -852,8 +852,6 @@ It is the Bridge's responsibility to validate all messages that flow to and from
 
 Where responses to requests from other agents are malformed, the bridge MUST send a bridge error response message with  `BridgingError.MalformedMessage` to the sender and record `BridgingError.MalformedMessage` as the error response from the responder that sent the malformed message.
 
-
-
 ### Forwarding of Messages and Collating Responses
 
 When handling request messages, it is the responsibility of the Desktop Agent Bridge to:
