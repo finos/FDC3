@@ -848,7 +848,11 @@ enum BridgingError {
 
 ### Handling Malformed Messages
 
-It is the Bridge responsibility to validate the all messages that flow to and from Desktop Agents. When a request message is malformed the bridge MUST send a bridge error response message with  `BridgingError.MalformedMessage` to the sender. Where responses to requests from other agents are malformed, the bridge MUST send a bridge error response message with  `BridgingError.MalformedMessage` to the sender and record `BridgingError.MalformedMessage` as the error response from the responder that sent the malformed message.
+It is the Bridge's responsibility to validate all messages that flow to and from Desktop Agents. When a request message is malformed the bridge MUST send a bridge error response message with  `BridgingError.MalformedMessage` error to the sender.  For 'request only' message exchanges, no specific error response schema is provided. Hence, the generic [Bridge Error Response Message schema](#all-responses-are-errors) should be used for such messages (with the type set to match the request message type).
+
+Where responses to requests from other agents are malformed, the bridge MUST send a bridge error response message with  `BridgingError.MalformedMessage` to the sender and record `BridgingError.MalformedMessage` as the error response from the responder that sent the malformed message.
+
+
 
 ### Forwarding of Messages and Collating Responses
 
