@@ -1,3 +1,8 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */
+
 import * as React from "react";
 import { Button, DialogTitle, DialogActions, Dialog } from "@material-ui/core";
 

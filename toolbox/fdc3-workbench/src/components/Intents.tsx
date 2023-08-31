@@ -1,3 +1,8 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */
+
 import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
 import fdc3, { AppMetadata, ContextType, IntentResolution, IntentTargetOption } from "../utility/Fdc3Api";
 import { toJS } from "mobx";
