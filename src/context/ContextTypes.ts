@@ -454,7 +454,7 @@ export interface PurpleContactIdentifiers {
    */
   email?: string;
   /**
-   * The FDS id for the contact
+   * FactSet Permanent Identifier representing the contact
    */
   FDS_ID?: string;
   [property: string]: any;
@@ -743,9 +743,9 @@ export interface Identifiers {
   /**
    * <https://www.factset.com/>
    *
-   * FDS ID for the organization
+   * FactSet Permanent Identifier representing the organization
    *
-   * The FDS id for the contact
+   * FactSet Permanent Identifier representing the contact
    */
   FDS_ID?: string;
   /**
@@ -810,7 +810,7 @@ export interface FluffyContactIdentifiers {
    */
   email?: string;
   /**
-   * The FDS id for the contact
+   * FactSet Permanent Identifier representing the contact
    */
   FDS_ID?: string;
   [property: string]: any;
@@ -1017,7 +1017,7 @@ export interface EmailRecipientsID {
    */
   email?: string;
   /**
-   * The FDS id for the contact
+   * FactSet Permanent Identifier representing the contact
    */
   FDS_ID?: string;
   [property: string]: any;
@@ -1486,7 +1486,7 @@ export interface Organization {
  */
 export interface OrganizationIdentifiers {
   /**
-   * FDS ID for the organization
+   * FactSet Permanent Identifier representing the organization
    */
   FDS_ID?: string;
   /**
