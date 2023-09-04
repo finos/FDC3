@@ -30,7 +30,7 @@
             "FDS_ID": {
               "type": "string",
               "title": "Organization",
-              "description": "FactSet Permanent Security Identifier repreenting the organization"
+              "description": "FactSet Permanent Identifier representing the organization"
             }
           }
         }
