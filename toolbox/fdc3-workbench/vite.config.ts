@@ -1,3 +1,7 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */
 import legacy from "@vitejs/plugin-legacy";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";

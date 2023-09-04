@@ -1,4 +1,8 @@
-import React from "react";
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */
+ import React from "react";
 
 export const openApiDocsLink = (event: React.MouseEvent<HTMLElement>) => {
 	event.preventDefault();

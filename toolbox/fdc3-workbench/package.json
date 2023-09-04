@@ -4,6 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {},
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "vite",
     "start": "vite",

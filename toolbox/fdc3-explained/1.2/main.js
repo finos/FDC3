@@ -1,3 +1,8 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */
+
 // check for FDC3 support
 function fdc3OnReady(success, error) {
   window.setTimeout(error, 1000);
