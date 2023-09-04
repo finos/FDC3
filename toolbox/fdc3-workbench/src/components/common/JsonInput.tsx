@@ -1,3 +1,8 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */
+
 import React, { useEffect, useRef, useState } from "react";
 import JSONEditor, { JSONEditorOptions, ParseError, SchemaValidationError } from "jsoneditor";
 import "jsoneditor/dist/jsoneditor.css";

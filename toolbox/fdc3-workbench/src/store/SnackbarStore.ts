@@ -1,3 +1,7 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */
 import { makeObservable, observable, action } from "mobx";
 import { Color } from "@material-ui/lab/Alert";
 import { nanoid } from "nanoid";

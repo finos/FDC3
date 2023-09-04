@@ -1,3 +1,7 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */
 import { makeObservable, observable, runInAction, action, toJS } from "mobx";
 import fdc3, { ContextType, Fdc3Listener } from "../utility/Fdc3Api";
 import { nanoid } from "nanoid";

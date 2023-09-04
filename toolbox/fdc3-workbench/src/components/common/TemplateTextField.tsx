@@ -1,3 +1,8 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ */
+
 import { withStyles } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
 
