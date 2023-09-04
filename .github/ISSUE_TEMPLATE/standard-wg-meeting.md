@@ -13,7 +13,7 @@ about: Track Standard Working Group meeting agenda and attendance
 ---
 
 ## Date
-Thursday DD MMM yyyy - 10am EST / 3pm GMT
+Thursday DD MMM yyyy - 10am (US eastern timezone EDT/EST) / 3pm (London, GMT/BST)
 
 ### WebEx info
 - [Meeting Link](https://finos.webex.com/finos/j.php?MTID=ma4b1de1b9f691d89e4b2ff380ec9687c)
