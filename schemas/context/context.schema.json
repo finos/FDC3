@@ -14,7 +14,7 @@
   ],
   "definitions": {
     "BaseContext": {
-      "$comment": "Base definition for the COntext object without documentation (which will be imported into all derived types unless separated).",
+      "$comment": "Base definition for the Context object without documentation (which will be imported into all derived types unless separated).",
       "type": "object",
       "properties": {
         "type": {
@@ -36,7 +36,7 @@
       ]
     },
     "DocumentedContext": {
-      "$comment": "Base definition for the COntext object without documentation (which will be imported into all derived types unless separated).",
+      "$comment": "Base definition for the Context object without documentation (which will be imported into all derived types unless separated).",
       "type": "object",
       "properties": {
         "type": {

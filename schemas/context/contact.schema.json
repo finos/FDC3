@@ -25,7 +25,7 @@
             "FDS_ID": {
               "type": "string",
               "title": "FDS ID",
-              "description": "FactSet Permanent Security Identifier representing the contact"
+              "description": "FactSet Permanent Identifier representing the contact"
             }
           }
         }
