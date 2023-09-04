@@ -19,7 +19,7 @@ Summary of the purpose and scope of the group
 If tags have been applied to relevant issues, provide details here.
 
 ## Meeting Date
-Thursday DD MMM yyyy - 10am EST / 3pm GMT
+Thursday DD MMM yyyy - 10am (US eastern timezone EDT/EST) / 3pm (London, GMT/BST)
 
 ### WebEx info
 - Meeting Link: [insert link](https://finos.webex.com)
