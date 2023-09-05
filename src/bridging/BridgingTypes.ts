@@ -391,7 +391,6 @@ export enum RequestMessageType {
   PrivateChannelOnDisconnect = 'PrivateChannel.onDisconnect',
   PrivateChannelOnUnsubscribe = 'PrivateChannel.onUnsubscribe',
   RaiseIntentRequest = 'raiseIntentRequest',
-  RaiseIntentResultResponse = 'raiseIntentResultResponse',
 }
 
 /**
@@ -6204,7 +6203,6 @@ const typeMap: any = {
     'PrivateChannel.onDisconnect',
     'PrivateChannel.onUnsubscribe',
     'raiseIntentRequest',
-    'raiseIntentResultResponse',
   ],
   ConnectionStepMessageType: ['authenticationFailed', 'connectedAgentsUpdate', 'handshake', 'hello'],
   ErrorMessage: [
