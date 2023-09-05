@@ -69,7 +69,7 @@ Agent Bridging is introduced in FDC3 2.1 as an [@experimental](../fdc3-complianc
 
 ### JSON Message Protocol & JSON Schema
 
-The connection and messaging protocols that the Desktop Agent Bridging Part defines are based on messages encoded in JSON. [JSON Schema](https://json-schema.org/) is used to define the format of each message in the protocol and should be considered the 'source of truth' for each, and may be used to validate individual messages. However, examples are provided in the documentation in TypeScript and JavaScript formats for convenience. TypeScript interfaces for individual messages, included in the FDC3 NPM module, are generated from the JSON Schema source files using [quicktype](https://quicktype.io/).
+The connection and messaging protocols that the Desktop Agent Bridging Part defines are based on messages encoded in JSON. [JSON Schema](https://json-schema.org/) is used to define the format of each message in the protocol and should be considered the 'source of truth' for each and may be used to validate that individual messages are in the correct format. However, examples are provided in the documentation in TypeScript and JavaScript formats for convenience. TypeScript interfaces for individual messages, included in the FDC3 NPM module, are generated from the JSON Schema source files using [quicktype](https://quicktype.io/).
 
 ## Connection
 
