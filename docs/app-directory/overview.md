@@ -103,7 +103,7 @@ Fully qualified appIds may be used to locate the appD instance hosting the appli
 
 ### Shrinking the URI
 
-Although the concept of fully qualified application IDs are useful in resolving the actual host of the application directory, there is no requirement for an application directory to use this fully qualified application ID as the resolver for a record.  An application ID is unique to given application directory, but there is no requirement to use the fully qualified representation when querying an interface.  Taking the prior example, the fully qualified application ID `app1@appd.foo.com` is represented as `app1` within the application directory.  As a result a launcher can use a shortened URI construct `https://appd.foo.com/api/appd/v2/app1` to resolve the application data vs `https://appd.foo.com/api/appd/v2/app1@appd.foo.com`.
+Although the concept of fully qualified application IDs are useful in resolving the actual host of the application directory, there is no requirement for an application directory to use this fully qualified application ID as the resolver for a record.  An application ID is unique to given application directory, but there is no requirement to use the fully qualified representation when querying an interface.  Taking the prior example, the fully qualified application ID `app1@appd.foo.com` is represented as `app1` within the application directory.  As a result a launcher can use a shortened URI construct `https://appd.foo.com/api/appd/v2/apps/app1` to resolve the application data vs `https://appd.foo.com/api/appd/v2/apps/app1@appd.foo.com`.
 
 ## Service Discovery
 
@@ -111,7 +111,7 @@ In order to support the discovery of applications that can be used with a Deskto
 
 ![img](/assets/appd_service_distribution.png)
 
-However, in order to do so, you must first discover the location of an app directory service, which you may then use to generate URIs  (e.g. `https://appd.foo.com/api/appd/v2/app1@appd.foo.com`) to query a given directory instance for data. In order to construct a URI, the host location and port of a given AppD service instance is required.
+However, in order to do so, you must first discover the location of an app directory service, which you may then use to generate URIs  (e.g. `https://appd.foo.com/api/appd/v2/apps/app1@appd.foo.com`) to query a given directory instance for data. In order to construct a URI, the host location and port of a given AppD service instance is required.
 
 Three methods for discovering app directory services are defined in this Standard:
 
@@ -136,9 +136,9 @@ A launcher can then easily construct a URI by:
 1. URI protocol is defaulted to `https`, but can be overridden by the launcher.
 2. URI hostname is the fully qualified domain of the application ID.
 3. URI port is default `https/443`, but can be overridden by the launcher
-4. URI url is by default `/api/appd/(version)` . Calls that are made without version MUST automatically default to latest, i.e. `/api/appd/app1` should return the same result as `/api/appd/v2/app1".
+4. URI url is by default `/api/appd/(version)/apps` . Calls that are made without version MUST automatically default to latest, i.e. `/api/appd/apps/app1` should return the same result as `/api/appd/v2/apps/app1".
 
-The resulting URI to retrieve application data for `app1` would be <https://appd.foo.com/api/appd/v2/app1@appd.foo.com>  
+The resulting URI to retrieve application data for `app1` would be <https://appd.foo.com/api/appd/v2/apps/app1@appd.foo.com>  
 
 ### DNS/SRV Records
 
