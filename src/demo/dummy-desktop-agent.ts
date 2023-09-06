@@ -3,6 +3,7 @@ import { supply } from "../lib/agent/supply";
 import { AppChecker, DesktopAgentDetailResolver } from "../lib/types";
 import { RequestMessageType } from "../lib/BridgingTypes";
 
+enum Approach { Tab, Frame, Nested }
 
 window.addEventListener("load", () => {
     
@@ -13,12 +14,14 @@ window.addEventListener("load", () => {
 
     const instances : AppIdentifierAndWindow[] = []
 
-    function useFrames() : boolean {
-        const cb = document.getElementById("frames") as HTMLInputElement;
-        return (cb.checked)
+    function getApproach() : Approach {
+        const cb = document.getElementById("opener") as HTMLInputElement;
+        const val = cb.value
+        var out : Approach = Approach[val as keyof typeof Approach]; //Works with --noImplicitAny
+        return out;
     }
 
-    function openTab(url: string) : Window {
+    function openFrame(url: string) : Window {
         var ifrm = document.createElement("iframe");
         ifrm.setAttribute("src", url);
         ifrm.style.width = "640px";
@@ -27,12 +30,34 @@ window.addEventListener("load", () => {
         return ifrm.contentWindow!!;
     }
 
-    function openFrame(url: string) : Window {
+    function openTab(url: string) : Window {
         return window.open(url, "_blank")!!;
     }
 
+    function openNested(url: string) : Window {
+        var ifrm = document.createElement("iframe");
+        ifrm.setAttribute("src", "nested.html?url="+url);
+        ifrm.style.width = "640px";
+        ifrm.style.height = "480px";
+        document.body.appendChild(ifrm);
+        return ifrm.contentWindow!!;
+    } 
+
+    function open(url: string): Window {
+        const approach = getApproach();
+        switch (approach) {
+            case Approach.Tab:
+                return openTab(url);
+            case Approach.Nested:
+                return openNested(url);
+            case Approach.Frame:
+                return openFrame(url);
+        }
+        throw new Error("unsupported")
+    }
+
     function launch(url: string, appId: string) {
-        const w = useFrames() ? openTab(url): openFrame(url);
+        const w = open(url);
         const instance = currentInstance++;
         w.name = "App"+instance;
         instances.push({
