@@ -15,6 +15,7 @@ Please use minor issues for discrepancies or errors found in the spec or support
 [ ] API
 [ ] Context Data
 [ ] Intents
+[ ] Desktop Agent Bridging
 [ ] Use Cases
 [ ] Other
 
