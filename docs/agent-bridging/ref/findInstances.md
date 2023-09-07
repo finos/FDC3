@@ -10,6 +10,9 @@ Desktop Agent bridging message exchange for a `findInstances` API call on the [`
 
 [Message Exchange Type](../spec#individual-message-exchanges): **Request Response (collated)** or **Request Response (single)**
 
+A Desktop Agent's [`findInstances`](../../api/ref/DesktopAgent#findinstances) API call should return an empty array for known applications and [`ResolveError.NoAppsFound`](../../api/ref/Errors#resolveerror) for unknown apps. Hence, if a findInstances request is received through bridging for a known app with no instances then a normal response should be returned with an empty array. The bridge should add the responding agent to the `sources` array in the collated response as this is a valid response. If the application is not known to the agent an error response should be used instead with the `ResolveError.NoAppsFound` message and the responding Desktop Agent should be added to the `meta.errorSources` of the bridge response.
+
+In the event that all agents returned an error response, then the bridge will also return an error response, which is passed back to the calling application. However, if any agent returned a valid response (including with an empty array) then the application was known, but had no instances, resulting in an empty array being returned to the calling application.
 E.g.
 
 ```javascript
@@ -94,6 +97,10 @@ which is repeated on to the target agent as:
     }
 }
 ```
+
+:::note
+If the `findInstancesRequest` from the requesting agent does not include a `meta.source` field then the Bridge MUST set the `meta.source.desktopAgent` field to attribute the request to the requesting agent. This is the case for all agent request messages that don't require application details.
+:::
 
 If results should be constrained to a particular Desktop Agent, then set a `desktopAgent` field in `payload.app` and a matching `destination` field in `meta`:
 
