@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `ChatRoom`
 
-Reference to the chat room(s) (which could be used later to send a message to the room(s)).
+Reference to the chat room, which could be used later to send a message to the room.
 
 ## Type
 

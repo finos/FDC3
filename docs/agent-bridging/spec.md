@@ -41,7 +41,7 @@ In any Desktop Agent Bridging scenario, it is expected that each DA is being ope
 
 ## Bridging Desktop Agents
 
-The Desktop Agent Bridge Part of the FDC3 Standard is composed of three components:
+The Desktop Agent Bridging Part of the FDC3 Standard is composed of three components:
 
 - **[Connection](#connection)**: A means for Desktop Agents to communicate with a bridge, and through that bridge, with each other.
 - **[Connection Protocol](#connection-protocol)**: A protocol defining message exchanges necessary to connect to a Bridge and to perform initial state synchronization.
@@ -53,7 +53,7 @@ Detail on each of these components is defined in the following sections.
 
 Although this specification defines a particular [connection](#connection) type (based on a websocket server), it has been divided into parts so that the protocol definitions might be reused to implement a bridge over an alternative connection in future.
 
-:::
+::: 
 
 :::tip
 
@@ -66,6 +66,10 @@ However, Bridging should still be visible to applications, which is achieved thr
 ### Agent Bridging Compliance
 
 Agent Bridging is introduced in FDC3 2.1 as an [@experimental](../fdc3-compliance#experimental-features) feature of the FDC3 Standard, included to enable implementation by and feedback from the FDC3 community. As such, it is currently optional for the purposes of compliance and is exempted from the normal versioning and deprecation polices in order to facilitate any refinement needed.
+
+### JSON Message Protocol & JSON Schema
+
+The connection and messaging protocols that the Desktop Agent Bridging Part defines are based on messages encoded in JSON. [JSON Schema](https://json-schema.org/) is used to define the format of each message in the protocol and should be considered the 'source of truth' for each and may be used to validate that individual messages are in the correct format. However, examples are provided in the documentation in TypeScript and JavaScript formats for convenience. TypeScript interfaces for individual messages, included in the FDC3 NPM module, are generated from the JSON Schema source files using [quicktype](https://quicktype.io/).
 
 ## Connection
 

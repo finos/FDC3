@@ -38,14 +38,36 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
+/**
+ * A representation of an FDC3 Action (specified via a Context or Context & Intent) that can
+ * be inserted inside another object, for example a chat message.
+ *
+ * The action may be completed by calling `fdc3.raiseIntent()` with the specified Intent and
+ * Context, or, if only a context is specified, by calling `fdc3.raiseIntentForContext()`
+ * (which the Desktop Agent will resolve by presenting the user with a list of available
+ * Intents for the Context).
+ *
+ * Accepts an optional `app` parameter in order to specify a specific app.
+ */
 export interface Action {
-  app?: ActionApp;
-  context: ActionContext;
-  customConfig?: { [key: string]: any };
   /**
-   * A reference an intent type name, such as those defined in the FDC3 Standard
+   * An optional target application identifier that should perform the action
+   */
+  app?: ActionTargetApp;
+  /**
+   * A context object with which the action will be performed
+   */
+  context: ContextElement;
+  /**
+   * Optional Intent to raise to perform the actions. Should reference an intent type name,
+   * such as those defined in the FDC3 Standard. If intent is not set then
+   * `fdc3.raiseIntentForContext` should be used to perform the action as this will usually
+   * allow the user to choose the intent to raise.
    */
   intent?: string;
+  /**
+   * A human readable display name for the action
+   */
   title: string;
   type: string;
   id?: { [key: string]: any };
@@ -53,68 +75,294 @@ export interface Action {
   [property: string]: any;
 }
 
-export interface ActionApp {
+/**
+ * An optional target application identifier that should perform the action
+ *
+ * Identifies an application, or instance of an application, and is used to target FDC3 API
+ * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
+ * instances.
+ *
+ * Will always include at least an `appId` field, which uniquely identifies a specific app.
+ *
+ * If the `instanceId` field is set then the `AppMetadata` object represents a specific
+ * instance of the application that may be addressed using that Id.
+ */
+export interface ActionTargetApp {
+  /**
+   * The unique application identifier located within a specific application directory
+   * instance. An example of an appId might be 'app@sub.root'
+   */
   appId: string;
+  /**
+   * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+   * identify the Desktop Agent to target.
+   */
+  desktopAgent?: string;
+  /**
+   * An optional instance identifier, indicating that this object represents a specific
+   * instance of the application described.
+   */
   instanceId?: string;
   [property: string]: any;
 }
 
-export interface ActionContext {
+/**
+ * A context object with which the action will be performed
+ *
+ * A context object returned by the transaction, possibly with updated data.
+ *
+ * The `fdc3.context` type defines the basic contract or "shape" for all data exchanged by
+ * FDC3 operations. As such, it is not really meant to be used on its own, but is imported
+ * by more specific type definitions (standardized or custom) to provide the structure and
+ * properties shared by all FDC3 context data types.
+ *
+ * The key element of FDC3 context types is their mandatory `type` property, which is used
+ * to identify what type of data the object represents, and what shape it has.
+ *
+ * The FDC3 context type, and all derived types, define the minimum set of fields a context
+ * data object of a particular type can be expected to have, but this can always be extended
+ * with custom fields as appropriate.
+ */
+export interface ContextElement {
+  /**
+   * Context data objects may include a set of equivalent key-value pairs that can be used to
+   * help applications identify and look up the context type they receive in their own domain.
+   * The idea behind this design is that applications can provide as many equivalent
+   * identifiers to a target application as possible, e.g. an instrument may be represented by
+   * an ISIN, CUSIP or Bloomberg identifier.
+   *
+   * Identifiers do not make sense for all types of data, so the `id` property is therefore
+   * optional, but some derived types may choose to require at least one identifier.
+   */
   id?: { [key: string]: any };
+  /**
+   * Context data objects may include a name property that can be used for more information,
+   * or display purposes. Some derived types may require the name object as mandatory,
+   * depending on use case.
+   */
   name?: string;
+  /**
+   * The type property is the only _required_ part of the FDC3 context data schema. The FDC3
+   * [API](https://fdc3.finos.org/docs/api/spec) relies on the `type` property being present
+   * to route shared context data appropriately.
+   *
+   * FDC3 [Intents](https://fdc3.finos.org/docs/intents/spec) also register the context data
+   * types they support in an FDC3 [App
+   * Directory](https://fdc3.finos.org/docs/app-directory/overview), used for intent discovery
+   * and routing.
+   *
+   * Standardized FDC3 context types have well-known `type` properties prefixed with the
+   * `fdc3` namespace, e.g. `fdc3.instrument`. For non-standard types, e.g. those defined and
+   * used by a particular organization, the convention is to prefix them with an
+   * organization-specific namespace, e.g. `blackrock.fund`.
+   *
+   * See the [Context Data Specification](https://fdc3.finos.org/docs/context/spec) for more
+   * information about context data types.
+   */
   type: string;
   [property: string]: any;
 }
 
+/**
+ * A context type representing details of a Chart, which may be used to request plotting of
+ * a particular chart or to otherwise share details of its composition, such as:
+ *
+ * - A list of instruments for comparison
+ * - The time period to plot the chart over
+ * - The style of chart (line, bar, mountain, candle etc.)
+ * - Other settings such as indicators to calculate, or data representing drawings and
+ * annotations.
+ *
+ * In addition to handling requests to plot charts, a charting application may use this type
+ * to output a representation of what it is currently displaying so that it can be recorded
+ * by another application.
+ */
 export interface Chart {
+  /**
+   * An array of instrument contexts whose data should be plotted.
+   */
   instruments: InstrumentElement[];
+  /**
+   * It is common for charts to support other configuration, such as indicators, annotations
+   * etc., which do not have standardized formats, but may be included in the `otherConfig`
+   * array as context objects.
+   */
   otherConfig?: ContextElement[];
+  /**
+   * The time range that should be plotted
+   */
   range?: TimeRangeObject;
-  style?: Style;
+  /**
+   * The type of chart that should be plotted
+   */
+  style?: ChartStyle;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
 
+/**
+ * financial instrument that relates to the definition of this product
+ *
+ *
+ *
+ * A financial instrument from any asset class.
+ */
 export interface InstrumentElement {
-  id: PurpleID;
+  /**
+   * Any combination of instrument identifiers can be used together to resolve ambiguity, or
+   * for a better match. Not all applications will use the same instrument identifiers, which
+   * is why FDC3 allows for multiple to be specified. In general, the more identifiers an
+   * application can provide, the easier it will be to achieve interoperability.
+   *
+   * It is valid to include extra properties and metadata as part of the instrument payload,
+   * but the minimum requirement is for at least one instrument identifier to be provided.
+   *
+   * Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant
+   * for tickers as used by an exchange.
+   * If the identifier you want to share is not a ticker or one of the other standardized
+   * fields, define a property that makes it clear what the value represents. Doing so will
+   * make interpretation easier for the developers of target applications.
+   */
+  id: PurpleInstrumentIdentifiers;
+  /**
+   * The `market` map can be used to further specify the instrument and help achieve
+   * interoperability between disparate data sources. This is especially useful when using an
+   * `id` field that is not globally unique.
+   */
   market?: OrganizationMarket;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface PurpleID {
+/**
+ * Any combination of instrument identifiers can be used together to resolve ambiguity, or
+ * for a better match. Not all applications will use the same instrument identifiers, which
+ * is why FDC3 allows for multiple to be specified. In general, the more identifiers an
+ * application can provide, the easier it will be to achieve interoperability.
+ *
+ * It is valid to include extra properties and metadata as part of the instrument payload,
+ * but the minimum requirement is for at least one instrument identifier to be provided.
+ *
+ * Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant
+ * for tickers as used by an exchange.
+ * If the identifier you want to share is not a ticker or one of the other standardized
+ * fields, define a property that makes it clear what the value represents. Doing so will
+ * make interpretation easier for the developers of target applications.
+ */
+export interface PurpleInstrumentIdentifiers {
+  /**
+   * <https://www.bloomberg.com/>
+   */
   BBG?: string;
+  /**
+   * <https://www.cusip.com/>
+   */
   CUSIP?: string;
+  /**
+   * <https://www.factset.com/>
+   */
   FDS_ID?: string;
+  /**
+   * <https://www.openfigi.com/>
+   */
   FIGI?: string;
+  /**
+   * <https://www.isin.org/>
+   */
   ISIN?: string;
+  /**
+   * <https://permid.org/>
+   */
   PERMID?: string;
+  /**
+   * <https://www.refinitiv.com/>
+   */
   RIC?: string;
+  /**
+   * <https://www.lseg.com/sedol>
+   */
   SEDOL?: string;
+  /**
+   * Unstandardized stock tickers
+   */
   ticker?: string;
   [property: string]: any;
 }
 
+/**
+ * The `market` map can be used to further specify the instrument and help achieve
+ * interoperability between disparate data sources. This is especially useful when using an
+ * `id` field that is not globally unique.
+ */
 export interface OrganizationMarket {
+  /**
+   * <https://www.bloomberg.com/>
+   */
   BBG?: string;
+  /**
+   * <https://www.iso.org/iso-3166-country-codes.html>
+   */
   COUNTRY_ISOALPHA2?: string;
+  /**
+   * <https://en.wikipedia.org/wiki/Market_Identifier_Code>
+   */
   MIC?: string;
+  /**
+   * Human readable market name
+   */
   name?: string;
   [property: string]: any;
 }
 
-export interface ContextElement {
-  id?: { [key: string]: any };
-  name?: string;
-  type: string;
-  [property: string]: any;
-}
-
+/**
+ * The time range that should be plotted
+ *
+ * The time range over which the interaction occurred
+ *
+ * A context representing a period of time. Any user interfaces that represent or visualize
+ * events or activity over time can be filtered or focused on a particular time period,
+ * e.g.:
+ *
+ * - A pricing chart
+ * - A trade blotter
+ * - A record of client contact/activity in a CRM
+ *
+ * Example use cases:
+ *
+ * - User may want to view pricing/trades/customer activity for a security over a particular
+ * time period, the time range might be specified as the context for the `ViewChart` intent
+ * OR it might be embedded in another context (e.g. a context representing a chart to plot).
+ * - User filters a visualization (e.g. a pricing chart) to show a particular period, the
+ * `TimeRange` is broadcast and other visualizations (e.g. a heatmap of activity by
+ * instrument, or industry sector etc.) receive it and filter themselves to show data over
+ * the same range.
+ *
+ * Notes:
+ *
+ * - A `TimeRange` may be closed (i.e. `startTime` and `endTime` are both known) or open
+ * (i.e. only one of `startTime` or `endTime` is known).
+ * - Ranges corresponding to dates (e.g. `2022-05-12` to `2022-05-19`) should be specified
+ * using times as this prevents issues with timezone conversions and inclusive/exclusive
+ * date ranges.
+ * - String fields representing times are encoded according to [ISO
+ * 8601-1:2019](https://www.iso.org/standard/70907.html).
+ * - A timezone indicator should be specified, e.g. `"2022-05-12T15:18:03Z"` or
+ * `"2022-05-12T16:18:03+01:00"`
+ * - Times MAY be specified with millisecond precision, e.g. `"2022-05-12T15:18:03.349Z"`
+ */
 export interface TimeRangeObject {
+  /**
+   * The end time of the range, encoded according to [ISO
+   * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
+   */
   endTime?: Date;
+  /**
+   * The start time of the range, encoded according to [ISO
+   * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
+   */
   startTime?: Date;
   type: string;
   id?: { [key: string]: any };
@@ -122,7 +370,10 @@ export interface TimeRangeObject {
   [property: string]: any;
 }
 
-export enum Style {
+/**
+ * The type of chart that should be plotted
+ */
+export enum ChartStyle {
   Bar = 'bar',
   Candle = 'candle',
   Custom = 'custom',
@@ -135,18 +386,47 @@ export enum Style {
   StackedBar = 'stacked-bar',
 }
 
+/**
+ * A collection of settings to start a new chat conversation
+ */
 export interface ChatInitSettings {
+  /**
+   * Name to apply to the chat created
+   */
   chatName?: string;
+  /**
+   * Contacts to add to the chat
+   */
   members?: ContactListObject;
+  /**
+   * An initial message to post in the chat when created.
+   */
   message?: MessageObject | string;
-  options?: Options;
+  /**
+   * Option settings that affect the creation of the chat
+   */
+  options?: ChatOptions;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
 
+/**
+ * Contacts to add to the chat
+ *
+ * A list of contacts involved in the interaction
+ *
+ * A collection of contacts, e.g. for chatting to or calling multiple contacts.
+ *
+ * The contact list schema does not explicitly include identifiers in the `id` section, as
+ * there is not a common standard for such identifiers. Applications can, however, populate
+ * this part of the contract with custom identifiers if so desired.
+ */
 export interface ContactListObject {
+  /**
+   * An array of contact contexts that forms the list.
+   */
   contacts: ContactElement[];
   type: string;
   id?: { [key: string]: any };
@@ -154,36 +434,90 @@ export interface ContactListObject {
   [property: string]: any;
 }
 
+/**
+ * The contact that initiated the interaction
+ *
+ * A person contact that can be engaged with through email, calling, messaging, CMS, etc.
+ */
 export interface ContactElement {
-  id: FluffyID;
+  /**
+   * Identifiers that relate to the Contact represented by this context
+   */
+  id: PurpleContactIdentifiers;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface FluffyID {
+/**
+ * Identifiers that relate to the Contact represented by this context
+ */
+export interface PurpleContactIdentifiers {
+  /**
+   * The email address for the contact
+   */
   email?: string;
+  /**
+   * FactSet Permanent Identifier representing the contact
+   */
   FDS_ID?: string;
   [property: string]: any;
 }
 
+/**
+ * A chat message to be sent through an instant messaging application. Can contain one or
+ * several text bodies (organized by mime-type, plaintext or markdown), as well as attached
+ * entities (either arbitrary file attachments or FDC3 actions to be embedded in the
+ * message). To be put inside a ChatInitSettings object.
+ */
 export interface MessageObject {
+  /**
+   * A map of string IDs to entities that should be attached to the message, such as an action
+   * to perform, a file attachment, or other FDC3 context object.
+   */
   entities?: { [key: string]: PurpleAction };
-  text?: PurpleText;
+  /**
+   * A map of string mime-type to string content
+   */
+  text?: PurpleMessageText;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
 
+/**
+ * A representation of an FDC3 Action (specified via a Context or Context & Intent) that can
+ * be inserted inside another object, for example a chat message.
+ *
+ * The action may be completed by calling `fdc3.raiseIntent()` with the specified Intent and
+ * Context, or, if only a context is specified, by calling `fdc3.raiseIntentForContext()`
+ * (which the Desktop Agent will resolve by presenting the user with a list of available
+ * Intents for the Context).
+ *
+ * Accepts an optional `app` parameter in order to specify a specific app.
+ *
+ * A File attachment encoded in the form of a data URI
+ */
 export interface PurpleAction {
-  app?: EntityApp;
-  context?: EntityContext;
-  customConfig?: { [key: string]: any };
   /**
-   * A reference an intent type name, such as those defined in the FDC3 Standard
+   * An optional target application identifier that should perform the action
+   */
+  app?: ActionTargetApp;
+  /**
+   * A context object with which the action will be performed
+   */
+  context?: ContextElement;
+  /**
+   * Optional Intent to raise to perform the actions. Should reference an intent type name,
+   * such as those defined in the FDC3 Standard. If intent is not set then
+   * `fdc3.raiseIntentForContext` should be used to perform the action as this will usually
+   * allow the user to choose the intent to raise.
    */
   intent?: string;
+  /**
+   * A human readable display name for the action
+   */
   title?: string;
   type: any;
   id?: { [key: string]: any };
@@ -192,68 +526,140 @@ export interface PurpleAction {
   [property: string]: any;
 }
 
-export interface EntityApp {
-  appId: string;
-  instanceId?: string;
-  [property: string]: any;
-}
-
-export interface EntityContext {
-  id?: { [key: string]: any };
-  name?: string;
-  type: string;
-  [property: string]: any;
-}
-
 export interface PurpleData {
+  /**
+   * A data URI encoding the content of the file to be attached
+   */
   dataUri: string;
+  /**
+   * The name of the attached file
+   */
   name: string;
   [property: string]: any;
 }
 
-export interface PurpleText {
+/**
+ * A map of string mime-type to string content
+ */
+export interface PurpleMessageText {
+  /**
+   * Markdown encoded content
+   */
   'text/markdown'?: string;
+  /**
+   * Plain text encoded content.
+   */
   'text/plain'?: string;
   [property: string]: any;
 }
 
-export interface Options {
+/**
+ * Option settings that affect the creation of the chat
+ */
+export interface ChatOptions {
+  /**
+   * if true members will be allowed to add other members to the chat
+   */
   allowAddUser?: boolean;
+  /**
+   * if true members will be allowed to browse past messages
+   */
   allowHistoryBrowsing?: boolean;
+  /**
+   * if true members will be allowed to copy/paste messages
+   */
   allowMessageCopy?: boolean;
+  /**
+   * if false a separate chat will be created for each member
+   */
   groupRecipients?: boolean;
+  /**
+   * if true the room will be visible to everyone in the chat application
+   */
   isPublic?: boolean;
   [property: string]: any;
 }
 
+/**
+ * A context representing a chat message. Typically used to send the message or to
+ * pre-populate a message for sending.
+ */
 export interface ChatMessage {
   chatRoom: ChatRoomObject;
-  message: MessageObject;
+  /**
+   * The content of the message to post in the chat when created.
+   */
+  message: MessageObject | string;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
 
+/**
+ * Reference to the chat room which could be used to send a message to the room
+ */
 export interface ChatRoomObject {
+  /**
+   * Identifier(s) for the chat - currently unstandardized
+   */
   id: { [key: string]: any };
+  /**
+   * Display name for the chat room
+   */
   name?: string;
+  /**
+   * The name of the service that hosts the chat
+   */
   providerName: string;
   type: string;
+  /**
+   * Universal url to access to the room. It could be opened from a browser, a mobile app,
+   * etc...
+   */
   url?: string;
   [property: string]: any;
 }
 
+/**
+ * Reference to the chat room which could be used to send a message to the room
+ */
 export interface ChatRoom {
+  /**
+   * Identifier(s) for the chat - currently unstandardized
+   */
   id: { [key: string]: any };
+  /**
+   * Display name for the chat room
+   */
   name?: string;
+  /**
+   * The name of the service that hosts the chat
+   */
   providerName: string;
   type: string;
+  /**
+   * Universal url to access to the room. It could be opened from a browser, a mobile app,
+   * etc...
+   */
   url?: string;
   [property: string]: any;
 }
 
+/**
+ * A context type that represents a simple search criterion, based on a list of other
+ * context objects, that can be used to search or filter messages in a chat application.
+ */
 export interface ChatSearchCriteria {
+  /**
+   * An array of criteria that should match chats returned from by a search.
+   *
+   * ⚠️ Operators (and/or/not) are not defined in `fdc3.chat.searchCriteria`. It is up to the
+   * application that processes the FDC3 Intent to choose and apply the operators between the
+   * criteria.
+   *
+   * Empty search criteria can be supported to allow resetting of filters.
+   */
   criteria: Array<OrganizationObject | string>;
   type: string;
   id?: { [key: string]: any };
@@ -261,43 +667,170 @@ export interface ChatSearchCriteria {
   [property: string]: any;
 }
 
+/**
+ * financial instrument that relates to the definition of this product
+ *
+ *
+ *
+ * A financial instrument from any asset class.
+ *
+ * An entity that can be used when referencing private companies and other organizations
+ * where a specific instrument is not available or desired e.g. CRM and News workflows.
+ *
+ * It is valid to include extra properties and metadata as part of the organization payload,
+ * but the minimum requirement is for at least one specified identifier to be provided.
+ *
+ * The contact that initiated the interaction
+ *
+ * A person contact that can be engaged with through email, calling, messaging, CMS, etc.
+ */
 export interface OrganizationObject {
-  id: TentacledID;
+  /**
+   * Any combination of instrument identifiers can be used together to resolve ambiguity, or
+   * for a better match. Not all applications will use the same instrument identifiers, which
+   * is why FDC3 allows for multiple to be specified. In general, the more identifiers an
+   * application can provide, the easier it will be to achieve interoperability.
+   *
+   * It is valid to include extra properties and metadata as part of the instrument payload,
+   * but the minimum requirement is for at least one instrument identifier to be provided.
+   *
+   * Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant
+   * for tickers as used by an exchange.
+   * If the identifier you want to share is not a ticker or one of the other standardized
+   * fields, define a property that makes it clear what the value represents. Doing so will
+   * make interpretation easier for the developers of target applications.
+   *
+   * Identifiers for the organization, at least one must be provided.
+   *
+   * Identifiers that relate to the Contact represented by this context
+   */
+  id: Identifiers;
+  /**
+   * The `market` map can be used to further specify the instrument and help achieve
+   * interoperability between disparate data sources. This is especially useful when using an
+   * `id` field that is not globally unique.
+   */
   market?: OrganizationMarket;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface TentacledID {
+/**
+ * Any combination of instrument identifiers can be used together to resolve ambiguity, or
+ * for a better match. Not all applications will use the same instrument identifiers, which
+ * is why FDC3 allows for multiple to be specified. In general, the more identifiers an
+ * application can provide, the easier it will be to achieve interoperability.
+ *
+ * It is valid to include extra properties and metadata as part of the instrument payload,
+ * but the minimum requirement is for at least one instrument identifier to be provided.
+ *
+ * Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant
+ * for tickers as used by an exchange.
+ * If the identifier you want to share is not a ticker or one of the other standardized
+ * fields, define a property that makes it clear what the value represents. Doing so will
+ * make interpretation easier for the developers of target applications.
+ *
+ * Identifiers for the organization, at least one must be provided.
+ *
+ * Identifiers that relate to the Contact represented by this context
+ */
+export interface Identifiers {
+  /**
+   * <https://www.bloomberg.com/>
+   */
   BBG?: string;
+  /**
+   * <https://www.cusip.com/>
+   */
   CUSIP?: string;
+  /**
+   * <https://www.factset.com/>
+   *
+   * FactSet Permanent Identifier representing the organization
+   *
+   * FactSet Permanent Identifier representing the contact
+   */
   FDS_ID?: string;
+  /**
+   * <https://www.openfigi.com/>
+   */
   FIGI?: string;
+  /**
+   * <https://www.isin.org/>
+   */
   ISIN?: string;
+  /**
+   * <https://permid.org/>
+   *
+   * Refinitiv Permanent Identifiers, or PermID for the organization
+   */
   PERMID?: string;
+  /**
+   * <https://www.refinitiv.com/>
+   */
   RIC?: string;
+  /**
+   * <https://www.lseg.com/sedol>
+   */
   SEDOL?: string;
+  /**
+   * Unstandardized stock tickers
+   */
   ticker?: string;
+  /**
+   * The Legal Entity Identifier (LEI) is a 20-character, alpha-numeric code based on the ISO
+   * 17442 standard developed by the International Organization for Standardization (ISO). It
+   * connects to key reference information that enables clear and unique identification of
+   * legal entities participating in financial transactions.
+   */
   LEI?: string;
+  /**
+   * The email address for the contact
+   */
   email?: string;
   [property: string]: any;
 }
 
+/**
+ * A person contact that can be engaged with through email, calling, messaging, CMS, etc.
+ */
 export interface Contact {
-  id: StickyID;
+  /**
+   * Identifiers that relate to the Contact represented by this context
+   */
+  id: FluffyContactIdentifiers;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface StickyID {
+/**
+ * Identifiers that relate to the Contact represented by this context
+ */
+export interface FluffyContactIdentifiers {
+  /**
+   * The email address for the contact
+   */
   email?: string;
+  /**
+   * FactSet Permanent Identifier representing the contact
+   */
   FDS_ID?: string;
   [property: string]: any;
 }
 
+/**
+ * A collection of contacts, e.g. for chatting to or calling multiple contacts.
+ *
+ * The contact list schema does not explicitly include identifiers in the `id` section, as
+ * there is not a common standard for such identifiers. Applications can, however, populate
+ * this part of the contract with custom identifiers if so desired.
+ */
 export interface ContactList {
+  /**
+   * An array of contact contexts that forms the list.
+   */
   contacts: ContactElement[];
   type: string;
   id?: { [key: string]: any };
@@ -305,13 +838,76 @@ export interface ContactList {
   [property: string]: any;
 }
 
+/**
+ * The `fdc3.context` type defines the basic contract or "shape" for all data exchanged by
+ * FDC3 operations. As such, it is not really meant to be used on its own, but is imported
+ * by more specific type definitions (standardized or custom) to provide the structure and
+ * properties shared by all FDC3 context data types.
+ *
+ * The key element of FDC3 context types is their mandatory `type` property, which is used
+ * to identify what type of data the object represents, and what shape it has.
+ *
+ * The FDC3 context type, and all derived types, define the minimum set of fields a context
+ * data object of a particular type can be expected to have, but this can always be extended
+ * with custom fields as appropriate.
+ */
 export interface Context {
+  /**
+   * Context data objects may include a set of equivalent key-value pairs that can be used to
+   * help applications identify and look up the context type they receive in their own domain.
+   * The idea behind this design is that applications can provide as many equivalent
+   * identifiers to a target application as possible, e.g. an instrument may be represented by
+   * an ISIN, CUSIP or Bloomberg identifier.
+   *
+   * Identifiers do not make sense for all types of data, so the `id` property is therefore
+   * optional, but some derived types may choose to require at least one identifier.
+   */
   id?: { [key: string]: any };
+  /**
+   * Context data objects may include a name property that can be used for more information,
+   * or display purposes. Some derived types may require the name object as mandatory,
+   * depending on use case.
+   */
   name?: string;
+  /**
+   * The type property is the only _required_ part of the FDC3 context data schema. The FDC3
+   * [API](https://fdc3.finos.org/docs/api/spec) relies on the `type` property being present
+   * to route shared context data appropriately.
+   *
+   * FDC3 [Intents](https://fdc3.finos.org/docs/intents/spec) also register the context data
+   * types they support in an FDC3 [App
+   * Directory](https://fdc3.finos.org/docs/app-directory/overview), used for intent discovery
+   * and routing.
+   *
+   * Standardized FDC3 context types have well-known `type` properties prefixed with the
+   * `fdc3` namespace, e.g. `fdc3.instrument`. For non-standard types, e.g. those defined and
+   * used by a particular organization, the convention is to prefix them with an
+   * organization-specific namespace, e.g. `blackrock.fund`.
+   *
+   * See the [Context Data Specification](https://fdc3.finos.org/docs/context/spec) for more
+   * information about context data types.
+   */
   type: string;
   [property: string]: any;
 }
 
+/**
+ * A country entity.
+ *
+ * Notes:
+ *
+ * - It is valid to include extra properties and metadata as part of the country payload,
+ * but the minimum requirement is for at least one standardized identifier to be provided
+ *
+ * - `COUNTRY_ISOALPHA2` SHOULD be preferred.
+ *
+ * - Try to only use country identifiers as intended and specified in the [ISO
+ * standard](https://en.wikipedia.org/wiki/ISO_3166-1). E.g. the `COUNTRY_ISOALPHA2`
+ * property must be a recognized value and not a proprietary two-letter code. If the
+ * identifier you want to share is not a standardized and recognized one, rather define a
+ * property that makes it clear what value it is. This makes it easier for target
+ * applications.
+ */
 export interface Country {
   id: CountryID;
   type: string;
@@ -320,28 +916,64 @@ export interface Country {
 }
 
 export interface CountryID {
+  /**
+   * Two-letter ISO country code
+   */
   COUNTRY_ISOALPHA2?: string;
+  /**
+   * Three-letter ISO country code
+   */
   COUNTRY_ISOALPHA3?: string;
+  /**
+   * Two-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed
+   * with `COUNTRY_`.
+   */
   ISOALPHA2?: string;
+  /**
+   * Three-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed
+   * with `COUNTRY_`.
+   */
   ISOALPHA3?: string;
   [property: string]: any;
 }
 
+/**
+ * A context representing an individual Currency.
+ */
 export interface Currency {
   id: CurrencyID;
+  /**
+   * The name of the currency for display purposes
+   */
   name?: string;
   type: string;
   [property: string]: any;
 }
 
 export interface CurrencyID {
+  /**
+   * The `CURRENCY_ISOCODE` should conform to 3 character alphabetic codes defined in [ISO
+   * 4217](https://www.iso.org/iso-4217-currency-codes.html)
+   */
   CURRENCY_ISOCODE?: string;
   [property: string]: any;
 }
 
+/**
+ * A collection of information to be used to initiate an email with a Contact or ContactList.
+ */
 export interface Email {
-  recipients: RecipientsObject;
+  /**
+   * One or more receipients for the email.
+   */
+  recipients: EmailRecipients;
+  /**
+   * Subject line for the email.
+   */
   subject?: string;
+  /**
+   * Body content for the email.
+   */
   textBody?: string;
   type: string;
   id?: { [key: string]: any };
@@ -349,50 +981,177 @@ export interface Email {
   [property: string]: any;
 }
 
-export interface RecipientsObject {
-  id?: RecipientsID;
+/**
+ * One or more receipients for the email.
+ *
+ * The contact that initiated the interaction
+ *
+ * A person contact that can be engaged with through email, calling, messaging, CMS, etc.
+ *
+ * Contacts to add to the chat
+ *
+ * A list of contacts involved in the interaction
+ *
+ * A collection of contacts, e.g. for chatting to or calling multiple contacts.
+ *
+ * The contact list schema does not explicitly include identifiers in the `id` section, as
+ * there is not a common standard for such identifiers. Applications can, however, populate
+ * this part of the contract with custom identifiers if so desired.
+ */
+export interface EmailRecipients {
+  /**
+   * Identifiers that relate to the Contact represented by this context
+   */
+  id?: EmailRecipientsID;
   type: string;
   name?: string;
+  /**
+   * An array of contact contexts that forms the list.
+   */
   contacts?: ContactElement[];
   [property: string]: any;
 }
 
-export interface RecipientsID {
+/**
+ * Identifiers that relate to the Contact represented by this context
+ */
+export interface EmailRecipientsID {
+  /**
+   * The email address for the contact
+   */
   email?: string;
+  /**
+   * FactSet Permanent Identifier representing the contact
+   */
   FDS_ID?: string;
   [property: string]: any;
 }
 
+/**
+ * A financial instrument from any asset class.
+ */
 export interface Instrument {
-  id: IndigoID;
+  /**
+   * Any combination of instrument identifiers can be used together to resolve ambiguity, or
+   * for a better match. Not all applications will use the same instrument identifiers, which
+   * is why FDC3 allows for multiple to be specified. In general, the more identifiers an
+   * application can provide, the easier it will be to achieve interoperability.
+   *
+   * It is valid to include extra properties and metadata as part of the instrument payload,
+   * but the minimum requirement is for at least one instrument identifier to be provided.
+   *
+   * Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant
+   * for tickers as used by an exchange.
+   * If the identifier you want to share is not a ticker or one of the other standardized
+   * fields, define a property that makes it clear what the value represents. Doing so will
+   * make interpretation easier for the developers of target applications.
+   */
+  id: FluffyInstrumentIdentifiers;
+  /**
+   * The `market` map can be used to further specify the instrument and help achieve
+   * interoperability between disparate data sources. This is especially useful when using an
+   * `id` field that is not globally unique.
+   */
   market?: PurpleMarket;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface IndigoID {
+/**
+ * Any combination of instrument identifiers can be used together to resolve ambiguity, or
+ * for a better match. Not all applications will use the same instrument identifiers, which
+ * is why FDC3 allows for multiple to be specified. In general, the more identifiers an
+ * application can provide, the easier it will be to achieve interoperability.
+ *
+ * It is valid to include extra properties and metadata as part of the instrument payload,
+ * but the minimum requirement is for at least one instrument identifier to be provided.
+ *
+ * Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant
+ * for tickers as used by an exchange.
+ * If the identifier you want to share is not a ticker or one of the other standardized
+ * fields, define a property that makes it clear what the value represents. Doing so will
+ * make interpretation easier for the developers of target applications.
+ */
+export interface FluffyInstrumentIdentifiers {
+  /**
+   * <https://www.bloomberg.com/>
+   */
   BBG?: string;
+  /**
+   * <https://www.cusip.com/>
+   */
   CUSIP?: string;
+  /**
+   * <https://www.factset.com/>
+   */
   FDS_ID?: string;
+  /**
+   * <https://www.openfigi.com/>
+   */
   FIGI?: string;
+  /**
+   * <https://www.isin.org/>
+   */
   ISIN?: string;
+  /**
+   * <https://permid.org/>
+   */
   PERMID?: string;
+  /**
+   * <https://www.refinitiv.com/>
+   */
   RIC?: string;
+  /**
+   * <https://www.lseg.com/sedol>
+   */
   SEDOL?: string;
+  /**
+   * Unstandardized stock tickers
+   */
   ticker?: string;
   [property: string]: any;
 }
 
+/**
+ * The `market` map can be used to further specify the instrument and help achieve
+ * interoperability between disparate data sources. This is especially useful when using an
+ * `id` field that is not globally unique.
+ */
 export interface PurpleMarket {
+  /**
+   * <https://www.bloomberg.com/>
+   */
   BBG?: string;
+  /**
+   * <https://www.iso.org/iso-3166-country-codes.html>
+   */
   COUNTRY_ISOALPHA2?: string;
+  /**
+   * <https://en.wikipedia.org/wiki/Market_Identifier_Code>
+   */
   MIC?: string;
+  /**
+   * Human readable market name
+   */
   name?: string;
   [property: string]: any;
 }
 
+/**
+ * A collection of instruments. Use this type for use cases that require not just a single
+ * instrument, but multiple (e.g. to populate a watchlist). However, when holding
+ * information for each instrument is required, it is recommended to use the
+ * [Portfolio](Portfolio) type.
+ *
+ * The instrument list schema does not explicitly include identifiers in the `id` section,
+ * as there is not a common standard for such identifiers. Applications can, however,
+ * populate this part of the contract with custom identifiers if so desired.
+ */
 export interface InstrumentList {
+  /**
+   * An array of instrument contexts that forms the list.
+   */
   instruments: InstrumentElement[];
   type: string;
   id?: { [key: string]: any };
@@ -400,36 +1159,131 @@ export interface InstrumentList {
   [property: string]: any;
 }
 
+/**
+ * An `Interaction` is a significant direct exchange of ideas or information between a
+ * number of participants, e.g. a Sell Side party and one or more Buy Side parties. An
+ * `Interaction` might be a call, a meeting (physical or virtual), an IM or the preparation
+ * of some specialist data, such as financial data for a given company or sector.
+ */
 export interface Interaction {
+  /**
+   * A human-readable description of the interaction
+   */
   description: string;
+  /**
+   * Can be used by a target application to pass an identifier back to the originating
+   * application after an interaction record has been created, updated or deleted. An
+   * interaction ID does not need to be populated by the originating application, however the
+   * target application could store it for future reference and SHOULD return it in a
+   * `TransactionResult`.
+   */
+  id?: InteractionID;
+  /**
+   * The contact that initiated the interaction
+   */
   initiator?: ContactElement;
+  /**
+   * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+   * `'Meeting'` although other string values are permitted.
+   */
   interactionType: string;
+  /**
+   * Used to represent the application or service that the interaction was created from to aid
+   * in tracing the source of an interaction.
+   */
   origin?: string;
+  /**
+   * A list of contacts involved in the interaction
+   */
   participants: ContactListObject;
+  /**
+   * The time range over which the interaction occurred
+   */
   timeRange: TimeRangeObject;
   type: string;
-  id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
 
+/**
+ * Can be used by a target application to pass an identifier back to the originating
+ * application after an interaction record has been created, updated or deleted. An
+ * interaction ID does not need to be populated by the originating application, however the
+ * target application could store it for future reference and SHOULD return it in a
+ * `TransactionResult`.
+ */
+export interface InteractionID {
+  /**
+   * Interactions ID in Salesforce
+   */
+  SALESFORCE?: string;
+  /**
+   * Interaction ID in SingleTrack
+   */
+  SINGLETRACK?: string;
+  /**
+   * Can be used by a target application to pass a record's link back to the originating
+   * application. This offers the originating application a way to open the record for a user
+   * to view.
+   */
+  URI?: string;
+  [property: string]: any;
+}
+
+/**
+ * A chat message to be sent through an instant messaging application. Can contain one or
+ * several text bodies (organized by mime-type, plaintext or markdown), as well as attached
+ * entities (either arbitrary file attachments or FDC3 actions to be embedded in the
+ * message). To be put inside a ChatInitSettings object.
+ */
 export interface Message {
+  /**
+   * A map of string IDs to entities that should be attached to the message, such as an action
+   * to perform, a file attachment, or other FDC3 context object.
+   */
   entities?: { [key: string]: FluffyAction };
-  text?: FluffyText;
+  /**
+   * A map of string mime-type to string content
+   */
+  text?: FluffyMessageText;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
 
+/**
+ * A representation of an FDC3 Action (specified via a Context or Context & Intent) that can
+ * be inserted inside another object, for example a chat message.
+ *
+ * The action may be completed by calling `fdc3.raiseIntent()` with the specified Intent and
+ * Context, or, if only a context is specified, by calling `fdc3.raiseIntentForContext()`
+ * (which the Desktop Agent will resolve by presenting the user with a list of available
+ * Intents for the Context).
+ *
+ * Accepts an optional `app` parameter in order to specify a specific app.
+ *
+ * A File attachment encoded in the form of a data URI
+ */
 export interface FluffyAction {
-  app?: EntityApp;
-  context?: EntityContext;
-  customConfig?: { [key: string]: any };
   /**
-   * A reference an intent type name, such as those defined in the FDC3 Standard
+   * An optional target application identifier that should perform the action
+   */
+  app?: ActionTargetApp;
+  /**
+   * A context object with which the action will be performed
+   */
+  context?: ContextElement;
+  /**
+   * Optional Intent to raise to perform the actions. Should reference an intent type name,
+   * such as those defined in the FDC3 Standard. If intent is not set then
+   * `fdc3.raiseIntentForContext` should be used to perform the action as this will usually
+   * allow the user to choose the intent to raise.
    */
   intent?: string;
+  /**
+   * A human readable display name for the action
+   */
   title?: string;
   type: any;
   id?: { [key: string]: any };
@@ -439,17 +1293,46 @@ export interface FluffyAction {
 }
 
 export interface FluffyData {
+  /**
+   * A data URI encoding the content of the file to be attached
+   */
   dataUri: string;
+  /**
+   * The name of the attached file
+   */
   name: string;
   [property: string]: any;
 }
 
-export interface FluffyText {
+/**
+ * A map of string mime-type to string content
+ */
+export interface FluffyMessageText {
+  /**
+   * Markdown encoded content
+   */
   'text/markdown'?: string;
+  /**
+   * Plain text encoded content.
+   */
   'text/plain'?: string;
   [property: string]: any;
 }
 
+/**
+ * A type that explicitly represents a lack of context.
+ *
+ * Notes:
+ *
+ * - Intended to be used in situations where no context is desired.
+ * - For example:
+ * - Raising an intent without context (e.g. opening a blank order form, or chat interface
+ * without a contact selected).
+ * - Resetting context on a channel (e.g. when context is used to set a filter in other
+ * applications a null context might release the filter).
+ * - An explicit representation of a Null or empty context allows apps to declare support
+ * for a lack of context, for example in their intent metadata in an app directory.
+ */
 export interface Nothing {
   type: string;
   id?: { [key: string]: any };
@@ -497,11 +1380,17 @@ export interface PurpleOrderDetails {
 }
 
 /**
+ * A product that is the subject of th trade.
+ *
  * @experimental context type representing a tradable product. To be used with OMS and EMS
  * systems.
  *
  * This type is currently only loosely defined as an extensible context object, with an
  * optional instrument field.
+ *
+ * The Product schema does not explicitly include identifiers in the id section, as there is
+ * not a common standard for such identifiers. Applications can, however, populate this part
+ * of the contract with custom identifiers if so desired.
  */
 export interface ProductObject {
   /**
@@ -510,18 +1399,29 @@ export interface ProductObject {
    */
   id: { [key: string]: string };
   /**
+   * financial instrument that relates to the definition of this product
+   */
+  instrument?: InstrumentElement;
+  /**
    * A human-readable summary of the product.
    */
   name?: string;
   type: string;
-  instrument?: InstrumentElement;
   [property: string]: any;
 }
 
 /**
- * @experimental A list of orders
+ * @experimental A list of orders. Use this type for use cases that require not just a
+ * single order, but multiple.
+ *
+ * The OrderList schema does not explicitly include identifiers in the id section, as there
+ * is not a common standard for such identifiers. Applications can, however, populate this
+ * part of the contract with custom identifiers if so desired.
  */
 export interface OrderList {
+  /**
+   * An array of order contexts that forms the list.
+   */
   orders: OrderElement[];
   type: string;
   id?: { [key: string]: any };
@@ -568,21 +1468,64 @@ export interface FluffyOrderDetails {
   [property: string]: any;
 }
 
+/**
+ * An entity that can be used when referencing private companies and other organizations
+ * where a specific instrument is not available or desired e.g. CRM and News workflows.
+ *
+ * It is valid to include extra properties and metadata as part of the organization payload,
+ * but the minimum requirement is for at least one specified identifier to be provided.
+ */
 export interface Organization {
-  id: IndecentID;
+  /**
+   * Identifiers for the organization, at least one must be provided.
+   */
+  id: OrganizationIdentifiers;
   type: string;
   name?: string;
   [property: string]: any;
 }
 
-export interface IndecentID {
+/**
+ * Identifiers for the organization, at least one must be provided.
+ */
+export interface OrganizationIdentifiers {
+  /**
+   * FactSet Permanent Identifier representing the organization
+   */
   FDS_ID?: string;
+  /**
+   * The Legal Entity Identifier (LEI) is a 20-character, alpha-numeric code based on the ISO
+   * 17442 standard developed by the International Organization for Standardization (ISO). It
+   * connects to key reference information that enables clear and unique identification of
+   * legal entities participating in financial transactions.
+   */
   LEI?: string;
+  /**
+   * Refinitiv Permanent Identifiers, or PermID for the organization
+   */
   PERMID?: string;
   [property: string]: any;
 }
 
+/**
+ * A financial portfolio made up of multiple positions (holdings) in several instruments.
+ * Contrast this with e.g. the [InstrumentList](InstrumentList) type, which is just a list
+ * of instruments.
+ *
+ * This is a good example of how types can be composed and extended with extra properties to
+ * define more complex types.
+ *
+ * The Portfolio type consists of an array of [Position](Position) types, each of which
+ * refers to a single [Instrument](Instrument) and a holding amount for that instrument.
+ *
+ * The portfolio schema does not explicitly include identifiers in the `id` section, as
+ * there bis not a common standard for such identifiers. Applications can, however, populate
+ * this part of the contract with custom identifiers if so desired.
+ */
 export interface Portfolio {
+  /**
+   * The List of Positions which make up the Portfolio
+   */
   positions: PositionElement[];
   type: string;
   id?: { [key: string]: any };
@@ -590,7 +1533,24 @@ export interface Portfolio {
   [property: string]: any;
 }
 
+/**
+ * A financial position made up of an instrument and a holding in that instrument. This type
+ * is a good example of how new context types can be composed from existing types.
+ *
+ * In this case, the instrument and the holding amount for that instrument are required
+ * values.
+ *
+ * The [Position](Position) type goes hand-in-hand with the [Portfolio](Portfolio) type,
+ * which represents multiple holdings in a combination of instruments.
+ *
+ * The position schema does not explicitly include identifiers in the `id` section, as there
+ * is not a common standard for such identifiers. Applications can, however, populate this
+ * part of the contract with custom identifiers if so desired.
+ */
 export interface PositionElement {
+  /**
+   * The amount of the holding, e.g. a number of shares
+   */
   holding: number;
   instrument: InstrumentElement;
   type: string;
@@ -599,7 +1559,24 @@ export interface PositionElement {
   [property: string]: any;
 }
 
+/**
+ * A financial position made up of an instrument and a holding in that instrument. This type
+ * is a good example of how new context types can be composed from existing types.
+ *
+ * In this case, the instrument and the holding amount for that instrument are required
+ * values.
+ *
+ * The [Position](Position) type goes hand-in-hand with the [Portfolio](Portfolio) type,
+ * which represents multiple holdings in a combination of instruments.
+ *
+ * The position schema does not explicitly include identifiers in the `id` section, as there
+ * is not a common standard for such identifiers. Applications can, however, populate this
+ * part of the contract with custom identifiers if so desired.
+ */
 export interface Position {
+  /**
+   * The amount of the holding, e.g. a number of shares
+   */
   holding: number;
   instrument: InstrumentElement;
   type: string;
@@ -614,6 +1591,10 @@ export interface Position {
  *
  * This type is currently only loosely defined as an extensible context object, with an
  * optional instrument field.
+ *
+ * The Product schema does not explicitly include identifiers in the id section, as there is
+ * not a common standard for such identifiers. Applications can, however, populate this part
+ * of the contract with custom identifiers if so desired.
  */
 export interface Product {
   /**
@@ -622,16 +1603,59 @@ export interface Product {
    */
   id: { [key: string]: string };
   /**
+   * financial instrument that relates to the definition of this product
+   */
+  instrument?: InstrumentElement;
+  /**
    * A human-readable summary of the product.
    */
   name?: string;
   type: string;
-  instrument?: InstrumentElement;
   [property: string]: any;
 }
 
+/**
+ * A context representing a period of time. Any user interfaces that represent or visualize
+ * events or activity over time can be filtered or focused on a particular time period,
+ * e.g.:
+ *
+ * - A pricing chart
+ * - A trade blotter
+ * - A record of client contact/activity in a CRM
+ *
+ * Example use cases:
+ *
+ * - User may want to view pricing/trades/customer activity for a security over a particular
+ * time period, the time range might be specified as the context for the `ViewChart` intent
+ * OR it might be embedded in another context (e.g. a context representing a chart to plot).
+ * - User filters a visualization (e.g. a pricing chart) to show a particular period, the
+ * `TimeRange` is broadcast and other visualizations (e.g. a heatmap of activity by
+ * instrument, or industry sector etc.) receive it and filter themselves to show data over
+ * the same range.
+ *
+ * Notes:
+ *
+ * - A `TimeRange` may be closed (i.e. `startTime` and `endTime` are both known) or open
+ * (i.e. only one of `startTime` or `endTime` is known).
+ * - Ranges corresponding to dates (e.g. `2022-05-12` to `2022-05-19`) should be specified
+ * using times as this prevents issues with timezone conversions and inclusive/exclusive
+ * date ranges.
+ * - String fields representing times are encoded according to [ISO
+ * 8601-1:2019](https://www.iso.org/standard/70907.html).
+ * - A timezone indicator should be specified, e.g. `"2022-05-12T15:18:03Z"` or
+ * `"2022-05-12T16:18:03+01:00"`
+ * - Times MAY be specified with millisecond precision, e.g. `"2022-05-12T15:18:03.349Z"`
+ */
 export interface TimeRange {
+  /**
+   * The end time of the range, encoded according to [ISO
+   * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
+   */
   endTime?: Date;
+  /**
+   * The start time of the range, encoded according to [ISO
+   * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
+   */
   startTime?: Date;
   type: string;
   id?: { [key: string]: any };
@@ -647,6 +1671,10 @@ export interface TimeRange {
  * to summarize the trade and a required `product` field that may be used to provide
  * additional detail about the trade, which is currently typed as a unspecified Context
  * type, but `product` is expected to be standardized in future.
+ *
+ * The Trade schema does not explicitly include identifiers in the id section, as there is
+ * not a common standard for such identifiers. Applications can, however, populate this part
+ * of the contract with custom identifiers if so desired.
  */
 export interface Trade {
   /**
@@ -658,15 +1686,26 @@ export interface Trade {
    * A human-readable summary of the trade.
    */
   name?: string;
+  /**
+   * A product that is the subject of th trade.
+   */
   product: ProductObject;
   type: string;
   [property: string]: any;
 }
 
 /**
- * @experimental A list of trades.
+ * @experimental A list of trades. Use this type for use cases that require not just a
+ * single trade, but multiple.
+ *
+ * The TradeList schema does not explicitly include identifiers in the id section, as there
+ * is not a common standard for such identifiers. Applications can, however, populate this
+ * part of the contract with custom identifiers if so desired.
  */
 export interface TradeList {
+  /**
+   * An array of trade contexts that forms the list.
+   */
   trades: TradeElement[];
   type: string;
   id?: { [key: string]: any };
@@ -682,6 +1721,10 @@ export interface TradeList {
  * to summarize the trade and a required `product` field that may be used to provide
  * additional detail about the trade, which is currently typed as a unspecified Context
  * type, but `product` is expected to be standardized in future.
+ *
+ * The Trade schema does not explicitly include identifiers in the id section, as there is
+ * not a common standard for such identifiers. Applications can, however, populate this part
+ * of the contract with custom identifiers if so desired.
  */
 export interface TradeElement {
   /**
@@ -693,33 +1736,72 @@ export interface TradeElement {
    * A human-readable summary of the trade.
    */
   name?: string;
+  /**
+   * A product that is the subject of th trade.
+   */
   product: ProductObject;
   type: string;
   [property: string]: any;
 }
 
+/**
+ * A context type representing the result of a transaction initiated via FDC3, which SHOULD
+ * be returned as an `IntentResult` by intents that create, retrieve, update or delete
+ * content or records in another application. Its purpose is to provide a status and message
+ * (where needed) for the transaction and MAY wrap a returned context object.
+ */
 export interface TransactionResult {
+  /**
+   * A context object returned by the transaction, possibly with updated data.
+   */
   context?: ContextElement;
-  status: Status;
+  /**
+   * The status of the transaction being reported.
+   */
+  status: TransactionStatus;
   type: string;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
 
-export enum Status {
+/**
+ * The status of the transaction being reported.
+ */
+export enum TransactionStatus {
   Created = 'Created',
   Deleted = 'Deleted',
   Failed = 'Failed',
   Updated = 'Updated',
 }
 
+/**
+ * A context type representing the price and value of a holding.
+ */
 export interface Valuation {
+  /**
+   * The valuation currency, which should conform to 3 character alphabetic codes defined in
+   * [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html)
+   */
   CURRENCY_ISOCODE: string;
+  /**
+   * The time at which this valuation expires, encoded according to [ISO
+   * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
+   */
   expiryTime?: Date;
+  /**
+   * The price per unit the the valuation is based on.
+   */
   price?: number;
   type: string;
+  /**
+   * The time at which the valuation was performed, encoded according to [ISO
+   * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
+   */
   valuationTime?: Date;
+  /**
+   * The value of the holding, expresses in the nominated currency.
+   */
   value: number;
   id?: { [key: string]: any };
   name?: string;
@@ -1123,9 +2205,8 @@ function r(name: string) {
 const typeMap: any = {
   Action: o(
     [
-      { json: 'app', js: 'app', typ: u(undefined, r('ActionApp')) },
-      { json: 'context', js: 'context', typ: r('ActionContext') },
-      { json: 'customConfig', js: 'customConfig', typ: u(undefined, m('any')) },
+      { json: 'app', js: 'app', typ: u(undefined, r('ActionTargetApp')) },
+      { json: 'context', js: 'context', typ: r('ContextElement') },
       { json: 'intent', js: 'intent', typ: u(undefined, '') },
       { json: 'title', js: 'title', typ: '' },
       { json: 'type', js: 'type', typ: '' },
@@ -1134,14 +2215,15 @@ const typeMap: any = {
     ],
     'any'
   ),
-  ActionApp: o(
+  ActionTargetApp: o(
     [
       { json: 'appId', js: 'appId', typ: '' },
+      { json: 'desktopAgent', js: 'desktopAgent', typ: u(undefined, '') },
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
     ],
     'any'
   ),
-  ActionContext: o(
+  ContextElement: o(
     [
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -1154,7 +2236,7 @@ const typeMap: any = {
       { json: 'instruments', js: 'instruments', typ: a(r('InstrumentElement')) },
       { json: 'otherConfig', js: 'otherConfig', typ: u(undefined, a(r('ContextElement'))) },
       { json: 'range', js: 'range', typ: u(undefined, r('TimeRangeObject')) },
-      { json: 'style', js: 'style', typ: u(undefined, r('Style')) },
+      { json: 'style', js: 'style', typ: u(undefined, r('ChartStyle')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -1163,14 +2245,14 @@ const typeMap: any = {
   ),
   InstrumentElement: o(
     [
-      { json: 'id', js: 'id', typ: r('PurpleID') },
+      { json: 'id', js: 'id', typ: r('PurpleInstrumentIdentifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  PurpleID: o(
+  PurpleInstrumentIdentifiers: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
@@ -1193,14 +2275,6 @@ const typeMap: any = {
     ],
     'any'
   ),
-  ContextElement: o(
-    [
-      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
-    ],
-    'any'
-  ),
   TimeRangeObject: o(
     [
       { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
@@ -1216,7 +2290,7 @@ const typeMap: any = {
       { json: 'chatName', js: 'chatName', typ: u(undefined, '') },
       { json: 'members', js: 'members', typ: u(undefined, r('ContactListObject')) },
       { json: 'message', js: 'message', typ: u(undefined, u(r('MessageObject'), '')) },
-      { json: 'options', js: 'options', typ: u(undefined, r('Options')) },
+      { json: 'options', js: 'options', typ: u(undefined, r('ChatOptions')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -1234,13 +2308,13 @@ const typeMap: any = {
   ),
   ContactElement: o(
     [
-      { json: 'id', js: 'id', typ: r('FluffyID') },
+      { json: 'id', js: 'id', typ: r('PurpleContactIdentifiers') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  FluffyID: o(
+  PurpleContactIdentifiers: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
@@ -1250,7 +2324,7 @@ const typeMap: any = {
   MessageObject: o(
     [
       { json: 'entities', js: 'entities', typ: u(undefined, m(r('PurpleAction'))) },
-      { json: 'text', js: 'text', typ: u(undefined, r('PurpleText')) },
+      { json: 'text', js: 'text', typ: u(undefined, r('PurpleMessageText')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -1259,30 +2333,14 @@ const typeMap: any = {
   ),
   PurpleAction: o(
     [
-      { json: 'app', js: 'app', typ: u(undefined, r('EntityApp')) },
-      { json: 'context', js: 'context', typ: u(undefined, r('EntityContext')) },
-      { json: 'customConfig', js: 'customConfig', typ: u(undefined, m('any')) },
+      { json: 'app', js: 'app', typ: u(undefined, r('ActionTargetApp')) },
+      { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
       { json: 'intent', js: 'intent', typ: u(undefined, '') },
       { json: 'title', js: 'title', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: 'any' },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'data', js: 'data', typ: u(undefined, r('PurpleData')) },
-    ],
-    'any'
-  ),
-  EntityApp: o(
-    [
-      { json: 'appId', js: 'appId', typ: '' },
-      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  EntityContext: o(
-    [
-      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
     ],
     'any'
   ),
@@ -1293,14 +2351,14 @@ const typeMap: any = {
     ],
     'any'
   ),
-  PurpleText: o(
+  PurpleMessageText: o(
     [
       { json: 'text/markdown', js: 'text/markdown', typ: u(undefined, '') },
       { json: 'text/plain', js: 'text/plain', typ: u(undefined, '') },
     ],
     'any'
   ),
-  Options: o(
+  ChatOptions: o(
     [
       { json: 'allowAddUser', js: 'allowAddUser', typ: u(undefined, true) },
       { json: 'allowHistoryBrowsing', js: 'allowHistoryBrowsing', typ: u(undefined, true) },
@@ -1313,7 +2371,7 @@ const typeMap: any = {
   ChatMessage: o(
     [
       { json: 'chatRoom', js: 'chatRoom', typ: r('ChatRoomObject') },
-      { json: 'message', js: 'message', typ: r('MessageObject') },
+      { json: 'message', js: 'message', typ: u(r('MessageObject'), '') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -1351,14 +2409,14 @@ const typeMap: any = {
   ),
   OrganizationObject: o(
     [
-      { json: 'id', js: 'id', typ: r('TentacledID') },
+      { json: 'id', js: 'id', typ: r('Identifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  TentacledID: o(
+  Identifiers: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
@@ -1376,13 +2434,13 @@ const typeMap: any = {
   ),
   Contact: o(
     [
-      { json: 'id', js: 'id', typ: r('StickyID') },
+      { json: 'id', js: 'id', typ: r('FluffyContactIdentifiers') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  StickyID: o(
+  FluffyContactIdentifiers: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
@@ -1434,7 +2492,7 @@ const typeMap: any = {
   CurrencyID: o([{ json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: u(undefined, '') }], 'any'),
   Email: o(
     [
-      { json: 'recipients', js: 'recipients', typ: r('RecipientsObject') },
+      { json: 'recipients', js: 'recipients', typ: r('EmailRecipients') },
       { json: 'subject', js: 'subject', typ: u(undefined, '') },
       { json: 'textBody', js: 'textBody', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
@@ -1443,16 +2501,16 @@ const typeMap: any = {
     ],
     'any'
   ),
-  RecipientsObject: o(
+  EmailRecipients: o(
     [
-      { json: 'id', js: 'id', typ: u(undefined, r('RecipientsID')) },
+      { json: 'id', js: 'id', typ: u(undefined, r('EmailRecipientsID')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'contacts', js: 'contacts', typ: u(undefined, a(r('ContactElement'))) },
     ],
     'any'
   ),
-  RecipientsID: o(
+  EmailRecipientsID: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
@@ -1461,14 +2519,14 @@ const typeMap: any = {
   ),
   Instrument: o(
     [
-      { json: 'id', js: 'id', typ: r('IndigoID') },
+      { json: 'id', js: 'id', typ: r('FluffyInstrumentIdentifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('PurpleMarket')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  IndigoID: o(
+  FluffyInstrumentIdentifiers: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
@@ -1503,21 +2561,29 @@ const typeMap: any = {
   Interaction: o(
     [
       { json: 'description', js: 'description', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, r('InteractionID')) },
       { json: 'initiator', js: 'initiator', typ: u(undefined, r('ContactElement')) },
       { json: 'interactionType', js: 'interactionType', typ: '' },
       { json: 'origin', js: 'origin', typ: u(undefined, '') },
       { json: 'participants', js: 'participants', typ: r('ContactListObject') },
       { json: 'timeRange', js: 'timeRange', typ: r('TimeRangeObject') },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  InteractionID: o(
+    [
+      { json: 'SALESFORCE', js: 'SALESFORCE', typ: u(undefined, '') },
+      { json: 'SINGLETRACK', js: 'SINGLETRACK', typ: u(undefined, '') },
+      { json: 'URI', js: 'URI', typ: u(undefined, '') },
     ],
     'any'
   ),
   Message: o(
     [
       { json: 'entities', js: 'entities', typ: u(undefined, m(r('FluffyAction'))) },
-      { json: 'text', js: 'text', typ: u(undefined, r('FluffyText')) },
+      { json: 'text', js: 'text', typ: u(undefined, r('FluffyMessageText')) },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -1526,9 +2592,8 @@ const typeMap: any = {
   ),
   FluffyAction: o(
     [
-      { json: 'app', js: 'app', typ: u(undefined, r('EntityApp')) },
-      { json: 'context', js: 'context', typ: u(undefined, r('EntityContext')) },
-      { json: 'customConfig', js: 'customConfig', typ: u(undefined, m('any')) },
+      { json: 'app', js: 'app', typ: u(undefined, r('ActionTargetApp')) },
+      { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
       { json: 'intent', js: 'intent', typ: u(undefined, '') },
       { json: 'title', js: 'title', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: 'any' },
@@ -1545,7 +2610,7 @@ const typeMap: any = {
     ],
     'any'
   ),
-  FluffyText: o(
+  FluffyMessageText: o(
     [
       { json: 'text/markdown', js: 'text/markdown', typ: u(undefined, '') },
       { json: 'text/plain', js: 'text/plain', typ: u(undefined, '') },
@@ -1573,9 +2638,9 @@ const typeMap: any = {
   ProductObject: o(
     [
       { json: 'id', js: 'id', typ: m('') },
+      { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
     ],
     'any'
   ),
@@ -1600,13 +2665,13 @@ const typeMap: any = {
   FluffyOrderDetails: o([{ json: 'product', js: 'product', typ: u(undefined, r('ProductObject')) }], 'any'),
   Organization: o(
     [
-      { json: 'id', js: 'id', typ: r('IndecentID') },
+      { json: 'id', js: 'id', typ: r('OrganizationIdentifiers') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  IndecentID: o(
+  OrganizationIdentifiers: o(
     [
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
       { json: 'LEI', js: 'LEI', typ: u(undefined, '') },
@@ -1646,9 +2711,9 @@ const typeMap: any = {
   Product: o(
     [
       { json: 'id', js: 'id', typ: m('') },
+      { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
     ],
     'any'
   ),
@@ -1692,7 +2757,7 @@ const typeMap: any = {
   TransactionResult: o(
     [
       { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
-      { json: 'status', js: 'status', typ: r('Status') },
+      { json: 'status', js: 'status', typ: r('TransactionStatus') },
       { json: 'type', js: 'type', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -1712,6 +2777,6 @@ const typeMap: any = {
     ],
     'any'
   ),
-  Style: ['bar', 'candle', 'custom', 'heatmap', 'histogram', 'line', 'mountain', 'pie', 'scatter', 'stacked-bar'],
-  Status: ['Created', 'Deleted', 'Failed', 'Updated'],
+  ChartStyle: ['bar', 'candle', 'custom', 'heatmap', 'histogram', 'line', 'mountain', 'pie', 'scatter', 'stacked-bar'],
+  TransactionStatus: ['Created', 'Deleted', 'Failed', 'Updated'],
 };

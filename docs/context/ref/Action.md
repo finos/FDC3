@@ -6,12 +6,11 @@ hide_title: true
 ---
 # `Action`
 
-A representation of an FDC3 Action (specified via a Context or Context & Intent) that can be inserted inside another object, 
-for example a chat message.
+A representation of an FDC3 Action (specified via a Context or Context & Intent) that can be inserted inside another object, for example a chat message.
 
 The action may be completed by calling `fdc3.raiseIntent()` with the specified Intent and Context, or, if only a context is specified, by calling `fdc3.raiseIntentForContext()` (which the Desktop Agent will resolve by presenting the user with a list of available Intents for the Context).
 
-Accepts an optional `app` parameter in order to specify a certain app.
+Accepts an optional `app` parameter in order to specify a specific app.
 
 ## Type
 
@@ -32,8 +31,6 @@ Accepts an optional `app` parameter in order to specify a certain app.
 | `app`             | object                                    | No       | `'myApp'`               |
 | `app.appId`       | string                                    | Yes      | `'app1'`                |
 | `app.instanceId`  | string                                    | No       | `'instance1'`           |
-
-
 
 ## Example
 
@@ -69,7 +66,9 @@ const action = {
 ## See Also
 
 Other Types
-* [Message](Message)
+
+- [Message](Message)
 
 Intents
-* [StartChat](../../intents/ref/StartChat)
+
+- [StartChat](../../intents/ref/StartChat)
