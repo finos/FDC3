@@ -13,6 +13,7 @@ The following normative documents contain provisions, which, through reference i
 - **ISO 8601-1:2019**, _Date and time — Representations for information interchange — Part 1: Basic rules_, <https://www.iso.org/standard/70907.html>
 - **JSON Schema**, <https://json-schema.org/>.
 - **OpenAPI Standard v3.0**, <https://www.openapis.org/>.
+- **quicktype**, <https://quicktype.io/>.
 - **RFC 2119**, _Keywords for use in RFCs to Indicate Requirement Levels, March 1997_, <https://datatracker.ietf.org/doc/html/rfc2119>.
 - **RFC 2782**, _A DNS RR for specifying the location of services (DNS SRV), February 2000_, <https://datatracker.ietf.org/doc/html/rfc2782>.
 - **RFC 4122**, _A Universally Unique IDentifier (UUID) URN Namespace, July 2005_, <https://datatracker.ietf.org/doc/html/rfc4122>.
