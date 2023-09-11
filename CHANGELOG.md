@@ -23,6 +23,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added an indication that applications, that can be launched to receive intents or context via a raised intent or open with context, SHOULD add their context or intent listeners via the API within 15 seconds, and that Desktop Agents MUST allow at least a 15 second timeout for them to do so, and MAY set a longer timeout  ([#987](https://github.com/finos/FDC3/pull/987))
 * Added [@experimental](https://fdc3.finos.org/docs/fdc3-compliance#experimental-features) `Order`, `OrderList`, `Product`, `Trade` & `TradeList` context types. ([#1021](https://github.com/finos/FDC3/pull/1021))
 * Added Agent Bridging as an [@experimental](https://fdc3.finos.org/docs/fdc3-compliance#experimental-features) 5th part of the FDC3 Standard. ([#968](https://github.com/finos/FDC3/pull/968))
+* Added a description of the standards use of JSON Schema to define context types and Bridging messages. ([#1020](https://github.com/finos/FDC3/pull/1020))
+* Documentation for standardized Context types was added to their JSON Schema files and TypeScript interfaces generated from them, so that they may act as a 'single source of truth' for Context definitions. ([#1020](https://github.com/finos/FDC3/pull/1020))
 
 ### Changed
 
