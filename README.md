@@ -147,13 +147,17 @@ Please refer to the FDC3 [Governance document](GOVERNANCE.md#1roles) for details
 
 Participants of FINOS standards projects should follow the FINOS Code of Conduct, which can be found at: <https://community.finos.org/docs/governance/code-of-conduct>
 
-## License
+## License & Patents
 
 - This version of the FDC3 Standard is licensed under the [Community Specification License](LICENSE).  SPDX-License-Identifier: [Community-Spec-1.0](https://spdx.org/licenses/Community-Spec-1.0). 
 
 - Reference implementations and other software contained in FDC3 repositories is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html) unless otherwise noted. SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0). 
 
 - See [Licenses in the FDC3 Charter](https://fdc3.finos.org/docs/fdc3-charter) for details of licensing for previous versions of the FDC3 Standard and [NOTICES.md](./NOTICES.md) for details of license acceptance, withdrawals and exclusions. 
+
+- See [Intellectual Property Claims in the FDC3 Charter](https://fdc3.finos.org/docs/fdc3-charter#intellectual-property-claims) for details of patents in the 1.1-present versions of FDC3.  
+
+- See [PATENTS-FDC3-1.0](PATENTS-FDC3-1.0.md) for details of patents in the 1.0 version of FDC3.
 
 ## Vulnerabilities / Security
 
