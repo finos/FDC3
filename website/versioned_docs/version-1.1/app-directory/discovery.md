@@ -28,7 +28,7 @@ In order to support the discovery of application data stored in a given director
 - AppD service host discovery implementations should support the following requirements;
   1. Discovery of the AppD location using the fully qualified application ID domain name. This would be the fqdn part of the email structure. 
   2. Discovery of the AppD location using the fully qualified application ID domain name to lookup DNS SRV records identifying the host server location and access TCP port. ([RFC2782](https://tools.ietf.org/html/rfc2782) ) 
-  3. Statically defined URI records for use within client applications directly. This is similar to #1 above, but provides explicit protocol, port and url definitions as part of the defintion. 
+  3. Statically defined URI records for use within client applications directly. This is similar to #1 above, but provides explicit protocol, port and url definitions as part of the defintion.
 
 **Examples:**
 
@@ -42,7 +42,7 @@ AppD Service distribution visual:
 
 ## Application data discovery
 
-Application data discovery shall be accessible through a unique application identifier (AppId) representing a single application represented by a nested namespace syntax using dot notation and email address construction (**name@fqdn**) defining the application identifier as the name part and AppD location as the fully qualified domain name part. The entire address should be considered the fully qualified application ID. 
+Application data discovery shall be accessible through a unique application identifier (AppId) representing a single application represented by a nested namespace syntax using dot notation and email address construction (**name@fqdn**) defining the application identifier as the name part and AppD location as the fully qualified domain name part. The entire address should be considered the fully qualified application ID.
 
 **Example:**
 
@@ -92,24 +92,24 @@ getAppData("app@sub.root")
 
 ## Service Discovery (Expanded)
 
-The following represents the three ways AppD service instances should be discovered over a given network. Again, the view is that AppD services are distributed/decoupled based on associated application namespace on a given network. This takes into account the use of the application identifiers described in previous section. A launcher is required to use a URI (e.g. "https://appd.foo.com/api/appd/app1@appd.foo.com") to query a given directory instance for data. In order to construct a URI, the host location and port of a given AppD service instance is required. This proposal focuses on the following approaches to achieve this resolution. 
+The following represents the three ways AppD service instances should be discovered over a given network. Again, the view is that AppD services are distributed/decoupled based on associated application namespace on a given network. This takes into account the use of the application identifiers described in previous section. A launcher is required to use a URI (e.g. "https://appd.foo.com/api/appd/apps/app1@appd.foo.com") to query a given directory instance for data. In order to construct a URI, the host location and port of a given AppD service instance is required. This proposal focuses on the following approaches to achieve this resolution.
 
 ### Application ID namespace syntax host resolution
 
-An application directory URI can be constructed using a fully qualified application ID (email address syntax) by using fqdn part of the ID as the host location and the name part as the application name. Given an application name "app1" with a fully qualified identifier of "app1@appd.foo.com" an application directory host location can be derived by simply extracting the fqdn "appd.foo.com" from the email syntax. The extracted fqdn "app.foo.com" may resolve to the actual host location where the application directory is running. 
+An application directory URI can be constructed using a fully qualified application ID (email address syntax) by using fqdn part of the ID as the host location and the name part as the application name. Given an application name "app1" with a fully qualified identifier of "app1@appd.foo.com" an application directory host location can be derived by simply extracting the fqdn "appd.foo.com" from the email syntax. The extracted fqdn "app.foo.com" may resolve to the actual host location where the application directory is running.
 
-A launcher can then easily construct a URI by; 
+A launcher can then easily construct a URI by;
 
-1. URI protocol is defaulted to https, but can be overridden by the launcher. 
+1. URI protocol is defaulted to https, but can be overridden by the launcher.
 2. URI hostname is the fully qualified domain of the application ID. 
 3. URI port is default https/443, but can be overridden by the launcher
-4. URI url is by default "/api/**(service)/(version)" .**  It is recommended that we identify service label as "**appd**" with version being optional. Calls that are made without version automatically default to latest "/api/appd/app1" vs "/api/appd/v1/app1" 
+4. URI url is by default "/api/**(service)/(version)/apps" .**  It is recommended that we identify service label as "**appd**" with version being optional. Calls that are made without version automatically default to latest "/api/appd/apps/app1" vs "/api/appd/v1/apps/app1" 
 
-The resulting URI to retrieve application data for "app1" would be "[https://appd.foo.com/api/appd/v1/app1@appd.foo.com](https://appd.foo.com/api/appd/v1/app1.appd.foo.com)"  
+The resulting URI to retrieve application data for "app1" would be "[https://appd.foo.com/api/appd/v1/apps/app1@appd.foo.com](https://appd.foo.com/api/appd/v1/apps/app1.appd.foo.com)"  
 
-###  Application identifiers, Shrinking the URI and AppdD defaults
+### Application identifiers, Shrinking the URI and AppdD defaults
 
-Although the concept of fully qualified application IDs are useful in resolving the actual host of the application directory, there is no requirement for an application directory to use this fully qualified application ID as the resolver for a record.  An application ID is unique to given application directory, but there is no requirement to use the fully qualified representation when querying an interface.  Taking the prior example, the fully qualified application ID "app1@appd.foo.com" is represented as "app1" within the application directory.  As a result a launcher can use a shortened URI construct "<https://appd.foo.com/api/appd/v1/app1>" to resolve the application data vs "https://appd.foo.com/api/appd/v1/app1@appd.foo.com".
+Although the concept of fully qualified application IDs are useful in resolving the actual host of the application directory, there is no requirement for an application directory to use this fully qualified application ID as the resolver for a record.  An application ID is unique to given application directory, but there is no requirement to use the fully qualified representation when querying an interface.  Taking the prior example, the fully qualified application ID "app1@appd.foo.com" is represented as "app1" within the application directory.  As a result a launcher can use a shortened URI construct "<https://appd.foo.com/api/appd/v1/apps/app1>" to resolve the application data vs "https://appd.foo.com/api/appd/v1/apps/app1@appd.foo.com".
 
 ### DNS/SRV Records
 
