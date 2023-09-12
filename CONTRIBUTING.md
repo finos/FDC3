@@ -100,7 +100,7 @@ To make review of PRs easier, please:
  
  * For code contributions, follow the existing code layout.
  
- * For documentation contributions, follow the general structure, language, and tone of the [existing docs](https://github.com/finos/FDC3/wiki).
+ * For documentation contributions, follow the general structure, language, and tone of the [existing docs](https://fdc3.finos.org).
  
  * Keep commits small and cohesive - if you have multiple contributions, please submit them as independent commits (and ideally as independent PRs too).
  
