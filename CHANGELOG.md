@@ -49,6 +49,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * An error was fixed in the appD schema where launch details sub-schemas were combined with `oneOf`, rather than `anyOf`. This causes validation errors for web or online native apps as their details elements overlap on a `url` field. ([#1034](https://github.com/finos/FDC3/pull/1034))
 * The appD `icon` and `screenshot` sub-schemas were updated to require the `src` value is set and restrict additional values, ensuring that common mistakes (such as ussing a `url` rather than `src` field are caught by the schemas when used to validate. ([#1037](https://github.com/finos/FDC3/pull/1037))
 * Linting, spell checking other corrections were applied to markdown syntax throughout the FDC3 documentation ([#1032](https://github.com/finos/FDC3/pull/1032))
+* Corrected bad example URLs in the App Directory overview/discovery page in the current and past versions as they did not agree with the paths provided in the API specification and OpenAPI schema.  ([#1060](https://github.com/finos/FDC3/pull/1060))
 
 ## [npm v2.0.3] - 2023-05-31
 
