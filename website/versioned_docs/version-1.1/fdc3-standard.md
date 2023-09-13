@@ -7,7 +7,7 @@ original_id: fdc3-standard
 **Status:** Superceded  
 _**adopted:** 1st Apr 2020_  
 _**released:** 14th Apr 2020_  
-_**superceded:** 1st Apr 2021_  
+_**superseded:** 1st Apr 2021_  
 
 ## Abstract
 FDC3 aims to provide an open standard for interoperability on the financial desktop. This includes standardized verbs to invoke actions between applications (called "intents"), a standardized data format, an OpenAPI app directory standard, and standardized API operations.
