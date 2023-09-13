@@ -30,12 +30,15 @@ To create a new version of the website, a number of NPM scripts need to be run t
     - Edit the new Standard version's abstract  to update its status and dates, e.g. *website/versioned_docs/version-2.1/fdc3-standard.md*
     - Edit the `Version` element of `themeConfig.navbar.items` in *website/docusaurus.config.js* to include the new version as the first element.
 
-4. If creating a new NPM module version at the same time, then
+4. Edit CHANGELOG.md to mark the unreleased changes as teh new version and create a new unreleased section for the next version.
+    - Note that the title of the release section usually includes a compare link for the previous version. These are based on tags - the tag needed will not exist yet, but is created in a later step. It should be fine to set it to what the tag name will be.
+
+5. If creating a new NPM module version at the same time, then
     - Return to the root of the repository (i.e. parent dir of the *website* dir) and edit *package.json*,
     - Set the `version` filed to the new standard version - but consider appending a beta label, e.g.: `"version": "2.1.0-beta.1",`
     - The new NPM module will be built and submitted to NPM via a Github action automatically when this PR is merged.
 
-5. Test you changes locally by running the site:
+6. Test you changes locally by running the site:
 
     ```bash
     cd website
@@ -43,6 +46,9 @@ To create a new version of the website, a number of NPM scripts need to be run t
     npm run start
     ```
 
-6. Create a PR and send out details for other maintainers to review and test.
+7. Create a PR and send out details for other maintainers to review and test.
 
-7. Merge the PR - website and NPM module will be deployed automatically.
+8. Merge the PR - website and NPM module will be deployed automatically.
+
+9. Goto <https://github.com/finos/FDC3/releases> and create a new release and tag for the new version.
+    - Copy the change log into the release description.
