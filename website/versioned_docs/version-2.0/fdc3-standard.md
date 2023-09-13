@@ -7,7 +7,7 @@ original_id: fdc3-standard
 **Status:** Superceded  
 _**adopted:** 1st July 2022_  
 _**released:** 22nd August 2022_  
-_**superseded:** 21st August 2023_  
+_**superseded:** 31st August 2023_  
 
 ## Abstract
 
