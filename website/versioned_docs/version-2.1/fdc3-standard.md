@@ -1,12 +1,12 @@
 ---
 id: fdc3-standard
-title: FDC3 2.1 (pre-draft)
+title: FDC3 2.1
 sidebar_label: Abstract
----
+--- 
 
-**Status:** pre-draft  
-_**adopted:** ..._  
-_**released:** ..._
+**Status:** Current
+_**adopted:** 31st August 2023_  
+_**released:** 15th September 2023_
 
 ## Abstract
 

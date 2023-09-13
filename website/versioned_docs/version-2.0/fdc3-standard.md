@@ -4,9 +4,10 @@ sidebar_label: Abstract
 original_id: fdc3-standard
 ---
 
-**Status:** Current  
+**Status:** Superceded  
 _**adopted:** 1st July 2022_  
-_**released:** 22nd August 2022_  
+_**released:** 22nd August 2022_ 
+_**superceded:** 21st August 2023_  
 
 ## Abstract
 
