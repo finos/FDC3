@@ -3,53 +3,118 @@
   "$id": "https://fdc3.finos.org/schemas/2.1/context/message.schema.json",
   "type": "object",
   "title": "Message",
-  "allOf": [{ "$ref": "context.schema.json#" }],
-  "properties": {
-    "type": { "const": "fdc3.message" },
-    "text": {
+  "description": "A chat message to be sent through an instant messaging application. Can contain one or several text bodies (organized by mime-type, plaintext or markdown), as well as attached entities (either arbitrary file attachments or FDC3 actions to be embedded in the message). To be put inside a ChatInitSettings object.",
+  "allOf": [
+    {
       "type": "object",
       "properties": {
-        "text/plain": {
-          "type": "string"
+        "type": {
+          "const": "fdc3.message"
         },
-        "text/markdown": {
-          "type": "string"
-        }
-      }
-    },
-    "entities": {
-      "type": "object",
-      "additionalProperties": {
-        "anyOf": [
-          {
-            "$ref": "action.schema.json#"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "type": {
-                "const": "fdc3.entity.fileAttachment"
+        "text": {
+          "type": "object",
+          "title": "Message text",
+          "description": "A map of string mime-type to string content",
+          "properties": {
+            "text/plain": {
+              "type": "string",
+              "title": "Plain text",
+              "description": "Plain text encoded content."
+            },
+            "text/markdown": {
+              "title": "Markdown text",
+              "description": "Markdown encoded content",
+              "type": "string"
+            }
+          }
+        },
+        "entities": {
+          "type": "object",
+          "title": "Message entities",
+          "description": "A map of string IDs to entities that should be attached to the message, such as an action to perform, a file attachment, or other FDC3 context object.",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "action.schema.json#"
               },
-              "data": {
+              {
                 "type": "object",
+                "title": "File attachment",
+                "description": "A File attachment encoded in the form of a data URI",
                 "properties": {
-                  "name": {
-                    "type": "string"
+                  "type": {
+                    "const": "fdc3.entity.fileAttachment"
                   },
-                  "dataUri": {
-                    "type": "string"
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "title": "File name",
+                        "description": "The name of the attached file"
+                      },
+                      "dataUri": {
+                        "type": "string",
+                        "format": "uri",
+                        "title": "",
+                        "description": "A data URI encoding the content of the file to be attached"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "dataUri"
+                    ]
                   }
                 },
                 "required": [
-                  "name",
-                  "dataUri"
+                  "type",
+                  "data"
                 ]
               }
-            },
-            "required": ["type", "data"]
+            ]
           }
-        ]
+        }
+      }
+    },
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
+  ],
+  "examples": [
+    {
+      "type": "fdc3.message",
+      "text": {
+        "text/plain": "Hey all, can we discuss the issue together? I attached a screenshot and a link to the current exchange rate"
+      },
+      "entities": {
+        "picture1": {
+          "type": "fdc3.fileAttachment",
+          "data": {
+            "name": "myImage.png",
+            "dataUri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII"
+          }
+        },
+        "eurusd_action": {
+          "type": "fdc3.action",
+          "title": "Click to view Chart",
+          "intent": "ViewChart",
+          "context": {
+            "type": "fdc3.chart",
+            "instruments": [
+              {
+                "type": "fdc3.instrument",
+                "id": {
+                  "ticker": "EURUSD"
+                }
+              }
+            ],
+            "range": {
+              "type": "fdc3.dateRange",
+              "starttime": "2020-09-01T08:00:00.000Z",
+              "endtime": "2020-10-31T08:00:00.000Z"
+            },
+            "style": "candle"
+          }
+        }
       }
     }
-  }
+  ]
 }
