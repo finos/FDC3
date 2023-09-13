@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.1/context/chatMessage.schema.json",
+  "type": "object",
+  "title": "ChatMessage",
+  "allOf": [{ "$ref": "context.schema.json#" }],
+  "properties": {
+    "type": { "const": "fdc3.chat.message" },
+    "chatRoom": { "$ref": "chatRoom.schema.json#" },
+    "message": { "$ref": "message.schema.json#" }
+  },
+  "required": ["type", "chatRoom", "message"]
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.1/context/context.schema.json",
+  "type": "object",
+  "title": "Context",
+  "properties": {
+    "type": { "type": "string" },
+    "name": { "type": "string" },
+    "id": {
+      "type": "object",
+      "unevaluatedProperties": { "type": "string" }
+    }
+  },
+  "additionalItems": true,
+  "required": ["type"]
+}

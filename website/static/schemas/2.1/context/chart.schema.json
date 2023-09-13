@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.1/context/chart.schema.json",
+  "type": "object",
+  "title": "Chart",
+  "allOf": [{ "$ref": "context.schema.json#" }],
+  "properties": {
+    "type": { "const": "fdc3.chart" },
+    "instruments": {
+      "type": "array",
+      "items": {
+        "$ref": "instrument.schema.json#"
+      }
+    },
+    "range": {
+      "$ref": "timerange.schema.json#"
+    },
+    "style": {
+      "type": "string",
+      "enum": [	"line", "bar", "stacked-bar", "mountain", "candle", "pie", "scatter", "histogram", "heatmap", "custom"]
+    },
+    "otherConfig": {
+      "type": "array",
+      "items": {
+        "$ref": "context.schema.json#"
+      }
+    }
+  },
+  "required": ["instruments"]
+}

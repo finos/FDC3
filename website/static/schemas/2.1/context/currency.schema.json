@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.1/context/currency.schema.json",
+  "type": "object",
+  "title": "Currency",
+  "allOf": [{ "$ref": "context.schema.json#" }],
+  "properties": {
+    "type": { "const": "fdc3.currency" },
+    "name": { "type": "string" },
+    "id": {
+      "type": "object",
+      "properties": {
+        "CURRENCY_ISOCODE": { "type": "string", "pattern": "^[A-Z]{3}$"}
+      }
+    }
+    
+  },
+  "required": ["id"]
+}
