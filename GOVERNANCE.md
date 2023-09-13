@@ -37,7 +37,7 @@ The Working Group may form one or more "Discussion Groups" to organize collabora
 
 - [View the FDC3 Editors GitHub Team](https://github.com/orgs/finos/teams/fdc3-editors)
 
-#### How do you become an Editor or Maintainer?
+### How do you become an Editor or Maintainer?
 
 Once you are an enrolled participant in FDC3, you can apply to become an **editor** or **maintainer** by contacting the existing FDC3 maintainers at [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org) and then seeking the approval of the FDC3 Standards Working Group. Generally, the maintainers will look for both a history of contribution to FDC3 and a commitment to investing sufficient time in the role from any prospective candidates before proposing them to the Standards Working Group for approval. 
 
