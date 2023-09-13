@@ -31,7 +31,7 @@ The Working Group may form one or more "Discussion Groups" to organize collabora
 
 - [View the FDC3 Maintainers GitHub Team](https://github.com/orgs/finos/teams/fdc3-maintainers)
 
-### 1.5. Editors
+### 1.4. Editors
 
 “Editors” are responsible for ensuring that the contents of the document accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines. The Working Group will designate one or more Editor(s). The Working Group may select a new Editor upon Approval of the Working Group Participants.
 
