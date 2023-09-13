@@ -25,19 +25,17 @@ Upon enrollment as an [FDC3 voting participant](https://github.com/orgs/finos/te
 
 The Working Group may form one or more "Discussion Groups" to organize collaboration around a particular aspect of a specification. Discussion Groups are for discussion only.  Approval of all portions of a specification is subject to the consensus-based decision-making process of the FDC3 Standard Working Group.
 
-### 1.3.	 Maintainers
+### 1.3. Maintainers & Editors
 
 “Maintainers” are responsible for organizing activities around developing, maintaining, and updating the specification(s) developed by the Working Group.  Maintainers are also responsible for determining consensus and coordinating appeals.  The Working Group will designate one or more Maintainer(s). The Working Group may select a new or additional Maintainer(s) upon Approval of the Working Group Participants.  
 
 - [View the FDC3 Maintainers GitHub Team](https://github.com/orgs/finos/teams/fdc3-maintainers)
 
-### 1.4. Editors
-
 “Editors” are responsible for ensuring that the contents of the document accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines. The Working Group will designate one or more Editor(s). The Working Group may select a new Editor upon Approval of the Working Group Participants.
 
 - [View the FDC3 Editors GitHub Team](https://github.com/orgs/finos/teams/fdc3-editors)
 
-### 1.5 How do you become an Editor or Maintainer?
+#### How do you become an Editor or Maintainer?
 
 Once you are an enrolled participant in FDC3, you can apply to become an **editor** or **maintainer** by contacting the existing FDC3 maintainers at [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org) and then seeking the approval of the FDC3 Standards Working Group. Generally, the maintainers will look for both a history of contribution to FDC3 and a commitment to investing sufficient time in the role from any prospective candidates before proposing them to the Standards Working Group for approval. 
 
