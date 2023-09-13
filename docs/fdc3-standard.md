@@ -1,6 +1,6 @@
 ---
 id: fdc3-standard
-title: FDC3 2.1 (pre-draft)
+title: FDC3 2.2 (pre-draft)
 sidebar_label: Abstract
 ---
 

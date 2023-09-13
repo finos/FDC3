@@ -91,9 +91,14 @@ module.exports={
           "position": "right",
           "items": [
             {
-              "label": "2.0",
+              "label": "2.1",
               "to": "/docs/fdc3-intro",
-              "activeBaseRegex": "docs/(?!1.0|1.1|1.2|2.0|next)"
+              "activeBaseRegex": "docs/(?!1.0|1.1|1.2|2.0|2.1|next)"
+            },
+            {
+              "label": "2.0",
+              "to": "/docs/2.0/fdc3-intro",
+              "activeBaseRegex": "docs/(?!1.0|1.1|1.2|2.0|2.1|next)"
             },
             {
               "label": "1.2",
