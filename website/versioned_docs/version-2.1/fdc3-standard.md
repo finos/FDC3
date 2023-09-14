@@ -6,7 +6,7 @@ sidebar_label: Abstract
 
 **Status:** Current  
 _**adopted:** 31st August 2023_  
-_**released:** 15th September 2023_
+_**released:** 14th September 2023_
 
 ## Abstract
 
