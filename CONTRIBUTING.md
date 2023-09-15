@@ -108,7 +108,7 @@ To make review of PRs easier, please:
  
  * Minimise non-functional changes (e.g. whitespace shenanigans).
  
- * Ensure all new files include a header comment block containing the [Apache License v2.0 and your copyright information](http://www.apache.org/licenses/LICENSE-2.0#apply).
+ * Ensure all new source files include a header comment block containing the [Apache License v2.0 and your copyright information](http://www.apache.org/licenses/LICENSE-2.0#apply).
  
  * If necessary (e.g. due to 3rd party dependency licensing requirements), update the [NOTICE file](https://github.com/finos/FDC3/blob/master/NOTICE) with any new attribution or other notices
 
