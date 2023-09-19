@@ -43,11 +43,12 @@ To be successful, the maintenance and evolution of this Standard needs to have a
 
 ## Licensing
 
-Version 1.0 of the FDC3 specification is licensed under the [FDC3 1.0 Final Specification License](https://github.com/finos/FDC3/blob/17892008c26a73ff1fd9f6e40ceb8c8bfd58c610/PATENTS-FDC3-1.0.md).
+ - Version 1.0 of the FDC3 specification is licensed under the [FDC3 1.0 Final Specification License](https://github.com/finos/FDC3/blob/17892008c26a73ff1fd9f6e40ceb8c8bfd58c610/PATENTS-FDC3-1.0.md).
 
-Subsequent FDC3 specifications and draft specifications are subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/website/static/governance-docs/IP-Policy.pdf)), which authorizes implementation of FDC3 specifications without charge, on a [RAND basis](https://en.wikipedia.org/wiki/Reasonable_and_non-discriminatory_licensing), subject to the terms of the policy. For details of the IP commitments made by contributors to FDC3, please refer to the policy.
-
-Reference implementations and other software contained in FDC3 repositories is licensed under the [Apache License, Version 2.0](https://github.com/finos/FDC3/blob/17892008c26a73ff1fd9f6e40ceb8c8bfd58c610/LICENSE) unless otherwise noted. SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0).
+ - Versions 1.1 - 2.1 of the FDC3 specification are subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/website/static/governance-docs/IP-Policy.pdf), which authorizes implementation of FDC3 specifications without charge, on a RAND basis, subject to the terms of the policy. For details of the IP commitments made by contributors to FDC3, please refer to the policy.
+ 
+ - Versions of the FDC3 specification following 2.1 and subsequent draft specifications are licensed under the [Community Specification License 1.0](https://github.com/finos/FDC3/blob/45ca765e5ff9a44a1fa5437eb70cf876bf4898aa/LICENSE)
+ - All code in the FDC3 specification (including JSON Schema) are licensed under [Apache 2.0](https://github.com/finos/FDC3/blob/master/LICENSE)
 
 ### Intellectual Property Claims
 

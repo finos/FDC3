@@ -1,18 +1,45 @@
 # FDC3 Governance Policy
 
-This document provides the governance policy for the development of the FDC3 specification and related materials in the FDC3 Standard Working Group (the “Working Group”).
+This document provides the governance policy for the development of the FDC3 specification and related materials in the FDC3 Standard (the “Working Group”).
 
 ## 1.	Roles.
 
-Working Group contributors include the following roles:
+The Working Group includes the following roles:
 
-**1.1.	Maintainer.** “Maintainers” are responsible for organizing activities around developing, maintaining, and updating the specification(s) developed by the Working Group.  Maintainers are also responsible for determining consensus and coordinating appeals.  The Working Group will designate one or more Maintainer(s). The Working Group may select a new or additional Maintainer(s) upon Approval of the Working Group Participants.  
+### 1.1. Participants
 
-**1.2.	Editor.**  “Editors” are responsible for ensuring that the contents of the document accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines. The Working Group will designate one or more Editor(s). The Working Group may select a new Editor upon Approval of the Working Group Participants.
+“Participants” are those that have made Contributions to the Working Group subject to the [Community Specification Contribution Policy 1.0](https://github.com/finos/standards-project-blueprint/blob/master/governance-documents/6._Contributing.md).  The [FDC3 Standard Working Group](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) has the specific purpose of defining and releasing subsequent updates to the Standard. In practice, that means people that attend and contribute to meetings, raise issues, pull requests (to submit patches to the Standard) and reviews.
 
-**1.3.	Participants.**  “Participants” are those that have made Contributions to the Working Group subject to the [FINOS IP Policy](https://github.com/finos/community/blob/master/website/static/governance-docs/IP-Policy.pdf).
+#### How do you become a Participant?
 
-**1.4. Discussion Groups.** The Working Group may form one or more "Discussion Groups" to organize collaboration around a particular aspect of a specification. Discussion Groups are for discussion only -- Approval of all portions of a specification is subject to the consensus-based decision making process.
+Becoming an FDC3 Participant is as easy as attending a meeting and/or raising issues for changes you'd like see in the Standard, commenting on issues others have raised or even asking questions (which can often result in the clarification of the Standard's documentation to help others with the same questions in future).
+
+#### Register to vote
+Participants may register to vote on changes to the FDC3 Standard (see [Section 2](#2decision-making) below). To do so use this link: [fdc3-participants+subscribe@finos.org](mailto:fdc3-participants+subscribe@finos.org?cc=fdc3-pmc%40finos.org&subject=Please%20enroll%20me%20as%20an%20FDC3%20Standards%20Participant&body=HI%2C%20my%20name%20is%20%3CFirstName%20LastName%3E%20and%20I'd%20like%20to%20formally%20participate%20to%20the%20FDC3%20standard%20process.%20I%20plan%20to%20contribute%20as%20%3Cindividual%7Con%20behalf%20of%20organizationName%3E%20and%20I%20have%20reviewed%20the%20policies%20described%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2FFDC3%2Fblob%2Fmaster%2FGOVERNANCE.md%20and%20read%20the%20license%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2FFDC3%2Fblob%2Fmaster%2FLICENSE%20.%20Thank%20you!) to send a templated email email to join the enrolled voting participants group.
+
+Upon enrollment as an [FDC3 voting participant](https://github.com/orgs/finos/teams/fdc3-participants), you will be invited to join the [FINOS GitHub organization](https://github.com/orgs/finos/people) and the [fdc3-participants](https://github.com/orgs/finos/teams/fdc3-participants) GitHub team.
+
+- [View the FDC3 Participants GitHub Team](https://github.com/orgs/finos/teams/fdc3-participants)
+
+### 1.2. Discussion Groups
+
+The Working Group may form one or more "Discussion Groups" to organize collaboration around a particular aspect of a specification. Discussion Groups are for discussion only.  Approval of all portions of a specification is subject to the consensus-based decision-making process of the FDC3 Standard Working Group.
+
+### 1.3. Maintainers & Editors
+
+“Maintainers” are responsible for organizing activities around developing, maintaining, and updating the specification(s) developed by the Working Group.  Maintainers are also responsible for determining consensus and coordinating appeals.  The Working Group will designate one or more Maintainer(s). The Working Group may select a new or additional Maintainer(s) upon Approval of the Working Group Participants.  
+
+- [View the FDC3 Maintainers GitHub Team](https://github.com/orgs/finos/teams/fdc3-maintainers)
+
+“Editors” are responsible for ensuring that the contents of the document accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines. The Working Group will designate one or more Editor(s). The Working Group may select a new Editor upon Approval of the Working Group Participants.
+
+- [View the FDC3 Editors GitHub Team](https://github.com/orgs/finos/teams/fdc3-editors)
+
+#### How do you become an Editor or Maintainer?
+
+Once you are an enrolled participant in FDC3, you can apply to become an **editor** or **maintainer** by contacting the existing FDC3 maintainers at [fdc3-maintainers@finos.org](mailto:fdc3-maintainers@finos.org) and then seeking the approval of the FDC3 Standards Working Group. Generally, the maintainers will look for both a history of contribution to FDC3 and a commitment to investing sufficient time in the role from any prospective candidates before proposing them to the Standards Working Group for approval. 
+
+If you are new to FDC3, but willing to make the investment of time, the maintainers can work with you to build up a history of contribution.
 
 ## 2.	Decision Making.
 
