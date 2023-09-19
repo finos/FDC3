@@ -1,11 +1,10 @@
-# FDC3 Standard Contribution Policy 1.0
+# Contributing to FDC3
 
-This document provides the contribution policy for the FDC3 Standard and is based on the [Community Specification Contribution Policy 1.0](https://github.com/finos/standards-project-blueprint/blob/master/governance-documents/6._Contributing.md).
+This document provides the contribution policy for the FDC3 Standard (the [Working Group](GOVERNANCE.md)) and is based on the [Community Specification Contribution Policy 1.0](https://github.com/finos/standards-project-blueprint/blob/master/governance-documents/6._Contributing.md).
 
-_NOTE:_ Commits and pull requests to FINOS repositories will only be accepted from those contributors with an active, executed Individual Contributor License Agreement (ICLA) with FINOS, _OR_ who are covered under an existing and active Corporate Contribution License Agreement (CCLA) executed with FINOS. Commits from individuals not covered under an ICLA or CCLA will be flagged and blocked by the [Linux Foundation `EasyCLA` tool](https://easycla.lfx.linuxfoundation.org/#/). Please note that some CCLAs require individuals/employees to be explicitly named on the CCLA.
+_NOTE:_ Commits and pull requests to FINOS repositories will only be accepted from those participants with an active, executed Individual Contributor License Agreement (ICLA) with FINOS, _OR_ who are covered under an existing and active Corporate Contribution License Agreement (CCLA) executed with FINOS. Commits from individuals not covered under an ICLA or CCLA will be flagged and blocked by the [Linux Foundation `EasyCLA` tool](https://easycla.lfx.linuxfoundation.org/#/). Please note that some CCLAs require individuals/employees to be explicitly named on the CCLA.
 
 *Need an ICLA? Unsure if you are covered under an existing CCLA? Email [help@finos.org](mailto:help@finos.org).*
-
 
 ## 1.	Contribution Guidelines.
 
@@ -25,9 +24,26 @@ This Working Group accepts contributions via pull requests. The following sectio
 
 ## 2.	Issue Lifecycle.
 
-The issue lifecycle is mainly driven by the Maintainer. All issue types follow the same general lifecycle. Differences are noted below.
+The issue lifecycle is mainly driven by the Maintainer.  All issue types follow the same general lifecycle. Differences are noted below.
+
+**Prerequisites**
+
+ * Have you [searched for duplicates](https://github.com/finos/FDC3/issues?utf8=%E2%9C%93&q=)?  A simple search for exception error messages or a summary of the unexpected behaviour should suffice.
+ * Are you using the latest version of the Standard?
+   * Changes that have been merged but not yet released can be found in the [next](https://fdc3.finos.org/docs/next/fdc3-standard) version of the website and details found in the [CHANGELOG](https://github.com/finos/FDC3/blob/master/CHANGELOG.md)
+ * Are you sure this is a bug or missing capability?
 
 **2.1.	Issue Creation.**
+
+ * Create your issue [here](https://github.com/finos/FDC3/issues/new).
+ * New issues contain two templates in the description: bug report and enhancement request. Please pick the most appropriate for your issue, **then delete the other**.
+
+ * Please also tag the new issue with either "Bug" or "Enhancement".
+
+ * Please use [Markdown formatting](https://help.github.com/categories/writing-on-github/)
+liberally to assist in readability.
+ 
+ * [Code fences](https://help.github.com/articles/creating-and-highlighting-code-blocks/) for exception stack traces and log entries, for example, massively improve readability.
 
 **2.2.	Triage.**
 
@@ -73,9 +89,28 @@ The next section contains more information on the workflow followed for Pull Req
 - We welcome pull requests that are currently in progress. They are a great way to keep track of important work that is in-flight, but useful for others to see. If a pull request is a work in progress, it should be prefaced with "WIP: [title]". Once the pull request is ready for review, remove "WIP" from the title and label.
 
 - It is preferred, but not required, to have a pull request tied to a specific issue. Prefix your PR's description with `resolves #<issue number>` to link it to your issue.
-  - There can be circumstances where if it is a quick fix then an issue might be overkill. The details provided in the pull request description would suffice in this case.
+
+- There can be circumstances where if it is a quick fix then an issue might be overkill. The details provided in the pull request description would suffice in this case.
 
 - Ensure that pull requests include a proposed update to the [FDC3 Changelog (CHANGELOG.md)](CHANGELOG.md)
+
+To make review of PRs easier, please:
+
+ * Please make sure your PRs will merge cleanly - PRs that don't are unlikely to be accepted.
+ 
+ * For code contributions, follow the existing code layout.
+ 
+ * For documentation contributions, follow the general structure, language, and tone of the [existing docs](https://fdc3.finos.org).
+ 
+ * Keep commits small and cohesive - if you have multiple contributions, please submit them as independent commits (and ideally as independent PRs too).
+ 
+ * Reference issue #s if your PR has anything to do with an issue (even if it doesn't address it).
+ 
+ * Minimise non-functional changes (e.g. whitespace shenanigans).
+ 
+ * Ensure all new source files include a header comment block containing the [Apache License v2.0 and your copyright information](http://www.apache.org/licenses/LICENSE-2.0#apply).
+ 
+ * If necessary (e.g. due to 3rd party dependency licensing requirements), update the [NOTICE file](https://github.com/finos/FDC3/blob/master/NOTICE) with any new attribution or other notices
 
 **4.2.	Triage**
 
@@ -109,3 +144,5 @@ The next section contains more information on the workflow followed for Pull Req
 
 ## 5. Adoption of Contributions.
 Contributions merged into the master branch of the FDC3 repository will form part of the next pre-draft of the FDC3 Standard (as defined by the [FDC3 Governance document](./GOVERNANCE.md)), which must be approved by the Standard Working Group voting participants before it is accepted as a draft and subsequently released as the next version of the Standard.
+
+
