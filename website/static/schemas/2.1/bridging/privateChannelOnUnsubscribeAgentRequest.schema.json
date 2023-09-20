@@ -25,7 +25,7 @@
           "title": "PrivateChannelOnUnsubscribe Request Payload",
           "type": "object",
           "properties": {
-            "channel": {
+            "channelId": {
               "type": "string"
             },
             "contextType": {
@@ -33,7 +33,7 @@
             }
           },
           "additionalProperties": false,
-          "required": ["channel", "contextType"]
+          "required": ["channelId", "contextType"]
         },
         "meta": {
           "title": "PrivateChannelOnUnsubscribe Request Metadata",

@@ -25,7 +25,7 @@
           "title": "PrivateChannelBroadcast Request Payload",
           "type": "object",
           "properties": {
-            "channel": {
+            "channelId": {
               "type": "string",
               "title": "Channel Id",
               "description": "The Id of the PrivateChannel that the broadcast was sent on"
@@ -37,7 +37,7 @@
             }
           },
           "additionalProperties": false,
-          "required": ["channel", "context"]
+          "required": ["channelId", "context"]
         },
         "meta": {
           "title": "PrivateChannelBroadcast Request Metadata",

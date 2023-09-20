@@ -50,7 +50,7 @@ sequenceDiagram
 {
     "type": "PrivateChannel.eventListenerAdded",
     "payload": {
-        "channel": "private-channel-ABC123",
+        "channelId": "private-channel-ABC123",
         "listenerType": "onAddContextListener"
     },
     "meta": {

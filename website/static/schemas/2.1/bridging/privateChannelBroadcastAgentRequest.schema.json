@@ -37,7 +37,7 @@
             }
           },
           "additionalProperties": false,
-          "required": ["channel", "context"]
+          "required": ["channelId", "context"]
         },
         "meta": {
           "title": "PrivateChannelBroadcast Request Metadata",
