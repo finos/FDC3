@@ -637,7 +637,7 @@ export interface SourceObject {
  */
 export interface BroadcastAgentRequestPayload {
   /**
-   * The Id of the PrivateChannel that the broadcast was sent on
+   * The Id of the Channel that the broadcast was sent on
    */
   channelId: string;
   /**
@@ -808,7 +808,7 @@ export interface MetaSource {
  */
 export interface BroadcastBridgeRequestPayload {
   /**
-   * The Id of the PrivateChannel that the broadcast was sent on
+   * The Id of the Channel that the broadcast was sent on
    */
   channelId: string;
   /**
@@ -2885,7 +2885,7 @@ export interface PrivateChannelBroadcastAgentRequestPayload {
   /**
    * The Id of the PrivateChannel that the broadcast was sent on
    */
-  channel: string;
+  channelId: string;
   /**
    * The context object that was the payload of a broadcast message.
    */
@@ -2937,7 +2937,7 @@ export interface PrivateChannelBroadcastBridgeRequestPayload {
   /**
    * The Id of the PrivateChannel that the broadcast was sent on
    */
-  channel: string;
+  channelId: string;
   /**
    * The context object that was the payload of a broadcast message.
    */
@@ -2985,7 +2985,7 @@ export interface PrivateChannelEventListenerAddedAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelEventListenerAddedAgentRequestPayload {
-  channel: string;
+  channelId: string;
   listenerType: Empty;
 }
 
@@ -3037,7 +3037,7 @@ export interface PrivateChannelEventListenerAddedBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelEventListenerAddedBridgeRequestPayload {
-  channel: string;
+  channelId: string;
   listenerType: Empty;
 }
 
@@ -3082,7 +3082,7 @@ export interface PrivateChannelEventListenerRemovedAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelEventListenerRemovedAgentRequestPayload {
-  channel: string;
+  channelId: string;
   listenerType: Empty;
 }
 
@@ -3128,7 +3128,7 @@ export interface PrivateChannelEventListenerRemovedBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelEventListenerRemovedBridgeRequestPayload {
-  channel: string;
+  channelId: string;
   listenerType: Empty;
 }
 
@@ -3173,7 +3173,7 @@ export interface PrivateChannelOnAddContextListenerAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelOnAddContextListenerAgentRequestPayload {
-  channel: string;
+  channelId: string;
   contextType: string;
 }
 
@@ -3219,7 +3219,7 @@ export interface PrivateChannelOnAddContextListenerBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelOnAddContextListenerBridgeRequestPayload {
-  channel: string;
+  channelId: string;
   contextType: string;
 }
 
@@ -3264,7 +3264,7 @@ export interface PrivateChannelOnDisconnectAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelOnDisconnectAgentRequestPayload {
-  channel: string;
+  channelId: string;
 }
 
 /**
@@ -3309,7 +3309,7 @@ export interface PrivateChannelOnDisconnectBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelOnDisconnectBridgeRequestPayload {
-  channel: string;
+  channelId: string;
 }
 
 /**
@@ -3353,7 +3353,7 @@ export interface PrivateChannelOnUnsubscribeAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelOnUnsubscribeAgentRequestPayload {
-  channel: string;
+  channelId: string;
   contextType: string;
 }
 
@@ -3399,7 +3399,7 @@ export interface ERequestMetadata {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelOnUnsubscribeBridgeRequestPayload {
-  channel: string;
+  channelId: string;
   contextType: string;
 }
 
@@ -5745,7 +5745,7 @@ const typeMap: any = {
   ),
   PrivateChannelBroadcastAgentRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'context', js: 'context', typ: r('ContextElement') },
     ],
     false
@@ -5769,7 +5769,7 @@ const typeMap: any = {
   ),
   PrivateChannelBroadcastBridgeRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'context', js: 'context', typ: r('ContextElement') },
     ],
     false
@@ -5793,7 +5793,7 @@ const typeMap: any = {
   ),
   PrivateChannelEventListenerAddedAgentRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'listenerType', js: 'listenerType', typ: r('Empty') },
     ],
     false
@@ -5817,7 +5817,7 @@ const typeMap: any = {
   ),
   PrivateChannelEventListenerAddedBridgeRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'listenerType', js: 'listenerType', typ: r('Empty') },
     ],
     false
@@ -5841,7 +5841,7 @@ const typeMap: any = {
   ),
   PrivateChannelEventListenerRemovedAgentRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'listenerType', js: 'listenerType', typ: r('Empty') },
     ],
     false
@@ -5865,7 +5865,7 @@ const typeMap: any = {
   ),
   PrivateChannelEventListenerRemovedBridgeRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'listenerType', js: 'listenerType', typ: r('Empty') },
     ],
     false
@@ -5889,7 +5889,7 @@ const typeMap: any = {
   ),
   PrivateChannelOnAddContextListenerAgentRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'contextType', js: 'contextType', typ: '' },
     ],
     false
@@ -5913,7 +5913,7 @@ const typeMap: any = {
   ),
   PrivateChannelOnAddContextListenerBridgeRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'contextType', js: 'contextType', typ: '' },
     ],
     false
@@ -5935,7 +5935,7 @@ const typeMap: any = {
     ],
     false
   ),
-  PrivateChannelOnDisconnectAgentRequestPayload: o([{ json: 'channel', js: 'channel', typ: '' }], false),
+  PrivateChannelOnDisconnectAgentRequestPayload: o([{ json: 'channelId', js: 'channelId', typ: '' }], false),
   PrivateChannelOnDisconnectBridgeRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelOnDisconnectBridgeRequestMeta') },
@@ -5953,7 +5953,7 @@ const typeMap: any = {
     ],
     false
   ),
-  PrivateChannelOnDisconnectBridgeRequestPayload: o([{ json: 'channel', js: 'channel', typ: '' }], false),
+  PrivateChannelOnDisconnectBridgeRequestPayload: o([{ json: 'channelId', js: 'channelId', typ: '' }], false),
   PrivateChannelOnUnsubscribeAgentRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelOnUnsubscribeAgentRequestMeta') },
@@ -5973,7 +5973,7 @@ const typeMap: any = {
   ),
   PrivateChannelOnUnsubscribeAgentRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'contextType', js: 'contextType', typ: '' },
     ],
     false
@@ -5997,7 +5997,7 @@ const typeMap: any = {
   ),
   PrivateChannelOnUnsubscribeBridgeRequestPayload: o(
     [
-      { json: 'channel', js: 'channel', typ: '' },
+      { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'contextType', js: 'contextType', typ: '' },
     ],
     false

@@ -48,7 +48,7 @@ sequenceDiagram
 {
     "type": "PrivateChannel.onAddContextListener",
     "payload": {
-        "channel": "private-channel-ABC123",
+        "channelId": "private-channel-ABC123",
         "contextType": "fdc3.instrument"
     },
     "meta": {

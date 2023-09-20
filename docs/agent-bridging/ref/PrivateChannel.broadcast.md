@@ -69,7 +69,7 @@ Hence, the broadcast message should be repeated once for each subscriber, and mo
 {
     "type": "PrivateChannel.broadcast", //modified type for PrivateChannel broadcasts
     "payload": {
-        "channel": "private-channel-ABC123",
+        "channelId": "private-channel-ABC123",
         "context": { /*contextObj*/}
     },
     "meta": {

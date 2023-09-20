@@ -25,12 +25,12 @@
           "title": "PrivateChannelOnDisconnect Request Payload",
           "type": "object",
           "properties": {
-            "channel": {
+            "channelId": {
               "type": "string"
             }
           },
           "additionalProperties": false,
-          "required": ["channel"]
+          "required": ["channelId"]
         },
         "meta": {
           "title": "PrivateChannelOnDisconnect Request Metadata",
