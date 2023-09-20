@@ -2885,7 +2885,7 @@ export interface PrivateChannelBroadcastAgentRequestPayload {
   /**
    * The Id of the PrivateChannel that the broadcast was sent on
    */
-  channelId: string;
+  channel: string;
   /**
    * The context object that was the payload of a broadcast message.
    */
@@ -2937,7 +2937,7 @@ export interface PrivateChannelBroadcastBridgeRequestPayload {
   /**
    * The Id of the PrivateChannel that the broadcast was sent on
    */
-  channelId: string;
+  channel: string;
   /**
    * The context object that was the payload of a broadcast message.
    */
@@ -2986,7 +2986,13 @@ export interface PrivateChannelEventListenerAddedAgentRequestMeta {
  */
 export interface PrivateChannelEventListenerAddedAgentRequestPayload {
   channel: string;
-  context: string;
+  listenerType: Empty;
+}
+
+export enum Empty {
+  OnAddContextListener = 'onAddContextListener',
+  OnDisconnect = 'onDisconnect',
+  OnUnsubscribe = 'onUnsubscribe',
 }
 
 /**
@@ -3032,7 +3038,7 @@ export interface PrivateChannelEventListenerAddedBridgeRequestMeta {
  */
 export interface PrivateChannelEventListenerAddedBridgeRequestPayload {
   channel: string;
-  context: string;
+  listenerType: Empty;
 }
 
 /**
@@ -3077,7 +3083,7 @@ export interface PrivateChannelEventListenerRemovedAgentRequestMeta {
  */
 export interface PrivateChannelEventListenerRemovedAgentRequestPayload {
   channel: string;
-  listenerType: string;
+  listenerType: Empty;
 }
 
 /**
@@ -3123,7 +3129,7 @@ export interface PrivateChannelEventListenerRemovedBridgeRequestMeta {
  */
 export interface PrivateChannelEventListenerRemovedBridgeRequestPayload {
   channel: string;
-  listenerType: string;
+  listenerType: Empty;
 }
 
 /**
@@ -5739,7 +5745,7 @@ const typeMap: any = {
   ),
   PrivateChannelBroadcastAgentRequestPayload: o(
     [
-      { json: 'channelId', js: 'channelId', typ: '' },
+      { json: 'channel', js: 'channel', typ: '' },
       { json: 'context', js: 'context', typ: r('ContextElement') },
     ],
     false
@@ -5763,7 +5769,7 @@ const typeMap: any = {
   ),
   PrivateChannelBroadcastBridgeRequestPayload: o(
     [
-      { json: 'channelId', js: 'channelId', typ: '' },
+      { json: 'channel', js: 'channel', typ: '' },
       { json: 'context', js: 'context', typ: r('ContextElement') },
     ],
     false
@@ -5788,7 +5794,7 @@ const typeMap: any = {
   PrivateChannelEventListenerAddedAgentRequestPayload: o(
     [
       { json: 'channel', js: 'channel', typ: '' },
-      { json: 'context', js: 'context', typ: '' },
+      { json: 'listenerType', js: 'listenerType', typ: r('Empty') },
     ],
     false
   ),
@@ -5812,7 +5818,7 @@ const typeMap: any = {
   PrivateChannelEventListenerAddedBridgeRequestPayload: o(
     [
       { json: 'channel', js: 'channel', typ: '' },
-      { json: 'context', js: 'context', typ: '' },
+      { json: 'listenerType', js: 'listenerType', typ: r('Empty') },
     ],
     false
   ),
@@ -5836,7 +5842,7 @@ const typeMap: any = {
   PrivateChannelEventListenerRemovedAgentRequestPayload: o(
     [
       { json: 'channel', js: 'channel', typ: '' },
-      { json: 'listenerType', js: 'listenerType', typ: '' },
+      { json: 'listenerType', js: 'listenerType', typ: r('Empty') },
     ],
     false
   ),
@@ -5860,7 +5866,7 @@ const typeMap: any = {
   PrivateChannelEventListenerRemovedBridgeRequestPayload: o(
     [
       { json: 'channel', js: 'channel', typ: '' },
-      { json: 'listenerType', js: 'listenerType', typ: '' },
+      { json: 'listenerType', js: 'listenerType', typ: r('Empty') },
     ],
     false
   ),
@@ -6323,6 +6329,7 @@ const typeMap: any = {
     'ResolverUnavailable',
     'ResponseToBridgeTimedOut',
   ],
+  Empty: ['onAddContextListener', 'onDisconnect', 'onUnsubscribe'],
   RaiseIntentResultErrorMessage: [
     'AgentDisconnected',
     'IntentHandlerRejected',
