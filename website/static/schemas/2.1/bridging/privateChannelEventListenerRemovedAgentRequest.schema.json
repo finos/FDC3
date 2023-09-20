@@ -29,7 +29,7 @@
               "type": "string"
             },
             "listenerType": {
-              "type": "string"
+              "$ref": "common.schema.json#/$defs/PrivateChannelEventListenerTypes"
             }
           },
           "additionalProperties": false,

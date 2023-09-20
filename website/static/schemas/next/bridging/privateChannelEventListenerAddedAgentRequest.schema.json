@@ -28,12 +28,12 @@
             "channel": {
               "type": "string"
             },
-            "context": {
-              "type": "string"
+            "listenerType": {
+              "$ref": "common.schema.json#/$defs/PrivateChannelEventListenerTypes"
             }
           },
           "additionalProperties": false,
-          "required": ["channel", "context"]
+          "required": ["channel", "listenerType"]
         },
         "meta": {
           "title": "PrivateChannelEventListenerAdded Request Metadata",
