@@ -1,9 +1,10 @@
 import { load } from '../lib/load'
+import { JS_INJECT } from '../lib/types';
 
 /**
  * This demonstrates using the API via a promise
  */
-load().then(fdc3 => {
+load({"methods" : [JS_INJECT]}).then(fdc3 => {
     console.log("in promise")
     const log = document.getElementById("log");
     const msg = document.createElement("p");
