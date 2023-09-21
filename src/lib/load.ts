@@ -1,13 +1,15 @@
 import { DesktopAgent} from '@finos/fdc3'
-import { loader as loader1 } from './strategies/post-message-load-js'
-import { loader as loader2 } from './strategies/electron-event';
-
 import { DEFAULT_OPTIONS, Options } from './types';
 
 /**
  * This return an FDC3 API.  Called by Apps.
  */
-export function load(options: Options = DEFAULT_OPTIONS) : Promise<DesktopAgent> {
+export function load(optionsOverride: Options = DEFAULT_OPTIONS) : Promise<DesktopAgent> {
+
+    const options = {
+        ...DEFAULT_OPTIONS,
+        ...optionsOverride
+    }
 
     function handleGenericOptions(da: DesktopAgent) {
         if ((options.setWindowGlobal) && (window.fdc3 == null)) {
@@ -17,7 +19,7 @@ export function load(options: Options = DEFAULT_OPTIONS) : Promise<DesktopAgent>
         return da;
     }
 
-    const strategies = [ loader1(options), loader2(options) ];
+    const strategies = options.strategies!!.map(s => s(options));
 
     return Promise.any(strategies)
         .then(da => handleGenericOptions(da)) 
