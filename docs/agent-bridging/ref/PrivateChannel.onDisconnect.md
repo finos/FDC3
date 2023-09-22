@@ -48,7 +48,7 @@ sequenceDiagram
 {
     "type": "PrivateChannel.onDisconnect",
     "payload": {
-        "channel": "private-channel-ABC123"
+        "channelId": "private-channel-ABC123"
     },
     "meta": {
         "requestUuid": "<requestUuid>",

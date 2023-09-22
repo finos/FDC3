@@ -25,15 +25,15 @@
           "title": "PrivateChannelEventListenerAdded Request Payload",
           "type": "object",
           "properties": {
-            "channel": {
+            "channelId": {
               "type": "string"
             },
-            "context": {
-              "type": "string"
+            "listenerType": {
+              "$ref": "common.schema.json#/$defs/PrivateChannelEventListenerTypes"
             }
           },
           "additionalProperties": false,
-          "required": ["channel", "context"]
+          "required": ["channelId", "listenerType"]
         },
         "meta": {
           "title": "PrivateChannelEventListenerAdded Request Metadata",
