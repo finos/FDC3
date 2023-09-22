@@ -110,7 +110,7 @@ To make review of PRs easier, please:
  
  * Ensure all new source files include a header comment block containing the [Apache License v2.0 and your copyright information](http://www.apache.org/licenses/LICENSE-2.0#apply).
  
- * If necessary (e.g. due to 3rd party dependency licensing requirements), update the [NOTICE file](https://github.com/finos/FDC3/blob/master/NOTICE) with any new attribution or other notices
+ * If necessary (e.g. due to 3rd party dependency licensing requirements), update the [NOTICES.md file](https://github.com/finos/FDC3/blob/master/NOTICES.md) with any new attribution or other notices
 
 **4.2.	Triage**
 
