@@ -25,15 +25,15 @@
           "title": "PrivateChannelEventListenerRemoved Request Payload",
           "type": "object",
           "properties": {
-            "channel": {
+            "channelId": {
               "type": "string"
             },
             "listenerType": {
-              "type": "string"
+              "$ref": "common.schema.json#/$defs/PrivateChannelEventListenerTypes"
             }
           },
           "additionalProperties": false,
-          "required": ["channel", "listenerType"]
+          "required": ["channelId", "listenerType"]
         },
         "meta": {
           "title": "PrivateChannelEventListenerRemoved Request Metadata",
