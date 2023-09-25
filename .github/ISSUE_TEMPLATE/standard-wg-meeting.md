@@ -15,18 +15,33 @@ about: Track Standard Working Group meeting agenda and attendance
 ## Date
 Thursday DD MMM yyyy - 10am (US eastern timezone EDT/EST) / 3pm (London, GMT/BST)
 
-### WebEx info
-- [Meeting Link](https://finos.webex.com/finos/j.php?MTID=ma4b1de1b9f691d89e4b2ff380ec9687c)
-Meeting number: 665 568 411
+### Zoom info
+Join Zoom Meeting
+https://zoom.us/j/96940294948?pwd=SjFibVdiN25QSWxva3FqRHY2RUFCdz09
 
-*More ways to join*
-- Join by video system:
-   - Dial 665568411@finos.webex.com
-   - You can also dial 173.243.2.68 and enter your meeting number
-- Join by phone
-   - +1-415-655-0003 US Toll
-   - +44-20319-88141 UK Toll
-- Access code: 665 568 411
+Meeting ID: 969 4029 4948
+Passcode: 636931---One tap mobile
++19292056099,,96940294948# US (New York)
++12532050468,,96940294948# US---Dial by your location
+• +1 929 205 6099 US (New York)
+• +1 253 205 0468 US
+• +1 253 215 8782 US (Tacoma)
+• +1 301 715 8592 US (Washington DC)
+• +1 305 224 1968 US
+• +1 309 205 3325 US
+• +1 312 626 6799 US (Chicago)
+• +1 346 248 7799 US (Houston)
+• +1 360 209 5623 US
+• +1 386 347 5053 US
+• +1 507 473 4847 US
+• +1 564 217 2000 US
+• +1 646 931 3860 US
+• +1 669 444 9171 US
+• +1 669 900 6833 US (San Jose)
+• +1 689 278 1000 US
+• +1 719 359 4580 US
+• 877 853 5247 US Toll-free
+• 888 788 0099 US Toll-freeMeeting ID: 969 4029 4948Find your local number: https://zoom.us/u/ad2WVnBzb8 (edited) 
 
 ## Meeting notices
 - FINOS **Project leads** are responsible for observing the FINOS guidelines for [running project meetings](https://community.finos.org/docs/governance/meeting-procedures/). Project maintainers can find additional resources in the [FINOS Maintainers Cheatsheet](https://community.finos.org/docs/finos-maintainers-cheatsheet).
