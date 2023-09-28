@@ -8,7 +8,7 @@ Financial applications include any type of application used in common financial 
 * PWAs & Web applications running in a commercial browser
 * Traditional native applications implemented in C++, .NET, Java, Python, etc.
 * Hybrid web/native applications - stand alone native apps embedding a WebView (e.g. Electron, CEF, WebView2, NW.js etc.)
-* Common desktop applications not specific to finance, but critical to workflows - such as Excel, Outlook, etc.
+* Common desktop applications not specific to finance, but critical to workflows - such as Excel, Outlook, Slack, etc.
 
 This standards group is focused specifically on establishing and promoting standards for the interoperability of front-end applications, hence, its activities are focused on:
 
