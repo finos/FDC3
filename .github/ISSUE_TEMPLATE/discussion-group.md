@@ -21,18 +21,17 @@ If tags have been applied to relevant issues, provide details here.
 ## Meeting Date
 Thursday DD MMM yyyy - 10am (US eastern timezone EDT/EST) / 3pm (London, GMT/BST)
 
-### WebEx info
-- Meeting Link: [insert link](https://finos.webex.com)
-- Meeting number: ### ### ###
-
-*More ways to join*
-- Join by video system:
-   - Dial ########@finos.webex.com
-   - You can also dial 173.243.2.68 and enter your meeting number
-- Join by phone
-   - +1-415-655-0003 US Toll
-   - +44-20319-88141 UK Toll
-- Access code: ### ### ###
+### Zoom info
+- **[Join Zoom Meeting](https://zoom.us/j/96940294948?pwd=SjFibVdiN25QSWxva3FqRHY2RUFCdz09)**
+- **Meeting ID:** 969 4029 4948
+- **Passcode:** 636931
+- **Dial-in:**
+    | Country      | International Dial-in | Toll-free Dial-in |
+    | :---        | :---        | :---        |
+    | **US** | [+1 929 205 6099 (New York)](tel:+19292056099) | [877 853 5247](tel:8778535247) |
+    | **UK** | [+44 330 088 5830](tel:+443300885830) | [0800 031 5717](tel:08000315717) |
+    | **France** | [+33 1 8699 5831](tel:+33186995831) | [0 800 940 415](tel:0800940415) 
+    | Find your local number | <https://zoom.us/u/ad2WVnBzb8> | |
 
 ## Meeting notices
 - FINOS **Project leads** are responsible for observing the FINOS guidelines for [running project meetings](https://community.finos.org/docs/governance/meeting-procedures/). Project maintainers can find additional resources in the [FINOS Maintainers Cheatsheet](https://community.finos.org/docs/finos-maintainers-cheatsheet).
