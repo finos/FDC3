@@ -279,11 +279,11 @@
     "publisher": "Adaptable Tools",
     "image": "/img/users/adaptabletools.svg",
     "infoLink": "https://www.adaptabletools.com/",
-    "docsLink": "https://docs.adaptabletools.com/",
-    "description": "AdapTable is a powerful, low-code / no-code data management tool which extends AG Grid, allowing financial services users to manage, visualise and transform their data in ways not previously possible. <br /><br />AdapTable provides a range of cutting-edge DataGrid features including Alerts, Calculated Columns, Conditional Styles, Scheduled Reports, Custom Filters, full Audit, State Management, Team Sharing, Charting and much more. <br /><br />AdapTable includes full FDC3 capabilities which developers can leverage to build applications that can broadcast FDC3 messages and raise FDC3 intents.  AdapTable works with OpenFin, Finsemble, Glue42 and other platform providers to promote collaboration and communication between multiple widgets using FDC3.",
+    "docsLink": "https://docs.adaptabletools.com/guide/handbook-fdc3",
+    "description": "AdapTable - the FDC3-Ready DataGrid - is a powerful, low-code AG Grid extension which allows users to manage, visualise and transform their data in ways not previously possible. <br /><br />AdapTable provides a range of cutting-edge DataGrid features including Alerts, Calculated Columns, Conditional Styles, Scheduled Reports, Custom Filters, State Management, Team Sharing, Charting and much more. <br /><br />AdapTable includes full FDC3 capabilities which developers can leverage to broadcast and receive FDC3 Context, raise and receive FDC3 Intents and support custom FDC3.  AdapTable ships with a range of configurable FDC3 UI components, that work seamlessly with all FDC3 Platform Providers (e.g. OpenFin, interop.io, Connectifi and others) to promote collaboration and communication between multiple applications using FDC3.",
     "badges": [
       {
-        "text": "FDC3 1.2 Supported"
+        "text": "FDC3 2.0 Supported"
       }
     ],
     "type": "application-provider"
