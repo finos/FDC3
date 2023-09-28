@@ -22,32 +22,16 @@ If tags have been applied to relevant issues, provide details here.
 Thursday DD MMM yyyy - 10am (US eastern timezone EDT/EST) / 3pm (London, GMT/BST)
 
 ### Zoom info
-Join Zoom Meeting
-https://zoom.us/j/96940294948?pwd=SjFibVdiN25QSWxva3FqRHY2RUFCdz09
-
-Meeting ID: 969 4029 4948
-Passcode: 636931---One tap mobile
-+19292056099,,96940294948# US (New York)
-+12532050468,,96940294948# US---Dial by your location
-• +1 929 205 6099 US (New York)
-• +1 253 205 0468 US
-• +1 253 215 8782 US (Tacoma)
-• +1 301 715 8592 US (Washington DC)
-• +1 305 224 1968 US
-• +1 309 205 3325 US
-• +1 312 626 6799 US (Chicago)
-• +1 346 248 7799 US (Houston)
-• +1 360 209 5623 US
-• +1 386 347 5053 US
-• +1 507 473 4847 US
-• +1 564 217 2000 US
-• +1 646 931 3860 US
-• +1 669 444 9171 US
-• +1 669 900 6833 US (San Jose)
-• +1 689 278 1000 US
-• +1 719 359 4580 US
-• 877 853 5247 US Toll-free
-• 888 788 0099 US Toll-freeMeeting ID: 969 4029 4948Find your local number: https://zoom.us/u/ad2WVnBzb8 (edited) 
+- **[Join Zoom Meeting](https://zoom.us/j/96940294948?pwd=SjFibVdiN25QSWxva3FqRHY2RUFCdz09)**
+- **Meeting ID:** 969 4029 4948
+- **Passcode:** 636931
+- **Dial-in:**
+    | Country      | International Dial-in | Toll-free Dial-in |
+    | :---        | :---        | :---        |
+    | **US** | [+1 929 205 6099 (New York)](tel:+19292056099) | [877 853 5247](tel:8778535247) |
+    | **UK** | [+44 330 088 5830](tel:+443300885830) | [0800 031 5717](tel:08000315717) |
+    | **France** | [+33 1 8699 5831](tel:+33186995831) | [0 800 940 415](tel:0800940415) 
+    | Find your local number | <https://zoom.us/u/ad2WVnBzb8> | |
 
 ## Meeting notices
 - FINOS **Project leads** are responsible for observing the FINOS guidelines for [running project meetings](https://community.finos.org/docs/governance/meeting-procedures/). Project maintainers can find additional resources in the [FINOS Maintainers Cheatsheet](https://community.finos.org/docs/finos-maintainers-cheatsheet).
