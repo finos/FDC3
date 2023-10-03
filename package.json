@@ -26,7 +26,8 @@
     "preprepare": "npm run typegen && npm run typegen-bridging",
     "prepare": "tsdx build",
     "typegen": "node s2tQuicktypeUtil.js schemas/context src/context/ContextTypes.ts && tsdx lint src/context/ --fix",
-    "typegen-bridging": "node s2tQuicktypeUtil.js schemas/api schemas/bridging schemas/context/context.schema.json src/bridging/BridgingTypes.ts && tsdx lint src/bridging/ --fix"
+    "typegen-bridging": "node s2tQuicktypeUtil.js schemas/api schemas/bridging schemas/context/context.schema.json src/bridging/BridgingTypes.ts && tsdx lint src/bridging/ --fix",
+    "typegen-bridging-zod": "node s2zodQuicktypeUtil.js schemas/api schemas/bridging schemas/context/context.schema.json src/bridging/BridgingZodSchemas.ts"
   },
   "peerDependencies": {},
   "husky": {
