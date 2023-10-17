@@ -2,7 +2,7 @@
 //
 //   import { Convert, BaseImplementationMetadata, AgentErrorResponseMessage, AgentRequestMessage, AgentResponseMessage, BridgeErrorResponseMessage, BridgeRequestMessage, BridgeResponseMessage, BroadcastAgentRequest, BroadcastBridgeRequest, ConnectionStepMessage, ConnectionStep2Hello, ConnectionStep3Handshake, ConnectionStep4AuthenticationFailed, ConnectionStep6ConnectedAgentsUpdate, FindInstancesAgentErrorResponse, FindInstancesAgentRequest, FindInstancesAgentResponse, FindInstancesBridgeErrorResponse, FindInstancesBridgeRequest, FindInstancesBridgeResponse, FindIntentAgentErrorResponse, FindIntentAgentRequest, FindIntentAgentResponse, FindIntentBridgeErrorResponse, FindIntentBridgeRequest, FindIntentBridgeResponse, FindIntentsByContextAgentErrorResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, FindIntentsByContextBridgeErrorResponse, FindIntentsByContextBridgeRequest, FindIntentsByContextBridgeResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataBridgeErrorResponse, GetAppMetadataBridgeRequest, GetAppMetadataBridgeResponse, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenBridgeErrorResponse, OpenBridgeRequest, OpenBridgeResponse, PrivateChannelBroadcastAgentRequest, PrivateChannelBroadcastBridgeRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelEventListenerAddedBridgeRequest, PrivateChannelEventListenerRemovedAgentRequest, PrivateChannelEventListenerRemovedBridgeRequest, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerBridgeRequest, PrivateChannelOnDisconnectAgentRequest, PrivateChannelOnDisconnectBridgeRequest, PrivateChannelOnUnsubscribeAgentRequest, PrivateChannelOnUnsubscribeBridgeRequest, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentBridgeErrorResponse, RaiseIntentBridgeRequest, RaiseIntentBridgeResponse, RaiseIntentResultAgentErrorResponse, RaiseIntentResultAgentResponse, RaiseIntentResultBridgeErrorResponse, RaiseIntentResultBridgeResponse, Context } from "./file";
 //
-//   const schemasAPIAPISchema = Convert.toSchemasAPIAPISchema(json);
+//   const fDC3DesktopAgentAPISchema = Convert.toFDC3DesktopAgentAPISchema(json);
 //   const baseImplementationMetadata = Convert.toBaseImplementationMetadata(json);
 //   const agentErrorResponseMessage = Convert.toAgentErrorResponseMessage(json);
 //   const agentRequestMessage = Convert.toAgentRequestMessage(json);
@@ -74,54 +74,6 @@
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
-
-/**
- * Metadata relating to the FDC3 Desktop Agent implementation and its provider.
- */
-export interface BaseImplementationMetadata {
-  /**
-   * The version number of the FDC3 specification that the implementation provides.
-   * The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
-   */
-  fdc3Version: string;
-  /**
-   * Metadata indicating whether the Desktop Agent implements optional features of
-   * the Desktop Agent API.
-   */
-  optionalFeatures: BaseImplementationMetadataOptionalFeatures;
-  /**
-   * The name of the provider of the Desktop Agent implementation (e.g. Finsemble, Glue42,
-   * OpenFin etc.).
-   */
-  provider: string;
-  /**
-   * The version of the provider of the Desktop Agent implementation (e.g. 5.3.0).
-   */
-  providerVersion?: string;
-}
-
-/**
- * Metadata indicating whether the Desktop Agent implements optional features of
- * the Desktop Agent API.
- */
-export interface BaseImplementationMetadataOptionalFeatures {
-  /**
-   * Used to indicate whether the experimental Desktop Agent Bridging
-   * feature is implemented by the Desktop Agent.
-   */
-  DesktopAgentBridging: boolean;
-  /**
-   * Used to indicate whether the exposure of 'originating app metadata' for
-   * context and intent messages is supported by the Desktop Agent.
-   */
-  OriginatingAppMetadata: boolean;
-  /**
-   * Used to indicate whether the optional `fdc3.joinUserChannel`,
-   * `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
-   * the Desktop Agent.
-   */
-  UserChannelMembershipAPIs: boolean;
-}
 
 /**
  * A response message from a Desktop Agent to the Bridge containing an error, to be used in
@@ -387,6 +339,7 @@ export enum RequestMessageType {
   OpenRequest = 'openRequest',
   PrivateChannelBroadcast = 'PrivateChannel.broadcast',
   PrivateChannelEventListenerAdded = 'PrivateChannel.eventListenerAdded',
+  PrivateChannelEventListenerRemoved = 'PrivateChannel.eventListenerRemoved',
   PrivateChannelOnAddContextListener = 'PrivateChannel.onAddContextListener',
   PrivateChannelOnDisconnect = 'PrivateChannel.onDisconnect',
   PrivateChannelOnUnsubscribe = 'PrivateChannel.onUnsubscribe',
@@ -554,7 +507,7 @@ export interface BroadcastAgentRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: RequestMessageType;
+  type: BroadcastRequestMessageType;
 }
 
 /**
@@ -643,7 +596,7 @@ export interface BroadcastAgentRequestPayload {
   /**
    * The context object that was the payload of a broadcast message.
    */
-  context: ContextElement;
+  context: Context;
 }
 
 /**
@@ -661,7 +614,7 @@ export interface BroadcastAgentRequestPayload {
  * data object of a particular type can be expected to have, but this can always be extended
  * with custom fields as appropriate.
  */
-export interface ContextElement {
+export interface Context {
   /**
    * Context data objects may include a set of equivalent key-value pairs that can be used to
    * help applications identify and look up the context type they receive in their own domain.
@@ -702,6 +655,18 @@ export interface ContextElement {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum BroadcastRequestMessageType {
+  BroadcastRequest = 'broadcastRequest',
+}
+
+/**
  * A request to broadcast context on a channel.
  *
  * A request message forwarded from the Bridge onto a Desktop Agent connected to it.
@@ -716,7 +681,7 @@ export interface BroadcastBridgeRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: string;
+  type: BroadcastRequestMessageType;
 }
 
 /**
@@ -814,7 +779,7 @@ export interface BroadcastBridgeRequestPayload {
   /**
    * The context object that was the payload of a broadcast message.
    */
-  context: ContextElement;
+  context: Context;
 }
 
 /**
@@ -868,7 +833,7 @@ export interface ConnectionStep2Hello {
   /**
    * Identifies the type of the connection step message.
    */
-  type: ConnectionStepMessageType;
+  type: ConnectionStep2HelloType;
 }
 
 /**
@@ -902,6 +867,13 @@ export interface ConnectionStep2HelloPayload {
 }
 
 /**
+ * Identifies the type of the connection step message.
+ */
+export enum ConnectionStep2HelloType {
+  Hello = 'hello',
+}
+
+/**
  * Handshake message sent by the Desktop Agent to the Bridge (including requested name,
  * channel state and authentication data)
  *
@@ -917,7 +889,7 @@ export interface ConnectionStep3Handshake {
   /**
    * Identifies the type of the connection step message.
    */
-  type: ConnectionStepMessageType;
+  type: ConnectionStep3HandshakeType;
 }
 
 /**
@@ -937,11 +909,11 @@ export interface ConnectionStep3HandshakePayload {
    * The current state of the Desktop Agent's channels, excluding any private channels, as a
    * mapping of channel id to an array of Context objects, most recent first.
    */
-  channelsState: { [key: string]: ContextElement[] };
+  channelsState: { [key: string]: Context[] };
   /**
    * Desktop Agent ImplementationMetadata trying to connect to the bridge.
    */
-  implementationMetadata: ImplementationMetadataElement;
+  implementationMetadata: BaseImplementationMetadata;
   /**
    * The requested Desktop Agent name
    */
@@ -949,11 +921,11 @@ export interface ConnectionStep3HandshakePayload {
 }
 
 /**
- * Desktop Agent ImplementationMetadata trying to connect to the bridge.
- *
  * Metadata relating to the FDC3 Desktop Agent implementation and its provider.
+ *
+ * Desktop Agent ImplementationMetadata trying to connect to the bridge.
  */
-export interface ImplementationMetadataElement {
+export interface BaseImplementationMetadata {
   /**
    * The version number of the FDC3 specification that the implementation provides.
    * The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
@@ -963,7 +935,7 @@ export interface ImplementationMetadataElement {
    * Metadata indicating whether the Desktop Agent implements optional features of
    * the Desktop Agent API.
    */
-  optionalFeatures: ImplementationMetadataOptionalFeatures;
+  optionalFeatures: OptionalFeatures;
   /**
    * The name of the provider of the Desktop Agent implementation (e.g. Finsemble, Glue42,
    * OpenFin etc.).
@@ -979,7 +951,7 @@ export interface ImplementationMetadataElement {
  * Metadata indicating whether the Desktop Agent implements optional features of
  * the Desktop Agent API.
  */
-export interface ImplementationMetadataOptionalFeatures {
+export interface OptionalFeatures {
   /**
    * Used to indicate whether the experimental Desktop Agent Bridging
    * feature is implemented by the Desktop Agent.
@@ -999,6 +971,13 @@ export interface ImplementationMetadataOptionalFeatures {
 }
 
 /**
+ * Identifies the type of the connection step message.
+ */
+export enum ConnectionStep3HandshakeType {
+  Handshake = 'handshake',
+}
+
+/**
  * Message sent by Bridge to Desktop Agent if their authentication fails.
  *
  * A message used during the connection flow for a Desktop Agent to the Bridge. Used for
@@ -1013,7 +992,7 @@ export interface ConnectionStep4AuthenticationFailed {
   /**
    * Identifies the type of the connection step message.
    */
-  type: ConnectionStepMessageType;
+  type: ConnectionStep4AuthenticationFailedType;
 }
 
 /**
@@ -1033,6 +1012,13 @@ export interface ConnectionStep4AuthenticationFailedPayload {
 }
 
 /**
+ * Identifies the type of the connection step message.
+ */
+export enum ConnectionStep4AuthenticationFailedType {
+  AuthenticationFailed = 'authenticationFailed',
+}
+
+/**
  * Message sent by Bridge to all Desktop Agent when an agent joins or leaves the bridge,
  * includes the details of all agents, the change made and the expected channel state for
  * all agents.
@@ -1049,7 +1035,7 @@ export interface ConnectionStep6ConnectedAgentsUpdate {
   /**
    * Identifies the type of the connection step message.
    */
-  type: ConnectionStepMessageType;
+  type: ConnectionStep6ConnectedAgentsUpdateType;
 }
 
 /**
@@ -1072,17 +1058,24 @@ export interface ConnectionStep6ConnectedAgentsUpdatePayload {
   /**
    * Desktop Agent Bridge implementation metadata of all connected agents.
    */
-  allAgents: ImplementationMetadataElement[];
+  allAgents: BaseImplementationMetadata[];
   /**
    * The updated state of channels that should be adopted by the agents. Should only be set
    * when an agent is connecting to the bridge.
    */
-  channelsState?: { [key: string]: ContextElement[] };
+  channelsState?: { [key: string]: Context[] };
   /**
    * Should be set when an agent disconnects from the bridge and provide the name that no
    * longer is assigned.
    */
   removeAgent?: string;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+export enum ConnectionStep6ConnectedAgentsUpdateType {
+  ConnectedAgentsUpdate = 'connectedAgentsUpdate',
 }
 
 /**
@@ -1101,7 +1094,7 @@ export interface FindInstancesAgentErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: FindInstancesResponseMessageType;
 }
 
 /**
@@ -1149,6 +1142,18 @@ export enum ErrorMessage {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum FindInstancesResponseMessageType {
+  FindInstancesResponse = 'findInstancesResponse',
+}
+
+/**
  * A request for details of instances of a particular app
  *
  * A request message from a Desktop Agent to the Bridge.
@@ -1163,7 +1168,7 @@ export interface FindInstancesAgentRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: RequestMessageType;
+  type: FindInstancesRequestMessageType;
 }
 
 /**
@@ -1299,6 +1304,18 @@ export interface AppIdentifier {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum FindInstancesRequestMessageType {
+  FindInstancesRequest = 'findInstancesRequest',
+}
+
+/**
  * A response to a findInstances request.
  *
  * A response message from a Desktop Agent to the Bridge.
@@ -1313,7 +1330,7 @@ export interface FindInstancesAgentResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: FindInstancesResponseMessageType;
 }
 
 /**
@@ -1466,7 +1483,7 @@ export interface FindInstancesBridgeErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: FindInstancesResponseMessageType;
 }
 
 /**
@@ -1503,7 +1520,7 @@ export interface FindInstancesBridgeRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: string;
+  type: FindInstancesRequestMessageType;
 }
 
 /**
@@ -1625,7 +1642,7 @@ export interface FindInstancesBridgeResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: FindInstancesResponseMessageType;
 }
 
 /**
@@ -1663,7 +1680,7 @@ export interface FindIntentAgentErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: FindIntentResponseMessageType;
 }
 
 /**
@@ -1683,6 +1700,18 @@ export interface FindIntentAgentErrorResponsePayload {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum FindIntentResponseMessageType {
+  FindIntentResponse = 'findIntentResponse',
+}
+
+/**
  * A request for details of apps available to resolve a particular intent and context pair.
  *
  * A request message from a Desktop Agent to the Bridge.
@@ -1697,7 +1726,7 @@ export interface FindIntentAgentRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: RequestMessageType;
+  type: FindIntentRequestMessageType;
 }
 
 /**
@@ -1723,8 +1752,20 @@ export interface FindIntentAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentAgentRequestPayload {
-  context?: ContextElement;
+  context?: Context;
   intent: string;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum FindIntentRequestMessageType {
+  FindIntentRequest = 'findIntentRequest',
 }
 
 /**
@@ -1742,7 +1783,7 @@ export interface FindIntentAgentResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: FindIntentResponseMessageType;
 }
 
 /**
@@ -1808,7 +1849,7 @@ export interface FindIntentBridgeErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: FindIntentResponseMessageType;
 }
 
 /**
@@ -1845,7 +1886,7 @@ export interface FindIntentBridgeRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: string;
+  type: FindIntentRequestMessageType;
 }
 
 /**
@@ -1872,7 +1913,7 @@ export interface FindIntentBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentBridgeRequestPayload {
-  context?: ContextElement;
+  context?: Context;
   intent: string;
 }
 
@@ -1892,7 +1933,7 @@ export interface FindIntentBridgeResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: FindIntentResponseMessageType;
 }
 
 /**
@@ -1930,7 +1971,7 @@ export interface FindIntentsByContextAgentErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: FindIntentsByContextResponseMessageType;
 }
 
 /**
@@ -1950,6 +1991,18 @@ export interface FindIntentsByContextAgentErrorResponsePayload {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum FindIntentsByContextResponseMessageType {
+  FindIntentsByContextResponse = 'findIntentsByContextResponse',
+}
+
+/**
  * A request for details of intents and apps available to resolve them for a particular
  * context.
  *
@@ -1965,7 +2018,7 @@ export interface FindIntentsByContextAgentRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: RequestMessageType;
+  type: FindIntentsByContextRequestMessageType;
 }
 
 /**
@@ -1991,7 +2044,19 @@ export interface FindIntentsByContextAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextAgentRequestPayload {
-  context: ContextElement;
+  context: Context;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum FindIntentsByContextRequestMessageType {
+  FindIntentsByContextRequest = 'findIntentsByContextRequest',
 }
 
 /**
@@ -2009,7 +2074,7 @@ export interface FindIntentsByContextAgentResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: FindIntentsByContextResponseMessageType;
 }
 
 /**
@@ -2045,7 +2110,7 @@ export interface FindIntentsByContextBridgeErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: FindIntentsByContextResponseMessageType;
 }
 
 /**
@@ -2083,7 +2148,7 @@ export interface FindIntentsByContextBridgeRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: string;
+  type: FindIntentsByContextRequestMessageType;
 }
 
 /**
@@ -2110,7 +2175,7 @@ export interface FindIntentsByContextBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextBridgeRequestPayload {
-  context: ContextElement;
+  context: Context;
 }
 
 /**
@@ -2129,7 +2194,7 @@ export interface FindIntentsByContextBridgeResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: FindIntentsByContextResponseMessageType;
 }
 
 /**
@@ -2167,7 +2232,7 @@ export interface GetAppMetadataAgentErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: GetAppMetadataResponseMessageType;
 }
 
 /**
@@ -2187,6 +2252,18 @@ export interface GetAppMetadataAgentErrorResponsePayload {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum GetAppMetadataResponseMessageType {
+  GetAppMetadataResponse = 'getAppMetadataResponse',
+}
+
+/**
  * A request for metadata about an app
  *
  * A request message from a Desktop Agent to the Bridge.
@@ -2201,7 +2278,7 @@ export interface GetAppMetadataAgentRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: RequestMessageType;
+  type: GetAppMetadataRequestMessageType;
 }
 
 /**
@@ -2290,6 +2367,18 @@ export interface AppDestinationIdentifier {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum GetAppMetadataRequestMessageType {
+  GetAppMetadataRequest = 'getAppMetadataRequest',
+}
+
+/**
  * A response to a getAppMetadata request.
  *
  * A response message from a Desktop Agent to the Bridge.
@@ -2304,7 +2393,7 @@ export interface GetAppMetadataAgentResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: GetAppMetadataResponseMessageType;
 }
 
 /**
@@ -2340,7 +2429,7 @@ export interface GetAppMetadataBridgeErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: GetAppMetadataResponseMessageType;
 }
 
 /**
@@ -2377,7 +2466,7 @@ export interface GetAppMetadataBridgeRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: string;
+  type: GetAppMetadataRequestMessageType;
 }
 
 /**
@@ -2423,7 +2512,7 @@ export interface GetAppMetadataBridgeResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: GetAppMetadataResponseMessageType;
 }
 
 /**
@@ -2461,7 +2550,7 @@ export interface OpenAgentErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: OpenResponseMessageType;
 }
 
 /**
@@ -2506,6 +2595,18 @@ export enum OpenErrorMessage {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum OpenResponseMessageType {
+  OpenResponse = 'openResponse',
+}
+
+/**
  * A request to open an application
  *
  * A request message from a Desktop Agent to the Bridge.
@@ -2520,7 +2621,7 @@ export interface OpenAgentRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: RequestMessageType;
+  type: OpenRequestMessageType;
 }
 
 /**
@@ -2550,7 +2651,7 @@ export interface OpenAgentRequestPayload {
    * The application to open on the specified Desktop Agent
    */
   app: AppToOpen;
-  context?: ContextElement;
+  context?: Context;
 }
 
 /**
@@ -2612,6 +2713,18 @@ export interface AppToOpen {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum OpenRequestMessageType {
+  OpenRequest = 'openRequest',
+}
+
+/**
  * A response to an open request
  *
  * A response message from a Desktop Agent to the Bridge.
@@ -2626,7 +2739,7 @@ export interface OpenAgentResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: OpenResponseMessageType;
 }
 
 /**
@@ -2662,7 +2775,7 @@ export interface OpenBridgeErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: OpenResponseMessageType;
 }
 
 /**
@@ -2699,7 +2812,7 @@ export interface OpenBridgeRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: string;
+  type: OpenRequestMessageType;
 }
 
 /**
@@ -2730,7 +2843,7 @@ export interface OpenBridgeRequestPayload {
    * The application to open on the specified Desktop Agent
    */
   app: AppToOpen;
-  context?: ContextElement;
+  context?: Context;
 }
 
 /**
@@ -2749,7 +2862,7 @@ export interface OpenBridgeResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: OpenResponseMessageType;
 }
 
 /**
@@ -2786,7 +2899,7 @@ export interface PrivateChannelBroadcastAgentRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: RequestMessageType;
+  type: PrivateChannelBroadcastMessageType;
 }
 
 /**
@@ -2889,7 +3002,19 @@ export interface PrivateChannelBroadcastAgentRequestPayload {
   /**
    * The context object that was the payload of a broadcast message.
    */
-  context: ContextElement;
+  context: Context;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum PrivateChannelBroadcastMessageType {
+  PrivateChannelBroadcast = 'PrivateChannel.broadcast',
 }
 
 /**
@@ -2907,7 +3032,7 @@ export interface PrivateChannelBroadcastBridgeRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: string;
+  type: PrivateChannelBroadcastMessageType;
 }
 
 /**
@@ -2941,7 +3066,7 @@ export interface PrivateChannelBroadcastBridgeRequestPayload {
   /**
    * The context object that was the payload of a broadcast message.
    */
-  context: ContextElement;
+  context: Context;
 }
 
 /**
@@ -2959,7 +3084,7 @@ export interface PrivateChannelEventListenerAddedAgentRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: RequestMessageType;
+  type: PrivateChannelEventListenerAddedMessageType;
 }
 
 /**
@@ -2986,13 +3111,28 @@ export interface PrivateChannelEventListenerAddedAgentRequestMeta {
  */
 export interface PrivateChannelEventListenerAddedAgentRequestPayload {
   channelId: string;
-  listenerType: Empty;
+  listenerType: PrivateChannelEventListenerTypes;
 }
 
-export enum Empty {
+/**
+ * Event listener type names for Private Channel events
+ */
+export enum PrivateChannelEventListenerTypes {
   OnAddContextListener = 'onAddContextListener',
   OnDisconnect = 'onDisconnect',
   OnUnsubscribe = 'onUnsubscribe',
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum PrivateChannelEventListenerAddedMessageType {
+  PrivateChannelEventListenerAdded = 'PrivateChannel.eventListenerAdded',
 }
 
 /**
@@ -3010,7 +3150,7 @@ export interface PrivateChannelEventListenerAddedBridgeRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: string;
+  type: PrivateChannelEventListenerAddedMessageType;
 }
 
 /**
@@ -3038,7 +3178,7 @@ export interface PrivateChannelEventListenerAddedBridgeRequestMeta {
  */
 export interface PrivateChannelEventListenerAddedBridgeRequestPayload {
   channelId: string;
-  listenerType: Empty;
+  listenerType: PrivateChannelEventListenerTypes;
 }
 
 /**
@@ -3056,7 +3196,7 @@ export interface PrivateChannelEventListenerRemovedAgentRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: RequestMessageType;
+  type: PrivateChannelEventListenerRemovedMessageType;
 }
 
 /**
@@ -3083,7 +3223,19 @@ export interface PrivateChannelEventListenerRemovedAgentRequestMeta {
  */
 export interface PrivateChannelEventListenerRemovedAgentRequestPayload {
   channelId: string;
-  listenerType: Empty;
+  listenerType: PrivateChannelEventListenerTypes;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum PrivateChannelEventListenerRemovedMessageType {
+  PrivateChannelEventListenerRemoved = 'PrivateChannel.eventListenerRemoved',
 }
 
 /**
@@ -3101,7 +3253,7 @@ export interface PrivateChannelEventListenerRemovedBridgeRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: string;
+  type: PrivateChannelEventListenerRemovedMessageType;
 }
 
 /**
@@ -3129,7 +3281,7 @@ export interface PrivateChannelEventListenerRemovedBridgeRequestMeta {
  */
 export interface PrivateChannelEventListenerRemovedBridgeRequestPayload {
   channelId: string;
-  listenerType: Empty;
+  listenerType: PrivateChannelEventListenerTypes;
 }
 
 /**
@@ -3147,7 +3299,7 @@ export interface PrivateChannelOnAddContextListenerAgentRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: RequestMessageType;
+  type: PrivateChannelOnAddContextListenerMessageType;
 }
 
 /**
@@ -3178,6 +3330,18 @@ export interface PrivateChannelOnAddContextListenerAgentRequestPayload {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum PrivateChannelOnAddContextListenerMessageType {
+  PrivateChannelOnAddContextListener = 'PrivateChannel.onAddContextListener',
+}
+
+/**
  * A request to forward on an AddContextListener event, relating to a PrivateChannel
  *
  * A request message forwarded from the Bridge onto a Desktop Agent connected to it.
@@ -3192,7 +3356,7 @@ export interface PrivateChannelOnAddContextListenerBridgeRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: string;
+  type: PrivateChannelOnAddContextListenerMessageType;
 }
 
 /**
@@ -3238,7 +3402,7 @@ export interface PrivateChannelOnDisconnectAgentRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: RequestMessageType;
+  type: PrivateChannelOnDisconnectMessageType;
 }
 
 /**
@@ -3268,6 +3432,18 @@ export interface PrivateChannelOnDisconnectAgentRequestPayload {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum PrivateChannelOnDisconnectMessageType {
+  PrivateChannelOnDisconnect = 'PrivateChannel.onDisconnect',
+}
+
+/**
  * A request to forward on a Disconnect event, relating to a PrivateChannel
  *
  * A request message forwarded from the Bridge onto a Desktop Agent connected to it.
@@ -3282,7 +3458,7 @@ export interface PrivateChannelOnDisconnectBridgeRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: string;
+  type: PrivateChannelOnDisconnectMessageType;
 }
 
 /**
@@ -3327,7 +3503,7 @@ export interface PrivateChannelOnUnsubscribeAgentRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: RequestMessageType;
+  type: PrivateChannelOnUnsubscribeMessageType;
 }
 
 /**
@@ -3358,6 +3534,18 @@ export interface PrivateChannelOnUnsubscribeAgentRequestPayload {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum PrivateChannelOnUnsubscribeMessageType {
+  PrivateChannelOnUnsubscribe = 'PrivateChannel.onUnsubscribe',
+}
+
+/**
  * A request to forward on an Unsubscribe event, relating to a PrivateChannel
  *
  * A request message forwarded from the Bridge onto a Desktop Agent connected to it.
@@ -3372,7 +3560,7 @@ export interface PrivateChannelOnUnsubscribeBridgeRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: string;
+  type: PrivateChannelOnUnsubscribeMessageType;
 }
 
 /**
@@ -3419,7 +3607,7 @@ export interface RaiseIntentAgentErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: RaiseIntentResponseMessageType;
 }
 
 /**
@@ -3439,6 +3627,18 @@ export interface RaiseIntentAgentErrorResponsePayload {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum RaiseIntentResponseMessageType {
+  RaiseIntentResponse = 'raiseIntentResponse',
+}
+
+/**
  * A request to raise an intent.
  *
  * A request message from a Desktop Agent to the Bridge.
@@ -3453,7 +3653,7 @@ export interface RaiseIntentAgentRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: RequestMessageType;
+  type: RaiseIntentRequestMessageType;
 }
 
 /**
@@ -3480,8 +3680,20 @@ export interface RaiseIntentAgentRequestMeta {
  */
 export interface RaiseIntentAgentRequestPayload {
   app: AppDestinationIdentifier;
-  context: ContextElement;
+  context: Context;
   intent: string;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum RaiseIntentRequestMessageType {
+  RaiseIntentRequest = 'raiseIntentRequest',
 }
 
 /**
@@ -3499,7 +3711,7 @@ export interface RaiseIntentAgentResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: RaiseIntentResponseMessageType;
 }
 
 /**
@@ -3579,7 +3791,7 @@ export interface RaiseIntentBridgeErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: RaiseIntentResponseMessageType;
 }
 
 /**
@@ -3616,7 +3828,7 @@ export interface RaiseIntentBridgeRequest {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
    */
-  type: string;
+  type: RaiseIntentRequestMessageType;
 }
 
 /**
@@ -3644,7 +3856,7 @@ export interface RaiseIntentBridgeRequestMeta {
  */
 export interface RaiseIntentBridgeRequestPayload {
   app: AppDestinationIdentifier;
-  context: ContextElement;
+  context: Context;
   intent: string;
 }
 
@@ -3664,7 +3876,7 @@ export interface RaiseIntentBridgeResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: RaiseIntentResponseMessageType;
 }
 
 /**
@@ -3703,7 +3915,7 @@ export interface RaiseIntentResultAgentErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: RaiseIntentResultResponseMessageType;
 }
 
 /**
@@ -3744,6 +3956,18 @@ export enum RaiseIntentResultErrorMessage {
 }
 
 /**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ *
+ * UUID for the request
+ *
+ * UUID for this specific response message.
+ */
+export enum RaiseIntentResultResponseMessageType {
+  RaiseIntentResultResponse = 'raiseIntentResultResponse',
+}
+
+/**
  * A secondary response to a request to raise an intent used to deliver the intent result
  *
  * A response message from a Desktop Agent to the Bridge.
@@ -3758,7 +3982,7 @@ export interface RaiseIntentResultAgentResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: ResponseMessageType;
+  type: RaiseIntentResultResponseMessageType;
 }
 
 /**
@@ -3778,7 +4002,7 @@ export interface RaiseIntentResultAgentResponsePayload {
 }
 
 export interface IntentResult {
-  context?: ContextElement;
+  context?: Context;
   channel?: Channel;
 }
 
@@ -3869,7 +4093,7 @@ export interface RaiseIntentResultBridgeErrorResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: RaiseIntentResultResponseMessageType;
 }
 
 /**
@@ -3907,7 +4131,7 @@ export interface RaiseIntentResultBridgeResponse {
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
    */
-  type: string;
+  type: RaiseIntentResultResponseMessageType;
 }
 
 /**
@@ -3929,67 +4153,14 @@ export interface RaiseIntentResultBridgeResponsePayload {
   intentResult: IntentResult;
 }
 
-/**
- * The `fdc3.context` type defines the basic contract or "shape" for all data exchanged by
- * FDC3 operations. As such, it is not really meant to be used on its own, but is imported
- * by more specific type definitions (standardized or custom) to provide the structure and
- * properties shared by all FDC3 context data types.
- *
- * The key element of FDC3 context types is their mandatory `type` property, which is used
- * to identify what type of data the object represents, and what shape it has.
- *
- * The FDC3 context type, and all derived types, define the minimum set of fields a context
- * data object of a particular type can be expected to have, but this can always be extended
- * with custom fields as appropriate.
- */
-export interface Context {
-  /**
-   * Context data objects may include a set of equivalent key-value pairs that can be used to
-   * help applications identify and look up the context type they receive in their own domain.
-   * The idea behind this design is that applications can provide as many equivalent
-   * identifiers to a target application as possible, e.g. an instrument may be represented by
-   * an ISIN, CUSIP or Bloomberg identifier.
-   *
-   * Identifiers do not make sense for all types of data, so the `id` property is therefore
-   * optional, but some derived types may choose to require at least one identifier.
-   */
-  id?: { [key: string]: any };
-  /**
-   * Context data objects may include a name property that can be used for more information,
-   * or display purposes. Some derived types may require the name object as mandatory,
-   * depending on use case.
-   */
-  name?: string;
-  /**
-   * The type property is the only _required_ part of the FDC3 context data schema. The FDC3
-   * [API](https://fdc3.finos.org/docs/api/spec) relies on the `type` property being present
-   * to route shared context data appropriately.
-   *
-   * FDC3 [Intents](https://fdc3.finos.org/docs/intents/spec) also register the context data
-   * types they support in an FDC3 [App
-   * Directory](https://fdc3.finos.org/docs/app-directory/overview), used for intent discovery
-   * and routing.
-   *
-   * Standardized FDC3 context types have well-known `type` properties prefixed with the
-   * `fdc3` namespace, e.g. `fdc3.instrument`. For non-standard types, e.g. those defined and
-   * used by a particular organization, the convention is to prefix them with an
-   * organization-specific namespace, e.g. `blackrock.fund`.
-   *
-   * See the [Context Data Specification](https://fdc3.finos.org/docs/context/spec) for more
-   * information about context data types.
-   */
-  type: string;
-  [property: string]: any;
-}
-
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
-  public static toSchemasAPIAPISchema(json: string): any {
+  public static toFDC3DesktopAgentAPISchema(json: string): any {
     return cast(JSON.parse(json), 'any');
   }
 
-  public static schemasAPIAPISchemaToJson(value: any): string {
+  public static fDC3DesktopAgentAPISchemaToJson(value: any): string {
     return JSON.stringify(uncast(value, 'any'), null, 2);
   }
 
@@ -4731,23 +4902,6 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-  BaseImplementationMetadata: o(
-    [
-      { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
-      { json: 'optionalFeatures', js: 'optionalFeatures', typ: r('BaseImplementationMetadataOptionalFeatures') },
-      { json: 'provider', js: 'provider', typ: '' },
-      { json: 'providerVersion', js: 'providerVersion', typ: u(undefined, '') },
-    ],
-    false
-  ),
-  BaseImplementationMetadataOptionalFeatures: o(
-    [
-      { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: true },
-      { json: 'OriginatingAppMetadata', js: 'OriginatingAppMetadata', typ: true },
-      { json: 'UserChannelMembershipAPIs', js: 'UserChannelMembershipAPIs', typ: true },
-    ],
-    false
-  ),
   AgentErrorResponseMessage: o(
     [
       { json: 'meta', js: 'meta', typ: r('AgentResponseMetadata') },
@@ -4866,7 +5020,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('BroadcastAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('BroadcastAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+      { json: 'type', js: 'type', typ: r('BroadcastRequestMessageType') },
     ],
     false
   ),
@@ -4889,11 +5043,11 @@ const typeMap: any = {
   BroadcastAgentRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'context', js: 'context', typ: r('ContextElement') },
+      { json: 'context', js: 'context', typ: r('Context') },
     ],
     false
   ),
-  ContextElement: o(
+  Context: o(
     [
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -4905,7 +5059,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('BroadcastBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('BroadcastBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('BroadcastRequestMessageType') },
     ],
     false
   ),
@@ -4928,7 +5082,7 @@ const typeMap: any = {
   BroadcastBridgeRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'context', js: 'context', typ: r('ContextElement') },
+      { json: 'context', js: 'context', typ: r('Context') },
     ],
     false
   ),
@@ -4952,7 +5106,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('ConnectionStep2HelloMeta') },
       { json: 'payload', js: 'payload', typ: r('ConnectionStep2HelloPayload') },
-      { json: 'type', js: 'type', typ: r('ConnectionStepMessageType') },
+      { json: 'type', js: 'type', typ: r('ConnectionStep2HelloType') },
     ],
     false
   ),
@@ -4970,7 +5124,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('ConnectionStep3HandshakeMeta') },
       { json: 'payload', js: 'payload', typ: r('ConnectionStep3HandshakePayload') },
-      { json: 'type', js: 'type', typ: r('ConnectionStepMessageType') },
+      { json: 'type', js: 'type', typ: r('ConnectionStep3HandshakeType') },
     ],
     false
   ),
@@ -4984,22 +5138,22 @@ const typeMap: any = {
   ConnectionStep3HandshakePayload: o(
     [
       { json: 'authToken', js: 'authToken', typ: u(undefined, '') },
-      { json: 'channelsState', js: 'channelsState', typ: m(a(r('ContextElement'))) },
-      { json: 'implementationMetadata', js: 'implementationMetadata', typ: r('ImplementationMetadataElement') },
+      { json: 'channelsState', js: 'channelsState', typ: m(a(r('Context'))) },
+      { json: 'implementationMetadata', js: 'implementationMetadata', typ: r('BaseImplementationMetadata') },
       { json: 'requestedName', js: 'requestedName', typ: '' },
     ],
     false
   ),
-  ImplementationMetadataElement: o(
+  BaseImplementationMetadata: o(
     [
       { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
-      { json: 'optionalFeatures', js: 'optionalFeatures', typ: r('ImplementationMetadataOptionalFeatures') },
+      { json: 'optionalFeatures', js: 'optionalFeatures', typ: r('OptionalFeatures') },
       { json: 'provider', js: 'provider', typ: '' },
       { json: 'providerVersion', js: 'providerVersion', typ: u(undefined, '') },
     ],
     false
   ),
-  ImplementationMetadataOptionalFeatures: o(
+  OptionalFeatures: o(
     [
       { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: true },
       { json: 'OriginatingAppMetadata', js: 'OriginatingAppMetadata', typ: true },
@@ -5011,7 +5165,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('ConnectionStep4AuthenticationFailedMeta') },
       { json: 'payload', js: 'payload', typ: r('ConnectionStep4AuthenticationFailedPayload') },
-      { json: 'type', js: 'type', typ: r('ConnectionStepMessageType') },
+      { json: 'type', js: 'type', typ: r('ConnectionStep4AuthenticationFailedType') },
     ],
     false
   ),
@@ -5028,7 +5182,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('ConnectionStep6ConnectedAgentsUpdateMeta') },
       { json: 'payload', js: 'payload', typ: r('ConnectionStep6ConnectedAgentsUpdatePayload') },
-      { json: 'type', js: 'type', typ: r('ConnectionStepMessageType') },
+      { json: 'type', js: 'type', typ: r('ConnectionStep6ConnectedAgentsUpdateType') },
     ],
     false
   ),
@@ -5043,8 +5197,8 @@ const typeMap: any = {
   ConnectionStep6ConnectedAgentsUpdatePayload: o(
     [
       { json: 'addAgent', js: 'addAgent', typ: u(undefined, '') },
-      { json: 'allAgents', js: 'allAgents', typ: a(r('ImplementationMetadataElement')) },
-      { json: 'channelsState', js: 'channelsState', typ: u(undefined, m(a(r('ContextElement')))) },
+      { json: 'allAgents', js: 'allAgents', typ: a(r('BaseImplementationMetadata')) },
+      { json: 'channelsState', js: 'channelsState', typ: u(undefined, m(a(r('Context')))) },
       { json: 'removeAgent', js: 'removeAgent', typ: u(undefined, '') },
     ],
     false
@@ -5053,7 +5207,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindInstancesAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindInstancesAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindInstancesResponseMessageType') },
     ],
     false
   ),
@@ -5070,7 +5224,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindInstancesAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('FindInstancesAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+      { json: 'type', js: 'type', typ: r('FindInstancesRequestMessageType') },
     ],
     false
   ),
@@ -5104,7 +5258,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindInstancesAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindInstancesAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindInstancesResponseMessageType') },
     ],
     false
   ),
@@ -5158,7 +5312,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindInstancesBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindInstancesBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('FindInstancesResponseMessageType') },
     ],
     false
   ),
@@ -5177,7 +5331,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindInstancesBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('FindInstancesBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('FindInstancesRequestMessageType') },
     ],
     false
   ),
@@ -5203,7 +5357,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindInstancesBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindInstancesBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('FindInstancesResponseMessageType') },
     ],
     false
   ),
@@ -5226,7 +5380,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentResponseMessageType') },
     ],
     false
   ),
@@ -5243,7 +5397,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentRequestMessageType') },
     ],
     false
   ),
@@ -5258,7 +5412,7 @@ const typeMap: any = {
   ),
   FindIntentAgentRequestPayload: o(
     [
-      { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
+      { json: 'context', js: 'context', typ: u(undefined, r('Context')) },
       { json: 'intent', js: 'intent', typ: '' },
     ],
     false
@@ -5267,7 +5421,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentResponseMessageType') },
     ],
     false
   ),
@@ -5298,7 +5452,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('FindIntentResponseMessageType') },
     ],
     false
   ),
@@ -5317,7 +5471,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('FindIntentRequestMessageType') },
     ],
     false
   ),
@@ -5332,7 +5486,7 @@ const typeMap: any = {
   ),
   FindIntentBridgeRequestPayload: o(
     [
-      { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
+      { json: 'context', js: 'context', typ: u(undefined, r('Context')) },
       { json: 'intent', js: 'intent', typ: '' },
     ],
     false
@@ -5341,7 +5495,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('FindIntentResponseMessageType') },
     ],
     false
   ),
@@ -5361,7 +5515,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentsByContextAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextResponseMessageType') },
     ],
     false
   ),
@@ -5378,7 +5532,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentsByContextAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextRequestMessageType') },
     ],
     false
   ),
@@ -5391,12 +5545,12 @@ const typeMap: any = {
     ],
     false
   ),
-  FindIntentsByContextAgentRequestPayload: o([{ json: 'context', js: 'context', typ: r('ContextElement') }], false),
+  FindIntentsByContextAgentRequestPayload: o([{ json: 'context', js: 'context', typ: r('Context') }], false),
   FindIntentsByContextAgentResponse: o(
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentsByContextAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextResponseMessageType') },
     ],
     false
   ),
@@ -5416,7 +5570,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentsByContextBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextResponseMessageType') },
     ],
     false
   ),
@@ -5435,7 +5589,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentsByContextBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextRequestMessageType') },
     ],
     false
   ),
@@ -5448,12 +5602,12 @@ const typeMap: any = {
     ],
     false
   ),
-  FindIntentsByContextBridgeRequestPayload: o([{ json: 'context', js: 'context', typ: r('ContextElement') }], false),
+  FindIntentsByContextBridgeRequestPayload: o([{ json: 'context', js: 'context', typ: r('Context') }], false),
   FindIntentsByContextBridgeResponse: o(
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentsByContextBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextResponseMessageType') },
     ],
     false
   ),
@@ -5476,7 +5630,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('GetAppMetadataAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('GetAppMetadataAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataResponseMessageType') },
     ],
     false
   ),
@@ -5493,7 +5647,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('GetAppMetadataAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('GetAppMetadataAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataRequestMessageType') },
     ],
     false
   ),
@@ -5519,7 +5673,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('GetAppMetadataAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('GetAppMetadataAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataResponseMessageType') },
     ],
     false
   ),
@@ -5536,7 +5690,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('GetAppMetadataBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('GetAppMetadataBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataResponseMessageType') },
     ],
     false
   ),
@@ -5555,7 +5709,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('GetAppMetadataBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('GetAppMetadataBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataRequestMessageType') },
     ],
     false
   ),
@@ -5573,7 +5727,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('GetAppMetadataBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('GetAppMetadataBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataResponseMessageType') },
     ],
     false
   ),
@@ -5593,7 +5747,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('OpenAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('OpenAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('OpenResponseMessageType') },
     ],
     false
   ),
@@ -5610,7 +5764,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('OpenAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('OpenAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+      { json: 'type', js: 'type', typ: r('OpenRequestMessageType') },
     ],
     false
   ),
@@ -5626,7 +5780,7 @@ const typeMap: any = {
   OpenAgentRequestPayload: o(
     [
       { json: 'app', js: 'app', typ: r('AppToOpen') },
-      { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
+      { json: 'context', js: 'context', typ: u(undefined, r('Context')) },
     ],
     false
   ),
@@ -5642,7 +5796,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('OpenAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('OpenAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('OpenResponseMessageType') },
     ],
     false
   ),
@@ -5659,7 +5813,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('OpenBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('OpenBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('OpenResponseMessageType') },
     ],
     false
   ),
@@ -5678,7 +5832,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('OpenBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('OpenBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('OpenRequestMessageType') },
     ],
     false
   ),
@@ -5694,7 +5848,7 @@ const typeMap: any = {
   OpenBridgeRequestPayload: o(
     [
       { json: 'app', js: 'app', typ: r('AppToOpen') },
-      { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
+      { json: 'context', js: 'context', typ: u(undefined, r('Context')) },
     ],
     false
   ),
@@ -5702,7 +5856,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('OpenBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('OpenBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('OpenResponseMessageType') },
     ],
     false
   ),
@@ -5722,7 +5876,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelBroadcastAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelBroadcastAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelBroadcastMessageType') },
     ],
     false
   ),
@@ -5746,7 +5900,7 @@ const typeMap: any = {
   PrivateChannelBroadcastAgentRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'context', js: 'context', typ: r('ContextElement') },
+      { json: 'context', js: 'context', typ: r('Context') },
     ],
     false
   ),
@@ -5754,7 +5908,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelBroadcastBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelBroadcastBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('PrivateChannelBroadcastMessageType') },
     ],
     false
   ),
@@ -5770,7 +5924,7 @@ const typeMap: any = {
   PrivateChannelBroadcastBridgeRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'context', js: 'context', typ: r('ContextElement') },
+      { json: 'context', js: 'context', typ: r('Context') },
     ],
     false
   ),
@@ -5778,7 +5932,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelEventListenerAddedAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelEventListenerAddedAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelEventListenerAddedMessageType') },
     ],
     false
   ),
@@ -5794,7 +5948,7 @@ const typeMap: any = {
   PrivateChannelEventListenerAddedAgentRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'listenerType', js: 'listenerType', typ: r('Empty') },
+      { json: 'listenerType', js: 'listenerType', typ: r('PrivateChannelEventListenerTypes') },
     ],
     false
   ),
@@ -5802,7 +5956,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelEventListenerAddedBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelEventListenerAddedBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('PrivateChannelEventListenerAddedMessageType') },
     ],
     false
   ),
@@ -5818,7 +5972,7 @@ const typeMap: any = {
   PrivateChannelEventListenerAddedBridgeRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'listenerType', js: 'listenerType', typ: r('Empty') },
+      { json: 'listenerType', js: 'listenerType', typ: r('PrivateChannelEventListenerTypes') },
     ],
     false
   ),
@@ -5826,7 +5980,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelEventListenerRemovedAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelEventListenerRemovedAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelEventListenerRemovedMessageType') },
     ],
     false
   ),
@@ -5842,7 +5996,7 @@ const typeMap: any = {
   PrivateChannelEventListenerRemovedAgentRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'listenerType', js: 'listenerType', typ: r('Empty') },
+      { json: 'listenerType', js: 'listenerType', typ: r('PrivateChannelEventListenerTypes') },
     ],
     false
   ),
@@ -5850,7 +6004,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelEventListenerRemovedBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelEventListenerRemovedBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('PrivateChannelEventListenerRemovedMessageType') },
     ],
     false
   ),
@@ -5866,7 +6020,7 @@ const typeMap: any = {
   PrivateChannelEventListenerRemovedBridgeRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'listenerType', js: 'listenerType', typ: r('Empty') },
+      { json: 'listenerType', js: 'listenerType', typ: r('PrivateChannelEventListenerTypes') },
     ],
     false
   ),
@@ -5874,7 +6028,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelOnAddContextListenerAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelOnAddContextListenerAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnAddContextListenerMessageType') },
     ],
     false
   ),
@@ -5898,7 +6052,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelOnAddContextListenerBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelOnAddContextListenerBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnAddContextListenerMessageType') },
     ],
     false
   ),
@@ -5922,7 +6076,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelOnDisconnectAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelOnDisconnectAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnDisconnectMessageType') },
     ],
     false
   ),
@@ -5940,7 +6094,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelOnDisconnectBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelOnDisconnectBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnDisconnectMessageType') },
     ],
     false
   ),
@@ -5958,7 +6112,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelOnUnsubscribeAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelOnUnsubscribeAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnUnsubscribeMessageType') },
     ],
     false
   ),
@@ -5982,7 +6136,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('ERequestMetadata') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelOnUnsubscribeBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnUnsubscribeMessageType') },
     ],
     false
   ),
@@ -6006,7 +6160,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResponseMessageType') },
     ],
     false
   ),
@@ -6023,7 +6177,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentRequestMessageType') },
     ],
     false
   ),
@@ -6039,7 +6193,7 @@ const typeMap: any = {
   RaiseIntentAgentRequestPayload: o(
     [
       { json: 'app', js: 'app', typ: r('AppDestinationIdentifier') },
-      { json: 'context', js: 'context', typ: r('ContextElement') },
+      { json: 'context', js: 'context', typ: r('Context') },
       { json: 'intent', js: 'intent', typ: '' },
     ],
     false
@@ -6048,7 +6202,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResponseMessageType') },
     ],
     false
   ),
@@ -6076,7 +6230,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResponseMessageType') },
     ],
     false
   ),
@@ -6095,7 +6249,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('RaiseIntentRequestMessageType') },
     ],
     false
   ),
@@ -6111,7 +6265,7 @@ const typeMap: any = {
   RaiseIntentBridgeRequestPayload: o(
     [
       { json: 'app', js: 'app', typ: r('AppDestinationIdentifier') },
-      { json: 'context', js: 'context', typ: r('ContextElement') },
+      { json: 'context', js: 'context', typ: r('Context') },
       { json: 'intent', js: 'intent', typ: '' },
     ],
     false
@@ -6120,7 +6274,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResponseMessageType') },
     ],
     false
   ),
@@ -6143,7 +6297,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentResultAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentResultAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResultResponseMessageType') },
     ],
     false
   ),
@@ -6163,7 +6317,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentResultAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentResultAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResultResponseMessageType') },
     ],
     false
   ),
@@ -6181,7 +6335,7 @@ const typeMap: any = {
   ),
   IntentResult: o(
     [
-      { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
+      { json: 'context', js: 'context', typ: u(undefined, r('Context')) },
       { json: 'channel', js: 'channel', typ: u(undefined, r('Channel')) },
     ],
     false
@@ -6206,7 +6360,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentResultBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentResultBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResultResponseMessageType') },
     ],
     false
   ),
@@ -6228,7 +6382,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentResultBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentResultBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResultResponseMessageType') },
     ],
     false
   ),
@@ -6246,14 +6400,6 @@ const typeMap: any = {
   RaiseIntentResultBridgeResponsePayload: o(
     [{ json: 'intentResult', js: 'intentResult', typ: r('IntentResult') }],
     false
-  ),
-  Context: o(
-    [
-      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
-    ],
-    'any'
   ),
   ResponseErrorDetail: [
     'AccessDenied',
@@ -6296,12 +6442,18 @@ const typeMap: any = {
     'openRequest',
     'PrivateChannel.broadcast',
     'PrivateChannel.eventListenerAdded',
+    'PrivateChannel.eventListenerRemoved',
     'PrivateChannel.onAddContextListener',
     'PrivateChannel.onDisconnect',
     'PrivateChannel.onUnsubscribe',
     'raiseIntentRequest',
   ],
+  BroadcastRequestMessageType: ['broadcastRequest'],
   ConnectionStepMessageType: ['authenticationFailed', 'connectedAgentsUpdate', 'handshake', 'hello'],
+  ConnectionStep2HelloType: ['hello'],
+  ConnectionStep3HandshakeType: ['handshake'],
+  ConnectionStep4AuthenticationFailedType: ['authenticationFailed'],
+  ConnectionStep6ConnectedAgentsUpdateType: ['connectedAgentsUpdate'],
   ErrorMessage: [
     'AgentDisconnected',
     'DesktopAgentNotFound',
@@ -6317,6 +6469,14 @@ const typeMap: any = {
     'TargetInstanceUnavailable',
     'UserCancelledResolution',
   ],
+  FindInstancesResponseMessageType: ['findInstancesResponse'],
+  FindInstancesRequestMessageType: ['findInstancesRequest'],
+  FindIntentResponseMessageType: ['findIntentResponse'],
+  FindIntentRequestMessageType: ['findIntentRequest'],
+  FindIntentsByContextResponseMessageType: ['findIntentsByContextResponse'],
+  FindIntentsByContextRequestMessageType: ['findIntentsByContextRequest'],
+  GetAppMetadataResponseMessageType: ['getAppMetadataResponse'],
+  GetAppMetadataRequestMessageType: ['getAppMetadataRequest'],
   OpenErrorMessage: [
     'AgentDisconnected',
     'AppNotFound',
@@ -6329,7 +6489,17 @@ const typeMap: any = {
     'ResolverUnavailable',
     'ResponseToBridgeTimedOut',
   ],
-  Empty: ['onAddContextListener', 'onDisconnect', 'onUnsubscribe'],
+  OpenResponseMessageType: ['openResponse'],
+  OpenRequestMessageType: ['openRequest'],
+  PrivateChannelBroadcastMessageType: ['PrivateChannel.broadcast'],
+  PrivateChannelEventListenerTypes: ['onAddContextListener', 'onDisconnect', 'onUnsubscribe'],
+  PrivateChannelEventListenerAddedMessageType: ['PrivateChannel.eventListenerAdded'],
+  PrivateChannelEventListenerRemovedMessageType: ['PrivateChannel.eventListenerRemoved'],
+  PrivateChannelOnAddContextListenerMessageType: ['PrivateChannel.onAddContextListener'],
+  PrivateChannelOnDisconnectMessageType: ['PrivateChannel.onDisconnect'],
+  PrivateChannelOnUnsubscribeMessageType: ['PrivateChannel.onUnsubscribe'],
+  RaiseIntentResponseMessageType: ['raiseIntentResponse'],
+  RaiseIntentRequestMessageType: ['raiseIntentRequest'],
   RaiseIntentResultErrorMessage: [
     'AgentDisconnected',
     'IntentHandlerRejected',
@@ -6338,5 +6508,6 @@ const typeMap: any = {
     'NotConnectedToBridge',
     'ResponseToBridgeTimedOut',
   ],
+  RaiseIntentResultResponseMessageType: ['raiseIntentResultResponse'],
   Type: ['app', 'private', 'user'],
 };

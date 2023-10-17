@@ -1,6 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "https://fdc3.finos.org/schemas/2.1/api/api.schema.json",
+    "title": "FDC3 Desktop Agent API Schema",
     "definitions": {
         "AppIdentifier": {
             "description": "Identifies an application, or instance of an application, and is used to target FDC3 API calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application instances.\n\nWill always include at least an `appId` field, which uniquely identifies a specific app.\n\nIf the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.",

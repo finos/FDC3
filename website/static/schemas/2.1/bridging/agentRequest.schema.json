@@ -17,6 +17,7 @@
         "openRequest",
         "PrivateChannel.broadcast",
         "PrivateChannel.eventListenerAdded",
+        "PrivateChannel.eventListenerRemoved",
         "PrivateChannel.onAddContextListener",
         "PrivateChannel.onDisconnect",
         "PrivateChannel.onUnsubscribe",

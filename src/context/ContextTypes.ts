@@ -1,7 +1,3 @@
-/**
- * SPDX-License-Identifier: Apache-2.0
- * Copyright FINOS FDC3 contributors - see NOTICE file
- */
 // To parse this data:
 //
 //   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
@@ -57,7 +53,7 @@ export interface Action {
   /**
    * A context object with which the action will be performed
    */
-  context: ContextElement;
+  context: Context;
   /**
    * Optional Intent to raise to perform the actions. Should reference an intent type name,
    * such as those defined in the FDC3 Standard. If intent is not set then
@@ -69,7 +65,7 @@ export interface Action {
    * A human readable display name for the action
    */
   title: string;
-  type: string;
+  type: ActionType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -123,7 +119,7 @@ export interface ActionTargetApp {
  * data object of a particular type can be expected to have, but this can always be extended
  * with custom fields as appropriate.
  */
-export interface ContextElement {
+export interface Context {
   /**
    * Context data objects may include a set of equivalent key-value pairs that can be used to
    * help applications identify and look up the context type they receive in their own domain.
@@ -164,6 +160,16 @@ export interface ContextElement {
 }
 
 /**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum ActionType {
+  Fdc3Action = 'fdc3.action',
+}
+
+/**
  * A context type representing details of a Chart, which may be used to request plotting of
  * a particular chart or to otherwise share details of its composition, such as:
  *
@@ -181,22 +187,22 @@ export interface Chart {
   /**
    * An array of instrument contexts whose data should be plotted.
    */
-  instruments: InstrumentElement[];
+  instruments: Instrument[];
   /**
    * It is common for charts to support other configuration, such as indicators, annotations
    * etc., which do not have standardized formats, but may be included in the `otherConfig`
    * array as context objects.
    */
-  otherConfig?: ContextElement[];
+  otherConfig?: Context[];
   /**
    * The time range that should be plotted
    */
-  range?: TimeRangeObject;
+  range?: TimeRange;
   /**
    * The type of chart that should be plotted
    */
   style?: ChartStyle;
-  type: string;
+  type: ChartType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -209,7 +215,7 @@ export interface Chart {
  *
  * A financial instrument from any asset class.
  */
-export interface InstrumentElement {
+export interface Instrument {
   /**
    * Any combination of instrument identifiers can be used together to resolve ambiguity, or
    * for a better match. Not all applications will use the same instrument identifiers, which
@@ -225,14 +231,14 @@ export interface InstrumentElement {
    * fields, define a property that makes it clear what the value represents. Doing so will
    * make interpretation easier for the developers of target applications.
    */
-  id: PurpleInstrumentIdentifiers;
+  id: InstrumentIdentifiers;
   /**
    * The `market` map can be used to further specify the instrument and help achieve
    * interoperability between disparate data sources. This is especially useful when using an
    * `id` field that is not globally unique.
    */
-  market?: OrganizationMarket;
-  type: string;
+  market?: Market;
+  type: PurpleInteractionType;
   name?: string;
   [property: string]: any;
 }
@@ -252,7 +258,7 @@ export interface InstrumentElement {
  * fields, define a property that makes it clear what the value represents. Doing so will
  * make interpretation easier for the developers of target applications.
  */
-export interface PurpleInstrumentIdentifiers {
+export interface InstrumentIdentifiers {
   /**
    * <https://www.bloomberg.com/>
    */
@@ -297,7 +303,7 @@ export interface PurpleInstrumentIdentifiers {
  * interoperability between disparate data sources. This is especially useful when using an
  * `id` field that is not globally unique.
  */
-export interface OrganizationMarket {
+export interface Market {
   /**
    * <https://www.bloomberg.com/>
    */
@@ -315,6 +321,16 @@ export interface OrganizationMarket {
    */
   name?: string;
   [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum PurpleInteractionType {
+  Fdc3Instrument = 'fdc3.instrument',
 }
 
 /**
@@ -353,7 +369,7 @@ export interface OrganizationMarket {
  * `"2022-05-12T16:18:03+01:00"`
  * - Times MAY be specified with millisecond precision, e.g. `"2022-05-12T15:18:03.349Z"`
  */
-export interface TimeRangeObject {
+export interface TimeRange {
   /**
    * The end time of the range, encoded according to [ISO
    * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
@@ -364,10 +380,20 @@ export interface TimeRangeObject {
    * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
    */
   startTime?: Date;
-  type: string;
+  type: TimeRangeType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum TimeRangeType {
+  Fdc3Timerange = 'fdc3.timerange',
 }
 
 /**
@@ -387,6 +413,16 @@ export enum ChartStyle {
 }
 
 /**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum ChartType {
+  Fdc3Chart = 'fdc3.chart',
+}
+
+/**
  * A collection of settings to start a new chat conversation
  */
 export interface ChatInitSettings {
@@ -397,16 +433,16 @@ export interface ChatInitSettings {
   /**
    * Contacts to add to the chat
    */
-  members?: ContactListObject;
+  members?: ContactList;
   /**
    * An initial message to post in the chat when created.
    */
-  message?: MessageObject | string;
+  message?: Message | string;
   /**
    * Option settings that affect the creation of the chat
    */
   options?: ChatOptions;
-  type: string;
+  type: ChatInitSettingsType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -423,12 +459,12 @@ export interface ChatInitSettings {
  * there is not a common standard for such identifiers. Applications can, however, populate
  * this part of the contract with custom identifiers if so desired.
  */
-export interface ContactListObject {
+export interface ContactList {
   /**
    * An array of contact contexts that forms the list.
    */
-  contacts: ContactElement[];
-  type: string;
+  contacts: Contact[];
+  type: ContactListType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -439,12 +475,12 @@ export interface ContactListObject {
  *
  * A person contact that can be engaged with through email, calling, messaging, CMS, etc.
  */
-export interface ContactElement {
+export interface Contact {
   /**
    * Identifiers that relate to the Contact represented by this context
    */
-  id: PurpleContactIdentifiers;
-  type: string;
+  id: ContactID;
+  type: FluffyInteractionType;
   name?: string;
   [property: string]: any;
 }
@@ -452,7 +488,7 @@ export interface ContactElement {
 /**
  * Identifiers that relate to the Contact represented by this context
  */
-export interface PurpleContactIdentifiers {
+export interface ContactID {
   /**
    * The email address for the contact
    */
@@ -465,22 +501,42 @@ export interface PurpleContactIdentifiers {
 }
 
 /**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum FluffyInteractionType {
+  Fdc3Contact = 'fdc3.contact',
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum ContactListType {
+  Fdc3ContactList = 'fdc3.contactList',
+}
+
+/**
  * A chat message to be sent through an instant messaging application. Can contain one or
  * several text bodies (organized by mime-type, plaintext or markdown), as well as attached
  * entities (either arbitrary file attachments or FDC3 actions to be embedded in the
  * message). To be put inside a ChatInitSettings object.
  */
-export interface MessageObject {
+export interface Message {
   /**
    * A map of string IDs to entities that should be attached to the message, such as an action
    * to perform, a file attachment, or other FDC3 context object.
    */
-  entities?: { [key: string]: PurpleAction };
+  entities?: { [key: string]: EntityValue };
   /**
    * A map of string mime-type to string content
    */
-  text?: PurpleMessageText;
-  type: string;
+  text?: MessageText;
+  type: MessageType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -499,7 +555,7 @@ export interface MessageObject {
  *
  * A File attachment encoded in the form of a data URI
  */
-export interface PurpleAction {
+export interface EntityValue {
   /**
    * An optional target application identifier that should perform the action
    */
@@ -507,7 +563,7 @@ export interface PurpleAction {
   /**
    * A context object with which the action will be performed
    */
-  context?: ContextElement;
+  context?: Context;
   /**
    * Optional Intent to raise to perform the actions. Should reference an intent type name,
    * such as those defined in the FDC3 Standard. If intent is not set then
@@ -519,14 +575,14 @@ export interface PurpleAction {
    * A human readable display name for the action
    */
   title?: string;
-  type: any;
+  type: EntityType;
   id?: { [key: string]: any };
   name?: string;
-  data?: PurpleData;
+  data?: Data;
   [property: string]: any;
 }
 
-export interface PurpleData {
+export interface Data {
   /**
    * A data URI encoding the content of the file to be attached
    */
@@ -539,9 +595,20 @@ export interface PurpleData {
 }
 
 /**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum EntityType {
+  Fdc3Action = 'fdc3.action',
+  Fdc3EntityFileAttachment = 'fdc3.entity.fileAttachment',
+}
+
+/**
  * A map of string mime-type to string content
  */
-export interface PurpleMessageText {
+export interface MessageText {
   /**
    * Markdown encoded content
    */
@@ -551,6 +618,16 @@ export interface PurpleMessageText {
    */
   'text/plain'?: string;
   [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum MessageType {
+  Fdc3Message = 'fdc3.message',
 }
 
 /**
@@ -581,43 +658,28 @@ export interface ChatOptions {
 }
 
 /**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum ChatInitSettingsType {
+  Fdc3ChatInitSettings = 'fdc3.chat.initSettings',
+}
+
+/**
  * A context representing a chat message. Typically used to send the message or to
  * pre-populate a message for sending.
  */
 export interface ChatMessage {
-  chatRoom: ChatRoomObject;
+  chatRoom: ChatRoom;
   /**
    * The content of the message to post in the chat when created.
    */
-  message: MessageObject | string;
-  type: string;
+  message: Message | string;
+  type: ChatMessageType;
   id?: { [key: string]: any };
   name?: string;
-  [property: string]: any;
-}
-
-/**
- * Reference to the chat room which could be used to send a message to the room
- */
-export interface ChatRoomObject {
-  /**
-   * Identifier(s) for the chat - currently unstandardized
-   */
-  id: { [key: string]: any };
-  /**
-   * Display name for the chat room
-   */
-  name?: string;
-  /**
-   * The name of the service that hosts the chat
-   */
-  providerName: string;
-  type: string;
-  /**
-   * Universal url to access to the room. It could be opened from a browser, a mobile app,
-   * etc...
-   */
-  url?: string;
   [property: string]: any;
 }
 
@@ -637,13 +699,33 @@ export interface ChatRoom {
    * The name of the service that hosts the chat
    */
   providerName: string;
-  type: string;
+  type: ChatRoomType;
   /**
    * Universal url to access to the room. It could be opened from a browser, a mobile app,
    * etc...
    */
   url?: string;
   [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum ChatRoomType {
+  Fdc3ChatRoom = 'fdc3.chat.room',
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum ChatMessageType {
+  Fdc3ChatMessage = 'fdc3.chat.message',
 }
 
 /**
@@ -660,8 +742,8 @@ export interface ChatSearchCriteria {
    *
    * Empty search criteria can be supported to allow resetting of filters.
    */
-  criteria: Array<OrganizationObject | string>;
-  type: string;
+  criteria: Array<InstrumentObject | string>;
+  type: ChatSearchCriteriaType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -684,7 +766,7 @@ export interface ChatSearchCriteria {
  *
  * A person contact that can be engaged with through email, calling, messaging, CMS, etc.
  */
-export interface OrganizationObject {
+export interface InstrumentObject {
   /**
    * Any combination of instrument identifiers can be used together to resolve ambiguity, or
    * for a better match. Not all applications will use the same instrument identifiers, which
@@ -710,8 +792,8 @@ export interface OrganizationObject {
    * interoperability between disparate data sources. This is especially useful when using an
    * `id` field that is not globally unique.
    */
-  market?: OrganizationMarket;
-  type: string;
+  market?: Market;
+  type: TentacledInteractionType;
   name?: string;
   [property: string]: any;
 }
@@ -793,102 +875,25 @@ export interface Identifiers {
 }
 
 /**
- * A person contact that can be engaged with through email, calling, messaging, CMS, etc.
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
  */
-export interface Contact {
-  /**
-   * Identifiers that relate to the Contact represented by this context
-   */
-  id: FluffyContactIdentifiers;
-  type: string;
-  name?: string;
-  [property: string]: any;
+export enum TentacledInteractionType {
+  Fdc3Contact = 'fdc3.contact',
+  Fdc3Instrument = 'fdc3.instrument',
+  Fdc3Organization = 'fdc3.organization',
 }
 
 /**
- * Identifiers that relate to the Contact represented by this context
- */
-export interface FluffyContactIdentifiers {
-  /**
-   * The email address for the contact
-   */
-  email?: string;
-  /**
-   * FactSet Permanent Identifier representing the contact
-   */
-  FDS_ID?: string;
-  [property: string]: any;
-}
-
-/**
- * A collection of contacts, e.g. for chatting to or calling multiple contacts.
+ * Free text to be used for a keyword search
  *
- * The contact list schema does not explicitly include identifiers in the `id` section, as
- * there is not a common standard for such identifiers. Applications can, however, populate
- * this part of the contract with custom identifiers if so desired.
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
  */
-export interface ContactList {
-  /**
-   * An array of contact contexts that forms the list.
-   */
-  contacts: ContactElement[];
-  type: string;
-  id?: { [key: string]: any };
-  name?: string;
-  [property: string]: any;
-}
-
-/**
- * The `fdc3.context` type defines the basic contract or "shape" for all data exchanged by
- * FDC3 operations. As such, it is not really meant to be used on its own, but is imported
- * by more specific type definitions (standardized or custom) to provide the structure and
- * properties shared by all FDC3 context data types.
- *
- * The key element of FDC3 context types is their mandatory `type` property, which is used
- * to identify what type of data the object represents, and what shape it has.
- *
- * The FDC3 context type, and all derived types, define the minimum set of fields a context
- * data object of a particular type can be expected to have, but this can always be extended
- * with custom fields as appropriate.
- */
-export interface Context {
-  /**
-   * Context data objects may include a set of equivalent key-value pairs that can be used to
-   * help applications identify and look up the context type they receive in their own domain.
-   * The idea behind this design is that applications can provide as many equivalent
-   * identifiers to a target application as possible, e.g. an instrument may be represented by
-   * an ISIN, CUSIP or Bloomberg identifier.
-   *
-   * Identifiers do not make sense for all types of data, so the `id` property is therefore
-   * optional, but some derived types may choose to require at least one identifier.
-   */
-  id?: { [key: string]: any };
-  /**
-   * Context data objects may include a name property that can be used for more information,
-   * or display purposes. Some derived types may require the name object as mandatory,
-   * depending on use case.
-   */
-  name?: string;
-  /**
-   * The type property is the only _required_ part of the FDC3 context data schema. The FDC3
-   * [API](https://fdc3.finos.org/docs/api/spec) relies on the `type` property being present
-   * to route shared context data appropriately.
-   *
-   * FDC3 [Intents](https://fdc3.finos.org/docs/intents/spec) also register the context data
-   * types they support in an FDC3 [App
-   * Directory](https://fdc3.finos.org/docs/app-directory/overview), used for intent discovery
-   * and routing.
-   *
-   * Standardized FDC3 context types have well-known `type` properties prefixed with the
-   * `fdc3` namespace, e.g. `fdc3.instrument`. For non-standard types, e.g. those defined and
-   * used by a particular organization, the convention is to prefix them with an
-   * organization-specific namespace, e.g. `blackrock.fund`.
-   *
-   * See the [Context Data Specification](https://fdc3.finos.org/docs/context/spec) for more
-   * information about context data types.
-   */
-  type: string;
-  [property: string]: any;
+export enum ChatSearchCriteriaType {
+  Fdc3ChatSearchCriteria = 'fdc3.chat.searchCriteria',
 }
 
 /**
@@ -910,7 +915,7 @@ export interface Context {
  */
 export interface Country {
   id: CountryID;
-  type: string;
+  type: CountryType;
   name?: string;
   [property: string]: any;
 }
@@ -938,6 +943,16 @@ export interface CountryID {
 }
 
 /**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum CountryType {
+  Fdc3Country = 'fdc3.country',
+}
+
+/**
  * A context representing an individual Currency.
  */
 export interface Currency {
@@ -946,7 +961,7 @@ export interface Currency {
    * The name of the currency for display purposes
    */
   name?: string;
-  type: string;
+  type: CurrencyType;
   [property: string]: any;
 }
 
@@ -957,6 +972,16 @@ export interface CurrencyID {
    */
   CURRENCY_ISOCODE?: string;
   [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum CurrencyType {
+  Fdc3Currency = 'fdc3.currency',
 }
 
 /**
@@ -975,7 +1000,7 @@ export interface Email {
    * Body content for the email.
    */
   textBody?: string;
-  type: string;
+  type: EmailType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -1003,12 +1028,12 @@ export interface EmailRecipients {
    * Identifiers that relate to the Contact represented by this context
    */
   id?: EmailRecipientsID;
-  type: string;
+  type: EmailRecipientsType;
   name?: string;
   /**
    * An array of contact contexts that forms the list.
    */
-  contacts?: ContactElement[];
+  contacts?: Contact[];
   [property: string]: any;
 }
 
@@ -1028,114 +1053,24 @@ export interface EmailRecipientsID {
 }
 
 /**
- * A financial instrument from any asset class.
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
  */
-export interface Instrument {
-  /**
-   * Any combination of instrument identifiers can be used together to resolve ambiguity, or
-   * for a better match. Not all applications will use the same instrument identifiers, which
-   * is why FDC3 allows for multiple to be specified. In general, the more identifiers an
-   * application can provide, the easier it will be to achieve interoperability.
-   *
-   * It is valid to include extra properties and metadata as part of the instrument payload,
-   * but the minimum requirement is for at least one instrument identifier to be provided.
-   *
-   * Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant
-   * for tickers as used by an exchange.
-   * If the identifier you want to share is not a ticker or one of the other standardized
-   * fields, define a property that makes it clear what the value represents. Doing so will
-   * make interpretation easier for the developers of target applications.
-   */
-  id: FluffyInstrumentIdentifiers;
-  /**
-   * The `market` map can be used to further specify the instrument and help achieve
-   * interoperability between disparate data sources. This is especially useful when using an
-   * `id` field that is not globally unique.
-   */
-  market?: PurpleMarket;
-  type: string;
-  name?: string;
-  [property: string]: any;
+export enum EmailRecipientsType {
+  Fdc3Contact = 'fdc3.contact',
+  Fdc3ContactList = 'fdc3.contactList',
 }
 
 /**
- * Any combination of instrument identifiers can be used together to resolve ambiguity, or
- * for a better match. Not all applications will use the same instrument identifiers, which
- * is why FDC3 allows for multiple to be specified. In general, the more identifiers an
- * application can provide, the easier it will be to achieve interoperability.
+ * Free text to be used for a keyword search
  *
- * It is valid to include extra properties and metadata as part of the instrument payload,
- * but the minimum requirement is for at least one instrument identifier to be provided.
- *
- * Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant
- * for tickers as used by an exchange.
- * If the identifier you want to share is not a ticker or one of the other standardized
- * fields, define a property that makes it clear what the value represents. Doing so will
- * make interpretation easier for the developers of target applications.
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
  */
-export interface FluffyInstrumentIdentifiers {
-  /**
-   * <https://www.bloomberg.com/>
-   */
-  BBG?: string;
-  /**
-   * <https://www.cusip.com/>
-   */
-  CUSIP?: string;
-  /**
-   * <https://www.factset.com/>
-   */
-  FDS_ID?: string;
-  /**
-   * <https://www.openfigi.com/>
-   */
-  FIGI?: string;
-  /**
-   * <https://www.isin.org/>
-   */
-  ISIN?: string;
-  /**
-   * <https://permid.org/>
-   */
-  PERMID?: string;
-  /**
-   * <https://www.refinitiv.com/>
-   */
-  RIC?: string;
-  /**
-   * <https://www.lseg.com/sedol>
-   */
-  SEDOL?: string;
-  /**
-   * Unstandardized stock tickers
-   */
-  ticker?: string;
-  [property: string]: any;
-}
-
-/**
- * The `market` map can be used to further specify the instrument and help achieve
- * interoperability between disparate data sources. This is especially useful when using an
- * `id` field that is not globally unique.
- */
-export interface PurpleMarket {
-  /**
-   * <https://www.bloomberg.com/>
-   */
-  BBG?: string;
-  /**
-   * <https://www.iso.org/iso-3166-country-codes.html>
-   */
-  COUNTRY_ISOALPHA2?: string;
-  /**
-   * <https://en.wikipedia.org/wiki/Market_Identifier_Code>
-   */
-  MIC?: string;
-  /**
-   * Human readable market name
-   */
-  name?: string;
-  [property: string]: any;
+export enum EmailType {
+  Fdc3Email = 'fdc3.email',
 }
 
 /**
@@ -1152,11 +1087,21 @@ export interface InstrumentList {
   /**
    * An array of instrument contexts that forms the list.
    */
-  instruments: InstrumentElement[];
-  type: string;
+  instruments: Instrument[];
+  type: InstrumentListType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum InstrumentListType {
+  Fdc3InstrumentList = 'fdc3.instrumentList',
 }
 
 /**
@@ -1181,7 +1126,7 @@ export interface Interaction {
   /**
    * The contact that initiated the interaction
    */
-  initiator?: ContactElement;
+  initiator?: Contact;
   /**
    * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
    * `'Meeting'` although other string values are permitted.
@@ -1195,12 +1140,12 @@ export interface Interaction {
   /**
    * A list of contacts involved in the interaction
    */
-  participants: ContactListObject;
+  participants: ContactList;
   /**
    * The time range over which the interaction occurred
    */
-  timeRange: TimeRangeObject;
-  type: string;
+  timeRange: TimeRange;
+  type: InteractionType;
   name?: string;
   [property: string]: any;
 }
@@ -1231,92 +1176,13 @@ export interface InteractionID {
 }
 
 /**
- * A chat message to be sent through an instant messaging application. Can contain one or
- * several text bodies (organized by mime-type, plaintext or markdown), as well as attached
- * entities (either arbitrary file attachments or FDC3 actions to be embedded in the
- * message). To be put inside a ChatInitSettings object.
- */
-export interface Message {
-  /**
-   * A map of string IDs to entities that should be attached to the message, such as an action
-   * to perform, a file attachment, or other FDC3 context object.
-   */
-  entities?: { [key: string]: FluffyAction };
-  /**
-   * A map of string mime-type to string content
-   */
-  text?: FluffyMessageText;
-  type: string;
-  id?: { [key: string]: any };
-  name?: string;
-  [property: string]: any;
-}
-
-/**
- * A representation of an FDC3 Action (specified via a Context or Context & Intent) that can
- * be inserted inside another object, for example a chat message.
+ * Free text to be used for a keyword search
  *
- * The action may be completed by calling `fdc3.raiseIntent()` with the specified Intent and
- * Context, or, if only a context is specified, by calling `fdc3.raiseIntentForContext()`
- * (which the Desktop Agent will resolve by presenting the user with a list of available
- * Intents for the Context).
- *
- * Accepts an optional `app` parameter in order to specify a specific app.
- *
- * A File attachment encoded in the form of a data URI
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
  */
-export interface FluffyAction {
-  /**
-   * An optional target application identifier that should perform the action
-   */
-  app?: ActionTargetApp;
-  /**
-   * A context object with which the action will be performed
-   */
-  context?: ContextElement;
-  /**
-   * Optional Intent to raise to perform the actions. Should reference an intent type name,
-   * such as those defined in the FDC3 Standard. If intent is not set then
-   * `fdc3.raiseIntentForContext` should be used to perform the action as this will usually
-   * allow the user to choose the intent to raise.
-   */
-  intent?: string;
-  /**
-   * A human readable display name for the action
-   */
-  title?: string;
-  type: any;
-  id?: { [key: string]: any };
-  name?: string;
-  data?: FluffyData;
-  [property: string]: any;
-}
-
-export interface FluffyData {
-  /**
-   * A data URI encoding the content of the file to be attached
-   */
-  dataUri: string;
-  /**
-   * The name of the attached file
-   */
-  name: string;
-  [property: string]: any;
-}
-
-/**
- * A map of string mime-type to string content
- */
-export interface FluffyMessageText {
-  /**
-   * Markdown encoded content
-   */
-  'text/markdown'?: string;
-  /**
-   * Plain text encoded content.
-   */
-  'text/plain'?: string;
-  [property: string]: any;
+export enum InteractionType {
+  Fdc3Interaction = 'fdc3.interaction',
 }
 
 /**
@@ -1334,7 +1200,36 @@ export interface FluffyMessageText {
  * for a lack of context, for example in their intent metadata in an app directory.
  */
 export interface Nothing {
-  type: string;
+  type: NothingType;
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum NothingType {
+  Fdc3Nothing = 'fdc3.nothing',
+}
+
+/**
+ * @experimental A list of orders. Use this type for use cases that require not just a
+ * single order, but multiple.
+ *
+ * The OrderList schema does not explicitly include identifiers in the id section, as there
+ * is not a common standard for such identifiers. Applications can, however, populate this
+ * part of the contract with custom identifiers if so desired.
+ */
+export interface OrderList {
+  /**
+   * An array of order contexts that forms the list.
+   */
+  orders: Order[];
+  type: OrderListType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -1356,7 +1251,7 @@ export interface Order {
    * Optional additional details about the order, which may include a product element that is
    * an, as yet undefined but extensible, Context
    */
-  details?: PurpleOrderDetails;
+  details?: OrderDetails;
   /**
    * One or more identifiers that refer to the order in an OMS, EMS or related system.
    * Specific key names for systems are expected to be standardized in future.
@@ -1366,7 +1261,7 @@ export interface Order {
    * An optional human-readable summary of the order.
    */
   name?: string;
-  type: string;
+  type: OrderType;
   [property: string]: any;
 }
 
@@ -1374,8 +1269,8 @@ export interface Order {
  * Optional additional details about the order, which may include a product element that is
  * an, as yet undefined but extensible, Context
  */
-export interface PurpleOrderDetails {
-  product?: ProductObject;
+export interface OrderDetails {
+  product?: Product;
   [property: string]: any;
 }
 
@@ -1392,7 +1287,7 @@ export interface PurpleOrderDetails {
  * not a common standard for such identifiers. Applications can, however, populate this part
  * of the contract with custom identifiers if so desired.
  */
-export interface ProductObject {
+export interface Product {
   /**
    * One or more identifiers that refer to the product. Specific key names for systems are
    * expected to be standardized in future.
@@ -1401,71 +1296,43 @@ export interface ProductObject {
   /**
    * financial instrument that relates to the definition of this product
    */
-  instrument?: InstrumentElement;
+  instrument?: Instrument;
   /**
    * A human-readable summary of the product.
    */
   name?: string;
-  type: string;
+  type: ProductType;
   [property: string]: any;
 }
 
 /**
- * @experimental A list of orders. Use this type for use cases that require not just a
- * single order, but multiple.
+ * Free text to be used for a keyword search
  *
- * The OrderList schema does not explicitly include identifiers in the id section, as there
- * is not a common standard for such identifiers. Applications can, however, populate this
- * part of the contract with custom identifiers if so desired.
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
  */
-export interface OrderList {
-  /**
-   * An array of order contexts that forms the list.
-   */
-  orders: OrderElement[];
-  type: string;
-  id?: { [key: string]: any };
-  name?: string;
-  [property: string]: any;
+export enum ProductType {
+  Fdc3Product = 'fdc3.product',
 }
 
 /**
- * @experimental context type representing an order. To be used with OMS and EMS systems.
+ * Free text to be used for a keyword search
  *
- * This type currently only defines a required `id` field, which should provide a reference
- * to the order in one or more systems, an optional human readable `name` field to be used
- * to summarize the order and an optional `details` field that may be used to provide
- * additional detail about the order, including a context representing a `product`, which
- * may be extended with arbitrary properties. The `details.product` field is currently typed
- * as a unspecified Context type, but both `details` and `details.product` are expected to
- * be standardized in future.
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
  */
-export interface OrderElement {
-  /**
-   * Optional additional details about the order, which may include a product element that is
-   * an, as yet undefined but extensible, Context
-   */
-  details?: FluffyOrderDetails;
-  /**
-   * One or more identifiers that refer to the order in an OMS, EMS or related system.
-   * Specific key names for systems are expected to be standardized in future.
-   */
-  id: { [key: string]: string };
-  /**
-   * An optional human-readable summary of the order.
-   */
-  name?: string;
-  type: string;
-  [property: string]: any;
+export enum OrderType {
+  Fdc3Order = 'fdc3.order',
 }
 
 /**
- * Optional additional details about the order, which may include a product element that is
- * an, as yet undefined but extensible, Context
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
  */
-export interface FluffyOrderDetails {
-  product?: ProductObject;
-  [property: string]: any;
+export enum OrderListType {
+  Fdc3OrderList = 'fdc3.orderList',
 }
 
 /**
@@ -1480,7 +1347,7 @@ export interface Organization {
    * Identifiers for the organization, at least one must be provided.
    */
   id: OrganizationIdentifiers;
-  type: string;
+  type: StickyInteractionType;
   name?: string;
   [property: string]: any;
 }
@@ -1508,6 +1375,16 @@ export interface OrganizationIdentifiers {
 }
 
 /**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum StickyInteractionType {
+  Fdc3Organization = 'fdc3.organization',
+}
+
+/**
  * A financial portfolio made up of multiple positions (holdings) in several instruments.
  * Contrast this with e.g. the [InstrumentList](InstrumentList) type, which is just a list
  * of instruments.
@@ -1526,34 +1403,8 @@ export interface Portfolio {
   /**
    * The List of Positions which make up the Portfolio
    */
-  positions: PositionElement[];
-  type: string;
-  id?: { [key: string]: any };
-  name?: string;
-  [property: string]: any;
-}
-
-/**
- * A financial position made up of an instrument and a holding in that instrument. This type
- * is a good example of how new context types can be composed from existing types.
- *
- * In this case, the instrument and the holding amount for that instrument are required
- * values.
- *
- * The [Position](Position) type goes hand-in-hand with the [Portfolio](Portfolio) type,
- * which represents multiple holdings in a combination of instruments.
- *
- * The position schema does not explicitly include identifiers in the `id` section, as there
- * is not a common standard for such identifiers. Applications can, however, populate this
- * part of the contract with custom identifiers if so desired.
- */
-export interface PositionElement {
-  /**
-   * The amount of the holding, e.g. a number of shares
-   */
-  holding: number;
-  instrument: InstrumentElement;
-  type: string;
+  positions: Position[];
+  type: PortfolioType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -1578,86 +1429,47 @@ export interface Position {
    * The amount of the holding, e.g. a number of shares
    */
   holding: number;
-  instrument: InstrumentElement;
-  type: string;
+  instrument: Instrument;
+  type: PositionType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
 }
 
 /**
- * @experimental context type representing a tradable product. To be used with OMS and EMS
- * systems.
+ * Free text to be used for a keyword search
  *
- * This type is currently only loosely defined as an extensible context object, with an
- * optional instrument field.
- *
- * The Product schema does not explicitly include identifiers in the id section, as there is
- * not a common standard for such identifiers. Applications can, however, populate this part
- * of the contract with custom identifiers if so desired.
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
  */
-export interface Product {
-  /**
-   * One or more identifiers that refer to the product. Specific key names for systems are
-   * expected to be standardized in future.
-   */
-  id: { [key: string]: string };
-  /**
-   * financial instrument that relates to the definition of this product
-   */
-  instrument?: InstrumentElement;
-  /**
-   * A human-readable summary of the product.
-   */
-  name?: string;
-  type: string;
-  [property: string]: any;
+export enum PositionType {
+  Fdc3Position = 'fdc3.position',
 }
 
 /**
- * A context representing a period of time. Any user interfaces that represent or visualize
- * events or activity over time can be filtered or focused on a particular time period,
- * e.g.:
+ * Free text to be used for a keyword search
  *
- * - A pricing chart
- * - A trade blotter
- * - A record of client contact/activity in a CRM
- *
- * Example use cases:
- *
- * - User may want to view pricing/trades/customer activity for a security over a particular
- * time period, the time range might be specified as the context for the `ViewChart` intent
- * OR it might be embedded in another context (e.g. a context representing a chart to plot).
- * - User filters a visualization (e.g. a pricing chart) to show a particular period, the
- * `TimeRange` is broadcast and other visualizations (e.g. a heatmap of activity by
- * instrument, or industry sector etc.) receive it and filter themselves to show data over
- * the same range.
- *
- * Notes:
- *
- * - A `TimeRange` may be closed (i.e. `startTime` and `endTime` are both known) or open
- * (i.e. only one of `startTime` or `endTime` is known).
- * - Ranges corresponding to dates (e.g. `2022-05-12` to `2022-05-19`) should be specified
- * using times as this prevents issues with timezone conversions and inclusive/exclusive
- * date ranges.
- * - String fields representing times are encoded according to [ISO
- * 8601-1:2019](https://www.iso.org/standard/70907.html).
- * - A timezone indicator should be specified, e.g. `"2022-05-12T15:18:03Z"` or
- * `"2022-05-12T16:18:03+01:00"`
- * - Times MAY be specified with millisecond precision, e.g. `"2022-05-12T15:18:03.349Z"`
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
  */
-export interface TimeRange {
+export enum PortfolioType {
+  Fdc3Portfolio = 'fdc3.portfolio',
+}
+
+/**
+ * @experimental A list of trades. Use this type for use cases that require not just a
+ * single trade, but multiple.
+ *
+ * The TradeList schema does not explicitly include identifiers in the id section, as there
+ * is not a common standard for such identifiers. Applications can, however, populate this
+ * part of the contract with custom identifiers if so desired.
+ */
+export interface TradeList {
   /**
-   * The end time of the range, encoded according to [ISO
-   * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
+   * An array of trade contexts that forms the list.
    */
-  endTime?: Date;
-  /**
-   * The start time of the range, encoded according to [ISO
-   * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
-   */
-  startTime?: Date;
-  type: string;
+  trades: Trade[];
+  type: TradeListType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -1689,59 +1501,29 @@ export interface Trade {
   /**
    * A product that is the subject of th trade.
    */
-  product: ProductObject;
-  type: string;
+  product: Product;
+  type: TradeType;
   [property: string]: any;
 }
 
 /**
- * @experimental A list of trades. Use this type for use cases that require not just a
- * single trade, but multiple.
+ * Free text to be used for a keyword search
  *
- * The TradeList schema does not explicitly include identifiers in the id section, as there
- * is not a common standard for such identifiers. Applications can, however, populate this
- * part of the contract with custom identifiers if so desired.
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
  */
-export interface TradeList {
-  /**
-   * An array of trade contexts that forms the list.
-   */
-  trades: TradeElement[];
-  type: string;
-  id?: { [key: string]: any };
-  name?: string;
-  [property: string]: any;
+export enum TradeType {
+  Fdc3Trade = 'fdc3.trade',
 }
 
 /**
- * @experimental context type representing a trade. To be used with execution systems.
+ * Free text to be used for a keyword search
  *
- * This type currently only defines a required `id` field, which should provide a reference
- * to the trade in one or more systems, an optional human readable `name` field to be used
- * to summarize the trade and a required `product` field that may be used to provide
- * additional detail about the trade, which is currently typed as a unspecified Context
- * type, but `product` is expected to be standardized in future.
- *
- * The Trade schema does not explicitly include identifiers in the id section, as there is
- * not a common standard for such identifiers. Applications can, however, populate this part
- * of the contract with custom identifiers if so desired.
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
  */
-export interface TradeElement {
-  /**
-   * One or more identifiers that refer to the trade in an OMS, EMS or related system.
-   * Specific key names for systems are expected to be standardized in future.
-   */
-  id: { [key: string]: string };
-  /**
-   * A human-readable summary of the trade.
-   */
-  name?: string;
-  /**
-   * A product that is the subject of th trade.
-   */
-  product: ProductObject;
-  type: string;
-  [property: string]: any;
+export enum TradeListType {
+  Fdc3TradeList = 'fdc3.tradeList',
 }
 
 /**
@@ -1754,12 +1536,12 @@ export interface TransactionResult {
   /**
    * A context object returned by the transaction, possibly with updated data.
    */
-  context?: ContextElement;
+  context?: Context;
   /**
    * The status of the transaction being reported.
    */
   status: TransactionStatus;
-  type: string;
+  type: TransactionResultType;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -1773,6 +1555,16 @@ export enum TransactionStatus {
   Deleted = 'Deleted',
   Failed = 'Failed',
   Updated = 'Updated',
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum TransactionResultType {
+  Fdc3TransactionResult = 'fdc3.transactionResult',
 }
 
 /**
@@ -1793,7 +1585,7 @@ export interface Valuation {
    * The price per unit the the valuation is based on.
    */
   price?: number;
-  type: string;
+  type: ValuationType;
   /**
    * The time at which the valuation was performed, encoded according to [ISO
    * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
@@ -1806,6 +1598,16 @@ export interface Valuation {
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+export enum ValuationType {
+  Fdc3Valuation = 'fdc3.valuation',
 }
 
 // Converts JSON strings to/from your types
@@ -2206,10 +2008,10 @@ const typeMap: any = {
   Action: o(
     [
       { json: 'app', js: 'app', typ: u(undefined, r('ActionTargetApp')) },
-      { json: 'context', js: 'context', typ: r('ContextElement') },
+      { json: 'context', js: 'context', typ: r('Context') },
       { json: 'intent', js: 'intent', typ: u(undefined, '') },
       { json: 'title', js: 'title', typ: '' },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('ActionType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -2223,7 +2025,7 @@ const typeMap: any = {
     ],
     'any'
   ),
-  ContextElement: o(
+  Context: o(
     [
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -2233,26 +2035,26 @@ const typeMap: any = {
   ),
   Chart: o(
     [
-      { json: 'instruments', js: 'instruments', typ: a(r('InstrumentElement')) },
-      { json: 'otherConfig', js: 'otherConfig', typ: u(undefined, a(r('ContextElement'))) },
-      { json: 'range', js: 'range', typ: u(undefined, r('TimeRangeObject')) },
+      { json: 'instruments', js: 'instruments', typ: a(r('Instrument')) },
+      { json: 'otherConfig', js: 'otherConfig', typ: u(undefined, a(r('Context'))) },
+      { json: 'range', js: 'range', typ: u(undefined, r('TimeRange')) },
       { json: 'style', js: 'style', typ: u(undefined, r('ChartStyle')) },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('ChartType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  InstrumentElement: o(
+  Instrument: o(
     [
-      { json: 'id', js: 'id', typ: r('PurpleInstrumentIdentifiers') },
-      { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: r('InstrumentIdentifiers') },
+      { json: 'market', js: 'market', typ: u(undefined, r('Market')) },
+      { json: 'type', js: 'type', typ: r('PurpleInteractionType') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  PurpleInstrumentIdentifiers: o(
+  InstrumentIdentifiers: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
@@ -2266,7 +2068,7 @@ const typeMap: any = {
     ],
     'any'
   ),
-  OrganizationMarket: o(
+  Market: o(
     [
       { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
       { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
@@ -2275,11 +2077,11 @@ const typeMap: any = {
     ],
     'any'
   ),
-  TimeRangeObject: o(
+  TimeRange: o(
     [
       { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
       { json: 'startTime', js: 'startTime', typ: u(undefined, Date) },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('TimeRangeType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -2288,70 +2090,70 @@ const typeMap: any = {
   ChatInitSettings: o(
     [
       { json: 'chatName', js: 'chatName', typ: u(undefined, '') },
-      { json: 'members', js: 'members', typ: u(undefined, r('ContactListObject')) },
-      { json: 'message', js: 'message', typ: u(undefined, u(r('MessageObject'), '')) },
+      { json: 'members', js: 'members', typ: u(undefined, r('ContactList')) },
+      { json: 'message', js: 'message', typ: u(undefined, u(r('Message'), '')) },
       { json: 'options', js: 'options', typ: u(undefined, r('ChatOptions')) },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('ChatInitSettingsType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  ContactListObject: o(
+  ContactList: o(
     [
-      { json: 'contacts', js: 'contacts', typ: a(r('ContactElement')) },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'contacts', js: 'contacts', typ: a(r('Contact')) },
+      { json: 'type', js: 'type', typ: r('ContactListType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  ContactElement: o(
+  Contact: o(
     [
-      { json: 'id', js: 'id', typ: r('PurpleContactIdentifiers') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'id', js: 'id', typ: r('ContactID') },
+      { json: 'type', js: 'type', typ: r('FluffyInteractionType') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  PurpleContactIdentifiers: o(
+  ContactID: o(
     [
       { json: 'email', js: 'email', typ: u(undefined, '') },
       { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
     ],
     'any'
   ),
-  MessageObject: o(
+  Message: o(
     [
-      { json: 'entities', js: 'entities', typ: u(undefined, m(r('PurpleAction'))) },
-      { json: 'text', js: 'text', typ: u(undefined, r('PurpleMessageText')) },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'entities', js: 'entities', typ: u(undefined, m(r('EntityValue'))) },
+      { json: 'text', js: 'text', typ: u(undefined, r('MessageText')) },
+      { json: 'type', js: 'type', typ: r('MessageType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  PurpleAction: o(
+  EntityValue: o(
     [
       { json: 'app', js: 'app', typ: u(undefined, r('ActionTargetApp')) },
-      { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
+      { json: 'context', js: 'context', typ: u(undefined, r('Context')) },
       { json: 'intent', js: 'intent', typ: u(undefined, '') },
       { json: 'title', js: 'title', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: 'any' },
+      { json: 'type', js: 'type', typ: r('EntityType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'data', js: 'data', typ: u(undefined, r('PurpleData')) },
+      { json: 'data', js: 'data', typ: u(undefined, r('Data')) },
     ],
     'any'
   ),
-  PurpleData: o(
+  Data: o(
     [
       { json: 'dataUri', js: 'dataUri', typ: '' },
       { json: 'name', js: 'name', typ: '' },
     ],
     'any'
   ),
-  PurpleMessageText: o(
+  MessageText: o(
     [
       { json: 'text/markdown', js: 'text/markdown', typ: u(undefined, '') },
       { json: 'text/plain', js: 'text/plain', typ: u(undefined, '') },
@@ -2370,21 +2172,11 @@ const typeMap: any = {
   ),
   ChatMessage: o(
     [
-      { json: 'chatRoom', js: 'chatRoom', typ: r('ChatRoomObject') },
-      { json: 'message', js: 'message', typ: u(r('MessageObject'), '') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'chatRoom', js: 'chatRoom', typ: r('ChatRoom') },
+      { json: 'message', js: 'message', typ: u(r('Message'), '') },
+      { json: 'type', js: 'type', typ: r('ChatMessageType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  ChatRoomObject: o(
-    [
-      { json: 'id', js: 'id', typ: m('any') },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'providerName', js: 'providerName', typ: '' },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'url', js: 'url', typ: u(undefined, '') },
     ],
     'any'
   ),
@@ -2393,25 +2185,25 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: m('any') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'providerName', js: 'providerName', typ: '' },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('ChatRoomType') },
       { json: 'url', js: 'url', typ: u(undefined, '') },
     ],
     'any'
   ),
   ChatSearchCriteria: o(
     [
-      { json: 'criteria', js: 'criteria', typ: a(u(r('OrganizationObject'), '')) },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'criteria', js: 'criteria', typ: a(u(r('InstrumentObject'), '')) },
+      { json: 'type', js: 'type', typ: r('ChatSearchCriteriaType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  OrganizationObject: o(
+  InstrumentObject: o(
     [
       { json: 'id', js: 'id', typ: r('Identifiers') },
-      { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'market', js: 'market', typ: u(undefined, r('Market')) },
+      { json: 'type', js: 'type', typ: r('TentacledInteractionType') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -2432,42 +2224,10 @@ const typeMap: any = {
     ],
     'any'
   ),
-  Contact: o(
-    [
-      { json: 'id', js: 'id', typ: r('FluffyContactIdentifiers') },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  FluffyContactIdentifiers: o(
-    [
-      { json: 'email', js: 'email', typ: u(undefined, '') },
-      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  ContactList: o(
-    [
-      { json: 'contacts', js: 'contacts', typ: a(r('ContactElement')) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  Context: o(
-    [
-      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
-    ],
-    'any'
-  ),
   Country: o(
     [
       { json: 'id', js: 'id', typ: r('CountryID') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('CountryType') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -2485,7 +2245,7 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: r('CurrencyID') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('CurrencyType') },
     ],
     'any'
   ),
@@ -2495,7 +2255,7 @@ const typeMap: any = {
       { json: 'recipients', js: 'recipients', typ: r('EmailRecipients') },
       { json: 'subject', js: 'subject', typ: u(undefined, '') },
       { json: 'textBody', js: 'textBody', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('EmailType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -2504,9 +2264,9 @@ const typeMap: any = {
   EmailRecipients: o(
     [
       { json: 'id', js: 'id', typ: u(undefined, r('EmailRecipientsID')) },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('EmailRecipientsType') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'contacts', js: 'contacts', typ: u(undefined, a(r('ContactElement'))) },
+      { json: 'contacts', js: 'contacts', typ: u(undefined, a(r('Contact'))) },
     ],
     'any'
   ),
@@ -2517,42 +2277,10 @@ const typeMap: any = {
     ],
     'any'
   ),
-  Instrument: o(
-    [
-      { json: 'id', js: 'id', typ: r('FluffyInstrumentIdentifiers') },
-      { json: 'market', js: 'market', typ: u(undefined, r('PurpleMarket')) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  FluffyInstrumentIdentifiers: o(
-    [
-      { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
-      { json: 'CUSIP', js: 'CUSIP', typ: u(undefined, '') },
-      { json: 'FDS_ID', js: 'FDS_ID', typ: u(undefined, '') },
-      { json: 'FIGI', js: 'FIGI', typ: u(undefined, '') },
-      { json: 'ISIN', js: 'ISIN', typ: u(undefined, '') },
-      { json: 'PERMID', js: 'PERMID', typ: u(undefined, '') },
-      { json: 'RIC', js: 'RIC', typ: u(undefined, '') },
-      { json: 'SEDOL', js: 'SEDOL', typ: u(undefined, '') },
-      { json: 'ticker', js: 'ticker', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  PurpleMarket: o(
-    [
-      { json: 'BBG', js: 'BBG', typ: u(undefined, '') },
-      { json: 'COUNTRY_ISOALPHA2', js: 'COUNTRY_ISOALPHA2', typ: u(undefined, '') },
-      { json: 'MIC', js: 'MIC', typ: u(undefined, '') },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
   InstrumentList: o(
     [
-      { json: 'instruments', js: 'instruments', typ: a(r('InstrumentElement')) },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'instruments', js: 'instruments', typ: a(r('Instrument')) },
+      { json: 'type', js: 'type', typ: r('InstrumentListType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -2562,12 +2290,12 @@ const typeMap: any = {
     [
       { json: 'description', js: 'description', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, r('InteractionID')) },
-      { json: 'initiator', js: 'initiator', typ: u(undefined, r('ContactElement')) },
+      { json: 'initiator', js: 'initiator', typ: u(undefined, r('Contact')) },
       { json: 'interactionType', js: 'interactionType', typ: '' },
       { json: 'origin', js: 'origin', typ: u(undefined, '') },
-      { json: 'participants', js: 'participants', typ: r('ContactListObject') },
-      { json: 'timeRange', js: 'timeRange', typ: r('TimeRangeObject') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'participants', js: 'participants', typ: r('ContactList') },
+      { json: 'timeRange', js: 'timeRange', typ: r('TimeRange') },
+      { json: 'type', js: 'type', typ: r('InteractionType') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -2580,46 +2308,18 @@ const typeMap: any = {
     ],
     'any'
   ),
-  Message: o(
-    [
-      { json: 'entities', js: 'entities', typ: u(undefined, m(r('FluffyAction'))) },
-      { json: 'text', js: 'text', typ: u(undefined, r('FluffyMessageText')) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  FluffyAction: o(
-    [
-      { json: 'app', js: 'app', typ: u(undefined, r('ActionTargetApp')) },
-      { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
-      { json: 'intent', js: 'intent', typ: u(undefined, '') },
-      { json: 'title', js: 'title', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: 'any' },
-      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'data', js: 'data', typ: u(undefined, r('FluffyData')) },
-    ],
-    'any'
-  ),
-  FluffyData: o(
-    [
-      { json: 'dataUri', js: 'dataUri', typ: '' },
-      { json: 'name', js: 'name', typ: '' },
-    ],
-    'any'
-  ),
-  FluffyMessageText: o(
-    [
-      { json: 'text/markdown', js: 'text/markdown', typ: u(undefined, '') },
-      { json: 'text/plain', js: 'text/plain', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
   Nothing: o(
     [
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('NothingType') },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  OrderList: o(
+    [
+      { json: 'orders', js: 'orders', typ: a(r('Order')) },
+      { json: 'type', js: 'type', typ: r('OrderListType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -2627,46 +2327,27 @@ const typeMap: any = {
   ),
   Order: o(
     [
-      { json: 'details', js: 'details', typ: u(undefined, r('PurpleOrderDetails')) },
+      { json: 'details', js: 'details', typ: u(undefined, r('OrderDetails')) },
       { json: 'id', js: 'id', typ: m('') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('OrderType') },
     ],
     'any'
   ),
-  PurpleOrderDetails: o([{ json: 'product', js: 'product', typ: u(undefined, r('ProductObject')) }], 'any'),
-  ProductObject: o(
+  OrderDetails: o([{ json: 'product', js: 'product', typ: u(undefined, r('Product')) }], 'any'),
+  Product: o(
     [
       { json: 'id', js: 'id', typ: m('') },
-      { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
+      { json: 'instrument', js: 'instrument', typ: u(undefined, r('Instrument')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('ProductType') },
     ],
     'any'
   ),
-  OrderList: o(
-    [
-      { json: 'orders', js: 'orders', typ: a(r('OrderElement')) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  OrderElement: o(
-    [
-      { json: 'details', js: 'details', typ: u(undefined, r('FluffyOrderDetails')) },
-      { json: 'id', js: 'id', typ: m('') },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
-    ],
-    'any'
-  ),
-  FluffyOrderDetails: o([{ json: 'product', js: 'product', typ: u(undefined, r('ProductObject')) }], 'any'),
   Organization: o(
     [
       { json: 'id', js: 'id', typ: r('OrganizationIdentifiers') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('StickyInteractionType') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -2681,18 +2362,8 @@ const typeMap: any = {
   ),
   Portfolio: o(
     [
-      { json: 'positions', js: 'positions', typ: a(r('PositionElement')) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  PositionElement: o(
-    [
-      { json: 'holding', js: 'holding', typ: 3.14 },
-      { json: 'instrument', js: 'instrument', typ: r('InstrumentElement') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'positions', js: 'positions', typ: a(r('Position')) },
+      { json: 'type', js: 'type', typ: r('PortfolioType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -2701,27 +2372,17 @@ const typeMap: any = {
   Position: o(
     [
       { json: 'holding', js: 'holding', typ: 3.14 },
-      { json: 'instrument', js: 'instrument', typ: r('InstrumentElement') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'instrument', js: 'instrument', typ: r('Instrument') },
+      { json: 'type', js: 'type', typ: r('PositionType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
-  Product: o(
+  TradeList: o(
     [
-      { json: 'id', js: 'id', typ: m('') },
-      { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: '' },
-    ],
-    'any'
-  ),
-  TimeRange: o(
-    [
-      { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
-      { json: 'startTime', js: 'startTime', typ: u(undefined, Date) },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'trades', js: 'trades', typ: a(r('Trade')) },
+      { json: 'type', js: 'type', typ: r('TradeListType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -2731,34 +2392,16 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: m('') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'product', js: 'product', typ: r('ProductObject') },
-      { json: 'type', js: 'type', typ: '' },
-    ],
-    'any'
-  ),
-  TradeList: o(
-    [
-      { json: 'trades', js: 'trades', typ: a(r('TradeElement')) },
-      { json: 'type', js: 'type', typ: '' },
-      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  TradeElement: o(
-    [
-      { json: 'id', js: 'id', typ: m('') },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'product', js: 'product', typ: r('ProductObject') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'product', js: 'product', typ: r('Product') },
+      { json: 'type', js: 'type', typ: r('TradeType') },
     ],
     'any'
   ),
   TransactionResult: o(
     [
-      { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
+      { json: 'context', js: 'context', typ: u(undefined, r('Context')) },
       { json: 'status', js: 'status', typ: r('TransactionStatus') },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('TransactionResultType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -2769,7 +2412,7 @@ const typeMap: any = {
       { json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: '' },
       { json: 'expiryTime', js: 'expiryTime', typ: u(undefined, Date) },
       { json: 'price', js: 'price', typ: u(undefined, 3.14) },
-      { json: 'type', js: 'type', typ: '' },
+      { json: 'type', js: 'type', typ: r('ValuationType') },
       { json: 'valuationTime', js: 'valuationTime', typ: u(undefined, Date) },
       { json: 'value', js: 'value', typ: 3.14 },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
@@ -2777,6 +2420,36 @@ const typeMap: any = {
     ],
     'any'
   ),
+  ActionType: ['fdc3.action'],
+  PurpleInteractionType: ['fdc3.instrument'],
+  TimeRangeType: ['fdc3.timerange'],
   ChartStyle: ['bar', 'candle', 'custom', 'heatmap', 'histogram', 'line', 'mountain', 'pie', 'scatter', 'stacked-bar'],
+  ChartType: ['fdc3.chart'],
+  FluffyInteractionType: ['fdc3.contact'],
+  ContactListType: ['fdc3.contactList'],
+  EntityType: ['fdc3.action', 'fdc3.entity.fileAttachment'],
+  MessageType: ['fdc3.message'],
+  ChatInitSettingsType: ['fdc3.chat.initSettings'],
+  ChatRoomType: ['fdc3.chat.room'],
+  ChatMessageType: ['fdc3.chat.message'],
+  TentacledInteractionType: ['fdc3.contact', 'fdc3.instrument', 'fdc3.organization'],
+  ChatSearchCriteriaType: ['fdc3.chat.searchCriteria'],
+  CountryType: ['fdc3.country'],
+  CurrencyType: ['fdc3.currency'],
+  EmailRecipientsType: ['fdc3.contact', 'fdc3.contactList'],
+  EmailType: ['fdc3.email'],
+  InstrumentListType: ['fdc3.instrumentList'],
+  InteractionType: ['fdc3.interaction'],
+  NothingType: ['fdc3.nothing'],
+  ProductType: ['fdc3.product'],
+  OrderType: ['fdc3.order'],
+  OrderListType: ['fdc3.orderList'],
+  StickyInteractionType: ['fdc3.organization'],
+  PositionType: ['fdc3.position'],
+  PortfolioType: ['fdc3.portfolio'],
+  TradeType: ['fdc3.trade'],
+  TradeListType: ['fdc3.tradeList'],
   TransactionStatus: ['Created', 'Deleted', 'Failed', 'Updated'],
+  TransactionResultType: ['fdc3.transactionResult'],
+  ValuationType: ['fdc3.valuation'],
 };
