@@ -85,7 +85,7 @@ If you **complete** the exam, you'll receive some **FINOS swag** (a t-shirt) and
       <img src="/certification/7-schedule.png" alt="Image of slide number 7" />
     </div>
     <div className="slide-notes">
-      <p>Next, you should see a greyed-out schedule box.  The exam is run by another firm, [PSI](https://www.psiexams.com/test-sponsors/test-delivery/online-proctoring/), and it can take up to 30 minutes to get the details of the candidate over to them.  So the button to schedule remains greyed out for usually a few minutes. </p>
+      <p>Next, you should see a greyed-out schedule box.  The exam is run by another firm, <a href="https://www.psiexams.com/test-sponsors/test-delivery/online-proctoring/">PSI</a>, and it can take up to 30 minutes to get the details of the candidate over to them.  So the button to schedule remains greyed out for usually a few minutes. </p>
     </div>
   </div>
   <div className="slide slide--bordered">
