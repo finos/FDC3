@@ -145,7 +145,11 @@ module.exports={
             {
               "label": "Training",
               "to": "https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop"
-            }
+            },
+            {
+              "label": "Certification",
+              "to": "docs/guides/certification-instructions"				
+			}
           ]
         },
         {
