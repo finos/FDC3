@@ -119,6 +119,7 @@ If you **complete** the exam, you'll receive some **FINOS swag** (a t-shirt) and
     <div className="slide-notes">
       <p>Choose the location you are in.  There should be timeslots available in every location.</p>
       <p>As mentioned above, try to schedule the exam for a time when you'll be on your home equipment as it may not work inside a firewall.</p>      
+      <p><strong>Note:</strong> The beta for FCFP ends on 20th November 2023, so you must schedule by 19th November to have your answers included in the beta.</p>
     </div>
   </div>
   <div className="slide slide--bordered">
