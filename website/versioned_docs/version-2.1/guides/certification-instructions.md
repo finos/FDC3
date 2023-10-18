@@ -7,7 +7,7 @@ id: CertificationInstructions
 
 <link href="/certification/web.css" rel="stylesheet"></link>
 
-**Note 1**:  The FCFP exam is _proctored_ - this means someone will be observing you take the exam.  For this reason, scheduling the exam is slightly complex.  These instructions will take you through the process.
+**Note 1**:  The FCFP exam is _proctored_ - this means someone will be observing you (via webcam) take the exam.  For this reason, scheduling the exam is slightly complex.  These instructions will take you through the process.
 
 **Note 2**: While it should be possible to schedule your exam from within a firewalled financial services firm, we strongly suggest to avoid technical difficulties, taking this exam **on your own equipment** outside office hours.
 
