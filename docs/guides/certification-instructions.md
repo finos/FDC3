@@ -11,6 +11,7 @@ id: CertificationInstructions
 
 **Note 2**: While it should be possible to schedule your exam from within a firewalled financial services firm, we strongly suggest to avoid technical difficulties, taking this exam **on your own equipment** outside office hours.
 
+If you **complete** the exam, you'll receive some **FINOS swag** (a t-shirt) and the **FCFP Qualification** to share on socials.
 
 <div className="slides">
   <div className="slide slide--bordered">
@@ -134,6 +135,14 @@ id: CertificationInstructions
     </div>
     <div className="slide-notes">
       <p>Remember, someone will be waiting to watch you take the exam when you do it, so set an alarm to make sure you make your appointment.</p>
+    </div>
+  </div>
+  <div className="slide slide--bordered">
+    <div className="slide-image">
+      <img src="/certification/15-t-shirts.jpg" alt="Image of slide number 14" />
+    </div>
+    <div className="slide-notes">
+      <p>After completing the exam, someone from FINOS will be in touch to organise mailing out your <strong>FREE T-Shirt</strong> and ask some questions about your background.</p>
     </div>
   </div>
 </div>
