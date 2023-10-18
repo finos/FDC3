@@ -52,7 +52,7 @@ If you **complete** the exam, you'll receive some **FINOS swag** (a t-shirt) and
       <img src="/certification/4-place-order.png" alt="Image of slide number 4" />
     </div>
     <div className="slide-notes">
-      <p>Check the checkbox and click "Place Your Order"</p>
+      <p>Check the T&Cs checkbox and click "Place Your Order"</p>
     </div>
   </div>
   <div className="slide slide--bordered">
