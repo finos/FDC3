@@ -101,7 +101,7 @@ If you **complete** the exam, you'll receive some **FINOS swag** (a t-shirt) and
       <img src="/certification/9-schedule.png" alt="Image of slide number 9" />
     </div>
     <div className="slide-notes">
-      <p>When you return with the beverage of your choice, you should see a newly-revitalised <strong>schedule</strong> button, which will accept your click.</p>
+      <p>When you return with the beverage of your choice, you should see a newly-revitalised <strong>schedule</strong> button, which will accept your click.  If not - try refreshing the page.</p>
     </div>
   </div>
   <div className="slide slide--bordered">
