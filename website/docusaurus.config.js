@@ -148,7 +148,7 @@ module.exports={
             },
             {
               "label": "Certification",
-              "to": "docs/guides/certification-instructions"				
+              "to": "/docs/next/guides/CertificationInstructions"				
 			}
           ]
         },
