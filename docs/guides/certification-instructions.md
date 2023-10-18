@@ -57,6 +57,14 @@ If you **complete** the exam, you'll receive some **FINOS swag** (a t-shirt) and
   </div>
   <div className="slide slide--bordered">
     <div className="slide-image">
+      <img src="/certification/4.5-portal.png" alt="Image of slide number 4" />
+    </div>
+    <div className="slide-notes">
+      <p>Once the order is complete, the exam will appear in your Linux Foundation Training Portal.  Click the button to schedule your exam.</p>
+    </div>
+  </div>
+  <div className="slide slide--bordered">
+    <div className="slide-image">
       <img src="/certification/5-agree.png" alt="Image of slide number 5" />
     </div>
     <div className="slide-notes">
