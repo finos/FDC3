@@ -36,7 +36,7 @@ If you **complete** the exam, you'll receive some **FINOS swag** (a t-shirt) and
       <img src="/certification/2-coupon.png" alt="Image of slide number 2" />
     </div>
     <div className="slide-notes">
-      <p>Next use the coupon code <strong>FCFP-BETA-2023</strong> in the box to reduce the price to zero.</p>
+      <p>Next use the coupon code <strong>from the email</strong> in the box to reduce the price to zero.</p>
     </div>
   </div>
   <div className="slide slide--bordered">
