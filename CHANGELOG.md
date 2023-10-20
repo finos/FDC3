@@ -45,6 +45,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Updated definition of the `otherConfig` element of the `Chart` context type from an Object to an array of Contexts as this allows the `type` of each additional item of config to be examined before it is used ([#985](https://github.com/finos/FDC3/pull/985))
 * Corrected the appD `interop.appChannels` metadata to use an `id` field to identify channels, rather than `name` ([#981](https://github.com/finos/FDC3/pull/981))
 * The App Directory OpenAPI schema was converted from YAML to JSON Schema, containing the same definitions. ([#1035](https://github.com/finos/FDC3/pull/1035))
+* Switched to union types (from enums) for constrained string values in generated source files as they provide better type checking and cross-compatability of types. ([#1093](https://github.com/finos/FDC3/pull/1093))
 
 ### Deprecated
 
