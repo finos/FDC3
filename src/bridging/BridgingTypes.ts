@@ -169,43 +169,41 @@ export interface ErrorResponseMessagePayload {
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
  */
-export enum ResponseErrorDetail {
-  AccessDenied = 'AccessDenied',
-  AgentDisconnected = 'AgentDisconnected',
-  AppNotFound = 'AppNotFound',
-  AppTimeout = 'AppTimeout',
-  CreationFailed = 'CreationFailed',
-  DesktopAgentNotFound = 'DesktopAgentNotFound',
-  ErrorOnLaunch = 'ErrorOnLaunch',
-  IntentDeliveryFailed = 'IntentDeliveryFailed',
-  IntentHandlerRejected = 'IntentHandlerRejected',
-  MalformedContext = 'MalformedContext',
-  MalformedMessage = 'MalformedMessage',
-  NoAppsFound = 'NoAppsFound',
-  NoChannelFound = 'NoChannelFound',
-  NoResultReturned = 'NoResultReturned',
-  NotConnectedToBridge = 'NotConnectedToBridge',
-  ResolverTimeout = 'ResolverTimeout',
-  ResolverUnavailable = 'ResolverUnavailable',
-  ResponseToBridgeTimedOut = 'ResponseToBridgeTimedOut',
-  TargetAppUnavailable = 'TargetAppUnavailable',
-  TargetInstanceUnavailable = 'TargetInstanceUnavailable',
-  UserCancelledResolution = 'UserCancelledResolution',
-}
+export type ResponseErrorDetail =
+  | 'AccessDenied'
+  | 'CreationFailed'
+  | 'MalformedContext'
+  | 'NoChannelFound'
+  | 'AppNotFound'
+  | 'AppTimeout'
+  | 'DesktopAgentNotFound'
+  | 'ErrorOnLaunch'
+  | 'ResolverUnavailable'
+  | 'IntentDeliveryFailed'
+  | 'NoAppsFound'
+  | 'ResolverTimeout'
+  | 'TargetAppUnavailable'
+  | 'TargetInstanceUnavailable'
+  | 'UserCancelledResolution'
+  | 'IntentHandlerRejected'
+  | 'NoResultReturned'
+  | 'AgentDisconnected'
+  | 'NotConnectedToBridge'
+  | 'ResponseToBridgeTimedOut'
+  | 'MalformedMessage';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
-export enum ResponseMessageType {
-  FindInstancesResponse = 'findInstancesResponse',
-  FindIntentResponse = 'findIntentResponse',
-  FindIntentsByContextResponse = 'findIntentsByContextResponse',
-  GetAppMetadataResponse = 'getAppMetadataResponse',
-  OpenResponse = 'openResponse',
-  RaiseIntentResponse = 'raiseIntentResponse',
-  RaiseIntentResultResponse = 'raiseIntentResultResponse',
-}
+export type ResponseMessageType =
+  | 'findInstancesResponse'
+  | 'findIntentResponse'
+  | 'findIntentsByContextResponse'
+  | 'getAppMetadataResponse'
+  | 'openResponse'
+  | 'raiseIntentResponse'
+  | 'raiseIntentResultResponse';
 
 /**
  * A request message from a Desktop Agent to the Bridge.
@@ -378,21 +376,20 @@ export interface SourceIdentifier {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  */
-export enum RequestMessageType {
-  BroadcastRequest = 'broadcastRequest',
-  FindInstancesRequest = 'findInstancesRequest',
-  FindIntentRequest = 'findIntentRequest',
-  FindIntentsByContextRequest = 'findIntentsByContextRequest',
-  GetAppMetadataRequest = 'getAppMetadataRequest',
-  OpenRequest = 'openRequest',
-  PrivateChannelBroadcast = 'PrivateChannel.broadcast',
-  PrivateChannelEventListenerAdded = 'PrivateChannel.eventListenerAdded',
-  PrivateChannelEventListenerRemoved = 'PrivateChannel.eventListenerRemoved',
-  PrivateChannelOnAddContextListener = 'PrivateChannel.onAddContextListener',
-  PrivateChannelOnDisconnect = 'PrivateChannel.onDisconnect',
-  PrivateChannelOnUnsubscribe = 'PrivateChannel.onUnsubscribe',
-  RaiseIntentRequest = 'raiseIntentRequest',
-}
+export type RequestMessageType =
+  | 'broadcastRequest'
+  | 'findInstancesRequest'
+  | 'findIntentRequest'
+  | 'findIntentsByContextRequest'
+  | 'getAppMetadataRequest'
+  | 'openRequest'
+  | 'PrivateChannel.broadcast'
+  | 'PrivateChannel.eventListenerAdded'
+  | 'PrivateChannel.eventListenerRemoved'
+  | 'PrivateChannel.onAddContextListener'
+  | 'PrivateChannel.onDisconnect'
+  | 'PrivateChannel.onUnsubscribe'
+  | 'raiseIntentRequest';
 
 /**
  * A response message from a Desktop Agent to the Bridge.
@@ -855,12 +852,7 @@ export interface ConnectionStepMetadata {
 /**
  * Identifies the type of the connection step message.
  */
-export enum ConnectionStepMessageType {
-  AuthenticationFailed = 'authenticationFailed',
-  ConnectedAgentsUpdate = 'connectedAgentsUpdate',
-  Handshake = 'handshake',
-  Hello = 'hello',
-}
+export type ConnectionStepMessageType = 'hello' | 'handshake' | 'authenticationFailed' | 'connectedAgentsUpdate';
 
 /**
  * Hello message sent by the Bridge to anyone connecting to the Bridge (enables
@@ -1158,21 +1150,20 @@ export interface FindInstancesAgentErrorResponsePayload {
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  */
-export enum ErrorMessage {
-  AgentDisconnected = 'AgentDisconnected',
-  DesktopAgentNotFound = 'DesktopAgentNotFound',
-  IntentDeliveryFailed = 'IntentDeliveryFailed',
-  MalformedContext = 'MalformedContext',
-  MalformedMessage = 'MalformedMessage',
-  NoAppsFound = 'NoAppsFound',
-  NotConnectedToBridge = 'NotConnectedToBridge',
-  ResolverTimeout = 'ResolverTimeout',
-  ResolverUnavailable = 'ResolverUnavailable',
-  ResponseToBridgeTimedOut = 'ResponseToBridgeTimedOut',
-  TargetAppUnavailable = 'TargetAppUnavailable',
-  TargetInstanceUnavailable = 'TargetInstanceUnavailable',
-  UserCancelledResolution = 'UserCancelledResolution',
-}
+export type ErrorMessage =
+  | 'DesktopAgentNotFound'
+  | 'IntentDeliveryFailed'
+  | 'MalformedContext'
+  | 'NoAppsFound'
+  | 'ResolverTimeout'
+  | 'ResolverUnavailable'
+  | 'TargetAppUnavailable'
+  | 'TargetInstanceUnavailable'
+  | 'UserCancelledResolution'
+  | 'AgentDisconnected'
+  | 'NotConnectedToBridge'
+  | 'ResponseToBridgeTimedOut'
+  | 'MalformedMessage';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -2590,18 +2581,17 @@ export interface OpenAgentErrorResponsePayload {
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
  */
-export enum OpenErrorMessage {
-  AgentDisconnected = 'AgentDisconnected',
-  AppNotFound = 'AppNotFound',
-  AppTimeout = 'AppTimeout',
-  DesktopAgentNotFound = 'DesktopAgentNotFound',
-  ErrorOnLaunch = 'ErrorOnLaunch',
-  MalformedContext = 'MalformedContext',
-  MalformedMessage = 'MalformedMessage',
-  NotConnectedToBridge = 'NotConnectedToBridge',
-  ResolverUnavailable = 'ResolverUnavailable',
-  ResponseToBridgeTimedOut = 'ResponseToBridgeTimedOut',
-}
+export type OpenErrorMessage =
+  | 'AppNotFound'
+  | 'AppTimeout'
+  | 'DesktopAgentNotFound'
+  | 'ErrorOnLaunch'
+  | 'MalformedContext'
+  | 'ResolverUnavailable'
+  | 'AgentDisconnected'
+  | 'NotConnectedToBridge'
+  | 'ResponseToBridgeTimedOut'
+  | 'MalformedMessage';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -3117,11 +3107,7 @@ export interface PrivateChannelEventListenerAddedAgentRequestPayload {
 /**
  * Event listener type names for Private Channel events
  */
-export enum PrivateChannelEventListenerTypes {
-  OnAddContextListener = 'onAddContextListener',
-  OnDisconnect = 'onDisconnect',
-  OnUnsubscribe = 'onUnsubscribe',
-}
+export type PrivateChannelEventListenerTypes = 'onAddContextListener' | 'onUnsubscribe' | 'onDisconnect';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -3925,14 +3911,13 @@ export interface RaiseIntentResultAgentErrorResponsePayload {
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
  */
-export enum RaiseIntentResultErrorMessage {
-  AgentDisconnected = 'AgentDisconnected',
-  IntentHandlerRejected = 'IntentHandlerRejected',
-  MalformedMessage = 'MalformedMessage',
-  NoResultReturned = 'NoResultReturned',
-  NotConnectedToBridge = 'NotConnectedToBridge',
-  ResponseToBridgeTimedOut = 'ResponseToBridgeTimedOut',
-}
+export type RaiseIntentResultErrorMessage =
+  | 'IntentHandlerRejected'
+  | 'NoResultReturned'
+  | 'AgentDisconnected'
+  | 'NotConnectedToBridge'
+  | 'ResponseToBridgeTimedOut'
+  | 'MalformedMessage';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -4045,11 +4030,7 @@ export interface DisplayMetadata {
  * Uniquely defines each channel type.
  * Can be "user", "app" or "private".
  */
-export enum Type {
-  App = 'app',
-  Private = 'private',
-  User = 'user',
-}
+export type Type = 'app' | 'private' | 'user';
 
 /**
  * A secondary response to a request to raise an intent used to deliver the intent result,
