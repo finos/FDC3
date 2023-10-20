@@ -44,7 +44,7 @@ while (dirIndex < inputs.length) {
 //const quicktypeExec = ['.', 'node_modules', '.bin', 'quicktype'].join(path.sep);
 const quicktypeExec = "node --stack_trace_limit=100 --max-old-space-size=4096 \"../quicktype/dist/index.js\""
 
-const command = `${quicktypeExec} --no-combine-classes -s schema -l typescript-zod -o ${outputFile} ${sources}`;
+const command = `${quicktypeExec} -s schema -l typescript-zod -o ${outputFile} ${sources}`;
 console.log('command to run: ' + command);
 
 exec(command, function(error, stdout, stderr) {
