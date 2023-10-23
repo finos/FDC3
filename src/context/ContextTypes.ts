@@ -390,18 +390,17 @@ export interface TimeRangeObject {
 /**
  * The type of chart that should be plotted
  */
-export enum ChartStyle {
-  Bar = 'bar',
-  Candle = 'candle',
-  Custom = 'custom',
-  Heatmap = 'heatmap',
-  Histogram = 'histogram',
-  Line = 'line',
-  Mountain = 'mountain',
-  Pie = 'pie',
-  Scatter = 'scatter',
-  StackedBar = 'stacked-bar',
-}
+export type ChartStyle =
+  | 'line'
+  | 'bar'
+  | 'stacked-bar'
+  | 'mountain'
+  | 'candle'
+  | 'pie'
+  | 'scatter'
+  | 'histogram'
+  | 'heatmap'
+  | 'custom';
 
 /**
  * Free text to be used for a keyword search
@@ -582,10 +581,7 @@ export interface PurpleData {
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
-export enum EntityType {
-  Fdc3Action = 'fdc3.action',
-  Fdc3EntityFileAttachment = 'fdc3.entity.fileAttachment',
-}
+export type EntityType = 'fdc3.action' | 'fdc3.entity.fileAttachment';
 
 /**
  * A map of string mime-type to string content
@@ -875,11 +871,7 @@ export interface Identifiers {
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
-export enum TentacledInteractionType {
-  Fdc3Contact = 'fdc3.contact',
-  Fdc3Instrument = 'fdc3.instrument',
-  Fdc3Organization = 'fdc3.organization',
-}
+export type TentacledInteractionType = 'fdc3.instrument' | 'fdc3.organization' | 'fdc3.contact';
 
 /**
  * Free text to be used for a keyword search
@@ -1143,10 +1135,7 @@ export interface EmailRecipientsID {
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
-export enum EmailRecipientsType {
-  Fdc3Contact = 'fdc3.contact',
-  Fdc3ContactList = 'fdc3.contactList',
-}
+export type EmailRecipientsType = 'fdc3.contact' | 'fdc3.contactList';
 
 /**
  * Free text to be used for a keyword search
@@ -1973,12 +1962,7 @@ export interface TransactionResult {
 /**
  * The status of the transaction being reported.
  */
-export enum TransactionStatus {
-  Created = 'Created',
-  Deleted = 'Deleted',
-  Failed = 'Failed',
-  Updated = 'Updated',
-}
+export type TransactionStatus = 'Created' | 'Deleted' | 'Updated' | 'Failed';
 
 /**
  * Free text to be used for a keyword search
