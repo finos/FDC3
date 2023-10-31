@@ -37,7 +37,7 @@ id: CertificationInstructions
       <img src="/certification/15-t-shirts.jpg" alt="Image of slide number 2" />
     </div>
     <div className="slide-notes">
-      <p>If you <strong>complete</strong> the exam, you'll receive some <strong>FINOS swag</strong> (a t-shirt) and the <strong>FCFP Qualification</strong> to share on socials.</p>
+      <p>If you <strong>complete</strong> the exam, you'll receive some <strong>FINOS swag</strong> (a t-shirt) and if you pass, the <strong>FCFP Qualification</strong> to share on socials.</p>
     </div>
   </div>
 </div>
@@ -214,6 +214,7 @@ id: CertificationInstructions
     <div className="slide-notes">
       <p>You will have received an email containing your exam details, but in case you've mislaid that, <a href="https://trainingportal.linuxfoundation.org/learn/dashboard">Click Here</a> to access the Linux Foundation Training Portal where you can find your exam.</p>
       <p>Click the button highlighted to access the exam page.</p>
+      <p><strong>Note: </strong>  The Linux Foundation's documentation around <a href="https://docs.linuxfoundation.org/tc-docs/certification/lf-handbook2/taking-the-exam">taking the exam</a> is really thorough.  Please consult that if you encounter something not covered in this guide.</p>
     </div>
   </div>
     <div className="slide slide--bordered">
@@ -222,7 +223,7 @@ id: CertificationInstructions
     </div>
     <div className="slide-notes">
       <p>Next, you'll need to complete the pre-checks, including testing your system compatibility and reading the instructions.</p>
-      <p>After that, the <strong>Take Exam</strong> button should be highlighted.</p>
+      <p>The <strong>Take Exam</strong> button will become active <strong>30 minutes</strong> before the exam and will remain active until <strong>30 minutes</strong> after the scheduled exam time.</p>
       <p>More instructions on completing this can be found <a href="https://docs.linuxfoundation.org/tc-docs/certification/lf-handbook2/exam-preparation-checklist">here</a>.</p>
     </div>
   </div>
