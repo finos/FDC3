@@ -1,5 +1,35 @@
 [
   {
+    "title": "Introduction to FDC3 (LFEL1000)",
+    "publisher": "Linux Foundation",
+    "image": "/img/training/LFEL1000.png",
+    "infoLink": "https://training.linuxfoundation.org/express-learning/introduction-to-fdc3-lfel1000/",
+    "type": "examples-and-training",
+    "badges": [
+    ],
+    "description": "<p>This entry-level course is designed for business technologists who are looking to adopt application interoperability within their technology landscape and for developers who want to build interoperable applications using the FDC3 Standard.</p>"
+  },
+  {
+    "title": "Developing Solutions with FDC3 (LFD237)",
+    "publisher": "Linux Foundation",
+    "image": "/img/training/LFD237.png",
+    "infoLink": "https://training.linuxfoundation.org/training/developing-solutions-with-fdc3-lfd237/",
+    "type": "examples-and-training",
+    "badges": [
+    ],
+    "description": "<p>This course is designed for developers who are looking to build interoperable applications using the FDC3 standard, as well as community participants who provide FDC3 technology and services.</p>"
+  },
+  {
+    "title": "FDC3 Certified Practitioner (FCFP)",
+    "publisher": "Linux Foundation",
+    "image": "/img/training/FCFP.png",
+    "infoLink": "https://training.linuxfoundation.org/certification/finos-certified-fdc3-practitioner/",
+    "type": "examples-and-training",
+    "badges": [
+    ],
+    "description": "<p>The FCFP is a professional certification designed for technical business analysts, software developers and FDC3 implementers in the finance, insurance, banking, and investment industries.</p>"
+  },
+  {
     "title": "ChartIQ",
     "publisher": "S&P Global",
     "image": "/img/users/ChartIQ.png",
@@ -103,15 +133,6 @@
     "type": "examples-and-training",
     "badges": [],
     "description": "FDC3 eXplained is a no-frills tool for learning more about FDC3 concepts without requiring any engineering or coding knowledge. Click the buttons and see the API response, type in context and broadcast it. No dependencies, libraries or frameworks - just a single html page per version that you can load in any environment. Similar to FDC3 Workbench it provides a reference implementation for you to test and verify the FDC3 functionality of other applications and desktop agents."
-  },
-  {
-    "title": "FDC3: Interoperability for the Financial Desktop (training course)",
-    "publisher": "LinuxFoundation",
-    "image": "/img/community/fdc3-training-course.png",
-    "infoLink": "https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop",
-    "type": "examples-and-training",
-    "badges": [],
-    "description": "The FDC3 standard for application interoperability has become a key fintech enabler for transformation as financial organizations embrace micro-frontend-oriented workflows. Learn about the vision and key concepts of FDC3, the benefits it provides, and how workflow-driven design makes it easy to get started with FDC3."
   },
   {
     "title": "Glue42",

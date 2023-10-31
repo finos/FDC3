@@ -81,7 +81,7 @@ module.exports={
           "position": "left"
         },
         {
-          "href": "https://www.edx.org/course/fdc3-interoperability-for-the-financial-desktop",
+          "href": "/training",
           "label": "Training",
           "position": "left"
         },
@@ -198,7 +198,8 @@ module.exports={
       "logo": {
         "src": "img/finos_wordmark.svg",
         "alt": "FINOS Logo",
-        "width": 50
+        "width": 50,
+        "href": "https://finos.org"
       }
     }
   }
