@@ -12,14 +12,7 @@
         "message": {
           "title": "Chat message",
           "description": "The content of the message to post in the chat when created.",
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "message.schema.json#"
-            }
-          ]
+          "$ref": "message.schema.json#"
         }
       },
       "required": ["type", "chatRoom", "message"]
