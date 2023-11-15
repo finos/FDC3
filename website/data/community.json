@@ -7,7 +7,7 @@
     "type": "examples-and-training",
     "badges": [
     ],
-    "description": "<p>This entry-level course is designed for business technologists who are looking to adopt application interoperability within their technology landscape and for developers who want to build interoperable applications using the FDC3 Standard.</p>"
+    "description": "<p>This <strong>FREE</strong> entry-level course is designed for business technologists who are looking to adopt application interoperability within their technology landscape and for developers who want to build interoperable applications using the FDC3 Standard.</p>"
   },
   {
     "title": "Developing Solutions with FDC3 (LFD237)",
@@ -17,7 +17,7 @@
     "type": "examples-and-training",
     "badges": [
     ],
-    "description": "<p>This course is designed for developers who are looking to build interoperable applications using the FDC3 standard, as well as community participants who provide FDC3 technology and services.</p>"
+    "description": "<p>This course is designed for developers who are looking to build interoperable applications using the FDC3 standard, as well as community participants who provide FDC3 technology and services.</p><p>LFD237 is priced at $299 but free seats are available to FINOS members.</p>"
   },
   {
     "title": "FDC3 Certified Practitioner (FCFP)",
@@ -27,7 +27,7 @@
     "type": "examples-and-training",
     "badges": [
     ],
-    "description": "<p>The FCFP is a professional certification designed for technical business analysts, software developers and FDC3 implementers in the finance, insurance, banking, and investment industries.</p>"
+    "description": "<p>The FCFP is a professional certification designed for technical business analysts, software developers and FDC3 implementers in the finance, insurance, banking, and investment industries.</p><p>FCFP is priced at $250 but free seats are available to FINOS members.</p>"
   },
   {
     "title": "ChartIQ",
@@ -198,7 +198,16 @@
             "link": "https://www.finos.org/blog/fdc3-news-march-2023"
           }
         ]
-      }  
+      },
+      {
+        "src": "/img/community/certified-2.0.png",
+        "items": [
+          {
+            "text": "OpenFin - 32.114.76.14  Certified Conformant With FDC3 2.0 Specification on 19th October 2023",
+            "link": "https://www.finos.org/press/finos-announces-fdc3-2.1"
+          }
+        ]
+      }    
     ]
   },
   {
