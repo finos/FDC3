@@ -4,6 +4,9 @@ sidebar_label: Overview
 title: API Overview (next)
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 The role of FDC3 API is to establish a baseline interface for interoperability between applications. Because FDC3 is largely an agreement between existing platforms and applications, standards should be optimized for ease of adoption rather than functional completeness. Functionality absent from a FDC3 specification is in no way a commentary on its importance.
 
 The following sections examine the API's use-cases and core concepts. The APIs a fully defined in both subsequent pages of this Part and a full set of TypeScript definitions in the [src](https://github.com/finos/FDC3/tree/master/src/api) directory of the [FDC3 GitHub repository](https://github.com/finos/FDC3/).
@@ -166,7 +169,10 @@ An application may wish to retrieve information about the version of the FDC3 St
 
 Since version 1.2 of the FDC3 Standard it may do so via the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function. The metadata returned can be used, for example, to vary the behavior of an application based on the version supported by the Desktop Agent, e.g.:
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
 
 if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), '1.2')) {
@@ -176,13 +182,36 @@ if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), '1.2')) {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 The [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 let implementationMetadata = await fdc3.getInfo();
 let {appId, instanceId} = implementationMetadata.appMetadata;
 
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 ### Reference apps or app instance(s) and retrieve their metadata
 
@@ -220,7 +249,10 @@ An optional result type is also supported when programmatically resolving an int
 
 Successful delivery of an intent depends first upon the Desktop Agent's ability to "resolve the intent" (i.e. map the intent to a specific App instance). Where the target application is ambiguous (because there is more than one application that could resolve the intent and context) Desktop Agents may resolve intents by any suitable methodology. A common method is to display a UI that allows the user to pick the desired App from a list of those that will accept the intent and context. Alternatively, the app issuing the intent may proactively handle resolution by calling [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext) and then raise the intent with a specific target application, e.g.:
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 // Find apps to resolve an intent to start a chat with a given contact
 const appIntent = await fdc3.findIntent("StartChat", context);
 // use the returned AppIntent object to target one of the returned 
@@ -259,6 +291,16 @@ const appIntents = await fdc3.findIntentByContext(context);
 await fdc3.raiseIntent(appIntent[0].intent, context, appIntent[0].apps[0]);
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 Result context types requested are represented by their type name. A channel may be requested by passing the string `"channel"` or a channel that returns a specific type via the syntax `"channel<contextType>"`, e.g. `"channel<fdc3.instrument>"`. Requesting intent resolution to an app returning a channel MUST include apps that are registered as returning a channel with a specific type.
 
 ### Intent Resolution
@@ -282,16 +324,32 @@ If the raising of the intent resolves (or rejects), a standard [`IntentResolutio
 
 For example, to raise a specific intent:
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 try {
   const resolution = await fdc3.raiseIntent('StageOrder', context);
 }
 catch (err){ ... }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 or to raise an unspecified intent for a specific context, where the user may select an intent from a resolver dialog:
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 try {
   const resolution = await fdc3.raiseIntentForContext(context);
   if (resolution.data) {
@@ -301,9 +359,22 @@ try {
 catch (err){ ... }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 Use metadata about the resolving app instance to target a further intent
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 try {
   const resolution = await fdc3.raiseIntent('StageOrder', context);
   ...
@@ -314,9 +385,22 @@ try {
 catch (err) { ... }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 Raise an intent and retrieve either data or a channel from the IntentResolution:
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 let resolution = await agent.raiseIntent("intentName", context);
 try {
   const result = await resolution.getResult();
@@ -332,6 +416,16 @@ try {
   console.error(`${resolution.source} returned a data error: ${error}`);
 }
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 ### Register an Intent Handler
 
@@ -413,17 +507,43 @@ There SHOULD always be a clear UX indicator of what channel an app is joined to.
 
 To find a User channel, one calls:
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 // returns an array of channels
 const allChannels = await fdc3.getUserChannels();
 const redChannel = allChannels.find(c => c.id === 'red');
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 To join a User channel, one calls:
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 fdc3.joinUserChannel(redChannel.id);
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Calling `fdc3.broadcast` will now route context to the joined channel.
 
@@ -439,7 +559,7 @@ Desktop Agent implementations SHOULD use the following set of channels, to enabl
 Future versions of the FDC3 Standard may support connections between desktop agents, where differing user channel sets may cause user experience issues.
 :::
 
-```javascript
+```ts
 const recommendedChannels = [
   {
     id: 'fdc3.channel.1',
@@ -526,7 +646,10 @@ App Channels are topics dynamically created by applications connected via FDC3. 
 
 To get (or create) a [`Channel`](ref/Channel) reference, then interact with it:
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 const appChannel = await fdc3.getOrCreateChannel('my_custom_channel');
 // get the current context of the channel
 const current = await appChannel.getCurrentContext();
@@ -536,9 +659,22 @@ await appChannel.addContextListener(null, context => {...});
 await appChannel.broadcast(context);
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 An app can still explicitly receive context events on any [`Channel`](ref/Channel), regardless of the channel it is currently joined to.
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 // check for current fdc3 channel
 let joinedChannel = await fdc3.getCurrentChannel()
 //current channel is null, as the app is not currently joined to a channel
@@ -554,6 +690,16 @@ fdc3.joinChannel('blue')
 joinedChannel = await fdc3.getCurrentChannel()
 //current channel is now the 'blue' channel
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 if another application broadcasts to "my_custom_channel" (by retrieving it and broadcasting to it via `myChannel.broadcast()`) then the broadcast will be received by the specific listener (`myChannelListener`) but NOT by the listener for joined channels (`listener`).
 
