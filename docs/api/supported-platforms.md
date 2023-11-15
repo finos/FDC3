@@ -11,6 +11,28 @@ There are two main categories of platform: web and native, both of which are des
 
 For a web application to be FDC3-enabled, it needs to run in the context of an environment or **_Platform Provider_** that makes the FDC3 API available to the application. This environment could be a browser extension, a web or native app, or a fully-fledged desktop container framework.
 
+### API Access & Globals
+
+The FDC3 API can be made available to an application through a number of different methods.  In the case of web applications, a Desktop Agent MUST provide the FDC3 API via a global accessible as `window.fdc3`. Implementors MAY additionally make the API available through modules, imports, or other means.
+
+The global `window.fdc3` must only be available after the API is ready to use. To enable applications to avoid using the API before it is ready, implementors MUST provide a global `fdc3Ready` event that is fired when the API is ready for use. Implementations should first check for the existence of the FDC3 API and add a listener for this event if it is not found:
+
+```ts
+function fdc3Action() {
+  // Make some fdc3 API calls here
+}
+
+if (window.fdc3) {
+  fdc3Action();
+} else {
+  window.addEventListener('fdc3Ready', fdc3Action);
+}
+```
+
+Since FDC3 is typically available to the whole web application, Desktop Agents are expected to make the [`DesktopAgent`](DesktopAgent) interface available at a global level.
+
+The global `window.fdc3` should only be available after the API is ready to use. To prevent the API from being used before it is ready, implementors should provide an `fdc3Ready` event.
+
 ### Usage
 
 There are two main ways FDC3 can be used from web applications:
@@ -19,7 +41,7 @@ There are two main ways FDC3 can be used from web applications:
 
 Simply rely on the global object being made available by your desktop agent, and address the API directly:
 
-```javascript
+```js
 function sendData() {
   window.fdc3.broadcast({
     type: 'fdc3.instrument',
@@ -87,10 +109,6 @@ const listener = await addIntentListener('ViewAnalysis', instrument => {
   // handle intent
 });
 ```
-
-**See also:**
-
-- [`fdc3Ready() Function`](api/ref/Globals#fdc3ready-function)
 
 ## Native
 

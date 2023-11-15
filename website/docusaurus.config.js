@@ -132,7 +132,7 @@ module.exports={
             },
             {
               "label": "Supported Platforms",
-              "to": "docs/supported-platforms"
+              "to": "docs/api/supported-platforms"
             },
             {
               "label": "API Reference",

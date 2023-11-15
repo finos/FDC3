@@ -4,13 +4,20 @@ sidebar_label: DesktopAgent
 title: DesktopAgent
 hide_title: true
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # `DesktopAgent`
 
 An FDC3 Desktop Agent is a desktop component (or aggregate of components) that serves as an orchestrator for applications in its domain.
 
 A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.
 
-It is expected that the `DesktopAgent` interface is made available via the [`window.fdc3`](Globals#windowfdc3-object) global object, and that the [`fdc3Ready`](Globals#fdc3ready-event) event fires when it is ready to be used.
+For details of how implementations of the `DesktopAgent` are made available to applications please see [Supported Platforms](supported-platforms).
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 interface DesktopAgent {
@@ -53,13 +60,36 @@ interface DesktopAgent {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 ## Functions
 
 ### `addContextListener`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Adds a listener for incoming context broadcasts from the Desktop Agent (via a User channel or [`fdc3.open`](#open) API call). If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
 
@@ -70,6 +100,9 @@ Context may also be received via this listener if the application was launched v
 Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the Desktop Agent implementation.
 
 **Examples:**
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 // any context
@@ -85,6 +118,16 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, 
 });
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 **See also:**
 
 - [`Listener`](Types#listener)
@@ -93,9 +136,22 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, 
 
 ### `addIntentListener`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Adds a listener for incoming intents raised by other applications, via calls to [`fdc3.raiseIntent`](#raiseintent) or [`fdc3.raiseIntentForContext`](#raiseintentforcontext). If the application is intended to be launched to resolve raised intents, it SHOULD add its intent listeners as quickly as possible after launch or an error MAY be returned to the caller and the intent and context may not be delivered. The exact timeout used is set by the Desktop Agent implementation, but MUST be at least 15 seconds.
 
@@ -112,6 +168,9 @@ The [`PrivateChannel`](PrivateChannel) type is provided to support synchronizati
 Optional metadata about each intent & context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
 
 **Examples:**
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 //Handle a raised intent
@@ -156,6 +215,16 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 });
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 **See also:**
 
 - [Register an Intent Handler](../spec#register-an-intent-handler)
@@ -166,9 +235,22 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 
 ### `broadcast`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 broadcast(context: Context): Promise<void>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever _User Channel_ the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
 
@@ -179,6 +261,9 @@ If you are working with complex context types composed of other simpler types (a
 If an application attempts to broadcast an invalid context argument the Promise returned by this function should reject with the [`ChannelError.MalformedContext` error](Errors#channelerror).
 
 **Example:**
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 const instrument = {
@@ -191,15 +276,38 @@ const instrument = {
 fdc3.broadcast(instrument);
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 **See also:**
 
 - [addContextListener](#addcontextlistener)
 
 ### `createPrivateChannel`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 createPrivateChannel(): Promise<PrivateChannel>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Returns a `Channel` with an auto-generated identity that is intended for private communication between applications. Primarily used to create channels that will be returned to other applications via an IntentResolution for a raised intent.
 
@@ -214,6 +322,9 @@ It is intended that Desktop Agent implementations:
 - MUST provide the `id` value for the channel as required by the `Channel` interface.
 
 **Example:**
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 fdc3.addIntentListener("QuoteStream", async (context) => {
@@ -242,6 +353,16 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 });
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 **See also:**
 
 - [`PrivateChannel`](PrivateChannel)
@@ -250,9 +371,22 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 
 ### `findInstances`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 findInstances(app: AppIdentifier): Promise<Array<AppIdentifier>>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Find all the available instances for a particular application.
 
@@ -262,6 +396,9 @@ If the request fails for another reason, the promise MUST be rejected with an `E
 
 **Example:**
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```js
 // Retrieve a list of instances of an application
 let instances = await fdc3.findInstances({appId: "MyAppId"});
@@ -270,11 +407,34 @@ let instances = await fdc3.findInstances({appId: "MyAppId"});
 let resolution = fdc3.raiseIntent("ViewInstrument", context, instances[0]);
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 ### `findIntent`
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 findIntent(intent: string, context?: Context, resultType?: string): Promise<AppIntent>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result context type.
 
@@ -288,6 +448,9 @@ Result types may be a type name, the string `"channel"` (which indicates that th
 **Examples:**
 
 I know 'StartChat' exists as a concept, and want to know which apps can resolve it:
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 const appIntent = await fdc3.findIntent("StartChat");
@@ -318,7 +481,20 @@ const appIntent = await fdc3.findIntent("StartChat");
 //   ]
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 An optional input context object and/or `resultType` argument may be specified, which the resolver MUST use to filter the returned applications such that each supports the specified input and result types.
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 const appIntent = await fdc3.findIntent("StartChat", contact);
@@ -344,15 +520,38 @@ const appIntent = await fdc3.findIntent("QuoteStream", instrument, "channel<fdc3
 // }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 **See also:**
 
 - [`ResolveError`](Errors#resolveerror)
 
 ### `findIntentsByContext`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 findIntentsByContext(context: Context, resultType?: string): Promise<Array<AppIntent>>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Find all the available intents for a particular context, and optionally a desired result context type.
 
@@ -366,6 +565,9 @@ The optional `resultType` argument may be a type name, the string `"channel"` (w
 **Example:**
 
 I have a context object, and I want to know what I can do with it, hence, I look for intents and apps to resolve them...
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 const appIntents = await fdc3.findIntentsByContext(context);
@@ -392,7 +594,20 @@ const appIntents = await fdc3.findIntentsByContext(context);
 // ];
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 or I look for only intents that are resolved by apps returning a particular result type
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 const appIntentsForType = await fdc3.findIntentsByContext(context, "fdc3.ContactList");
@@ -412,6 +627,16 @@ const selectedApp = startChat.apps[2];
 await fdc3.raiseIntent(startChat.intent.name, context, selectedApp);
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 **See also:**
 
 - [`findIntent()`](#findintent)
@@ -419,21 +644,46 @@ await fdc3.raiseIntent(startChat.intent.name, context, selectedApp);
 
 ### `getAppMetadata`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Retrieves the [`AppMetadata`](Metadata#appmetadata) for an [`AppIdentifier`](Types#appidentifier), which provides additional metadata (such as icons, a title and description) from the App Directory record for the application, that may be used for display purposes.
 
 If the app is not found, the promise MUST be rejected with an `Error` Object with the `message` given by [`ResolveError.TargetAppUnavailable`](Errors#resolveerror), or (if connected to a Desktop Agent Bridge) an error from the [`BridgingError`](Errors#bridgingerror) enumeration.
 
+**Example:**
 
-**Examples:**
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 let appIdentifier = { appId: "MyAppId@my.appd.com" }
 let appMetadata = await fdc3.getAppMetadata(appIdentifier);
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 **See also:**
 
@@ -442,20 +692,46 @@ let appMetadata = await fdc3.getAppMetadata(appIdentifier);
 
 ### `getCurrentChannel`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 getCurrentChannel() : Promise<Channel | null>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 OPTIONAL function that returns the `Channel` object for the current User channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
 
 Returns `null` if the app is not joined to a channel.
 
-**Examples:**
+**Example:**
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 // get the current channel membership
 let current = await fdc3.getCurrentChannel();
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 **See also:**
 
@@ -463,15 +739,31 @@ let current = await fdc3.getCurrentChannel();
 
 ### `getInfo`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 getInfo(): Promise<ImplementationMetadata>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Retrieves information about the FDC3 Desktop Agent implementation, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number, details of whether optional API features are implemented and the metadata of the calling application according to the desktop agent.
 
 Returns an [`ImplementationMetadata`](Metadata#implementationmetadata) object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.
 
 **Example:**
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
@@ -483,12 +775,35 @@ if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 The `ImplementationMetadata` object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 let implementationMetadata = await fdc3.getInfo();
 let {appId, instanceId} = implementationMetadata.appMetadata;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 **See also:**
 
@@ -497,9 +812,22 @@ let {appId, instanceId} = implementationMetadata.appMetadata;
 
 ### `getOrCreateChannel`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 getOrCreateChannel(channelId: string): Promise<Channel>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Returns a `Channel` object for the specified channel, creating it (as an _App_ channel) if it does not exist.
 
@@ -507,15 +835,28 @@ If the Channel cannot be created or access was denied, the returned promise MUST
 
 **Example:**
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 try {
   const myChannel = await fdc3.getOrCreateChannel("myChannel");
   myChannel.addContextListener(null, context => { /* do something with context */});
 }
-catch (err){
+catch (err: ChannelError) {
   //app could not register the channel
 }
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 **See also:**
 
@@ -523,18 +864,44 @@ catch (err){
 
 ### `getUserChannels`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 getUserChannels() : Promise<Array<Channel>>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Retrieves a list of the User Channels available for the app to join.
 
 **Example:**
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```js
 const userChannels = await fdc3.getUserChannels();
 const redChannel = userChannels.find(c => c.id === 'red');
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 **See also:**
 
@@ -542,9 +909,22 @@ const redChannel = userChannels.find(c => c.id === 'red');
 
 ### `joinUserChannel`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 joinUserChannel(channelId: string) : Promise<void>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 OPTIONAL function that joins the app to the specified User channel. In most cases, applications SHOULD be joined to channels via UX provided to the application by the desktop agent, rather than calling this function directly.
 
@@ -556,7 +936,10 @@ An app can only be joined to one channel at a time.
 
 If an error occurs (such as the channel is unavailable or the join request is denied) the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`ChannelError`](Errors#channelerror) enumeration.
 
-**Examples:**
+**Example:**
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 // get all user channels
@@ -566,8 +949,17 @@ const channels = await fdc3.getUserChannels();
 
 // join the channel on selection
 fdc3.joinUserChannel(selectedChannel.id);
-
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 **See also:**
 
@@ -575,15 +967,31 @@ fdc3.joinUserChannel(selectedChannel.id);
 
 ### `leaveCurrentChannel`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 leaveCurrentChannel() : Promise<void>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 OPTIONAL function that removes the app from any User channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
 
 Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be a no-op when the app is not joined to a User channel.
 
-**Examples:**
+**Example:**
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 //desktop-agent scope context listener
@@ -597,11 +1005,34 @@ redChannel.addContextListener(null, channelListener);
 
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 ### `open`
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 open(app: AppIdentifier, context?: Context): Promise<AppIdentifier>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Launches an app, specified via an [`AppIdentifier`](Types#appidentifier) object.
 
@@ -617,6 +1048,9 @@ If an error occurs while opening the app, the promise MUST be rejected with an `
 
 **Example:**
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
  ```js
 // Open an app without context, using an AppIdentifier object to specify the target
 let appIdentifier = { appId: 'myApp-v1.0.1' };
@@ -625,6 +1059,16 @@ let instanceIdentifier = await fdc3.open(appIdentifier);
 // Open an app with context 
 let instanceIdentifier = await fdc3.open(appIdentifier, context);
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 **See also:**
 
@@ -635,9 +1079,22 @@ let instanceIdentifier = await fdc3.open(appIdentifier, context);
 
 ### `raiseIntent`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<IntentResolution>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Raises a specific intent for resolution against apps registered with the desktop agent.
 
@@ -654,7 +1111,10 @@ Issuing apps may optionally wait on the promise that is returned by the `getResu
 
 **Example:**
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 // raise an intent for resolution by the desktop agent
 // a resolver UI may be displayed, or another method of resolving the intent to a
 // target applied, if more than one application can resolve the intent
@@ -680,10 +1140,21 @@ try {
   } else {
     console.error(`${resolution.source} didn't return anything`
   }
-} catch(error) {
+} 
+catch (error: ResultError) {
   console.error(`${resolution.source} returned a result error: ${error}`);
 }
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 **See also:**
 
@@ -697,9 +1168,22 @@ try {
 
 ### `raiseIntentForContext`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<IntentResolution>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Finds and raises an intent against apps registered with the desktop agent based purely on the type of the context data.
 
@@ -714,6 +1198,9 @@ If a target intent and app cannot be found with the criteria provided or the use
 
 **Example:**
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```js
 // Display a resolver UI for the user to select an intent and application to resolve it
 const intentResolution = await fdc3.raiseIntentForContext(context);
@@ -721,6 +1208,16 @@ const intentResolution = await fdc3.raiseIntentForContext(context);
 // Resolve against all intents registered by a specific target app for the specified context
 await fdc3.raiseIntentForContext(context, targetAppIdentifier);
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 **See also:**
 
@@ -735,9 +1232,22 @@ await fdc3.raiseIntentForContext(context, targetAppIdentifier);
 
 ### `addContextListener` (deprecated)
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 addContextListener(handler: ContextHandler): Promise<Listener>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard <2.0.
 
@@ -747,9 +1257,22 @@ Adds a listener for incoming context broadcasts from the Desktop Agent. Provided
 
 ### `getSystemChannels` (deprecated)
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 getSystemChannels() : Promise<Array<Channel>>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Alias to the [`getUserChannels`](#getuserchannels) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
 **See also:**
@@ -758,9 +1281,22 @@ Alias to the [`getUserChannels`](#getuserchannels) function provided for backwar
 
 ### `joinChannel` (deprecated)
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 joinChannel(channelId: string) : Promise<void>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
 
@@ -770,9 +1306,22 @@ Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwar
 
 ### `open` (deprecated)
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 open(name: string, context?: Context): Promise<AppIdentifier>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
 
@@ -782,9 +1331,22 @@ Version of `open` that launches an app by name rather than `AppIdentifier`. Prov
 
 ### `raiseIntent` (deprecated)
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 raiseIntent(intent: string, context: Context, name: string): Promise<IntentResolution>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
 
@@ -794,9 +1356,22 @@ Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`
 
 ### `raiseIntentForContext` (deprecated)
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Version of `raiseIntentForContext` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
 
