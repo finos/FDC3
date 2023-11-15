@@ -2,9 +2,15 @@
 title: Metadata
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 FDC3 API operations return various types of metadata.
 
 ## `AppIntent`
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 interface AppIntent {
@@ -18,6 +24,16 @@ interface AppIntent {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 An interface that represents the binding of an intent to apps, returned as part of intent discovery.
 For each intent, it reference the applications that support that intent.
 
@@ -29,6 +45,9 @@ For each intent, it reference the applications that support that intent.
 - [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
 
 ## `AppMetadata`
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 interface AppMetadata extends AppIdentifier {
@@ -81,6 +100,16 @@ interface AppMetadata extends AppIdentifier {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 Extends an AppIdentifier, describing an application or instance of an application, with additional descriptive metadata that is usually provided by an FDC3 App Directory that the desktop agent connects to.
 
 The additional information from an app directory can aid in rendering UI elements, such as a launcher menu or resolver UI. This includes a title, description, tooltip and icon and screenshot URLs.
@@ -99,6 +128,9 @@ Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passe
 
 ## `ContextMetadata`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 interface ContextMetadata {
   /** Identifier for the app instance that sent the context and/or intent. 
@@ -107,6 +139,16 @@ interface ContextMetadata {
   readonly source: AppIdentifier;
 }
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Metadata relating to a context or intent & context received through the `addContextListener` and `addIntentListener` functions. Currently identifies the app that originated the context or intent message.
 
@@ -122,6 +164,9 @@ Metadata relating to a context or intent & context received through the `addCont
 - [`Channel.addContextListener`](Channel#addcontextlistener)
 
 ## `DisplayMetadata`
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 interface DisplayMetadata {
@@ -141,6 +186,16 @@ interface DisplayMetadata {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
 
 **See also:**
@@ -150,7 +205,10 @@ A desktop agent (typically for _system_ channels) may want to provide additional
 
 ## `Icon`
 
-```typescript
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 interface Icon {
   src: string;
   size?: string;
@@ -158,13 +216,26 @@ interface Icon {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 Metadata relating to a single icon image at a remote URL, used to represent an application in a user interface.
 
 AppMetadata includes an icons property allowing multiple icon types to be specified. Various properties may be used by the Desktop Agent to decide which icon is the most suitable to be used considering the application chooser UI, device DPI and formats supported by the system.
 
 **Example:**
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 "icons": [
   {
     "src": "https://app.foo.icon/app_icons/lowres.webp",
@@ -179,6 +250,16 @@ AppMetadata includes an icons property allowing multiple icon types to be specif
 ]
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 **Properties:**
 
 - **`src`:** The fully qualified url to the icon.
@@ -191,7 +272,10 @@ AppMetadata includes an icons property allowing multiple icon types to be specif
 
 ## `Image`
 
-```typescript
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 interface Image {
   src: string;
   size?: string;
@@ -200,13 +284,26 @@ interface Image {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 Metadata relating to a single image at a remote URL, used to represent screenshot images.
 
 AppMetadata includes a screenshots property allowing multiple images to be specified. Various properties may be used by the Desktop Agent to decide which image(s) are the most suitable to be used considering the application chooser UI, device DPI and formats supported by the system.
 
 **Example:**
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 "screenshots": [
   {
     "src": "https://app.foo.icon/app_screenshots/dashboard.png",
@@ -223,6 +320,16 @@ AppMetadata includes a screenshots property allowing multiple images to be speci
 ]
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 **Properties:**
 
 - **`src`:** The fully qualified url to the image.
@@ -234,6 +341,9 @@ AppMetadata includes a screenshots property allowing multiple images to be speci
 - [`AppMetadata`](Metadata#appmetadata)
 
 ## `ImplementationMetadata`
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 interface ImplementationMetadata {
@@ -275,6 +385,16 @@ interface ImplementationMetadata {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number and the metadata of the calling application according to the desktop agent.
 
 **See also:**
@@ -283,6 +403,9 @@ Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provid
 - [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
 
 ## `IntentMetadata`
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 interface IntentMetadata {
@@ -297,6 +420,16 @@ interface IntentMetadata {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 The interface used to describe an intent within the platform.
 
 **See also:**
@@ -304,6 +437,9 @@ The interface used to describe an intent within the platform.
 - [`AppIntent.intent`](#appintent)
 
 ## `IntentResolution`
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 interface IntentResolution {
@@ -341,11 +477,24 @@ interface IntentResolution {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 IntentResolution provides a standard format for data returned upon resolving an intent.
 
 **Examples:**
 
-```js
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 // Resolve a "Chain" type intent
 let resolution = await agent.raiseIntent("intentName", context);
 
@@ -357,7 +506,7 @@ try {
   //Some time later
   await agent.raiseIntent("UpdateOrder", context, resolution.source);
 }
-catch (err) { ... }                                    
+catch (err: ResolveError) { ... }                                    
                                                
 //Resolve a "Client-Service" type intent with a data or channel response
 let resolution = await agent.raiseIntent("intentName", context);
@@ -370,10 +519,20 @@ try {
     } else {
         console.error(`${resolution.source} didn't return anything`);
     }
-} catch(error) {
+} catch(error: ResultError) {
     console.error(`${resolution.source} returned an error: ${error}`);
 }
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 **See also:**
 

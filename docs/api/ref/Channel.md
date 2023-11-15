@@ -4,6 +4,10 @@ sidebar_label: Channel
 title: Channel
 hide_title: true
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # `Channel`
 
 Represents a context channel that applications can join to share context data and provides functions for interacting with it.
@@ -17,6 +21,9 @@ There are differences in behavior when you interact with a User channel via the 
 :::
 
 Channels each have a unique identifier, some display metadata and operations for broadcasting context to other applications, or receiving context from other applications.
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 interface Channel {
@@ -38,6 +45,16 @@ interface Channel {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 **See also:**
 
 - [`Context`](Types#context)
@@ -50,25 +67,64 @@ interface Channel {
 
 ### `id`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 public readonly id: string;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Uniquely identifies the channel. It is either assigned by the desktop agent (User Channel) or defined by an application (App Channel).
 
 ### `type`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 public readonly type: "user" | "app" | "private";
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Can be _user_,  _app_ or _private_.
 
 ### `displayMetadata`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 public readonly displayMetadata?: DisplayMetadata;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 DisplayMetadata can be used to provide display hints for User Channels intended to be visualized and selectable by end users.
 
@@ -80,9 +136,22 @@ DisplayMetadata can be used to provide display hints for User Channels intended 
 
 ### `addContextListener`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 public addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
 
@@ -93,6 +162,9 @@ Optional metadata about each context message received, including the app that or
 **Examples:**
 
 Add a listener for any context that is broadcast on the channel:
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 const listener = await channel.addContextListener(null, context => {
@@ -107,7 +179,20 @@ const listener = await channel.addContextListener(null, context => {
 listener.unsubscribe();
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 Adding listeners for specific types of context that is broadcast on the channel:
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 const contactListener = await channel.addContextListener('fdc3.contact', contact => {
@@ -123,6 +208,16 @@ contactListener.unsubscribe();
 instrumentListener.unsubscribe();
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 **See also:**
 
 - [`Listener`](Types#listener)
@@ -132,9 +227,22 @@ instrumentListener.unsubscribe();
 
 ### `broadcast`
 
-```typescript
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 public broadcast(context: Context): Promise<void>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Broadcasts a context on the channel. This function can be used without first joining the channel, allowing applications to broadcast on both App Channels and User Channels that they aren't a member of.
 
@@ -148,7 +256,10 @@ If an application attempts to broadcast an invalid context argument the Promise 
 
 **Example:**
 
-```javascript
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 const instrument = {
     type: 'fdc3.instrument',
     id: {
@@ -163,6 +274,16 @@ try {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 **See also:**
 
 - [`ChannelError`](Errors#channelerror)
@@ -171,9 +292,22 @@ try {
 
 ### `getCurrentContext`
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 public getCurrentContext(contextType?: string): Promise<Context|null>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 When a _context type_ is provided, the most recent context matching the type will be returned, or `null` if no matching context is found.
 
@@ -187,6 +321,9 @@ If getting the current context fails, the promise will be rejected with an `Erro
 
 Without specifying a context type:
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 try {
     const context = await channel.getCurrentContext();
@@ -195,7 +332,20 @@ try {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 Specifying a context type:
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 try {
@@ -204,6 +354,16 @@ try {
     // handler error
 }
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 **See also:**
 
@@ -215,12 +375,25 @@ try {
 
 ### `addContextListener` (deprecated)
 
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 /**
  * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
  */
 public addContextListener(handler: ContextHandler): Promise<Listener>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Adds a listener for incoming contexts whenever a broadcast happens on the channel.
 

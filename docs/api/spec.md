@@ -49,23 +49,7 @@ The FDC3 API specification consists of interfaces.  It is expected that each Des
 
 Other interfaces defined in the spec are not critical to define as concrete types.  Rather, the Desktop Agent should expect to have objects of the interface shape passed into or out of their library.
 
-### API Access
-
-The FDC3 API can be made available to an application through a number of different methods.  In the case of web applications, a Desktop Agent MUST provide the FDC3 API via a global accessible as `window.fdc3`. Implementors MAY additionally make the API available through modules, imports, or other means.
-
-The global `window.fdc3` must only be available after the API is ready to use. To enable applications to avoid using the API before it is ready, implementors MUST provide a global `fdc3Ready` event that is fired when the API is ready for use. Implementations should first check for the existence of the FDC3 API and add a listener for this event if it is not found:
-
-```js
-function fdc3Stuff() {
-  // Make fdc3 API calls here
-}
-
-if (window.fdc3) {
-  fdc3Stuff();
-} else {
-  window.addEventListener('fdc3Ready', fdc3Stuff);
-}
-```
+For implementation details relating to particular languages, and how to access the API in those languages, please see [Supported Platforms](supported-platforms).
 
 ### Standards vs. Implementation
 

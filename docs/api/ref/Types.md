@@ -2,6 +2,9 @@
 title: Types
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 FDC3 API operations make use of several type declarations.
 
 ## `AppIdentifier`
@@ -9,6 +12,9 @@ FDC3 API operations make use of several type declarations.
 Identifies an application, or instance of an application, and is used to target FDC3 API calls at specific applications.
 Will always include at least an `appId` property, which can be used with `fdc3.open`, `fdc3.raiseIntent` etc..
 If the `instanceId` field is set then the `AppIdentifier` object represents a specific instance of the application that may be addressed using that Id.
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 interface AppIdentifier {
@@ -30,6 +36,16 @@ interface AppIdentifier {
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 **See also:**
 
 - [`AppMetadata`](Metadata#appmetadata)
@@ -40,13 +56,26 @@ interface AppIdentifier {
 
 ## `Context`
 
-```typescript
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 interface Context {
   id?: { [key: string]: string };
   name?: string;
   type: string;
 }
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 The base interface that all contexts should extend: a context data object adhering to the [FDC3 Context Data specification](../../context/spec).
 
@@ -69,9 +98,22 @@ This means that it must at least have a `type` property that indicates what type
 
 ## `ContextHandler`
 
-```typescript
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 type ContextHandler = (context: Context, metadata?: ContextMetadata) => void;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Describes a callback that handles a context event. Optional metadata about the context message, including the app that originated the message, may be provided.
 
@@ -88,7 +130,10 @@ Optional metadata about the context message, including the app that originated t
 
 ## `DesktopAgentIdentifier`
 
-```typescript
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 /** @experimental */
 interface DesktopAgentIdentifier {
   /** Used in Desktop Agent Bridging to attribute or target a message to a 
@@ -96,6 +141,16 @@ interface DesktopAgentIdentifier {
   readonly desktopAgent: string;
 }
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 (Experimental) Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios where a request needs to be directed to a Desktop Agent rather than a specific app, or a response message is returned by the Desktop Agent (or more specifically its resolver) rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no app details are available or are appropriate.
 
@@ -105,9 +160,22 @@ interface DesktopAgentIdentifier {
 
 ## `IntentHandler`
 
-```typescript
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 type IntentHandler = (context: Context, metadata?: ContextMetadata) => Promise<IntentResult> | void;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Describes a callback that handles a context event and may return a promise of a Context, Channel object or `void` to be returned to the application that raised the intent.
 
@@ -125,9 +193,22 @@ Optional metadata about the intent & context message, including the app that ori
 
 ## `IntentResult`
 
-```typescript
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 type IntentResult = Context | Channel | void;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Describes results that an Intent handler may return that should be communicated back to the app that raised the intent, via the [`IntentResolution`](Metadata#intentresolution).
 
@@ -146,17 +227,43 @@ Represented as a union type in TypeScript, however, this type may be rendered as
 
 A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](DesktopAgent#addintentlistener) or [`addContextListener`](DesktopAgent#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
 
-```typescript
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
 interface Listener {
   unsubscribe(): void;
 }
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
+
 ### `unsubscribe`
+
+<Tabs>
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 unsubscribe(): void;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+TBC
+```
+
+</TabItem>
+</Tabs>
 
 Allows an application to unsubscribe from listening to intents or context broadcasts.
 
