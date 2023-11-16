@@ -1,16 +1,4 @@
-
-
-/* 
- * this part is the different ways that we can use to talk with the
- * desktop agent once we have a reference to it.
- */
-export const JS_INJECT = "js-inject" 
-export const POST_MESSAGE_PROTOCOL = "post-message-protocol";
-
-/**
- * This is in preference order, chosen by the app.
- */
-export const DEFAULT_METHODS = [ POST_MESSAGE_PROTOCOL, JS_INJECT];
+import { DesktopAgent } from "@finos/fdc3";
 
 /** 
  * We need to add options here. 
@@ -21,14 +9,6 @@ export type Options = {
     methods?: string[],
     strategies?: Loader[],
     frame?: Window
-}
-
-export const DEFAULT_OPTIONS : Options = {
-    setWindowGlobal: false,
-    fireFdc3Ready: false,
-    methods: DEFAULT_METHODS,
-    strategies: [postMessage, electronEvent],
-    frame: window.opener ?? window.parent
 }
 
 export type AppChecker = (o: Window) => boolean;
