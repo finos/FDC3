@@ -49,6 +49,9 @@ module.exports={
   themes: ['@docusaurus/theme-mermaid'],
   "plugins": [],
   "themeConfig": {
+    "prism": {
+      "additionalLanguages": ["csharp"]
+    },
     "navbar": {
       "title": "FDC3",
       "logo": {
