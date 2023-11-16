@@ -1,18 +1,15 @@
 {
-  "name": "fdc3-for-the-web",
+  "name": "@finos/web-fdc3",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "vite --port 8080 --host ",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "packageManager": "yarn@4.0.2",
   "devDependencies": {
-    "typescript": "^5.0.2",
-    "vite": "^4.3.9"
-  },
-  "dependencies": {
-    "@finos/fdc3": "^2.0.3"
+    "@types/eslint": "^8",
+    "eslint": "^8.53.0",
+    "typescript": "^5.2.2"
   }
 }
