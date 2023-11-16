@@ -19,5 +19,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src", "packages/client/src", "packages/common/src", "packages/demo/src", "packages/desktop-agen/src"]
 }
