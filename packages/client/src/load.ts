@@ -1,5 +1,27 @@
 import { DesktopAgent} from '@finos/fdc3'
-import { DEFAULT_OPTIONS, Options } from '../../common/src';
+import { Options } from '../../common/src';
+
+/* 
+ * this part is the different ways that we can use to talk with the
+ * desktop agent once we have a reference to it.
+ */
+export const JS_INJECT = "js-inject" 
+export const POST_MESSAGE_PROTOCOL = "post-message-protocol";
+
+/**
+ * This is in preference order, chosen by the app.
+ */
+export const DEFAULT_METHODS = [ POST_MESSAGE_PROTOCOL, JS_INJECT];
+
+
+export const DEFAULT_OPTIONS : Options = {
+    setWindowGlobal: false,
+    fireFdc3Ready: false,
+    methods: DEFAULT_METHODS,
+    strategies: [postMessage, electronEvent],
+    frame: window.opener ?? window.parent
+}
+
 
 /**
  * This return an FDC3 API.  Called by Apps.

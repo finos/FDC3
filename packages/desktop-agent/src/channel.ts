@@ -1,4 +1,4 @@
-import { Channel as Channel2_0, PrivateChannel } from 'fdc3-2.0';
+import { Channel as Channel2_0, PrivateChannel } from '@finos/fdc3';
 import { createChannelObject as createChannelObject1_2 } from '../fdc3-1.2/channel';
 
 import { Context, DisplayMetadata } from '/@main/types/FDC3Message';
