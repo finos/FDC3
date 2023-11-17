@@ -6,9 +6,9 @@ export interface IntentSupport {
 
     findIntentsByContext(context: Context): Promise<AppIntent[]>
 
-    raiseIntent(intent: string, context: Context, app: AppIdentifier | undefined) : Promise<IntentResolution>
+    raiseIntent(intent: string, context: Context, app?: AppIdentifier) : Promise<IntentResolution>
 
-    raiseIntentForContext(context: Context, app: AppIdentifier | undefined) : Promise<IntentResolution>
+    raiseIntentForContext(context: Context, app?: AppIdentifier) : Promise<IntentResolution>
 
     addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>
 
