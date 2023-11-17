@@ -1,62 +1,81 @@
-import { AppIdentifier, Context, ContextHandler, DesktopAgent, IntentHandler, Listener } from "@finos/fdc3";
-import { DesktopAgentProvider } from "./DesktopAgentProvider";
+import { AppIdentifier, AppMetadata, Context, ContextHandler, DesktopAgent, ImplementationMetadata, IntentHandler, IntentResolution, Listener } from "@finos/fdc3";
 import { ChannelSupport } from "./channels/ChannelSupport";
 import { IntentSupport } from "./intents/IntentSupport";
+import { AppSupport } from "./apps/AppSupport";
 
 /**
  * This splits out the functionality of the desktop agent into 
- * provider details, channels and intents concerns.
+ * app, channels and intents concerns.
  */
 export class BasicDesktopAgent implements DesktopAgent {
 
-    readonly provider: DesktopAgentProvider
     readonly channels: ChannelSupport
     readonly intents: IntentSupport
+    readonly apps: AppSupport
+    readonly fdc3Version: string
+    readonly provider: string
+    
 
-    constructor(provider: DesktopAgentProvider, channels: ChannelSupport, intents: IntentSupport) {
-        this.provider = provider
+    constructor(channels: ChannelSupport, intents: IntentSupport, apps: AppSupport, fdc3Version: string, provider: string) {
         this.intents = intents
         this.channels = channels
+        this.apps = apps
+        this.fdc3Version = fdc3Version
+        this.provider = provider
     }    
 
-    getInfo() {
-        return Promise.resolve(this.provider.getImplementationMetadata());
+    async getInfo() : Promise<ImplementationMetadata>{
+        const am = await this.apps.getThisAppMetadata()
+        return {
+            fdc3Version: this.fdc3Version,
+            provider: this.provider,
+            appMetadata: am,
+            optionalFeatures: {
+                OriginatingAppMetadata: this.apps.hasOriginatingAppMetadata(),
+                UserChannelMembershipAPIs: this.channels.hasUserChannelMembershipAPIs(),
+                DesktopAgentBridging: this.apps.hasDesktopAgentBridging()
+            }
+        }
     }
 
     async broadcast(context: Context): Promise<void> {
-        const channel = await this.channels.getUserChannel();
-        return channel.broadcast(context);
+        const channel = await this.channels.getUserChannel()
+        return channel.broadcast(context)
     }
 
     async addContextListener(context: ContextHandler | string | null, handler?: ContextHandler): Promise<Listener> {
-        const theHandler: ContextHandler = handler ? handler : (context as ContextHandler);
-        const theContextType: string | null = context && handler ? (context as string) : null;
-        const channel = await this.channels.getUserChannel();
-        return channel.addContextListener(theContextType, theHandler);
+        const theHandler: ContextHandler = handler ? handler : (context as ContextHandler)
+        const theContextType: string | null = context && handler ? (context as string) : null
+        const channel = await this.channels.getUserChannel()
+        return channel.addContextListener(theContextType, theHandler)
     }
 
     getUserChannels() {
-        return this.channels.getUserChannels();
+        return this.channels.getUserChannels()
     }
   
     getSystemChannels() {
-        return this.channels.getUserChannels();
+        return this.channels.getUserChannels()
     }
 
     getOrCreateChannel(channelId: string) {
-        return this.channels.getOrCreate(channelId);
+        return this.channels.getOrCreate(channelId)
     }
 
     createPrivateChannel() {
-        return this.channels.createPrivateChannel();
+        return this.channels.createPrivateChannel()
     }
 
     leaveCurrentChannel() {
-        return this.channels.leaveUserChannel();
+        return this.channels.leaveUserChannel()
     }
   
-    joinUserChannel(channel: string) {
-        return this.channels.joinUserChannel(channel);
+    joinUserChannel(channelId: string) {
+        return this.channels.joinUserChannel(channelId)
+    }
+
+    joinChannel(channelId: string) {
+        return this.channels.joinUserChannel(channelId)
     }
   
     getCurrentChannel() {
@@ -68,18 +87,43 @@ export class BasicDesktopAgent implements DesktopAgent {
     }
 
     findIntentsByContext(context: Context) {
-        return this.intents.findIntentsByContext(context);
+        return this.intents.findIntentsByContext(context)
+    }
+
+    private ensureAppId(app?: any) : AppIdentifier | undefined {
+        if (typeof app === "string") {
+            return {
+                appId: app
+            }
+        } else if (app?.appId) {
+            return app as AppIdentifier
+        } else {
+            return undefined;
+        }
     }
 
     raiseIntent(intent: string, context: Context, app?: any) {
-        return this.intents.raiseIntent(intent, context, app);
-    }
-
-    raiseIntentForContext(context: Context, app?: AppIdentifier | undefined) {
-        //return this.intents.raiseIntentForContext(context, app);
+        return this.intents.raiseIntent(intent, context, this.ensureAppId(app))
     }
   
     addIntentListener(intent: string, handler: IntentHandler) {
-        return this.intents.addIntentListener(intent, handler);
+        return this.intents.addIntentListener(intent, handler)
     }
+
+    raiseIntentForContext(context: Context, app?: any): Promise<IntentResolution> {
+        return this.intents.raiseIntentForContext(context, this.ensureAppId(app))
+    }
+
+    open(app: any, context?: Context | undefined) {
+        return this.apps.open(this.ensureAppId(app)!, context)
+    }
+
+    findInstances(app: AppIdentifier) {
+        return this.apps.findInstances(app)
+    }
+
+    getAppMetadata(app: AppIdentifier): Promise<AppMetadata> {
+        return this.apps.getAppMetadata(app);
+    }
+
 }
