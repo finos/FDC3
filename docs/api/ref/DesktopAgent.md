@@ -16,7 +16,7 @@ A Desktop Agent can be connected to one or more App Directories and will use dir
 
 For details of how implementations of the `DesktopAgent` are made available to applications please see [Supported Platforms](supported-platforms).
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -64,7 +64,37 @@ interface DesktopAgent {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IDesktopAgent
+{
+    // Apps
+    Task<IAppIdentifier> Open(IAppIdentifier app, IContext? context = null);
+    Task<IEnumerable<IAppIdentifier>> FindInstances(IAppIdentifier app);
+    Task<IAppMetadata> GetAppMetadata(IAppIdentifier app);
+
+    // Context
+    Task Broadcast(IContext context);
+    Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> handler) where T : IContext;
+
+    // Intents
+    Task<IAppIntent> FindIntent(string intent, IContext? context = null, string? resultType = null);
+    Task<IEnumerable<IAppIntent>> FindIntentsByContext(IContext context, string? resultType = null);
+    Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentifier? app = null);
+    Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? app = null);
+    Task<IListener> AddIntentListener<T>(string intent, IntentHandler<T> handler) where T : IContext;
+
+    // Channels
+    Task<IChannel> GetOrCreateChannel(string channelId);
+    Task<IPrivateChannel> CreatePrivateChannel();
+    Task<IEnumerable<IChannel>> GetUserChannels();
+
+    // OPTIONAL channel management functions
+    Task JoinUserChannel(string channelId);
+    Task<IChannel?> GetCurrentChannel();
+    Task LeaveCurrentChannel();
+
+    // Implementation Information
+    Task<IImplementationMetadata> GetInfo();
+}
 ```
 
 </TabItem>
@@ -74,7 +104,7 @@ TBC
 
 ### `addContextListener`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -85,7 +115,7 @@ addContextListener(contextType: string | null, handler: ContextHandler): Promise
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> handler) where T : IContext;
 ```
 
 </TabItem>
@@ -101,7 +131,7 @@ Optional metadata about each context message received, including the app that or
 
 **Examples:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -122,7 +152,17 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, 
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+// any context
+var listener = await _desktopAgent.AddContextListener<IContext>(null, (context, meatadata) => { ... });
+
+// listener for a specific type
+var listener = await _desktopAgent.AddContextListener<Instrument>("fdc3.contact", (contact, metadata) => { ... });
+
+// listener that logs metadata for the message of a specific type
+var contactListener = await _desktopAgent.AddContextListener<Contact>("fdc3.contact", (contact, metadata) => {
+  System.Diagnostics.Debug.WriteLine($"Received context message\nContext: {contact}\nOriginating app: {metadata?.Source}");
+  // do something else with the context
+});
 ```
 
 </TabItem>
@@ -136,7 +176,7 @@ TBC
 
 ### `addIntentListener`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -147,7 +187,7 @@ addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IListener> AddIntentListener<T>(string intent, IntentHandler<T> handler) where T : IContext;
 ```
 
 </TabItem>
@@ -169,7 +209,7 @@ Optional metadata about each intent & context message received, including the ap
 
 **Examples:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -219,7 +259,17 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+//Handle a raised intent
+var listener = await _desktopAgent.AddIntentListener<IContext>("StartChat", (context, metadata) => {
+    // start chat has been requested by another application
+    // return IIntentResult;
+});
+
+//Handle a raised intent and log the originating app metadata
+var listener = await _desktopAgent.AddIntentListener<IContext>("StartChat", (contact, metadata) => {
+    System.Diagnostics.Debug.Write($"Received intent StartChat\nContext: {contact}\nOriginating app: {metadata?.Source}");
+    // return IIntentResult;
+});
 ```
 
 </TabItem>
@@ -235,7 +285,7 @@ TBC
 
 ### `broadcast`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -246,7 +296,7 @@ broadcast(context: Context): Promise<void>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task Broadcast(IContext context);
 ```
 
 </TabItem>
@@ -262,7 +312,7 @@ If an application attempts to broadcast an invalid context argument the Promise 
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -280,7 +330,14 @@ fdc3.broadcast(instrument);
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Instrument instrument = new Instrument(
+    new InstrumentID()
+    {
+        Ticker = "AAPL"
+    }
+);
+
+_desktopAgent.Broadcast(instrument);
 ```
 
 </TabItem>
@@ -292,7 +349,7 @@ TBC
 
 ### `createPrivateChannel`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -303,7 +360,7 @@ createPrivateChannel(): Promise<PrivateChannel>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IPrivateChannel> CreatePrivateChannel();
 ```
 
 </TabItem>
@@ -323,7 +380,7 @@ It is intended that Desktop Agent implementations:
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -357,7 +414,30 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+_desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metadata) => {
+  var channel = await _desktopAgent.CreatePrivateChannel();
+  var symbol = context?.ID?.Ticker;
+
+  // This gets called when the remote side adds a context listener
+  var addContextListener = channel.OnAddContextListener((contextType) => {
+      // broadcast price quotes as they come in from our quote feed
+      _feed.OnQuote(symbol, (price) => {
+          channel.Broadcast(new Price(price));
+      });
+  });
+
+  // This gets called when the remote side calls Listener.unsubscribe()
+  var unsubscribeListener = channel.OnUnsubscribe((contextType) => {
+      _feed.Stop(symbol);
+  });
+
+  // This gets called if the remote side closes
+  var disconnectListener = channel.OnDisconnect(() => {
+      _feed.stop(symbol);
+  });
+  
+  return channel;
+});
 ```
 
 </TabItem>
@@ -371,7 +451,7 @@ TBC
 
 ### `findInstances`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -382,7 +462,7 @@ findInstances(app: AppIdentifier): Promise<Array<AppIdentifier>>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IEnumerable<IAppIdentifier>> FindInstances(IAppIdentifier app);
 ```
 
 </TabItem>
@@ -396,7 +476,7 @@ If the request fails for another reason, the promise MUST be rejected with an `E
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -411,7 +491,11 @@ let resolution = fdc3.raiseIntent("ViewInstrument", context, instances[0]);
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+// Retrieve a list of instances of an application
+var instances = await _desktopAgent.FindInstances(new AppIdentifier("MyAppId"));
+
+// Target a raised intent at a specific instance
+var resolution = await _desktopAgent.RaiseIntent("ViewInstrument", context, instances.First());
 ```
 
 </TabItem>
@@ -419,7 +503,7 @@ TBC
 
 ### `findIntent`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -430,7 +514,7 @@ findIntent(intent: string, context?: Context, resultType?: string): Promise<AppI
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IAppIntent> FindIntent(string intent, IContext? context = null, string? resultType = null);
 ```
 
 </TabItem>
@@ -449,7 +533,7 @@ Result types may be a type name, the string `"channel"` (which indicates that th
 
 I know 'StartChat' exists as a concept, and want to know which apps can resolve it:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -485,7 +569,10 @@ const appIntent = await fdc3.findIntent("StartChat");
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var appIntent = await _desktopAgent.FindIntent("StartChat");
+
+// raise the intent against a particular app
+await _desktopAgent.RaiseIntent(appIntent.Intent.Name, context, appIntent.Apps.First());
 ```
 
 </TabItem>
@@ -493,7 +580,7 @@ TBC
 
 An optional input context object and/or `resultType` argument may be specified, which the resolver MUST use to filter the returned applications such that each supports the specified input and result types.
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -524,7 +611,26 @@ const appIntent = await fdc3.findIntent("QuoteStream", instrument, "channel<fdc3
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var appIntent = await _desktopAgent.FindIntent("StartChat", contact);
+// returns only apps that support the type of the specified input context:
+// {
+//     Intent: { Name: "StartChat" },
+//     Apps: { Name: "Symphony" }]
+// }
+
+var appIntent = await _desktopAgent.FindIntent("ViewContact", "fdc3.ContactList");
+// returns only apps that return the specified result type:
+// {
+//     Intent: { Name: "ViewContact" },
+//     Apps: { AppId: "MyCRM", ResultType: "fdc3.ContactList"}]
+// }
+
+var appIntent = await _desktopAgent.fFindIntent("QuoteStream", instrument, "channel<fdc3.Quote>");
+// returns only apps that return a channel which will receive the specified input and result types:
+// {
+//     Intent: { Name: "QuoteStream" },
+//     Apps: { AppId: "MyOMS", ResultType: "channel<fdc3.Quote>"}]
+// }
 ```
 
 </TabItem>
@@ -536,7 +642,7 @@ TBC
 
 ### `findIntentsByContext`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -547,7 +653,7 @@ findIntentsByContext(context: Context, resultType?: string): Promise<Array<AppIn
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IEnumerable<IAppIntent>> FindIntentsByContext(IContext context, string? resultType = null);
 ```
 
 </TabItem>
@@ -566,7 +672,7 @@ The optional `resultType` argument may be a type name, the string `"channel"` (w
 
 I have a context object, and I want to know what I can do with it, hence, I look for intents and apps to resolve them...
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -598,7 +704,7 @@ const appIntents = await fdc3.findIntentsByContext(context);
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var appIntents = await _desktopAgent.FindIntentsByContext(context);
 ```
 
 </TabItem>
@@ -606,7 +712,7 @@ TBC
 
 or I look for only intents that are resolved by apps returning a particular result type
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -631,7 +737,21 @@ await fdc3.raiseIntent(startChat.intent.name, context, selectedApp);
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var appIntentsForType = await _desktopAgent.FindIntentsByContext(context, "fdc3.ContactList");
+// returns for example:
+// [{
+//     Intent: { Name: "ViewContact" },
+//     Apps: [{ AppId: "Symphony" }, { AppId: "MyCRM", ResultType: "fdc3.ContactList"}]
+// }];
+
+// select a particular intent to raise
+var startChat = appIntentsForType.First();
+
+// target a particular app or instance
+var selectedApp = startChat.Apps.First();
+
+// raise the intent, passing the given context, targeting the app
+await _desktopAgent.RaiseIntent(startChat.Intent.Name, context, selectedApp);
 ```
 
 </TabItem>
@@ -644,7 +764,7 @@ TBC
 
 ### `getAppMetadata`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -655,7 +775,7 @@ getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IAppMetadata> GetAppMetadata(IAppIdentifier app);
 ```
 
 </TabItem>
@@ -667,7 +787,7 @@ If the app is not found, the promise MUST be rejected with an `Error` Object wit
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -679,7 +799,8 @@ let appMetadata = await fdc3.getAppMetadata(appIdentifier);
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var appIdentifier = new AppIdentifier("MyAppId@my.appd.com");
+var appMetadata = await _desktopAgent.GetAppMetadata(appIdentifier);
 ```
 
 </TabItem>
@@ -692,7 +813,7 @@ TBC
 
 ### `getCurrentChannel`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -703,7 +824,7 @@ getCurrentChannel() : Promise<Channel | null>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IChannel?> GetCurrentChannel();
 ```
 
 </TabItem>
@@ -715,7 +836,7 @@ Returns `null` if the app is not joined to a channel.
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -727,7 +848,8 @@ let current = await fdc3.getCurrentChannel();
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+// get the current channel membership
+var current = await _desktopAgent.GetCurrentChannel();
 ```
 
 </TabItem>
@@ -739,7 +861,7 @@ TBC
 
 ### `getInfo`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -750,7 +872,7 @@ getInfo(): Promise<ImplementationMetadata>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IImplementationMetadata> GetInfo();
 ```
 
 </TabItem>
@@ -762,7 +884,7 @@ Returns an [`ImplementationMetadata`](Metadata#implementationmetadata) object.  
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -779,7 +901,7 @@ if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var version = (await _desktopAgent.GetInfo()).Fdc3Version;
 ```
 
 </TabItem>
@@ -787,7 +909,7 @@ TBC
 
 The `ImplementationMetadata` object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -799,7 +921,9 @@ let {appId, instanceId} = implementationMetadata.appMetadata;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var implementationMetadata = await _desktopAgent.GetInfo();
+var appId = implementationMetadata.AppMetadata.AppId;
+var instanceId = implementationMetadata.AppMetadata.InstanceId;
 ```
 
 </TabItem>
@@ -812,7 +936,7 @@ TBC
 
 ### `getOrCreateChannel`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -823,7 +947,7 @@ getOrCreateChannel(channelId: string): Promise<Channel>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IChannel> GetOrCreateChannel(string channelId);
 ```
 
 </TabItem>
@@ -835,7 +959,7 @@ If the Channel cannot be created or access was denied, the returned promise MUST
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -852,7 +976,15 @@ catch (err: ChannelError) {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+try
+{
+    var myChannel = await _desktopAgent.GetOrCreateChannel("myChannel");
+    await myChannel.AddContextListener<IContext>(null, (context, metadata) => { /* do something with context */});
+}
+catch (Exception ex)
+{
+    //app could not register the channel
+}
 ```
 
 </TabItem>
@@ -864,7 +996,7 @@ TBC
 
 ### `getUserChannels`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -875,7 +1007,7 @@ getUserChannels() : Promise<Array<Channel>>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IEnumerable<IChannel>> GetUserChannels();
 ```
 
 </TabItem>
@@ -885,7 +1017,7 @@ Retrieves a list of the User Channels available for the app to join.
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -897,7 +1029,8 @@ const redChannel = userChannels.find(c => c.id === 'red');
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var userChannels = await _desktopAgent.GetUserChannels();
+var redChannel = userChannels.First(c => c.Id == "red");
 ```
 
 </TabItem>
@@ -909,7 +1042,7 @@ TBC
 
 ### `joinUserChannel`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -920,7 +1053,7 @@ joinUserChannel(channelId: string) : Promise<void>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task JoinUserChannel(string channelId);
 ```
 
 </TabItem>
@@ -938,7 +1071,7 @@ If an error occurs (such as the channel is unavailable or the join request is de
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -955,7 +1088,13 @@ fdc3.joinUserChannel(selectedChannel.id);
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+// get all user channels
+var channels = await _desktopAgent.GetUserChannels();
+
+// create UI to pick from the User channels
+
+// join the channel on selection
+_desktopAgent.JoinUserChannel(selectedChannel.Id);
 ```
 
 </TabItem>
@@ -967,7 +1106,7 @@ TBC
 
 ### `leaveCurrentChannel`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -978,7 +1117,7 @@ leaveCurrentChannel() : Promise<void>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task LeaveCurrentChannel();
 ```
 
 </TabItem>
@@ -990,7 +1129,7 @@ Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -1009,7 +1148,14 @@ redChannel.addContextListener(null, channelListener);
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+//desktop-agent scope context listener
+var fdc3Listener = await _desktopAgent.AddContextListener<IContext>(null, (context, metadata) => { });
+
+await _desktopAgent.LeaveCurrentChannel();
+//the fdc3Listener will now cease receiving context
+
+//listening on a specific channel though, will continue to work
+redChannel.AddContextListener(null, channelListener);
 ```
 
 </TabItem>
@@ -1017,7 +1163,7 @@ TBC
 
 ### `open`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -1028,7 +1174,7 @@ open(app: AppIdentifier, context?: Context): Promise<AppIdentifier>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IAppIdentifier> Open(IAppIdentifier app, IContext? context = null);
 ```
 
 </TabItem>
@@ -1048,7 +1194,7 @@ If an error occurs while opening the app, the promise MUST be rejected with an `
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
  ```js
@@ -1064,7 +1210,12 @@ let instanceIdentifier = await fdc3.open(appIdentifier, context);
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+// Open an app without context, using an AppIdentifier object to specify the target
+var appIdentifier = new AppIdentifier("myApp-v1.0.1");
+var instanceIdentifier = await _desktopAgent.Open(appIdentifier);
+
+// Open an app with context 
+var instanceIdentifier = await _desktopAgent.Open(appIdentifier, context);
 ```
 
 </TabItem>
@@ -1079,7 +1230,7 @@ TBC
 
 ### `raiseIntent`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -1090,7 +1241,7 @@ raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<Inte
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentifier? app = null);
 ```
 
 </TabItem>
@@ -1111,7 +1262,7 @@ Issuing apps may optionally wait on the promise that is returned by the `getResu
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -1150,7 +1301,22 @@ catch (error: ResultError) {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+// raise an intent for resolution by the desktop agent
+// a resolver UI may be displayed, or another method of resolving the intent to a
+// target applied, if more than one application can resolve the intent
+await _desktopAgent.RaiseIntent("StartChat", context);
+
+// or find apps to resolve an intent to start a chat with a given contact
+var appIntent = await _desktopAgent.FindIntent("StartChat", context);
+
+// use the metadata of an app or app instance to describe the target app for the intent
+await _desktopAgent.RaiseIntent("StartChat", context, appIntent.Apps.First());
+
+//Raise an intent without a context by using the null context type
+await _desktopAgent.RaiseIntent("StartChat", ContextType.Nothing);
+
+//Raise an intent and retrieve a result from the IntentResolution
+IIntentResolution resolution = await _desktopAgent.RaiseIntent("intentName", context);
 ```
 
 </TabItem>
@@ -1168,7 +1334,7 @@ TBC
 
 ### `raiseIntentForContext`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -1179,7 +1345,7 @@ raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<IntentReso
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? app = null);
 ```
 
 </TabItem>
@@ -1198,7 +1364,7 @@ If a target intent and app cannot be found with the criteria provided or the use
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
@@ -1213,7 +1379,11 @@ await fdc3.raiseIntentForContext(context, targetAppIdentifier);
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+// Display a resolver UI for the user to select an intent and application to resolve it
+var intentResolution = await _desktopAgent.RaiseIntentForContext(context);
+
+// Resolve against all intents registered by a specific target app for the specified context
+await _desktopAgent.RaiseIntentForContext(context, targetAppIdentifier);
 ```
 
 </TabItem>
@@ -1232,18 +1402,11 @@ TBC
 
 ### `addContextListener` (deprecated)
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 addContextListener(handler: ContextHandler): Promise<Listener>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-TBC
 ```
 
 </TabItem>
@@ -1257,18 +1420,11 @@ Adds a listener for incoming context broadcasts from the Desktop Agent. Provided
 
 ### `getSystemChannels` (deprecated)
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 getSystemChannels() : Promise<Array<Channel>>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-TBC
 ```
 
 </TabItem>
@@ -1281,18 +1437,11 @@ Alias to the [`getUserChannels`](#getuserchannels) function provided for backwar
 
 ### `joinChannel` (deprecated)
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 joinChannel(channelId: string) : Promise<void>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-TBC
 ```
 
 </TabItem>
@@ -1306,18 +1455,11 @@ Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwar
 
 ### `open` (deprecated)
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 open(name: string, context?: Context): Promise<AppIdentifier>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-TBC
 ```
 
 </TabItem>
@@ -1331,18 +1473,11 @@ Version of `open` that launches an app by name rather than `AppIdentifier`. Prov
 
 ### `raiseIntent` (deprecated)
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 raiseIntent(intent: string, context: Context, name: string): Promise<IntentResolution>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-TBC
 ```
 
 </TabItem>
@@ -1356,18 +1491,11 @@ Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`
 
 ### `raiseIntentForContext` (deprecated)
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-TBC
 ```
 
 </TabItem>
