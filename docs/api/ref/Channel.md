@@ -22,7 +22,7 @@ There are differences in behavior when you interact with a User channel via the 
 
 Channels each have a unique identifier, some display metadata and operations for broadcasting context to other applications, or receiving context from other applications.
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -49,7 +49,15 @@ interface Channel {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IChannel: IIntentResult
+{
+    string Id { get; }
+    ChannelType Type { get; }
+    IDisplayMetadata? DisplayMetadata { get; }
+    Task Broadcast(IContext context);
+    Task<IContext?> GetCurrentContext(string? contextType);
+    Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> handler) where T : IContext;
+}
 ```
 
 </TabItem>
@@ -67,7 +75,7 @@ TBC
 
 ### `id`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -78,7 +86,7 @@ public readonly id: string;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+string Id { get; }
 ```
 
 </TabItem>
@@ -88,7 +96,7 @@ Uniquely identifies the channel. It is either assigned by the desktop agent (Use
 
 ### `type`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -99,7 +107,14 @@ public readonly type: "user" | "app" | "private";
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+ChannelType Type { get; }
+
+public enum ChannelType
+{
+    User = 1,
+    App = 2,
+    Private = 3
+}
 ```
 
 </TabItem>
@@ -109,7 +124,7 @@ Can be _user_,  _app_ or _private_.
 
 ### `displayMetadata`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -120,7 +135,7 @@ public readonly displayMetadata?: DisplayMetadata;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+IDisplayMetadata? DisplayMetadata { get; }
 ```
 
 </TabItem>
@@ -136,7 +151,7 @@ DisplayMetadata can be used to provide display hints for User Channels intended 
 
 ### `addContextListener`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -147,7 +162,7 @@ public addContextListener(contextType: string | null, handler: ContextHandler): 
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> handler) where T : IContext;
 ```
 
 </TabItem>
@@ -163,7 +178,7 @@ Optional metadata about each context message received, including the app that or
 
 Add a listener for any context that is broadcast on the channel:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -183,7 +198,19 @@ listener.unsubscribe();
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+IChannel channel;
+var listener = await channel.AddContextListener<IContext>(null, (context, metadata) => {
+    if (context.Type == ContextTypes.Contact)
+    {
+        // handle the contact
+    }
+    else if (context.Type == ContextTypes.Instrument) {
+        // handle the instrument
+    }
+});
+
+// later
+listener.Unsubscribe();
 ```
 
 </TabItem>
@@ -191,7 +218,7 @@ TBC
 
 Adding listeners for specific types of context that is broadcast on the channel:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -212,7 +239,17 @@ instrumentListener.unsubscribe();
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var contactListener = await channel.AddContextListener<Contact>("fdc3.contact", (contact, metadata) => {
+    // handle the contact
+});
+
+var instrumentListener = await channel.AddContextListener<Instrument>("fdc3.instrument", (instrument, metadata) => {
+    // handle the instrument
+});
+
+// later
+contactListener.unsubscribe();
+instrumentListener.unsubscribe();
 ```
 
 </TabItem>
@@ -227,7 +264,7 @@ TBC
 
 ### `broadcast`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -238,7 +275,7 @@ public broadcast(context: Context): Promise<void>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task Broadcast(IContext context);
 ```
 
 </TabItem>
@@ -256,7 +293,7 @@ If an application attempts to broadcast an invalid context argument the Promise 
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -278,7 +315,16 @@ try {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var instrument = new Instrument(new InstrumentID() { Ticker = "AAPL" });
+
+try
+{
+    channel.Broadcast(instrument);
+}
+catch (Exception ex)
+{
+    // handle error
+}
 ```
 
 </TabItem>
@@ -292,7 +338,7 @@ TBC
 
 ### `getCurrentContext`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -303,7 +349,7 @@ public getCurrentContext(contextType?: string): Promise<Context|null>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+Task<IContext?> GetCurrentContext(string? contextType);
 ```
 
 </TabItem>
@@ -321,7 +367,7 @@ If getting the current context fails, the promise will be rejected with an `Erro
 
 Without specifying a context type:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -336,7 +382,14 @@ try {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+try
+{
+    var context = await channel.GetCurrentContext();
+}
+catch (Exception ex)
+{
+    // handle error
+}
 ```
 
 </TabItem>
@@ -344,7 +397,7 @@ TBC
 
 Specifying a context type:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -359,7 +412,14 @@ try {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+try
+{
+    var context = await channel.GetCurrentContext("fdc3.contact");
+}
+catch (Exception ex)
+{
+    // handle error
+}
 ```
 
 </TabItem>
@@ -375,7 +435,7 @@ TBC
 
 ### `addContextListener` (deprecated)
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -383,13 +443,6 @@ TBC
  * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
  */
 public addContextListener(handler: ContextHandler): Promise<Listener>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-TBC
 ```
 
 </TabItem>
