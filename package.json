@@ -6,10 +6,8 @@
   "workspaces": [
     "packages/*"
   ],
-  "packageManager": "yarn@4.0.2",
-  "devDependencies": {
-    "@types/eslint": "^8",
-    "eslint": "^8.53.0",
-    "typescript": "^5.2.2"
-  }
+  "scripts": {
+    "test": "yarn workspaces foreach --all test"
+  },
+  "packageManager": "yarn@4.0.2"
 }

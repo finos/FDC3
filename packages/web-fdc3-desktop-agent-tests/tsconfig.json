@@ -1,13 +1,12 @@
 {
-  "extends": "../../tsconfig.json",
-  "ts-node" : {
-    "compilerOptions": {
-      "noEmit": false,
-      "outDir": "target",
-      "module": "CommonJS",
-      "moduleResolution": "NodeNext",
-      "resolveJsonModule": false,
-      "rootDirs": [ "test" , "src" ]
-    }
-  }
+  "compilerOptions": {
+    "outDir": "target",
+    "noEmit": false,
+    "module": "NodeNext",
+    "target": "ES5",
+    //"moduleResolution": "",
+    "resolveJsonModule": false,
+    "allowImportingTsExtensions": false
+  },
+  "include": [ "test" ],
 }
