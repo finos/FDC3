@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.root.json",
+  "compilerOptions": {
+    "rootDir": "test",
+    "outDir": "dist",
+    "target": "es5",
+  },
+  "references": [
+    {
+      "path": "../da"
+    }
+  ]
+}

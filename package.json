@@ -9,5 +9,8 @@
   "scripts": {
     "test": "yarn workspaces foreach --all test"
   },
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@4.0.2",
+  "devDependencies": {
+    "typescript": "^5.3.2"
+  }
 }

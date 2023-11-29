@@ -1,4 +1,0 @@
-default:
-  format: [ "html:target/cucumber-report.html" ]
-  paths: [ "test/features/*.feature" ]
-  require: [ "target/step-definitions/*.js", "target/test/support/*.js" ]
