@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.root.json",
+  "compilerOptions": {
+    "lib": ["es2019"],
+    "rootDir": "src",
+    "outDir": "dist",
+    "target": "es6",
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../hello-lib"
+    }
+  ]
+}

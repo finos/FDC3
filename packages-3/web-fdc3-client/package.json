@@ -1,0 +1,16 @@
+{
+  "name": "web-fdc3-client",
+  "version": "0.0.0",
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^5.0.2"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@finos/fdc3": "^2.1.0-beta.4",
+    "web-fdc3-common": "workspace:*",
+    "web-fdc3-desktop-agent": "workspace:*"
+  }
+}

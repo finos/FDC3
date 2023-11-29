@@ -1,0 +1,4 @@
+default:
+  format: [ "html:dist/cucumber-report.html" ]
+  paths: [ "test/features/*.feature" ]
+  require: [ "dist/step-definitions/*.js", "dist/test/support/*.js" ]
