@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "ts-node" : {
+    "compilerOptions": {
+      "noEmit": false,
+      "outDir": "target",
+      "module": "CommonJS",
+      "moduleResolution": "NodeNext",
+      "resolveJsonModule": false,
+      "rootDirs": [ "test" , "src" ]
+    }
+  }
+}
