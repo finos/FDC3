@@ -1,10 +1,10 @@
-import { Channel, PrivateChannel, getCurrentChannel } from "@finos/fdc3"
+import { Channel, ContextHandler, Listener, PrivateChannel } from "@finos/fdc3"
 
 export interface ChannelSupport {
 
     hasUserChannelMembershipAPIs(): boolean
 
-    getUserChannel() : Promise<Channel>
+    getUserChannel() : Promise<Channel | null>
 
     getUserChannels() : Promise<Channel[]>
 
@@ -14,6 +14,8 @@ export interface ChannelSupport {
 
     leaveUserChannel() : Promise<void>
 
-    joinUserChannel(id: string) 
+    joinUserChannel(id: string) : Promise<void>
+
+    addContextListener(handler: ContextHandler, type: string | null) : Promise<Listener>
 
 }

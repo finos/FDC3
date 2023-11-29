@@ -1,5 +1,5 @@
 import { AppIdentifier, Context, ContextHandler, ContextMetadata, ImplementationMetadata, Listener } from "@finos/fdc3";
-import { DesktopAgentDetails, Options } from "../../common/src";
+import { DesktopAgentDetails, Options } from "@finos/web-fdc3-common/src";
 import { BroadcastAgentRequest, BroadcastAgentRequestMeta, RequestMessageType } from "@finos/fdc3";
 
 class BroadcastListener implements Listener {

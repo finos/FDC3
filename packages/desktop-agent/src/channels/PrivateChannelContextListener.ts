@@ -1,13 +1,12 @@
-import { Context, ContextHandler, Listener, PrivateChannel } from "@finos/fdc3";
-import { DefaultChannel } from "./DefaultChannel";
+import { ContextHandler } from "@finos/fdc3";
+import { PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { Messaging } from "../Messaging";
-import { AgentRequestMessage, PrivateChannelBroadcastAgentRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelEventListenerAddedAgentRequestMeta, PrivateChannelEventListenerRemovedAgentRequest, PrivateChannelEventListenerRemovedAgentRequestMeta, PrivateChannelOnDisconnectAgentRequest, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { DefaultContextListener } from "./DefaultContextListener";
+import { ChannelContextListener } from "./ChannelContextListener";
 
-export class PrivateChannelContextListener extends DefaultContextListener {
+export class PrivateChannelContextListener extends ChannelContextListener {
 
-    constructor(messaging: Messaging, type: string, channelId: string, contextType: string | null, action: ContextHandler) {
-        super(messaging, type, channelId, contextType, action);
+    constructor(messaging: Messaging, channelId: string, contextType: string | null, action: ContextHandler) {
+        super(messaging, channelId, contextType, action, "PrivateChannel.broadcast",);
     }
 
     unsubscribe(): void {
@@ -15,9 +14,9 @@ export class PrivateChannelContextListener extends DefaultContextListener {
 
         // message to say we've unsubscribed
         const message : PrivateChannelOnUnsubscribeAgentRequest = {
-            meta: this.messaging.createMeta(),
+            meta: this.messaging.createMeta() as PrivateChannelOnUnsubscribeAgentRequest['meta'],
             payload: {
-                channelId: this.channelId,
+                channelId: this.channelId!!,
                 contextType: this.contextType as any // ##1109 raised
             },
             type: "PrivateChannel.onUnsubscribe"

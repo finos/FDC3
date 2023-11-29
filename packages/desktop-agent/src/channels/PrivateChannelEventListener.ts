@@ -14,7 +14,7 @@ export class PrivateChannelEventListener implements Listener {
     constructor(messaging: Messaging, 
         channelId: string, 
         messageTypeFilter: EVENT_TYPES, 
-        action: (m: AgentRequestMessage) => void) {
+        action: (m: any) => void) {
         this.messaging = messaging;
         this.channelId = channelId;
         const filter = (m: AgentRequestMessage) => (m.type == "PrivateChannel."+messageTypeFilter) 
@@ -29,7 +29,7 @@ export class PrivateChannelEventListener implements Listener {
 
         // message to say we've unsubscribed
         const message : PrivateChannelEventListenerRemovedAgentRequest = {
-                meta: this.messaging.createMeta(),
+                meta: this.messaging.createMeta() as PrivateChannelEventListenerRemovedAgentRequest['meta'],
                 payload: {
                     channelId: this.channelId,
                     listenerType: this.messageTypeFilter

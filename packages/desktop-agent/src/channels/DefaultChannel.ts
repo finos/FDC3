@@ -1,9 +1,10 @@
-import { Channel, Context, ContextHandler, DisplayMetadata, Listener } from "@finos/fdc3"
+import { Context, ContextHandler, DisplayMetadata, Listener } from "@finos/fdc3"
 import { Messaging } from "../Messaging"
 import { BroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes"
-import { DefaultContextListener } from "./DefaultContextListener"
+import { ChannelContextListener } from "./ChannelContextListener"
+import { StatefulChannel } from "./StatefulChannel"
 
-export class DefaultChannel implements Channel {
+export class DefaultChannel implements StatefulChannel {
 
     readonly messaging: Messaging
     readonly id: string
@@ -24,7 +25,7 @@ export class DefaultChannel implements Channel {
     broadcast(context: Context): Promise<void> {
         const message : BroadcastAgentRequest = {
             meta: {
-                requestUuid: this.messaging.createUUid(),
+                requestUuid: this.messaging.createUUID(),
                 timestamp: new Date(),
                 source: this.messaging.getSource()
             },
@@ -65,9 +66,13 @@ export class DefaultChannel implements Channel {
     }
 
     addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
-        const listener = new DefaultContextListener(this.messaging, "broadcastRequest", this.id, contextType, theHandler);
+        const listener = new ChannelContextListener(this.messaging, this.id, contextType, theHandler);
         this.listeners.push(listener)
         return Promise.resolve(listener)   
+    }
+
+    getState() : Map<string, Context> {
+        return this.latestContextMap;
     }
 }
 
