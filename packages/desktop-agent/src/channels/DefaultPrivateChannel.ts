@@ -1,7 +1,7 @@
 import { Context, ContextHandler, Listener, PrivateChannel } from "@finos/fdc3";
 import { DefaultChannel } from "./DefaultChannel";
 import { Messaging } from "../Messaging";
-import { AgentRequestMessage, PrivateChannelBroadcastAgentRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelEventListenerAddedAgentRequestMeta, PrivateChannelEventListenerRemovedAgentRequest, PrivateChannelEventListenerRemovedAgentRequestMeta, PrivateChannelOnDisconnectAgentRequest, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { PrivateChannelBroadcastAgentRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelOnDisconnectAgentRequest} from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { EVENT_TYPES, PrivateChannelEventListener } from "./PrivateChannelEventListener";
 import { PrivateChannelContextListener } from "./PrivateChannelContextListener";
 
@@ -14,7 +14,7 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
     
     broadcast(context: Context): Promise<void> {
         const message : PrivateChannelBroadcastAgentRequest = {
-            meta: this.messaging.createMeta(),
+            meta: this.messaging.createMeta() as PrivateChannelBroadcastAgentRequest['meta'],
             payload: {
                 channelId : this.id,
                 context
@@ -26,7 +26,7 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
 
     notifyEventListenerAdded(t: EVENT_TYPES) {
         const message : PrivateChannelEventListenerAddedAgentRequest = {
-            meta: this.messaging.createMeta(),
+            meta: this.messaging.createMeta() as PrivateChannelEventListenerAddedAgentRequest['meta'],
             payload: {
                 channelId: this.id,
                 listenerType: t
@@ -52,7 +52,7 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
     }
 
     onDisconnect(handler: () => void): Listener {
-        const l = new PrivateChannelEventListener(this.messaging, this.id, "onDisconnect", (m) => handler()); 
+        const l = new PrivateChannelEventListener(this.messaging, this.id, "onDisconnect", () => handler()); 
         this.listeners.push(l);
         this.notifyEventListenerAdded("onDisconnect")
         return l;
@@ -64,7 +64,7 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
         
         // disconnect.
         const disconnectMessage : PrivateChannelOnDisconnectAgentRequest = {
-            meta: this.messaging.createMeta(),
+            meta: this.messaging.createMeta() as PrivateChannelOnDisconnectAgentRequest['meta'] ,
             payload: {
                 channelId: this.id,
             },
@@ -75,7 +75,7 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
     }
     
     addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
-        const listener = new PrivateChannelContextListener(this.messaging, "PrivateChannel.broadcast", this.id, contextType, theHandler);
+        const listener = new PrivateChannelContextListener(this.messaging, this.id, contextType, theHandler);
         this.listeners.push(listener)
         return Promise.resolve(listener)   
     }

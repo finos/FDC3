@@ -14,7 +14,6 @@ export class BasicDesktopAgent implements DesktopAgent {
     readonly apps: AppSupport
     readonly fdc3Version: string
     readonly provider: string
-    
 
     constructor(channels: ChannelSupport, intents: IntentSupport, apps: AppSupport, fdc3Version: string, provider: string) {
         this.intents = intents
@@ -40,14 +39,17 @@ export class BasicDesktopAgent implements DesktopAgent {
 
     async broadcast(context: Context): Promise<void> {
         const channel = await this.channels.getUserChannel()
-        return channel.broadcast(context)
+        if (channel) {
+            return channel.broadcast(context)
+        } else {
+            return Promise.resolve();
+        }
     }
 
     async addContextListener(context: ContextHandler | string | null, handler?: ContextHandler): Promise<Listener> {
         const theHandler: ContextHandler = handler ? handler : (context as ContextHandler)
         const theContextType: string | null = context && handler ? (context as string) : null
-        const channel = await this.channels.getUserChannel()
-        return channel.addContextListener(theContextType, theHandler)
+        return this.channels.addContextListener(theHandler, theContextType)
     }
 
     getUserChannels() {
