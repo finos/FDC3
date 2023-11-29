@@ -9,4 +9,9 @@
     "allowImportingTsExtensions": false
   },
   "include": [ "test" ],
+  "references": [
+    {
+       "path": "../web-fdc3-desktop-agent"
+    }
+  ]
 }

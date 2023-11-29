@@ -1,13 +1,13 @@
 import { AppIdentifier } from "@finos/fdc3";
 import { AgentRequestMessage } from "@finos/fdc3/dist/bridging/BridgingTypes";
-//import { Messaging } from "@finos/web-fdc3-desktop-agent/src/Messaging";
+import { Messaging } from "@finos/web-fdc3-desktop-agent/src/Messaging";
 
 type ListenerDetail = {
     filter: (m: AgentRequestMessage) => boolean,
     action: (m: AgentRequestMessage) => void
 }
 
-export class TestMessaging /* implements Messaging */ {
+export class TestMessaging implements Messaging {
 
     readonly allPosts : AgentRequestMessage[] = []
     readonly listeners : Map<string, ListenerDetail> = new Map()
