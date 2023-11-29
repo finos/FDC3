@@ -33,15 +33,15 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Use Node ${{ matrix.node }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@c5482d70ec8706408996e31ac94075030694993f #v1.8.32
+        uses: bahmutov/npm-install@2509f13e8485d88340a789a3f7ca11aaac47c9fc #v1.8.36
 
       - name: Lint
         run: yarn lint
@@ -52,7 +52,7 @@ jobs:
       - name: Build
         run: yarn build
 
-  pacakge-publish:
+  package-publish:
     if: ${{ github.event_name == 'push' }}
     needs: package-build
     name: Publish package to ${{ matrix.name }}
@@ -68,30 +68,40 @@ jobs:
            token-name: GITHUB_TOKEN
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Configure Node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
         node-version: 18.16.x
         registry-url: ${{ matrix.registry }}
 
     - name: Check package version
       id: check-version
-      uses: PostHog/check-package-version@adccce0ed9759513476413668bd2a5c995450bde #v2.0.0
+      uses: tehpsalmist/npm-publish-status-action@v1
 
-    - name: Package version info
-      run: |
-        echo "Committed version: ${{ steps.check-version.outputs.committed-version }}"
-        echo "Published version: ${{ steps.check-version.published-version }}"
-        echo "Is version new: ${{ steps.check-version.outputs.is-new-version }}"
+    # Disabled when switching from PostHog/check-package-version as the new lib 
+    #   just tells you if your version exists or not 
+    # - name: Package version info
+    #   run: |
+    #     echo "Committed version: ${{ steps.check-version.outputs.committed-version }}"
+    #     echo "Published version: ${{ steps.check-version.published-version }}"
+    #     echo "Is version new: ${{ steps.check-version.outputs.is-new-version }}"
 
+    - name: Report already published status
+      if: steps.check-version.outputs.exists == '1' 
+      run: 'echo "package version already exists on npm registry"'
+      
+    - name: Report not yet published status
+      if: steps.check-version.outputs.exists == '1' 
+      run: 'echo "package version does not exist on npm registry, publishing..."'
+      
     - name: Install dependencies
-      if: steps.check-version.outputs.is-new-version == 'true'
-      uses: bahmutov/npm-install@c5482d70ec8706408996e31ac94075030694993f #v1.8.32
+      if: steps.check-version.outputs.exists == '0' 
+      uses: bahmutov/npm-install@2509f13e8485d88340a789a3f7ca11aaac47c9fc #v1.8.36
 
     - name: Publish
-      if: steps.check-version.outputs.is-new-version == 'true'
+      if: steps.check-version.outputs.exists == '0' 
       run: yarn publish --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets[matrix.token-name] }}
