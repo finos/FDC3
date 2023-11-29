@@ -1,7 +1,6 @@
 {
   "name": "@finos/web-fdc3-desktop-agent",
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "build": "tsc"
   },

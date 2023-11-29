@@ -18,5 +18,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+
+    /* for monorepo */
+    "composite": true
   }
 }
