@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "build": "tsc",
-    "test": "yarn cucumber-js"
+    "test": "tsc; yarn cucumber-js"
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.0.1",

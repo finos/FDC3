@@ -1,5 +1,4 @@
 default:
-  format: [ "html:cucumber-report.html" ]
+  format: [ "html:target/cucumber-report.html" ]
   paths: [ "test/features/*.feature" ]
-  requireModule: [ "ts-node/register" ]
-  require: [ "test/step-definitions/*.ts", "test/support/*.ts" ]
+  require: [ "target/step-definitions/*.js", "target/test/support/*.js" ]
