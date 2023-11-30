@@ -29,3 +29,4 @@ var PrivateChannelEventListener = /** @class */ (function () {
     return PrivateChannelEventListener;
 }());
 exports.PrivateChannelEventListener = PrivateChannelEventListener;
+//# sourceMappingURL=PrivateChannelEventListener.js.map

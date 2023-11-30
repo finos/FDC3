@@ -65,3 +65,4 @@ var DefaultChannel = /** @class */ (function () {
     return DefaultChannel;
 }());
 exports.DefaultChannel = DefaultChannel;
+//# sourceMappingURL=DefaultChannel.js.map

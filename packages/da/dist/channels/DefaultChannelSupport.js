@@ -65,3 +65,4 @@ var DefaultChannelSupport = /** @class */ (function () {
     return DefaultChannelSupport;
 }());
 exports.DefaultChannelSupport = DefaultChannelSupport;
+//# sourceMappingURL=DefaultChannelSupport.js.map

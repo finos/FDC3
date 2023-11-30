@@ -25,3 +25,4 @@ var DefaultAppSupport = /** @class */ (function () {
     return DefaultAppSupport;
 }());
 exports.DefaultAppSupport = DefaultAppSupport;
+//# sourceMappingURL=DefaultAppSupport.js.map

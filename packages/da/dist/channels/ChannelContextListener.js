@@ -51,3 +51,4 @@ var ChannelContextListener = /** @class */ (function (_super) {
     return ChannelContextListener;
 }(DefaultContextListener_1.DefaultContextListener));
 exports.ChannelContextListener = ChannelContextListener;
+//# sourceMappingURL=ChannelContextListener.js.map

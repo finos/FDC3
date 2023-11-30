@@ -6,7 +6,7 @@
     "outDir": "dist",
     "target": "es5",
     "composite": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
   },
   "include": ["src"]
 }
