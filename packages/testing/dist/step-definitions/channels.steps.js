@@ -47,7 +47,7 @@ var da_3 = require("da");
 var da_4 = require("da");
 var cucumber_1 = require("@cucumber/cucumber");
 var expect_1 = __importDefault(require("expect"));
-var jsonpath_plus_1 = require("jsonpath-plus");
+var matching_1 = require("../support/matching");
 // class CustomWorld extends World {  
 //   constructor(options: any) {
 //     super(options)
@@ -75,7 +75,23 @@ var jsonpath_plus_1 = require("jsonpath-plus");
         });
     });
 });
-(0, cucumber_1.Then)('The result is an array of objects with the following contents', function (params) {
+(0, cucumber_1.When)('I call the API {string} with parameter {string}', function (fnName, param) {
+    return __awaiter(this, void 0, void 0, function () {
+        var fn, result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    fn = this.desktopAgent[fnName];
+                    return [4 /*yield*/, fn.call(this.desktopAgent, param)];
+                case 1:
+                    result = _a.sent();
+                    this.result = result;
+                    return [2 /*return*/];
+            }
+        });
+    });
+});
+(0, cucumber_1.Then)('the result is an array of objects with the following contents', function (params) {
     var _this = this;
     var table = params.rawTable;
     var headers = table.splice(0, 1)[0];
@@ -83,27 +99,9 @@ var jsonpath_plus_1 = require("jsonpath-plus");
     this.log("headers ".concat(JSON.stringify(headers), " body ").concat(JSON.stringify(table), " rows ").concat(rowCount));
     var resultCopy = JSON.parse(JSON.stringify(this.result));
     this.log("result ".concat(JSON.stringify(resultCopy), " length ").concat(resultCopy.length));
-    function doesRowMatch(values, headers, data) {
-        for (var i = 0; i < headers.length; i++) {
-            var found = (0, jsonpath_plus_1.JSONPath)({ path: headers[i], json: data })[0];
-            var actual = values[i];
-            if (found != actual) {
-                return false;
-            }
-        }
-        return true;
-    }
-    function indexOf(rows, headers, data) {
-        for (var i = 0; i < rows.length; i++) {
-            if (doesRowMatch(rows[i], headers, data)) {
-                return i;
-            }
-        }
-        return -1;
-    }
     (0, expect_1.default)(resultCopy).toHaveLength(rowCount);
     resultCopy = resultCopy.filter(function (rr) {
-        var matchingRow = indexOf(table, headers, rr);
+        var matchingRow = (0, matching_1.indexOf)(table, headers, rr);
         if (matchingRow != -1) {
             return false;
         }
@@ -113,5 +111,15 @@ var jsonpath_plus_1 = require("jsonpath-plus");
         }
     });
     (0, expect_1.default)(resultCopy).toHaveLength(0);
+});
+(0, cucumber_1.Then)('the result is an object with the following contents', function (params) {
+    var table = params.rawTable;
+    var headers = table.splice(0, 1)[0];
+    var rowCount = table.length;
+    this.log("headers ".concat(JSON.stringify(headers), " body ").concat(JSON.stringify(table), " rows ").concat(rowCount));
+    (0, expect_1.default)((0, matching_1.doesRowMatch)(table[0], headers, this.result)).toBeTruthy();
+});
+(0, cucumber_1.Then)('the result is null', function () {
+    (0, expect_1.default)(this.result).toBeNull();
 });
 //# sourceMappingURL=channels.steps.js.map

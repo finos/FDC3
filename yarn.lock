@@ -705,13 +705,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:4.14.167":
-  version: 4.14.167
-  resolution: "@types/lodash@npm:4.14.167"
-  checksum: 2cc272144ccdac8b8da305d2f7f76f311e9cb2904073bc7f886271ec5d60d023c431c017c8f9e57613cf75e83d312c47cf8a22de42439dfd9934685e122fd2df
-  languageName: node
-  linkType: hard
-
 "@types/long@npm:^4.0.1":
   version: 4.0.2
   resolution: "@types/long@npm:4.0.2"
@@ -1220,17 +1213,6 @@ __metadata:
     shebang-command: "npm:^2.0.0"
     which: "npm:^2.0.1"
   checksum: 5738c312387081c98d69c98e105b6327b069197f864a60593245d64c8089c8a0a744e16349281210d56835bb9274130d825a78b2ad6853ca13cfbeffc0c31750
-  languageName: node
-  linkType: hard
-
-"cucumber-console-formatter@npm:*":
-  version: 1.0.0
-  resolution: "cucumber-console-formatter@npm:1.0.0"
-  dependencies:
-    "@types/lodash": "npm:4.14.167"
-  peerDependencies:
-    "@cucumber/cucumber": ">= 7.0.0"
-  checksum: 33528cd7c771b0ec57443af313bcbb4470f7ee4766c44be375cae642aab4d9e024f204e25b83d1c146ac582b56b7673e2ba9f0e93e81778ed9e2b29dda03006b
   languageName: node
   linkType: hard
 
@@ -3170,7 +3152,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:*, ts-node@npm:10.9.1":
+"ts-node@npm:10.9.1":
   version: 10.9.1
   resolution: "ts-node@npm:10.9.1"
   dependencies:
