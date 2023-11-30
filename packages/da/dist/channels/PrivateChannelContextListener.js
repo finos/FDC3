@@ -38,3 +38,4 @@ var PrivateChannelContextListener = /** @class */ (function (_super) {
     return PrivateChannelContextListener;
 }(ChannelContextListener_1.ChannelContextListener));
 exports.PrivateChannelContextListener = PrivateChannelContextListener;
+//# sourceMappingURL=PrivateChannelContextListener.js.map

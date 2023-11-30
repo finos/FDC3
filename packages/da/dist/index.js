@@ -13,3 +13,4 @@ var DefaultChannelSupport_1 = require("./channels/DefaultChannelSupport");
 Object.defineProperty(exports, "DefaultChannelSupport", { enumerable: true, get: function () { return DefaultChannelSupport_1.DefaultChannelSupport; } });
 var DefaultAppSupport_1 = require("./apps/DefaultAppSupport");
 Object.defineProperty(exports, "DefaultAppSupport", { enumerable: true, get: function () { return DefaultAppSupport_1.DefaultAppSupport; } });
+//# sourceMappingURL=index.js.map

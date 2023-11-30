@@ -164,3 +164,4 @@ var BasicDesktopAgent = /** @class */ (function () {
     return BasicDesktopAgent;
 }());
 exports.BasicDesktopAgent = BasicDesktopAgent;
+//# sourceMappingURL=BasicDesktopAgent.js.map

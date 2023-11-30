@@ -85,3 +85,4 @@ var DefaultPrivateChannel = /** @class */ (function (_super) {
     return DefaultPrivateChannel;
 }(DefaultChannel_1.DefaultChannel));
 exports.DefaultPrivateChannel = DefaultPrivateChannel;
+//# sourceMappingURL=DefaultPrivateChannel.js.map
