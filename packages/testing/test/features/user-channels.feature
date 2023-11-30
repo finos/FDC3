@@ -2,6 +2,7 @@ Feature: Basic User Channels Support
 
 Background: Desktop Agent API
     Given A Basic API Setup
+    Given "instrumentMessageOne" is a "fdc3.instrument" broadcastRequest message on channel "one"
 
     Scenario: List User Channels    
 
@@ -35,19 +36,7 @@ Background: Desktop Agent API
         Given "resultHandler" pipes context to "contexts"
         When I call the API "joinUserChannel" with parameter "one"
         And I call the API "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
-        And messaging receives a "broadcastRequest" with payload:
-"""
-{
-    "channelId" : "one",
-    "context" : {
-        "type": "fdc3.instrument",
-        "name": "Apple",
-        "id" : {
-            "ticker": "AAPL"
-        }
-    }
-}
-"""
+        And messaging receives "{instrumentMessageOne}"
         Then "contexts" is an array of objects with the following contents
             | id.ticker    | type              | name         |
             | AAPL         | fdc3.instrument   | Apple        |
@@ -55,17 +44,30 @@ Background: Desktop Agent API
     Scenario: If you haven't joined a channel, your listener receives nothing
         Given "resultHandler" pipes context to "contexts"
         When I call the API "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
-        And messaging receives a "broadcastRequest" with payload:
-"""
-{
-    "channelId" : "one",
-    "context" : {
-        "type": "fdc3.instrument",
-        "name": "Apple",
-        "id" : {
-            "ticker": "AAPL"
-        }
-    }
-}
-"""
+        And messaging receives "{instrumentMessageOne}"
         Then "contexts" is empty
+
+    Scenario: Adding a listener to a user channel replays Context
+
+        Although the message is sent before the listener is added, history from the channel will get replayed
+
+        Given "resultHandler" pipes context to "contexts"
+        When messaging receives "{instrumentMessageOne}"
+        And I call the API "joinUserChannel" with parameter "one"
+        And I call the API "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+        Then "contexts" is an array of objects with the following contents
+            | id.ticker    | type              | name         |
+            | AAPL         | fdc3.instrument   | Apple        |
+
+    Scenario: Joining a user channel replays Context to listeners
+
+        Although the message is sent before the channel is joined, history from the channel will get replayed
+        to the listener
+
+        Given "resultHandler" pipes context to "contexts"
+        When messaging receives "{instrumentMessageOne}"
+        And I call the API "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+        And I call the API "joinUserChannel" with parameter "one"
+        Then "contexts" is an array of objects with the following contents
+            | id.ticker    | type              | name         |
+            | AAPL         | fdc3.instrument   | Apple        |

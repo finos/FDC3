@@ -7,7 +7,7 @@ export declare class DefaultChannel implements StatefulChannel {
     readonly type: "user" | "app" | "private";
     readonly displayMetadata?: DisplayMetadata | undefined;
     readonly latestContextMap: Map<string, Context>;
-    readonly latestContext: Context | null;
+    private latestContext;
     readonly listeners: Listener[];
     constructor(messaging: Messaging, id: string, type: "user" | "app" | "private", displayMetadata?: DisplayMetadata);
     broadcast(context: Context): Promise<void>;

@@ -4,6 +4,7 @@ exports.DefaultChannel = void 0;
 var ChannelContextListener_1 = require("./ChannelContextListener");
 var DefaultChannel = /** @class */ (function () {
     function DefaultChannel(messaging, id, type, displayMetadata) {
+        var _this = this;
         this.latestContextMap = new Map();
         this.latestContext = null;
         this.listeners = [];
@@ -11,6 +12,10 @@ var DefaultChannel = /** @class */ (function () {
         this.id = id;
         this.type = type;
         this.displayMetadata = displayMetadata;
+        this.addContextListenerInner(null, function (ctx) {
+            _this.latestContextMap.set(ctx.type, ctx);
+            _this.latestContext = ctx;
+        });
     }
     DefaultChannel.prototype.broadcast = function (context) {
         var message = {
