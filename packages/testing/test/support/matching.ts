@@ -21,3 +21,11 @@ export function indexOf(rows: string[][], headers: string[], data: any): number 
 
     return -1;
 }
+
+export function handleResolve(name: string, on: any) : any {
+    if (name.startsWith("{") && name.endsWith("}")) {
+        return on[name.substring(1, name.length-1)]
+    } else {
+        return name
+    }
+}

@@ -48,16 +48,20 @@ var da_4 = require("da");
 var cucumber_1 = require("@cucumber/cucumber");
 var expect_1 = __importDefault(require("expect"));
 var matching_1 = require("../support/matching");
-// class CustomWorld extends World {  
-//   constructor(options: any) {
-//     super(options)
-//   }
-// }
-// setWorldConstructor(CustomWorld)
 (0, cucumber_1.Given)('A Basic API Setup', function () {
     this.messaging = new TestMessaging_1.TestMessaging();
     this.defaultChannels = (0, DefaultUserChannels_1.createDefaultChannels)(this.messaging);
     this.desktopAgent = new da_1.BasicDesktopAgent(new da_2.DefaultChannelSupport(this.messaging, this.defaultChannels, null), new da_3.DefaultIntentSupport(), new da_4.DefaultAppSupport(), "2.0", "cucumber-provider");
+    this.result = null;
+});
+(0, cucumber_1.Given)('{string} pipes context to the result', function (contextHandlerName) {
+    var _this = this;
+    this[contextHandlerName] = function (context) {
+        if (!Array.isArray(_this.result)) {
+            _this.result = [];
+        }
+        _this.result.push(context);
+    };
 });
 (0, cucumber_1.When)('I call the API {string}', function (fnName) {
     return __awaiter(this, void 0, void 0, function () {
@@ -69,7 +73,9 @@ var matching_1 = require("../support/matching");
                     return [4 /*yield*/, fn.call(this.desktopAgent)];
                 case 1:
                     result = _a.sent();
-                    this.result = result;
+                    if (result) {
+                        this.result = result;
+                    }
                     return [2 /*return*/];
             }
         });
@@ -82,10 +88,39 @@ var matching_1 = require("../support/matching");
             switch (_a.label) {
                 case 0:
                     fn = this.desktopAgent[fnName];
-                    return [4 /*yield*/, fn.call(this.desktopAgent, param)];
+                    return [4 /*yield*/, fn.call(this.desktopAgent, (0, matching_1.handleResolve)(param, this))];
                 case 1:
                     result = _a.sent();
-                    this.result = result;
+                    if (result) {
+                        this.result = result;
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+});
+(0, cucumber_1.When)('messaging receives a {string} with payload:', function (type, docString) {
+    var message = {
+        meta: this.messaging.createMeta(),
+        payload: JSON.parse(docString),
+        type: type
+    };
+    this.log("Sending: ".concat(JSON.stringify(message)));
+    this.messaging.receive(message, this.log);
+});
+(0, cucumber_1.When)('I call the API {string} with parameters {string} and {string}', function (fnName, param1, param2) {
+    return __awaiter(this, void 0, void 0, function () {
+        var fn, result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    fn = this.desktopAgent[fnName];
+                    return [4 /*yield*/, fn.call(this.desktopAgent, (0, matching_1.handleResolve)(param1, this), (0, matching_1.handleResolve)(param2, this))];
+                case 1:
+                    result = _a.sent();
+                    if (result) {
+                        this.result = result;
+                    }
                     return [2 /*return*/];
             }
         });
