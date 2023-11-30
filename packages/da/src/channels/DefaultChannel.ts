@@ -12,7 +12,7 @@ export class DefaultChannel implements StatefulChannel {
     readonly displayMetadata?: DisplayMetadata | undefined;
 
     readonly latestContextMap: Map<string, Context> = new Map()
-    readonly latestContext: Context | null = null 
+    private latestContext: Context | null = null 
     readonly listeners: Listener[] = []
 
     constructor(messaging: Messaging, id: string, type: "user" | "app" | "private", displayMetadata? : DisplayMetadata) {
@@ -20,6 +20,10 @@ export class DefaultChannel implements StatefulChannel {
         this.id = id
         this.type = type
         this.displayMetadata = displayMetadata
+        this.addContextListenerInner(null, (ctx) => {
+            this.latestContextMap.set(ctx.type, ctx);
+            this.latestContext = ctx;
+        })
     }
 
     broadcast(context: Context): Promise<void> {
