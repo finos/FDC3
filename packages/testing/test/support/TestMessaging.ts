@@ -1,6 +1,9 @@
+import { ICreateLog } from "@cucumber/cucumber/lib/runtime/attachment_manager";
 import { AppIdentifier } from "@finos/fdc3";
 import { AgentRequestMessage } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { Messaging } from "da"
+import { v4 as uuidv4 } from 'uuid'
+
 
 type ListenerDetail = {
     filter: (m: AgentRequestMessage) => boolean,
@@ -20,7 +23,7 @@ export class TestMessaging implements Messaging {
     }
 
     createUUID() : string {
-        return crypto.randomUUID()
+        return uuidv4()
     }
 
     post(message: AgentRequestMessage): Promise<void> {
@@ -50,4 +53,14 @@ export class TestMessaging implements Messaging {
         }
     }
 
+    receive(m: AgentRequestMessage, log: ICreateLog) {
+        this.listeners.forEach((v, k) => {
+            if (v.filter(m)) {
+                log("Processing in "+k)
+                v.action(m)
+            } else {
+                log("Ignoring in "+k)
+            }
+        })
+    }
 }

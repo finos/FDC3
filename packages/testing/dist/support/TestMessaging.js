@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TestMessaging = void 0;
+var uuid_1 = require("uuid");
 var TestMessaging = /** @class */ (function () {
     function TestMessaging() {
         this.allPosts = [];
@@ -13,7 +14,7 @@ var TestMessaging = /** @class */ (function () {
         };
     };
     TestMessaging.prototype.createUUID = function () {
-        return crypto.randomUUID();
+        return (0, uuid_1.v4)();
     };
     TestMessaging.prototype.post = function (message) {
         this.allPosts.push(message);
@@ -36,6 +37,17 @@ var TestMessaging = /** @class */ (function () {
             "timestamp": new Date(),
             "source": this.getSource()
         };
+    };
+    TestMessaging.prototype.receive = function (m, log) {
+        this.listeners.forEach(function (v, k) {
+            if (v.filter(m)) {
+                log("Processing in " + k);
+                v.action(m);
+            }
+            else {
+                log("Ignoring in " + k);
+            }
+        });
     };
     return TestMessaging;
 }());

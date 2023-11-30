@@ -705,6 +705,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:4.14.167":
+  version: 4.14.167
+  resolution: "@types/lodash@npm:4.14.167"
+  checksum: 2cc272144ccdac8b8da305d2f7f76f311e9cb2904073bc7f886271ec5d60d023c431c017c8f9e57613cf75e83d312c47cf8a22de42439dfd9934685e122fd2df
+  languageName: node
+  linkType: hard
+
 "@types/long@npm:^4.0.1":
   version: 4.0.2
   resolution: "@types/long@npm:4.0.2"
@@ -771,6 +778,13 @@ __metadata:
   version: 9.0.1
   resolution: "@types/uuid@npm:9.0.1"
   checksum: 234e14e053504a98532bb5d1490c8d649fe24ae04a94ba042b09b380a900094df1032aa7c3864b74b7a85a0a5e97530b2d1340048ed9d07855140cb99b2cefc8
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^9.0.7":
+  version: 9.0.7
+  resolution: "@types/uuid@npm:9.0.7"
+  checksum: b329ebd4f9d1d8e08d4f2cc211be4922d70d1149f73d5772630e4a3acfb5170c6d37b3d7a39a0412f1a56e86e8a844c7f297c798b082f90380608bf766688787
   languageName: node
   linkType: hard
 
@@ -1213,6 +1227,17 @@ __metadata:
     shebang-command: "npm:^2.0.0"
     which: "npm:^2.0.1"
   checksum: 5738c312387081c98d69c98e105b6327b069197f864a60593245d64c8089c8a0a744e16349281210d56835bb9274130d825a78b2ad6853ca13cfbeffc0c31750
+  languageName: node
+  linkType: hard
+
+"cucumber-console-formatter@npm:*":
+  version: 1.0.0
+  resolution: "cucumber-console-formatter@npm:1.0.0"
+  dependencies:
+    "@types/lodash": "npm:4.14.167"
+  peerDependencies:
+    "@cucumber/cucumber": ">= 7.0.0"
+  checksum: 33528cd7c771b0ec57443af313bcbb4470f7ee4766c44be375cae642aab4d9e024f204e25b83d1c146ac582b56b7673e2ba9f0e93e81778ed9e2b29dda03006b
   languageName: node
   linkType: hard
 
@@ -3077,6 +3102,7 @@ __metadata:
     "@finos/fdc3": "npm:^2.1.0-beta.4"
     "@types/eslint": "npm:^8"
     "@types/node": "npm:20.10.0"
+    "@types/uuid": "npm:^9.0.7"
     chai: "npm:4.3.10"
     da: "workspace:*"
     eslint: "npm:^8.53.0"
@@ -3084,7 +3110,7 @@ __metadata:
     jsonpath-plus: "npm:^7.2.0"
     ts-node: "npm:10.9.1"
     typescript: "npm:5.3.2"
-    uuid: "npm:9.0.1"
+    uuid: "npm:^9.0.1"
   languageName: unknown
   linkType: soft
 
@@ -3152,7 +3178,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:10.9.1":
+"ts-node@npm:*, ts-node@npm:10.9.1":
   version: 10.9.1
   resolution: "ts-node@npm:10.9.1"
   dependencies:
@@ -3380,21 +3406,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:9.0.1":
-  version: 9.0.1
-  resolution: "uuid@npm:9.0.1"
-  bin:
-    uuid: dist/bin/uuid
-  checksum: 1607dd32ac7fc22f2d8f77051e6a64845c9bce5cd3dd8aa0070c074ec73e666a1f63c7b4e0f4bf2bc8b9d59dc85a15e17807446d9d2b17c8485fbc2147b27f9b
-  languageName: node
-  linkType: hard
-
 "uuid@npm:^8.3.1":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
   bin:
     uuid: dist/bin/uuid
   checksum: bcbb807a917d374a49f475fae2e87fdca7da5e5530820ef53f65ba1d12131bd81a92ecf259cc7ce317cbe0f289e7d79fdfebcef9bfa3087c8c8a2fa304c9be54
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "uuid@npm:9.0.1"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 1607dd32ac7fc22f2d8f77051e6a64845c9bce5cd3dd8aa0070c074ec73e666a1f63c7b4e0f4bf2bc8b9d59dc85a15e17807446d9d2b17c8485fbc2147b27f9b
   languageName: node
   linkType: hard
 

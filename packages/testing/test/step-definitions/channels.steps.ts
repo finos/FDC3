@@ -7,15 +7,9 @@ import { DefaultAppSupport } from 'da'
 import { Given, Then, When, World, setWorldConstructor } from '@cucumber/cucumber'
 import expect from 'expect';
 import { JSONPath } from 'jsonpath-plus'
-import { doesRowMatch, indexOf } from '../support/matching';
+import { doesRowMatch, handleResolve, indexOf } from '../support/matching';
+import { Context } from '@finos/fdc3';
 
-// class CustomWorld extends World {  
-//   constructor(options: any) {
-//     super(options)
-//   }
-// }
-
-// setWorldConstructor(CustomWorld)
 
 Given('A Basic API Setup', function() {
 
@@ -29,19 +23,53 @@ Given('A Basic API Setup', function() {
       "2.0",
       "cucumber-provider"
   )
+
+  this.result = null
+})
+
+Given('{string} pipes context to the result', function(contextHandlerName) {
+  this[contextHandlerName] = (context: Context) => {
+    if (!Array.isArray(this.result)) {
+      this.result = [];
+    }
+    this.result.push(context)
+  }
 })
 
 When('I call the API {string}', async function(fnName: string) {
     const fn = this.desktopAgent[fnName];
     const result = await fn.call(this.desktopAgent)
-    this.result = result;
+    if (result) {
+      this.result = result;
+    }
 })
 
 When('I call the API {string} with parameter {string}', async function(fnName: string, param: string) {
   const fn = this.desktopAgent[fnName];
-  const result = await fn.call(this.desktopAgent, param)
-  this.result = result;
+  const result = await fn.call(this.desktopAgent, handleResolve(param, this))
+  if (result) {
+    this.result = result;
+  }
 })
+
+When('messaging receives a {string} with payload:', function (type, docString) {
+  const message = {
+    meta: this.messaging.createMeta(),
+    payload: JSON.parse(docString),
+    type
+  }
+
+  this.log(`Sending: ${JSON.stringify(message)}`)
+  this.messaging.receive(message, this.log);
+});
+
+When('I call the API {string} with parameters {string} and {string}', async function (fnName: string, param1: string, param2: string) {
+  const fn = this.desktopAgent[fnName];
+  const result = await fn.call(this.desktopAgent, handleResolve(param1, this), handleResolve(param2, this))
+  if (result) {
+    this.result = result;
+  }
+});
 
 Then('the result is an array of objects with the following contents', function(params) {
   const table = params.rawTable as string[][]
@@ -78,3 +106,4 @@ Then('the result is an object with the following contents', function (params) {
 Then('the result is null', function() {
   expect(this.result).toBeNull()
 })
+
