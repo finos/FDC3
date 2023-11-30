@@ -8,7 +8,7 @@ Background: Desktop Agent API
         There should be a selection of user channels to choose from
 
         When I call the API "getUserChannels"
-        Then the result is an array of objects with the following contents
+        Then "result" is an array of objects with the following contents
             | id    | type              | displayMetadata.color         |
             | one   | user              | red                           |
             | two   | user              | green                         |
@@ -19,7 +19,7 @@ Background: Desktop Agent API
         At startup, the user channel shouldn't be set
 
         When I call the API "getCurrentChannel"
-        Then the result is null
+        Then "result" is null
 
     Scenario: Changing Channel
 
@@ -27,12 +27,12 @@ Background: Desktop Agent API
 
         When I call the API "joinUserChannel" with parameter "one"
         When I call the API "getCurrentChannel"
-        Then the result is an object with the following contents
+        Then "result" is an object with the following contents
             | id    | type              | displayMetadata.color         |
             | one   | user              | red                           |
 
     Scenario: Adding a Listener on a given User Channel
-        Given "resultHandler" pipes context to the result
+        Given "resultHandler" pipes context to "contexts"
         When I call the API "joinUserChannel" with parameter "one"
         And I call the API "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
         And messaging receives a "broadcastRequest" with payload:
@@ -48,6 +48,24 @@ Background: Desktop Agent API
     }
 }
 """
-        Then the result is an array of objects with the following contents
+        Then "contexts" is an array of objects with the following contents
             | id.ticker    | type              | name         |
             | AAPL         | fdc3.instrument   | Apple        |
+
+    Scenario: If you haven't joined a channel, your listener receives nothing
+        Given "resultHandler" pipes context to "contexts"
+        When I call the API "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+        And messaging receives a "broadcastRequest" with payload:
+"""
+{
+    "channelId" : "one",
+    "context" : {
+        "type": "fdc3.instrument",
+        "name": "Apple",
+        "id" : {
+            "ticker": "AAPL"
+        }
+    }
+}
+"""
+        Then "contexts" is empty

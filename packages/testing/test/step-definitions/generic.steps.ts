@@ -4,7 +4,7 @@ import { BasicDesktopAgent } from 'da';
 import { DefaultChannelSupport } from 'da';
 import { DefaultIntentSupport } from 'da';
 import { DefaultAppSupport } from 'da'
-import { Given, Then, When } from '@cucumber/cucumber'
+import { DataTable, Given, Then, When } from '@cucumber/cucumber'
 import expect from 'expect';
 import { doesRowMatch, handleResolve, indexOf } from '../support/matching';
 
@@ -48,18 +48,16 @@ When('I call the API {string} with parameters {string} and {string}', async func
     }
 });
 
-Then('the result is an array of objects with the following contents', function (params) {
-    const table = params.rawTable as string[][]
-    const headers = table.splice(0, 1)[0]
-    const rowCount = table.length
-    this.log(`headers ${JSON.stringify(headers)} body ${JSON.stringify(table)} rows ${rowCount}`)
+Then('{string} is an array of objects with the following contents', function (field: string, dt: DataTable) {
+    const tableData = dt.hashes();
+    const rowCount = tableData.length
 
-    var resultCopy = JSON.parse(JSON.stringify(this.result)) as any[];
+    var resultCopy = JSON.parse(JSON.stringify(this[field])) as any[];
     this.log(`result ${JSON.stringify(resultCopy)} length ${resultCopy.length}`)
     expect(resultCopy).toHaveLength(rowCount);
 
     resultCopy = resultCopy.filter(rr => {
-        const matchingRow = indexOf(table, headers, rr);
+        const matchingRow = indexOf(tableData, rr);
         if (matchingRow != -1) {
             return false
         } else {
@@ -71,15 +69,16 @@ Then('the result is an array of objects with the following contents', function (
     expect(resultCopy).toHaveLength(0)
 });
 
-Then('the result is an object with the following contents', function (params) {
-    const table = params.rawTable as string[][]
-    const headers = table.splice(0, 1)[0]
+Then('{string} is an object with the following contents', function (field: string, params: DataTable) {
+    const table = params.hashes()
     const rowCount = table.length
-    this.log(`headers ${JSON.stringify(headers)} body ${JSON.stringify(table)} rows ${rowCount}`)
-
-    expect(doesRowMatch(table[0], headers, this.result)).toBeTruthy();
+    expect(doesRowMatch(table[0], this[field])).toBeTruthy();
 });
 
-Then('the result is null', function () {
-    expect(this.result).toBeNull()
+Then('{string} is null', function (field) {
+    expect(this[field]).toBeNull()
+})
+
+Then('{string} is empty', function (field) {
+    expect(this[field]).toHaveLength(0)
 })
