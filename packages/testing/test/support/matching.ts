@@ -1,20 +1,20 @@
 import { JSONPath } from "jsonpath-plus";
 
-export function doesRowMatch(values: string[], headers: string[], data: any): boolean {
-    for (var i = 0; i < headers.length; i++) {
-        const found = JSONPath({ path: headers[i], json: data })[0];
-        const actual = values[i]
+export function doesRowMatch(t: Record<string, string>, data: any): boolean {
+    for (var k in Object.keys(t)) {
+        const found = JSONPath({ path: k, json: data })[0];
+        const actual = t[k]
         if (found != actual) {
             return false;
-        }
+        } 
     }
 
     return true;
 }
 
-export function indexOf(rows: string[][], headers: string[], data: any): number {
+export function indexOf(rows: Record<string, string>[], data: any): number {
     for (var i = 0; i < rows.length; i++) {
-        if (doesRowMatch(rows[i], headers, data)) {
+        if (doesRowMatch(rows[i], data)) {
             return i;
         }
     }
