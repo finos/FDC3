@@ -22,6 +22,14 @@ A Licensee may consent to accepting the current Community Specification License 
 
 ---------------------------------------------------------------------------------
 
+Licensee’s name: Rob Moffat
+
+Authorized individual and system identifier: robmoffat
+
+Specification version: 2.1
+
+---------------------------------------------------------------------------------
+
 Licensee’s name:
 
 Authorized individual and system identifier:
