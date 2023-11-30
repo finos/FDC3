@@ -9,7 +9,7 @@ FDC3 API operations may sometimes result in an error, which must be returned to 
 
 ## `ChannelError`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -42,7 +42,34 @@ enum ChannelError {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+public static class ChannelError
+{
+    /// <summary>
+    /// Returned if the specified channel is not found when attempting to join a
+    /// channel via the `JoinUserChannel` function of the DesktopAgent.
+    /// </summary>
+    public static readonly string NoChannelFound = nameof(NoChannelFound);
+
+    /// <summary>
+    /// SHOULD be returned when a request to join a user channel or to a retrieve
+    /// a Channel object via the `JoinUserChannel` or `GetOrCreateChannel` methods
+    /// of the DesktopAgent is denied.
+    /// </summary>
+    public static readonly string AccessDenied = nameof(AccessDenied);
+
+    /// <summary>
+    /// SHOULD be returned when a channel cannot be created or retrieved via the
+    /// `GetOrCreateChannel` method of the DesktopAgent.
+    /// </summary>
+    public static readonly string CreationFailed = nameof(CreationFailed);
+
+    /// <summary>
+    /// Returned if a call to the `Broadcast` functions is made with an invalid
+    /// context argument.Contexts should be Objects with at least a `Type` field
+    /// that has a `String` value.
+    /// </summary>
+    public static readonly string MalformedContext = nameof(MalformedContext);
+}
 ```
 
 </TabItem>
@@ -61,7 +88,7 @@ Contains constants representing the errors that can be encountered when calling 
 
 ## `OpenError`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -98,7 +125,37 @@ enum OpenError {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+public static class OpenError
+{
+    /// <summary>
+    /// Returned if the specified application is not found.
+    /// </summary>
+    public static readonly string AppNotFound = nameof(AppNotFound);
+
+    /// <summary>
+    /// Returned if the specified application fails to launch correctly.
+    /// </summary>
+    public static readonly string ErrorOnLaunch = nameof(ErrorOnLaunch);
+
+    /// <summary>
+    /// Returned if the specified application launches but fails to add a context
+    /// listener in order to receive the context passed to the `Open` call.
+    /// </summary>
+    public static readonly string AppTimeout = nameof(AppTimeout);
+
+    /// <summary>
+    /// Returned if the FDC3 desktop agent implementation is not currently able
+    /// to handle the request.
+    /// </summary>
+    public static readonly string ResolverUnavailable = nameof(ResolverUnavailable);
+
+    /// <summary>
+    /// Returned if a call to the `Open` function is made with an invalid
+    /// context argument.Contexts should be Objects with at least a `Type` field
+    /// that has a `String` value.
+    /// </summary>
+    public static readonly string MalformedContext = nameof(MalformedContext);
+}
 ```
 
 </TabItem>
@@ -112,7 +169,7 @@ Contains constants representing the errors that can be encountered when calling 
 
 ## `ResolveError`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -170,7 +227,59 @@ export enum ResolveError {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+public static class ResolveError
+{
+    /// <summary>
+    /// SHOULD be returned if no apps are available that can resolve the intent
+    /// and context combination.
+    /// </summary>
+    public static readonly string NoAppsFound = nameof(NoAppsFound);
+
+    /// <summary>
+    /// Returned if the FDC3 desktop agent implementation is not currently able
+    /// to handle the request.
+    /// </summary>
+    public static readonly string ResolverUnavailable = nameof(ResolverUnavailable);
+
+    /// <summary>
+    /// SHOULD be returned if a timeout cancels an intent resolution that
+    /// required user interaction. Please use `ResolverUnavailable` instead for
+    /// situations where a resolver UI or similar fails.
+    /// </summary>
+    public static readonly string ResolverTimeout = nameof(ResolverTimeout);
+
+    /// <summary>
+    /// Returned if the user cancelled the resolution request, for example by
+    /// closing or cancelling a resolver UI.
+    /// </summary>
+    public static readonly string UserCancelledResolution = nameof(UserCancelledResolution);
+
+    /// <summary>
+    /// Returned if a specified target application is not available or a new
+    /// instance of it cannot be opened.
+    /// </summary>
+    public static readonly string TargetAppUnavailable = nameof(TargetAppUnavailable);
+
+    /// <summary>
+    /// Returned if a specified target application instance is not available,
+    /// for example because it has been closed.
+    /// </summary>
+    public static readonly string TargetInstanceUnavailable = nameof(TargetInstanceUnavailable);
+
+    /// <summary>
+    /// Returned if the intent and context could not be delivered to the selected
+    /// application or instance, for example because it has not added an intent
+    /// handler within a timeout.
+    /// </summary>
+    public static readonly string IntentDeliveryFailed = nameof(IntentDeliveryFailed);
+    
+    /// <summary>
+    /// Returned if a call to one of the `RaiseIntent` functions is made with an 
+    /// invalid context argument. Contexts should be Objects with at least a `Type`
+    /// field that has a `String` value.
+    /// </summary>
+    public static readonly string MalformedContext = nameof(MalformedContext);
+}
 ```
 
 </TabItem>
@@ -187,7 +296,7 @@ Contains constants representing the errors that can be encountered when calling 
 
 ## `ResultError`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -208,7 +317,20 @@ enum ResultError {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+public static class ResultError
+{
+    /// <summary>
+    /// Returned if the intent handler exited without returning a valid result 
+    /// (a Task resolving to a Context, Channel object or void).
+    /// </summary>
+    public static readonly string NoResultReturned = nameof(NoResultReturned);
+
+    /// <summary>
+    /// Returned if the `IntentHandler` function processing the raised intent
+    /// throws an error.
+    /// </summary>
+    public static readonly string IntentHandlerRejected = nameof(IntentHandlerRejected);
+}
 ```
 
 </TabItem>
@@ -226,7 +348,7 @@ Contains constants representing the errors that can be encountered when calling 
 
 `@experimental`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -248,13 +370,6 @@ enum BridgingError {
    */
   MalformedMessage = 'MalformedMessage'
 }
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-TBC
 ```
 
 </TabItem>
