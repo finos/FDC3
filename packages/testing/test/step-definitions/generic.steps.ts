@@ -8,13 +8,14 @@ import { DataTable, Given, Then, When } from '@cucumber/cucumber'
 import expect from 'expect';
 import { doesRowMatch, handleResolve, indexOf } from '../support/matching';
 
-Given('A Basic API Setup', function () {
+Given('A Desktop Agent in {string}', function (field: string) {
 
-    this.messaging = new TestMessaging()
-    this.defaultChannels = createDefaultChannels(this.messaging);
+    if (!this.messaging) {
+        this.messaging = new TestMessaging();
+    }
 
-    this.desktopAgent = new BasicDesktopAgent(
-        new DefaultChannelSupport(this.messaging, this.defaultChannels, null),
+    this[field] = new BasicDesktopAgent(
+        new DefaultChannelSupport(this.messaging, createDefaultChannels(this.messaging), null),
         new DefaultIntentSupport(),
         new DefaultAppSupport(),
         "2.0",
@@ -24,25 +25,25 @@ Given('A Basic API Setup', function () {
     this.result = null
 })
 
-When('I call the API {string}', async function (fnName: string) {
-    const fn = this.desktopAgent[fnName];
-    const result = await fn.call(this.desktopAgent)
+When('I call {string} with {string}', async function (field: string, fnName: string) {
+    const fn = this[field][fnName];
+    const result = await fn.call(this[field])
     if (result) {
         this.result = result;
     }
 })
 
-When('I call the API {string} with parameter {string}', async function (fnName: string, param: string) {
-    const fn = this.desktopAgent[fnName];
-    const result = await fn.call(this.desktopAgent, handleResolve(param, this))
+When('I call {string} with {string} with parameter {string}', async function (field: string, fnName: string, param: string) {
+    const fn = this[field][fnName];
+    const result = await fn.call(this[field], handleResolve(param, this))
     if (result) {
         this.result = result;
     }
 })
 
-When('I call the API {string} with parameters {string} and {string}', async function (fnName: string, param1: string, param2: string) {
-    const fn = this.desktopAgent[fnName];
-    const result = await fn.call(this.desktopAgent, handleResolve(param1, this), handleResolve(param2, this))
+When('I call {string} with {string} with parameters {string} and {string}', async function (field: string, fnName: string, param1: string, param2: string) {
+    const fn = this[field][fnName];
+    const result = await fn.call(this[field], handleResolve(param1, this), handleResolve(param2, this))
     if (result) {
         this.result = result;
     }
