@@ -9,7 +9,7 @@ FDC3 API operations return various types of metadata.
 
 ## `AppIntent`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -28,7 +28,19 @@ interface AppIntent {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IAppIntent
+{
+  /// <summary>
+  /// Details of the intent whose relationship to resolving application is
+  /// being described.
+  /// </summary>
+  IIntentMetadata Intent { get; }
+
+  /// <summary>
+  /// Details of applications that can resolve the intent.
+  /// </summary>
+  IEnumerable<IAppMetadata> Apps { get; }
+}
 ```
 
 </TabItem>
@@ -46,7 +58,7 @@ For each intent, it reference the applications that support that intent.
 
 ## `AppMetadata`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -104,7 +116,49 @@ interface AppMetadata extends AppIdentifier {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IAppMetadata : IAppIdentifier
+{
+    /// <summary>
+    /// The unique app name that can be used with the open and raiseIntent calls.
+    /// </summary>
+    string? Name { get; }
+
+    /// <summary>
+    /// The Version of the application.
+    /// </summary>
+    string? Version { get; }
+
+    /// <summary>
+    /// A more user-friendly application title that can be used to render UI elements.
+    /// </summary>
+    string? Title { get; }
+
+    /// <summary>
+    /// A tooltip for the application that can be used to render UI elements.
+    /// </summary>
+    string? Tooltip { get; }
+
+    /// <summary>
+    /// A longer, multi-paragraph description for the application that could include markup.
+    /// </summary>
+    string? Description { get; }
+
+    /// <summary>
+    /// A list of icon URLs for the application that can be used to render UI elements.
+    /// </summary>
+    IEnumerable<IIcon> Icons { get; }
+
+    /// <summary>
+    /// A list of image URLs for the application that can be used to render UI elements.
+    /// </summary>
+    IEnumerable<IImage> Screenshots { get; }
+
+    /// <summary>
+    /// The type of output returned for any intent specified during resolution. May express a particular context type,
+    /// channel, or channel with specified type
+    /// </summary>
+    string? ResultType { get; }
+}
 ```
 
 </TabItem>
@@ -128,7 +182,7 @@ Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passe
 
 ## `ContextMetadata`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -144,7 +198,13 @@ interface ContextMetadata {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IContextMetadata
+{
+    /// <summary>
+    /// Identifier for the app instance that sent the context and/or intent.
+    /// </summary>
+    IAppIdentifier? Source { get; }
+}
 ```
 
 </TabItem>
@@ -165,7 +225,7 @@ Metadata relating to a context or intent & context received through the `addCont
 
 ## `DisplayMetadata`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -190,7 +250,24 @@ interface DisplayMetadata {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IDisplayMetadata
+{
+    /// <summary>
+    /// A user-readable name for this channel, e.g: Red.
+    /// </summary>
+    string? Name { get; }
+
+    /// <summary>
+    /// The color that should be associated within this channel when displaying this
+    /// channein in a UI, e.g: '0xFF0000'.
+    /// </summary>
+    string? Color { get; }
+
+    /// <summary>
+    /// A URL of an image that can be used to display this channel.
+    /// </summary>
+    string? Glyph { get; }
+}
 ```
 
 </TabItem>
@@ -205,7 +282,7 @@ A desktop agent (typically for _system_ channels) may want to provide additional
 
 ## `Icon`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -220,7 +297,23 @@ interface Icon {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IIcon
+{
+    /// <summary>
+    /// The icon url
+    /// </summary>
+    string Src { get; }
+    
+    /// <summary>
+    /// The icon dimensions, formatted as '{height}x{width}'
+    /// </summary>
+    string? Size { get; }
+    
+    /// <summary>
+    /// Icon media type. If not present, the Desktop Agent may use the src file extension.
+    /// </summary>
+    string? Type { get; }
+}
 ```
 
 </TabItem>
@@ -232,7 +325,7 @@ AppMetadata includes an icons property allowing multiple icon types to be specif
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -254,7 +347,7 @@ AppMetadata includes an icons property allowing multiple icon types to be specif
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+IIcon? icon = appMetadata?.Icons.Where(icon => icon.Size == "48x48").First();
 ```
 
 </TabItem>
@@ -272,7 +365,7 @@ TBC
 
 ## `Image`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -288,7 +381,29 @@ interface Image {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IImage
+{
+    /// <summary>
+    /// The icon url
+    /// </summary>
+    string Src { get; }
+    
+    /// <summary>
+    /// The icon dimensions, formatted as '{height}x{width}'
+    /// </summary>
+    string? Size { get; }
+    
+    /// <summary>
+    /// Icon media type.  If not present, the Desktop Agent may use the src file extension.
+    /// </summary>
+    string? Type { get; }
+
+
+    /// <summary>
+    /// Caption for the image
+    /// </summary>
+    string? Label { get; }
+}
 ```
 
 </TabItem>
@@ -300,7 +415,7 @@ AppMetadata includes a screenshots property allowing multiple images to be speci
 
 **Example:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -324,7 +439,10 @@ AppMetadata includes a screenshots property allowing multiple images to be speci
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+foreach (IImage image in appMetadata.Screenshots)
+{
+    System.Diagnostics.Debug.WriteLine(image.Src);
+}
 ```
 
 </TabItem>
@@ -342,7 +460,7 @@ TBC
 
 ## `ImplementationMetadata`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -389,7 +507,49 @@ interface ImplementationMetadata {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IImplementationMetadata
+{
+    /// <summary>
+    ///  The version number of the FDC3 specification that the implementation provides.
+    ///  The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
+    /// </summary>
+    string Fdc3Version { get; }
+
+    /// <summary>
+    /// The name of the provider of the FDC3 Desktop Agent Implementation (e.g. Finsemble, Glue42, OpenFin etc.).
+    /// </summary>
+    string Provider { get; }
+
+    /// <summary>
+    /// The version of the provider of the FDC3 Desktop Agent Implementation (e.g. 5.3.0).
+    /// </summary>
+    string ProviderVersion { get; }
+
+    /// <summary>
+    /// Metadata indicating whether the Desktop Agent implements optional features of the Desktop Agent API.
+    /// </summary>
+    OptionalDesktopAgentFeatures OptionalFeatures { get; }
+
+    /// <summary>
+    /// The calling application instance's own metadata according to the Desktop Agent
+    /// </summary>
+    IAppMetadata AppMetadata { get; }
+}
+
+class OptionalDesktopAgentFeatures
+{
+    /// <summary>
+    /// Used to indicate whether the exposure of 'originating app metadata' for context and intent
+    /// messages is supported by the Desktop Agent.
+    /// </summary>
+    public bool OriginatingAppMetadata { get; set; }
+    
+    /// <summary>
+    /// Used to indicate whether the optional 'JoinUserChannel', 'GetCurrentChannel', and 'LeaveCurrentChannel'
+    /// are implemented by the Desktop Agent.
+    /// </summary>
+    public bool UserChannelMembershipAPIs { get; set; }
+}
 ```
 
 </TabItem>
@@ -404,7 +564,7 @@ Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provid
 
 ## `IntentMetadata`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -424,7 +584,18 @@ interface IntentMetadata {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IIntentMetadata
+{
+    /// <summary>
+    /// The unique name of the intent that can be invoked by the raiseIntent call.
+    /// </summary>
+    string Name { get; }
+
+    /// <summary>
+    /// A friendly display name for the intent that should be used to render UI elements.
+    /// </summary>
+    string DisplayName { get; }
+}
 ```
 
 </TabItem>
@@ -438,7 +609,7 @@ The interface used to describe an intent within the platform.
 
 ## `IntentResolution`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -481,7 +652,25 @@ interface IntentResolution {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IIntentResolution
+{
+    /// <summary>
+    /// The application that resolved the intent.
+    /// </summary>
+    IAppIdentifier Source { get; }
+
+    /// <summary>
+    /// The intent that was raised.
+    /// </summary>
+    string Intent { get; }
+
+    /// <summary>
+    /// The version number of the Intents schema being used.
+    /// </summary>
+    string? Version { get; }
+
+    Task<IIntentResult> GetResult();
+}
 ```
 
 </TabItem>
@@ -491,7 +680,7 @@ IntentResolution provides a standard format for data returned upon resolving an 
 
 **Examples:**
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -528,7 +717,36 @@ try {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var resolution = await _desktopAgent.RaiseIntent("QuoteStream", new Instrument(new InstrumentID() { Ticker = "AAPL" }));
+try
+{
+    var result = await resolution.GetResult();
+
+    //check that we got a result and that it's a channel
+    if (result is IChannel channel)
+    {
+        var listener = await channel.AddContextListener<IContext>("price", (quote, metadata) => System.Diagnostics.Debug.WriteLine(quote));
+
+        //if it's a PrivateChannel
+        if (channel is IPrivateChannel privateChannel)
+        {
+            privateChannel.OnDisconnect(() => {
+                System.Diagnostics.Debug.WriteLine("Quote feed went down");
+            });
+
+            // Sometime later...
+            listener.Unsubscribe();
+        }
+    }
+    else
+    {
+        System.Diagnostics.Debug.WriteLine($" {resolution.Source} did not return a channel");
+    }
+}
+catch (Exception ex)
+{
+    // Handle exception
+}
 ```
 
 </TabItem>
