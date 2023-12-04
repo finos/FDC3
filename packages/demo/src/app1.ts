@@ -1,4 +1,4 @@
-import { load } from '../../client/src/load'
+import { getClientAPI } from 'client'
 
 function createContext(i: number) {
     return {
@@ -14,7 +14,7 @@ function createContext(i: number) {
  * Can be called any number of times.
  */
 async function startBroadcasting() {
-    const fdc3 = await load(); 
+    const fdc3 = await getClientAPI(); 
     for (let index = 0; index < 50; index++) {
         setTimeout(() => fdc3.broadcast(createContext(index)), index*1000);
     }

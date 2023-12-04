@@ -1,6 +1,5 @@
-import { DesktopAgent } from "@finos/fdc3";
-import { fdc3Ready } from "@finos/fdc3";
-import { Loader, Options } from "@finos/web-fdc3-common/src";
+import { DesktopAgent, fdc3Ready } from "@finos/fdc3";
+import { Loader, Options } from "fdc3-common";
 
 /**
  * This approach will resolve the loader promise if the fdc3Ready event occurs.

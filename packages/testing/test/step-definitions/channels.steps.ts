@@ -1,4 +1,4 @@
-import { Given, Then, When } from '@cucumber/cucumber'
+import { Given, When } from '@cucumber/cucumber'
 import { Context } from '@finos/fdc3';
 import { handleResolve } from '../support/matching';
 

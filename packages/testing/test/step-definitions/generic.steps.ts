@@ -72,7 +72,6 @@ Then('{string} is an array of objects with the following contents', function (fi
 
 Then('{string} is an object with the following contents', function (field: string, params: DataTable) {
     const table = params.hashes()
-    const rowCount = table.length
     expect(doesRowMatch(table[0], this[field])).toBeTruthy();
 });
 
