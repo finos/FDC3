@@ -8,3 +8,4 @@ packages/.DS_Store
 target/
 *.buildinfo
 /**/dist
+/**/node_modules
