@@ -169,7 +169,7 @@ An application may wish to retrieve information about the version of the FDC3 St
 
 Since version 1.2 of the FDC3 Standard it may do so via the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function. The metadata returned can be used, for example, to vary the behavior of an application based on the version supported by the Desktop Agent, e.g.:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -186,7 +186,7 @@ if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), '1.2')) {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var version = (await _desktopAgent.GetInfo()).Fdc3Version;
 ```
 
 </TabItem>
@@ -194,7 +194,7 @@ TBC
 
 The [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -207,7 +207,9 @@ let {appId, instanceId} = implementationMetadata.appMetadata;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var implementationMetadata = await _desktopAgent.GetInfo();
+var appId = implementationMetadata.AppMetadata.AppId;
+var instanceId = implementationMetadata.AppMetadata.InstanceId;
 ```
 
 </TabItem>
@@ -249,7 +251,7 @@ An optional result type is also supported when programmatically resolving an int
 
 Successful delivery of an intent depends first upon the Desktop Agent's ability to "resolve the intent" (i.e. map the intent to a specific App instance). Where the target application is ambiguous (because there is more than one application that could resolve the intent and context) Desktop Agents may resolve intents by any suitable methodology. A common method is to display a UI that allows the user to pick the desired App from a list of those that will accept the intent and context. Alternatively, the app issuing the intent may proactively handle resolution by calling [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext) and then raise the intent with a specific target application, e.g.:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -295,7 +297,48 @@ await fdc3.raiseIntent(appIntent[0].intent, context, appIntent[0].apps[0]);
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+// Find apps to resolve an intent to start a chat with a given contact
+var appIntent = await _desktopAgent.FindIntent("StartChat", context);
+// use the returned AppIntent object to target one of the returned 
+// chat apps or app instances using the AppMetadata object
+await _desktopAgent.RaiseIntent("StartChat", context, appIntent.Apps.First());
+
+//Find apps to resolve an intent and return a specified context type
+var appIntent = await _desktopAgent.FindIntent("ViewContact", context, "fdc3.contact");
+var resolution = await _desktopAgent.RaiseIntent(appIntent.Intent.Name, context, appIntent.Apps.First());
+try
+{
+  var result = await resolution.GetResult();
+  System.Diagnostics.Debug.WriteLine($"{resolution.Source} returned ${result}");
+}
+catch (Exception ex)
+{
+  System.Diagnostics.Debug.WriteLine($"{resolution.Source} returned an error");
+}
+
+//Find apps to resolve an intent and return a channel
+var appIntent = await _desktopAgent.FindIntent("QuoteStream", context, "channel");
+try
+{
+  var resolution = await _desktopAgent.RaiseIntent(appIntent.Intent.Name, context, appIntent.Apps.First());
+  var result = await resolution.GetResult();
+  if (result is IChannel resolvedChannel)
+  {
+      await resolvedChannel.AddContextListener<IContext>(null, (context, metadata) => { });
+  }
+  else
+  {
+      System.Diagnostics.Debug.WriteLine("Did not return a channel");
+  }
+}
+catch (Exception ex)
+{
+}
+
+//Find apps that can perform any intent with the specified context
+var appIntents = await _desktopAgent.FindIntentsByContext(context);
+//use the returned AppIntent array to target one of the returned apps
+await _desktopAgent.RaiseIntent(appIntents.First().Intent.Name, context, appIntents.First().Apps.First());
 ```
 
 </TabItem>
@@ -324,7 +367,7 @@ If the raising of the intent resolves (or rejects), a standard [`IntentResolutio
 
 For example, to raise a specific intent:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -338,7 +381,11 @@ catch (err){ ... }
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+try
+{
+    var resolution = await _desktopAgent.RaiseIntent("StageOrder", context);
+}
+catch (Exception ex) { }
 ```
 
 </TabItem>
@@ -346,7 +393,7 @@ TBC
 
 or to raise an unspecified intent for a specific context, where the user may select an intent from a resolver dialog:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -363,7 +410,15 @@ catch (err){ ... }
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+try
+{
+    var resolution = await _desktopAgent.RaiseIntentForContext(context);
+    if (resolution is IContext resolvedContext)
+    {
+        var orderId = resolvedContext.ID;
+    }
+}
+catch (Exception ex) { }
 ```
 
 </TabItem>
@@ -371,7 +426,7 @@ TBC
 
 Use metadata about the resolving app instance to target a further intent
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -389,7 +444,14 @@ catch (err) { ... }
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+try
+{
+    var resolution = await _desktopAgent.RaiseIntent("StageOrder", context);
+
+    //some time later
+    await _desktopAgent.RaiseIntent("UpdateOrder", context, resolution.Source);
+}
+catch (Exception ex) {  }
 ```
 
 </TabItem>
@@ -397,7 +459,7 @@ TBC
 
 Raise an intent and retrieve either data or a channel from the IntentResolution:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -421,7 +483,29 @@ try {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var resolution = await _desktopAgent.RaiseIntent("QuoteStream", new Instrument(new InstrumentID() { Ticker = "AAPL" }));
+try
+{
+    var result = await resolution.GetResult();
+
+    //check that we got a result and that it's a channel
+    if (result is IChannel channel)
+    {
+        System.Diagnostics.Debug.WriteLine($"{resolution.Source} returned a channel with id {channel.Id}");
+    }
+    else if (result is IContext context)
+    {
+        System.Diagnostics.Debug.WriteLine($"{resolution.Source} returned data {context}");
+    }
+    else
+    {
+        System.Diagnostics.Debug.WriteLine($"{resolution.Source} didn't return anything");
+    }
+}
+catch (Exception ex)
+{
+    System.Diagnostics.Debug.WriteLine($"{resolution.Source} returned an error");
+}
 ```
 
 </TabItem>
@@ -507,7 +591,7 @@ There SHOULD always be a clear UX indicator of what channel an app is joined to.
 
 To find a User channel, one calls:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -520,7 +604,8 @@ const redChannel = allChannels.find(c => c.id === 'red');
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var allChannels = await _desktopAgent.GetUserChannels();
+var redChannel = allChannels.Single(c => c.Id == "red");
 ```
 
 </TabItem>
@@ -528,7 +613,7 @@ TBC
 
 To join a User channel, one calls:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -539,7 +624,7 @@ fdc3.joinUserChannel(redChannel.id);
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+await _desktopAgent.JoinUserChannel(redChannel.Id);
 ```
 
 </TabItem>
@@ -646,7 +731,7 @@ App Channels are topics dynamically created by applications connected via FDC3. 
 
 To get (or create) a [`Channel`](ref/Channel) reference, then interact with it:
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -663,7 +748,13 @@ await appChannel.broadcast(context);
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var appChannel = await _desktopAgent.GetOrCreateChannel("my_custom_channel");
+// get the current context of the channel
+var current = await appChannel.GetCurrentContext(null);
+// add a listener
+await appChannel.AddContextListener<IContext>(null, (context, metadata) => { });
+// broadcast to the channel
+await appChannel.Broadcast(context);
 ```
 
 </TabItem>
@@ -671,7 +762,7 @@ TBC
 
 An app can still explicitly receive context events on any [`Channel`](ref/Channel), regardless of the channel it is currently joined to.
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -695,7 +786,19 @@ joinedChannel = await fdc3.getCurrentChannel()
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+var joinedChannel = await _desktopAgent.GetCurrentChannel();
+// current channel is null, as the app is not currently joined to a channel
+
+// add a context listener for channels we join
+var listener = await _desktopAgent.AddContextListener<IContext>(null, (context, metadata) => { });
+
+// retrieve an App Channel and add a listener that is specific to that channel
+var myChannel = await _desktopAgent.GetOrCreateChannel("my_custom_channel");
+var myChannelListener = await myChannel.AddContextListener<IContext>(null, (context, metadata) => { });
+
+await _desktopAgent.JoinUserChannel("blue");
+joinedChannel = await _desktopAgent.GetCurrentChannel();
+// current channel is now the "blue" channel
 ```
 
 </TabItem>
