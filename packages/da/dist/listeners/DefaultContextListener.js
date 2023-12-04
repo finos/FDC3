@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DefaultContextListener = void 0;
 var DefaultContextListener = /** @class */ (function () {
     function DefaultContextListener(messaging, filter, action) {
         this.messaging = messaging;
@@ -17,5 +14,5 @@ var DefaultContextListener = /** @class */ (function () {
     };
     return DefaultContextListener;
 }());
-exports.DefaultContextListener = DefaultContextListener;
+export { DefaultContextListener };
 //# sourceMappingURL=DefaultContextListener.js.map

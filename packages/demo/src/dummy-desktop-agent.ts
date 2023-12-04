@@ -1,6 +1,6 @@
 import { AppIdentifier } from "@finos/fdc3";
-import { supply } from "server";
 import { AppChecker, DesktopAgentDetailResolver, } from "fdc3-common";
+import { supply } from "server";
 
 enum Approach { Tab, Frame, Nested }
 

@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var cucumber_1 = require("@cucumber/cucumber");
-var matching_1 = require("../support/matching");
+import { Given, When } from '@cucumber/cucumber';
+import { handleResolve } from '../support/matching';
 var contextMap = {
     "fdc3.instrument": {
         "type": "fdc3.instrument",
@@ -11,7 +9,7 @@ var contextMap = {
         }
     }
 };
-(0, cucumber_1.Given)('{string} is a {string} broadcastRequest message on channel {string}', function (field, type, channel) {
+Given('{string} is a {string} broadcastRequest message on channel {string}', function (field, type, channel) {
     var message = {
         meta: this.messaging.createMeta(),
         payload: {
@@ -22,14 +20,14 @@ var contextMap = {
     };
     this[field] = message;
 });
-(0, cucumber_1.Given)('{string} pipes context to {string}', function (contextHandlerName, field) {
+Given('{string} pipes context to {string}', function (contextHandlerName, field) {
     var _this = this;
     this[field] = [];
     this[contextHandlerName] = function (context) {
         _this[field].push(context);
     };
 });
-(0, cucumber_1.When)('messaging receives a {string} with payload:', function (type, docString) {
+When('messaging receives a {string} with payload:', function (type, docString) {
     var message = {
         meta: this.messaging.createMeta(),
         payload: JSON.parse(docString),
@@ -38,8 +36,8 @@ var contextMap = {
     this.log("Sending: ".concat(JSON.stringify(message)));
     this.messaging.receive(message, this.log);
 });
-(0, cucumber_1.When)('messaging receives {string}', function (field) {
-    var message = (0, matching_1.handleResolve)(field, this);
+When('messaging receives {string}', function (field) {
+    var message = handleResolve(field, this);
     this.log("Sending: ".concat(JSON.stringify(message)));
     this.messaging.receive(message, this.log);
 });

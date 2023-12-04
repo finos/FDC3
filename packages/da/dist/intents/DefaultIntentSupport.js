@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DefaultIntentSupport = void 0;
 var DefaultIntentSupport = /** @class */ (function () {
     function DefaultIntentSupport() {
     }
@@ -21,5 +18,5 @@ var DefaultIntentSupport = /** @class */ (function () {
     };
     return DefaultIntentSupport;
 }());
-exports.DefaultIntentSupport = DefaultIntentSupport;
+export { DefaultIntentSupport };
 //# sourceMappingURL=DefaultIntentSupport.js.map
