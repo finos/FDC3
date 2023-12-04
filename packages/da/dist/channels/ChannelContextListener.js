@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -14,9 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ChannelContextListener = void 0;
-var DefaultContextListener_1 = require("../listeners/DefaultContextListener");
+import { DefaultContextListener } from "../listeners/DefaultContextListener";
 var ChannelContextListener = /** @class */ (function (_super) {
     __extends(ChannelContextListener, _super);
     function ChannelContextListener(messaging, channelId, contextType, action, type) {
@@ -49,6 +46,6 @@ var ChannelContextListener = /** @class */ (function (_super) {
         });
     };
     return ChannelContextListener;
-}(DefaultContextListener_1.DefaultContextListener));
-exports.ChannelContextListener = ChannelContextListener;
+}(DefaultContextListener));
+export { ChannelContextListener };
 //# sourceMappingURL=ChannelContextListener.js.map

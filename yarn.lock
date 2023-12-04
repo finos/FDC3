@@ -1515,6 +1515,7 @@ __metadata:
   dependencies:
     "@finos/fdc3": "npm:^2.1.0-beta.4"
     client: "workspace:*"
+    da: "workspace:*"
     fdc3-common: "workspace:*"
     server: "workspace:*"
     typescript: "npm:^5.0.2"

@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TestMessaging = void 0;
-var uuid_1 = require("uuid");
+import { v4 as uuidv4 } from 'uuid';
 var TestMessaging = /** @class */ (function () {
     function TestMessaging() {
         this.allPosts = [];
@@ -14,7 +11,7 @@ var TestMessaging = /** @class */ (function () {
         };
     };
     TestMessaging.prototype.createUUID = function () {
-        return (0, uuid_1.v4)();
+        return uuidv4();
     };
     TestMessaging.prototype.post = function (message) {
         this.allPosts.push(message);
@@ -51,5 +48,5 @@ var TestMessaging = /** @class */ (function () {
     };
     return TestMessaging;
 }());
-exports.TestMessaging = TestMessaging;
+export { TestMessaging };
 //# sourceMappingURL=TestMessaging.js.map

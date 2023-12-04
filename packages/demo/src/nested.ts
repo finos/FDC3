@@ -10,7 +10,6 @@ const childWindow = child?.contentWindow!!;
 window.addEventListener(
     "message",
     (event) => {
-        const data = event.data;
         if (event.source == parentWindow) {
             // from the parent
             childWindow.postMessage(event.data, "*");

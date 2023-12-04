@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -14,11 +13,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DefaultPrivateChannel = void 0;
-var DefaultChannel_1 = require("./DefaultChannel");
-var PrivateChannelEventListener_1 = require("./PrivateChannelEventListener");
-var PrivateChannelContextListener_1 = require("./PrivateChannelContextListener");
+import { DefaultChannel } from "./DefaultChannel";
+import { PrivateChannelEventListener } from "./PrivateChannelEventListener";
+import { PrivateChannelContextListener } from "./PrivateChannelContextListener";
 var DefaultPrivateChannel = /** @class */ (function (_super) {
     __extends(DefaultPrivateChannel, _super);
     function DefaultPrivateChannel(messaging, id) {
@@ -47,19 +44,19 @@ var DefaultPrivateChannel = /** @class */ (function (_super) {
         this.messaging.post(message);
     };
     DefaultPrivateChannel.prototype.onAddContextListener = function (handler) {
-        var l = new PrivateChannelEventListener_1.PrivateChannelEventListener(this.messaging, this.id, "onAddContextListener", function (m) { return handler(m.payload.contextType); });
+        var l = new PrivateChannelEventListener(this.messaging, this.id, "onAddContextListener", function (m) { return handler(m.payload.contextType); });
         this.listeners.push(l);
         this.notifyEventListenerAdded("onAddContextListener");
         return l;
     };
     DefaultPrivateChannel.prototype.onUnsubscribe = function (handler) {
-        var l = new PrivateChannelEventListener_1.PrivateChannelEventListener(this.messaging, this.id, "onUnsubscribe", function (m) { return handler(m.payload.contextType); });
+        var l = new PrivateChannelEventListener(this.messaging, this.id, "onUnsubscribe", function (m) { return handler(m.payload.contextType); });
         this.listeners.push(l);
         this.notifyEventListenerAdded("onUnsubscribe");
         return l;
     };
     DefaultPrivateChannel.prototype.onDisconnect = function (handler) {
-        var l = new PrivateChannelEventListener_1.PrivateChannelEventListener(this.messaging, this.id, "onDisconnect", function () { return handler(); });
+        var l = new PrivateChannelEventListener(this.messaging, this.id, "onDisconnect", function () { return handler(); });
         this.listeners.push(l);
         this.notifyEventListenerAdded("onDisconnect");
         return l;
@@ -78,11 +75,11 @@ var DefaultPrivateChannel = /** @class */ (function (_super) {
         this.messaging.post(disconnectMessage);
     };
     DefaultPrivateChannel.prototype.addContextListenerInner = function (contextType, theHandler) {
-        var listener = new PrivateChannelContextListener_1.PrivateChannelContextListener(this.messaging, this.id, contextType, theHandler);
+        var listener = new PrivateChannelContextListener(this.messaging, this.id, contextType, theHandler);
         this.listeners.push(listener);
         return Promise.resolve(listener);
     };
     return DefaultPrivateChannel;
-}(DefaultChannel_1.DefaultChannel));
-exports.DefaultPrivateChannel = DefaultPrivateChannel;
+}(DefaultChannel));
+export { DefaultPrivateChannel };
 //# sourceMappingURL=DefaultPrivateChannel.js.map

@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DefaultChannel = void 0;
-var ChannelContextListener_1 = require("./ChannelContextListener");
+import { ChannelContextListener } from "./ChannelContextListener";
 var DefaultChannel = /** @class */ (function () {
     function DefaultChannel(messaging, id, type, displayMetadata) {
         var _this = this;
@@ -60,7 +57,7 @@ var DefaultChannel = /** @class */ (function () {
         return this.addContextListenerInner(theContextType, theHandler);
     };
     DefaultChannel.prototype.addContextListenerInner = function (contextType, theHandler) {
-        var listener = new ChannelContextListener_1.ChannelContextListener(this.messaging, this.id, contextType, theHandler);
+        var listener = new ChannelContextListener(this.messaging, this.id, contextType, theHandler);
         this.listeners.push(listener);
         return Promise.resolve(listener);
     };
@@ -69,5 +66,5 @@ var DefaultChannel = /** @class */ (function () {
     };
     return DefaultChannel;
 }());
-exports.DefaultChannel = DefaultChannel;
+export { DefaultChannel };
 //# sourceMappingURL=DefaultChannel.js.map

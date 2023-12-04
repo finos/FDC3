@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DefaultAppSupport = void 0;
 var DefaultAppSupport = /** @class */ (function () {
     function DefaultAppSupport() {
     }
@@ -24,5 +21,5 @@ var DefaultAppSupport = /** @class */ (function () {
     };
     return DefaultAppSupport;
 }());
-exports.DefaultAppSupport = DefaultAppSupport;
+export { DefaultAppSupport };
 //# sourceMappingURL=DefaultAppSupport.js.map

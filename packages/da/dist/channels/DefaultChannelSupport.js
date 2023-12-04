@@ -1,10 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DefaultChannelSupport = void 0;
-var fdc3_1 = require("@finos/fdc3");
-var DefaultPrivateChannel_1 = require("./DefaultPrivateChannel");
-var DefaultChannel_1 = require("./DefaultChannel");
-var ChannelContextListener_1 = require("./ChannelContextListener");
+import { ChannelError } from "@finos/fdc3";
+import { DefaultPrivateChannel } from "./DefaultPrivateChannel";
+import { DefaultChannel } from "./DefaultChannel";
+import { ChannelContextListener } from "./ChannelContextListener";
 var DefaultChannelSupport = /** @class */ (function () {
     function DefaultChannelSupport(messaging, userChannelState, initialChannelId) {
         var _a;
@@ -26,11 +23,11 @@ var DefaultChannelSupport = /** @class */ (function () {
         return {};
     };
     DefaultChannelSupport.prototype.getOrCreate = function (id) {
-        var out = new DefaultChannel_1.DefaultChannel(this.messaging, id, "app", this.getDisplayMetadata(id));
+        var out = new DefaultChannel(this.messaging, id, "app", this.getDisplayMetadata(id));
         return Promise.resolve(out);
     };
     DefaultChannelSupport.prototype.createPrivateChannel = function () {
-        var out = new DefaultPrivateChannel_1.DefaultPrivateChannel(this.messaging, this.messaging.createUUID());
+        var out = new DefaultPrivateChannel(this.messaging, this.messaging.createUUID());
         return Promise.resolve(out);
     };
     DefaultChannelSupport.prototype.leaveUserChannel = function () {
@@ -47,7 +44,7 @@ var DefaultChannelSupport = /** @class */ (function () {
                 this.userChannelListeners.forEach(function (l) { return l.updateUnderlyingChannel(newUserChannel_1.id, newUserChannel_1.getState()); });
             }
             else {
-                throw new Error(fdc3_1.ChannelError.NoChannelFound);
+                throw new Error(ChannelError.NoChannelFound);
             }
         }
         return Promise.resolve();
@@ -55,7 +52,7 @@ var DefaultChannelSupport = /** @class */ (function () {
     DefaultChannelSupport.prototype.addContextListener = function (handler, type) {
         var _a;
         var uc = this.userChannel;
-        var listener = new ChannelContextListener_1.ChannelContextListener(this.messaging, (_a = uc === null || uc === void 0 ? void 0 : uc.id) !== null && _a !== void 0 ? _a : null, type, handler);
+        var listener = new ChannelContextListener(this.messaging, (_a = uc === null || uc === void 0 ? void 0 : uc.id) !== null && _a !== void 0 ? _a : null, type, handler);
         this.userChannelListeners.push(listener);
         if (uc) {
             listener.updateUnderlyingChannel(uc.id, uc.getState());
@@ -64,5 +61,5 @@ var DefaultChannelSupport = /** @class */ (function () {
     };
     return DefaultChannelSupport;
 }());
-exports.DefaultChannelSupport = DefaultChannelSupport;
+export { DefaultChannelSupport };
 //# sourceMappingURL=DefaultChannelSupport.js.map

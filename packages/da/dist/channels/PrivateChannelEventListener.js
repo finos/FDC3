@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PrivateChannelEventListener = void 0;
 var PrivateChannelEventListener = /** @class */ (function () {
     function PrivateChannelEventListener(messaging, channelId, messageTypeFilter, action) {
         this.messaging = messaging;
@@ -28,5 +25,5 @@ var PrivateChannelEventListener = /** @class */ (function () {
     };
     return PrivateChannelEventListener;
 }());
-exports.PrivateChannelEventListener = PrivateChannelEventListener;
+export { PrivateChannelEventListener };
 //# sourceMappingURL=PrivateChannelEventListener.js.map

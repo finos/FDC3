@@ -13,6 +13,7 @@
     "dependencies": {
         "@finos/fdc3": "^2.1.0-beta.4",
         "client": "workspace:*",
+        "da": "workspace:*",
         "fdc3-common": "workspace:*",
         "server": "workspace:*"
     },

@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -14,9 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PrivateChannelContextListener = void 0;
-var ChannelContextListener_1 = require("./ChannelContextListener");
+import { ChannelContextListener } from "./ChannelContextListener";
 var PrivateChannelContextListener = /** @class */ (function (_super) {
     __extends(PrivateChannelContextListener, _super);
     function PrivateChannelContextListener(messaging, channelId, contextType, action) {
@@ -36,6 +33,6 @@ var PrivateChannelContextListener = /** @class */ (function (_super) {
         this.messaging.post(message);
     };
     return PrivateChannelContextListener;
-}(ChannelContextListener_1.ChannelContextListener));
-exports.PrivateChannelContextListener = PrivateChannelContextListener;
+}(ChannelContextListener));
+export { PrivateChannelContextListener };
 //# sourceMappingURL=PrivateChannelContextListener.js.map
