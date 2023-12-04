@@ -13,7 +13,7 @@ Identifies an application, or instance of an application, and is used to target 
 Will always include at least an `appId` property, which can be used with `fdc3.open`, `fdc3.raiseIntent` etc..
 If the `instanceId` field is set then the `AppIdentifier` object represents a specific instance of the application that may be addressed using that Id.
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -40,7 +40,18 @@ interface AppIdentifier {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IAppIdentifier
+{
+    /// <summary>
+    /// The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root'.
+    /// </summary>
+    string AppId { get; }
+
+    /// <summary>
+    /// An optional instance identifier, indicating that this object represents a specific instance of the application described.
+    /// </summary>
+    string? InstanceId { get; }
+}
 ```
 
 </TabItem>
@@ -56,7 +67,7 @@ TBC
 
 ## `Context`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -71,7 +82,24 @@ interface Context {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IContext<out T>: IIntentResult, IDynamicContext where T : class
+{
+    T? ID { get; }
+    string? Name { get; }
+    string Type { get; }
+}
+
+interface IContext : IContext<object>
+{
+}
+
+interface IDynamicContext
+{
+    /// <summary>
+    /// Underlying message as a dynamic type for accessing all properties without deserialization
+    /// </summary>
+    dynamic? Native { get; set; }
+}
 ```
 
 </TabItem>
@@ -98,7 +126,7 @@ This means that it must at least have a `type` property that indicates what type
 
 ## `ContextHandler`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -109,7 +137,7 @@ type ContextHandler = (context: Context, metadata?: ContextMetadata) => void;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+delegate void ContextHandler<T>(T context, IContextMetadata? metadata = null) where T : IContext;
 ```
 
 </TabItem>
@@ -130,7 +158,7 @@ Optional metadata about the context message, including the app that originated t
 
 ## `DesktopAgentIdentifier`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -140,13 +168,6 @@ interface DesktopAgentIdentifier {
    *  particular Desktop Agent.**/
   readonly desktopAgent: string;
 }
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-TBC
 ```
 
 </TabItem>
@@ -160,7 +181,7 @@ TBC
 
 ## `IntentHandler`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -171,7 +192,7 @@ type IntentHandler = (context: Context, metadata?: ContextMetadata) => Promise<I
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+delegate Task<IIntentResult> IntentHandler<T>(T context, IContextMetadata? metadata = null) where T : IContext;
 ```
 
 </TabItem>
@@ -193,7 +214,7 @@ Optional metadata about the intent & context message, including the app that ori
 
 ## `IntentResult`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -204,7 +225,7 @@ type IntentResult = Context | Channel | void;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IIntentResult { /* Marker interface implemented by IContext and Channel */ }
 ```
 
 </TabItem>
@@ -227,7 +248,7 @@ Represented as a union type in TypeScript, however, this type may be rendered as
 
 A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](DesktopAgent#addintentlistener) or [`addContextListener`](DesktopAgent#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -240,7 +261,10 @@ interface Listener {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+interface IListener
+{
+    void Unsubscribe();
+}
 ```
 
 </TabItem>
@@ -248,7 +272,7 @@ TBC
 
 ### `unsubscribe`
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
@@ -259,7 +283,7 @@ unsubscribe(): void;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-TBC
+void Unsubscribe();
 ```
 
 </TabItem>
