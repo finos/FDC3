@@ -15,5 +15,16 @@
         /* for monorepo */
         "composite": true
     },
-    "include": [ "src/**/*.ts" ]
+    "include": [ "src/**/*.ts" ],
+    "references": [
+        {
+            "path": "../client"
+        },
+        {
+            "path": "../server"
+        },
+        {
+            "path": "../fdc3-common"
+        }
+    ] 
 }

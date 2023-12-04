@@ -1,10 +1,9 @@
-import { load } from '../../client/src/load'
-import { JS_INJECT } from '../../common/src';
+import { getClientAPI } from 'client'
 
 /**
  * This demonstrates using the API via a promise
  */
-load({"methods" : [JS_INJECT]}).then(fdc3 => {
+getClientAPI().then(fdc3 => {
     console.log("in promise")
     const log = document.getElementById("log");
     const msg = document.createElement("p");
