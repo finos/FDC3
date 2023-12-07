@@ -24,6 +24,7 @@
     "@docusaurus/core": "~2.4.1",
     "@docusaurus/preset-classic": "~2.4.1",
     "@docusaurus/theme-mermaid": "~2.4.1",
+    "docusaurus-json-schema-plugin": "1.6.1",
     "clsx": "^1.2.1",
     "cpy-cli": "4.2.0",
     "cross-env": "^7.0.3",
