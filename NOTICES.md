@@ -22,7 +22,7 @@ A Licensee may consent to accepting the current Community Specification License 
 
 ---------------------------------------------------------------------------------
 
-Licensee’s name: interop.io
+Licensee’s name: interop.io, inc.
 
 Authorized individual and system identifier: Kris West <kris.west@interop.io / @kriswest>
 
