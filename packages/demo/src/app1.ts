@@ -14,7 +14,9 @@ function createContext(i: number) {
  * Can be called any number of times.
  */
 async function startBroadcasting() {
+    console.log("starting...")
     const fdc3 = await getClientAPI(); 
+    console.log("got api...")
     for (let index = 0; index < 50; index++) {
         setTimeout(() => fdc3.broadcast(createContext(index)), index*1000);
     }

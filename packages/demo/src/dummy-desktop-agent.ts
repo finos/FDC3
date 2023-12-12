@@ -1,5 +1,5 @@
 import { AppIdentifier } from "@finos/fdc3";
-import { AppChecker, DesktopAgentDetailResolver, } from "fdc3-common";
+import { AppChecker, DesktopAgentDetailResolver, FDC3_PORT_TRANSFER_REQUEST_TYPE, } from "fdc3-common";
 import { supply } from "server";
 
 enum Approach { Tab, Frame, Nested }
@@ -68,25 +68,33 @@ window.addEventListener("load", () => {
     }
 
     // for a given window, allows us to determine which app it is (if any)
-    const appChecker : AppChecker = o => instances.find(i => i.window ==o) != undefined;
+    const appChecker : AppChecker = o => instances.find(i => i.window == o)
+
     const detailsResolver : DesktopAgentDetailResolver = (o) => { 
-        const appIdentifier = instances.find(i => i.window ==o)!!
         return { 
-            url: "/src/demo/implementation.ts",
-            apiId : currentApiInstance++, 
-            apikey: "Abc",
-            appId: appIdentifier.appId,
-            instanceId: appIdentifier.instanceId!!
+            apikey: "Abc"
         }
     }
 
     // set up desktop agent handler here using FDC3 Web Loader (or whatever we call it)
-    supply(appChecker, detailsResolver);
+    supply(appChecker, detailsResolver, {
+        uri: "http://localhost:8080/static/embed/index.html"
+    })
 
     // hook up the buttons
     document.getElementById("app1")?.addEventListener("click", () => launch("/static/app1/index.html", "1"));
     document.getElementById("app2")?.addEventListener("click", () => launch("http://robs-pro:8080/static/app2/index.html", "2"));
     document.getElementById("app3")?.addEventListener("click", () => launch("http://localhost:8080/static/app3/index.html", "3"));
 
+    // // listen for desktop agent ports being sent to connect
+    // bc.addEventListener(
+    //     "message",
+    //     (event) => {
+    //         console.log("Received "+event)
+    //         if (event.data.type == FDC3_PORT_TRANSFER_REQUEST_TYPE) {
+    //             const port = event.data.payload
+    //             server.register(port)
+    //         }
+    //     });
 })
 
