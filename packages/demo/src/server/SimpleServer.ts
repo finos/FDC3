@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from "uuid"
 import { handleHandshake } from "./handshake"
 import { ConnectionStep2Hello, ConnectionStep3Handshake } from "@finos/fdc3/dist/bridging/BridgingTypes"
 import { handleBroadcast } from "./broadcast"
-import { handleInternalRegisterDesktopInstance } from "./internal-register"
 
 declare var onconnect : any
 
@@ -22,7 +21,6 @@ export class SimpleServer {
 
     readonly channelsState: Record<string, Context[]> 
     readonly clients : Map<MessagePort, ClientData> = new Map()
-    readonly instances: Record<string, AppIdentifier> = {}
     private readonly actions : Record<string, (e: MessageEvent<any>, client: MessagePort, ss: SimpleServer) => void> 
     
     constructor(actions) {
@@ -56,16 +54,11 @@ export class SimpleServer {
 
         console.log("Added client. "+this.clients.size)
     }
-
-    addInstance(apiKey: string, appIdentifier: AppIdentifier) {
-        this.instances[apiKey] = appIdentifier
-    }
 }
 
 const theServer = new SimpleServer({
     "hello" : handleHandshake,
     "broadcastRequest": handleBroadcast,
-    "internalRegisterAppInstance": handleInternalRegisterDesktopInstance
 });
 
 onconnect = function (event) {
