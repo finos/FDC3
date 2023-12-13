@@ -7,4 +7,6 @@
 packages/.DS_Store
 target/
 *.buildinfo
+**/*.buildinfo
 /**/dist
+/**/node_modules

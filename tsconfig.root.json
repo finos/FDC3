@@ -1,14 +1,23 @@
 {
   "compilerOptions": {
-    "strict": true,
     "esModuleInterop": true,
-    "module": "commonjs",
+    "module": "ESNext",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "sourceMap": true
+    "sourceMap": true,
+
+    /* output setting */
+    "lib": ["es2021", "DOM"],
+    "target": "es5",
+    "composite": true,
+
+    /* Linting */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true
   }
 }

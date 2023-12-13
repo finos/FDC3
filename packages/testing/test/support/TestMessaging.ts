@@ -63,4 +63,8 @@ export class TestMessaging implements Messaging {
             }
         })
     }
+
+    exchange<X>(_message: object, _expectedTypeName: string): Promise<X> {
+        throw new Error("not yet implemented")
+    }
 }

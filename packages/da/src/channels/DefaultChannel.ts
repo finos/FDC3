@@ -1,8 +1,8 @@
 import { Context, ContextHandler, DisplayMetadata, Listener } from "@finos/fdc3"
 import { Messaging } from "../Messaging"
 import { BroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes"
-import { ChannelContextListener } from "./ChannelContextListener"
-import { StatefulChannel } from "./StatefulChannel"
+import { ChannelContextListener } from "./ChannelContextListener.js"
+import { StatefulChannel } from "./StatefulChannel.js"
 
 export class DefaultChannel implements StatefulChannel {
 
