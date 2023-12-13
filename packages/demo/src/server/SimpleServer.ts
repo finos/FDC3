@@ -18,7 +18,7 @@ type ClientData = {
 
 export class SimpleServer {
 
-    private readonly channelsState: Record<string, Context[]> 
+    readonly channelsState: Record<string, Context[]> 
     private readonly actions : Record<string, (e: MessageEvent<any>, client: MessagePort, ss: SimpleServer) => void> 
     private readonly clients : Map<MessagePort, ClientData> = new Map()
 

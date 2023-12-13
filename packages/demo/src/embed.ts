@@ -4,7 +4,7 @@ const appWindow = window.parent;
 
 window.addEventListener("load", () => {
 
-    const sw = new SharedWorker('http://localhost:8080/src/SimpleServer.ts', {
+    const sw = new SharedWorker('http://localhost:8080/src/server/SimpleServer.ts', {
         type: "module"
     })
     

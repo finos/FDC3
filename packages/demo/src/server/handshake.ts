@@ -21,7 +21,7 @@ export function handleHandshake(e: MessageEvent, client: MessagePort, ss: Simple
             }
             },
             requestedName: 'demo-da',
-            channelsState: this.channelsState
+            channelsState: ss.channelsState
         },
         meta: {
             requestUuid: ss.createUUID(),
@@ -31,5 +31,5 @@ export function handleHandshake(e: MessageEvent, client: MessagePort, ss: Simple
 
     ss.addClient(client, hello, handshake)
     console.log("Responding to hello "+handshake)
-    client.postMessage(this.createHandshake(e.data))
+    client.postMessage(handshake)
 }
