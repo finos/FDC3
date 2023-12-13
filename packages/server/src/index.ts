@@ -17,7 +17,7 @@ export const supply: Supplier = (checker: AppChecker, detailsResolver: DesktopAg
             fdc3Version: "2.0",
             type: FDC3_API_RESPONSE_MESSAGE_TYPE,
             ...staticDetails, 
-            ...detailsResolver(source),
+            ...detailsResolver(source, appId),
 
             method: "message-port",
 

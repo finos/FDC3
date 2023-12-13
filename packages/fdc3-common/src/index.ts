@@ -26,7 +26,7 @@ export type Loader = (options: Options) => Promise<DesktopAgent>
  */
 export type DesktopAgentDetails = { [key: string] : string | number | boolean }
 
-export type DesktopAgentDetailResolver = (o: Window) => DesktopAgentDetails
+export type DesktopAgentDetailResolver = (o: Window, a: AppIdentifier) => DesktopAgentDetails
 
 export type Method = (r: APIResponseMessage, options: Options) => Promise<DesktopAgent>
 

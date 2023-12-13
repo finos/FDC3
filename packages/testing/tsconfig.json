@@ -3,6 +3,8 @@
   "compilerOptions": {
     "rootDir": "test",
     "outDir": "dist",
+    "target": "es6",
+    "module": "CommonJS"
   },
   "references": [
     {

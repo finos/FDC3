@@ -1,42 +1,45 @@
-import { v4 as uuidv4 } from 'uuid';
-var TestMessaging = /** @class */ (function () {
-    function TestMessaging() {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TestMessaging = void 0;
+const uuid_1 = require("uuid");
+class TestMessaging {
+    constructor() {
         this.allPosts = [];
         this.listeners = new Map();
     }
-    TestMessaging.prototype.getSource = function () {
+    getSource() {
         return {
             appId: "SomeDummyApp",
             instanceId: "some.dummy.instance"
         };
-    };
-    TestMessaging.prototype.createUUID = function () {
-        return uuidv4();
-    };
-    TestMessaging.prototype.post = function (message) {
+    }
+    createUUID() {
+        return (0, uuid_1.v4)();
+    }
+    post(message) {
         this.allPosts.push(message);
         return Promise.resolve();
-    };
-    TestMessaging.prototype.register = function (filter, action) {
-        var id = this.createUUID();
+    }
+    register(filter, action) {
+        const id = this.createUUID();
         this.listeners.set(id, {
-            filter: filter,
-            action: action
+            filter,
+            action
         });
         return id;
-    };
-    TestMessaging.prototype.unregister = function (id) {
+    }
+    unregister(id) {
         this.listeners.delete(id);
-    };
-    TestMessaging.prototype.createMeta = function () {
+    }
+    createMeta() {
         return {
             "requestUuid": this.createUUID(),
             "timestamp": new Date(),
             "source": this.getSource()
         };
-    };
-    TestMessaging.prototype.receive = function (m, log) {
-        this.listeners.forEach(function (v, k) {
+    }
+    receive(m, log) {
+        this.listeners.forEach((v, k) => {
             if (v.filter(m)) {
                 log("Processing in " + k);
                 v.action(m);
@@ -45,8 +48,10 @@ var TestMessaging = /** @class */ (function () {
                 log("Ignoring in " + k);
             }
         });
-    };
-    return TestMessaging;
-}());
-export { TestMessaging };
+    }
+    exchange(_message, _expectedTypeName) {
+        throw new Error("not yet implemented");
+    }
+}
+exports.TestMessaging = TestMessaging;
 //# sourceMappingURL=TestMessaging.js.map

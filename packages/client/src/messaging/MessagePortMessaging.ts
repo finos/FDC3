@@ -1,6 +1,7 @@
 import { AppIdentifier } from "@finos/fdc3"
 import { AgentRequestMessage } from "@finos/fdc3/dist/bridging/BridgingTypes"
 import { Messaging } from "da"
+import { exchangePostMessage } from "fdc3-common"
 import { v4 as uuidv4 } from "uuid"
 
 type ListenerDetail = {
@@ -59,5 +60,11 @@ export class MessagePortMessaging implements Messaging {
             "timestamp": new Date(),
             "source": this.getSource()
         }
+    }
+
+    exchange<X>(message: object, expectedTypeName: string): Promise<X> {
+        return exchangePostMessage(this.mp, expectedTypeName, message).then(e => {
+            return e.data as X
+        });
     }
 }

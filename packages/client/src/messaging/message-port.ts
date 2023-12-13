@@ -30,7 +30,7 @@ export async function messagePortInit(data: APIResponseMessage, options: Options
     return new BasicDesktopAgent(
         new DefaultChannelSupport(messaging, userChannelState, null),
         new DefaultIntentSupport(),
-        new DefaultAppSupport(),
+        new DefaultAppSupport(messaging, data.appIdentifier),
         data.fdc3Version,
         data.provider);
 }
