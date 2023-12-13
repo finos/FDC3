@@ -70,24 +70,8 @@ window.addEventListener("load", () => {
     // for a given window, allows us to determine which app it is (if any)
     const appChecker : AppChecker = o => instances.find(i => i.window == o)
 
-    // create the shared web worker
-    const sw = new SharedWorker('http://localhost:8080/src/server/SimpleServer.ts', {
-        type: "module"
-    })
-    
-    sw.port.start()
-
     const detailsResolver : DesktopAgentDetailResolver = (o, a) => { 
         const apiKey = "ABC"+ (currentApiInstance++)
-        sw.port.postMessage({
-            type: "internalRegisterAppInstance",
-            apiKey,
-            appIdentifier: {
-                appId: a.appId,
-                instanceId: a.instanceId,
-                desktopAgent: a.desktopAgent
-            }
-        })
         return { 
             apiKey
         }
