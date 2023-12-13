@@ -645,10 +645,7 @@ export interface ChatOptions {
  */
 export interface ChatMessage {
   chatRoom: ChatRoomObject;
-  /**
-   * The content of the message to post in the chat when created.
-   */
-  message: MessageObject | string;
+  message: MessageObject;
   type: 'fdc3.chat.message';
   id?: { [key: string]: any };
   name?: string;
@@ -2574,7 +2571,7 @@ const typeMap: any = {
   ChatMessage: o(
     [
       { json: 'chatRoom', js: 'chatRoom', typ: r('ChatRoomObject') },
-      { json: 'message', js: 'message', typ: u(r('MessageObject'), '') },
+      { json: 'message', js: 'message', typ: r('MessageObject') },
       { json: 'type', js: 'type', typ: r('ChatMessageType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },

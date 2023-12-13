@@ -36,7 +36,21 @@ const chatMessage = {
             streamId: "j75xqXy25NBOdacUI3FNBH"
         }
     },
-    message: "A message to send"
+    message: {
+      type: 'fdc3.message',
+      text: {
+        'text/plain': 'Hey all, can we discuss the issue together? I attached a screenshot'
+      },
+      entities: {
+         '0': {
+             type: 'fdc3.fileAttachment',
+              data: {
+              name: 'myImage.png',
+                    dataUri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII'
+              }
+          }
+      }
+    }
 }
 ```
 
