@@ -3,7 +3,6 @@
   "compilerOptions": {
     "rootDir": "test",
     "outDir": "dist",
-    "target": "es5",
   },
   "references": [
     {

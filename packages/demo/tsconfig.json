@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "dist",
+    },
+    "include": [ "search" ],
+    "references": [
+        {
+            "path": "../client"
+        },
+        {
+            "path": "../server"
+        },
+        {
+            "path": "../fdc3-common"
+        },
+        {
+            "path": "../da"
+        }
+    ] 
+}
