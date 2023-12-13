@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Removed the union type for the `ChatMessage` context, which caused issues for languages not having union types. This is a breaking change.
 * Added `CreateInteraction` intent. To be used when a user wants to record an interaction into a system.  New context `Interaction` also introduced. An interaction might be a call, IM, email, a meeting (physical or virtual) or the preparation of some specialist data. ([#747](https://github.com/finos/FDC3/pull/747))
 * Added `TransactionResult` context. A context type representing the result of a transaction initiated via FDC3. Its purpose is to provide a status and message (where needed) for the transaction and MAY wrap a returned context object. ([#761] (https://github.com/finos/FDC3/pull/761))
 * Added a `MalformedContext` error to the `OpenError`, `ChannelError` and `ResolveError` enumerations, to be used when `broadcast`, `open`, `findIntents`, `raiseIntents`, and other related functions are passed an invalid context Object. ([#972](https://github.com/finos/FDC3/pull/972))
