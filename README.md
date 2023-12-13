@@ -34,8 +34,8 @@ The project is divided into several different yarn workspaces:
 
  - `demo` : A bare-bones 
  
-
- ## Configuring the client
+ 
+## Configuring the client
 
 `getClientAPI` (in `index.ts`): Called (with options) by an FDC3 Aoo to retrieve the API.  This retrieves `details` from the desktop agent and initialises a `DesktopAgent` API implementation, returning it in a promise.  There are various options available:
 
@@ -56,12 +56,12 @@ The project is divided into several different yarn workspaces:
 - This currently only supports FDC3 2.0
 - Also supports the difference between frames and tabs.
 
-## Cross-Origin
+## Cross-Origin
 
 - This supports cross-origin when using post message without iframes.  (at least on my machine!) you can configure hostnames in `dummy-desktop-agent.ts` to try this out.
 - However, using the iframe mode (you can see this in the demo) will fail as chrome has restricted the 
 
-## TO DO
+## TO-DO
 
  - Fallback strategy in case FDC3 API isn't available (currently promise never resolves)
  - Sanitisation of response from the Desktop Agent
