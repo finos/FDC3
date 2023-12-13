@@ -8,8 +8,8 @@ const loader: Loader = (options: Options) => {
         // setup listener for message and retrieve JS URL from it
         window.addEventListener("message", (event) => {
             const data: APIResponseMessage = event.data;
-            if (data.type == FDC3_API_RESPONSE_MESSAGE_TYPE) {
-                resolve(messagePortInit(data))
+            if ((data.type == FDC3_API_RESPONSE_MESSAGE_TYPE) && (data.method == 'message-port')) {
+                resolve(messagePortInit(data, options))
             } else {
                 reject("Incorrect API Response Message");
             }
@@ -21,6 +21,7 @@ const loader: Loader = (options: Options) => {
     if (da != null) {
         const requestMessage = {
             type: FDC3_API_REQUEST_MESSAGE_TYPE,
+            methods: ['post-message']
         }
 
         da.postMessage(requestMessage, "*");

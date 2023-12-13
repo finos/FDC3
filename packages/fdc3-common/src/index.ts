@@ -1,5 +1,6 @@
 import { AppIdentifier } from "@finos/fdc3";
 import { DesktopAgent } from "@finos/fdc3";
+import { exchange, exchangePostMessage, exchangeForMessagePort } from "./exchange";
 
 /** 
  * We need to add options here. 
@@ -11,9 +12,11 @@ export type Options = {
     frame?: Window
 }
 
-export type AppChecker = (o: Window) => boolean;
+export { exchange, exchangePostMessage, exchangeForMessagePort }
 
-export type Supplier = (checker: AppChecker, detailsResolver: DesktopAgentDetailResolver) => void
+export type AppChecker = (o: Window) => AppIdentifier | undefined;
+
+export type Supplier = (checker: AppChecker, detailsResolver: DesktopAgentDetailResolver, staticDetails: DesktopAgentDetails) => void
 
 export type Loader = (options: Options) => Promise<DesktopAgent> 
 
@@ -35,12 +38,14 @@ export type Method = (r: APIResponseMessage, options: Options) => Promise<Deskto
 export type APIResponseMessage = {
     type: string,
     method: "message-port",
-    uri: string,
-    appId: AppIdentifier,
+    uri?: string,
+    appIdentifier: AppIdentifier,
     fdc3Version: string,
+    supportedFDC3Versions: string[],
+    desktopAgentBridgeVersion: string,
+    authRequired: boolean,
     provider: string,
-    clientSecret: string,
-    details: DesktopAgentDetails
+    authToken?: string,
 }
 
 export type APIRequestMessage = {

@@ -15,7 +15,8 @@
         "client": "workspace:*",
         "da": "workspace:*",
         "fdc3-common": "workspace:*",
-        "server": "workspace:*"
+        "server": "workspace:*",
+        "uuid": "^9.0.1"
     },
     "references": [
         {
