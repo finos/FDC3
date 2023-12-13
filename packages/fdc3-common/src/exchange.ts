@@ -36,13 +36,10 @@ export function exchangeForMessagePort(p: MessagePort | Window | BroadcastChanne
 /**
  * Send a message to on a port and wait for one to come back.
  */
-export function exchangePostMessage(p: MessagePort | Window | BroadcastChannel, fromType: any, toType: string, payload?: any) : Promise<any> {
+export function exchangePostMessage(p: MessagePort | Window | BroadcastChannel, toType: string, contents: any) : Promise<any> {
     return exchange(p, toType, () => {
-        console.log("Posting message: "+fromType)
-        p.postMessage({
-            type: fromType,
-            payload
-        });
+        console.log("Posting message: "+JSON.stringify(contents))
+        p.postMessage(contents);
     })
 }
 

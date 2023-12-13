@@ -17,7 +17,11 @@ Given('A Desktop Agent in {string}', function (field: string) {
     this[field] = new BasicDesktopAgent(
         new DefaultChannelSupport(this.messaging, createDefaultChannels(this.messaging), null),
         new DefaultIntentSupport(),
-        new DefaultAppSupport(),
+        new DefaultAppSupport(this.messaging, {
+            appId: "Test App Id",
+            desktopAgent: "Test DA",
+            instanceId: "123-ABC"
+        }),
         "2.0",
         "cucumber-provider"
     )

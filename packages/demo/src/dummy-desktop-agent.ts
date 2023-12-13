@@ -70,9 +70,26 @@ window.addEventListener("load", () => {
     // for a given window, allows us to determine which app it is (if any)
     const appChecker : AppChecker = o => instances.find(i => i.window == o)
 
-    const detailsResolver : DesktopAgentDetailResolver = (o) => { 
+    // create the shared web worker
+    const sw = new SharedWorker('http://localhost:8080/src/server/SimpleServer.ts', {
+        type: "module"
+    })
+    
+    sw.port.start()
+
+    const detailsResolver : DesktopAgentDetailResolver = (o, a) => { 
+        const apiKey = "ABC"+ (currentApiInstance++)
+        sw.port.postMessage({
+            type: "internalRegisterAppInstance",
+            apiKey,
+            appIdentifier: {
+                appId: a.appId,
+                instanceId: a.instanceId,
+                desktopAgent: a.desktopAgent
+            }
+        })
         return { 
-            apikey: "Abc"
+            apiKey
         }
     }
 
@@ -86,15 +103,5 @@ window.addEventListener("load", () => {
     document.getElementById("app2")?.addEventListener("click", () => launch("http://robs-pro:8080/static/app2/index.html", "2"));
     document.getElementById("app3")?.addEventListener("click", () => launch("http://localhost:8080/static/app3/index.html", "3"));
 
-    // // listen for desktop agent ports being sent to connect
-    // bc.addEventListener(
-    //     "message",
-    //     (event) => {
-    //         console.log("Received "+event)
-    //         if (event.data.type == FDC3_PORT_TRANSFER_REQUEST_TYPE) {
-    //             const port = event.data.payload
-    //             server.register(port)
-    //         }
-    //     });
 })
 

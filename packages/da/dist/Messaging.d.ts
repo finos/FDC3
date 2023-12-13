@@ -25,4 +25,9 @@ export interface Messaging {
      */
     unregister(id: string): void;
     createMeta(): object;
+    /**
+     *
+     * @param message Performs a request / response message pass
+     */
+    exchange<X>(message: object, expectedTypeName: string): Promise<X>;
 }

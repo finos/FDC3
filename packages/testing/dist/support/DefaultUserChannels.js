@@ -1,9 +1,13 @@
-import { DefaultChannel } from "da";
-export function createDefaultChannels(messaging) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createDefaultChannels = void 0;
+const da_1 = require("da");
+function createDefaultChannels(messaging) {
     return [
-        new DefaultChannel(messaging, "one", "user", { color: "red" }),
-        new DefaultChannel(messaging, "two", "user", { color: "green" }),
-        new DefaultChannel(messaging, "three", "user", { color: "blue" })
+        new da_1.DefaultChannel(messaging, "one", "user", { color: "red" }),
+        new da_1.DefaultChannel(messaging, "two", "user", { color: "green" }),
+        new da_1.DefaultChannel(messaging, "three", "user", { color: "blue" })
     ];
 }
+exports.createDefaultChannels = createDefaultChannels;
 //# sourceMappingURL=DefaultUserChannels.js.map
