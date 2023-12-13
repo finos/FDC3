@@ -96,7 +96,7 @@ jobs:
       run: 'echo "package version already exists on npm registry"'
       
     - name: Report not yet published status
-      if: steps.check-version.outputs.exists == '1' 
+      if: steps.check-version.outputs.exists == '0' 
       run: 'echo "package version does not exist on npm registry, publishing..."'
       
     - name: Install dependencies
