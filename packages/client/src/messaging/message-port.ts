@@ -53,7 +53,7 @@ function messageParentWindow(w: Window | undefined) {
 function openFrame(url: string) : Window {
     var ifrm = document.createElement("iframe")
     ifrm.setAttribute("src", url)
-    ifrm.setAttribute("title", "FDC3 Communications")
+    ifrm.setAttribute("name", "FDC3 Communications")
     ifrm.style.width = "0px"
     ifrm.style.height = "0px"
     document.body.appendChild(ifrm)

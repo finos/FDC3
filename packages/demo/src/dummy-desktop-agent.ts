@@ -1,6 +1,7 @@
 import { AppIdentifier } from "@finos/fdc3";
 import { AppChecker, DesktopAgentDetailResolver, FDC3_PORT_TRANSFER_REQUEST_TYPE, } from "fdc3-common";
 import { supply } from "server";
+import { MAIN_HOST, SECOND_HOST } from "./constants";
 
 enum Approach { Tab, Frame, Nested }
 
@@ -79,13 +80,14 @@ window.addEventListener("load", () => {
 
     // set up desktop agent handler here using FDC3 Web Loader (or whatever we call it)
     supply(appChecker, detailsResolver, {
-        uri: "http://localhost:8080/static/embed/index.html"
+        uri: MAIN_HOST+ "/static/embed/index.html"
     })
 
     // hook up the buttons
-    document.getElementById("app1")?.addEventListener("click", () => launch("/static/app1/index.html", "1"));
-    document.getElementById("app2")?.addEventListener("click", () => launch("http://robs-pro:8080/static/app2/index.html", "2"));
-    document.getElementById("app3")?.addEventListener("click", () => launch("http://localhost:8080/static/app3/index.html", "3"));
+    document.getElementById("app1")?.addEventListener("click", () => launch(MAIN_HOST+"/static/app1/index.html", "1"));
+    document.getElementById("app2")?.addEventListener("click", () => launch(MAIN_HOST+"/static/app2/index.html", "1"));
+    document.getElementById("app3")?.addEventListener("click", () => launch(SECOND_HOST+"/static/app2/index.html", "2"));
+    document.getElementById("app4")?.addEventListener("click", () => launch(MAIN_HOST+"/static/app3/index.html", "3"));
 
 })
 

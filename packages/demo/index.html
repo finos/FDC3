@@ -15,13 +15,31 @@
         <option value="Nested">Nested Frame</option>
     </select>
 
-    <a type="button" href="#" id="app1" >Open App 1</a>
+    <ul>
+        <li>
+            <a type="button" href="#" id="app1" >Open App 1 on MAIN HOST</a>
 
-    <a type="button" href="#"  id="app2" >Open App 2</a>
+            <p><em>App will connect to the desktop agent and broadcast on the red channel when you hit the button</em></p>
+        </li>
+        <li>
+            <a type="button" href="#"  id="app2" >Open App 2 on MAIN HOST</a>
 
-    <a type="button" href="#"  id="app3" >Open App 3</a>
+            <p><em>App will connect to the desktop agent on startup and listen to messages on the red channel</em></p>
+        
+        </li>
+        <li>
+            <a type="button" href="#"  id="app3" >Open App 2 on SECOND HOST</a>
 
-    </p>
+            <p><em>App will connect to the desktop agent on startup and listen to messages on the red channel</em></p>
+        
+        </li>
+        <li>
+            <a type="button" href="#"  id="app4" >Open App 3</a>
+
+            <p><em>App creates two APIs to the desktop agent, broadcasts in one and listens in the other.</em></p>
+        </li>
+    </ul>
+
 
 </body>
 
