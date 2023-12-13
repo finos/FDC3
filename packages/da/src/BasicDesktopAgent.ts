@@ -1,7 +1,7 @@
 import { AppIdentifier, AppMetadata, Context, ContextHandler, DesktopAgent, ImplementationMetadata, IntentHandler, IntentResolution, Listener } from "@finos/fdc3";
-import { ChannelSupport } from "./channels/ChannelSupport";
-import { IntentSupport } from "./intents/IntentSupport";
-import { AppSupport } from "./apps/AppSupport";
+import { ChannelSupport } from "./channels/ChannelSupport.js";
+import { IntentSupport } from "./intents/IntentSupport.js";
+import { AppSupport } from "./apps/AppSupport.js";
 
 /**
  * This splits out the functionality of the desktop agent into 

@@ -1,12 +1,12 @@
-import { TestMessaging } from '../support/TestMessaging';
-import { createDefaultChannels } from '../support/DefaultUserChannels';
+import { TestMessaging } from '../support/TestMessaging.js';
+import { createDefaultChannels } from '../support/DefaultUserChannels.js';
 import { BasicDesktopAgent } from 'da';
 import { DefaultChannelSupport } from 'da';
 import { DefaultIntentSupport } from 'da';
 import { DefaultAppSupport } from 'da'
 import { DataTable, Given, Then, When } from '@cucumber/cucumber'
 import expect from 'expect';
-import { doesRowMatch, handleResolve, indexOf } from '../support/matching';
+import { doesRowMatch, handleResolve, indexOf } from '../support/matching.js';
 
 Given('A Desktop Agent in {string}', function (field: string) {
 

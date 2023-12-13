@@ -2,6 +2,8 @@
   "name": "fdc3-common",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
+
   "scripts": {
     "build": "tsc -b"
   },
@@ -9,6 +11,6 @@
     "@finos/fdc3": "^2.1.0-beta.4"
   },
   "devDependencies": {
-    "typescript": "^5.0.2"
+    "typescript": "^5.3.2"
   }
 }

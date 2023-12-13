@@ -1,6 +1,7 @@
 {
   "name": "testing",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "build": "tsc -b",
     "test": "tsc -b; yarn cucumber-js"
