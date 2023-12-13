@@ -1,7 +1,8 @@
-import { DesktopAgent } from "@finos/fdc3";
-import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport } from "da";
-import { APIResponseMessage, FDC3_PORT_TRANSFER_REQUEST_TYPE, FDC3_PORT_TRANSFER_RESPONSE_TYPE } from "fdc3-common"
+import { Context, DesktopAgent } from "@finos/fdc3";
+import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultChannel } from "da";
+import { APIResponseMessage, FDC3_PORT_TRANSFER_RESPONSE_TYPE, FDC3_PORT_TRANSFER_REQUEST_TYPE, Options, exchangeForMessagePort, exchange } from "fdc3-common"
 import { MessagePortMessaging } from "./MessagePortMessaging";
+import { ConnectionStep2Hello, ConnectionStep3Handshake } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 /**
  * Initialises the desktop agent by opening an iframe 
@@ -10,16 +11,21 @@ import { MessagePortMessaging } from "./MessagePortMessaging";
  * It is up to the desktop agent to arrange communucation between other
  * windows. 
  */
-export async function messagePortInit(data: APIResponseMessage) : Promise<DesktopAgent> {
+export async function messagePortInit(data: APIResponseMessage, options: Options) : Promise<DesktopAgent> {
+    
+    const action = data.uri ? () => {
+        return openFrame(data.uri!!);
+    } : () => {
+        return messageParentWindow(options.frame)
+    }
 
-    // first, open the ifrma
-    const window = openFrame(data.uri)
+    const mp = await exchangeForMessagePort(window, FDC3_PORT_TRANSFER_RESPONSE_TYPE, action) as MessagePort
+    mp.start()
 
-    // next, open a messagePort with the window.
-
-    const myPort = await shareMessagePorts(window)
-    const messaging = new MessagePortMessaging(myPort, data)
-    const userChannelState = await messaging.getUserChannelState()
+    const handshakeData = (await exchange(mp, "handshake", () => sendHello(mp, data))).data as ConnectionStep3Handshake
+    const messaging = new MessagePortMessaging(mp, data.appIdentifier)
+    const channelState = handshakeData.payload.channelsState
+    const userChannelState = buildUserChannelState(messaging, channelState) 
 
     return new BasicDesktopAgent(
         new DefaultChannelSupport(messaging, userChannelState, null),
@@ -29,6 +35,21 @@ export async function messagePortInit(data: APIResponseMessage) : Promise<Deskto
         data.provider);
 }
 
+/**
+ * If the desktop agent doesn't provide an opener URL, we message another iframe asking for the port.
+ */
+function messageParentWindow(w: Window | undefined) {
+    if (w) {
+        w.postMessage({
+            type: FDC3_PORT_TRANSFER_REQUEST_TYPE,
+            methods: 'post-message'
+        });
+    }
+}
+
+/**
+ * The desktop agent requests that the client opens a URL in order to provide a message port.
+ */
 function openFrame(url: string) : Window {
     var ifrm = document.createElement("iframe")
     ifrm.setAttribute("src", url)
@@ -39,32 +60,27 @@ function openFrame(url: string) : Window {
     return ifrm.contentWindow!!
 }
 
-async function shareMessagePorts(w: Window) : Promise<MessagePort> {
-    const channel = new MessageChannel()
-    await exchange(w, FDC3_PORT_TRANSFER_REQUEST_TYPE, FDC3_PORT_TRANSFER_RESPONSE_TYPE, channel.port1)
-    return channel.port2;
+function sendHello(mp: MessagePort, data: APIResponseMessage) {
+    const hello : ConnectionStep2Hello = {
+        type: "hello",
+        payload: {
+            desktopAgentBridgeVersion: data.desktopAgentBridgeVersion,
+            supportedFDC3Versions: data.supportedFDC3Versions,
+            authRequired: data.authRequired,
+            authToken: data.authToken
+        },
+        meta: {
+            timestamp: new Date()
+        }
+    }
+    mp.postMessage(hello);
 }
 
-export function exchange(p: MessagePort | Window, fromType: any, toType: string, payload?: any) : Promise<any> {
-    return new Promise((resolve, reject) => {
-        const listener = (m: Event) => {
-            if (m instanceof MessageEvent) {
-                if (m.data.type == toType) {
-                    resolve(m.data.payload);
-                }
-            }
-        } 
-        p.addEventListener("onmessage", listener)
-
-        p.postMessage({
-            type: fromType,
-            payload
-        });
-
-        setTimeout(() => {
-            p.removeEventListener("message", listener);
-            reject(new Error(`Didn't receive response ${toType} after sending ${fromType}"`))
-        }, 1000);
-    })
+function buildUserChannelState(messaging: MessagePortMessaging, _channelState: Record<string, Context[]>) {
+    return [
+        new DefaultChannel(messaging, "one", "user", {
+            color: "red",
+            name: "THE RED CHANNEL"
+        })
+    ]
 }
-

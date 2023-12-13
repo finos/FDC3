@@ -6,4 +6,7 @@ import { Channel, Context } from "@finos/fdc3";
 export interface StatefulChannel extends Channel {
 
     getState() : Map<string, Context>
+
+    getCurrentContext(contextType: string | undefined): Promise<Context | null> 
+
 }

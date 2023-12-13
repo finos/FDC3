@@ -1,9 +1,7 @@
 import { AppIdentifier } from "@finos/fdc3"
 import { AgentRequestMessage } from "@finos/fdc3/dist/bridging/BridgingTypes"
-import { Messaging, StatefulChannel } from "da"
-import { APIResponseMessage, FDC3_PORT_TRANSFER_REQUEST_TYPE, FDC3_PORT_TRANSFER_RESPONSE_TYPE } from "fdc3-common" 
+import { Messaging } from "da"
 import { v4 as uuidv4 } from "uuid"
-import { exchange } from "./message-port"
 
 type ListenerDetail = {
     filter: (m: AgentRequestMessage) => boolean,
@@ -16,8 +14,8 @@ export class MessagePortMessaging implements Messaging {
     private readonly mp: MessagePort
     private readonly listeners : Map<string, ListenerDetail> = new Map()
 
-    constructor(mp: MessagePort, data: APIResponseMessage) {
-        this.appId = data.appId
+    constructor(mp: MessagePort, appId: AppIdentifier) {
+        this.appId = appId
         this.mp = mp;
 
         this.mp.onmessage = (m) => {
@@ -61,9 +59,5 @@ export class MessagePortMessaging implements Messaging {
             "timestamp": new Date(),
             "source": this.getSource()
         }
-    }
-
-    getUserChannelState() : Promise<StatefulChannel[]> {
-        return exchange(this.mp, FDC3_PORT_TRANSFER_REQUEST_TYPE, FDC3_PORT_TRANSFER_RESPONSE_TYPE) as Promise<StatefulChannel[]>;
     }
 }
