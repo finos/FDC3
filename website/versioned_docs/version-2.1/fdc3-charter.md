@@ -34,7 +34,8 @@ The group's activities do not include:
 
 - Versions 1.1 - 2.1 of the FDC3 specification are subject to the [FINOS IP Policy](https://github.com/finos/community/blob/fdd059c93b6ceefadd8cf60c4bef995366695337/website/static/governance-docs/IP-Policy.pdf), which authorizes implementation of FDC3 specifications without charge, on a RAND basis, subject to the terms of the policy. For details of the IP commitments made by contributors to FDC3, please refer to the policy.
 
-- Versions of the FDC3 specification following 2.1 and subsequent draft specifications are licensed under the [Community Specification License 1.0](https://github.com/finos/FDC3/blob/45ca765e5ff9a44a1fa5437eb70cf876bf4898aa/LICENSE)
+- Versions of the FDC3 specification following 2.1 and subsequent draft specifications are licensed under the [Community Specification License 1.0](https://github.com/finos/FDC3/blob/4ce90d45ca8e0c4f8f2c5bd73f51304278783d87/LICENSE.md)
+
 - All code in the FDC3 specification (including JSON Schema) are licensed under [Apache 2.0](https://github.com/finos/FDC3/blob/master/LICENSE)
 
 ### Intellectual Property Claims
