@@ -262,8 +262,9 @@ The DA must then respond to the `hello` message with a `handshake` request to th
         },
         /** The requested DA name */
         requestedName: string,
-        /** The current state of the Desktop Agent's channels, excluding any private channels,
-         *  as a mapping of channel id to an array of Context objects, most recent first.*/
+        /** The current state of the Desktop Agent's App and User channels (exclude any 
+         *  Private channels), as a mapping of channel id to an array of Context objects, 
+         *  one per type found in the channel, most recent first.*/
         channelsState: Record<string, Context[]>
     },
     meta: {
@@ -330,7 +331,7 @@ Channels are the main stateful mechanism in the FDC3 that we have to consider. T
 
 A key responsibility of the Desktop Agent Bridge is ensuring that the channel state of the connected agents is kept in-sync. To do so, the states must be synchronized whenever a new agent connects. Hence, the Bridge MUST process the `channelState` provided by the new agent in the `handshake` request, which MUST contain details of each known User Channel or App Channel and its state (the most recent context object and the most recent context object of each type that it has received). The bridge MUST compare the received channel names and states to its own representation of the current state of channels in connected agents, merge that state with that of the new agent and communicate the updated state to all connected agents to ensure that they are synchronized with it.
 
-Hence, if we assume that the state of each channel can be represented by an ordered array of context objects (most recent first - noting that only the first position, that of the most recent context broadcast, matters), the Desktop Agent Bridge MUST merge the incoming `channelsState` with the `existingChannelsState` as follows:
+Hence, if we assume that the state of each channel can be represented by an array of the most recent context object of each type, with the most recent context occupying the first position in the array, the Desktop Agent Bridge MUST merge the incoming `channelsState` with the `existingChannelsState` as follows:
 
 ```typescript
 Object.keys(channelsState).forEach((channelId) => {
