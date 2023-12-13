@@ -12,7 +12,7 @@ This is a minimal proof-of-concept for FDC3 For the Web.
     yarn dev
     ```
 
-2. Point browser at http://localhost:8080/static/da/
+2. Point browser at http://localhost:8080/da/
 
 3. This is your dummy desktop agent, which has various apps you can launch.
 
