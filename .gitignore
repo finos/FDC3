@@ -1,2 +1,12 @@
 /dist
 /node_modules
+.yarn/
+.pnp.*
+.pnp.cjs
+.DS_Store
+packages/.DS_Store
+target/
+*.buildinfo
+**/*.buildinfo
+/**/dist
+/**/node_modules

@@ -1,0 +1,27 @@
+{
+  "name": "testing",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b",
+    "test": "tsc -b; yarn cucumber-js"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "10.0.1",
+    "@cucumber/html-formatter": "11.0.4",
+    "@types/eslint": "^8",
+    "@types/node": "20.10.0",
+    "chai": "4.3.10",
+    "eslint": "^8.53.0",
+    "expect": "^29.7.0",
+    "jsonpath-plus": "^7.2.0",
+    "ts-node": "10.9.1",
+    "typescript": "5.3.2"
+  },
+  "dependencies": {
+    "@finos/fdc3": "^2.1.0-beta.4",
+    "@types/uuid": "^9.0.7",
+    "da": "workspace:*",
+    "uuid": "^9.0.1"
+  }
+}
