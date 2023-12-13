@@ -940,8 +940,9 @@ export interface ConnectionStep3HandshakeMeta {
 export interface ConnectionStep3HandshakePayload {
   authToken?: string;
   /**
-   * The current state of the Desktop Agent's channels, excluding any private channels, as a
-   * mapping of channel id to an array of Context objects, most recent first.
+   * The current state of the Desktop Agent's App and User channels (exclude any Private
+   * channels), as a mapping of channel id to an array of Context objects, one per type found
+   * in the channel, most recent first.
    */
   channelsState: { [key: string]: ContextElement[] };
   /**
