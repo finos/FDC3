@@ -1,5 +1,5 @@
 import { Context, AppIntent, AppIdentifier, IntentResolution, IntentHandler, Listener } from "@finos/fdc3";
-import { IntentSupport } from "./IntentSupport";
+import { IntentSupport } from "./IntentSupport.js";
 
 export class DefaultIntentSupport implements IntentSupport {
     

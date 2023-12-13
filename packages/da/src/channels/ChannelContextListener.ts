@@ -1,6 +1,6 @@
 import { Context, ContextHandler } from "@finos/fdc3";
-import { Messaging } from "../Messaging";
-import { DefaultContextListener } from "../listeners/DefaultContextListener";
+import { Messaging } from "../Messaging.js";
+import { DefaultContextListener } from "../listeners/DefaultContextListener.js";
 
 export class ChannelContextListener extends DefaultContextListener {
 

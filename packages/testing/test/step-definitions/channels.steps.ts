@@ -1,6 +1,6 @@
 import { Given, When } from '@cucumber/cucumber'
 import { Context } from '@finos/fdc3';
-import { handleResolve } from '../support/matching';
+import { handleResolve } from '../support/matching.js';
 
 const contextMap : Record<string, any> = {
   "fdc3.instrument": {
