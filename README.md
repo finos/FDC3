@@ -149,7 +149,7 @@ Participants of FINOS standards projects should follow the FINOS Code of Conduct
 
 ## License & Patents
 
-- This version of the FDC3 Standard is licensed under the [Community Specification License](LICENSE).  SPDX-License-Identifier: [Community-Spec-1.0](https://spdx.org/licenses/Community-Spec-1.0). 
+- This version of the FDC3 Standard is licensed under the [Community Specification License](LICENSE.md).  SPDX-License-Identifier: [Community-Spec-1.0](https://spdx.org/licenses/Community-Spec-1.0). 
 
 - Reference implementations and other software contained in FDC3 repositories is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html). SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0). 
 
