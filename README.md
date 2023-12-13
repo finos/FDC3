@@ -59,7 +59,7 @@ The project is divided into several different yarn workspaces:
 ## Cross-Origin
 
 - This supports cross-origin when using post message without iframes.  (at least on my machine!) you can configure hostnames in `dummy-desktop-agent.ts` to try this out.
-- However, using the iframe mode (you can see this in the demo) will fail as chrome has restricted the 
+- However, using the iframe mode (you can see this in the demo) will fail as chrome has restricted the SharedWorker when used with iframes (even of the same origin).
 
 ## TO-DO
 
