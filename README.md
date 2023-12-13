@@ -44,7 +44,7 @@ The project is divided into several different yarn workspaces:
     - `post-message` which fires a post message up to the opening window/iframe (or whatever is set in the `frame` option) asking for details of how to construct a `DesktopAgent` API implementation.
   - `frame` : when _not_ using a loaded iframe, you can begin communicating with a port on a particular frame.  By default, opener or window, but you can pick something else if you want.
 
-## Configuring Server
+## Configuring Server
 
    - **For the desktop agent**: `supply` (in `agent/supply.ts`):  Called by the desktop agent on startup, allows it to supply FDC3 APIs to apps when they ask for one via the `post-message` strategy.  This takes the following parameters:
      - A `checker`, which checks the origin window for the API request.  It should be a window that the Desktop Agent is aware of.
