@@ -4,7 +4,7 @@
  * You can register message ports with it and plug in extra functionality to handle new message types. 
  */
 
-import { AppIdentifier, Context } from "@finos/fdc3"
+import { Context } from "@finos/fdc3"
 import { v4 as uuidv4 } from "uuid"
 import { handleHandshake } from "./handshake"
 import { ConnectionStep2Hello, ConnectionStep3Handshake } from "@finos/fdc3/dist/bridging/BridgingTypes"
