@@ -32,7 +32,7 @@ The project is divided into several different yarn workspaces:
 
  - `common` : Common APIs and functionality used by both `client` and `server`
 
- - `demo` : A bare-bones 
+ - `demo` : A bare-bones desktop agent implementation with a few apps that use WebFDC3
  
  
 ## Configuring the client
