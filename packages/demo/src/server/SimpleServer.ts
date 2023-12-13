@@ -63,5 +63,6 @@ const theServer = new SimpleServer({
 
 onconnect = function (event) {
     const port = event.ports[0]
+    port.start()
     theServer.register(port)
 }
