@@ -16,7 +16,10 @@ export { exchange, exchangePostMessage, exchangeForMessagePort }
 
 export type AppChecker = (o: Window) => AppIdentifier | undefined;
 
-export type Supplier = (checker: AppChecker, detailsResolver: DesktopAgentDetailResolver, staticDetails: DesktopAgentDetails) => void
+export type Supplier = (
+    checker: AppChecker, 
+    detailsResolver: DesktopAgentDetailResolver, 
+    portResolver?: DesktopAgentPortResolver) => void;
 
 export type Loader = (options: Options) => Promise<DesktopAgent> 
 
@@ -26,9 +29,15 @@ export type Loader = (options: Options) => Promise<DesktopAgent>
  */
 export type DesktopAgentDetails = { [key: string] : string | number | boolean }
 
+/**
+ * Use these to return details specific to the window/app needing a connection
+ */
 export type DesktopAgentDetailResolver = (o: Window, a: AppIdentifier) => DesktopAgentDetails
 
-export type Method = (r: APIResponseMessage, options: Options) => Promise<DesktopAgent>
+/**
+ * Return a MessagePort specific to the window/app in question
+ */
+export type DesktopAgentPortResolver = (o: Window, a: AppIdentifier) => MessagePort | null
 
 /**
  * This is the object that the desktop agent must get back to the App.
@@ -38,7 +47,7 @@ export type Method = (r: APIResponseMessage, options: Options) => Promise<Deskto
 export type APIResponseMessage = {
     type: string,
     method: "message-port",
-    uri?: string,
+    uri?: string,           /* Supplied when an embedded iframe should be loaded */
     appIdentifier: AppIdentifier,
     fdc3Version: string,
     supportedFDC3Versions: string[],
