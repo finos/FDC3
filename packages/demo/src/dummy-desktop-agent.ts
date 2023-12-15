@@ -1,9 +1,11 @@
 import { AppIdentifier } from "@finos/fdc3";
-import { AppChecker, DesktopAgentDetailResolver, FDC3_PORT_TRANSFER_REQUEST_TYPE, } from "fdc3-common";
+import { AppChecker, DesktopAgentDetailResolver, DesktopAgentDetails, DesktopAgentPortResolver, FDC3_PORT_TRANSFER_REQUEST_TYPE, } from "fdc3-common";
 import { supply } from "server";
 import { MAIN_HOST, SECOND_HOST } from "./constants";
 
-enum Approach { Tab, Frame, Nested }
+enum Opener { Tab, Frame, Nested }
+
+enum Approach { IFRAME, PARENT_POST_MESSAGE }
 
 window.addEventListener("load", () => {
     
@@ -14,8 +16,15 @@ window.addEventListener("load", () => {
 
     const instances : AppIdentifierAndWindow[] = []
 
-    function getApproach() : Approach {
+    function getOpener() : Opener {
         const cb = document.getElementById("opener") as HTMLInputElement;
+        const val = cb.value
+        var out : Opener = Opener[val as keyof typeof Opener]; //Works with --noImplicitAny
+        return out;
+    }
+
+    function getApproach() : Approach {
+        const cb = document.getElementById("approach") as HTMLInputElement;
         const val = cb.value
         var out : Approach = Approach[val as keyof typeof Approach]; //Works with --noImplicitAny
         return out;
@@ -44,13 +53,13 @@ window.addEventListener("load", () => {
     } 
 
     function open(url: string): Window {
-        const approach = getApproach();
-        switch (approach) {
-            case Approach.Tab:
+        const opener = getOpener();
+        switch (opener) {
+            case Opener.Tab:
                 return openTab(url);
-            case Approach.Nested:
+            case Opener.Nested:
                 return openNested(url);
-            case Approach.Frame:
+            case Opener.Frame:
                 return openFrame(url);
         }
         throw new Error("unsupported")
@@ -71,17 +80,45 @@ window.addEventListener("load", () => {
     // for a given window, allows us to determine which app it is (if any)
     const appChecker : AppChecker = o => instances.find(i => i.window == o)
 
+    // this is for when the API is using an iframe, and needs to know the address to load
     const detailsResolver : DesktopAgentDetailResolver = (o, a) => { 
         const apiKey = "ABC"+ (currentApiInstance++)
-        return { 
-            apiKey
+        if (getApproach() == Approach.IFRAME) {
+            return {
+                apiKey,
+                uri: MAIN_HOST+ "/static/embed/index.html"
+            }
+        } else {
+            return {
+                apiKey
+            } as DesktopAgentDetails
+        }
+    }
+
+    // this is for when the api isn't using an iframe, and just requests a port from this host directly.
+    const sw = new SharedWorker(MAIN_HOST+'/src/server/SimpleServer.ts', {
+        type: "module",
+        name: "Demo FDC3 Server"
+    })
+    
+    sw.port.start()
+
+    const portResolver : DesktopAgentPortResolver = (o, a) => {
+        if (getApproach() == Approach.IFRAME) {
+            return null;
+        } else {
+            const sw = new SharedWorker(MAIN_HOST+'/src/server/SimpleServer.ts', {
+                type: "module",
+                name: "Demo FDC3 Server"
+            })
+            
+            sw.port.start()
+            return sw.port;
         }
     }
 
     // set up desktop agent handler here using FDC3 Web Loader (or whatever we call it)
-    supply(appChecker, detailsResolver, {
-        uri: MAIN_HOST+ "/static/embed/index.html"
-    })
+    supply(appChecker, detailsResolver, portResolver)
 
     // hook up the buttons
     document.getElementById("app1")?.addEventListener("click", () => launch(MAIN_HOST+"/static/app1/index.html", "1"));
