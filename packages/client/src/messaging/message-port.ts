@@ -5,21 +5,9 @@ import { MessagePortMessaging } from "./MessagePortMessaging";
 import { ConnectionStep2Hello, ConnectionStep3Handshake } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 /**
- * Initialises the desktop agent by opening an iframe 
- * on the desktop agent host and communicating via a messsage port to it.
- * 
- * It is up to the desktop agent to arrange communucation between other
- * windows. 
+ * Given a message port, constructs a desktop agent to communicate via that.
  */
-export async function messagePortInit(data: APIResponseMessage, options: Options) : Promise<DesktopAgent> {
-    
-    const action = data.uri ? () => {
-        return openFrame(data.uri!!);
-    } : () => {
-        return messageParentWindow(options.frame)
-    }
-
-    const mp = await exchangeForMessagePort(window, FDC3_PORT_TRANSFER_RESPONSE_TYPE, action) as MessagePort
+export async function messagePortInit(mp: MessagePort, data: APIResponseMessage) : Promise<DesktopAgent> {
     mp.start()
 
     const handshakeData = (await exchange(mp, "handshake", () => sendHello(mp, data))).data as ConnectionStep3Handshake
@@ -33,6 +21,26 @@ export async function messagePortInit(data: APIResponseMessage, options: Options
         new DefaultAppSupport(messaging, data.appIdentifier),
         data.fdc3Version,
         data.provider);
+}
+
+/**
+ * Initialises the desktop agent by opening an iframe 
+ * on the desktop agent host and communicating via a messsage port to it.
+ * 
+ * It is up to the desktop agent to arrange communucation between other
+ * windows. 
+ */
+export async function messagePortIFrameInit(data: APIResponseMessage, options: Options) : Promise<DesktopAgent> {
+    
+    const action = data.uri ? () => {
+        return openFrame(data.uri!!);
+    } : () => {
+        return messageParentWindow(options.frame)
+    }
+
+    const mp = await exchangeForMessagePort(window, FDC3_PORT_TRANSFER_RESPONSE_TYPE, action) as MessagePort
+ 
+    return messagePortInit(mp, data);
 }
 
 /**
