@@ -14,3 +14,5 @@ target/
 packages/server/tsconfig.tsbuildinfo
 packages/fdc3-common/tsconfig.tsbuildinfo
 packages/client/tsconfig.tsbuildinfo
+packages/da/tsconfig.tsbuildinfo
+packages/testing/tsconfig.tsbuildinfo
