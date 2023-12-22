@@ -5,7 +5,6 @@ import {
   broadcast,
   compareVersionNumbers,
   ContextHandler,
-  ContextTypes,
   DesktopAgent,
   fdc3Ready,
   findIntent,
@@ -33,7 +32,7 @@ const TimeoutError = new Error('Timed out waiting for `fdc3Ready` event.');
 const UnexpectedError = new Error('`fdc3Ready` event fired, but `window.fdc3` not set to DesktopAgent.');
 
 const ContactContext = {
-  type: ContextTypes.Contact,
+  type: 'fdc3.contact',
   id: { email: 'test@example.com' },
 };
 
@@ -163,10 +162,10 @@ describe('test ES6 module', () => {
     test('findIntent should delegate to window.fdc3.findIntent (with additional output type argument)', async () => {
       const intent = 'ViewChart';
 
-      await findIntent(intent, ContactContext, ContextTypes.Contact);
+      await findIntent(intent, ContactContext, 'fdc3.contact');
 
       expect(window.fdc3.findIntent).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.findIntent).toHaveBeenLastCalledWith(intent, ContactContext, ContextTypes.Contact);
+      expect(window.fdc3.findIntent).toHaveBeenLastCalledWith(intent, ContactContext, 'fdc3.contact');
     });
 
     test('findIntentsByContext should delegate to window.fdc3.findIntentsByContext', async () => {
@@ -177,10 +176,10 @@ describe('test ES6 module', () => {
     });
 
     test('findIntentsByContext should delegate to window.fdc3.findIntentsByContext (with additional output type argument)', async () => {
-      await findIntentsByContext(ContactContext, ContextTypes.Contact);
+      await findIntentsByContext(ContactContext, 'fdc3.contact');
 
       expect(window.fdc3.findIntentsByContext).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.findIntentsByContext).toHaveBeenLastCalledWith(ContactContext, ContextTypes.Contact);
+      expect(window.fdc3.findIntentsByContext).toHaveBeenLastCalledWith(ContactContext, 'fdc3.contact');
     });
 
     test('broadcast should delegate to window.fdc3.broadcast', async () => {
