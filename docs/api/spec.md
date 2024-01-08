@@ -17,8 +17,7 @@ A Desktop Agent is a desktop component (or aggregate of components) that serves 
 Examples of Desktop Agents include:
 
 - Autobahn
-- Finsemble
-- Glue42
+- io.Connect
 - OpenFin
 - Refinitiv Eikon
 
