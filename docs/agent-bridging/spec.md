@@ -244,7 +244,7 @@ The DA must then respond to the `hello` message with a `handshake` request to th
           *  provides. The string must be a numeric semver version, e.g. 1.2 or 1.2.1. */
           fdc3Version: string,
           /** The name of the provider of the FDC3 Desktop Agent Implementation
-           *  (e.g.Finsemble, Glue42, OpenFin etc.). */
+           *  (e.g.Finsemble, io.Connect, OpenFin etc.). */
           provider: string,
           /** The version of the provider of the FDC3 Desktop Agent Implementation (e.g. 5.3.0). */
           providerVersion: string,
