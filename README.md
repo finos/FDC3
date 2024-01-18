@@ -38,18 +38,19 @@ The project is divided into several different yarn workspaces:
  
 ## Configuring the client
 
-`getClientAPI` (in `index.ts`): Called (with options) by an FDC3 Aoo to retrieve the API.  This retrieves `details` from the desktop agent and initialises a `DesktopAgent` API implementation, returning it in a promise.  There are various options available:
+`getClientAPI` (in `index.ts`): Called (with options) by an FDC3 App to retrieve the API.  This retrieves `details` from the desktop agent and initialises a `DesktopAgent` API implementation, returning it in a promise.  There are various options available:
 
   - `strategies`: This allows plugable strategies for getting the DA.  Two exist:
-    -  `electron-event` which waits for `window.fdc3` to be set and 
+    - `electron-event` which waits for `window.fdc3` to be set and 
     - `post-message` which fires a post message up to the opening window/iframe (or whatever is set in the `frame` option) asking for details of how to construct a `DesktopAgent` API implementation.
   - `frame` : when _not_ using a loaded iframe, you can begin communicating with a port on a particular frame.  By default, opener or window, but you can pick something else if you want.
 
 ## Configuring Server
 
-   - **For the desktop agent**: `supply` (in `agent/supply.ts`):  Called by the desktop agent on startup, allows it to supply FDC3 APIs to apps when they ask for one via the `post-message` strategy.  This takes the following parameters:
+   - **For the desktop agent**: `supply` (in `server/supply.ts`):  Called by the desktop agent on startup, allows it to supply FDC3 APIs to apps when they ask for one via the `post-message` strategy.  This takes the following parameters:
      - A `checker`, which checks the origin window for the API request.  It should be a window that the Desktop Agent is aware of.
-     - A map of `detailsResolver`s, which returns a map of properties to send to the API requestor (the app) that should be used to instantiate the API.  This map is keyed by the names of the _methods_ above.
+     - A `detailsResolver`s, which returns a map of properties to send to the API requestor (the app) that should be used to instantiate the API. 
+     - A `portResolver` which is responsible for providing a `MessagePort` for the server and client to communicate over.
 
 ## Notes
 
@@ -68,5 +69,6 @@ The project is divided into several different yarn workspaces:
  - Sanitisation of response from the Desktop Agent
  - Handing of fdc3Ready
  - Handling on intents, open, finishing test cases for `da` / `testing`
+ - Code Coverage
 
 
