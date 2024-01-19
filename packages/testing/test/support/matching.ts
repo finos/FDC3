@@ -1,4 +1,5 @@
 import { JSONPath } from "jsonpath-plus";
+import { CustomWorld } from "../world";
 
 export function doesRowMatch(t: Record<string, string>, data: any): boolean {
     for (var k in Object.keys(t)) {
@@ -22,9 +23,9 @@ export function indexOf(rows: Record<string, string>[], data: any): number {
     return -1;
 }
 
-export function handleResolve(name: string, on: any) : any {
+export function handleResolve(name: string, on: CustomWorld) : any {
     if (name.startsWith("{") && name.endsWith("}")) {
-        return on[name.substring(1, name.length-1)]
+        return on.props[name.substring(1, name.length-1)]
     } else {
         return name
     }

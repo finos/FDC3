@@ -1,6 +1,8 @@
 import { Given, When } from '@cucumber/cucumber'
 import { Context } from '@finos/fdc3';
-import { handleResolve } from '../support/matching.js';
+import { handleResolve } from '../support/matching';
+import { CustomWorld } from '../world/index';
+import { AgentRequestMessage, RequestMessageType } from '@finos/fdc3/dist/bridging/BridgingTypes';
 
 const contextMap : Record<string, any> = {
   "fdc3.instrument": {
@@ -12,9 +14,9 @@ const contextMap : Record<string, any> = {
   }
 }
 
-Given('{string} is a {string} broadcastRequest message on channel {string}', function(field: string, type: string, channel: string) {
+Given('{string} is a {string} broadcastRequest message on channel {string}', function(this: CustomWorld, field: string, type: string, channel: string) {
   const message = {
-    meta: this.messaging.createMeta(),
+    meta: this.messaging!!.createMeta(),
     payload: {
       "channelId" : channel,
       "context" : contextMap[type]
@@ -22,30 +24,30 @@ Given('{string} is a {string} broadcastRequest message on channel {string}', fun
     type: "broadcastRequest"
   }
   
-  this[field] = message;  
+  this.props[field] = message;  
 })
 
 
-Given('{string} pipes context to {string}', function(contextHandlerName, field) {
-  this[field] = []
-  this[contextHandlerName] = (context: Context) => {
-    this[field].push(context)
+Given('{string} pipes context to {string}', function(this: CustomWorld, contextHandlerName: string, field: string) {
+  this.props[field] = []
+  this.props[contextHandlerName] = (context: Context) => {
+    this.props[field].push(context)
   }
 })
 
-When('messaging receives a {string} with payload:', function (type, docString) {
-  const message = {
-    meta: this.messaging.createMeta(),
+When('messaging receives a {string} with payload:', function (this: CustomWorld, type: RequestMessageType, docString: string) {
+  const message : AgentRequestMessage = {
+    meta: this.messaging!!.createMeta(),
     payload: JSON.parse(docString),
     type
   }
 
   this.log(`Sending: ${JSON.stringify(message)}`)
-  this.messaging.receive(message, this.log);
+  this.messaging!!.receive(message, this.log);
 });
 
-When('messaging receives {string}', function (field) {
+When('messaging receives {string}', function (this: CustomWorld, field: string) {
   const message = handleResolve(field, this)
   this.log(`Sending: ${JSON.stringify(message)}`)
-  this.messaging.receive(message, this.log);
+  this.messaging!!.receive(message, this.log);
 });
