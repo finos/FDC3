@@ -1,20 +1,23 @@
 {
   "name": "testing",
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "build": "tsc -b",
-    "test": "tsc -b; yarn cucumber-js"
+    "build": "",
+    "test": "cucumber-js",
+    "cucumber": "cucumber-js test/features/*.feature --require-module ts-node/register --require test/step-definitions/generic.steps.ts --require test/step-definitions/channels.steps.ts --require test/world/index.ts --require test/support/DefaultUserChannels.ts --require test/support/matching.ts --require test/support/TestMessaging.ts  --format summary  --publish-quiet"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "10.0.1",
+    "@cucumber/cucumber": "7.0.0",
     "@cucumber/html-formatter": "11.0.4",
     "@types/eslint": "^8",
+    "@types/lodash": "^4.14.202",
     "@types/node": "20.10.0",
     "chai": "4.3.10",
     "eslint": "^8.53.0",
     "expect": "^29.7.0",
     "jsonpath-plus": "^7.2.0",
+    "lodash": "^4.17.21",
+    "nyc": "^15.1.0",
     "ts-node": "10.9.1",
     "typescript": "5.3.2"
   },

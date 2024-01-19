@@ -1,20 +1,21 @@
-import { TestMessaging } from '../support/TestMessaging.js';
-import { createDefaultChannels } from '../support/DefaultUserChannels.js';
+import { TestMessaging } from '../support/TestMessaging';
+import { createDefaultChannels } from '../support/DefaultUserChannels';
 import { BasicDesktopAgent } from 'da';
 import { DefaultChannelSupport } from 'da';
 import { DefaultIntentSupport } from 'da';
 import { DefaultAppSupport } from 'da'
 import { DataTable, Given, Then, When } from '@cucumber/cucumber'
 import { expect } from 'expect';
-import { doesRowMatch, handleResolve, indexOf } from '../support/matching.js';
+import { doesRowMatch, handleResolve, indexOf } from '../support/matching';
+import { CustomWorld } from '../world/index';
 
-Given('A Desktop Agent in {string}', function (field: string) {
+Given('A Desktop Agent in {string}', function (this: CustomWorld, field: string) {
 
     if (!this.messaging) {
         this.messaging = new TestMessaging();
     }
 
-    this[field] = new BasicDesktopAgent(
+    this.props[field] = new BasicDesktopAgent(
         new DefaultChannelSupport(this.messaging, createDefaultChannels(this.messaging), null),
         new DefaultIntentSupport(),
         new DefaultAppSupport(this.messaging, {
@@ -26,38 +27,38 @@ Given('A Desktop Agent in {string}', function (field: string) {
         "cucumber-provider"
     )
 
-    this.result = null
+    this.props['result'] = null
 })
 
-When('I call {string} with {string}', async function (field: string, fnName: string) {
-    const fn = this[field][fnName];
-    const result = await fn.call(this[field])
+When('I call {string} with {string}', async function (this: CustomWorld, field: string, fnName: string) {
+    const fn = this.props[field][fnName];
+    const result = await fn.call(this.props[field])
     if (result) {
-        this.result = result;
+        this.props['result'] = result;
     }
 })
 
-When('I call {string} with {string} with parameter {string}', async function (field: string, fnName: string, param: string) {
-    const fn = this[field][fnName];
-    const result = await fn.call(this[field], handleResolve(param, this))
+When('I call {string} with {string} with parameter {string}', async function (this: CustomWorld, field: string, fnName: string, param: string) {
+    const fn = this.props[field][fnName];
+    const result = await fn.call(this.props[field], handleResolve(param, this))
     if (result) {
-        this.result = result;
+        this.props['result'] = result;
     }
 })
 
-When('I call {string} with {string} with parameters {string} and {string}', async function (field: string, fnName: string, param1: string, param2: string) {
-    const fn = this[field][fnName];
-    const result = await fn.call(this[field], handleResolve(param1, this), handleResolve(param2, this))
+When('I call {string} with {string} with parameters {string} and {string}', async function (this: CustomWorld, field: string, fnName: string, param1: string, param2: string) {
+    const fn = this.props[field][fnName];
+    const result = await fn.call(this.props[field], handleResolve(param1, this), handleResolve(param2, this))
     if (result) {
-        this.result = result;
+        this.props['result'] = result;
     }
 });
 
-Then('{string} is an array of objects with the following contents', function (field: string, dt: DataTable) {
+Then('{string} is an array of objects with the following contents', function (this: CustomWorld, field: string, dt: DataTable) {
     const tableData = dt.hashes();
     const rowCount = tableData.length
 
-    var resultCopy = JSON.parse(JSON.stringify(this[field])) as any[];
+    var resultCopy = JSON.parse(JSON.stringify(this.props[field])) as any[];
     this.log(`result ${JSON.stringify(resultCopy)} length ${resultCopy.length}`)
     expect(resultCopy).toHaveLength(rowCount);
 
@@ -74,15 +75,15 @@ Then('{string} is an array of objects with the following contents', function (fi
     expect(resultCopy).toHaveLength(0)
 });
 
-Then('{string} is an object with the following contents', function (field: string, params: DataTable) {
+Then('{string} is an object with the following contents', function (this: CustomWorld, field: string, params: DataTable) {
     const table = params.hashes()
-    expect(doesRowMatch(table[0], this[field])).toBeTruthy();
+    expect(doesRowMatch(table[0], this.props[field])).toBeTruthy();
 });
 
-Then('{string} is null', function (field) {
-    expect(this[field]).toBeNull()
+Then('{string} is null', function (this: CustomWorld, field: string) {
+    expect(this.props[field]).toBeNull()
 })
 
-Then('{string} is empty', function (field) {
-    expect(this[field]).toHaveLength(0)
+Then('{string} is empty', function (this: CustomWorld, field: string) {
+    expect(this.props[field]).toHaveLength(0)
 })
