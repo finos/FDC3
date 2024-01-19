@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    /* Basic Options */
     "esModuleInterop": true,
     "module": "CommonJS",
     "moduleResolution": "node",
@@ -19,13 +18,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,                 
-    "noImplicitThis": true,               
-    "noImplicitReturns": true,           
-
-    /* From Coverage Work */
-    "emitDeclarationOnly": true,                      
-    "skipDefaultLibCheck": true,
+    "noFallthroughCasesInSwitch": true
   }
 }

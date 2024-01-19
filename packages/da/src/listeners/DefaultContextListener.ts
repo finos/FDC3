@@ -1,5 +1,5 @@
 import { ContextHandler, Listener } from "@finos/fdc3";
-import { Messaging } from "../Messaging.js";
+import { Messaging } from "../Messaging";
 
 export class DefaultContextListener implements Listener {
 
