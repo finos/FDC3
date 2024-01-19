@@ -72,3 +72,6 @@ The project is divided into several different yarn workspaces:
  - Code Coverage
 
 
+## Troubleshooting
+
+- Try removing tsconfig.tsbuildinfo files if you are having trouble building

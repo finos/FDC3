@@ -1,9 +1,9 @@
 import { Context, ContextHandler, Listener, PrivateChannel } from "@finos/fdc3";
-import { DefaultChannel } from "./DefaultChannel.js";
-import { Messaging } from "../Messaging.js";
+import { DefaultChannel } from "./DefaultChannel";
+import { Messaging } from "../Messaging";
 import { PrivateChannelBroadcastAgentRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelOnDisconnectAgentRequest} from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { EVENT_TYPES, PrivateChannelEventListener } from "./PrivateChannelEventListener.js";
-import { PrivateChannelContextListener } from "./PrivateChannelContextListener.js";
+import { EVENT_TYPES, PrivateChannelEventListener } from "./PrivateChannelEventListener";
+import { PrivateChannelContextListener } from "./PrivateChannelContextListener";
 
 
 export class DefaultPrivateChannel extends DefaultChannel implements PrivateChannel {

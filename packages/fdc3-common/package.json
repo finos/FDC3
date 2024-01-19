@@ -1,7 +1,6 @@
 {
   "name": "fdc3-common",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
   "type": "module",
   "scripts": {
     "build": "tsc -b"

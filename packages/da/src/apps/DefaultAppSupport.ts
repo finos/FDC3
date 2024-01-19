@@ -1,6 +1,6 @@
 import { AppIdentifier, AppMetadata, Context } from "@finos/fdc3";
-import { AppSupport } from "./AppSupport.js";
-import { Messaging } from "../Messaging.js";
+import { AppSupport } from "./AppSupport";
+import { Messaging } from "../Messaging";
 import { AppDestinationIdentifier, GetAppMetadataAgentRequest, GetAppMetadataAgentRequestMeta, GetAppMetadataAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 

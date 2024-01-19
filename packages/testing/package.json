@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "build": "",
-    "test": "cucumber-js",
-    "cucumber": "cucumber-js test/features/*.feature --require-module ts-node/register --require test/step-definitions/generic.steps.ts --require test/step-definitions/channels.steps.ts --require test/world/index.ts --require test/support/DefaultUserChannels.ts --require test/support/matching.ts --require test/support/TestMessaging.ts  --format summary  --publish-quiet"
+    "test": "nyc cucumber-js test/features/*.feature --require-module ts-node/register --require test/step-definitions/generic.steps.ts --require test/step-definitions/channels.steps.ts --require test/world/index.ts --require test/support/DefaultUserChannels.ts --require test/support/matching.ts --require test/support/TestMessaging.ts  --format summary  --publish-quiet"
   },
   "devDependencies": {
     "@cucumber/cucumber": "7.0.0",

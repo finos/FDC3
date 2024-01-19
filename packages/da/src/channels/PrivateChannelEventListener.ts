@@ -1,5 +1,5 @@
 import { Listener } from "@finos/fdc3"
-import { Messaging } from "../Messaging.js"
+import { Messaging } from "../Messaging"
 import { AgentRequestMessage, PrivateChannelEventListenerRemovedAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes"
 
 export type EVENT_TYPES = "onAddContextListener" | "onDisconnect" | "onUnsubscribe"
