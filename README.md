@@ -25,7 +25,7 @@ The project is divided into several different yarn workspaces:
 
  - `da`: 
    - `src`: This is an implementation of a client-side, typescript desktop agent that communicates to a server backend using the APIs/JSON Schema defined in  [Agent Bridging](https://fdc3.finos.org/docs/next/agent-bridging/spec).  It is expected that we would standardize this and add to the FDC3 NPM module. 
-  - `test`: This is some cucumber/gherkin tests that exercise the functionality in `da`.  These are written to be language-agnostic so that we can use the same Gherkin feature files to test .net, Java, Python APIs too.  These can be run with `yarn build`
+   - `test`: This is some cucumber/gherkin tests that exercise the functionality in `da`.  These are written to be language-agnostic so that we can use the same Gherkin feature files to test .net, Java, Python APIs too.  These can be run with `yarn build`
 
  - `client`:  This exports the `getClientAPI()` function which can be used to retrieve a desktop agent API via the web.
 
