@@ -1,9 +1,7 @@
 {
   "extends": "../../tsconfig.root.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
-    "module": "ESNext"
-  },
-  "include": ["src"]
+    "rootDirs": [ "src", "test" ],
+    "outDir": "dist"
+  }
 }

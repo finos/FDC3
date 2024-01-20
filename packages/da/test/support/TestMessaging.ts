@@ -1,8 +1,8 @@
 import { ICreateLog } from "@cucumber/cucumber/lib/runtime/attachment_manager";
 import { AppIdentifier } from "@finos/fdc3";
 import { AgentRequestMessage } from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { Messaging } from "da"
 import { v4 as uuidv4 } from 'uuid'
+import { Messaging } from "../../src";
 
 
 type ListenerDetail = {

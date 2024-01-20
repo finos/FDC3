@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
+    /* Basic Options */
     "esModuleInterop": true,
-    "module": "ESNext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
@@ -11,13 +12,20 @@
 
     /* output setting */
     "lib": ["es2021", "DOM"],
-    "target": "es5",
+    "target": "ESNext",
     "composite": true,
 
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,                 
+    "noImplicitThis": true,               
+    "noImplicitReturns": true,           
+
+    /* From Coverage Work */
+    "emitDeclarationOnly": true,                      
+    "skipLibCheck": true
   }
 }

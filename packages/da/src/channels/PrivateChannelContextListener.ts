@@ -1,7 +1,7 @@
 import { ContextHandler } from "@finos/fdc3";
 import { PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { Messaging } from "../Messaging.js";
-import { ChannelContextListener } from "./ChannelContextListener.js";
+import { Messaging } from "../Messaging";
+import { ChannelContextListener } from "./ChannelContextListener";
 
 export class PrivateChannelContextListener extends ChannelContextListener {
 

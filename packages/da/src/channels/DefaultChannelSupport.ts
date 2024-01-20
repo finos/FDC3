@@ -1,10 +1,10 @@
 import { Channel, ChannelError, ContextHandler, DisplayMetadata, Listener, PrivateChannel } from "@finos/fdc3";
-import { Messaging } from "../Messaging.js";
-import { ChannelSupport } from "./ChannelSupport.js";
-import { DefaultPrivateChannel } from "./DefaultPrivateChannel.js";
-import { DefaultChannel } from "./DefaultChannel.js";
-import { ChannelContextListener } from "./ChannelContextListener.js";
-import { StatefulChannel } from "./StatefulChannel.js";
+import { Messaging } from "../Messaging";
+import { ChannelSupport } from "./ChannelSupport";
+import { DefaultPrivateChannel } from "./DefaultPrivateChannel";
+import { DefaultChannel } from "./DefaultChannel";
+import { ChannelContextListener } from "./ChannelContextListener";
+import { StatefulChannel } from "./StatefulChannel";
 
 export class DefaultChannelSupport implements ChannelSupport {
 

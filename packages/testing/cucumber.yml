@@ -1,4 +1,0 @@
-default:
-  format: [ "html:dist/cucumber-report.html" ]
-  paths: [ "test/features/*.feature" ]
-  import: [ "dist/support/*.js", "dist/step-definitions/*.js"]
