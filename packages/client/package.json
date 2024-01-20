@@ -1,7 +1,6 @@
 {
   "name": "client",
   "main": "src/index.ts",
-  "type": "module",
   "scripts": {
     "build": "tsc -b"
   },

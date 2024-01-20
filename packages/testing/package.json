@@ -2,28 +2,34 @@
   "name": "testing",
   "version": "0.0.0",
   "scripts": {
-    "build": "",
-    "test": "nyc cucumber-js test/features/*.feature --require-module ts-node/register --require test/step-definitions/generic.steps.ts --require test/step-definitions/channels.steps.ts --require test/world/index.ts --require test/support/DefaultUserChannels.ts --require test/support/matching.ts --require test/support/TestMessaging.ts  --format summary  --publish-quiet"
+    "build": "nyc cucumber-js src/features/*.feature --format cucumber-console-formatter --require-module ts-node/register --require src/step-definitions/generic.steps.ts --require src/step-definitions/channels.steps.ts --require src/world/index.ts --require src/support/DefaultUserChannels.ts --require src/support/matching.ts --require src/support/TestMessaging.ts --publish-quiet"
   },
   "devDependencies": {
     "@cucumber/cucumber": "7.0.0",
     "@cucumber/html-formatter": "11.0.4",
-    "@types/eslint": "^8",
-    "@types/lodash": "^4.14.202",
-    "@types/node": "20.10.0",
-    "chai": "4.3.10",
-    "eslint": "^8.53.0",
-    "expect": "^29.7.0",
-    "jsonpath-plus": "^7.2.0",
-    "lodash": "^4.17.21",
-    "nyc": "^15.1.0",
-    "ts-node": "10.9.1",
+    "@cucumber/pretty-formatter": "1.0.0-alpha.0",
+    "@types/expect": "24.3.0",
+    "@types/lodash": "4.14.167",
+    "@types/node": "14.14.20",
+    "@typescript-eslint/eslint-plugin": "4.12.0",
+    "@typescript-eslint/parser": "4.12.0",
+    "cucumber-console-formatter": "1.0.0",
+    "eslint": "7.17.0",
+    "eslint-config-prettier": "7.1.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-prettier": "3.3.1",
+    "is-ci": "2.0.0",
+    "nyc": "15.1.0",
+    "prettier": "2.2.1",
+    "ts-node": "^10.9.2",
     "typescript": "5.3.2"
   },
   "dependencies": {
     "@finos/fdc3": "^2.1.0-beta.4",
     "@types/uuid": "^9.0.7",
     "da": "workspace:*",
+    "expect": "^29.7.0",
+    "jsonpath-plus": "^7.2.0",
     "uuid": "^9.0.1"
   }
 }
