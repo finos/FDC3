@@ -1,6 +1,5 @@
-import { Messaging } from "da"
-import { DefaultChannel } from "da"
-import { StatefulChannel } from "da"
+import { DefaultChannel, StatefulChannel } from "../../src"
+import { Messaging } from "../../src/Messaging"
 
 export function createDefaultChannels(messaging: Messaging) : StatefulChannel[] {
     return [

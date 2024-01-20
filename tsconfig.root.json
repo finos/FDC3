@@ -26,6 +26,6 @@
 
     /* From Coverage Work */
     "emitDeclarationOnly": true,                      
-    "skipDefaultLibCheck": true,
+    "skipLibCheck": true
   }
 }
