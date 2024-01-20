@@ -1,9 +1,0 @@
-default:
-  format: 
-    - html:dist/cucumber-report.html
-  paths: 
-   - test/features/*.feature
-  require-module:
-   - ts-node/register
-  require: 
-   - features/**/*.ts
