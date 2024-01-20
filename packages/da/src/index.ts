@@ -1,17 +1,17 @@
-import { BasicDesktopAgent } from "./BasicDesktopAgent.js";
-import { Messaging } from "./Messaging.js";
+import { BasicDesktopAgent } from "./BasicDesktopAgent";
+import { Messaging } from "./Messaging";
 
-import { DefaultChannel } from "./channels/DefaultChannel.js";
-import { IntentSupport } from "./intents/IntentSupport.js";
-import { ChannelSupport } from "./channels/ChannelSupport.js";
+import { DefaultChannel } from "./channels/DefaultChannel";
+import { IntentSupport } from "./intents/IntentSupport";
+import { ChannelSupport } from "./channels/ChannelSupport";
 
-import { StatefulChannel } from "./channels/StatefulChannel.js";
-import { DefaultContextListener } from "./listeners/DefaultContextListener.js";
-import { DesktopAgentProvider } from "./DesktopAgentProvider.js";
-import { DefaultIntentSupport } from "./intents/DefaultIntentSupport.js";
-import { DefaultChannelSupport } from "./channels/DefaultChannelSupport.js";
-import { DefaultAppSupport } from "./apps/DefaultAppSupport.js";
-import { AppSupport } from "./apps/AppSupport.js";
+import { StatefulChannel } from "./channels/StatefulChannel";
+import { DefaultContextListener } from "./listeners/DefaultContextListener";
+import { DesktopAgentProvider } from "./DesktopAgentProvider";
+import { DefaultIntentSupport } from "./intents/DefaultIntentSupport";
+import { DefaultChannelSupport } from "./channels/DefaultChannelSupport";
+import { DefaultAppSupport } from "./apps/DefaultAppSupport";
+import { AppSupport } from "./apps/AppSupport";
 
 export {
     type Messaging,

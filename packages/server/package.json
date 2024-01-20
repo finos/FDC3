@@ -1,7 +1,6 @@
 {
   "name": "server",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
   "scripts": {
     "build": "tsc -b"
   },

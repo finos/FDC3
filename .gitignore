@@ -16,3 +16,5 @@ packages/fdc3-common/tsconfig.tsbuildinfo
 packages/client/tsconfig.tsbuildinfo
 packages/da/tsconfig.tsbuildinfo
 packages/testing/tsconfig.tsbuildinfo
+**/coverage
+.nyc_output
