@@ -1,13 +1,10 @@
 import { TestMessaging } from '../support/TestMessaging';
 import { createDefaultChannels } from '../support/DefaultUserChannels';
-import { BasicDesktopAgent } from 'da';
-import { DefaultChannelSupport } from 'da';
-import { DefaultIntentSupport } from 'da';
-import { DefaultAppSupport } from 'da'
 import { DataTable, Given, Then, When } from '@cucumber/cucumber'
 import { expect } from 'expect';
 import { doesRowMatch, handleResolve, indexOf } from '../support/matching';
 import { CustomWorld } from '../world/index';
+import { BasicDesktopAgent, DefaultAppSupport, DefaultChannelSupport, DefaultIntentSupport } from '../../src';
 
 Given('A Desktop Agent in {string}', function (this: CustomWorld, field: string) {
 
@@ -15,7 +12,7 @@ Given('A Desktop Agent in {string}', function (this: CustomWorld, field: string)
         this.messaging = new TestMessaging();
     }
 
-    this.props[field] = new BasicDesktopAgent(
+    this.props[field] = new BasicDesktopAgent (
         new DefaultChannelSupport(this.messaging, createDefaultChannels(this.messaging), null),
         new DefaultIntentSupport(),
         new DefaultAppSupport(this.messaging, {
