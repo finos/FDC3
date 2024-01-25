@@ -104,12 +104,18 @@ Optional metadata about the intent & context message, including the app that ori
 ## `IntentResult`
 
 ```typescript
-type IntentResult = Context | Channel;
+type IntentResult = Context | Channel | void;
 ```
 
 Describes results that an Intent handler may optionally return that should be communicated back to the app that raised the intent, via the [`IntentResolution`](Metadata#intentresolution).
 
 Represented as a union type in TypeScript, however, this type may be rendered as an interface in other languages that both the `Context` and `Channel` types implement, allowing either to be returned by an `IntentHandler`.
+
+:::info
+
+The original release of FDC3 2.0 contained an error in the `IntentResult` type, which omitted `void` as a valid return type. It was intended that an `IntentHandler` be able to return either `void` or a Promise that resolves to `void` and, as these are valid results, no error should be thrown by `IntentResolution.getResult()`. This was corrected in FDC3 2.1 and retrospectively corrected in FDC3 2.0.
+
+:::
 
 #### See also
 
