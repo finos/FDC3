@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added clarification that `id` field values SHOULD always be strings to context schema definition (a restriction that can't easily be represented in the generated types). ([#1149](https://github.com/finos/FDC3/pull/1149))
+
 ### Changed
 
 ### Deprecated
