@@ -25,9 +25,7 @@
         },
         "id": {
           "type": "object",
-          "unevaluatedProperties": {
-            "type": "string"
-          }
+          "unevaluatedProperties": {"type": "string" }
         }
       },
       "additionalProperties": true,
@@ -52,10 +50,8 @@
         "id": {
           "type": "object",
           "title": "Id",
-          "description": "Context data objects may include a set of equivalent key-value pairs that can be used to help applications identify and look up the context type they receive in their own domain. The idea behind this design is that applications can provide as many equivalent identifiers to a target application as possible, e.g. an instrument may be represented by an ISIN, CUSIP or Bloomberg identifier.\n\nIdentifiers do not make sense for all types of data, so the `id` property is therefore optional, but some derived types may choose to require at least one identifier.",
-          "unevaluatedProperties": {
-            "type": "string"
-          }
+          "description": "Context data objects may include a set of equivalent key-value pairs that can be used to help applications identify and look up the context type they receive in their own domain. The idea behind this design is that applications can provide as many equivalent identifiers to a target application as possible, e.g. an instrument may be represented by an ISIN, CUSIP or Bloomberg identifier.\n\nIdentifiers do not make sense for all types of data, so the `id` property is therefore optional, but some derived types may choose to require at least one identifier. Identifier values SHOULD always be of type string.",
+          "unevaluatedProperties": {"type": "string" }
         }
       },
       "additionalProperties": true,
