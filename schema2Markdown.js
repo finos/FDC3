@@ -29,13 +29,13 @@ function generateMarkdown(schema) {
 
     let markdownContent = `# ${schema.title}\n\n`;
     markdownContent += `${schema.description}\n\n`; 
-    markdownContent += `## Properties\n\n`; 
 
 
     function processProperty(propertyName, propertyDetails) {
         if (propertyName === 'type') {
-            markdownContent += `### ${'Type'|| propertyName}\n\n`;
+            markdownContent += `## ${'Type'|| propertyName}\n\n`;
             markdownContent += `\`${propertyDetails.const}\`\n\n`;
+            markdownContent += `## Properties\n\n`; 
         } else {
             markdownContent += `### ${propertyDetails.title || propertyName}\n\n`;
             markdownContent += `\`${propertyName}\`\n\n`;
@@ -79,7 +79,7 @@ function generateMarkdown(schema) {
         markdownContent += `ref: ${schema.allOf[1].$ref}\n\n`;
     }
 
-    markdownContent += `## Examples\n\n`;
+    markdownContent += `## examples\n\n`;
     markdownContent += '```json\n';
     markdownContent += JSON.stringify(schema.examples, null, 2);
     markdownContent += '\n```';
@@ -97,10 +97,13 @@ function generateFrontMatter(title, description) {
 
 function processSchemaFile(schemaFile) {
     const schemaData = fs.readJSONSync(schemaFile);
-    const markdownContent = generateMarkdown(schemaData);
-    const frontMatter = generateFrontMatter(schemaData.title, schemaData.description);
 
-    const outputFileName = `./docs/context/schemas/${schemaData.title.toLowerCase().replace(/\s+/g, '-')}-schema.md`;
+    const fileName = path.basename(schemaFile);
+
+    const markdownContent = generateMarkdown(schemaData);
+    const frontMatter = generateFrontMatter(fileName.replace('.schema.json', '.md'), schemaData.description);
+
+    const outputFileName = `./docs/context/schemas/${schemaData.title.replace(/\s+/g, '')}.md`;
     fs.outputFileSync(outputFileName, `---\n${yaml.dump(frontMatter)}\n---\n\n${markdownContent}`);
 }
 
