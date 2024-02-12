@@ -72,6 +72,19 @@ Background: Desktop Agent API
             | id.ticker    | type              | name         |
             | AAPL         | fdc3.instrument   | Apple        |
 
+    Scenario: After unsubscribing, my listener shouldn't receive any more messages
+
+        Given "resultHandler" pipes context to "contexts"
+        When I call "api" with "joinUserChannel" with parameter "one"
+        And I call "api" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+        And I refer to "result" as "theListener"
+        And messaging receives "{instrumentMessageOne}"
+        And I call "theListener" with "unsubscribe"
+        And messaging receives "{instrumentMessageOne}"
+        Then "contexts" is an array of objects with the following contents
+            | id.ticker    | type              | name         |
+            | AAPL         | fdc3.instrument   | Apple        |
+        
 
     Scenario: Rejoining a channel shouldn't replay context already seen
 

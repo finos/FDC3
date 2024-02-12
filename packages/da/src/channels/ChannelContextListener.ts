@@ -16,11 +16,7 @@ export class ChannelContextListener extends DefaultContextListener {
         this.channelId = channelId;
         this.contextType = contextType;
     }   
-
-    unsubscribe(): void {
-        this.messaging.unregister(this.id)
-    }
-
+    
     /**
      * This is used for user channels when changing to a new channel
      */
