@@ -85,6 +85,20 @@ Background: Desktop Agent API
             | id.ticker    | type              | name         |
             | AAPL         | fdc3.instrument   | Apple        |
         
+    Scenario: I should be able to leave a user channel, and not receive messages on it
+    
+        Given "resultHandler" pipes context to "contexts"
+        When I call "api" with "joinUserChannel" with parameter "one"
+        And I call "api" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+        And I call "api" with "leaveCurrentChannel"
+        And messaging receives "{instrumentMessageOne}"
+        Then "contexts" is an array of objects with the following contents
+            | id.ticker    | type              | name         |
+
+    Scenario: Joining a user channel that doesn't exist throws an error
+
+        When I call "api" with "joinUserChannel" with parameter "nonexistent"
+        Then "result" is an error with message "NoChannelFound"
 
     Scenario: Rejoining a channel shouldn't replay context already seen
 
