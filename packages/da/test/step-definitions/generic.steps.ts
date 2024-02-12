@@ -51,6 +51,10 @@ When('I call {string} with {string} with parameters {string} and {string}', asyn
     }
 });
 
+When('I refer to {string} as {string}', async function (this: CustomWorld, from: string, to: string) {
+    this.props[to] = this.props[from];
+})
+
 Then('{string} is an array of objects with the following contents', function (this: CustomWorld, field: string, dt: DataTable) {
     const tableData = dt.hashes();
     const rowCount = tableData.length
