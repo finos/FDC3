@@ -1,6 +1,6 @@
-import { Given, When } from '@cucumber/cucumber'
+import { DataTable, Given, Then, When } from '@cucumber/cucumber'
 import { Context } from '@finos/fdc3';
-import { handleResolve } from '../support/matching';
+import { handleResolve, matchData } from '../support/matching';
 import { CustomWorld } from '../world/index';
 import { AgentRequestMessage, RequestMessageType } from '@finos/fdc3/dist/bridging/BridgingTypes';
 
@@ -13,6 +13,10 @@ const contextMap : Record<string, any> = {
     }
   }
 }
+
+Given('{string} is a {string} context', function(this: CustomWorld, field: string, type: string) {
+  this.props[field] = contextMap[type];  
+})
 
 Given('{string} is a {string} broadcastRequest message on channel {string}', function(this: CustomWorld, field: string, type: string, channel: string) {
   const message = {
@@ -51,3 +55,8 @@ When('messaging receives {string}', function (this: CustomWorld, field: string) 
   this.log(`Sending: ${JSON.stringify(message)}`)
   this.messaging!!.receive(message, this.log);
 });
+
+
+Then('messaging will have posts', function(this: CustomWorld, dt: DataTable) {
+  matchData(this.messaging?.allPosts!!, dt, this.log)
+})

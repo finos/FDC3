@@ -2,7 +2,7 @@ import { TestMessaging } from '../support/TestMessaging';
 import { createDefaultChannels } from '../support/DefaultUserChannels';
 import { DataTable, Given, Then, When } from '@cucumber/cucumber'
 import { expect } from 'expect';
-import { doesRowMatch, handleResolve, indexOf } from '../support/matching';
+import { doesRowMatch, handleResolve, matchData } from '../support/matching';
 import { CustomWorld } from '../world/index';
 import { BasicDesktopAgent, DefaultAppSupport, DefaultChannelSupport, DefaultIntentSupport } from '../../src';
 
@@ -36,10 +36,14 @@ When('I call {string} with {string}', async function (this: CustomWorld, field: 
 })
 
 When('I call {string} with {string} with parameter {string}', async function (this: CustomWorld, field: string, fnName: string, param: string) {
-    const fn = this.props[field][fnName];
-    const result = await fn.call(this.props[field], handleResolve(param, this))
-    if (result) {
-        this.props['result'] = result;
+    try {
+        const fn = this.props[field][fnName];
+        const result = await fn.call(this.props[field], handleResolve(param, this))
+        if (result) {
+            this.props['result'] = result;
+        }
+    } catch (error) {
+        this.props['result'] = error
     }
 })
 
@@ -56,24 +60,7 @@ When('I refer to {string} as {string}', async function (this: CustomWorld, from:
 })
 
 Then('{string} is an array of objects with the following contents', function (this: CustomWorld, field: string, dt: DataTable) {
-    const tableData = dt.hashes();
-    const rowCount = tableData.length
-
-    var resultCopy = JSON.parse(JSON.stringify(this.props[field])) as any[];
-    this.log(`result ${JSON.stringify(resultCopy)} length ${resultCopy.length}`)
-    expect(resultCopy).toHaveLength(rowCount);
-
-    resultCopy = resultCopy.filter(rr => {
-        const matchingRow = indexOf(tableData, rr);
-        if (matchingRow != -1) {
-            return false
-        } else {
-            this.log(`Couldn't match row: ${JSON.stringify(rr)}`)
-            return true
-        }
-    })
-
-    expect(resultCopy).toHaveLength(0)
+    matchData(this.props[field], dt, this.log)
 });
 
 Then('{string} is an object with the following contents', function (this: CustomWorld, field: string, params: DataTable) {
@@ -87,4 +74,8 @@ Then('{string} is null', function (this: CustomWorld, field: string) {
 
 Then('{string} is empty', function (this: CustomWorld, field: string) {
     expect(this.props[field]).toHaveLength(0)
+})
+
+Then('{string} is an error with message {string}', function (this: CustomWorld, field: string, errorType: string) {
+    expect(this.props[field]['message']).toBe(errorType)  
 })

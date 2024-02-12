@@ -1,10 +1,14 @@
 import { JSONPath } from "jsonpath-plus";
 import { CustomWorld } from "../world";
+import expect from "expect";
+import { DataTable } from "@cucumber/cucumber";
 
 export function doesRowMatch(t: Record<string, string>, data: any): boolean {
-    for (var k in Object.keys(t)) {
-        const found = JSONPath({ path: k, json: data })[0];
-        const actual = t[k]
+    for (const [field, actual] of Object.entries(t)) {
+        const found = JSONPath({ path: field, json: data })[0];
+        if (found == undefined) {
+            return false;
+        }
         if (found != actual) {
             return false;
         } 
@@ -29,4 +33,25 @@ export function handleResolve(name: string, on: CustomWorld) : any {
     } else {
         return name
     }
+}
+
+export function matchData(actual: any[], dt: DataTable, log: (arg0: string) => void) {
+    const tableData = dt.hashes();
+    const rowCount = tableData.length
+
+    var resultCopy = JSON.parse(JSON.stringify(actual)) as any[];
+    log(`result ${JSON.stringify(resultCopy)} length ${resultCopy.length}`)
+    expect(resultCopy).toHaveLength(rowCount);
+
+    resultCopy = resultCopy.filter(rr => {
+        const matchingRow = indexOf(tableData, rr);
+        if (matchingRow != -1) {
+            return false
+        } else {
+            log(`Couldn't match row: ${JSON.stringify(rr)}`)
+            return true
+        }
+    })
+
+    expect(resultCopy).toHaveLength(0)
 }
