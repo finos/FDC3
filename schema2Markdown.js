@@ -48,11 +48,11 @@ function processProperty(propertyName, propertyDetails, schemaExamples) {
 }
 
 function renderType(ref) {
-    return `**Type**: ${ref}\n\n`;
+    return `**Type**: \`${ref}\`\n\n`;
 }
 
 function renderEnum(ref) {
-    return `**Possible values**: ${ref.join(', ')}\n\n`;
+    return `**Possible values**: ${("\`" + ref + "\`").join(', ')}\n\n`;
 }
 
 function renderRef(contextRef) {
