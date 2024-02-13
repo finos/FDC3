@@ -3,6 +3,8 @@ Feature: Basic User Channels Support
 Background: Desktop Agent API
     Given A Desktop Agent in "api"
     Given "instrumentMessageOne" is a "fdc3.instrument" broadcastRequest message on channel "one"
+    Given "emailMessageOne" is a "fdc3.email" broadcastRequest message on channel "one"
+    
 
     Scenario: List User Channels    
 
@@ -99,6 +101,28 @@ Background: Desktop Agent API
 
         When I call "api" with "joinUserChannel" with parameter "nonexistent"
         Then "result" is an error with message "NoChannelFound"
+
+    Scenario: You can get the details of the last context type sent
+
+        Given "resultHandler" pipes context to "contexts"
+        When I call "api" with "joinUserChannel" with parameter "one"
+        And I call "api" with "getCurrentChannel"
+        And I refer to "result" as "theChannel"
+        And messaging receives "{instrumentMessageOne}"
+        And I call "theChannel" with "getCurrentContext"
+        Then "result" is an object with the following contents
+            | id.ticker    | type              | name         |
+            | AAPL         | fdc3.instrument   | Apple        |
+
+    Scenario: Asking for a piece of context (e.g. an email) when it's not been sent returns null
+
+        Given "resultHandler" pipes context to "contexts"
+        When I call "api" with "joinUserChannel" with parameter "one"
+        And I call "api" with "getCurrentChannel"
+        And I refer to "result" as "theChannel"
+        And messaging receives "{instrumentMessageOne}"
+        And I call "theChannel" with "getCurrentContext" with parameter "fdc3.email"
+        Then "result" is null
 
     Scenario: Rejoining a channel shouldn't replay context already seen
 

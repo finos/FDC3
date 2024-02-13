@@ -30,18 +30,14 @@ Given('A Desktop Agent in {string}', function (this: CustomWorld, field: string)
 When('I call {string} with {string}', async function (this: CustomWorld, field: string, fnName: string) {
     const fn = this.props[field][fnName];
     const result = await fn.call(this.props[field])
-    if (result) {
-        this.props['result'] = result;
-    }
+    this.props['result'] = result;
 })
 
 When('I call {string} with {string} with parameter {string}', async function (this: CustomWorld, field: string, fnName: string, param: string) {
     try {
         const fn = this.props[field][fnName];
         const result = await fn.call(this.props[field], handleResolve(param, this))
-        if (result) {
-            this.props['result'] = result;
-        }
+        this.props['result'] = result;
     } catch (error) {
         this.props['result'] = error
     }
@@ -50,9 +46,7 @@ When('I call {string} with {string} with parameter {string}', async function (th
 When('I call {string} with {string} with parameters {string} and {string}', async function (this: CustomWorld, field: string, fnName: string, param1: string, param2: string) {
     const fn = this.props[field][fnName];
     const result = await fn.call(this.props[field], handleResolve(param1, this), handleResolve(param2, this))
-    if (result) {
-        this.props['result'] = result;
-    }
+    this.props['result'] = result;
 });
 
 When('I refer to {string} as {string}', async function (this: CustomWorld, from: string, to: string) {
