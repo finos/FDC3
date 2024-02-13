@@ -52,7 +52,8 @@ function renderType(ref) {
 }
 
 function renderEnum(ref) {
-    return `**Possible values**: ${("\`" + ref + "\`").join(', ')}\n\n`;
+    // for each item in ref, wrap it in backticks and join with a comma
+    return `**Possible values**: ${ref.map((item) => `\`${item}\``).join(', ')}\n\n`;
 }
 
 function renderRef(contextRef) {
