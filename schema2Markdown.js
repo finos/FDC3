@@ -85,7 +85,7 @@ function hasProperties(schema) {
 }
 
 // Function to generate Markdown content from JSON schema
-function generateObjectMD(schema, title, schemaFolderName) {
+function generateObjectMD(schema, title, schemaFolderName, version) {
 
     const objectName = schema.title
 
@@ -142,7 +142,7 @@ function generateObjectMD(schema, title, schemaFolderName) {
     const frontMatter = generateFrontMatter(objectName, schema.description);
     console.log('frontMatter:', frontMatter);
 
-    const outputFileName = `./website/versioned_docs/version-2.1/${schemaFolderName}/schemas/${title.replace(/\s+/g, '')}.md`;
+    const outputFileName = `./website/versioned_docs/version-${version}/${schemaFolderName}/schemas/${title.replace(/\s+/g, '')}.md`;
 
     fs.outputFileSync(outputFileName, `---\n${yaml.dump(frontMatter)}\n---\n\n${markdownContent}`);
 
@@ -167,18 +167,18 @@ function generateFrontMatter(title, description) {
     };
 }
 
-function processSchemaFile(schemaFile, schemaFolderName) {
+function processSchemaFile(schemaFile, schemaFolderName, version) {
     const schemaData = fs.readJSONSync(schemaFile);
 
     // if there is allOf, then it is an object
     const allOfArray = schemaData.allOf;
     let sidebarItems = [];
     if (Array.isArray(allOfArray) && allOfArray.length > 0) {
-        sidebarItems.push(generateObjectMD(schemaData, null, schemaFolderName));
+        sidebarItems.push(generateObjectMD(schemaData, null, schemaFolderName, version));
     }
     if (schemaData.definitions) {
         for (const [objectName, objectDetails] of Object.entries(schemaData.definitions)) {
-            sidebarItems.push(generateObjectMD(objectDetails, objectName, schemaFolderName));
+            sidebarItems.push(generateObjectMD(objectDetails, objectName, schemaFolderName, version));
         }
     }
 
@@ -186,7 +186,7 @@ function processSchemaFile(schemaFile, schemaFolderName) {
     return sidebarItems;
 }
 
-function parseSchemaFolder(schemaFolderName) {
+function parseSchemaFolder(schemaFolderName, version) {
     // Read all files in the schema folder
     const schemaFiles = fs.readdirSync("./schemas/"+schemaFolderName)
     .filter(file => file.endsWith('.json'))
@@ -195,7 +195,7 @@ function parseSchemaFolder(schemaFolderName) {
     // Process each schema file
     let sidebarItems = [];
     for (const schemaFile of schemaFiles) {
-        sidebarItems.push(processSchemaFile(schemaFile, schemaFolderName));
+        sidebarItems.push(processSchemaFile(schemaFile, schemaFolderName, version));
     }
 
     // filter out null values
@@ -203,27 +203,39 @@ function parseSchemaFolder(schemaFolderName) {
 }
 
 function main() {
-    let sidebarObject = require('./website/versioned_sidebars/version-2.1-sidebars.json')
 
-    let sidebarContextObject = {
-        "type": "category",
-        "label": "Context Schemas Part",
-        "items": []
-    }
+    const versions = ["1.0", "1.1", "1.2", "2.0", "2.1"];
 
-    let sidebarApiObject = {
-        "type": "category",
-        "label": "API Schemas Part",
-        "items": []
-    }
+    versions.forEach(version => {
 
-    sidebarApiObject.items = parseSchemaFolder('api');
-    sidebarContextObject.items = parseSchemaFolder('context');
+        let sidebarObject = require(`./website/versioned_sidebars/version-${version}-sidebars.json`)
 
-    sidebarObject.docs["FDC3 Standard"].push(sidebarContextObject)
-    sidebarObject.docs["FDC3 Standard"].push(sidebarApiObject)
+        let sidebarContextObject = {
+            "type": "category",
+            "label": "Context Schemas Part",
+            "items": []
+        }
 
-    fs.outputJSONSync('./website/versioned_sidebars/version-2.1-sidebars.json', sidebarObject, { spaces: 2 });
+        let sidebarApiObject = {
+            "type": "category",
+            "label": "API Schemas Part",
+            "items": []
+        }
+
+        sidebarApiObject.items = parseSchemaFolder('api', version);
+        sidebarContextObject.items = parseSchemaFolder('context', version);
+
+        if (sidebarObject.docs["FDC3 Standard"] == null) {
+            sidebarObject.docs["FDC3 Standard"] = [];
+        }
+
+        sidebarObject.docs["FDC3 Standard"].push(sidebarContextObject)
+        sidebarObject.docs["FDC3 Standard"].push(sidebarApiObject)
+
+        fs.outputJSONSync(
+            `./website/versioned_sidebars/version-${version}-sidebars.json`, 
+            sidebarObject, { spaces: 2 });
+    });
 }
 
 if (require.main === module) {
