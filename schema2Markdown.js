@@ -17,7 +17,7 @@ function processProperty(propertyName, propertyDetails, schemaExamples) {
         }
 
         if (propertyDetails.type) {
-        markdownContent += `**Type**: ${propertyDetails.type}\n\n`;
+            markdownContent += renderType(propertyDetails.type);
         } else {
             const contextRef = propertyDetails.properties?.context?.$ref || propertyDetails.$ref;
 
@@ -27,7 +27,7 @@ function processProperty(propertyName, propertyDetails, schemaExamples) {
         }
 
         if (propertyDetails.enum) {
-            markdownContent += `Possible values: ${propertyDetails.enum.join(', ')}\n\n`;
+            markdownContent += renderEnum(propertyDetails.enum);
         }
 
         if (propertyDetails.allOf) {
@@ -45,6 +45,14 @@ function processProperty(propertyName, propertyDetails, schemaExamples) {
         }
     }
     return markdownContent;
+}
+
+function renderType(ref) {
+    return `**Type**: ${ref}\n\n`;
+}
+
+function renderEnum(ref) {
+    return `**Possible values**: ${ref.join(', ')}\n\n`;
 }
 
 function renderRef(contextRef) {
@@ -97,6 +105,13 @@ function generateObjectMD(schema, title, schemaFolderName, version) {
 
     if (schema.description != null) {
         markdownContent += `${escape(schema.description)}\n\n`; 
+    }
+
+    if (schema.type) {
+        markdownContent += renderType(schema.type);
+    }
+    if (schema.enum) {
+        markdownContent += renderEnum(schema.enum);
     }
 
     console.log('hasAllOf/hasProperties', hasAllOf(schema.allOf), hasProperties(schema));
