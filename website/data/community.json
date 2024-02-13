@@ -514,5 +514,5 @@
     "type": "examples-and-training",
     "badges": [],
     "description": "The Connectifi FDC3 Sandbox is a free FDC3 development tool that uses the Coonectifi cloud service to securely enable interoperability across applications regardless of technology or device they are running on.  It is the easiest way to use the FDC3 standard and works without installs so that FDC3 can be used directly in a browser, bridging across desktop containers, and even in mobile and across devices."
-  },
+  }
 ]
