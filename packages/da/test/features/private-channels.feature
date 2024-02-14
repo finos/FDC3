@@ -57,15 +57,33 @@ Background: Desktop Agent API
              | PrivateChannel.eventListenerAdded    | onUnsubscribe        | {privateChannel.id} |
              | PrivateChannel.eventListenerRemoved  | onUnsubscribe        | {privateChannel.id} |
 
+    Scenario: Adding an "onUnsubscribe" on a given Private Channel to receive a notification
+
+        Given "onUnsubscribeListenerMessage" is a "PrivateChannel.onUnsubscribe" message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
+        And "typesHandler" pipes types to "types"
+        When I call "privateChannel" with "onUnsubscribe" with parameter "{typesHandler}"
+        And messaging receives "{onUnsubscribeListenerMessage}"
+        Then "types" is an array of strings with the following values
+            | value              | 
+            | fdc3.instrument   | 
+
     Scenario: Adding and then unsubscribing an "onDisconnect" listener will send a notification of each event to the agent
 
-        Given "voidHandler" is a void handler
+        Given "voidHandler" is a invocation counter into "count"
         When I call "privateChannel" with "onDisconnect" with parameter "{voidHandler}"
         And I call "result" with "unsubscribe"
         Then messaging will have posts
              | type                                 | payload.listenerType |
              | PrivateChannel.eventListenerAdded    | onDisconnect         |
              | PrivateChannel.eventListenerRemoved  | onDisconnect         | 
+
+    Scenario: Adding an "onDisconnect" on a given Private Channel to receive a notification
+
+        Given "onDisconnectListenerMessage" is a "PrivateChannel.onDisconnect" message on channel "{privateChannel.id}"
+        And "voidHandler" is a invocation counter into "count"
+        When I call "privateChannel" with "onDisconnect" with parameter "{voidHandler}"
+        And messaging receives "{onDisconnectListenerMessage}"
+        Then "{count}" is "1"
 
     Scenario: I can broadcast context on a private channel
 
@@ -75,4 +93,18 @@ Background: Desktop Agent API
              | type                        | payload.channelId    | payload.context.type | payload.context.name |
              | PrivateChannel.broadcast    | {privateChannel.id}  | fdc3.instrument      | Apple                |
 
-  
+    Scenario: When disconnecting, a disconnect message is sent and unsubscribe is sent from each listener.
+
+        Given "typesHandler" pipes types to "types"
+        When I call "privateChannel" with "onAddContextListener" with parameter "{typesHandler}"    
+        And I call "privateChannel" with "onUnsubscribe" with parameter "{typesHandler}"
+        And I call "privateChannel" with "disconnect"  
+        Then messaging will have posts
+        | type                                 | payload.channelId    | payload.listenerType | 
+        | PrivateChannel.eventListenerAdded    | {privateChannel.id}  | onAddContextListener | 
+        | PrivateChannel.eventListenerAdded    | {privateChannel.id}  | onUnsubscribe        | 
+        | PrivateChannel.eventListenerRemoved  | {privateChannel.id}  | onAddContextListener | 
+        | PrivateChannel.eventListenerRemoved  | {privateChannel.id}  | onUnsubscribe        | 
+        | PrivateChannel.onDisconnect          | {privateChannel.id}  | {empty}              | 
+
+

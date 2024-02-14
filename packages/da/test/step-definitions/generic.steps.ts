@@ -75,6 +75,21 @@ Then('{string} is empty', function (this: CustomWorld, field: string) {
     expect(this.props[field]).toHaveLength(0)
 })
 
+Then('{string} is {string}', function (this: CustomWorld, field: string, expected: string) {
+    const fVal = handleResolve(field, this)
+    const eVal = handleResolve(expected, this)
+    expect(""+fVal).toEqual(""+eVal)        
+})
+
 Then('{string} is an error with message {string}', function (this: CustomWorld, field: string, errorType: string) {
     expect(this.props[field]['message']).toBe(errorType)  
 })
+
+Given('{string} is a invocation counter into {string}', function(this: CustomWorld, handlerName: string, field: string) {
+    this.props[handlerName] = () => {
+      var amount : number = this.props[field]
+      amount ++;
+      this.props[field] = amount
+    }
+    this.props[field] = 0;
+  })
