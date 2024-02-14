@@ -104,11 +104,6 @@ Given('{string} pipes context to {string}', function(this: CustomWorld, contextH
   }
 })
 
-Given('{string} is a void handler', function(this: CustomWorld, handlerName: string) {
-  this.props[handlerName] = () => {}
-})
-
-
 When('messaging receives a {string} with payload:', function (this: CustomWorld, type: RequestMessageType, docString: string) {
   const message : AgentRequestMessage = {
     meta: this.messaging!!.createMeta(),
