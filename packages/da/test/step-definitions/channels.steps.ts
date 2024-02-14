@@ -26,14 +26,14 @@ Given('{string} is a {string} context', function(this: CustomWorld, field: strin
   this.props[field] = contextMap[type];  
 })
 
-Given('{string} is a {string} broadcastRequest message on channel {string}', function(this: CustomWorld, field: string, type: string, channel: string) {
+Given('{string} is a {string} message on channel {string} with context {string}', function(this: CustomWorld, field: string, type: string, channel: string, context: string) {
   const message = {
     meta: this.messaging!!.createMeta(),
     payload: {
-      "channelId" : channel,
-      "context" : contextMap[type]
+      "channelId" : handleResolve(channel, this),
+      "context" : contextMap[context]
     },
-    type: "broadcastRequest"
+    type: type
   }
   
   this.props[field] = message;  
@@ -51,7 +51,7 @@ Given('{string} is a {string} message on channel {string}', function(this: Custo
   this.props[field] = message;  
 })
 
-Given('{string} is a {string} message on channel {string} with contextType as {string}', function(this: CustomWorld, field: string, type: string, channel: string, contextType: string) {
+Given('{string} is a {string} message on channel {string} " {string}', function(this: CustomWorld, field: string, type: string, channel: string, contextType: string) {
   const message = {
     meta: this.messaging!!.createMeta(),
     payload: {
@@ -77,9 +77,9 @@ Given('{string} is a {string} message on channel {string} with listenerType as {
   this.props[field] = message;  
 })
 
-Given('{string} pipes types to {string}', function(this: CustomWorld, contextTypeHandlerName: string, field: string) {
+Given('{string} pipes types to {string}', function(this: CustomWorld, typeHandlerName: string, field: string) {
   this.props[field] = []
-  this.props[contextTypeHandlerName] = (s?: string) => {
+  this.props[typeHandlerName] = (s?: string) => {
     this.props[field].push(s)
   }
 })
@@ -90,6 +90,11 @@ Given('{string} pipes context to {string}', function(this: CustomWorld, contextH
     this.props[field].push(context)
   }
 })
+
+Given('{string} is a void handler', function(this: CustomWorld, handlerName: string) {
+  this.props[handlerName] = () => {}
+})
+
 
 When('messaging receives a {string} with payload:', function (this: CustomWorld, type: RequestMessageType, docString: string) {
   const message : AgentRequestMessage = {

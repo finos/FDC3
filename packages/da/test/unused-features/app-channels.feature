@@ -2,7 +2,7 @@ Feature: Basic User Channels Support
 
   Background: Desktop Agent API
     Given A Desktop Agent in "api1"
-    Given "instrumentMessageOne" is a "fdc3.instrument" broadcastRequest message on channel "channel-name"
+    Given "instrumentMessageOne" is a "broadcastRequest" broadcastRequest message on channel "channel-name" with context "fdc3.instrument" 
     Given "countryMessageOne" is a "fdc3.country" broadcastRequest message on channel "channel-name"
     Given "instrumentContext" is a "fdc3.instrument" context
 
@@ -10,7 +10,7 @@ Feature: Basic User Channels Support
 
         When I call "api1" with "getOrCreateChannel" with parameter "channel-name"
         And I refer to "result" as "channel1"
-        And I call "channel1" with "broadcast" with parameters "{instrumentContext}" and "{resultHandler}" 
+        And I call "channel1" with "broadcast" with parameter "{instrumentContext}"
         Then messaging will have posts
             | payload.channelId    | payload.context.type              | payload.context.name         |
             | channel-name         | fdc3.instrument                   | Apple                        |
