@@ -3,13 +3,12 @@ import { CustomWorld } from "../world";
 import expect from "expect";
 import { DataTable } from "@cucumber/cucumber";
 
-export function doesRowMatch(t: Record<string, string>, data: any): boolean {
+export function doesRowMatch(cw: CustomWorld, t: Record<string, string>, data: any): boolean {
     for (const [field, actual] of Object.entries(t)) {
         const found = JSONPath({ path: field, json: data })[0];
-        if (found == undefined) {
-            return false;
-        }
-        if (found != actual) {
+        const resolved = handleResolve(actual, cw)
+
+        if (found != resolved) {
             return false;
         } 
     }
@@ -17,9 +16,9 @@ export function doesRowMatch(t: Record<string, string>, data: any): boolean {
     return true;
 }
 
-export function indexOf(rows: Record<string, string>[], data: any): number {
+export function indexOf(cw: CustomWorld, rows: Record<string, string>[], data: any): number {
     for (var i = 0; i < rows.length; i++) {
-        if (doesRowMatch(rows[i], data)) {
+        if (doesRowMatch(cw, rows[i], data)) {
             return i;
         }
     }
@@ -29,26 +28,32 @@ export function indexOf(rows: Record<string, string>[], data: any): number {
 
 export function handleResolve(name: string, on: CustomWorld) : any {
     if (name.startsWith("{") && name.endsWith("}")) {
-        return on.props[name.substring(1, name.length-1)]
+        const stripped = name.substring(1, name.length-1)
+        const parts = stripped.split(".")
+        var out = on.props[parts[0]]
+        for(let i=1; i<parts.length; i++) {
+            out = out[parts[i]]
+        }
+        return out
     } else {
         return name
     }
 }
 
-export function matchData(actual: any[], dt: DataTable, log: (arg0: string) => void) {
+export function matchData(cw: CustomWorld, actual: any[], dt: DataTable) {
     const tableData = dt.hashes();
     const rowCount = tableData.length
 
     var resultCopy = JSON.parse(JSON.stringify(actual)) as any[];
-    log(`result ${JSON.stringify(resultCopy)} length ${resultCopy.length}`)
+    cw.log(`result ${JSON.stringify(resultCopy)} length ${resultCopy.length}`)
     expect(resultCopy).toHaveLength(rowCount);
 
     resultCopy = resultCopy.filter(rr => {
-        const matchingRow = indexOf(tableData, rr);
+        const matchingRow = indexOf(cw, tableData, rr);
         if (matchingRow != -1) {
             return false
         } else {
-            log(`Couldn't match row: ${JSON.stringify(rr)}`)
+            cw.log(`Couldn't match row: ${JSON.stringify(rr)}`)
             return true
         }
     })

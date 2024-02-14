@@ -20,10 +20,7 @@ export class DefaultChannel implements StatefulChannel {
         this.id = id
         this.type = type
         this.displayMetadata = displayMetadata
-        this.addContextListenerInner(null, (ctx) => {
-            this.latestContextMap.set(ctx.type, ctx);
-            this.latestContext = ctx;
-        })
+        this._addCurrentContextListener();
     }
 
     broadcast(context: Context): Promise<void> {
@@ -48,6 +45,18 @@ export class DefaultChannel implements StatefulChannel {
         } else {
             return Promise.resolve(this.latestContext);
         }
+    }
+
+    /**
+     * Special internal listener that keeps track of current context
+     */
+    _addCurrentContextListener() {
+        const listener = new ChannelContextListener(this.messaging, this.id, null, (ctx) => {
+            this.latestContextMap.set(ctx.type, ctx);
+            this.latestContext = ctx;
+        });
+
+        this.listeners.push(listener)
     }
 
     addContextListener(contextType: any, handler?: ContextHandler): Promise<Listener> {

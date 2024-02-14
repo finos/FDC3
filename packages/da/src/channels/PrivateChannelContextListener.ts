@@ -1,5 +1,5 @@
 import { ContextHandler } from "@finos/fdc3";
-import { PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { Messaging } from "../Messaging";
 import { ChannelContextListener } from "./ChannelContextListener";
 
@@ -7,6 +7,18 @@ export class PrivateChannelContextListener extends ChannelContextListener {
 
     constructor(messaging: Messaging, channelId: string, contextType: string | null, action: ContextHandler) {
         super(messaging, channelId, contextType, action, "PrivateChannel.broadcast",);
+
+        // send notification
+        const addContextListenerMessage : PrivateChannelOnAddContextListenerAgentRequest = {
+            meta: this.messaging.createMeta() as PrivateChannelOnAddContextListenerAgentRequest['meta'] ,
+            payload : {
+                channelId,
+                contextType
+            },
+            type: "PrivateChannel.onAddContextListener"
+        }
+        
+        messaging.post(addContextListenerMessage)
     }
 
     unsubscribe(): void {
