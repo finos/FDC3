@@ -46,7 +46,7 @@ sequenceDiagram
 
 ### Example
 
-Outward message to the DAB:
+Outward message to the DAB (with `intent` and `context` specified, but not `resultType`):
 
 ```json
 // agent-A -> DAB
