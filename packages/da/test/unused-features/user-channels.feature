@@ -2,10 +2,9 @@ Feature: Basic User Channels Support
 
 Background: Desktop Agent API
     Given A Desktop Agent in "api"
-    Given "instrumentMessageOne" is a "fdc3.instrument" broadcastRequest message on channel "one"
+    Given "instrumentMessageOne" is a "broadcastRequest" broadcastRequest message on channel "one" with context "fdc3.instrument" 
     Given "emailMessageOne" is a "fdc3.email" broadcastRequest message on channel "one"
     
-
     Scenario: List User Channels    
 
         There should be a selection of user channels to choose from
