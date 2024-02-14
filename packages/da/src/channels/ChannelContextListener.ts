@@ -9,14 +9,14 @@ export class ChannelContextListener extends DefaultContextListener {
 
     constructor(messaging: Messaging, channelId: string | null, contextType: string | null, action: ContextHandler, type: string = "broadcastRequest") {
         const filter = (m: any) => (m.type == type) 
-                && (m.payload.channelId == this.channelId)
+                && (m.payload.channel == this.channelId)
                 && ((m.payload.context?.type == this.contextType) || (this.contextType == null));
 
         super(messaging, filter, action);
         this.channelId = channelId;
         this.contextType = contextType;
     }   
-    
+
     /**
      * This is used for user channels when changing to a new channel
      */

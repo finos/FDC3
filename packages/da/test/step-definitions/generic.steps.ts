@@ -57,6 +57,11 @@ Then('{string} is an array of objects with the following contents', function (th
     matchData(this, this.props[field], dt)
 });
 
+Then('{string} is an array of strings with the following values', function (this: CustomWorld, field: string, dt: DataTable) {
+    const values = this.props[field].map((s: string) => {return { "value": s }})
+    matchData(this, values, dt)
+});
+
 Then('{string} is an object with the following contents', function (this: CustomWorld, field: string, params: DataTable) {
     const table = params.hashes()
     expect(doesRowMatch(this, table[0], this.props[field])).toBeTruthy();

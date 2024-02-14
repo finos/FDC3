@@ -30,7 +30,7 @@ Given('{string} is a {string} message on channel {string} with context {string}'
   const message = {
     meta: this.messaging!!.createMeta(),
     payload: {
-      "channelId" : handleResolve(channel, this),
+      "channel" : handleResolve(channel, this),
       "context" : contextMap[context]
     },
     type: type
@@ -43,7 +43,7 @@ Given('{string} is a {string} message on channel {string}', function(this: Custo
   const message = {
     meta: this.messaging!!.createMeta(),
     payload: {
-      "channelId" : handleResolve(channel, this),
+      "channel" : handleResolve(channel, this),
     },
     type
   }
@@ -55,7 +55,7 @@ Given('{string} is a {string} message on channel {string} " {string}', function(
   const message = {
     meta: this.messaging!!.createMeta(),
     payload: {
-      "channelId" : handleResolve(channel, this),
+      "channel" : handleResolve(channel, this),
       contextType
     },
     type
@@ -68,8 +68,21 @@ Given('{string} is a {string} message on channel {string} with listenerType as {
   const message = {
     meta: this.messaging!!.createMeta(),
     payload: {
-      "channelId" : handleResolve(channel, this),
+      "channel" : handleResolve(channel, this),
       listenerType
+    },
+    type
+  }
+  
+  this.props[field] = message;  
+})
+
+Given('{string} is a {string} message on channel {string} with contextType as {string}', function(this: CustomWorld, field: string, type: string, channel: string, contextType: string) {
+  const message = {
+    meta: this.messaging!!.createMeta(),
+    payload: {
+      "channel" : handleResolve(channel, this),
+      contextType
     },
     type
   }
