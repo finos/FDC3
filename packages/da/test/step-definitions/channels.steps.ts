@@ -11,6 +11,14 @@ const contextMap : Record<string, any> = {
     "id" : {
         "ticker": "AAPL"
     }
+  },
+  "fdc3.country": {
+    "type": "fdc3.country",
+    "name": "Sweden",
+    "id": {
+      "COUNTRY_ISOALPHA2": "SE",
+      "COUNTRY_ISOALPHA3": "SWE",
+    }
   }
 }
 
@@ -31,6 +39,50 @@ Given('{string} is a {string} broadcastRequest message on channel {string}', fun
   this.props[field] = message;  
 })
 
+Given('{string} is a {string} message on channel {string}', function(this: CustomWorld, field: string, type: string, channel: string) {
+  const message = {
+    meta: this.messaging!!.createMeta(),
+    payload: {
+      "channelId" : handleResolve(channel, this),
+    },
+    type
+  }
+  
+  this.props[field] = message;  
+})
+
+Given('{string} is a {string} message on channel {string} with contextType as {string}', function(this: CustomWorld, field: string, type: string, channel: string, contextType: string) {
+  const message = {
+    meta: this.messaging!!.createMeta(),
+    payload: {
+      "channelId" : handleResolve(channel, this),
+      contextType
+    },
+    type
+  }
+  
+  this.props[field] = message;  
+})
+
+Given('{string} is a {string} message on channel {string} with listenerType as {string}', function(this: CustomWorld, field: string, type: string, channel: string, listenerType: string) {
+  const message = {
+    meta: this.messaging!!.createMeta(),
+    payload: {
+      "channelId" : handleResolve(channel, this),
+      listenerType
+    },
+    type
+  }
+  
+  this.props[field] = message;  
+})
+
+Given('{string} pipes types to {string}', function(this: CustomWorld, contextTypeHandlerName: string, field: string) {
+  this.props[field] = []
+  this.props[contextTypeHandlerName] = (s?: string) => {
+    this.props[field].push(s)
+  }
+})
 
 Given('{string} pipes context to {string}', function(this: CustomWorld, contextHandlerName: string, field: string) {
   this.props[field] = []
@@ -58,5 +110,5 @@ When('messaging receives {string}', function (this: CustomWorld, field: string) 
 
 
 Then('messaging will have posts', function(this: CustomWorld, dt: DataTable) {
-  matchData(this.messaging?.allPosts!!, dt, this.log)
+  matchData(this, this.messaging?.allPosts!!, dt)
 })

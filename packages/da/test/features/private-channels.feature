@@ -1,17 +1,39 @@
 Feature: Basic User Channels Support
 
 Background: Desktop Agent API
-    Given A Desktop Agent in "api1"
-    Given "instrumentMessageOne" is a "fdc3.instrument" broadcastRequest message on channel "channel-name"
+    Given A Desktop Agent in "api"
+    And I call "api" with "createPrivateChannel"
+    And I refer to "result" as "privateChannel" 
 
-    Scenario: Creating an App Channel and Receiving A Context on it
+    Scenario: Adding a context listener will send a notification to the agent
 
-        Given "resultHandler" pipes context to "contexts"
-        When I call "api1" with "getOrCreateChannel" with parameter "channel-name"
-        And I refer to "result" as "channel1"
-        And I call "channel1" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}" 
-        And messaging receives "{instrumentMessageOne}"
-        Then "contexts" is an array of objects with the following contents
-            | id.ticker    | type              | name         |
-            | AAPL         | fdc3.instrument   | Apple        |
-    
+        Given "contextHandler" pipes context to "context"
+        When I call "privateChannel" with "addContextListener" with parameters "fdc3.instrument" and "{contextHandler}"
+        Then messaging will have posts
+             | type                                   | payload.channelId     | payload.contextType |
+             | PrivateChannel.onAddContextListener    | {privateChannel.id}   | fdc3.instrument     |
+
+    Scenario: Adding an "onAddContextListener" listener will send a notification to the agent
+
+        Given "typesHandler" pipes types to "types"
+        When I call "privateChannel" with "onAddContextListener" with parameter "{typesHandler}"
+        Then messaging will have posts
+             | type                               | payload.listenerType | payload.channelId   |
+             | PrivateChannel.eventListenerAdded  | onAddContextListener | {privateChannel.id} |
+
+
+    #     Given "resultHandler" pipes types to "types"
+    #     When I call "api1" with "createPrivateChannel"
+    #     And I refer to "result" as "private-channel"
+    #     And I call "private-channel" with "onAddContextListener" with parameter "{resultHandler}"
+    #     Then messaging will have posts
+    #         | type                                 | payload.listenerType                   | 
+    #         | PrivateChannel.eventListenerAdded    | onAddContextListener                   | 
+     
+    #     # Now we're going to send the message to the private channel listener
+
+    #     Given "pcUnsubscribe" is a "PrivateChannel.onAddContextListener" message on channel "{private-channel.id}" with contextType as "fdc3.instrument"
+    #     And messaging receives "{pcUnsubscribe}"
+    #     Then "types" is an array of objects with the following contents
+    #         | type              |
+    #         | fdc3.instrument   |

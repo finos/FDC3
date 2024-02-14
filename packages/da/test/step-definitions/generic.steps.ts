@@ -54,12 +54,12 @@ When('I refer to {string} as {string}', async function (this: CustomWorld, from:
 })
 
 Then('{string} is an array of objects with the following contents', function (this: CustomWorld, field: string, dt: DataTable) {
-    matchData(this.props[field], dt, this.log)
+    matchData(this, this.props[field], dt)
 });
 
 Then('{string} is an object with the following contents', function (this: CustomWorld, field: string, params: DataTable) {
     const table = params.hashes()
-    expect(doesRowMatch(table[0], this.props[field])).toBeTruthy();
+    expect(doesRowMatch(this, table[0], this.props[field])).toBeTruthy();
 });
 
 Then('{string} is null', function (this: CustomWorld, field: string) {
