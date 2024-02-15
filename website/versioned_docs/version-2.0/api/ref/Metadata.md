@@ -345,9 +345,9 @@ interface IntentResolution {
    *  receive a stream of data.
    * 
    *  If an error occurs (i.e. an error is thrown by the handler function,
-   *  the promise it returns is rejected, or a promise is not returned by the
-   *  handler function) then the Desktop Agent MUST reject the promise returned
-   *  by the `getResult()` function of the `IntentResolution` with a string from
+   *  the promise it returns is rejected, or the promise resolved to an invalid 
+   *  type) then the Desktop Agent MUST reject the promise returned by the 
+   *  `getResult()` function of the `IntentResolution` with a string from
    *  the `ResultError` enumeration.
    */
    getResult(): Promise<IntentResult>;

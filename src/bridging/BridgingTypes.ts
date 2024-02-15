@@ -669,6 +669,7 @@ export interface ContextElement {
    *
    * Identifiers do not make sense for all types of data, so the `id` property is therefore
    * optional, but some derived types may choose to require at least one identifier.
+   * Identifier values SHOULD always be of type string.
    */
   id?: { [key: string]: any };
   /**
@@ -1770,6 +1771,7 @@ export interface FindIntentAgentRequestMeta {
 export interface FindIntentAgentRequestPayload {
   context?: ContextElement;
   intent: string;
+  resultType?: string;
 }
 
 /**
@@ -1928,6 +1930,7 @@ export interface FindIntentBridgeRequestMeta {
 export interface FindIntentBridgeRequestPayload {
   context?: ContextElement;
   intent: string;
+  resultType?: string;
 }
 
 /**
@@ -3102,7 +3105,7 @@ export interface PrivateChannelEventListenerAddedAgentRequestMeta {
  */
 export interface PrivateChannelEventListenerAddedAgentRequestPayload {
   /**
-   * The id of the PrivateChannel that the event listener was added to
+   * The id of the PrivateChannel that the event listener was added to.
    */
   channelId: string;
   listenerType: PrivateChannelEventListenerTypes;
@@ -3165,7 +3168,7 @@ export interface PrivateChannelEventListenerAddedBridgeRequestMeta {
  */
 export interface PrivateChannelEventListenerAddedBridgeRequestPayload {
   /**
-   * The id of the PrivateChannel that the event listener was added to
+   * The id of the PrivateChannel that the event listener was added to.
    */
   channelId: string;
   listenerType: PrivateChannelEventListenerTypes;
@@ -3213,7 +3216,7 @@ export interface PrivateChannelEventListenerRemovedAgentRequestMeta {
  */
 export interface PrivateChannelEventListenerRemovedAgentRequestPayload {
   /**
-   * The id of the PrivateChannel that the event listener was removed from
+   * The id of the PrivateChannel that the event listener was removed from.
    */
   channelId: string;
   listenerType: PrivateChannelEventListenerTypes;
@@ -3271,7 +3274,7 @@ export interface PrivateChannelEventListenerRemovedBridgeRequestMeta {
  */
 export interface PrivateChannelEventListenerRemovedBridgeRequestPayload {
   /**
-   * The id of the PrivateChannel that the event listener was removed from
+   * The id of the PrivateChannel that the event listener was removed from.
    */
   channelId: string;
   listenerType: PrivateChannelEventListenerTypes;
@@ -4178,6 +4181,7 @@ export interface Context {
    *
    * Identifiers do not make sense for all types of data, so the `id` property is therefore
    * optional, but some derived types may choose to require at least one identifier.
+   * Identifier values SHOULD always be of type string.
    */
   id?: { [key: string]: any };
   /**
@@ -5486,6 +5490,7 @@ const typeMap: any = {
     [
       { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
       { json: 'intent', js: 'intent', typ: '' },
+      { json: 'resultType', js: 'resultType', typ: u(undefined, '') },
     ],
     false
   ),
@@ -5560,6 +5565,7 @@ const typeMap: any = {
     [
       { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
       { json: 'intent', js: 'intent', typ: '' },
+      { json: 'resultType', js: 'resultType', typ: u(undefined, '') },
     ],
     false
   ),
