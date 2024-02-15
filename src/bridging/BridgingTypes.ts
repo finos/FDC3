@@ -1771,6 +1771,7 @@ export interface FindIntentAgentRequestMeta {
 export interface FindIntentAgentRequestPayload {
   context?: ContextElement;
   intent: string;
+  resultType?: string;
 }
 
 /**
@@ -1929,6 +1930,7 @@ export interface FindIntentBridgeRequestMeta {
 export interface FindIntentBridgeRequestPayload {
   context?: ContextElement;
   intent: string;
+  resultType?: string;
 }
 
 /**
@@ -5488,6 +5490,7 @@ const typeMap: any = {
     [
       { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
       { json: 'intent', js: 'intent', typ: '' },
+      { json: 'resultType', js: 'resultType', typ: u(undefined, '') },
     ],
     false
   ),
@@ -5562,6 +5565,7 @@ const typeMap: any = {
     [
       { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
       { json: 'intent', js: 'intent', typ: '' },
+      { json: 'resultType', js: 'resultType', typ: u(undefined, '') },
     ],
     false
   ),
