@@ -75,6 +75,8 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
+import { Intent } from '../intents/Intents';
+
 /**
  * Metadata relating to the FDC3 Desktop Agent implementation and its provider.
  */
@@ -1770,7 +1772,7 @@ export interface FindIntentAgentRequestMeta {
  */
 export interface FindIntentAgentRequestPayload {
   context?: ContextElement;
-  intent: string;
+  intent: Intent;
   resultType?: string;
 }
 
@@ -1844,7 +1846,7 @@ export interface IntentMetadata {
   /**
    * The unique name of the intent that can be invoked by the raiseIntent call
    */
-  name: string;
+  name: Intent;
 }
 
 /**
@@ -1929,7 +1931,7 @@ export interface FindIntentBridgeRequestMeta {
  */
 export interface FindIntentBridgeRequestPayload {
   context?: ContextElement;
-  intent: string;
+  intent: Intent;
   resultType?: string;
 }
 
@@ -3697,7 +3699,7 @@ export interface RaiseIntentAgentRequestMeta {
 export interface RaiseIntentAgentRequestPayload {
   app: AppDestinationIdentifier;
   context: ContextElement;
-  intent: string;
+  intent: Intent;
 }
 
 /**
@@ -3774,7 +3776,7 @@ export interface IntentResolution {
    * The intent that was raised. May be used to determine which intent the user
    * chose in response to `fdc3.raiseIntentForContext()`.
    */
-  intent: string;
+  intent: Intent;
   /**
    * Identifier for the app instance that was selected (or started) to resolve the intent.
    * `source.instanceId` MUST be set, indicating the specific app instance that
@@ -3870,7 +3872,7 @@ export interface RaiseIntentBridgeRequestMeta {
 export interface RaiseIntentBridgeRequestPayload {
   app: AppDestinationIdentifier;
   context: ContextElement;
-  intent: string;
+  intent: Intent;
 }
 
 /**
