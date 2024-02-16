@@ -9,3 +9,6 @@
 website
 dist
 src/app-directory/*/target
+
+# temporary, until Prettier is upgraded to at least v2.8, which supports the TS 'satisfies' syntax
+src/**/IntentsConfiguration.ts

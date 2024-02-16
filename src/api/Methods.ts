@@ -15,7 +15,11 @@ import {
   AppMetadata,
   PrivateChannel,
   Intent,
+  StandardContextType,
+  StandardIntent,
+  ContextTypeFor,
 } from '..';
+import { IntentsConfiguration, StandardContextsSet, StandardIntentsSet } from '../intents/IntentsConfiguration';
 
 const DEFAULT_TIMEOUT = 5000;
 
@@ -177,6 +181,30 @@ export function getAppMetadata(app: AppIdentifier): Promise<AppMetadata> {
 
 export function findInstances(app: AppIdentifier): Promise<AppIdentifier[]> {
   return rejectIfNoGlobal(() => window.fdc3.findInstances(app));
+}
+
+/**
+ * Check if the given context is a standard context type.
+ * @param contextType
+ */
+export function isStandardContextType(contextType: string): contextType is StandardContextType {
+  return StandardContextsSet.has(contextType as StandardContextType);
+}
+
+/**
+ * Check if the given intent is a standard intent.
+ * @param intent
+ */
+export function isStandardIntent(intent: string): intent is StandardIntent {
+  return StandardIntentsSet.has(intent as StandardIntent);
+}
+
+/**
+ * Get the possible context types for a given intent.
+ * @param intent
+ */
+export function getPossibleContextsForIntent<I extends StandardIntent>(intent: I): ContextTypeFor<I>[] {
+  return IntentsConfiguration[intent] ?? [];
 }
 
 /**
