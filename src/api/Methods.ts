@@ -14,6 +14,7 @@ import {
   ImplementationMetadata,
   AppMetadata,
   PrivateChannel,
+  Intent,
 } from '..';
 
 const DEFAULT_TIMEOUT = 5000;
@@ -74,7 +75,7 @@ export function open(app: AppIdentifier | string, context?: Context): Promise<Ap
   }
 }
 
-export function findIntent(intent: string, context?: Context, resultType?: string): Promise<AppIntent> {
+export function findIntent(intent: Intent, context?: Context, resultType?: string): Promise<AppIntent> {
   return rejectIfNoGlobal(() => window.fdc3.findIntent(intent, context, resultType));
 }
 
@@ -86,7 +87,7 @@ export function broadcast(context: Context): Promise<void> {
   return rejectIfNoGlobal(() => window.fdc3.broadcast(context));
 }
 
-export function raiseIntent(intent: string, context: Context, app?: AppIdentifier | string): Promise<IntentResolution> {
+export function raiseIntent(intent: Intent, context: Context, app?: AppIdentifier | string): Promise<IntentResolution> {
   if (isString(app)) {
     return rejectIfNoGlobal(() => window.fdc3.raiseIntent(intent, context, app));
   } else {
@@ -102,7 +103,7 @@ export function raiseIntentForContext(context: Context, app?: AppIdentifier | st
   }
 }
 
-export function addIntentListener(intent: string, handler: IntentHandler): Promise<Listener> {
+export function addIntentListener(intent: Intent, handler: IntentHandler): Promise<Listener> {
   return rejectIfNoGlobal(() => window.fdc3.addIntentListener(intent, handler));
 }
 

@@ -13,6 +13,7 @@ import { ImplementationMetadata } from './ImplementationMetadata';
 import { PrivateChannel } from './PrivateChannel';
 import { AppIdentifier } from './AppIdentifier';
 import { AppMetadata } from './AppMetadata';
+import { Intent } from '../intents/Intents';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -125,7 +126,7 @@ export interface DesktopAgent {
    * // }
    * ```
    */
-  findIntent(intent: string, context?: Context, resultType?: string): Promise<AppIntent>;
+  findIntent(intent: Intent, context?: Context, resultType?: string): Promise<AppIntent>;
 
   /**
    * Find all the available intents for a particular context, and optionally a desired result context type.
@@ -234,7 +235,7 @@ export interface DesktopAgent {
    *
    * If you wish to raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
    *
-   * Returns an `IntentResolution` object with details of the app instance that was selected (or started) to respond to the intent. 
+   * Returns an `IntentResolution` object with details of the app instance that was selected (or started) to respond to the intent.
    *
    * Issuing apps may optionally wait on the promise that is returned by the `getResult()` member of the `IntentResolution`. This promise will resolve when the _receiving app's_ intent handler function returns and resolves a promise. The Desktop Agent resolves the issuing app's promise with the Context object, Channel object or void that is provided as resolution within the receiving app. The Desktop Agent MUST reject the issuing app's promise, with a string from the `ResultError` enumeration, if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a valid response (a promise or void), or (3) the returned promise resolves to an invalid type.
    *
@@ -268,7 +269,7 @@ export interface DesktopAgent {
    * }
    * ```
    */
-  raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<IntentResolution>;
+  raiseIntent(intent: Intent, context: Context, app?: AppIdentifier): Promise<IntentResolution>;
 
   /**
    * Finds and raises an intent against apps registered with the desktop agent based on the type of the specified context data example.
@@ -346,7 +347,7 @@ export interface DesktopAgent {
    * });
    * ```
    */
-  addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
+  addIntentListener(intent: Intent, handler: IntentHandler): Promise<Listener>;
 
   /**
    * Adds a listener for incoming context broadcasts from the Desktop Agent (via a User channel or `fdc3.open`API call. If the consumer is only interested in a context of a particular type, they can they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
@@ -561,7 +562,7 @@ export interface DesktopAgent {
    * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
    * ```
    */
-  raiseIntent(intent: string, context: Context, name: string): Promise<IntentResolution>;
+  raiseIntent(intent: Intent, context: Context, name: string): Promise<IntentResolution>;
 
   /**
    * @deprecated version of `raiseIntentForContext` that targets an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.

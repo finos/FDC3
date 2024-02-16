@@ -5,6 +5,7 @@
 
 import { IntentResult } from './Types';
 import { AppIdentifier } from './AppIdentifier';
+import { Intent } from '../intents/Intents';
 
 /**
  * IntentResolution provides a standard format for data returned upon resolving an intent.
@@ -43,7 +44,7 @@ export interface IntentResolution {
    * The intent that was raised. May be used to determine which intent the user
    * chose in response to `fdc3.raiseIntentForContext()`.
    */
-  readonly intent: string;
+  readonly intent: Intent;
   /**
    * The version number of the Intents schema being used.
    */
