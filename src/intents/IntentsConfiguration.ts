@@ -34,7 +34,10 @@ export const IntentsConfiguration = {
   ViewProfile: ['fdc3.contact', 'fdc3.organization', 'fdc3.nothing'],
   ViewQuote: ['fdc3.instrument', 'fdc3.nothing'],
   ViewResearch: ['fdc3.contact', 'fdc3.instrument', 'fdc3.organization', 'fdc3.nothing'],
-} satisfies Record<StandardIntent, StandardContextType[]>;
+};
+// TODO -  TSDX's Prettier version does not support 'satisfies' construct
+// that's unfortunate because this syntax ensures that the IntentsConfiguration Map is always kep in sync with the StandardIntent type
+// satisfies Record<StandardIntent, StandardContextType[]>;
 
 const STANDARD_CONTEXT_TYPES: Readonly<StandardContextType[]> = [
   'fdc3.action',
