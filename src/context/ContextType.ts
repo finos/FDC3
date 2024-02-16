@@ -31,6 +31,16 @@ export type StandardContextType =
   | 'fdc3.valuation';
 
 /**
+ * @see https://fdc3.finos.org/docs/context/spec#standard-context-types
+ */
+export type ExperimentalContextType =
+  | 'fdc3.order'
+  | 'fdc3.orderList'
+  | 'fdc3.product'
+  | 'fdc3.trade'
+  | 'fdc3.tradeList';
+
+/**
  * @see https://fdc3.finos.org/docs/context/spec
  */
-export type ContextType = StandardContextType | string;
+export type ContextType = StandardContextType | ExperimentalContextType | (string & {});
