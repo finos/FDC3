@@ -123,5 +123,6 @@ When('messaging receives {string}', function (this: CustomWorld, field: string) 
 
 
 Then('messaging will have posts', function(this: CustomWorld, dt: DataTable) {
+  // just take the last few posts and match those - we don't care about 
   matchData(this, this.messaging?.allPosts!!, dt)
 })
