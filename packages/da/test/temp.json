@@ -1,0 +1,104 @@
+{
+    "meta": {
+        "requestUuid": "bae5e83d-bf3b-45f3-a9d8-2b2bb9a03e5e",
+        "source": {
+            "appId": "SomeDummyApp",
+            "instanceId": "some.dummy.instance"
+        },
+        "timestamp": "2024-02-17T12:13:35.802Z"
+    },
+    "payload": {
+        "channelId": "18d73690-d84e-414d-bd93-e49ed26c774f",
+        "listenerType": "onAddContextListener"
+    },
+    "type": "PrivateChannel.eventListenerAdded"
+},
+{
+    "meta": {
+        "requestUuid": "d769a916-cd0f-49c6-9ec2-08b4e42c5364",
+        "source": {
+            "appId": "SomeDummyApp",
+            "instanceId": "some.dummy.instance"
+        },
+        "timestamp": "2024-02-17T12:13:35.802Z"
+    },
+    "payload": {
+        "channelId": "18d73690-d84e-414d-bd93-e49ed26c774f",
+        "listenerType": "onAddContextListener"
+    },
+    "type": "PrivateChannel.eventListenerAdded"
+},
+{
+    "meta": {
+        "requestUuid": "f377dfd4-28ef-4da7-a76f-ac17fd94846f",
+        "source": {
+            "appId": "SomeDummyApp",
+            "instanceId": "some.dummy.instance"
+        },
+        "timestamp": "2024-02-17T12:13:35.802Z"
+    },
+    "payload": {
+        "channelId": "18d73690-d84e-414d-bd93-e49ed26c774f",
+        "listenerType": "onUnsubscribe"
+    },
+    "type": "PrivateChannel.eventListenerAdded"
+},
+{
+    "meta": {
+        "requestUuid": "66b8d5cb-dba5-4f57-8f7b-fb5e4ffbdf28",
+        "source": {
+            "appId": "SomeDummyApp",
+            "instanceId": "some.dummy.instance"
+        },
+        "timestamp": "2024-02-17T12:13:35.802Z"
+    },
+    "payload": {
+        "channelId": "18d73690-d84e-414d-bd93-e49ed26c774f",
+        "listenerType": "onUnsubscribe"
+    },
+    "type": "PrivateChannel.eventListenerAdded"
+},
+{
+    "meta": {
+        "requestUuid": "72b5f9af-69d7-40df-bc95-7a95150b3395",
+        "source": {
+            "appId": "SomeDummyApp",
+            "instanceId": "some.dummy.instance"
+        },
+        "timestamp": "2024-02-17T12:13:35.803Z"
+    },
+    "payload": {
+        "channelId": "18d73690-d84e-414d-bd93-e49ed26c774f",
+        "listenerType": "onAddContextListener"
+    },
+    "type": "PrivateChannel.eventListenerRemoved"
+},
+{
+    "meta": {
+        "requestUuid": "5aa36192-4ab1-49d6-a24a-22a2c76b7fa7",
+        "source": {
+            "appId": "SomeDummyApp",
+            "instanceId": "some.dummy.instance"
+        },
+        "timestamp": "2024-02-17T12:13:35.803Z"
+    },
+    "payload": {
+        "channelId": "18d73690-d84e-414d-bd93-e49ed26c774f",
+        "listenerType": "onUnsubscribe"
+    },
+    "type": "PrivateChannel.eventListenerRemoved"
+},
+{
+    "meta": {
+        "requestUuid": "5842dfb5-a121-46b7-a443-75727efb91b5",
+        "source": {
+            "appId": "SomeDummyApp",
+            "instanceId": "some.dummy.instance"
+        },
+        "timestamp": "2024-02-17T12:13:35.803Z"
+    },
+    "payload": {
+        "channelId": "18d73690-d84e-414d-bd93-e49ed26c774f"
+    },
+    "type": "PrivateChannel.onDisconnect"
+}
