@@ -14,7 +14,7 @@ Given('A Desktop Agent in {string}', function (this: CustomWorld, field: string)
 
     this.props[field] = new BasicDesktopAgent (
         new DefaultChannelSupport(this.messaging, createDefaultChannels(this.messaging), null),
-        new DefaultIntentSupport(),
+        new DefaultIntentSupport(this.messaging),
         new DefaultAppSupport(this.messaging, {
             appId: "Test App Id",
             desktopAgent: "Test DA",

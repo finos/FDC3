@@ -70,6 +70,12 @@ The project is divided into several different yarn workspaces:
  - Handing of fdc3Ready
  - Handling on intents, open, finishing test cases for `da` / `testing`
 
+## More Messages
+
+Desktop Agent Briding needs extending with the following types:
+
+
+
 
 ## Troubleshooting
 

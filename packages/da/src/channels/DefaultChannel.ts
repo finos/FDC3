@@ -1,8 +1,9 @@
 import { Context, ContextHandler, DisplayMetadata, Listener } from "@finos/fdc3"
 import { Messaging } from "../Messaging"
 import { BroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes"
-import { ChannelContextListener } from "./ChannelContextListener"
+import { DefaultContextListener } from "../listeners/DefaultContextListener"
 import { StatefulChannel } from "./StatefulChannel"
+import { NonNotifyingContextListener } from "../listeners/NonNotifyingContextListener"
 
 export class DefaultChannel implements StatefulChannel {
 
@@ -51,7 +52,7 @@ export class DefaultChannel implements StatefulChannel {
      * Special internal listener that keeps track of current context
      */
     _addCurrentContextListener() {
-        const listener = new ChannelContextListener(this.messaging, this.id, null, (ctx) => {
+        const listener = new NonNotifyingContextListener(this.messaging, this.id, null, (ctx) => {
             this.latestContextMap.set(ctx.type, ctx);
             this.latestContext = ctx;
         });
@@ -79,7 +80,7 @@ export class DefaultChannel implements StatefulChannel {
     }
 
     addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
-        const listener = new ChannelContextListener(this.messaging, this.id, contextType, theHandler);
+        const listener = new DefaultContextListener(this.messaging, this.id, contextType, theHandler);
         this.listeners.push(listener)
         return Promise.resolve(listener)   
     }

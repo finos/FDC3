@@ -2,8 +2,8 @@ import { Context, ContextHandler, Listener, PrivateChannel } from "@finos/fdc3";
 import { DefaultChannel } from "./DefaultChannel";
 import { Messaging } from "../Messaging";
 import { PrivateChannelBroadcastAgentRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelOnDisconnectAgentRequest} from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { EVENT_TYPES, PrivateChannelEventListener } from "./PrivateChannelEventListener";
-import { PrivateChannelContextListener } from "./PrivateChannelContextListener";
+import { EVENT_TYPES, PrivateChannelEventListenerType, PrivateChannelEventListenerVoid } from "../listeners/PrivateChannelEventListener";
+import { DefaultContextListener } from "../listeners/DefaultContextListener";
 
 
 export class DefaultPrivateChannel extends DefaultChannel implements PrivateChannel {
@@ -38,21 +38,21 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
     }
 
     onAddContextListener(handler: (contextType?: string | undefined) => void): Listener {
-        const l = new PrivateChannelEventListener(this.messaging, this.id, "onAddContextListener", (m) => handler(m.payload.contextType)); 
+        const l = new PrivateChannelEventListenerType(this.messaging, this.id, "onAddContextListener", handler); 
         this.listeners.push(l);
         this.notifyEventListenerAdded("onAddContextListener")
         return l;
     }
 
     onUnsubscribe(handler: (contextType?: string | undefined) => void): Listener {
-        const l = new PrivateChannelEventListener(this.messaging, this.id,  "onUnsubscribe", (m) => handler(m.payload.contextType)); 
+        const l = new PrivateChannelEventListenerType(this.messaging, this.id,  "onUnsubscribe", handler); 
         this.listeners.push(l);
         this.notifyEventListenerAdded("onUnsubscribe")
         return l;
     }
 
     onDisconnect(handler: () => void): Listener {
-        const l = new PrivateChannelEventListener(this.messaging, this.id, "onDisconnect", () => handler()); 
+        const l = new PrivateChannelEventListenerVoid(this.messaging, this.id, handler); 
         this.listeners.push(l);
         this.notifyEventListenerAdded("onDisconnect")
         return l;
@@ -75,7 +75,10 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
     }
     
     addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
-        const listener = new PrivateChannelContextListener(this.messaging, this.id, contextType, theHandler);
+        const listener = new DefaultContextListener(this.messaging, this.id, contextType, theHandler, 
+            "PrivateChannel.broadcast",
+            "PrivateChannel.onAddContextListener",
+            "PrivateChannel.onUnsubscribe");
         this.listeners.push(listener)
         return Promise.resolve(listener)   
     }

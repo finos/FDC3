@@ -720,6 +720,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@finos/fdc3@npm:^2.1.0-beta.6":
+  version: 2.1.0-beta.6
+  resolution: "@finos/fdc3@npm:2.1.0-beta.6"
+  checksum: 3e4a6707c48aea415db191f84ac721869fab7af0de6b192cf0ceb8c9ffafb529fad7efec8fcb0a925ee3dad2df6fe4ed7ded3b19d1f1bc2e6ec9151981e768a4
+  languageName: node
+  linkType: hard
+
 "@finos/web-fdc3@workspace:.":
   version: 0.0.0-use.local
   resolution: "@finos/web-fdc3@workspace:."
@@ -1985,7 +1992,7 @@ __metadata:
     "@cucumber/cucumber": "npm:10.3.1"
     "@cucumber/html-formatter": "npm:11.0.4"
     "@cucumber/pretty-formatter": "npm:1.0.0-alpha.0"
-    "@finos/fdc3": "npm:^2.1.0-beta.4"
+    "@finos/fdc3": "npm:^2.1.0-beta.6"
     "@types/expect": "npm:24.3.0"
     "@types/lodash": "npm:4.14.167"
     "@types/node": "npm:14.14.20"

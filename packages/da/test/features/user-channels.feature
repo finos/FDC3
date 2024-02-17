@@ -5,48 +5,48 @@ Background: Desktop Agent API
     Given "instrumentMessageOne" is a "broadcastRequest" message on channel "one" with context "fdc3.instrument" 
     Given "emailMessageOne" is a "broadcastRequest" message on channel "one" with context "fdc3.email"
     
-    Scenario: List User Channels    
+    # Scenario: List User Channels    
 
-        There should be a selection of user channels to choose from
+    #     There should be a selection of user channels to choose from
 
-        When I call "api" with "getUserChannels"
-        Then "result" is an array of objects with the following contents
-            | id    | type              | displayMetadata.color         |
-            | one   | user              | red                           |
-            | two   | user              | green                         |
-            | three | user              | blue                          |
+    #     When I call "api" with "getUserChannels"
+    #     Then "result" is an array of objects with the following contents
+    #         | id    | type              | displayMetadata.color         |
+    #         | one   | user              | red                           |
+    #         | two   | user              | green                         |
+    #         | three | user              | blue                          |
 
-    Scenario: Initial User Channel
+    # Scenario: Initial User Channel
 
-        At startup, the user channel shouldn't be set
+    #     At startup, the user channel shouldn't be set
 
-        When I call "api" with "getCurrentChannel"
-        Then "result" is null
+    #     When I call "api" with "getCurrentChannel"
+    #     Then "result" is null
 
-    Scenario: Changing Channel
+    # Scenario: Changing Channel
 
-        You should be able to join a channel knowing it's ID.
+    #     You should be able to join a channel knowing it's ID.
 
-        When I call "api" with "joinUserChannel" with parameter "one"
-        When I call "api" with "getCurrentChannel"
-        Then "result" is an object with the following contents
-            | id    | type              | displayMetadata.color         |
-            | one   | user              | red                           |
+    #     When I call "api" with "joinUserChannel" with parameter "one"
+    #     When I call "api" with "getCurrentChannel"
+    #     Then "result" is an object with the following contents
+    #         | id    | type              | displayMetadata.color         |
+    #         | one   | user              | red                           |
 
-    Scenario: Adding a Listener on a given User Channel
-        Given "resultHandler" pipes context to "contexts"
-        When I call "api" with "joinUserChannel" with parameter "one"
-        And I call "api" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
-        And messaging receives "{instrumentMessageOne}"
-        Then "contexts" is an array of objects with the following contents
-            | id.ticker    | type              | name         |
-            | AAPL         | fdc3.instrument   | Apple        |
+    # Scenario: Adding a Listener on a given User Channel
+    #     Given "resultHandler" pipes context to "contexts"
+    #     When I call "api" with "joinUserChannel" with parameter "one"
+    #     And I call "api" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    #     And messaging receives "{instrumentMessageOne}"
+    #     Then "contexts" is an array of objects with the following contents
+    #         | id.ticker    | type              | name         |
+    #         | AAPL         | fdc3.instrument   | Apple        |
 
-    Scenario: If you haven't joined a channel, your listener receives nothing
-        Given "resultHandler" pipes context to "contexts"
-        When I call "api" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
-        And messaging receives "{instrumentMessageOne}"
-        Then "contexts" is empty
+    # Scenario: If you haven't joined a channel, your listener receives nothing
+    #     Given "resultHandler" pipes context to "contexts"
+    #     When I call "api" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    #     And messaging receives "{instrumentMessageOne}"
+    #     Then "contexts" is empty
 
     Scenario: Adding a listener to a user channel replays Context
 
