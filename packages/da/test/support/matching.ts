@@ -47,10 +47,12 @@ export function matchData(cw: CustomWorld, actual: any[], dt: DataTable) {
     var resultCopy = JSON.parse(JSON.stringify(actual)) as any[];
     cw.log(`result ${JSON.stringify(resultCopy)} length ${resultCopy.length}`)
     expect(resultCopy).toHaveLength(rowCount);
+    var row = 0
 
     resultCopy = resultCopy.filter(rr => {
-        const matchingRow = indexOf(cw, tableData, rr);
-        if (matchingRow != -1) {
+        const matchingRow = tableData[row]
+        row ++;
+        if (doesRowMatch(cw, matchingRow, rr)) {
             return false
         } else {
             cw.log(`Couldn't match row: ${JSON.stringify(rr)}`)

@@ -3,15 +3,15 @@ import { Messaging } from "../Messaging";
 import { ChannelSupport } from "./ChannelSupport";
 import { DefaultPrivateChannel } from "./DefaultPrivateChannel";
 import { DefaultChannel } from "./DefaultChannel";
-import { ChannelContextListener } from "./ChannelContextListener";
 import { StatefulChannel } from "./StatefulChannel";
+import { DefaultContextListener } from "../listeners/DefaultContextListener";
 
 export class DefaultChannelSupport implements ChannelSupport {
 
     readonly messaging: Messaging
     protected userChannel: StatefulChannel | null
     protected userChannelState: StatefulChannel[]
-    protected userChannelListeners: ChannelContextListener[] = []
+    protected userChannelListeners: DefaultContextListener[] = []
 
     constructor(messaging: Messaging, userChannelState: StatefulChannel[], initialChannelId: string | null) {
         this.messaging = messaging;
@@ -72,7 +72,7 @@ export class DefaultChannelSupport implements ChannelSupport {
 
     addContextListener(handler: ContextHandler, type: string | null): Promise<Listener> {
         const uc = this.userChannel
-        const listener = new ChannelContextListener(this.messaging, uc?.id ?? null, type, handler)
+        const listener = new DefaultContextListener(this.messaging, uc?.id ?? null, type, handler)
         this.userChannelListeners.push(listener);
         if (uc) {
             listener.updateUnderlyingChannel(uc.id, uc.getState())

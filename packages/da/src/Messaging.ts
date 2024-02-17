@@ -1,4 +1,5 @@
 import { AppIdentifier } from "@finos/fdc3";
+import { RegisterableListener } from "./listeners/RegisterableListener";
 
 export interface Messaging {
 
@@ -19,11 +20,8 @@ export interface Messaging {
 
     /**
      * Registers a listener for incoming messages.
-     * 
-     * @param filter A filter to ignore certain messages
-     * @param action Action to take on non-ignored messages.
      */
-    register(filter: (m: any) => boolean, action: (m: any) => void ) : string
+    register(l: RegisterableListener) : void
 
     /**
      * Unregisters a listener with the id given above
@@ -32,6 +30,11 @@ export interface Messaging {
     unregister(id: string) : void
 
     createMeta() : object
+
+    /**
+     * Waits for a specific matching message
+     */
+    waitFor<X>(filter: (m: any) => boolean) : Promise<X>
 
     /**
      * 

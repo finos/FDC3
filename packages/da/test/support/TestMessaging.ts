@@ -2,18 +2,13 @@ import { ICreateLog } from "@cucumber/cucumber/lib/runtime/attachment_manager";
 import { AppIdentifier } from "@finos/fdc3";
 import { AgentRequestMessage } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { v4 as uuidv4 } from 'uuid'
-import { Messaging } from "../../src";
+import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";
+import { RegisterableListener } from "../../src/listeners/RegisterableListener";
 
-
-type ListenerDetail = {
-    filter: (m: AgentRequestMessage) => boolean,
-    action: (m: AgentRequestMessage) => void
-}
-
-export class TestMessaging implements Messaging {
+export class TestMessaging extends AbstractMessaging {
 
     readonly allPosts : AgentRequestMessage[] = []
-    readonly listeners : Map<string, ListenerDetail> = new Map()
+    readonly listeners : Map<string, RegisterableListener> = new Map()
     
     getSource(): AppIdentifier {
         return {
@@ -31,14 +26,8 @@ export class TestMessaging implements Messaging {
         return Promise.resolve();
     }
 
-    register(filter: (m: AgentRequestMessage) => boolean, action: (m: AgentRequestMessage) => void): string {
-        const id = this.createUUID();
-        this.listeners.set(id,{
-            filter,
-            action
-        })
-
-        return id;
+    register(l: RegisterableListener) {
+        this.listeners.set(l.id, l)
     }
 
     unregister(id: string) {
@@ -62,9 +51,5 @@ export class TestMessaging implements Messaging {
                 log("Ignoring in "+k)
             }
         })
-    }
-
-    exchange<X>(_message: object, _expectedTypeName: string): Promise<X> {
-        throw new Error("not yet implemented")
     }
 }
