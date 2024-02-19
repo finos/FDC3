@@ -14,6 +14,7 @@ import { PrivateChannel } from './PrivateChannel';
 import { AppIdentifier } from './AppIdentifier';
 import { AppMetadata } from './AppMetadata';
 import { Intent } from '../intents/Intents';
+import { ContextType } from '../context/ContextType';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -372,7 +373,7 @@ export interface DesktopAgent {
    * });
    * ```
    */
-  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+  addContextListener(contextType: ContextType | null, handler: ContextHandler): Promise<Listener>;
 
   /**
    * Retrieves a list of the User channels available for the app to join.

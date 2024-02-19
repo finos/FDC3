@@ -18,6 +18,7 @@ import {
   StandardContextType,
   StandardIntent,
   ContextTypeFor,
+  ContextType,
 } from '..';
 import { IntentsConfiguration, StandardContextsSet, StandardIntentsSet } from '../intents/IntentsConfiguration';
 
@@ -112,7 +113,7 @@ export function addIntentListener(intent: Intent, handler: IntentHandler): Promi
 }
 
 export function addContextListener(
-  contextTypeOrHandler: string | null | ContextHandler,
+  contextTypeOrHandler: ContextType | null | ContextHandler,
   handler?: ContextHandler
 ): Promise<Listener> {
   //Handle (deprecated) function signature that allowed contextType argument to be omitted
@@ -187,7 +188,7 @@ export function findInstances(app: AppIdentifier): Promise<AppIdentifier[]> {
  * Check if the given context is a standard context type.
  * @param contextType
  */
-export function isStandardContextType(contextType: string): contextType is StandardContextType {
+export function isStandardContextType(contextType: ContextType): contextType is StandardContextType {
   return StandardContextsSet.has(contextType as StandardContextType);
 }
 
@@ -195,7 +196,7 @@ export function isStandardContextType(contextType: string): contextType is Stand
  * Check if the given intent is a standard intent.
  * @param intent
  */
-export function isStandardIntent(intent: string): intent is StandardIntent {
+export function isStandardIntent(intent: Intent): intent is StandardIntent {
   return StandardIntentsSet.has(intent as StandardIntent);
 }
 
