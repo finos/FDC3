@@ -77,10 +77,10 @@ export type RequestMessageType = z.infer<typeof RequestMessageTypeSchema>;
 //
 // UUID for this specific response message.
 
-export const BroadcastRequestMessageTypeSchema = z.enum([
+export const BroadcastAgentRequestTypeSchema = z.enum([
     "broadcastRequest",
 ]);
-export type BroadcastRequestMessageType = z.infer<typeof BroadcastRequestMessageTypeSchema>;
+export type BroadcastAgentRequestType = z.infer<typeof BroadcastAgentRequestTypeSchema>;
 
 // Identifies the type of the connection step message.
 
@@ -155,10 +155,10 @@ export type ErrorMessage = z.infer<typeof ErrorMessageSchema>;
 //
 // UUID for this specific response message.
 
-export const FindInstancesResponseMessageTypeSchema = z.enum([
+export const FindInstancesAgentErrorResponseTypeSchema = z.enum([
     "findInstancesResponse",
 ]);
-export type FindInstancesResponseMessageType = z.infer<typeof FindInstancesResponseMessageTypeSchema>;
+export type FindInstancesAgentErrorResponseType = z.infer<typeof FindInstancesAgentErrorResponseTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -167,10 +167,10 @@ export type FindInstancesResponseMessageType = z.infer<typeof FindInstancesRespo
 //
 // UUID for this specific response message.
 
-export const FindInstancesRequestMessageTypeSchema = z.enum([
+export const FindInstancesAgentRequestTypeSchema = z.enum([
     "findInstancesRequest",
 ]);
-export type FindInstancesRequestMessageType = z.infer<typeof FindInstancesRequestMessageTypeSchema>;
+export type FindInstancesAgentRequestType = z.infer<typeof FindInstancesAgentRequestTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -179,10 +179,10 @@ export type FindInstancesRequestMessageType = z.infer<typeof FindInstancesReques
 //
 // UUID for this specific response message.
 
-export const FindIntentResponseMessageTypeSchema = z.enum([
+export const FindIntentAgentErrorResponseTypeSchema = z.enum([
     "findIntentResponse",
 ]);
-export type FindIntentResponseMessageType = z.infer<typeof FindIntentResponseMessageTypeSchema>;
+export type FindIntentAgentErrorResponseType = z.infer<typeof FindIntentAgentErrorResponseTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -191,10 +191,10 @@ export type FindIntentResponseMessageType = z.infer<typeof FindIntentResponseMes
 //
 // UUID for this specific response message.
 
-export const FindIntentRequestMessageTypeSchema = z.enum([
+export const FindIntentAgentRequestTypeSchema = z.enum([
     "findIntentRequest",
 ]);
-export type FindIntentRequestMessageType = z.infer<typeof FindIntentRequestMessageTypeSchema>;
+export type FindIntentAgentRequestType = z.infer<typeof FindIntentAgentRequestTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -203,10 +203,10 @@ export type FindIntentRequestMessageType = z.infer<typeof FindIntentRequestMessa
 //
 // UUID for this specific response message.
 
-export const FindIntentsByContextResponseMessageTypeSchema = z.enum([
+export const FindIntentsByContextAgentErrorResponseTypeSchema = z.enum([
     "findIntentsByContextResponse",
 ]);
-export type FindIntentsByContextResponseMessageType = z.infer<typeof FindIntentsByContextResponseMessageTypeSchema>;
+export type FindIntentsByContextAgentErrorResponseType = z.infer<typeof FindIntentsByContextAgentErrorResponseTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -215,10 +215,10 @@ export type FindIntentsByContextResponseMessageType = z.infer<typeof FindIntents
 //
 // UUID for this specific response message.
 
-export const FindIntentsByContextRequestMessageTypeSchema = z.enum([
+export const FindIntentsByContextAgentRequestTypeSchema = z.enum([
     "findIntentsByContextRequest",
 ]);
-export type FindIntentsByContextRequestMessageType = z.infer<typeof FindIntentsByContextRequestMessageTypeSchema>;
+export type FindIntentsByContextAgentRequestType = z.infer<typeof FindIntentsByContextAgentRequestTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -227,10 +227,10 @@ export type FindIntentsByContextRequestMessageType = z.infer<typeof FindIntentsB
 //
 // UUID for this specific response message.
 
-export const GetAppMetadataResponseMessageTypeSchema = z.enum([
+export const GetAppMetadataAgentErrorResponseTypeSchema = z.enum([
     "getAppMetadataResponse",
 ]);
-export type GetAppMetadataResponseMessageType = z.infer<typeof GetAppMetadataResponseMessageTypeSchema>;
+export type GetAppMetadataAgentErrorResponseType = z.infer<typeof GetAppMetadataAgentErrorResponseTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -239,10 +239,10 @@ export type GetAppMetadataResponseMessageType = z.infer<typeof GetAppMetadataRes
 //
 // UUID for this specific response message.
 
-export const GetAppMetadataRequestMessageTypeSchema = z.enum([
+export const GetAppMetadataAgentRequestTypeSchema = z.enum([
     "getAppMetadataRequest",
 ]);
-export type GetAppMetadataRequestMessageType = z.infer<typeof GetAppMetadataRequestMessageTypeSchema>;
+export type GetAppMetadataAgentRequestType = z.infer<typeof GetAppMetadataAgentRequestTypeSchema>;
 
 // Constants representing the errors that can be encountered when calling the `open` method
 // on the DesktopAgent object (`fdc3`).
@@ -276,10 +276,10 @@ export type OpenErrorMessage = z.infer<typeof OpenErrorMessageSchema>;
 //
 // UUID for this specific response message.
 
-export const OpenResponseMessageTypeSchema = z.enum([
+export const OpenAgentErrorResponseTypeSchema = z.enum([
     "openResponse",
 ]);
-export type OpenResponseMessageType = z.infer<typeof OpenResponseMessageTypeSchema>;
+export type OpenAgentErrorResponseType = z.infer<typeof OpenAgentErrorResponseTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -288,10 +288,10 @@ export type OpenResponseMessageType = z.infer<typeof OpenResponseMessageTypeSche
 //
 // UUID for this specific response message.
 
-export const OpenRequestMessageTypeSchema = z.enum([
+export const OpenAgentRequestTypeSchema = z.enum([
     "openRequest",
 ]);
-export type OpenRequestMessageType = z.infer<typeof OpenRequestMessageTypeSchema>;
+export type OpenAgentRequestType = z.infer<typeof OpenAgentRequestTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -300,10 +300,10 @@ export type OpenRequestMessageType = z.infer<typeof OpenRequestMessageTypeSchema
 //
 // UUID for this specific response message.
 
-export const PrivateChannelBroadcastMessageTypeSchema = z.enum([
+export const PrivateChannelBroadcastAgentRequestTypeSchema = z.enum([
     "PrivateChannel.broadcast",
 ]);
-export type PrivateChannelBroadcastMessageType = z.infer<typeof PrivateChannelBroadcastMessageTypeSchema>;
+export type PrivateChannelBroadcastAgentRequestType = z.infer<typeof PrivateChannelBroadcastAgentRequestTypeSchema>;
 
 // Event listener type names for Private Channel events
 
@@ -321,10 +321,10 @@ export type PrivateChannelEventListenerTypes = z.infer<typeof PrivateChannelEven
 //
 // UUID for this specific response message.
 
-export const PrivateChannelEventListenerAddedMessageTypeSchema = z.enum([
+export const PrivateChannelEventListenerAddedAgentRequestTypeSchema = z.enum([
     "PrivateChannel.eventListenerAdded",
 ]);
-export type PrivateChannelEventListenerAddedMessageType = z.infer<typeof PrivateChannelEventListenerAddedMessageTypeSchema>;
+export type PrivateChannelEventListenerAddedAgentRequestType = z.infer<typeof PrivateChannelEventListenerAddedAgentRequestTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -333,10 +333,10 @@ export type PrivateChannelEventListenerAddedMessageType = z.infer<typeof Private
 //
 // UUID for this specific response message.
 
-export const PrivateChannelEventListenerRemovedMessageTypeSchema = z.enum([
+export const PrivateChannelEventListenerRemovedAgentRequestTypeSchema = z.enum([
     "PrivateChannel.eventListenerRemoved",
 ]);
-export type PrivateChannelEventListenerRemovedMessageType = z.infer<typeof PrivateChannelEventListenerRemovedMessageTypeSchema>;
+export type PrivateChannelEventListenerRemovedAgentRequestType = z.infer<typeof PrivateChannelEventListenerRemovedAgentRequestTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -345,10 +345,10 @@ export type PrivateChannelEventListenerRemovedMessageType = z.infer<typeof Priva
 //
 // UUID for this specific response message.
 
-export const PrivateChannelOnAddContextListenerMessageTypeSchema = z.enum([
+export const PrivateChannelOnAddContextListenerAgentRequestTypeSchema = z.enum([
     "PrivateChannel.onAddContextListener",
 ]);
-export type PrivateChannelOnAddContextListenerMessageType = z.infer<typeof PrivateChannelOnAddContextListenerMessageTypeSchema>;
+export type PrivateChannelOnAddContextListenerAgentRequestType = z.infer<typeof PrivateChannelOnAddContextListenerAgentRequestTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -357,10 +357,10 @@ export type PrivateChannelOnAddContextListenerMessageType = z.infer<typeof Priva
 //
 // UUID for this specific response message.
 
-export const PrivateChannelOnDisconnectMessageTypeSchema = z.enum([
+export const PrivateChannelOnDisconnectAgentRequestTypeSchema = z.enum([
     "PrivateChannel.onDisconnect",
 ]);
-export type PrivateChannelOnDisconnectMessageType = z.infer<typeof PrivateChannelOnDisconnectMessageTypeSchema>;
+export type PrivateChannelOnDisconnectAgentRequestType = z.infer<typeof PrivateChannelOnDisconnectAgentRequestTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -369,10 +369,10 @@ export type PrivateChannelOnDisconnectMessageType = z.infer<typeof PrivateChanne
 //
 // UUID for this specific response message.
 
-export const PrivateChannelOnUnsubscribeMessageTypeSchema = z.enum([
+export const PrivateChannelOnUnsubscribeAgentRequestTypeSchema = z.enum([
     "PrivateChannel.onUnsubscribe",
 ]);
-export type PrivateChannelOnUnsubscribeMessageType = z.infer<typeof PrivateChannelOnUnsubscribeMessageTypeSchema>;
+export type PrivateChannelOnUnsubscribeAgentRequestType = z.infer<typeof PrivateChannelOnUnsubscribeAgentRequestTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -381,10 +381,10 @@ export type PrivateChannelOnUnsubscribeMessageType = z.infer<typeof PrivateChann
 //
 // UUID for this specific response message.
 
-export const RaiseIntentResponseMessageTypeSchema = z.enum([
+export const RaiseIntentAgentErrorResponseTypeSchema = z.enum([
     "raiseIntentResponse",
 ]);
-export type RaiseIntentResponseMessageType = z.infer<typeof RaiseIntentResponseMessageTypeSchema>;
+export type RaiseIntentAgentErrorResponseType = z.infer<typeof RaiseIntentAgentErrorResponseTypeSchema>;
 
 // Identifies the type of the message and it is typically set to the FDC3 function name that
 // the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -393,10 +393,10 @@ export type RaiseIntentResponseMessageType = z.infer<typeof RaiseIntentResponseM
 //
 // UUID for this specific response message.
 
-export const RaiseIntentRequestMessageTypeSchema = z.enum([
+export const RaiseIntentAgentRequestTypeSchema = z.enum([
     "raiseIntentRequest",
 ]);
-export type RaiseIntentRequestMessageType = z.infer<typeof RaiseIntentRequestMessageTypeSchema>;
+export type RaiseIntentAgentRequestType = z.infer<typeof RaiseIntentAgentRequestTypeSchema>;
 
 // Array of error message strings for responses that were not returned to the bridge before
 // the timeout or because an error occurred. Should be the same length as the `errorSources`
@@ -426,10 +426,10 @@ export type RaiseIntentResultErrorMessage = z.infer<typeof RaiseIntentResultErro
 //
 // UUID for this specific response message.
 
-export const RaiseIntentResultResponseMessageTypeSchema = z.enum([
+export const RaiseIntentResultAgentErrorResponseTypeSchema = z.enum([
     "raiseIntentResultResponse",
 ]);
-export type RaiseIntentResultResponseMessageType = z.infer<typeof RaiseIntentResultResponseMessageTypeSchema>;
+export type RaiseIntentResultAgentErrorResponseType = z.infer<typeof RaiseIntentResultAgentErrorResponseTypeSchema>;
 
 // Uniquely defines each channel type.
 // Can be "user", "app" or "private".
@@ -695,6 +695,7 @@ export type FindIntentAgentRequestMeta = z.infer<typeof FindIntentAgentRequestMe
 export const FindIntentAgentRequestPayloadSchema = z.object({
     "context": z.union([ContextElementSchema, z.null()]).optional(),
     "intent": z.string(),
+    "resultType": z.union([z.null(), z.string()]).optional(),
 });
 export type FindIntentAgentRequestPayload = z.infer<typeof FindIntentAgentRequestPayloadSchema>;
 
@@ -736,6 +737,7 @@ export type FindIntentBridgeRequestMeta = z.infer<typeof FindIntentBridgeRequest
 export const FindIntentBridgeRequestPayloadSchema = z.object({
     "context": z.union([ContextElementSchema, z.null()]).optional(),
     "intent": z.string(),
+    "resultType": z.union([z.null(), z.string()]).optional(),
 });
 export type FindIntentBridgeRequestPayload = z.infer<typeof FindIntentBridgeRequestPayloadSchema>;
 
@@ -1064,7 +1066,7 @@ export type PrivateChannelOnAddContextListenerAgentRequestMeta = z.infer<typeof 
 
 export const PrivateChannelOnAddContextListenerAgentRequestPayloadSchema = z.object({
     "channelId": z.string(),
-    "contextType": z.string(),
+    "contextType": z.union([z.null(), z.string()]),
 });
 export type PrivateChannelOnAddContextListenerAgentRequestPayload = z.infer<typeof PrivateChannelOnAddContextListenerAgentRequestPayloadSchema>;
 
@@ -1078,7 +1080,7 @@ export type PrivateChannelOnAddContextListenerBridgeRequestMeta = z.infer<typeof
 
 export const PrivateChannelOnAddContextListenerBridgeRequestPayloadSchema = z.object({
     "channelId": z.string(),
-    "contextType": z.string(),
+    "contextType": z.union([z.null(), z.string()]),
 });
 export type PrivateChannelOnAddContextListenerBridgeRequestPayload = z.infer<typeof PrivateChannelOnAddContextListenerBridgeRequestPayloadSchema>;
 
@@ -1118,7 +1120,7 @@ export type PrivateChannelOnUnsubscribeAgentRequestMeta = z.infer<typeof Private
 
 export const PrivateChannelOnUnsubscribeAgentRequestPayloadSchema = z.object({
     "channelId": z.string(),
-    "contextType": z.string(),
+    "contextType": z.union([z.null(), z.string()]),
 });
 export type PrivateChannelOnUnsubscribeAgentRequestPayload = z.infer<typeof PrivateChannelOnUnsubscribeAgentRequestPayloadSchema>;
 
@@ -1132,7 +1134,7 @@ export type ERequestMetadata = z.infer<typeof ERequestMetadataSchema>;
 
 export const PrivateChannelOnUnsubscribeBridgeRequestPayloadSchema = z.object({
     "channelId": z.string(),
-    "contextType": z.string(),
+    "contextType": z.union([z.null(), z.string()]),
 });
 export type PrivateChannelOnUnsubscribeBridgeRequestPayload = z.infer<typeof PrivateChannelOnUnsubscribeBridgeRequestPayloadSchema>;
 
@@ -1384,7 +1386,7 @@ export type ConnectionStep6ConnectedAgentsUpdatePayload = z.infer<typeof Connect
 export const FindInstancesAgentErrorResponseSchema = z.object({
     "meta": FindInstancesAgentErrorResponseMetaSchema,
     "payload": FindInstancesAgentErrorResponsePayloadSchema,
-    "type": FindInstancesResponseMessageTypeSchema,
+    "type": FindInstancesAgentErrorResponseTypeSchema,
 });
 export type FindInstancesAgentErrorResponse = z.infer<typeof FindInstancesAgentErrorResponseSchema>;
 
@@ -1420,7 +1422,7 @@ export type AppMetadata = z.infer<typeof AppMetadataSchema>;
 export const FindInstancesBridgeErrorResponseSchema = z.object({
     "meta": FindInstancesBridgeErrorResponseMetaSchema,
     "payload": FindInstancesBridgeErrorResponsePayloadSchema,
-    "type": FindInstancesResponseMessageTypeSchema,
+    "type": FindInstancesAgentErrorResponseTypeSchema,
 });
 export type FindInstancesBridgeErrorResponse = z.infer<typeof FindInstancesBridgeErrorResponseSchema>;
 
@@ -1440,14 +1442,14 @@ export type FindInstancesBridgeResponsePayload = z.infer<typeof FindInstancesBri
 export const FindIntentAgentErrorResponseSchema = z.object({
     "meta": FindIntentAgentErrorResponseMetaSchema,
     "payload": FindIntentAgentErrorResponsePayloadSchema,
-    "type": FindIntentResponseMessageTypeSchema,
+    "type": FindIntentAgentErrorResponseTypeSchema,
 });
 export type FindIntentAgentErrorResponse = z.infer<typeof FindIntentAgentErrorResponseSchema>;
 
 export const FindIntentAgentRequestSchema = z.object({
     "meta": FindIntentAgentRequestMetaSchema,
     "payload": FindIntentAgentRequestPayloadSchema,
-    "type": FindIntentRequestMessageTypeSchema,
+    "type": FindIntentAgentRequestTypeSchema,
 });
 export type FindIntentAgentRequest = z.infer<typeof FindIntentAgentRequestSchema>;
 
@@ -1460,14 +1462,14 @@ export type AppIntent = z.infer<typeof AppIntentSchema>;
 export const FindIntentBridgeErrorResponseSchema = z.object({
     "meta": FindIntentBridgeErrorResponseMetaSchema,
     "payload": FindIntentBridgeErrorResponsePayloadSchema,
-    "type": FindIntentResponseMessageTypeSchema,
+    "type": FindIntentAgentErrorResponseTypeSchema,
 });
 export type FindIntentBridgeErrorResponse = z.infer<typeof FindIntentBridgeErrorResponseSchema>;
 
 export const FindIntentBridgeRequestSchema = z.object({
     "meta": FindIntentBridgeRequestMetaSchema,
     "payload": FindIntentBridgeRequestPayloadSchema,
-    "type": FindIntentRequestMessageTypeSchema,
+    "type": FindIntentAgentRequestTypeSchema,
 });
 export type FindIntentBridgeRequest = z.infer<typeof FindIntentBridgeRequestSchema>;
 
@@ -1479,14 +1481,14 @@ export type FindIntentBridgeResponsePayload = z.infer<typeof FindIntentBridgeRes
 export const FindIntentsByContextAgentErrorResponseSchema = z.object({
     "meta": FindIntentsByContextAgentErrorResponseMetaSchema,
     "payload": FindIntentsByContextAgentErrorResponsePayloadSchema,
-    "type": FindIntentsByContextResponseMessageTypeSchema,
+    "type": FindIntentsByContextAgentErrorResponseTypeSchema,
 });
 export type FindIntentsByContextAgentErrorResponse = z.infer<typeof FindIntentsByContextAgentErrorResponseSchema>;
 
 export const FindIntentsByContextAgentRequestSchema = z.object({
     "meta": FindIntentsByContextAgentRequestMetaSchema,
     "payload": FindIntentsByContextAgentRequestPayloadSchema,
-    "type": FindIntentsByContextRequestMessageTypeSchema,
+    "type": FindIntentsByContextAgentRequestTypeSchema,
 });
 export type FindIntentsByContextAgentRequest = z.infer<typeof FindIntentsByContextAgentRequestSchema>;
 
@@ -1498,14 +1500,14 @@ export type FindIntentsByContextAgentResponsePayload = z.infer<typeof FindIntent
 export const FindIntentsByContextBridgeErrorResponseSchema = z.object({
     "meta": FindIntentsByContextBridgeErrorResponseMetaSchema,
     "payload": FindIntentsByContextBridgeErrorResponsePayloadSchema,
-    "type": FindIntentsByContextResponseMessageTypeSchema,
+    "type": FindIntentsByContextAgentErrorResponseTypeSchema,
 });
 export type FindIntentsByContextBridgeErrorResponse = z.infer<typeof FindIntentsByContextBridgeErrorResponseSchema>;
 
 export const FindIntentsByContextBridgeRequestSchema = z.object({
     "meta": FindIntentsByContextBridgeRequestMetaSchema,
     "payload": FindIntentsByContextBridgeRequestPayloadSchema,
-    "type": FindIntentsByContextRequestMessageTypeSchema,
+    "type": FindIntentsByContextAgentRequestTypeSchema,
 });
 export type FindIntentsByContextBridgeRequest = z.infer<typeof FindIntentsByContextBridgeRequestSchema>;
 
@@ -1517,7 +1519,7 @@ export type FindIntentsByContextBridgeResponsePayload = z.infer<typeof FindInten
 export const GetAppMetadataAgentErrorResponseSchema = z.object({
     "meta": GetAppMetadataAgentErrorResponseMetaSchema,
     "payload": GetAppMetadataAgentErrorResponsePayloadSchema,
-    "type": GetAppMetadataResponseMessageTypeSchema,
+    "type": GetAppMetadataAgentErrorResponseTypeSchema,
 });
 export type GetAppMetadataAgentErrorResponse = z.infer<typeof GetAppMetadataAgentErrorResponseSchema>;
 
@@ -1534,14 +1536,14 @@ export type GetAppMetadataAgentResponsePayload = z.infer<typeof GetAppMetadataAg
 export const GetAppMetadataBridgeErrorResponseSchema = z.object({
     "meta": GetAppMetadataBridgeErrorResponseMetaSchema,
     "payload": GetAppMetadataBridgeErrorResponsePayloadSchema,
-    "type": GetAppMetadataResponseMessageTypeSchema,
+    "type": GetAppMetadataAgentErrorResponseTypeSchema,
 });
 export type GetAppMetadataBridgeErrorResponse = z.infer<typeof GetAppMetadataBridgeErrorResponseSchema>;
 
 export const GetAppMetadataBridgeRequestSchema = z.object({
     "meta": GetAppMetadataBridgeRequestMetaSchema,
     "payload": GetAppMetadataBridgeRequestPayloadSchema,
-    "type": GetAppMetadataRequestMessageTypeSchema,
+    "type": GetAppMetadataAgentRequestTypeSchema,
 });
 export type GetAppMetadataBridgeRequest = z.infer<typeof GetAppMetadataBridgeRequestSchema>;
 
@@ -1553,7 +1555,7 @@ export type GetAppMetadataBridgeResponsePayload = z.infer<typeof GetAppMetadataB
 export const OpenAgentErrorResponseSchema = z.object({
     "meta": OpenAgentErrorResponseMetaSchema,
     "payload": OpenAgentErrorResponsePayloadSchema,
-    "type": OpenResponseMessageTypeSchema,
+    "type": OpenAgentErrorResponseTypeSchema,
 });
 export type OpenAgentErrorResponse = z.infer<typeof OpenAgentErrorResponseSchema>;
 
@@ -1566,28 +1568,28 @@ export type OpenAgentRequestPayload = z.infer<typeof OpenAgentRequestPayloadSche
 export const OpenAgentResponseSchema = z.object({
     "meta": OpenAgentResponseMetaSchema,
     "payload": OpenAgentResponsePayloadSchema,
-    "type": OpenResponseMessageTypeSchema,
+    "type": OpenAgentErrorResponseTypeSchema,
 });
 export type OpenAgentResponse = z.infer<typeof OpenAgentResponseSchema>;
 
 export const OpenBridgeErrorResponseSchema = z.object({
     "meta": OpenBridgeErrorResponseMetaSchema,
     "payload": OpenBridgeErrorResponsePayloadSchema,
-    "type": OpenResponseMessageTypeSchema,
+    "type": OpenAgentErrorResponseTypeSchema,
 });
 export type OpenBridgeErrorResponse = z.infer<typeof OpenBridgeErrorResponseSchema>;
 
 export const OpenBridgeRequestSchema = z.object({
     "meta": OpenBridgeRequestMetaSchema,
     "payload": OpenBridgeRequestPayloadSchema,
-    "type": OpenRequestMessageTypeSchema,
+    "type": OpenAgentRequestTypeSchema,
 });
 export type OpenBridgeRequest = z.infer<typeof OpenBridgeRequestSchema>;
 
 export const OpenBridgeResponseSchema = z.object({
     "meta": OpenBridgeResponseMetaSchema,
     "payload": OpenBridgeResponsePayloadSchema,
-    "type": OpenResponseMessageTypeSchema,
+    "type": OpenAgentErrorResponseTypeSchema,
 });
 export type OpenBridgeResponse = z.infer<typeof OpenBridgeResponseSchema>;
 
@@ -1602,91 +1604,91 @@ export type PrivateChannelBroadcastAgentRequestMeta = z.infer<typeof PrivateChan
 export const PrivateChannelBroadcastBridgeRequestSchema = z.object({
     "meta": PrivateChannelBroadcastBridgeRequestMetaSchema,
     "payload": PrivateChannelBroadcastBridgeRequestPayloadSchema,
-    "type": PrivateChannelBroadcastMessageTypeSchema,
+    "type": PrivateChannelBroadcastAgentRequestTypeSchema,
 });
 export type PrivateChannelBroadcastBridgeRequest = z.infer<typeof PrivateChannelBroadcastBridgeRequestSchema>;
 
 export const PrivateChannelEventListenerAddedAgentRequestSchema = z.object({
     "meta": PrivateChannelEventListenerAddedAgentRequestMetaSchema,
     "payload": PrivateChannelEventListenerAddedAgentRequestPayloadSchema,
-    "type": PrivateChannelEventListenerAddedMessageTypeSchema,
+    "type": PrivateChannelEventListenerAddedAgentRequestTypeSchema,
 });
 export type PrivateChannelEventListenerAddedAgentRequest = z.infer<typeof PrivateChannelEventListenerAddedAgentRequestSchema>;
 
 export const PrivateChannelEventListenerAddedBridgeRequestSchema = z.object({
     "meta": PrivateChannelEventListenerAddedBridgeRequestMetaSchema,
     "payload": PrivateChannelEventListenerAddedBridgeRequestPayloadSchema,
-    "type": PrivateChannelEventListenerAddedMessageTypeSchema,
+    "type": PrivateChannelEventListenerAddedAgentRequestTypeSchema,
 });
 export type PrivateChannelEventListenerAddedBridgeRequest = z.infer<typeof PrivateChannelEventListenerAddedBridgeRequestSchema>;
 
 export const PrivateChannelEventListenerRemovedAgentRequestSchema = z.object({
     "meta": PrivateChannelEventListenerRemovedAgentRequestMetaSchema,
     "payload": PrivateChannelEventListenerRemovedAgentRequestPayloadSchema,
-    "type": PrivateChannelEventListenerRemovedMessageTypeSchema,
+    "type": PrivateChannelEventListenerRemovedAgentRequestTypeSchema,
 });
 export type PrivateChannelEventListenerRemovedAgentRequest = z.infer<typeof PrivateChannelEventListenerRemovedAgentRequestSchema>;
 
 export const PrivateChannelEventListenerRemovedBridgeRequestSchema = z.object({
     "meta": PrivateChannelEventListenerRemovedBridgeRequestMetaSchema,
     "payload": PrivateChannelEventListenerRemovedBridgeRequestPayloadSchema,
-    "type": PrivateChannelEventListenerRemovedMessageTypeSchema,
+    "type": PrivateChannelEventListenerRemovedAgentRequestTypeSchema,
 });
 export type PrivateChannelEventListenerRemovedBridgeRequest = z.infer<typeof PrivateChannelEventListenerRemovedBridgeRequestSchema>;
 
 export const PrivateChannelOnAddContextListenerAgentRequestSchema = z.object({
     "meta": PrivateChannelOnAddContextListenerAgentRequestMetaSchema,
     "payload": PrivateChannelOnAddContextListenerAgentRequestPayloadSchema,
-    "type": PrivateChannelOnAddContextListenerMessageTypeSchema,
+    "type": PrivateChannelOnAddContextListenerAgentRequestTypeSchema,
 });
 export type PrivateChannelOnAddContextListenerAgentRequest = z.infer<typeof PrivateChannelOnAddContextListenerAgentRequestSchema>;
 
 export const PrivateChannelOnAddContextListenerBridgeRequestSchema = z.object({
     "meta": PrivateChannelOnAddContextListenerBridgeRequestMetaSchema,
     "payload": PrivateChannelOnAddContextListenerBridgeRequestPayloadSchema,
-    "type": PrivateChannelOnAddContextListenerMessageTypeSchema,
+    "type": PrivateChannelOnAddContextListenerAgentRequestTypeSchema,
 });
 export type PrivateChannelOnAddContextListenerBridgeRequest = z.infer<typeof PrivateChannelOnAddContextListenerBridgeRequestSchema>;
 
 export const PrivateChannelOnDisconnectAgentRequestSchema = z.object({
     "meta": PrivateChannelOnDisconnectAgentRequestMetaSchema,
     "payload": PrivateChannelOnDisconnectAgentRequestPayloadSchema,
-    "type": PrivateChannelOnDisconnectMessageTypeSchema,
+    "type": PrivateChannelOnDisconnectAgentRequestTypeSchema,
 });
 export type PrivateChannelOnDisconnectAgentRequest = z.infer<typeof PrivateChannelOnDisconnectAgentRequestSchema>;
 
 export const PrivateChannelOnDisconnectBridgeRequestSchema = z.object({
     "meta": PrivateChannelOnDisconnectBridgeRequestMetaSchema,
     "payload": PrivateChannelOnDisconnectBridgeRequestPayloadSchema,
-    "type": PrivateChannelOnDisconnectMessageTypeSchema,
+    "type": PrivateChannelOnDisconnectAgentRequestTypeSchema,
 });
 export type PrivateChannelOnDisconnectBridgeRequest = z.infer<typeof PrivateChannelOnDisconnectBridgeRequestSchema>;
 
 export const PrivateChannelOnUnsubscribeAgentRequestSchema = z.object({
     "meta": PrivateChannelOnUnsubscribeAgentRequestMetaSchema,
     "payload": PrivateChannelOnUnsubscribeAgentRequestPayloadSchema,
-    "type": PrivateChannelOnUnsubscribeMessageTypeSchema,
+    "type": PrivateChannelOnUnsubscribeAgentRequestTypeSchema,
 });
 export type PrivateChannelOnUnsubscribeAgentRequest = z.infer<typeof PrivateChannelOnUnsubscribeAgentRequestSchema>;
 
 export const PrivateChannelOnUnsubscribeBridgeRequestSchema = z.object({
     "meta": ERequestMetadataSchema,
     "payload": PrivateChannelOnUnsubscribeBridgeRequestPayloadSchema,
-    "type": PrivateChannelOnUnsubscribeMessageTypeSchema,
+    "type": PrivateChannelOnUnsubscribeAgentRequestTypeSchema,
 });
 export type PrivateChannelOnUnsubscribeBridgeRequest = z.infer<typeof PrivateChannelOnUnsubscribeBridgeRequestSchema>;
 
 export const RaiseIntentAgentErrorResponseSchema = z.object({
     "meta": RaiseIntentAgentErrorResponseMetaSchema,
     "payload": RaiseIntentAgentErrorResponsePayloadSchema,
-    "type": RaiseIntentResponseMessageTypeSchema,
+    "type": RaiseIntentAgentErrorResponseTypeSchema,
 });
 export type RaiseIntentAgentErrorResponse = z.infer<typeof RaiseIntentAgentErrorResponseSchema>;
 
 export const RaiseIntentAgentRequestSchema = z.object({
     "meta": RaiseIntentAgentRequestMetaSchema,
     "payload": RaiseIntentAgentRequestPayloadSchema,
-    "type": RaiseIntentRequestMessageTypeSchema,
+    "type": RaiseIntentAgentRequestTypeSchema,
 });
 export type RaiseIntentAgentRequest = z.infer<typeof RaiseIntentAgentRequestSchema>;
 
@@ -1698,28 +1700,28 @@ export type RaiseIntentAgentResponsePayload = z.infer<typeof RaiseIntentAgentRes
 export const RaiseIntentBridgeErrorResponseSchema = z.object({
     "meta": RaiseIntentBridgeErrorResponseMetaSchema,
     "payload": RaiseIntentBridgeErrorResponsePayloadSchema,
-    "type": RaiseIntentResponseMessageTypeSchema,
+    "type": RaiseIntentAgentErrorResponseTypeSchema,
 });
 export type RaiseIntentBridgeErrorResponse = z.infer<typeof RaiseIntentBridgeErrorResponseSchema>;
 
 export const RaiseIntentBridgeRequestSchema = z.object({
     "meta": RaiseIntentBridgeRequestMetaSchema,
     "payload": RaiseIntentBridgeRequestPayloadSchema,
-    "type": RaiseIntentRequestMessageTypeSchema,
+    "type": RaiseIntentAgentRequestTypeSchema,
 });
 export type RaiseIntentBridgeRequest = z.infer<typeof RaiseIntentBridgeRequestSchema>;
 
 export const RaiseIntentBridgeResponseSchema = z.object({
     "meta": RaiseIntentBridgeResponseMetaSchema,
     "payload": RaiseIntentBridgeResponsePayloadSchema,
-    "type": RaiseIntentResponseMessageTypeSchema,
+    "type": RaiseIntentAgentErrorResponseTypeSchema,
 });
 export type RaiseIntentBridgeResponse = z.infer<typeof RaiseIntentBridgeResponseSchema>;
 
 export const RaiseIntentResultAgentErrorResponseSchema = z.object({
     "meta": RaiseIntentResultAgentErrorResponseMetaSchema,
     "payload": RaiseIntentResultAgentErrorResponsePayloadSchema,
-    "type": RaiseIntentResultResponseMessageTypeSchema,
+    "type": RaiseIntentResultAgentErrorResponseTypeSchema,
 });
 export type RaiseIntentResultAgentErrorResponse = z.infer<typeof RaiseIntentResultAgentErrorResponseSchema>;
 
@@ -1733,7 +1735,7 @@ export type Channel = z.infer<typeof ChannelSchema>;
 export const RaiseIntentResultBridgeErrorResponseSchema = z.object({
     "meta": RaiseIntentResultBridgeErrorResponseMetaSchema,
     "payload": RaiseIntentResultBridgeErrorResponsePayloadSchema,
-    "type": RaiseIntentResultResponseMessageTypeSchema,
+    "type": RaiseIntentResultAgentErrorResponseTypeSchema,
 });
 export type RaiseIntentResultBridgeErrorResponse = z.infer<typeof RaiseIntentResultBridgeErrorResponseSchema>;
 
@@ -1754,14 +1756,14 @@ export type BridgeErrorResponseMessage = z.infer<typeof BridgeErrorResponseMessa
 export const BroadcastAgentRequestSchema = z.object({
     "meta": BroadcastAgentRequestMetaSchema,
     "payload": BroadcastAgentRequestPayloadSchema,
-    "type": BroadcastRequestMessageTypeSchema,
+    "type": BroadcastAgentRequestTypeSchema,
 });
 export type BroadcastAgentRequest = z.infer<typeof BroadcastAgentRequestSchema>;
 
 export const BroadcastBridgeRequestSchema = z.object({
     "meta": BroadcastBridgeRequestMetaSchema,
     "payload": BroadcastBridgeRequestPayloadSchema,
-    "type": BroadcastRequestMessageTypeSchema,
+    "type": BroadcastAgentRequestTypeSchema,
 });
 export type BroadcastBridgeRequest = z.infer<typeof BroadcastBridgeRequestSchema>;
 
@@ -1783,7 +1785,7 @@ export type ConnectionStep6ConnectedAgentsUpdate = z.infer<typeof ConnectionStep
 export const FindInstancesAgentRequestSchema = z.object({
     "meta": FindInstancesAgentRequestMetaSchema,
     "payload": FindInstancesAgentRequestPayloadSchema,
-    "type": FindInstancesRequestMessageTypeSchema,
+    "type": FindInstancesAgentRequestTypeSchema,
 });
 export type FindInstancesAgentRequest = z.infer<typeof FindInstancesAgentRequestSchema>;
 
@@ -1795,14 +1797,14 @@ export type FindInstancesAgentResponsePayload = z.infer<typeof FindInstancesAgen
 export const FindInstancesBridgeRequestSchema = z.object({
     "meta": FindInstancesBridgeRequestMetaSchema,
     "payload": FindInstancesBridgeRequestPayloadSchema,
-    "type": FindInstancesRequestMessageTypeSchema,
+    "type": FindInstancesAgentRequestTypeSchema,
 });
 export type FindInstancesBridgeRequest = z.infer<typeof FindInstancesBridgeRequestSchema>;
 
 export const FindInstancesBridgeResponseSchema = z.object({
     "meta": FindInstancesBridgeResponseMetaSchema,
     "payload": FindInstancesBridgeResponsePayloadSchema,
-    "type": FindInstancesResponseMessageTypeSchema,
+    "type": FindInstancesAgentErrorResponseTypeSchema,
 });
 export type FindInstancesBridgeResponse = z.infer<typeof FindInstancesBridgeResponseSchema>;
 
@@ -1814,63 +1816,63 @@ export type FindIntentAgentResponsePayload = z.infer<typeof FindIntentAgentRespo
 export const FindIntentBridgeResponseSchema = z.object({
     "meta": FindIntentBridgeResponseMetaSchema,
     "payload": FindIntentBridgeResponsePayloadSchema,
-    "type": FindIntentResponseMessageTypeSchema,
+    "type": FindIntentAgentErrorResponseTypeSchema,
 });
 export type FindIntentBridgeResponse = z.infer<typeof FindIntentBridgeResponseSchema>;
 
 export const FindIntentsByContextAgentResponseSchema = z.object({
     "meta": FindIntentsByContextAgentResponseMetaSchema,
     "payload": FindIntentsByContextAgentResponsePayloadSchema,
-    "type": FindIntentsByContextResponseMessageTypeSchema,
+    "type": FindIntentsByContextAgentErrorResponseTypeSchema,
 });
 export type FindIntentsByContextAgentResponse = z.infer<typeof FindIntentsByContextAgentResponseSchema>;
 
 export const FindIntentsByContextBridgeResponseSchema = z.object({
     "meta": FindIntentsByContextBridgeResponseMetaSchema,
     "payload": FindIntentsByContextBridgeResponsePayloadSchema,
-    "type": FindIntentsByContextResponseMessageTypeSchema,
+    "type": FindIntentsByContextAgentErrorResponseTypeSchema,
 });
 export type FindIntentsByContextBridgeResponse = z.infer<typeof FindIntentsByContextBridgeResponseSchema>;
 
 export const GetAppMetadataAgentRequestSchema = z.object({
     "meta": GetAppMetadataAgentRequestMetaSchema,
     "payload": GetAppMetadataAgentRequestPayloadSchema,
-    "type": GetAppMetadataRequestMessageTypeSchema,
+    "type": GetAppMetadataAgentRequestTypeSchema,
 });
 export type GetAppMetadataAgentRequest = z.infer<typeof GetAppMetadataAgentRequestSchema>;
 
 export const GetAppMetadataAgentResponseSchema = z.object({
     "meta": GetAppMetadataAgentResponseMetaSchema,
     "payload": GetAppMetadataAgentResponsePayloadSchema,
-    "type": GetAppMetadataResponseMessageTypeSchema,
+    "type": GetAppMetadataAgentErrorResponseTypeSchema,
 });
 export type GetAppMetadataAgentResponse = z.infer<typeof GetAppMetadataAgentResponseSchema>;
 
 export const GetAppMetadataBridgeResponseSchema = z.object({
     "meta": GetAppMetadataBridgeResponseMetaSchema,
     "payload": GetAppMetadataBridgeResponsePayloadSchema,
-    "type": GetAppMetadataResponseMessageTypeSchema,
+    "type": GetAppMetadataAgentErrorResponseTypeSchema,
 });
 export type GetAppMetadataBridgeResponse = z.infer<typeof GetAppMetadataBridgeResponseSchema>;
 
 export const OpenAgentRequestSchema = z.object({
     "meta": OpenAgentRequestMetaSchema,
     "payload": OpenAgentRequestPayloadSchema,
-    "type": OpenRequestMessageTypeSchema,
+    "type": OpenAgentRequestTypeSchema,
 });
 export type OpenAgentRequest = z.infer<typeof OpenAgentRequestSchema>;
 
 export const PrivateChannelBroadcastAgentRequestSchema = z.object({
     "meta": PrivateChannelBroadcastAgentRequestMetaSchema,
     "payload": PrivateChannelBroadcastAgentRequestPayloadSchema,
-    "type": PrivateChannelBroadcastMessageTypeSchema,
+    "type": PrivateChannelBroadcastAgentRequestTypeSchema,
 });
 export type PrivateChannelBroadcastAgentRequest = z.infer<typeof PrivateChannelBroadcastAgentRequestSchema>;
 
 export const RaiseIntentAgentResponseSchema = z.object({
     "meta": RaiseIntentAgentResponseMetaSchema,
     "payload": RaiseIntentAgentResponsePayloadSchema,
-    "type": RaiseIntentResponseMessageTypeSchema,
+    "type": RaiseIntentAgentErrorResponseTypeSchema,
 });
 export type RaiseIntentAgentResponse = z.infer<typeof RaiseIntentAgentResponseSchema>;
 
@@ -1895,14 +1897,14 @@ export type ConnectionStep3Handshake = z.infer<typeof ConnectionStep3HandshakeSc
 export const FindInstancesAgentResponseSchema = z.object({
     "meta": FindInstancesAgentResponseMetaSchema,
     "payload": FindInstancesAgentResponsePayloadSchema,
-    "type": FindInstancesResponseMessageTypeSchema,
+    "type": FindInstancesAgentErrorResponseTypeSchema,
 });
 export type FindInstancesAgentResponse = z.infer<typeof FindInstancesAgentResponseSchema>;
 
 export const FindIntentAgentResponseSchema = z.object({
     "meta": FindIntentAgentResponseMetaSchema,
     "payload": FindIntentAgentResponsePayloadSchema,
-    "type": FindIntentResponseMessageTypeSchema,
+    "type": FindIntentAgentErrorResponseTypeSchema,
 });
 export type FindIntentAgentResponse = z.infer<typeof FindIntentAgentResponseSchema>;
 
@@ -1914,13 +1916,13 @@ export type RaiseIntentResultAgentResponsePayload = z.infer<typeof RaiseIntentRe
 export const RaiseIntentResultBridgeResponseSchema = z.object({
     "meta": RaiseIntentResultBridgeResponseMetaSchema,
     "payload": RaiseIntentResultBridgeResponsePayloadSchema,
-    "type": RaiseIntentResultResponseMessageTypeSchema,
+    "type": RaiseIntentResultAgentErrorResponseTypeSchema,
 });
 export type RaiseIntentResultBridgeResponse = z.infer<typeof RaiseIntentResultBridgeResponseSchema>;
 
 export const RaiseIntentResultAgentResponseSchema = z.object({
     "meta": RaiseIntentResultAgentResponseMetaSchema,
     "payload": RaiseIntentResultAgentResponsePayloadSchema,
-    "type": RaiseIntentResultResponseMessageTypeSchema,
+    "type": RaiseIntentResultAgentErrorResponseTypeSchema,
 });
 export type RaiseIntentResultAgentResponse = z.infer<typeof RaiseIntentResultAgentResponseSchema>;

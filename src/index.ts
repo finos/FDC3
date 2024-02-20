@@ -5,6 +5,7 @@
 
 import { DesktopAgent } from './api/DesktopAgent';
 import * as BridgingTypes from './bridging/BridgingTypes';
+import * as BridgingZodSchemas from './bridging/BridgingZodSchemas';
 
 export * from './api/AppIdentifier';
 export * from './api/AppIntent';
@@ -31,6 +32,7 @@ export * from './intents/Intents';
 /* Workaround for conflicts between bridging types and API types
    and prettier issue with `export * as`. */
 export { BridgingTypes };
+export { BridgingZodSchemas };
 
 declare global {
   interface Window {
