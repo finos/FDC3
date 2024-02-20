@@ -17,8 +17,7 @@ A Desktop Agent is a desktop component (or aggregate of components) that serves 
 Examples of Desktop Agents include:
 
 - Autobahn
-- Finsemble
-- Glue42
+- io.Connect
 - OpenFin
 - Refinitiv Eikon
 
@@ -226,7 +225,7 @@ As an alternative to raising a specific intent, you may also raise an unspecifie
 
 ### Intent Results
 
-An optional [`IntentResult`](ref/Types#intentresult) may also be returned as output by an application handling an intent. Results maybe either a single `Context` object, or a `Channel` that may be used to send a stream of responses. The [`PrivateChannel`](ref/PrivateChannel) type is provided to support synchronization of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via [raising an intent](ref/DesktopAgent#raiseintent).
+An optional [`IntentResult`](ref/Types#intentresult) may also be returned as output by an application handling an intent. Results may be a single `Context` object, a `Channel` that may be used to send a stream of responses, or `void` (no result). The [`PrivateChannel`](ref/PrivateChannel) type is provided to support synchronization of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via [raising an intent](ref/DesktopAgent#raiseintent).
 
 For example, an application handling a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.
 

@@ -41,8 +41,8 @@ while (dirIndex < inputs.length) {
 }
 
 // Normalise path to local quicktype executable.
-const quicktypeExec = "node " + ["..","quicktype","dist","index.js"].join(path.sep);
-//const quicktypeExec = ['.', 'node_modules', '.bin', 'quicktype'].join(path.sep);
+//const quicktypeExec = "node " + ["..","quicktype","dist","index.js"].join(path.sep);
+const quicktypeExec = ['.', 'node_modules', '.bin', 'quicktype'].join(path.sep);
 
 const command = `${quicktypeExec} --prefer-const-values --prefer-unions -s schema -o ${outputFile} ${sources}`;
 console.log('command to run: ' + command);

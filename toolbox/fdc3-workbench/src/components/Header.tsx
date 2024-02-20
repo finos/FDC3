@@ -114,16 +114,19 @@ export const Header = (props: { fdc3Available: boolean }) => {
 					console.error("Failed to retrieve FDC3 implementation info", e);
 				}
 
+				
 				if (paramVersion) {
 					setChosenVersion(paramVersion);
-				} else if(implInfo?.fdc3Version && supportedVersion.includes(implInfo?.fdc3Version)) {
+				} else if(implInfo?.fdc3Version && implInfo.fdc3Version == "2.1") {
+					//API version 2.1 is backwards compatible with 2.0
+					setChosenVersion("2.0");
+				}else if(implInfo?.fdc3Version && supportedVersion.includes(implInfo.fdc3Version)) {
 					setChosenVersion(implInfo.fdc3Version);
 				} else {
 					setChosenVersion("2.0");
 				}
 
 				window.fdc3Version = chosenVersion;
-				
 			};
 
 			updateInfo();
@@ -144,10 +147,11 @@ export const Header = (props: { fdc3Available: boolean }) => {
 							{supportedVersion.map((ver, index) => (
 								<span key={index}>
 									{ver === chosenVersion ? (
-										<span><b>{ver}</b></span>
+										//version 2.0 serves for both 2.0 and 2.1
+										<span><b>{ver == "2.0" ? "2.0+" : ver}</b></span>
 									) : (
 										<a className={`${classes.link}`} href={`?fdc3Version=${ver}`}>
-											{ver}
+											{ver == "2.0" ? "2.0+" : ver}
 										</a>
 									)}
 									{supportedVersion.length - 1 !== index && <span> | </span>}

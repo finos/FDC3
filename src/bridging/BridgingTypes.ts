@@ -669,6 +669,7 @@ export interface ContextElement {
    *
    * Identifiers do not make sense for all types of data, so the `id` property is therefore
    * optional, but some derived types may choose to require at least one identifier.
+   * Identifier values SHOULD always be of type string.
    */
   id?: { [key: string]: any };
   /**
@@ -940,8 +941,9 @@ export interface ConnectionStep3HandshakeMeta {
 export interface ConnectionStep3HandshakePayload {
   authToken?: string;
   /**
-   * The current state of the Desktop Agent's channels, excluding any private channels, as a
-   * mapping of channel id to an array of Context objects, most recent first.
+   * The current state of the Desktop Agent's App and User channels (exclude any Private
+   * channels), as a mapping of channel id to an array of Context objects, one per type found
+   * in the channel, most recent first.
    */
   channelsState: { [key: string]: ContextElement[] };
   /**
@@ -1769,6 +1771,7 @@ export interface FindIntentAgentRequestMeta {
 export interface FindIntentAgentRequestPayload {
   context?: ContextElement;
   intent: string;
+  resultType?: string;
 }
 
 /**
@@ -1927,6 +1930,7 @@ export interface FindIntentBridgeRequestMeta {
 export interface FindIntentBridgeRequestPayload {
   context?: ContextElement;
   intent: string;
+  resultType?: string;
 }
 
 /**
@@ -3100,6 +3104,9 @@ export interface PrivateChannelEventListenerAddedAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelEventListenerAddedAgentRequestPayload {
+  /**
+   * The id of the PrivateChannel that the event listener was added to.
+   */
   channelId: string;
   listenerType: PrivateChannelEventListenerTypes;
 }
@@ -3160,6 +3167,9 @@ export interface PrivateChannelEventListenerAddedBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelEventListenerAddedBridgeRequestPayload {
+  /**
+   * The id of the PrivateChannel that the event listener was added to.
+   */
   channelId: string;
   listenerType: PrivateChannelEventListenerTypes;
 }
@@ -3205,6 +3215,9 @@ export interface PrivateChannelEventListenerRemovedAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelEventListenerRemovedAgentRequestPayload {
+  /**
+   * The id of the PrivateChannel that the event listener was removed from.
+   */
   channelId: string;
   listenerType: PrivateChannelEventListenerTypes;
 }
@@ -3260,6 +3273,9 @@ export interface PrivateChannelEventListenerRemovedBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelEventListenerRemovedBridgeRequestPayload {
+  /**
+   * The id of the PrivateChannel that the event listener was removed from.
+   */
   channelId: string;
   listenerType: PrivateChannelEventListenerTypes;
 }
@@ -3305,8 +3321,14 @@ export interface PrivateChannelOnAddContextListenerAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelOnAddContextListenerAgentRequestPayload {
+  /**
+   * The id of the PrivateChannel that the context listener was added to.
+   */
   channelId: string;
-  contextType: string;
+  /**
+   * The type of the context listener added. Should be null for an untyped listener.
+   */
+  contextType: null | string;
 }
 
 /**
@@ -3360,8 +3382,14 @@ export interface PrivateChannelOnAddContextListenerBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelOnAddContextListenerBridgeRequestPayload {
+  /**
+   * The id of the PrivateChannel that the context listener was added to.
+   */
   channelId: string;
-  contextType: string;
+  /**
+   * The type of the context listener added. Should be null for an untyped listener.
+   */
+  contextType: null | string;
 }
 
 /**
@@ -3405,6 +3433,9 @@ export interface PrivateChannelOnDisconnectAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelOnDisconnectAgentRequestPayload {
+  /**
+   * The id of the PrivateChannel that the agent discconnected from.
+   */
   channelId: string;
 }
 
@@ -3459,6 +3490,9 @@ export interface PrivateChannelOnDisconnectBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelOnDisconnectBridgeRequestPayload {
+  /**
+   * The id of the PrivateChannel that the agent discconnected from.
+   */
   channelId: string;
 }
 
@@ -3503,8 +3537,15 @@ export interface PrivateChannelOnUnsubscribeAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelOnUnsubscribeAgentRequestPayload {
+  /**
+   * The id of the PrivateChannel that the context listener was unsubscribed from.
+   */
   channelId: string;
-  contextType: string;
+  /**
+   * The type of the context listener that was unsubscribed. Should be null for an untyped
+   * listener.
+   */
+  contextType: null | string;
 }
 
 /**
@@ -3558,8 +3599,15 @@ export interface ERequestMetadata {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelOnUnsubscribeBridgeRequestPayload {
+  /**
+   * The id of the PrivateChannel that the context listener was unsubscribed from.
+   */
   channelId: string;
-  contextType: string;
+  /**
+   * The type of the context listener that was unsubscribed. Should be null for an untyped
+   * listener.
+   */
+  contextType: null | string;
 }
 
 /**
@@ -4133,6 +4181,7 @@ export interface Context {
    *
    * Identifiers do not make sense for all types of data, so the `id` property is therefore
    * optional, but some derived types may choose to require at least one identifier.
+   * Identifier values SHOULD always be of type string.
    */
   id?: { [key: string]: any };
   /**
@@ -5047,7 +5096,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('BroadcastAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('BroadcastAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('BroadcastRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('BroadcastAgentRequestType') },
     ],
     false
   ),
@@ -5086,7 +5135,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('BroadcastBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('BroadcastBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: r('BroadcastRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('BroadcastAgentRequestType') },
     ],
     false
   ),
@@ -5234,7 +5283,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindInstancesAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindInstancesAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('FindInstancesResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindInstancesAgentErrorResponseType') },
     ],
     false
   ),
@@ -5251,7 +5300,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindInstancesAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('FindInstancesAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('FindInstancesRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('FindInstancesAgentRequestType') },
     ],
     false
   ),
@@ -5285,7 +5334,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindInstancesAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindInstancesAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('FindInstancesResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindInstancesAgentErrorResponseType') },
     ],
     false
   ),
@@ -5339,7 +5388,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindInstancesBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindInstancesBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('FindInstancesResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindInstancesAgentErrorResponseType') },
     ],
     false
   ),
@@ -5358,7 +5407,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindInstancesBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('FindInstancesBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: r('FindInstancesRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('FindInstancesAgentRequestType') },
     ],
     false
   ),
@@ -5384,7 +5433,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindInstancesBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindInstancesBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: r('FindInstancesResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindInstancesAgentErrorResponseType') },
     ],
     false
   ),
@@ -5407,7 +5456,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('FindIntentResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentAgentErrorResponseType') },
     ],
     false
   ),
@@ -5424,7 +5473,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('FindIntentRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentAgentRequestType') },
     ],
     false
   ),
@@ -5441,6 +5490,7 @@ const typeMap: any = {
     [
       { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
       { json: 'intent', js: 'intent', typ: '' },
+      { json: 'resultType', js: 'resultType', typ: u(undefined, '') },
     ],
     false
   ),
@@ -5448,7 +5498,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('FindIntentResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentAgentErrorResponseType') },
     ],
     false
   ),
@@ -5479,7 +5529,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('FindIntentResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentAgentErrorResponseType') },
     ],
     false
   ),
@@ -5498,7 +5548,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: r('FindIntentRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentAgentRequestType') },
     ],
     false
   ),
@@ -5515,6 +5565,7 @@ const typeMap: any = {
     [
       { json: 'context', js: 'context', typ: u(undefined, r('ContextElement')) },
       { json: 'intent', js: 'intent', typ: '' },
+      { json: 'resultType', js: 'resultType', typ: u(undefined, '') },
     ],
     false
   ),
@@ -5522,7 +5573,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: r('FindIntentResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentAgentErrorResponseType') },
     ],
     false
   ),
@@ -5542,7 +5593,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentsByContextAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('FindIntentsByContextResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextAgentErrorResponseType') },
     ],
     false
   ),
@@ -5559,7 +5610,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentsByContextAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('FindIntentsByContextRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextAgentRequestType') },
     ],
     false
   ),
@@ -5577,7 +5628,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentsByContextAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('FindIntentsByContextResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextAgentErrorResponseType') },
     ],
     false
   ),
@@ -5597,7 +5648,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentsByContextBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('FindIntentsByContextResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextAgentErrorResponseType') },
     ],
     false
   ),
@@ -5616,7 +5667,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentsByContextBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: r('FindIntentsByContextRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextAgentRequestType') },
     ],
     false
   ),
@@ -5634,7 +5685,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('FindIntentsByContextBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('FindIntentsByContextBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: r('FindIntentsByContextResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextAgentErrorResponseType') },
     ],
     false
   ),
@@ -5657,7 +5708,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('GetAppMetadataAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('GetAppMetadataAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('GetAppMetadataResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataAgentErrorResponseType') },
     ],
     false
   ),
@@ -5674,7 +5725,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('GetAppMetadataAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('GetAppMetadataAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('GetAppMetadataRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataAgentRequestType') },
     ],
     false
   ),
@@ -5700,7 +5751,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('GetAppMetadataAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('GetAppMetadataAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('GetAppMetadataResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataAgentErrorResponseType') },
     ],
     false
   ),
@@ -5717,7 +5768,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('GetAppMetadataBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('GetAppMetadataBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('GetAppMetadataResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataAgentErrorResponseType') },
     ],
     false
   ),
@@ -5736,7 +5787,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('GetAppMetadataBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('GetAppMetadataBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: r('GetAppMetadataRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataAgentRequestType') },
     ],
     false
   ),
@@ -5754,7 +5805,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('GetAppMetadataBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('GetAppMetadataBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: r('GetAppMetadataResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataAgentErrorResponseType') },
     ],
     false
   ),
@@ -5774,7 +5825,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('OpenAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('OpenAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('OpenResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('OpenAgentErrorResponseType') },
     ],
     false
   ),
@@ -5791,7 +5842,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('OpenAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('OpenAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('OpenRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('OpenAgentRequestType') },
     ],
     false
   ),
@@ -5823,7 +5874,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('OpenAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('OpenAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('OpenResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('OpenAgentErrorResponseType') },
     ],
     false
   ),
@@ -5840,7 +5891,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('OpenBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('OpenBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('OpenResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('OpenAgentErrorResponseType') },
     ],
     false
   ),
@@ -5859,7 +5910,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('OpenBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('OpenBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: r('OpenRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('OpenAgentRequestType') },
     ],
     false
   ),
@@ -5883,7 +5934,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('OpenBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('OpenBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: r('OpenResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('OpenAgentErrorResponseType') },
     ],
     false
   ),
@@ -5903,7 +5954,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelBroadcastAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelBroadcastAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('PrivateChannelBroadcastMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelBroadcastAgentRequestType') },
     ],
     false
   ),
@@ -5935,7 +5986,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelBroadcastBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelBroadcastBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: r('PrivateChannelBroadcastMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelBroadcastAgentRequestType') },
     ],
     false
   ),
@@ -5959,7 +6010,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelEventListenerAddedAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelEventListenerAddedAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('PrivateChannelEventListenerAddedMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelEventListenerAddedAgentRequestType') },
     ],
     false
   ),
@@ -5983,7 +6034,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelEventListenerAddedBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelEventListenerAddedBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: r('PrivateChannelEventListenerAddedMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelEventListenerAddedAgentRequestType') },
     ],
     false
   ),
@@ -6007,7 +6058,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelEventListenerRemovedAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelEventListenerRemovedAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('PrivateChannelEventListenerRemovedMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelEventListenerRemovedAgentRequestType') },
     ],
     false
   ),
@@ -6031,7 +6082,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelEventListenerRemovedBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelEventListenerRemovedBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: r('PrivateChannelEventListenerRemovedMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelEventListenerRemovedAgentRequestType') },
     ],
     false
   ),
@@ -6055,7 +6106,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelOnAddContextListenerAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelOnAddContextListenerAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('PrivateChannelOnAddContextListenerMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnAddContextListenerAgentRequestType') },
     ],
     false
   ),
@@ -6071,7 +6122,7 @@ const typeMap: any = {
   PrivateChannelOnAddContextListenerAgentRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'contextType', js: 'contextType', typ: '' },
+      { json: 'contextType', js: 'contextType', typ: u(null, '') },
     ],
     false
   ),
@@ -6079,7 +6130,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelOnAddContextListenerBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelOnAddContextListenerBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: r('PrivateChannelOnAddContextListenerMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnAddContextListenerAgentRequestType') },
     ],
     false
   ),
@@ -6095,7 +6146,7 @@ const typeMap: any = {
   PrivateChannelOnAddContextListenerBridgeRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'contextType', js: 'contextType', typ: '' },
+      { json: 'contextType', js: 'contextType', typ: u(null, '') },
     ],
     false
   ),
@@ -6103,7 +6154,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelOnDisconnectAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelOnDisconnectAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('PrivateChannelOnDisconnectMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnDisconnectAgentRequestType') },
     ],
     false
   ),
@@ -6121,7 +6172,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelOnDisconnectBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelOnDisconnectBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: r('PrivateChannelOnDisconnectMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnDisconnectAgentRequestType') },
     ],
     false
   ),
@@ -6139,7 +6190,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('PrivateChannelOnUnsubscribeAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelOnUnsubscribeAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('PrivateChannelOnUnsubscribeMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnUnsubscribeAgentRequestType') },
     ],
     false
   ),
@@ -6155,7 +6206,7 @@ const typeMap: any = {
   PrivateChannelOnUnsubscribeAgentRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'contextType', js: 'contextType', typ: '' },
+      { json: 'contextType', js: 'contextType', typ: u(null, '') },
     ],
     false
   ),
@@ -6163,7 +6214,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('ERequestMetadata') },
       { json: 'payload', js: 'payload', typ: r('PrivateChannelOnUnsubscribeBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: r('PrivateChannelOnUnsubscribeMessageType') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnUnsubscribeAgentRequestType') },
     ],
     false
   ),
@@ -6179,7 +6230,7 @@ const typeMap: any = {
   PrivateChannelOnUnsubscribeBridgeRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'contextType', js: 'contextType', typ: '' },
+      { json: 'contextType', js: 'contextType', typ: u(null, '') },
     ],
     false
   ),
@@ -6187,7 +6238,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('RaiseIntentResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentAgentErrorResponseType') },
     ],
     false
   ),
@@ -6204,7 +6255,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentAgentRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentAgentRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RaiseIntentRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentAgentRequestType') },
     ],
     false
   ),
@@ -6229,7 +6280,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('RaiseIntentResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentAgentErrorResponseType') },
     ],
     false
   ),
@@ -6257,7 +6308,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('RaiseIntentResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentAgentErrorResponseType') },
     ],
     false
   ),
@@ -6276,7 +6327,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentBridgeRequestMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentBridgeRequestPayload') },
-      { json: 'type', js: 'type', typ: r('RaiseIntentRequestMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentAgentRequestType') },
     ],
     false
   ),
@@ -6301,7 +6352,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: r('RaiseIntentResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentAgentErrorResponseType') },
     ],
     false
   ),
@@ -6324,7 +6375,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentResultAgentErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentResultAgentErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('RaiseIntentResultResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResultAgentErrorResponseType') },
     ],
     false
   ),
@@ -6344,7 +6395,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentResultAgentResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentResultAgentResponsePayload') },
-      { json: 'type', js: 'type', typ: r('RaiseIntentResultResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResultAgentErrorResponseType') },
     ],
     false
   ),
@@ -6387,7 +6438,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentResultBridgeErrorResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentResultBridgeErrorResponsePayload') },
-      { json: 'type', js: 'type', typ: r('RaiseIntentResultResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResultAgentErrorResponseType') },
     ],
     false
   ),
@@ -6409,7 +6460,7 @@ const typeMap: any = {
     [
       { json: 'meta', js: 'meta', typ: r('RaiseIntentResultBridgeResponseMeta') },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentResultBridgeResponsePayload') },
-      { json: 'type', js: 'type', typ: r('RaiseIntentResultResponseMessageType') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResultAgentErrorResponseType') },
     ],
     false
   ),
@@ -6483,7 +6534,7 @@ const typeMap: any = {
     'PrivateChannel.onUnsubscribe',
     'raiseIntentRequest',
   ],
-  BroadcastRequestMessageType: ['broadcastRequest'],
+  BroadcastAgentRequestType: ['broadcastRequest'],
   ConnectionStepMessageType: ['authenticationFailed', 'connectedAgentsUpdate', 'handshake', 'hello'],
   ConnectionStep2HelloType: ['hello'],
   ConnectionStep3HandshakeType: ['handshake'],
@@ -6504,14 +6555,14 @@ const typeMap: any = {
     'TargetInstanceUnavailable',
     'UserCancelledResolution',
   ],
-  FindInstancesResponseMessageType: ['findInstancesResponse'],
-  FindInstancesRequestMessageType: ['findInstancesRequest'],
-  FindIntentResponseMessageType: ['findIntentResponse'],
-  FindIntentRequestMessageType: ['findIntentRequest'],
-  FindIntentsByContextResponseMessageType: ['findIntentsByContextResponse'],
-  FindIntentsByContextRequestMessageType: ['findIntentsByContextRequest'],
-  GetAppMetadataResponseMessageType: ['getAppMetadataResponse'],
-  GetAppMetadataRequestMessageType: ['getAppMetadataRequest'],
+  FindInstancesAgentErrorResponseType: ['findInstancesResponse'],
+  FindInstancesAgentRequestType: ['findInstancesRequest'],
+  FindIntentAgentErrorResponseType: ['findIntentResponse'],
+  FindIntentAgentRequestType: ['findIntentRequest'],
+  FindIntentsByContextAgentErrorResponseType: ['findIntentsByContextResponse'],
+  FindIntentsByContextAgentRequestType: ['findIntentsByContextRequest'],
+  GetAppMetadataAgentErrorResponseType: ['getAppMetadataResponse'],
+  GetAppMetadataAgentRequestType: ['getAppMetadataRequest'],
   OpenErrorMessage: [
     'AgentDisconnected',
     'AppNotFound',
@@ -6524,17 +6575,17 @@ const typeMap: any = {
     'ResolverUnavailable',
     'ResponseToBridgeTimedOut',
   ],
-  OpenResponseMessageType: ['openResponse'],
-  OpenRequestMessageType: ['openRequest'],
-  PrivateChannelBroadcastMessageType: ['PrivateChannel.broadcast'],
+  OpenAgentErrorResponseType: ['openResponse'],
+  OpenAgentRequestType: ['openRequest'],
+  PrivateChannelBroadcastAgentRequestType: ['PrivateChannel.broadcast'],
   PrivateChannelEventListenerTypes: ['onAddContextListener', 'onDisconnect', 'onUnsubscribe'],
-  PrivateChannelEventListenerAddedMessageType: ['PrivateChannel.eventListenerAdded'],
-  PrivateChannelEventListenerRemovedMessageType: ['PrivateChannel.eventListenerRemoved'],
-  PrivateChannelOnAddContextListenerMessageType: ['PrivateChannel.onAddContextListener'],
-  PrivateChannelOnDisconnectMessageType: ['PrivateChannel.onDisconnect'],
-  PrivateChannelOnUnsubscribeMessageType: ['PrivateChannel.onUnsubscribe'],
-  RaiseIntentResponseMessageType: ['raiseIntentResponse'],
-  RaiseIntentRequestMessageType: ['raiseIntentRequest'],
+  PrivateChannelEventListenerAddedAgentRequestType: ['PrivateChannel.eventListenerAdded'],
+  PrivateChannelEventListenerRemovedAgentRequestType: ['PrivateChannel.eventListenerRemoved'],
+  PrivateChannelOnAddContextListenerAgentRequestType: ['PrivateChannel.onAddContextListener'],
+  PrivateChannelOnDisconnectAgentRequestType: ['PrivateChannel.onDisconnect'],
+  PrivateChannelOnUnsubscribeAgentRequestType: ['PrivateChannel.onUnsubscribe'],
+  RaiseIntentAgentErrorResponseType: ['raiseIntentResponse'],
+  RaiseIntentAgentRequestType: ['raiseIntentRequest'],
   RaiseIntentResultErrorMessage: [
     'AgentDisconnected',
     'IntentHandlerRejected',
@@ -6543,6 +6594,6 @@ const typeMap: any = {
     'NotConnectedToBridge',
     'ResponseToBridgeTimedOut',
   ],
-  RaiseIntentResultResponseMessageType: ['raiseIntentResultResponse'],
+  RaiseIntentResultAgentErrorResponseType: ['raiseIntentResultResponse'],
   Type: ['app', 'private', 'user'],
 };

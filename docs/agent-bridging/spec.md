@@ -244,7 +244,7 @@ The DA must then respond to the `hello` message with a `handshake` request to th
           *  provides. The string must be a numeric semver version, e.g. 1.2 or 1.2.1. */
           fdc3Version: string,
           /** The name of the provider of the FDC3 Desktop Agent Implementation
-           *  (e.g.Finsemble, Glue42, OpenFin etc.). */
+           *  (e.g.Finsemble, io.Connect, OpenFin etc.). */
           provider: string,
           /** The version of the provider of the FDC3 Desktop Agent Implementation (e.g. 5.3.0). */
           providerVersion: string,
@@ -262,8 +262,9 @@ The DA must then respond to the `hello` message with a `handshake` request to th
         },
         /** The requested DA name */
         requestedName: string,
-        /** The current state of the Desktop Agent's channels, excluding any private channels,
-         *  as a mapping of channel id to an array of Context objects, most recent first.*/
+        /** The current state of the Desktop Agent's App and User channels (exclude any 
+         *  Private channels), as a mapping of channel id to an array of Context objects, 
+         *  one per type found in the channel, most recent first.*/
         channelsState: Record<string, Context[]>
     },
     meta: {
@@ -326,9 +327,11 @@ If authentication succeeds (or is not required), then the Desktop Agent Bridge s
 
 ### Step 5. Synchronize the Bridge's Channel State
 
-Channels are the main stateful mechanism in the FDC3 that we have to consider. A key responsibility of the Desktop Agent Bridge is ensuring that the channel state of the connected agents is kept in-sync. To do so, the states must be synchronized whenever a new agent connects. Hence, the Bridge MUST process the `channelState` provided by the new agent in the `handshake` request, which MUST contain details of each known User Channel or App Channel and its state. The bridge MUST compare the received channel names and states to its own representation of the current state of channels in connected agents, merge that state with that of the new agent and communicate the updated state to all connected agents to ensure that they are synchronized with it.
+Channels are the main stateful mechanism in the FDC3 that we have to consider. The state of any FDC3 channel includes the most recent context broadcast on the channel, plus the most recent context of each type that has been broadcast on it (allowing applications to receive the most recent context of the type that they listen for, rather than just the most recent context of any type).
 
-Hence, if we assume that the state of each channel can be represented by an ordered array of context objects (most recent first - noting that only the first position, that of the most recent context broadcast, matters), the Desktop Agent Bridge MUST merge the incoming `channelsState` with the `existingChannelsState` as follows:
+A key responsibility of the Desktop Agent Bridge is ensuring that the channel state of the connected agents is kept in-sync. To do so, the states must be synchronized whenever a new agent connects. Hence, the Bridge MUST process the `channelState` provided by the new agent in the `handshake` request, which MUST contain details of each known User Channel or App Channel and its state (the most recent context object and the most recent context object of each type that it has received). The bridge MUST compare the received channel names and states to its own representation of the current state of channels in connected agents, merge that state with that of the new agent and communicate the updated state to all connected agents to ensure that they are synchronized with it.
+
+Hence, if we assume that the state of each channel can be represented by an array of the most recent context object of each type, with the most recent context occupying the first position in the array, the Desktop Agent Bridge MUST merge the incoming `channelsState` with the `existingChannelsState` as follows:
 
 ```typescript
 Object.keys(channelsState).forEach((channelId) => {
