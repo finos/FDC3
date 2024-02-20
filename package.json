@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3",
-  "version": "2.1.0-beta.6",
+  "version": "2.1.0-beta.7",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -29,7 +29,6 @@
     "typegen-bridging": "node s2tQuicktypeUtil.js schemas/api schemas/bridging schemas/context/context.schema.json src/bridging/BridgingTypes.ts && tsdx lint src/bridging/ --fix",
     "typegen-bridging-zod": "node s2zodQuicktypeUtil.js schemas/api schemas/bridging schemas/context/context.schema.json src/bridging/BridgingZodSchemas.ts"
   },
-  "peerDependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint src test"
@@ -53,5 +52,8 @@
     "tsdx": "^0.14.1",
     "tslib": "^2.0.1",
     "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
   }
 }
