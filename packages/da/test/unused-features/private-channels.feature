@@ -6,25 +6,25 @@ Background: Desktop Agent API
     And I call "api" with "createPrivateChannel"
     And I refer to "result" as "privateChannel" 
 
-    # Scenario: Adding and then unsubscribing a context listener will send a notification of each event to the agent
+    Scenario: Adding and then unsubscribing a context listener will send a notification of each event to the agent
 
-    #     Given "contextHandler" pipes context to "context"
-    #     When I call "privateChannel" with "addContextListener" with parameters "fdc3.instrument" and "{contextHandler}"
-    #     And I call "result" with "unsubscribe"
-    #     Then messaging will have posts
-    #          | type                                   | payload.channelId     | payload.contextType |
-    #          | PrivateChannel.onAddContextListener    | {privateChannel.id}   | fdc3.instrument     |
-    #          | PrivateChannel.onUnsubscribe           | {privateChannel.id}   | fdc3.instrument     |
+        Given "contextHandler" pipes context to "context"
+        When I call "privateChannel" with "addContextListener" with parameters "fdc3.instrument" and "{contextHandler}"
+        And I call "result" with "unsubscribe"
+        Then messaging will have posts
+             | type                                   | payload.channelId     | payload.contextType |
+             | PrivateChannel.onAddContextListener    | {privateChannel.id}   | fdc3.instrument     |
+             | PrivateChannel.onUnsubscribe           | {privateChannel.id}   | fdc3.instrument     |
 
-    # Scenario: Adding a Context Listener on a given Private Channel to receive a notification
+    Scenario: Adding a Context Listener on a given Private Channel to receive a notification
 
-    #     Given "instrumentMessageOne" is a "PrivateChannel.broadcast" message on channel "{privateChannel.id}" with context "fdc3.instrument"
-    #     And "resultHandler" pipes context to "contexts"
-    #     When I call "privateChannel" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
-    #     And messaging receives "{instrumentMessageOne}"
-    #     Then "contexts" is an array of objects with the following contents
-    #         | id.ticker    | type              | name         |
-    #         | AAPL         | fdc3.instrument   | Apple        |
+        Given "instrumentMessageOne" is a "PrivateChannel.broadcast" message on channel "{privateChannel.id}" with context "fdc3.instrument"
+        And "resultHandler" pipes context to "contexts"
+        When I call "privateChannel" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+        And messaging receives "{instrumentMessageOne}"
+        Then "contexts" is an array of objects with the following contents
+            | id.ticker    | type              | name         |
+            | AAPL         | fdc3.instrument   | Apple        |
 
     Scenario: Adding and then unsubscribing an "onAddContextListener" listener will send a notification of each event to the agent
 

@@ -19,6 +19,10 @@ const contextMap : Record<string, any> = {
       "COUNTRY_ISOALPHA2": "SE",
       "COUNTRY_ISOALPHA3": "SWE",
     }
+  },
+  "fdc3.unsupported" : {
+    "type": "fdc3.unsupported",
+    "bogus": true
   }
 }
 
