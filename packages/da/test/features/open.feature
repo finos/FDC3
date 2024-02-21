@@ -10,4 +10,10 @@ Feature: Desktop Agent Information
     Then "{result}" is an object with the following contents
       | appId     | instanceId          | 
       | chipShop  | c1                  | 
+
+   Scenario: Open An App Using App ID
+    When I call "api" with "open" with parameters "chipShop" and "{instrumentContext}"
+    Then "{result}" is an object with the following contents
+      | appId     | instanceId          | 
+      | chipShop  | c1                  | 
       

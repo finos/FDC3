@@ -1,8 +1,8 @@
 import { Context, ContextHandler, Listener, PrivateChannel } from "@finos/fdc3";
 import { DefaultChannel } from "./DefaultChannel";
 import { Messaging } from "../Messaging";
-import { PrivateChannelBroadcastAgentRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelOnDisconnectAgentRequest} from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { EVENT_TYPES, PrivateChannelEventListenerType, PrivateChannelEventListenerVoid } from "../listeners/PrivateChannelEventListener";
+import { PrivateChannelBroadcastAgentRequest, PrivateChannelOnDisconnectAgentRequest} from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { PrivateChannelEventListenerType, PrivateChannelEventListenerVoid } from "../listeners/PrivateChannelEventListener";
 import { DefaultContextListener } from "../listeners/DefaultContextListener";
 
 
@@ -22,19 +22,6 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
             type: "PrivateChannel.broadcast"
         }
         return this.messaging.post(message);
-    }
-
-    notifyEventListenerAdded(t: EVENT_TYPES) {
-        const message : PrivateChannelEventListenerAddedAgentRequest = {
-            meta: this.messaging.createMeta() as PrivateChannelEventListenerAddedAgentRequest['meta'],
-            payload: {
-                channelId: this.id,
-                listenerType: t
-            },
-            type: "PrivateChannel.eventListenerAdded"
-        }
-
-        this.messaging.post(message);
     }
 
     onAddContextListener(handler: (contextType?: string | undefined) => void): Listener {

@@ -3,13 +3,24 @@ Feature: Basic User Channels Support
 Background: Desktop Agent API
     Given A Desktop Agent in "api"
     Given "instrumentMessageOne" is a "broadcastRequest" message on channel "one" with context "fdc3.instrument" 
-    Given "emailMessageOne" is a "broadcastRequest" message on channel "one" with context "fdc3.email"
+    Given "countryMessageOne" is a "broadcastRequest" message on channel "one" with context "fdc3.country"
     
     Scenario: List User Channels    
 
         There should be a selection of user channels to choose from
 
         When I call "api" with "getUserChannels"
+        Then "{result}" is an array of objects with the following contents
+            | id    | type              | displayMetadata.color         |
+            | one   | user              | red                           |
+            | two   | user              | green                         |
+            | three | user              | blue                          |
+
+    Scenario: List User Channels via Deprecated API call    
+
+        There should be a selection of user channels to choose from
+
+        When I call "api" with "getSystemChannels"
         Then "{result}" is an array of objects with the following contents
             | id    | type              | displayMetadata.color         |
             | one   | user              | red                           |
@@ -32,11 +43,48 @@ Background: Desktop Agent API
         Then "{result}" is an object with the following contents
             | id    | type              | displayMetadata.color         |
             | one   | user              | red                           |
+    
+    Scenario: Changing Channel to the Channel You're Already On
 
-    Scenario: Adding a Listener on a given User Channel
+        When I call "api" with "joinUserChannel" with parameter "one"
+        And I call "api" with "joinUserChannel" with parameter "one"
+        And I call "api" with "getCurrentChannel"
+        Then "{result}" is an object with the following contents
+            | id    | type              | displayMetadata.color         |
+            | one   | user              | red                           |
+    
+    Scenario: Changing Channel via Deprecated API
+
+        You should be able to join a channel knowing it's ID.
+
+        When I call "api" with "joinChannel" with parameter "one"
+        When I call "api" with "getCurrentChannel"
+        Then "{result}" is an object with the following contents
+            | id    | type              | displayMetadata.color         |
+            | one   | user              | red                           |
+
+    Scenario: Adding a Typed Listener on a given User Channel
         Given "resultHandler" pipes context to "contexts"
         When I call "api" with "joinUserChannel" with parameter "one"
         And I call "api" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+        And messaging receives "{instrumentMessageOne}"
+        Then "{contexts}" is an array of objects with the following contents
+            | id.ticker    | type              | name         |
+            | AAPL         | fdc3.instrument   | Apple        |
+
+    Scenario: Adding an Un-Typed Listener on a given User Channel
+        Given "resultHandler" pipes context to "contexts"
+        When I call "api" with "joinUserChannel" with parameter "one"
+        And I call "api" with "addContextListener" with parameters "{empty}" and "{resultHandler}"
+        And messaging receives "{instrumentMessageOne}"
+        Then "{contexts}" is an array of objects with the following contents
+            | id.ticker    | type              | name         |
+            | AAPL         | fdc3.instrument   | Apple        |
+
+    Scenario: Adding an Un-Typed Listener on a given User Channel (deprecated API)
+        Given "resultHandler" pipes context to "contexts"
+        When I call "api" with "joinUserChannel" with parameter "one"
+        And I call "api" with "addContextListener" with parameter "{resultHandler}"
         And messaging receives "{instrumentMessageOne}"
         Then "{contexts}" is an array of objects with the following contents
             | id.ticker    | type              | name         |
@@ -54,13 +102,14 @@ Background: Desktop Agent API
 
         Given "resultHandler" pipes context to "contexts"
         When messaging receives "{instrumentMessageOne}"
+        And messaging receives "{countryMessageOne}"
         And I call "api" with "joinUserChannel" with parameter "one"
         And I call "api" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
         Then "{contexts}" is an array of objects with the following contents
             | id.ticker    | type              | name         |
             | AAPL         | fdc3.instrument   | Apple        |
 
-    Scenario: Joining a user channel replays Context to listeners
+    Scenario: Joining a user channel replays Context to typed listeners
 
         Although the message is sent before the channel is joined, history from the channel will get replayed
         to the listener
