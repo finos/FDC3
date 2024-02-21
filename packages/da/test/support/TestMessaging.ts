@@ -1,10 +1,10 @@
 import { AppIdentifier } from "@finos/fdc3";
-import { AgentRequestMessage, AgentResponseMessage } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AgentRequestMessage, AgentResponseMessage, IntentResult } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { v4 as uuidv4 } from 'uuid'
 import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";
 import { RegisterableListener } from "../listeners/RegisterableListener";
 import { FindIntent } from "./responses/FindIntent";
-import { FIndIntentByContext } from "./responses/FindIntentByContext";
+import { FindIntentByContext } from "./responses/FindIntentByContext";
 import { ICreateLog } from "@cucumber/cucumber/lib/runtime/attachment_manager";
 import { RaiseIntent } from "./responses/RaiseIntent";
 
@@ -23,11 +23,15 @@ export interface AutomaticResponse {
 }
 
 function matchStringOrUndefined(expected: string | undefined, actual: string | undefined) {
-    if (expected) { 
+    if ((expected) && (actual)) { 
         return expected == actual
     } else {
         return true
     }
+}
+
+function matchString(expected: string | undefined, actual: string | undefined) {
+    return expected == actual
 }
 
 function removeGenericType(t: string) {
@@ -57,11 +61,11 @@ function matchResultTypes(expected: string | undefined, actual: string | undefin
     }
 }
 
-export function intentDetailMatches(instance: IntentDetail, template: IntentDetail) : boolean {
+export function intentDetailMatches(instance: IntentDetail, template: IntentDetail, contextMustMatch: boolean) : boolean {
     return matchStringOrUndefined(template.app?.appId, instance.app?.appId) &&
     matchStringOrUndefined(template.app?.instanceId, instance.app?.instanceId) &&
     matchStringOrUndefined(template.intent, instance.intent) &&
-    matchStringOrUndefined(template.context, instance.context) &&
+    (contextMustMatch ? matchString(template.context, instance.context) : matchStringOrUndefined(template.context, instance.context)) &&
     matchResultTypes(template.resultType, instance.resultType)
 }
 
@@ -70,9 +74,10 @@ export class TestMessaging extends AbstractMessaging {
     readonly allPosts : AgentRequestMessage[] = []
     readonly listeners : Map<string, RegisterableListener> = new Map()
     readonly intentDetails : IntentDetail[] = []
+
     readonly automaticResponses : AutomaticResponse[] = [ 
         new FindIntent(),
-        new FIndIntentByContext(),
+        new FindIntentByContext(),
         new RaiseIntent()
     ]
     
@@ -132,4 +137,16 @@ export class TestMessaging extends AbstractMessaging {
             }
         })
     }
+
+    private ir: IntentResult = {
+
+    }
+
+    getIntentResult() {
+        return this.ir
+    }
+
+    setIntentResult(o : IntentResult) {
+        this.ir = o
+    } 
 }

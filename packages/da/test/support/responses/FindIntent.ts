@@ -19,7 +19,7 @@ export class FindIntent implements AutomaticResponse {
             resultType
         }
 
-        const relevant = m.intentDetails.filter(id => intentDetailMatches(id, template))
+        const relevant = m.intentDetails.filter(id => intentDetailMatches(id, template, false))
         const request = this.createFindIntentResponseMessage(intentRequest, relevant)
         setTimeout(() => { m.receive(request) },100)
         return Promise.resolve()

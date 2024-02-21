@@ -10,7 +10,7 @@ Background: Desktop Agent API
         There should be a selection of user channels to choose from
 
         When I call "api" with "getUserChannels"
-        Then "result" is an array of objects with the following contents
+        Then "{result}" is an array of objects with the following contents
             | id    | type              | displayMetadata.color         |
             | one   | user              | red                           |
             | two   | user              | green                         |
@@ -21,7 +21,7 @@ Background: Desktop Agent API
         At startup, the user channel shouldn't be set
 
         When I call "api" with "getCurrentChannel"
-        Then "result" is null
+        Then "{result}" is null
 
     Scenario: Changing Channel
 
@@ -29,7 +29,7 @@ Background: Desktop Agent API
 
         When I call "api" with "joinUserChannel" with parameter "one"
         When I call "api" with "getCurrentChannel"
-        Then "result" is an object with the following contents
+        Then "{result}" is an object with the following contents
             | id    | type              | displayMetadata.color         |
             | one   | user              | red                           |
 
@@ -38,7 +38,7 @@ Background: Desktop Agent API
         When I call "api" with "joinUserChannel" with parameter "one"
         And I call "api" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
         And messaging receives "{instrumentMessageOne}"
-        Then "contexts" is an array of objects with the following contents
+        Then "{contexts}" is an array of objects with the following contents
             | id.ticker    | type              | name         |
             | AAPL         | fdc3.instrument   | Apple        |
 
@@ -46,7 +46,7 @@ Background: Desktop Agent API
         Given "resultHandler" pipes context to "contexts"
         When I call "api" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
         And messaging receives "{instrumentMessageOne}"
-        Then "contexts" is empty
+        Then "{contexts}" is empty
 
     Scenario: Adding a listener to a user channel replays Context
 
@@ -56,7 +56,7 @@ Background: Desktop Agent API
         When messaging receives "{instrumentMessageOne}"
         And I call "api" with "joinUserChannel" with parameter "one"
         And I call "api" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
-        Then "contexts" is an array of objects with the following contents
+        Then "{contexts}" is an array of objects with the following contents
             | id.ticker    | type              | name         |
             | AAPL         | fdc3.instrument   | Apple        |
 
@@ -69,7 +69,7 @@ Background: Desktop Agent API
         When messaging receives "{instrumentMessageOne}"
         And I call "api" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
         And I call "api" with "joinUserChannel" with parameter "one"
-        Then "contexts" is an array of objects with the following contents
+        Then "{contexts}" is an array of objects with the following contents
             | id.ticker    | type              | name         |
             | AAPL         | fdc3.instrument   | Apple        |
 
@@ -82,7 +82,7 @@ Background: Desktop Agent API
         And messaging receives "{instrumentMessageOne}"
         And I call "theListener" with "unsubscribe"
         And messaging receives "{instrumentMessageOne}"
-        Then "contexts" is an array of objects with the following contents
+        Then "{contexts}" is an array of objects with the following contents
             | id.ticker    | type              | name         |
             | AAPL         | fdc3.instrument   | Apple        |
         
@@ -93,13 +93,13 @@ Background: Desktop Agent API
         And I call "api" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
         And I call "api" with "leaveCurrentChannel"
         And messaging receives "{instrumentMessageOne}"
-        Then "contexts" is an array of objects with the following contents
+        Then "{contexts}" is an array of objects with the following contents
             | id.ticker    | type              | name         |
 
     Scenario: Joining a user channel that doesn't exist throws an error
 
         When I call "api" with "joinUserChannel" with parameter "nonexistent"
-        Then "result" is an error with message "NoChannelFound"
+        Then "{result}" is an error with message "NoChannelFound"
 
     Scenario: You can get the details of the last context type sent
 
@@ -109,7 +109,7 @@ Background: Desktop Agent API
         And I refer to "result" as "theChannel"
         And messaging receives "{instrumentMessageOne}"
         And I call "theChannel" with "getCurrentContext"
-        Then "result" is an object with the following contents
+        Then "{result}" is an object with the following contents
             | id.ticker    | type              | name         |
             | AAPL         | fdc3.instrument   | Apple        |
 
@@ -121,7 +121,7 @@ Background: Desktop Agent API
         And I refer to "result" as "theChannel"
         And messaging receives "{instrumentMessageOne}"
         And I call "theChannel" with "getCurrentContext" with parameter "fdc3.email"
-        Then "result" is null
+        Then "{result}" is null
 
     Scenario: Rejoining a channel shouldn't replay context already seen
 

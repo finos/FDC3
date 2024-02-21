@@ -2,7 +2,7 @@ import { AgentRequestMessage, FindIntentsByContextAgentRequest, FindIntentsByCon
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from "../TestMessaging";
 
 
-export class FIndIntentByContext implements AutomaticResponse {
+export class FindIntentByContext implements AutomaticResponse {
 
     filter(t: string) {
         return t == 'findIntentsByContextRequest'
@@ -16,7 +16,7 @@ export class FIndIntentByContext implements AutomaticResponse {
             context
         }
 
-        const relevant = m.intentDetails.filter(id => intentDetailMatches(id, template))
+        const relevant = m.intentDetails.filter(id => intentDetailMatches(id, template, true))
         const request = this.createFindIntentsByContextResponseMessage(intentRequest, relevant)
         setTimeout(() => { m.receive(request) }, 100)
         return Promise.resolve()

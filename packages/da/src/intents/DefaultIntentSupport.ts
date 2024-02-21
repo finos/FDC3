@@ -109,8 +109,8 @@ export class DefaultIntentSupport implements IntentSupport {
             return this.raiseSpecificIntent(intent, context, matched.apps[0])
         } else {
             // need to do the intent resolver
-            const chosentIntent = await this.intentResolver.resolveIntent([matched])
-            return this.raiseSpecificIntent(intent, context, chosentIntent.chosenApp)
+            const chosentIntent = await this.intentResolver.chooseIntent([matched])
+            return this.raiseSpecificIntent(chosentIntent.intent.name, context, chosentIntent.chosenApp)
         }
     }
 
@@ -118,9 +118,8 @@ export class DefaultIntentSupport implements IntentSupport {
         var matched = await this.findIntentsByContext(context)
 
         if (app) {
-            matched = matched
-                .map(m => this.filterApps(m, app))
-                .filter(m => m.apps.length == 0)
+            matched = matched.map(m => this.filterApps(m, app))
+            matched = matched.filter(m => m.apps.length > 0)
         }
 
         if (matched.length == 0) {
@@ -129,7 +128,7 @@ export class DefaultIntentSupport implements IntentSupport {
             return this.raiseSpecificIntent(matched[0].intent.name, context, matched[0].apps[0])
         } else {
             // need to do the intent resolver
-            const chosentIntent = await this.intentResolver.resolveIntent(matched)
+            const chosentIntent = await this.intentResolver.chooseIntent(matched)
             return this.raiseSpecificIntent(chosentIntent.intent.name, context, chosentIntent.chosenApp)
         }
     }
