@@ -1,6 +1,8 @@
 import { Given } from '@cucumber/cucumber'
 import { CustomWorld } from '../world/index';
 import { handleResolve } from '../support/matching';
+import { RaiseIntentAgentRequest } from '@finos/fdc3/dist/bridging/BridgingTypes';
+import { Context, ContextMetadata } from '@finos/fdc3';
 
 Given("app {string} resolves intent {string}", function (this: CustomWorld, appStr: string, intent: string) {
     const [ appId, instanceId ] = appStr.split("/")
@@ -91,4 +93,39 @@ Given("Raise Intent will return a private channel", function (this: CustomWorld)
     })
 })
 
-Given('{string} is a {string} message with intent {string} and context {string}', function (string, string2, string3, string4) {
+Given('{string} is a raiseIntentRequest message with intent {string} and context {string}', function (this: CustomWorld, field: string, intent: string, context: string) {
+    const msg : RaiseIntentAgentRequest = {
+        type: 'raiseIntentRequest',
+        meta: {
+            requestUuid: this.messaging?.createUUID()!!,
+            timestamp: new Date(),
+            destination: {
+                desktopAgent: '',
+                appId: ''
+            },
+            source: {
+                appId: 'something'
+            }
+        },
+        payload: {
+            app: {
+                appId: 'some-app-id',
+                desktopAgent: "some-desktop-agent"
+            },
+            context: handleResolve(context, this),
+            intent
+        }
+    }
+
+    this.props[field] = msg
+})
+
+Given('{string} pipes intent to {string}', function(this: CustomWorld, intentHandlerName: string, field: string) {
+    this.props[field] = []
+    this.props[intentHandlerName] = (context: Context, metadata: ContextMetadata) => {
+      this.props[field].push({
+        context,
+        metadata
+      })
+    }
+  })

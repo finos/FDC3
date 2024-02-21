@@ -17,10 +17,12 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
     }
 
     filter(m: any): boolean {
-        return (m.type == 'intent') && (m.payload.intent == this.intent)
+        return (m.type == 'raiseIntentRequest') && (m.payload.intent == this.intent)
     }
    
     action(m: any) : void {
-        this.handler(m.payload.context, m.payload.metadata)
+        this.handler(m.payload.context, {
+            source: m.meta.source
+        })
     }
 }
