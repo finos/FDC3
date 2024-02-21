@@ -113,7 +113,7 @@ function ImplementationsShowcase(initialFilter) {
 export default (props) => {
 	const context = useDocusaurusContext();
 	const siteConfig = context.siteConfig;
-	const editUrl = `${siteConfig.customFields.repoUrl}/edit/master/website/data/community.json`;
+	const editUrl = `${siteConfig.customFields.repoUrl}/edit/main/website/data/community.json`;
 
 	return <Layout>
 		<Container>

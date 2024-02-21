@@ -39,7 +39,7 @@ env:
   GIT_CSV_HOST: "gitlab.com"
   GIT_CSV_ORG: "finos-admin"
   GIT_CSV_REPO: sources
-  GIT_CSV_BRANCH: master
+  GIT_CSV_BRANCH: main
   REPO_NAME: ${{ github.event.repository.name }}
   ORG_NAME: ${{ github.event.repository.owner.login }}
   MEETING_DATE: ${{ github.event.issue.closed_at }}
@@ -61,13 +61,13 @@ jobs:
     - name: Checking out FINOS metadata
       run: git clone https://finos-admin:$FINOS_TOKEN@github.com/finos-admin/metadata.git >/dev/null
     - name: Downloading github-finos-meetings.csv
-      run: curl -s https://raw.githubusercontent.com/finos/open-developer-platform/master/scripts/checkout-meeting-attendance.sh | bash
+      run: curl -s https://raw.githubusercontent.com/finos/open-developer-platform/main/scripts/checkout-meeting-attendance.sh | bash
     - name: Checkout metadata dependencies
       run: cd metadata-tool ; lein deps
     - name: Generating a new github-finos-meetings.csv
-      run: curl -s https://raw.githubusercontent.com/finos/open-developer-platform/master/scripts/generate-meeting-attendance.sh | bash
+      run: curl -s https://raw.githubusercontent.com/finos/open-developer-platform/main/scripts/generate-meeting-attendance.sh | bash
     - name: Pushing github-finos-meetings.csv changes to Git
-      run: curl -s https://raw.githubusercontent.com/finos/open-developer-platform/master/scripts/submit-meeting-attendance.sh | bash
+      run: curl -s https://raw.githubusercontent.com/finos/open-developer-platform/main/scripts/submit-meeting-attendance.sh | bash
     - name: Check unknowns
       if: github.event.action == 'closed' || (github.event.action == 'labeled' && github.event.label.name == 'indexed')
       run: |

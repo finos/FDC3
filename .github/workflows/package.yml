@@ -1,13 +1,13 @@
 name: npm-build
 
 # Only trigger on:
-# - master branch
+# - main branch
 # - PR or Pull Request event types
 # - Exclide Docusaurus files: this file, docs/** and website/**
 on:
   push:
     branches:
-      - master
+      - main
       - release/**
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
@@ -15,7 +15,7 @@ on:
       - 'website/**'
   pull_request:
     branches:
-      - master
+      - main
       - release/*
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
