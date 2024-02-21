@@ -16,11 +16,11 @@ export class DefaultAppSupport implements AppSupport {
     }
 
     hasDesktopAgentBridging(): boolean {
-        throw new Error("Method not implemented.");
+        return true
     }
 
     hasOriginatingAppMetadata(): boolean {
-        throw new Error("Method not implemented.");
+        return true
     }
     
     findInstances(_app: AppIdentifier): Promise<AppIdentifier[]> {

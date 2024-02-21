@@ -4,6 +4,15 @@ import { handleResolve } from '../support/matching';
 import { RaiseIntentAgentRequest } from '@finos/fdc3/dist/bridging/BridgingTypes';
 import { Context, ContextMetadata } from '@finos/fdc3';
 
+Given("app {string}", function (this: CustomWorld, appStr: string) {
+    const [ appId, instanceId ] = appStr.split("/")
+    const app = { appId, instanceId }
+    this.messaging?.addAppIntentDetail({
+        app
+    })
+    this.props[instanceId] = app
+})
+
 Given("app {string} resolves intent {string}", function (this: CustomWorld, appStr: string, intent: string) {
     const [ appId, instanceId ] = appStr.split("/")
     const app = { appId, instanceId }
