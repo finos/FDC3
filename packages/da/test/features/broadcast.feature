@@ -6,25 +6,26 @@ Feature: Broadcasting
     Given "countryMessageOne" is a "broadcastRequest" message on channel "channel-name" with context "fdc3.country" 
     Given "instrumentContext" is a "fdc3.instrument" context
 
-    # Scenario: Broadcasting on a named app channel
+    Scenario: Broadcasting on a named app channel
 
-    #     When I call "api" with "getOrCreateChannel" with parameter "channel-name"
-    #     And I refer to "result" as "channel1"
-    #     And I call "channel1" with "broadcast" with parameter "{instrumentContext}"
-    #     Then messaging will have posts
-    #         | payload.channelId    | payload.context.type              | payload.context.name         |
-    #         | channel-name         | fdc3.instrument                   | Apple                        |
+        When I call "api" with "getOrCreateChannel" with parameter "channel-name"
+        And I refer to "result" as "channel1"
+        And I call "channel1" with "broadcast" with parameter "{instrumentContext}"
+        Then messaging will have posts
+            | payload.channelId    | payload.context.type              | payload.context.name         |
+            | channel-name         | fdc3.instrument                   | Apple                        |
     
     Scenario: Broadcasting using the api directly, with no user channel set
 
         When I call "api" with "broadcast" with parameter "{instrumentContext}"
-        Then messaging will have no new posts
+        Then messaging will have posts
+            | payload.channelId    | payload.context.type              | payload.context.name         |
 
-    #  Scenario: Broadcasting using the api directly, with user channel set
+     Scenario: Broadcasting using the api directly, with user channel set
 
-    #     When I call "api" with "joinUserChannel" with parameter "one"
-    #     And I call "api" with "broadcast" with parameter "{instrumentContext}"
-    #     Then messaging will have posts
-    #         | payload.channelId    | payload.context.type              | payload.context.name         |
-    #         | one                  | fdc3.instrument                   | Apple                        |
+        When I call "api" with "joinUserChannel" with parameter "one"
+        And I call "api" with "broadcast" with parameter "{instrumentContext}"
+        Then messaging will have posts
+            | payload.channelId    | payload.context.type              | payload.context.name         |
+            | one                  | fdc3.instrument                   | Apple                        |
     
