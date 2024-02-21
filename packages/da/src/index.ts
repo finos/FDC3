@@ -6,7 +6,6 @@ import { IntentSupport } from "./intents/IntentSupport";
 import { ChannelSupport } from "./channels/ChannelSupport";
 
 import { StatefulChannel } from "./channels/StatefulChannel";
-import { DefaultContextListener } from "./listeners/DefaultContextListener";
 import { DesktopAgentProvider } from "./DesktopAgentProvider";
 import { DefaultIntentSupport } from "./intents/DefaultIntentSupport";
 import { DefaultChannelSupport } from "./channels/DefaultChannelSupport";
@@ -18,7 +17,6 @@ export {
     BasicDesktopAgent,
     DefaultChannel,
     type StatefulChannel,
-    DefaultContextListener,
     type AppSupport,
     type IntentSupport,
     type ChannelSupport,
