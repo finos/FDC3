@@ -7,6 +7,7 @@ import { FindIntent } from "./responses/FindIntent";
 import { FindIntentByContext } from "./responses/FindIntentByContext";
 import { ICreateLog } from "@cucumber/cucumber/lib/runtime/attachment_manager";
 import { RaiseIntent } from "./responses/RaiseIntent";
+import { GetAppMetadata } from "./responses/GetAppMetadata";
 
 export interface IntentDetail {
     app?: AppIdentifier,
@@ -78,7 +79,8 @@ export class TestMessaging extends AbstractMessaging {
     readonly automaticResponses : AutomaticResponse[] = [ 
         new FindIntent(),
         new FindIntentByContext(),
-        new RaiseIntent()
+        new RaiseIntent(),
+        new GetAppMetadata()
     ]
     
     getSource(): AppIdentifier {
