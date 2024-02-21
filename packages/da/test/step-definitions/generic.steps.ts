@@ -41,10 +41,11 @@ Given('A Desktop Agent in {string}', function (this: CustomWorld, field: string)
         new DefaultChannelSupport(this.messaging, createDefaultChannels(this.messaging), null),
         new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this)),
         new DefaultAppSupport(this.messaging, {
-            appId: "Test App Id",
-            desktopAgent: "Test DA",
-            instanceId: "123-ABC"
-        }),
+                appId: "Test App Id",
+                desktopAgent: "Test DA",
+                instanceId: "123-ABC"
+            }, 'cucumber-desktop-agent'
+        ),
         "2.0",
         "cucumber-provider"
     )

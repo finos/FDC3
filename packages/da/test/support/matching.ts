@@ -4,6 +4,7 @@ import expect from "expect";
 import { DataTable } from "@cucumber/cucumber";
 
 export function doesRowMatch(cw: CustomWorld, t: Record<string, string>, data: any): boolean {
+    cw.log(`Comparing with ${data}`)
     for (const [field, actual] of Object.entries(t)) {
         const found = JSONPath({ path: field, json: data })[0];
         const resolved = handleResolve(actual, cw)
