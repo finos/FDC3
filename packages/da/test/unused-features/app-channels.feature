@@ -24,7 +24,7 @@ Feature: Basic User Channels Support
     And I call "channel1" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
     And I call "channel1" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
     And messaging receives "{instrumentMessageOne}"
-    Then "contexts" is an array of objects with the following contents
+    Then "{contexts}" is an array of objects with the following contents
             | id.ticker    | type              | name         |
             | AAPL         | fdc3.instrument   | Apple        |
             | AAPL         | fdc3.instrument   | Apple        |
@@ -39,7 +39,7 @@ Feature: Basic User Channels Support
         And I call "channel1" with "addContextListener" with parameter "{resultHandler}"
         And messaging receives "{instrumentMessageOne}"
         And messaging receives "{countryMessageOne}"
-        Then "contexts" is an array of objects with the following contents
+        Then "{contexts}" is an array of objects with the following contents
                 | type              | name                   |
                 | fdc3.instrument   | Apple                  |
                 | fdc3.country      | Sweden                 |
@@ -54,7 +54,7 @@ Feature: Basic User Channels Support
         And I call "channel1" with "addContextListener" with parameters "{null}" and "{resultHandler}"
         And messaging receives "{instrumentMessageOne}"
         And messaging receives "{countryMessageOne}"
-        Then "contexts" is an array of objects with the following contents
+        Then "{contexts}" is an array of objects with the following contents
                 | type              | name                   |
                 | fdc3.instrument   | Apple                  |
                 | fdc3.country      | Sweden                 |

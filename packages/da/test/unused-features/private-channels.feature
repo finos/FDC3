@@ -22,7 +22,7 @@ Background: Desktop Agent API
         And "resultHandler" pipes context to "contexts"
         When I call "privateChannel" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
         And messaging receives "{instrumentMessageOne}"
-        Then "contexts" is an array of objects with the following contents
+        Then "{contexts}" is an array of objects with the following contents
             | id.ticker    | type              | name         |
             | AAPL         | fdc3.instrument   | Apple        |
 

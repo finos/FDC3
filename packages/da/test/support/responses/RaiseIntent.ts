@@ -1,4 +1,4 @@
-import { AgentRequestMessage, IntentResult, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AgentRequestMessage, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from "../TestMessaging";
 
 
@@ -26,39 +26,14 @@ export class RaiseIntent implements AutomaticResponse {
         return out
     }
 
-    createRaiseIntentResultResponseMesssage(intentRequest: RaiseIntentAgentRequest, using: IntentDetail, m: TestMessaging) : RaiseIntentResultAgentResponse {
-        var intentResult : IntentResult = {}
-
-        // here, we're just providing a few canned responses required for the tests
-        switch (using.resultType) {
-            case "channel": 
-                intentResult.channel = {
-                    type: 'app',
-                    id: 'result-channel',
-                    displayMetadata: {
-                        color: "purple",
-                        name: "Result Channel"
-                    }
-                }
-                break;
-            case "fdc3.order": 
-                intentResult.context = {
-                    type: 'fdc3.order',
-                    id: {
-                        myOMS: "OMS-9",
-                    },
-                    name: "Big Order 9"
-                }
-                break;
-        }
-        
+    createRaiseIntentResultResponseMesssage(intentRequest: RaiseIntentAgentRequest, m: TestMessaging) : RaiseIntentResultAgentResponse {
         const out: RaiseIntentResultAgentResponse = {
             meta: {
                 ...intentRequest.meta,
                 responseUuid: m.createUUID()
             },
             payload: {
-                intentResult
+                intentResult:m.getIntentResult()
             },
             type: "raiseIntentResultResponse"
         }
@@ -76,7 +51,7 @@ export class RaiseIntent implements AutomaticResponse {
             context
         }
 
-        const relevant = m.intentDetails.filter(id => intentDetailMatches(id, template))
+        const relevant = m.intentDetails.filter(id => intentDetailMatches(id, template, false))
         const using = relevant[0]
 
         // this sends out the intent resolution
@@ -84,7 +59,7 @@ export class RaiseIntent implements AutomaticResponse {
         setTimeout(() => { m.receive(out1) }, 100)
 
         // next, send the result response
-        const out2 = this.createRaiseIntentResultResponseMesssage(intentRequest, using, m) 
+        const out2 = this.createRaiseIntentResultResponseMesssage(intentRequest, m) 
         setTimeout(() => { m.receive(out2) }, 300)
         return Promise.resolve()
     }

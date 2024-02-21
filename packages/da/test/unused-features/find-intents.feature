@@ -8,6 +8,7 @@ Feature: Basic Intents Support
         And app "chipShop/c2" resolves intent "OrderFood" with result type "channel<fdc3.chips>"
         And app "library/l1" resolves intent "BorrowBooks" with result type "channel<fdc3.book>"
         And app "bank/b1" resolves intent "Buy" with context "fdc3.instrument" and result type "fdc3.order"
+        And app "bank/b1" resolves intent "Sell" with context "fdc3.instrument" and result type "fdc3.order"
         And app "travelAgent/t1" resolves intent "Buy" with context "fdc3.currency" and result type "fdc3.order"
 
         And "instrumentContext" is a "fdc3.instrument" context
@@ -27,7 +28,7 @@ Feature: Basic Intents Support
         Scenario: Find Intent can return an error when an intent doesn't match
 
             When I call "api" with "findIntent" with parameter "Bob"
-            Then "result" is an error with message "NoAppsFound"
+            Then "{result}" is an error with message "NoAppsFound"
 
         Scenario: Find Intent can filter by a context type
 
@@ -55,29 +56,9 @@ Feature: Basic Intents Support
             Then "{result}" is an array of objects with the following contents
                 | intent.name        | apps[0].appId | apps.length    | 
                 | Buy                | bank          | 1              |
+                | Sell               | bank          | 1              |
 
         Scenario: Find Intents By Context can return an error when an intent doesn't match
 
             When I call "api" with "findIntentsByContext" with parameter "{crazyContext}"
-            Then "result" is an error with message "NoAppsFound"    
-
-    Scenario: Raising A Specific Intent to the server, returning a context object
-
-        When I call "api" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{b1}"
-        Then "{result}" is an object with the following contents
-             | source.appId | source.instanceId     | intent |
-             | bank         | b1                    | Buy    |
-        And I call "result" with "getResult"
-        Then "{result}" is an object with the following contents
-             | type               | name        |
-             | fdc3.order         | Big Order 9 | 
-
-    Scenario: Raising An Invalid Intent to the server
-        
-        When I call "api" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{c1}"
-        Then "result" is an error with message "NoAppsFound"    
-
-    # Scenario: Invoking the intent resolver when it's not clear which intent is required
-
-    #     When I call "api" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
-        
+            Then "{result}" is an error with message "NoAppsFound"    

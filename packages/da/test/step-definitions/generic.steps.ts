@@ -20,7 +20,7 @@ class SimpleIntentResolver implements IntentResolver {
 
     cw: CustomWorld
    
-    resolveIntent(appIntents: AppIntent[]): SingleAppIntent {
+    chooseIntent(appIntents: AppIntent[]): SingleAppIntent {
         const out = {
             intent: appIntents[0].intent,
             chosenApp :appIntents[0].apps[0]
@@ -111,11 +111,11 @@ Then('{string} is an object with the following contents', function (this: Custom
 });
 
 Then('{string} is null', function (this: CustomWorld, field: string) {
-    expect(this.props[field]).toBeNull()
+    expect(handleResolve(field, this)).toBeNull()
 })
 
 Then('{string} is empty', function (this: CustomWorld, field: string) {
-    expect(this.props[field]).toHaveLength(0)
+    expect(handleResolve(field, this)).toHaveLength(0)
 })
 
 Then('{string} is {string}', function (this: CustomWorld, field: string, expected: string) {
@@ -125,7 +125,7 @@ Then('{string} is {string}', function (this: CustomWorld, field: string, expecte
 })
 
 Then('{string} is an error with message {string}', function (this: CustomWorld, field: string, errorType: string) {
-    expect(this.props[field]['message']).toBe(errorType)  
+    expect(handleResolve(field, this)['message']).toBe(errorType)  
 })
 
 Given('{string} is a invocation counter into {string}', function(this: CustomWorld, handlerName: string, field: string) {
