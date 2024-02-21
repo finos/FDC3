@@ -1,7 +1,7 @@
 import { AppIdentifier, AppMetadata, Context } from "@finos/fdc3";
 import { AppSupport } from "./AppSupport";
 import { Messaging } from "../Messaging";
-import { AppDestinationIdentifier, GetAppMetadataAgentRequest, GetAppMetadataAgentRequestMeta, GetAppMetadataAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppDestinationIdentifier, FindInstancesAgentRequest, FindInstancesAgentRequestMeta, FindInstancesAgentResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentRequestMeta, GetAppMetadataAgentResponse, OpenAgentRequest, OpenAgentRequestMeta, OpenAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 
 export class DefaultAppSupport implements AppSupport {
@@ -9,10 +9,12 @@ export class DefaultAppSupport implements AppSupport {
     readonly messaging: Messaging
     readonly appIdentifier: AppIdentifier
     private thisAppMetadata: AppMetadata | null = null
+    private readonly desktopAgent: string
 
-    constructor(messaging: Messaging, appIdentifier: AppIdentifier) {
+    constructor(messaging: Messaging, appIdentifier: AppIdentifier, desktopAgent: string) {
         this.messaging = messaging
         this.appIdentifier = appIdentifier
+        this.desktopAgent = desktopAgent
     }
 
     hasDesktopAgentBridging(): boolean {
@@ -23,8 +25,18 @@ export class DefaultAppSupport implements AppSupport {
         return true
     }
     
-    findInstances(_app: AppIdentifier): Promise<AppIdentifier[]> {
-        throw new Error("Method not implemented.");
+    findInstances(app: AppIdentifier): Promise<AppIdentifier[]> {
+        const request : FindInstancesAgentRequest = {
+            type: "findInstancesRequest",
+            payload: {
+                app
+            },
+            meta: this.messaging.createMeta() as FindInstancesAgentRequestMeta
+        }
+
+        return this.messaging.exchange<FindInstancesAgentResponse>(request, "findInstancesResponse").then(d => {
+            return d.payload.appIdentifiers
+        });
     }
 
     getAppMetadata(app: AppIdentifier): Promise<AppMetadata> {
@@ -41,8 +53,23 @@ export class DefaultAppSupport implements AppSupport {
         });
     }
 
-    open(_app: AppIdentifier, _context?: Context | undefined): Promise<AppIdentifier> {
-        throw new Error("Method not implemented.");
+    open(app: AppIdentifier, context?: Context | undefined): Promise<AppIdentifier> {
+        const request : OpenAgentRequest = {
+            type: "openRequest",
+            payload: {
+                app: {
+                    appId: app.appId,
+                    instanceId: app.instanceId,
+                    desktopAgent: this.desktopAgent
+                },
+                context
+            },
+            meta: this.messaging.createMeta() as OpenAgentRequestMeta
+        }
+
+        return this.messaging.exchange<OpenAgentResponse>(request, "openResponse").then(d => {
+            return d.payload.appIdentifier
+        });
     }
     
     async getThisAppMetadata(): Promise<AppMetadata> {
