@@ -39,3 +39,27 @@ export type Intent = StandardIntent | (string & {});
  * @example `ContextTypeFor<'StartCall'>` is equivalent to `'fdc3.contact' | 'fdc3.contactList' | 'fdc3.nothing'`
  */
 export type ContextTypeFor<I extends StandardIntent> = typeof IntentsConfiguration[I][number];
+
+/**
+ * @deprecated Use {@link StandardIntent} instead
+ */
+export enum Intents {
+  CreateInteraction = 'CreateInteraction',
+  SendChatMessage = 'SendChatMessage',
+  StartCall = 'StartCall',
+  StartChat = 'StartChat',
+  StartEmail = 'StartEmail',
+  ViewAnalysis = 'ViewAnalysis',
+  ViewChat = 'ViewChat',
+  ViewChart = 'ViewChart',
+  ViewContact = 'ViewContact',
+  ViewHoldings = 'ViewHoldings',
+  ViewInstrument = 'ViewInstrument',
+  ViewInteractions = 'ViewInteractions',
+  ViewMessages = 'ViewMessages',
+  ViewNews = 'ViewNews',
+  ViewOrders = 'ViewOrders',
+  ViewProfile = 'ViewProfile',
+  ViewQuote = 'ViewQuote',
+  ViewResearch = 'ViewResearch',
+}
