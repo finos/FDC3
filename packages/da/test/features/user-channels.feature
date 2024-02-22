@@ -172,6 +172,4 @@ Background: Desktop Agent API
         And I call "theChannel" with "getCurrentContext" with parameter "fdc3.email"
         Then "{result}" is null
 
-    Scenario: Rejoining a channel shouldn't replay context already seen
-
 
