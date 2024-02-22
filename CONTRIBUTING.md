@@ -1,6 +1,6 @@
 # Contributing to FDC3
 
-This document provides the contribution policy for the FDC3 Standard (the [Working Group](GOVERNANCE.md)) and is based on the [Community Specification Contribution Policy 1.0](https://github.com/finos/standards-project-blueprint/blob/main/governance-documents/6._Contributing.md).
+This document provides the contribution policy for the FDC3 Standard (the [Working Group](GOVERNANCE.md)) and is based on the [Community Specification Contribution Policy 1.0](https://spdx.org/licenses/Community-Spec-1.0.html).
 
 _NOTE:_ Commits and pull requests to FINOS repositories will only be accepted from those participants with an active, executed Individual Contributor License Agreement (ICLA) with FINOS, _OR_ who are covered under an existing and active Corporate Contribution License Agreement (CCLA) executed with FINOS. Commits from individuals not covered under an ICLA or CCLA will be flagged and blocked by the [Linux Foundation `EasyCLA` tool](https://easycla.lfx.linuxfoundation.org/#/). Please note that some CCLAs require individuals/employees to be explicitly named on the CCLA.
 
