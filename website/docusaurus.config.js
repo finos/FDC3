@@ -49,6 +49,11 @@ module.exports={
   themes: ['@docusaurus/theme-mermaid'],
   "plugins": [],
   "themeConfig": {
+    "algolia": {
+      "appId": "FMGF6HHA39",
+      "apiKey": process.env.ALGOLIA_API_KEY ? process.env.ALGOLIA_API_KEY : "none",
+      "indexName": "fdc3-finos",
+    },
     "navbar": {
       "title": "FDC3",
       "logo": {
