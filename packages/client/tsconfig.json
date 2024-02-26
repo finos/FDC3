@@ -9,7 +9,7 @@
     ],
     "references": [
         {
-            "path": "../da"
+            "path": "../da-proxy"
         },
         {
             "path": "../fdc3-common"

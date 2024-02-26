@@ -1,0 +1,13 @@
+default:
+  format: 
+    - html:dist/cucumber-report.html
+    - "@cucumber/pretty-formatter"
+  paths: 
+   - test/features/*.feature
+  require: 
+   - test/step-definitions/*.steps.ts 
+   - test/support/*.ts
+   - test/world/index.ts
+  requireModule:
+   - ts-node/register
+    
