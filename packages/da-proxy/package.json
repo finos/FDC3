@@ -1,5 +1,5 @@
 {
-  "name": "da",
+  "name": "da-proxy",
   "main": "src/index.ts",
   "scripts": {
     "build": "nyc --reporter=lcov --reporter=text cucumber-js"
