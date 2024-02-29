@@ -20,8 +20,7 @@ A Desktop Agent is a desktop component (or aggregate of components) that serves 
 Examples of Desktop Agents include:
 
 - Autobahn
-- Finsemble
-- Glue42
+- io.Connect
 - OpenFin
 - Refinitiv Eikon
 
@@ -51,6 +50,14 @@ The FDC3 API specification consists of interfaces.  It is expected that each Des
 - [`Listener`](ref/Types#listener)
 
 Other interfaces defined in the spec are not critical to define as concrete types.  Rather, the Desktop Agent should expect to have objects of the interface shape passed into or out of their library.
+
+FDC3 supports multiple types of desktop agents:
+
+- [Preload DAs](../specs/preloadDesktopAgents.md) - DAs that use a technology that allows the `fdc3` interface to be instantiated on the global object without any action by the app itself. Example technologies that support preloading include DAs built with Electron, Webviews, and Browser Extensions.
+- [Browser-resident DAs](../specs/browserResidentDesktopAgents) - DAs that run in standard browsers without the assistance of any non-standard technology.
+- Native language DAs - DAs that run in native containers.
+
+Communication between different types of DA may be handled in a proprietary manner by vendors or through [Desktop Agent Bridging](#inter-agent-communication).
 
 For implementation details relating to particular languages, and how to access the API in those languages, please see [Supported Platforms](supported-platforms).
 
@@ -111,6 +118,8 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Only require app directories that they connect to to have implemented only the minimum requirements specified in the [App Directory API Part](../app-directory/spec) of this Standard.
 - Provide details of whether they implement optional features of the Desktop Agent API in the `optionalFeatures` property of the [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned by the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function.
 - Allow, by default, at least a 15 second timeout for an application, launched via [`fdc3.open`](../api/ref/DesktopAgent#open), [`fdc3.raiseIntent`](../api/ref/DesktopAgent#raiseintent) or [`fdc3.raiseIntentForContext`](../api/ref/DesktopAgent#raiseintentforcontext) to add any context listener (via [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener)) or intent listener (via [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener)) necessary to deliver context or intent and context to it on launch. This timeout only applies to listeners needed to receive context on launch; further intent and context listeners not required on launch MAY be added later.
+- Implement the [Browser-Resident Desktop Agent spec](../specs/browserResidentDesktopAgents.md) if it is intended to run in a standard browser.
+- Implement the [Preload Desktop Agent spec](../specs/preloadtDesktopAgents.md) if it is intended to run in a container that supports injecting a global `fdc` object.
 
 An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 
@@ -122,6 +131,7 @@ An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 - Make metadata about each context message or intent and context message received (including the app that originated the message) available to the receiving application.
 - Prevent external apps from listening or publishing on a [`PrivateChannel`](ref/PrivateChannel) that they did not request or provide.
 - Enforce compliance with the expected behavior of intents (where Intents specify a contract that is enforceable by schema, for example, return object types) and return an error if the interface is not met.
+- Implement validateAppIdentity()
 
 An FDC3 Standard compliant Desktop Agent implementation **MAY**:
 
