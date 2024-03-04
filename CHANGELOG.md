@@ -9,9 +9,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 * Specifications for getAgent() and Browser-Resident Desktop Agents.
-* Specification for Preload Desktop Agents. This content was previously in the supported platforms section. It had been revised and amended to include recommended behavior related to the new ValidateAppIdentity() function.
+* Specification for Preload Desktop Agents. This content was previously in the supported platforms section. It had been revised and amended to include recommended behavior related to the new validateAppIdentity() function.
+* Added optional validateAppIdentity() function to DesktopAgent interface.
 * Typescript definitions for getAgent() and related types
 * Typescript definitions for Browser Communication Protocol (BCP). These constitute the internal "wire protocol" that the "@finos/fdc3" library uses to communicate with Browser-Resident DAs.
+* Typescript definitions for Web Connection Protocol (WCP). These constitute the messages used to establish connectivity between "@finos/fdc3" and a Browser-Resident DA.
 
 ### Changed
 

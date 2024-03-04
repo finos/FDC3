@@ -60,7 +60,7 @@ window.addEventListener("message", (event) => {
 
 ## Responding to app communications with Browser Communication Protocol (BCP)
 
-BCP processing should begin by setting up an inactive connection instance. This instance will become active after the first BCP "ValidateAppIdentity" message is received and processed (or deleted if it fails). It is important to remember the WindowProxy (event.source).
+BCP processing should begin by setting up an inactive connection instance. This instance will become active after the first BCP "WCPValidateAppIdentity" message is received and processed (or deleted if it fails). It is important to remember the WindowProxy (event.source).
 
 An `instanceUuid` should be established at this point. This will be used in following steps.
 
@@ -83,9 +83,9 @@ const startBCPProcessing(event, channel) => {
 
 ### Step 1 - Validating a connection
 
-The first BCP message received should be a "ValidateAppIdentity" message. With this message, the DA establishes or denies the connection.
+The first BCP message received should be a "WCPValidateAppIdentity" message. With this message, the DA establishes or denies the connection.
 
-1) If the message contains an `instanceUuid` field then the app window might have navigated or refreshed and simply require reconnecting on a previously established instance. The DA SHOULD reestablish the connection if the `instanceUuid`, `appId`, WindowProxy and origin match what is already on record. When a connection is reestablished the DA MUST respond with a valid "IdentityValidationSucceeded" message.
+1) If the message contains an `instanceUuid` field then the app window might have navigated or refreshed and simply require reconnecting on a previously established instance. The DA SHOULD reestablish the connection if the `instanceUuid`, `appId`, WindowProxy and origin match what is already on record. When a connection is reestablished the DA MUST respond with a valid "WCPValidateAppIdentityResponse" message.
 
 2) If the message does not contain an `instanceUuid`, or the record does not match, then proceed to authenticate the application.
 
@@ -114,7 +114,7 @@ const processValidateAppIdentityBCP = (connection, e) => {
             connection.appId = maybeExistingConnection.appId;
             connection.appMetadata = maybeExistingConnection.appMetadata;
             connection.channel.port1.postMessage({
-                type: "IdentityValidationSucceeded",
+                type: "validateAppIdentityResponse",
                 payload: {
                     desktopAgentDetails: {
                         agentType: "PARENT",
@@ -144,11 +144,11 @@ Each of these should result in a request to "https://myapp.com/appd/v2/apps/myAp
 `appId="myApp", appDUrl="https://muyapp.com/appd"`
 `appDUrl="https://myapp.com/appd/v2/apps/myApp"`
 
-The DA MUST validate the app's identity against the application's origin (protocol, domain and port) by positively matching it with either the `details.url` or `details.allowedOrigins` fields in the  _AppD record constructed from the ValidateAppIdentity message_.
+The DA MUST validate the app's identity against the application's origin (protocol, domain and port) by positively matching it with either the `details.url` or `details.allowedOrigins` fields in the  _AppD record constructed from the WCPValidateAppIdentity message_.
 
 > Note - The AppD record provided by the app may be different from the one that the DA used to launch the app. This is because a DA may launch apps from its own app directory or even without a directory. However, the responsibility to provide application identity _rests with its publisher_ (the entity that is _hosting_ the app) and hence DA's MUST reference the AppD record that is provided by the application itself for verification. DAs MAY choose to implement _additional_ identity verification procedures (such as comparison with their own configured app directories) and MAY choose to deny access to an application for any reason.
 
-If authentication succeeds then the DA MUST respond with a "IdentityValidationSucceeded" message which MUST include `ImplementationMetadata` (describing the DA), `AppMetadata` (describing the instance), and `DesktopAgentDetails` record (to support reconnecting after window navigation).
+If authentication succeeds then the DA MUST respond with a "WCPValidateAppIdentityResponse" message which MUST include `ImplementationMetadata` (describing the DA), `AppMetadata` (describing the instance), and `DesktopAgentDetails` record (to support reconnecting after window navigation).
 
 ```JavaScript
 const authenticateApp = (connection, e) => {
@@ -167,7 +167,7 @@ const authenticateApp = (connection, e) => {
         connection.instanceId = uuid();
         connection.appMetadata = new AppMetadata(); // To be set by the DA
         connection.channel.port1.postMessage({
-            type: "IdentityValidationSucceeded",
+            type: "WCPValidateAppIdentityResponse",
             payload: {
                 desktopAgentDetails: {
                     agentType: "PARENT",
@@ -181,7 +181,7 @@ const authenticateApp = (connection, e) => {
         }, connection.origin)
     } else {
         connection.port.postMessage({
-            type: "IdentityValidationFailed",
+            type: "WCPValidateAppIdentityResponse",
             payload: {
                 error: `Origin "${origin}" for "${appId}" didn't match AppD record`
             }
@@ -192,9 +192,11 @@ const authenticateApp = (connection, e) => {
 
 ### Step 3 - DesktopAgent Operations (BCP)
 
-TODO
+Each message should be responded to with its corresponding response when a response should contain data, or with `BCPAck` if only an acknowledgement is required.
 
 See [Browser Communication Protocol](./browserCommunicationProtocol.md)
+
+See bcp.ts for a full list of BCP messages. 
 
 ## Implementing DAs in hidden iframes
 
@@ -208,6 +210,15 @@ The hidden iframe url can be provided in two ways:
 
 The same WCP mechanism is used to connect to DAs located in hidden iframes. Likewise, the same BCP messages are used for communications.
 
+## UI Channel Selector and Intent Resolver
+
+A DA may implement its own Channel Selector and Intent Resolver or may utilize the one provided by "@finos/fdc3" via `getAgent()` ("built-in UI"). For instance, a DA may not have the ability to present a channel selector in a window that has been opened with `window.open()`. The built-in UI can be leveraged in this circumstance. Send the `BCPResolveIntent` and `BCPInitializeChannelSelector` messages to invoke the built-in UI.
+
+## Disconnects
+
+DAs are responsible for tracking when app windows close by checking `win.closed` in a loop.
+
+https://stackoverflow.com/questions/9388380/capture-the-close-event-of-popup-window-in-javascript/48240128#48240128
 
 
 

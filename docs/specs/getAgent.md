@@ -115,11 +115,11 @@ The DA will validate the app's identity against the app window's origin (protoco
 
 2) If the DA is browser-resident, then:
 
-    Send a "ValidateAppIdentity" message to the DA via the MessagePort. Include the DesktopAgentDetails record if it exists in SessionStorage.
+    Send a "WCPValidateAppIdentity" message to the DA via the MessagePort. Include the DesktopAgentDetails record if it exists in SessionStorage.
     
     The DA will validate the app's identity against the origin of the message. It will return either a "IdentityValidationSucceeded" or "IdentityValidationFailed" message. The `getAgent()` promise should reject on a failure message.
 
-Success responses (from calls to `validateAppIdentity()` or "ValidateAppIdentityResponse" messages) MUST include `ImplementationMetadata` (describing the DA), `AppMetadata` (describing the instance), and `DesktopAgentDetails` record (to be persisted in the next step).
+Success responses (from calls to `validateAppIdentity()` or "WCPValidateAppIdentityResponse" messages) MUST include `ImplementationMetadata` (describing the DA), `AppMetadata` (describing the instance), and `DesktopAgentDetails` record (to be persisted in the next step).
 
 ### Persist DesktopAgentDetails to SessionStorage (step 3)
 
@@ -139,3 +139,8 @@ BCP uses the HTML Channel Messaging API, communicating via the `MessagePort` obj
 
 See [Browser Communication Protocol](./browserCommunicationProtocol.md)
 
+## Built in UI (Channel Selector and Intent Resolver)
+
+`getAgent()` MUST provide UI for channel selector and intent resolution. These can be OPTIONALLY utilized by the DA. The DA will send the `BCPInitializeChannelSelector` message if it does not have its own way to manage channel selection. It will send `BCPResolveIntent` if it does not have a way to present an intent resolver UI.
+
+`getAgent()` SHOULD implement UI within the app's DOM, for instance with an overlay for channel selector and a modal dialog for intent resolution.

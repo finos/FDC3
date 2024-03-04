@@ -43,9 +43,13 @@ Meanwhile, if the "server" app's intent handler resolves to a Channel or Context
 
 ## Intent Resolver
 
-TODO
+The DA should send `BCPResolveIntent` if it requires an external UI for intent resolution. This MUST include the list of available apps which are capable of being launched to handle the intent, and it MUST include the list of open apps which are capable of handling the intent. The "@finos/fdc3" library will present UI to the end user, and then will respond with a `BCPResolveIntentResponse` containing the user's choice.
+
+DAs are free to provide their own intent resolution UIs if they have this capability.
 
 ## Channels
+
+The DA should send `BCPInitializeChannelSelector` if it requires the app to provide UI for channel selection. The "@finos/fdc3" library will provide the UI when this message is received.
 
 Any message related to a channel contains a `channelId` field. It is the responsibility of each party (DA and library) to correlate `channelId` fields with the correct local objects.
 

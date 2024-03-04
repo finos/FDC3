@@ -1,11 +1,5 @@
-/**
- * Typescript related to the getAgent() function. Note that GetAgent.md is a copy of this file which has been modified
- * for display in markdown format.
- */
-import { DesktopAgent } from "./DesktopAgent";
-import { ImplementationMetadata } from "./ImplementationMetadata";
-import { AppMetadata } from "./AppMetadata";
 
+```Typescript
 /** 
  * Retrieves an FDC3 DesktopAgent instance either from a Desktop Agent that supports
  * injection or by using the FDC3 Web Connection Protocol (WCP) to establish a connection
@@ -34,7 +28,7 @@ export type GetAgentFunction = (
     desktopAgent: DesktopAgent,
     implementationMetadata: ImplementationMetadata,
     appMetadata: AppMetadata
-}>; 
+}>;
 
 /** 
  * @typedef {Object} GetAgentParams Type representing parameters passed to the 
@@ -128,3 +122,4 @@ export type DesktopAgentDetails = {
  * "URL" - The DA is loaded as an iframe in the app window.
  */ 
 export type WebDesktopAgentType = "INJECTED" | "PARENT" | "URL";
+```
