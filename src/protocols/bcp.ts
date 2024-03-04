@@ -1,3 +1,6 @@
+/**
+ * Browser Communication Protocol (BCP) is used for communication between the "@finos/fdc3" library and Browser-Resident DAs.
+ */
 import { Context } from "../context/ContextTypes";
 import { ContextType } from "../context/ContextType";
 import { AppIdentifier } from "../api/AppIdentifier";
@@ -93,12 +96,13 @@ export type BCPAck = {
 export type BCPCreatePrivateChannelResponse = {
 	type: "createPrivateChannelResponse";
 	payload: {
-		error?: string;
-		channel ?: {
+		channel : {
 			channelId: string;
 			type: "private";
 			displayMetadata ?: DisplayMetadata;
 		}
+	} | {
+		error: string;
 	};
 	meta: BCPMeta;
 };
@@ -106,8 +110,9 @@ export type BCPCreatePrivateChannelResponse = {
 export type BCPFindInstancesResponse = {
 	type: "findInstancesResponse";
 	payload: {
-		error?: string;
 		instances: Array<AppIdentifier>;
+	} | {
+		error: string;
 	};
 	meta: BCPMeta;
 };
@@ -115,8 +120,9 @@ export type BCPFindInstancesResponse = {
 export type BCPFindIntentResponse = {
 	type: "findIntentResponse";
 	payload: {
-		error?: string;
 		appIntent?: AppIntent;
+	} | {
+		error: string;
 	};
 	meta: BCPMeta;
 };
@@ -124,8 +130,9 @@ export type BCPFindIntentResponse = {
 export type BCPFindIntentsByContextResponse = {
 	type: "findIntentsByContextResponse";
 	payload: {
-		error?: string;
 		appIntents: Array<AppIntent>;
+	} | {
+		error: string;
 	};
 	meta: BCPMeta;
 };
@@ -133,8 +140,9 @@ export type BCPFindIntentsByContextResponse = {
 export type BCPGetAppMetadataResponse = {
 	type: "getAppMetadataResponse";
 	payload: {
-		error?: string;
 		appMetadata?: AppMetadata;
+	} | {
+		error: string;
 	};
 	meta: BCPMeta;
 };
@@ -142,11 +150,13 @@ export type BCPGetAppMetadataResponse = {
 export type BCPGetCurrentChannelResponse = {
 	type: "getCurrentChannelResponse";
 	payload: {
-		error?: string;
+		// Channel will be undefined if not on a current channel
 		channel?: {
 			id: string;
 			displayMetadata ?: DisplayMetadata;
 		}
+	} | {
+		error: string;
 	};
 	meta: BCPMeta;
 };
@@ -154,8 +164,10 @@ export type BCPGetCurrentChannelResponse = {
 export type BCPGetCurrentContextResponse = {
 	type: "getCurrentContextResponse";
 	payload: {
-		error?: string;
+		// context will be undefined if no current context
 		context?: Context;
+	} | {
+		error: string;
 	};
 	meta: BCPMeta;
 };
@@ -163,8 +175,9 @@ export type BCPGetCurrentContextResponse = {
 export type BCPGetInfoResponse = {
 	type: "getInfoResponse";
 	payload: {
-		error?: string;
-		implementationMetadata?: ImplementationMetadata;
+		implementationMetadata: ImplementationMetadata;
+	} | {
+		error: string;
 	};
 	meta: BCPMeta;
 };
@@ -172,12 +185,13 @@ export type BCPGetInfoResponse = {
 export type BCPGetOrCreateChannelResponse = {
 	type: "getOrCreateChannelResponse";
 	payload: {
-		error?: string;
-		channel ?: {
+		channel : {
 			channelId: string;
 			type: "user" | "app" | "private";
 			displayMetadata ?: DisplayMetadata;
 		}
+	} | {
+		error: string;
 	};
 	meta: BCPMeta;
 };
@@ -185,11 +199,12 @@ export type BCPGetOrCreateChannelResponse = {
 export type BCPGetUserChannelsResponse = {
 	type: "getUserChannelsResponse";
 	payload: {
-		error?: string;
 		channels: Array<{
 			id: string;
 			displayMetadata ?: DisplayMetadata;
 		}>;
+	} | {
+		error: string;
 	};
 	meta: BCPMeta;
 };
@@ -197,8 +212,9 @@ export type BCPGetUserChannelsResponse = {
 export type BCPOpenResponse = {
 	type: "openResponse";
 	payload: {
-		error?: string;
-		appIdentifier?: AppIdentifier;
+		appIdentifier: AppIdentifier;
+	} | {
+		error: string;
 	};
 	meta: BCPMeta;
 };
@@ -206,14 +222,15 @@ export type BCPOpenResponse = {
 export type BCPRaiseIntentResponse = {
 	type: "raiseIntentResponse";
 	payload: {
-		error?: string;
-		data?: {
+		data: {
 			source: AppMetadata;
 			intent: string;
 			version?: string;
 			// Use this to match up future inbound BCPRaiseIntentResult messages
 			responseId: string;
 		};
+	} | {
+		error: string;
 	};
 	meta: BCPMeta;
 };
@@ -386,10 +403,65 @@ export type BCPRemoveIntentListener = {
 };
 
 /**
- * Intent resolver protocol
+ * Library provided UI messages
  */
 
-TODO define these and add them to the corresponding sections
+// Sent from DA to App when an intent needs resolution and it does
+// not have the ability to provide a graphical intent resolver
+export type BCPResolveIntent = {
+	type: "resolveIntent",
+	payload: {
+		// The intent to resolve
+		intent: {
+			name: string;
+			displayName: string;
+		};
+
+		// If raiseIntentForContext
+		context?: Context;
+
+		// The DA provided list of launchable apps which may resolve this intent type
+		launchableApps: {
+			meta: AppMetadata;
+			appId: string;
+		}[];
+
+		// The DA provided lists of open apps which are registered to receive this intent type
+		openApps: {
+			meta: AppMetadata;
+			instanceId ?: string;
+		}[];
+
+		// the originatingAppName may be displayed by the UI Resolver to indicate the source of the request.
+		originatingAppName?: string;
+	};
+	meta: BCPMeta;
+}
+
+// Response from App to DA with intent resolution
+export type BCPResolveIntentResponse = {
+	type: "resolveIntentResponse",
+	payload: {
+		error?: string;
+
+		// appId is set if intent should be delivered to a launchable app
+		appId?: string;
+
+		// instanceId is set if intent should be delivered to open app
+		instanceId?: string;
+	};
+	meta: BCPMeta;
+}
+
+// Sent by the DA to the App to enable the built-in channel selector. `id` can optionally be set in order
+// to initialize a specific channel (for instance when rehydrating an app from previous persistence)
+export type BCPinitializeChannelSelector  = {
+	type: "initializeChannelSelector",
+	payload: {
+		// The id of the channel which should be enabled, if one should be initially set
+		id?: string;
+	}
+}
 
 export type BCPMessageInbound =
 	BCPBroadcastInbound |
