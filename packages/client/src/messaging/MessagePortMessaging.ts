@@ -1,6 +1,6 @@
 import { AppIdentifier } from "@finos/fdc3"
 import { AgentRequestMessage } from "@finos/fdc3/dist/bridging/BridgingTypes"
-import { Messaging } from "da"
+import { Messaging } from "da-proxy"
 import { exchangePostMessage } from "fdc3-common"
 import { v4 as uuidv4 } from "uuid"
 

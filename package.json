@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "yarn workspaces foreach --all test"
+    "build": "yarn workspaces foreach --all run build"
   },
   "packageManager": "yarn@4.0.2",
   "devDependencies": {
