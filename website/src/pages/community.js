@@ -73,7 +73,7 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 					}
 				</div>
 				<div className="badges">
-					{badges.map(b => <a href="#" key={b.text} title={badgeTitles[b.text]} className="button badge">{b.text}</a>)}
+					{badges.map(b => <div key={b.text} title={badgeTitles[b.text]} className="button badge">{b.text}</div>)}
 				</div>
 			</div>
 		</div>
