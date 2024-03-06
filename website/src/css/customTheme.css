@@ -342,6 +342,12 @@ article iframe {
   padding-bottom: 0px;
   margin-bottom: 0px;
 }
+.filter {
+  margin-left: 0px;
+  margin-right: 2px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
 .implementations {
   padding-top: 0px;
   margin-top: 0px;

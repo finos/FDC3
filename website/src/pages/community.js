@@ -20,6 +20,9 @@ const badgeTitles = {
 	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process."
 }
 
+//remove content guidelines
+implData.splice(0,1);
+
 //alpha sort implementations
 implData.sort((a, b) => {
 	const titleA = a.title.toUpperCase(); // ignore upper and lowercase
@@ -89,14 +92,17 @@ function ImplementationsShowcase(initialFilter) {
 			<button className="button filter" id="solution-provider" onClick={() => setType("solution-provider")}>
 				Solution Providers
 			</button>
-			<button className="button filter" id="examples-and-training" onClick={() => setType("examples-and-training")}>
-				Examples &amp; Training
-			</button>
 			<button className="button filter" id="adopter" onClick={() => setType("adopter")}>
 				Adopters
 			</button>
-			<button className="button filter" id="meetup" onClick={() => setType("meetup")}>
-				Meetups
+			<button className="button filter" id="examples-and-training" onClick={() => setType("tools-and-training")}>
+				Tools &amp; Training
+			</button>
+			<button className="button filter" id="demos" onClick={() => setType("demos")}>
+				Demos
+			</button>
+			<button className="button filter" id="meetup" onClick={() => setType("other")}>
+				Other
 			</button>
 			<button className="button filter" id="all" onClick={() => setType("all")}>
 				All
@@ -123,13 +129,20 @@ export default (props) => {
 					The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standard is maintained and used by leading organizations across the financial industry through a variety of different implementations.
 				</p>
 				<p>
-					For more detail on who's implementing the Desktop Agent (a "Platform Provider"), using FDC3 to enable interop with their apps (an "App Provider") or details on where to find tools, examples apps and training materials see below.
+					For more detail on who's implementing the Desktop Agent (a "Platform Provider"), using FDC3 to enable interop with their apps (an "App Provider") or details on where to find demos, examples apps, training materials and other resources, see below.
+				</p>
+				<p>
+					<small>
+						<i>
+							Disclaimer: Please note that the majority of platforms, applications and content listed below are not affiliated with, supported, or otherwise maintained by FINOS or the FDC3 project and its maintainers. Please contact the publisher of each entry for more information.
+						</i>
+					</small>
 				</p>
 				<p>
 					<i>
-						Are you using FDC3?
+						<strong>Are you using FDC3?</strong>
 						<a href={editUrl} className="button">
-							Add your Implementation
+							Add your details
 						</a>
 					</i>
 				</p>
