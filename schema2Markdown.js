@@ -165,10 +165,7 @@ function generateObjectMD(schema, title, schemaFolderName, version) {
 }
 
 function escape(text) {
-    let output = text;
-    output = output.replace(/>/g, '\\>');
-
-    return output;
+    return text.replace(/>/g, '\\>');
 }
 
 function generateFrontMatter(title, description) {
