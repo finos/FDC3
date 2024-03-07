@@ -35,13 +35,14 @@ function processProperty(propertyName, propertyDetails, schemaExamples) {
         }
 
         if (schemaExamples) {
-            const example = schemaExamples[0];
-
-            if (typeof example[propertyName] === 'object') {
-                markdownContent += `**Example Value**: \n\`\`\`json\n${JSON.stringify(example[propertyName], null, 2)}\n\`\`\`\n\n`;
-            } else if (example[propertyName]) {
-                markdownContent += `**Example Value**: \`'${example[propertyName]}'\`\n\n`;
-            }
+            schemaExamples.forEach((example) => {
+                markdownContent += `**Example Value**: \n`;
+                if (typeof example[propertyName] === 'object') {
+                    markdownContent += `\`\`\`json\n${JSON.stringify(example[propertyName], null, 2)}\n\`\`\`\n\n`;
+                } else if (example[propertyName]) {
+                    markdownContent += `\`${example[propertyName]}\`\n\n`;
+                }
+            });
         }
     }
     return markdownContent;
@@ -57,7 +58,7 @@ function renderEnum(ref) {
 }
 
 function renderRef(contextRef) {
-    const filePath = contextRef.split('#')[0]; // ../api/api.schema.json
+    const [filePath, objectPath] = contextRef.split('#'); // ../api/api.schema.json, /definitions/AppIdentifier
     const objectType = filePath.split('/').pop().split('.')[0]; // api
 
     // FROM ../api/api.schema.json#/definitions/AppIdentifier
@@ -66,7 +67,6 @@ function renderRef(contextRef) {
     // FROM timerange.schema.json#
     // TO   timerange/schemas/timerange
 
-    const objectPath = contextRef.split('#')[1]; // /definitions/AppIdentifier
     let objectName = objectType;
     if (objectPath) {
         objectName = objectPath.split('/').pop(); // AppIdentifier
@@ -215,11 +215,11 @@ function parseSchemaFolder(schemaFolderName, version) {
 
 function main() {
 
-    const versions = ["1.0", "1.1", "1.2", "2.0", "2.1"];
+    const versions = fse.readdirSync('./website/versioned_docs').map(version => version.split('-')[1]);
 
     versions.forEach(version => {
 
-        let sidebarObject = require(`./website/versioned_sidebars/version-${version}-sidebars.json`)
+        let sidebarObject = fse.readJsonSync(`./website/versioned_sidebars/version-${version}-sidebars.json`)    
 
         let sidebarContextObject = {
             "type": "category",
