@@ -1,4 +1,4 @@
-const fs = require('fs-extra');
+const fse = require('fs-extra');
 const yaml = require('js-yaml');
 const path = require('path');
 
@@ -77,8 +77,6 @@ function renderRef(contextRef) {
         objectRef = "../../" + objectType + "/schemas/" + objectName;
     }
 
-    console.log('from contextRef:', contextRef, 'to objectRef:', objectRef);
-
     return `**Reference**: [${objectType}/${objectName}](${objectRef})\n\n`;
 }
 
@@ -115,7 +113,6 @@ function generateObjectMD(schema, title, schemaFolderName, version) {
         markdownContent += renderEnum(schema.enum);
     }
 
-    console.log('hasAllOf/hasProperties', hasAllOf(schema.allOf), hasProperties(schema));
     if (hasAllOf(schema.allOf) || hasProperties(schema)) {
         // Extract properties, required fields, and $ref from the first allOf object
         let root = schema;
@@ -156,11 +153,10 @@ function generateObjectMD(schema, title, schemaFolderName, version) {
     }
 
     const frontMatter = generateFrontMatter(objectName, schema.description);
-    console.log('frontMatter:', frontMatter);
 
     const outputFileName = `./website/versioned_docs/version-${version}/${schemaFolderName}/schemas/${title.replace(/\s+/g, '')}.md`;
 
-    fs.outputFileSync(outputFileName, `---\n${yaml.dump(frontMatter)}\n---\n\n${markdownContent}`);
+    fse.outputFileSync(outputFileName, `---\n${yaml.dump(frontMatter)}\n---\n\n${markdownContent}`);
 
     // objectName must not contain any spaces
     if (objectName != null) {
@@ -184,7 +180,7 @@ function generateFrontMatter(title, description) {
 }
 
 function processSchemaFile(schemaFile, schemaFolderName, version) {
-    const schemaData = fs.readJSONSync(schemaFile);
+    const schemaData = fse.readJSONSync(schemaFile);
 
     // if there is allOf, then it is an object
     const allOfArray = schemaData.allOf;
@@ -198,13 +194,12 @@ function processSchemaFile(schemaFile, schemaFolderName, version) {
         }
     }
 
-    // return sidebarItems.flat().filter(item => !item.endsWith('undefined'));
     return sidebarItems;
 }
 
 function parseSchemaFolder(schemaFolderName, version) {
     // Read all files in the schema folder
-    const schemaFiles = fs.readdirSync("./schemas/"+schemaFolderName)
+    const schemaFiles = fse.readdirSync("./schemas/"+schemaFolderName)
     .filter(file => file.endsWith('.json'))
     .map(file => path.join("./schemas/"+schemaFolderName, file));
 
@@ -248,7 +243,7 @@ function main() {
         sidebarObject.docs["FDC3 Standard"].push(sidebarContextObject)
         sidebarObject.docs["FDC3 Standard"].push(sidebarApiObject)
 
-        fs.outputJSONSync(
+        fse.outputJSONSync(
             `./website/versioned_sidebars/version-${version}-sidebars.json`, 
             sidebarObject, { spaces: 2 });
     });
