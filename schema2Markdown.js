@@ -6,7 +6,7 @@ function processProperty(propertyName, propertyDetails, schemaExamples) {
     let markdownContent = '';
 
     if (propertyName === 'type') {
-        markdownContent += `### ${'Type'|| propertyName}\n\n`;
+        markdownContent += `### Type\n\n`;
         markdownContent += `\`${propertyDetails.const}\`\n\n`;
     } else {
         markdownContent += `### ${propertyDetails.title || propertyName}\n\n`;
