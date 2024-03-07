@@ -92,7 +92,7 @@ function hasProperties(schema) {
 }
 
 // Function to generate Markdown content from JSON schema
-function generateObjectMD(schema, title, schemaFolderName, version) {
+function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
 
     const objectName = schema.title
 
@@ -150,6 +150,8 @@ function generateObjectMD(schema, title, schemaFolderName, version) {
             markdownContent += JSON.stringify(schema.examples, null, 2);
             markdownContent += '\n```';
         }
+        const url = filePath.replace("schemas/", `https://github.com/finos/FDC3/tree/master/schemas/`);
+        markdownContent += `Generated from ${url}`;
     }
 
     const frontMatter = generateFrontMatter(objectName, schema.description);
@@ -186,11 +188,11 @@ function processSchemaFile(schemaFile, schemaFolderName, version) {
     const allOfArray = schemaData.allOf;
     let sidebarItems = [];
     if (Array.isArray(allOfArray) && allOfArray.length > 0) {
-        sidebarItems.push(generateObjectMD(schemaData, null, schemaFolderName, version));
+        sidebarItems.push(generateObjectMD(schemaData, null, schemaFolderName, schemaFile, version));
     }
     if (schemaData.definitions) {
         for (const [objectName, objectDetails] of Object.entries(schemaData.definitions)) {
-            sidebarItems.push(generateObjectMD(objectDetails, objectName, schemaFolderName, version));
+            sidebarItems.push(generateObjectMD(objectDetails, objectName, schemaFolderName, schemaFile, version));
         }
     }
 
