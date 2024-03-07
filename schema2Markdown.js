@@ -149,10 +149,11 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
             markdownContent += `## Examples\n\n`;
             markdownContent += '```json\n';
             markdownContent += JSON.stringify(schema.examples, null, 2);
-            markdownContent += '\n```';
+            markdownContent += '\n```\n\n';
         }
         const url = filePath.replace("schemas/", `https://github.com/finos/FDC3/tree/master/schemas/`);
         markdownContent += `Generated from ${url}`;
+        
     }
 
     const frontMatter = generateFrontMatter(objectName, schema.description);
