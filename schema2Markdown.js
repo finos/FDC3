@@ -8,43 +8,44 @@ function processProperty(propertyName, propertyDetails, schemaExamples) {
     if (propertyName === 'type') {
         markdownContent += `### Type\n\n`;
         markdownContent += `\`${propertyDetails.const}\`\n\n`;
+        return markdownContent;
+    }   
+    markdownContent += `### ${propertyDetails.title || propertyName}\n\n`;
+    markdownContent += `\`${propertyName}\`\n\n`;
+
+    if (propertyDetails.description != null) {
+        markdownContent += `${escape(propertyDetails.description)}\n\n`;
+    }
+
+    if (propertyDetails.type) {
+        markdownContent += renderType(propertyDetails.type);
     } else {
-        markdownContent += `### ${propertyDetails.title || propertyName}\n\n`;
-        markdownContent += `\`${propertyName}\`\n\n`;
+        const contextRef = propertyDetails.properties?.context?.$ref || propertyDetails.$ref;
 
-        if (propertyDetails.description != null) {
-            markdownContent += `${escape(propertyDetails.description)}\n\n`;
-        }
-
-        if (propertyDetails.type) {
-            markdownContent += renderType(propertyDetails.type);
-        } else {
-            const contextRef = propertyDetails.properties?.context?.$ref || propertyDetails.$ref;
-
-            if (contextRef) {
-                markdownContent += renderRef(contextRef);
-            }
-        }
-
-        if (propertyDetails.enum) {
-            markdownContent += renderEnum(propertyDetails.enum);
-        }
-
-        if (propertyDetails.allOf) {
-            markdownContent += `${propertyDetails.allOf.map((item) => renderRef(item.$ref)).join(', ')}\n\n`;
-        }
-
-        if (schemaExamples) {
-            schemaExamples.forEach((example) => {
-                markdownContent += `**Example Value**: \n`;
-                if (typeof example[propertyName] === 'object') {
-                    markdownContent += `\`\`\`json\n${JSON.stringify(example[propertyName], null, 2)}\n\`\`\`\n\n`;
-                } else if (example[propertyName]) {
-                    markdownContent += `\`${example[propertyName]}\`\n\n`;
-                }
-            });
+        if (contextRef) {
+            markdownContent += renderRef(contextRef);
         }
     }
+
+    if (propertyDetails.enum) {
+        markdownContent += renderEnum(propertyDetails.enum);
+    }
+
+    if (propertyDetails.allOf) {
+        markdownContent += `${propertyDetails.allOf.map((item) => renderRef(item.$ref)).join(', ')}\n\n`;
+    }
+
+    if (schemaExamples) {
+        schemaExamples.forEach((example) => {
+            markdownContent += `**Example Value**: \n`;
+            if (typeof example[propertyName] === 'object') {
+                markdownContent += `\`\`\`json\n${JSON.stringify(example[propertyName], null, 2)}\n\`\`\`\n\n`;
+            } else if (example[propertyName]) {
+                markdownContent += `\`${example[propertyName]}\`\n\n`;
+            }
+        });
+    }
+    
     return markdownContent;
 }
 
