@@ -177,7 +177,7 @@ function escape(text) {
 
 function generateFrontMatter(title, description) {
     return {
-        title: title + ' Schema',
+        title: `${title} Schema`,
         description: description,
         sidebar_label: title + ' Schema',
     };
