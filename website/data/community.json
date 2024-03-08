@@ -14,7 +14,7 @@
     "//badges4": "FDC3 1.2 Compliant: This badge is applied to desktop agents that have passed the FINOS FDC3 1.2 Conformance testing process.",
     "//badges5": "FDC3 2.0 Compliant: This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process.",
     "//conformance": "Indicate that a desktop agent has passed a FINOS FDC3 Conformance testing process - see other entries for examples of how to set this.",
-    "//description": "A description to be displayed by your entry. Please limit to 100 hundred words and avoid the use of superlatives (e.g. easiest, best, most powerful etc.) or other descriptive content that may be disputed by other community members."
+    "//description": "A description to be displayed by your entry. Please limit to 100 words and avoid the use of superlatives (e.g. easiest, best, most powerful etc.) or other descriptive content that may be disputed by other community members."
   },
   {
     "title": "Introduction to FDC3 (LFEL1000)",
