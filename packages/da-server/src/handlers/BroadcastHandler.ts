@@ -10,31 +10,31 @@ type ListenerRegistration = {
     contextType: string | null
 }
 
-function matches(lr1: ListenerRegistration, lr2: ListenerRegistration) : boolean {
+function matches(lr1: ListenerRegistration, lr2: ListenerRegistration): boolean {
     return (lr1.appId == lr2.appId) &&
         (lr1.instanceId == lr2.instanceId) &&
-        (lr1.channelId == lr2.channelId) && 
+        (lr1.channelId == lr2.channelId) &&
         (lr1.contextType == lr2.contextType)
 }
 
-function createListenerRegistration(msg: 
-    PrivateChannelOnAddContextListenerAgentRequest | 
-    PrivateChannelOnUnsubscribeAgentRequest) : ListenerRegistration {
+function createListenerRegistration(msg:
+    PrivateChannelOnAddContextListenerAgentRequest |
+    PrivateChannelOnUnsubscribeAgentRequest): ListenerRegistration {
 
-        return {
-            appId: msg.meta.source?.appId!!,
-            instanceId: msg.meta.source?.instanceId!!,
-            channelId: msg.payload.channelId,
-            contextType: msg.payload.contextType
-        }
+    return {
+        appId: msg.meta.source?.appId!!,
+        instanceId: msg.meta.source?.instanceId!!,
+        channelId: msg.payload.channelId,
+        contextType: msg.payload.contextType
+    }
 }
 
 export class BroadcastHandler implements MessageHandler {
 
     private regs: ListenerRegistration[] = []
-    
-    accept(msg: AgentRequestMessage, sc: ServerContext)  {
-        switch(msg.type as string /* 1165, see below */) {
+
+    accept(msg: AgentRequestMessage, sc: ServerContext) {
+        switch (msg.type as string /* 1165, see below */) {
             case 'PrivateChannel.broadcast': return this.handleBroadcast(msg as PrivateChannelBroadcastAgentRequest, sc)
             case 'PrivateChannel.onAddContextListener': return this.handleOnAddContextListener(msg as PrivateChannelOnAddContextListenerAgentRequest, sc)
             case 'PrivateChannel.onUnsubscribe': return this.handleOnUnsubscribe(msg as PrivateChannelOnUnsubscribeAgentRequest, sc)
@@ -82,11 +82,11 @@ export class BroadcastHandler implements MessageHandler {
                     },
                     type: arg0.type,
                     payload: arg0.payload
-                }
+                } as PrivateChannelBroadcastAgentRequest
 
                 sc.post(out)
             })
     }
-} 
+}
 
 
