@@ -7,7 +7,7 @@ This is a minimal proof-of-concept for FDC3 For the Web.
 1.  From the Command Line:
     ```
     yarn install
-    yarn workspaces foreach --all run install
+    yarn workspaces foreach --all install
     yarn workspaces foreach --all run build
     cd packages/demo
     yarn dev
