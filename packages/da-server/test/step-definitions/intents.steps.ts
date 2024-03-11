@@ -14,13 +14,13 @@ type ListensFor = {
     };
 }
 
-function convertDataTableToListensFor(dt: DataTable): ListensFor {
+function convertDataTableToListensFor(cw: CustomWorld, dt: DataTable): ListensFor {
     const hashes = dt.hashes()
     const out: { [key: string]: any } = {}
     hashes.forEach(h => {
         out[h["Intent Name"]] = {
-            contexts: [h["Context Type"]],
-            resultType: h["Result Type"]
+            contexts: [handleResolve(h["Context Type"], cw)],
+            resultType: handleResolve(h["Result Type"], cw)
         }
     })
 
@@ -39,7 +39,7 @@ Given('{string} is an app with the following intents', function (this: CustomWor
         details: {},
         interop: {
             intents: {
-                listensFor: convertDataTableToListensFor(dt)
+                listensFor: convertDataTableToListensFor(this, dt)
             }
         }
     }

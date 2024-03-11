@@ -1,4 +1,4 @@
-import { AgentRequestMessage, FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, FindIntentsByContextAgentResponseMeta } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, FindIntentsByContextAgentResponseMeta } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from "../TestMessaging";
 
 
@@ -8,7 +8,7 @@ export class FindIntentByContext implements AutomaticResponse {
         return t == 'findIntentsByContextRequest'
     }
 
-    action(input: AgentRequestMessage, m: TestMessaging) {
+    action(input: object, m: TestMessaging) {
         const intentRequest = input as FindIntentsByContextAgentRequest
         const payload = intentRequest.payload
         const context = payload?.context?.type
@@ -30,7 +30,7 @@ export class FindIntentByContext implements AutomaticResponse {
             meta: m.meta as FindIntentsByContextAgentResponseMeta,
             type: "findIntentsByContextResponse",
             payload: {
-                appIntents: 
+                appIntents:
                     relevantIntents.map(i => {
                         return {
                             intent: { name: i, displayName: i },
@@ -39,7 +39,7 @@ export class FindIntentByContext implements AutomaticResponse {
                                 .map(r => r.app!!)!!
                         }
                     })
-                }
+            }
         }
     }
 }
