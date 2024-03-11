@@ -1,5 +1,5 @@
 import { MessageHandler } from "../BasicFDC3Server";
-import { AgentRequestMessage } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AgentRequestMessage, AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { ServerContext } from "../ServerContext";
 import { PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnUnsubscribeAgentRequest, PrivateChannelBroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
@@ -33,17 +33,20 @@ export class BroadcastHandler implements MessageHandler {
 
     private regs: ListenerRegistration[] = []
 
+
+    connect(_sc: ServerContext): void {
+    }
+
+    disconnect(_app: AppMetadata, _sc: ServerContext): void {
+    }
+
     accept(msg: AgentRequestMessage, sc: ServerContext) {
-        switch (msg.type as string /* 1165, see below */) {
+        switch (msg.type as string) {
             case 'PrivateChannel.broadcast': return this.handleBroadcast(msg as PrivateChannelBroadcastAgentRequest, sc)
             case 'PrivateChannel.onAddContextListener': return this.handleOnAddContextListener(msg as PrivateChannelOnAddContextListenerAgentRequest, sc)
             case 'PrivateChannel.onUnsubscribe': return this.handleOnUnsubscribe(msg as PrivateChannelOnUnsubscribeAgentRequest, sc)
-
-            // temporary, while we wait for https://github.com/finos/FDC3/issues/1165
             case 'broadcast': return this.handleBroadcast(msg as PrivateChannelBroadcastAgentRequest, sc)
-            case 'onAddContextListener': return this.handleOnAddContextListener(msg as PrivateChannelOnAddContextListenerAgentRequest, sc)
-            case 'onUnsubscribe': return this.handleOnUnsubscribe(msg as PrivateChannelOnUnsubscribeAgentRequest, sc)
-
+            case 'hello': return this.hand
         }
     }
 

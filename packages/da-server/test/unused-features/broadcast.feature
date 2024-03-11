@@ -21,3 +21,5 @@ Feature: Relaying Broadcast messages
     And "App1/a1" broadcasts "fdc3.instrument" on "channel1"
     Then messaging will have outgoing posts
       | source.AppId | source.instanceId | payload.context.type |
+
+  Scenario: Handle disconnection, channel state synchronisation

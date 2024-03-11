@@ -82,3 +82,7 @@ Desktop Agent Briding needs extending with the following types:
 ## Troubleshooting
 
 - Try removing tsconfig.tsbuildinfo files if you are having trouble building
+
+## Issues To Resolve
+
+- How does the da-server tell the da-proxy about the channel metadata?

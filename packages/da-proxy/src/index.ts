@@ -12,6 +12,9 @@ import { DefaultChannelSupport } from "./channels/DefaultChannelSupport";
 import { DefaultAppSupport } from "./apps/DefaultAppSupport";
 import { AppSupport } from "./apps/AppSupport";
 
+import { HandshakeSupport } from "./handshake/HandshakeSupport";
+import { DefaultHandshakeSupport } from "./handshake/DefaultHandshakeSupport";
+
 export {
     type Messaging,
     BasicDesktopAgent,
@@ -23,5 +26,7 @@ export {
     DefaultAppSupport,
     DefaultChannelSupport,
     DefaultIntentSupport,
-    type DesktopAgentProvider
+    type DesktopAgentProvider,
+    type HandshakeSupport,
+    DefaultHandshakeSupport
 }

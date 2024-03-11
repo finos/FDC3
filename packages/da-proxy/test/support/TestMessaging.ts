@@ -1,5 +1,5 @@
-import { AppIdentifier } from "@finos/fdc3";
-import { AgentRequestMessage, AgentResponseMessage, IntentResult } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppIdentifier, Context } from "@finos/fdc3";
+import { AgentRequestMessage, AgentResponseMessage, ConnectionStep3Handshake, ContextElement, IntentResult } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { v4 as uuidv4 } from 'uuid'
 import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";
 import { RegisterableListener } from "../listeners/RegisterableListener";
@@ -10,6 +10,7 @@ import { RaiseIntent } from "./responses/RaiseIntent";
 import { GetAppMetadata } from "./responses/GetAppMetadata";
 import { FindInstances } from "./responses/FindInstances";
 import { Open } from "./responses/Open";
+import { Handshake } from "./responses/Handshake";
 
 export interface IntentDetail {
     app?: AppIdentifier,
@@ -21,12 +22,12 @@ export interface IntentDetail {
 export interface AutomaticResponse {
 
     filter: (t: string) => boolean,
-    action: (input: AgentRequestMessage, m: TestMessaging) => Promise<void>
+    action: (input: object, m: TestMessaging) => Promise<void>
 
 }
 
 function matchStringOrUndefined(expected: string | undefined, actual: string | undefined) {
-    if ((expected) && (actual)) { 
+    if ((expected) && (actual)) {
         return expected == actual
     } else {
         return true
@@ -39,8 +40,8 @@ function matchString(expected: string | undefined, actual: string | undefined) {
 
 function removeGenericType(t: string) {
     const startOfGeneric = t.indexOf("<")
-    if  (startOfGeneric > -1) {
-        return t.substring(0, startOfGeneric-1)
+    if (startOfGeneric > -1) {
+        return t.substring(0, startOfGeneric - 1)
     } else {
         return t
     }
@@ -54,7 +55,7 @@ function matchResultTypes(expected: string | undefined, actual: string | undefin
         } else if (actual == undefined) {
             // no actual, only expected
             return false;
-        } else { 
+        } else {
             // expected doesn't have generics, match without
             const actualType = removeGenericType(actual)
             return expected == actualType
@@ -64,29 +65,31 @@ function matchResultTypes(expected: string | undefined, actual: string | undefin
     }
 }
 
-export function intentDetailMatches(instance: IntentDetail, template: IntentDetail, contextMustMatch: boolean) : boolean {
+export function intentDetailMatches(instance: IntentDetail, template: IntentDetail, contextMustMatch: boolean): boolean {
     return matchStringOrUndefined(template.app?.appId, instance.app?.appId) &&
-    matchStringOrUndefined(template.app?.instanceId, instance.app?.instanceId) &&
-    matchStringOrUndefined(template.intent, instance.intent) &&
-    (contextMustMatch ? matchString(template.context, instance.context) : matchStringOrUndefined(template.context, instance.context)) &&
-    matchResultTypes(template.resultType, instance.resultType)
+        matchStringOrUndefined(template.app?.instanceId, instance.app?.instanceId) &&
+        matchStringOrUndefined(template.intent, instance.intent) &&
+        (contextMustMatch ? matchString(template.context, instance.context) : matchStringOrUndefined(template.context, instance.context)) &&
+        matchResultTypes(template.resultType, instance.resultType)
 }
 
 export class TestMessaging extends AbstractMessaging {
 
-    readonly allPosts : AgentRequestMessage[] = []
-    readonly listeners : Map<string, RegisterableListener> = new Map()
-    readonly intentDetails : IntentDetail[] = []
+    readonly allPosts: AgentRequestMessage[] = []
+    readonly listeners: Map<string, RegisterableListener> = new Map()
+    readonly intentDetails: IntentDetail[] = []
+    readonly channelState: { [key: string]: ContextElement[] } = {}
 
-    readonly automaticResponses : AutomaticResponse[] = [ 
+    readonly automaticResponses: AutomaticResponse[] = [
         new FindIntent(),
         new FindIntentByContext(),
         new RaiseIntent(),
         new GetAppMetadata(),
         new FindInstances(),
-        new Open()
+        new Open(),
+        new Handshake()
     ]
-    
+
     getSource(): AppIdentifier {
         return {
             appId: "SomeDummyApp",
@@ -94,11 +97,11 @@ export class TestMessaging extends AbstractMessaging {
         }
     }
 
-    createUUID() : string {
+    createUUID(): string {
         return uuidv4()
     }
 
-    
+
     post(message: AgentRequestMessage): Promise<void> {
         this.allPosts.push(message)
 
@@ -133,13 +136,13 @@ export class TestMessaging extends AbstractMessaging {
         }
     }
 
-    receive(m: AgentRequestMessage | AgentResponseMessage, log?: ICreateLog) {
+    receive(m: AgentRequestMessage | AgentResponseMessage | ConnectionStep3Handshake, log?: ICreateLog) {
         this.listeners.forEach((v, k) => {
             if (v.filter(m)) {
-                log ? log("Processing in "+k) : ""
+                log ? log("Processing in " + k) : ""
                 v.action(m)
             } else {
-                log ? log("Ignoring in "+k) : ""
+                log ? log("Ignoring in " + k) : ""
             }
         })
     }
@@ -152,7 +155,13 @@ export class TestMessaging extends AbstractMessaging {
         return this.ir
     }
 
-    setIntentResult(o : IntentResult) {
+    setIntentResult(o: IntentResult) {
         this.ir = o
-    } 
+    }
+
+    addChannelState(channelName: string, c: Context) {
+        const cs = this.channelState[channelName] ?? []
+        cs.push(c)
+        this.channelState[channelName] = cs
+    }
 }

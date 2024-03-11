@@ -1,5 +1,15 @@
 import { Directory, DirectoryApp, DirectoryIntent } from "./DirectoryInterface"
 
+export function genericResultType(rt: string | undefined): string | undefined {
+    if (rt == undefined) {
+        return undefined;
+    } else if (rt.indexOf('channel<') == 0) {
+        return 'channel';
+    } else {
+        return rt;
+    }
+}
+
 /**
  * Basic directory implementation that allows queries over a set of apps.
  */
@@ -67,12 +77,3 @@ export class BasicDirectory implements Directory {
 }
 
 
-function genericResultType(rt: string | undefined): string | undefined {
-    if (rt == undefined) {
-        return undefined;
-    } else if (rt.indexOf('channel<') == 0) {
-        return 'channel';
-    } else {
-        return rt;
-    }
-}

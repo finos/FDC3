@@ -1,5 +1,5 @@
 export interface ServerContext {
-    
+
     /**
      * UUID for outgoing message
      */
@@ -8,15 +8,10 @@ export interface ServerContext {
     /**
      * Post an outgoing message
      */
-    post(message: object) : Promise<void>
-
-    /**
-     * Useful for creating response meta for the messages being sent back
-     */
-//    createMeta() : object
+    post(message: object): Promise<void>
 
     /**
      * Allows you to write a log message somewhere
      */
-    log(message: string) : void
+    log(message: string): void
 }
