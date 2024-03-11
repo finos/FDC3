@@ -3,6 +3,7 @@ import { Context } from '@finos/fdc3';
 import { handleResolve, matchData } from '../support/matching';
 import { CustomWorld } from '../world/index';
 import { AgentRequestMessage, RequestMessageType } from '@finos/fdc3/dist/bridging/BridgingTypes';
+import { CHANNEL_STATE } from './generic.steps';
 
 const contextMap: Record<string, any> = {
   "fdc3.instrument": {
@@ -134,4 +135,15 @@ Then('messaging will have posts', function (this: CustomWorld, dt: DataTable) {
     toUse = toUse.slice(toUse.length - matching, toUse.length)
   }
   matchData(this, toUse, dt)
+})
+
+
+Given("channel {string} has context {string}", function (this: CustomWorld, channel: string, context: string) {
+  const ctxObject = handleResolve(context, this)
+  const state = this.props[CHANNEL_STATE] ?? {}
+  this.props[CHANNEL_STATE] = state
+
+  const cs = state[channel] ?? []
+  cs.push(ctxObject)
+  state[channel] = cs
 })

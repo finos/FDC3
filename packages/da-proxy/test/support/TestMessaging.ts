@@ -1,4 +1,4 @@
-import { AppIdentifier, Context } from "@finos/fdc3";
+import { AppIdentifier } from "@finos/fdc3";
 import { AgentRequestMessage, AgentResponseMessage, ConnectionStep3Handshake, ContextElement, IntentResult } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { v4 as uuidv4 } from 'uuid'
 import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";
@@ -78,7 +78,7 @@ export class TestMessaging extends AbstractMessaging {
     readonly allPosts: AgentRequestMessage[] = []
     readonly listeners: Map<string, RegisterableListener> = new Map()
     readonly intentDetails: IntentDetail[] = []
-    readonly channelState: { [key: string]: ContextElement[] } = {}
+    readonly channelState: { [key: string]: ContextElement[] }
 
     readonly automaticResponses: AutomaticResponse[] = [
         new FindIntent(),
@@ -89,6 +89,11 @@ export class TestMessaging extends AbstractMessaging {
         new Open(),
         new Handshake()
     ]
+
+    constructor(channelState: { [key: string]: ContextElement[] }) {
+        super()
+        this.channelState = channelState
+    }
 
     getSource(): AppIdentifier {
         return {
@@ -157,11 +162,5 @@ export class TestMessaging extends AbstractMessaging {
 
     setIntentResult(o: IntentResult) {
         this.ir = o
-    }
-
-    addChannelState(channelName: string, c: Context) {
-        const cs = this.channelState[channelName] ?? []
-        cs.push(c)
-        this.channelState[channelName] = cs
     }
 }

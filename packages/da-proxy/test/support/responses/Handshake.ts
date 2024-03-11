@@ -34,7 +34,7 @@ export class Handshake implements AutomaticResponse {
                     provider: "cucumber-provider",
                     providerVersion: "test"
                 },
-                channelsState: m.channelState
+                channelsState: m.channelState ?? {}
 
             }
         }

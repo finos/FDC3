@@ -39,7 +39,8 @@ export class DefaultHandshakeSupport implements HandshakeSupport {
     }
 
     disconnect(): Promise<void> {
-        throw new Error("Method not implemented.");
+        // does nothing yet
+        return Promise.resolve()
     }
 
     getHandshakePayload(): ConnectionStep3HandshakePayload | null {

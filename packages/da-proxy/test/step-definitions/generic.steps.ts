@@ -31,10 +31,12 @@ class SimpleIntentResolver implements IntentResolver {
     }
 }
 
+export const CHANNEL_STATE = 'CHANNEL_STATE'
+
 Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
 
     if (!this.messaging) {
-        this.messaging = new TestMessaging();
+        this.messaging = new TestMessaging(this.props[CHANNEL_STATE]);
     }
 
     const version = "2.0"
@@ -114,6 +116,10 @@ Then('{string} is an object with the following contents', function (this: Custom
 
 Then('{string} is null', function (this: CustomWorld, field: string) {
     expect(handleResolve(field, this)).toBeNull()
+})
+
+Then('{string} is undefined', function (this: CustomWorld, field: string) {
+    expect(handleResolve(field, this)).toBeUndefined()
 })
 
 Then('{string} is empty', function (this: CustomWorld, field: string) {
