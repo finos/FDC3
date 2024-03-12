@@ -53,7 +53,7 @@ module.exports={
       "appId": "YW91L9TW76",
       "apiKey": "ab431bb4107069ef51780d8947cd8e0a",
       "indexName": "fdc3-finos",
-      "contextualSearch": false,
+      "contextualSearch": true,
 			"searchParameters": {}
     },
     "navbar": {
