@@ -50,8 +50,8 @@ module.exports={
   "plugins": [],
   "themeConfig": {
     "algolia": {
-      "appId": "FMGF6HHA39",
-      "apiKey": process.env.ALGOLIA_API_KEY ? process.env.ALGOLIA_API_KEY : "none",
+      "appId": "YW91L9TW76",
+      "apiKey": "ab431bb4107069ef51780d8947cd8e0a",
       "indexName": "fdc3-finos",
       "contextualSearch": false,
 			"searchParameters": {}
