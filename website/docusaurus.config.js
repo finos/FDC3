@@ -53,6 +53,8 @@ module.exports={
       "appId": "FMGF6HHA39",
       "apiKey": process.env.ALGOLIA_API_KEY ? process.env.ALGOLIA_API_KEY : "none",
       "indexName": "fdc3-finos",
+      "contextualSearch": false,
+			"searchParameters": {}
     },
     "navbar": {
       "title": "FDC3",
