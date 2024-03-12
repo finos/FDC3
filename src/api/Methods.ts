@@ -17,10 +17,10 @@ import {
   Intent,
   StandardContextType,
   StandardIntent,
-  ContextTypeFor,
   ContextType,
 } from '..';
-import { IntentsConfiguration, StandardContextsSet, StandardIntentsSet } from '../intents/IntentsConfiguration';
+import { StandardContextsSet } from '../internal/contextConfiguration';
+import { StandardIntentsSet } from '../internal/intentConfiguration';
 
 const DEFAULT_TIMEOUT = 5000;
 
@@ -201,14 +201,6 @@ export function isStandardIntent(intent: Intent): intent is StandardIntent {
 }
 
 /**
- * Get the possible context types for a given intent.
- * @param intent
- */
-export function getPossibleContextsForIntent<I extends StandardIntent>(intent: I): ContextTypeFor<I>[] {
-  return IntentsConfiguration[intent] ?? [];
-}
-
-/**
  * Compare numeric semver version number strings (in the form `1.2.3`).
  *
  * Returns `-1` if the first argument is a lower version number than the second,
@@ -252,5 +244,5 @@ export const versionIsAtLeast: (metadata: ImplementationMetadata, version: strin
   version
 ) => {
   let comparison = compareVersionNumbers(metadata.fdc3Version, version);
-  return comparison === null ? null : comparison >= 0 ? true : false;
+  return comparison === null ? null : comparison >= 0;
 };
