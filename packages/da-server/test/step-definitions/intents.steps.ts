@@ -78,3 +78,18 @@ Given('{string} registers an intent listener for {string} with contextType {stri
     }
     this.server.receive(message, meta.source)
 });
+
+
+Given('{string} unsubscribes an intent listener for {string} with contextType {string} and result type {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, resultType: string) {
+    const meta = createMeta(this, appStr)
+    const message = {
+        type: 'onUnsubscribe',
+        meta,
+        payload: {
+            intentName: handleResolve(intentName, this),
+            contextType: handleResolve(contextType, this),
+            resultType: handleResolve(resultType, this),
+        }
+    }
+    this.server.receive(message, meta.source)
+});
