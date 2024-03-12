@@ -4,7 +4,7 @@ import { DirectoryApp } from "../../src/directory/DirectoryInterface";
 import { APP_FIELD } from "./generic.steps";
 import { FindIntentAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { handleResolve } from "../support/matching";
-import { contextMap, createMeta } from "./broadcast.steps";
+import { createMeta, contextMap } from './generic.steps';
 
 type ListensFor = {
     [key: string]: {
@@ -50,9 +50,10 @@ Given('{string} is an app with the following intents', function (this: CustomWor
 
 });
 
-When('{string} finds intents with intent {string} and contextType {string} and result type {string}', function (this: CustomWorld, app: string, intentName: string, contextType: string, resultType: string) {
+When('{string} finds intents with intent {string} and contextType {string} and result type {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, resultType: string) {
+    const meta = createMeta(this, appStr)
     const message = {
-        meta: createMeta(this, app),
+        meta,
         payload: {
             intent: handleResolve(intentName, this)!!,
             resultType: handleResolve(resultType, this),
@@ -61,5 +62,19 @@ When('{string} finds intents with intent {string} and contextType {string} and r
         type: 'findIntentRequest'
     } as FindIntentAgentRequest
 
-    this.server.receive(message)
+    this.server.receive(message, meta.source)
+});
+
+Given('{string} registers an intent listener for {string} with contextType {string} and result type {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, resultType: string) {
+    const meta = createMeta(this, appStr)
+    const message = {
+        type: 'onAddIntentListener',
+        meta,
+        payload: {
+            intentName: handleResolve(intentName, this),
+            contextType: handleResolve(contextType, this),
+            resultType: handleResolve(resultType, this),
+        }
+    }
+    this.server.receive(message, meta.source)
 });
