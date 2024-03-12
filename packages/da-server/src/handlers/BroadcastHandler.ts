@@ -1,5 +1,5 @@
 import { MessageHandler } from "../BasicFDC3Server";
-import { AppMetadata, ConnectionStep2Hello, ConnectionStep3Handshake } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppMetadata, BroadcastAgentRequest, ConnectionStep2Hello, ConnectionStep3Handshake } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { ServerContext } from "../ServerContext";
 import {
     PrivateChannelOnAddContextListenerAgentRequest,
@@ -49,7 +49,13 @@ export class BroadcastHandler implements MessageHandler {
             case 'PrivateChannel.broadcast': return this.handleBroadcast(msg as PrivateChannelBroadcastAgentRequest, sc)
             case 'PrivateChannel.onAddContextListener': return this.handleOnAddContextListener(msg as PrivateChannelOnAddContextListenerAgentRequest, sc)
             case 'PrivateChannel.onUnsubscribe': return this.handleOnUnsubscribe(msg as PrivateChannelOnUnsubscribeAgentRequest, sc)
-            case 'broadcast': return this.handleBroadcast(msg as PrivateChannelBroadcastAgentRequest, sc)
+
+            // although we don't have messages for these yet, we're going to need them. See: https://github.com/finos/FDC3/issues/1171 
+            case 'onUnsubscribe': return this.handleOnUnsubscribe(msg as PrivateChannelOnUnsubscribeAgentRequest, sc)
+            case 'onAddContextListener': return this.handleOnAddContextListener(msg as PrivateChannelOnAddContextListenerAgentRequest, sc)
+            case 'broadcastRequest': return this.handleBroadcast(msg as BroadcastAgentRequest, sc)
+
+            // handling state synchronisation of channels
             case 'hello': return this.handleHello(msg as ConnectionStep2Hello, sc, from)
         }
     }
@@ -93,7 +99,7 @@ export class BroadcastHandler implements MessageHandler {
         this.regs.push(lr)
     }
 
-    handleBroadcast(arg0: PrivateChannelBroadcastAgentRequest, sc: ServerContext) {
+    handleBroadcast(arg0: PrivateChannelBroadcastAgentRequest | BroadcastAgentRequest, sc: ServerContext) {
         const channelId = arg0.payload.channelId
         const contextType = arg0.payload.context.type
 
@@ -115,7 +121,7 @@ export class BroadcastHandler implements MessageHandler {
                     },
                     type: arg0.type,
                     payload: arg0.payload
-                } as PrivateChannelBroadcastAgentRequest
+                } as PrivateChannelBroadcastAgentRequest | BroadcastAgentRequest
 
                 sc.post(out, r)
             })

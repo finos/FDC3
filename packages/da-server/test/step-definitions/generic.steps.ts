@@ -1,9 +1,8 @@
-import { Given, When } from '@cucumber/cucumber'
+import { Given } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { TestServerContext } from '../support/TestServerContext';
 import { DefaultFDC3Server } from '../../src/BasicFDC3Server';
 import { BasicDirectory } from '../../src/directory/BasicDirectory';
-import { ConnectionStep2Hello } from '@finos/fdc3/dist/bridging/BridgingTypes';
 
 export const APP_FIELD = 'apps'
 
@@ -50,17 +49,3 @@ Given('A newly instantiated FDC3 Server', function (this: CustomWorld) {
     this.server = new DefaultFDC3Server(this.sc, d, "cucumber-fdc3-server")
 
 });
-
-When('{string} connects', function (this: CustomWorld, appStr: string) {
-    const meta = createMeta(this, appStr)
-    const hello: ConnectionStep2Hello = {
-        type: 'hello',
-        meta,
-        payload: {
-            authRequired: false,
-            supportedFDC3Versions: ["2.0"],
-            desktopAgentBridgeVersion: "any"
-        }
-    }
-    this.server.receive(hello, meta.source)
-})
