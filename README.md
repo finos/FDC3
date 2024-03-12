@@ -86,3 +86,4 @@ Desktop Agent Briding needs extending with the following types:
 ## Issues To Resolve
 
 - How does the da-server tell the da-proxy about the channel metadata?
+- How does the da-server decide on a desktop agent name (maybe it just has one?)

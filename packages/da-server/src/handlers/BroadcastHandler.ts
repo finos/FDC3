@@ -1,7 +1,12 @@
 import { MessageHandler } from "../BasicFDC3Server";
-import { AgentRequestMessage, AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppMetadata, ConnectionStep2Hello, ConnectionStep3Handshake } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { ServerContext } from "../ServerContext";
-import { PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnUnsubscribeAgentRequest, PrivateChannelBroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import {
+    PrivateChannelOnAddContextListenerAgentRequest,
+    PrivateChannelOnUnsubscribeAgentRequest,
+    PrivateChannelBroadcastAgentRequest
+} from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { ContextElement } from "@finos/fdc3";
 
 type ListenerRegistration = {
     appId: string,
@@ -32,22 +37,47 @@ function createListenerRegistration(msg:
 export class BroadcastHandler implements MessageHandler {
 
     private regs: ListenerRegistration[] = []
+    private state: { [channelId: string]: ContextElement[] } = {}
+    private readonly desktopAgentName: string
 
-
-    connect(_sc: ServerContext): void {
+    constructor(name: string) {
+        this.desktopAgentName = name
     }
 
-    disconnect(_app: AppMetadata, _sc: ServerContext): void {
-    }
-
-    accept(msg: AgentRequestMessage, sc: ServerContext) {
-        switch (msg.type as string) {
+    accept(msg: any, sc: ServerContext, from: AppMetadata) {
+        switch (msg.type as string | null) {
             case 'PrivateChannel.broadcast': return this.handleBroadcast(msg as PrivateChannelBroadcastAgentRequest, sc)
             case 'PrivateChannel.onAddContextListener': return this.handleOnAddContextListener(msg as PrivateChannelOnAddContextListenerAgentRequest, sc)
             case 'PrivateChannel.onUnsubscribe': return this.handleOnUnsubscribe(msg as PrivateChannelOnUnsubscribeAgentRequest, sc)
             case 'broadcast': return this.handleBroadcast(msg as PrivateChannelBroadcastAgentRequest, sc)
-            case 'hello': return this.hand
+            case 'hello': return this.handleHello(msg as ConnectionStep2Hello, sc, from)
         }
+    }
+
+    handleHello(_hello: ConnectionStep2Hello, sc: ServerContext, from: AppMetadata) {
+        const out: ConnectionStep3Handshake = {
+            type: 'handshake',
+            meta: {
+                requestUuid: sc.createUUID(),
+                timestamp: new Date()
+            },
+            payload: {
+                channelsState: this.state,
+                implementationMetadata: {
+                    fdc3Version: sc.fdc3Version(),
+                    optionalFeatures: {
+                        DesktopAgentBridging: false,
+                        OriginatingAppMetadata: true,
+                        UserChannelMembershipAPIs: true
+                    },
+                    provider: sc.provider(),
+                    providerVersion: sc.providerVersion()
+                },
+                requestedName: this.desktopAgentName
+            }
+        }
+
+        sc.post(out, from)
     }
 
     handleOnUnsubscribe(arg0: PrivateChannelOnUnsubscribeAgentRequest, _sc: ServerContext) {
@@ -87,8 +117,12 @@ export class BroadcastHandler implements MessageHandler {
                     payload: arg0.payload
                 } as PrivateChannelBroadcastAgentRequest
 
-                sc.post(out)
+                sc.post(out, r)
             })
+
+
+        // store channel state for new da-proxies connecting
+
     }
 }
 

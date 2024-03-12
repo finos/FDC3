@@ -2,45 +2,14 @@ import { DataTable, Then, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnUnsubscribeAgentRequest, PrivateChannelBroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { matchData } from '../support/matching';
-
-
-export function createMeta(cw: CustomWorld, appStr: string) {
-  const [appId, instanceId] = appStr.split("/")
-  const app = { appId, instanceId }
-
-  return {
-    "requestUuid": cw.sc.createUUID(),
-    "timestamp": new Date(),
-    "source": app
-  }
-}
-
-export const contextMap: Record<string, any> = {
-  "fdc3.instrument": {
-    "type": "fdc3.instrument",
-    "name": "Apple",
-    "id": {
-      "ticker": "AAPL"
-    }
-  },
-  "fdc3.country": {
-    "type": "fdc3.country",
-    "name": "Sweden",
-    "id": {
-      "COUNTRY_ISOALPHA2": "SE",
-      "COUNTRY_ISOALPHA3": "SWE",
-    }
-  },
-  "fdc3.unsupported": {
-    "type": "fdc3.unsupported",
-    "bogus": true
-  }
-}
+import { contextMap, createMeta } from './generic.steps';
+import expect from "expect";
 
 
 When('{string} adds a context listener on {string} with type {string}', function (this: CustomWorld, app: string, channelId: string, contextType: string) {
+  const meta = createMeta(this, app)
   const message = {
-    meta: createMeta(this, app),
+    meta,
     payload: {
       channelId,
       contextType
@@ -48,12 +17,13 @@ When('{string} adds a context listener on {string} with type {string}', function
     type: 'PrivateChannel.onAddContextListener'
   } as PrivateChannelOnAddContextListenerAgentRequest
 
-  this.server.receive(message)
+  this.server.receive(message, meta.source)
 })
 
 When('{string} removes context listener on {string} with type {string}', function (this: CustomWorld, app: string, channelId: string, contextType: string) {
+  const meta = createMeta(this, app)
   const message = {
-    meta: createMeta(this, app),
+    meta,
     payload: {
       channelId,
       contextType
@@ -61,12 +31,13 @@ When('{string} removes context listener on {string} with type {string}', functio
     type: 'PrivateChannel.onUnsubscribe'
   } as PrivateChannelOnUnsubscribeAgentRequest
 
-  this.server.receive(message)
+  this.server.receive(message, meta.source)
 })
 
 When('{string} broadcasts {string} on {string}', function (this: CustomWorld, app: string, contextType: string, channelId: string) {
+  const meta = createMeta(this, app)
   const message = {
-    meta: createMeta(this, app),
+    meta,
     payload: {
       channelId,
       context: contextMap[contextType]
@@ -74,12 +45,20 @@ When('{string} broadcasts {string} on {string}', function (this: CustomWorld, ap
     type: 'PrivateChannel.broadcast'
   } as PrivateChannelBroadcastAgentRequest
 
-  this.server.receive(message)
+  this.server.receive(message, meta.source)
 
 })
 
-
-
 Then('messaging will have outgoing posts', function (this: CustomWorld, dt: DataTable) {
-  matchData(this, this.sc.postedMessages, dt)
+  // just take the last few posts and match those
+  const matching = dt.rows().length
+  var toUse = this.sc?.postedMessages
+  if (toUse.length > matching) {
+    toUse = toUse.slice(toUse.length - matching, toUse.length)
+  }
+  matchData(this, toUse, dt)
+})
+
+Then('messaging will have {int} posts', function (this: CustomWorld, count: number) {
+  expect(this.sc.postedMessages.length).toEqual(count)
 })

@@ -1,11 +1,17 @@
 import { ServerContext } from '../../src/ServerContext'
 import { v4 as uuidv4 } from 'uuid'
 import { CustomWorld } from '../world'
+import { AppMetadata } from '@finos/fdc3'
+
+type MessageRecord = {
+    to: AppMetadata,
+    msg: object
+}
 
 
 export class TestServerContext implements ServerContext {
 
-    public postedMessages: object[] = []
+    public postedMessages: MessageRecord[] = []
     private readonly cw: CustomWorld
 
 
@@ -13,12 +19,22 @@ export class TestServerContext implements ServerContext {
         this.cw = cw
     }
 
-    createUUID() : string {
+    provider(): string {
+        return "cucumber-provider"
+    }
+    providerVersion(): string {
+        return "1.2.3.TEST"
+    }
+    fdc3Version(): string {
+        return "2.0"
+    }
+
+    createUUID(): string {
         return uuidv4()
     }
 
-    post(message: object): Promise<void> {
-        this.postedMessages.push(message)
+    post(msg: object, to: AppMetadata): Promise<void> {
+        this.postedMessages.push({ msg, to })
         return Promise.resolve();
     }
 

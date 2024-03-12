@@ -1,4 +1,4 @@
-import { AgentRequestMessage, AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { FDC3Server } from "./FDC3Server";
 import { ServerContext } from "./ServerContext";
 import { BroadcastHandler } from "./handlers/BroadcastHandler";
@@ -10,17 +10,7 @@ export interface MessageHandler {
     /**
      * Handles an AgentRequestMessage from the messaging source
      */
-    accept(msg: AgentRequestMessage, sc: ServerContext): void
-
-    /**
-     * Handles a new connection
-     */
-    connect(sc: ServerContext): void
-
-    /**
-     * Called when an app is lost or deliberately disconnects.
-     */
-    disconnect(app: AppMetadata, sc: ServerContext): void
+    accept(msg: any, sc: ServerContext, from: AppMetadata): void
 }
 
 /**
@@ -36,20 +26,17 @@ export class BasicFDC3Server implements FDC3Server {
         this.sc = sc;
     }
 
-    receive(message: AgentRequestMessage): void {
+    receive(message: any, from: AppMetadata): void {
         this.sc.log(`MessageReceived: \n ${JSON.stringify(message, null, 2)}`)
-        this.handlers.forEach(h => h.accept(message, this.sc))
+        this.handlers.forEach(h => h.accept(message, this.sc, from))
     }
-
-    connect()
-
 }
 
 export class DefaultFDC3Server extends BasicFDC3Server {
 
-    constructor(sc: ServerContext, directory: Directory) {
+    constructor(sc: ServerContext, directory: Directory, name: string) {
         super([
-            new BroadcastHandler(),
+            new BroadcastHandler(name),
             new IntentHandler(directory)
         ], sc)
     }
