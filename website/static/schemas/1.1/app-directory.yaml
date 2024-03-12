@@ -320,7 +320,7 @@ components:
           type: array
           description: >
             The list of intents implemented by the Application as defined by
-            https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
+            https://github.com/FDC3/Intents/blob/main/src/Intent.yaml
           items:
             $ref: '#/components/schemas/Intent'
     ApplicationSearchResponse:
@@ -359,7 +359,7 @@ components:
     Intent:
       description: >-
         An intent definition as defined by spec
-        https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
+        https://github.com/FDC3/Intents/blob/main/src/Intent.yaml
       required:
         - name
       properties:
