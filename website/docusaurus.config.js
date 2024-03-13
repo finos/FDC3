@@ -49,6 +49,9 @@ module.exports={
   themes: ['@docusaurus/theme-mermaid'],
   "plugins": [],
   "themeConfig": {
+    "prism": {
+      "additionalLanguages": ["csharp"]
+    },
     "navbar": {
       "title": "FDC3",
       "logo": {
@@ -132,7 +135,7 @@ module.exports={
             },
             {
               "label": "Supported Platforms",
-              "to": "docs/supported-platforms"
+              "to": "docs/api/supported-platforms"
             },
             {
               "label": "API Reference",
