@@ -1,6 +1,6 @@
 import { DataTable, Then, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
-import { ConnectionStep2Hello, OpenAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { ConnectionStep2Hello, FindInstancesAgentRequest, GetAppMetadataAgentRequest, OpenAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { contextMap, createMeta } from './generic.steps';
 import { matchData } from '../support/matching';
 
@@ -31,6 +31,21 @@ Then('running apps will be', async function (this: CustomWorld, dataTable: DataT
   matchData(this, apps, dataTable)
 });
 
+When('{string} opens app {string}', function (this: CustomWorld, appStr: string, open: string) {
+  const from = createMeta(this, appStr)
+  const message: OpenAgentRequest = {
+    type: 'openRequest',
+    meta: from,
+    payload: {
+      app: {
+        appId: open,
+        desktopAgent: "n/a"
+      },
+    }
+  }
+  this.server.receive(message, from.source)
+});
+
 When('{string} opens app {string} with context data {string}', function (this: CustomWorld, appStr: string, open: string, context: string) {
   const from = createMeta(this, appStr)
   const message: OpenAgentRequest = {
@@ -44,4 +59,35 @@ When('{string} opens app {string} with context data {string}', function (this: C
       context: contextMap[context]
     }
   }
+  this.server.receive(message, from.source)
+});
+
+When('{string} requests metadata for {string}', function (this: CustomWorld, appStr: string, open: string) {
+  const from = createMeta(this, appStr)
+  const message: GetAppMetadataAgentRequest = {
+    type: 'getAppMetadataRequest',
+    meta: from,
+    payload: {
+      app: {
+        appId: open,
+        desktopAgent: "n/a"
+      }
+    }
+  }
+  this.server.receive(message, from.source)
+});
+
+
+When('{string} findsInstances of {string}', function (this: CustomWorld, appStr: string, open: string) {
+  const from = createMeta(this, appStr)
+  const message: FindInstancesAgentRequest = {
+    type: 'findInstancesRequest',
+    meta: from,
+    payload: {
+      app: {
+        appId: open
+      }
+    }
+  }
+  this.server.receive(message, from.source)
 });
