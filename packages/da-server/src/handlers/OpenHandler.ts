@@ -1,4 +1,4 @@
-import { AppMetadata, BroadcastAgentRequest, FindInstancesAgentRequest, FindInstancesAgentResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentErrorResponseMeta, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataAgentResponsePayload, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenAgentResponseMeta, OpenErrorMessage, PrivateChannelOnAddContextListenerAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppMetadata, BroadcastAgentRequest, FindInstancesAgentRequest, FindInstancesAgentResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataAgentResponsePayload, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenAgentResponseMeta, OpenErrorMessage, PrivateChannelOnAddContextListenerAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { MessageHandler } from "../BasicFDC3Server";
 import { ServerContext } from "../ServerContext";
 import { Directory, DirectoryApp } from "../directory/DirectoryInterface";
@@ -43,9 +43,9 @@ export class OpenHandler implements MessageHandler {
 
     async accept(msg: any, sc: ServerContext, from: AppMetadata): Promise<void> {
         switch (msg.type as string) {
-            case 'open': return this.open(msg as OpenAgentRequest, sc, from)
-            case 'findInstances': return this.findInstances(msg as FindInstancesAgentRequest, sc, from)
-            case 'getAppMetadata': return this.getAppMetadata(msg as GetAppMetadataAgentRequest, sc, from)
+            case 'openRequest': return this.open(msg as OpenAgentRequest, sc, from)
+            case 'findInstancesRequest': return this.findInstances(msg as FindInstancesAgentRequest, sc, from)
+            case 'getAppMetadataRequest': return this.getAppMetadata(msg as GetAppMetadataAgentRequest, sc, from)
 
             // although we don't have messages for these yet, we're going to need them. See: https://github.com/finos/FDC3/issues/1171 
             case 'onAddContextListener': return this.handleOnAddContextListener(msg as PrivateChannelOnAddContextListenerAgentRequest, sc)
@@ -53,10 +53,10 @@ export class OpenHandler implements MessageHandler {
     }
 
     handleOnAddContextListener(arg0: PrivateChannelOnAddContextListenerAgentRequest, sc: ServerContext) {
-        const instanceId = arg0.meta.source?.nextInstanceId
-        const pendingContext = this.pendingContexts.get(instanceId)
+        const instanceId = arg0.meta.source?.instanceId
+        const pendingContext = instanceId ? this.pendingContexts.get(instanceId) : undefined
 
-        if (pendingContext) {
+        if (pendingContext && instanceId) {
             const channelId = arg0.payload.channelId
             const contextType = arg0.payload.contextType
 
