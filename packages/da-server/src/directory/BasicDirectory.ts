@@ -1,12 +1,18 @@
 import { Directory, DirectoryApp, DirectoryIntent } from "./DirectoryInterface"
 
-export function genericResultType(rt: string | undefined): string | undefined {
-    if (rt == undefined) {
-        return undefined;
-    } else if (rt.indexOf('channel<') == 0) {
-        return 'channel';
+export function genericResultTypeSame(a: string | undefined, b: string | undefined) {
+    if (a == b) {
+        return true;
+    } else if (a == undefined) {
+        return true;
+    } else if (b == undefined) {
+        return true;
+    } else if (a.startsWith("channel<") && b == "channel") {
+        return true;
+    } else if (b.startsWith("channel<") && a == "channel") {
+        return true;
     } else {
-        return rt;
+        return false;
     }
 }
 
@@ -30,7 +36,7 @@ export class BasicDirectory implements Directory {
     intentMatches(i: DirectoryIntent, contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): boolean {
         return ((intentName == undefined) || (i.intentName == intentName)) &&
             ((contextType == undefined) || (i.contexts.includes(contextType))) &&
-            ((resultType == undefined) || (i.resultType == resultType) || (genericResultType(i.resultType) == resultType))
+            (genericResultTypeSame(i.resultType, resultType))
     }
 
     retrieveAllIntents(): DirectoryIntent[] {

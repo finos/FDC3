@@ -54,6 +54,6 @@ Given('A newly instantiated FDC3 Server', function (this: CustomWorld) {
 
 
     this.sc = new TestServerContext(this)
-    this.server = new DefaultFDC3Server(this.sc, d, "cucumber-fdc3-server")
+    this.server = new DefaultFDC3Server(this.sc, d, "cucumber-fdc3-server", 2000)
 
 });
