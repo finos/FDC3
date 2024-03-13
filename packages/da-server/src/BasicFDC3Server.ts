@@ -4,6 +4,7 @@ import { ServerContext } from "./ServerContext";
 import { BroadcastHandler } from "./handlers/BroadcastHandler";
 import { IntentHandler } from "./handlers/IntentHandler";
 import { Directory } from "./directory/DirectoryInterface";
+import { OpenHandler } from "./handlers/OpenHandler";
 
 export interface MessageHandler {
 
@@ -37,7 +38,8 @@ export class DefaultFDC3Server extends BasicFDC3Server {
     constructor(sc: ServerContext, directory: Directory, name: string, timeoutMs: number = 20000) {
         super([
             new BroadcastHandler(name),
-            new IntentHandler(directory, timeoutMs)
+            new IntentHandler(directory, timeoutMs),
+            new OpenHandler(directory)
         ], sc)
     }
 }

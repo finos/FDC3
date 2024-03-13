@@ -2,7 +2,7 @@ import { DataTable, Given, When } from "@cucumber/cucumber";
 import { CustomWorld } from "../world";
 import { DirectoryApp } from "../../src/directory/DirectoryInterface";
 import { APP_FIELD } from "./generic.steps";
-import { FindIntentAgentRequest, RaiseIntentAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { FindIntentAgentRequest, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { handleResolve } from "../support/matching";
 import { createMeta, contextMap } from './generic.steps';
 
@@ -94,9 +94,8 @@ Given('{string} unsubscribes an intent listener for {string} with contextType {s
     this.server.receive(message, meta.source)
 });
 
-When('{string} raises an intent for {string} with contextType {string} on app {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, dest: string) {
-    const meta = createMeta(this, appStr)
-    const destMeta = createMeta(this, dest)
+function raise(cw: CustomWorld, intentName: string, contextType: string, dest: string, meta: any): RaiseIntentAgentRequest {
+    const destMeta = createMeta(cw, dest)
     const message = {
         type: 'raiseIntentRequest',
         meta: {
@@ -107,17 +106,74 @@ When('{string} raises an intent for {string} with contextType {string} on app {s
             }
         },
         payload: {
-            intent: handleResolve(intentName, this),
+            intent: handleResolve(intentName, cw),
             context: contextMap[contextType],
             app: destMeta.source
         }
     } as RaiseIntentAgentRequest
+    return message;
+}
+
+When('{string} raises an intent for {string} with contextType {string} on app {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, dest: string) {
+    const meta = createMeta(this, appStr)
+    const message = raise(this, intentName, contextType, dest, meta)
     this.server.receive(message, meta.source)
 });
+
+When('{string} raises an intent for {string} with contextType {string} on app {string} with requestUuid {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, dest: string, requestUuid: string) {
+    const meta = {
+        ...createMeta(this, appStr), requestUuid
+    }
+    const message = raise(this, intentName, contextType, dest, meta)
+    this.server.receive(message, meta.source)
+})
 
 
 When('we wait for the intent timeout', function (this: CustomWorld) {
     return new Promise<void>((resolve, _reject) => {
         setTimeout(() => resolve(), 2100)
     })
+});
+
+When('{string} sends a raiseIntentResponse for intent {string} with requestUuid {string}', function (this: CustomWorld, appStr: string, intentName: string, requestUuid: string) {
+    const meta = createMeta(this, appStr)
+    const message = {
+        type: 'raiseIntentResponse',
+        meta: {
+            requestUuid,
+            responseUuid: this.sc.createUUID(),
+            timestamp: new Date()
+        },
+        payload: {
+            intentResolution: {
+                intent: intentName,
+                source: {
+                    ...meta.source
+                }
+            }
+        }
+    } as RaiseIntentAgentResponse
+    this.server.receive(message, meta.source)
+});
+
+When('{string} sends a raiseIntentResultResponse with requestUuid {string}', function (this: CustomWorld, appStr: string, requestUuid: string) {
+    const meta = createMeta(this, appStr)
+    const message = {
+        type: 'raiseIntentResultResponse',
+        meta: {
+            requestUuid,
+            responseUuid: this.sc.createUUID(),
+            timestamp: new Date()
+        },
+        payload: {
+            intentResult: {
+                context: {
+                    "type": "fdc3.something",
+                    "name": "Some Name"
+                }
+            }
+        }
+    } as RaiseIntentResultAgentResponse
+
+    this.server.receive(message, meta.source)
 });

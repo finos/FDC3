@@ -2,6 +2,7 @@ import { ServerContext } from '../../src/ServerContext'
 import { v4 as uuidv4 } from 'uuid'
 import { CustomWorld } from '../world'
 import { AppMetadata } from '@finos/fdc3/dist/bridging/BridgingTypes'
+import { OpenError } from '@finos/fdc3'
 
 type MessageRecord = {
     to: AppMetadata,
@@ -20,12 +21,16 @@ export class TestServerContext implements ServerContext {
     }
 
     async open(appId: string): Promise<AppMetadata> {
-        const out = {
-            appId,
-            instanceId: "" + this.nextInstanceId++
-        } as AppMetadata
-        this.openApps.push(out)
-        return out
+        if (appId.includes("missing")) {
+            throw new Error(OpenError.AppNotFound)
+        } else {
+            const out = {
+                appId,
+                instanceId: "" + this.nextInstanceId++
+            } as AppMetadata
+            this.openApps.push(out)
+            return out
+        }
     }
 
     async getOpenApps(): Promise<AppMetadata[]> {
