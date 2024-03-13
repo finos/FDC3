@@ -434,11 +434,6 @@
                     "description": "The intent that was raised. May be used to determine which intent the user\nchose in response to `fdc3.raiseIntentForContext()`.",
                     "type": "string",
                     "title": "intent"
-                },
-                "version": {
-                    "description": "The version number of the Intents schema being used.",
-                    "type": "string",
-                    "title": "version"
                 }
             },
             "additionalProperties": false,

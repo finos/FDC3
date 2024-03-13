@@ -795,7 +795,7 @@ Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`
 ### `raiseIntentForContext` (deprecated)
 
 ```ts
-raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;;
+raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;
 ```
 
 Version of `raiseIntentForContext` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
