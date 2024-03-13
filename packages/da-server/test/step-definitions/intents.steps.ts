@@ -2,7 +2,7 @@ import { DataTable, Given, When } from "@cucumber/cucumber";
 import { CustomWorld } from "../world";
 import { DirectoryApp } from "../../src/directory/DirectoryInterface";
 import { APP_FIELD } from "./generic.steps";
-import { FindIntentAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { FindIntentAgentRequest, RaiseIntentAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { handleResolve } from "../support/matching";
 import { createMeta, contextMap } from './generic.steps';
 
@@ -91,5 +91,26 @@ Given('{string} unsubscribes an intent listener for {string} with contextType {s
             resultType: handleResolve(resultType, this),
         }
     }
+    this.server.receive(message, meta.source)
+});
+
+When('{string} raises an intent for {string} with contextType {string} on app {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, dest: string) {
+    const meta = createMeta(this, appStr)
+    const destMeta = createMeta(this, dest)
+    const message = {
+        type: 'raiseIntentRequest',
+        meta: {
+            ...meta,
+            destination: {
+                ...destMeta.source,
+                desktopAgent: 'n/a'
+            }
+        },
+        payload: {
+            intent: handleResolve(intentName, this),
+            context: contextMap[contextType],
+            app: destMeta.source
+        }
+    } as RaiseIntentAgentRequest
     this.server.receive(message, meta.source)
 });

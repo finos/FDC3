@@ -34,10 +34,12 @@ function createListenerRegistration(msg:
     }
 }
 
+type ChannelState = { [channelId: string]: ContextElement[] }
+
 export class BroadcastHandler implements MessageHandler {
 
     private regs: ListenerRegistration[] = []
-    private state: { [channelId: string]: ContextElement[] } = {}
+    private state: ChannelState = {}
     private readonly desktopAgentName: string
 
     constructor(name: string) {
@@ -101,7 +103,8 @@ export class BroadcastHandler implements MessageHandler {
 
     handleBroadcast(arg0: PrivateChannelBroadcastAgentRequest | BroadcastAgentRequest, sc: ServerContext) {
         const channelId = arg0.payload.channelId
-        const contextType = arg0.payload.context.type
+        const context = arg0.payload.context
+        const contextType = context.type
 
         this.regs
             .filter(r => {
@@ -128,6 +131,16 @@ export class BroadcastHandler implements MessageHandler {
 
 
         // store channel state for new da-proxies connecting
+        if (arg0.type == 'broadcastRequest') {
+            var channelState: ContextElement[] = this.state[channelId] ?? []
+
+            // remove previous context of same type
+            channelState = channelState.filter(ce => ce.type != contextType)
+            this.state[channelId] = channelState
+
+            // add the new element of context
+            channelState.push(context)
+        }
 
     }
 }

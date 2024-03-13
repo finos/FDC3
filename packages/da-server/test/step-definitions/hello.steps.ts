@@ -3,6 +3,11 @@ import { CustomWorld } from '../world';
 import { ConnectionStep2Hello } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { createMeta } from './generic.steps';
 
+When('{string} is opened', function (this: CustomWorld, app: string) {
+  const meta = createMeta(this, app)
+  this.sc.openApps.push(meta.source)
+});
+
 When('{string} sends hello', function (this: CustomWorld, app: string) {
   const meta = createMeta(this, app)
   const message: ConnectionStep2Hello = {

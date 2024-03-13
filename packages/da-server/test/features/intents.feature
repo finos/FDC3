@@ -7,7 +7,8 @@ Feature: Responding to Directory Requests about Intents
       | streamBook  | fdc3.book    | channel<chapter> |
       | returnBook  | fdc3.book    | {empty}          |
     And A newly instantiated FDC3 Server
-    And "App1/b1" connects
+    And "App1/b1" is opened
+    And "App1/b1" sends hello
     And "App1/b1" registers an intent listener for "returnBook" with contextType "fdc3.book" and result type "channel<messages>"
 
   Scenario: Failed Find Intents Request
@@ -52,3 +53,22 @@ Feature: Responding to Directory Requests about Intents
     Then messaging will have outgoing posts
       | msg.type           | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length | to.instanceId | msg.payload.appIntent.apps[0].appId |
       | findIntentResponse | returnBook                        |                                 1 | a1            | libraryApp                          |
+
+  Scenario: Raising An Intent To A Non-Existent App
+    When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "AppZ/b1"
+    Then messaging will have outgoing posts
+      | msg.type            | msg.payload.error         | to.instanceId |
+      | raiseIntentResponse | TargetInstanceUnavailable | a1            |
+
+  Scenario: Raising An Intent To A Running App
+    When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "App1/b1"
+    Then messaging will have outgoing posts
+      | msg.type           | msg.payload.intent | to.instanceId |
+      | raiseIntentRequest | returnBook         | b1            |
+
+  Scenario: Raising An Intent To A Non-Running App
+    When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "libraryApp"
+    And "libraryApp/0" registers an intent listener for "returnBook" with contextType "fdc3.book" and result type "channel<messages>"
+    Then messaging will have outgoing posts
+      | msg.type | msg.payload.intent | to.instanceId |
+      | boof     | returnBook         | b1            |

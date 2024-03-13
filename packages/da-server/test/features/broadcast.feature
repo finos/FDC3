@@ -27,5 +27,5 @@ Feature: Relaying Broadcast messages
     When "App1/a1" broadcasts "fdc3.instrument" on "channel1"
     And "App2/a2" sends hello
     Then messaging will have outgoing posts
-      | msg.type  | msg.requestedName | msg.channelsState['channel1'].length | msg.channelsState['channel1'][0].type |
-      | handshake | Jeff              |                                    1 | fdc3.instrument                       |
+      | msg.type  | msg.payload.requestedName | msg.payload.channelsState['channel1'].length | msg.payload.channelsState['channel1'][0].type |
+      | handshake | cucumber-fdc3-server      |                                            1 | fdc3.instrument                               |
