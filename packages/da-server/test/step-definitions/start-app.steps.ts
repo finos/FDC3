@@ -1,7 +1,8 @@
-import { When } from '@cucumber/cucumber'
+import { DataTable, Then, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { ConnectionStep2Hello } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { createMeta } from './generic.steps';
+import { matchData } from '../support/matching';
 
 When('{string} is opened', function (this: CustomWorld, app: string) {
   const meta = createMeta(this, app)
@@ -23,4 +24,9 @@ When('{string} sends hello', function (this: CustomWorld, app: string) {
   }
 
   this.server.receive(message, meta.source)
+});
+
+Then('running apps will be', async function (this: CustomWorld, dataTable: DataTable) {
+  const apps = await this.sc.getOpenApps()
+  matchData(this, apps, dataTable)
 });
