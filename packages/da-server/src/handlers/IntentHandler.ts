@@ -8,7 +8,7 @@ import { ResolveError } from "@finos/fdc3";
 
 type ListenerRegistration = {
     appId: string,
-    instanceId: string,
+    instanceId: string | undefined,
     intentName: string,
     contextType: string | undefined,
     resultType: string | undefined
@@ -26,17 +26,17 @@ function createListenerRegistration(msg: any): ListenerRegistration {
 }
 
 function matches(template: ListenerRegistration, actual: ListenerRegistration): boolean {
-    return (lr1.appId == lr2.appId) &&
-        (lr1.instanceId == lr2.instanceId) &&
-        (lr1.intentName == lr2.intentName) &&
-        (lr1.contextType == lr2.contextType) &&
-        (lr1.resultType == lr2.resultType)
+    return (template.appId == actual.appId) &&
+        ((template.instanceId == actual.instanceId) || (template.instanceId == undefined)) &&
+        (template.intentName == actual.intentName) &&
+        ((template.contextType == actual.contextType) || (template.contextType == undefined)) &&
+        ((template.resultType == actual.resultType) || (template.resultType == undefined))
 }
 
 /**
  * Re-writes the request to forward it on to the target application
  */
-async function forwardRequest(arg0: RaiseIntentAgentRequest, sc: ServerContext): Promise<void> {
+async function forwardRequest(arg0: RaiseIntentAgentRequest, to: AppMetadata, sc: ServerContext): Promise<void> {
     const out: RaiseIntentAgentRequest = {
         type: 'raiseIntentRequest',
         payload: arg0.payload,
@@ -47,7 +47,7 @@ async function forwardRequest(arg0: RaiseIntentAgentRequest, sc: ServerContext):
             timestamp: arg0.meta.timestamp
         }
     }
-    return sc.post(out, arg0.payload.app)
+    return sc.post(out, to)
 }
 
 async function sendError(arg0: RaiseIntentAgentRequest, sc: ServerContext, e: ErrorMessage) {
@@ -82,7 +82,13 @@ class PendingIntent {
 
     constructor(r: RaiseIntentAgentRequest, sc: ServerContext, timeoutMs: number) {
         this.r = r
-        this.expecting = createListenerRegistration(r)
+        this.expecting = {
+            appId: r.payload.app.appId,
+            instanceId: undefined,
+            intentName: r.payload.intent,
+            contextType: r.payload.context?.type,
+            resultType: undefined
+        }
         this.sc = sc
 
         // handle the timeout
@@ -100,9 +106,9 @@ class PendingIntent {
 
         if (arg0.type == 'onAddIntentListener') {
             const actual = createListenerRegistration(arg0)
-            if (matches(actual, this.expecting)) {
+            if (matches(this.expecting, actual)) {
                 this.complete = true
-                forwardRequest(arg0, this.sc)
+                forwardRequest(this.r, arg0.meta.source, this.sc)
             }
         }
     }
@@ -154,7 +160,7 @@ export class IntentHandler implements MessageHandler {
         if (arg0.meta.destination.instanceId) {
             // ok, targeting a specific, known instance
             if (await sc.isAppOpen(arg0.meta.destination)) {
-                return forwardRequest(arg0, sc)
+                return forwardRequest(arg0, arg0.meta.destination, sc)
             } else {
                 // instance doesn't exist
                 return sendError(arg0, sc, ResolveError.TargetInstanceUnavailable)

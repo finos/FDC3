@@ -7,6 +7,7 @@ Feature: Responding to Directory Requests about Intents
       | streamBook  | fdc3.book    | channel<chapter> |
       | returnBook  | fdc3.book    | {empty}          |
     And A newly instantiated FDC3 Server
+    And "App1/a1" is opened
     And "App1/b1" is opened
     And "App1/b1" sends hello
     And "App1/b1" registers an intent listener for "returnBook" with contextType "fdc3.book" and result type "channel<messages>"
@@ -55,6 +56,12 @@ Feature: Responding to Directory Requests about Intents
       | findIntentResponse | returnBook                        |                                 1 | a1            | libraryApp                          |
 
   Scenario: Raising An Intent To A Non-Existent App
+    When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "NonExistentApp"
+    Then messaging will have outgoing posts
+      | msg.type            | msg.payload.error    | to.instanceId |
+      | raiseIntentResponse | TargetAppUnavailable | a1            |
+
+  Scenario: Raising An Intent To A Non-Existent App Instance
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "AppZ/b1"
     Then messaging will have outgoing posts
       | msg.type            | msg.payload.error         | to.instanceId |
@@ -69,6 +76,11 @@ Feature: Responding to Directory Requests about Intents
   Scenario: Raising An Intent To A Non-Running App
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "libraryApp"
     And "libraryApp/0" registers an intent listener for "returnBook" with contextType "fdc3.book" and result type "channel<messages>"
+    Then running apps will be
+      | appId      | instanceId |
+      | App1       | a1         |
+      | App1       | b1         |
+      | libraryApp |          0 |
     Then messaging will have outgoing posts
-      | msg.type | msg.payload.intent | to.instanceId |
-      | boof     | returnBook         | b1            |
+      | msg.type           | msg.payload.intent | to.instanceId | to.appId   | msg.payload.context.type |
+      | raiseIntentRequest | returnBook         |             0 | libraryApp | fdc3.book                |

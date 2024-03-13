@@ -25,6 +25,14 @@ export const contextMap: Record<string, any> = {
     "fdc3.unsupported": {
         "type": "fdc3.unsupported",
         "bogus": true
+    },
+    "fdc3.book": {
+        "type": "fdc3.book",
+        "author": "Greg Wallace",
+        "title": "Cooking with Greg",
+        "id": {
+            "ISBN": "1234"
+        }
     }
 }
 
