@@ -84,3 +84,27 @@ Feature: Responding to Directory Requests about Intents
     Then messaging will have outgoing posts
       | msg.type           | msg.payload.intent | to.instanceId | to.appId   | msg.payload.context.type |
       | raiseIntentRequest | returnBook         |             0 | libraryApp | fdc3.book                |
+
+  Scenario: Raising An Intent To A Non-Running App without A Context Type in the listener
+    When "App1/a1" raises an intent for "stampBook" with contextType "fdc3.book" on app "libraryApp"
+    And "libraryApp/0" registers an intent listener for "stampBook" with contextType "{empty}" and result type "channel<messages>"
+    Then running apps will be
+      | appId      | instanceId |
+      | App1       | a1         |
+      | App1       | b1         |
+      | libraryApp |          0 |
+    Then messaging will have outgoing posts
+      | msg.type           | msg.payload.intent | to.instanceId | to.appId   | msg.payload.context.type |
+      | raiseIntentRequest | stampBook          |             0 | libraryApp | fdc3.book                |
+
+  Scenario: Raising An Intent To A Broken App that doesn't add an intent listener
+    When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "libraryApp"
+    And we wait for the intent timeout
+    Then running apps will be
+      | appId      | instanceId |
+      | App1       | a1         |
+      | App1       | b1         |
+      | libraryApp |          0 |
+    Then messaging will have outgoing posts
+      | msg.type            | msg.payload.error    | to.instanceId | to.appId |
+      | raiseIntentResponse | IntentDeliveryFailed | a1            | App1     |

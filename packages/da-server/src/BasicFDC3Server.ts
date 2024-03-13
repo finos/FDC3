@@ -34,10 +34,10 @@ export class BasicFDC3Server implements FDC3Server {
 
 export class DefaultFDC3Server extends BasicFDC3Server {
 
-    constructor(sc: ServerContext, directory: Directory, name: string) {
+    constructor(sc: ServerContext, directory: Directory, name: string, timeoutMs: number = 20000) {
         super([
             new BroadcastHandler(name),
-            new IntentHandler(directory)
+            new IntentHandler(directory, timeoutMs)
         ], sc)
     }
 }

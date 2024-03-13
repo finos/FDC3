@@ -114,3 +114,10 @@ When('{string} raises an intent for {string} with contextType {string} on app {s
     } as RaiseIntentAgentRequest
     this.server.receive(message, meta.source)
 });
+
+
+When('we wait for the intent timeout', function (this: CustomWorld) {
+    return new Promise<void>((resolve, _reject) => {
+        setTimeout(() => resolve(), 2100)
+    })
+});

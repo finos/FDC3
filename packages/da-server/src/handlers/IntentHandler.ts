@@ -2,12 +2,12 @@ import { AppMetadata, ErrorMessage, FindIntentAgentRequest, FindIntentAgentRespo
 import { MessageHandler } from "../BasicFDC3Server";
 import { ServerContext } from "../ServerContext";
 import { Directory } from "../directory/DirectoryInterface";
-import { genericResultType } from "../directory/BasicDirectory";
+import { genericResultTypeSame } from "../directory/BasicDirectory";
 import { ResolveError } from "@finos/fdc3";
 
 
 type ListenerRegistration = {
-    appId: string,
+    appId: string | undefined,
     instanceId: string | undefined,
     intentName: string,
     contextType: string | undefined,
@@ -25,12 +25,15 @@ function createListenerRegistration(msg: any): ListenerRegistration {
     }
 }
 
-function matches(template: ListenerRegistration, actual: ListenerRegistration): boolean {
-    return (template.appId == actual.appId) &&
-        ((template.instanceId == actual.instanceId) || (template.instanceId == undefined)) &&
-        (template.intentName == actual.intentName) &&
-        ((template.contextType == actual.contextType) || (template.contextType == undefined)) &&
-        ((template.resultType == actual.resultType) || (template.resultType == undefined))
+function sameOrUndefined(a: string | undefined, b: string | undefined) {
+    return (a == b) || (a == undefined) || (b == undefined)
+}
+
+function matches(a: ListenerRegistration, b: ListenerRegistration): boolean {
+    return (sameOrUndefined(a.appId, b.appId)) &&
+        (a.intentName == b.intentName) &&
+        (sameOrUndefined(a.contextType, b.contextType)) &&
+        (genericResultTypeSame(a.resultType, b.resultType))
 }
 
 /**
@@ -100,13 +103,9 @@ class PendingIntent {
     }
 
     async accept(arg0: any): Promise<void> {
-        if (this.complete) {
-            return
-        }
-
         if (arg0.type == 'onAddIntentListener') {
             const actual = createListenerRegistration(arg0)
-            if (matches(this.expecting, actual)) {
+            if (matches(this.expecting, actual) && !this.complete) {
                 this.complete = true
                 forwardRequest(this.r, arg0.meta.source, this.sc)
             }
@@ -121,7 +120,7 @@ export class IntentHandler implements MessageHandler {
     private readonly regs: ListenerRegistration[] = []
     private readonly pendingIntents: Set<PendingIntent> = new Set()
 
-    constructor(d: Directory, timeoutMs: number = 8000) {
+    constructor(d: Directory, timeoutMs: number) {
         this.directory = d
         this.timeoutMs = timeoutMs
     }
@@ -216,13 +215,14 @@ export class IntentHandler implements MessageHandler {
     }
 
     retrieveListeners(contextType: string | undefined, intentName: string, resultType: string | undefined): ListenerRegistration[] {
-
-        function matches(i: ListenerRegistration): boolean {
-            return ((intentName == undefined) || (i.intentName == intentName)) &&
-                ((contextType == undefined) || (i.contextType == contextType)) &&
-                ((resultType == undefined) || (i.resultType == resultType) || (genericResultType(i.resultType) == resultType))
+        const template: ListenerRegistration = {
+            appId: undefined,
+            instanceId: undefined,
+            contextType,
+            intentName,
+            resultType
         }
 
-        return this.regs.filter(r => matches(r))
+        return this.regs.filter(r => matches(template, r))
     }
 }

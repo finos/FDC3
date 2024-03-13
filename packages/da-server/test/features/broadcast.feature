@@ -23,8 +23,9 @@ Feature: Relaying Broadcast messages
     Then messaging will have outgoing posts
       | msg.source.AppId | msg.source.instanceId | msg.payload.context.type |
 
-  Scenario: Handle disconnection, channel state synchronisation
+  Scenario: Handle channel state synchronisation for new apps
     When "App1/a1" broadcasts "fdc3.instrument" on "channel1"
+    And "App1/a1" broadcasts "fdc3.instrument" on "channel1"
     And "App2/a2" sends hello
     Then messaging will have outgoing posts
       | msg.type  | msg.payload.requestedName | msg.payload.channelsState['channel1'].length | msg.payload.channelsState['channel1'][0].type |
