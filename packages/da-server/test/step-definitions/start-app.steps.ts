@@ -1,7 +1,7 @@
 import { DataTable, Then, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
-import { ConnectionStep2Hello } from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { createMeta } from './generic.steps';
+import { ConnectionStep2Hello, OpenAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { contextMap, createMeta } from './generic.steps';
 import { matchData } from '../support/matching';
 
 When('{string} is opened', function (this: CustomWorld, app: string) {
@@ -29,4 +29,19 @@ When('{string} sends hello', function (this: CustomWorld, app: string) {
 Then('running apps will be', async function (this: CustomWorld, dataTable: DataTable) {
   const apps = await this.sc.getOpenApps()
   matchData(this, apps, dataTable)
+});
+
+When('{string} opens app {string} with context data {string}', function (this: CustomWorld, appStr: string, open: string, context: string) {
+  const from = createMeta(this, appStr)
+  const message: OpenAgentRequest = {
+    type: 'openRequest',
+    meta: from,
+    payload: {
+      app: {
+        appId: open,
+        desktopAgent: "n/a"
+      },
+      context: contextMap[context]
+    }
+  }
 });

@@ -1,4 +1,4 @@
-import { AppMetadata, ErrorMessage, FindIntentAgentRequest, FindIntentAgentResponse, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppMetadata, ErrorMessage, FindIntentAgentRequest, FindIntentAgentResponse, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { MessageHandler } from "../BasicFDC3Server";
 import { ServerContext } from "../ServerContext";
 import { Directory } from "../directory/DirectoryInterface";
@@ -39,7 +39,7 @@ function matches(a: ListenerRegistration, b: ListenerRegistration): boolean {
 /**
  * Re-writes the request to forward it on to the target application
  */
-async function forwardRequest(arg0: RaiseIntentAgentRequest, to: AppMetadata, sc: ServerContext): Promise<void> {
+async function forwardRequest(arg0: RaiseIntentAgentRequest, to: AppMetadata, sc: ServerContext, ih: IntentHandler): Promise<void> {
     const out: RaiseIntentAgentRequest = {
         type: 'raiseIntentRequest',
         payload: arg0.payload,
@@ -50,6 +50,10 @@ async function forwardRequest(arg0: RaiseIntentAgentRequest, to: AppMetadata, sc
             timestamp: arg0.meta.timestamp
         }
     }
+
+    // register the resolution destination
+    ih.pendingResolutions.set(arg0.meta.requestUuid, arg0.meta.source)
+
     return sc.post(out, to)
 }
 
@@ -82,8 +86,9 @@ class PendingIntent {
     r: RaiseIntentAgentRequest
     expecting: ListenerRegistration
     sc: ServerContext
+    ih: IntentHandler
 
-    constructor(r: RaiseIntentAgentRequest, sc: ServerContext, timeoutMs: number) {
+    constructor(r: RaiseIntentAgentRequest, sc: ServerContext, ih: IntentHandler) {
         this.r = r
         this.expecting = {
             appId: r.payload.app.appId,
@@ -93,13 +98,14 @@ class PendingIntent {
             resultType: undefined
         }
         this.sc = sc
+        this.ih = ih
 
         // handle the timeout
         setTimeout(() => {
             if (!this.complete) {
                 sendError(r, sc, ResolveError.IntentDeliveryFailed)
             }
-        }, timeoutMs)
+        }, ih.timeoutMs)
     }
 
     async accept(arg0: any): Promise<void> {
@@ -107,7 +113,7 @@ class PendingIntent {
             const actual = createListenerRegistration(arg0)
             if (matches(this.expecting, actual) && !this.complete) {
                 this.complete = true
-                forwardRequest(this.r, arg0.meta.source, this.sc)
+                forwardRequest(this.r, arg0.meta.source, this.sc, this.ih)
             }
         }
     }
@@ -115,10 +121,11 @@ class PendingIntent {
 
 export class IntentHandler implements MessageHandler {
 
-    private readonly timeoutMs: number
     private readonly directory: Directory
     private readonly regs: ListenerRegistration[] = []
     private readonly pendingIntents: Set<PendingIntent> = new Set()
+    readonly pendingResolutions: Map<string, AppMetadata> = new Map()
+    readonly timeoutMs: number
 
     constructor(d: Directory, timeoutMs: number) {
         this.directory = d
@@ -131,6 +138,36 @@ export class IntentHandler implements MessageHandler {
             case 'raiseIntentRequest': return this.raiseIntentRequest(msg as RaiseIntentAgentRequest, sc)
             case 'onAddIntentListener': return this.onAddIntentListener(msg as any, sc)
             case 'onUnsubscribe': return this.onUnsubscribe(msg as any, sc)
+            case 'raiseIntentResponse': return this.raiseIntentResponse(msg as RaiseIntentAgentResponse, sc)
+            case 'raiseIntentResultResponse': return this.raiseIntentResultResponse(msg as RaiseIntentResultAgentResponse, sc)
+        }
+    }
+    raiseIntentResponse(arg0: RaiseIntentAgentResponse, sc: ServerContext): void | PromiseLike<void> {
+        const requestId = arg0.meta.requestUuid
+        const to = this.pendingResolutions.get(requestId)
+        if (to) {
+            const out: RaiseIntentAgentResponse = {
+                meta: arg0.meta,
+                type: "raiseIntentResponse",
+                payload: arg0.payload
+            }
+
+            sc.post(out, to)
+        }
+    }
+
+    raiseIntentResultResponse(arg0: RaiseIntentResultAgentResponse, sc: ServerContext): void | PromiseLike<void> {
+        const requestId = arg0.meta.requestUuid
+        const to = this.pendingResolutions.get(requestId)
+        if (to) {
+            this.pendingResolutions.delete(requestId)
+            const out: RaiseIntentResultAgentResponse = {
+                meta: arg0.meta,
+                type: "raiseIntentResultResponse",
+                payload: arg0.payload
+            }
+
+            sc.post(out, to)
         }
     }
 
@@ -159,14 +196,14 @@ export class IntentHandler implements MessageHandler {
         if (arg0.meta.destination.instanceId) {
             // ok, targeting a specific, known instance
             if (await sc.isAppOpen(arg0.meta.destination)) {
-                return forwardRequest(arg0, arg0.meta.destination, sc)
+                return forwardRequest(arg0, arg0.meta.destination, sc, this)
             } else {
                 // instance doesn't exist
                 return sendError(arg0, sc, ResolveError.TargetInstanceUnavailable)
             }
         } else if (this.directory.retrieveAppsById(arg0.meta.destination.appId).length > 0) {
             // app exists but needs starting
-            const pi = new PendingIntent(arg0, sc, this.timeoutMs)
+            const pi = new PendingIntent(arg0, sc, this)
             this.pendingIntents.add(pi)
             return sc.open(arg0.meta.destination.appId).then(() => { return undefined })
         } else {
