@@ -1,8 +1,9 @@
-import { AppMetadata, FindIntentAgentRequest, FindIntentAgentResponse, RaiseIntentAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppMetadata, ErrorMessage, FindIntentAgentRequest, FindIntentAgentResponse, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { MessageHandler } from "../BasicFDC3Server";
 import { ServerContext } from "../ServerContext";
 import { Directory } from "../directory/DirectoryInterface";
 import { genericResultType } from "../directory/BasicDirectory";
+import { ResolveError } from "@finos/fdc3";
 
 
 type ListenerRegistration = {
@@ -24,7 +25,7 @@ function createListenerRegistration(msg: any): ListenerRegistration {
     }
 }
 
-function matches(lr1: ListenerRegistration, lr2: ListenerRegistration): boolean {
+function matches(template: ListenerRegistration, actual: ListenerRegistration): boolean {
     return (lr1.appId == lr2.appId) &&
         (lr1.instanceId == lr2.instanceId) &&
         (lr1.intentName == lr2.intentName) &&
@@ -32,17 +33,94 @@ function matches(lr1: ListenerRegistration, lr2: ListenerRegistration): boolean 
         (lr1.resultType == lr2.resultType)
 }
 
+/**
+ * Re-writes the request to forward it on to the target application
+ */
+async function forwardRequest(arg0: RaiseIntentAgentRequest, sc: ServerContext): Promise<void> {
+    const out: RaiseIntentAgentRequest = {
+        type: 'raiseIntentRequest',
+        payload: arg0.payload,
+        meta: {
+            source: arg0.meta.source,
+            destination: arg0.payload.app,
+            requestUuid: arg0.meta.requestUuid,
+            timestamp: arg0.meta.timestamp
+        }
+    }
+    return sc.post(out, arg0.payload.app)
+}
+
+async function sendError(arg0: RaiseIntentAgentRequest, sc: ServerContext, e: ErrorMessage) {
+    const out: RaiseIntentAgentErrorResponse = {
+        type: 'raiseIntentResponse',
+        meta: {
+            requestUuid: arg0.meta.requestUuid,
+            responseUuid: sc.createUUID(),
+            timestamp: new Date()
+        },
+        payload: {
+            error: e
+        }
+    }
+
+    sc.post(out, arg0.meta.source)
+}
+
+
+/**
+ * A pending intent is one for an app that hasn't registered it's intent listener yet.
+ * (Possibly it is being opened)
+ * 
+ * Pending intents wait for that registration and then message the app.
+ */
+class PendingIntent {
+
+    complete: boolean = false
+    r: RaiseIntentAgentRequest
+    expecting: ListenerRegistration
+    sc: ServerContext
+
+    constructor(r: RaiseIntentAgentRequest, sc: ServerContext, timeoutMs: number) {
+        this.r = r
+        this.expecting = createListenerRegistration(r)
+        this.sc = sc
+
+        // handle the timeout
+        setTimeout(() => {
+            if (!this.complete) {
+                sendError(r, sc, ResolveError.IntentDeliveryFailed)
+            }
+        }, timeoutMs)
+    }
+
+    async accept(arg0: any): Promise<void> {
+        if (this.complete) {
+            return
+        }
+
+        if (arg0.type == 'onAddIntentListener') {
+            const actual = createListenerRegistration(arg0)
+            if (matches(actual, this.expecting)) {
+                this.complete = true
+                forwardRequest(arg0, this.sc)
+            }
+        }
+    }
+}
 
 export class IntentHandler implements MessageHandler {
 
+    private readonly timeoutMs: number
     private readonly directory: Directory
     private readonly regs: ListenerRegistration[] = []
+    private readonly pendingIntents: Set<PendingIntent> = new Set()
 
-    constructor(d: Directory) {
+    constructor(d: Directory, timeoutMs: number = 8000) {
         this.directory = d
+        this.timeoutMs = timeoutMs
     }
 
-    accept(msg: any, sc: ServerContext, from: AppMetadata): void {
+    async accept(msg: any, sc: ServerContext, from: AppMetadata): Promise<void> {
         switch (msg.type as string) {
             case 'findIntentRequest': return this.findIntentRequest(msg as FindIntentAgentRequest, sc, from)
             case 'raiseIntentRequest': return this.raiseIntentRequest(msg as RaiseIntentAgentRequest, sc)
@@ -62,22 +140,34 @@ export class IntentHandler implements MessageHandler {
     onAddIntentListener(arg0: any, _sc: ServerContext): void {
         const lr = createListenerRegistration(arg0)
         this.regs.push(lr)
-    }
 
-    raiseIntentRequest(arg0: RaiseIntentAgentRequest, sc: ServerContext): void {
-        // simply forward the request on to the right app
-        const out: RaiseIntentAgentRequest = {
-            type: 'raiseIntentRequest',
-            payload: arg0.payload,
-            meta: {
-                source: arg0.meta.source,
-                destination: arg0.payload.app,
-                requestUuid: arg0.meta.requestUuid,
-                timestamp: arg0.meta.timestamp
+        // see if this intent listener is the destination for any pending intents
+        for (let x of this.pendingIntents) {
+            x.accept(arg0)
+            if (x.complete) {
+                this.pendingIntents.delete(x)
             }
         }
+    }
 
-        sc.post(out, arg0.payload.app)
+    async raiseIntentRequest(arg0: RaiseIntentAgentRequest, sc: ServerContext): Promise<void> {
+        if (arg0.meta.destination.instanceId) {
+            // ok, targeting a specific, known instance
+            if (await sc.isAppOpen(arg0.meta.destination)) {
+                return forwardRequest(arg0, sc)
+            } else {
+                // instance doesn't exist
+                return sendError(arg0, sc, ResolveError.TargetInstanceUnavailable)
+            }
+        } else if (this.directory.retrieveAppsById(arg0.meta.destination.appId).length > 0) {
+            // app exists but needs starting
+            const pi = new PendingIntent(arg0, sc, this.timeoutMs)
+            this.pendingIntents.add(pi)
+            return sc.open(arg0.meta.destination.appId).then(() => { return undefined })
+        } else {
+            // app doesn't exist
+            return sendError(arg0, sc, ResolveError.TargetAppUnavailable)
+        }
     }
 
     findIntentRequest(r: FindIntentAgentRequest, sc: ServerContext, from: AppMetadata): void {
@@ -129,9 +219,4 @@ export class IntentHandler implements MessageHandler {
 
         return this.regs.filter(r => matches(r))
     }
-
-
-
-
-
 }
