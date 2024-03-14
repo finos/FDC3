@@ -109,12 +109,10 @@ class PendingIntent {
     }
 
     async accept(arg0: any): Promise<void> {
-        if (arg0.type == 'onAddIntentListener') {
-            const actual = createListenerRegistration(arg0)
-            if (matches(this.expecting, actual) && !this.complete) {
-                this.complete = true
-                forwardRequest(this.r, arg0.meta.source, this.sc, this.ih)
-            }
+        const actual = createListenerRegistration(arg0)
+        if (matches(this.expecting, actual) && !this.complete) {
+            this.complete = true
+            forwardRequest(this.r, arg0.meta.source, this.sc, this.ih)
         }
     }
 }
