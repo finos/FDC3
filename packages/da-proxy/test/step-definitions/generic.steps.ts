@@ -20,7 +20,7 @@ class SimpleIntentResolver implements IntentResolver {
 
     cw: CustomWorld
 
-    chooseIntent(appIntents: AppIntent[]): SingleAppIntent {
+    async chooseIntent(appIntents: AppIntent[]): Promise<SingleAppIntent> {
         const out = {
             intent: appIntents[0].intent,
             chosenApp: appIntents[0].apps[0]

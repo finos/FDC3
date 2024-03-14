@@ -4,44 +4,26 @@
  * You can register message ports with it and plug in extra functionality to handle new message types. 
  */
 
-import { Context } from "@finos/fdc3"
-import { v4 as uuidv4 } from "uuid"
-import { handleHandshake } from "./handshake"
-import { ConnectionStep2Hello, ConnectionStep3Handshake } from "@finos/fdc3/dist/bridging/BridgingTypes"
-import { handleBroadcast } from "./broadcast"
-
-declare var onconnect : any
-
-type ClientData = {
-    hello: ConnectionStep2Hello,
-    handshake: ConnectionStep3Handshake
-}
+import { DefaultFDC3Server } from "da-server/src/BasicFDC3Server"
+import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory"
+import { ServerContext } from "da-server/src/ServerContext"
+import { AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes"
+import { v4 as uuidv4 } from 'uuid'
 
 export class SimpleServer {
 
-    readonly channelsState: Record<string, Context[]> 
-    readonly clients : Map<MessagePort, ClientData> = new Map()
-    private readonly actions : Record<string, (e: MessageEvent<any>, client: MessagePort, ss: SimpleServer) => void> 
-    
-    constructor(actions) {
-        this.channelsState = {}
-        this.actions = actions
-    }
+    const fdc3: DefaultFDC3Server = new DefaultFDC3Server()
 
-    createUUID(): string {
-        return uuidv4();
-    }
-    
     register(client: MessagePort) {
         console.log("Added new listener")
         client.onmessage = (e) => {
-            console.log("Received: "+e.data.type);
+            console.log("Received: " + e.data.type);
             Object.keys(this.actions).forEach(k => {
                 if (k == e.data.type) {
-                    console.log("Performing "+k)
+                    console.log("Performing " + k)
                     const action = this.actions[k]
                     action(e, client, this);
-                }    
+                }
             })
         }
     }
@@ -52,14 +34,58 @@ export class SimpleServer {
             handshake
         })
 
-        console.log("Added client. "+this.clients.size)
+        console.log("Added client. " + this.clients.size)
     }
 }
 
-const theServer = new SimpleServer({
-    "hello" : handleHandshake,
-    "broadcastRequest": handleBroadcast,
-});
+const directory = new FDC3_2_1_JSONDirectory();
+directory.load("./initial-apps.json")
+
+class MessagePortServerContext implements ServerContext {
+
+
+
+    createUUID(): string {
+        return uuidv4();
+    }
+
+    post(message: object, to: AppMetadata): Promise<void> {
+        throw new Error("Method not implemented.")
+    }
+
+    open(appId: string): Promise<AppMetadata> {
+        throw new Error("Method not implemented.")
+    }
+
+    getOpenApps(): Promise<AppMetadata[]> {
+        throw new Error("Method not implemented.")
+    }
+
+    isAppOpen(app: AppMetadata): Promise<boolean> {
+        throw new Error("Method not implemented.")
+    }
+
+    log(message: string): void {
+        console.log(message)
+    }
+
+    provider(): string {
+        return "webFDC3-demo"
+    }
+
+    providerVersion(): string {
+        return "0.1"
+    }
+
+    fdc3Version(): string {
+        return "2.0"
+    }
+
+}
+
+
+
+const theServer = new SimpleServer();
 
 onconnect = function (event) {
     const port = event.ports[0]

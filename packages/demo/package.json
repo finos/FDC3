@@ -12,11 +12,16 @@
     },
     "dependencies": {
         "@finos/fdc3": "^2.1.0-beta.4",
+        "@types/node": "^20.11.27",
+        "@types/uuid": "^9.0.7",
+        "@types/ws": "^8.5.10",
         "client": "workspace:*",
         "da-proxy": "workspace:*",
         "da-server": "workspace:*",
         "fdc3-common": "workspace:*",
-        "uuid": "^9.0.1"
+        "uuid": "^9.0.1",
+        "vite-plugin-mix": "^0.4.0",
+        "ws": "^8.16.0"
     },
     "references": [
         {
