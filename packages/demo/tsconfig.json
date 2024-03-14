@@ -1,10 +1,13 @@
 {
     "compilerOptions": {
-        "rootDir": "src",
+        "rootDirs": [
+            "src"
+        ],
         "outDir": "dist",
+        "esModuleInterop": true,
     },
     "include": [
-        "search"
+        "src"
     ],
     "references": [
         {
@@ -16,5 +19,9 @@
         {
             "path": "../fdc3-common"
         }
-    ]
+    ],
+    "ts-node": {
+        "esm": true,
+        "experimentalSpecifierResolution": "node"
+    },
 }
