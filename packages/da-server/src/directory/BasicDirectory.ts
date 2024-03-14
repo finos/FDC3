@@ -1,4 +1,8 @@
-import { Directory, DirectoryApp, DirectoryIntent } from "./DirectoryInterface"
+import { Directory, DirectoryApp } from "./DirectoryInterface"
+import { components } from '../directory-schema'
+
+type schemas = components['schemas']
+type DirectoryIntent = schemas['Intent'] & { intentName: string, appId: string }
 
 export function genericResultTypeSame(a: string | undefined, b: string | undefined) {
     if (a == b) {
@@ -27,23 +31,13 @@ export class BasicDirectory implements Directory {
         this.allApps = apps
     }
 
-    /** For retrieving intents */
-
-    retrieveIntents(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): DirectoryIntent[] {
-        return this.retrieveAllIntents().filter(i => this.intentMatches(i, contextType, intentName, resultType))
-    }
-
-    intentMatches(i: DirectoryIntent, contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): boolean {
+    private intentMatches(i: DirectoryIntent, contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): boolean {
         return ((intentName == undefined) || (i.intentName == intentName)) &&
             ((contextType == undefined) || (i.contexts.includes(contextType))) &&
             (genericResultTypeSame(i.resultType, resultType))
     }
 
-    retrieveAllIntents(): DirectoryIntent[] {
-        return this.allApps.flatMap(a => this.retrieveIntentsForApp(a))
-    }
-
-    retrieveIntentsForApp(a: DirectoryApp): DirectoryIntent[] {
+    private retrieveIntentsForApp(a: DirectoryApp): DirectoryIntent[] {
         const lf = a.interop?.intents?.listensFor ?? {}
         const lfa = Object.entries(lf)
         const lfAugmented = lfa.map(([key, value]) => {
@@ -55,9 +49,6 @@ export class BasicDirectory implements Directory {
         })
         return lfAugmented
     }
-
-
-    /** For retrieving apps */
 
     retrieveApps(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): DirectoryApp[] {
         return this.retrieveAllApps()
@@ -72,13 +63,6 @@ export class BasicDirectory implements Directory {
 
     retrieveAllApps(): DirectoryApp[] {
         return this.allApps
-    }
-
-    /**
-     * For FDC3 1.2, retreives by the name of the app
-     */
-    retrieveAppsByName(name: string): DirectoryApp[] {
-        return this.retrieveAllApps().filter(a => a.name == name)
     }
 }
 

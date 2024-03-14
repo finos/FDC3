@@ -13,24 +13,9 @@ export type DirectoryApp = schemas['Application'];
 
 export interface Directory {
 
-    /** For retrieving intents */
-
-    //retrieveIntents(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): DirectoryIntent[]
-
-    retrieveAllIntents(): DirectoryIntent[]
-
-
-    /** For retrieving apps */
-
     retrieveApps(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): DirectoryApp[]
 
     retrieveAppsById(appId: string): DirectoryApp[]
 
     retrieveAllApps(): DirectoryApp[]
-
-    /**
-     * For FDC3 1.2, retreives by the name of the app
-     */
-    retrieveAppsByName(name: string): DirectoryApp[]
-
 }
