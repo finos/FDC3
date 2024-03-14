@@ -13,7 +13,7 @@ export interface SingleAppIntent {
 
 export interface IntentResolver {
 
-    chooseIntent(appIntents: AppIntent[]) : SingleAppIntent
+    chooseIntent(appIntents: AppIntent[]): Promise<SingleAppIntent>
 
 }
 
