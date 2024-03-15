@@ -1,21 +1,12 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import dotenv from "dotenv"
+import ViteExpress from "vite-express";
 
-// configures dotenv to work in your application
 dotenv.config();
-const app = express();
-
 const PORT = process.env.PORT;
 
-app.get("/", (request: Request, response: Response) => {
-    response.status(200).send("Hello World");
-});
 
-app.listen(PORT, () => {
-    console.log("Server running at PORT: ", PORT);
-}).on("error", (error) => {
-    // gracefully handle error
-    throw new Error(error.message);
-});
+const app = express();
+app.get("/message", (_, res) => res.send("Hello from express!"));
 
-console.log('h')
+ViteExpress.listen(app, 3000, () => console.log("Server is listening..."));

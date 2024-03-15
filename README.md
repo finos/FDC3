@@ -4,6 +4,13 @@ This is a minimal proof-of-concept for FDC3 For the Web.
 
 ## To Run
 
+0.  Prerequisites:
+
+    ```
+    node: v20+
+    yarn v4+
+    ```
+
 1.  From the Command Line:
     ```
     yarn install

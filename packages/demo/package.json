@@ -25,6 +25,7 @@
         "fdc3-common": "workspace:*",
         "ts-node": "^10.9.2",
         "uuid": "^9.0.1",
+        "vite-express": "^0.15.0",
         "ws": "^8.16.0"
     },
     "references": [
