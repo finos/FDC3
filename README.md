@@ -42,7 +42,9 @@ The project is divided into several different yarn workspaces:
 
  - `common` : Common APIs and functionality used by both `client` and `server`
 
- - `demo` : A bare-bones desktop agent implementation with a few apps that use WebFDC3
+ - `fdc3-web-demo` : A bare-bones desktop agent implementation with a few apps that use WebFDC3.  See: https://static.swimlanes.io/6bb69f2c9acdc0656f5f3b098d40518e.png for how this works.  Basically, the implementation here is that it uses iframes approach and a server-side websocket to relay messages.
+
+ - `fdc3-workbench`: The FDC3 Workbench app from https://github.com/FDC3/toolbox/workbench, ported to use WebFDC3. 
  
  
 ## Configuring the client

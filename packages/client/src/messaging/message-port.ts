@@ -19,6 +19,7 @@ export async function messagePortInit(mp: MessagePort, data: APIResponseMessage)
     const is = new DefaultIntentSupport(messaging, new DesktopAgentIntentResolver(messaging))
     const as = new DefaultAppSupport(messaging, data.appIdentifier, "WebFDC3")
     const da = new BasicDesktopAgent(hs, cs, is, as, version)
+    await da.connect()
     return da
 }
 
