@@ -1,7 +1,7 @@
 import express from "express";
 import ViteExpress from "vite-express";
 import { Server, Socket } from "socket.io"
-import { APP_HELLO, DA_HELLO, FDC3_EVENT } from "../common";
+import { APP_HELLO, DA_HELLO, FDC3_APP_EVENT, FDC3_DA_EVENT } from "../message-types";
 import { AppIdentifier } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 const app = express();
@@ -58,21 +58,19 @@ io.on('connection', (socket: Socket) => {
     }
   })
 
-  socket.on("fdc3-event", function (data) {
+  socket.on(FDC3_APP_EVENT, function (data, from): void {
+    // message from app to da
     console.log(JSON.stringify(data))
-    if (myType == 'App') {
-      // send message on to the da
-      myInstance?.server.emit(FDC3_EVENT, data)
-    } else if (myType = "DA") {
-      // send message to app
-      const dest = data?.meta?.destination?.instanceId
-      const destSocket = myInstance?.apps.get(dest)
-      if (destSocket) {
-        destSocket.emit(FDC3_EVENT, data)
-      } else {
-        console.log("Unknown dest " + JSON.stringify(dest))
-      }
-    }
+    myInstance?.server.emit(FDC3_APP_EVENT, data, from)
+  })
 
+  socket.on(FDC3_DA_EVENT, function (data, to): void {
+    // send message to app
+    const destSocket = myInstance?.apps.get(to.instanceId)
+    if (destSocket) {
+      destSocket.emit(FDC3_DA_EVENT, data, to)
+    } else {
+      console.log("Unknown dest " + JSON.stringify(to))
+    }
   })
 })
