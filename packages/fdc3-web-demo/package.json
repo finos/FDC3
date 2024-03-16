@@ -1,5 +1,5 @@
 {
-  "name": "vite-typescript-starter",
+  "name": "fdc3-web-demo",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -14,7 +14,7 @@
     "vite": "^5.0.2"
   },
   "dependencies": {
-    "@finos/fdc3": "^2.1.0-beta.4",
+    "@finos/fdc3": "^2.1.0-beta.6",
     "@types/uuid": "^9.0.8",
     "@types/ws": "^8.5.10",
     "client": "workspace:*",

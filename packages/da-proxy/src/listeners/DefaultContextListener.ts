@@ -1,6 +1,7 @@
 import { Context, ContextHandler } from "@finos/fdc3";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
+import { BroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 export class DefaultContextListener extends AbstractListener<ContextHandler> {
 
@@ -8,12 +9,12 @@ export class DefaultContextListener extends AbstractListener<ContextHandler> {
     private readonly messageType: string
     private readonly contextType: string | null
 
-    constructor(messaging: Messaging, 
-        channelId: string | null, 
-        contextType: string | null, 
+    constructor(messaging: Messaging,
+        channelId: string | null,
+        contextType: string | null,
         handler: ContextHandler,
         messageType: string = "broadcastRequest",
-        subscribeType: string  | null= "onAddContextListener",
+        subscribeType: string | null = "onAddContextListener",
         unsubscribeType: string | null = "onUnsubscribe") {
         super(messaging, { channelId, contextType }, handler, subscribeType, unsubscribeType)
         this.channelId = channelId
@@ -21,13 +22,13 @@ export class DefaultContextListener extends AbstractListener<ContextHandler> {
         this.contextType = contextType
     }
 
-    filter(m: any) : boolean {
+    filter(m: BroadcastAgentRequest): boolean {
         return (m.type == this.messageType)
-            && (m.payload.channel == this.channelId)
+            && (m.payload.channelId == this.channelId)
             && ((m.payload.context?.type == this.contextType) || (this.contextType == null));
     }
 
-    action(m: any) : void {
+    action(m: any): void {
         this.handler(m.payload.context)
     }
 

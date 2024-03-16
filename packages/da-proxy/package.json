@@ -2,10 +2,12 @@
   "name": "da-proxy",
   "main": "src/index.ts",
   "scripts": {
-    "build": "nyc --reporter=lcov --reporter=text cucumber-js"
+    "build": "nyc --reporter=lcov --reporter=text cucumber-js",
+    "b2": "tsx cucumber-js"
   },
   "dependencies": {
-    "@finos/fdc3": "^2.1.0-beta.6"
+    "@finos/fdc3": "^2.1.0-beta.6",
+    "tsx": "^4.7.1"
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",
