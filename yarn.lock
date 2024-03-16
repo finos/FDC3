@@ -614,26 +614,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@esbuild-kit/core-utils@npm:^3.3.2":
-  version: 3.3.2
-  resolution: "@esbuild-kit/core-utils@npm:3.3.2"
-  dependencies:
-    esbuild: "npm:~0.18.20"
-    source-map-support: "npm:^0.5.21"
-  checksum: d856f5bd720814593f911d781ed7558a3f8ec1a39802f3831d0eea0d1306e0e2dc11b7b2443af621c413ec6557f1f3034a9a4f1472a4cb40e52cd6e3b356aa05
-  languageName: node
-  linkType: hard
-
-"@esbuild-kit/esm-loader@npm:^2.6.5":
-  version: 2.6.5
-  resolution: "@esbuild-kit/esm-loader@npm:2.6.5"
-  dependencies:
-    "@esbuild-kit/core-utils": "npm:^3.3.2"
-    get-tsconfig: "npm:^4.7.0"
-  checksum: 6894b29176eda62bdce0d458d57f32daed5cb8fcff14cb3ddfbc995cfe3e2fa8599f3b0b1af66db446903b30167f57069f27e9cf79a69cf9b41f557115811cde
-  languageName: node
-  linkType: hard
-
 "@esbuild/aix-ppc64@npm:0.19.12":
   version: 0.19.12
   resolution: "@esbuild/aix-ppc64@npm:0.19.12"
@@ -1729,7 +1709,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:^4.17.15, @types/express@npm:^4.17.21":
+"@types/express@npm:^4.17.15":
   version: 4.17.21
   resolution: "@types/express@npm:4.17.21"
   dependencies:
@@ -1834,7 +1814,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:^20.11.27, @types/node@npm:^20.9.3":
+"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:^20.9.3":
   version: 20.11.27
   resolution: "@types/node@npm:20.11.27"
   dependencies:
@@ -3489,32 +3469,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"demo@workspace:packages/demo":
-  version: 0.0.0-use.local
-  resolution: "demo@workspace:packages/demo"
-  dependencies:
-    "@esbuild-kit/esm-loader": "npm:^2.6.5"
-    "@finos/fdc3": "npm:^2.1.0-beta.4"
-    "@types/express": "npm:^4.17.21"
-    "@types/node": "npm:^20.11.27"
-    "@types/uuid": "npm:^9.0.7"
-    "@types/ws": "npm:^8.5.10"
-    client: "workspace:*"
-    da-proxy: "workspace:*"
-    da-server: "workspace:*"
-    dotenv: "npm:^16.4.5"
-    express: "npm:^4.18.3"
-    fdc3-common: "workspace:*"
-    path: "npm:^0.12.7"
-    ts-node: "npm:^10.9.2"
-    typescript: "npm:^5.3.2"
-    uuid: "npm:^9.0.1"
-    vite: "npm:^4.3.9"
-    vite-express: "npm:^0.15.0"
-    ws: "npm:^8.16.0"
-  languageName: unknown
-  linkType: soft
-
 "depd@npm:2.0.0":
   version: 2.0.0
   resolution: "depd@npm:2.0.0"
@@ -3625,13 +3579,6 @@ __metadata:
     domelementtype: "npm:^2.3.0"
     domhandler: "npm:^5.0.3"
   checksum: 342d64cf4d07b8a0573fb51e0a6312a88fb520c7fefd751870bf72fa5fc0f2e0cb9a3958a573610b1d608c6e2a69b8e9b4b40f0bfb8f87a71bce4f180cca1887
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:^16.4.5":
-  version: 16.4.5
-  resolution: "dotenv@npm:16.4.5"
-  checksum: 48d92870076832af0418b13acd6e5a5a3e83bb00df690d9812e94b24aff62b88ade955ac99a05501305b8dc8f1b0ee7638b18493deb6fe93d680e5220936292f
   languageName: node
   linkType: hard
 
@@ -3933,7 +3880,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.18.10, esbuild@npm:~0.18.20":
+"esbuild@npm:^0.18.10":
   version: 0.18.20
   resolution: "esbuild@npm:0.18.20"
   dependencies:
@@ -4969,7 +4916,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-tsconfig@npm:^4.7.0, get-tsconfig@npm:^4.7.2":
+"get-tsconfig@npm:^4.7.2":
   version: 4.7.3
   resolution: "get-tsconfig@npm:4.7.3"
   dependencies:
@@ -5377,13 +5324,6 @@ __metadata:
   version: 2.0.4
   resolution: "inherits@npm:2.0.4"
   checksum: 4e531f648b29039fb7426fb94075e6545faa1eb9fe83c29f0b6d9e7263aceb4289d2d4557db0d428188eeb449cc7c5e77b0a0b2c4e248ff2a65933a0dee49ef2
-  languageName: node
-  linkType: hard
-
-"inherits@npm:2.0.3":
-  version: 2.0.3
-  resolution: "inherits@npm:2.0.3"
-  checksum: 6e56402373149ea076a434072671f9982f5fad030c7662be0332122fe6c0fa490acb3cc1010d90b6eff8d640b1167d77674add52dfd1bb85d545cf29e80e73e7
   languageName: node
   linkType: hard
 
@@ -7381,16 +7321,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path@npm:^0.12.7":
-  version: 0.12.7
-  resolution: "path@npm:0.12.7"
-  dependencies:
-    process: "npm:^0.11.1"
-    util: "npm:^0.10.3"
-  checksum: f795ce5438a988a590c7b6dfd450ec9baa1c391a8be4c2dea48baa6e0f5b199e56cd83b8c9ebf3991b81bea58236d2c32bdafe2c17a2e70c3a2e4c69891ade59
-  languageName: node
-  linkType: hard
-
 "picocolors@npm:^1.0.0":
   version: 1.0.0
   resolution: "picocolors@npm:1.0.0"
@@ -7546,13 +7476,6 @@ __metadata:
   dependencies:
     fromentries: "npm:^1.2.0"
   checksum: 8abd43199b17e61740faec4523fbebb2b2ec990ae096d3051096788128364beb09472decef78dbad70a267e207345aa3a4b595364fefd89e954a509177bdc02b
-  languageName: node
-  linkType: hard
-
-"process@npm:^0.11.1":
-  version: 0.11.10
-  resolution: "process@npm:0.11.10"
-  checksum: 40c3ce4b7e6d4b8c3355479df77aeed46f81b279818ccdc500124e6a5ab882c0cc81ff7ea16384873a95a74c4570b01b120f287abbdd4c877931460eca6084b3
   languageName: node
   linkType: hard
 
@@ -9380,15 +9303,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"util@npm:^0.10.3":
-  version: 0.10.4
-  resolution: "util@npm:0.10.4"
-  dependencies:
-    inherits: "npm:2.0.3"
-  checksum: d29f6893e406b63b088ce9924da03201df89b31490d4d011f1c07a386ea4b3dbe907464c274023c237da470258e1805d806c7e4009a5974cd6b1d474b675852a
-  languageName: node
-  linkType: hard
-
 "utils-merge@npm:1.0.1":
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
@@ -9742,21 +9656,6 @@ __metadata:
     signal-exit: "npm:^3.0.2"
     typedarray-to-buffer: "npm:^3.1.5"
   checksum: 7fb67affd811c7a1221bed0c905c26e28f0041e138fb19ccf02db57a0ef93ea69220959af3906b920f9b0411d1914474cdd90b93a96e5cd9e8368d9777caac0e
-  languageName: node
-  linkType: hard
-
-"ws@npm:^8.16.0":
-  version: 8.16.0
-  resolution: "ws@npm:8.16.0"
-  peerDependencies:
-    bufferutil: ^4.0.1
-    utf-8-validate: ">=5.0.2"
-  peerDependenciesMeta:
-    bufferutil:
-      optional: true
-    utf-8-validate:
-      optional: true
-  checksum: a7783bb421c648b1e622b423409cb2a58ac5839521d2f689e84bc9dc41d59379c692dd405b15a997ea1d4c0c2e5314ad707332d0c558f15232d2bc07c0b4618a
   languageName: node
   linkType: hard
 
