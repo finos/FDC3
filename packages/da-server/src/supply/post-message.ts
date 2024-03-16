@@ -6,18 +6,18 @@ import { APIResponseMessage, AppChecker, DesktopAgentDetailResolver, Supplier, F
  * Called by the server-side desktop agent.
  */
 export const supply: Supplier = (
-    checker: AppChecker, 
-    detailsResolver: DesktopAgentDetailResolver, 
+    checker: AppChecker,
+    detailsResolver: DesktopAgentDetailResolver,
     portResolver: DesktopAgentPortResolver = () => null) => {
-    
+
     function createResponseMessage(source: Window, appId: AppIdentifier): APIResponseMessage {
         return {
-            provider: "string",
-            authRequired: true,
-            authToken: "secret",
-            desktopAgentBridgeVersion: "demo",
-            supportedFDC3Versions: [ '2.0'],
-            fdc3Version: "2.0",
+            //provider: "string",
+            //authRequired: true,
+            //authToken: "secret",
+            //desktopAgentBridgeVersion: "demo",
+            //supportedFDC3Versions: [ '2.0'],
+            //fdc3Version: "2.0",
             type: FDC3_API_RESPONSE_MESSAGE_TYPE,
             ...detailsResolver(source, appId),
 
@@ -34,7 +34,7 @@ export const supply: Supplier = (
     function createTransferrableArray(source: Window, appId: AppIdentifier): Transferable[] {
         const port = portResolver(source, appId);
         if (port) {
-            return [ port ]
+            return [port]
         } else {
             return []
         }
@@ -51,7 +51,7 @@ export const supply: Supplier = (
                 const appDetails = checker(source)
                 if (appDetails) {
                     console.log(`API Request Origin:  ${origin}`);
-                    const message = createResponseMessage(source,appDetails)
+                    const message = createResponseMessage(source, appDetails)
                     const transferrables = createTransferrableArray(source, appDetails)
                     source.postMessage(message, {
                         targetOrigin: origin,

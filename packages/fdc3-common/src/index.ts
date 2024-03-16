@@ -17,17 +17,17 @@ export { exchange, exchangePostMessage, exchangeForMessagePort }
 export type AppChecker = (o: Window) => AppIdentifier | undefined;
 
 export type Supplier = (
-    checker: AppChecker, 
-    detailsResolver: DesktopAgentDetailResolver, 
+    checker: AppChecker,
+    detailsResolver: DesktopAgentDetailResolver,
     portResolver?: DesktopAgentPortResolver) => void;
 
-export type Loader = (options: Options) => Promise<DesktopAgent> 
+export type Loader = (options: Options) => Promise<DesktopAgent>
 
 /**
  * These are details such as login information sent from the desktop back to the 
  * app in order to initialise the api.
  */
-export type DesktopAgentDetails = { [key: string] : string | number | boolean }
+export type DesktopAgentDetails = { [key: string]: string | number | boolean }
 
 /**
  * Use these to return details specific to the window/app needing a connection
@@ -49,16 +49,16 @@ export type APIResponseMessage = {
     method: "message-port",
     uri?: string,           /* Supplied when an embedded iframe should be loaded */
     appIdentifier: AppIdentifier,
-    fdc3Version: string,
-    supportedFDC3Versions: string[],
-    desktopAgentBridgeVersion: string,
-    authRequired: boolean,
-    provider: string,
-    authToken?: string,
+    // fdc3Version: string,
+    // supportedFDC3Versions: string[],
+    // desktopAgentBridgeVersion: string,
+    // authRequired: boolean,
+    // provider: string,
+    // authToken?: string,
 }
 
 export type APIRequestMessage = {
-    type: string, 
+    type: string,
     methods: string[]
 }
 
