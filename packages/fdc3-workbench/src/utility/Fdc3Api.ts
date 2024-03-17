@@ -5,6 +5,9 @@
 import * as fdc3_2 from "fdc3-2.0";
 import * as fdc3_1 from "fdc3-1.2";
 import { group } from "console";
+import { fdc3Ready, getClientAPI } from 'client'
+
+const fdc3ReadyPromise = fdc3Ready()
 
 interface fdc3_1IntentResolution extends fdc3_1.IntentResolution {
 	getResult?: any;
@@ -63,7 +66,7 @@ export type PrivateChannel = fdc3_2.PrivateChannel;
 
 export type IntentTargetOption = { appId: string, metadata: AppMetadata, instances: fdc3_2.AppMetadata[], launchNew: boolean };
 
-export type ContextTargetOption = { intent: string, targetOptions: IntentTargetOption[]};
+export type ContextTargetOption = { intent: string, targetOptions: IntentTargetOption[] };
 
 class Fdc3Api {
 	fdc3Methods: typeof fdc3_1 | typeof fdc3_2;
@@ -97,7 +100,7 @@ class Fdc3Api {
 				return await fdc3_1.addContextListener(contextTypeOrNull, handler);
 			}
 		}
-		
+
 	}
 
 	async raiseIntent(intent: string, context: fdc3_1.Context | fdc3_2.Context, app?: AppMetadata | undefined) {
@@ -143,7 +146,7 @@ class Fdc3Api {
 	}
 
 	fdc3Ready(waitForMs?: number | undefined) {
-		return this.fdc3Methods.fdc3Ready(waitForMs);
+		return fdc3ReadyPromise
 	}
 
 	async getOrCreateChannel(channelId: string) {
@@ -169,7 +172,7 @@ class Fdc3Api {
 	async findInstances(targetApp: any) {
 		return await fdc3_2.findInstances(targetApp);
 	}
-	
+
 	async getTargetOptions(intent: string, context: ContextType): Promise<IntentTargetOption[]> {
 		let appIntent = await this.findIntent(intent, context);
 		if (!appIntent?.apps) {
@@ -180,16 +183,16 @@ class Fdc3Api {
 
 		if (window.fdc3Version === "2.0") {
 			appIntent = appIntent as fdc3_2.AppIntent;
-			appIntent.apps.forEach((currentApp)=>{
-				let foundApp = groupedApps.find((app)=>app.appId === currentApp.appId);
-				if(!foundApp) {
+			appIntent.apps.forEach((currentApp) => {
+				let foundApp = groupedApps.find((app) => app.appId === currentApp.appId);
+				if (!foundApp) {
 					//separate out the instanceId if present
 					// eslint-disable-next-line @typescript-eslint/no-unused-vars
-					const {instanceId: _, ...metadata} = currentApp;
+					const { instanceId: _, ...metadata } = currentApp;
 					const option: IntentTargetOption = {
 						appId: currentApp.appId,
 						metadata: metadata,
-						instances: [ ],
+						instances: [],
 						launchNew: false
 					};
 					if (currentApp.instanceId) {
@@ -205,14 +208,14 @@ class Fdc3Api {
 						foundApp.launchNew = true;
 					}
 				}
-			});	
+			});
 
 		} else {
 			//no instances in FDC3 < 2
 			appIntent = appIntent as fdc3_1.AppIntent;
-			appIntent.apps.forEach((currentApp)=>{
+			appIntent.apps.forEach((currentApp) => {
 				//deduplicate results in case a 2.0 implementation returned instances
-				let foundApp = groupedApps.find((app)=>app.appId === currentApp.appId);
+				let foundApp = groupedApps.find((app) => app.appId === currentApp.appId);
 				if (!foundApp) {
 					groupedApps.push({
 						appId: currentApp.appId ?? currentApp.name,
@@ -221,7 +224,7 @@ class Fdc3Api {
 						launchNew: true
 					});
 				}
-				
+
 			});
 		}
 
@@ -233,24 +236,24 @@ class Fdc3Api {
 		if (appIntents.length === 0) {
 			return [];
 		}
-	
+
 		//We only return apps to target which means we need to deduplicate where they are returned more than once
 		const groupedApps: IntentTargetOption[] = [];
-	
+
 		if (window.fdc3Version === "2.0") {
 			appIntents = appIntents as fdc3_2.AppIntent[];
-			
+
 			appIntents.forEach((currentIntent) => {
 				currentIntent.apps.forEach((currentApp) => {
-					let foundApp = groupedApps.find((app)=>app.appId === currentApp.appId);
-					if(!foundApp) {
+					let foundApp = groupedApps.find((app) => app.appId === currentApp.appId);
+					if (!foundApp) {
 						//separate out the instanceId if present
 						// eslint-disable-next-line @typescript-eslint/no-unused-vars
-						const {instanceId: _, ...metadata} = currentApp;
+						const { instanceId: _, ...metadata } = currentApp;
 						const option: IntentTargetOption = {
 							appId: currentApp.appId,
 							metadata: metadata,
-							instances: [ ],
+							instances: [],
 							launchNew: false
 						};
 						if (currentApp.instanceId) {
@@ -262,21 +265,21 @@ class Fdc3Api {
 					} else {
 						if (currentApp.instanceId) {
 							//deduplicate instances
-							let foundInstance = foundApp.instances.find((instance)=>instance.instanceId === currentApp.instanceId);
-							if (!foundInstance){ foundApp.instances.push(currentApp); }
+							let foundInstance = foundApp.instances.find((instance) => instance.instanceId === currentApp.instanceId);
+							if (!foundInstance) { foundApp.instances.push(currentApp); }
 						} else {
 							foundApp.launchNew = true;
 						}
 					}
 				});
 			});
-	
+
 		} else {
 			appIntents = appIntents as fdc3_1.AppIntent[];
 			appIntents.forEach((currentIntent) => {
 				currentIntent.apps.forEach((currentApp) => {
 					//deduplicate in case a 2.0 implementation returned some instances
-					let foundApp = groupedApps.find((app)=>app.appId === currentApp.appId);
+					let foundApp = groupedApps.find((app) => app.appId === currentApp.appId);
 					if (!foundApp) {
 						groupedApps.push({
 							appId: currentApp.appId ?? currentApp.name,
@@ -286,10 +289,10 @@ class Fdc3Api {
 						});
 					}
 				});
-				
+
 			});
 		}
-	
+
 		return groupedApps;
 	}
 }

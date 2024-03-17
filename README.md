@@ -97,3 +97,11 @@ Desktop Agent Briding needs extending with the following types:
 - How does the da-server tell the da-proxy about the channel metadata?
 - How does the da-server decide on a desktop agent name (maybe it just has one?)
 - AppChecker / AppDetailsResolver / AppPortResolver - this is all too complex.
+= fdc3Ready timeout
+- get it to work without desktop agent window running
+- use cookie for the da id.
+
+## Idea
+
+Do we need to send a post-message to the server, if we have cookies?  Couldn't we just hold the DA ID and the 
+address of the embed page in the cookie?  Problem is, the cookie is scoped to the DA...
