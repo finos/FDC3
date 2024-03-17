@@ -1,5 +1,4 @@
-import { AppIdentifier } from "@finos/fdc3";
-import { DesktopAgent } from "@finos/fdc3";
+import { AppIdentifier, DesktopAgent } from "@finos/fdc3";
 import { exchange, exchangePostMessage, exchangeForMessagePort } from "./exchange";
 
 /** 
@@ -9,7 +8,8 @@ export type Options = {
     setWindowGlobal?: boolean,
     fireFdc3Ready?: boolean,
     strategies?: Loader[],
-    frame?: Window
+    frame?: Window,
+    waitForMs?: number
 }
 
 export { exchange, exchangePostMessage, exchangeForMessagePort }
