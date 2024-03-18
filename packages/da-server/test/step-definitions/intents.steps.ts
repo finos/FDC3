@@ -5,6 +5,7 @@ import { APP_FIELD } from "./generic.steps";
 import { FindIntentAgentRequest, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { handleResolve } from "../support/matching";
 import { createMeta, contextMap } from './generic.steps';
+import { OnAddIntentListenerAgentRequest, OnUnsubscribeIntentListenerAgentRequest } from "fdc3-common";
 
 type ListensFor = {
     [key: string]: {
@@ -75,7 +76,7 @@ Given('{string} registers an intent listener for {string} with contextType {stri
             contextType: handleResolve(contextType, this),
             resultType: handleResolve(resultType, this),
         }
-    }
+    } as OnAddIntentListenerAgentRequest
     this.server.receive(message, meta.source)
 });
 
@@ -83,14 +84,14 @@ Given('{string} registers an intent listener for {string} with contextType {stri
 Given('{string} unsubscribes an intent listener for {string} with contextType {string} and result type {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, resultType: string) {
     const meta = createMeta(this, appStr)
     const message = {
-        type: 'onUnsubscribe',
+        type: 'onUnsubscribeIntentListener',
         meta,
         payload: {
             intentName: handleResolve(intentName, this),
             contextType: handleResolve(contextType, this),
             resultType: handleResolve(resultType, this),
         }
-    }
+    } as OnUnsubscribeIntentListenerAgentRequest
     this.server.receive(message, meta.source)
 });
 

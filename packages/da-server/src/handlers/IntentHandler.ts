@@ -4,6 +4,7 @@ import { ServerContext } from "../ServerContext";
 import { Directory } from "../directory/DirectoryInterface";
 import { genericResultTypeSame } from "../directory/BasicDirectory";
 import { ResolveError } from "@finos/fdc3";
+import { OnAddIntentListenerAgentRequest, OnUnsubscribeIntentListenerAgentRequest } from "fdc3-common";
 
 
 type ListenerRegistration = {
@@ -134,8 +135,8 @@ export class IntentHandler implements MessageHandler {
         switch (msg.type as string) {
             case 'findIntentRequest': return this.findIntentRequest(msg as FindIntentAgentRequest, sc, from)
             case 'raiseIntentRequest': return this.raiseIntentRequest(msg as RaiseIntentAgentRequest, sc)
-            case 'onAddIntentListener': return this.onAddIntentListener(msg as any, sc)
-            case 'onUnsubscribe': return this.onUnsubscribe(msg as any, sc)
+            case 'onAddIntentListener': return this.onAddIntentListener(msg as OnAddIntentListenerAgentRequest, sc)
+            case 'onUnsubscribeIntentListener': return this.onUnsubscribe(msg as OnUnsubscribeIntentListenerAgentRequest, sc)
             case 'raiseIntentResponse': return this.raiseIntentResponse(msg as RaiseIntentAgentResponse, sc)
             case 'raiseIntentResultResponse': return this.raiseIntentResultResponse(msg as RaiseIntentResultAgentResponse, sc)
         }
@@ -169,7 +170,7 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    onUnsubscribe(arg0: any, _sc: ServerContext): void {
+    onUnsubscribe(arg0: OnUnsubscribeIntentListenerAgentRequest, _sc: ServerContext): void {
         const lr = createListenerRegistration(arg0)
         const fi = this.regs.findIndex((e) => matches(e, lr))
         if (fi > -1) {
@@ -177,7 +178,7 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    onAddIntentListener(arg0: any, _sc: ServerContext): void {
+    onAddIntentListener(arg0: OnAddIntentListenerAgentRequest, _sc: ServerContext): void {
         const lr = createListenerRegistration(arg0)
         this.regs.push(lr)
 

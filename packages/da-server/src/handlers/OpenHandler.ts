@@ -3,6 +3,7 @@ import { MessageHandler } from "../BasicFDC3Server";
 import { ServerContext } from "../ServerContext";
 import { Directory, DirectoryApp } from "../directory/DirectoryInterface";
 import { ContextElement, ResolveError } from "@finos/fdc3";
+import { OnAddContextListenerAgentRequest } from "fdc3-common";
 
 function filterPublicDetails(appD: DirectoryApp): GetAppMetadataAgentResponsePayload['appMetadata'] {
     return {
@@ -46,13 +47,11 @@ export class OpenHandler implements MessageHandler {
             case 'openRequest': return this.open(msg as OpenAgentRequest, sc, from)
             case 'findInstancesRequest': return this.findInstances(msg as FindInstancesAgentRequest, sc, from)
             case 'getAppMetadataRequest': return this.getAppMetadata(msg as GetAppMetadataAgentRequest, sc, from)
-
-            // although we don't have messages for these yet, we're going to need them. See: https://github.com/finos/FDC3/issues/1171 
-            case 'onAddContextListener': return this.handleOnAddContextListener(msg as PrivateChannelOnAddContextListenerAgentRequest, sc)
+            case 'onAddContextListener': return this.handleOnAddContextListener(msg as OnAddContextListenerAgentRequest, sc)
         }
     }
 
-    handleOnAddContextListener(arg0: PrivateChannelOnAddContextListenerAgentRequest, sc: ServerContext) {
+    handleOnAddContextListener(arg0: PrivateChannelOnAddContextListenerAgentRequest | OnAddContextListenerAgentRequest, sc: ServerContext) {
         const instanceId = arg0.meta.source?.instanceId
         const pendingContext = instanceId ? this.pendingContexts.get(instanceId) : undefined
 

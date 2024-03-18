@@ -1,5 +1,6 @@
 import { AppIdentifier, DesktopAgent } from "@finos/fdc3";
 import { exchange, exchangePostMessage, exchangeForMessagePort } from "./exchange";
+import { PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerAgentRequestMeta, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 /** 
  * We need to add options here. 
@@ -68,3 +69,32 @@ export const FDC3_USER_CHANNELS_REQUEST_TYPE = 'FDC3-User-Channels-Request';
 export const FDC3_USER_CHANNELS_RESPONSE_TYPE = 'FDC3-User-Channels-Response';
 export const FDC3_PORT_TRANSFER_REQUEST_TYPE = 'FDC3-Port-Transfer-Request';
 export const FDC3_PORT_TRANSFER_RESPONSE_TYPE = 'FDC3-Port-Transfer-Response';
+
+/** Message Types Not Defined By Bridging, But Needed */
+export type OnAddContextListenerAgentRequest = PrivateChannelOnAddContextListenerAgentRequest & {
+    type: "onAddContextListener"
+}
+
+export type OnUnsubscribeAgentRequest = PrivateChannelOnUnsubscribeAgentRequest & {
+    type: "onUnsubscribe"
+}
+
+export type OnAddIntentListenerAgentRequest = {
+    type: 'onAddIntentListener',
+    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
+    payload: {
+        intentName: string,
+        contextType: string | undefined,
+        resultType: string | undefined,
+    }
+}
+
+export type OnUnsubscribeIntentListenerAgentRequest = {
+    type: 'onUnsubscribeIntentListener',
+    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
+    payload: {
+        intentName: string,
+        contextType: string | undefined,
+        resultType: string | undefined,
+    }
+}
