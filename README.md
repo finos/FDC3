@@ -94,7 +94,7 @@ Desktop Agent Briding needs extending with the following types:
 
 ## Issues To Resolve
 
-- How does the da-server tell the da-proxy about the channel metadata?
+- How does the da-server tell the da-proxy about the channel metadata?  We need a message to get the list of user channels from the server.
 - How does the da-server decide on a desktop agent name (maybe it just has one?)
 - AppChecker / AppDetailsResolver / AppPortResolver - this is all too complex.
 = fdc3Ready timeout
