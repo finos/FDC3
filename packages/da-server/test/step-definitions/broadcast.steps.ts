@@ -2,6 +2,7 @@ import { When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { BroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { contextMap, createMeta } from './generic.steps';
+import { OnAddContextListenerAgentRequest, OnUnsubscribeAgentRequest } from 'fdc3-common';
 
 When('{string} adds a context listener on {string} with type {string}', function (this: CustomWorld, app: string, channelId: string, contextType: string) {
   const meta = createMeta(this, app)
@@ -12,7 +13,7 @@ When('{string} adds a context listener on {string} with type {string}', function
       contextType
     },
     type: 'onAddContextListener'
-  }
+  } as OnAddContextListenerAgentRequest
 
   this.server.receive(message, meta.source)
 })
@@ -26,7 +27,7 @@ When('{string} removes context listener on {string} with type {string}', functio
       contextType
     },
     type: 'onUnsubscribe'
-  }
+  } as OnUnsubscribeAgentRequest
 
   this.server.receive(message, meta.source)
 })

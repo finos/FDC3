@@ -7,6 +7,7 @@ import {
     PrivateChannelBroadcastAgentRequest
 } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { ContextElement } from "@finos/fdc3";
+import { OnAddContextListenerAgentRequest, OnUnsubscribeAgentRequest } from "fdc3-common";
 
 type ListenerRegistration = {
     appId: string,
@@ -53,8 +54,8 @@ export class BroadcastHandler implements MessageHandler {
             case 'PrivateChannel.onUnsubscribe': return this.handleOnUnsubscribe(msg as PrivateChannelOnUnsubscribeAgentRequest, sc)
 
             // although we don't have messages for these yet, we're going to need them. See: https://github.com/finos/FDC3/issues/1171 
-            case 'onUnsubscribe': return this.handleOnUnsubscribe(msg as PrivateChannelOnUnsubscribeAgentRequest, sc)
-            case 'onAddContextListener': return this.handleOnAddContextListener(msg as PrivateChannelOnAddContextListenerAgentRequest, sc)
+            case 'onUnsubscribe': return this.handleOnUnsubscribe(msg as OnUnsubscribeAgentRequest, sc)
+            case 'onAddContextListener': return this.handleOnAddContextListener(msg as OnAddContextListenerAgentRequest, sc)
             case 'broadcastRequest': return this.handleBroadcast(msg as BroadcastAgentRequest, sc)
 
             // handling state synchronisation of channels
@@ -88,7 +89,7 @@ export class BroadcastHandler implements MessageHandler {
         sc.post(out, from)
     }
 
-    handleOnUnsubscribe(arg0: PrivateChannelOnUnsubscribeAgentRequest, _sc: ServerContext) {
+    handleOnUnsubscribe(arg0: PrivateChannelOnUnsubscribeAgentRequest | OnUnsubscribeAgentRequest, _sc: ServerContext) {
         const lr = createListenerRegistration(arg0)
         const fi = this.regs.findIndex((e) => matches(e, lr))
         if (fi > -1) {
@@ -96,7 +97,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    handleOnAddContextListener(arg0: PrivateChannelOnAddContextListenerAgentRequest, _sc: ServerContext) {
+    handleOnAddContextListener(arg0: PrivateChannelOnAddContextListenerAgentRequest | OnAddContextListenerAgentRequest, _sc: ServerContext) {
         const lr = createListenerRegistration(arg0)
         this.regs.push(lr)
     }

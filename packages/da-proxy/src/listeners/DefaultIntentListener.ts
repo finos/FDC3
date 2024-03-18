@@ -11,8 +11,8 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
         super(messaging,
             { intent },
             action,
-            "subscribeIntentListener", /** TODO : https://github.com/finos/FDC3/issues/1171 */
-            "unsubscribeIntentListener")
+            "onAddIntentListener",
+            "onUnsubscribeIntentListener")
 
         this.intent = intent
     }
