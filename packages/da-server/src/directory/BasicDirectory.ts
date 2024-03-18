@@ -33,7 +33,7 @@ export class BasicDirectory implements Directory {
 
     private intentMatches(i: DirectoryIntent, contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): boolean {
         return ((intentName == undefined) || (i.intentName == intentName)) &&
-            ((contextType == undefined) || (i.contexts.includes(contextType))) &&
+            ((contextType == undefined) || (i.contexts == null) || (i.contexts.includes(contextType))) &&
             (genericResultTypeSame(i.resultType, resultType))
     }
 

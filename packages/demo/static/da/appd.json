@@ -55,6 +55,55 @@
             "version": "1.0.0",
             "publisher": "FINOS",
             "icons": []
+        },
+        {
+            "appId": "app4",
+            "name": "App Four",
+            "title": "View News Intent Listener",
+            "description": "Listens for the ViewNews intent only",
+            "type": "web",
+            "details": {
+                "url": "http://robs-pro:8095/static/app4/index.html"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": [],
+            "interop": {
+                "intents": {
+                    "listensFor": {
+                        "ViewNews": {
+                            "displayName": "View News"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "appId": "app5",
+            "name": "App Five",
+            "title": "View News + View Quote Intent Listener",
+            "description": "Listens for the ViewNews intent only",
+            "type": "web",
+            "details": {
+                "url": "http://robs-pro:8095/static/app5/index.html"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": [],
+            "interop": {
+                "intents": {
+                    "listensFor": {
+                        "ViewNews": {
+                            "displayName": "View News"
+                        },
+                        "ViewQuote": {
+                            "displayName": "View Quote"
+                        }
+                    }
+                }
+            }
         }
     ],
     "message": "OK"
