@@ -27,7 +27,7 @@ export function createAppStartButton(app: DirectoryApp, sc: ServerContext): HTML
     button.onclick = () => sc.open(app.appId)
     div.appendChild(button)
     const p = document.createElement("p")
-    p.textContent = app.description
+    p.textContent = app.description ?? ''
     div.appendChild(p)
     return div
 }

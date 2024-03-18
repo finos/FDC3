@@ -90,9 +90,9 @@ export class DemoServerContext implements ServerContext {
     }
 
     async open(appId: string): Promise<AppMetadata> {
-        const details = this.directory.retrieveAppsById(appId) as DirectoryApp[]
+        const details: DirectoryApp[] = this.directory.retrieveAppsById(appId) as DirectoryApp[]
         if (details.length > 0) {
-            const url = details[0].details.url
+            const url = (details[0].details as any)?.url ?? undefined
             const window = this.openUrl(url)
             const metadata = {
                 appId,

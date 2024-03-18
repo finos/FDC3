@@ -3,7 +3,10 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "NodeNext",
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "moduleResolution": "NodeNext",
     "strict": true,
     "resolveJsonModule": true,
@@ -15,5 +18,18 @@
     "noImplicitReturns": true,
     "skipLibCheck": true
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../fdc3-common"
+    },
+    {
+      "path": "../client"
+    },
+    {
+      "path": "../da-server"
+    }
+  ]
 }
