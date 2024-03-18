@@ -83,9 +83,7 @@ export type OnAddIntentListenerAgentRequest = {
     type: 'onAddIntentListener',
     meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
     payload: {
-        intentName: string,
-        contextType: string | undefined,
-        resultType: string | undefined,
+        intent: string,
     }
 }
 
@@ -93,8 +91,6 @@ export type OnUnsubscribeIntentListenerAgentRequest = {
     type: 'onUnsubscribeIntentListener',
     meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
     payload: {
-        intentName: string,
-        contextType: string | undefined,
-        resultType: string | undefined,
+        intent: string,
     }
 }

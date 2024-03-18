@@ -3452,6 +3452,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"demo@workspace:packages/demo":
+  version: 0.0.0-use.local
+  resolution: "demo@workspace:packages/demo"
+  dependencies:
+    "@finos/fdc3": "npm:^2.1.0-beta.6"
+    "@types/express": "npm:^4.17.15"
+    "@types/node": "npm:^20.9.3"
+    "@types/uuid": "npm:^9.0.8"
+    "@types/ws": "npm:^8.5.10"
+    client: "workspace:*"
+    da-server: "workspace:*"
+    express: "npm:^4.18.3"
+    fdc3-common: "workspace:*"
+    nodemon: "npm:^3.0.1"
+    socket.io: "npm:^4.7.5"
+    socket.io-client: "npm:^4.7.5"
+    tsx: "npm:^4.5.0"
+    typescript: "npm:^5.3.2"
+    uuid: "npm:^9.0.1"
+    vite: "npm:^5.0.2"
+    vite-express: "npm:^0.15.0"
+  languageName: unknown
+  linkType: soft
+
 "depd@npm:2.0.0":
   version: 2.0.0
   resolution: "depd@npm:2.0.0"
@@ -4576,31 +4600,6 @@ __metadata:
   dependencies:
     "@finos/fdc3": "npm:^2.1.0-beta.6"
     typescript: "npm:^5.3.2"
-  languageName: unknown
-  linkType: soft
-
-"fdc3-web-demo@workspace:packages/fdc3-web-demo":
-  version: 0.0.0-use.local
-  resolution: "fdc3-web-demo@workspace:packages/fdc3-web-demo"
-  dependencies:
-    "@finos/fdc3": "npm:^2.1.0-beta.6"
-    "@types/express": "npm:^4.17.15"
-    "@types/node": "npm:^20.9.3"
-    "@types/uuid": "npm:^9.0.8"
-    "@types/ws": "npm:^8.5.10"
-    client: "workspace:*"
-    da-proxy: "workspace:*"
-    da-server: "workspace:*"
-    express: "npm:^4.18.3"
-    fdc3-common: "workspace:*"
-    nodemon: "npm:^3.0.1"
-    socket.io: "npm:^4.7.5"
-    socket.io-client: "npm:^4.7.5"
-    tsx: "npm:^4.5.0"
-    typescript: "npm:^5.3.2"
-    uuid: "npm:^9.0.1"
-    vite: "npm:^5.0.2"
-    vite-express: "npm:^0.15.0"
   languageName: unknown
   linkType: soft
 

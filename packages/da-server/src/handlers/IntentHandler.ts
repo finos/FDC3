@@ -15,14 +15,13 @@ type ListenerRegistration = {
     resultType: string | undefined
 }
 
-function createListenerRegistration(msg: any): ListenerRegistration {
-
+function createListenerRegistrationNameOnly(msg: OnAddIntentListenerAgentRequest | OnUnsubscribeIntentListenerAgentRequest): ListenerRegistration {
     return {
         appId: msg.meta.source?.appId!!,
         instanceId: msg.meta.source?.instanceId!!,
-        intentName: msg.payload.intentName,
-        contextType: msg.payload.contextType,
-        resultType: msg.payload.resultType
+        intentName: msg.payload.intent,
+        contextType: undefined,
+        resultType: undefined
     }
 }
 
@@ -110,7 +109,7 @@ class PendingIntent {
     }
 
     async accept(arg0: any): Promise<void> {
-        const actual = createListenerRegistration(arg0)
+        const actual = createListenerRegistrationNameOnly(arg0)
         if (matches(this.expecting, actual) && !this.complete) {
             this.complete = true
             forwardRequest(this.r, arg0.meta.source, this.sc, this.ih)
@@ -171,7 +170,7 @@ export class IntentHandler implements MessageHandler {
     }
 
     onUnsubscribe(arg0: OnUnsubscribeIntentListenerAgentRequest, _sc: ServerContext): void {
-        const lr = createListenerRegistration(arg0)
+        const lr = createListenerRegistrationNameOnly(arg0)
         const fi = this.regs.findIndex((e) => matches(e, lr))
         if (fi > -1) {
             this.regs.splice(fi, 1)
@@ -179,7 +178,7 @@ export class IntentHandler implements MessageHandler {
     }
 
     onAddIntentListener(arg0: OnAddIntentListenerAgentRequest, _sc: ServerContext): void {
-        const lr = createListenerRegistration(arg0)
+        const lr = createListenerRegistrationNameOnly(arg0)
         this.regs.push(lr)
 
         // see if this intent listener is the destination for any pending intents
@@ -192,19 +191,20 @@ export class IntentHandler implements MessageHandler {
     }
 
     async raiseIntentRequest(arg0: RaiseIntentAgentRequest, sc: ServerContext): Promise<void> {
-        if (arg0.meta.destination.instanceId) {
+        const target = arg0.payload.app
+        if (target.instanceId) {
             // ok, targeting a specific, known instance
-            if (await sc.isAppOpen(arg0.meta.destination)) {
-                return forwardRequest(arg0, arg0.meta.destination, sc, this)
+            if (await sc.isAppOpen(target)) {
+                return forwardRequest(arg0, target, sc, this)
             } else {
                 // instance doesn't exist
                 return sendError(arg0, sc, ResolveError.TargetInstanceUnavailable)
             }
-        } else if (this.directory.retrieveAppsById(arg0.meta.destination.appId).length > 0) {
+        } else if (this.directory.retrieveAppsById(target.appId).length > 0) {
             // app exists but needs starting
             const pi = new PendingIntent(arg0, sc, this)
             this.pendingIntents.add(pi)
-            return sc.open(arg0.meta.destination.appId).then(() => { return undefined })
+            return sc.open(target.appId).then(() => { return undefined })
         } else {
             // app doesn't exist
             return sendError(arg0, sc, ResolveError.TargetAppUnavailable)
