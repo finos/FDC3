@@ -4,9 +4,25 @@ import { v4 as uuid } from 'uuid'
 import { DA_HELLO, FDC3_APP_EVENT } from "../../message-types";
 import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
-import { DefaultFDC3Server } from "da-server";
-import { createAppStartButton } from "./util";
+import { DefaultFDC3Server, DirectoryApp, ServerContext } from "da-server";
 
+
+
+function createAppStartButton(app: DirectoryApp, sc: ServerContext): HTMLDivElement {
+    const div = document.createElement("div") as HTMLDivElement
+    div.classList.add("app")
+    const h3 = document.createElement("h3")
+    h3.textContent = app.title
+    div.appendChild(h3)
+    const button = document.createElement("button")
+    button.textContent = "Start"
+    button.onclick = () => sc.open(app.appId)
+    div.appendChild(button)
+    const p = document.createElement("p")
+    p.textContent = app.description ?? ''
+    div.appendChild(p)
+    return div
+}
 
 window.addEventListener("load", () => {
 
@@ -34,19 +50,6 @@ window.addEventListener("load", () => {
 
         // set up desktop agent handler here using FDC3 Web Loader (or whatever we call it)
         supply(sc.appChecker, sc.detailsResolver, sc.portResolver)
-
-
-
-
-
-
-
-
     })
-
-
-
-
-
 })
 

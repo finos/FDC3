@@ -1,13 +1,13 @@
 import { DesktopAgent } from "@finos/fdc3";
 import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultChannel, DefaultHandshakeSupport } from "da-proxy";
-import { APIResponseMessage, FDC3_PORT_TRANSFER_RESPONSE_TYPE, FDC3_PORT_TRANSFER_REQUEST_TYPE, Options, exchangeForMessagePort } from "fdc3-common"
+import { APIResponseMessage, FDC3_PORT_TRANSFER_RESPONSE_TYPE, FDC3_PORT_TRANSFER_REQUEST_TYPE, Options, exchangeForMessagePort, APIResponseMessageParentWindow, APIResponseMessageIFrame } from "fdc3-common"
 import { MessagePortMessaging } from "./MessagePortMessaging";
 import { DesktopAgentIntentResolver } from "../intent-resolution/DesktopAgentIntentResolver";
 
 /**
  * Given a message port, constructs a desktop agent to communicate via that.
  */
-export async function messagePortInit(mp: MessagePort, data: APIResponseMessage, options: Options): Promise<DesktopAgent> {
+export async function createDesktopAgentAPI(mp: MessagePort, data: APIResponseMessage, options: Options): Promise<DesktopAgent> {
     mp.start()
 
     const messaging = new MessagePortMessaging(mp, data.appIdentifier)
@@ -26,34 +26,29 @@ export async function messagePortInit(mp: MessagePort, data: APIResponseMessage,
 }
 
 /**
- * Initialises the desktop agent by opening an iframe 
+ * Initialises the desktop agent by opening an iframe or talking to the parent window.
  * on the desktop agent host and communicating via a messsage port to it.
  * 
  * It is up to the desktop agent to arrange communucation between other
  * windows. 
  */
-export async function messagePortIFrameInit(data: APIResponseMessage, options: Options): Promise<DesktopAgent> {
+export async function messagePortInit(event: MessageEvent, options: Options): Promise<DesktopAgent> {
 
-    const action = data.uri ? () => {
-        return openFrame(data.uri!!);
-    } : () => {
-        return messageParentWindow(options.frame)
-    }
+    if (event.ports[0]) {
+        return createDesktopAgentAPI(event.ports[0], event.data, options);
+    } else if ((event.data as APIResponseMessageIFrame).uri) {
+        const action = () => {
+            const iframeData = event.data as APIResponseMessageIFrame
+            return openFrame(iframeData.uri +
+                "?source=" + encodeURIComponent(JSON.stringify(iframeData.appIdentifier)) +
+                "&desktopAgentId=" + encodeURIComponent(iframeData.desktopAgentId));
+        }
 
-    const mp = await exchangeForMessagePort(window, FDC3_PORT_TRANSFER_RESPONSE_TYPE, action) as MessagePort
+        const mp = await exchangeForMessagePort(window, FDC3_PORT_TRANSFER_RESPONSE_TYPE, action) as MessagePort
+        return createDesktopAgentAPI(mp, event.data, options);
 
-    return messagePortInit(mp, data, options);
-}
-
-/**
- * If the desktop agent doesn't provide an opener URL, we message another iframe asking for the port.
- */
-function messageParentWindow(w: Window | undefined) {
-    if (w) {
-        w.postMessage({
-            type: FDC3_PORT_TRANSFER_REQUEST_TYPE,
-            methods: 'post-message'
-        });
+    } else {
+        throw new Error(`Couldn't initialise message port with ${JSON.stringify(event)}`)
     }
 }
 
