@@ -18,15 +18,15 @@
     "dist"
   ],
   "scripts": {
+    "clean": "rm -rf dist",
     "start": "tsdx watch",
-    "prebuild": "npm run typegen && npm run typegen-bridging",
-    "build": "tsdx build",
+    "prebuild": "npm run clean && npm run typegen && npm run typegen-bridging && npm run lint",
+    "build": "rollup -c rollup.config.js --silent --bundleConfigAsCjs",
     "test": "jest --verbose",
     "lint": "eslint src/ test/ --ext .ts --fix",
-    "preprepare": "npm run typegen && npm run typegen-bridging",
-    "prepare": "tsdx build",
-    "typegen": "node s2tQuicktypeUtil.js schemas/context src/context/ContextTypes.ts && tsdx lint src/context/ --fix",
-    "typegen-bridging": "node s2tQuicktypeUtil.js schemas/api schemas/bridging schemas/context/context.schema.json src/bridging/BridgingTypes.ts && tsdx lint src/bridging/ --fix"
+    "prepare": "npm run build",
+    "typegen": "node s2tQuicktypeUtil.js schemas/context src/context/ContextTypes.ts",
+    "typegen-bridging": "node s2tQuicktypeUtil.js schemas/api schemas/bridging schemas/context/context.schema.json src/bridging/BridgingTypes.ts"
   },
   "husky": {
     "hooks": {
@@ -45,6 +45,12 @@
     "y18n": "^4.0.1"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.5",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "11.1.6",
     "@types/jest": "29.5.12",
     "@typescript-eslint/eslint-plugin": "7.1.1",
     "@typescript-eslint/parser": "7.1.0",
@@ -58,9 +64,9 @@
     "jest-mock-extended": "3.0.5",
     "prettier": "3.2.5",
     "quicktype": "23.0.78",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.0.1",
+    "rollup": "4.12.1",
     "ts-jest": "29.1.2",
+    "tslib": "^2.0.1",
     "typescript": "^4.0.3"
   }
 }
