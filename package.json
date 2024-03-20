@@ -41,9 +41,6 @@
     "endOfLine": "auto",
     "printWidth": 120
   },
-  "resolutions": {
-    "y18n": "^4.0.1"
-  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.1.0",
