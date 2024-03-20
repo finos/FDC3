@@ -100,6 +100,7 @@ Desktop Agent Briding needs extending with the following types:
 = fdc3Ready timeout
 - get it to work without desktop agent window running
 - use cookie for the da id.
+- add server tests for intent resolution choice
 
 ## Idea
 

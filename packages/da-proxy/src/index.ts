@@ -9,7 +9,6 @@ import { StatefulChannel } from "./channels/StatefulChannel";
 import { DefaultIntentSupport } from "./intents/DefaultIntentSupport";
 import { DefaultChannelSupport } from "./channels/DefaultChannelSupport";
 import { IntentSupport } from "./intents/IntentSupport";
-import { IntentResolver } from "./intents/IntentResolver";
 
 import { DefaultAppSupport } from "./apps/DefaultAppSupport";
 import { AppSupport } from "./apps/AppSupport";
@@ -28,7 +27,6 @@ export {
     type AppSupport,
     type IntentSupport,
     type ChannelSupport,
-    type IntentResolver,
     DefaultAppSupport,
     DefaultChannelSupport,
     DefaultIntentSupport,

@@ -144,11 +144,13 @@ export class DemoServerContext implements ServerContext {
         if (getApproach() == Approach.IFRAME) {
             return {
                 apiKey,
-                uri: window.location.origin + "/static/embed/index.html"
+                uri: window.location.origin + "/static/embed.html",
+                resolverUri: window.location.origin + "/static/da/intent-resolver.html"
             }
         } else {
             return {
-                apiKey
+                apiKey,
+                resolverUri: window.location.origin + "/static/da/intent-resolver.html"
             } as DesktopAgentDetails
         }
     }

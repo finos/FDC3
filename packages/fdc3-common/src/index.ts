@@ -1,6 +1,6 @@
-import { AppIdentifier, DesktopAgent } from "@finos/fdc3";
+import { AppIdentifier, AppMetadata, DesktopAgent, IntentMetadata, IntentResult } from "@finos/fdc3";
 import { exchange, exchangePostMessage, exchangeForMessagePort } from "./exchange";
-import { PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerAgentRequestMeta, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppIntent, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerAgentRequestMeta, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 /** 
  * We need to add options here. 
@@ -10,7 +10,8 @@ export type Options = {
     fireFdc3Ready?: boolean,
     strategies?: Loader[],
     frame?: Window,
-    waitForMs?: number
+    waitForMs?: number,
+    intentResolver?: IntentResolver
 }
 
 export { exchange, exchangePostMessage, exchangeForMessagePort }
@@ -50,6 +51,7 @@ export type APIResponseMessage = {
     method: "message-port",
     uri?: string,           /* Supplied when an embedded iframe should be loaded */
     appIdentifier: AppIdentifier,
+    resolverUri: string
     // fdc3Version: string,
     // supportedFDC3Versions: string[],
     // desktopAgentBridgeVersion: string,
@@ -94,3 +96,40 @@ export type OnUnsubscribeIntentListenerAgentRequest = {
         intent: string,
     }
 }
+
+/**
+ * Contains the details of a single intent and application resolved
+ * by the IntentResolver implementation
+ */
+export interface SingleAppIntent {
+
+    intent: IntentMetadata
+    chosenApp: AppIdentifier
+
+}
+
+export interface IntentResolver {
+
+    /**
+     * Called when the user needs to resolve an intent
+     */
+    chooseIntent(appIntents: AppIntent[], source: AppIdentifier): Promise<SingleAppIntent>
+
+    /**
+     * Steps after the user has chosen the intent
+     */
+    intentChosen(intentResult: IntentResult): Promise<IntentResult>
+
+}
+
+
+export type IntentResolutionChoiceAgentResponse = {
+    type: 'intentResolutionChoice',
+    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
+    payload: {
+        intent: IntentMetadata,
+        chosenApp: AppMetadata
+    }
+}
+
+export type IntentResolutionChoiceAgentRequest = IntentResolutionChoiceAgentResponse

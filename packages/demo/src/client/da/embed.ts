@@ -1,6 +1,6 @@
 import { FDC3_PORT_TRANSFER_RESPONSE_TYPE } from "fdc3-common";
 import { io } from "socket.io-client"
-import { link } from "./constants";
+import { link } from "./util";
 
 const appWindow = window.parent;
 
@@ -11,7 +11,7 @@ window.addEventListener("load", () => {
 
     socket.on("connect", () => {
 
-        link(socket, channel)
+        //link(socket, channel)
 
         // sned the other end of the channel to the app
         appWindow.postMessage({

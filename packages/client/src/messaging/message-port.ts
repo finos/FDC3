@@ -7,16 +7,18 @@ import { DesktopAgentIntentResolver } from "../intent-resolution/DesktopAgentInt
 /**
  * Given a message port, constructs a desktop agent to communicate via that.
  */
-export async function messagePortInit(mp: MessagePort, data: APIResponseMessage): Promise<DesktopAgent> {
+export async function messagePortInit(mp: MessagePort, data: APIResponseMessage, options: Options): Promise<DesktopAgent> {
     mp.start()
 
     const messaging = new MessagePortMessaging(mp, data.appIdentifier)
+
+    const intentResolver = options.intentResolver ?? new DesktopAgentIntentResolver(messaging, data.resolverUri)
     const userChannelState = buildUserChannelState(messaging)
 
     const version = "2.0"
     const cs = new DefaultChannelSupport(messaging, userChannelState, null)
     const hs = new DefaultHandshakeSupport(messaging, [version], cs)
-    const is = new DefaultIntentSupport(messaging, new DesktopAgentIntentResolver(messaging))
+    const is = new DefaultIntentSupport(messaging, intentResolver)
     const as = new DefaultAppSupport(messaging, data.appIdentifier, "WebFDC3")
     const da = new BasicDesktopAgent(hs, cs, is, as, version)
     await da.connect()
@@ -40,7 +42,7 @@ export async function messagePortIFrameInit(data: APIResponseMessage, options: O
 
     const mp = await exchangeForMessagePort(window, FDC3_PORT_TRANSFER_RESPONSE_TYPE, action) as MessagePort
 
-    return messagePortInit(mp, data);
+    return messagePortInit(mp, data, options);
 }
 
 /**
