@@ -47,17 +47,25 @@ export type DesktopAgentPortResolver = (o: Window, a: AppIdentifier) => MessageP
  * agent is via the "message-port" approach.  This may change in the future.
  */
 export type APIResponseMessage = {
-    type: string,
+    type: "FDC3-API-Response",
     method: "message-port",
-    uri?: string,           /* Supplied when an embedded iframe should be loaded */
     appIdentifier: AppIdentifier,
-    resolverUri: string
+    resolverUri: string,
+    desktopAgentId: string
     // fdc3Version: string,
     // supportedFDC3Versions: string[],
     // desktopAgentBridgeVersion: string,
     // authRequired: boolean,
     // provider: string,
     // authToken?: string,
+}
+
+export type APIResponseMessageIFrame = APIResponseMessage & {
+    uri?: string,           /* Supplied when an embedded iframe should be loaded */
+}
+
+export type APIResponseMessageParentWindow = APIResponseMessage & {
+    // tbd
 }
 
 export type APIRequestMessage = {

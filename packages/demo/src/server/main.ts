@@ -57,7 +57,7 @@ io.on('connection', (socket: Socket) => {
     // message from app to da
     console.log(JSON.stringify(data))
 
-    if (myInstance == null) {
+    if ((myInstance == null) && (data.type == 'intentResolutionChoice')) {
       // message from app's intent resolver
       myInstance = Array.from(instances.values()).find(cw => cw.apps.get(from.instanceId))
     }

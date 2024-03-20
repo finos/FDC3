@@ -28,7 +28,7 @@ export const supply: Supplier = (
                 instanceId: appId.instanceId,
                 desktopAgent: appId.desktopAgent
             }
-        }
+        } as APIResponseMessage
     }
 
     function createTransferrableArray(source: Window, appId: AppIdentifier): Transferable[] {
