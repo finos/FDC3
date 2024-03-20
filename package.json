@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "clean": "rm -rf dist",
-    "start": "tsdx watch",
+    "start": "rollup -c rollup.config.js --bundleConfigAsCjs -w",
     "prebuild": "npm run clean && npm run typegen && npm run typegen-bridging && npm run lint",
     "build": "rollup -c rollup.config.js --silent --bundleConfigAsCjs",
     "test": "jest --verbose",
