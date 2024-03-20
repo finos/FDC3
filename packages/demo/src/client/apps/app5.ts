@@ -6,13 +6,31 @@ import { getClientAPI } from 'client'
 getClientAPI().then(async fdc3 => {
     console.log("in promise")
 
-    fdc3.addIntentListener("ViewNews", context => {
+    fdc3.addIntentListener("ViewNews", async context => {
         const msg = document.createElement("p");
         msg.textContent = "Received News!: " + JSON.stringify(context);
+        const log = document.getElementById("log");
+        log?.appendChild(msg);
+        return {
+            type: "fdc3.test",
+            id: {
+                from: "app5",
+                intent: "ViewNews"
+            }
+        }
     })
 
-    fdc3.addIntentListener("ViewQuote", context => {
+    fdc3.addIntentListener("ViewQuote", async context => {
         const msg = document.createElement("p");
         msg.textContent = "Received Quote!: " + JSON.stringify(context);
+        const log = document.getElementById("log");
+        log?.appendChild(msg);
+        return {
+            type: "fdc3.test",
+            id: {
+                from: "app5",
+                intent: "ViewQuote"
+            }
+        }
     })
 });
