@@ -21,7 +21,7 @@
     "start": "tsdx watch",
     "prebuild": "npm run typegen && npm run typegen-bridging",
     "build": "tsdx build",
-    "test": "tsdx test --verbose",
+    "test": "jest --verbose",
     "lint": "eslint src/ test/ --ext .ts --fix",
     "preprepare": "npm run typegen && npm run typegen-bridging",
     "prepare": "tsdx build",
@@ -45,18 +45,22 @@
     "y18n": "^4.0.1"
   },
   "devDependencies": {
+    "@types/jest": "29.5.12",
     "@typescript-eslint/eslint-plugin": "7.1.1",
     "@typescript-eslint/parser": "7.1.0",
     "eslint": "8.57.0",
     "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-jest": "^27.9.0",
+    "eslint-plugin-jest": "27.9.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "husky": "^4.3.0",
-    "jest-mock-extended": "^1.0.13",
+    "jest": "29.7.0",
+    "jest-environment-jsdom": "29.7.0",
+    "jest-mock-extended": "3.0.5",
     "prettier": "3.2.5",
     "quicktype": "23.0.78",
     "tsdx": "^0.14.1",
     "tslib": "^2.0.1",
+    "ts-jest": "29.1.2",
     "typescript": "^4.0.3"
   }
 }
