@@ -6,7 +6,7 @@ import { AppIdentifier } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 const app = express();
 
-app.get("/hello", (_, res) => {
+app.get("/iframe", (_, res) => {
   res.send("Hello Vite + TypeScript!");
 });
 
@@ -22,14 +22,11 @@ type ConnectedWorld = {
   apps: Map<string, Socket>
 }
 
-type AppOrDA = "App" | "DA"
-
 const instances: Map<string, ConnectedWorld> = new Map()
 
 io.on('connection', (socket: Socket) => {
 
   var myInstance: ConnectedWorld | undefined
-  var myType: AppOrDA | undefined
 
   socket.on(DA_HELLO, function (id) {
     const instance = instances.get(id) ?? {
@@ -41,7 +38,6 @@ io.on('connection', (socket: Socket) => {
     instances.set(id, instance)
     console.log("instances " + instances.size)
     myInstance = instance
-    myType = "DA"
     console.log("A da connected: " + id)
   })
 
@@ -52,7 +48,6 @@ io.on('connection', (socket: Socket) => {
       console.log("An app connected: " + id)
       instance.apps.set(appID.instanceId!!, socket)
       myInstance = instance
-      myType = "App"
     } else {
       console.log("App Tried Connecting to non-existent DA Instance " + id + " " + appID.appId + " " + appID.instanceId)
     }
@@ -61,7 +56,15 @@ io.on('connection', (socket: Socket) => {
   socket.on(FDC3_APP_EVENT, function (data, from): void {
     // message from app to da
     console.log(JSON.stringify(data))
-    myInstance?.server.emit(FDC3_APP_EVENT, data, from)
+
+    if (myInstance == null) {
+      // message from app's intent resolver
+      myInstance = Array.from(instances.values()).find(cw => cw.apps.get(from.instanceId))
+    }
+
+    if (myInstance != undefined) {
+      myInstance!!.server.emit(FDC3_APP_EVENT, data, from)
+    }
   })
 
   socket.on(FDC3_DA_EVENT, function (data, to): void {

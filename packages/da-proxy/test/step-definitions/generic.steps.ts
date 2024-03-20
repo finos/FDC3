@@ -5,8 +5,8 @@ import { expect } from 'expect';
 import { doesRowMatch, handleResolve, matchData } from '../support/matching';
 import { CustomWorld } from '../world/index';
 import { BasicDesktopAgent, DefaultAppSupport, DefaultChannelSupport, DefaultIntentSupport, DefaultHandshakeSupport } from '../../src';
-import { IntentResolver, SingleAppIntent } from '../intents/IntentResolver';
-import { AppIntent } from '@finos/fdc3';
+import { IntentResolver, SingleAppIntent } from 'fdc3-common';
+import { AppIntent, IntentResult } from '@finos/fdc3';
 
 /**
      * This super-simple intent resolver just resolves to the first
@@ -14,11 +14,16 @@ import { AppIntent } from '@finos/fdc3';
      */
 class SimpleIntentResolver implements IntentResolver {
 
+    cw: CustomWorld
+
     constructor(cw: CustomWorld) {
         this.cw = cw;
     }
 
-    cw: CustomWorld
+    async intentChosen(ir: IntentResult): Promise<IntentResult> {
+        this.cw.props['intent-result'] = ir
+        return ir
+    }
 
     async chooseIntent(appIntents: AppIntent[]): Promise<SingleAppIntent> {
         const out = {

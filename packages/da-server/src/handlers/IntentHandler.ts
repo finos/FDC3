@@ -4,7 +4,7 @@ import { ServerContext } from "../ServerContext";
 import { Directory } from "../directory/DirectoryInterface";
 import { genericResultTypeSame } from "../directory/BasicDirectory";
 import { ResolveError } from "@finos/fdc3";
-import { OnAddIntentListenerAgentRequest, OnUnsubscribeIntentListenerAgentRequest } from "fdc3-common";
+import { IntentResolutionChoiceAgentRequest, IntentResolutionChoiceAgentResponse, OnAddIntentListenerAgentRequest, OnUnsubscribeIntentListenerAgentRequest } from "fdc3-common";
 
 
 type ListenerRegistration = {
@@ -138,8 +138,16 @@ export class IntentHandler implements MessageHandler {
             case 'onUnsubscribeIntentListener': return this.onUnsubscribe(msg as OnUnsubscribeIntentListenerAgentRequest, sc)
             case 'raiseIntentResponse': return this.raiseIntentResponse(msg as RaiseIntentAgentResponse, sc)
             case 'raiseIntentResultResponse': return this.raiseIntentResultResponse(msg as RaiseIntentResultAgentResponse, sc)
+            case 'intentResolutionChoice': return this.intentResolutionChoice(msg as IntentResolutionChoiceAgentRequest, from, sc)
         }
     }
+    intentResolutionChoice(arg0: IntentResolutionChoiceAgentResponse, from: AppMetadata, sc: ServerContext): void | PromiseLike<void> {
+        // currently, this is a no-op, just pass the same message to the app
+        const out = arg0 as IntentResolutionChoiceAgentResponse
+        sc.post(out, from)
+    }
+
+
     raiseIntentResponse(arg0: RaiseIntentAgentResponse, sc: ServerContext): void | PromiseLike<void> {
         const requestId = arg0.meta.requestUuid
         const to = this.pendingResolutions.get(requestId)
