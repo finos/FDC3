@@ -1,26 +1,31 @@
 {
-    "name": "demo",
-    "private": true,
-    "scripts": {
-        "dev": "vite --port 8080 --host ",
-        "build": "tsc && vite build",
-        "preview": "vite preview"
-    },
-    "devDependencies": {
-        "typescript": "^5.3.2",
-        "vite": "^4.3.9"
-    },
-    "dependencies": {
-        "@finos/fdc3": "^2.1.0-beta.4",
-        "client": "workspace:*",
-        "da-proxy": "workspace:*",
-        "da-server": "workspace:*",
-        "fdc3-common": "workspace:*",
-        "uuid": "^9.0.1"
-    },
-    "references": [
-        {
-            "path": "../client"
-        }
-    ]
+  "name": "demo",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "nodemon -w src/server -x tsx src/server/main.ts",
+    "start": "NODE_ENV=production tsx src/server/main.ts",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.15",
+    "@types/node": "^20.9.3",
+    "nodemon": "^3.0.1",
+    "vite": "^5.0.2"
+  },
+  "dependencies": {
+    "@finos/fdc3": "^2.1.0-beta.6",
+    "@types/uuid": "^9.0.8",
+    "@types/ws": "^8.5.10",
+    "client": "workspace:*",
+    "da-server": "workspace:*",
+    "express": "^4.18.3",
+    "fdc3-common": "workspace:*",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
+    "tsx": "^4.5.0",
+    "typescript": "^5.3.2",
+    "uuid": "^9.0.1",
+    "vite-express": "^0.15.0"
+  }
 }

@@ -3,9 +3,10 @@ import { CustomWorld } from '../world/index';
 import { handleResolve } from '../support/matching';
 import { RaiseIntentAgentRequest } from '@finos/fdc3/dist/bridging/BridgingTypes';
 import { Context, ContextMetadata } from '@finos/fdc3';
+import { createDefaultChannels } from '../support/DefaultUserChannels';
 
 Given("app {string}", function (this: CustomWorld, appStr: string) {
-    const [ appId, instanceId ] = appStr.split("/")
+    const [appId, instanceId] = appStr.split("/")
     const app = { appId, instanceId }
     this.messaging?.addAppIntentDetail({
         app
@@ -14,7 +15,7 @@ Given("app {string}", function (this: CustomWorld, appStr: string) {
 })
 
 Given("app {string} resolves intent {string}", function (this: CustomWorld, appStr: string, intent: string) {
-    const [ appId, instanceId ] = appStr.split("/")
+    const [appId, instanceId] = appStr.split("/")
     const app = { appId, instanceId }
     this.messaging?.addAppIntentDetail({
         app,
@@ -24,7 +25,7 @@ Given("app {string} resolves intent {string}", function (this: CustomWorld, appS
 })
 
 Given("app {string} resolves intent {string} with result type {string}", function (this: CustomWorld, appStr: string, intent: string, resultType: string) {
-    const [ appId, instanceId ] = appStr.split("/")
+    const [appId, instanceId] = appStr.split("/")
     const app = { appId, instanceId }
     this.messaging?.addAppIntentDetail({
         app,
@@ -35,7 +36,7 @@ Given("app {string} resolves intent {string} with result type {string}", functio
 })
 
 Given("app {string} resolves intent {string} with context {string}", function (this: CustomWorld, appStr: string, intent: string, context: string) {
-    const [ appId, instanceId ] = appStr.split("/")
+    const [appId, instanceId] = appStr.split("/")
     const app = { appId, instanceId }
     this.messaging?.addAppIntentDetail({
         app,
@@ -46,7 +47,7 @@ Given("app {string} resolves intent {string} with context {string}", function (t
 })
 
 Given("app {string} resolves intent {string} with context {string} and result type {string}", function (this: CustomWorld, appStr: string, intent: string, context: string, resultType: string) {
-    const [ appId, instanceId ] = appStr.split("/")
+    const [appId, instanceId] = appStr.split("/")
     const app = { appId, instanceId }
     this.messaging?.addAppIntentDetail({
         app,
@@ -103,7 +104,7 @@ Given("Raise Intent will return a private channel", function (this: CustomWorld)
 })
 
 Given('{string} is a raiseIntentRequest message with intent {string} and context {string}', function (this: CustomWorld, field: string, intent: string, context: string) {
-    const msg : RaiseIntentAgentRequest = {
+    const msg: RaiseIntentAgentRequest = {
         type: 'raiseIntentRequest',
         meta: {
             requestUuid: this.messaging?.createUUID()!!,
@@ -129,12 +130,37 @@ Given('{string} is a raiseIntentRequest message with intent {string} and context
     this.props[field] = msg
 })
 
-Given('{string} pipes intent to {string}', function(this: CustomWorld, intentHandlerName: string, field: string) {
+Given('{string} pipes intent to {string}', function (this: CustomWorld, intentHandlerName: string, field: string) {
     this.props[field] = []
     this.props[intentHandlerName] = (context: Context, metadata: ContextMetadata) => {
-      this.props[field].push({
-        context,
-        metadata
-      })
+        this.props[field].push({
+            context,
+            metadata
+        })
     }
-  })
+})
+
+Given('{string} returns a context item', function (this: CustomWorld, intentHandlerName: string) {
+    this.props[intentHandlerName] = async () => {
+        return {
+            type: "fdc3.returned-intent",
+            id: {
+                in: "one",
+                out: "two"
+            }
+        }
+    }
+})
+
+Given('{string} returns a channel', function (this: CustomWorld, intentHandlerName: string) {
+    this.props[intentHandlerName] = async () => {
+        return createDefaultChannels(this.messaging!!)[0]
+    }
+})
+
+
+Given('{string} returns a void promise', function (this: CustomWorld, intentHandlerName: string) {
+    this.props[intentHandlerName] = async () => {
+        return null
+    }
+})

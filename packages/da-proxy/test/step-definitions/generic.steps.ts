@@ -4,9 +4,9 @@ import { DataTable, Given, Then, When } from '@cucumber/cucumber'
 import { expect } from 'expect';
 import { doesRowMatch, handleResolve, matchData } from '../support/matching';
 import { CustomWorld } from '../world/index';
-import { BasicDesktopAgent, DefaultAppSupport, DefaultChannelSupport, DefaultIntentSupport } from '../../src';
-import { IntentResolver, SingleAppIntent } from '../intents/IntentResolver';
-import { AppIntent } from '@finos/fdc3';
+import { BasicDesktopAgent, DefaultAppSupport, DefaultChannelSupport, DefaultIntentSupport, DefaultHandshakeSupport } from '../../src';
+import { IntentResolver, SingleAppIntent } from 'fdc3-common';
+import { AppIntent, IntentResult } from '@finos/fdc3';
 
 /**
      * This super-simple intent resolver just resolves to the first
@@ -14,16 +14,21 @@ import { AppIntent } from '@finos/fdc3';
      */
 class SimpleIntentResolver implements IntentResolver {
 
+    cw: CustomWorld
+
     constructor(cw: CustomWorld) {
         this.cw = cw;
     }
 
-    cw: CustomWorld
-   
-    chooseIntent(appIntents: AppIntent[]): SingleAppIntent {
+    async intentChosen(ir: IntentResult): Promise<IntentResult> {
+        this.cw.props['intent-result'] = ir
+        return ir
+    }
+
+    async chooseIntent(appIntents: AppIntent[]): Promise<SingleAppIntent> {
         const out = {
             intent: appIntents[0].intent,
-            chosenApp :appIntents[0].apps[0]
+            chosenApp: appIntents[0].apps[0]
         }
 
         this.cw.props['intent-resolution'] = out
@@ -31,25 +36,28 @@ class SimpleIntentResolver implements IntentResolver {
     }
 }
 
-Given('A Desktop Agent in {string}', function (this: CustomWorld, field: string) {
+export const CHANNEL_STATE = 'CHANNEL_STATE'
+
+Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
 
     if (!this.messaging) {
-        this.messaging = new TestMessaging();
+        this.messaging = new TestMessaging(this.props[CHANNEL_STATE]);
     }
 
-    this.props[field] = new BasicDesktopAgent (
-        new DefaultChannelSupport(this.messaging, createDefaultChannels(this.messaging), null),
-        new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this)),
-        new DefaultAppSupport(this.messaging, {
-                appId: "Test App Id",
-                desktopAgent: "Test DA",
-                instanceId: "123-ABC"
-            }, 'cucumber-desktop-agent'
-        ),
-        "2.0",
-        "cucumber-provider"
-    )
+    const version = "2.0"
+    const cs = new DefaultChannelSupport(this.messaging, createDefaultChannels(this.messaging), null)
+    const hs = new DefaultHandshakeSupport(this.messaging, [version], cs)
+    const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this))
+    const as = new DefaultAppSupport(this.messaging, {
+        appId: "Test App Id",
+        desktopAgent: "Test DA",
+        instanceId: "123-ABC"
+    }, 'cucumber-desktop-agent')
 
+    const da = new BasicDesktopAgent(hs, cs, is, as, version)
+    await da.connect()
+
+    this.props[field] = da
     this.props['result'] = null
 })
 
@@ -102,7 +110,7 @@ Then('{string} is an array of objects with the following contents', function (th
 });
 
 Then('{string} is an array of strings with the following values', function (this: CustomWorld, field: string, dt: DataTable) {
-    const values = this.props[field].map((s: string) => {return { "value": s }})
+    const values = this.props[field].map((s: string) => { return { "value": s } })
     matchData(this, values, dt)
 });
 
@@ -115,6 +123,10 @@ Then('{string} is null', function (this: CustomWorld, field: string) {
     expect(handleResolve(field, this)).toBeNull()
 })
 
+Then('{string} is undefined', function (this: CustomWorld, field: string) {
+    expect(handleResolve(field, this)).toBeUndefined()
+})
+
 Then('{string} is empty', function (this: CustomWorld, field: string) {
     expect(handleResolve(field, this)).toHaveLength(0)
 })
@@ -122,18 +134,18 @@ Then('{string} is empty', function (this: CustomWorld, field: string) {
 Then('{string} is {string}', function (this: CustomWorld, field: string, expected: string) {
     const fVal = handleResolve(field, this)
     const eVal = handleResolve(expected, this)
-    expect(""+fVal).toEqual(""+eVal)        
+    expect("" + fVal).toEqual("" + eVal)
 })
 
 Then('{string} is an error with message {string}', function (this: CustomWorld, field: string, errorType: string) {
-    expect(handleResolve(field, this)['message']).toBe(errorType)  
+    expect(handleResolve(field, this)['message']).toBe(errorType)
 })
 
-Given('{string} is a invocation counter into {string}', function(this: CustomWorld, handlerName: string, field: string) {
+Given('{string} is a invocation counter into {string}', function (this: CustomWorld, handlerName: string, field: string) {
     this.props[handlerName] = () => {
-      var amount : number = this.props[field]
-      amount ++;
-      this.props[field] = amount
+        var amount: number = this.props[field]
+        amount++;
+        this.props[field] = amount
     }
     this.props[field] = 0;
-  })
+})

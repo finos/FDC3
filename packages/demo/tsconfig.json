@@ -1,21 +1,35 @@
 {
-    "compilerOptions": {
-        "rootDir": "src",
-        "outDir": "dist",
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "NodeNext",
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../fdc3-common"
     },
-    "include": [ "search" ],
-    "references": [
-        {
-            "path": "../client"
-        },
-        {
-            "path": "../server"
-        },
-        {
-            "path": "../fdc3-common"
-        },
-        {
-            "path": "../da"
-        }
-    ] 
+    {
+      "path": "../client"
+    },
+    {
+      "path": "../da-server"
+    }
+  ]
 }

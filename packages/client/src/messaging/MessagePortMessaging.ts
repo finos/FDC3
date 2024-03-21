@@ -1,21 +1,17 @@
 import { AppIdentifier } from "@finos/fdc3"
-import { AgentRequestMessage } from "@finos/fdc3/dist/bridging/BridgingTypes"
-import { Messaging } from "da-proxy"
+import { AbstractMessaging } from "da-proxy"
+import { RegisterableListener } from "da-proxy/src/listeners/RegisterableListener"
 import { exchangePostMessage } from "fdc3-common"
 import { v4 as uuidv4 } from "uuid"
 
-type ListenerDetail = {
-    filter: (m: AgentRequestMessage) => boolean,
-    action: (m: AgentRequestMessage) => void
-}
-
-export class MessagePortMessaging implements Messaging {
+export class MessagePortMessaging extends AbstractMessaging {
 
     private readonly appId: AppIdentifier
     private readonly mp: MessagePort
-    private readonly listeners : Map<string, ListenerDetail> = new Map()
+    private readonly listeners: Map<string, RegisterableListener> = new Map()
 
     constructor(mp: MessagePort, appId: AppIdentifier) {
+        super()
         this.appId = appId
         this.mp = mp;
 
@@ -23,7 +19,7 @@ export class MessagePortMessaging implements Messaging {
             this.listeners.forEach((v, _k) => {
                 if (v.filter(m.data)) {
                     v.action(m.data)
-                } 
+                }
             })
         }
     }
@@ -40,14 +36,8 @@ export class MessagePortMessaging implements Messaging {
         return Promise.resolve();
     }
 
-    register(filter: (m: any) => boolean, action: (m: any) => void): string {
-        const id = this.createUUID();
-        this.listeners.set(id,{
-            filter,
-            action
-        })
-
-        return id;
+    register(l: RegisterableListener): void {
+        this.listeners.set(l.id, l)
     }
 
     unregister(id: string): void {

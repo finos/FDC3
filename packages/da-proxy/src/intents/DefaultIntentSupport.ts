@@ -1,10 +1,31 @@
-import { Context, AppIntent, AppIdentifier, IntentResolution, IntentHandler, Listener, ResolveError } from "@finos/fdc3";
+import { Context, AppIntent, AppIdentifier, IntentResolution, IntentHandler, Listener, ResolveError, IntentResult } from "@finos/fdc3";
 import { IntentSupport } from "./IntentSupport";
 import { Messaging } from "../Messaging";
 import { AppDestinationIdentifier, FindIntentAgentRequest, FindIntentAgentRequestMeta, FindIntentAgentResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentRequestMeta, FindIntentsByContextAgentResponse, RaiseIntentAgentRequest, RaiseIntentAgentRequestMeta, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { DefaultIntentResolution } from "./DefaultIntentResolution";
 import { DefaultIntentListener } from "../listeners/DefaultIntentListener";
-import { IntentResolver } from "./IntentResolver";
+import { IntentResolver } from "fdc3-common";
+import { DefaultChannel } from "../channels/DefaultChannel";
+import { DefaultPrivateChannel } from "../channels/DefaultPrivateChannel";
+
+function convertIntentResult(m: RaiseIntentResultAgentResponse, messaging: Messaging): Promise<IntentResult> {
+    if (m.payload?.intentResult?.channel) {
+        const c = m.payload.intentResult.channel!!;
+        switch (c.type) {
+            case 'app':
+            case 'user':
+                return new Promise((resolve) => resolve(new DefaultChannel(messaging, c.id, c.type, c.displayMetadata)))
+            case 'private':
+                return new Promise((resolve) => resolve(new DefaultPrivateChannel(messaging, c.id)))
+        }
+    } else if (m.payload?.intentResult?.context) {
+        return new Promise((resolve) => {
+            resolve(m.payload.intentResult.context)
+        })
+    } else {
+        return new Promise((resolve) => (resolve()))
+    }
+}
 
 export class DefaultIntentSupport implements IntentSupport {
 
@@ -68,12 +89,14 @@ export class DefaultIntentSupport implements IntentSupport {
             meta: this.messaging.createMeta() as RaiseIntentAgentRequestMeta
         }
 
+        const resultPromise = this.messaging.waitFor<RaiseIntentResultAgentResponse>(m => (
+            (m.meta.requestUuid == messageOut.meta.requestUuid) &&
+            (m.type == 'raiseIntentResultResponse')))
+            .then(ir => convertIntentResult(ir, this.messaging))
+            .then(ir => this.intentResolver.intentChosen(ir))
+
         const resolution = await this.messaging.exchange(messageOut, "raiseIntentResponse") as RaiseIntentAgentResponse
         const details = resolution.payload.intentResolution
-
-        const resultPromise = this.messaging.waitFor<RaiseIntentResultAgentResponse>(
-            m => m.meta.requestUuid == messageOut.meta.requestUuid
-        )
 
         return new DefaultIntentResolution(
             this.messaging,
@@ -109,7 +132,7 @@ export class DefaultIntentSupport implements IntentSupport {
             return this.raiseSpecificIntent(intent, context, matched.apps[0])
         } else {
             // need to do the intent resolver
-            const chosentIntent = await this.intentResolver.chooseIntent([matched])
+            const chosentIntent = await this.intentResolver.chooseIntent([matched], this.messaging.getSource())
             return this.raiseSpecificIntent(chosentIntent.intent.name, context, chosentIntent.chosenApp)
         }
     }
@@ -128,7 +151,7 @@ export class DefaultIntentSupport implements IntentSupport {
             return this.raiseSpecificIntent(matched[0].intent.name, context, matched[0].apps[0])
         } else {
             // need to do the intent resolver
-            const chosentIntent = await this.intentResolver.chooseIntent(matched)
+            const chosentIntent = await this.intentResolver.chooseIntent(matched, this.messaging.getSource())
             return this.raiseSpecificIntent(chosentIntent.intent.name, context, chosentIntent.chosenApp)
         }
     }
