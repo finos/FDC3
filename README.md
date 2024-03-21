@@ -101,6 +101,7 @@ Desktop Agent Briding needs extending with the following types:
 - get it to work without desktop agent window running
 - use cookie for the da id.
 - add server tests for intent resolution choice
+- handle disconnections from the server / update running apps
 
 ## Idea
 
