@@ -10,6 +10,7 @@ export function doesRowMatch(cw: CustomWorld, t: Record<string, string>, data: a
         const resolved = handleResolve(actual, cw)
 
         if (found != resolved) {
+            cw.log("Match failed on " + field)
             return false;
         }
     }

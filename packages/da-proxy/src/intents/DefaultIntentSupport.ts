@@ -9,7 +9,7 @@ import { DefaultChannel } from "../channels/DefaultChannel";
 import { DefaultPrivateChannel } from "../channels/DefaultPrivateChannel";
 
 function convertIntentResult(m: RaiseIntentResultAgentResponse, messaging: Messaging): Promise<IntentResult> {
-    if (m.payload.intentResult.channel) {
+    if (m.payload?.intentResult?.channel) {
         const c = m.payload.intentResult.channel!!;
         switch (c.type) {
             case 'app':
@@ -18,7 +18,7 @@ function convertIntentResult(m: RaiseIntentResultAgentResponse, messaging: Messa
             case 'private':
                 return new Promise((resolve) => resolve(new DefaultPrivateChannel(messaging, c.id)))
         }
-    } else if (m.payload.intentResult.context) {
+    } else if (m.payload?.intentResult?.context) {
         return new Promise((resolve) => {
             resolve(m.payload.intentResult.context)
         })
@@ -89,12 +89,14 @@ export class DefaultIntentSupport implements IntentSupport {
             meta: this.messaging.createMeta() as RaiseIntentAgentRequestMeta
         }
 
-        const resolution = await this.messaging.exchange(messageOut, "raiseIntentResponse") as RaiseIntentAgentResponse
-        const details = resolution.payload.intentResolution
-
-        const resultPromise = this.messaging.waitFor<RaiseIntentResultAgentResponse>(m => m.meta.requestUuid == messageOut.meta.requestUuid)
+        const resultPromise = this.messaging.waitFor<RaiseIntentResultAgentResponse>(m => (
+            (m.meta.requestUuid == messageOut.meta.requestUuid) &&
+            (m.type == 'raiseIntentResultResponse')))
             .then(ir => convertIntentResult(ir, this.messaging))
             .then(ir => this.intentResolver.intentChosen(ir))
+
+        const resolution = await this.messaging.exchange(messageOut, "raiseIntentResponse") as RaiseIntentAgentResponse
+        const details = resolution.payload.intentResolution
 
         return new DefaultIntentResolution(
             this.messaging,

@@ -76,4 +76,8 @@ io.on('connection', (socket: Socket) => {
       console.log("Unknown dest " + JSON.stringify(to))
     }
   })
+
+  socket.on("disconnect", function (): void {
+    console.log("Apparent disconnect")
+  })
 })
