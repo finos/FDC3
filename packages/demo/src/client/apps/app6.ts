@@ -14,6 +14,6 @@ getClientAPI().then(async fdc3 => {
     })
 
     log!!.textContent = `Got resolution: ${JSON.stringify(reso)}`
-    const result = reso.getResult()
+    const result = await reso.getResult()
     log!!.textContent += `Got result: ${JSON.stringify(result)}`
 });
