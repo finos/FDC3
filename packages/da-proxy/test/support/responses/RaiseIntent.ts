@@ -1,4 +1,4 @@
-import { AgentRequestMessage, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from "../TestMessaging";
 
 
@@ -8,8 +8,8 @@ export class RaiseIntent implements AutomaticResponse {
         return t == 'raiseIntentRequest'
     }
 
-    createRaiseIntentAgentResponseMessage(intentRequest: RaiseIntentAgentRequest, using: IntentDetail, m: TestMessaging) : RaiseIntentAgentResponse {
-        const out : RaiseIntentAgentResponse = {
+    createRaiseIntentAgentResponseMessage(intentRequest: RaiseIntentAgentRequest, using: IntentDetail, m: TestMessaging): RaiseIntentAgentResponse {
+        const out: RaiseIntentAgentResponse = {
             meta: {
                 ...intentRequest.meta,
                 responseUuid: m.createUUID()
@@ -26,22 +26,22 @@ export class RaiseIntent implements AutomaticResponse {
         return out
     }
 
-    createRaiseIntentResultResponseMesssage(intentRequest: RaiseIntentAgentRequest, m: TestMessaging) : RaiseIntentResultAgentResponse {
+    createRaiseIntentResultResponseMesssage(intentRequest: RaiseIntentAgentRequest, m: TestMessaging): RaiseIntentResultAgentResponse {
         const out: RaiseIntentResultAgentResponse = {
             meta: {
                 ...intentRequest.meta,
                 responseUuid: m.createUUID()
             },
             payload: {
-                intentResult:m.getIntentResult()
+                intentResult: m.getIntentResult()
             },
             type: "raiseIntentResultResponse"
         }
 
         return out
     }
- 
-    action(input: AgentRequestMessage, m: TestMessaging) {
+
+    action(input: object, m: TestMessaging) {
         const intentRequest = input as RaiseIntentAgentRequest
         const payload = intentRequest.payload
         const intent = payload.intent
@@ -55,11 +55,11 @@ export class RaiseIntent implements AutomaticResponse {
         const using = relevant[0]
 
         // this sends out the intent resolution
-        const out1 = this.createRaiseIntentAgentResponseMessage(intentRequest, using, m) 
+        const out1 = this.createRaiseIntentAgentResponseMessage(intentRequest, using, m)
         setTimeout(() => { m.receive(out1) }, 100)
 
         // next, send the result response
-        const out2 = this.createRaiseIntentResultResponseMesssage(intentRequest, m) 
+        const out2 = this.createRaiseIntentResultResponseMesssage(intentRequest, m)
         setTimeout(() => { m.receive(out2) }, 300)
         return Promise.resolve()
     }

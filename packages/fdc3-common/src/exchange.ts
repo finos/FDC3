@@ -2,22 +2,24 @@
 /**
  * Perform some generalized action and expect a response back via message ports.
  */
-export function exchange(p: MessagePort | Window | BroadcastChannel, toType: string, action: () => void) : Promise<MessageEvent> {
+export function exchange(p: MessagePort | Window | BroadcastChannel, toType: string, action: () => void): Promise<MessageEvent> {
     return new Promise((resolve, reject) => {
         var done = false;
         const listener = (m: Event) => {
             if (m instanceof MessageEvent) {
-                console.log("Received: "+m.data.type)
+                console.log("Received: " + m.data.type)
                 if (m.data.type == toType) {
                     done = true;
+                    p.removeEventListener("message", listener);
                     resolve(m);
                 }
             }
-        } 
+        }
+
         p.addEventListener("message", listener)
 
         action();
-        
+
         setTimeout(() => {
             p.removeEventListener("message", listener);
             if (!done) {
@@ -27,7 +29,7 @@ export function exchange(p: MessagePort | Window | BroadcastChannel, toType: str
     })
 }
 
-export function exchangeForMessagePort(p: MessagePort | Window | BroadcastChannel, toType: string, action: () => void) : Promise<MessagePort> {
+export function exchangeForMessagePort(p: MessagePort | Window | BroadcastChannel, toType: string, action: () => void): Promise<MessagePort> {
     return exchange(p, toType, action).then(x => {
         return x.ports[0]
     })
@@ -36,9 +38,9 @@ export function exchangeForMessagePort(p: MessagePort | Window | BroadcastChanne
 /**
  * Send a message to on a port and wait for one to come back.
  */
-export function exchangePostMessage(p: MessagePort | Window | BroadcastChannel, toType: string, contents: any) : Promise<any> {
+export function exchangePostMessage(p: MessagePort | Window | BroadcastChannel, toType: string, contents: any): Promise<any> {
     return exchange(p, toType, () => {
-        console.log("Posting message: "+JSON.stringify(contents))
+        console.log("Posting message: " + JSON.stringify(contents))
         p.postMessage(contents);
     })
 }

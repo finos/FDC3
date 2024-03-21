@@ -18,3 +18,4 @@ packages/da/tsconfig.tsbuildinfo
 packages/testing/tsconfig.tsbuildinfo
 **/coverage
 .nyc_output
+packages/da-server/generated

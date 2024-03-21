@@ -1,4 +1,4 @@
-import { AgentRequestMessage, OpenAgentRequest, OpenAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { OpenAgentRequest, OpenAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { AutomaticResponse, IntentDetail, TestMessaging } from "../TestMessaging";
 
 
@@ -8,13 +8,13 @@ export class Open implements AutomaticResponse {
         return t == 'openRequest'
     }
 
-    action(input: AgentRequestMessage, m: TestMessaging) {
+    action(input: object, m: TestMessaging) {
         const out = this.createOpenResponse(input as OpenAgentRequest, m.intentDetails[0])
-        
-        setTimeout(() => { m.receive(out)}, 100)
+
+        setTimeout(() => { m.receive(out) }, 100)
         return Promise.resolve()
     }
-    
+
     private createOpenResponse(m: OpenAgentRequest, id: IntentDetail): OpenAgentResponse {
         return {
             meta: m.meta as any,

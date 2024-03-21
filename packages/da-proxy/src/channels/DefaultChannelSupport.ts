@@ -5,6 +5,7 @@ import { DefaultPrivateChannel } from "./DefaultPrivateChannel";
 import { DefaultChannel } from "./DefaultChannel";
 import { StatefulChannel } from "./StatefulChannel";
 import { DefaultContextListener } from "../listeners/DefaultContextListener";
+import { ContextElement } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 export class DefaultChannelSupport implements ChannelSupport {
 
@@ -19,35 +20,48 @@ export class DefaultChannelSupport implements ChannelSupport {
         this.userChannel = userChannelState.find(c => c.id == initialChannelId) ?? null;
     }
 
+    mergeChannelState(newState: { [key: string]: ContextElement[]; }): void {
+        this.userChannel = null
+        this.userChannelState.forEach(uc => {
+            const incoming = newState[uc.id] ?? []
+            incoming.forEach((context) => {
+                const existing = uc.getState()
+                if (!existing.get(context.type)) {
+                    existing.set(context.type, context)
+                }
+            });
+        })
+    }
+
     hasUserChannelMembershipAPIs(): boolean {
         return true
     }
-    
-    getUserChannel() : Promise<Channel | null> {
+
+    getUserChannel(): Promise<Channel | null> {
         return Promise.resolve(this.userChannel);
     }
 
-    getUserChannels() : Promise<Channel[]> {
+    getUserChannels(): Promise<Channel[]> {
         return Promise.resolve(this.userChannelState);
     }
 
-    getDisplayMetadata(_id: string) : DisplayMetadata {
+    getDisplayMetadata(_id: string): DisplayMetadata {
         return {
-            
+
         }
     }
 
-    getOrCreate(id: string) : Promise<Channel> {
+    getOrCreate(id: string): Promise<Channel> {
         const out = new DefaultChannel(this.messaging, id, "app", this.getDisplayMetadata(id))
         return Promise.resolve(out)
     }
 
-    createPrivateChannel() : Promise<PrivateChannel> {
+    createPrivateChannel(): Promise<PrivateChannel> {
         const out = new DefaultPrivateChannel(this.messaging, this.messaging.createUUID())
         return Promise.resolve(out);
     }
 
-    leaveUserChannel() : Promise<void> {
+    leaveUserChannel(): Promise<void> {
         this.userChannel = null;
         this.userChannelListeners.forEach(
             l => l.updateUnderlyingChannel(null, new Map())
@@ -57,7 +71,7 @@ export class DefaultChannelSupport implements ChannelSupport {
 
     joinUserChannel(id: string) {
         if (this.userChannel?.id != id) {
-            const newUserChannel = this.userChannelState.find(c => c.id == id) 
+            const newUserChannel = this.userChannelState.find(c => c.id == id)
             if (newUserChannel) {
                 this.userChannel = newUserChannel;
                 this.userChannelListeners.forEach(
@@ -80,5 +94,5 @@ export class DefaultChannelSupport implements ChannelSupport {
         return Promise.resolve(listener);
     }
 
-    
+
 }

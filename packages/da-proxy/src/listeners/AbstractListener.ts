@@ -7,13 +7,13 @@ import { RegisterableListener } from "./RegisterableListener"
  */
 export abstract class AbstractListener<X> implements RegisterableListener {
 
-    private readonly messaging: Messaging
+    readonly messaging: Messaging
     private readonly unsubscribeType: string | null
     private readonly payloadDetails: Record<string, string | null>
     readonly id: string
-    readonly handler:X
- 
-    constructor(messaging: Messaging, payloadDetails: Record<string, string | null>,  handler: X, subscribeType: string | null, unsubscribeType: string | null) {
+    readonly handler: X
+
+    constructor(messaging: Messaging, payloadDetails: Record<string, string | null>, handler: X, subscribeType: string | null, unsubscribeType: string | null) {
         this.messaging = messaging
         this.id = this.messaging.createUUID()
         this.handler = handler
@@ -23,10 +23,10 @@ export abstract class AbstractListener<X> implements RegisterableListener {
         this.listenerNotification(subscribeType)
     }
 
-    abstract filter(m: any) : boolean
+    abstract filter(m: any): boolean
 
-    abstract action(m: any) : void 
- 
+    abstract action(m: any): void
+
     listenerNotification(type: string | null) {
         if (type) {
             // send notification

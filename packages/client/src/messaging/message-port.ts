@@ -1,64 +1,61 @@
-import { Context, DesktopAgent } from "@finos/fdc3";
-import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultChannel } from "da";
-import { APIResponseMessage, FDC3_PORT_TRANSFER_RESPONSE_TYPE, FDC3_PORT_TRANSFER_REQUEST_TYPE, Options, exchangeForMessagePort, exchange } from "fdc3-common"
+import { DesktopAgent } from "@finos/fdc3";
+import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultChannel, DefaultHandshakeSupport } from "da-proxy";
+import { APIResponseMessage, FDC3_PORT_TRANSFER_RESPONSE_TYPE, FDC3_PORT_TRANSFER_REQUEST_TYPE, Options, exchangeForMessagePort, APIResponseMessageParentWindow, APIResponseMessageIFrame } from "fdc3-common"
 import { MessagePortMessaging } from "./MessagePortMessaging";
-import { ConnectionStep2Hello, ConnectionStep3Handshake } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { DesktopAgentIntentResolver } from "../intent-resolution/DesktopAgentIntentResolver";
 
 /**
  * Given a message port, constructs a desktop agent to communicate via that.
  */
-export async function messagePortInit(mp: MessagePort, data: APIResponseMessage) : Promise<DesktopAgent> {
+export async function createDesktopAgentAPI(mp: MessagePort, data: APIResponseMessage, options: Options): Promise<DesktopAgent> {
     mp.start()
 
-    const handshakeData = (await exchange(mp, "handshake", () => sendHello(mp, data))).data as ConnectionStep3Handshake
     const messaging = new MessagePortMessaging(mp, data.appIdentifier)
-    const channelState = handshakeData.payload.channelsState
-    const userChannelState = buildUserChannelState(messaging, channelState) 
 
-    return new BasicDesktopAgent(
-        new DefaultChannelSupport(messaging, userChannelState, null),
-        new DefaultIntentSupport(),
-        new DefaultAppSupport(messaging, data.appIdentifier),
-        data.fdc3Version,
-        data.provider);
+    const intentResolver = options.intentResolver ?? new DesktopAgentIntentResolver(messaging, data.resolverUri)
+    const userChannelState = buildUserChannelState(messaging)
+
+    const version = "2.0"
+    const cs = new DefaultChannelSupport(messaging, userChannelState, null)
+    const hs = new DefaultHandshakeSupport(messaging, [version], cs)
+    const is = new DefaultIntentSupport(messaging, intentResolver)
+    const as = new DefaultAppSupport(messaging, data.appIdentifier, "WebFDC3")
+    const da = new BasicDesktopAgent(hs, cs, is, as, version)
+    await da.connect()
+    return da
 }
 
 /**
- * Initialises the desktop agent by opening an iframe 
+ * Initialises the desktop agent by opening an iframe or talking to the parent window.
  * on the desktop agent host and communicating via a messsage port to it.
  * 
  * It is up to the desktop agent to arrange communucation between other
  * windows. 
  */
-export async function messagePortIFrameInit(data: APIResponseMessage, options: Options) : Promise<DesktopAgent> {
-    
-    const action = data.uri ? () => {
-        return openFrame(data.uri!!);
-    } : () => {
-        return messageParentWindow(options.frame)
-    }
+export async function messagePortInit(event: MessageEvent, options: Options): Promise<DesktopAgent> {
 
-    const mp = await exchangeForMessagePort(window, FDC3_PORT_TRANSFER_RESPONSE_TYPE, action) as MessagePort
- 
-    return messagePortInit(mp, data);
-}
+    if (event.ports[0]) {
+        return createDesktopAgentAPI(event.ports[0], event.data, options);
+    } else if ((event.data as APIResponseMessageIFrame).uri) {
+        const action = () => {
+            const iframeData = event.data as APIResponseMessageIFrame
+            return openFrame(iframeData.uri +
+                "?source=" + encodeURIComponent(JSON.stringify(iframeData.appIdentifier)) +
+                "&desktopAgentId=" + encodeURIComponent(iframeData.desktopAgentId));
+        }
 
-/**
- * If the desktop agent doesn't provide an opener URL, we message another iframe asking for the port.
- */
-function messageParentWindow(w: Window | undefined) {
-    if (w) {
-        w.postMessage({
-            type: FDC3_PORT_TRANSFER_REQUEST_TYPE,
-            methods: 'post-message'
-        });
+        const mp = await exchangeForMessagePort(window, FDC3_PORT_TRANSFER_RESPONSE_TYPE, action) as MessagePort
+        return createDesktopAgentAPI(mp, event.data, options);
+
+    } else {
+        throw new Error(`Couldn't initialise message port with ${JSON.stringify(event)}`)
     }
 }
 
 /**
  * The desktop agent requests that the client opens a URL in order to provide a message port.
  */
-function openFrame(url: string) : Window {
+function openFrame(url: string): Window {
     var ifrm = document.createElement("iframe")
     ifrm.setAttribute("src", url)
     ifrm.setAttribute("name", "FDC3 Communications")
@@ -68,23 +65,9 @@ function openFrame(url: string) : Window {
     return ifrm.contentWindow!!
 }
 
-function sendHello(mp: MessagePort, data: APIResponseMessage) {
-    const hello : ConnectionStep2Hello = {
-        type: "hello",
-        payload: {
-            desktopAgentBridgeVersion: data.desktopAgentBridgeVersion,
-            supportedFDC3Versions: data.supportedFDC3Versions,
-            authRequired: data.authRequired,
-            authToken: data.authToken
-        },
-        meta: {
-            timestamp: new Date()
-        }
-    }
-    mp.postMessage(hello);
-}
-
-function buildUserChannelState(messaging: MessagePortMessaging, _channelState: Record<string, Context[]>) {
+function buildUserChannelState(messaging: MessagePortMessaging) {
+    // TODO: Figure out how to set initial user channels.  
+    // Should probably be in the message from the server.
     return [
         new DefaultChannel(messaging, "one", "user", {
             color: "red",
