@@ -96,11 +96,21 @@
     },
     "ErrorMessages": {
       "oneOf": [
-        { "$ref": "../api/api.schema.json#/definitions/ChannelError" },
-        { "$ref": "../api/api.schema.json#/definitions/OpenError" },
-        { "$ref": "../api/api.schema.json#/definitions/ResolveError" },
-        { "$ref": "../api/api.schema.json#/definitions/ResultError" },
-        { "$ref": "../api/api.schema.json#/definitions/BridgingError" }
+        {
+          "$ref": "../api/api.schema.json#/definitions/ChannelError"
+        },
+        {
+          "$ref": "../api/api.schema.json#/definitions/OpenError"
+        },
+        {
+          "$ref": "../api/api.schema.json#/definitions/ResolveError"
+        },
+        {
+          "$ref": "../api/api.schema.json#/definitions/ResultError"
+        },
+        {
+          "$ref": "../api/api.schema.json#/definitions/BridgingError"
+        }
       ]
     },
     "BridgeResponseErrorDetails": {
@@ -120,6 +130,40 @@
         "onUnsubscribe",
         "onDisconnect"
       ]
+    },
+    "DesktopAgentImplementationMetadata": {
+      "description": "Includes the name assigned to the Desktop Agent by the Bridge.",
+      "title": "DesktopAgentImplementationMetadata",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/BaseImplementationMetadata"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "desktopAgent": {
+              "description": "Used in Desktop Agent Bridging to attribute or target a message to a\nparticular Desktop Agent.",
+              "type": "string",
+              "title": "desktopAgent"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "fdc3Version": true,
+        "provider": true,
+        "providerVersion": true,
+        "optionalFeatures": true,
+        "desktopAgent": true
+      },
+      "required": [
+        "fdc3Version",
+        "optionalFeatures",
+        "provider",
+        "desktopAgent"
+      ],
+      "additionalProperties": false
     }
   }
 }
