@@ -1,0 +1,73 @@
+section.nst {
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	height: calc(100vh);
+	flex-direction: column;
+}
+
+svg.logo {
+	max-width: 100%;
+	height: calc(70vh);
+	margin: 3rem;
+}
+
+svg.text {
+	max-width: 100%;
+	height: calc(30vh);
+	margin: 3rem;
+}
+
+@keyframes change {
+	100% {
+		stroke-dashoffset: 1000;
+	}	
+	0% {
+		fill: white;
+		stroke: black;
+		stroke-dashoffset: 0;
+	}
+}
+
+.st0,
+.st1,
+.st2,
+._f,
+._d,
+._c,
+._3 {
+	animation-direction: normal;
+	animation-duration: 4s;
+	animation-name: change; 
+	animation-timing-function: ease-in-out;
+	animation-fill-mode: both;
+	fill: black;
+	opacity: 1;
+	stroke: black;
+	stroke-width: 5px;
+	stroke-dasharray: 1000;
+}
+
+
+.st0 {
+	fill: #0054A6;
+}
+
+.st1 {
+	fill: #5D93CD;
+}
+
+.st2 {
+	fill: black;
+}
+
+html[data-theme=dark] .st2 {
+	fill: white;
+}
+
+html[data-theme=dark] ._f,
+html[data-theme=dark] ._d,
+html[data-theme=dark] ._c,
+html[data-theme=dark] ._3 {
+  fill: white;	
+}

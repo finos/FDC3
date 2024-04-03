@@ -21,6 +21,7 @@ import Feature from '../components/Feature'
 import Showcase from "../../core/Showcase";
 
 import users from './../../data/users.json';
+import NewSplashTop from "../components/NewSplashTop";
 
 
 const UserShowcase = () => {
@@ -41,7 +42,7 @@ const UserShowcase = () => {
 
 export default () => {
   return (<Layout>
-    <HomeSplash />
+    <NewSplashTop />
     <Container>
       <GridBlock items={[
         <Api />,
