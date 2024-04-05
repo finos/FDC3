@@ -143,7 +143,7 @@
           "type": "object",
           "properties": {
             "desktopAgent": {
-              "description": "Used in Desktop Agent Bridging to attribute or target a message to a\nparticular Desktop Agent.",
+              "description": "Used in Desktop Agent Bridging to attribute or target a message to a particular Desktop Agent.",
               "type": "string",
               "title": "desktopAgent"
             }
