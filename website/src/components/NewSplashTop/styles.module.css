@@ -29,6 +29,17 @@ svg.text {
 	}
 }
 
+@keyframes change-dark {
+	100% {
+		stroke-dashoffset: 1000;
+	}	
+	0% {
+		fill: black;
+		stroke: white;
+		stroke-dashoffset: 0;
+	}
+}
+
 .st0,
 .st1,
 .st2,
@@ -48,6 +59,18 @@ svg.text {
 	stroke-dasharray: 1000;
 }
 
+.st1,
+._f,
+._d {
+	animation-duration: 4.2s;
+	animation-delay: .3s
+}
+
+.st2,
+._3 {
+	animation-duration: 3.5s;
+}
+
 
 .st0 {
 	fill: #0054A6;
@@ -61,13 +84,25 @@ svg.text {
 	fill: black;
 }
 
-html[data-theme=dark] .st2 {
-	fill: white;
-}
-
+html[data-theme=dark] .st2,
 html[data-theme=dark] ._f,
 html[data-theme=dark] ._d,
 html[data-theme=dark] ._c,
 html[data-theme=dark] ._3 {
   fill: white;	
+}
+
+html[data-theme=dark] .st0,
+html[data-theme=dark] .st1,
+html[data-theme=dark] .st2,
+html[data-theme=dark] ._f,
+html[data-theme=dark] ._d,
+html[data-theme=dark] ._c,
+html[data-theme=dark] ._3 {
+  animation-name: change-dark; 
+}
+
+div.footerImage {
+	width: 3rem;
+	margin: auto;
 }

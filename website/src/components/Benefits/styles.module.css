@@ -1,0 +1,25 @@
+.benefit {
+	
+}
+
+.title {
+	font-family: 'Electrolize';
+	font-size: 3rem;
+}
+
+.innerAside {
+	flex-basis: 50%;
+	font-weight: bold;
+	color: black;
+	font-family: 'Electrolize';
+	font-size: 6rem;
+	line-height: 1.1;
+}
+
+.innerAside strong {
+	background-color: yellow;
+}
+
+html[data-theme=dark] .innerAside {
+	color: white;
+}

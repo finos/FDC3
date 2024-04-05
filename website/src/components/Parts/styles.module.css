@@ -1,0 +1,46 @@
+
+
+.part {
+	text-align: center;
+	display: flex;
+	flex-direction: column;	
+	align-items: center;
+}
+
+.part img {
+	max-width: 60%;
+}
+
+.title {
+	font-family: 'Electrolize';
+	font-size: 3rem;
+}
+
+.button {
+	background: #0086bf44;
+	border: 1px solid #ace;
+	border-radius: .5rem;
+	color: #0086bf;
+	display: inline-block;
+	font-size: 1rem;
+	line-height: 1.2em;
+	margin: 1rem;
+	padding: 1rem;
+	text-decoration: none !important;
+	transition: background .3s, color .3s;
+	width: 15rem;
+}
+
+.innerAside {
+	flex-basis: 50%;
+	font-size: 3rem;
+	font-weight: bold;
+	color: black;
+	font-family: 'Electrolize';
+	font-size: 7rem;
+}
+
+
+html[data-theme=dark] .innerAside {
+	color: white;
+}
