@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './styles.module.css'
-
+import TypeText from "../TypeText";
 
 export default function NewSplashTop() {
 	return (
@@ -46,6 +46,8 @@ export default function NewSplashTop() {
 
 				</g>
 			</svg>
+			
+			<TypeText>Financial Desktop Connectivity and Collaboration Consortium</TypeText>
 		</section>
 	)
 }

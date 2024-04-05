@@ -1,0 +1,20 @@
+.columns {
+	display: flex;
+	padding-bottom: 1rem;
+	align-items: center;
+	gap: 1rem;
+}
+
+.left {
+	flex-basis: 5rem;
+	flex-shrink: 0;
+	padding-right: .5rem;
+}
+
+.left img {
+	width: 5rem;
+}
+
+.right {
+	flex-grow: 1;
+}

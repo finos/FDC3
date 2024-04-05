@@ -1,0 +1,40 @@
+.benefit {
+	
+}
+
+.title {
+	font-family: 'Electrolize';
+	font-size: 3rem;
+}
+
+.button {
+	background: #0086bf44;
+	border: 1px solid #ace;
+	border-radius: .5rem;
+	color: #0086bf;
+	display: inline-block;
+	font-size: 1rem;
+	line-height: 1.2em;
+	margin: 1rem;
+	padding: 1rem;
+	text-decoration: none !important;
+	transition: background .3s, color .3s;
+	width: 15rem;
+}
+
+.innerAside {
+	flex-basis: 50%;
+	font-weight: bold;
+	color: black;
+	font-family: 'Electrolize';
+	font-size: 6rem;
+	line-height: 1.1;
+}
+
+.innerAside strong {
+	background-color: yellow;
+}
+
+html[data-theme=dark] .innerAside {
+	color: white;
+}
