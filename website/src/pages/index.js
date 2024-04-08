@@ -8,8 +8,6 @@
 const React = require('react');
 import Layout from "@theme/Layout";
 
-import Feature from '../components/Feature'
-
 import NewSplashTop from "../components/NewSplashTop";
 import UseCases from "../components/UseCases";
 import Benefits from "../components/Benefits";
@@ -18,9 +16,8 @@ import WhatIsIt from "../components/WhatIsIt";
 
 import UserShowcase from "../components/UserShowcase";
 import Conformance from "../components/Conformance";
-
-
-
+import Training from "../components/Training"
+import GetInvolved from "../components/GetInvolved"
 
 
 export default () => {
@@ -32,9 +29,8 @@ export default () => {
 		<Parts />
 		<UserShowcase />
 		<Conformance />
+		<Training />
+		<GetInvolved />
 
 	</Layout>)
 }
-
-
-

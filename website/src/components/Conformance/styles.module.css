@@ -23,6 +23,10 @@
 	font-size: 7rem;
 }
 
+.innerAside strong {
+	background-color: yellow;
+}
+
 html[data-theme=dark] .innerAside {
 	color: white;
 }
