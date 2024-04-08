@@ -5,30 +5,50 @@ sidebar_label: 1. Equity sell side trader
 layout: use_case
 ---
 
-## Preconditions
+![A diagrammatic representation of the applications available to the trader](/img/use-cases/1.png)
+
 On their desktop, this user has:
-- Their firm's internal research & analytics platform containing liquidity tools and internal research. The product is running and the liquidity tool is open
-- An installed chat application - product is running
-- A third party market data terminal with 3 open applications. These applications are all 'linked' through a channel. 
-    - A Watchlist
-    - An Order Book
-    - An Overview of pricing and fundamental data
-- A third party Charting Application access via a browser window. This is not open. 
 
-## Workflow 1
-The user receives a message in the chat application containing an instrument identifier for Tesla. They want to do some analysis on Tesla and so see what applications are available through right clicking on the identifier for Tesla. A menu will appear within the chat application showing applications that can be launched from the Messenger tool. The menu shows two apps, both for analysis; one in the internal platform, the other in the market data terminal. 
+- Their firm's internal research & analytics platform, providing liquidity tools and internal research. The product is running and the **liquidity tool** is open.
+- An installed **chat application** is running.
+A **Watchlist** of stocks the trader is interested in
+A third-party **Charting Application** is available that the user accesses via a browser window. This is not open. 
+An **Overview** which gives pricing and fundamental data for stocks
 
-## Workflow 2
-The user wants to see his firm's internal research on Tesla and so decides to open the analysis app from his internal platform. The application is launched showing all internal research available for Tesla. 
+## First Workflow
 
-## Workflow 3
-The user wants to do further analysis on Tesla and so they open (themselves) a new app in the market data terminal that has Tesla's financial statement and other calculated financial data (such as market capitalization, P/E ratio, growth rate, earnings margins, etc). The user sees the third party charting app listed in a menu in the market data terminal and decides to do some technical analysis using that app. They select the chart app, which opens in a browser window. 
+![The “TSLA” ticker is mentioned in a chat.](/img/use-cases/2.png)
 
-## Workflow 4
-Having done technical analysis in the Chart app, the user wants to do the same analysis on BMW, and also use the open pricing and fundamental app. The user creates a link between the financial statement app, the pricing data app (both in the market data terminal) and the charting app. The user changes the instrument in the financial statement app and the other applications update to show information on BMW. 
 
-## Workflow 5
-The user adds BMW and Tesla to a shared group of companies (aka a Watchlist) named "Automotive comparables" to a list within the open Watchlist. All linked applications update with the new companies.
+1. The user receives a message in the **chat application** containing an instrument identifier for Tesla “TSLA” (as shown above)
+1. They want to do some analysis on Tesla and so see what applications are available through right clicking on the identifier for Tesla in the **chat application**.
+1. A menu will appear within the **chat application** showing applications that can handle the identifier. 
+1. The menu shows two apps, both for analysis; the **liquidity tool** and the **overview** 
+1. The user is then able to click the menu item to open the **liquidity tool** and pass it the instrument representing Tesla.
+1. The **liquidity tool** updates to show the TSLA stock’s liquidity levels.
+
+![The user is able to push the “TSLA” ticker into the liquidity tool and see the liquidity of the stock.](/img/use-cases/3.png)
+
+
+## Second Workflow
+
+
+1. The user wants to do further analysis on Tesla and so they open the **overview app** that has Tesla's financial statement and other calculated financial data (such as market capitalization, P/E ratio, growth rate, earnings margins, etc). 
+
+![The user is now looking at the TSLA stock in the Overview application.](/img/use-cases/4.png)
+
+2. They want to see a chart of how Tesla’ share price has changed, so they pull up the action menu, which contains an option to “View Chart”
+3. They click the menu item and the **charting application** opens, showing a chart of Tesla’s share price over time.
+
+![The user is able to easily open a **chart** showing the TSLA stock.](/img/use-cases/5.png)
+
+## Third Workflow
+
+1. The user decides the share price for Tesla is too high, but based on recent events expects it to go down.
+1. They right click to get the action menu again, and see there is an option to “Add to **watchlist**”.
+1. By selecting this menu option, the **Watchlist application** activates and adds the TSLA ticker to the trader’s **watchlist**.
+
+![The user is able to easily add a stock to the watch list.](/img/use-cases/6.png)
 
 ## Interoperability Points
 - API

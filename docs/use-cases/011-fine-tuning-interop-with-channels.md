@@ -1,7 +1,7 @@
 ---
-id: uc-17
-title: "Use Case 17: Fine-tuning InterOp with Channels"
-sidebar_label: 17. Fine-tuning InterOp with Channels
+id: uc-11
+title: "Use Case 11: Fine-tuning InterOp with Channels"
+sidebar_label: 11. Fine-tuning InterOp with Channels
 layout: use_case
 ---
 

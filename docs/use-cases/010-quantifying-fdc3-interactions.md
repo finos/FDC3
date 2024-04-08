@@ -1,7 +1,7 @@
 ---
-id: uc-16
-title: "Use Case 16: Quantifying FDC3 Interactions"
-sidebar_label: 16. Quantifying FDC3 Interactions
+id: uc-10
+title: "Use Case 10: Quantifying FDC3 Interactions"
+sidebar_label: 10. Quantifying FDC3 Interactions
 layout: use_case
 ---
 
