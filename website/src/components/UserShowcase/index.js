@@ -14,7 +14,7 @@ export default function UserShowcase() {
 		<HomeSection2>
 			<div>
 				<h2 className={styles.innerAside}>Who is Using FDC3?</h2>
-				<p style={{ margin: 'auto' }}>The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standards are created and used by <a href="/users">leading organizations across the financial industry</a>. For more detail on who's using FDC3, developer tools, training and examples see the <a href="/community">community page</a>.</p>
+				<p>The FDC3 standards are created and used by <a href="/users">leading organizations across the financial industry</a>. For more detail on who's using FDC3, developer tools, training and examples see the <a href="/community">community page</a>.</p>
 			</div>
 			<div className={styles.showcaseOuter}>
 				{
@@ -27,7 +27,7 @@ export default function UserShowcase() {
 				}
 			</div>
 			<p>
-				<a className={styles.button} href="/community">COMMNUITY PAGE</a>
+				<a className={styles.button} href="/community">COMMUNITY PAGE</a>
 			</p>
 		</HomeSection2>
 	);

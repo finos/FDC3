@@ -9,6 +9,7 @@ section.homeSection {
 
 .title {
 	margin: auto;
+	max-width: 1200px;
 }
 
 div.innerFlex {

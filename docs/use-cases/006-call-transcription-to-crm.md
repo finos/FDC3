@@ -1,7 +1,7 @@
 ---
-id: uc-9
-title: "Use Case 9: Call Transcription to CRM"
-sidebar_label: 9. Call Transcription to CRM
+id: uc-6
+title: "Use Case 6: Call Transcription to CRM"
+sidebar_label: 6. Call Transcription to CRM
 layout: use_case
 ---
 
