@@ -76,3 +76,12 @@ html[data-theme=dark] .innerAside {
 	width: 15rem;
 	text-align: center;
 }
+
+.logo {
+	width: 15rem;
+}
+
+.explanation {
+	font-size: 1.5rem;
+	text-align: center;
+}

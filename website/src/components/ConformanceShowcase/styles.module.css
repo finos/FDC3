@@ -3,25 +3,29 @@
     flex-direction: column;
     align-items: center;
     margin: auto;
+    font-size: smaller;
+	justify-content: start;
 }
 
 .conformanceShowcaseItem {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     text-align: left;
 }
 
-.conformanceImage img {
-    max-width: 25rem;
-    min-width: 25rem;
+.conformanceImage {
+    max-width: 10rem;
+    min-width: 10rem;
     max-height: 8rem;
 }
 
-
+.badgeImage {
+	max-width: 10rem;
+}
 
 .conformanceText {
-    max-width: 35rem;
-    min-width: 35rem;
+    max-width: 15rem;
+    min-width: 15rem;
     margin: 2rem;
 }
