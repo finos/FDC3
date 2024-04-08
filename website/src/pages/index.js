@@ -8,7 +8,6 @@
 const React = require('react');
 import Layout from "@theme/Layout";
 
-import Conformance from '../../data/front/conformance.mdx'
 import Feature from '../components/Feature'
 
 import NewSplashTop from "../components/NewSplashTop";
@@ -18,6 +17,7 @@ import Parts from "../components/Parts";
 import WhatIsIt from "../components/WhatIsIt";
 
 import UserShowcase from "../components/UserShowcase";
+import Conformance from "../components/Conformance";
 
 
 
@@ -31,13 +31,10 @@ export default () => {
 		<UseCases />
 		<Parts />
 		<UserShowcase />
+		<Conformance />
 
-		<Feature>
-		</Feature>
-		<Feature>
-			<Conformance />
-		</Feature>
 	</Layout>)
 }
+
 
 

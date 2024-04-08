@@ -1,0 +1,42 @@
+section.homeSection {
+	margin-top: 10rem;
+	margin-bottom: 10rem;
+	background-color: #EEE;
+	padding-top: 10rem;
+	padding-bottom: 10rem;
+}
+
+div.innerFlex {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 100%;
+	max-width: 1200px;
+	margin: auto;
+	font-size: 1.5rem;
+}
+
+.title {
+	margin: auto;
+	max-width: 1200px;
+}
+
+
+div.item {
+	padding: 20px;
+	flex-basis: 50%;
+	min-width: 450px;
+}
+
+div.footerImage {
+	width: 3rem;
+	margin: auto;
+	margin-top: 3rem;
+}
+
+div.callToAction {
+	margin: 2rem auto;
+	font-size: 2rem;
+	text-align: center;
+}
