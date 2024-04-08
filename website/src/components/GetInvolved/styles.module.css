@@ -1,0 +1,48 @@
+.benefit {
+	
+}
+
+.title {
+	font-family: 'Electrolize';
+	font-size: 3rem;
+}
+
+.innerAside {
+	flex-basis: 50%;
+	font-weight: bold;
+	color: black;
+	font-family: 'Electrolize';
+	font-size: 6rem;
+	line-height: 1.1;
+}
+
+.innerAside strong {
+	background-color: yellow;
+}
+
+html[data-theme=dark] .innerAside {
+	color: white;
+}
+
+
+.itemList {
+	display: flex;
+	margin: auto;
+	gap: 2rem;
+	flex-wrap: true;
+}
+
+.itemList div {
+	display: flex;
+	flex-direction: column;
+	flex-basis: 30rem;
+	flex-shrink: 1;
+	flex-grow: 0;
+	align-items: center;
+	
+}
+
+.itemList div h2 {
+	height: 5rem;
+	text-align: center;
+}

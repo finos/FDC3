@@ -40,3 +40,7 @@ div.callToAction {
 	font-size: 2rem;
 	text-align: center;
 }
+
+div.main {
+	margin: auto;
+}

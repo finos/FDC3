@@ -7,7 +7,7 @@ export default function Conformance() {
 	return (
 		<HomeSection2>
 			<div>
-				<h1 className={styles.innerAside}>FDC3 Conformance</h1>
+				<h1 className={styles.innerAside}>FDC3 <strong>Conformance</strong></h1>
 				<p className={styles.explanation}>FDC3 has a <a href="https://github.com/finos/FDC3-Conformance-Framework">conformance framework</a> that works to ensure compatibility with the standard. </p>
 			</div>
 			<div>
