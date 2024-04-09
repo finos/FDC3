@@ -12,8 +12,8 @@
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: center;
-	margin-top: 20px;
-	padding: 20px;
+	margin: 4rem;
+	padding: 2rem;
 }
 
 .showcaseImage {
