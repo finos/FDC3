@@ -5,19 +5,11 @@ import styles from './styles.module.css'
 
 export default () => {
 
-	const titleSort = function(a, b) {
-		let x = a.conf.title.toLowerCase();
-		let y = b.conf.title.toLowerCase();
-		if (x < y) { return -1; }
-		if (x > y) { return 1; }
-		return 0;
-	}
-
 	let relevant = community.filter(c => c.conformance)
 
 	let badges = ["/img/community/certified-1.2.png", "/img/community/certified-2.0.png"]
 
-	let publishers = relevant.map(r => r.publisher).filter((x, i, a) => a.indexOf(x) === i)
+	let publishers = relevant.map(r => r.publisher).filter((x, i, a) => a.indexOf(x) === i).sort()
 
 	function Publisher({name}) {
 		const p = community.find(q => q.publisher == name)
@@ -26,9 +18,9 @@ export default () => {
 	}
 
 	function ConformanceItem({ publisher, badge }) {
-		const pub = community.find(q => (q.publisher == publisher))
-		const details = pub.conformance.find(c => c.src == badge)
-		const items = details?.items ?? []
+		const pubs = relevant.filter(q => (q.publisher == publisher))
+		const details = pubs.flatMap(p => p.conformance.filter(c => c.src == badge))
+		const items = details.flatMap(d => d.items ?? [])
 
 		return (items.map( i => <div className={styles.conformanceText}><p>{i.text}</p><p><a href={i.link}>Read More</a></p></div>))		
 	}
