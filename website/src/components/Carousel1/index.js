@@ -37,9 +37,9 @@ const Carousel1 = (props) => {
 		<div className={styles.carouselContainer}>
 			<div className={styles.carouselWrapper}>
 				<div className={styles.carouselContentWrapper}>
-					<div className={styles.carouselContent} style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
-						{children}
-					</div>
+					{
+						children.map((v, i) => <div className={currentIndex == i ? styles.show : styles.hide }>{v}</div>)
+					}
 				</div>
 			</div>
 			<div className={styles.controls}>
