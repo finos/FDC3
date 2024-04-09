@@ -15,7 +15,6 @@
 
 .innerAside {
 	margin: auto;
-	flex-basis: 50%;
 	background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" fill="%23ace"><ellipse rx="200px" ry="200px" cy="200" cx="200" /></svg>');
 	background-repeat: no-repeat;
 	background-position: 0 0;
