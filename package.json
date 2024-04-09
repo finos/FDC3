@@ -18,7 +18,7 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rm -rf dist",
+    "clean": "rimraf dist",
     "start": "rollup -c rollup.config.js --bundleConfigAsCjs -w",
     "prebuild": "npm run clean && npm run typegen && npm run typegen-bridging && npm run lint",
     "build": "rollup -c rollup.config.js --silent --bundleConfigAsCjs",
@@ -61,6 +61,7 @@
     "jest-mock-extended": "3.0.5",
     "prettier": "3.2.5",
     "quicktype": "23.0.78",
+    "rimraf": "^5.0.5",
     "rollup": "4.12.1",
     "ts-jest": "29.1.2",
     "tslib": "^2.0.1",
