@@ -120,7 +120,7 @@
     "publisher": "FDC3 / FINOS",
     "image": "/toolbox/fdc3-workbench/fdc3-icon-256.png",
     "infoLink": "http://fdc3.finos.org/toolbox/fdc3-workbench",
-    "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-workbench/README.md",
+    "docsLink": "https://github.com/finos/FDC3/blob/main/toolbox/fdc3-workbench/README.md",
     "type": "tools-and-training",
     "badges": [
       {
@@ -134,7 +134,7 @@
     "publisher": "FDC3 / FINOS / ScottLogic",
     "image": "/img/community/conformance.svg",
     "infoLink": "https://github.com/finos/FDC3-conformance-framework",
-    "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-conformance/README.md",
+    "docsLink": "https://github.com/finos/FDC3/blob/main/toolbox/fdc3-conformance/README.md",
     "type": "tools-and-training",
     "badges": [
       {
@@ -148,7 +148,7 @@
     "publisher": "FDC3 / FINOS",
     "image": "/toolbox/fdc3-explained/logo.png",
     "infoLink": "https://fdc3.finos.org/toolbox/fdc3-explained",
-    "docsLink": "https://github.com/finos/FDC3/blob/master/toolbox/fdc3-explained/README.md",
+    "docsLink": "https://github.com/finos/FDC3/blob/main/toolbox/fdc3-explained/README.md",
     "type": "demos",
     "badges": [
       {
