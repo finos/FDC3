@@ -6,8 +6,8 @@ import ImageBullet from "../ImageBullet";
 export default function Benefits() {
 	return (
 		<HomeSection alt="true">
-			<div>
-				<h1 className={styles.innerAside}><strong>What Is It?</strong></h1>
+			<div className={styles.innerAside}>
+				<h2>What Is It?</h2>
 			</div>
 			<div>
 				<ImageBullet image="/img/splash/noun-radar.svg" alt="Connect Icon">FDC3 is an open standard for applications on financial desktop to interoperate and exchange data with each other.</ImageBullet>

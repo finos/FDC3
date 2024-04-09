@@ -14,11 +14,7 @@ export default function UseCases() {
 
 			</div>
 			<div className={styles.right}>
-				<div className={styles.stack}>
-					<img className={styles.image1} src="/img/use-cases/1.png" />
-					<img className={styles.image2} src="/img/use-cases/10.png" />
-					<img className={styles.image3} src="/img/use-cases/11.png" />
-				</div>
+				<img className={styles.image1} src="/img/use-cases/illus.svg" />
 				<a className={styles.button} href="/docs/next/use-cases/overview">READ MORE</a>
 			</div>
 		</HomeSection>

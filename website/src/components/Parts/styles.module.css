@@ -55,16 +55,8 @@
 	font-family: "Rokkitt";
 }
 
-.innerAside strong {
-	background-color: yellow;
-	font-weight: 400;
-}
 
 
 html[data-theme=dark] .innerAside {
 	color: white;
-}
-
-html[data-theme=dark] strong {
-	color: black;
 }
