@@ -3,9 +3,10 @@ import styles from './styles.module.css'
 import MonoIcon from '../MonoIcon'
 
 // left, right panels, a call to action adn a footer icon
-export default ({children}) => {
+export default ({children, alt, reverse}) => {
+	const classes = (alt ? styles.homeSectionAlt : styles.homeSection) + " " + (reverse ? "reverse" : "")
 	return (
-		<section className={styles.homeSection}>
+		<section className={classes}>
 			<div className={styles.innerFlex}>
 				<div className={styles.item}>
 					{ children[0] }

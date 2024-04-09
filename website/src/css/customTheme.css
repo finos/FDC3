@@ -4,6 +4,20 @@
     font-family: 'Electrolize'
 }
 
+
+@font-face {
+    src: url("/fonts/Rokkitt-ExtraBold.ttf");
+    font-family: 'Rokkitt';
+    font-weight: 800;
+}
+
+
+@font-face {
+    src: url("/fonts/Rokkitt-Medium.ttf");
+    font-family: 'Rokkitt';
+    font-weight: 400;
+}
+
 @font-face {
     src: url("/fonts/SpaceMono-Regular.ttf");
 	font-family: 'Space-Mono'

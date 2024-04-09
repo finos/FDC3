@@ -8,12 +8,23 @@
 .left {
 	flex-basis: 5rem;
 	flex-shrink: 0;
-	padding-right: .5rem;
+	border-radius: 2.5rem;
+	height: 5rem;
+	padding: 0;
+	margin: 0;
 }
 
 .left img {
-	width: 5rem;
+	padding: 0;
+	margin: 0;
 }
+
+
+html[data-theme=dark] .left {
+	background: #fff;
+}
+
+
 
 .right {
 	flex-grow: 1;

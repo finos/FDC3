@@ -1,10 +1,18 @@
-section.homeSection {
-	margin-top: 10rem;
-	margin-bottom: 10rem;
-	background-color: #EEE;
-	padding-top: 10rem;
-	padding-bottom: 10rem;
+section.homeSection, 
+section.homeSectionAlt {
+	margin-top: 5rem;
+	margin-bottom: 5rem;
+	padding-top: 5rem;
+	padding-bottom: 5rem;
+	clip-path: polygon(0 3rem, 100% 0, 100% 100%, 0 calc(100% - 3rem));
 }
+
+
+section.homeSectionAlt {
+	background-color: #ace;
+	color: black;
+}
+
 
 div.innerFlex {
 	display: flex;
@@ -15,6 +23,10 @@ div.innerFlex {
 	max-width: 1200px;
 	margin: auto;
 	font-size: 1.5rem;
+}
+
+section.reverse div.innerFlex {
+	flex-direction: row-reverse;
 }
 
 

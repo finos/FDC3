@@ -5,7 +5,7 @@ import ImageBullet from "../ImageBullet";
 
 export default function Benefits() {
 	return (
-		<HomeSection>
+		<HomeSection alt="true">
 			<div>
 				<h1 className={styles.innerAside}><strong>What Is It?</strong></h1>
 			</div>

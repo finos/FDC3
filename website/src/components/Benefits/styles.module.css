@@ -1,19 +1,22 @@
-.benefit {
-	
-}
-
 .title {
-	font-family: 'Electrolize';
+	font-family: Rokkitt;
 	font-size: 3rem;
+	font-weight: 400;
+	text-align: center;
 }
 
 .innerAside {
 	flex-basis: 50%;
 	font-weight: bold;
 	color: black;
-	font-family: 'Electrolize';
-	font-size: 6rem;
+	font-family: Rokkitt;
+	font-size: 8rem;
 	line-height: 1.1;
+	font-weight: 800;
+	background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 310 310" fill="%23ace"><path d="M102.91 50.54 24.57 155v104.46h104.45V155H76.79l55.96-74.61zm182.52 29.85-29.84-29.85L177.25 155v104.46H281.7V155h-52.23z"></path></svg>');
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	color: black;
 }
 
 .innerAside strong {
@@ -22,4 +25,12 @@
 
 html[data-theme=dark] .innerAside {
 	color: white;
+}
+
+
+.number {
+	font-family: 'rokkitt';
+	text-align: center;
+	font-size: 5rem;
+	font-weight: 800;
 }

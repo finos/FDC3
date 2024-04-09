@@ -20,6 +20,14 @@ const Carousel1 = (props) => {
 		}
 	}
 
+	const hasNext = () => (currentIndex < (length - 1))
+
+	const hasPrev = () => (currentIndex > 0)
+
+	const prevClass = styles.leftArrow + " " + (hasPrev() ? styles.active : styles.inactive)
+
+	const nextClass = styles.rightArrow + " " + (hasNext() ? styles.active : styles.inactive)
+
 	// Set the length to match current children from props
 	useEffect(() => {
 		setLength(children.length)
@@ -35,18 +43,13 @@ const Carousel1 = (props) => {
 				</div>
 			</div>
 			<div className={styles.controls}>
-				{
-					currentIndex > 0 &&
-					<button className={styles.leftArrow} onClick={prev}>
-						&lt;
-					</button>
-				}				{
-					currentIndex < (length - 1) &&
-					<button className={styles.rightArrow} onClick={next}>
-						&gt;
-					</button>
-				}
-				</div>
+				<button className={prevClass} onClick={prev}>
+					&lt; PREVIOUS
+				</button>
+				<button className={nextClass} onClick={next}>
+					NEXT &gt;
+				</button>
+			</div>
 		</div>
 	)
 }

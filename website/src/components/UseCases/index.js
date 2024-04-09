@@ -6,7 +6,7 @@ import Callout from "../Callout";
 
 export default function UseCases() {
 	return (
-		<HomeSection style={{ "backgroundColor": "white" }}>
+		<HomeSection style={{ "backgroundColor": "white" }} reverse="true">
 			<div>
 				<h1 className={styles.innerAside}>Use Cases</h1>
 				<p>The design of FDC3 is based on a set of foundational interoperability use-cases, validated by firms across the industry.</p><p>
