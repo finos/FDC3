@@ -5,12 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const React = require('react');
+import React, { useState } from 'react';
 import Layout from "@theme/Layout";
 import Container from "../components/Container"
 import implData from "../../data/community.json";
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import setType from '../components/implementationFilters'
 
 const badgeTitles = {
 	"Open Source": "Indicates that the project source code is available to download and modify, under an Apache 2.0 or similar license.",
@@ -20,8 +19,10 @@ const badgeTitles = {
 	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process."
 }
 
-//remove content guidelines
-implData.splice(0,1);
+//remove content guidelines, which are the first entry in the data file
+if (implData[0]["//content guidelines"]){
+	implData.splice(0,1);
+}
 
 //alpha sort implementations
 implData.sort((a, b) => {
@@ -80,36 +81,32 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 	</div>
 }
 
-function ImplementationsShowcase(initialFilter) {
+function ImplementationsShowcase() {
+	//set up state for filtering
+	const [type, setType] = useState("adopter");
+
+	function getButton(label, implType) {
+		let classes = "button filter";
+		if (type == implType) { classes += " selected"};
+		return <button className={classes} id={implType} onClick={() => setType(implType)}>
+			{label}
+		</button>
+	}
+
 	return <div key="is">
 		<div className="filters">
-			<button className="button filter" id="platform-provider" onClick={() => setType("platform-provider")}>
-				Platform Providers
-			</button>
-			<button className="button filter" id="application-provider" onClick={() => setType("application-provider")}>
-				App Providers
-			</button>
-			<button className="button filter" id="solution-provider" onClick={() => setType("solution-provider")}>
-				Solution Providers
-			</button>
-			<button className="button filter" id="adopter" onClick={() => setType("adopter")}>
-				Adopters
-			</button>
-			<button className="button filter" id="examples-and-training" onClick={() => setType("tools-and-training")}>
-				Tools &amp; Training
-			</button>
-			<button className="button filter" id="demos" onClick={() => setType("demos")}>
-				Demos
-			</button>
-			<button className="button filter" id="meetup" onClick={() => setType("other")}>
-				Other
-			</button>
-			<button className="button filter" id="all" onClick={() => setType("all")}>
-				All
-			</button>
+			{getButton("Adopters", "adopter")}
+			{getButton("Platform Providers", "platform-provider")}
+			{getButton("App Providers", "application-provider")}
+			{getButton("Solution Providers", "solution-provider")}
+			{getButton("Tools & Training", "tools-and-training")}
+			{getButton("Demos", "demos")}
+			{getButton("Other", "other")}
 		</div>
 		<div className="implementations">
-			{implData.map(impl => (
+			{ //only render implementations matching current filter
+			implData.map(impl => (
+				impl.type == type && 
 				<Implementation key={impl.title} {...impl} />
 			))}
 		</div>
@@ -148,7 +145,7 @@ export default (props) => {
 				</p>
 			</div>
 
-			<ImplementationsShowcase initialFilter={"all"} />
+			<ImplementationsShowcase />
 		</Container>
 	</Layout>
 }
