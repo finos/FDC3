@@ -12,7 +12,7 @@ export default () => {
 	let publishers = relevant.map(r => r.publisher).filter((x, i, a) => a.indexOf(x) === i).sort()
 
 	function Publisher({name}) {
-		const p = community.find(q => q.publisher == name)
+		const p = relevant.find(q => q.publisher == name)
 		
 		return (<a href={p.infoLink} title={p.publisher}><img className={styles.conformanceImage} src={p.image} /></a>)
 	}
