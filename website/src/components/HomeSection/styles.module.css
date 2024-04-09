@@ -14,7 +14,8 @@ section.homeSectionAlt {
 }
 
 
-div.innerFlex {
+div.innerFlex, 
+div.innerFlexReverse {
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
@@ -25,7 +26,7 @@ div.innerFlex {
 	font-size: 1.5rem;
 }
 
-section.reverse div.innerFlex {
+div.innerFlexReverse {
 	flex-direction: row-reverse;
 }
 

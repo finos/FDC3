@@ -3,8 +3,11 @@
     flex-direction: column;
     align-items: center;
     margin: auto;
-    font-size: smaller;
 	justify-content: start;
+}
+
+.conformanceShowcase table {
+	background-color: white;
 }
 
 .conformanceShowcaseItem {
@@ -15,8 +18,7 @@
 }
 
 .conformanceImage {
-    max-width: 10rem;
-    min-width: 10rem;
+    max-width: 20rem;
     max-height: 8rem;
 }
 

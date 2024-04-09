@@ -7,6 +7,12 @@ section.homeSectionAlt {
 	clip-path: polygon(0 3rem, 100% 0, 100% 100%, 0 calc(100% - 3rem));
 }
 
+section.homeSectionAlt {
+	background-color: #ace;
+	color: black;
+}
+
+
 .title {
 	margin: auto;
 	max-width: 1200px;

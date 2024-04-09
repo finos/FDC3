@@ -6,7 +6,7 @@ export default function Training() {
 	return (
 		<HomeSection2>
 			<div>
-				<h1 className={styles.innerAside}><strong>FDC3 Training</strong> and Certification</h1>
+				<h1 className={styles.innerAside}>FDC3 Training and Certification</h1>
 			</div>
 
 			<div className={styles.trainingList}>

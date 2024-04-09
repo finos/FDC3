@@ -1,11 +1,11 @@
 const React = require('react');
 import Layout from "@theme/Layout";
+import styles from "./community.styles.css"
 import Container from "../components/Container"
 import implData from "../../data/training.json";
 
 
 export default ({items}) => {
-
 
 function Implementation({ type, title, publisher, image, infoLink, docsLink, badges, conformance, description }) {
 	return <div key={title + type} className={"implementation " + type}>
