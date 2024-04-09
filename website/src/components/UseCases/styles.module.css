@@ -38,36 +38,6 @@ html[data-theme=dark] .innerAside {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	background-color: white;
-	border-radius: 2rem;
-}
-
-.stack {
-	position: relative;
-	top: 10px;
-	left: 10px;
-	height: 300px;
-}
-
-.image1 {
-	position: relative;
-	top: 0;
-	left: 0;
-	width: calc(100% - 120px);
-}
-
-.image2 {
-	position: absolute;
-	top: 50px;
-	left: 50px;
-	width: calc(100% - 120px);
-}
-
-.image3 {
-	position: absolute;
-	top: 100px;
-	left: 100px;
-	width: calc(100% - 120px);
 }
 
 .button {

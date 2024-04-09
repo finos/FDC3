@@ -9,7 +9,7 @@ export default function Parts() {
 		<HomeSection alt="true" reverse="true">
 			<div className={styles.innerAside}> 
 				<h2 >The Standard</h2>
-				<p className={styles.strap}>The FDC3 standard consists of <strong>five main parts</strong>...</p>
+				<p className={styles.strap}>The FDC3 standard consists of five main parts...</p>
 			</div>
 			<div>
 				<Carousel1>
