@@ -9,7 +9,7 @@ export default () => {
 
 	let badges = ["/img/community/certified-1.2.png", "/img/community/certified-2.0.png"]
 
-	let publishers = relevant.map(r => r.publisher).filter((x, i, a) => a.indexOf(x) === i).sort()
+	let publishers = relevant.map(r => r.publisher).filter((x, i, a) => a.indexOf(x) === i).sort((a, b) => a.localeCompare(b, undefined, {sensitivity: 'base'}))
 
 	function Publisher({name}) {
 		const p = relevant.find(q => q.publisher == name)
