@@ -32,34 +32,6 @@
 	align-items: center;
 }
 
-.stack {
-	position: relative;
-	top: 0;
-	left: 0;
-	height: 300px;
-}
-
-.image1 {
-	position: relative;
-	top: 0;
-	left: 0;
-	width: calc(100% - 100px);
-}
-
-.image2 {
-	position: absolute;
-	top: 50px;
-	left: 50px;
-	width: calc(100% - 100px);
-}
-
-.image3 {
-	position: absolute;
-	top: 100px;
-	left: 100px;
-	width: calc(100% - 100px);
-}
-
 .button {
 	background: #0086bf44;
 	border: 1px solid #ace;

@@ -1,5 +1,4 @@
-section.homeSection, 
-section.homeSectionAlt {
+section.homeSection, section.homeSectionAlt {
 	margin-top: 5rem;
 	margin-bottom: 5rem;
 	padding-top: 5rem;
@@ -7,15 +6,12 @@ section.homeSectionAlt {
 	clip-path: polygon(0 3rem, 100% 0, 100% 100%, 0 calc(100% - 3rem));
 }
 
-
 section.homeSectionAlt {
 	background-color: #ace;
 	color: black;
 }
 
-
-div.innerFlex, 
-div.innerFlexReverse {
+div.innerFlex, div.innerFlexReverse {
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
@@ -30,11 +26,11 @@ div.innerFlexReverse {
 	flex-direction: row-reverse;
 }
 
-
 div.item {
 	padding: 20px;
-	flex-basis: 50%;
-	min-width: 450px;
+	flex-basis: 30rem;
+	flex-grow: 1;
+	flex-shrink: 0;
 }
 
 div.footerImage {

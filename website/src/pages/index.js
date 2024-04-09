@@ -27,9 +27,12 @@ export default () => {
 		<Benefits />
 		<UseCases />
 		<Parts />
+		
+		
 		<UserShowcase />
 		<Conformance />
 		<Training />
+		
 		<GetInvolved />
 
 	</Layout>)

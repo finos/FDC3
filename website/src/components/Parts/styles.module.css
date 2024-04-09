@@ -1,18 +1,24 @@
-
-
 .part {
 	text-align: center;
 	display: flex;
-	flex-direction: column;	
+	flex-direction: column;
 	align-items: center;
-	background-color: white;
-	border-radius: 3rem;
+}
+
+.title {
+	font-size: 3rem;
+	font-family: "Rokkitt";
+}
+
+.part h1 {
+	font-size: 5rem;
+	font-family: "Rokkitt";	
+	font-weight: 800;
 }
 
 .part img {
-	max-width: 60%;
+	width: 60%;
 }
-
 
 .strap {
 	font-size: 3rem;
@@ -41,21 +47,17 @@
 	text-align: right;
 }
 
-
 .innerAside h2 {
 	font-size: 8rem;
 	font-weight: 800;
 	font-family: "Rokkitt";
 }
 
-.innerAside p,
-.title {
+.innerAside p, .title {
 	font-size: 3rem;
 	font-weight: 400;
 	font-family: "Rokkitt";
 }
-
-
 
 html[data-theme=dark] .innerAside {
 	color: white;
