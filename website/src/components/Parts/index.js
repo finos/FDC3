@@ -6,10 +6,10 @@ import Callout from "../Callout";
 
 export default function Parts() {
 	return (
-		<HomeSection>
-			<div>
-				<h1 className={styles.innerAside}>The Standard</h1>
-				<p>The FDC3 standard consists of five main parts...</p>
+		<HomeSection alt="true" reverse="true">
+			<div className={styles.innerAside}> 
+				<h2 >The Standard</h2>
+				<p className={styles.strap}>The FDC3 standard consists of <strong>five main parts</strong>...</p>
 			</div>
 			<div>
 				<Carousel1>

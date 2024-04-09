@@ -3,9 +3,9 @@ import styles from './styles.module.css'
 import MonoIcon from '../MonoIcon'
 
 // title, central panel, a call to action adn a footer icon
-export default ({ children }) => {
+export default ({ children, alt }) => {
 	return (
-		<section className={styles.homeSection}>
+		<section className={alt ? styles.homeSectionAlt : styles.homeSection}>
 			<div className={styles.title}>
 				{children[0]}
 			</div>

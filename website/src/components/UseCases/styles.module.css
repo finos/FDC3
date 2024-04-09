@@ -16,9 +16,16 @@
 .innerAside {
 	margin: auto;
 	flex-basis: 50%;
+	background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" fill="%23ace"><ellipse rx="200px" ry="200px" cy="200" cx="200" /></svg>');
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-size: cover;
+	min-height: 450px;
+}
+
+.innerAside h2 {
 	font-size: 3rem;
 	font-weight: bold;
-	color: black;
 	font-family: 'Rokkitt';
 	font-size: 7rem;
 }
@@ -31,12 +38,14 @@ html[data-theme=dark] .innerAside {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	background-color: white;
+	border-radius: 2rem;
 }
 
 .stack {
 	position: relative;
-	top: 0;
-	left: 0;
+	top: 10px;
+	left: 10px;
 	height: 300px;
 }
 
@@ -44,21 +53,21 @@ html[data-theme=dark] .innerAside {
 	position: relative;
 	top: 0;
 	left: 0;
-	width: calc(100% - 100px);
+	width: calc(100% - 120px);
 }
 
 .image2 {
 	position: absolute;
 	top: 50px;
 	left: 50px;
-	width: calc(100% - 100px);
+	width: calc(100% - 120px);
 }
 
 .image3 {
 	position: absolute;
 	top: 100px;
 	left: 100px;
-	width: calc(100% - 100px);
+	width: calc(100% - 120px);
 }
 
 .button {

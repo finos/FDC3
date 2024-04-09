@@ -37,7 +37,7 @@ export default () => {
 		<table>
 			<thead>
 				<tr>
-					<th>Firm</th>
+					<th></th>
 					{
 						badges.map(b => <th><img className={styles.badgeImage} src={b} /></th>)
 					}

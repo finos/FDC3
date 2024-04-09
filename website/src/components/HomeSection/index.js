@@ -4,10 +4,9 @@ import MonoIcon from '../MonoIcon'
 
 // left, right panels, a call to action adn a footer icon
 export default ({children, alt, reverse}) => {
-	const classes = (alt ? styles.homeSectionAlt : styles.homeSection) + " " + (reverse ? "reverse" : "")
 	return (
-		<section className={classes}>
-			<div className={styles.innerFlex}>
+		<section className={alt ? styles.homeSectionAlt : styles.homeSection}>
+			<div className={reverse ? styles.innerFlexReverse : styles.innerFlex}>
 				<div className={styles.item}>
 					{ children[0] }
 				</div>

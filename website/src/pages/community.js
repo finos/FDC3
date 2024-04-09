@@ -11,6 +11,7 @@ import Container from "../components/Container"
 import implData from "../../data/community.json";
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import setType from '../components/implementationFilters'
+import styles from "./community.styles.css"
 
 const badgeTitles = {
 	"Open Source": "Indicates that the project source code is available to download and modify, under an Apache 2.0 or similar license.",

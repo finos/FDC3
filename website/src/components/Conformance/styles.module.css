@@ -17,18 +17,13 @@
 	margin: auto;
 	flex-basis: 50%;
 	font-size: 3rem;
-	font-weight: bold;
 	color: black;
-	font-family: 'Electrolize';
-	font-size: 7rem;
 }
 
-.innerAside strong {
-	background-color: yellow;
-}
-
-html[data-theme=dark] .innerAside {
-	color: white;
+.innerAside h2 {
+	font-family: 'Rokkitt';
+	font-size: 8rem;
+	font-weight: bold;
 }
 
 .right {
@@ -69,7 +64,7 @@ html[data-theme=dark] .innerAside {
 	background: #0086bf44;
 	border: 1px solid #ace;
 	border-radius: .5rem;
-	color: #0086bf;
+	color: white;
 	display: inline-block;
 	font-size: 1rem;
 	line-height: 1.2em;

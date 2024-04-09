@@ -11,8 +11,8 @@
 	flex-basis: 50%;
 	font-weight: bold;
 	color: black;
-	font-family: 'Electrolize';
-	font-size: 6rem;
+	font-family: 'Rokkitt';
+	font-size: 8rem;
 	line-height: 1.1;
 	text-align: center;
 }
@@ -24,9 +24,6 @@
 	gap: 2rem;
 }
 
-.innerAside strong {
-	background-color: yellow;
-}
 
 html[data-theme=dark] .innerAside {
 	color: white;
@@ -52,7 +49,7 @@ html[data-theme=dark] .innerAside {
 	background: #0086bf44;
 	border: 1px solid #ace;
 	border-radius: .5rem;
-	color: #0086bf;
+	color: white;
 	display: inline-block;
 	font-size: 1rem;
 	line-height: 1.2em;

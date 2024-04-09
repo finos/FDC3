@@ -22,3 +22,13 @@
     src: url("/fonts/SpaceMono-Regular.ttf");
 	font-family: 'Space-Mono'
 }
+
+.footer {
+	background-color: #252525;
+	border-top: 1px solid #aaa;
+}
+
+.footer__title,
+.footer__link-item {
+	color: #eee;
+}

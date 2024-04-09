@@ -5,22 +5,25 @@
 	display: flex;
 	flex-direction: column;	
 	align-items: center;
+	background-color: white;
+	border-radius: 3rem;
 }
 
 .part img {
 	max-width: 60%;
 }
 
-.title {
-	font-family: 'Electrolize';
+
+.strap {
 	font-size: 3rem;
+	font-family: "Rokkitt";
 }
 
 .button {
 	background: #0086bf44;
 	border: 1px solid #ace;
 	border-radius: .5rem;
-	color: #0086bf;
+	color: white;
 	display: inline-block;
 	font-size: 1rem;
 	line-height: 1.2em;
@@ -33,14 +36,35 @@
 
 .innerAside {
 	flex-basis: 50%;
-	font-size: 3rem;
-	font-weight: bold;
 	color: black;
-	font-family: 'Electrolize';
-	font-size: 7rem;
+	font-family: 'Rokkitt';
+	text-align: right;
+}
+
+
+.innerAside h2 {
+	font-size: 8rem;
+	font-weight: 800;
+	font-family: "Rokkitt";
+}
+
+.innerAside p,
+.title {
+	font-size: 3rem;
+	font-weight: 400;
+	font-family: "Rokkitt";
+}
+
+.innerAside strong {
+	background-color: yellow;
+	font-weight: 400;
 }
 
 
 html[data-theme=dark] .innerAside {
 	color: white;
+}
+
+html[data-theme=dark] strong {
+	color: black;
 }
