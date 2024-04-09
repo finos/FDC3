@@ -31,8 +31,6 @@ div.innerFlex {
 
 div.item {
 	padding: 20px;
-	flex-basis: 50%;
-	min-width: 450px;
 }
 
 div.footerImage {
