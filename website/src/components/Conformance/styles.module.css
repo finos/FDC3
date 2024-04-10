@@ -23,6 +23,10 @@
 	font-family: 'Rokkitt';
 	font-size: 8rem;
 	font-weight: bold;
+	
+	@media (max-width: 60rem) {
+	 	font-size: 4rem;
+	}
 }
 
 .right {

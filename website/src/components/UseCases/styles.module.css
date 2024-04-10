@@ -23,10 +23,14 @@
 }
 
 .innerAside h2 {
-	font-size: 3rem;
+	font-size: 8rem;
 	font-weight: bold;
 	font-family: 'Rokkitt';
 	font-size: 7rem;
+	
+	@media (max-width: 60rem) {
+	 	font-size: 4rem;
+	}
 }
 
 html[data-theme=dark] .innerAside {

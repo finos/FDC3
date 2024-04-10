@@ -1,15 +1,16 @@
 section.nst {
-	display: flex;
-	align-content: center;
-	justify-content: center;
-	flex-direction: column;
+	margin: auto;
+	max-width: 1200px;
+	text-align: center;
 }
 
-svg.text,
+svg.text {
+	
+}
+
 svg.logo {
-	flex-basis: 20rem;
-	flex-grow: 1;
-	flex-shrink: 1;
+	height: calc(70vh);
+	width: 100%;
 }
 
 @keyframes change {

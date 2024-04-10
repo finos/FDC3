@@ -5,8 +5,8 @@ import HomeSection2 from "../HomeSection2";
 export default function Training() {
 	return (
 		<HomeSection2>
-			<div>
-				<h1 className={styles.innerAside}>FDC3 Training and Certification</h1>
+			<div className={styles.innerAside}>
+				<h2>FDC3 Training and Certification</h2>
 			</div>
 
 			<div className={styles.trainingList}>

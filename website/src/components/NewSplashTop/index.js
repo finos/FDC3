@@ -7,7 +7,7 @@ export default function NewSplashTop() {
 
 		<section className={styles.nst}>
 			<svg className={styles.logo} version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-				viewBox="0 0 390 683.04">
+				viewBox="-10 -10 465 683.04">
 				<g>
 					<path className={styles.st0} d="M428.27,363.7v-234L239.55,238.65c0.11,0.99,0.58,1.85,0.58,2.87c0,11.73-7.91,21.26-18.57,24.5v217.03
 		L428.27,363.7L428.27,363.7z"/>

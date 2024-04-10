@@ -3,6 +3,7 @@ section.homeSection, section.homeSectionAlt {
 	padding-top: 5rem;
 	padding-bottom: 5rem;
 	clip-path: polygon(0 3rem, 100% 0, 100% 100%, 0 calc(100% - 3rem));
+	overflow: hidden;
 }
 
 section.homeSectionAlt {

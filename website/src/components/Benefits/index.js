@@ -10,7 +10,7 @@ export default function Benefits() {
 			<div className={styles.innerAside}>
 				<h2>What are the Benefits?</h2>
 			</div>
-			<Carousel1>
+			<Carousel1 minHeight="35rem">
 				<aside>
 					<h2 className={styles.number}>1</h2>
 					<h3 className={styles.title}>📇 Manage The Information Overload </h3>

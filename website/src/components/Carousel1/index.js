@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from './styles.module.css'
 
-const Carousel1 = (props) => {
-	const { children } = props
+const Carousel1 = ({minHeight = "50rem", children}) => {
 
 	const [currentIndex, setCurrentIndex] = useState(0)
 	const [length, setLength] = useState(children.length)
@@ -36,15 +35,13 @@ const Carousel1 = (props) => {
 	return (
 		<div className={styles.carouselContainer}>
 			<div className={styles.carouselWrapper}>
-				<div className={styles.carouselContentWrapper}>
-					{
-						children.map((v, i) => <div className={currentIndex == i ? styles.show : styles.hide }>{v}</div>)
-					}
-				</div>
+				{
+					children.map((v, i) => <div className={currentIndex == i ? styles.show : styles.hide } style={{minHeight: minHeight}}>{v}</div>)
+				}
 			</div>
 			<div className={styles.controls}>
 				<button className={prevClass} onClick={prev}>
-					&lt; PREVIOUS
+					&lt; PREV
 				</button>
 				<button className={nextClass} onClick={next}>
 					NEXT &gt;
