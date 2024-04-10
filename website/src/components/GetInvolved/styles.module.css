@@ -35,6 +35,12 @@ html[data-theme=dark] .innerAside {
 }
 
 
+html[data-theme=dark] .item {
+	border: 1px dashed white;
+}
+
+
+
 .item h1 {
 	height: 5rem;
 	text-align: center;

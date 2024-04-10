@@ -60,6 +60,11 @@
 	}
 }
 
+html[data-theme=dark] .innerAside h2,
+html[data-theme=dark] .strap {
+	color: black;
+}
+
 .innerAside p, .title {
 	font-size: 3rem;
 	font-weight: 400;
