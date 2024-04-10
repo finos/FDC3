@@ -441,13 +441,6 @@ export const TypeSchema = z.enum([
 ]);
 export type Type = z.infer<typeof TypeSchema>;
 
-export const BaseImplementationMetadataOptionalFeaturesSchema = z.object({
-    "DesktopAgentBridging": z.boolean(),
-    "OriginatingAppMetadata": z.boolean(),
-    "UserChannelMembershipAPIs": z.boolean(),
-});
-export type BaseImplementationMetadataOptionalFeatures = z.infer<typeof BaseImplementationMetadataOptionalFeaturesSchema>;
-
 export const AgentResponseMetadataSchema = z.object({
     "requestUuid": z.string(),
     "responseUuid": z.string(),
@@ -562,12 +555,12 @@ export const ConnectionStep3HandshakeMetaSchema = z.object({
 });
 export type ConnectionStep3HandshakeMeta = z.infer<typeof ConnectionStep3HandshakeMetaSchema>;
 
-export const ImplementationMetadataOptionalFeaturesSchema = z.object({
+export const OptionalFeaturesSchema = z.object({
     "DesktopAgentBridging": z.boolean(),
     "OriginatingAppMetadata": z.boolean(),
     "UserChannelMembershipAPIs": z.boolean(),
 });
-export type ImplementationMetadataOptionalFeatures = z.infer<typeof ImplementationMetadataOptionalFeaturesSchema>;
+export type OptionalFeatures = z.infer<typeof OptionalFeaturesSchema>;
 
 export const ConnectionStep4AuthenticationFailedMetaSchema = z.object({
     "requestUuid": z.string(),
@@ -587,6 +580,15 @@ export const ConnectionStep6ConnectedAgentsUpdateMetaSchema = z.object({
     "timestamp": z.coerce.date(),
 });
 export type ConnectionStep6ConnectedAgentsUpdateMeta = z.infer<typeof ConnectionStep6ConnectedAgentsUpdateMetaSchema>;
+
+export const DesktopAgentImplementationMetadataSchema = z.object({
+    "desktopAgent": z.string(),
+    "fdc3Version": z.string(),
+    "optionalFeatures": OptionalFeaturesSchema,
+    "provider": z.string(),
+    "providerVersion": z.union([z.null(), z.string()]).optional(),
+});
+export type DesktopAgentImplementationMetadata = z.infer<typeof DesktopAgentImplementationMetadataSchema>;
 
 export const FindInstancesAgentErrorResponseMetaSchema = z.object({
     "requestUuid": z.string(),
@@ -1175,7 +1177,6 @@ export type RaiseIntentAgentResponseMeta = z.infer<typeof RaiseIntentAgentRespon
 export const IntentResolutionSchema = z.object({
     "intent": z.string(),
     "source": AppIdentifierSchema,
-    "version": z.union([z.null(), z.string()]).optional(),
 });
 export type IntentResolution = z.infer<typeof IntentResolutionSchema>;
 
@@ -1280,14 +1281,6 @@ export const ContextSchema = z.object({
 });
 export type Context = z.infer<typeof ContextSchema>;
 
-export const BaseImplementationMetadataSchema = z.object({
-    "fdc3Version": z.string(),
-    "optionalFeatures": BaseImplementationMetadataOptionalFeaturesSchema,
-    "provider": z.string(),
-    "providerVersion": z.union([z.null(), z.string()]).optional(),
-});
-export type BaseImplementationMetadata = z.infer<typeof BaseImplementationMetadataSchema>;
-
 export const AgentErrorResponseMessageSchema = z.object({
     "meta": AgentResponseMetadataSchema,
     "payload": ErrorResponseMessagePayloadSchema,
@@ -1360,13 +1353,13 @@ export const ConnectionStep2HelloSchema = z.object({
 });
 export type ConnectionStep2Hello = z.infer<typeof ConnectionStep2HelloSchema>;
 
-export const ImplementationMetadataElementSchema = z.object({
+export const ConnectingAgentImplementationMetadataSchema = z.object({
     "fdc3Version": z.string(),
-    "optionalFeatures": ImplementationMetadataOptionalFeaturesSchema,
+    "optionalFeatures": OptionalFeaturesSchema,
     "provider": z.string(),
     "providerVersion": z.union([z.null(), z.string()]).optional(),
 });
-export type ImplementationMetadataElement = z.infer<typeof ImplementationMetadataElementSchema>;
+export type ConnectingAgentImplementationMetadata = z.infer<typeof ConnectingAgentImplementationMetadataSchema>;
 
 export const ConnectionStep4AuthenticationFailedSchema = z.object({
     "meta": ConnectionStep4AuthenticationFailedMetaSchema,
@@ -1377,7 +1370,7 @@ export type ConnectionStep4AuthenticationFailed = z.infer<typeof ConnectionStep4
 
 export const ConnectionStep6ConnectedAgentsUpdatePayloadSchema = z.object({
     "addAgent": z.union([z.null(), z.string()]).optional(),
-    "allAgents": z.array(ImplementationMetadataElementSchema),
+    "allAgents": z.array(DesktopAgentImplementationMetadataSchema),
     "channelsState": z.union([z.record(z.string(), z.array(ContextElementSchema)), z.null()]).optional(),
     "removeAgent": z.union([z.null(), z.string()]).optional(),
 });
@@ -1770,7 +1763,7 @@ export type BroadcastBridgeRequest = z.infer<typeof BroadcastBridgeRequestSchema
 export const ConnectionStep3HandshakePayloadSchema = z.object({
     "authToken": z.union([z.null(), z.string()]).optional(),
     "channelsState": z.record(z.string(), z.array(ContextElementSchema)),
-    "implementationMetadata": ImplementationMetadataElementSchema,
+    "implementationMetadata": ConnectingAgentImplementationMetadataSchema,
     "requestedName": z.string(),
 });
 export type ConnectionStep3HandshakePayload = z.infer<typeof ConnectionStep3HandshakePayloadSchema>;
