@@ -132,5 +132,5 @@ Intents functionality is dependent on resolver functionality to map the intent t
 ## APIs
 The APIs are defined in TypeScript in [src], with the documentation generated in the [docs] folder.
 
-[src]: https://github.com/finos/FDC3/tree/master/src/api
-[docs]: https://github.com/finos/FDC3/tree/master/docs/api
+[src]: https://github.com/finos/FDC3/tree/main/src/api
+[docs]: https://github.com/finos/FDC3/tree/main/docs/api

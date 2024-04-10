@@ -36,7 +36,7 @@ The group's activities do not include:
 
 - Versions of the FDC3 specification following 2.1 and subsequent draft specifications are licensed under the [Community Specification License 1.0](https://github.com/finos/FDC3/blob/4ce90d45ca8e0c4f8f2c5bd73f51304278783d87/LICENSE.md)
 
-- All code in the FDC3 specification (including JSON Schema) are licensed under [Apache 2.0](https://github.com/finos/FDC3/blob/master/LICENSE)
+- All code in the FDC3 specification (including JSON Schema) are licensed under [Apache 2.0](https://github.com/finos/FDC3/blob/main/LICENSE)
 
 ### Intellectual Property Claims
 
