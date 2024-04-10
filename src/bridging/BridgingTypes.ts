@@ -3764,10 +3764,6 @@ export interface IntentResolution {
    * received the intent.
    */
   source: AppIdentifier;
-  /**
-   * The version number of the Intents schema being used.
-   */
-  version?: string;
 }
 
 /**
@@ -6268,7 +6264,6 @@ const typeMap: any = {
     [
       { json: 'intent', js: 'intent', typ: '' },
       { json: 'source', js: 'source', typ: r('AppIdentifier') },
-      { json: 'version', js: 'version', typ: u(undefined, '') },
     ],
     false
   ),
