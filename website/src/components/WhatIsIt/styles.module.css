@@ -36,7 +36,3 @@
 html[data-theme=dark] .innerAside {
 	color: white;
 }
-
-html[data-theme=dark] .innerAside strong {
-	background-color: #ace;
-}

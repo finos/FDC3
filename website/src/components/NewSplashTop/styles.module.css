@@ -5,14 +5,9 @@ section.nst {
 	flex-direction: column;
 }
 
+svg.text,
 svg.logo {
-	flex-basis: 30rem;
-	flex-grow: 1;
-	flex-shrink: 1;
-}
-
-svg.text {
-	flex-basis: 30rem;
+	flex-basis: 20rem;
 	flex-grow: 1;
 	flex-shrink: 1;
 }

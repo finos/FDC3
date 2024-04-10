@@ -27,7 +27,7 @@ div.innerFlexReverse {
 
 div.item {
 	padding: 20px;
-	flex-basis: 30rem;
+	flex-basis: 20rem;
 	flex-grow: 1;
 	flex-shrink: 0;
 }

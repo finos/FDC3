@@ -32,7 +32,7 @@
 	transition: background .3s, color .3s;
 	width: 15rem;
 	text-align: center;
-	flex-basis: 30rem;
+	flex-basis: 20rem;
 	flex-grow: 1;
 	flex-shrink: 1;
 }

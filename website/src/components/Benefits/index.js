@@ -7,8 +7,8 @@ import Callout from "../Callout";
 export default function Benefits() {
 	return (
 		<HomeSection reverse="true">
-			<div>
-				<h1 className={styles.innerAside}>What are the Benefits?</h1>
+			<div className={styles.innerAside}>
+				<h2>What are the Benefits?</h2>
 			</div>
 			<Carousel1>
 				<aside>
