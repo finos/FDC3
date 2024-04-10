@@ -13,7 +13,7 @@
   ],
   "$defs": {
     "ConnectionStep3HandshakeBase": {
-      "type":"object",
+      "type": "object",
       "title": "ConnectionStep3Handshake",
       "description": "Handshake message sent by the Desktop Agent to the Bridge (including requested name, channel state and authentication data)",
       "properties": {
@@ -26,9 +26,26 @@
           "type": "object",
           "properties": {
             "implementationMetadata": {
-              "title": "Desktop Agent ImplementationMetadata",
+              "title": "Connecting Agent ImplementationMetadata",
               "description": "Desktop Agent ImplementationMetadata trying to connect to the bridge.",
-              "$ref": "../api/baseImplementationMetadata.schema.json"
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "../api/api.schema.json#/definitions/BaseImplementationMetadata"
+                }
+              ],
+              "properties": {
+                "fdc3Version": true,
+                "provider": true,
+                "providerVersion": true,
+                "optionalFeatures": true
+              },
+              "required": [
+                "fdc3Version",
+                "optionalFeatures",
+                "provider"
+              ],
+              "additionalProperties": false
             },
             "requestedName": {
               "title": "Requested name",
@@ -42,9 +59,9 @@
               "additionalProperties": {
                 "title": "Channel ",
                 "type": "array",
-                  "items": {
-                    "$ref": "../context/context.schema.json"
-                  }
+                "items": {
+                  "$ref": "../context/context.schema.json"
+                }
               }
             },
             "authToken": {
@@ -53,7 +70,11 @@
             }
           },
           "additionalProperties": false,
-          "required": ["implementationMetadata", "requestedName", "channelsState"]
+          "required": [
+            "implementationMetadata",
+            "requestedName",
+            "channelsState"
+          ]
         },
         "meta": {
           "title": "Connection Step 3 Metadata",
@@ -67,10 +88,17 @@
             }
           },
           "additionalProperties": false,
-          "required": ["requestUuid", "timestamp"]
+          "required": [
+            "requestUuid",
+            "timestamp"
+          ]
         }
       },
-      "required": ["type", "payload", "meta"],
+      "required": [
+        "type",
+        "payload",
+        "meta"
+      ],
       "additionalProperties": false
     }
   }

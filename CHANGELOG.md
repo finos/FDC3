@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+* Added missing `desktopAgent` field to ImplementationMetadata objects returned for all agents connect to a DesktopAgent bridge in Connection Step 6 connectAgentsUpdate messages and refined the schema used to collect this info in step 3 handshake. ([#1177](https://github.com/finos/FDC3/pull/1177))
 * Removed the `version` field from `IntentResolution` as there are no version fields for intents in the FDC3 API definitions and hence the field has no purpose. ([#1170](https://github.com/finos/FDC3/pull/1170))
 
 ## [FDC3 Standard 2.1](https://github.com/finos/FDC3/compare/v2.0..v2.1) - 2023-09-13
