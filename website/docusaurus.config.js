@@ -147,7 +147,7 @@ module.exports={
             },
             {
               "label": "Use Cases",
-              "to": "/docs/use-cases/overview"
+              "to": "/docs/next/use-cases/overview"
             },
             {
               "label": "Training",
