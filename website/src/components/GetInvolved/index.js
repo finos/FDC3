@@ -20,7 +20,7 @@ export default function Benefits() {
 				 </p>
 
 			</div>
-			<Carousel1>
+			<Carousel1  minHeight="40rem">
 				<div className={styles.item}><h1>1</h1><One /></div> 
 				<div className={styles.item}><h1>2</h1><Two /></div> 
 				<div className={styles.item}><h1>3</h1><Three /></div> 

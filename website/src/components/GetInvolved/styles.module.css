@@ -18,10 +18,20 @@
 	font-family: 'Rokkitt';
 	font-size: 8rem;
 	line-height: 1.1;	
+	
+	@media (max-width: 60rem) {
+	 	font-size: 4rem;
+	}
 }
 
 html[data-theme=dark] .innerAside {
 	color: white;
+}
+
+.item {
+	border: 1px dashed black;
+	padding: 1rem;
+	min-height: 40rem;
 }
 
 

@@ -44,12 +44,20 @@
 	color: black;
 	font-family: 'Rokkitt';
 	text-align: right;
+	background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" fill="%23fff"><ellipse rx="200px" ry="200px" cy="200" cx="200" /></svg>');
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-size: cover;
 }
 
 .innerAside h2 {
 	font-size: 8rem;
 	font-weight: 800;
 	font-family: "Rokkitt";
+	
+	@media (max-width: 60rem) {
+	 	font-size: 4rem;
+	}
 }
 
 .innerAside p, .title {

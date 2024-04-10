@@ -1,19 +1,14 @@
 .conformanceShowcase {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: auto;
-	justify-content: flex-start;
-	max-width: 100rem;
+	overflow: scroll;
 }
 
 .conformanceShowcase table {
 	background-color: #ffffff99;
-	
+	max-width: 1200px;
+	margin: auto;
 }
 
 .conformanceShowcase td {
-	min-width: 8rem;
 }
 
 .conformanceShowcaseItem {
@@ -25,4 +20,12 @@
 
 .conformanceText {
     margin: 2rem;
+}
+
+.badgeImage {
+	max-width: 6rem;
+}
+
+.conformanceImage {
+	max-width: 10rem;
 }

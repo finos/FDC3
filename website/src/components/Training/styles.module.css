@@ -1,19 +1,22 @@
-.benefit {
-	
-}
-
 .title {
 	font-family: 'Electrolize';
 	font-size: 3rem;
 }
 
 .innerAside {
-	font-weight: bold;
 	color: black;
-	font-family: 'Rokkitt';
-	font-size: 8rem;
 	line-height: 1.1;
 	text-align: center;
+}
+
+.innerAside h2 {	
+	font-weight: bold;
+	font-family: 'Rokkitt';
+	font-size: 8rem;
+	
+	@media (max-width: 60rem) {
+	 	font-size: 4rem;
+	}
 }
 
 .trainingList {

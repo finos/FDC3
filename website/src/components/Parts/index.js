@@ -8,11 +8,11 @@ export default function Parts() {
 	return (
 		<HomeSection alt="true" reverse="true">
 			<div className={styles.innerAside}> 
-				<h2 >The Standard</h2>
+				<h2>The Standard</h2>
 				<p className={styles.strap}>The FDC3 standard consists of five main parts...</p>
 			</div>
 			<div>
-				<Carousel1>
+				<Carousel1  minHeight="30rem">
 					<aside className={styles.part}>
 						<h1>1</h1>
 						<h2 className={styles.title}>The API</h2>

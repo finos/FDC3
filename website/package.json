@@ -41,5 +41,7 @@
   "overrides": {
     "got": "^11.8.5",
     "trim": "1.0.1"
+  },
+  "dependencies": {
   }
 }

@@ -4,18 +4,11 @@
 }
 
 .carouselWrapper {
-	display: flex;
-	position: relative;
-}
-
-.carouselContentWrapper {
-	overflow: hidden;
-	height: 100%;
+	height: auto;
 }
 
 .controls {
 	display: flex;
-	justify-content: full;
 }
 
 .leftArrow, .rightArrow {
@@ -23,33 +16,30 @@
 	border: 1px solid #ace;
 	border-radius: .5rem;
 	color: white;
-	display: inline-block;
 	font-size: 1rem;
 	line-height: 1.2em;
 	margin: 1rem;
 	padding: 1rem;
 	text-decoration: none !important;
-	transition: background .3s, color .3s;
-	width: 15rem;
 	text-align: center;
-	flex-basis: 20rem;
-	flex-grow: 1;
-	flex-shrink: 1;
+	flex-basis: 45%;
 }
 
+.leftArrow {
+	align-self: flex-start;
+}
+
+.rightArrow {
+	align-self: flex-end;
+}
+
+
 .show {
-	position: relative;
-	top: 0;
-	left: 0;
-	height: 40rem;
+	min-height: 50rem;
 }
 
 .hide {
-	position: absolute;
-	visibility: hidden;
-	top: 0;
-	left: 0;
-	height: 40rem;
+	display: none;
 }
 
 .inactive {

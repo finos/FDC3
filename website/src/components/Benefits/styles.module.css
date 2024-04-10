@@ -18,11 +18,12 @@
 	font-size: 8rem;
 	line-height: 1.1;
 	text-wrap: wrap;
+	
+	@media (max-width: 60rem) {
+	 	font-size: 4rem;
+	}
 }
 
-.innerAside strong {
-	background-color: yellow;
-}
 
 html[data-theme=dark] .innerAside {
 	color: white;
