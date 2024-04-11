@@ -9,7 +9,7 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
         //skip rendering the type property as it should be rendered at the top level
         return markdownContent;
     }   
-    markdownContent += `### ${\`${propertyName}\`}\n\n`;
+    markdownContent += `### \`${propertyName}\`}\n\n`;
     if (required) { markdownContent += `**(required)**\n`; }
 
     if (propertyDetails.description != null) {
@@ -118,15 +118,18 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
         }
         
         const properties = root.properties;
-        const required = root.required;
+        const typeString = properties?.type?.const;
         const ref = root.$ref;
-
+                
+        markdownContent += `## Type\n\n`;
+        markdownContent += `\`${typeString}\`\n\n`;
         markdownContent += `## Properties\n\n`; 
 
         for (const [propertyName, propertyDetails] of Object.entries(properties)) {
-            markdownContent += processProperty(propertyName, propertyDetails, schema.examples, required.includes(propertyName));
+            if (propertyName != "type"){ 
+                markdownContent += processProperty(propertyName, propertyDetails, schema.examples);
+            }
         }
-
 
         if (ref) {
             markdownContent += `ref: ${ref}\n\n`;
@@ -163,7 +166,7 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
 }
 
 function escape(text) {
-    return text.replace(/>/g, '\\>').replace(/@experimental/g, '[@experiemental](/docs/fdc3-compliance#experimental-features)';
+    return text.replace(/>/g, '\\>').replace(/@experimental/g, '[@experiemental](/docs/fdc3-compliance#experimental-features)');
 }
 
 function generateFrontMatter(title, description) {
@@ -221,14 +224,6 @@ function main() {
             "label": "Context Data Part",
             "items": []
         }
-
-        let sidebarApiObject = {
-            "type": "category",
-            "label": "API Schemas Part",
-            "items": []
-        }
-
-        sidebarContextObject.items = parseSchemaFolder('context', version);
 
         if (sidebarObject.docs["FDC3 Standard"] == null) {
             sidebarObject.docs["FDC3 Standard"] = [];
