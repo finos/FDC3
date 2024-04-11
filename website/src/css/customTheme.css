@@ -33,11 +33,13 @@
 }
 
 /** 
- * Some werid webpack / docusaurus bug breaking 
- * responsive styling in netlify */
+ * Some weird webpack / docusaurus bug breaking 
+ * responsive styling in netlify 
+ */
  	
-div[class^="innerAside"] h2 {  	
- 	@media (max-width: 60rem) {
+
+@media (max-width: 300px) {
+	div[class^="innerAside"] h2 {  	
 	 	font-size: 4rem;
 	}
 }
