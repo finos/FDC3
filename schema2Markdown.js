@@ -151,7 +151,7 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
                 markdownContent += '\n```\n\n';
             });
         }
-        
+
     }
 
     const frontMatter = generateFrontMatter(objectName, schema.description);
@@ -225,6 +225,8 @@ function main() {
             "label": "Context Data Part",
             "items": []
         }
+
+        sidebarContextObject.items = parseSchemaFolder('context', version);
 
         if (sidebarObject.docs["FDC3 Standard"] == null) {
             sidebarObject.docs["FDC3 Standard"] = [];
