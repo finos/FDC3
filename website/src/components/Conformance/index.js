@@ -12,7 +12,7 @@ export default function Conformance() {
 			</div>
 			<ConformanceShowcase />
 			<div>
-				<a className={styles.button} href="https://github.com/finos/FDC3-Conformance-Framework">CONFORMANCE FRAMEWORK</a>
+				<a className={styles.cta} href="https://github.com/finos/FDC3-Conformance-Framework">CONFORMANCE FRAMEWORK</a>
 			</div>
 		</HomeSection2>
 	)

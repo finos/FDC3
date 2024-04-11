@@ -1,4 +1,4 @@
-.button {
+.cta {
 	background: #0086bf44;
 	border: 1px solid #ace;
 	border-radius: .5rem;
@@ -17,6 +17,7 @@
 	margin: auto;
 	font-size: 3rem;
 	color: black;
+	text-align: center;
 }
 
 .innerAside h2 {
@@ -35,7 +36,7 @@
 	align-items: center;
 }
 
-.button {
+.cta {
 	background: #0086bf44;
 	border: 1px solid #ace;
 	border-radius: .5rem;

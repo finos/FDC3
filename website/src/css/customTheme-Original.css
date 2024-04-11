@@ -1,0 +1,381 @@
+:root{
+  --ifm-color-primary-lightest: #00AEF8;
+  --ifm-color-primary-lighter: #009ADC;
+  --ifm-color-primary-light: #0093D2;
+  --ifm-color-primary: #0086BF;
+  --ifm-color-primary-dark: #0079AC;
+  --ifm-color-primary-darker: #0072A2;
+  --ifm-color-primary-darkest: #005E86;
+  --ifm-font-weight-semibold: 300;
+  --ifm-navbar-item-padding-horizontal: 0.5rem;
+}
+
+/** Buttons from Docusaurus v1 */
+
+.button {
+  border: 1px solid #0086bf;
+  border-radius: 3px;
+  color: #0086bf;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2em;
+  padding: 10px;
+  margin: 10px;
+  text-decoration: none!important;
+  text-transform: uppercase;
+  transition: background .3s,color .3s;
+}
+
+/** Theme header/footer */
+
+html[data-theme='light'] {
+  --ifm-navbar-background-color: #0086bf; 
+  --ifm-navbar-link-color: #dddddd;
+  --ifm-navbar-link-hover-color: #ffffff;
+  --ifm-footer-background-color: #0086bf; 
+  --ifm-footer-title-color: #ffffff;
+  --ifm-footer-link-hover-color: #eeeeee;
+  --ifm-footer-link-color: #dddddd;
+}  
+
+html[data-theme='light'] .footer-strap {
+  font-weight: bold;
+  color:  #ffffff;
+}
+
+html[data-theme='light'] .footer-copyright {
+  color: #dddddd;
+  font-size: smaller;
+}
+
+html[data-theme='light'] body {
+  background-color: #fff;
+}
+
+.dropdown__menu {
+  background-color:  #009ADC;
+}
+
+.button:hover {
+  background: #0086bf;
+  color:#fff
+}
+
+
+/* your custom css */
+
+@media only screen and (max-width: 1023px) {
+  article p img,FeatureCallout
+  article iframe {
+    max-width: 75%;
+  }
+}
+
+@media only screen and (max-width: 736px) {
+  article p img,FeatureCallout
+  article iframe {
+    max-width: 85%;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  article p img,FeatureCallout
+  article iframe {
+    max-width: 70%;
+  }
+}
+
+@media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
+  article p img,FeatureCallout
+  article iframe {
+    max-width: 85%;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  article p img,FeatureCallout
+  article iframe {
+    max-width: 55%;
+  }
+}
+
+header.postHeader:empty {
+    display: none;
+  }
+  
+header.postHeader:empty + article h1 {
+  margin-top: 0;
+}
+
+.imageAlignTop .blockImage {
+  max-width: 220px;
+}
+
+.navbar {
+  background: #0086bf;
+  color: white;
+}
+
+.navbar a {
+  color: white;
+}
+
+.menu {
+  font-weight: 400;
+}
+
+/* CSS added 14 May 2019 */
+
+.navigationSlider .slidingNav ul {
+    /* DO NOT CHANGE - THIS IS THE NAVIGATION BACKGROUND - SHOULD STAY FINOS BLUE */
+  box-sizing: border-box;
+  color: #fff;
+  display: flex;
+  flex-wrap: nowrap;
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.navigationSlider .slidingNav ul li a:hover {
+  background: #0033A0;  /* DO NOT CHANGE - THIS IS THE NAVIGATION BACKGROUND - SHOULD STAY FINOS BLUE */
+
+}
+
+.inner img{
+  width: 25%;
+}
+
+.homeContainer {
+  background-image: url("/img/fdc3-background.png"); /* CHANGE THIS TO BACKGROUND LOGO PNG - THIS IS A SEMI-TRANSPARENT DOUBLE RENDERING OF THE LOGO ICON */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #0086BF; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
+  text-align: center;
+}
+
+.homeContainer h2{
+  color: #ffffff;
+}
+
+.homeContainer a{
+  color: #ffffff;
+}
+
+.button {
+  background: #0086bf44;
+  border: 1px solid #ffffff;
+}
+
+.button.selected {
+  background: #0086bf;
+  color: #fff;
+}
+
+.button.selected:hover {
+  background: #0086bf44;
+  color: #0086bf;;
+}
+
+.mainContainer {
+  padding: 40 0;
+}
+
+.blockImage img{
+  fill: #ffffff;
+}
+
+.blockContent {
+  margin: 20px 10px;
+}
+ 
+.blockTitle {
+  color:  #0086bf;  /* DO NOT CHANGE - THIS IS THE TITLE UNDER THE ICONS IN THE 3RD BLOCK - SHOULD STAY FINOS BLUE */
+  text-align: center;
+  font-size: var(--ifm-h2-font-size);
+  font-family: var(--ifm-heading-font-family);
+  font-weight: var(--ifm-heading-font-weight);
+  line-height: var(--ifm-heading-line-height);
+  margin: var(--ifm-heading-margin-top) 0 0 0;
+  padding-bottom: var(--ifm-heading-margin-bottom);
+}
+.blockSubLabel {
+  color:  #0086bf;  /* DO NOT CHANGE - THIS IS THE TITLE UNDER THE ICONS IN THE 3RD BLOCK - SHOULD STAY FINOS BLUE */
+  text-align: center;
+  font-size: var(--ifm-font-size-base);
+  font-family: var(--ifm-heading-font-family);
+  font-weight: var(--ifm-heading-font-weight);
+  /* line-height: var(--ifm-heading-line-height);
+  margin: var(--ifm-heading-margin-top) 0 0 0;
+  padding-bottom: var(--ifm-heading-margin-bottom); */
+}
+
+.blockSubLabel {
+  color:  #0086bf;  /* DO NOT CHANGE - THIS IS THE TITLE UNDER THE ICONS IN THE 3RD BLOCK - SHOULD STAY FINOS BLUE */
+  text-align: center;
+  font-size: var(--ifm-font-size-base);
+  font-family: var(--ifm-heading-font-family);
+  font-weight: var(--ifm-heading-font-weight);
+}
+
+.surveyBanner {
+  background-color: #F7F7F7; /* CHANGE THIS TO PRIMARY PROJECT COLOR */
+  padding-top: 10px;
+  padding-bottom: 40px;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  padding: 20px;
+}
+
+.CTA-image {
+  width: 200px;
+  flex: none;
+}
+
+.finosBanner {
+  background-color: #0086bf; /* DO NOT CHANGE - THIS IS THE FINOS BANNER BACKGROUND - SHOULD STAY FINOS BLUE */
+  margin: 0 auto;
+  padding: 0 0;
+}
+
+.finosBanner h2{
+  color: #ffffff;
+  font-size: 16px;
+}
+
+article p img,FeatureCallout
+article iframe {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nav-footer {
+  background-color: #0086bf;
+}
+
+.nav-footer .sitemap{
+  margin: 0 auto 1em;
+}
+
+.projectTitle {
+  color: #fff;
+  font-size: var(--ifm-h2-font-size);
+  font-family: var(--ifm-heading-font-family);
+  font-weight: var(--ifm-heading-font-weight);
+  line-height: var(--ifm-heading-line-height);
+  margin: var(--ifm-heading-margin-top) 0 var(--ifm-heading-margin-bottom) 0;
+}
+
+
+
+
+/* Get Involved */
+
+
+.gridBlock {
+  padding:0
+}
+
+.gridBlock > * {
+  box-sizing:border-box
+}
+
+.gridBlock .fiveByGridBlock img, .fourByGridBlock img, .gridBlock .threeByGridBlock img, .gridBlock .twoByGridBlock img {
+  max-width:100%
+}
+
+.gridBlock .gridClear {
+  clear:both
+}
+
+@media only screen and (min-width: 736px) {
+  .gridBlock {
+      display: flex;
+      flex-direction: row;
+      flex-wrap:wrap
+  }
+
+  .gridBlock > * {
+      margin:0 12px
+  }
+
+  .gridBlock > :first-child {
+      margin-left:0
+  }
+
+  .gridBlock > :last-child {
+      margin-right:0
+  }
+
+  .gridBlock .twoByGridBlock {
+      flex:1 0 40%
+  }
+
+  .gridBlock .threeByGridBlock {
+      flex:1 0 26%
+  }
+
+  .gridBlock .fourByGridBlock {
+      flex:1 0 20%
+  }
+
+  .gridBlock .fiveByGridBlock {
+      flex:1 0 16%
+  }
+
+  h2 + .gridBlock {
+      padding-top:20px
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .gridBlock {
+      display: flex;
+      flex-direction: row;
+      flex-wrap:wrap
+  }
+}
+
+
+/* index page formatting */
+
+
+.promoSection {
+  display: flex;
+  flex-flow: column wrap;
+  font-size: 125%;
+  line-height: 1.6em;
+  position: relative;
+  z-index:99
+}
+
+.promoSection .promoRow {
+  padding:10px 0
+}
+
+.promoSection .promoRow .pluginWrapper {
+  display:block
+}
+
+.promoSection .promoRow .pluginWrapper.ghStarWrapper, .promoSection .promoRow .pluginWrapper.ghWatchWrapper {
+  height:28px
+}
+
+.promoSection .promoRow .pluginRowBlock {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin:0 -2px
+}
+
+.promoSection .promoRow .pluginRowBlock .pluginWrapper {
+  padding:0 2px
+}
+
+.promoSection .promoRow .pluginRowBlock iframe {
+  margin-left: 2px;
+  margin-top:5px
+}

@@ -1,4 +1,4 @@
-.button {
+.cta {
 	background: #0086bf44;
 	border: 1px solid #ace;
 	border-radius: .5rem;
@@ -43,7 +43,7 @@ html[data-theme=dark] .innerAside {
 	align-items: center;
 }
 
-.button {
+.cta {
 	background: #0086bf44;
 	border: 1px solid #ace;
 	border-radius: .5rem;

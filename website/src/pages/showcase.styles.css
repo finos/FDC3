@@ -72,7 +72,7 @@ html[data-theme='dark'] {
   max-width: 60%;
 }
 
-.button {
+.cta {
 	background: #0086bf44;
 	border: 1px solid #ace;
 	border-radius: .5rem;
@@ -85,4 +85,5 @@ html[data-theme='dark'] {
 	text-decoration: none !important;
 	transition: background .3s, color .3s;
 	width: 15rem;
+	text-align: center;
 }

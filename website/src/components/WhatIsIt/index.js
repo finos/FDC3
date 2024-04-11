@@ -19,8 +19,8 @@ export default function Benefits() {
 				</ImageBullet>
 			</>
 			<p>
-				<a className={styles.button} target='_blank' href="/pdf/FDC3-primer-2024.pdf">READ THE PRIMER</a>
-				<a className={styles.button} target='_blank' href="https://github.com/finos/FDC3">GITHUB REPO</a>
+				<a className={styles.cta} target='_blank' href="/pdf/FDC3-primer-2024.pdf">READ THE PRIMER</a>
+				<a className={styles.cta} target='_blank' href="https://github.com/finos/FDC3">GITHUB REPO</a>
 			</p>
 		</HomeSection>
 
