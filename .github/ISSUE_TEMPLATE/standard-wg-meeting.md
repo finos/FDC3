@@ -43,14 +43,14 @@ Thursday DD MMM yyyy - 10am (US eastern timezone EDT/EST) / 3pm (London, GMT/BST
 
  Please click the following links at the start of the meeting if you have not done so previously.
 
- - [View the CSL](https://raw.githubusercontent.com/finos/FDC3/master/LICENSE)
- - [View the GOVERNANCE of the Project](https://github.com/finos/FDC3/blob/master/GOVERNANCE.md)
- - [Click here to start a PR](https://github.com/finos/FDC3/edit/master/NOTICES.md). 
+ - [View the CSL](https://raw.githubusercontent.com/finos/FDC3/main/LICENSE)
+ - [View the GOVERNANCE of the Project](https://github.com/finos/FDC3/blob/main/GOVERNANCE.md)
+ - [Click here to start a PR](https://github.com/finos/FDC3/edit/main/NOTICES.md). 
    - Edit the page to add your details.
    - Hit the save button.
    - Click "Create Pull Request".
    - Click "Accept" on the EasyCLA dialog in the PR's discussion section.
- - [Click here to send email to become a voting participant on the FDC3 Project](mailto:fdc3-participants+subscribe@finos.org?subject=Please%20enroll%20me%20as%20an%20FDC3%20Standards%20Participant&amp;body=HI%2C%20my%20name%20is%20%3CFirstName%20LastName%3E%20and%20I'd%20like%20to%20formally%20participate%20to%20the%20FDC3%20standard%20process.%20I%20plan%20to%20contribute%20as%20%3Cindividual%7Con%20behalf%20of%20organizationName%3E%20and%20I%20have%20reviewed%20the%20policies%20described%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2FFDC3%2Fblob%2Fmaster%2FGOVERNANCE.md%20and%20read%20the%20license%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2FFDC3%2Fblob%2Fmaster%2FLICENSE%20.%20Thank%20you!")
+ - [Click here to send email to become a voting participant on the FDC3 Project](mailto:fdc3-participants+subscribe@finos.org?subject=Please%20enroll%20me%20as%20an%20FDC3%20Standards%20Participant&amp;body=HI%2C%20my%20name%20is%20%3CFirstName%20LastName%3E%20and%20I'd%20like%20to%20formally%20participate%20to%20the%20FDC3%20standard%20process.%20I%20plan%20to%20contribute%20as%20%3Cindividual%7Con%20behalf%20of%20organizationName%3E%20and%20I%20have%20reviewed%20the%20policies%20described%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2FFDC3%2Fblob%2Fmain%2FGOVERNANCE.md%20and%20read%20the%20license%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2FFDC3%2Fblob%2Fmain%2FLICENSE%20.%20Thank%20you!")
 
  ## Tracking Attendance
 

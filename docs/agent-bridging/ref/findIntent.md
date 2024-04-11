@@ -46,7 +46,7 @@ sequenceDiagram
 
 ### Example
 
-Outward message to the DAB:
+Outward message to the DAB (with `intent` and `context` specified, but not `resultType`):
 
 ```json
 // agent-A -> DAB
@@ -59,10 +59,10 @@ Outward message to the DAB:
     "meta": {
         "requestUuid": "<requestUuid>",
         "timestamp": "2020-03-...",
-        "source": [{
+        "source": {
             "appId": "agentA-app1",
             "instanceId": "c6ad5174-6f78-4582-8e96-728d93a4d7d7"
-        }]
+        }
     }
 }
 ```

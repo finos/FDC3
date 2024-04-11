@@ -21,7 +21,7 @@ The standard currently consists of four complementary parts:
 - **[App Directory](app-directory/spec)**: A structured repository of information about apps that can be used in an FDC3-enabled desktop.
 
 ## Versioning
-This Standard defines FDC3 Version 1.2. The differences between this version and earlier ones can be found in the [Changelog](https://github.com/finos/FDC3/blob/master/CHANGELOG.md). 
+This Standard defines FDC3 Version 1.2. The differences between this version and earlier ones can be found in the [Changelog](https://github.com/finos/FDC3/blob/main/CHANGELOG.md). 
 
 ## Table of Contents
 - [Compliance information](fdc3-compliance)
