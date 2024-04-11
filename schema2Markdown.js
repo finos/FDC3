@@ -156,7 +156,7 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
 }
 
 function escape(text) {
-    return text.replace(/>/g, '\\>');
+    return text.replace(/>/g, '\\>').replace(/@experimental/g, '[@experiemental](/docs/fdc3-compliance#experimental-features)';
 }
 
 function generateFrontMatter(title, description) {
