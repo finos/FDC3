@@ -11,7 +11,6 @@
     font-weight: 800;
 }
 
-
 @font-face {
     src: url("/fonts/Rokkitt-Medium.ttf");
     font-family: 'Rokkitt';
@@ -31,4 +30,14 @@
 .footer__title,
 .footer__link-item {
 	color: #eee;
+}
+
+/** 
+ * Some werid webpack / docusaurus bug breaking 
+ * responsive styling in netlify */
+ 	
+div[class^="innerAside"] h2 {  	
+ 	@media (max-width: 60rem) {
+	 	font-size: 4rem;
+	}
 }
