@@ -125,18 +125,9 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
         markdownContent += `## Properties\n\n`; 
 
         for (const [propertyName, propertyDetails] of Object.entries(properties)) {
-            markdownContent += processProperty(propertyName, propertyDetails, schema.examples);
+            markdownContent += processProperty(propertyName, propertyDetails, schema.examples, required.includes(propertyName));
         }
 
-        // show required properties
-        if (required && required.length > 0) {
-            markdownContent += `### Required Properties:\n\n`;
-            // for each required property show the name
-            required.forEach((propertyName) => {
-                markdownContent += `* \`${propertyName}\`\n`;
-            });
-            markdownContent += '\n';
-        } 
 
         if (ref) {
             markdownContent += `ref: ${ref}\n\n`;
