@@ -14,7 +14,13 @@ import {
   ImplementationMetadata,
   AppMetadata,
   PrivateChannel,
+  Intent,
+  StandardContextType,
+  StandardIntent,
+  ContextType,
 } from '..';
+import { StandardContextsSet } from '../internal/contextConfiguration';
+import { StandardIntentsSet } from '../internal/intentConfiguration';
 
 const DEFAULT_TIMEOUT = 5000;
 
@@ -74,7 +80,7 @@ export function open(app: AppIdentifier | string, context?: Context): Promise<Ap
   }
 }
 
-export function findIntent(intent: string, context?: Context, resultType?: string): Promise<AppIntent> {
+export function findIntent(intent: Intent, context?: Context, resultType?: string): Promise<AppIntent> {
   return rejectIfNoGlobal(() => window.fdc3.findIntent(intent, context, resultType));
 }
 
@@ -86,7 +92,7 @@ export function broadcast(context: Context): Promise<void> {
   return rejectIfNoGlobal(() => window.fdc3.broadcast(context));
 }
 
-export function raiseIntent(intent: string, context: Context, app?: AppIdentifier | string): Promise<IntentResolution> {
+export function raiseIntent(intent: Intent, context: Context, app?: AppIdentifier | string): Promise<IntentResolution> {
   if (isString(app)) {
     return rejectIfNoGlobal(() => window.fdc3.raiseIntent(intent, context, app));
   } else {
@@ -102,12 +108,12 @@ export function raiseIntentForContext(context: Context, app?: AppIdentifier | st
   }
 }
 
-export function addIntentListener(intent: string, handler: IntentHandler): Promise<Listener> {
+export function addIntentListener(intent: Intent, handler: IntentHandler): Promise<Listener> {
   return rejectIfNoGlobal(() => window.fdc3.addIntentListener(intent, handler));
 }
 
 export function addContextListener(
-  contextTypeOrHandler: string | null | ContextHandler,
+  contextTypeOrHandler: ContextType | null | ContextHandler,
   handler?: ContextHandler
 ): Promise<Listener> {
   //Handle (deprecated) function signature that allowed contextType argument to be omitted
@@ -176,6 +182,22 @@ export function getAppMetadata(app: AppIdentifier): Promise<AppMetadata> {
 
 export function findInstances(app: AppIdentifier): Promise<AppIdentifier[]> {
   return rejectIfNoGlobal(() => window.fdc3.findInstances(app));
+}
+
+/**
+ * Check if the given context is a standard context type.
+ * @param contextType
+ */
+export function isStandardContextType(contextType: ContextType): contextType is StandardContextType {
+  return StandardContextsSet.has(contextType as StandardContextType);
+}
+
+/**
+ * Check if the given intent is a standard intent.
+ * @param intent
+ */
+export function isStandardIntent(intent: Intent): intent is StandardIntent {
+  return StandardIntentsSet.has(intent as StandardIntent);
 }
 
 /**
