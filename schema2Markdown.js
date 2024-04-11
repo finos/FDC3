@@ -107,9 +107,6 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
         markdownContent += `${escape(schema.description)}\n\n`; 
     }
 
-    if (schema.type) {
-        markdownContent += renderType(schema.type);
-    }
     if (schema.enum) {
         markdownContent += renderEnum(schema.enum);
     }
