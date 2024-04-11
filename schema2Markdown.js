@@ -234,7 +234,6 @@ function main() {
             "items": []
         }
 
-        sidebarApiObject.items = parseSchemaFolder('api', version);
         sidebarContextObject.items = parseSchemaFolder('context', version);
 
         if (sidebarObject.docs["FDC3 Standard"] == null) {
@@ -242,7 +241,6 @@ function main() {
         }
 
         sidebarObject.docs["FDC3 Standard"].push(sidebarContextObject)
-        sidebarObject.docs["FDC3 Standard"].push(sidebarApiObject)
 
         fse.outputJSONSync(
             `./website/versioned_sidebars/version-${version}-sidebars.json`, 
