@@ -109,7 +109,7 @@ function hasProperties(schema) {
 // Function to generate Markdown content from JSON schema
 function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
 
-    const objectName = schema.title
+    const objectName = schema.title;
 
     if (schema.title != null) {
         title = schema.title;
@@ -125,10 +125,10 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
         markdownContent += renderEnum(schema.enum);
     }
 
-        const url = filePath.replace("schemas/", `https://github.com/finos/FDC3/tree/main/schemas/`);
-        markdownContent += `## Schema\n\n<${url}>\n\n`;
+    const url = filePath.replace("schemas/", `https://github.com/finos/FDC3/tree/main/schemas/`);
+    markdownContent += `## Schema\n\n<${url}>\n\n`;
 
-        if (hasAllOf(schema.allOf) || hasProperties(schema)) {
+    if (hasAllOf(schema.allOf) || hasProperties(schema)) {
         // Extract properties, required fields, and $ref from the first allOf object
         let root = schema;
         if (hasAllOf(schema.allOf)) {
@@ -154,7 +154,7 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
         }
 
         if (schema.examples && schema.examples.length > 0) {
-            if (schema.examples.length > 1){
+            if (schema.examples.length > 1) {
                 markdownContent += `## Examples\n\n`;
             } else {
                 markdownContent += `## Example\n\n`;
@@ -167,17 +167,16 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
             });
         }
 
-    }
+        const frontMatter = generateFrontMatter(objectName, schema.description);
 
-    const frontMatter = generateFrontMatter(objectName, schema.description);
+        const outputFileName = `./website/versioned_docs/version-${version}/${schemaFolderName}/schemas/${title.replace(/\s+/g, '')}.md`;
 
-    const outputFileName = `./website/versioned_docs/version-${version}/${schemaFolderName}/schemas/${title.replace(/\s+/g, '')}.md`;
+        fse.outputFileSync(outputFileName, `---\n${yaml.dump(frontMatter)}\n---\n\n${markdownContent}`);
 
-    fse.outputFileSync(outputFileName, `---\n${yaml.dump(frontMatter)}\n---\n\n${markdownContent}`);
-
-    // objectName must not contain any spaces
-    if (objectName != null) {
-        return schemaFolderName + '/schemas/' + objectName.replace(/\s+/g, '');
+        // objectName must not contain any spaces
+        if (objectName != null) {
+            return schemaFolderName + '/schemas/' + objectName.replace(/\s+/g, '');
+        }
     }
 }
 
