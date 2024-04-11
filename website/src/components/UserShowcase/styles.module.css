@@ -4,9 +4,11 @@
 	font-size: 8rem;
 	line-height: 1.1;
 	text-align: center;
-	
-	@media (max-width: 60rem) {
-	 	font-size: 4rem;
+}
+
+@media (max-width: 60rem) {
+	.innerAside h2 {
+		font-size: 4rem;
 	}
 }
 

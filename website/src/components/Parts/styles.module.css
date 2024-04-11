@@ -54,9 +54,11 @@
 	font-size: 8rem;
 	font-weight: 800;
 	font-family: "Rokkitt";
-	
-	@media (max-width: 60rem) {
-	 	font-size: 4rem;
+}
+
+@media (max-width: 60rem) {
+	.innerAside h2 {
+		font-size: 4rem;
 	}
 }
 

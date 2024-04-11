@@ -31,15 +31,3 @@
 .footer__link-item {
 	color: #eee;
 }
-
-/** 
- * Some weird webpack / docusaurus bug breaking 
- * responsive styling in netlify 
- */
- 	
-
-@media (max-width: 300px) {
-	div[class^="innerAside"] h2 {  	
-	 	font-size: 4rem;
-	}
-}
