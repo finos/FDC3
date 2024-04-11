@@ -88,7 +88,11 @@ function renderRef(contextRef) {
         objectRef = "../../" + objectType + "/schemas/" + objectName;
     }
 
-    return `**Reference**: [${objectType}/${objectName}](${objectRef})\n\n`;
+    let refLabel = `${objectType}/${objectName}`;
+    if (objectType == objectName) {
+        refLabel = objectName;
+    }
+    return `**Reference**: [${refLabel}](${objectRef})\n\n`;
 }
 
 function hasAllOf(allOfArray) {
