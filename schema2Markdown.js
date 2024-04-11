@@ -212,7 +212,7 @@ function main() {
 
         let sidebarContextObject = {
             "type": "category",
-            "label": "Context Schemas Part",
+            "label": "Context Data Part",
             "items": []
         }
 
