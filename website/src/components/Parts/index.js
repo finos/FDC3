@@ -59,7 +59,7 @@ export default function Parts() {
 				</Carousel1>
 			</div>
 			<p>
-				<a className={styles.button} href="/docs/fdc3-intro">READ THE STANDARD</a>
+				<a className={styles.cta} href="/docs/fdc3-intro">READ THE STANDARD</a>
 			</p>
 		</HomeSection>
 

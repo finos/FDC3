@@ -12,8 +12,8 @@ export default function UserShowcase() {
 
 	return (
 		<HomeSection2>
-			<div>
-				<h2 className={styles.innerAside}>Who is Using FDC3?</h2>
+			<div className={styles.innerAside}>
+				<h2>Who is Using FDC3?</h2>
 				<p className={styles.explanation}>The FDC3 standards are created and used by <a href="/users">leading organizations across the financial industry</a>. For more detail on who's using FDC3, developer tools, training and examples see the <a href="/community">community page</a>.</p>
 			</div>
 			<div className={styles.showcaseOuter}>

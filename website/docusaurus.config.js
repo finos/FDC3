@@ -59,7 +59,8 @@ module.exports={
     "navbar": {
       "title": "FDC3",
       "logo": {
-        "src": "img/fdc3-icon-2019.svg"
+		"src": "img/fdc3-icon-light-2019.svg",
+        "srcDark": "img/fdc3-icon-2019.svg"
       },
       "items": [
         {

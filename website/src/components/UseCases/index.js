@@ -15,7 +15,7 @@ export default function UseCases() {
 			</div>
 			<div className={styles.right}>
 				<img className={styles.image1} src="/img/use-cases/illus.svg" />
-				<a className={styles.button} href="/docs/next/use-cases/overview">READ MORE</a>
+				<a className={styles.cta} href="/docs/next/use-cases/overview">READ MORE</a>
 			</div>
 		</HomeSection>
 	)

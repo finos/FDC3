@@ -46,7 +46,7 @@ export default (props) => {
               <Showcase users={othersToShowcase} />
             </div> : null}
           <p>Are you using FDC3?</p>
-          <a href={editUrl} className="button">
+          <a href={editUrl} className="cta">
             Add your company
           </a>
         </div>

@@ -1,4 +1,4 @@
-.innerAside {
+.innerAside h2 {
 	font-weight: bold;
 	font-family: 'Rokkitt';
 	font-size: 8rem;
@@ -8,6 +8,12 @@
 	@media (max-width: 60rem) {
 	 	font-size: 4rem;
 	}
+}
+
+
+.innerAside p {
+	font-size: 1.5rem;
+	text-align: center;
 }
 
 .showcaseOuter {
@@ -29,7 +35,7 @@
 	padding-right: 15px;
 }
 
-.button {
+.cta {
 	background: #0086bf44;
 	border: 1px solid #ace;
 	border-radius: .5rem;
@@ -44,7 +50,3 @@
 	width: 15rem;
 }
 
-.explanation {
-	font-size: 1.5rem;
-	text-align: center;
-}
