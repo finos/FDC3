@@ -132,11 +132,18 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
             markdownContent += `ref: ${ref}\n\n`;
         }
 
-        if (schema.examples) {
-            markdownContent += `## Examples\n\n`;
-            markdownContent += '```json\n';
-            markdownContent += JSON.stringify(schema.examples, null, 2);
-            markdownContent += '\n```\n\n';
+        if (schema.examples && schema.examples.length > 0) {
+            if (schema.examples.length > 1){
+                markdownContent += `## Examples\n\n`;
+            } else {
+                markdownContent += `## Example\n\n`;
+            }
+            
+            schema.examples.forEach((example) => {
+                markdownContent += '```json\n';
+                markdownContent += JSON.stringify(example, null, 2);
+                markdownContent += '\n```\n\n';
+            });
         }
         const url = filePath.replace("schemas/", `https://github.com/finos/FDC3/tree/master/schemas/`);
         markdownContent += `Generated from ${url}`;
