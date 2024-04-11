@@ -9,7 +9,7 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
         //skip rendering the type property as it should be rendered at the top level
         return markdownContent;
     }   
-    markdownContent += `### \`${propertyName}\`}\n\n`;
+    markdownContent += `### \`${propertyName}\`\n\n`;
     if (required) { markdownContent += `**(required)**\n`; }
 
     if (propertyDetails.description != null) {
@@ -32,6 +32,17 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
 
     if (propertyDetails.allOf) {
         markdownContent += `${propertyDetails.allOf.map((item) => renderRef(item.$ref)).join(', ')}\n\n`;
+    }
+
+    
+    if (propertyDetails.properties && Object.entries(propertyDetails.properties).length > 0) {
+        // console.log("Sub props for "+propertyName+" - ",propertyDetails.properties.entries())
+        markdownContent += '#### Subproperties\n';
+        for (const [subpropertyName, subpropertyDetails] of Object.entries(propertyDetails.properties)) {
+            markdownContent += `Name: \`${subpropertyName}\`\n`;
+            markdownContent += `Type: \`${subpropertyDetails.type}\`\n`;
+            markdownContent += `Description: \`${subpropertyDetails.description}\`\n\n`;
+        };
     }
 
     if (schemaExamples) {
