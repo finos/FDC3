@@ -111,9 +111,9 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
     }
 
         const url = filePath.replace("schemas/", `https://github.com/finos/FDC3/tree/main/schemas/`);
-        markdownContent += ``## Schema\n\n<${url}>\n\n`;
+        markdownContent += `## Schema\n\n<${url}>\n\n`;
 
-    if (hasAllOf(schema.allOf) || hasProperties(schema)) {
+        if (hasAllOf(schema.allOf) || hasProperties(schema)) {
         // Extract properties, required fields, and $ref from the first allOf object
         let root = schema;
         if (hasAllOf(schema.allOf)) {
