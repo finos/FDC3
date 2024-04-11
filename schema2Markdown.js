@@ -2,7 +2,7 @@ const fse = require('fs-extra');
 const yaml = require('js-yaml');
 const path = require('path');
 
-function processProperty(propertyName, propertyDetails, schemaExamples) {
+function processProperty(propertyName, propertyDetails, schemaExamples, required) {
     let markdownContent = '';
 
     if (propertyName === 'type') {
@@ -10,8 +10,8 @@ function processProperty(propertyName, propertyDetails, schemaExamples) {
         markdownContent += `\`${propertyDetails.const}\`\n\n`;
         return markdownContent;
     }   
-    markdownContent += `### ${propertyDetails.title || propertyName}\n\n`;
-    markdownContent += `\`${propertyName}\`\n\n`;
+    markdownContent += `### ${\`${propertyName}\`}\n\n`;
+    if (required) { markdownContent += `**(required)**\n`; }
 
     if (propertyDetails.description != null) {
         markdownContent += `${escape(propertyDetails.description)}\n\n`;
