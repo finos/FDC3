@@ -39,9 +39,9 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
         // console.log("Sub props for "+propertyName+" - ",propertyDetails.properties.entries())
         markdownContent += '#### Subproperties\n';
         for (const [subpropertyName, subpropertyDetails] of Object.entries(propertyDetails.properties)) {
-            markdownContent += `Name: \`${subpropertyName}\`\n`;
-            markdownContent += `Type: \`${subpropertyDetails.type}\`\n`;
-            markdownContent += `Description: \`${subpropertyDetails.description}\`\n\n`;
+            markdownContent += `##### ${subpropertyName}\n`;
+            markdownContent += `- Type: \`${subpropertyDetails.type}\`\n`;
+            markdownContent += `- Description: \`${subpropertyDetails.description}\`\n`;
         };
     }
 
