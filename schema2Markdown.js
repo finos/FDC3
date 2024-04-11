@@ -148,8 +148,6 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
                 markdownContent += '\n```\n\n';
             });
         }
-        const url = filePath.replace("schemas/", `https://github.com/finos/FDC3/tree/master/schemas/`);
-        markdownContent += `Generated from ${url}`;
         
     }
 
