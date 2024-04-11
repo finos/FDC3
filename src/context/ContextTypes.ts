@@ -129,6 +129,7 @@ export interface ContextElement {
    *
    * Identifiers do not make sense for all types of data, so the `id` property is therefore
    * optional, but some derived types may choose to require at least one identifier.
+   * Identifier values SHOULD always be of type string.
    */
   id?: { [key: string]: any };
   /**
@@ -946,6 +947,7 @@ export interface Context {
    *
    * Identifiers do not make sense for all types of data, so the `id` property is therefore
    * optional, but some derived types may choose to require at least one identifier.
+   * Identifier values SHOULD always be of type string.
    */
   id?: { [key: string]: any };
   /**
