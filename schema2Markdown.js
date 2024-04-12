@@ -41,7 +41,7 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
         for (const [subpropertyName, subpropertyDetails] of Object.entries(propertyDetails.properties)) {
             markdownContent += `##### ${subpropertyName}\n`;
             markdownContent += `- Type: \`${subpropertyDetails.type}\`\n`;
-            markdownContent += `- Description: \`${subpropertyDetails.description}\`\n`;
+            markdownContent += `- Description: \`${subpropertyDetails.description}\`\n\n`;
         };
     }
 
@@ -92,7 +92,8 @@ function renderRef(contextRef) {
     if (objectType == objectName) {
         refLabel = objectName;
     }
-    return `**Reference**: [${refLabel}](${objectRef})\n\n`;
+    // We need to prepend ../ since Docusaurus forces a trailing slash at the end of each URL
+    return `**Reference**: [${refLabel}](../${objectRef})\n\n`;
 }
 
 function hasAllOf(allOfArray) {
