@@ -1059,8 +1059,8 @@ export interface ConnectionStep6ConnectedAgentsUpdatePayload {
  */
 export interface DesktopAgentImplementationMetadata {
   /**
-   * Used in Desktop Agent Bridging to attribute or target a message to a
-   * particular Desktop Agent.
+   * Used in Desktop Agent Bridging to attribute or target a message to a particular Desktop
+   * Agent.
    */
   desktopAgent: string;
   /**
