@@ -29,6 +29,7 @@ export type StandardIntent =
 /**
  * @see https://fdc3.finos.org/docs/intents/spec
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type Intent = StandardIntent | (string & {});
 
 /**

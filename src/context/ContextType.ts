@@ -43,6 +43,7 @@ export type ExperimentalContextType =
 /**
  * @see https://fdc3.finos.org/docs/context/spec
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type ContextType = StandardContextType | ExperimentalContextType | (string & {});
 
 /**
