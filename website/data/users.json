@@ -186,5 +186,12 @@
         "infoLink": "https://www.dowjones.com/",
         "pinned": true,
         "isMember": true
+    },
+    {
+        "caption": "Morgan Stanley",
+        "image": "/img/users/MorganStanley.png",
+        "infoLink": "https://www.morganstanley.com/",
+        "pinned": true,
+        "isMember": true
     }    
 ]
