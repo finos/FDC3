@@ -1517,7 +1517,7 @@ export interface PurpleOrderDetails {
 }
 
 /**
- * A product that is the subject of th trade.
+ * A product that is the subject of the trade.
  *
  * @experimental context type representing a tradable product. To be used with OMS and EMS
  * systems.
@@ -1866,7 +1866,7 @@ export interface Trade {
    */
   name?: string;
   /**
-   * A product that is the subject of th trade.
+   * A product that is the subject of the trade.
    */
   product: ProductObject;
   type: 'fdc3.trade';
@@ -1923,7 +1923,7 @@ export interface TradeElement {
    */
   name?: string;
   /**
-   * A product that is the subject of th trade.
+   * A product that is the subject of the trade.
    */
   product: ProductObject;
   type: 'fdc3.trade';
