@@ -46,6 +46,10 @@ export interface IntentResolution {
    */
   readonly intent: Intent;
   /**
+   * The version number of the Intents schema being used.
+   */
+  readonly version?: string;
+  /**
    * Retrieves a promise that will resolve to `Context` data returned
    * by the application that resolves the raised intent, a `Channel`
    * established and returned by the app resolving the intent or void.

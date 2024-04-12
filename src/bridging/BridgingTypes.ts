@@ -3700,6 +3700,10 @@ export interface IntentResolution {
      * received the intent.
      */
     source: AppIdentifier;
+    /**
+     * The version number of the Intents schema being used.
+     */
+    version?: string;
 }
 
 /**
@@ -5749,6 +5753,7 @@ const typeMap: any = {
     "IntentResolution": o([
         { json: "intent", js: "intent", typ: "" },
         { json: "source", js: "source", typ: r("AppIdentifier") },
+        { json: "version", js: "version", typ: u(undefined, "") },
     ], false),
     "RaiseIntentBridgeErrorResponse": o([
         { json: "meta", js: "meta", typ: r("RaiseIntentBridgeErrorResponseMeta") },
