@@ -10,7 +10,7 @@
 
 **getAgent()**: The library function provided by `@finos/fdc3` that discovers and establishes communication to DAs. It may (1) return a reference to an injected `DesktopAgent` instance, (2) use the FDC3 Web Connection Protocol (WCP) to discover a DA (e.g. in a "parent" window or frame) and return a `DesktopAgent` instance that communicates with the DA using the FDC3 Browser Communication Protocol (BCP), or (3) run an application provided failover function that provides direct or indirect access to a `DesktopAgent`.
 
-**Web Connection Protocol (WCP)**: A protocol for discovering and establishing communications with a DA. Ths includes a proscribed algorithm as well as some standard messages that are transmitted using `window.postMessage`.
+**Web Connection Protocol (WCP)**: A protocol for discovering and establishing communications with a DA. Ths includes a prescribed algorithm as well as some standard messages that are transmitted using `window.postMessage`.
 
 **Browser Communication Protocol (BCP)**: A protocol that uses the standard HTML Channel Messaging API (MessagePort) to communicate with a DA in a remote iframe or window via messages.
 
