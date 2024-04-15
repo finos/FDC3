@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3",
-  "version": "2.1.0-beta.4",
+  "version": "2.1.0-beta.7",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -43,7 +43,14 @@
     "printWidth": 120
   },
   "resolutions": {
-    "y18n": "^4.0.1"
+    "y18n": "^4.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1"
+  },
+  "overrides": {
+    "y18n": "^4.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1"
   },
   "devDependencies": {
     "husky": "^4.3.0",

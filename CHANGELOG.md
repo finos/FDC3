@@ -8,11 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added clarification that `id` field values SHOULD always be strings to context schema definition (a restriction that can't easily be represented in the generated types). ([#1149](https://github.com/finos/FDC3/pull/1149))
+
 ### Changed
 
 ### Deprecated
 
 ### Fixed
+
+* Added missing `desktopAgent` field to ImplementationMetadata objects returned for all agents connect to a DesktopAgent bridge in Connection Step 6 connectAgentsUpdate messages and refined the schema used to collect this info in step 3 handshake. ([#1177](https://github.com/finos/FDC3/pull/1177))
+* Removed the `version` field from `IntentResolution` as there are no version fields for intents in the FDC3 API definitions and hence the field has no purpose. ([#1170](https://github.com/finos/FDC3/pull/1170))
 
 ## [FDC3 Standard 2.1](https://github.com/finos/FDC3/compare/v2.0..v2.1) - 2023-09-13
 
@@ -55,6 +60,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+* Removed the union type for the `ChatMessage` context, which caused issues for languages not having union types. This is a breaking change (made before the final version of 2.1 is released).
 * Corrected chatInitSettings context schema to incorporate the Context schema. ([#869](https://github.com/finos/FDC3/pull/869))
 * Corrected schema syntax in chatInitSettings and renamed the `public` property to `isPublic` (as `public` is a reserved keyword in javascript). ([#875](https://github.com/finos/FDC3/pull/875))
 * Further clarified the difference between the behavior of User channels and other channel types on joinUserChannel/addContextListener. ([#971](https://github.com/finos/FDC3/pull/971))

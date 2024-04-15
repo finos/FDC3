@@ -43,6 +43,26 @@ Thursday DD MMM yyyy - 10am (US eastern timezone EDT/EST) / 3pm (London, GMT/BST
 - FINOS project meetings may be recorded for use solely by the FINOS team for administration purposes. In very limited instances, and with explicit approval, recordings may be made more widely available.
   
 - A Discussion Group has no direct decision-making power regarding the FDC3 standard - rather it is intended that anything they propose or work on will result in proposals (via Github issues and PRs) for the Standards Working Group participants to consider and vote on for inclusion in the standard.
+
+
+## Participation Requirements
+
+**Note:** Meeting participants are expected to accept the terms of the FDC3 license (Community Specification License), understand the governance process and have a CLA in place.  
+
+Please click the following links at the start of the meeting if you have not done so previously.
+
+ - [View the CSL](https://raw.githubusercontent.com/finos/FDC3/main/LICENSE.md)
+ - [View the GOVERNANCE of the Project](https://github.com/finos/FDC3/blob/main/GOVERNANCE.md)
+ - [Click here to start a PR](https://github.com/finos/FDC3/edit/main/NOTICES.md). 
+   - Edit the page to add your details.
+   - Hit the save button.
+   - Click "Create Pull Request".
+   - Click "Accept" on the EasyCLA dialog in the PR's discussion section.
+ - [Click here to send email to become a voting participant on the FDC3 Project](mailto:fdc3-participants+subscribe@finos.org?subject=Please%20enroll%20me%20as%20an%20FDC3%20Standards%20Participant&amp;body=HI%2C%20my%20name%20is%20%3CFirstName%20LastName%3E%20and%20I'd%20like%20to%20formally%20participate%20to%20the%20FDC3%20standard%20process.%20I%20plan%20to%20contribute%20as%20%3Cindividual%7Con%20behalf%20of%20organizationName%3E%20and%20I%20have%20reviewed%20the%20policies%20described%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2FFDC3%2Fblob%2Fmain%2FGOVERNANCE.md%20and%20read%20the%20license%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2FFDC3%2Fblob%2Fmain%2FLICENSE%20.%20Thank%20you!")
+
+## Tracking Attendance
+
+**Note:** Meeting participants are expected to _add a comment to this GitHub issue_ in order that we can track attendance of FDC3 project meetings.  Please do this at the start of the meeting.
    
 ## Agenda
 - [ ] Convene & roll call, review meeting notices (5mins)

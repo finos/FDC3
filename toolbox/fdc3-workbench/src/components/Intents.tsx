@@ -39,7 +39,7 @@ import { Checkbox } from "@material-ui/core";
 import { FormGroup } from "@material-ui/core";
 import { FormControlLabel } from "@material-ui/core";
 import { RadioGroup } from "@material-ui/core";
-import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
+import { Alert, ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 
 // interface copied from lib @material-ui/lab/Autocomplete
@@ -979,6 +979,10 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 							</RadioGroup>
 						</Grid>
 					)}
+					<Grid item xs={12}>
+						<Alert severity="info">Desktop Agents often require apps that listen for intents to include the intent in their appD record. Refer to your Desktop Agent's documentation if the workbench doesn't appear in the intent resolver.</Alert>
+					</Grid>
+					
 				</Grid>
 			</form>
 		</div>

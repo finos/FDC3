@@ -5,7 +5,6 @@ import {
   broadcast,
   compareVersionNumbers,
   ContextHandler,
-  ContextTypes,
   DesktopAgent,
   fdc3Ready,
   findIntent,
@@ -26,6 +25,8 @@ import {
   versionIsAtLeast,
   createPrivateChannel,
   findInstances,
+  isStandardContextType,
+  isStandardIntent,
 } from '../src';
 
 const UnavailableError = new Error('FDC3 DesktopAgent not available at `window.fdc3`.');
@@ -33,7 +34,7 @@ const TimeoutError = new Error('Timed out waiting for `fdc3Ready` event.');
 const UnexpectedError = new Error('`fdc3Ready` event fired, but `window.fdc3` not set to DesktopAgent.');
 
 const ContactContext = {
-  type: ContextTypes.Contact,
+  type: 'fdc3.contact',
   id: { email: 'test@example.com' },
 };
 
@@ -163,10 +164,10 @@ describe('test ES6 module', () => {
     test('findIntent should delegate to window.fdc3.findIntent (with additional output type argument)', async () => {
       const intent = 'ViewChart';
 
-      await findIntent(intent, ContactContext, ContextTypes.Contact);
+      await findIntent(intent, ContactContext, 'fdc3.contact');
 
       expect(window.fdc3.findIntent).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.findIntent).toHaveBeenLastCalledWith(intent, ContactContext, ContextTypes.Contact);
+      expect(window.fdc3.findIntent).toHaveBeenLastCalledWith(intent, ContactContext, 'fdc3.contact');
     });
 
     test('findIntentsByContext should delegate to window.fdc3.findIntentsByContext', async () => {
@@ -177,10 +178,10 @@ describe('test ES6 module', () => {
     });
 
     test('findIntentsByContext should delegate to window.fdc3.findIntentsByContext (with additional output type argument)', async () => {
-      await findIntentsByContext(ContactContext, ContextTypes.Contact);
+      await findIntentsByContext(ContactContext, 'fdc3.contact');
 
       expect(window.fdc3.findIntentsByContext).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.findIntentsByContext).toHaveBeenLastCalledWith(ContactContext, ContextTypes.Contact);
+      expect(window.fdc3.findIntentsByContext).toHaveBeenLastCalledWith(ContactContext, 'fdc3.contact');
     });
 
     test('broadcast should delegate to window.fdc3.broadcast', async () => {
@@ -443,5 +444,59 @@ describe('test version comparison functions', () => {
     expect(versionIsAtLeast(metaOneTwoOne, '1.2')).toBe(true);
     expect(versionIsAtLeast(metaOneTwoOne, '1.2.1')).toBe(true);
     expect(versionIsAtLeast(metaOneTwoOne, '2.0')).toBe(false);
+  });
+
+  test('isStandardContextType should return TRUE for standard context types', () => {
+    expect(isStandardContextType('fdc3.action')).toBe(true);
+    expect(isStandardContextType('fdc3.chart')).toBe(true);
+    expect(isStandardContextType('fdc3.chat.initSettings')).toBe(true);
+    expect(isStandardContextType('fdc3.chat.message')).toBe(true);
+    expect(isStandardContextType('fdc3.chat.room')).toBe(true);
+    expect(isStandardContextType('fdc3.chat.searchCriteria')).toBe(true);
+    expect(isStandardContextType('fdc3.contact')).toBe(true);
+    expect(isStandardContextType('fdc3.contactList')).toBe(true);
+    expect(isStandardContextType('fdc3.country')).toBe(true);
+    expect(isStandardContextType('fdc3.currency')).toBe(true);
+    expect(isStandardContextType('fdc3.email')).toBe(true);
+    expect(isStandardContextType('fdc3.instrument')).toBe(true);
+    expect(isStandardContextType('fdc3.instrumentList')).toBe(true);
+    expect(isStandardContextType('fdc3.interaction')).toBe(true);
+    expect(isStandardContextType('fdc3.message')).toBe(true);
+    expect(isStandardContextType('fdc3.organization')).toBe(true);
+    expect(isStandardContextType('fdc3.portfolio')).toBe(true);
+    expect(isStandardContextType('fdc3.position')).toBe(true);
+    expect(isStandardContextType('fdc3.nothing')).toBe(true);
+    expect(isStandardContextType('fdc3.timerange')).toBe(true);
+    expect(isStandardContextType('fdc3.transactionResult')).toBe(true);
+    expect(isStandardContextType('fdc3.valuation')).toBe(true);
+  });
+
+  test('isStandardContextType should return FALSE for custom context types', () => {
+    expect(isStandardContextType('myApp.customContext')).toBe(false);
+  });
+
+  test('isStandardIntent should return TRUE for standard intents', () => {
+    expect(isStandardIntent('CreateInteraction')).toBe(true);
+    expect(isStandardIntent('SendChatMessage')).toBe(true);
+    expect(isStandardIntent('StartCall')).toBe(true);
+    expect(isStandardIntent('StartChat')).toBe(true);
+    expect(isStandardIntent('StartEmail')).toBe(true);
+    expect(isStandardIntent('ViewAnalysis')).toBe(true);
+    expect(isStandardIntent('ViewChat')).toBe(true);
+    expect(isStandardIntent('ViewChart')).toBe(true);
+    expect(isStandardIntent('ViewContact')).toBe(true);
+    expect(isStandardIntent('ViewHoldings')).toBe(true);
+    expect(isStandardIntent('ViewInstrument')).toBe(true);
+    expect(isStandardIntent('ViewInteractions')).toBe(true);
+    expect(isStandardIntent('ViewMessages')).toBe(true);
+    expect(isStandardIntent('ViewNews')).toBe(true);
+    expect(isStandardIntent('ViewOrders')).toBe(true);
+    expect(isStandardIntent('ViewProfile')).toBe(true);
+    expect(isStandardIntent('ViewQuote')).toBe(true);
+    expect(isStandardIntent('ViewResearch')).toBe(true);
+  });
+
+  test('isStandardIntent should return FALSE for custom intents', () => {
+    expect(isStandardIntent('myApp.CustomIntent')).toBe(false);
   });
 });

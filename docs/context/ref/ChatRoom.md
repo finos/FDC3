@@ -36,7 +36,7 @@ const chatRoom = {
   providerName: "Symphony",
   id: {
       streamId: "j75xqXy25NBOdacUI3FNBH"
-  }
+  },
   url: "http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA",
   name: 'My new room'
 };
