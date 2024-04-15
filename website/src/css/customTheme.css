@@ -342,6 +342,9 @@ article iframe {
   padding-bottom: 0px;
   margin-bottom: 0px;
 }
+.filter {
+  margin: 0 2px 5px 0;
+}
 .implementations {
   padding-top: 0px;
   margin-top: 0px;

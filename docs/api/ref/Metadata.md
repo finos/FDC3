@@ -471,7 +471,7 @@ interface ImplementationMetadata {
   readonly fdc3Version: string;
 
   /** The name of the provider of the FDC3 Desktop Agent Implementation
-   *  (e.g.Finsemble, Glue42, OpenFin etc.).
+   *  (e.g. io.Connect, OpenFin etc.).
    */
   readonly provider: string;
 
@@ -625,10 +625,6 @@ interface IntentResolution {
    *  chose in response to `fdc3.raiseIntentForContext()`.
    */
   readonly intent: string;
-
-  /** The version number of the Intents schema being used.
-   */
-  readonly version?: string;
   
   /** Retrieves a promise that will resolve to `Context` data returned 
    *  by the application that resolves the raised intent, a `Channel` 
