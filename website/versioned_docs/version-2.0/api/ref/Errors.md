@@ -122,8 +122,8 @@ Contains constants representing the errors that can be encountered when calling 
 
 ```typescript
 enum ResultError {
-  /** Returned if the `IntentHandler` exited without returning a Promise or that
-   *  Promise was not resolved with a Context or Channel object. 
+  /** Returned if the intent handler exited without returning a valid result 
+   * (a promise resolving to a Context, Channel object or void).
    */
   NoResultReturned = 'NoResultReturned',
 

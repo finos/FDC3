@@ -129,6 +129,7 @@ export interface ContextElement {
    *
    * Identifiers do not make sense for all types of data, so the `id` property is therefore
    * optional, but some derived types may choose to require at least one identifier.
+   * Identifier values SHOULD always be of type string.
    */
   id?: { [key: string]: any };
   /**
@@ -645,10 +646,7 @@ export interface ChatOptions {
  */
 export interface ChatMessage {
   chatRoom: ChatRoomObject;
-  /**
-   * The content of the message to post in the chat when created.
-   */
-  message: MessageObject | string;
+  message: MessageObject;
   type: 'fdc3.chat.message';
   id?: { [key: string]: any };
   name?: string;
@@ -949,6 +947,7 @@ export interface Context {
    *
    * Identifiers do not make sense for all types of data, so the `id` property is therefore
    * optional, but some derived types may choose to require at least one identifier.
+   * Identifier values SHOULD always be of type string.
    */
   id?: { [key: string]: any };
   /**
@@ -1518,7 +1517,7 @@ export interface PurpleOrderDetails {
 }
 
 /**
- * A product that is the subject of th trade.
+ * A product that is the subject of the trade.
  *
  * @experimental context type representing a tradable product. To be used with OMS and EMS
  * systems.
@@ -1867,7 +1866,7 @@ export interface Trade {
    */
   name?: string;
   /**
-   * A product that is the subject of th trade.
+   * A product that is the subject of the trade.
    */
   product: ProductObject;
   type: 'fdc3.trade';
@@ -1924,7 +1923,7 @@ export interface TradeElement {
    */
   name?: string;
   /**
-   * A product that is the subject of th trade.
+   * A product that is the subject of the trade.
    */
   product: ProductObject;
   type: 'fdc3.trade';
@@ -2574,7 +2573,7 @@ const typeMap: any = {
   ChatMessage: o(
     [
       { json: 'chatRoom', js: 'chatRoom', typ: r('ChatRoomObject') },
-      { json: 'message', js: 'message', typ: u(r('MessageObject'), '') },
+      { json: 'message', js: 'message', typ: r('MessageObject') },
       { json: 'type', js: 'type', typ: r('ChatMessageType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },

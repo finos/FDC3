@@ -4,7 +4,7 @@
 
 [![Latest Standard](https://img.shields.io/badge/release-2.0-blue)](https://github.com/finos/fdc3/releases/v2.0)
 [![npm](https://img.shields.io/npm/v/@finos/fdc3)](https://www.npmjs.com/package/@finos/fdc3)
-[![FINOS - Released](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-released.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Released)
+[![FINOS - Released](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@main/images/badge-released.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Released)
 [![GitHub](https://img.shields.io/github/license/finos/fdc3)](https://opensource.org/licenses/Apache-2.0)
 [![Stack Overflow](https://img.shields.io/badge/stackoverflow-fdc3-orange.svg)](https://stackoverflow.com/questions/tagged/fdc3)
 [![npm-build](https://github.com/finos/FDC3/workflows/npm-build/badge.svg)](https://github.com/finos/FDC3/actions?query=workflow%3Anpm-build)
@@ -131,7 +131,7 @@ Please see the [Contributing](CONTRIBUTING.md) guide for details on how to contr
 _NOTE:_
 
 - Issues that change the Standard usually need discussion. You can post comments directly on the issue or can ask for it to be added to a Standards Working Group meeting agenda by emailing [fdc3@finos.org](mailto:fdc3@finos.org), sending a message to the [#fdc3 channel on the FINOS slack](https://finos-lf.slack.com/messages/fdc3/) or tag the FDC3 maintainers (`@finos/fdc3-maintainers`) in your issue.
-- Contributions merged into the master branch of the FDC3 repository will form part of the next pre-draft of the FDC3 Standard (as defined by the [FDC3 Governance document](./GOVERNANCE.md)), which must be approved by a Standard Working Group vote before it is accepted as a draft and subsequently released as the next version of the Standard.
+- Contributions merged into the main branch of the FDC3 repository will form part of the next pre-draft of the FDC3 Standard (as defined by the [FDC3 Governance document](./GOVERNANCE.md)), which must be approved by a Standard Working Group vote before it is accepted as a draft and subsequently released as the next version of the Standard.
 
 ### Why should you get involved in FDC3?
 
@@ -149,7 +149,7 @@ Participants of FINOS standards projects should follow the FINOS Code of Conduct
 
 ## License & Patents
 
-- This version of the FDC3 Standard is licensed under the [Community Specification License](LICENSE).  SPDX-License-Identifier: [Community-Spec-1.0](https://spdx.org/licenses/Community-Spec-1.0). 
+- This version of the FDC3 Standard is licensed under the [Community Specification License](LICENSE.md).  SPDX-License-Identifier: [Community-Spec-1.0](https://spdx.org/licenses/Community-Spec-1.0). 
 
 - Reference implementations and other software contained in FDC3 repositories is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html). SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0). 
 

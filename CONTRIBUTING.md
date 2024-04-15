@@ -1,6 +1,6 @@
 # Contributing to FDC3
 
-This document provides the contribution policy for the FDC3 Standard (the [Working Group](GOVERNANCE.md)) and is based on the [Community Specification Contribution Policy 1.0](https://github.com/finos/standards-project-blueprint/blob/master/governance-documents/6._Contributing.md).
+This document provides the contribution policy for the FDC3 Standard (the [Working Group](GOVERNANCE.md)) and is based on the [Community Specification Contribution Policy 1.0](https://spdx.org/licenses/Community-Spec-1.0.html).
 
 _NOTE:_ Commits and pull requests to FINOS repositories will only be accepted from those participants with an active, executed Individual Contributor License Agreement (ICLA) with FINOS, _OR_ who are covered under an existing and active Corporate Contribution License Agreement (CCLA) executed with FINOS. Commits from individuals not covered under an ICLA or CCLA will be flagged and blocked by the [Linux Foundation `EasyCLA` tool](https://easycla.lfx.linuxfoundation.org/#/). Please note that some CCLAs require individuals/employees to be explicitly named on the CCLA.
 
@@ -30,7 +30,7 @@ The issue lifecycle is mainly driven by the Maintainer.  All issue types follow 
 
  * Have you [searched for duplicates](https://github.com/finos/FDC3/issues?utf8=%E2%9C%93&q=)?  A simple search for exception error messages or a summary of the unexpected behaviour should suffice.
  * Are you using the latest version of the Standard?
-   * Changes that have been merged but not yet released can be found in the [next](https://fdc3.finos.org/docs/next/fdc3-standard) version of the website and details found in the [CHANGELOG](https://github.com/finos/FDC3/blob/master/CHANGELOG.md)
+   * Changes that have been merged but not yet released can be found in the [next](https://fdc3.finos.org/docs/next/fdc3-standard) version of the website and details found in the [CHANGELOG](https://github.com/finos/FDC3/blob/main/CHANGELOG.md)
  * Are you sure this is a bug or missing capability?
 
 **2.1.	Issue Creation.**
@@ -110,7 +110,7 @@ To make review of PRs easier, please:
  
  * Ensure all new source files include a header comment block containing the [Apache License v2.0 and your copyright information](http://www.apache.org/licenses/LICENSE-2.0#apply).
  
- * If necessary (e.g. due to 3rd party dependency licensing requirements), update the [NOTICES.md file](https://github.com/finos/FDC3/blob/master/NOTICES.md) with any new attribution or other notices
+ * If necessary (e.g. due to 3rd party dependency licensing requirements), update the [NOTICES.md file](https://github.com/finos/FDC3/blob/main/NOTICES.md) with any new attribution or other notices
 
 **4.2.	Triage**
 
@@ -143,6 +143,6 @@ To make review of PRs easier, please:
 - Pull requests may be closed by a Maintainer if the decision is made that it is not going to be merged.
 
 ## 5. Adoption of Contributions.
-Contributions merged into the master branch of the FDC3 repository will form part of the next pre-draft of the FDC3 Standard (as defined by the [FDC3 Governance document](./GOVERNANCE.md)), which must be approved by the Standard Working Group voting participants before it is accepted as a draft and subsequently released as the next version of the Standard.
+Contributions merged into the main branch of the FDC3 repository will form part of the next pre-draft of the FDC3 Standard (as defined by the [FDC3 Governance document](./GOVERNANCE.md)), which must be approved by the Standard Working Group voting participants before it is accepted as a draft and subsequently released as the next version of the Standard.
 
 
