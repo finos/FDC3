@@ -735,7 +735,7 @@ components:
     IntentV1:
       description: >-
         (Deprecated v1 API version) An intent definition as defined by spec
-        https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
+        https://github.com/FDC3/Intents/blob/main/src/Intent.yaml
       required:
         - name
       properties:
@@ -853,7 +853,7 @@ components:
           type: array
           description: >
             The list of intents implemented by the application as defined by
-            https://github.com/FDC3/Intents/blob/master/src/Intent.yaml
+            https://github.com/FDC3/Intents/blob/main/src/Intent.yaml
           items:
             $ref: '#/components/schemas/IntentV1'
     ApplicationSearchResponseV1:

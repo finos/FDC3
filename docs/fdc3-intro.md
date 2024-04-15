@@ -38,8 +38,8 @@ The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standards
 
 FDC3 is hosted within, and governed by the policies of, the [Fintech Open Source Foundation](http://finos.org/) (FINOS). FINOS is an independent nonprofit organization focused on promoting open innovation within financial services.
 
-- See the [FDC3 Governance document](https://github.com/finos/FDC3/blob/master/GOVERNANCE.md) for details of how FDC3 is governed.
-- See the [FDC3 Contribution Guide](https://github.com/finos/FDC3/blob/master/CONTRIBUTING.md) for details of how to contribute to FDC3.
+- See the [FDC3 Governance document](https://github.com/finos/FDC3/blob/main/GOVERNANCE.md) for details of how FDC3 is governed.
+- See the [FDC3 Contribution Guide](https://github.com/finos/FDC3/blob/main/CONTRIBUTING.md) for details of how to contribute to FDC3.
 - See the [FDC3 Charter](fdc3-charter#licensing) for details of how deliverables are licensed.
 
 ## Where should I go next?

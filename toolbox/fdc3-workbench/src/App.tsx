@@ -286,8 +286,8 @@ export const App = observer(() => {
 								</Typography>
 								<Typography variant="body1">
 									For web applications to be FDC3-enabled, they need to run in the context of an agent that makes the
-									FDC3 API available to the application. This desktop agent is also responsible for lauching and
-									co-ordinating applications. It could be a browser extension, web app, or full-fledged desktop
+									FDC3 API available to the application. This desktop agent is also responsible for launching and
+									coordinating applications. It could be a browser extension, web app, or full-fledged desktop
 									container framework.
 								</Typography>
 								<Typography variant="body1">

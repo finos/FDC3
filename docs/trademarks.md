@@ -12,8 +12,9 @@ Trademarks used within this site and the FDC3 Standard include, but are not limi
 - Eikon is a registered trademark of Refinitiv
 - FDC3 is a registered trademark and brand of The Linux Foundation
 - Excel is a Microsoft Corporation product name
-- Finsemble is a registered trademark and product name of Finsemble, Inc.
-- Glue42 is a trademark of Tick42
+- Finsemble is a registered trademark and product name of interop.io, Inc.
+- Glue42 is a trademark and product name of interop.io, Inc.
+- io.Connect is a trademark and product name of interop.io, Inc.
 - Java is a registered trademark of Oracle America, Inc.
 - JavaScript  is a registered trademark of Oracle America, Inc.
 - .NET is a trademark of Microsoft Corporation
