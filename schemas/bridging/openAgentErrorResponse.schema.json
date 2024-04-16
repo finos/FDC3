@@ -18,23 +18,10 @@
       "description": "A response to an open request that contains an error",
       "properties": {
         "type": {
-          "title": "Open Response Message Type",
-          "const": "openResponse"
+          "$ref": "../api/openResponse.schema.json#/$defs/OpenResponseType"
         },
         "payload": {
-          "title": "Open Error Response Payload",
-          "type": "object",
-          "properties": {
-            "error": {
-              "title": "Open Error Message",
-              "oneOf": [
-                { "$ref": "../api/api.schema.json#/definitions/OpenError" },
-                { "$ref": "../api/api.schema.json#/definitions/BridgingError" }
-              ]
-            }
-          },
-          "required": ["error"],
-          "additionalProperties": false
+          "$ref": "../api/openResponse.schema.json#/$defs/OpenErrorResponsePayload"
         },
         "meta": {
           "title": "Open Response Metadata",
