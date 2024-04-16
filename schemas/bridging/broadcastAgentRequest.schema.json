@@ -18,26 +18,10 @@
       "description": "A request to broadcast context on a channel.",
       "properties": {
         "type": {
-          "title": "Broadcast Request Message Type",
-          "const": "broadcastRequest"
+          "$ref": "../api/broadcastRequest.schema.json#/$defs/BroadcastRequestType"
         },
         "payload": {
-          "title": "broadcast Request Payload",
-          "type": "object",
-          "properties": {
-            "channelId": {
-              "type": "string",
-              "title": "Channel Id",
-              "description": "The Id of the Channel that the broadcast was sent on"
-            },
-            "context": {
-              "$ref": "../context/context.schema.json",
-              "title": "Context",
-              "description": "The context object that was the payload of a broadcast message."
-            }
-          },
-          "additionalProperties": false,
-          "required": ["channelId", "context"]
+          "$ref": "../api/broadcastRequest.schema.json#/$defs/BroadcastRequestPayload"
         },
         "meta": {
           "type": "object",

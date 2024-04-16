@@ -18,23 +18,10 @@
       "description": "A response to a getAppMetadata request that contains an error.",
       "properties": {
         "type": {
-          "title": "GetAppMetadata Response Message Type",
-          "const": "getAppMetadataResponse"
+          "$ref": "../api/getAppMetadataResponse.schema.json#/$defs/GetAppMetadataResponseType"
         },
         "payload": {
-          "title": "GetAppMetadata Error Response Payload",
-          "type": "object",
-          "properties": {
-            "error": {
-              "title": "GetAppMetadata Error Message",
-              "oneOf": [
-                { "$ref": "../api/api.schema.json#/definitions/ResolveError" },
-                { "$ref": "../api/api.schema.json#/definitions/BridgingError" }
-              ]
-            }
-          },
-          "required": ["error"],
-          "additionalProperties": false
+          "$ref": "../api/getAppMetadataResponse.schema.json#/$defs/GetAppMetadataErrorResponsePayload"
         },
         "meta": {
           "title": "GetAppMetadata Response Metadata",
