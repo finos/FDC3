@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/agentResponseMessage.schema.json",
+  "title": "FDC3 Agent Response Message",
+  "type": "object",
+  "description": "A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the payload contains an `error` property, the request was unsuccessful.",
+  "properties": {
+    "type": {
+      "title": "Message Type",
+      "type": "string",
+      "enum": [
+        "addContextListenerResponse",
+        "addIntentListenerResponse",
+        "broadcastResponse",
+        "createPrivateChannelResponse",
+        "findInstancesResponse",
+        "findIntentResponse",
+        "findIntentsByContextResponse",
+        "getAppMetadataResponse",
+        "getCurrentChannelResponse",
+        "getInfoResponse",
+        "getOrCreateChannelResponse",
+        "getUserChannelsResponse",
+        "joinUserChannelResponse",
+        "leaveCurrentChannelResponse",
+        "openResponse",
+        "raiseIntentResponse",
+        "raiseIntentForContextResponse",
+        "raiseIntentResultResponse",
+        "contextListenerUnsubscribeResponse",
+        "intentListenerUnsubscribeResponse",
+        "PrivateChannel.disconnectResponse"
+      ],
+      "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Response' appended."
+    },
+    "payload": {
+      "title": "Agent Response Message Payload",
+      "type": "object",
+      "description": "A payload for a response to an API call that will contain any return values or an `error` property containing a standardized error message indicating that the request was unsuccessful.",
+      "oneOf": [{
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },{
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "common.schema.json#/$defs/ErrorMessages"
+          }
+        },
+        "required": ["success","error"],
+        "additionalProperties": false
+      }]
+    },
+    "meta": {
+      "title": "Agent Response Message Metadata",
+      "description": "Metadata for messages sent by a Desktop Agent to an App in response to an API call",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "requestUuid": {
+          "$ref": "common.schema.json#/$defs/ResponseUuid"
+        },
+        "responseUuid": {
+          "$ref": "common.schema.json#/$defs/ResponseUuid"
+        },
+        "source": {
+          "title": "Original Source AppIdentifier",
+          "description": "Field that represents the source application that the request being responded to was received from, for debugging purposes.",
+          "$ref": "api.schema.json#/definitions/AppIdentifier"
+        }
+      },
+      "required": ["timestamp", "requestUuid", "responseUuid"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "required": ["type", "payload", "meta"]
+}

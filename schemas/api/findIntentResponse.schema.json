@@ -1,0 +1,72 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/findIntentResponse.schema.json",
+	"type": "object",
+	"title": "FindIntent Response",
+	"description": "A response to a findIntent request.",
+	"allOf": [
+		{
+			"$ref": "agentResponseMessage.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/FindIntentResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/FindIntentSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/FindIntentErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"FindIntentResponseType": {
+			"title": "FindIntent Response Message Type",
+			"const": "findIntentResponse"
+		},
+		"FindIntentSuccessResponsePayload": {
+			"title": "FindIntent Response Payload",
+			"type": "object",
+			"properties": {
+				"appIntent": {
+					"$ref": "../api/api.schema.json#/definitions/AppIntent"
+				}
+			},
+			"required": [
+				"appIntent"
+			]
+		},
+		"FindIntentErrorResponsePayload": {
+			"title": "",
+			"type": "object",
+			"properties": {
+				"error": {
+					"title": "findIntent Errors",
+					"type": "String",
+					"oneOf": [
+						{
+							"$ref": "../api/api.schema.json#/definitions/ResolveError"
+						},
+						{
+							"$ref": "../api/api.schema.json#/definitions/BridgingError"
+						}
+					]
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

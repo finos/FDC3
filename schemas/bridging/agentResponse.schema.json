@@ -37,13 +37,13 @@
       "type": "object",
       "properties": {
         "requestUuid": {
-          "$ref": "common.schema.json#/$defs/RequestUuid"
+          "$ref": "../api/common.schema.json#/$defs/RequestUuid"
         },
         "responseUuid": {
-          "$ref": "common.schema.json#/$defs/ResponseUuid"
+          "$ref": "../api/common.schema.json#/$defs/ResponseUuid"
         },
         "timestamp": {
-          "$ref": "common.schema.json#/$defs/Timestamp"
+          "$ref": "../api/common.schema.json#/$defs/Timestamp"
         }
       },
       "required": ["requestUuid", "responseUuid", "timestamp"],

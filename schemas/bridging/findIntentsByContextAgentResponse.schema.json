@@ -18,23 +18,10 @@
       "description": "A response to a findIntentsByContext request.",
       "properties": {
         "type": {
-          "title": "FindIntentsByContext Response Message Type",
-          "const": "findIntentsByContextResponse"
+          "$ref": "../api/findIntentsByContextResponse.schema.json#/$defs/FindIntentsByContextResponseType"
         },
         "payload": {
-          "title": "FindIntentsByContext Response Payload",
-          "type": "object",
-          "properties": {
-            "appIntents": {
-              "type": "array",
-              "items": {
-                "$ref": "../api/api.schema.json#/definitions/AppIntent"
-              },
-              "additionalProperties": false
-            }
-          },
-          "additionalProperties": false,
-          "required": ["appIntents"]
+          "$ref": "../api/findIntentsByContextResponse.schema.json#/$defs/FindIntentsByContextSuccessResponsePayload"
         },
         "meta": {
           "title": "FindIntentsByContext Response Metadata",
