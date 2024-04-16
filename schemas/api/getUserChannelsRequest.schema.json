@@ -3,7 +3,7 @@
 	"$id": "https://fdc3.finos.org/schemas/next/api/getUserChannelsRequest.schema.json",
 	"type": "object",
 	"title": "GetUserChannels Request",
-	"description": "Request to return a Channel with an auto-generated identity that is intended for private communication between applications.",
+	"description": "Request to retrieve a list of the User Channels available for the app to join.",
 	"allOf": [
 		{
 			"$ref": "appRequest.schema.json"

@@ -1,0 +1,98 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/raiseIntentResultResponse.schema.json",
+	"type": "object",
+	"title": "RaiseIntentResult Response",
+	"description": "A secondary response to a request to raise an intent used to deliver the intent result.",
+	"allOf": [
+		{
+			"$ref": "agentResponseMessage.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/RaiseIntentResultResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/RaiseIntentResultSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/RaiseIntentResultErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"RaiseIntentResultResponseType": {
+			"title": "RaiseIntentResult Response Message Type",
+			"const": "raiseIntentResultResponse"
+		},
+		"RaiseIntentResultSuccessResponsePayload": {
+			"title": "RaiseIntent Result Response Payload",
+			"type": "object",
+			"properties": {
+				"intentResult": {
+					"title": "IntentResult",
+					"anyOf": [
+						{
+							"type": "object",
+							"title": "IntentResult Context",
+							"properties": {
+								"context": {
+									"$ref": "../context/context.schema.json"
+								}
+							},
+							"required": [
+								"context"
+							],
+							"additionalProperties": false
+						},
+						{
+							"type": "object",
+							"title": "IntentResult Channel",
+							"properties": {
+								"channel": {
+									"$ref": "../api/api.schema.json#/definitions/Channel"
+								}
+							},
+							"required": [
+								"channel"
+							],
+							"additionalProperties": false
+						},
+						{
+							"type": "object",
+							"title": "IntentResult Void",
+							"properties": {},
+							"additionalProperties": false
+						}
+					]
+				}
+			},
+			"required": [
+				"intentResult"
+			],
+			"additionalProperties": false
+		},
+		"RaiseIntentResultErrorResponsePayload": {
+			"title": "RaiseIntentResult Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "common.schema.json#/ErrorMessages"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

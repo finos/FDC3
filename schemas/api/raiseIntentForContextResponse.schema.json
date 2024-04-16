@@ -1,0 +1,38 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/raiseIntentForContextResponse.schema.json",
+	"type": "object",
+	"title": "RaiseIntentForContext Response",
+	"description": "A response to a raiseIntentForContext request.",
+	"allOf": [
+		{
+			"$ref": "agentResponseMessage.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/RaiseIntentForContextResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "raiseIntentResponse.schema.json#/$defs/RaiseIntentSuccessResponsePayload"
+						},
+						{
+							"$ref": "raiseIntentResponse.schema.json#/$defs/RaiseIntentErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"RaiseIntentForContextResponseType": {
+			"title": "RaiseIntentForContext Response Message Type",
+			"const": "raiseIntentForContextResponse"
+		}
+	}
+}

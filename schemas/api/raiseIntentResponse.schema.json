@@ -1,0 +1,73 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/raiseIntentResponse.schema.json",
+	"type": "object",
+	"title": "RaiseIntent Response",
+	"description": "A response to a raiseIntent request.",
+	"allOf": [
+		{
+			"$ref": "agentResponseMessage.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/RaiseIntentResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/RaiseIntentSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/RaiseIntentErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"RaiseIntentResponseType": {
+			"title": "RaiseIntent Response Message Type",
+			"const": "raiseIntentResponse"
+		},
+		"RaiseIntentSuccessResponsePayload": {
+			"title": "RaiseIntent Response Payload",
+			"type": "object",
+			"properties": {
+				"intentResolution": {
+					"$ref": "../api/api.schema.json#/definitions/IntentResolution"
+				}
+			},
+			"required": [
+				"intentResolution"
+			],
+			"additionalProperties": false
+		},
+		"RaiseIntentErrorResponsePayload": {
+			"title": "RaiseIntent Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"title": "RaiseIntent Error Response Payload",
+					"type": "String",
+					"oneOf": [
+						{
+							"$ref": "../api/api.schema.json#/definitions/ResolveError"
+						},
+						{
+							"$ref": "../api/api.schema.json#/definitions/BridgingError"
+						}
+					]
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}
