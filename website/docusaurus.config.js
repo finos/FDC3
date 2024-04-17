@@ -153,11 +153,7 @@ module.exports={
             {
               "label": "Training",
               "to": "https://fdc3.finos.org/training"
-            },
-            {
-              "label": "Certification",
-              "to": "/docs/guides/CertificationInstructions"				
-			}
+            }
           ]
         },
         {
