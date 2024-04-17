@@ -42,9 +42,9 @@ The project is divided into several different yarn workspaces:
 
  - `common` : Common APIs and functionality used by both `client` and `server`
 
- - `fdc3-web-demo` : A bare-bones desktop agent implementation with a few apps that use WebFDC3.  See: https://static.swimlanes.io/6bb69f2c9acdc0656f5f3b098d40518e.png for how this works.  Basically, the implementation here is that it uses iframes approach and a server-side websocket to relay messages.
+ - `demo` : A bare-bones desktop agent implementation with a few apps that use WebFDC3.  See: https://static.swimlanes.io/6bb69f2c9acdc0656f5f3b098d40518e.png for how this works.  Basically, the implementation here is that it uses iframes approach and a server-side websocket to relay messages.
 
- - `fdc3-workbench`: The FDC3 Workbench app from https://github.com/FDC3/toolbox/workbench, ported to use WebFDC3. 
+ - `fdc3-workbench`: The FDC3 Workbench app from https://github.com/FDC3/toolbox/workbench, ported to use WebFDC3.   Start with `yarn dev` and invoke from `demo`
  
  
 ## Configuring the client
@@ -81,19 +81,14 @@ The project is divided into several different yarn workspaces:
  - Handing of fdc3Ready
  - Handling on intents, open, finishing test cases for `da` / `testing`
 
-## More Messages
-
-Desktop Agent Briding needs extending with the following types:
-
-
-
-
 ## Troubleshooting
 
 - Try removing tsconfig.tsbuildinfo files if you are having trouble building
 
 ## Issues To Resolve
 
+- Desktop Agent Briding needs extending with types from `fdc3-common/index.ts`
+- Move exchange into client, instead of common.
 - How does the da-server tell the da-proxy about the channel metadata?  We need a message to get the list of user channels from the server.
 - How does the da-server decide on a desktop agent name (maybe it just has one?)
 - AppChecker / AppDetailsResolver / AppPortResolver - this is all too complex.
@@ -102,6 +97,8 @@ Desktop Agent Briding needs extending with the following types:
 - use cookie for the da id.
 - add server tests for intent resolution choice
 - handle disconnections from the server / update running apps
+- test intent resolvers on different domains
+- we shoulnd't be using meta for routing - check this.
 
 ## Idea
 
