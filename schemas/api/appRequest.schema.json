@@ -24,11 +24,13 @@
         "joinUserChannelRequest",
         "leaveCurrentChannelRequest",
         "openRequest",
-        "PrivateChannel.disconnectRequest",
         "raiseIntentRequest",
         "raiseIntentForContextRequest",
         "contextListenerUnsubscribeRequest",
-        "intentListenerUnsubscribeRequest"
+        "intentListenerUnsubscribeRequest",
+        "privateChannelAddEventListenerRequest",
+        "privateChannelUnsubscribeEventListenerRequest",
+        "privateChannelDisconnectRequest"
       ],
       "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Request' appended."
     },
