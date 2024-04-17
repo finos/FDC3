@@ -27,8 +27,10 @@ const instances: Map<string, ConnectedWorld> = new Map()
 io.on('connection', (socket: Socket) => {
 
   var myInstance: ConnectedWorld | undefined
+  var myId: string | undefined
 
   socket.on(DA_HELLO, function (id) {
+    myId = id
     const instance = instances.get(id) ?? {
       server: socket,
       apps: new Map()
@@ -42,11 +44,12 @@ io.on('connection', (socket: Socket) => {
   })
 
   socket.on(APP_HELLO, function (id: string, appID: AppIdentifier) {
+    myId = appID.instanceId!!
     const instance = instances.get(id)
 
     if (instance != undefined) {
       console.log("An app connected: " + id)
-      instance.apps.set(appID.instanceId!!, socket)
+      instance.apps.set(myId, socket)
       myInstance = instance
     } else {
       console.log("App Tried Connecting to non-existent DA Instance " + id + " " + appID.appId + " " + appID.instanceId)
@@ -78,6 +81,13 @@ io.on('connection', (socket: Socket) => {
   })
 
   socket.on("disconnect", function (): void {
-    console.log("Apparent disconnect")
+    if (myInstance) {
+      if (myInstance.server.id == socket.id) {
+        instances.delete(myId!!)
+      } else {
+        myInstance.apps.delete(myId!!)
+        console.log(`Apparent disconnect: ${myInstance.apps.size} remaining`)
+      }
+    }
   })
 })
