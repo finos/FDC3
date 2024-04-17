@@ -20,6 +20,11 @@
       "type": "string",
       "description": "Unique identifier for an event message sent from a Desktop Agent to an app."
     },
+    "ListenerUuid": {
+      "title": "Listener UUID",
+      "type": "string",
+      "description": "Unique identifier for a `listener` object returned by a Desktop Agent to an app in response to addCOntextListener or addIntentListener and used to identify it in messages (e.g. when unsubscribing)."
+    },
     "Timestamp": {
       "title": "Timestamp",
       "type": "string",
