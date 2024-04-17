@@ -23,7 +23,7 @@
     "ListenerUuid": {
       "title": "Listener UUID",
       "type": "string",
-      "description": "Unique identifier for a `listener` object returned by a Desktop Agent to an app in response to addCOntextListener or addIntentListener and used to identify it in messages (e.g. when unsubscribing)."
+      "description": "Unique identifier for a `listener` object returned by a Desktop Agent to an app in response to addContextListener, addIntentListener or one of the PrivateChannel event listeners and used to identify it in messages (e.g. when unsubscribing)."
     },
     "Timestamp": {
       "title": "Timestamp",

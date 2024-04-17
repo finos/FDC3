@@ -1,0 +1,59 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/privateChannelAddEventListenerRequest.schema.json",
+	"type": "object",
+	"title": "PrivateChannelAddEventListener Request",
+	"description": "An event message from the Desktop Agent to an app indicating that another app has added a context listener to a specific PrivateChannel.",
+	"allOf": [
+		{
+			"$ref": "agentRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/PrivateChannelAddEventListenerRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/PrivateChannelAddEventListenerRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"PrivateChannelAddEventListenerRequestType": {
+			"title": "PrivateChannelAddEventListener Request Message Type",
+			"const": "privateChannelAddEventListenerRequest"
+		},
+		"PrivateChannelAddEventListenerRequestPayload": {
+			"title": "privateChannelAddEventListener Event Payload",
+			"type": "object",
+			"properties": {
+				"privateChannelId": {
+					"type": "string",
+					"title": "Private Channel Id",
+					"description": "The Id of the PrivateChannel that the listener should be added to."
+				},
+				"contextType": {
+					"title": "Context type",
+					"description": "The type of the context listener to add to the channel, or null if it should listen to all types.",
+					"oneOf": [
+						{
+							"type": "string"
+						},
+						{
+							"type": "null"
+						}
+					]
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"privateChannelId",
+				"contextType"
+			]
+		}
+	}
+}
