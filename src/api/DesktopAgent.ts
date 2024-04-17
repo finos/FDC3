@@ -528,14 +528,22 @@ export interface DesktopAgent {
 
   /**
    * Use by getAgent() to validate app identity. Apps should not call this function directly.
-   * 
+   *
    * See getAgent.md for instructions.
-   * 
+   *
    * Either appId, appDUrl, or both may be provided. This logic is covered int supported_platforms.md.
-   * 
+   *
    * This function is optional but recommended.
    */
-  validateAppIdentity?({appId, appDUrl, instanceUuid} : { appId?: string, appDUrl?: string, instanceUuid?:string}) : Promise<DesktopAgentDetails>
+  validateAppIdentity?({
+    appId,
+    appDUrl,
+    instanceUuid,
+  }: {
+    appId?: string;
+    appDUrl?: string;
+    instanceUuid?: string;
+  }): Promise<DesktopAgentDetails>;
 
   //---------------------------------------------------------------------------------------------
   // Deprecated function signatures
