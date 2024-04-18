@@ -1,15 +1,7 @@
 import { Messaging } from "da-proxy";
-import { ChannelSelector, ChannelSelectorDetails, CSSPositioning, ChannelSelectionChoiceRequest } from "fdc3-common";
+import { ChannelSelector, ChannelSelectorDetails, CSSPositioning, ChannelSelectionChoiceAgentRequest } from "fdc3-common";
 import { Channel } from "@finos/fdc3";
-
-const DEFAULT_SELECTOR_CONTAINER_CSS: CSSPositioning = {
-    position: "fixed",
-    zIndex: "1000",
-    right: "0",
-    bottom: "10%",
-    width: "150px",
-    height: "200px"
-}
+import { DEFAULT_CONTAINER_CSS } from "../intent-resolution/DefaultDesktopAgentIntentResolver";
 
 const DEFAULT_ICON_CSS: CSSPositioning = {
     position: "fixed",
@@ -93,6 +85,7 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
         return this.details.selector?.uri
             + "?currentId=" + encodeURIComponent(JSON.stringify(this.currentId))
             + "&availableChannels=" + encodeURIComponent(JSON.stringify(this.serializeChannels()))
+            + "&source=" + encodeURIComponent(JSON.stringify(this.m.getSource()))
     }
 
     serializeChannels(): any {
@@ -110,7 +103,7 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
         this.container = document.createElement("div")
         const ifrm = document.createElement("iframe")
 
-        this.theme(this.container, this.details.selector?.css ?? DEFAULT_SELECTOR_CONTAINER_CSS)
+        this.theme(this.container, this.details.selector?.css ?? DEFAULT_CONTAINER_CSS)
         this.themeFrame(ifrm)
 
         ifrm.setAttribute("src", this.buildUrl())
@@ -126,7 +119,7 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
     async chooseChannel(): Promise<void> {
         this.openFrame()
 
-        const choice = await this.m.waitFor<ChannelSelectionChoiceRequest>(m => m.type == 'channelSelectionChoice')
+        const choice = await this.m.waitFor<ChannelSelectionChoiceAgentRequest>(m => m.type == 'channelSelectionChoice')
 
         this.removeFrame()
 

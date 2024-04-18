@@ -65,6 +65,11 @@ io.on('connection', (socket: Socket) => {
       myInstance = Array.from(instances.values()).find(cw => cw.apps.get(from.instanceId))
     }
 
+    if ((myInstance == null) && (data.type == 'channelSelectionChoice')) {
+      // message from app's channelSelector
+      myInstance = Array.from(instances.values()).find(cw => cw.apps.get(from.instanceId))
+    }
+
     if (myInstance != undefined) {
       myInstance!!.server.emit(FDC3_APP_EVENT, data, from)
     }

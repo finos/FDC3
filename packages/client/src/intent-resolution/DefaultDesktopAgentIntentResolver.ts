@@ -2,7 +2,7 @@ import { AppIntent, IntentResult } from "@finos/fdc3";
 import { Messaging } from "da-proxy";
 import { IntentResolver, SingleAppIntent, IntentResolutionChoiceAgentResponse, IntentResolverDetails, CSSPositioning } from "fdc3-common";
 
-const DEFAULT_CONTAINER_CSS: CSSPositioning = {
+export const DEFAULT_CONTAINER_CSS: CSSPositioning = {
     position: "fixed",
     zIndex: "1000",
     left: "10%",

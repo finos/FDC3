@@ -184,8 +184,9 @@ export type IntentResolutionChoiceAgentResponse = {
 export type IntentResolutionChoiceAgentRequest = IntentResolutionChoiceAgentResponse
 
 
-export type ChannelSelectionChoiceRequest = {
+export type ChannelSelectionChoiceAgentRequest = {
     type: 'channelSelectionChoice',
+    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
     payload: {
         channelId: string,
         cancelled: boolean,
