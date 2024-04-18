@@ -1,4 +1,4 @@
-import { AppIdentifier, AppMetadata, DesktopAgent, IntentMetadata, IntentResult } from "@finos/fdc3";
+import { AppIdentifier, AppMetadata, DesktopAgent, IntentMetadata, IntentResult, Channel } from "@finos/fdc3";
 import { exchange, exchangePostMessage, exchangeForMessagePort } from "./exchange";
 import { AppIntent, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerAgentRequestMeta, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
@@ -150,7 +150,9 @@ export interface SingleAppIntent {
 
 export interface ChannelSelector {
 
-    updateChannel(channelId: string | null): void
+    updateChannel(channelId: string | null, availableChannels: Channel[]): void
+
+    setChannelChangeCallback(callback: (channelId: string) => void): void
 
 }
 
@@ -180,3 +182,12 @@ export type IntentResolutionChoiceAgentResponse = {
 
 
 export type IntentResolutionChoiceAgentRequest = IntentResolutionChoiceAgentResponse
+
+
+export type ChannelSelectionChoiceRequest = {
+    type: 'channelSelectionChoice',
+    payload: {
+        channelId: string,
+        cancelled: boolean,
+    }
+}
