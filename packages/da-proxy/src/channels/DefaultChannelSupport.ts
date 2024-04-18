@@ -6,18 +6,29 @@ import { DefaultChannel } from "./DefaultChannel";
 import { StatefulChannel } from "./StatefulChannel";
 import { DefaultContextListener } from "../listeners/DefaultContextListener";
 import { ContextElement } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { ChannelSelector } from 'fdc3-common'
+
+const NO_OP_CHANNEL_SELECTOR: ChannelSelector = {
+
+    updateChannel(_channelId: string | null): void {
+        // does nothing
+    }
+
+}
 
 export class DefaultChannelSupport implements ChannelSupport {
 
     readonly messaging: Messaging
+    readonly channelSelector: ChannelSelector
     protected userChannel: StatefulChannel | null
     protected userChannelState: StatefulChannel[]
     protected userChannelListeners: DefaultContextListener[] = []
 
-    constructor(messaging: Messaging, userChannelState: StatefulChannel[], initialChannelId: string | null) {
+    constructor(messaging: Messaging, userChannelState: StatefulChannel[], initialChannelId: string | null = null, channelSelector: ChannelSelector = NO_OP_CHANNEL_SELECTOR) {
         this.messaging = messaging;
         this.userChannelState = userChannelState;
         this.userChannel = userChannelState.find(c => c.id == initialChannelId) ?? null;
+        this.channelSelector = channelSelector
     }
 
     mergeChannelState(newState: { [key: string]: ContextElement[]; }): void {
@@ -66,6 +77,7 @@ export class DefaultChannelSupport implements ChannelSupport {
         this.userChannelListeners.forEach(
             l => l.updateUnderlyingChannel(null, new Map())
         )
+        this.channelSelector.updateChannel(null)
         return Promise.resolve();
     }
 
@@ -74,6 +86,7 @@ export class DefaultChannelSupport implements ChannelSupport {
             const newUserChannel = this.userChannelState.find(c => c.id == id)
             if (newUserChannel) {
                 this.userChannel = newUserChannel;
+                this.channelSelector.updateChannel(id)
                 this.userChannelListeners.forEach(
                     l => l.updateUnderlyingChannel(newUserChannel.id, newUserChannel.getState()))
             } else {
