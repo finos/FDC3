@@ -4,7 +4,7 @@ import { Socket, io } from 'socket.io-client';
 import { v4 as uuid } from 'uuid'
 import { APP_HELLO, FDC3_DA_EVENT } from '../../message-types';
 import { AppIdentifier, OpenError } from '@finos/fdc3';
-import { AppChecker, DesktopAgentDetailResolver, DesktopAgentDetails, DesktopAgentPortResolver, IntentResolver, ChannelSelector } from 'fdc3-common';
+import { AppChecker, DesktopAgentDetailResolver, DesktopAgentDetails, DesktopAgentPortResolver, IntentResolver, ChannelSelector, ChannelSelectorDetails, IntentResolverDetails } from 'fdc3-common';
 import { link } from './util';
 
 enum Opener { Tab, Frame, Nested }
@@ -142,11 +142,11 @@ export class DemoServerContext implements ServerContext {
     detailsResolver: DesktopAgentDetailResolver = (o: Window, a: AppIdentifier) => {
         const apiKey = "ABC"
 
-        const resolver: IntentResolver = {
+        const intentResolver: IntentResolverDetails = {
             uri: window.location.origin + "/static/da/intent-resolver.html"
         }
 
-        const channelSelector: ChannelSelector = {
+        const channelSelector: ChannelSelectorDetails = {
             icon: {
                 src: window.location.origin + "/static/da/noun-mailbox-6010513.png",
                 css: {
@@ -168,14 +168,14 @@ export class DemoServerContext implements ServerContext {
                 apiKey,
                 uri: window.location.origin + "/static/da/embed.html",
                 desktopAgentId: this.desktopAgentUUID,
-                resolver,
+                intentResolver,
                 channelSelector
-            }
+            } as DesktopAgentDetails
         } else {
             return {
                 apiKey,
                 desktopAgentId: this.desktopAgentUUID,
-                resolver,
+                intentResolver,
                 channelSelector
             } as DesktopAgentDetails
         }
