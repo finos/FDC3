@@ -156,6 +156,9 @@ export class DemoServerContext implements ServerContext {
                     bottom: "20px",
                     position: "fixed"
                 }
+            },
+            selector: {
+                url: window.location.origin + "/static/da/channel-selector.html"
             }
 
         }

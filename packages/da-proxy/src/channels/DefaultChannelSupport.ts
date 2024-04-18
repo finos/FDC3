@@ -12,6 +12,10 @@ const NO_OP_CHANNEL_SELECTOR: ChannelSelector = {
 
     updateChannel(_channelId: string | null): void {
         // does nothing
+    },
+
+    setChannelChangeCallback(_callback: (channelId: string) => void): void {
+        // also does nothing
     }
 
 }
@@ -29,6 +33,14 @@ export class DefaultChannelSupport implements ChannelSupport {
         this.userChannelState = userChannelState;
         this.userChannel = userChannelState.find(c => c.id == initialChannelId) ?? null;
         this.channelSelector = channelSelector
+        this.channelSelector.updateChannel(initialChannelId, userChannelState)
+        this.channelSelector.setChannelChangeCallback((channelId: string) => {
+            if (channelId == null) {
+                this.leaveUserChannel()
+            } else {
+                this.joinUserChannel(channelId)
+            }
+        })
     }
 
     mergeChannelState(newState: { [key: string]: ContextElement[]; }): void {
@@ -77,7 +89,7 @@ export class DefaultChannelSupport implements ChannelSupport {
         this.userChannelListeners.forEach(
             l => l.updateUnderlyingChannel(null, new Map())
         )
-        this.channelSelector.updateChannel(null)
+        this.channelSelector.updateChannel(null, this.userChannelState)
         return Promise.resolve();
     }
 
@@ -86,7 +98,7 @@ export class DefaultChannelSupport implements ChannelSupport {
             const newUserChannel = this.userChannelState.find(c => c.id == id)
             if (newUserChannel) {
                 this.userChannel = newUserChannel;
-                this.channelSelector.updateChannel(id)
+                this.channelSelector.updateChannel(id, this.userChannelState)
                 this.userChannelListeners.forEach(
                     l => l.updateUnderlyingChannel(newUserChannel.id, newUserChannel.getState()))
             } else {
