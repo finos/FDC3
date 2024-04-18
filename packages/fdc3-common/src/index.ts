@@ -11,7 +11,8 @@ export type Options = {
     strategies?: Loader[],
     frame?: Window,
     waitForMs?: number,
-    intentResolver?: IntentResolver
+    intentResolver?: IntentResolver,
+    channelSelector?: ChannelSelector
 }
 
 export { exchange, exchangePostMessage, exchangeForMessagePort }
@@ -41,6 +42,36 @@ export type DesktopAgentDetailResolver = (o: Window, a: AppIdentifier) => Deskto
  */
 export type DesktopAgentPortResolver = (o: Window, a: AppIdentifier) => MessagePort | null
 
+export interface CSSPositioning {
+    width?: string,
+    height?: string,
+    position?: string,
+    zIndex?: string,
+    left?: string,
+    right?: string,
+    top?: string,
+    bottom?: string
+    transition?: string
+
+    // maybe add others here
+}
+
+export type ChannelSelectorDetails = {
+    icon?: {
+        src: string,
+        css?: CSSPositioning,
+    },
+    selector?: {
+        uri: string,
+        css?: CSSPositioning
+    }
+}
+
+export type IntentResolverDetails = {
+    uri: string,
+    css?: CSSPositioning
+}
+
 /**
  * This is the object that the desktop agent must get back to the App.
  * In the first instance, the only approach to instantiating the desktop
@@ -50,7 +81,8 @@ export type APIResponseMessage = {
     type: "FDC3-API-Response",
     method: "message-port",
     appIdentifier: AppIdentifier,
-    resolverUri: string,
+    intentResolver: IntentResolverDetails,
+    channelSelector: ChannelSelectorDetails,
     desktopAgentId: string
     // fdc3Version: string,
     // supportedFDC3Versions: string[],
@@ -116,6 +148,12 @@ export interface SingleAppIntent {
 
 }
 
+export interface ChannelSelector {
+
+    updateChannel(channelId: string | null): void
+
+}
+
 export interface IntentResolver {
 
     /**
@@ -139,5 +177,6 @@ export type IntentResolutionChoiceAgentResponse = {
         chosenApp: AppMetadata
     }
 }
+
 
 export type IntentResolutionChoiceAgentRequest = IntentResolutionChoiceAgentResponse

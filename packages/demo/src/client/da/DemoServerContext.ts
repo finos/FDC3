@@ -4,7 +4,7 @@ import { Socket, io } from 'socket.io-client';
 import { v4 as uuid } from 'uuid'
 import { APP_HELLO, FDC3_DA_EVENT } from '../../message-types';
 import { AppIdentifier, OpenError } from '@finos/fdc3';
-import { AppChecker, DesktopAgentDetailResolver, DesktopAgentDetails, DesktopAgentPortResolver } from 'fdc3-common';
+import { AppChecker, DesktopAgentDetailResolver, DesktopAgentDetails, DesktopAgentPortResolver, IntentResolver, ChannelSelector } from 'fdc3-common';
 import { link } from './util';
 
 enum Opener { Tab, Frame, Nested }
@@ -141,18 +141,39 @@ export class DemoServerContext implements ServerContext {
     // this is for when the API is using an iframe, and needs to know the address to load
     detailsResolver: DesktopAgentDetailResolver = (o: Window, a: AppIdentifier) => {
         const apiKey = "ABC"
+
+        const resolver: IntentResolver = {
+            uri: window.location.origin + "/static/da/intent-resolver.html"
+        }
+
+        const channelSelector: ChannelSelector = {
+            icon: {
+                src: window.location.origin + "/static/da/noun-mailbox-6010513.png",
+                css: {
+                    width: "15px",
+                    height: "15px",
+                    right: "20px",
+                    bottom: "20px",
+                    position: "fixed"
+                }
+            }
+
+        }
+
         if (getApproach() == Approach.IFRAME) {
             return {
                 apiKey,
                 uri: window.location.origin + "/static/da/embed.html",
                 desktopAgentId: this.desktopAgentUUID,
-                resolverUri: window.location.origin + "/static/da/intent-resolver.html"
+                resolver,
+                channelSelector
             }
         } else {
             return {
                 apiKey,
                 desktopAgentId: this.desktopAgentUUID,
-                resolverUri: window.location.origin + "/static/da/intent-resolver.html"
+                resolver,
+                channelSelector
             } as DesktopAgentDetails
         }
     }
