@@ -49,11 +49,11 @@ socket.on("connect", async () => {
     const list = document.getElementById("channel-list")!!
     const close = document.getElementById("close")!!
 
-    function sendChosenChannel(channelId: string, cancel: boolean) {
+    function sendChosenChannel(channelId: string, cancelled: boolean) {
         const out: ChannelSelectionChoiceAgentRequest = {
             type: "channelSelectionChoice",
             payload: {
-                cancel,
+                cancelled,
                 channelId
             },
             meta: {
@@ -76,7 +76,7 @@ socket.on("connect", async () => {
         li.style.backgroundColor = channel.displayMetadata.color
         const a = document.createElement("a")
         const description = document.createElement("em")
-        description.textContent = channel.displayMetadata.name
+        description.textContent = channel.displayMetadata.name = (channel.id == currentChannelId ? " CURRENT CHANNEL " : "")
         a.textContent = channel.id
 
         li.appendChild(a)

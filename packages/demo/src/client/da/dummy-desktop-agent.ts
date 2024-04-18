@@ -5,6 +5,7 @@ import { DA_HELLO, FDC3_APP_EVENT } from "../../message-types";
 import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
 import { DefaultFDC3Server, DirectoryApp, ServerContext } from "da-server";
+import { ChannelState } from "da-server/src/handlers/BroadcastHandler";
 
 
 
@@ -36,7 +37,13 @@ window.addEventListener("load", () => {
         const directory = new FDC3_2_1_JSONDirectory()
         await directory.load("/static/da/appd.json")
         const sc = new DemoServerContext(socket, directory, desktopAgentUUID)
-        const fdc3Server = new DefaultFDC3Server(sc, directory, "FDC3-Web-Demo")
+        const initialChannels: ChannelState = {
+            "one": [],
+            "two": [],
+            "three": [],
+            "four": []
+        }
+        const fdc3Server = new DefaultFDC3Server(sc, directory, "FDC3-Web-Demo", initialChannels)
 
         socket.on(FDC3_APP_EVENT, (msg, from) => {
             fdc3Server.receive(msg, from)

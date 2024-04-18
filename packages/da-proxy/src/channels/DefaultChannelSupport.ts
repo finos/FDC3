@@ -45,6 +45,7 @@ export class DefaultChannelSupport implements ChannelSupport {
 
     mergeChannelState(newState: { [key: string]: ContextElement[]; }): void {
         this.userChannel = null
+        // update known channels
         this.userChannelState.forEach(uc => {
             const incoming = newState[uc.id] ?? []
             incoming.forEach((context) => {
@@ -54,6 +55,23 @@ export class DefaultChannelSupport implements ChannelSupport {
                 }
             });
         })
+
+        // ensure we have new channels
+        for (const [id, contexts] of Object.entries(newState)) {
+            const existing = this.userChannelState.find(c => c.id == id)
+            if (!existing) {
+                const newChannel = new DefaultChannel(this.messaging, id, 'user', {
+                    // todo - figure out how to source these
+                    name: 'channel named ' + id,
+                    color: '#abc',
+                    glyph: "circle.png"
+                })
+                contexts.forEach(c => {
+                    newChannel.latestContextMap.set(c.type, c)
+                })
+                this.userChannelState.push(newChannel)
+            }
+        }
     }
 
     hasUserChannelMembershipAPIs(): boolean {

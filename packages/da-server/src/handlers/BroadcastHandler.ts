@@ -7,7 +7,7 @@ import {
     PrivateChannelBroadcastAgentRequest
 } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { ContextElement } from "@finos/fdc3";
-import { OnAddContextListenerAgentRequest, OnUnsubscribeAgentRequest, ChannelSectionChoiceAgentRequest, ChannelSectionChoiceAgentResponse } from "fdc3-common";
+import { OnAddContextListenerAgentRequest, OnUnsubscribeAgentRequest, ChannelSelectionChoiceAgentRequest, ChannelSelectionChoiceAgentResponse } from "fdc3-common";
 
 type ListenerRegistration = {
     appId: string,
@@ -35,16 +35,17 @@ function createListenerRegistration(msg:
     }
 }
 
-type ChannelState = { [channelId: string]: ContextElement[] }
+export type ChannelState = { [channelId: string]: ContextElement[] }
 
 export class BroadcastHandler implements MessageHandler {
 
     private regs: ListenerRegistration[] = []
-    private state: ChannelState = {}
+    private readonly state: ChannelState = {}
     private readonly desktopAgentName: string
 
-    constructor(name: string) {
+    constructor(name: string, initialChannelState: ChannelState) {
         this.desktopAgentName = name
+        this.state = initialChannelState
     }
 
     accept(msg: any, sc: ServerContext, from: AppMetadata) {
@@ -60,13 +61,13 @@ export class BroadcastHandler implements MessageHandler {
 
             // handling state synchronisation of channels
             case 'hello': return this.handleHello(msg as ConnectionStep2Hello, sc, from)
-            case 'channelSelectionChoice': return this.handleChannelSelectionChoice(msg as ChannelSectionChoiceAgentRequest, from, sc)
+            case 'channelSelectionChoice': return this.handleChannelSelectionChoice(msg as ChannelSelectionChoiceAgentRequest, from, sc)
         }
     }
 
-    handleChannelSelectionChoice(arg0: ChannelSectionChoiceAgentRequest, from: AppMetadata, sc: ServerContext): void | PromiseLike<void> {
+    handleChannelSelectionChoice(arg0: ChannelSelectionChoiceAgentRequest, from: AppMetadata, sc: ServerContext): void | PromiseLike<void> {
         // currently, this is a no-op, just pass the same message to the app
-        const out = arg0 as ChannelSectionChoiceAgentResponse
+        const out = arg0 as ChannelSelectionChoiceAgentResponse
         sc.post(out, from)
     }
 

@@ -67,13 +67,7 @@ function openFrame(url: string): Window {
     return ifrm.contentWindow!!
 }
 
-function buildUserChannelState(messaging: MessagePortMessaging) {
-    // TODO: Figure out how to set initial user channels.  
-    // Should probably be in the message from the server.
-    return [
-        new DefaultChannel(messaging, "one", "user", {
-            color: "red",
-            name: "THE RED CHANNEL"
-        })
-    ]
+function buildUserChannelState(_messaging: MessagePortMessaging) {
+    // we start with no channels and receive from the server after handshake.
+    return []
 }

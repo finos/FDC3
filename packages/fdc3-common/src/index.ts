@@ -29,8 +29,10 @@ export type Loader = (options: Options) => Promise<DesktopAgent>
 /**
  * These are details such as login information sent from the desktop back to the 
  * app in order to initialise the api.
+ * 
+ * TODO: remove this type
  */
-export type DesktopAgentDetails = { [key: string]: string | number | boolean }
+export type DesktopAgentDetails = { [key: string]: any }
 
 /**
  * Use these to return details specific to the window/app needing a connection

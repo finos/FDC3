@@ -1,7 +1,7 @@
 import { AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { FDC3Server } from "./FDC3Server";
 import { ServerContext } from "./ServerContext";
-import { BroadcastHandler } from "./handlers/BroadcastHandler";
+import { BroadcastHandler, ChannelState } from "./handlers/BroadcastHandler";
 import { IntentHandler } from "./handlers/IntentHandler";
 import { Directory } from "./directory/DirectoryInterface";
 import { OpenHandler } from "./handlers/OpenHandler";
@@ -35,9 +35,9 @@ export class BasicFDC3Server implements FDC3Server {
 
 export class DefaultFDC3Server extends BasicFDC3Server {
 
-    constructor(sc: ServerContext, directory: Directory, name: string, timeoutMs: number = 20000) {
+    constructor(sc: ServerContext, directory: Directory, name: string, userChannels: ChannelState, timeoutMs: number = 20000) {
         super([
-            new BroadcastHandler(name),
+            new BroadcastHandler(name, userChannels),
             new IntentHandler(directory, timeoutMs),
             new OpenHandler(directory)
         ], sc)
