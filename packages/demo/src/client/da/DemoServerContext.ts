@@ -158,7 +158,7 @@ export class DemoServerContext implements ServerContext {
                 }
             },
             selector: {
-                url: window.location.origin + "/static/da/channel-selector.html"
+                uri: window.location.origin + "/static/da/channel-selector.html"
             }
 
         }
