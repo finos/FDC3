@@ -47,6 +47,7 @@ socket.on("connect", async () => {
     const source = getSource()
 
     const list = document.getElementById("channel-list")!!
+    const close = document.getElementById("close")!!
 
     function sendChosenChannel(channelId: string, cancel: boolean) {
         const out: ChannelSelectionChoiceAgentRequest = {
@@ -84,5 +85,7 @@ socket.on("connect", async () => {
         a.setAttribute("href", "#")
         a.onclick = () => sendChosenChannel(channel.id, false)
     })
+
+    close.onclick = () => sendChosenChannel("", true)
 
 })

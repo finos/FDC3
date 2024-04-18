@@ -56,6 +56,7 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
         ifrm.setAttribute("name", "FDC3 Channel Selector")
         ifrm.style.width = "100%"
         ifrm.style.height = "100%"
+        ifrm.style.border = "0"
     }
 
     updateChannel(channelId: string | null, availableChannels: Channel[]): void {

@@ -67,6 +67,7 @@ export class DefaultDesktopAgentIntentResolver implements IntentResolver {
         ifrm.setAttribute("name", "FDC3 Intent Resolver")
         ifrm.style.width = "100%"
         ifrm.style.height = "100%"
+        ifrm.style.border = "0"
     }
 
     openFrame(appIntents: AppIntent[]): void {

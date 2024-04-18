@@ -7,7 +7,7 @@ import {
     PrivateChannelBroadcastAgentRequest
 } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { ContextElement } from "@finos/fdc3";
-import { OnAddContextListenerAgentRequest, OnUnsubscribeAgentRequest } from "fdc3-common";
+import { OnAddContextListenerAgentRequest, OnUnsubscribeAgentRequest, ChannelSectionChoiceAgentRequest, ChannelSectionChoiceAgentResponse } from "fdc3-common";
 
 type ListenerRegistration = {
     appId: string,
@@ -60,7 +60,14 @@ export class BroadcastHandler implements MessageHandler {
 
             // handling state synchronisation of channels
             case 'hello': return this.handleHello(msg as ConnectionStep2Hello, sc, from)
+            case 'channelSelectionChoice': return this.handleChannelSelectionChoice(msg as ChannelSectionChoiceAgentRequest, from, sc)
         }
+    }
+
+    handleChannelSelectionChoice(arg0: ChannelSectionChoiceAgentRequest, from: AppMetadata, sc: ServerContext): void | PromiseLike<void> {
+        // currently, this is a no-op, just pass the same message to the app
+        const out = arg0 as ChannelSectionChoiceAgentResponse
+        sc.post(out, from)
     }
 
     handleHello(_hello: ConnectionStep2Hello, sc: ServerContext, from: AppMetadata) {

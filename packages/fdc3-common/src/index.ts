@@ -192,3 +192,6 @@ export type ChannelSelectionChoiceAgentRequest = {
         cancelled: boolean,
     }
 }
+
+export type ChannelSelectionChoiceAgentResponse = ChannelSelectionChoiceAgentRequest
+
