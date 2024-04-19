@@ -5,50 +5,37 @@ sidebar_label: 2. Buy side Portfolio Manager
 layout: use_case
 ---
 
-![User's Desktop](/img/use-cases/7.png) 
+## Preconditions
+On their desktop, this user has:
+- An installed full-service market data terminal with news, quotes, research management, etc. The application is open and FDC3 compatible.
+- A third-party portfolio management system. The application is closed and not FDC3 compatible.
+- An installed application for the chat tool used by the firm. The application is open and FDC3 compatible. It also has a proprietary integration to the portfolio management system.
+- The default web browser for the OS.
+- The default mail application for the OS.
 
+On their mobile device, this user has:
+- The default mail application for the device.
+- The default web browser for the device.
+- The installed application from the market data provider.
+- The installed application for the chat tool used at the firm.
 
-This user has access to:
-
-- An **internal research** platform.
-- A **chat tool** used by the firm.
-- A **portfolio management system**.
-- A **charting tool**.
-- A **market data terminal** which gives news, quotes, research management, etc.
-
-## Workflow 1 
-
-
-1. The user is reading a new report about IBM published on the **market data terminal**.
-2. The user links the **market data terminal **with the **charting app **so that whatever stock is shown in the **market data terminal ** is also shown in the **charting tool.**   
-3. While they read the report on IBM, the **charting tool** shows a real-time graph of the share price of IBM.
-
-![ The portfolio manager is able to link applications together so that they provide different views of the same subject](/img/use-cases/8.png) 
+## Workflow 1 (non-desktop)
+While using the mobile device (out of office), the user receives an email alert from his market data provider that a new research report has been posted which mentions a company that user is interested in. The user wants to read the report and clicks on the link in the email report. The market data application is launched and shows the research report.
 
 ## Workflow 2
-
-1. While reading the report the user wants to look up what the firm’s internal analysts have written about the company. The user opens the** internal research app **and links it to show a view of the same stock that the **market data app** and **chart **are showing. 
-2. The research app changes to show IBM research.
-
-![ The portfolio manager links a third application.](/img/use-cases/9.png) 
-
-3. A note from one analyst is intriguing so the user wants to know more. The user hovers over the name and launches the chat tool with a conversation with the analyst in focus.  Some details regarding the note have already been added to the chat for context.
-
-![ The portfolio manager shares details from the internal research application with a colleague in a chat.](/img/use-cases/10.png) 
-
-4. The user decides to link the **portfolio management **app to the others.  It updates to show the position on the IBM stock.  Now, four applications are synchronized together.
-
-![ The portfolio manager links a fourth application.](/img/use-cases/11.png) 
-
+Back in the office, the user wants to follow up on the report so he goes to his email client, finds the email and clicks the link. The market data application on the desktop displays the research report.
 
 ## Workflow 3
+While reading the report the user wants to look up what the firm’s internal analysts have written about the company. The user hovers over the company identifier in the report and launches a tool within the terminal that shows the firm's internal research. A note from one analyst is intriguing so the user wants to know more. The user hovers over the name and launches the chat tool with a conversation with the analyst in focus and some details regarding the note is already posted to the chat.
 
-1. The user decides they want to go and look at a competitor of IBM: Oracle.  They change the **Market Data** app to bring the ORCL stock into view. 
+## Workflow 4
+During the chat, the analyst sends a link to a web site containing some further details regarding the company and the reason for the note posted. The user clicks on the link and the web browser opens. The user reads the article and continues to chat with the analyst.
 
-2. The four applications all change together to show the information about the ORCL stock instead.
+## Workflow 5
+During the chat, the analyst shares a chart with some important observations highlighted. The user clicks on the chart image in the chat and the terminal opens a live version of the chart with the observations highlighted.
 
-
-![ The portfolio manager changes stock on one application and the others update to match.](/img/use-cases/12.png) 
+## Workflow 6
+During the chat, the user realizes that some changes should be done to their holdings in the company so hovers over the company identifier and launches the portfolio management system. While looking over the holdings the user also wants to contact the firm’s trader who is listed within the system. The user hovers over the name and launches the chat tool with a conversation with the trader in focus.
 
 ## Interoperability Points
 - API
