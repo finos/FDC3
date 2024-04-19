@@ -21,7 +21,7 @@ import { AppMetadata } from './AppMetadata';
  *     appId: “myApp@myorg.com/appd”
  * });
  *
- *  * @example Using appDUrl
+ * @example Using appDUrl
  * const { desktopAgent: fdc3 } = await getAgent({
  *     appId: “myApp”,
  *     appDUrl: "myorg.com/appd"
