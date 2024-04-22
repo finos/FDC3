@@ -149,16 +149,25 @@ export class DemoServerContext implements ServerContext {
         const channelSelector: ChannelSelectorDetails = {
             icon: {
                 src: window.location.origin + "/static/da/noun-mailbox-6010513.png",
-                css: {
-                    width: "15px",
-                    height: "15px",
-                    right: "20px",
-                    bottom: "20px",
-                    position: "fixed"
-                }
+                // css: {
+                //     width: "15px",
+                //     height: "15px",
+                //     right: "20px",
+                //     bottom: "20px",
+                //     position: "fixed"
+                // }
             },
             selector: {
-                uri: window.location.origin + "/static/da/channel-selector.html"
+                uri: window.location.origin + "/static/da/channel-selector.html",
+                css: {
+                    transition: "width 2s, height 4s",
+                    position: "fixed",
+                    zIndex: "1000",
+                    right: "20px",
+                    bottom: "20px",
+                    width: "300px",
+                    height: "300px"
+                }
             }
 
         }
