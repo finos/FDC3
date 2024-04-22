@@ -71,7 +71,7 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
                 document.body.appendChild(this.icon)
 
                 const popup = this.details.selector
-                if (popup) {
+                if (popup?.uri) {
                     // need to allow for dragging here too
                     this.icon.addEventListener("touchend", () => this.chooseChannel())
                     this.icon.addEventListener("mouseup", () => this.chooseChannel())
