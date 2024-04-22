@@ -1,0 +1,43 @@
+.empty {
+    flex-basis: 1rem;
+    flex-grow: 1;
+}
+
+.logo {
+    display: inline;
+    background-color: white;
+    text-align: right;
+    flex-basis: 9rem;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding-right: .5rem;
+    border-top-left-radius: -6px;
+    border-bottom-left-radius: 6px;
+}
+
+.logoImage {
+    display: inline;
+    height: 1.5rem;
+}
+
+
+.logoTextThin {
+    display: inline;
+    font-family: "DM-Sans";
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin: 0;
+}
+
+.logoTextBold {
+    display: inline;
+    font-family: "DM-Sans";
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+    padding: .3rem;
+}
+
+.logoControl {
+    height: 1.1rem;
+}
