@@ -1,0 +1,45 @@
+.outer {
+    background-color: red;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+.top {
+    background-color: #eee;
+    flex-basis: 1rem;
+    flex-grow: 0;
+    flex-shrink: 0;
+    justify-content: flex-end;
+    display: flex;
+}
+
+.middle {
+    background-color: orange;
+    flex-basis: 30rem;
+    flex-grow: 1;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.left {
+    background-color: chartreuse;
+    flex-basis: 6rem;
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.main {
+    background-color: maroon;
+    flex-basis: 50rem;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
