@@ -1,7 +1,7 @@
 .tabs {
     display: flex;
     flex-direction: column;
-    background-color: #eee;
+    background-color: white;
 }
 
 .tab {

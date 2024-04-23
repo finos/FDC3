@@ -1,9 +1,7 @@
-.grids {}
-
-.grid {}
-
-.grid-stack {
-    color: white;
+.grids {
+    padding: 2px;
+    border-radius: .4rem;
+    background-color: bisque;
 }
 
 /** Grid Content */
@@ -21,7 +19,6 @@
     justify-items: center;
     background-color: red;
     flex-grow: 1;
-    flex-basis: 10rem;
     flex-shrink: 1;
 }
 
@@ -74,6 +71,8 @@
 }
 
 
+/** Choose App */
+
 .contentChoose {
     display: flex;
     flex-direction: column;
@@ -81,6 +80,7 @@
     flex-basis: 5rem;
     flex-grow: 0;
     flex-shrink: 0;
+    background-color: aqua;
 }
 
 .contentChooseIcon {

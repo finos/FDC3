@@ -1,17 +1,19 @@
-import { Component, useEffect } from 'react'
+import { useEffect } from 'react'
 import { GridStack } from 'gridstack'
 import { AppPanel, ClientState } from '../state/state'
 import * as styles from './styles.module.css'
 import 'gridstack/dist/gridstack.css'
 
-//const Item = ({ id }) => <div>{id}</div>
-
-
 export const Grids = ({ cs }: { cs: ClientState }) => {
     return (
         <div className={styles.grids}>
             {
-                cs.tabs.map((t, i) => <SimpleGrid key={t.channel} items={t.items} active={i == cs.activeTab} background={t.background} />)
+                cs.getTabs().map((t, i) => {
+                    const panels = cs.getPanels().filter(p => p.tab == t.id)
+                    return (
+                        <SimpleGrid key={t.id} items={panels} active={i == cs.getActiveTab()} background={t.background} />
+                    )
+                })
             }
         </div>
     )
@@ -49,7 +51,7 @@ function SimpleGrid({ items, active, background }: { items: AppPanel[], active: 
         }}>
             {
                 items.map(i =>
-                    <div className='grid-stack-item' data-gs-width={i.w} data-gs-height={i.h}>
+                    <div className='grid-stack-item' gs-w={i.w} gs-h={i.h} gs-x={i.x} gs-y={i.y}>
                         <Content key={i.id} panel={i} />
                     </div>
                 )
