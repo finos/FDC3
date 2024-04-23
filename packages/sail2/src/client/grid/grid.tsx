@@ -11,7 +11,7 @@ export const Grids = ({ cs }: { cs: ClientState }) => {
                 cs.getTabs().map((t, i) => {
                     const panels = cs.getPanels().filter(p => p.tab == t.id)
                     return (
-                        <SimpleGrid key={t.id} items={panels} active={i == cs.getActiveTab()} background={t.background} />
+                        <SimpleGrid key={t.id} items={panels} active={i == cs.getActiveTab()} background={t.background} id={'_gs_' + t.id} />
                     )
                 })
             }
@@ -19,13 +19,14 @@ export const Grids = ({ cs }: { cs: ClientState }) => {
     )
 }
 
-function SimpleGrid({ items, active, background }: { items: AppPanel[], active: boolean, background: string }) {
+function SimpleGrid({ items, active, background, id }: { items: AppPanel[], active: boolean, background: string, id: string }) {
 
     var grid: GridStack | null = null
     var timerId: number | null = null
 
     useEffect(() => {
-        grid = GridStack.init();
+        const el = document.getElementById(id)!!
+        grid = GridStack.addGrid(el);
 
         grid.on("dragstop", (_event, element) => {
             const node = element.gridstackNode;
@@ -45,13 +46,13 @@ function SimpleGrid({ items, active, background }: { items: AppPanel[], active: 
 
 
     return (
-        <div className="grid-stack" style={{
-            visibility: active ? "visible" : "hidden",
+        <div id={id} className="grid-stack" style={{
+            display: active ? "block" : "none",
             backgroundColor: background
         }}>
             {
                 items.map(i =>
-                    <div className='grid-stack-item' gs-w={i.w} gs-h={i.h} gs-x={i.x} gs-y={i.y}>
+                    <div key={i.id} className='grid-stack-item' gs-w={i.w} gs-h={i.h} gs-x={i.x} gs-y={i.y}>
                         <Content key={i.id} panel={i} />
                     </div>
                 )
