@@ -27,6 +27,9 @@ export interface ClientState {
     removePanel(id: string): void
     addPanel(ap: AppPanel): void
     getPanels(): AppPanel[]
+
+    /** Callback */
+    addStateChangeCallback(cb: () => void): void
 }
 
 abstract class AbstractClientState implements ClientState {
@@ -34,6 +37,7 @@ abstract class AbstractClientState implements ClientState {
     private tabs: TabDetail[] = []
     private panels: AppPanel[] = []
     private activeTab: number = 0
+    callbacks: (() => void)[] = []
 
     constructor(tabs: TabDetail[], panels: AppPanel[], activeTab: number) {
         this.tabs = tabs
@@ -90,6 +94,10 @@ abstract class AbstractClientState implements ClientState {
     getPanels(): AppPanel[] {
         return this.panels
     }
+
+    addStateChangeCallback(cb: () => void) {
+        this.callbacks.push(cb)
+    }
 }
 
 class LocalStorageClientState extends AbstractClientState {
@@ -106,6 +114,7 @@ class LocalStorageClientState extends AbstractClientState {
 
     saveState(): void {
         localStorage.setItem('ui-state', JSON.stringify(this))
+        this.callbacks.forEach(cb => cb())
     }
 
 }

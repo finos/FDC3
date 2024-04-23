@@ -8,9 +8,6 @@
     flex-grow: 0;
     flex-shrink: 0;
     gap: .5rem;
-    border-left: 1px solid white;
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
     border-radius: 0;
     border-top-left-radius: .5rem;
     border-bottom-left-radius: .5rem;
@@ -20,7 +17,10 @@
     padding-right: 1rem;
     padding-top: .2rem;
     padding-bottom: .2rem;
+    box-shadow: -4px 4px 3px #00000030;
 }
+
+
 
 .tabDetail {
     display: flex;
@@ -28,6 +28,18 @@
     align-items: center;
     justify-items: start;
     flex-basis: 3rem;
+}
+
+.inactiveTab {
+    background: linear-gradient(90deg, rgba(0, 0, 0, .1) 0%, rgba(0, 0, 0, .6) 60%);
+}
+
+.activeTab {
+    background: linear-gradient(134deg, rgba(255, 255, 255, .3) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+.tab:hover {
+    background: white;
 }
 
 .tabImage {

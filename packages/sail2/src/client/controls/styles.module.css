@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     justify-items: end;
-    background-color: aquamarine;
     justify-self: end;
     align-items: center;
 }

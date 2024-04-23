@@ -1,5 +1,4 @@
 .outer {
-    background-color: #eee;
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -20,7 +19,6 @@
 }
 
 .middle {
-    background-color: orange;
     flex-basis: 30rem;
     flex-grow: 1;
     flex-shrink: 0;
@@ -39,8 +37,11 @@
 }
 
 .main {
-    background-color: maroon;
     flex-basis: 50rem;
     flex-grow: 1;
     flex-shrink: 0;
+    border-top-left-radius: .5rem;
+    border-bottom-left-radius: .5rem;
+    box-shadow: -4px 4px 3px #00000030;
+    overflow: scroll;
 }

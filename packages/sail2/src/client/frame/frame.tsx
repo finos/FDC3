@@ -20,7 +20,7 @@ export const Frame = ({ cs }: { cs: ClientState }) => {
                     <Tabs cs={cs} />
                     <Controls />
                 </div>
-                <div className={styles.main}>
+                <div className={styles.main} style={{ backgroundColor: cs.getTabs()[cs.getActiveTab()].background }}>
                     <Grids cs={cs} />
                 </div>
             </div>
