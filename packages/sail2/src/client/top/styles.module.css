@@ -3,16 +3,27 @@
     flex-grow: 1;
 }
 
+.settings {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    flex-basis: 2rem;
+    flex-grow: 0;
+    flex-shrink: 0;
+    border-bottom-left-radius: 6px;
+}
+
 .logo {
     display: inline;
     background-color: white;
     text-align: right;
-    flex-basis: 9rem;
+    flex-basis: 8rem;
     flex-grow: 0;
     flex-shrink: 0;
     padding-right: .5rem;
-    border-top-left-radius: -6px;
-    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 
 .logoImage {
@@ -38,6 +49,7 @@
     padding: .3rem;
 }
 
-.logoControl {
-    height: 1.1rem;
+.settingsControl {
+    height: 1.3rem;
+
 }

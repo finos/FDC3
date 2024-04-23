@@ -1,0 +1,100 @@
+.grids {}
+
+.grid {}
+
+.grid-stack {
+    color: white;
+}
+
+/** Grid Content */
+
+.content {
+    background-color: yellow;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.contentInner {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    background-color: red;
+    flex-grow: 1;
+    flex-basis: 10rem;
+    flex-shrink: 1;
+}
+
+.contentTitle {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 2rem;
+    flex-shrink: 0;
+    flex-grow: 0;
+    background-color: green;
+    gap: .2rem;
+}
+
+.contentBody {
+    flex-basis: 1rem;
+    flex-grow: 1;
+    flex-shrink: 1;
+    background-color: magenta;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+/** Title Bar **/
+
+.contentTitleText {
+    flex-basis: 5rem;
+    flex-grow: 1;
+    flex-shrink: 1;
+    color: white;
+    padding: .4rem;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipses;
+}
+
+.contentTitleTextSpan {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.contentTitleIcon {
+    flex-basis: 1rem;
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 1rem;
+}
+
+
+.contentChoose {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-basis: 5rem;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.contentChooseIcon {
+    flex-basis: 2rem;
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 2rem;
+}
+
+.contentChooseText {
+    flex-basis: 2rem;
+    flex-grow: 0;
+    flex-shrink: 0;
+    color: white;
+    text-align: center;
+    font-size: smaller;
+}
