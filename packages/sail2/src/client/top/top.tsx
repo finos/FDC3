@@ -13,7 +13,14 @@ export const Logo = () => {
             <img src="/static/icons/logo/logo.png" className={styles.logoImage} />
             <p className={styles.logoTextThin}>FDC3</p>
             <p className={styles.logoTextBold}>Sail</p>
-            <img src="/static/icons/control/dots.svg" className={styles.logoControl} />
+        </div >
+    )
+}
+
+export const Settings = () => {
+    return (
+        <div className={styles.settings}>
+            <img src="/static/icons/control/dots.svg" className={styles.settingsControl} />
         </div >
     )
 }

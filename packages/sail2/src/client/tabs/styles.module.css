@@ -5,7 +5,6 @@
 }
 
 .tab {
-    background-color: purple;
     flex-grow: 0;
     flex-shrink: 0;
     gap: .5rem;
@@ -29,13 +28,11 @@
     align-items: center;
     justify-items: start;
     flex-basis: 3rem;
-    background-color: gray;
 }
 
 .tabImage {
     max-width: 3rem;
     text-align: center;
-    background-color: yellow;
 }
 
 .tabText {
@@ -43,6 +40,8 @@
     color: white;
     font-family: sans-serif;
     display: block;
-    background-color: orange;
     margin: 0;
+    font-family: "DM-Sans";
+    font-weight: 300;
+    font-size: .8rem;
 }
