@@ -34,7 +34,6 @@
 
 .logoTextThin {
     display: inline;
-    font-family: "DM-Sans";
     font-size: 1.3rem;
     font-weight: 300;
     margin: 0;
@@ -42,7 +41,6 @@
 
 .logoTextBold {
     display: inline;
-    font-family: "DM-Sans";
     font-size: 1.3rem;
     font-weight: 600;
     margin: 0;

@@ -11,7 +11,7 @@
 }
 
 .top {
-    background-color: #eee;
+    background-color: #fff;
     flex-basis: 1rem;
     flex-grow: 0;
     flex-shrink: 0;
@@ -29,7 +29,7 @@
 }
 
 .left {
-    background-color: chartreuse;
+    background-color: white;
     flex-basis: 6rem;
     flex-grow: 0;
     flex-shrink: 0;

@@ -19,7 +19,7 @@ export const Tabs = ({ cs }: { cs: ClientState }) => {
     return (
         <div className={styles.tabs}>
             {
-                cs.tabs.map((t, i) => <Tab key={t.channel} td={t} active={i == cs.activeTab} />)
+                cs.getTabs().map((t, i) => <Tab key={t.id} td={t} active={i == cs.getActiveTab()} />)
             }
         </div>
     )
