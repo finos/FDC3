@@ -47,7 +47,7 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
 
     if (schemaExamples) {
         schemaExamples.forEach((example) => {
-            markdownContent += `**Example Value**: \n`;
+            markdownContent += `\n**Example Value**: \n`;
             if (typeof example[propertyName] === 'object') {
                 markdownContent += `\`\`\`json\n${JSON.stringify(example[propertyName], null, 2)}\n\`\`\`\n\n`;
             } else if (example[propertyName]) {
