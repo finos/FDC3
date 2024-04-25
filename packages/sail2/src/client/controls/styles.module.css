@@ -1,13 +1,12 @@
 .controls {
     display: flex;
     flex-direction: column;
-    justify-items: end;
-    justify-self: end;
+    justify-items: start;
     align-items: center;
 }
 
 .control {
-    background-color: black;
+    opacity: .6;
     flex-grow: 0;
     flex-shrink: 0;
     border: 1px solid white;

@@ -3,12 +3,22 @@ import ViteExpress from "vite-express";
 import { Server, Socket } from "socket.io"
 import { APP_HELLO, DA_HELLO, FDC3_APP_EVENT, FDC3_DA_EVENT } from "../message-types"
 import { AppIdentifier } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { FDC3_2_1_JSONDirectory } from "./appd/FDC3_2_1_JSONDirectory";
 
 const app = express();
+
+const directory = new FDC3_2_1_JSONDirectory()
+directory.load("temp/appd.json")
+//directory.load('https://directory.fdc3.finos.org/v2/apps/')
+//directory.load('https://directory.fdc3.finos.org/v2/apps/')
 
 app.get("/iframe", (_, res) => {
   res.send("Hello Vite + TypeScript!");
 });
+
+app.get("/apps", (_, res) => {
+  res.send(JSON.stringify(directory.allApps))
+})
 
 
 const httpServer = ViteExpress.listen(app, 8090, () =>

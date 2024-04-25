@@ -1,3 +1,4 @@
+import { DirectoryApp } from "da-server"
 import { GridStackWidget } from "gridstack"
 
 export type AppPanel = GridStackWidget & {
@@ -25,8 +26,10 @@ export interface ClientState {
     /** Panels */
     updatePanel(ap: AppPanel): void
     removePanel(id: string): void
-    addPanel(ap: AppPanel): void
     getPanels(): AppPanel[]
+
+    /** Apps */
+    open(details: DirectoryApp): void
 
     /** Callback */
     addStateChangeCallback(cb: () => void): void
@@ -86,8 +89,12 @@ abstract class AbstractClientState implements ClientState {
         this.saveState()
     }
 
-    addPanel(ap: AppPanel): void {
-        this.panels.push(ap)
+    open(_detail: DirectoryApp): void {
+        const ap = {
+
+        }
+        console.log("opening app")
+        //this.panels.push(ap)
         this.saveState()
     }
 

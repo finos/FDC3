@@ -5,18 +5,18 @@
 
 /** Grid Content */
 
-.content {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
+.content {}
 
 .contentInner {
-    display: flex;
-    flex-direction: column;
-    justify-items: center;
-    flex-grow: 1;
-    flex-shrink: 1;
+    top: .5rem;
+    left: .5rem;
+    right: .5rem;
+    bottom: .5rem;
+    position: absolute;
+    background-color: #FFFFFF22;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: .25rem;
 }
 
 .contentTitle {
