@@ -1,36 +1,29 @@
-import * as styles from './styles.module.css'
+import {ReactNode} from "react"
+import * as styles from "./styles.module.css"
 
+// const Start = () => {
+//     return (<div className={styles.control}>
+//         <img src="/static/icons/control/start.svg" title="Add App" className={styles.controlImage} />
+//     </div>
+//     )
+// }
 
-
-
-const Start = () => {
-    return (<div className={styles.control}>
-        <img src="/static/icons/control/start.svg" title="Add App" className={styles.controlImage} />
+export const Bin = () => {
+  return (
+    <div className={styles.control} id="trash">
+      <img src="/static/icons/control/bin.svg" title="Remove App" className={styles.controlImage} />
     </div>
-    )
+  )
 }
 
-
-const Bin = () => {
-    return (<div className={styles.control}>
-        <img src="/static/icons/control/bin.svg" title="Remove App" className={styles.controlImage} />
+export const NewPanel = ({onClick}: {onClick: () => void}) => {
+  return (
+    <div className={styles.control}>
+      <img src="/static/icons/control/add.svg" title="Add Tab" className={styles.controlImage} onClick={onClick} />
     </div>
-    )
+  )
 }
 
-const NewTab = () => {
-    return (<div className={styles.control}>
-        <img src="/static/icons/control/add.svg" title="Add Tab" className={styles.controlImage} />
-    </div>
-    )
-}
-
-export const Controls = () => {
-    return (
-        <div className={styles.controls}>
-            <Start />
-            <NewTab />
-            <Bin />
-        </div>
-    )
+export const Controls = ({children}: {children: ReactNode}) => {
+  return <div className={styles.controls}>{children}</div>
 }
