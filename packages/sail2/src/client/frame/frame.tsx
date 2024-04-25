@@ -52,6 +52,7 @@ export class Frame extends Component<FrameProps, FrameState> {
         </div>
         {this.state?.popup == Popup.APPD ? (
           <AppDPanel
+            key="appd"
             cs={this.props.cs}
             closeAction={() =>
               this.setState({

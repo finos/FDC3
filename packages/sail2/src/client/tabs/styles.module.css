@@ -23,7 +23,7 @@
 }
 
 .activeTab {
-    background: linear-gradient(134deg, rgba(255, 255, 255, .4) 0%, rgba(255, 255, 255, 0) 80%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, .4) 0%, rgba(255, 255, 255, 0) 40%);
 }
 
 .tab:hover {

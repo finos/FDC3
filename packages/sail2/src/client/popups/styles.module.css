@@ -7,10 +7,16 @@
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: #00000055;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #00000055;
+    opacity: 0;
+}
+
+.popup[data-loaded] {
+    transition: opacity .3s;
+    opacity: 1;
 }
 
 .popupInner {
@@ -26,15 +32,6 @@
     gap: 1rem;
 }
 
-.ready {
-    transition: opacity width height 3s;
-    opacity: 1;
-}
-
-.loading {
-    transition: opacity 3s;
-    opacity: 0;
-}
 
 .popupArea {
     display: flex;
