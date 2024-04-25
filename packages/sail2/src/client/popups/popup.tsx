@@ -1,4 +1,4 @@
-import {ReactNode} from "react"
+import {Component, ReactNode} from "react"
 import * as styles from "./styles.module.css"
 import {Logo} from "../top/top"
 
@@ -7,25 +7,34 @@ type PopupProps = {
   area: ReactNode
   closeAction: () => void
   title: string
-  loaded: boolean
 }
 
-export const Popup = (p: PopupProps) => {
-  return (
-    <div key="back" className={`${styles.popup} ${p.loaded ? styles.ready : styles.loading}`}>
-      <div key="popup" className={styles.popupInner}>
-        <div className={styles.popupTitle}>
-          <p className={styles.popupTitleText}>{p.title}</p>
-          <Logo />
-        </div>
-        <div className={styles.popupArea}>{p.area}</div>
-        <div className={styles.popupButtons}>
-          <PopupButton onClick={() => p.closeAction()} text="Cancel" disabled={false} />
-          {p.button}
+export class Popup extends Component<PopupProps> {
+  componentDidMount(): void {
+    setTimeout(() => {
+      document.getElementById("backdrop")?.setAttribute("data-loaded", "true")
+    }, 10)
+  }
+
+  render() {
+    return (
+      <div>
+        <div id="backdrop" className={styles.popup}>
+          <div id="popup" className={styles.popupInner}>
+            <div className={styles.popupTitle}>
+              <p className={styles.popupTitleText}>{this.props.title}</p>
+              <Logo />
+            </div>
+            <div className={styles.popupArea}>{this.props.area}</div>
+            <div className={styles.popupButtons}>
+              <PopupButton onClick={() => this.props.closeAction()} text="Cancel" disabled={false} />
+              {this.props.button}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 export const PopupButton = ({text, onClick, disabled}: {text: string; onClick: () => void; disabled: boolean}) => {

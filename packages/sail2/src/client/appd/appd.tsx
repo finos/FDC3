@@ -22,7 +22,6 @@ type AppPanelProps = {closeAction: () => void; cs: ClientState}
 type AppPanelState = {
   chosen: DirectoryApp | null
   apps: DirectoryApp[]
-  loaded: boolean
 }
 
 export class AppDPanel extends Component<AppPanelProps, AppPanelState> {
@@ -31,7 +30,6 @@ export class AppDPanel extends Component<AppPanelProps, AppPanelState> {
     this.state = {
       chosen: null,
       apps: [],
-      loaded: false,
     }
   }
 
@@ -39,10 +37,10 @@ export class AppDPanel extends Component<AppPanelProps, AppPanelState> {
     getServerState()
       .getApplications()
       .then((apps) => {
+        //console.log("loaded - ready to display")
         this.setState({
           chosen: null,
           apps,
-          loaded: false,
         })
       })
   }
@@ -52,7 +50,6 @@ export class AppDPanel extends Component<AppPanelProps, AppPanelState> {
     this.setState({
       apps: this.state.apps,
       chosen: app,
-      loaded: true,
     })
   }
 
@@ -61,8 +58,8 @@ export class AppDPanel extends Component<AppPanelProps, AppPanelState> {
 
     return (
       <Popup
+        key="AppDPopup"
         title="Start Application"
-        loaded={this.state.loaded}
         area={
           <div className={styles.appDContent}>
             <div className={styles.appDApps}>
