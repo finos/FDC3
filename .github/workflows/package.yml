@@ -16,7 +16,9 @@ on:
       - 'docs/**'
       - 'website/**'
   pull_request:
+    types: [opened, reopened, edited, ready_for_review]
     branches:
+      - main
       - release/*
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
