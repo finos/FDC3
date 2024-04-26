@@ -31,7 +31,7 @@ is for at least one standardized identifier to be provided
 |--------------------------|---------|----------|----------------------|
 | `type`                   | string  | Yes      | `'fdc3.country'`     |
 | `name`                   | string  | No       | `'Sweden'`           |
-| `id.COUNTRY_ISOALPHA2`   | string  | Yes      | `'SE'`               |
+| `id.COUNTRY_ISOALPHA2`   | string  | No       | `'SE'`               |
 | `id.COUNTRY_ISOALPHA3`   | string  | No       | `'SWE'`              |
 | `id.ISOALPHA2` *         | string  | No       | `'SE'`               |
 | `id.ISOALPHA3` *         | string  | No       | `'SWE'`              |
