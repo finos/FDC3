@@ -5,6 +5,8 @@ import * as styles from "./styles.module.css"
 import {DirectoryApp} from "da-server"
 import {ClientState} from "../state/client"
 import {Popup, PopupButton} from "../popups/popup"
+import {GridsState} from "../state/grid"
+import {gridIdforTab} from "../grid/grid"
 
 const DEFAULT_ICON = "/static/icons/control/choose-app.svg"
 
@@ -17,7 +19,7 @@ function getIcon(a: DirectoryApp) {
   }
 }
 
-type AppPanelProps = {closeAction: () => void; cs: ClientState}
+type AppPanelProps = {closeAction: () => void; cs: ClientState; gs: GridsState}
 
 type AppPanelState = {
   chosen: DirectoryApp | null
@@ -91,7 +93,17 @@ export class AppDPanel extends Component<AppPanelProps, AppPanelState> {
           </div>
         }
         button={
-          <PopupButton text="open" disabled={this.state.chosen == null} onClick={() => (this.state.chosen ? this.props.cs.open(this.state.chosen) : null)} />
+          <PopupButton
+            text="open"
+            disabled={this.state.chosen == null}
+            onClick={() => {
+              if (this.state.chosen) {
+                const ap = this.props.cs.open(this.state.chosen)
+                this.props.gs.enqueuePanel(ap)
+                this.props.closeAction()
+              }
+            }}
+          />
         }
         closeAction={() => this.props.closeAction()}
       />

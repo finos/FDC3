@@ -20,8 +20,8 @@ const Tab = ({td, active, onClick}: {td: TabDetail; active: boolean; onClick: ()
 export const Tabs = ({cs}: {cs: ClientState}) => {
   return (
     <div className={styles.tabs}>
-      {cs.getTabs().map((t, i) => (
-        <Tab key={t.id} td={t} active={i == cs.getActiveTab()} onClick={() => cs.setActiveTab(i)} />
+      {cs.getTabs().map((t) => (
+        <Tab key={t.id} td={t} active={t.id == cs.getActiveTab().id} onClick={() => cs.setActiveTabId(t.id)} />
       ))}
     </div>
   )

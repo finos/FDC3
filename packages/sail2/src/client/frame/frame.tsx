@@ -7,6 +7,7 @@ import {Grids} from "../grid/grid"
 import {Component} from "react"
 import {AppDPanel} from "../appd/appd"
 import {SettingsPopup} from "../popups/settings"
+import {getGridState} from "../state/grid"
 
 enum Popup {
   NONE,
@@ -31,6 +32,8 @@ export class Frame extends Component<FrameProps, FrameState> {
   }
 
   render() {
+    const activeTab = this.props.cs.getActiveTab()
+
     return (
       <div className={styles.outer}>
         <div className={styles.top}>
@@ -46,14 +49,15 @@ export class Frame extends Component<FrameProps, FrameState> {
               <Bin />
             </Controls>
           </div>
-          <div className={styles.main} style={{backgroundColor: this.props.cs.getTabs()[this.props.cs.getActiveTab()].background}}>
-            <Grids cs={this.props.cs} />
+          <div className={styles.main} style={{backgroundColor: activeTab!!.background}}>
+            <Grids cs={this.props.cs} gs={getGridState()} />
           </div>
         </div>
         {this.state?.popup == Popup.APPD ? (
           <AppDPanel
             key="appd"
             cs={this.props.cs}
+            gs={getGridState()}
             closeAction={() =>
               this.setState({
                 popup: Popup.NONE,
