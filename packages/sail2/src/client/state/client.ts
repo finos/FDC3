@@ -2,6 +2,8 @@ import { DirectoryApp } from "da-server"
 import { GridStackPosition } from "gridstack"
 import { v4 as uuid } from 'uuid'
 
+const STORAGE_KEY = "sail-client-state"
+
 export type AppPanel = GridStackPosition & {
     title: string
     url?: string,
@@ -39,9 +41,9 @@ export interface ClientState {
 
 abstract class AbstractClientState implements ClientState {
 
-    private tabs: TabDetail[] = []
-    private panels: AppPanel[] = []
-    private activeTabId: string
+    protected tabs: TabDetail[] = []
+    protected panels: AppPanel[] = []
+    protected activeTabId: string
     callbacks: (() => void)[] = []
 
     constructor(tabs: TabDetail[], panels: AppPanel[], activeTabId: string) {
@@ -127,19 +129,20 @@ abstract class AbstractClientState implements ClientState {
 class LocalStorageClientState extends AbstractClientState {
 
     constructor() {
-        const theState = localStorage.getItem('sail-state')
+        const theState = localStorage.getItem(STORAGE_KEY)
         if (theState) {
-            const { tabs, panels, activeTab } = JSON.parse(theState)
-            super(tabs, panels, activeTab)
+            const { tabs, panels, activeTabId } = JSON.parse(theState)
+            super(tabs, panels, activeTabId)
         } else {
             super(DEFAULT_TABS, DEFAULT_PANELS, DEFAULT_TABS[0].id)
         }
     }
 
     saveState(): void {
-        localStorage.setItem('ui-state', JSON.stringify(this))
+        const data = JSON.stringify({ tabs: this.tabs, panels: this.panels, activeTabId: this.activeTabId })
+        localStorage.setItem(STORAGE_KEY, data)
         this.callbacks.forEach(cb => cb())
-        console.log("State saved")
+        console.log("State saved" + data)
     }
 
 }

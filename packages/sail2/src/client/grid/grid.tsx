@@ -39,7 +39,14 @@ class SimpleGrid extends Component<SimpleGridProps> {
 
     this.props.gs.ensureGrid(
       this.gridId,
-      (g) => this.props.cs.updatePanel(this.getPanel(g)),
+      (g) => {
+        const panel = this.getPanel(g)
+        panel.x = g.x
+        panel.y = g.y
+        panel.w = g.w
+        panel.h = g.h
+        this.props.cs.updatePanel(this.getPanel(g))
+      },
       (g) => this.props.cs.removePanel(this.getPanel(g).id),
       styles.grid
     )
