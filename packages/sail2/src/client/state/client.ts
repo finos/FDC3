@@ -1,10 +1,12 @@
 import { DirectoryApp } from "da-server"
-import { GridStackWidget } from "gridstack"
+import { GridStackPosition } from "gridstack"
+import { v4 as uuid } from 'uuid'
 
-export type AppPanel = GridStackWidget & {
+export type AppPanel = GridStackPosition & {
     title: string
     url?: string,
-    tab: string
+    tabId: string
+    id: string
 }
 
 export type TabDetail = {
@@ -17,8 +19,8 @@ export type TabDetail = {
 export interface ClientState {
 
     /** Tabs */
-    getActiveTab(): number
-    setActiveTab(n: number): void
+    getActiveTab(): TabDetail
+    setActiveTabId(n: string): void
     getTabs(): TabDetail[]
     addTab(td: TabDetail): void
     removeTab(id: string): void
@@ -29,7 +31,7 @@ export interface ClientState {
     getPanels(): AppPanel[]
 
     /** Apps */
-    open(details: DirectoryApp): void
+    open(details: DirectoryApp): AppPanel
 
     /** Callback */
     addStateChangeCallback(cb: () => void): void
@@ -39,25 +41,25 @@ abstract class AbstractClientState implements ClientState {
 
     private tabs: TabDetail[] = []
     private panels: AppPanel[] = []
-    private activeTab: number = 0
+    private activeTabId: string
     callbacks: (() => void)[] = []
 
-    constructor(tabs: TabDetail[], panels: AppPanel[], activeTab: number) {
+    constructor(tabs: TabDetail[], panels: AppPanel[], activeTabId: string) {
         this.tabs = tabs
         this.panels = panels
-        this.activeTab = activeTab
+        this.activeTabId = activeTabId
         this.saveState()
     }
 
     abstract saveState(): void
 
     /** Tabs */
-    getActiveTab(): number {
-        return this.activeTab
+    getActiveTab(): TabDetail {
+        return this.tabs.find(t => t.id == this.activeTabId)!!
     }
 
-    setActiveTab(n: number) {
-        this.activeTab = n
+    setActiveTabId(id: string) {
+        this.activeTabId = id
         this.saveState()
     }
 
@@ -77,10 +79,16 @@ abstract class AbstractClientState implements ClientState {
 
     /** Panels */
     updatePanel(ap: AppPanel): void {
+        console.log("Panels " + JSON.stringify(this.panels))
         const idx = this.panels.findIndex(p => p.id == ap.id)
         if (idx != -1) {
             this.panels[idx] = ap
+        } else {
+            this.panels.push(ap)
         }
+
+        console.log("Total Panels: " + this.panels.length)
+
         this.saveState()
     }
 
@@ -89,13 +97,22 @@ abstract class AbstractClientState implements ClientState {
         this.saveState()
     }
 
-    open(_detail: DirectoryApp): void {
+    open(detail: DirectoryApp): AppPanel {
         const ap = {
+            x: 1,
+            y: 1,
+            w: 3,
+            h: 4,
+            title: detail.title,
+            tabId: this.activeTabId,
+            id: uuid(),
+            url: 'wxyz' // detail?.details?.url as string
+        } as AppPanel
 
-        }
         console.log("opening app")
-        //this.panels.push(ap)
+        this.panels.push(ap)
         this.saveState()
+        return ap
     }
 
     getPanels(): AppPanel[] {
@@ -110,18 +127,19 @@ abstract class AbstractClientState implements ClientState {
 class LocalStorageClientState extends AbstractClientState {
 
     constructor() {
-        const theState = localStorage.getItem('ui-state')
+        const theState = localStorage.getItem('sail-state')
         if (theState) {
             const { tabs, panels, activeTab } = JSON.parse(theState)
             super(tabs, panels, activeTab)
         } else {
-            super(DEFAULT_TABS, DEFAULT_PANELS, 0)
+            super(DEFAULT_TABS, DEFAULT_PANELS, DEFAULT_TABS[0].id)
         }
     }
 
     saveState(): void {
         localStorage.setItem('ui-state', JSON.stringify(this))
         this.callbacks.forEach(cb => cb())
+        console.log("State saved")
     }
 
 }
@@ -148,11 +166,11 @@ const DEFAULT_TABS: TabDetail[] = [
 ]
 
 const DEFAULT_PANELS: AppPanel[] = [
-    { id: "abc", x: 2, y: 1, h: 2, w: 1, title: "ovme", tab: 'one' },
-    { id: "def", x: 2, y: 4, w: 3, h: 1, title: "Barn Owl", tab: 'one' },
-    { id: "786", x: 4, y: 2, w: 1, h: 1, title: "Routine", tab: 'one' },
-    { id: "322323", x: 3, y: 1, h: 2, w: 1, title: "Maintenance Broncohippy", tab: 'one' },
-    { id: "45", x: 0, y: 6, w: 2, h: 2, title: "Sasquatch", tab: 'two' }
+    { id: "abc", x: 2, y: 1, h: 2, w: 1, title: "ovme", tabId: 'one' },
+    { id: "def", x: 2, y: 4, w: 3, h: 1, title: "Barn Owl", tabId: 'one' },
+    { id: "786", x: 4, y: 2, w: 1, h: 1, title: "Routine", tabId: 'one' },
+    { id: "322323", x: 3, y: 1, h: 2, w: 1, title: "Maintenance Broncohippy", tabId: 'one' },
+    { id: "45", x: 0, y: 6, w: 2, h: 2, title: "Sasquatch", tabId: 'two' }
 ]
 
 const theState = new LocalStorageClientState()

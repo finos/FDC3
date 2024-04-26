@@ -3,9 +3,16 @@
     padding: .5rem;
 }
 
+.grid {
+    cursor: cell;
+    background-color: #FFFFFF;
+}
+
 /** Grid Content */
 
-.content {}
+.content {
+    cursor: pointer;
+}
 
 .contentInner {
     top: .5rem;
