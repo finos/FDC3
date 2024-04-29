@@ -49,6 +49,9 @@ module.exports={
   themes: ['@docusaurus/theme-mermaid'],
   "plugins": [],
   "themeConfig": {
+    "prism": {
+      "additionalLanguages": ["json","csharp"]
+    },
     "algolia": {
       "appId": "YW91L9TW76",
       "apiKey": "ab431bb4107069ef51780d8947cd8e0a",
