@@ -129,7 +129,7 @@ Similar constructs are allowed in JSON Schema by [combining or composing schemas
 }
 ```
 
-However, other languages can be less less-flexible. In most languages, polymorphism of object types is possible via the implementation and/or extension of an interface (for example all context types are derived from the [Context](ref/Context) schema, which can be modelled as an interface). However, this approach is not possible if one of the types in the union is a primitive, meaning it's not a class and can't be modified to implement an interface, e.g.:
+However, other languages can be less flexible. In most languages, polymorphism of object types is possible via the implementation and/or extension of an interface (for example all context types are derived from the [Context](ref/Context) schema, which can be modelled as an interface). However, this approach is not possible if one of the types in the union is a primitive, meaning it's not a class and can't be modified to implement an interface, e.g.:
 
 ```ts
 type Example2 = SomeOtherType | number;
