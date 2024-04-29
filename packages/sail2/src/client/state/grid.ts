@@ -1,6 +1,7 @@
-import { GridStack, GridStackNode } from "gridstack"
+import { GridStack, GridStackNode, GridStackPosition } from "gridstack"
 import { AppPanel } from "./client"
 import { gridIdforTab } from "../grid/grid"
+import { grids } from "../grid/styles.module.css"
 
 export interface GridsState {
 
@@ -10,7 +11,6 @@ export interface GridsState {
 
     ensureGrid(id: string, update: (ap: GridStackNode) => void, remove: (ap: GridStackNode) => void, cssClass: string): void
 
-    removePanel(ap: AppPanel): void
 }
 
 
@@ -21,15 +21,26 @@ class GridstackGridsState implements GridsState {
 
     private panelToAdd: AppPanel | null = null
 
-    enqueuePanel(ap: AppPanel) {
-        this.panelToAdd = ap
+    findEmptyArea(ap: AppPanel, grid: GridStack) {
+        for (let y = 0; y < 10; y++) {
+            for (let x = 0; x < 12 - (ap.w ?? 1); x++) {
+                if (grid.isAreaEmpty(x, y, ap.w ?? 1, ap.h ?? 1)) {
+                    ap.x = x;
+                    ap.y = y;
+                    return;
+                }
+            }
+        }
+        ap.x = 0;
+        ap.y = 0;
+        return
     }
 
-    removePanel(ap: AppPanel): void {
+    enqueuePanel(ap: AppPanel) {
+        this.panelToAdd = ap
         const gridId = gridIdforTab(ap.tabId)
         const grid = this.gridstacks[gridId]
-        const el = document.getElementById(ap.id)
-        grid.removeWidget(el!!)
+        this.findEmptyArea(ap, grid)
     }
 
     ensurePanelsInGrid(): void {
@@ -42,6 +53,13 @@ class GridstackGridsState implements GridsState {
             grid.addWidget(widget)
             this.panelToAdd = null
         }
+
+        // Object.keys(this.gridstacks).forEach(id => {
+        //     const gridId = gridIdforTab(id)
+        //     const el = document.getElementById()
+        //     const state = gs.getGridItems()
+        //     gs.update()
+        // })
     }
 
     ensureGrid(id: string, update: (ap: GridStackNode) => void, remove: (ap: GridStackNode) => void, cssClass: string): void {
