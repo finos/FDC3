@@ -5,6 +5,12 @@ import json from "@rollup/plugin-json";
 import replace from "@rollup/plugin-replace";
 import terser from "@rollup/plugin-terser";
 
+const devProdGlue = `if (process.env.NODE_ENV === 'production') {
+  module.exports = require('./fdc3.cjs.production.min.js');
+} else {
+  module.exports = require('./fdc3.cjs.development.js');
+}`;
+
 export default [
 
     // Development CJS files
@@ -141,4 +147,21 @@ export default [
             typescript(),
         ]
     },
+
+    // Glue for Dev v Prod environments
+    {
+        input: "src/index.ts",  // We don't use the input string, but rollup requires that an `input` be specified
+        output: {
+            file: "dist/index.js",
+            format: "cjs"   // This adds `"use strict"` to the top of index.js
+        },
+        plugins: [
+            {
+                name: "dev-prod-glue",
+                load(){
+                    return devProdGlue;
+                }
+            }
+        ]
+    }
 ];
