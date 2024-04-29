@@ -120,7 +120,7 @@ However, other languages can be less less-flexible. In most languages, polymorph
 type Example2 = SomeOtherType | number;
 ```
 
-Hence, to ensure that FDC3 context objects are implementable in other languages context schemas MUST NOT use `anyOf`/`oneOf` compositions of primitive types in JSON schema (and, hence, unions of primitive types in TypeScript) and SHOULD avoid compositions of Object types unless a defined interface (such as [Context](ref/Context)).
+Hence, to ensure that FDC3 context objects are implementable in other languages context schemas MUST NOT use `anyOf`/`oneOf` compositions of primitive types in JSON schema (and, hence, unions of primitive types in TypeScript) and SHOULD avoid compositions of Object types unless a concept that can be defined as an interface (such as [Context](ref/Context)) is available.
 
 #### Identifiers
 
