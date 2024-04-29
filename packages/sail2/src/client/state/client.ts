@@ -1,4 +1,5 @@
 import { DirectoryApp } from "da-server"
+import { WebAppDetails } from "da-server/src/directory/DirectoryInterface"
 import { GridStackPosition } from "gridstack"
 import { v4 as uuid } from 'uuid'
 
@@ -6,7 +7,7 @@ const STORAGE_KEY = "sail-client-state"
 
 export type AppPanel = GridStackPosition & {
     title: string
-    url?: string,
+    url: string,
     tabId: string
     id: string
 }
@@ -33,7 +34,7 @@ export interface ClientState {
     getPanels(): AppPanel[]
 
     /** Apps */
-    open(details: DirectoryApp): AppPanel
+    open(details: DirectoryApp): AppPanel | null
 
     /** Callback */
     addStateChangeCallback(cb: () => void): void
@@ -99,22 +100,27 @@ abstract class AbstractClientState implements ClientState {
         this.saveState()
     }
 
-    open(detail: DirectoryApp): AppPanel {
-        const ap = {
-            x: 1,
-            y: 1,
-            w: 3,
-            h: 4,
-            title: detail.title,
-            tabId: this.activeTabId,
-            id: uuid(),
-            url: 'wxyz' // detail?.details?.url as string
-        } as AppPanel
+    open(detail: DirectoryApp): AppPanel | null {
+        if (detail.type == 'web') {
+            const url = (detail.details as WebAppDetails).url
+            const ap = {
+                x: 1,
+                y: 1,
+                w: 3,
+                h: 4,
+                title: detail.title,
+                tabId: this.activeTabId,
+                id: uuid(),
+                url
+            } as AppPanel
 
-        console.log("opening app")
-        this.panels.push(ap)
-        this.saveState()
-        return ap
+            console.log("opening app")
+            this.panels.push(ap)
+            this.saveState()
+            return ap
+        } else {
+            return null;
+        }
     }
 
     getPanels(): AppPanel[] {
@@ -169,11 +175,6 @@ const DEFAULT_TABS: TabDetail[] = [
 ]
 
 const DEFAULT_PANELS: AppPanel[] = [
-    { id: "abc", x: 2, y: 1, h: 2, w: 1, title: "ovme", tabId: 'one' },
-    { id: "def", x: 2, y: 4, w: 3, h: 1, title: "Barn Owl", tabId: 'one' },
-    { id: "786", x: 4, y: 2, w: 1, h: 1, title: "Routine", tabId: 'one' },
-    { id: "322323", x: 3, y: 1, h: 2, w: 1, title: "Maintenance Broncohippy", tabId: 'one' },
-    { id: "45", x: 0, y: 6, w: 2, h: 2, title: "Sasquatch", tabId: 'two' }
 ]
 
 const theState = new LocalStorageClientState()

@@ -10,6 +10,7 @@ export interface GridsState {
 
     ensureGrid(id: string, update: (ap: GridStackNode) => void, remove: (ap: GridStackNode) => void, cssClass: string): void
 
+    removePanel(ap: AppPanel): void
 }
 
 
@@ -22,6 +23,13 @@ class GridstackGridsState implements GridsState {
 
     enqueuePanel(ap: AppPanel) {
         this.panelToAdd = ap
+    }
+
+    removePanel(ap: AppPanel): void {
+        const gridId = gridIdforTab(ap.tabId)
+        const grid = this.gridstacks[gridId]
+        const el = document.getElementById(ap.id)
+        grid.removeWidget(el!!)
     }
 
     ensurePanelsInGrid(): void {

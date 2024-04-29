@@ -4,6 +4,7 @@ type schemas = components['schemas']
 
 export type DirectoryIntent = schemas['Intent'] & { intentName: string, appId: string }
 export type DirectoryApp = schemas['Application'];
+export type WebAppDetails = schemas['WebAppDetails']
 
 
 /**
