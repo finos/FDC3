@@ -89,6 +89,10 @@ const PopOutIcon = () => {
   return <img src="/static/icons/control/pop-out.svg" className={styles.contentTitleIcon} title="Pop Out" />
 }
 
+const CloseIcon = () => {
+  return <img src="/static/icons/control/close.svg" className={styles.contentTitleIcon} title="Pop Out" />
+}
+
 const ChooseApp = () => {
   return (
     <div className={styles.contentChoose}>
@@ -103,6 +107,7 @@ const Content = ({panel}: {panel: AppPanel}) => {
     <div className={styles.content}>
       <div className={styles.contentInner}>
         <div className={styles.contentTitle}>
+          <CloseIcon />
           <p className={styles.contentTitleText}>
             <span className={styles.contentTitleTextSpan}>{panel.title}</span>
           </p>
