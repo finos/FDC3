@@ -358,9 +358,9 @@
             ],
             "type": "string"
         },
-        "ImplementationMetadata": {
+        "BaseImplementationMetadata": {
             "description": "Metadata relating to the FDC3 Desktop Agent implementation and its provider.",
-            "title": "ImplementationMetadata",
+            "title": "BaseImplementationMetadata",
             "type": "object",
             "properties": {
                 "fdc3Version": {
@@ -405,20 +405,47 @@
                         "UserChannelMembershipAPIs"
                     ],
                     "title": "optionalFeatures"
-                },
-                "appMetadata": {
-                    "$ref": "#/definitions/AppMetadata",
-                    "description": "The calling application instance's own metadata, according to the Desktop Agent (MUST include at least the `appId` and `instanceId`).",
-                    "title": "appMetadata"
                 }
             },
-            "additionalProperties": false,
             "required": [
-                "appMetadata",
                 "fdc3Version",
                 "optionalFeatures",
                 "provider"
             ]
+        },
+        "ImplementationMetadata": {
+            "description": "Includes Metadata for the current application.",
+            "title": "ImplementationMetadata",
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/BaseImplementationMetadata"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "appMetadata": {
+                            "$ref": "#/definitions/AppMetadata",
+                            "description": "The calling application instance's own metadata, according to the Desktop Agent (MUST include at least the `appId` and `instanceId`).",
+                            "title": "appMetadata"
+                        }
+                    }
+                }
+            ],
+            "properties": {
+                "fdc3Version": true,
+                "provider": true,
+                "providerVersion": true,
+                "optionalFeatures": true,
+                "appMetadata": true
+            },
+            "required": [
+                "fdc3Version",
+                "optionalFeatures",
+                "provider",
+                "appMetadata"
+            ],
+            "additionalProperties": false
         },
         "IntentResolution": {
             "description": "IntentResolution provides a standard format for data returned upon resolving an intent.\n\n```javascript\n//resolve a \"Chain\" type intent\nlet resolution = await agent.raiseIntent(\"intentName\", context);\n\n//resolve a \"Client-Service\" type intent with a data response or a Channel\nlet resolution = await agent.raiseIntent(\"intentName\", context);\ntry {\n\t   const result = await resolution.getResult();\n    if (result && result.broadcast) {\n        console.log(`${resolution.source} returned a channel with id ${result.id}`);\n    } else if (result){\n        console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);\n    } else {\n        console.error(`${resolution.source} didn't return data`\n    }\n} catch(error) {\n    console.error(`${resolution.source} returned an error: ${error}`);\n}\n\n// Use metadata about the resolving app instance to target a further intent\nawait agent.raiseIntent(\"intentName\", context, resolution.source);\n```",
@@ -434,11 +461,6 @@
                     "description": "The intent that was raised. May be used to determine which intent the user\nchose in response to `fdc3.raiseIntentForContext()`.",
                     "type": "string",
                     "title": "intent"
-                },
-                "version": {
-                    "description": "The version number of the Intents schema being used.",
-                    "type": "string",
-                    "title": "version"
                 }
             },
             "additionalProperties": false,

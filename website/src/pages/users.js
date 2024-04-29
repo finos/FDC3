@@ -12,6 +12,7 @@ import Layout from "@theme/Layout";
 import Container from "../components/Container"
 import Showcase from "../../core/Showcase"
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import styles from "./showcase.styles.css"
 
 export default (props) => {
   const context = useDocusaurusContext();
@@ -39,13 +40,13 @@ export default (props) => {
           {/* <div className="logos">{showcase}</div> */}
           {othersToShowcase.length > 0 ?
             <div>
-              <div className="prose paddingTop">
+              <div className="prose">
                 <p>FDC3 is also used by financial organizations of all sizes.</p>
               </div>
               <Showcase users={othersToShowcase} />
             </div> : null}
           <p>Are you using FDC3?</p>
-          <a href={editUrl} className="button">
+          <a href={editUrl} className="cta">
             Add your company
           </a>
         </div>
