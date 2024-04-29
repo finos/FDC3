@@ -1,7 +1,7 @@
 .tabs {
     display: flex;
     flex-direction: column;
-    background-color: white;
+    z-index: 10;
 }
 
 .tab {
@@ -19,13 +19,17 @@
 }
 
 .inactiveTab {
-    background: linear-gradient(90deg, rgba(0, 0, 0, .1) 0%, rgba(0, 0, 0, .4) 60%);
+    z-index: 1;
+    background: linear-gradient(90deg, rgba(0, 0, 0, .1) 90%, rgba(0, 0, 0, .7) 100%);
 }
 
 .activeTab {
-    background: linear-gradient(90deg, rgba(255, 255, 255, .4) 0%, rgba(255, 255, 255, 0) 40%);
+    z-index: 10;
+    background: linear-gradient(165deg, rgba(255, 255, 255, .4) 0%, rgba(255, 255, 255, 0) 20%);
 }
 
-.tab:hover {
-    background: white;
+.activeTab:hover {}
+
+.inactiveTab:hover {
+    background: linear-gradient(90deg, rgba(255, 255, 255, .1) 90%, rgba(0, 0, 0, .8) 100%);
 }
