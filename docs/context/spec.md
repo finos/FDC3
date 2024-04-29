@@ -104,6 +104,24 @@ It may be as simple as adding an optional `$version` property to types, but it c
 
 This Standard defines a number of conventions for the fields of context types that all context objects SHOULD adhere to in order to reduce or prevent competing conventions from being established in both standardized types and proprietary types created by app developers.
 
+#### Avoid union types / composition of primitive types
+
+Both Typescript and JSON Schema allow for a type of polymorphism in types and interfaces that is hard to represent in other languages: allowing the type of a variable to be a union of other, unrelated types. E.g.: in typescript
+
+```ts
+type Example = SomeOtherType | YetAnotherType;
+```
+
+Similar constructs are allowed in JSON Schema by using the `anyOf` or `oneOf` keywords to specify that a value can take the form defined in one-or-more or one-of-several sub-schemas.
+
+However, other languages can be less less-flexible. In most languages, polymorphism of object types is possible via the implementation and/or extension of an interface (for example all context types are derived from the [Context](ref/Context) schema, which can be modelled as an interface). However, this approach is not possible if one of the types in the union is a primitive, meaning it's not a class and can't be modified to implement an interface, e.g.:
+
+```ts
+type Example2 = SomeOtherType | number;
+```
+
+Hence, to ensure that FDC3 context objects are implementable in other languages context schemas MUST NOT use `anyOf`/`oneOf` compositions of primitive types in JSON schema (and, hence, unions of primitive types in TypeScript) and SHOULD avoid compositions of Object types unless a defined interface (such as [Context](ref/Context)).
+
 #### Identifiers
 
 An `id` field with type `object` is defined in the base [fdc3.context](ref/Context) type, from which all other context objects are derived, and SHOULD be used to encapsulate identifiers. Specific context types may define subfields for specific identifiers as needed.
