@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3",
-  "version": "2.1.0-beta.8",
+  "version": "2.1.0-beta.9",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -24,7 +24,7 @@
     "build": "rollup -c rollup.config.js --silent --bundleConfigAsCjs",
     "test": "jest --verbose",
     "lint": "eslint src/ test/ --ext .ts --fix",
-    "prepare": "npm run build",
+    "prepack": "npm run build",
     "typegen": "node s2tQuicktypeUtil.js schemas/context src/context/ContextTypes.ts",
     "typegen-bridging": "node s2tQuicktypeUtil.js schemas/api schemas/bridging schemas/context/context.schema.json src/bridging/BridgingTypes.ts"
   },
