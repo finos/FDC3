@@ -62,7 +62,7 @@ interface Context {
 
 or in JSON Schema as:
 
-```JSON
+```json
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "https://fdc3.finos.org/schemas/next/context/context.schema.json",
@@ -114,7 +114,7 @@ type Example = SomeOtherType | YetAnotherType;
 
 Similar constructs are allowed in JSON Schema by [combining or composing schemas](https://json-schema.org/understanding-json-schema/reference/combining) using the `anyOf` or `oneOf` keywords to specify that a value can take the form defined in one-or-more or one-of-several sub-schemas.
 
-```JSON
+```json
 "recipients": {
     "title": "Email Recipients",
     "description": "One or more recipients for the email.",
