@@ -1,5 +1,5 @@
 import {Bin, Controls, NewPanel} from "../controls/controls"
-import {Empty, Logo, Settings} from "../top/top"
+import {Logo, Settings} from "../top/top"
 import {Tabs} from "../tabs/tabs"
 import * as styles from "./styles.module.css"
 import {ClientState} from "../state/client"
@@ -38,20 +38,17 @@ export class Frame extends Component<FrameProps, FrameState> {
       <div className={styles.outer}>
         <div className={styles.top}>
           <Logo />
-          <Empty />
           <Settings />
         </div>
-        <div className={styles.middle}>
-          <div className={styles.left}>
-            <Tabs cs={this.props.cs} />
-            <Controls>
-              <NewPanel onClick={() => this.setState({popup: Popup.APPD})} />
-              <Bin />
-            </Controls>
-          </div>
-          <div className={styles.main} style={{backgroundColor: activeTab!!.background}}>
-            <Grids cs={this.props.cs} gs={getGridState()} />
-          </div>
+        <div className={styles.left}>
+          <Tabs cs={this.props.cs} />
+          <Controls>
+            <NewPanel onClick={() => this.setState({popup: Popup.APPD})} />
+            <Bin />
+          </Controls>
+        </div>
+        <div className={styles.main} style={{backgroundColor: activeTab!!.background}}>
+          <Grids cs={this.props.cs} gs={getGridState()} />
         </div>
         {this.state?.popup == Popup.APPD ? (
           <AppDPanel

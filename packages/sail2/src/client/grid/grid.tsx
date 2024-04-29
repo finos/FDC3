@@ -66,7 +66,6 @@ class SimpleGrid extends Component<SimpleGridProps> {
         className="grid-stack"
         style={{
           display: this.props.active ? "block" : "none",
-          backgroundColor: this.props.background,
         }}
       >
         {this.props.cs
