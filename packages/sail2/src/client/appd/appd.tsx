@@ -6,7 +6,6 @@ import {DirectoryApp} from "da-server"
 import {ClientState} from "../state/client"
 import {Popup, PopupButton} from "../popups/popup"
 import {GridsState} from "../state/grid"
-import {gridIdforTab} from "../grid/grid"
 
 const DEFAULT_ICON = "/static/icons/control/choose-app.svg"
 
@@ -99,8 +98,12 @@ export class AppDPanel extends Component<AppPanelProps, AppPanelState> {
             onClick={() => {
               if (this.state.chosen) {
                 const ap = this.props.cs.open(this.state.chosen)
-                this.props.gs.enqueuePanel(ap)
-                this.props.closeAction()
+                if (ap) {
+                  this.props.gs.enqueuePanel(ap)
+                  this.props.closeAction()
+                } else {
+                  alert("Not a web app")
+                }
               }
             }}
           />

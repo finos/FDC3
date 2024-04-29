@@ -3,7 +3,7 @@ import {AppPanel, ClientState} from "../state/client"
 import * as styles from "./styles.module.css"
 import "gridstack/dist/gridstack.css"
 import {GridsState} from "../state/grid"
-import {GridStack, GridStackNode} from "gridstack"
+import {GridStackNode} from "gridstack"
 
 export const Grids = ({cs, gs}: {cs: ClientState; gs: GridsState}) => {
   return (
@@ -32,6 +32,11 @@ class SimpleGrid extends Component<SimpleGridProps> {
 
   getPanel(g: GridStackNode): AppPanel {
     return this.props.items.find((p) => p.id == g.id)!!
+  }
+
+  removePanel(p: AppPanel) {
+    //this.props.gs.removePanel(p)
+    this.props.cs.removePanel(p.id)
   }
 
   componentDidMount() {
@@ -73,7 +78,7 @@ class SimpleGrid extends Component<SimpleGridProps> {
           .filter((p) => p.tabId == this.props.tabId)
           .map((i) => (
             <div key={i.id} className="grid-stack-item" gs-w={i.w} gs-h={i.h} gs-x={i.x} gs-y={i.y} id={i.id} gs-id={i.id}>
-              <Content key={i.id} panel={i} />
+              <Content key={i.id} panel={i} close={() => this.removePanel(i)} />
             </div>
           ))}
       </div>
@@ -89,34 +94,27 @@ const PopOutIcon = () => {
   return <img src="/static/icons/control/pop-out.svg" className={styles.contentTitleIcon} title="Pop Out" />
 }
 
-const CloseIcon = () => {
-  return <img src="/static/icons/control/close.svg" className={styles.contentTitleIcon} title="Pop Out" />
+const CloseIcon = ({action}: {action: () => void}) => {
+  return <img src="/static/icons/control/close.svg" className={styles.contentTitleIcon} title="Pop Out" onClick={() => action()} />
 }
 
-const ChooseApp = () => {
-  return (
-    <div className={styles.contentChoose}>
-      <img src="/static/icons/control/choose-app.svg" className={styles.contentChooseIcon} title="Choose App" />
-      <p className={styles.contentChooseText}>Click To Choose App</p>
-    </div>
-  )
+const AppFrame = ({panel}: {panel: AppPanel}) => {
+  return <iframe src={panel.url} className={styles.iframe} id={"iframe_" + panel.id} />
 }
 
-const Content = ({panel}: {panel: AppPanel}) => {
+const Content = ({panel, close}: {panel: AppPanel; close: () => void}) => {
   return (
     <div className={styles.content}>
       <div className={styles.contentInner}>
         <div className={styles.contentTitle}>
-          <CloseIcon />
+          <CloseIcon action={close} />
           <p className={styles.contentTitleText}>
             <span className={styles.contentTitleTextSpan}>{panel.title}</span>
           </p>
           <LockIcon />
           <PopOutIcon />
         </div>
-        <div className={styles.contentBody}>
-          <ChooseApp />
-        </div>
+        <div className={styles.contentBody}>{panel.url ? <AppFrame panel={panel} /> : <div />}</div>
       </div>
     </div>
   )

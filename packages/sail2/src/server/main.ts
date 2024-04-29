@@ -8,8 +8,8 @@ import { FDC3_2_1_JSONDirectory } from "./appd/FDC3_2_1_JSONDirectory";
 const app = express();
 
 const directory = new FDC3_2_1_JSONDirectory()
-directory.load("temp/appd.json")
-//directory.load('https://directory.fdc3.finos.org/v2/apps/')
+///directory.load("temp/appd.json")
+directory.load('https://directory.fdc3.finos.org/v2/apps/')
 //directory.load('https://directory.fdc3.finos.org/v2/apps/')
 
 app.get("/iframe", (_, res) => {
