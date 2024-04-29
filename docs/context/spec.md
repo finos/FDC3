@@ -106,13 +106,13 @@ This Standard defines a number of conventions for the fields of context types th
 
 #### Avoid union types / composition of primitive types
 
-Both Typescript and JSON Schema allow for a type of polymorphism in types and interfaces that is hard to represent in other languages: allowing the type of a variable to be a union of other, unrelated types. E.g.: in typescript
+Both Typescript and JSON Schema allow for a type of polymorphism in types and interfaces that is hard to represent in other languages: allowing the type of a variable to be a ['union'](https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html) of other, unrelated types. E.g.: in typescript
 
 ```ts
 type Example = SomeOtherType | YetAnotherType;
 ```
 
-Similar constructs are allowed in JSON Schema by using the `anyOf` or `oneOf` keywords to specify that a value can take the form defined in one-or-more or one-of-several sub-schemas.
+Similar constructs are allowed in JSON Schema by [combining or composing schemas](https://json-schema.org/understanding-json-schema/reference/combining) using the `anyOf` or `oneOf` keywords to specify that a value can take the form defined in one-or-more or one-of-several sub-schemas.
 
 However, other languages can be less less-flexible. In most languages, polymorphism of object types is possible via the implementation and/or extension of an interface (for example all context types are derived from the [Context](ref/Context) schema, which can be modelled as an interface). However, this approach is not possible if one of the types in the union is a primitive, meaning it's not a class and can't be modified to implement an interface, e.g.:
 
