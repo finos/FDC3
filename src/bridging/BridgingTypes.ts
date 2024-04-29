@@ -1,9 +1,8 @@
 // To parse this data:
 //
-//   import { Convert, BaseImplementationMetadata, AgentErrorResponseMessage, AgentRequestMessage, AgentResponseMessage, BridgeErrorResponseMessage, BridgeRequestMessage, BridgeResponseMessage, BroadcastAgentRequest, BroadcastBridgeRequest, ConnectionStepMessage, ConnectionStep2Hello, ConnectionStep3Handshake, ConnectionStep4AuthenticationFailed, ConnectionStep6ConnectedAgentsUpdate, FindInstancesAgentErrorResponse, FindInstancesAgentRequest, FindInstancesAgentResponse, FindInstancesBridgeErrorResponse, FindInstancesBridgeRequest, FindInstancesBridgeResponse, FindIntentAgentErrorResponse, FindIntentAgentRequest, FindIntentAgentResponse, FindIntentBridgeErrorResponse, FindIntentBridgeRequest, FindIntentBridgeResponse, FindIntentsByContextAgentErrorResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, FindIntentsByContextBridgeErrorResponse, FindIntentsByContextBridgeRequest, FindIntentsByContextBridgeResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataBridgeErrorResponse, GetAppMetadataBridgeRequest, GetAppMetadataBridgeResponse, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenBridgeErrorResponse, OpenBridgeRequest, OpenBridgeResponse, PrivateChannelBroadcastAgentRequest, PrivateChannelBroadcastBridgeRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelEventListenerAddedBridgeRequest, PrivateChannelEventListenerRemovedAgentRequest, PrivateChannelEventListenerRemovedBridgeRequest, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerBridgeRequest, PrivateChannelOnDisconnectAgentRequest, PrivateChannelOnDisconnectBridgeRequest, PrivateChannelOnUnsubscribeAgentRequest, PrivateChannelOnUnsubscribeBridgeRequest, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentBridgeErrorResponse, RaiseIntentBridgeRequest, RaiseIntentBridgeResponse, RaiseIntentResultAgentErrorResponse, RaiseIntentResultAgentResponse, RaiseIntentResultBridgeErrorResponse, RaiseIntentResultBridgeResponse, Context } from "./file";
+//   import { Convert, AgentErrorResponseMessage, AgentRequestMessage, AgentResponseMessage, BridgeErrorResponseMessage, BridgeRequestMessage, BridgeResponseMessage, BroadcastAgentRequest, BroadcastBridgeRequest, ConnectionStepMessage, ConnectionStep2Hello, ConnectionStep3Handshake, ConnectionStep4AuthenticationFailed, ConnectionStep6ConnectedAgentsUpdate, FindInstancesAgentErrorResponse, FindInstancesAgentRequest, FindInstancesAgentResponse, FindInstancesBridgeErrorResponse, FindInstancesBridgeRequest, FindInstancesBridgeResponse, FindIntentAgentErrorResponse, FindIntentAgentRequest, FindIntentAgentResponse, FindIntentBridgeErrorResponse, FindIntentBridgeRequest, FindIntentBridgeResponse, FindIntentsByContextAgentErrorResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, FindIntentsByContextBridgeErrorResponse, FindIntentsByContextBridgeRequest, FindIntentsByContextBridgeResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataBridgeErrorResponse, GetAppMetadataBridgeRequest, GetAppMetadataBridgeResponse, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenBridgeErrorResponse, OpenBridgeRequest, OpenBridgeResponse, PrivateChannelBroadcastAgentRequest, PrivateChannelBroadcastBridgeRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelEventListenerAddedBridgeRequest, PrivateChannelEventListenerRemovedAgentRequest, PrivateChannelEventListenerRemovedBridgeRequest, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerBridgeRequest, PrivateChannelOnDisconnectAgentRequest, PrivateChannelOnDisconnectBridgeRequest, PrivateChannelOnUnsubscribeAgentRequest, PrivateChannelOnUnsubscribeBridgeRequest, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentBridgeErrorResponse, RaiseIntentBridgeRequest, RaiseIntentBridgeResponse, RaiseIntentResultAgentErrorResponse, RaiseIntentResultAgentResponse, RaiseIntentResultBridgeErrorResponse, RaiseIntentResultBridgeResponse, Context } from "./file";
 //
 //   const fDC3DesktopAgentAPISchema = Convert.toFDC3DesktopAgentAPISchema(json);
-//   const baseImplementationMetadata = Convert.toBaseImplementationMetadata(json);
 //   const agentErrorResponseMessage = Convert.toAgentErrorResponseMessage(json);
 //   const agentRequestMessage = Convert.toAgentRequestMessage(json);
 //   const agentResponseMessage = Convert.toAgentResponseMessage(json);
@@ -74,54 +73,6 @@
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
-
-/**
- * Metadata relating to the FDC3 Desktop Agent implementation and its provider.
- */
-export interface BaseImplementationMetadata {
-    /**
-     * The version number of the FDC3 specification that the implementation provides.
-     * The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
-     */
-    fdc3Version: string;
-    /**
-     * Metadata indicating whether the Desktop Agent implements optional features of
-     * the Desktop Agent API.
-     */
-    optionalFeatures: BaseImplementationMetadataOptionalFeatures;
-    /**
-     * The name of the provider of the Desktop Agent implementation (e.g. Finsemble, Glue42,
-     * OpenFin etc.).
-     */
-    provider: string;
-    /**
-     * The version of the provider of the Desktop Agent implementation (e.g. 5.3.0).
-     */
-    providerVersion?: string;
-}
-
-/**
- * Metadata indicating whether the Desktop Agent implements optional features of
- * the Desktop Agent API.
- */
-export interface BaseImplementationMetadataOptionalFeatures {
-    /**
-     * Used to indicate whether the experimental Desktop Agent Bridging
-     * feature is implemented by the Desktop Agent.
-     */
-    DesktopAgentBridging: boolean;
-    /**
-     * Used to indicate whether the exposure of 'originating app metadata' for
-     * context and intent messages is supported by the Desktop Agent.
-     */
-    OriginatingAppMetadata: boolean;
-    /**
-     * Used to indicate whether the optional `fdc3.joinUserChannel`,
-     * `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
-     * the Desktop Agent.
-     */
-    UserChannelMembershipAPIs: boolean;
-}
 
 /**
  * A response message from a Desktop Agent to the Bridge containing an error, to be used in
@@ -908,7 +859,7 @@ export interface ConnectionStep3HandshakePayload {
     /**
      * Desktop Agent ImplementationMetadata trying to connect to the bridge.
      */
-    implementationMetadata: ImplementationMetadataElement;
+    implementationMetadata: ConnectingAgentImplementationMetadata;
     /**
      * The requested Desktop Agent name
      */
@@ -920,7 +871,7 @@ export interface ConnectionStep3HandshakePayload {
  *
  * Metadata relating to the FDC3 Desktop Agent implementation and its provider.
  */
-export interface ImplementationMetadataElement {
+export interface ConnectingAgentImplementationMetadata {
     /**
      * The version number of the FDC3 specification that the implementation provides.
      * The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
@@ -930,7 +881,7 @@ export interface ImplementationMetadataElement {
      * Metadata indicating whether the Desktop Agent implements optional features of
      * the Desktop Agent API.
      */
-    optionalFeatures: ImplementationMetadataOptionalFeatures;
+    optionalFeatures: OptionalFeatures;
     /**
      * The name of the provider of the Desktop Agent implementation (e.g. Finsemble, Glue42,
      * OpenFin etc.).
@@ -946,7 +897,7 @@ export interface ImplementationMetadataElement {
  * Metadata indicating whether the Desktop Agent implements optional features of
  * the Desktop Agent API.
  */
-export interface ImplementationMetadataOptionalFeatures {
+export interface OptionalFeatures {
     /**
      * Used to indicate whether the experimental Desktop Agent Bridging
      * feature is implemented by the Desktop Agent.
@@ -1047,7 +998,7 @@ export interface ConnectionStep6ConnectedAgentsUpdatePayload {
     /**
      * Desktop Agent Bridge implementation metadata of all connected agents.
      */
-    allAgents: ImplementationMetadataElement[];
+    allAgents: DesktopAgentImplementationMetadata[];
     /**
      * The updated state of channels that should be adopted by the agents. Should only be set
      * when an agent is connecting to the bridge.
@@ -1058,6 +1009,38 @@ export interface ConnectionStep6ConnectedAgentsUpdatePayload {
      * longer is assigned.
      */
     removeAgent?: string;
+}
+
+/**
+ * Includes the name assigned to the Desktop Agent by the Bridge.
+ *
+ * Metadata relating to the FDC3 Desktop Agent implementation and its provider.
+ */
+export interface DesktopAgentImplementationMetadata {
+    /**
+     * Used in Desktop Agent Bridging to attribute or target a message to a particular Desktop
+     * Agent.
+     */
+    desktopAgent: string;
+    /**
+     * The version number of the FDC3 specification that the implementation provides.
+     * The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
+     */
+    fdc3Version: string;
+    /**
+     * Metadata indicating whether the Desktop Agent implements optional features of
+     * the Desktop Agent API.
+     */
+    optionalFeatures: OptionalFeatures;
+    /**
+     * The name of the provider of the Desktop Agent implementation (e.g. Finsemble, Glue42,
+     * OpenFin etc.).
+     */
+    provider: string;
+    /**
+     * The version of the provider of the Desktop Agent implementation (e.g. 5.3.0).
+     */
+    providerVersion?: string;
 }
 
 /**
@@ -3717,10 +3700,6 @@ export interface IntentResolution {
      * received the intent.
      */
     source: AppIdentifier;
-    /**
-     * The version number of the Intents schema being used.
-     */
-    version?: string;
 }
 
 /**
@@ -4151,14 +4130,6 @@ export class Convert {
 
     public static fDC3DesktopAgentAPISchemaToJson(value: any): string {
         return JSON.stringify(uncast(value, "any"), null, 2);
-    }
-
-    public static toBaseImplementationMetadata(json: string): BaseImplementationMetadata {
-        return cast(JSON.parse(json), r("BaseImplementationMetadata"));
-    }
-
-    public static baseImplementationMetadataToJson(value: BaseImplementationMetadata): string {
-        return JSON.stringify(uncast(value, r("BaseImplementationMetadata")), null, 2);
     }
 
     public static toAgentErrorResponseMessage(json: string): AgentErrorResponseMessage {
@@ -4851,17 +4822,6 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-    "BaseImplementationMetadata": o([
-        { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "optionalFeatures", js: "optionalFeatures", typ: r("BaseImplementationMetadataOptionalFeatures") },
-        { json: "provider", js: "provider", typ: "" },
-        { json: "providerVersion", js: "providerVersion", typ: u(undefined, "") },
-    ], false),
-    "BaseImplementationMetadataOptionalFeatures": o([
-        { json: "DesktopAgentBridging", js: "DesktopAgentBridging", typ: true },
-        { json: "OriginatingAppMetadata", js: "OriginatingAppMetadata", typ: true },
-        { json: "UserChannelMembershipAPIs", js: "UserChannelMembershipAPIs", typ: true },
-    ], false),
     "AgentErrorResponseMessage": o([
         { json: "meta", js: "meta", typ: r("AgentResponseMetadata") },
         { json: "payload", js: "payload", typ: r("ErrorResponseMessagePayload") },
@@ -5022,16 +4982,16 @@ const typeMap: any = {
     "ConnectionStep3HandshakePayload": o([
         { json: "authToken", js: "authToken", typ: u(undefined, "") },
         { json: "channelsState", js: "channelsState", typ: m(a(r("ContextElement"))) },
-        { json: "implementationMetadata", js: "implementationMetadata", typ: r("ImplementationMetadataElement") },
+        { json: "implementationMetadata", js: "implementationMetadata", typ: r("ConnectingAgentImplementationMetadata") },
         { json: "requestedName", js: "requestedName", typ: "" },
     ], false),
-    "ImplementationMetadataElement": o([
+    "ConnectingAgentImplementationMetadata": o([
         { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "optionalFeatures", js: "optionalFeatures", typ: r("ImplementationMetadataOptionalFeatures") },
+        { json: "optionalFeatures", js: "optionalFeatures", typ: r("OptionalFeatures") },
         { json: "provider", js: "provider", typ: "" },
         { json: "providerVersion", js: "providerVersion", typ: u(undefined, "") },
     ], false),
-    "ImplementationMetadataOptionalFeatures": o([
+    "OptionalFeatures": o([
         { json: "DesktopAgentBridging", js: "DesktopAgentBridging", typ: true },
         { json: "OriginatingAppMetadata", js: "OriginatingAppMetadata", typ: true },
         { json: "UserChannelMembershipAPIs", js: "UserChannelMembershipAPIs", typ: true },
@@ -5061,9 +5021,16 @@ const typeMap: any = {
     ], false),
     "ConnectionStep6ConnectedAgentsUpdatePayload": o([
         { json: "addAgent", js: "addAgent", typ: u(undefined, "") },
-        { json: "allAgents", js: "allAgents", typ: a(r("ImplementationMetadataElement")) },
+        { json: "allAgents", js: "allAgents", typ: a(r("DesktopAgentImplementationMetadata")) },
         { json: "channelsState", js: "channelsState", typ: u(undefined, m(a(r("ContextElement")))) },
         { json: "removeAgent", js: "removeAgent", typ: u(undefined, "") },
+    ], false),
+    "DesktopAgentImplementationMetadata": o([
+        { json: "desktopAgent", js: "desktopAgent", typ: "" },
+        { json: "fdc3Version", js: "fdc3Version", typ: "" },
+        { json: "optionalFeatures", js: "optionalFeatures", typ: r("OptionalFeatures") },
+        { json: "provider", js: "provider", typ: "" },
+        { json: "providerVersion", js: "providerVersion", typ: u(undefined, "") },
     ], false),
     "FindInstancesAgentErrorResponse": o([
         { json: "meta", js: "meta", typ: r("FindInstancesAgentErrorResponseMeta") },
@@ -5782,7 +5749,6 @@ const typeMap: any = {
     "IntentResolution": o([
         { json: "intent", js: "intent", typ: "" },
         { json: "source", js: "source", typ: r("AppIdentifier") },
-        { json: "version", js: "version", typ: u(undefined, "") },
     ], false),
     "RaiseIntentBridgeErrorResponse": o([
         { json: "meta", js: "meta", typ: r("RaiseIntentBridgeErrorResponseMeta") },

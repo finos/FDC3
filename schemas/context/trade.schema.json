@@ -27,7 +27,7 @@
 				"product": {
 					"$ref": "product.schema.json",
 					"title": "Traded product",
-					"description": "A product that is the subject of th trade."
+					"description": "A product that is the subject of the trade."
 				}
 			},
 			"required": [
