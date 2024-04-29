@@ -114,6 +114,21 @@ type Example = SomeOtherType | YetAnotherType;
 
 Similar constructs are allowed in JSON Schema by [combining or composing schemas](https://json-schema.org/understanding-json-schema/reference/combining) using the `anyOf` or `oneOf` keywords to specify that a value can take the form defined in one-or-more or one-of-several sub-schemas.
 
+```JSON
+"recipients": {
+    "title": "Email Recipients",
+    "description": "One or more recipients for the email.",
+    "oneOf": [
+        {
+            "$ref": "contact.schema.json#"
+        },
+        {
+            "$ref": "contactList.schema.json#"
+        }
+    ]
+}
+```
+
 However, other languages can be less less-flexible. In most languages, polymorphism of object types is possible via the implementation and/or extension of an interface (for example all context types are derived from the [Context](ref/Context) schema, which can be modelled as an interface). However, this approach is not possible if one of the types in the union is a primitive, meaning it's not a class and can't be modified to implement an interface, e.g.:
 
 ```ts
