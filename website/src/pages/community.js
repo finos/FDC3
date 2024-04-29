@@ -5,12 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const React = require('react');
+import React, { useState } from 'react';
 import Layout from "@theme/Layout";
 import Container from "../components/Container"
 import implData from "../../data/community.json";
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import setType from '../components/implementationFilters'
 
 const badgeTitles = {
 	"Open Source": "Indicates that the project source code is available to download and modify, under an Apache 2.0 or similar license.",
@@ -18,6 +17,11 @@ const badgeTitles = {
 	"FDC3 2.0 Supported ": "Indicates that this product advertises compatibility with the FDC3 2.0 Standard. ",
 	"FDC3 1.2 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 1.2 Conformance testing process.",
 	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process."
+}
+
+//remove content guidelines, which are the first entry in the data file
+if (implData[0]["//content guidelines"]){
+	implData.splice(0,1);
 }
 
 //alpha sort implementations
@@ -70,40 +74,39 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 					}
 				</div>
 				<div className="badges">
-					{badges.map(b => <a href="#" key={b.text} title={badgeTitles[b.text]} className="button badge">{b.text}</a>)}
+					{badges.map(b => <div key={b.text} title={badgeTitles[b.text]} className="button badge">{b.text}</div>)}
 				</div>
 			</div>
 		</div>
 	</div>
 }
 
-function ImplementationsShowcase(initialFilter) {
+function ImplementationsShowcase() {
+	//set up state for filtering
+	const [type, setType] = useState("adopter");
+
+	function getButton(label, implType) {
+		let classes = "button filter";
+		if (type == implType) { classes += " selected"};
+		return <button className={classes} id={implType} onClick={() => setType(implType)}>
+			{label}
+		</button>
+	}
+
 	return <div key="is">
 		<div className="filters">
-			<button className="button filter" id="platform-provider" onClick={() => setType("platform-provider")}>
-				Platform Providers
-			</button>
-			<button className="button filter" id="application-provider" onClick={() => setType("application-provider")}>
-				App Providers
-			</button>
-			<button className="button filter" id="solution-provider" onClick={() => setType("solution-provider")}>
-				Solution Providers
-			</button>
-			<button className="button filter" id="examples-and-training" onClick={() => setType("examples-and-training")}>
-				Examples &amp; Training
-			</button>
-			<button className="button filter" id="adopter" onClick={() => setType("adopter")}>
-				Adopters
-			</button>
-			<button className="button filter" id="meetup" onClick={() => setType("meetup")}>
-				Meetups
-			</button>
-			<button className="button filter" id="all" onClick={() => setType("all")}>
-				All
-			</button>
+			{getButton("Adopters", "adopter")}
+			{getButton("Platform Providers", "platform-provider")}
+			{getButton("App Providers", "application-provider")}
+			{getButton("Solution Providers", "solution-provider")}
+			{getButton("Tools & Training", "tools-and-training")}
+			{getButton("Demos", "demos")}
+			{getButton("Other", "other")}
 		</div>
 		<div className="implementations">
-			{implData.map(impl => (
+			{ //only render implementations matching current filter
+			implData.map(impl => (
+				impl.type == type && 
 				<Implementation key={impl.title} {...impl} />
 			))}
 		</div>
@@ -123,19 +126,26 @@ export default (props) => {
 					The Financial Desktop Connectivity and Collaboration Consortium (FDC3) standard is maintained and used by leading organizations across the financial industry through a variety of different implementations.
 				</p>
 				<p>
-					For more detail on who's implementing the Desktop Agent (a "Platform Provider"), using FDC3 to enable interop with their apps (an "App Provider") or details on where to find tools, examples apps and training materials see below.
+					For more detail on who's implementing the Desktop Agent (a "Platform Provider"), using FDC3 to enable interop with their apps (an "App Provider") or details on where to find demos, examples apps, training materials and other resources, see below.
+				</p>
+				<p>
+					<small>
+						<i>
+							Disclaimer: Please note that the majority of platforms, applications and content listed below are not affiliated with, supported, or otherwise maintained by FINOS or the FDC3 project and its maintainers. Please contact the publisher of each entry for more information.
+						</i>
+					</small>
 				</p>
 				<p>
 					<i>
-						Are you using FDC3?
+						<strong>Are you using FDC3?</strong>
 						<a href={editUrl} className="button">
-							Add your Implementation
+							Add your details
 						</a>
 					</i>
 				</p>
 			</div>
 
-			<ImplementationsShowcase initialFilter={"all"} />
+			<ImplementationsShowcase />
 		</Container>
 	</Layout>
 }
