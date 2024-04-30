@@ -5,7 +5,7 @@
   "homepage": "https://fdc3.finos.org",
   "repository": {
     "type": "git",
-    "url": "https://github.com/finos/FDC3.git"
+    "url": "git+https://github.com/finos/FDC3.git"
   },
   "publishConfig": {
     "tag": "latest"
