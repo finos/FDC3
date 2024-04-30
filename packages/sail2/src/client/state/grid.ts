@@ -1,25 +1,28 @@
-import { GridStack, GridStackNode, GridStackPosition } from "gridstack"
+import { GridStack, GridStackNode, GridStackWidget } from "gridstack"
 import { AppPanel } from "./client"
+import { ReactElement } from "react"
 import { gridIdforTab } from "../grid/grid"
-import { grids } from "../grid/styles.module.css"
+import { Root, createRoot } from "react-dom/client"
 
 export interface GridsState {
 
-    enqueuePanel(ap: AppPanel): void
+    removePanel(ap: AppPanel): void
 
-    ensurePanelsInGrid(): void
+    ensurePanelsInGrid(id: string, items: AppPanel[]): void
 
-    ensureGrid(id: string, update: (ap: GridStackNode) => void, remove: (ap: GridStackNode) => void, cssClass: string): void
-
+    ensureGrid(
+        id: string,
+        update: (gn: GridStackNode) => void,
+        render: (ap: AppPanel) => ReactElement,
+        remove: (gn: GridStackNode) => void,
+        cssClass: string): void
 }
-
-
 
 class GridstackGridsState implements GridsState {
 
     private readonly gridstacks: { [id: string]: GridStack } = {}
-
-    private panelToAdd: AppPanel | null = null
+    private readonly renderers: { [id: string]: (ap: AppPanel) => ReactElement } = {}
+    private readonly reactRoots: { [id: string]: Root } = {}
 
     findEmptyArea(ap: AppPanel, grid: GridStack) {
         for (let y = 0; y < 10; y++) {
@@ -36,33 +39,45 @@ class GridstackGridsState implements GridsState {
         return
     }
 
-    enqueuePanel(ap: AppPanel) {
-        this.panelToAdd = ap
+    removePanel(ap: AppPanel) {
         const gridId = gridIdforTab(ap.tabId)
         const grid = this.gridstacks[gridId]
-        this.findEmptyArea(ap, grid)
+        const el = document.getElementById(ap.id)
+        const root = this.reactRoots['content_' + ap.id]
+        root.unmount()
+        grid.removeWidget(el!!)
     }
 
-    ensurePanelsInGrid(): void {
-        if (this.panelToAdd) {
-            const p = this.panelToAdd
-            const gridId = gridIdforTab(p.tabId)
-            const grid = this.gridstacks[gridId]
+    ensurePanelsInGrid(gridId: string, items: AppPanel[]): void {
+        const grid = this.gridstacks[gridId]
+        items.forEach(p => {
             const el = document.getElementById(p.id)
-            const widget = grid.makeWidget(el!!)
-            grid.addWidget(widget)
-            this.panelToAdd = null
-        }
+            if (!el) {
+                const contentId = 'content_' + p.id
+                const opts: GridStackWidget = {
+                    h: p.h,
+                    w: p.w,
+                    x: p.x,
+                    y: p.y,
+                    id: p.id,
+                    content: `<div id="${contentId}" />`
+                }
+                // create the widget
+                const widget = grid.addWidget(opts)
+                widget.setAttribute("id", p.id)
 
-        // Object.keys(this.gridstacks).forEach(id => {
-        //     const gridId = gridIdforTab(id)
-        //     const el = document.getElementById()
-        //     const state = gs.getGridItems()
-        //     gs.update()
-        // })
+                // add content to it
+                const div = document.getElementById(contentId)!!
+                const renderer = this.renderers[gridId]
+                const content = renderer(p)
+                const root = createRoot(div)
+                this.reactRoots[contentId] = root
+                root.render(content)
+            }
+        })
     }
 
-    ensureGrid(id: string, update: (ap: GridStackNode) => void, remove: (ap: GridStackNode) => void, cssClass: string): void {
+    ensureGrid(id: string, update: (ap: GridStackNode) => void, render: (ap: AppPanel) => ReactElement, remove: (gn: GridStackNode) => void, cssClass: string): void {
         if (!this.gridstacks[id]) {
             const grid = GridStack.init(
                 {
@@ -72,6 +87,7 @@ class GridstackGridsState implements GridsState {
                 id
             )
             this.gridstacks[id] = grid
+            this.renderers[id] = render
 
             const gridEl = document.getElementById(id)!!
 

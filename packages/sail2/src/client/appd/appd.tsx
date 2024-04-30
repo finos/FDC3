@@ -99,7 +99,6 @@ export class AppDPanel extends Component<AppPanelProps, AppPanelState> {
               if (this.state.chosen) {
                 const ap = this.props.cs.open(this.state.chosen)
                 if (ap) {
-                  this.props.gs.enqueuePanel(ap)
                   this.props.closeAction()
                 } else {
                   alert("Not a web app")
