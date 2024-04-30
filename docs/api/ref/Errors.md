@@ -9,6 +9,8 @@ FDC3 API operations may sometimes result in an error, which must be returned to 
 
 ## `ChannelError`
 
+Contains constants representing the errors that can be encountered when calling channels using the [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`getOrCreateChannel`](DesktopAgent#getorcreatechannel) methods, or the [`getCurrentContext`](Channel#getcurrentcontext), [`broadcast`](Channel#broadcast) or [`addContextListener`](Channel#addcontextlistener) methods on the `Channel` object.
+
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
@@ -75,8 +77,6 @@ public static class ChannelError
 </TabItem>
 </Tabs>
 
-Contains constants representing the errors that can be encountered when calling channels using the [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`getOrCreateChannel`](DesktopAgent#getorcreatechannel) methods, or the [`getCurrentContext`](Channel#getcurrentcontext), [`broadcast`](Channel#broadcast) or [`addContextListener`](Channel#addcontextlistener) methods on the `Channel` object.
-
 **See also:**
 
 - [`DesktopAgent.createPrivateChannel`](DesktopAgent#createprivatechannel)
@@ -87,6 +87,8 @@ Contains constants representing the errors that can be encountered when calling 
 - [`Channel.getCurrentContext`](Channel#getcurrentcontext)
 
 ## `OpenError`
+
+Contains constants representing the errors that can be encountered when calling the [`open`](DesktopAgent#open) method on the [DesktopAgent](DesktopAgent) object.
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -161,13 +163,13 @@ public static class OpenError
 </TabItem>
 </Tabs>
 
-Contains constants representing the errors that can be encountered when calling the [`open`](DesktopAgent#open) method on the [DesktopAgent](DesktopAgent) object.
-
 **See also:**
 
 - [`DesktopAgent.open`](DesktopAgent#open)
 
 ## `ResolveError`
+
+Contains constants representing the errors that can be encountered when calling the [`findIntent`](DesktopAgent#findintent), [`findIntentsByContext`](DesktopAgent#findintentsbycontext), [`raiseIntent`](DesktopAgent#raiseintent) or [`raiseIntentForContext`](DesktopAgent#raiseintentforcontext) methods on the [DesktopAgent](DesktopAgent).
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -285,8 +287,6 @@ public static class ResolveError
 </TabItem>
 </Tabs>
 
-Contains constants representing the errors that can be encountered when calling the [`findIntent`](DesktopAgent#findintent), [`findIntentsByContext`](DesktopAgent#findintentsbycontext), [`raiseIntent`](DesktopAgent#raiseintent) or [`raiseIntentForContext`](DesktopAgent#raiseintentforcontext) methods on the [DesktopAgent](DesktopAgent).
-
 **See also:**
 
 - [`DesktopAgent.findIntent`](DesktopAgent#findintent)
@@ -295,6 +295,8 @@ Contains constants representing the errors that can be encountered when calling 
 - [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 
 ## `ResultError`
+
+Contains constants representing the errors that can be encountered when calling the [`getResult`](DesktopAgent#findintent) method on the [IntentResolution](Metadata#intentresolution) Object.
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -336,13 +338,112 @@ public static class ResultError
 </TabItem>
 </Tabs>
 
-Contains constants representing the errors that can be encountered when calling the [`getResult`](DesktopAgent#findintent) method on the [IntentResolution](Metadata#intentresolution) Object.
-
 **See also:**
 
 - [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 - [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 - [`IntentResolution`](Metadata#intentresolution)
+
+## `AgentError`
+
+Contains constants representing the errors that can be encountered when calling the [`getAgent`](getAgent) function to establish connectivity to a Desktop Agent. Primarily used with web applications, but may also be used in other language
+implementations.
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+enum AgentError {
+  /** Returned when connectivity to a DA cannot be established via any
+   *  available strategy.*/
+  AgentNotFound = "AgentNotFound",
+
+  /** Returned when a browser-based Desktop agent does not conform to the FDC3
+   *  Web Connection Protocol.*/
+  InvalidAgent = "InvalidAgent",
+
+  /** Returned when the app fails DA identity verification.**/
+  IdentityValidationFailed = "IdentityValidationFailed",
+
+  /** Returned when the app does not pass one of the required identity
+   *  parameters indicating an app directory record.*/
+  NoAppIdentityProvided = "NoAppIdentityProvided",
+
+  /** Returned when the DA refuses a connection from application.*/
+  AccessDenied = "AccessDenied",
+  
+  /** Returned when the failover function itself, or its resolution is not the
+   *  right type.*/
+  InvalidFailover = "InvalidFailover",
+ 
+  /** Returned when reestablishment of an instance via persisted StorageSession
+   *  data fails (e.g. after a page navigation).*/
+  ReestablishConnectionFailed = "ReestablishConnectionFailed"
+ 
+  /** Returned when any other error or exception occurs.*/
+  ErrorOnConnect ="ErrorOnConnect"
+}
+
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+public static class ResultError
+{
+    /// <summary>
+    /// Returned when connectivity to a DA cannot be established via any
+    /// available strategy.
+    /// </summary>
+    public static readonly string AgentNotFound = nameof(AgentNotFound);
+
+    /// <summary>
+    /// Returned when a browser-based Desktop agent does not conform to the FDC3
+    /// Web Connection Protocol.
+    /// </summary>
+    public static readonly string InvalidAgent = nameof(InvalidAgent);
+
+    /// <summary>
+    /// Returned when the app fails DA identity verification.
+    /// </summary>
+    public static readonly string IdentityValidationFailed = nameof(IdentityValidationFailed);
+
+    /// <summary>
+    /// Returned when the app does not pass one of the required identity
+    /// parameters indicating an app directory record.
+    /// </summary>
+    public static readonly string NoAppIdentityProvided = nameof(NoAppIdentityProvided);
+
+    /// <summary>
+    /// Returned when the DA refuses a connection from application.
+    /// </summary>
+    public static readonly string AccessDenied = nameof(AccessDenied);
+
+    /// <summary>
+    /// Returned when the failover function itself, or its resolution is not the
+    /// right type.
+    /// </summary>
+    public static readonly string InvalidFailover = nameof(InvalidFailover);
+
+    /// <summary>
+    /// Returned when reestablishment of an instance via persisted StorageSession
+    /// data fails (e.g. after a page navigation).
+    /// </summary>
+    public static readonly string ReestablishConnectionFailed = nameof(ReestablishConnectionFailed);
+
+    /// <summary>
+    /// Returned when any other error or exception occurs.
+    /// </summary>
+    public static readonly string ErrorOnConnect = nameof(ErrorOnConnect);
+}
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+</Tabs>
 
 ## `BridgingError`
 
