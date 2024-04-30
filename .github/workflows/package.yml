@@ -63,6 +63,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      packages: write
     strategy:
       matrix:
        include:
