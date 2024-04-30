@@ -1,19 +1,22 @@
 name: npm-build
 
-# Only trigger on:
-# - main branch
-# - PR or Pull Request event types
-# - Exclide Docusaurus files: this file, docs/** and website/**
+# This workflow publishes releases to NPM, after checking that the version they would create does not already exist.
+# Hence, it will only publish if the version number in package.json is not already listed at: 
+# https://www.npmjs.com/package/@finos/fdc3?activeTab=versions
+# The workflow will:
+# - Only trigger on a push or PR merge to a release/* branch in the repository
+# - Ignore Docusaurus workflow, docs/** and website/** as they don't affect the NPM module build
+# WARNING: the workflow does NOT confirm that the version number in package JSON matches the branch name, which should be manually confirmed
 on:
   push:
     branches:
-      - main
       - release/**
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
       - 'docs/**'
       - 'website/**'
   pull_request:
+    types: [opened, reopened, edited, ready_for_review]
     branches:
       - main
       - release/*
