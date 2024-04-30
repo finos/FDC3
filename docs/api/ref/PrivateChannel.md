@@ -59,7 +59,7 @@ interface IPrivateChannel : IChannel, IIntentResult
 
 ### 'Server-side' example
 
-The intent app establishes and returns a `PrivateChannel` to the client (who is awaiting `getResult()`). When the client calls `addContextlistener()` on that channel, the intent app receives notice via the handler added with `onAddContextListener()` and knows that the client is ready to start receiving quotes.
+The intent app establishes and returns a `PrivateChannel` to the client (who is awaiting `getResult()`). When the client calls `addContextlistener()` on that channel, the intent app receives notice via the handler added with `onAddContextListener()` and knows that the client is ready to start receiving quotes. If the client unsubscribes it's context listener or disconnects from the channel, the intent app may receive notice via the the `onUnsubscribe()` and `onDisconnect()` and can stop sending data and clean-up.
 
 The Desktop Agent knows that a channel is being returned by inspecting the object returned from the handler (e.g. check constructor or look for private member).
 
@@ -130,7 +130,7 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
 
 ### 'Client-side' example
 
-The 'client' application retrieves a `Channel` by raising an intent with context and awaiting the result. It adds a `ContextListener` so that it can receive messages from it. If a `PrivateChannel` was returned this may in turn trigger a handler added on the 'server-side' with `onAddContextListener()` and start the stream. The onDisconnect() listener may also be to clean up when the 'server-side' disconnects the stream.
+The 'client' application retrieves a `Channel` by raising an intent with context and awaiting the result. It adds a `ContextListener` so that it can receive messages from it. If a `PrivateChannel` was returned this may in turn trigger a handler added on the 'server-side' with `onAddContextListener()` and start the stream. The `onDisconnect()` listener may also be to clean up when the 'server-side' disconnects the stream.
 
 Although this interaction occurs entirely in frontend code, we refer to it as the 'client-side' interaction as it requests and receives a stream of responses.
 
