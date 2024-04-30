@@ -34,9 +34,19 @@ class SimpleGrid extends Component<SimpleGridProps> {
     return this.props.items.find((p) => p.id == g.id)!!
   }
 
-  removePanel(p: AppPanel) {
-    //this.props.gs.removePanel(p)
+  removePanel(g: GridStackNode) {
+    const p = this.getPanel(g)
+    this.props.gs.removePanel(p)
     this.props.cs.removePanel(p.id)
+  }
+
+  updatePosition(g: GridStackNode) {
+    const panel = this.getPanel(g)
+    panel.x = g.x
+    panel.y = g.y
+    panel.w = g.w
+    panel.h = g.h
+    this.props.cs.updatePanel(panel)
   }
 
   componentDidMount() {
@@ -44,22 +54,18 @@ class SimpleGrid extends Component<SimpleGridProps> {
 
     this.props.gs.ensureGrid(
       this.gridId,
-      (g) => {
-        const panel = this.getPanel(g)
-        panel.x = g.x
-        panel.y = g.y
-        panel.w = g.w
-        panel.h = g.h
-        this.props.cs.updatePanel(this.getPanel(g))
-      },
-      (g) => this.props.cs.removePanel(this.getPanel(g).id),
+      (w) => this.updatePosition(w),
+      (ap) => <Content panel={ap} close={() => this.removePanel(ap)} />,
+      (w) => this.removePanel(w),
       styles.grid
     )
+
+    this.props.gs.ensurePanelsInGrid(this.gridId, this.props.items)
   }
 
   componentDidUpdate(): void {
     console.log("CDU")
-    this.props.gs.ensurePanelsInGrid()
+    this.props.gs.ensurePanelsInGrid(this.gridId, this.props.items)
   }
 
   render() {
@@ -72,16 +78,7 @@ class SimpleGrid extends Component<SimpleGridProps> {
         style={{
           display: this.props.active ? "block" : "none",
         }}
-      >
-        {this.props.cs
-          .getPanels()
-          .filter((p) => p.tabId == this.props.tabId)
-          .map((i) => (
-            <div key={i.id} className="grid-stack-item" gs-w={i.w} gs-h={i.h} gs-x={i.x} gs-y={i.y} id={i.id} gs-id={i.id}>
-              <Content key={i.id} panel={i} close={() => this.removePanel(i)} />
-            </div>
-          ))}
-      </div>
+      ></div>
     )
   }
 }
