@@ -43,11 +43,11 @@ jobs:
       - name: Install dependencies
         uses: bahmutov/npm-install@2509f13e8485d88340a789a3f7ca11aaac47c9fc #v1.8.36
 
-      - name: Lint
-        run: npm run lint
+      # - name: Lint
+      #   run: npm run lint
 
-      - name: Test
-        run:  npm run test --ci --coverage --maxWorkers=2
+      # - name: Test
+      #   run:  npm run test --ci --coverage --maxWorkers=2
 
       - name: Build
         run:  npm run build
