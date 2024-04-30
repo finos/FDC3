@@ -39,7 +39,7 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
 
 	const displayIntentResults = async () => {
 		try {
-			if (data.hasOwnProperty("getResult")) {
+			if (data.getResult) {
 				const result = await data.getResult();
 
 				//detect whether the result is Context or a Channel

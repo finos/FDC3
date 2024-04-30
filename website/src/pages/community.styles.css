@@ -1,0 +1,196 @@
+/* Conformance Added Dec 2022 */
+.conformance {
+	padding-left: 10px;
+}
+
+.conformance-element {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.conformance-badge {
+	flex-basis: 100px;
+	flex-grow: 0;
+	flex-shrink: 1;
+}
+
+.conformance-text {
+	flex-basis: 500px;
+	flex-grow: 1;
+	flex-shrink: 5;
+	color: rgb(90, 90, 90);
+}
+
+.front-conformance-logo {
+	width: 240px;
+	padding: 40px;
+}
+
+/* Implementations CSS added Apr 2021 */
+.filters {
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+}
+
+.implementations {
+	padding-top: 0px;
+	margin-top: 0px;
+	margin-bottom: 25px;
+}
+
+.implementation {
+	margin: 6px 0px;
+	padding: 0px 0px;
+	display: flex;
+	flex-direction: column;
+	border-color: #0086bf;
+	border-width: 3px;
+	border-style: solid;
+}
+
+.implementation.hide {
+	display: none;
+}
+
+.implementation-metadata {
+	padding: 6px 6px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	background-color: #0086bf;
+	color: #ffffff
+}
+
+.title-and-publisher {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	flex-grow: 1;
+}
+
+.title-and-publisher>.title, .title-and-publisher>.title>a {
+	font-size: 24px;
+	font-weight: 600;
+	flex-basis: 100%;
+	color: #ffffff;
+}
+
+.implementation-metadata>.type {
+	font-size: 16px;
+	font-weight: 600;
+	flex-basis: content;
+	font-variant-caps: small-caps;
+}
+
+.title-and-publisher>.publisher {
+	font-size: 14px;
+	font-weight: 400;
+	font-variant-caps: small-caps;
+	flex-basis: 100%;
+}
+
+.implementation-details>.implementation-image {
+	padding-top: 6px;
+	padding-bottom: 10px;
+	object-fit: contain;
+	flex-basis: 300px;
+	margin-right: 6px;
+	background-color: #FFFFFF;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.implementation-details>.implementation-image img {
+	max-width: 285px;
+	max-height: 150px;
+}
+
+.implementation-details>.description {
+	flex-shrink: 1;
+	flex-grow: 1;
+}
+
+.prose {
+	padding-left: 10px;
+}
+
+.implementation-details>.description>.infoLinks, .implementation-details>.description>.infoLinks>a
+	{
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.implementation-details {
+	padding: 6px 6px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex-basis: 100%;
+	align-items: stretch;
+}
+
+.implementation-details>.description>.badges {
+	padding-top: 10px;
+}
+
+.implementation-details>.description>.badges>.badge {
+	background-color: rgb(239, 239, 239);
+	display: inline-block;
+	border: 0px;
+	margin-top: 5px;
+	margin-right: 10px;
+}
+
+@media screen and (max-width: 736px) {
+	.implementation-details {
+		padding: 6px 6px;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		flex-basis: 100%;
+	}
+	.implementation-details>img {
+		align-self: center;
+	}
+}
+
+@media screen and (min-width: 737px) {
+	.implementation-details>.description {
+		flex-basis: 300px;
+	}
+}
+
+.button {
+	border-radius: 3px;
+	color: #0086bf;
+	display: inline-block;
+	font-size: 14px;
+	line-height: 1.2em;
+	margin: 10px;
+	padding: 10px;
+	text-decoration: none !important;
+	transition: background .3s, color .3s;
+}
+
+.button {
+  background: #0086bf44;
+  border: 1px solid #ffffff;
+}
+
+.button.selected {
+  background: #0086bf;
+  color: #fff;
+}
+
+.button.selected:hover {
+  background: #0086bf44;
+  color: #0086bf;;
+}
+
+.filter {
+    margin:0 2px 5px 0
+}

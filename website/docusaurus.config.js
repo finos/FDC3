@@ -62,7 +62,8 @@ module.exports={
     "navbar": {
       "title": "FDC3",
       "logo": {
-        "src": "img/fdc3-icon-2019.svg"
+		"src": "img/fdc3-icon-light-2019.svg",
+        "srcDark": "img/fdc3-icon-2019.svg"
       },
       "items": [
         {
@@ -150,16 +151,12 @@ module.exports={
             },
             {
               "label": "Use Cases",
-              "to": "/docs/use-cases/overview"
+              "to": "/docs/next/use-cases/overview"
             },
             {
               "label": "Training",
               "to": "https://fdc3.finos.org/training"
-            },
-            {
-              "label": "Certification",
-              "to": "/docs/guides/CertificationInstructions"				
-			}
+            }
           ]
         },
         {
