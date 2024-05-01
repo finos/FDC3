@@ -5,6 +5,7 @@ import * as styles from "./styles.module.css"
 const Tab = ({td, active, onClick}: {td: TabDetail; active: boolean; onClick: () => void}) => {
   return (
     <div
+      id={td.id}
       onClick={onClick}
       className={`${styles.tab} ${active ? styles.activeTab : styles.inactiveTab}`}
       style={{
