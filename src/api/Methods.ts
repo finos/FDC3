@@ -212,8 +212,8 @@ export function isStandardIntent(intent: Intent): intent is StandardIntent {
  */
 export const compareVersionNumbers: (a: string, b: string) => number | null = (a, b) => {
   try {
-    let aVerArr = a.split('.').map(Number);
-    let bVerArr = b.split('.').map(Number);
+    const aVerArr = a.split('.').map(Number);
+    const bVerArr = b.split('.').map(Number);
     for (let index = 0; index < Math.max(aVerArr.length, bVerArr.length); index++) {
       /* If one version number has more digits and the other does not, and they are otherwise equal,
          assume the longer is greater. E.g. 1.1.1 > 1.1 */
@@ -243,6 +243,6 @@ export const versionIsAtLeast: (metadata: ImplementationMetadata, version: strin
   metadata,
   version
 ) => {
-  let comparison = compareVersionNumbers(metadata.fdc3Version, version);
-  return comparison === null ? null : comparison >= 0;
+  const comparison = compareVersionNumbers(metadata.fdc3Version, version);
+  return comparison === null ? null : comparison >= 0 ? true : false;
 };
