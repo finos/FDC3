@@ -9,20 +9,47 @@ There are two main categories of platform: web and native, both of which are des
 
 ## Web
 
-For a web application to be FDC3-enabled, it needs to run in the context of an environment or **_Platform Provider_** that makes the FDC3 API available to the application (a "Desktop Agent" - DA). Applications use the `DesktopAgent` interface to connect to the DA (we refer to this as the `fdc3` object or the "FDC3 API"). DAs may either be "Preload DAs" (where the DA itself lives in code outside of the browser - such as an Electron app or a Browser Extension) or "Browser Resident DAs" (where the DA lives in a separate frame or window.)
+For a web application to use the FDC3 API it needs to retrieve a copy of the `DesktopAgent` API interface, which it will use to communicate with the desktop agent (this interface is often referred to as the `fdc3` object or the "FDC3 API").
 
-### API Access - Connecting to FDC3
+There are two standardized types of interface to a DA that a web application may use (which is appropriate depends on where the web application is run):
 
-FDC3 apps SHOULD obtain access to a `DesktopAgent` object (`fdc3`) by importing or loading the `@finos/fdc` library and then calling the provided `getAgent()` function. This will ensure that the app can run in any type of DA (either browser-resident DAs or DAs that support injection.) (Apps SHOULD NO LONGER rely on the existence of a global `fdc3` object.)
+- **Preload**: Used where the desktop agent is able to inject the the `DesktopAgent` API at `window.fdc3` allowing an app to access it directly, for example in an Electron app or where a browser Browser Extension is in use.
+- **Proxy**: Used when running in standard web browser (without an extension) and the desktop agent has to run in a different window or frame to the application and must be communicated with via Cross-document messaging with `postMessage` and `MessagePorts` (see the [HTML5 Living Standard](https://html.spec.whatwg.org/multipage/web-messaging.html) for more details). A 'proxy' class implementing the Desktop Agent API is used to abstract the details of Cross-document messaging, allowing the application to work with the FDC3 API directly.
 
-Apps MUST call `getAgent()` with their identity. This can be done in either of three ways.
+The FDC3 Standard defines a Web Connection Protocol (WCP) that allows apps to work with either interface, by detecting which is applicable. The FDC3 NPM module implements the `getAgent()` function defined by WCP and can return an injected Desktop Agent, a Desktop Agent Proxy, or other Desktop Agent implementation enabled by a non-standard interface.
+
+Hence, FDC3 apps SHOULD obtain access to a `DesktopAgent` object (`fdc3`) by importing or loading the `@finos/fdc3` library and then calling the provided `getAgent()` function, ensuring that they can support either of the standardized interfaces.
+
+:::note
+
+In prior versions of FDC3 (<= 2.1) Apps were required to use the 'Preload' interface, i.e. they relied on the existence of the `window.fdc3` object, which meant that apps running in a standard web browser had to import libraries specific to the Desktop Agent implementation in use. From FDC3 2.2 onwards the 'Proxy' interface is available, which allows apps in a standard web browser to connect to any Desktop Agent that implements that interface.
+
+Hence, from FDC3 2.2 onwards apps should switch from using `window.fdc3` directly to calling the `getAgent()` function to retrieve a `DesktopAgent` API interface.
+
+:::
+
+:::tip
+
+To simplify migration of an app that works with `window.fdc3` to using `getAgent()`, simply set the `fdc3 property on the global object yourself, i.e.:
+
+```ts
+getAgent({ appId: “yourApp@yourorg.org” }))
+.then((fdc3: DesktopAgent) => { window.fdc3 = fdc3 })
+.catch((error) => { console.error(`Failed to retrieve FDC3 Desktop Agent: ${error}`) });
+```
+
+:::
+
+
+As Web applications can navigate (or be navigated by users) to different URLs and become different application, apps MUST pass details of their identity to `getAgent()`. This can be done in one of two ways.
 
 1. Provide an appId field
 
     The appId SHOULD be _fully qualified_ (containing a domain name). The DA will then use this to construct a query to AppD endpoint rules. For instance, this will result in a query to "https://yourorg.org/v2/apps/yourApp".
 
     Example: Obtaining an fdc3 interface
-    ```JavaScript
+    
+    ```js
     import { getAgent } from "@finos/fdc3";
 
     try {
@@ -50,7 +77,8 @@ Apps MUST call `getAgent()` with their identity. This can be done in either of t
     The DA will construct the AppD query according to AppD endpoint rules. For instance, this will result in a query to "https://yourorg.org/appd/v2/apps/yourApp".
 
     Example: Obtaining an fdc3 interface using an AppD locator
-    ```JavaScript
+    
+    ```js
     try {
         const fdc3 = await getAgent({ appId: "yourApp", appDUrl: 'https://yourorg.org/appd' }); 
     } catch (e) {
@@ -67,7 +95,8 @@ Applications MAY provide additional fields related to configuration or failover 
 Interface retrieval can time out, for instance if the DA doesn't exist or is unresponsive. The default timeout of 750 milliseconds can be overridden by setting the `timeout` field. An application may also provide a failover function which will be called if an interface cannot be retrieved or times out.
 
 Example: Decreasing the timeout and providing a failover function
-```JavaScript
+
+```js
     const fdc3 = await getAgent({
         appId: “myApp@yourorg.org”,
         timeout: 250,
@@ -88,18 +117,18 @@ The failover function allows an application to provide a backup mechanism for co
 Failover functions MUST be asynchronous MUST resolve to one of the following types: 
 
 1) DesktopAgent
-
-The application may choose to directly import or load code that provides a `DesktopAgent` implementation. `getAgent()` will then resolve to the provided `DesktopAgent`.
-
+    The application may choose to directly import or load code that provides a `DesktopAgent` implementation. `getAgent()` will then resolve to the provided `DesktopAgent`.
 2) WindowProxy (Window object)
-
-The application may open a window or create a hidden iframe which may then provide access to a compliant browser-resident DA. Resolve to the `WindowProxy` object for the window or iframe. The `getAgent()` call will then use the supplied `WindowProxy` to establish a connection.
-
+    The application may open a window or create a hidden iframe which may then provide access to a compliant browser-resident DA. Resolve to the `WindowProxy` object for the window or iframe. The `getAgent()` call will then use the supplied `WindowProxy` to establish a connection.
 3) URL
+    If a URL is provided, then `getAgent()` will load that url in a hidden iframe and attempt to establish connectivity to a browser-resident DA within that iframe.
 
-If a URL is provided, then `getAgent()` will load that url in a hidden iframe and attempt to establish connectivity to a browser-resident DA within that iframe.
+    If the failover function returns any other result, or if communication cannot be established with the provided `WindowProxy` or URL within the specified timeout, then `getAgent()` will reject with the "AgentNotFound" error.
 
-If the failover function returns any other result, or if communication cannot be established with the provided `WindowProxy` or URL within the specified timeout, then `getAgent()` will reject with the "AgentNotFound" error.
+
+
+
+
 
 ### Usage
 
@@ -187,7 +216,7 @@ The FDC3 Standard does not currently define wire formats for an app to communica
 
 ## Hybrid
 
-In a hybrid application, a standalone native application incorporates a web view, within which a web application runs. This may be considered a special case of the web platform where all platform-provider requirements for web applications must be satisfied, but it is the responsibility of the associated native application, rather than a platform provider, to ensure they are fulfilled. This may be achieved, for example, by injecting an implementation of the DesktopAgent API and ensuring that it is accessible at the usual location, `window.fdc3`.
+In a hybrid application, a standalone native application incorporates a web view, within which a web application runs. This may be considered a special case of the web platform where all platform-provider requirements for web applications must be satisfied, but it is the responsibility of the associated native application, rather than a platform provider, to ensure they are fulfilled. This may be achieved via either of the defined web interfaces, i.e. by injecting an implementation of the DesktopAgent API at `window.fdc3` or via the FDC3 Web Connection Protocol (`postMessage`).
 
 ## Compliance
 
