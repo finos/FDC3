@@ -5,7 +5,6 @@ import * as styles from "./styles.module.css"
 import {DirectoryApp} from "da-server"
 import {ClientState} from "../state/client"
 import {Popup, PopupButton} from "../popups/popup"
-import {GridsState} from "../state/grid"
 
 const DEFAULT_ICON = "/static/icons/control/choose-app.svg"
 
@@ -18,7 +17,7 @@ function getIcon(a: DirectoryApp) {
   }
 }
 
-type AppPanelProps = {closeAction: () => void; cs: ClientState; gs: GridsState}
+type AppPanelProps = {closeAction: () => void; cs: ClientState}
 
 type AppPanelState = {
   chosen: DirectoryApp | null
