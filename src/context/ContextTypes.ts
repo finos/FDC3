@@ -1055,7 +1055,7 @@ export interface CurrencyID {
  */
 export interface Email {
     /**
-     * One or more receipients for the email.
+     * One or more recipients for the email.
      */
     recipients: EmailRecipients;
     /**
@@ -1073,7 +1073,7 @@ export interface Email {
 }
 
 /**
- * One or more receipients for the email.
+ * One or more recipients for the email.
  *
  * The contact that initiated the interaction
  *
