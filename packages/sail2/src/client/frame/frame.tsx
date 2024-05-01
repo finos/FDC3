@@ -2,12 +2,12 @@ import {Bin, Controls, NewPanel} from "../controls/controls"
 import {Logo, Settings} from "../top/top"
 import {Tabs} from "../tabs/tabs"
 import * as styles from "./styles.module.css"
-import {ClientState} from "../state/client"
-import {Grids} from "../grid/grid"
+import {ClientState, getClientState} from "../state/client"
 import {Component} from "react"
 import {AppDPanel} from "../appd/appd"
 import {SettingsPopup} from "../popups/settings"
-import {getGridState} from "../state/grid"
+import {Content, Grids} from "../grid/grid"
+import {GridsStateImpl, GridsState} from "../grid/gridstate"
 
 enum Popup {
   NONE,
@@ -23,7 +23,11 @@ interface FrameState {
   popup: Popup
 }
 
+const CONTAINER_ID = "container-id"
+
 export class Frame extends Component<FrameProps, FrameState> {
+  private gs: GridsState = new GridsStateImpl(CONTAINER_ID, (ap) => <Content panel={ap} cs={this.props.cs} />, getClientState())
+
   constructor(p: FrameProps) {
     super(p)
     this.state = {
@@ -48,13 +52,12 @@ export class Frame extends Component<FrameProps, FrameState> {
           </Controls>
         </div>
         <div className={styles.main} style={{backgroundColor: activeTab!!.background}}>
-          <Grids cs={this.props.cs} gs={getGridState()} />
+          <Grids cs={this.props.cs} gs={this.gs} id={CONTAINER_ID} />
         </div>
         {this.state?.popup == Popup.APPD ? (
           <AppDPanel
             key="appd"
             cs={this.props.cs}
-            gs={getGridState()}
             closeAction={() =>
               this.setState({
                 popup: Popup.NONE,
