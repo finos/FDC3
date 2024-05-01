@@ -1,7 +1,6 @@
 .tabs {
     display: flex;
     flex-direction: column;
-    z-index: 10;
 }
 
 .tab {
@@ -19,12 +18,10 @@
 }
 
 .inactiveTab {
-    z-index: 1;
     background: linear-gradient(90deg, rgba(0, 0, 0, .1) 90%, rgba(0, 0, 0, .7) 100%);
 }
 
 .activeTab {
-    z-index: 10;
     background: linear-gradient(165deg, rgba(255, 255, 255, .4) 0%, rgba(255, 255, 255, 0) 20%);
 }
 

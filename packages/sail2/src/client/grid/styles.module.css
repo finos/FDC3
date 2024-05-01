@@ -8,10 +8,6 @@
     background-color: #FFFFFF22;
 }
 
-.grid>.grid-stack-item {
-    z-index: 300;
-}
-
 /** Grid Content */
 
 .content {

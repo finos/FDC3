@@ -2,7 +2,7 @@ import {Component} from "react"
 import {AppPanel, ClientState} from "../state/client"
 import * as styles from "./styles.module.css"
 import "gridstack/dist/gridstack.css"
-import {GridsState} from "../state/grid"
+import {GridsState, gridIdforTab} from "../state/grid"
 import {GridStackNode} from "gridstack"
 
 export const Grids = ({cs, gs}: {cs: ClientState; gs: GridsState}) => {
@@ -16,18 +16,11 @@ export const Grids = ({cs, gs}: {cs: ClientState; gs: GridsState}) => {
   )
 }
 
-export function gridIdforTab(tabId: string): string {
-  return "_gs_" + tabId
-}
-
 type SimpleGridProps = {items: AppPanel[]; active: boolean; background: string; tabId: string; cs: ClientState; gs: GridsState}
 
 class SimpleGrid extends Component<SimpleGridProps> {
-  private gridId: string = ""
-
   constructor(props: SimpleGridProps) {
     super(props)
-    this.gridId = gridIdforTab(props.tabId)
   }
 
   getPanel(g: GridStackNode): AppPanel {
@@ -40,12 +33,13 @@ class SimpleGrid extends Component<SimpleGridProps> {
     this.props.cs.removePanel(p.id)
   }
 
-  updatePosition(g: GridStackNode) {
+  updatePanel(g: GridStackNode, tab: string) {
     const panel = this.getPanel(g)
     panel.x = g.x
     panel.y = g.y
     panel.w = g.w
     panel.h = g.h
+    panel.tabId = tab
     this.props.cs.updatePanel(panel)
   }
 
@@ -53,19 +47,19 @@ class SimpleGrid extends Component<SimpleGridProps> {
     console.log("CDM")
 
     this.props.gs.ensureGrid(
-      this.gridId,
-      (w) => this.updatePosition(w),
+      (w, id) => this.updatePanel(w, id),
       (ap) => <Content panel={ap} close={() => this.removePanel(ap)} />,
       (w) => this.removePanel(w),
-      styles.grid
+      styles.grid,
+      this.props.tabId
     )
 
-    this.props.gs.ensurePanelsInGrid(this.gridId, this.props.items)
+    this.props.gs.ensurePanelsInGrid(this.props.tabId, this.props.items)
   }
 
   componentDidUpdate(): void {
     console.log("CDU")
-    this.props.gs.ensurePanelsInGrid(this.gridId, this.props.items)
+    this.props.gs.ensurePanelsInGrid(this.props.tabId, this.props.items)
   }
 
   render() {
@@ -73,7 +67,7 @@ class SimpleGrid extends Component<SimpleGridProps> {
 
     return (
       <div
-        id={this.gridId}
+        id={gridIdforTab(this.props.tabId)}
         className="grid-stack"
         style={{
           display: this.props.active ? "block" : "none",

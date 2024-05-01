@@ -23,7 +23,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    z-index: 100;
 }
 
 .main {
@@ -35,5 +34,4 @@
     border-radius: .5rem;
     box-shadow: -4px 4px 3px #00000030;
     overflow-y: scroll;
-    z-index: 10;
 }
