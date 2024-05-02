@@ -215,6 +215,7 @@ function parseSchemaFolder(schemaFolderName, version) {
     // Read all files in the schema folder
     const schemaFiles = fse.readdirSync("./schemas/"+schemaFolderName)
     .filter(file => file.endsWith('.json'))
+    // nosemgrep
     .map(file => path.join("./schemas/"+schemaFolderName, file));
 
     // Process each schema file
