@@ -110,6 +110,8 @@ An `id` field with type `object` is defined in the base [fdc3.context](ref/Conte
 
 Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifier is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.
 
+Identifier values SHOULD always be of type string.
+
 All standard identifier names are reserved names. Applications may use their own identifiers ad hoc. For example:
 
 ```json

@@ -3,12 +3,14 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
+import { Intent } from '../intents/Intents';
+
 /**
  * Intent descriptor
  */
 export interface IntentMetadata {
   /** The unique name of the intent that can be invoked by the raiseIntent call */
-  readonly name: string;
+  readonly name: Intent;
 
   /** Display name for the intent.
    * @deprecated Use the intent name for display as display name may vary for
