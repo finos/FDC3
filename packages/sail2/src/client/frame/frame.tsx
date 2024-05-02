@@ -26,7 +26,7 @@ interface FrameState {
 const CONTAINER_ID = "container-id"
 
 export class Frame extends Component<FrameProps, FrameState> {
-  private gs: GridsState = new GridsStateImpl(CONTAINER_ID, (ap) => <Content panel={ap} cs={this.props.cs} />, getClientState())
+  private gs: GridsState = new GridsStateImpl(CONTAINER_ID, (ap, id) => <Content panel={ap} cs={this.props.cs} id={id} />, getClientState())
 
   constructor(p: FrameProps) {
     super(p)
