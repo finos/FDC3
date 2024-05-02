@@ -26,10 +26,17 @@
           "type": "object",
           "properties": {
             "channelId": {
-              "type": "string"
+              "type": "string",
+              "title": "Channel Id",
+              "description": "The id of the PrivateChannel that the context listener was added to."
             },
             "contextType": {
-              "type": "string"
+              "oneOf": [
+                { "type": "string" },
+                { "type": "null" }
+              ],
+              "title": "Context Type",
+              "description": "The type of the context listener added. Should be null for an untyped listener."
             }
           },
           "additionalProperties": false,

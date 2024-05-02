@@ -36,6 +36,7 @@ During the chat, the analyst shares a chart with some important observations hig
 
 ## Workflow 6
 During the chat, the user realizes that some changes should be done to their holdings in the company so hovers over the company identifier and launches the portfolio management system. While looking over the holdings the user also wants to contact the firm’s trader who is listed within the system. The user hovers over the name and launches the chat tool with a conversation with the trader in focus.
+
 ## Interoperability Points
 - API
 - Intents
