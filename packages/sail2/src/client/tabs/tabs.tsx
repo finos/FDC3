@@ -7,7 +7,7 @@ const Tab = ({td, active, onClick}: {td: TabDetail; active: boolean; onClick: ()
     <div
       id={td.id}
       onClick={onClick}
-      className={`${styles.tab} ${active ? styles.activeTab : styles.inactiveTab}`}
+      className={`${styles.tab} ${active ? styles.activeTab : styles.inactiveTab} drop-tab`}
       style={{
         backgroundColor: td.background,
         zIndex: active ? 100 : "none",

@@ -38,9 +38,9 @@ const AppFrame = ({panel}: {panel: AppPanel}) => {
   return <iframe src={panel.url} className={styles.iframe} id={"iframe_" + panel.id} />
 }
 
-export const Content = ({panel, cs}: {panel: AppPanel; cs: ClientState}) => {
+export const Content = ({panel, cs, id}: {panel: AppPanel; cs: ClientState; id: string}) => {
   return (
-    <div className={styles.content}>
+    <div className={styles.content} id={id}>
       <div className={styles.contentInner}>
         <div className={styles.contentTitle}>
           <CloseIcon action={() => cs.removePanel(panel.id)} />
