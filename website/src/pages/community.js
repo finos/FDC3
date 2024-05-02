@@ -10,6 +10,9 @@ import Layout from "@theme/Layout";
 import Container from "../components/Container"
 import implData from "../../data/community.json";
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import setType from '../components/implementationFilters'
+import styles from "./community.styles.css"
+
 
 const badgeTitles = {
 	"Open Source": "Indicates that the project source code is available to download and modify, under an Apache 2.0 or similar license.",
@@ -63,11 +66,11 @@ function Implementation({ type, title, publisher, image, infoLink, docsLink, bad
 					}
 					{
 						(conformance ? conformance : []).map(c =>
-							<div key={c} className="conformance-element">
+							<div key={c.src} className="conformance-element">
 								<div className="conformance-badge"><img src={c.src} /></div>
 								<div className="conformance-text"><ul>
 									{
-										c.items.map(ti => <li key={ti.link}>{ti.text} { ti.link ? <a className="conformance-details" href={ti.link}>details</a> : "" }</li>)
+										c.items.map(ti => <li key={ti.text}>{ti.text} { ti.link ? <a className="conformance-details" href={ti.link}>details</a> : "" }</li>)
 									}
 								</ul></div>
 							</div>)
@@ -107,7 +110,7 @@ function ImplementationsShowcase() {
 			{ //only render implementations matching current filter
 			implData.map(impl => (
 				impl.type == type && 
-				<Implementation key={impl.title} {...impl} />
+				<Implementation key={impl.title + impl.type} {...impl} />
 			))}
 		</div>
 	</div>
