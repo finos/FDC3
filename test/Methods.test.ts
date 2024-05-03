@@ -2,6 +2,7 @@ import { mock } from 'jest-mock-extended';
 import {
   addContextListener,
   addIntentListener,
+  addEventListener,
   broadcast,
   compareVersionNumbers,
   ContextHandler,
@@ -95,6 +96,13 @@ describe('test ES6 module', () => {
 
     test('getUserChannels should reject', async () => {
       await expect(getUserChannels()).rejects.toEqual(UnavailableError);
+    });
+
+
+    test('addEventListener should reject', async () => {
+      await expect(addEventListener(expect.any(Object))).rejects.toEqual(UnavailableError);
+
+      await expect(addEventListener(expect.any(String), expect.any(Object))).rejects.toEqual(UnavailableError);
     });
 
     test('joinChannel should reject', async () => {

@@ -22,7 +22,8 @@
           "api/ref/Globals",
           "api/ref/Types",
           "api/ref/Metadata",
-          "api/ref/Errors"
+          "api/ref/Errors",
+          "api/ref/Events"
         ]
       },
       {
