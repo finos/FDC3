@@ -27,6 +27,7 @@ export * from './api/Types';
 export * from './context/ContextType';
 export * from './context/ContextTypes';
 export * from './intents/Intents';
+export * from './api/Events'
 
 /* Workaround for conflicts between bridging types and API types
    and prettier issue with `export * as`. */

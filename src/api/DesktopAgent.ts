@@ -15,6 +15,7 @@ import { AppIdentifier } from './AppIdentifier';
 import { AppMetadata } from './AppMetadata';
 import { Intent } from '../intents/Intents';
 import { ContextType } from '../context/ContextType';
+import { EventHandler, FDC3EventType } from './Events';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -374,6 +375,30 @@ export interface DesktopAgent {
    * ```
    */
   addContextListener(contextType: ContextType | null, handler: ContextHandler): Promise<Listener>;
+
+  /** 
+   * Register a handler for events from the Desktop Agent. Whenever the handler function 
+   * is called it will be passed an event object with details related to the event.
+   * 
+   * ````typescript
+   * // any event type
+   * const listener = await fdc3.addEventListener(null, event => { ... });
+   * 
+   * // listener for a specific event type
+   * const userChannlChangedListener = await fdc3.addEventListener(FDC3EventType.USER_CHANNEL_CHANGED, event => { ... });
+   * 
+   * // listener that logs detials for the event a specific type
+   * const contactListener = await fdc3.addEventListener(FDC3EventType.USER_CHANNEL_CHANGED, event => { 
+   *  console.log(`Received event USER_CHANNEL_CHANGED\nDetails: ${event.details}`);
+   *  //do something else with the event
+   * });
+   * ````
+   * 
+   * @parm {FDC3EventType|null} type If non-null, only events of the specified type will be received by the handler. 
+   * @param {EventHandler} handler A function that events received will be passed to. 
+   * 
+   */ 
+  addEventListener(type: FDC3EventType  | null, handler: EventHandler): Promise<Listener>;
 
   /**
    * Retrieves a list of the User channels available for the app to join.
