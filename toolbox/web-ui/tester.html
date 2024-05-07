@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>FDC3 Web UI's Demo</title>
+        <script src="https://cdn.jsdelivr.net/npm/pretty-print-json@2.1/dist/pretty-print-json.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-print-json@2.1/dist/css/pretty-print-json.css" />
+        <script src="./tester.js"></script>
+    </head>
+    <body>
+        <h1>FDC3 Web UI's Demo</h1>
+
+        <button id="send-btn" style="margin-bottom: 8px">Open channel selector</button>
+        <div style="display: flex; gap: 12px">
+            <div id="iframe-container">
+                Channel selector:<br/>
+                <iframe src="./channel_selector.html" height="300" width="300"></iframe>
+            </div>
+        </div>
+
+        <div>
+            Data returned:<br/>
+            <pre id="user-selection" class="json-container"></pre>
+        </div>
+    </body>
+</html>
