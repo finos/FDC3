@@ -10,7 +10,6 @@
 [![npm-build](https://github.com/finos/FDC3/workflows/npm-build/badge.svg)](https://github.com/finos/FDC3/actions?query=workflow%3Anpm-build)
 [![Slack](https://img.shields.io/badge/slack-@finos/fdc3-green.svg?logo=slack)](https://finos-lf.slack.com/messages/fdc3/)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6579/badge)](https://bestpractices.coreinfrastructure.org/projects/6579)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/finos/fdc3/badge)](https://securityscorecards.dev/viewer/?uri=github.com/finos/fdc3)
 
 ## What Is It?
 
