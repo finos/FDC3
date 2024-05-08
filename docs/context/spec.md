@@ -106,7 +106,7 @@ This Standard defines a number of conventions for the fields of context types th
 
 #### Avoid union types / composition of primitive types
 
-Both Typescript and JSON Schema allow for a type of polymorphism in types and interfaces that is hard to represent in other languages: allowing the type of a variable to be a ['union'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of other, unrelated types. E.g.: in typescript
+Both Typescript and JSON Schema allow for a type of polymorphism in types and interfaces that is hard to represent in other languages: allowing the type of a variable to be a ['union'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of other, unrelated types. E.g.: in TypeScript
 
 ```ts
 type Example = SomeOtherType | YetAnotherType;
