@@ -1,5 +1,5 @@
 {
-  "name": "da-server",
+  "name": "@kite9/da-server",
   "main": "src/index.ts",
   "scripts": {
     "directory-openapi": "npx openapi-typescript https://fdc3.finos.org/schemas/2.1/appd.schema.json --output generated/directory-schema.ts",
@@ -7,8 +7,8 @@
   },
   "dependencies": {
     "@finos/fdc3": "^2.1.0-beta.4",
+    "@kite9/fdc3-common": "workspace:*",
     "@types/uuid": "^9.0.7",
-    "fdc3-common": "workspace:*",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

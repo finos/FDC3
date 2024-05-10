@@ -5,7 +5,7 @@ import { expect } from 'expect';
 import { doesRowMatch, handleResolve, matchData } from '../support/matching';
 import { CustomWorld } from '../world/index';
 import { BasicDesktopAgent, DefaultAppSupport, DefaultChannelSupport, DefaultIntentSupport, DefaultHandshakeSupport } from '../../src';
-import { IntentResolver, SingleAppIntent } from 'fdc3-common';
+import { IntentResolver, SingleAppIntent } from '@kite9/fdc3-common';
 import { AppIntent, IntentResult } from '@finos/fdc3';
 
 /**

@@ -1,10 +1,10 @@
-import { supply } from "da-server/src/supply/post-message";
+import { supply } from "@kite9/da-server/src/supply/post-message";
 import { io } from "socket.io-client"
 import { v4 as uuid } from 'uuid'
 import { DA_HELLO, FDC3_APP_EVENT } from "../../message-types";
 import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
-import { DefaultFDC3Server, DirectoryApp, ServerContext } from "da-server";
+import { DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/da-server";
 
 
 

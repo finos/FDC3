@@ -1,10 +1,10 @@
 import { AppMetadata } from '@finos/fdc3/dist/bridging/BridgingTypes';
-import { Directory, DirectoryApp, ServerContext } from 'da-server'
+import { Directory, DirectoryApp, ServerContext } from '@kite9/da-server'
 import { Socket, io } from 'socket.io-client';
 import { v4 as uuid } from 'uuid'
 import { APP_HELLO, FDC3_DA_EVENT } from '../../message-types';
 import { AppIdentifier, OpenError } from '@finos/fdc3';
-import { AppChecker, DesktopAgentDetailResolver, DesktopAgentDetails, DesktopAgentPortResolver } from 'fdc3-common';
+import { AppChecker, DesktopAgentDetailResolver, DesktopAgentDetails, DesktopAgentPortResolver } from '@kite9/fdc3-common';
 import { link } from './util';
 
 enum Opener { Tab, Frame, Nested }
