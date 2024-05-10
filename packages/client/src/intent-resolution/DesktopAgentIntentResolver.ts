@@ -1,6 +1,6 @@
 import { AppIntent, IntentResult } from "@finos/fdc3";
-import { Messaging } from "da-proxy";
-import { IntentResolver, SingleAppIntent, IntentResolutionChoiceAgentResponse } from "fdc3-common";
+import { Messaging } from "@kite9/da-proxy";
+import { IntentResolver, SingleAppIntent, IntentResolutionChoiceAgentResponse } from "@kite9/fdc3-common";
 
 /**
  * Works with the desktop agent to provide a resolution to the intent choices.

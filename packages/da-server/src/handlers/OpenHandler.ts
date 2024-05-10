@@ -3,7 +3,7 @@ import { MessageHandler } from "../BasicFDC3Server";
 import { ServerContext } from "../ServerContext";
 import { Directory, DirectoryApp } from "../directory/DirectoryInterface";
 import { ContextElement, ResolveError } from "@finos/fdc3";
-import { OnAddContextListenerAgentRequest } from "fdc3-common";
+import { OnAddContextListenerAgentRequest } from "@kite9/fdc3-common";
 
 function filterPublicDetails(appD: DirectoryApp): GetAppMetadataAgentResponsePayload['appMetadata'] {
     return {

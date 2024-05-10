@@ -1,5 +1,5 @@
 import { AppIdentifier } from '@finos/fdc3';
-import { APIResponseMessage, AppChecker, DesktopAgentDetailResolver, Supplier, FDC3_API_RESPONSE_MESSAGE_TYPE, FDC3_API_REQUEST_MESSAGE_TYPE, DesktopAgentPortResolver } from 'fdc3-common';
+import { APIResponseMessage, AppChecker, DesktopAgentDetailResolver, Supplier, FDC3_API_RESPONSE_MESSAGE_TYPE, FDC3_API_REQUEST_MESSAGE_TYPE, DesktopAgentPortResolver } from '@kite9/fdc3-common';
 
 /**
  * This configures the postMessage listener to respond to requests for desktop agent APIs.

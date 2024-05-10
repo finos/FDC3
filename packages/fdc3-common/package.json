@@ -1,5 +1,5 @@
 {
-  "name": "fdc3-common",
+  "name": "@kite9/fdc3-common",
   "main": "src/index.ts",
   "version": "0.0.0",
   "scripts": {

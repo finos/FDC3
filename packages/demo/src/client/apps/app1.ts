@@ -1,4 +1,4 @@
-import { getClientAPI } from 'client'
+import { getClientAPI } from '@kite9/client'
 
 function createContext(i: number) {
     return {
@@ -15,12 +15,12 @@ function createContext(i: number) {
  */
 async function startBroadcasting() {
     console.log("starting...")
-    const fdc3 = await getClientAPI(); 
+    const fdc3 = await getClientAPI();
     console.log("got api...")
     const channels = await fdc3.getUserChannels()
     const channel = channels[0]
     for (let index = 0; index < 50; index++) {
-        setTimeout(() => channel.broadcast(createContext(index)), index*1000);
+        setTimeout(() => channel.broadcast(createContext(index)), index * 1000);
     }
 }
 

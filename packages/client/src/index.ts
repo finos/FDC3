@@ -1,5 +1,5 @@
 import { DesktopAgent } from '@finos/fdc3'
-import { Options } from 'fdc3-common';
+import { Options } from '@kite9/fdc3-common';
 import postMessage from './strategies/post-message'
 //import electronEvent from './strategies/electron-event'
 

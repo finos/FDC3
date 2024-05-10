@@ -1,4 +1,4 @@
-import { getClientAPI } from 'client'
+import { getClientAPI } from '@kite9/client'
 
 /**
  * This demonstrates using the API via a promise

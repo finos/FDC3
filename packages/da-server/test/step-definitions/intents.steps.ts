@@ -5,7 +5,7 @@ import { APP_FIELD } from "./generic.steps";
 import { FindIntentAgentRequest, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { handleResolve } from "../support/matching";
 import { createMeta, contextMap } from './generic.steps';
-import { OnAddIntentListenerAgentRequest, OnUnsubscribeIntentListenerAgentRequest } from "fdc3-common";
+import { OnAddIntentListenerAgentRequest, OnUnsubscribeIntentListenerAgentRequest } from "@kite9/fdc3-common";
 
 type ListensFor = {
     [key: string]: {

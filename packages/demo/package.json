@@ -1,5 +1,5 @@
 {
-  "name": "demo",
+  "name": "@kite9/demo",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -15,12 +15,12 @@
   },
   "dependencies": {
     "@finos/fdc3": "^2.1.0-beta.6",
+    "@kite9/client": "workspace:*",
+    "@kite9/da-server": "workspace:*",
+    "@kite9/fdc3-common": "workspace:*",
     "@types/uuid": "^9.0.8",
     "@types/ws": "^8.5.10",
-    "client": "workspace:*",
-    "da-server": "workspace:*",
     "express": "^4.18.3",
-    "fdc3-common": "workspace:*",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "tsx": "^4.5.0",
