@@ -1,7 +1,7 @@
 {
   "name": "@kite9/web-fdc3",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "workspaces": [
     "packages/*"
   ],
@@ -12,5 +12,8 @@
   "devDependencies": {
     "release-it": "^17.2.1",
     "typescript": "^5.3.2"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
   }
 }
