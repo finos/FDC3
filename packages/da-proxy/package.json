@@ -1,6 +1,7 @@
 {
   "name": "@kite9/da-proxy",
   "main": "src/index.ts",
+  "version": "0.0.4",
   "scripts": {
     "build": "nyc --reporter=lcov --reporter=text cucumber-js",
     "b2": "tsx cucumber-js"
