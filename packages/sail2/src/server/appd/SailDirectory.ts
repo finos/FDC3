@@ -2,7 +2,6 @@ import { BasicDirectory } from "da-server/src/directory/BasicDirectory";
 import { DirectoryApp } from "da-server/src/directory/DirectoryInterface";
 import fs from 'node:fs/promises';
 
-
 function loadRemotely(u: string): Promise<any> {
     return fetch(u).then((response) => response.json());
 }
@@ -24,7 +23,7 @@ const convertToDirectoryList = (data: any) => {
     return data.applications as DirectoryApp[];
 }
 
-export class FDC3_2_1_JSONDirectory extends BasicDirectory {
+export class SailDirectory extends BasicDirectory {
 
     constructor() {
         super([])
@@ -34,4 +33,11 @@ export class FDC3_2_1_JSONDirectory extends BasicDirectory {
         this.allApps.push(...await load(url));
     }
 
+    /**
+     * Replaces the loaded apps with new ones
+     */
+    async replace(url: string[]) {
+        this.allApps = []
+        url.forEach(u => load(u))
+    }
 }

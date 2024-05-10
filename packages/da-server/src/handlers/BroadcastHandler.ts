@@ -39,9 +39,9 @@ export type ChannelState = { [channelId: string]: ContextElement[] }
 
 export class BroadcastHandler implements MessageHandler {
 
-    private regs: ListenerRegistration[] = []
-    private readonly state: ChannelState = {}
-    private readonly desktopAgentName: string
+    protected regs: ListenerRegistration[] = []
+    protected readonly state: ChannelState = {}
+    protected readonly desktopAgentName: string
 
     constructor(name: string, initialChannelState: ChannelState) {
         this.desktopAgentName = name
