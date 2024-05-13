@@ -1,7 +1,7 @@
 {
   "name": "@kite9/da-server",
   "main": "src/index.ts",
-  "version": "0.0.4",
+  "version": "0.0.10",
   "scripts": {
     "directory-openapi": "npx openapi-typescript https://fdc3.finos.org/schemas/2.1/appd.schema.json --output generated/directory-schema.ts",
     "build": "nyc --reporter=lcov --reporter=text cucumber-js"

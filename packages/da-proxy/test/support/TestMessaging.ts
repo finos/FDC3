@@ -2,7 +2,7 @@ import { AppIdentifier } from "@finos/fdc3";
 import { AgentRequestMessage, AgentResponseMessage, ConnectionStep3Handshake, ContextElement, IntentResult } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { v4 as uuidv4 } from 'uuid'
 import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";
-import { RegisterableListener } from "../listeners/RegisterableListener";
+import { RegisterableListener } from "../../src/listeners/RegisterableListener";
 import { FindIntent } from "./responses/FindIntent";
 import { FindIntentByContext } from "./responses/FindIntentByContext";
 import { ICreateLog } from "@cucumber/cucumber/lib/runtime/attachment_manager";

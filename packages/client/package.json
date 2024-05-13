@@ -1,10 +1,14 @@
 {
   "name": "@kite9/client",
-  "main": "src/index.ts",
-  "version": "0.0.0",
+  "main": "dist/index.js",
+  "version": "0.0.10",
   "scripts": {
     "build": "tsc -b"
   },
+  "files": [
+    "dist"
+  ],
+  "typings": [],
   "dependencies": {
     "@finos/fdc3": "^2.1.0-beta.4",
     "@kite9/da-proxy": "workspace:*",
