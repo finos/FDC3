@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WCPConnectionStep.schema.json",
+  "title": "Web Connection Protocol Message",
+  "type": "object",
+  "description": "A message used during the connection flow for an application to a Desktop Agent in a browser window. Used for messages sent in either direction.",
+  "properties": {
+    "type": {
+      "title": "Connection Step Message type",
+      "type": "string",
+      "enum": [
+        "WCP1Hello",
+        "WCP2LoadUrl",
+        "WCP3Handshake",
+        "WCP4ValidateAppIdentity",
+        "WCP5ValidateAppIdentityFailedResponse",
+        "WCP5ValidateAppIdentityResponse"
+      ],
+      "description": "Identifies the type of the connection step message."
+    },
+    "payload": {
+      "title": "Message payload",
+      "type": "object",
+      "description": "The message payload, containing data pertaining to this connection step.",
+      "unevaluatedProperties": false
+    },
+    "meta": {
+      "$ref": "#/$defs/ConnectionStepMeta"
+    }
+  },
+  "required": ["type", "payload", "meta"],
+  "additionalProperties": false,
+  "$defs": {
+    "ConnectionStepMeta": {
+      "title": "Connection Step Metadata",
+      "description": "Metadata for this connection step message.",
+      "type": "object",
+      "properties": {
+        "connectionAttemptUuid": {
+          "$ref": "../api/common.schema.json#/$defs/ConnectionAttemptUuid"
+        },
+        "timestamp": {
+          "$ref": "../api/common.schema.json#/$defs/Timestamp"
+        }
+      },
+      "required": ["timestamp"],
+      "additionalProperties": false
+    }
+  }
+}

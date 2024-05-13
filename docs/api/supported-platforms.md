@@ -40,7 +40,6 @@ getAgent({ appId: “yourApp@yourorg.org” }))
 
 :::
 
-
 As Web applications can navigate (or be navigated by users) to different URLs and become different application, apps MUST pass details of their identity to `getAgent()`. This can be done in one of two ways.
 
 1. Provide an appId field

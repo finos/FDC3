@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json",
+  "title": "Web Connection Protocol Hello",
+  "description": "Hello message sent by an application to a parent window or frame when attempting to establish connectivity to a Desktop Agent",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/WCP1HelloBase"
+    },
+    {
+      "$ref": "WCPConnectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "WCP1HelloBase": {
+      "type":"object",
+      "properties": {
+        "type": {
+          "title": "WCP1Hello Message Type",
+          "const": "WCP1Hello"
+        },
+        "payload": {
+          "title": "WCP1Hello Payload",
+          "type": "object",
+          "properties": {
+            "fdc3Version": {
+              "title": "FDC3 version",
+              "type": "string",
+              "description": "The version of FDC3 API that the app supports."
+            }
+          },
+          "required": ["fdc3Version"]
+        },
+        "meta": {
+          "title": "WCP1Hello Metadata",
+          "type": "object",
+          "properties": {
+            "timestamp": true,
+            "connectionAttemptUuid": true
+          },
+          "additionalProperties": false,
+          "required": ["timestamp","connectionAttemptUuid"]
+        }
+      },
+      "required": ["type", "payload", "meta"],
+      "additionalProperties": false
+    }
+  }
+}

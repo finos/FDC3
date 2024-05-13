@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/WCP4ValidateAppIdentity.schema.json",
+  "title": "WCP4ValidateAppIdentity",
+  "description": "Identity Validation request from an app attempting to connect to a Desktop Agent.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/WCP4ValidateAppIdentityBase"
+    },
+    {
+      "$ref": "WCPConnectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "WCP4ValidateAppIdentityBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "WCP4ValidateAppIdentity Message Type",
+          "const": "WCP4ValidateAppIdentity"
+        },
+        "payload": {
+          "title": "WCP4ValidateAppIdentity Payload",
+          "type": "object",
+          "properties": {
+            "appId": {
+              "title": "appId",
+              "description": "appId for the application attempting to connect. The appId must be fully qualified (appId@host.domain.appD) such that the URL for the appD record can be determined for identity validation purposes, or appDUrl must also be specified.",
+              "type": "string"
+            },
+            "appDUrl": {
+              "title": "appDUrl",
+              "description": "URL for an App Directory record that provides identity details for the application attempting to connect",
+              "type": "string",
+              "format": "uri"
+            },
+            "instanceId": {
+              "title": "instanceId",
+              "description": "If an application has previously connected to the desktop agent, it may specify its prior instance id and associated instance UUID to request the same same instance Id be assigned.",
+              "type": "string"
+            },
+            "instanceUuid": {
+              "title": "instanceUuid",
+              "description": "Instance UUID associated with the requested instanceId.",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "appId"
+          ]
+        },
+        "meta": {
+          "title": "WCP4ValidateAppIdentity Metadata",
+          "type": "object",
+          "properties": {
+            "timestamp": true,
+            "connectionAttemptUuid": true
+          },
+          "additionalProperties": false,
+          "required": [
+            "timestamp",
+            "connectionAttemptUuid"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "payload",
+        "meta"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
