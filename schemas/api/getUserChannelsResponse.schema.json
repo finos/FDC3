@@ -41,7 +41,7 @@
 				"userChannels": {
 					"type": "array",
 					"items": {
-						"$ref": "../api/api.schema.json#/definitions/Channel"
+						"$ref": "api.schema.json#/definitions/Channel"
 					}
 				}
 			},
@@ -55,7 +55,7 @@
 			"type": "object",
 			"properties": {
 				"error": {
-					"$ref": "api.schema.json#/$defs/ChannelError"
+					"$ref": "api.schema.json#/definitions/ChannelError"
 				}
 			},
 			"required": [

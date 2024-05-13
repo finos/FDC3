@@ -39,7 +39,7 @@
 			"type": "object",
 			"properties": {
 				"appIdentifier": {
-					"$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+					"$ref": "api.schema.json#/definitions/AppIdentifier"
 				}
 			},
 			"required": [
@@ -56,10 +56,10 @@
 					"type": "String",
 					"oneOf": [
 						{
-							"$ref": "../api/api.schema.json#/definitions/OpenError"
+							"$ref": "api.schema.json#/definitions/OpenError"
 						},
 						{
-							"$ref": "../api/api.schema.json#/definitions/BridgingError"
+							"$ref": "api.schema.json#/definitions/BridgingError"
 						}
 					]
 				}

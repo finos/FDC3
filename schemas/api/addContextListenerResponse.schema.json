@@ -44,14 +44,15 @@
 			},
 			"required": [
 				"listenerUUID"
-			]
+			],
+			"additionalProperties": false
 		},
 		"AddContextListenerErrorResponsePayload": {
-			"title": "",
+			"title": "AddContextListener Error Response Payload",
 			"type": "object",
 			"properties": {
 				"error": {
-					"$ref": "../api/api.schema.json#/definitions/ChannelError"
+					"$ref": "api.schema.json#/definitions/ChannelError"
 				}
 			},
 			"required": [

@@ -39,20 +39,25 @@
       "title": "Agent Response Message Payload",
       "type": "object",
       "description": "A payload for a response to an API call that will contain any return values or an `error` property containing a standardized error message indicating that the request was unsuccessful.",
-      "oneOf": [{
-        "type": "object",
-        "properties": {},
-        "additionalProperties": true
-      },{
-        "type": "object",
-        "properties": {
-          "error": {
-            "$ref": "common.schema.json#/$defs/ErrorMessages"
-          }
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true
         },
-        "required": ["success","error"],
-        "additionalProperties": false
-      }]
+        {
+          "type": "object",
+          "properties": {
+            "error": {
+              "$ref": "common.schema.json#/$defs/ErrorMessages"
+            }
+          },
+          "required": [
+            "error"
+          ],
+          "additionalProperties": false
+        }
+      ]
     },
     "meta": {
       "title": "Agent Response Message Metadata",
@@ -74,10 +79,18 @@
           "$ref": "api.schema.json#/definitions/AppIdentifier"
         }
       },
-      "required": ["timestamp", "requestUuid", "responseUuid"],
+      "required": [
+        "timestamp",
+        "requestUuid",
+        "responseUuid"
+      ],
       "additionalProperties": false
     }
   },
   "additionalProperties": false,
-  "required": ["type", "payload", "meta"]
+  "required": [
+    "type",
+    "payload",
+    "meta"
+  ]
 }

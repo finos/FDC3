@@ -42,12 +42,12 @@
 				"resultType": {
 					"title": "Result type argument",
 					"type": "string"
-				},
-				"required": [
-					"intent"
-				]
+				}
 			},
-			"additionalProperties": false
+			"additionalProperties": false,
+			"required": [
+				"intent"
+			]
 		}
 	}
 }

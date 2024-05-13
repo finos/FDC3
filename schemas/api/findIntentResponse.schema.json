@@ -39,7 +39,7 @@
 			"type": "object",
 			"properties": {
 				"appIntent": {
-					"$ref": "../api/api.schema.json#/definitions/AppIntent"
+					"$ref": "api.schema.json#/definitions/AppIntent"
 				}
 			},
 			"required": [
@@ -56,10 +56,10 @@
 					"type": "String",
 					"oneOf": [
 						{
-							"$ref": "../api/api.schema.json#/definitions/ResolveError"
+							"$ref": "api.schema.json#/definitions/ResolveError"
 						},
 						{
-							"$ref": "../api/api.schema.json#/definitions/BridgingError"
+							"$ref": "api.schema.json#/definitions/BridgingError"
 						}
 					]
 				}

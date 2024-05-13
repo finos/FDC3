@@ -17,10 +17,10 @@
 				"payload": {
 					"oneOf": [
 						{
-							"$ref": "$defs/FindInstancesSuccessResponsePayload"
+							"$ref": "#/$defs/FindInstancesSuccessResponsePayload"
 						},
 						{
-							"$ref": "$defs/FindInstancesErrorResponsePayload"
+							"$ref": "#/$defs/FindInstancesErrorResponsePayload"
 						}
 					]
 				},
@@ -35,14 +35,14 @@
 			"const": "findInstancesResponse"
 		},
 		"FindInstancesSuccessResponsePayload": {
-			"title": "Agent Response Message Payload",
+			"title": "FindInstances Response Message Payload",
 			"type": "object",
 			"description": "The message payload contains a flag indicating whether the API call was successful, plus any return values for the FDC3 API function called, or indicating that the request resulted in an error and including a standardized error message.",
 			"properties": {
 				"appIdentifiers": {
 					"type": "array",
 					"items": {
-						"$ref": "../api/api.schema.json#/definitions/AppMetadata"
+						"$ref": "api.schema.json#/definitions/AppMetadata"
 					}
 				}
 			},
@@ -52,18 +52,18 @@
 			"additionalProperties": false
 		},
 		"FindInstancesErrorResponsePayload": {
-			"title": "",
+			"title": "FindInstances Error Response Message Payload",
 			"type": "object",
 			"properties": {
 				"error": {
 					"title": "findInstances Errors",
-					"type": "String",
+					"type": "string",
 					"oneOf": [
 						{
-							"$ref": "../api/api.schema.json#/definitions/ResolveError"
+							"$ref": "api.schema.json#/definitions/ResolveError"
 						},
 						{
-							"$ref": "../api/api.schema.json#/definitions/BridgingError"
+							"$ref": "api.schema.json#/definitions/BridgingError"
 						}
 					]
 				}

@@ -45,7 +45,7 @@
 			"type": "object",
 			"properties": {
 				"error": {
-					"$ref": "api.schema.json#/$defs/ChannelError"
+					"$ref": "api.schema.json#/definitions/ChannelError"
 				}
 			},
 			"required": [
