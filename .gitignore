@@ -19,3 +19,4 @@ packages/testing/tsconfig.tsbuildinfo
 **/coverage
 .nyc_output
 packages/da-server/generated
+**/cucumber-report.html

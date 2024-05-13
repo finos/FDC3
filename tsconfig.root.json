@@ -25,6 +25,9 @@
     "noImplicitReturns": true,           
 
     /* From Coverage Work */
-    "skipLibCheck": true
+    "skipLibCheck": true,
+
+    /* From Distribution Work */
+    "declarationMap": true
   }
 }
