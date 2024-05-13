@@ -48,7 +48,8 @@
 			},
 			"required": [
 				"appIntents"
-			]
+			],
+			"additionalProperties": false
 		},
 		"FindIntentsByContextErrorResponsePayload": {
 			"title": "FindIntentsByContext Error Response Payload",

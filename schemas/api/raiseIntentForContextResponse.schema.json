@@ -20,6 +20,9 @@
 							"$ref": "raiseIntentResponse.schema.json#/$defs/RaiseIntentSuccessResponsePayload"
 						},
 						{
+							"$ref": "#/$defs/RaiseIntentForContextNeedsResolutionResponsePayload"
+						},
+						{
 							"$ref": "raiseIntentResponse.schema.json#/$defs/RaiseIntentErrorResponsePayload"
 						}
 					]
@@ -33,6 +36,24 @@
 		"RaiseIntentForContextResponseType": {
 			"title": "RaiseIntentForContext Response Message Type",
 			"const": "raiseIntentForContextResponse"
+		},
+		"RaiseIntentForContextNeedsResolutionResponsePayload": {
+			"title": "RaiseIntentForContext NeedsResolution Response Payload",
+			"description": "Response to a raiseIntentForContext request that needs additional resolution (i.e. show an intent resolver UI)",
+			"type": "object",
+			"properties": {
+				"appIntents": {
+					"type": "array",
+					"items": {
+						"$ref": "../api/api.schema.json#/definitions/AppIntent"
+					},
+					"additionalProperties": false
+				}
+			},
+			"required": [
+				"appIntents"
+			],
+			"additionalProperties": false
 		}
 	}
 }
