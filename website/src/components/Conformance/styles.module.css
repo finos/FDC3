@@ -1,0 +1,65 @@
+.cta {
+	background: #0086bf44;
+	border: 1px solid #ace;
+	border-radius: .5rem;
+	color: #0086bf;
+	display: inline-block;
+	font-size: 1rem;
+	line-height: 1.2em;
+	margin: 1rem;
+	padding: 1rem;
+	text-decoration: none !important;
+	transition: background .3s, color .3s;
+	width: 15rem;
+}
+
+.innerAside {
+	margin: auto;
+	font-size: 3rem;
+	color: black;
+	text-align: center;
+}
+
+.innerAside h2 {
+	font-family: 'Rokkitt';
+	font-size: 8rem;
+	font-weight: bold;
+}
+
+@media (max-width: 60rem) {
+	.innerAside h2 {
+		font-size: 4rem;
+	}
+}
+
+
+.right {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.cta {
+	background: #0086bf44;
+	border: 1px solid #ace;
+	border-radius: .5rem;
+	color: white;
+	display: inline-block;
+	font-size: 1rem;
+	line-height: 1.2em;
+	margin: 1rem;
+	padding: 1rem;
+	text-decoration: none !important;
+	transition: background .3s, color .3s;
+	width: 15rem;
+	text-align: center;
+}
+
+.logo {
+	width: 15rem;
+}
+
+.explanation {
+	font-size: 1.5rem;
+	text-align: center;
+}
