@@ -1,8 +1,11 @@
 {
   "name": "@kite9/da-proxy",
-  "main": "dist/src/index.ts",
-  "types": "dist/**/*.d.ts",
   "version": "0.0.10",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "build": "tsc -b",
     "test": "nyc --reporter=lcov --reporter=text cucumber-js",
@@ -32,10 +35,10 @@
     "jsonpath-plus": "^7.2.0",
     "nyc": "15.1.0",
     "prettier": "2.2.1",
+    "rimraf": "^5.0.7",
     "ts-node": "^10.9.2",
     "tsx": "^4.7.1",
     "typescript": "^5.3.2",
-    "uuid": "^9.0.1",
-    "rimraf": "^5.0.7"
+    "uuid": "^9.0.1"
   }
 }
