@@ -62,7 +62,6 @@
     "pretty-quick": "^3.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "release-it": "^17.2.1",
     "terser": "^5.16.1",
     "typescript": "^4.1.2",
     "uuid": "^9.0.0",
@@ -79,6 +78,7 @@
     "*.{js,css,md}": "prettier --write"
   },
   "dependencies": {
-    "@material-ui/styles": "^4.11.5"
+    "@material-ui/styles": "^4.11.5",
+    "rimraf": "^5.0.7"
   }
 }
