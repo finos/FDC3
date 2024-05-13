@@ -104,7 +104,7 @@
                 "instanceMetadata": {
                     "description": "An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set.",
                     "type": "object",
-                    "additionalProperties": {},
+                    "additionalProperties": true,
                     "title": "instanceMetadata"
                 },
                 "title": {

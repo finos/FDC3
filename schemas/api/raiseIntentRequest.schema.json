@@ -38,7 +38,7 @@
 					"$ref": "../context/context.schema.json"
 				},
 				"app": {
-					"$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+					"$ref": "api.schema.json#/definitions/AppIdentifier"
 				}
 			},
 			"required": [

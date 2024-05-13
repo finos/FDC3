@@ -40,7 +40,7 @@
 			"properties": {
 				"channel": {
 					"oneOf": [
-						{ "$ref": "../api/api.schema.json#/definitions/Channel" },
+						{ "$ref": "api.schema.json#/definitions/Channel" },
 						{ "type": "null" }
 					]
 				}

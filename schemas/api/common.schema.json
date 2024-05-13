@@ -39,19 +39,19 @@
     "ErrorMessages": {
       "oneOf": [
         {
-          "$ref": "../api/api.schema.json#/definitions/ChannelError"
+          "$ref": "api.schema.json#/definitions/ChannelError"
         },
         {
-          "$ref": "../api/api.schema.json#/definitions/OpenError"
+          "$ref": "api.schema.json#/definitions/OpenError"
         },
         {
-          "$ref": "../api/api.schema.json#/definitions/ResolveError"
+          "$ref": "api.schema.json#/definitions/ResolveError"
         },
         {
-          "$ref": "../api/api.schema.json#/definitions/ResultError"
+          "$ref": "api.schema.json#/definitions/ResultError"
         },
         {
-          "$ref": "../api/api.schema.json#/definitions/BridgingError"
+          "$ref": "api.schema.json#/definitions/BridgingError"
         }
       ]
     },

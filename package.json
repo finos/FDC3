@@ -26,6 +26,7 @@
     "lint": "eslint src/ test/ --ext .ts --fix",
     "prepack": "npm run build",
     "typegen": "node s2tQuicktypeUtil.js schemas/context src/context/ContextTypes.ts",
+    "typegen-browser": "node s2tQuicktypeUtil.js schemas/api src/api/BrowserTypes.ts",
     "typegen-bridging": "node s2tQuicktypeUtil.js schemas/api schemas/bridging schemas/context/context.schema.json src/bridging/BridgingTypes.ts"
   },
   "husky": {
