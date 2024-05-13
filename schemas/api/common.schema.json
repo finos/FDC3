@@ -5,6 +5,11 @@
   "type": "object",
   "description": "Common definitions that are referenced in the API and Bridging wire protocol schemas",
   "$defs": {
+    "ConnectionAttemptUuid": {
+      "title": "Connection Attempt UUID",
+      "type": "string",
+      "description": "Unique identifier for a for an attempt to connect to a Desktop Agent"
+    },
     "RequestUuid": {
       "title": "Request UUID",
       "type": "string",

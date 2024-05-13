@@ -48,7 +48,7 @@ window.addEventListener("message", (event) => {
 });
 ```
 
-Alternatively for step 3, a DA MAY return a `url` instead transferring a MessagePort. When `url` is provided in the response, `getAgent()` will open that `url` in a hidden iframe and initiate another WCP handshake with that frame.
+Alternatively for step 3, a DA MAY return a `url` instead of transferring a MessagePort. When `url` is provided in the response, `getAgent()` will open that `url` in a hidden iframe and initiate another WCP handshake with that frame.
 
 Example WCP negotiation with URL
 ```JavaScript
@@ -170,7 +170,6 @@ const authenticateApp = (connection, e) => {
             type: "WCPValidateAppIdentityResponse",
             payload: {
                 desktopAgentDetails: {
-                    agentType: "PARENT",
                     appId: data.appId,
                     instanceUUid: connection.instanceUuid,
                     instanceId: connection.instanceId,
