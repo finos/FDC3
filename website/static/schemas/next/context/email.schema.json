@@ -13,7 +13,7 @@
         },
         "recipients": {
           "title": "Email Recipients",
-          "description": "One or more receipients for the email.",
+          "description": "One or more recipients for the email.",
           "oneOf": [
             {
               "$ref": "contact.schema.json#"
