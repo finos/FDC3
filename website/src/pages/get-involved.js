@@ -15,6 +15,7 @@ import Three from '../../data/get-involved/3.mdx'
 import Four from '../../data/get-involved/4.mdx'
 import GridBlock from "../components/GridBlock";
 
+import Five from '../../data/get-involved/5.mdx'
 
 export default () => {
 
@@ -24,7 +25,7 @@ export default () => {
         <header className="postHeader">
           <h1>Get Involved in FDC3</h1>
         </header>
-        <GridBlock items={[<One/>,<Two/>,<Three/>,<Four/>]}/>
+        <GridBlock items={[<One/>,<Two/>,<Three/>,<Four/>, <Five />]}/>
       </Container>
     </Layout>)
 };

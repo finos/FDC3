@@ -26,7 +26,9 @@
           "type": "object",
           "properties": {
             "channelId": {
-              "type": "string"
+              "type": "string",
+              "title": "Channel Id",
+              "description": "The id of the PrivateChannel that the event listener was removed from."
             },
             "listenerType": {
               "$ref": "common.schema.json#/$defs/PrivateChannelEventListenerTypes"

@@ -322,7 +322,9 @@ describe('test ES6 module', () => {
     let eventListeners: any;
 
     beforeEach(() => {
-      jest.useFakeTimers();
+      jest.useFakeTimers({
+        legacyFakeTimers: true
+      });
 
       eventListeners = {};
 
@@ -334,6 +336,10 @@ describe('test ES6 module', () => {
     afterEach(() => {
       window.fdc3 = (undefined as unknown) as DesktopAgent;
     });
+
+    afterAll(() => {
+      jest.useRealTimers();
+    })
 
     test('resolves immediately if `window.fdc3` is already defined', async () => {
       // set fdc3 object and call fdc3Ready
