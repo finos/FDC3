@@ -20,6 +20,9 @@
 							"$ref": "#/$defs/RaiseIntentSuccessResponsePayload"
 						},
 						{
+							"$ref": "#/$defs/RaiseIntentNeedsResolutionResponsePayload"
+						},
+						{
 							"$ref": "#/$defs/RaiseIntentErrorResponsePayload"
 						}
 					]
@@ -36,6 +39,7 @@
 		},
 		"RaiseIntentSuccessResponsePayload": {
 			"title": "RaiseIntent Response Payload",
+			"description": "Response to a raiseIntent request that was successfully resolved",
 			"type": "object",
 			"properties": {
 				"intentResolution": {
@@ -47,8 +51,23 @@
 			],
 			"additionalProperties": false
 		},
+		"RaiseIntentNeedsResolutionResponsePayload": {
+			"title": "RaiseIntent NeedsResolution Response Payload",
+			"description": "Response to a raiseIntent request that needs additional resolution (i.e. show an intent resolver UI)",
+			"type": "object",
+			"properties": {
+				"appIntent": {
+					"$ref": "../api/api.schema.json#/definitions/AppIntent"
+				}
+			},
+			"required": [
+				"appIntent"
+			],
+			"additionalProperties": false
+		},
 		"RaiseIntentErrorResponsePayload": {
 			"title": "RaiseIntent Error Response Payload",
+			"description": "Response to a raiseIntent request that resulted in an error",
 			"type": "object",
 			"properties": {
 				"error": {
