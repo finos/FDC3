@@ -7,7 +7,7 @@
     ],
     "outDir": "dist",
   },
-  "exclude": ["test/**"],
+  "exclude": ["test/**", "dist/**"],
   "references": [
     {
       "path": "../fdc3-common"
