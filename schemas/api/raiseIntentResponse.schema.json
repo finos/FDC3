@@ -72,7 +72,6 @@
 			"properties": {
 				"error": {
 					"title": "RaiseIntent Error Response Payload",
-					"type": "String",
 					"oneOf": [
 						{
 							"$ref": "api.schema.json#/definitions/ResolveError"

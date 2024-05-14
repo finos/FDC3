@@ -53,7 +53,6 @@
 			"properties": {
 				"error": {
 					"title": "GetAppMetadata Error Message",
-					"type": "String",
 					"oneOf": [
 						{
 							"$ref": "api.schema.json#/definitions/ResolveError"

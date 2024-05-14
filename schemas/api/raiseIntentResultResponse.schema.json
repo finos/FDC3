@@ -83,10 +83,9 @@
 		},
 		"RaiseIntentResultErrorResponsePayload": {
 			"title": "RaiseIntentResult Error Response Payload",
-			"type": "object",
 			"properties": {
 				"error": {
-					"$ref": "common.schema.json#/ErrorMessages"
+					"$ref": "common.schema.json#/$defs/ErrorMessages"
 				}
 			},
 			"required": [

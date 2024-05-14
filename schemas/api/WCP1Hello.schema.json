@@ -14,7 +14,7 @@
   ],
   "$defs": {
     "WCP1HelloBase": {
-      "type":"object",
+      "type": "object",
       "properties": {
         "type": {
           "title": "WCP1Hello Message Type",
@@ -26,8 +26,8 @@
           "properties": {
             "fdc3Version": {
               "title": "FDC3 version",
-              "type": "string",
-              "description": "The version of FDC3 API that the app supports."
+              "description": "The version of FDC3 API that the app supports.",
+              "type": "string"
             }
           },
           "required": ["fdc3Version"]

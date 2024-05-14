@@ -57,7 +57,6 @@
 			"properties": {
 				"error": {
 					"title": "FindIntentsByContext Error Message",
-					"type": "String",
 					"oneOf": [
 						{
 							"$ref": "api.schema.json#/definitions/ResolveError"
