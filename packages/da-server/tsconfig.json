@@ -12,6 +12,9 @@
         "src",
         "generated",
     ],
+    "exclude": [
+        "dist/**"
+    ],
     "references": [
         {
             "path": "../fdc3-common"

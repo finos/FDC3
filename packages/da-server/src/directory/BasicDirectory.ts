@@ -43,11 +43,11 @@ export class BasicDirectory implements Directory {
         const lfAugmented = lfa.map(([key, value]) => {
             return {
                 intentName: key,
-                ...value,
+                ...(value as any),
                 appId: a.appId
             }
         })
-        return lfAugmented
+        return lfAugmented as DirectoryIntent[]
     }
 
     retrieveApps(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): DirectoryApp[] {

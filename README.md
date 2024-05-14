@@ -101,6 +101,7 @@ The project is divided into several different yarn workspaces:
 - handle disconnections from the server / update running apps
 - test intent resolvers on different domains
 - we shoulnd't be using meta for routing - check this.
+- factor out test codes into module
 
 ## Idea
 

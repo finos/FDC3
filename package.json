@@ -1,13 +1,14 @@
 {
   "name": "@kite9/web-fdc3",
   "private": true,
-  "version": "0.0.10",
+  "version": "0.0.12",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
     "clean": "yarn workspaces foreach --all run clean",
-    "build": "yarn workspaces foreach --all run build"
+    "build": "yarn workspaces foreach --all run build",
+    "test": "yarn workspaces foreach --all run test"
   },
   "packageManager": "yarn@4.1.1",
   "devDependencies": {
