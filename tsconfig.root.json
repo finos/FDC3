@@ -6,7 +6,6 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     /* output setting */
