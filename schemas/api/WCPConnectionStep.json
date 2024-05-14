@@ -22,18 +22,22 @@
       "title": "Message payload",
       "type": "object",
       "description": "The message payload, containing data pertaining to this connection step.",
-      "unevaluatedProperties": false
+      "additionalProperties": true
     },
     "meta": {
       "$ref": "#/$defs/ConnectionStepMeta"
     }
   },
-  "required": ["type", "payload", "meta"],
+  "required": [
+    "type",
+    "payload",
+    "meta"
+  ],
   "additionalProperties": false,
   "$defs": {
     "ConnectionStepMeta": {
       "title": "Connection Step Metadata",
-      "description": "Metadata for this connection step message.",
+      "description": "Metadata for this connection step message",
       "type": "object",
       "properties": {
         "connectionAttemptUuid": {
@@ -43,7 +47,10 @@
           "$ref": "common.schema.json#/$defs/Timestamp"
         }
       },
-      "required": ["timestamp","connectionAttemptUuid"],
+      "required": [
+        "timestamp",
+        "connectionAttemptUuid"
+      ],
       "additionalProperties": false
     }
   }
