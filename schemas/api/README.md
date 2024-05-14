@@ -12,8 +12,8 @@ Contents:
 - `api\schemas\api.schema.json` - partially auto-generated schema from the existing `src\api` types and metadata objects.
 - `api\schemas\common.schema.json` - common element definitions referenced in multiple other schemas in both the API and Bridging API protocols.
 - `api\schemas\appRequest.schema.json` - The base message definition that requests from an app to the DA are derived from.
-- `api\schemas\agentResponseMessage.schema.json` - The base message definition that API call response messages from a DA to an app are derived from.
-- `api\schemas\agentEventMessage.schema.json` - The base message definition that event messages from a DA to an app are derived from.
+- `api\schemas\agentResponse.schema.json` - The base message definition that API call response messages from a DA to an app are derived from.
+- `api\schemas\agentEvent.schema.json` - The base message definition that event messages from a DA to an app are derived from.
 - `api\schemas\*Request.schema.json` - Schemas defining request messages sent from apps to Desktop Agents.
 - `api\schemas\*Response.schema.json` - Schemas defining responses from DAs to apps for request messages (sent from apps to Desktop Agents).
 - `api\schemas\*Event.schema.json` - Schemas defining event messages sent from Desktop Agents to Apps.

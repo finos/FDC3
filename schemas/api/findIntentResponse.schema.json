@@ -6,7 +6,7 @@
 	"description": "A response to a findIntent request.",
 	"allOf": [
 		{
-			"$ref": "agentResponseMessage.schema.json"
+			"$ref": "agentResponse.schema.json"
 		},
 		{
 			"type": "object",
@@ -48,7 +48,7 @@
 			"additionalProperties": false
 		},
 		"FindIntentErrorResponsePayload": {
-			"title": "",
+			"title": "FindIntent Response Error Payload",
 			"type": "object",
 			"properties": {
 				"error": {

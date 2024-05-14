@@ -7,6 +7,7 @@
 	"allOf": [
 		{
 			"$ref": "agentResponseMessage.schema.json"
+			"$ref": "agentResponse.schema.json"
 		},
 		{
 			"type": "object",
@@ -47,7 +48,7 @@
 			]
 		},
 		"PrivateChannelAddEventListenerErrorResponsePayload": {
-			"title": "",
+			"title": "PrivateChannelAddEventListener Error Response Payload",
 			"type": "object",
 			"properties": {
 				"error": {

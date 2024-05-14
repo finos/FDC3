@@ -18,7 +18,7 @@
       "properties": {
         "type": {
           "title": "WCP2LoadUrl Message Type",
-          "const": "WCPLoadUrl"
+          "const": "WCP2LoadUrl"
         },
         "payload": {
           "title": "WCP2LoadUrl Payload",
