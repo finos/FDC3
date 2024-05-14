@@ -1,8 +1,4 @@
-import { Directory, DirectoryApp } from "./DirectoryInterface"
-import { components } from '../directory-schema'
-
-type schemas = components['schemas']
-type DirectoryIntent = schemas['Intent'] & { intentName: string, appId: string }
+import { Directory, DirectoryApp, DirectoryIntent } from "./DirectoryInterface"
 
 export function genericResultTypeSame(a: string | undefined, b: string | undefined) {
     if (a == b) {
@@ -50,12 +46,22 @@ export class BasicDirectory implements Directory {
         return lfAugmented as DirectoryIntent[]
     }
 
+    retrieveIntents(contextType: string, resultType: string | undefined): DirectoryIntent[] {
+        const allIntents = this.retrieveAllApps()
+            .flatMap(a => this.retrieveIntentsForApp(a))
+            .filter(i => {
+                return i.contexts.includes(contextType) && (genericResultTypeSame(resultType, i.resultType))
+            })
+        return allIntents
+    }
+
     retrieveApps(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): DirectoryApp[] {
         return this.retrieveAllApps()
             .filter(a => this.retrieveIntentsForApp(a)
                 .filter(i => this.intentMatches(i, contextType, intentName, resultType))
                 .length > 0)
     }
+
 
     retrieveAppsById(appId: string): DirectoryApp[] {
         return this.retrieveAllApps().filter(a => a.appId == appId)

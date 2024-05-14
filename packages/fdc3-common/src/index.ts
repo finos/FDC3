@@ -11,7 +11,8 @@ export type Options = {
     strategies?: Loader[],
     frame?: Window,
     waitForMs?: number,
-    intentResolver?: IntentResolver
+    intentResolver?: IntentResolver,
+    middlewares: MessagingMiddleware[]
 }
 
 export { exchange, exchangePostMessage, exchangeForMessagePort }
@@ -141,3 +142,20 @@ export type IntentResolutionChoiceAgentResponse = {
 }
 
 export type IntentResolutionChoiceAgentRequest = IntentResolutionChoiceAgentResponse
+
+
+// Middleware for security and anything else..
+export interface MessagingMiddleware {
+
+    /**
+     * A function that mutates the message to be sent to the desktop agent
+     */
+    preSend(msg: object): Promise<object>
+
+    /**
+     * A function that processes messages from the desktop agent prior to
+     * being handled by the da-proxy.
+     */
+    postReceive(msg: object): Promise<object>
+
+}

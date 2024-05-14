@@ -1,7 +1,7 @@
 {
   "name": "@kite9/web-fdc3",
   "private": true,
-  "version": "0.0.14",
+  "version": "0.0.15",
   "workspaces": [
     "packages/*"
   ],

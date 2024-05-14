@@ -2,7 +2,7 @@ import { DataTable, Given, When } from "@cucumber/cucumber";
 import { CustomWorld } from "../world";
 import { DirectoryApp } from "../../src/directory/DirectoryInterface";
 import { APP_FIELD } from "./generic.steps";
-import { FindIntentAgentRequest, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { FindIntentAgentRequest, FindIntentsByContextAgentRequest, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { handleResolve } from "../support/matching";
 import { createMeta, contextMap } from './generic.steps';
 import { OnAddIntentListenerAgentRequest, OnUnsubscribeIntentListenerAgentRequest } from "@kite9/fdc3-common";
@@ -66,6 +66,19 @@ When('{string} finds intents with intent {string} and contextType {string} and r
     this.server.receive(message, meta.source)
 });
 
+When('{string} finds intents with contextType {string}', function (this: CustomWorld, appStr: string, contextType: string) {
+    const meta = createMeta(this, appStr)
+    const message = {
+        meta,
+        payload: {
+            context: contextMap[contextType]
+        },
+        type: 'findIntentsByContextRequest'
+    } as FindIntentsByContextAgentRequest
+
+    this.server.receive(message, meta.source)
+});
+
 Given('{string} registers an intent listener for {string}', function (this: CustomWorld, appStr: string, intent: string) {
     const meta = createMeta(this, appStr)
     const message = {
@@ -73,6 +86,19 @@ Given('{string} registers an intent listener for {string}', function (this: Cust
         meta,
         payload: {
             intent: handleResolve(intent, this)
+        }
+    } as OnAddIntentListenerAgentRequest
+    this.server.receive(message, meta.source)
+});
+
+Given('{string} registers an intent listener for {string} with contextType {string}', function (this: CustomWorld, appStr: string, intent: string, contextType: string) {
+    const meta = createMeta(this, appStr)
+    const message = {
+        type: 'onAddIntentListener',
+        meta,
+        payload: {
+            intent: handleResolve(intent, this),
+            contextType: handleResolve(contextType, this)
         }
     } as OnAddIntentListenerAgentRequest
     this.server.receive(message, meta.source)
