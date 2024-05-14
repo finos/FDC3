@@ -37,7 +37,9 @@
 		"JoinUserChannelSuccessResponsePayload": {
 			"title": "JoinUserChannel Response Payload",
 			"type": "object",
-			"properties": {},
+			"properties": {
+				
+			},
 			"additionalProperties": false
 		},
 		"JoinUserChannelErrorResponsePayload": {

@@ -14,7 +14,7 @@
   ],
   "$defs": {
     "WCP2LoadUrlBase": {
-      "type":"object",
+      "type": "object",
       "properties": {
         "type": {
           "title": "WCP2LoadUrl Message Type",
@@ -31,20 +31,17 @@
               "format": "uri"
             }
           },
-          "required": ["iframeUrl"]
+          "required": [
+            "iframeUrl"
+          ]
         },
-        "meta": {
-          "title": "WCP2LoadUrl Metadata",
-          "type": "object",
-          "properties": {
-            "timestamp": true,
-            "connectionAttemptUuid": true
-          },
-          "additionalProperties": false,
-          "required": ["timestamp","connectionAttemptUuid"]
-        }
+        "meta": true
       },
-      "required": ["type", "payload", "meta"],
+      "required": [
+        "type",
+        "payload",
+        "meta"
+      ],
       "additionalProperties": false
     }
   }

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/WCP4ValidateAppIdentity.schema.json",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json",
   "title": "WCP4ValidateAppIdentity",
   "description": "Identity Validation request from an app attempting to connect to a Desktop Agent.",
   "type": "object",
@@ -51,19 +51,7 @@
             "appId"
           ]
         },
-        "meta": {
-          "title": "WCP4ValidateAppIdentity Metadata",
-          "type": "object",
-          "properties": {
-            "timestamp": true,
-            "connectionAttemptUuid": true
-          },
-          "additionalProperties": false,
-          "required": [
-            "timestamp",
-            "connectionAttemptUuid"
-          ]
-        }
+        "meta": true
       },
       "required": [
         "type",

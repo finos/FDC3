@@ -14,7 +14,7 @@
   ],
   "$defs": {
     "WCP5ValidateAppIdentityFailedResponseBase": {
-      "type":"object",
+      "type": "object",
       "properties": {
         "type": {
           "title": "WCP5ValidateAppIdentityFailedResponse Message Type",
@@ -31,18 +31,12 @@
           },
           "additionalProperties": false
         },
-        "meta": {
-          "title": "WCP5ValidateAppIdentityFailedResponse Metadata",
-          "type": "object",
-          "properties": {
-            "timestamp": true,
-            "connectionAttemptUuid": true
-          },
-          "additionalProperties": false,
-          "required": ["timestamp","connectionAttemptUuid"]
-        }
+        "meta": true
       },
-      "required": ["type", "meta"],
+      "required": [
+        "type",
+        "meta"
+      ],
       "additionalProperties": false
     }
   }

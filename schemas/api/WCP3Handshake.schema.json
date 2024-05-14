@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/WCP3Handshake.schema.json",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json",
   "title": "WCP3Handshake",
-  "description": "Handshake message sent by the Desktop Agent to the app with a MessagePort that should be used for subsequent communication steps.",
+  "description": "Handshake message sent by the Desktop Agent to the app (with a MessagePort appended) that should be used for subsequent communication steps.",
   "type": "object",
   "allOf": [
     {
@@ -24,36 +24,46 @@
           "title": "WCP3Handshake Payload",
           "type": "object",
           "properties": {
-            "messagePort": {
-              "title": "MessagePort",
-              "type": "object",
-              "additionalProperties": true
-            },
             "fdc3Version": {
               "title": "FDC3 version",
               "type": "string",
               "description": "The version of FDC3 API that the Desktop Agent will provide support for."
+            },
+            "resolver": {
+              "title": "Resolver URL",
+              "description": "Indicates whether an intent resolver UI is required and the URL to use to do so. Set to `true` to use the default or `false` to disable the intent resolver (as the Desktop Agent will handle another way)",
+              "oneOf": [
+                {
+                  "type": "string",
+                  "format": "uri"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "channelSelector": {
+              "title": "Channel Selector URL",
+              "description": "Indicates whether a channel selector UI is required and the URL to use to do so. Set to `true` to use the default or `false` to disable the channel selector (as the Desktop Agent will handle another way)",
+              "oneOf": [
+                {
+                  "type": "string",
+                  "format": "uri"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
             }
           },
           "additionalProperties": false,
           "required": [
-            "messagePort",
-            "fdc3Version"
+            "fdc3Version",
+            "resolver",
+            "channelSelector"
           ]
         },
-        "meta": {
-          "title": "WCP3Handshake Metadata",
-          "type": "object",
-          "properties": {
-            "timestamp": true,
-            "connectionAttemptUuid": true
-          },
-          "additionalProperties": false,
-          "required": [
-            "timestamp",
-            "connectionAttemptUuid"
-          ]
-        }
+        "meta": true
       },
       "required": [
         "type",
