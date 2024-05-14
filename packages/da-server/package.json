@@ -1,6 +1,6 @@
 {
   "name": "@kite9/da-server",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "files": [
     "dist"
   ],
@@ -10,7 +10,7 @@
     "clean": "rimraf dist; rimraf generated; rimraf node_modules; rumraf coverage; rimraf .nyc_output; rimraf cucumber-report.html",
     "directory-openapi": "npx openapi-typescript https://fdc3.finos.org/schemas/2.1/appd.schema.json --output generated/directory-schema.ts",
     "test": "nyc --reporter=lcov --reporter=text cucumber-js",
-    "build": "run directory-openapi; tsc -b"
+    "build": "run directory-openapi; tsc --module es2022"
   },
   "dependencies": {
     "@finos/fdc3": "^2.1.0-beta.4",

@@ -1,14 +1,14 @@
 {
   "name": "@kite9/da-proxy",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "files": [
     "dist"
   ],
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "build": "tsc -b",
-    "test": "nyc --reporter=lcov --reporter=text cucumber-js",
+    "build": "tsc --module es2022",
+    "test": "tsc; nyc --reporter=lcov --reporter=text cucumber-js",
     "clean": "rimraf dist; rimraf cucumber-report.html; rimraf coverage; rimraf .nyc_output; rimraf node_modules"
   },
   "dependencies": {
