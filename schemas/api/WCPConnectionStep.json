@@ -37,13 +37,13 @@
       "type": "object",
       "properties": {
         "connectionAttemptUuid": {
-          "$ref": "../api/common.schema.json#/$defs/ConnectionAttemptUuid"
+          "$ref": "common.schema.json#/$defs/ConnectionAttemptUuid"
         },
         "timestamp": {
-          "$ref": "../api/common.schema.json#/$defs/Timestamp"
+          "$ref": "common.schema.json#/$defs/Timestamp"
         }
       },
-      "required": ["timestamp"],
+      "required": ["timestamp","connectionAttemptUuid"],
       "additionalProperties": false
     }
   }

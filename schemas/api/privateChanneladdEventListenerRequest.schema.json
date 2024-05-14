@@ -6,7 +6,7 @@
 	"description": "An event message from the Desktop Agent to an app indicating that another app has added a context listener to a specific PrivateChannel.",
 	"allOf": [
 		{
-			"$ref": "agentRequest.schema.json"
+			"$ref": "appRequest.schema.json"
 		},
 		{
 			"type": "object",
@@ -32,9 +32,9 @@
 			"type": "object",
 			"properties": {
 				"privateChannelId": {
-					"type": "string",
 					"title": "Private Channel Id",
-					"description": "The Id of the PrivateChannel that the listener should be added to."
+					"description": "The Id of the PrivateChannel that the listener should be added to.",
+					"type": "string"
 				},
 				"contextType": {
 					"title": "Context type",

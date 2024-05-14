@@ -23,11 +23,11 @@
 		}
 	],
 	"$defs": {
-		"PrivateChannel.disconnectRequestType": {
+		"PrivateChannelDisconnectRequestType": {
 			"title": "PrivateChannelDisconnect Request Message Type",
 			"const": "privateChannelDisconnectRequest"
 		},
-		"PrivateChannel.disconnectRequestPayload": {
+		"PrivateChannelDisconnectRequestPayload": {
 			"title": "PrivateChannelDisconnect Request Payload",
 			"type": "object",
 			"properties": {
