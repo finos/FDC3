@@ -6,7 +6,7 @@
 	"description": "A response to a leaveCurrentChannel request.",
 	"allOf": [
 		{
-			"$ref": "agentResponseMessage.schema.json"
+			"$ref": "agentResponse.schema.json"
 		},
 		{
 			"type": "object",

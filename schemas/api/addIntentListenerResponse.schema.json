@@ -6,7 +6,7 @@
 	"description": "A response to a addIntentListener request.",
 	"allOf": [
 		{
-			"$ref": "agentResponseMessage.schema.json"
+			"$ref": "agentResponse.schema.json"
 		},
 		{
 			"type": "object",
@@ -47,7 +47,7 @@
 			]
 		},
 		"AddIntentListenerErrorResponsePayload": {
-			"title": "",
+			"title": "AddIntentListener Response Error Payload",
 			"type": "object",
 			"properties": {
 				"error": {

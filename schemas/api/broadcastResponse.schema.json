@@ -6,7 +6,7 @@
 	"description": "A response to a request to broadcast context on a channel.",
 	"allOf": [
 		{
-			"$ref": "agentResponseMessage.schema.json"
+			"$ref": "agentResponse.schema.json"
 		},
 		{
 			"type": "object",

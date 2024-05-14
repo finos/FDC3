@@ -6,7 +6,7 @@
 	"description": "An event message from the Desktop Agent to an app indicating that its current user channel has changed.",
 	"allOf": [
 		{
-			"$ref": "agentEventMessage.schema.json"
+			"$ref": "agentEvent.schema.json"
 		},
 		{
 			"type": "object",

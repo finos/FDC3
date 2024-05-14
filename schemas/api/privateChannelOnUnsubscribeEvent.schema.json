@@ -6,7 +6,7 @@
 	"description": "An event message from the Desktop Agent to an app indicating that another app has unsubscribed a context listener from a specific PrivateChannel.",
 	"allOf": [
 		{
-			"$ref": "agentEventMessage.schema.json"
+			"$ref": "agentEvent.schema.json"
 		},
 		{
 			"type": "object",

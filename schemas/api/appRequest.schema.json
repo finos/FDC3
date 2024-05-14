@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/api/appRequest.schema.json",
-  "title": "FDC3 App Request Message",
+  "title": "App Request Message",
   "type": "object",
   "description": "A request message from an FDC3-enabled app to a Desktop Agent.",
   "properties": {
@@ -12,6 +12,7 @@
         "addContextListenerRequest",
         "addIntentListenerRequest",
         "broadcastRequest",
+        "contextListenerUnsubscribeRequest",
         "createPrivateChannelRequest",
         "findInstancesRequest",
         "findIntentRequest",
@@ -21,21 +22,20 @@
         "getInfoRequest",
         "getOrCreateChannelRequest",
         "getUserChannelsRequest",
+        "intentListenerUnsubscribeRequest",
         "joinUserChannelRequest",
         "leaveCurrentChannelRequest",
         "openRequest",
-        "raiseIntentRequest",
-        "raiseIntentForContextRequest",
-        "contextListenerUnsubscribeRequest",
-        "intentListenerUnsubscribeRequest",
         "privateChannelAddEventListenerRequest",
+        "privateChannelDisconnectRequest",
         "privateChannelUnsubscribeEventListenerRequest",
-        "privateChannelDisconnectRequest"
+        "raiseIntentForContextRequest",
+        "raiseIntentRequest"
       ],
       "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Request' appended."
     },
     "payload": {
-      "title": "Message payload",
+      "title": "Request payload",
       "type": "object",
       "description": "The message payload typically contains the arguments to FDC3 API functions."
     },

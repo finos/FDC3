@@ -1,17 +1,18 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/api/agentResponseMessage.schema.json",
-  "title": "FDC3 Agent Response Message",
+  "$id": "https://fdc3.finos.org/schemas/next/api/agentResponse.schema.json",
+  "title": "Agent Response Message",
   "type": "object",
   "description": "A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the payload contains an `error` property, the request was unsuccessful.",
   "properties": {
     "type": {
-      "title": "Message Type",
+      "title": "Response Message Type",
       "type": "string",
       "enum": [
         "addContextListenerResponse",
         "addIntentListenerResponse",
         "broadcastResponse",
+        "contextListenerUnsubscribeResponse",
         "createPrivateChannelResponse",
         "findInstancesResponse",
         "findIntentResponse",
@@ -21,22 +22,21 @@
         "getInfoResponse",
         "getOrCreateChannelResponse",
         "getUserChannelsResponse",
+        "intentListenerUnsubscribeResponse",
         "joinUserChannelResponse",
         "leaveCurrentChannelResponse",
         "openResponse",
-        "raiseIntentResponse",
-        "raiseIntentForContextResponse",
-        "raiseIntentResultResponse",
-        "contextListenerUnsubscribeResponse",
-        "intentListenerUnsubscribeResponse",
         "privateChannelAddEventListenerResponse",
+        "privateChannelDisconnectResponse",
         "privateChannelUnsubscribeEventListenerResponse",
-        "privateChannelDisconnectResponse"
+        "raiseIntentForContextResponse",
+        "raiseIntentResponse",
+        "raiseIntentResultResponse"
       ],
       "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Response' appended."
     },
     "payload": {
-      "title": "Agent Response Message Payload",
+      "title": "Response Payload",
       "type": "object",
       "description": "A payload for a response to an API call that will contain any return values or an `error` property containing a standardized error message indicating that the request was unsuccessful.",
       "oneOf": [

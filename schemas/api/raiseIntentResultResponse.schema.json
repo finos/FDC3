@@ -6,7 +6,7 @@
 	"description": "A secondary response to a request to raise an intent used to deliver the intent result.",
 	"allOf": [
 		{
-			"$ref": "agentResponseMessage.schema.json"
+			"$ref": "agentResponse.schema.json"
 		},
 		{
 			"type": "object",
