@@ -1,6 +1,6 @@
 default:
   format: 
-    - html:dist/cucumber-report.html
+    - html:cucumber-report.html
     - "@cucumber/pretty-formatter"
   paths: 
    - test/features/*.feature
