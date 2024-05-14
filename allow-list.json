@@ -1,0 +1,5 @@
+{
+    "ignore": [
+        { "id": "CVE-2023-45857", "reason": "Need further updates to docusaurus and its dependencies to proceed" }
+    ]
+}
