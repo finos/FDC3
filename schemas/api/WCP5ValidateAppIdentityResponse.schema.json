@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/bridging/WCP5ValidateAppIdentityResponse.schema.json",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json",
   "title": "WCP5ValidateAppIdentityFailedResponse",
   "description": "Message sent by the Desktop Agent to an app after successful identity validation",
   "type": "object",
@@ -14,7 +14,7 @@
   ],
   "$defs": {
     "WCP5ValidateAppIdentityResponseBase": {
-      "type":"object",
+      "type": "object",
       "properties": {
         "type": {
           "title": "WCP5ValidateAppIdentityResponse Message Type",
@@ -42,24 +42,23 @@
             "implementationMetadata": {
               "title": "ImplementationMetadata",
               "description": "Implementation metadata for the Desktop Agent, which includes an appMetadata element containing a copy of the app's own metadata",
-              "$ref": "api.schema.json#/ImplementationMetadata"
+              "$ref": "api.schema.json#/definitions/ImplementationMetadata"
             }
           },
           "additionalProperties": false,
-          "required": ["appId","instanceId","instanceUuid", "implementationMetadata"]
+          "required": [
+            "appId",
+            "instanceId",
+            "instanceUuid",
+            "implementationMetadata"
+          ]
         },
-        "meta": {
-          "title": "WCP5ValidateAppIdentityResponse Metadata",
-          "type": "object",
-          "properties": {
-            "timestamp": true,
-            "connectionAttemptUuid": true
-          },
-          "additionalProperties": false,
-          "required": ["timestamp","connectionAttemptUuid"]
-        }
+        "meta": true
       },
-      "required": ["type", "meta"],
+      "required": [
+        "type",
+        "meta"
+      ],
       "additionalProperties": false
     }
   }
