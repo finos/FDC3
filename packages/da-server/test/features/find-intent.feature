@@ -1,6 +1,6 @@
 Feature: Find Intent API
 
-  Background: 
+  Background:
     Given "libraryApp" is an app with the following intents
       | Intent Name | Context Type | Result Type      |
       | loanBook    | fdc3.book    | fdc3.loan        |
@@ -27,6 +27,12 @@ Feature: Find Intent API
     Then messaging will have outgoing posts
       | msg.type           | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length | msg.payload.appIntent.apps[0].appId | to.instanceId |
       | findIntentResponse | loanBook                          |                                 1 | libraryApp                          | a1            |
+
+  Scenario: Find Intents by Context Request
+    When "App/a1" finds intents with contextType "fdc3.book"
+    Then messaging will have outgoing posts
+      | msg.type                     | msg.payload.appIntents[0].intent.name | msg.payload.appIntents.length | to.instanceId |
+      | findIntentsByContextResponse | loanBook                              |                             4 | a1            |
 
   Scenario: Successful Find Intents Request With Channel
     When "App1/a1" finds intents with intent "streamBook" and contextType "fdc3.book" and result type "channel"

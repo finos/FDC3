@@ -15,6 +15,8 @@ export interface Directory {
 
     retrieveApps(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): DirectoryApp[]
 
+    retrieveIntents(contextType: string, resultType: string | undefined): DirectoryIntent[]
+
     retrieveAppsById(appId: string): DirectoryApp[]
 
     retrieveAllApps(): DirectoryApp[]
