@@ -6,7 +6,6 @@
 	"description": "A response to a privateChannelAddEventListener request.",
 	"allOf": [
 		{
-			"$ref": "agentResponseMessage.schema.json"
 			"$ref": "agentResponse.schema.json"
 		},
 		{
