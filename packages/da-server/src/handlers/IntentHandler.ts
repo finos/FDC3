@@ -225,18 +225,27 @@ export class IntentHandler implements MessageHandler {
         // TODO: Add result type
         const { context } = r.payload
 
-        const apps1 = this.directory.retrieveIntents(context?.type, undefined, undefined).map(di => {
-            return {
-                intent: {
-                    name: di.intentName,
-                    displayName: di.displayName
-                },
-                apps: [
-                    {
-                        appId: di.appId
-                    }
-                ]
-            } as AppIntent
+        const apps1 = this.directory.retrieveIntents(context?.type, undefined, undefined)
+
+        // fold apps so same intents aren't duplicated
+        const apps2: AppIntent[] = []
+        apps1.forEach(a1 => {
+            const existing = apps2.find(a2 => a2.intent.name == a1.intentName)
+            if (existing) {
+                existing.apps.push({ appId: a1.appId })
+            } else {
+                apps2.push({
+                    intent: {
+                        name: a1.intentName,
+                        displayName: a1.displayName ?? a1.intentName
+                    },
+                    apps: [
+                        {
+                            appId: a1.appId
+                        }
+                    ]
+                })
+            }
         })
 
         const out = {
@@ -247,9 +256,7 @@ export class IntentHandler implements MessageHandler {
             },
             type: "findIntentsByContextResponse",
             payload: {
-                appIntents: [
-                    ...apps1
-                ]
+                appIntents: apps2
             }
         } as FindIntentsByContextAgentResponse
 
