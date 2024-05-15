@@ -1,11 +1,11 @@
-import { AppMetadata, BroadcastAgentRequest, FindInstancesAgentRequest, FindInstancesAgentResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataAgentResponsePayload, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenAgentResponseMeta, OpenErrorMessage, PrivateChannelOnAddContextListenerAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppDestinationIdentifier, AppMetadata, BroadcastAgentRequest, FindInstancesAgentRequest, FindInstancesAgentResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataAgentResponsePayload, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenAgentResponseMeta, OpenErrorMessage, PrivateChannelOnAddContextListenerAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { MessageHandler } from "../BasicFDC3Server";
 import { ServerContext } from "../ServerContext";
 import { Directory, DirectoryApp } from "../directory/DirectoryInterface";
 import { ContextElement, ResolveError } from "@finos/fdc3";
 import { OnAddContextListenerAgentRequest } from "@kite9/fdc3-common";
 
-function filterPublicDetails(appD: DirectoryApp): GetAppMetadataAgentResponsePayload['appMetadata'] {
+function filterPublicDetails(appD: DirectoryApp, appID: AppDestinationIdentifier): GetAppMetadataAgentResponsePayload['appMetadata'] {
     return {
         appId: appD.appId,
         name: appD.name,
@@ -14,7 +14,8 @@ function filterPublicDetails(appD: DirectoryApp): GetAppMetadataAgentResponsePay
         tooltip: appD.tooltip,
         description: appD.description,
         icons: appD.icons,
-        screenshots: appD.screenshots
+        screenshots: appD.screenshots,
+        instanceId: appID.instanceId
     }
 }
 
@@ -81,15 +82,15 @@ export class OpenHandler implements MessageHandler {
     }
 
     getAppMetadata(arg0: GetAppMetadataAgentRequest, sc: ServerContext, from: AppMetadata): void {
-        const appId = arg0.payload.app.appId
-        const details = this.directory.retrieveAppsById(appId)
+        const appID = arg0.payload.app
+        const details = this.directory.retrieveAppsById(appID.appId)
         if (details.length > 0) {
             // returning first matching app record
             const response: GetAppMetadataAgentResponse = {
                 type: "getAppMetadataResponse",
                 meta: createReplyMeta(arg0, sc),
                 payload: {
-                    appMetadata: filterPublicDetails(details[0])
+                    appMetadata: filterPublicDetails(details[0], appID)
                 }
             }
             sc.post(response, from)

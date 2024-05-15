@@ -1,6 +1,6 @@
 Feature: Opening and Requesting App Details
 
-  Background: 
+  Background:
     Given "libraryApp" is an app with the following intents
       | Intent Name | Context Type | Result Type |
       | returnBook  | fdc3.book    | {empty}     |
@@ -12,8 +12,8 @@ Feature: Opening and Requesting App Details
   Scenario: Looking up app metadata
     When "libraryApp/a1" requests metadata for "storageApp"
     Then messaging will have outgoing posts
-      | msg.type               | msg.payload.appMetadata.appId | to.instanceId |
-      | getAppMetadataResponse | storageApp                    | a1            |
+      | msg.type               | msg.payload.appMetadata.appId | to.instanceId | msg.payload.appMetadata.instanceId |
+      | getAppMetadataResponse | storageApp                    | a1            |                                123 |
 
   Scenario: Looking up app metadata from missing app
     When "libraryApp/a1" requests metadata for "unknownApp"

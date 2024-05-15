@@ -1,5 +1,8 @@
 import { AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
+/**
+ * Handles messaging to apps and opening apps
+ */
 export interface ServerContext {
 
     /**
