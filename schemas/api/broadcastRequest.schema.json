@@ -39,7 +39,7 @@
 				"context": {
 					"$ref": "../context/context.schema.json",
 					"title": "Context",
-					"description": "The context object that was the payload of a broadcast message."
+					"description": "The context object that is to be broadcast."
 				}
 			},
 			"additionalProperties": false,

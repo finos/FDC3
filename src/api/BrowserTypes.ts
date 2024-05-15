@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, AppRequestMessage, AgentResponseMessage, AgentEventMessage, AddContextListenerRequest, AddContextListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEventEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocolHello, WebConnectionProtocolLoadURL, WCP3Handshake, WCP4ValidateAppIdentity, WCP5ValidateAppIdentityFailedResponse, WebConnectionProtocolMessage } from "./file";
+//   import { Convert, AppRequestMessage, AgentResponseMessage, AgentEventMessage, AddContextListenerRequest, AddContextListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEventEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocolHello, WebConnectionProtocolLoadURL, WCP3Handshake, WCP4ValidateAppIdentity, WCP5ValidateAppIdentityFailedResponse, WebConnectionProtocolMessage } from "./file";
 //
 //   const fDC3DesktopAgentAPISchema = Convert.toFDC3DesktopAgentAPISchema(json);
 //   const commonDefinitions = Convert.toCommonDefinitions(json);
@@ -11,6 +11,7 @@
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
 //   const addIntentListenerRequest = Convert.toAddIntentListenerRequest(json);
 //   const addIntentListenerResponse = Convert.toAddIntentListenerResponse(json);
+//   const broadcastEvent = Convert.toBroadcastEvent(json);
 //   const broadcastRequest = Convert.toBroadcastRequest(json);
 //   const broadcastResponse = Convert.toBroadcastResponse(json);
 //   const channelChangedEvent = Convert.toChannelChangedEvent(json);
@@ -242,7 +243,7 @@ export interface AgentEventMessageMeta {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
-export type EventMessageType = "channelChangedEvent" | "privateChannelOnAddContextListenerEvent" | "privateChannelOnDisconnectEvent" | "privateChannelOnUnsubscribeEvent";
+export type EventMessageType = "broadcastEvent" | "channelChangedEvent" | "privateChannelOnAddContextListenerEvent" | "privateChannelOnDisconnectEvent" | "privateChannelOnUnsubscribeEvent";
 
 /**
  * A request to add a context listener to a specified Channel OR to the current user
@@ -452,42 +453,53 @@ export type FluffyError = "MalformedContext" | "DesktopAgentNotFound" | "Resolve
  */
 
 /**
- * A request to broadcast context on a channel.
+ * An event message from the Desktop Agent to an app indicating that context has been
+ * broadcast on a channel it is listening to.
  *
- * A request message from an FDC3-enabled app to a Desktop Agent.
+ * A message from a Desktop Agent to an FDC3-enabled app representing an event.
  */
-export interface BroadcastRequest {
+export interface BroadcastEvent {
     /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
      */
-    meta: AddContextListenerRequestMeta;
+    meta: BroadcastEventMeta;
     /**
-     * The message payload typically contains the arguments to FDC3 API functions.
+     * The message payload contains details of the event that the app is being notified about.
      */
-    payload: BroadcastRequestPayload;
+    payload: BroadcastEventPayload;
     /**
      * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
+     * the message relates to, e.g. 'findIntent', with 'Response' appended.
      */
-    type: "broadcastRequest";
+    type: "broadcastEvent";
 }
 
 /**
- * The message payload typically contains the arguments to FDC3 API functions.
+ * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
  */
-export interface BroadcastRequestPayload {
+export interface BroadcastEventMeta {
+    eventUuid: string;
+    timestamp: Date;
+}
+
+/**
+ * The message payload contains details of the event that the app is being notified about.
+ */
+export interface BroadcastEventPayload {
     /**
-     * The Id of the Channel that the broadcast was sent on
+     * The Id of the channel that the broadcast was sent on.
      */
     channelId: string;
     /**
-     * The context object that was the payload of a broadcast message.
+     * The context object that was broadcast.
      */
     context: Context;
 }
 
 /**
- * The context object that was the payload of a broadcast message.
+ * The context object that was broadcast.
+ *
+ * The context object that is to be broadcast.
  *
  * The `fdc3.context` type defines the basic contract or "shape" for all data exchanged by
  * FDC3 operations. As such, it is not really meant to be used on its own, but is imported
@@ -544,6 +556,46 @@ export interface Context {
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
+ * A request to broadcast context on a channel.
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface BroadcastRequest {
+    /**
+     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+     */
+    meta: AddContextListenerRequestMeta;
+    /**
+     * The message payload typically contains the arguments to FDC3 API functions.
+     */
+    payload: BroadcastRequestPayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Request' appended.
+     */
+    type: "broadcastRequest";
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface BroadcastRequestPayload {
+    /**
+     * The Id of the Channel that the broadcast was sent on
+     */
+    channelId: string;
+    /**
+     * The context object that is to be broadcast.
+     */
+    context: Context;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  */
 
@@ -596,7 +648,7 @@ export interface ChannelChangedEvent {
     /**
      * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
      */
-    meta: ChannelChangedEventMeta;
+    meta: BroadcastEventMeta;
     /**
      * The message payload contains details of the event that the app is being notified about.
      */
@@ -606,14 +658,6 @@ export interface ChannelChangedEvent {
      * the message relates to, e.g. 'findIntent', with 'Response' appended.
      */
     type: "channelChangedEvent";
-}
-
-/**
- * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
- */
-export interface ChannelChangedEventMeta {
-    eventUuid: string;
-    timestamp: Date;
 }
 
 /**
@@ -2187,7 +2231,7 @@ export interface PrivateChannelOnAddContextListenerEvent {
     /**
      * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
      */
-    meta: ChannelChangedEventMeta;
+    meta: BroadcastEventMeta;
     /**
      * The message payload contains details of the event that the app is being notified about.
      */
@@ -2229,7 +2273,7 @@ export interface PrivateChannelOnDisconnectEvent {
     /**
      * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
      */
-    meta: ChannelChangedEventMeta;
+    meta: BroadcastEventMeta;
     /**
      * The message payload contains details of the event that the app is being notified about.
      */
@@ -2266,7 +2310,7 @@ export interface PrivateChannelOnUnsubscribeEventEvent {
     /**
      * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
      */
-    meta: ChannelChangedEventMeta;
+    meta: BroadcastEventMeta;
     /**
      * The message payload contains details of the event that the app is being notified about.
      */
@@ -2931,6 +2975,14 @@ export class Convert {
         return JSON.stringify(uncast(value, r("AddIntentListenerResponse")), null, 2);
     }
 
+    public static toBroadcastEvent(json: string): BroadcastEvent {
+        return cast(JSON.parse(json), r("BroadcastEvent"));
+    }
+
+    public static broadcastEventToJson(value: BroadcastEvent): string {
+        return JSON.stringify(uncast(value, r("BroadcastEvent")), null, 2);
+    }
+
     public static toBroadcastRequest(json: string): BroadcastRequest {
         return cast(JSON.parse(json), r("BroadcastRequest"));
     }
@@ -3593,6 +3645,24 @@ const typeMap: any = {
         { json: "error", js: "error", typ: u(undefined, r("FluffyError")) },
         { json: "listenerUUID", js: "listenerUUID", typ: u(undefined, "") },
     ], "any"),
+    "BroadcastEvent": o([
+        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
+        { json: "payload", js: "payload", typ: r("BroadcastEventPayload") },
+        { json: "type", js: "type", typ: r("BroadcastEventType") },
+    ], false),
+    "BroadcastEventMeta": o([
+        { json: "eventUuid", js: "eventUuid", typ: "" },
+        { json: "timestamp", js: "timestamp", typ: Date },
+    ], false),
+    "BroadcastEventPayload": o([
+        { json: "channelId", js: "channelId", typ: "" },
+        { json: "context", js: "context", typ: r("Context") },
+    ], false),
+    "Context": o([
+        { json: "id", js: "id", typ: u(undefined, m("any")) },
+        { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: "" },
+    ], "any"),
     "BroadcastRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
         { json: "payload", js: "payload", typ: r("BroadcastRequestPayload") },
@@ -3602,11 +3672,6 @@ const typeMap: any = {
         { json: "channelId", js: "channelId", typ: "" },
         { json: "context", js: "context", typ: r("Context") },
     ], false),
-    "Context": o([
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
-        { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "type", js: "type", typ: "" },
-    ], "any"),
     "BroadcastResponse": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
         { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
@@ -3616,13 +3681,9 @@ const typeMap: any = {
         { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
     ], "any"),
     "ChannelChangedEvent": o([
-        { json: "meta", js: "meta", typ: r("ChannelChangedEventMeta") },
+        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
         { json: "payload", js: "payload", typ: r("ChannelChangedEventPayload") },
         { json: "type", js: "type", typ: r("ChannelChangedEventType") },
-    ], false),
-    "ChannelChangedEventMeta": o([
-        { json: "eventUuid", js: "eventUuid", typ: "" },
-        { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "ChannelChangedEventPayload": o([
         { json: "newChannelId", js: "newChannelId", typ: u(null, "") },
@@ -3960,7 +4021,7 @@ const typeMap: any = {
         { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
     ], false),
     "PrivateChannelOnAddContextListenerEvent": o([
-        { json: "meta", js: "meta", typ: r("ChannelChangedEventMeta") },
+        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
         { json: "payload", js: "payload", typ: r("PrivateChannelOnAddContextListenerEventPayload") },
         { json: "type", js: "type", typ: r("PrivateChannelOnAddContextListenerEventType") },
     ], false),
@@ -3969,7 +4030,7 @@ const typeMap: any = {
         { json: "privateChannelId", js: "privateChannelId", typ: "" },
     ], false),
     "PrivateChannelOnDisconnectEvent": o([
-        { json: "meta", js: "meta", typ: r("ChannelChangedEventMeta") },
+        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
         { json: "payload", js: "payload", typ: r("PrivateChannelOnDisconnectEventPayload") },
         { json: "type", js: "type", typ: r("PrivateChannelOnDisconnectEventType") },
     ], false),
@@ -3977,7 +4038,7 @@ const typeMap: any = {
         { json: "privateChannelId", js: "privateChannelId", typ: "" },
     ], false),
     "PrivateChannelOnUnsubscribeEventEvent": o([
-        { json: "meta", js: "meta", typ: r("ChannelChangedEventMeta") },
+        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
         { json: "payload", js: "payload", typ: r("PrivateChannelOnUnsubscribeEventEventPayload") },
         { json: "type", js: "type", typ: r("PrivateChannelOnUnsubscribeEventEventType") },
     ], false),
@@ -4188,6 +4249,7 @@ const typeMap: any = {
         "raiseIntentResultResponse",
     ],
     "EventMessageType": [
+        "broadcastEvent",
         "channelChangedEvent",
         "privateChannelOnAddContextListenerEvent",
         "privateChannelOnDisconnectEvent",
@@ -4221,6 +4283,9 @@ const typeMap: any = {
     ],
     "AddIntentListenerResponseType": [
         "addIntentListenerResponse",
+    ],
+    "BroadcastEventType": [
+        "broadcastEvent",
     ],
     "BroadcastRequestType": [
         "broadcastRequest",
