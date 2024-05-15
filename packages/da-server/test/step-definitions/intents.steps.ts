@@ -15,11 +15,21 @@ type ListensFor = {
     };
 }
 
+function decamelize(str: string, separator: string) {
+    separator = typeof separator === 'undefined' ? '_' : separator;
+
+    return str
+        .replace(/([a-z\d])([A-Z])/g, '$1' + separator + '$2')
+        .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1' + separator + '$2')
+        .toLowerCase();
+}
+
 function convertDataTableToListensFor(cw: CustomWorld, dt: DataTable): ListensFor {
     const hashes = dt.hashes()
     const out: { [key: string]: any } = {}
     hashes.forEach(h => {
         out[h["Intent Name"]] = {
+            displayName: decamelize(h["Intent Name"], " "),
             contexts: [handleResolve(h["Context Type"], cw)],
             resultType: handleResolve(h["Result Type"], cw)
         }
