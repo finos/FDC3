@@ -19,6 +19,7 @@
         "findIntentsByContextRequest",
         "getAppMetadataRequest",
         "getCurrentChannelRequest",
+        "getCurrentContextRequest",
         "getInfoRequest",
         "getOrCreateChannelRequest",
         "getUserChannelsRequest",
