@@ -46,11 +46,11 @@ Feature: Find Intent API
       | msg.type           | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length | msg.payload.appIntent.apps[0].appId | to.instanceId |
       | findIntentResponse | streamBook                        |                                 1 | libraryApp                          | a1            |
 
-  Scenario: Successful Find Intents Request With an untyped Channel
+  Scenario: Unsuccessful Find Intents Request With an untyped Channel
     When "App1/a1" finds intents with intent "streamAny" and contextType "{empty}" and result type "channel<spurious>"
     Then messaging will have outgoing posts
-      | msg.type           | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length | msg.payload.appIntent.apps[0].appId | to.instanceId |
-      | findIntentResponse | streamAny                         |                                 1 | libraryApp                          | a1            |
+      | msg.type           | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length |
+      | findIntentResponse | streamAny                         |                                 0 |
 
   Scenario: Find Intent includes results for a running app with intent listener
     When "App1/a1" finds intents with intent "returnBook" and contextType "fdc3.book" and result type "{empty}"
