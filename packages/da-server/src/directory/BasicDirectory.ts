@@ -3,9 +3,7 @@ import { Directory, DirectoryApp, DirectoryIntent } from "./DirectoryInterface"
 export function genericResultTypeSame(a: string | undefined, b: string | undefined) {
     if (a == b) {
         return true;
-    } else if (a == undefined) {
-        return true;
-    } else if (b == undefined) {
+    } else if ((a == undefined) || (b == undefined)) {
         return true;
     } else if (a.startsWith("channel<") && b == "channel") {
         return true;
