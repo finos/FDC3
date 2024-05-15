@@ -225,10 +225,11 @@ export class IntentHandler implements MessageHandler {
         // TODO: Add result type
         const { context } = r.payload
 
-        const apps1 = this.directory.retrieveIntents(context?.type, undefined).map(di => {
+        const apps1 = this.directory.retrieveIntents(context?.type, undefined, undefined).map(di => {
             return {
                 intent: {
-                    name: di.intentName
+                    name: di.intentName,
+                    displayName: di.displayName
                 },
                 apps: [
                     {
@@ -279,7 +280,9 @@ export class IntentHandler implements MessageHandler {
                 return !running
             }) as AppMetadata[]
 
-
+        // just need this for the (deprecated) display name
+        const allMatchingIntents = this.directory.retrieveIntents(context?.type, intent, resultType)
+        const displayName = (allMatchingIntents.length > 0) ? allMatchingIntents[0].displayName : undefined
 
         const out = {
             meta: {
@@ -291,7 +294,8 @@ export class IntentHandler implements MessageHandler {
             payload: {
                 appIntent: {
                     intent: {
-                        name: r.payload.intent
+                        name: intent,
+                        displayName
                     },
                     apps: [...apps1, ...apps2]
                 }

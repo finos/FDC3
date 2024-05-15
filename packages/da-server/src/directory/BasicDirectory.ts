@@ -46,13 +46,17 @@ export class BasicDirectory implements Directory {
         return lfAugmented as DirectoryIntent[]
     }
 
-    retrieveIntents(contextType: string, resultType: string | undefined): DirectoryIntent[] {
+    retrieveAllIntents(): DirectoryIntent[] {
         const allIntents = this.retrieveAllApps()
             .flatMap(a => this.retrieveIntentsForApp(a))
-            .filter(i => {
-                return i.contexts.includes(contextType) && (genericResultTypeSame(resultType, i.resultType))
-            })
+
         return allIntents
+    }
+
+    retrieveIntents(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): DirectoryIntent[] {
+        const matchingIntents = this.retrieveAllIntents()
+            .filter(i => this.intentMatches(i, contextType, intentName, resultType))
+        return matchingIntents
     }
 
     retrieveApps(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): DirectoryApp[] {
