@@ -63,6 +63,11 @@ export class DemoServerContext implements ServerContext {
         return ifrm.contentWindow!!;
     }
 
+    goodbye(id: string) {
+        this.instances = this.instances.filter(i => i.appId.instanceId !== id)
+        console.log(`${this.instances.length} apps open`)
+    }
+
     openTab(url: string): Window {
         return window.open(url, "_blank")!!;
     }

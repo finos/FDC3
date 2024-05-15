@@ -259,20 +259,26 @@ export class IntentHandler implements MessageHandler {
     findIntentRequest(r: FindIntentAgentRequest, sc: ServerContext, from: AppMetadata): void {
         const { intent, context, resultType } = r.payload
 
-        const apps1 = this.directory.retrieveApps(context?.type, intent, resultType)
-            .map(a => {
-                return {
-                    appId: a.appId,
-                }
-            }) as AppMetadata[]
-
-        const apps2 = this.retrieveListeners(context?.type, intent, resultType).
+        const apps2 = this.retrieveListeners(context?.type, intent, resultType, sc).
             map(lr => {
                 return {
                     appId: lr.appId,
                     instanceId: lr.instanceId
                 }
             }) as AppMetadata[]
+
+        const apps1 = this.directory.retrieveApps(context?.type, intent, resultType)
+            .map(a => {
+                return {
+                    appId: a.appId,
+                }
+            })
+            .filter(i => {
+                // remove any directory entries that are already started
+                const running = apps2.find(i2 => i2.appId == i.appId)
+                return !running
+            }) as AppMetadata[]
+
 
 
         const out = {
@@ -295,7 +301,7 @@ export class IntentHandler implements MessageHandler {
         sc.post(out, from)
     }
 
-    retrieveListeners(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): ListenerRegistration[] {
+    retrieveListeners(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined, sc: ServerContext): ListenerRegistration[] {
         const template: ListenerRegistration = {
             appId: undefined,
             instanceId: undefined,
@@ -304,6 +310,14 @@ export class IntentHandler implements MessageHandler {
             resultType
         }
 
-        return this.regs.filter(r => matches(template, r))
+        const matching = this.regs.filter(r => matches(template, r))
+        const active = matching.filter(async r => await sc.isAppOpen({
+            instanceId: r.instanceId,
+            appId: r.appId!!
+        }))
+
+        return active
     }
+
+
 }
