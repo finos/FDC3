@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, AppRequestMessage, AgentResponseMessage, AgentEventMessage, AddContextListenerRequest, AddContextListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEventEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocolHello, WebConnectionProtocolLoadURL, WCP3Handshake, WCP4ValidateAppIdentity, WCP5ValidateAppIdentityFailedResponse, WebConnectionProtocolMessage } from "./file";
+//   import { Convert, AppRequestMessage, AgentResponseMessage, AgentEventMessage, AddContextListenerRequest, AddContextListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEventEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocolHello, WebConnectionProtocolLoadURL, WCP3Handshake, WCP4ValidateAppIdentity, WCP5ValidateAppIdentityFailedResponse, WebConnectionProtocolMessage } from "./file";
 //
 //   const fDC3DesktopAgentAPISchema = Convert.toFDC3DesktopAgentAPISchema(json);
 //   const commonDefinitions = Convert.toCommonDefinitions(json);
@@ -28,6 +28,8 @@
 //   const getAppMetadataResponse = Convert.toGetAppMetadataResponse(json);
 //   const getCurrentChannelRequest = Convert.toGetCurrentChannelRequest(json);
 //   const getCurrentChannelResponse = Convert.toGetCurrentChannelResponse(json);
+//   const getCurrentContextRequest = Convert.toGetCurrentContextRequest(json);
+//   const getCurrentContextResponse = Convert.toGetCurrentContextResponse(json);
 //   const getInfoRequest = Convert.toGetInfoRequest(json);
 //   const getInfoResponse = Convert.toGetInfoResponse(json);
 //   const getOrCreateChannelRequest = Convert.toGetOrCreateChannelRequest(json);
@@ -145,7 +147,7 @@ export interface AppIdentifier {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  */
-export type RequestMessageType = "addContextListenerRequest" | "addIntentListenerRequest" | "broadcastRequest" | "contextListenerUnsubscribeRequest" | "createPrivateChannelRequest" | "findInstancesRequest" | "findIntentRequest" | "findIntentsByContextRequest" | "getAppMetadataRequest" | "getCurrentChannelRequest" | "getInfoRequest" | "getOrCreateChannelRequest" | "getUserChannelsRequest" | "intentListenerUnsubscribeRequest" | "joinUserChannelRequest" | "leaveCurrentChannelRequest" | "openRequest" | "privateChannelAddEventListenerRequest" | "privateChannelDisconnectRequest" | "privateChannelUnsubscribeEventListenerRequest" | "raiseIntentForContextRequest" | "raiseIntentRequest";
+export type RequestMessageType = "addContextListenerRequest" | "addIntentListenerRequest" | "broadcastRequest" | "contextListenerUnsubscribeRequest" | "createPrivateChannelRequest" | "findInstancesRequest" | "findIntentRequest" | "findIntentsByContextRequest" | "getAppMetadataRequest" | "getCurrentChannelRequest" | "getCurrentContextRequest" | "getInfoRequest" | "getOrCreateChannelRequest" | "getUserChannelsRequest" | "intentListenerUnsubscribeRequest" | "joinUserChannelRequest" | "leaveCurrentChannelRequest" | "openRequest" | "privateChannelAddEventListenerRequest" | "privateChannelDisconnectRequest" | "privateChannelUnsubscribeEventListenerRequest" | "raiseIntentForContextRequest" | "raiseIntentRequest";
 
 /**
  * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
@@ -207,7 +209,7 @@ export type ResponsePayloadError = "AccessDenied" | "CreationFailed" | "Malforme
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
-export type ResponseMessageType = "addContextListenerResponse" | "addIntentListenerResponse" | "broadcastResponse" | "contextListenerUnsubscribeResponse" | "createPrivateChannelResponse" | "findInstancesResponse" | "findIntentResponse" | "findIntentsByContextResponse" | "getAppMetadataResponse" | "getCurrentChannelResponse" | "getInfoResponse" | "getOrCreateChannelResponse" | "getUserChannelsResponse" | "intentListenerUnsubscribeResponse" | "joinUserChannelResponse" | "leaveCurrentChannelResponse" | "openResponse" | "privateChannelAddEventListenerResponse" | "privateChannelDisconnectResponse" | "privateChannelUnsubscribeEventListenerResponse" | "raiseIntentForContextResponse" | "raiseIntentResponse" | "raiseIntentResultResponse";
+export type ResponseMessageType = "addContextListenerResponse" | "addIntentListenerResponse" | "broadcastResponse" | "contextListenerUnsubscribeResponse" | "createPrivateChannelResponse" | "findInstancesResponse" | "findIntentResponse" | "findIntentsByContextResponse" | "getAppMetadataResponse" | "getCurrentChannelResponse" | "getCurrentContextResponse" | "getInfoResponse" | "getOrCreateChannelResponse" | "getUserChannelsResponse" | "intentListenerUnsubscribeResponse" | "joinUserChannelResponse" | "leaveCurrentChannelResponse" | "openResponse" | "privateChannelAddEventListenerResponse" | "privateChannelDisconnectResponse" | "privateChannelUnsubscribeEventListenerResponse" | "raiseIntentForContextResponse" | "raiseIntentResponse" | "raiseIntentResultResponse";
 
 /**
  * A message from a Desktop Agent to an FDC3-enabled app representing an event.
@@ -1360,6 +1362,92 @@ export interface GetCurrentChannelResponse {
 export interface GetCurrentChannelResponsePayload {
     error?:   ResponsePayloadError;
     channel?: Channel | null;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
+ * A request to return the current context (either of a specified type or most recent
+ * broadcast) of a specified Channel. Returns `null` if no context (of the requested type if
+ * one was specified) is available in the channel.
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface GetCurrentContextRequest {
+    /**
+     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+     */
+    meta: AddContextListenerRequestMeta;
+    /**
+     * The message payload typically contains the arguments to FDC3 API functions.
+     */
+    payload: GetCurrentContextRequestPayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Request' appended.
+     */
+    type: "getCurrentContextRequest";
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface GetCurrentContextRequestPayload {
+    /**
+     * The id of the channel to return the current context of
+     */
+    channelId: string;
+    /**
+     * The type of context to return for OR `null` indicating that the most recently broadcast
+     * context on the channel should be returned.
+     */
+    contextType: null | string;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+
+/**
+ * A response to a getCurrentContext request.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
+ * payload contains an `error` property, the request was unsuccessful.
+ */
+export interface GetCurrentContextResponse {
+    /**
+     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     */
+    meta: AddContextListenerResponseMeta;
+    /**
+     * A payload for a response to an API call that will contain any return values or an `error`
+     * property containing a standardized error message indicating that the request was
+     * unsuccessful.
+     */
+    payload: GetCurrentContextResponsePayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Response' appended.
+     */
+    type: "getCurrentContextResponse";
+}
+
+/**
+ * A payload for a response to an API call that will contain any return values or an `error`
+ * property containing a standardized error message indicating that the request was
+ * unsuccessful.
+ */
+export interface GetCurrentContextResponsePayload {
+    error?: PurpleError;
+    /**
+     * The most recently broadcast context object (of the specified type, if one was specified),
+     * or `null` if none was available in the channel
+     */
+    context?: null | Context;
 }
 
 /**
@@ -2979,6 +3067,22 @@ export class Convert {
         return JSON.stringify(uncast(value, r("GetCurrentChannelResponse")), null, 2);
     }
 
+    public static toGetCurrentContextRequest(json: string): GetCurrentContextRequest {
+        return cast(JSON.parse(json), r("GetCurrentContextRequest"));
+    }
+
+    public static getCurrentContextRequestToJson(value: GetCurrentContextRequest): string {
+        return JSON.stringify(uncast(value, r("GetCurrentContextRequest")), null, 2);
+    }
+
+    public static toGetCurrentContextResponse(json: string): GetCurrentContextResponse {
+        return cast(JSON.parse(json), r("GetCurrentContextResponse"));
+    }
+
+    public static getCurrentContextResponseToJson(value: GetCurrentContextResponse): string {
+        return JSON.stringify(uncast(value, r("GetCurrentContextResponse")), null, 2);
+    }
+
     public static toGetInfoRequest(json: string): GetInfoRequest {
         return cast(JSON.parse(json), r("GetInfoRequest"));
     }
@@ -3681,6 +3785,24 @@ const typeMap: any = {
         { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
         { json: "channel", js: "channel", typ: u(undefined, u(r("Channel"), null)) },
     ], false),
+    "GetCurrentContextRequest": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
+        { json: "payload", js: "payload", typ: r("GetCurrentContextRequestPayload") },
+        { json: "type", js: "type", typ: r("GetCurrentContextRequestType") },
+    ], false),
+    "GetCurrentContextRequestPayload": o([
+        { json: "channelId", js: "channelId", typ: "" },
+        { json: "contextType", js: "contextType", typ: u(null, "") },
+    ], false),
+    "GetCurrentContextResponse": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
+        { json: "payload", js: "payload", typ: r("GetCurrentContextResponsePayload") },
+        { json: "type", js: "type", typ: r("GetCurrentContextResponseType") },
+    ], false),
+    "GetCurrentContextResponsePayload": o([
+        { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
+        { json: "context", js: "context", typ: u(undefined, u(null, r("Context"))) },
+    ], false),
     "GetInfoRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
         { json: "payload", js: "payload", typ: r("GetInfoRequestPayload") },
@@ -4002,6 +4124,7 @@ const typeMap: any = {
         "findIntentsByContextRequest",
         "getAppMetadataRequest",
         "getCurrentChannelRequest",
+        "getCurrentContextRequest",
         "getInfoRequest",
         "getOrCreateChannelRequest",
         "getUserChannelsRequest",
@@ -4049,6 +4172,7 @@ const typeMap: any = {
         "findIntentsByContextResponse",
         "getAppMetadataResponse",
         "getCurrentChannelResponse",
+        "getCurrentContextResponse",
         "getInfoResponse",
         "getOrCreateChannelResponse",
         "getUserChannelsResponse",
@@ -4168,6 +4292,12 @@ const typeMap: any = {
     ],
     "GetCurrentChannelResponseType": [
         "getCurrentChannelResponse",
+    ],
+    "GetCurrentContextRequestType": [
+        "getCurrentContextRequest",
+    ],
+    "GetCurrentContextResponseType": [
+        "getCurrentContextResponse",
     ],
     "GetInfoRequestType": [
         "getInfoRequest",
