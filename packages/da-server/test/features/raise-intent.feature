@@ -1,6 +1,6 @@
 Feature: Raising Intents
 
-  Background: 
+  Background:
     Given "libraryApp" is an app with the following intents
       | Intent Name | Context Type | Result Type |
       | returnBook  | fdc3.book    | {empty}     |
@@ -67,3 +67,8 @@ Feature: Raising Intents
     Then messaging will have outgoing posts
       | msg.type            | msg.payload.error    | to.instanceId | to.appId |
       | raiseIntentResponse | IntentDeliveryFailed | a1            | App1     |
+  # Scenario: User Chooses an Intent From the Intent Resolver
+  #   When User chooses intent "returnBook" with contextType "fdc3.book" on app "libraryApp" for app "App1/a1" to raise
+  #   Then messaging will have outgoing posts
+  #     | msg.type     | msg.payload.intentName | msg.payload.contextType | to.instanceId | to.appId |
+  #     | chooseIntent | returnBook             | fdc3.book               | App1          | a1       |
