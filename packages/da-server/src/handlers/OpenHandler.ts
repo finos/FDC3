@@ -1,4 +1,4 @@
-import { AppDestinationIdentifier, AppMetadata, BroadcastAgentRequest, FindInstancesAgentRequest, FindInstancesAgentResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataAgentResponsePayload, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenAgentResponseMeta, OpenErrorMessage, PrivateChannelOnAddContextListenerAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppDestinationIdentifier, AppMetadata, BroadcastAgentRequest, ConnectionStep2Hello, FindInstancesAgentRequest, FindInstancesAgentResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataAgentResponsePayload, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenAgentResponseMeta, OpenErrorMessage, PrivateChannelOnAddContextListenerAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { MessageHandler } from "../BasicFDC3Server";
 import { ServerContext } from "../ServerContext";
 import { Directory, DirectoryApp } from "../directory/DirectoryInterface";
@@ -29,14 +29,16 @@ function createReplyMeta(msg: any, sc: ServerContext): BasicMeta {
     }
 }
 
-class PendingContext {
+enum AppState { Opening, DeliveringContext, Done }
 
-    readonly context: ContextElement
+class PendingApps {
+
+    readonly context: ContextElement | undefined
     readonly source: AppMetadata
-    private resolved: boolean = false
+    state: AppState = AppState.Opening
     private onSuccess: () => void
 
-    constructor(context: ContextElement, source: AppMetadata,
+    constructor(context: ContextElement | undefined, source: AppMetadata,
         onSuccess: () => void,
         onError: () => void,
         timeoutMs: number) {
@@ -45,14 +47,22 @@ class PendingContext {
         this.onSuccess = onSuccess
 
         setTimeout(() => {
-            if (!this.resolved) {
+            if (this.state != AppState.Done) {
                 onError()
             }
         }, timeoutMs)
     }
 
-    resolve() {
-        this.resolved = true
+    setOpened() {
+        if (this.context) {
+            this.state = AppState.DeliveringContext
+        } else {
+            this.setDone()
+        }
+    }
+
+    setDone() {
+        this.state = AppState.Done
         this.onSuccess()
     }
 }
@@ -60,7 +70,7 @@ class PendingContext {
 export class OpenHandler implements MessageHandler {
 
     private readonly directory: Directory
-    private readonly pendingContexts: Map<string, PendingContext> = new Map()
+    private readonly pending: Map<string, PendingApps> = new Map()
 
     readonly timeoutMs: number
 
@@ -70,47 +80,44 @@ export class OpenHandler implements MessageHandler {
     }
 
     async accept(msg: any, sc: ServerContext, from: AppMetadata): Promise<void> {
-        this.ensureRegisteredConnected(sc, from)
-
         switch (msg.type as string) {
             case 'openRequest': return this.open(msg as OpenAgentRequest, sc, from)
             case 'findInstancesRequest': return this.findInstances(msg as FindInstancesAgentRequest, sc, from)
             case 'getAppMetadataRequest': return this.getAppMetadata(msg as GetAppMetadataAgentRequest, sc, from)
             case 'onAddContextListener': return this.handleOnAddContextListener(msg as OnAddContextListenerAgentRequest, sc)
+            case 'hello': return this.handleHello(msg as ConnectionStep2Hello, sc, from)
         }
-    }
-
-    ensureRegisteredConnected(sc: ServerContext, from: AppMetadata) {
-        sc.setAppConnected(from)
     }
 
     handleOnAddContextListener(arg0: PrivateChannelOnAddContextListenerAgentRequest | OnAddContextListenerAgentRequest, sc: ServerContext) {
         const instanceId = arg0.meta.source?.instanceId
-        const pendingContext = instanceId ? this.pendingContexts.get(instanceId) : undefined
+        const pendingOpen = instanceId ? this.pending.get(instanceId) : undefined
 
-        if (pendingContext && instanceId) {
+        if (pendingOpen && instanceId) {
             const channelId = arg0.payload.channelId
             const contextType = arg0.payload.contextType
 
-            if ((contextType == pendingContext.context.type) || (contextType == undefined)) {
-                // ok, we can deliver to this listener
+            if ((pendingOpen.context) && (pendingOpen.state == AppState.DeliveringContext)) {
+                if ((contextType == pendingOpen.context.type) || (contextType == undefined)) {
+                    // ok, we can deliver to this listener
 
-                const message: BroadcastAgentRequest = {
-                    meta: {
-                        requestUuid: sc.createUUID(),
-                        source: pendingContext.source,
-                        timestamp: new Date()
-                    },
-                    type: "broadcastRequest",
-                    payload: {
-                        channelId,
-                        context: pendingContext.context
+                    const message: BroadcastAgentRequest = {
+                        meta: {
+                            requestUuid: sc.createUUID(),
+                            source: pendingOpen.source,
+                            timestamp: new Date()
+                        },
+                        type: "broadcastRequest",
+                        payload: {
+                            channelId,
+                            context: pendingOpen.context
+                        }
                     }
-                }
 
-                pendingContext.resolve()
-                this.pendingContexts.delete(instanceId)
-                sc.post(message, arg0.meta.source!!)
+                    pendingOpen.setDone()
+                    this.pending.delete(instanceId)
+                    sc.post(message, arg0.meta.source!!)
+                }
             }
         }
     }
@@ -185,19 +192,26 @@ export class OpenHandler implements MessageHandler {
 
         try {
             const details = await sc.open(source.appId)
-            if (context && details.instanceId) {
-                this.pendingContexts.set(details.instanceId!!, new PendingContext(context, source,
-                    () => sc.post(createSuccessMessage(details), from),
-                    () => sc.post(createErrorMessage(OpenError.AppTimeout), from),
-                    this.timeoutMs))
-            } else {
-                sc.post(createSuccessMessage(details), from)
-            }
+            this.pending.set(details.instanceId!!, new PendingApps(context, source,
+                () => sc.post(createSuccessMessage(details), from),
+                () => sc.post(createErrorMessage(OpenError.AppTimeout), from),
+                this.timeoutMs))
         } catch (e: any) {
             const message = createErrorMessage(e.message)
             sc.post(message, from)
         }
     }
 
+    handleHello(_arg0: ConnectionStep2Hello, sc: ServerContext, opening: AppMetadata): void | PromiseLike<void> {
+        sc.setAppConnected(opening)
 
+        const instanceId = opening.instanceId
+        const pendingOpen = instanceId ? this.pending.get(instanceId) : undefined
+
+        if (pendingOpen) {
+            if (pendingOpen.state == AppState.Opening) {
+                pendingOpen.setOpened()
+            }
+        }
+    }
 }
