@@ -87,6 +87,7 @@ export class BroadcastHandler implements MessageHandler {
         }
 
         sc.post(out, from)
+
     }
 
     handleOnUnsubscribe(arg0: PrivateChannelOnUnsubscribeAgentRequest | OnUnsubscribeAgentRequest, _sc: ServerContext) {

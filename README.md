@@ -98,10 +98,9 @@ The project is divided into several different yarn workspaces:
 - get it to work without desktop agent window running
 - use cookie for the da id.
 - add server tests for intent resolution choice
-- handle disconnections from the server / update running apps
 - test intent resolvers on different domains
-- we shoulnd't be using meta for routing - check this.
 - factor out test codes into module
+- handle setting connected on the server context.
 
 ## Idea
 

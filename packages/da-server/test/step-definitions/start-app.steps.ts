@@ -6,7 +6,7 @@ import { matchData } from '../support/matching';
 
 When('{string} is opened', function (this: CustomWorld, app: string) {
   const meta = createMeta(this, app)
-  this.sc.openApps.push(meta.source)
+  this.sc.connectedApps.push(meta.source)
 });
 
 When('{string} sends hello', function (this: CustomWorld, app: string) {
@@ -27,7 +27,7 @@ When('{string} sends hello', function (this: CustomWorld, app: string) {
 });
 
 Then('running apps will be', async function (this: CustomWorld, dataTable: DataTable) {
-  const apps = await this.sc.getOpenApps()
+  const apps = await this.sc.getConnectedApps()
   matchData(this, apps, dataTable)
 });
 

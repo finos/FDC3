@@ -7,7 +7,8 @@ export const DEFAULT_OPTIONS: Options = {
     setWindowGlobal: false,
     fireFdc3Ready: false,
     strategies: [postMessage], //, electronEvent],
-    frame: window.opener ?? window.parent
+    frame: window.opener ?? window.parent,
+    middlewares: []
 }
 
 /**
