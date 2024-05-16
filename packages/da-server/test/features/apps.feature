@@ -35,6 +35,14 @@ Feature: Opening and Requesting App Details
       | openResponse     | {empty}               | {empty}                  | a1            |
       | broadcastRequest | channel1              | fdc3.instrument          |             0 |
 
+  Scenario: Opening An App With Context, But No Listener Added
+    When "libraryApp/a1" opens app "storageApp" with context data "fdc3.instrument"
+    And "storageApp/0" adds a context listener on "channel1" with type "fdc3.country"
+    And we wait for the listener timeout
+    Then messaging will have outgoing posts
+      | msg.type     | msg.payload.channelId | msg.payload.context.type | to.instanceId |
+      | openResponse | {empty}               | {empty}                  | a1            |
+
   Scenario: Opening A Missing App
     When "libraryApp/a1" opens app "missingApp"
     Then messaging will have outgoing posts

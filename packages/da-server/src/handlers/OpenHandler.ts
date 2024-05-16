@@ -2,7 +2,7 @@ import { AppDestinationIdentifier, AppMetadata, BroadcastAgentRequest, FindInsta
 import { MessageHandler } from "../BasicFDC3Server";
 import { ServerContext } from "../ServerContext";
 import { Directory, DirectoryApp } from "../directory/DirectoryInterface";
-import { ContextElement, ResolveError } from "@finos/fdc3";
+import { ContextElement, OpenError, ResolveError } from "@finos/fdc3";
 import { OnAddContextListenerAgentRequest } from "@kite9/fdc3-common";
 
 function filterPublicDetails(appD: DirectoryApp, appID: AppDestinationIdentifier): GetAppMetadataAgentResponsePayload['appMetadata'] {
@@ -29,9 +29,32 @@ function createReplyMeta(msg: any, sc: ServerContext): BasicMeta {
     }
 }
 
-type PendingContext = {
-    context: ContextElement,
-    source: AppMetadata
+class PendingContext {
+
+    readonly context: ContextElement
+    readonly source: AppMetadata
+    private resolved: boolean = false
+    private onSuccess: () => void
+
+    constructor(context: ContextElement, source: AppMetadata,
+        onSuccess: () => void,
+        onError: () => void,
+        timeoutMs: number) {
+        this.context = context
+        this.source = source
+        this.onSuccess = onSuccess
+
+        setTimeout(() => {
+            if (!this.resolved) {
+                onError()
+            }
+        }, timeoutMs)
+    }
+
+    resolve() {
+        this.resolved = true
+        this.onSuccess()
+    }
 }
 
 export class OpenHandler implements MessageHandler {
@@ -39,17 +62,26 @@ export class OpenHandler implements MessageHandler {
     private readonly directory: Directory
     private readonly pendingContexts: Map<string, PendingContext> = new Map()
 
-    constructor(d: Directory) {
+    readonly timeoutMs: number
+
+    constructor(d: Directory, timeoutMs: number) {
         this.directory = d
+        this.timeoutMs = timeoutMs
     }
 
     async accept(msg: any, sc: ServerContext, from: AppMetadata): Promise<void> {
+        this.ensureRegisteredConnected(sc, from)
+
         switch (msg.type as string) {
             case 'openRequest': return this.open(msg as OpenAgentRequest, sc, from)
             case 'findInstancesRequest': return this.findInstances(msg as FindInstancesAgentRequest, sc, from)
             case 'getAppMetadataRequest': return this.getAppMetadata(msg as GetAppMetadataAgentRequest, sc, from)
             case 'onAddContextListener': return this.handleOnAddContextListener(msg as OnAddContextListenerAgentRequest, sc)
         }
+    }
+
+    ensureRegisteredConnected(sc: ServerContext, from: AppMetadata) {
+        sc.setAppConnected(from)
     }
 
     handleOnAddContextListener(arg0: PrivateChannelOnAddContextListenerAgentRequest | OnAddContextListenerAgentRequest, sc: ServerContext) {
@@ -75,6 +107,8 @@ export class OpenHandler implements MessageHandler {
                         context: pendingContext.context
                     }
                 }
+
+                pendingContext.resolve()
                 this.pendingContexts.delete(instanceId)
                 sc.post(message, arg0.meta.source!!)
             }
@@ -123,15 +157,19 @@ export class OpenHandler implements MessageHandler {
     }
 
     async open(arg0: OpenAgentRequest, sc: ServerContext, from: AppMetadata): Promise<void> {
-        const source = arg0.payload.app
-        const context = arg0.payload.context
 
-        try {
-            const details = await sc.open(source.appId)
-            if (context && details.instanceId) {
-                this.pendingContexts.set(details.instanceId!!, { context, source })
+        function createErrorMessage(e: string): OpenAgentErrorResponse {
+            const message: OpenAgentErrorResponse = {
+                meta: createReplyMeta(arg0, sc),
+                type: "openResponse",
+                payload: {
+                    error: e as OpenErrorMessage
+                }
             }
+            return message;
+        }
 
+        function createSuccessMessage(details: AppMetadata): OpenAgentResponse {
             const message: OpenAgentResponse = {
                 meta: createReplyMeta(arg0, sc),
                 type: "openResponse",
@@ -139,16 +177,24 @@ export class OpenHandler implements MessageHandler {
                     appIdentifier: details
                 }
             }
+            return message
+        }
 
-            sc.post(message, from)
-        } catch (e: unknown) {
-            const message: OpenAgentErrorResponse = {
-                meta: createReplyMeta(arg0, sc),
-                type: "openResponse",
-                payload: {
-                    error: ((e as Error).message as OpenErrorMessage)
-                }
+        const source = arg0.payload.app
+        const context = arg0.payload.context
+
+        try {
+            const details = await sc.open(source.appId)
+            if (context && details.instanceId) {
+                this.pendingContexts.set(details.instanceId!!, new PendingContext(context, source,
+                    () => sc.post(createSuccessMessage(details), from),
+                    () => sc.post(createErrorMessage(OpenError.AppTimeout), from),
+                    this.timeoutMs))
+            } else {
+                sc.post(createSuccessMessage(details), from)
             }
+        } catch (e: any) {
+            const message = createErrorMessage(e.message)
             sc.post(message, from)
         }
     }
