@@ -91,3 +91,9 @@ When('{string} findsInstances of {string}', function (this: CustomWorld, appStr:
   }
   this.server.receive(message, from.source)
 });
+
+When('we wait for the listener timeout', function (this: CustomWorld) {
+  return new Promise<void>((resolve, _reject) => {
+    setTimeout(() => resolve(), 3100)
+  })
+});
