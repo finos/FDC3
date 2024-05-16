@@ -13,11 +13,14 @@ export class TestServerContext implements ServerContext {
 
     public postedMessages: MessageRecord[] = []
     private readonly cw: CustomWorld
-    public openApps: AppMetadata[] = []
+    public connectedApps: AppMetadata[] = []
     private nextInstanceId: number = 0
 
     constructor(cw: CustomWorld) {
         this.cw = cw
+    }
+
+    async setAppConnected(_app: AppMetadata): Promise<void> {
     }
 
     async open(appId: string): Promise<AppMetadata> {
@@ -28,17 +31,16 @@ export class TestServerContext implements ServerContext {
                 appId,
                 instanceId: "" + this.nextInstanceId++
             } as AppMetadata
-            this.openApps.push(out)
             return out
         }
     }
 
-    async getOpenApps(): Promise<AppMetadata[]> {
-        return this.openApps
+    async getConnectedApps(): Promise<AppMetadata[]> {
+        return this.connectedApps
     }
 
-    async isAppOpen(app: AppMetadata): Promise<boolean> {
-        const openApps = await this.getOpenApps()
+    async isAppConnected(app: AppMetadata): Promise<boolean> {
+        const openApps = await this.getConnectedApps()
         const found = openApps.find(a => (a.appId == app.appId) && (a.instanceId == app.instanceId))
         return found != null
     }

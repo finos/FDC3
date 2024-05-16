@@ -109,7 +109,7 @@ export class OpenHandler implements MessageHandler {
 
     async findInstances(arg0: FindInstancesAgentRequest, sc: ServerContext, from: AppMetadata): Promise<void> {
         const appId = arg0.payload.app.appId
-        const openApps = await sc.getOpenApps()
+        const openApps = await sc.getConnectedApps()
         const matching = openApps.filter(a => a.appId == appId)
         const response: FindInstancesAgentResponse = {
             type: 'findInstancesResponse',

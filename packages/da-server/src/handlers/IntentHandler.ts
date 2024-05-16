@@ -203,7 +203,7 @@ export class IntentHandler implements MessageHandler {
         const target = arg0.payload.app
         if (target.instanceId) {
             // ok, targeting a specific, known instance
-            if (await sc.isAppOpen(target)) {
+            if (await sc.isAppConnected(target)) {
                 return forwardRequest(arg0, target, sc, this)
             } else {
                 // instance doesn't exist
@@ -322,7 +322,7 @@ export class IntentHandler implements MessageHandler {
         }
 
         const matching = this.regs.filter(r => matches(template, r))
-        const active = matching.filter(async r => await sc.isAppOpen({
+        const active = matching.filter(async r => await sc.isAppConnected({
             instanceId: r.instanceId,
             appId: r.appId!!
         }))
