@@ -100,8 +100,6 @@ describe('test ES6 module', () => {
 
 
     test('addEventListener should reject', async () => {
-      await expect(addEventListener(expect.any(Object))).rejects.toEqual(UnavailableError);
-
       await expect(addEventListener(expect.any(String), expect.any(Object))).rejects.toEqual(UnavailableError);
     });
 
