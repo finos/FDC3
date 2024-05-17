@@ -2,7 +2,7 @@
 title: Events
 ---
 
-FDC3 API operations may trigger non-context and non-intent events.
+In addition to intent and context events, the FDC3 API may be used to listen for other types of events via the `addEventListener()` function.
 
 ## `EventHandler`
 
@@ -39,7 +39,7 @@ interface FDC3Event {
 }
 ````
 
-Type representing the format of event objects that may be received via the FDC3 API's `addEventListener` function. Will always include both `type` and `details`, which describe type of the event and any additional details respectively. 
+Type representing the format of event objects that may be received via the FDC3 API's `addEventListener` function. Will always include both `type` and `details`, which describe type of the event and any additional details respectively.
 
 **See also:**
 - [`DesktopAgent.addEventListener`](DesktopAgent#addEventListener)
@@ -56,4 +56,4 @@ interface FDC3ChannelChangedEvent extends FDC3Event {
 }
 ````
 
-Type representing the format of event USER_CHANNEL_CHANGED objects. Will always include both `type` USER_CHANNEL_CHANGED and `details`, with `currentChannelId` specified as `string` or `null`.
+Type representing the format of USER_CHANNEL_CHANGED events. The identity of the channel joined is provided as `details.currentChannelId`, which will be `null` if the app is no longer joined to any channel.
