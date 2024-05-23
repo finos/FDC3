@@ -1,7 +1,7 @@
 const fillChannels = (data, messageClickedChannel) => {
   const list = document.getElementById('list');
   list.innerHTML = '';
-  data.forEach(({ id, type, displayMetadata }) => {
+  data.forEach(({ id, displayMetadata }) => {
     const node = document.createElement('div');
     node.setAttribute('tabIndex', '0');
     const span = document.createElement('span');
@@ -15,7 +15,7 @@ const fillChannels = (data, messageClickedChannel) => {
     span2.textContent = displayMetadata.name;
     node.appendChild(span2);
     list.appendChild(node);
-    node.addEventListener('click', () => messageClickedChannel({ id, type, displayMetadata }));
+    node.addEventListener('click', () => messageClickedChannel(id));
   });
 };
 
