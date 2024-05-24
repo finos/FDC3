@@ -15,7 +15,7 @@
         "iframeResolveAction",
         "iframeChannels",
         "iframeChannelSelected",
-        "iframeChannelToggle",
+        "iframeChannelResize",
         "iframeChannelDrag"
       ],
       "description": "Identifies the type of the message to or from the iframe."

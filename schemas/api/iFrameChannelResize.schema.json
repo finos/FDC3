@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/iframeChannelResize.schema.json",
+  "title": "iframe Channel Resize",
+  "description": "Message from the channel selector UI to the DA proxy when the user hits a toggle button that opens or closes the selector or otherwise resizes it. Includes the size that it should change to and the corner (if any) at which the change should be made.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/IframeChannelResizeBase"
+    },
+    {
+      "$ref": "iFrameMessage.schema.json"
+    }
+  ],
+  "$defs": {
+    "IframeChannelResizeBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "iframeChannelResize Message Type",
+          "const": "iframeChannelResize"
+        },
+        "payload": {
+          "title": "iframeChannelResize Payload",
+          "type": "object",
+          "properties": {
+            "dimensions": {
+              "title": "Dimensions",
+              "description": "The updated dimensions of the UI",
+              "type": "object",
+              "properties": {
+                "width": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                }
+              },
+              "required": ["width", "height"],
+              "additionalProperties": false
+            },
+            "resizeAnchor": {
+              "title": "Resizing",
+              "description": "When resizing anchor at the indicated location,\ne.g.\n\t- for top-left and a larger size: the bottom right corner should move down and out.\n\t- for top and smaller size: both the bottom corners should move in and up.",
+              "anyOf": [
+                { "type": "string", "const": "top-left" },
+                { "type": "string", "const": "top" },
+                { "type": "string", "const": "top-right" },
+                { "type": "string", "const": "right" },
+                { "type": "string", "const": "bottom-right" },
+                { "type": "string", "const": "bottom" },
+                { "type": "string", "const": "bottom-left" },
+                { "type": "string", "const": "left" },
+                { "type": "string", "const": "center" }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": ["dimensions", "resizeAnchor"]
+        }
+      },
+      "required": [
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
+
