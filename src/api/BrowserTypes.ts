@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, AppRequestMessage, AgentResponseMessage, AgentEventMessage, AddContextListenerRequest, AddContextListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEventEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocolHello, WebConnectionProtocolLoadURL, WCP3Handshake, WCP4ValidateAppIdentity, WCP5ValidateAppIdentityFailedResponse, WebConnectionProtocolMessage } from "./file";
+//   import { Convert, AppRequestMessage, AgentResponseMessage, AgentEventMessage, AddContextListenerRequest, AddContextListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IframeChannels, IframeChannelSelected, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEventEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocolHello, WebConnectionProtocolLoadURL, WCP3Handshake, WCP4ValidateAppIdentity, WCP5ValidateAppIdentityFailedResponse, WebConnectionProtocolMessage } from "./file";
 //
 //   const fDC3DesktopAgentAPISchema = Convert.toFDC3DesktopAgentAPISchema(json);
 //   const commonDefinitions = Convert.toCommonDefinitions(json);
@@ -37,6 +37,8 @@
 //   const getOrCreateChannelResponse = Convert.toGetOrCreateChannelResponse(json);
 //   const getUserChannelsRequest = Convert.toGetUserChannelsRequest(json);
 //   const getUserChannelsResponse = Convert.toGetUserChannelsResponse(json);
+//   const iframeChannels = Convert.toIframeChannels(json);
+//   const iframeChannelSelected = Convert.toIframeChannelSelected(json);
 //   const iframeHandshake = Convert.toIframeHandshake(json);
 //   const iframeHello = Convert.toIframeHello(json);
 //   const iframeMessage = Convert.toIframeMessage(json);
@@ -1789,6 +1791,92 @@ export interface GetUserChannelsResponsePayload {
  */
 
 /**
+ * Setup message sent by the DA proxy code in getAgent() to a channel selector UI in an
+ * iframe with the channel definitions and current channel selection.
+ *
+ * A message used to communicate with iframes injected by `getAgent()` for displaying UI
+ * elements such as the intent resolver or channel selector. Used for messages sent in
+ * either direction.
+ */
+export interface IframeChannels {
+    /**
+     * The message payload
+     */
+    payload: IframeChannelsPayload;
+    /**
+     * Identifies the type of the message to or from the iframe.
+     */
+    type: "iframeChannels";
+}
+
+/**
+ * The message payload
+ */
+export interface IframeChannelsPayload {
+    /**
+     * If the channel selector was previously displayed in this window its location may be
+     * restored by setting the location coordinates
+     */
+    location?: Location;
+    /**
+     * The id of the channel taht should be currently selected, or `null` if none should be
+     * selected
+     */
+    selected: null | string;
+    /**
+     * User Channel definitions
+     */
+    userChannels: Channel[];
+}
+
+/**
+ * If the channel selector was previously displayed in this window its location may be
+ * restored by setting the location coordinates
+ */
+export interface Location {
+    x: number;
+    y: number;
+}
+
+/**
+ * Identifies the type of the message to or from the iframe.
+ */
+
+/**
+ * Message from the channel selector UI to the DA proxy sent when the channel selection
+ * changes.
+ *
+ * A message used to communicate with iframes injected by `getAgent()` for displaying UI
+ * elements such as the intent resolver or channel selector. Used for messages sent in
+ * either direction.
+ */
+export interface IframeChannelSelected {
+    /**
+     * The message payload
+     */
+    payload: IframeChannelSelectedPayload;
+    /**
+     * Identifies the type of the message to or from the iframe.
+     */
+    type: "iframeChannelSelected";
+}
+
+/**
+ * The message payload
+ */
+export interface IframeChannelSelectedPayload {
+    /**
+     * The id of the channel that should be currently selected, or `null` if none should be
+     * selected
+     */
+    selected: null | string;
+}
+
+/**
+ * Identifies the type of the message to or from the iframe.
+ */
+
+/**
  * Handshake message sent back by an iframe to the DA proxy code indicating that it is setup
  * and ready to communicate over the MessagePort.
  *
@@ -3403,6 +3491,22 @@ export class Convert {
         return JSON.stringify(uncast(value, r("GetUserChannelsResponse")), null, 2);
     }
 
+    public static toIframeChannels(json: string): IframeChannels {
+        return cast(JSON.parse(json), r("IframeChannels"));
+    }
+
+    public static iframeChannelsToJson(value: IframeChannels): string {
+        return JSON.stringify(uncast(value, r("IframeChannels")), null, 2);
+    }
+
+    public static toIframeChannelSelected(json: string): IframeChannelSelected {
+        return cast(JSON.parse(json), r("IframeChannelSelected"));
+    }
+
+    public static iframeChannelSelectedToJson(value: IframeChannelSelected): string {
+        return JSON.stringify(uncast(value, r("IframeChannelSelected")), null, 2);
+    }
+
     public static toIframeHandshake(json: string): IframeHandshake {
         return cast(JSON.parse(json), r("IframeHandshake"));
     }
@@ -4193,6 +4297,26 @@ const typeMap: any = {
         { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
         { json: "userChannels", js: "userChannels", typ: u(undefined, a(r("Channel"))) },
     ], false),
+    "IframeChannels": o([
+        { json: "payload", js: "payload", typ: r("IframeChannelsPayload") },
+        { json: "type", js: "type", typ: r("IframeChannelsType") },
+    ], false),
+    "IframeChannelsPayload": o([
+        { json: "location", js: "location", typ: u(undefined, r("Location")) },
+        { json: "selected", js: "selected", typ: u(null, "") },
+        { json: "userChannels", js: "userChannels", typ: a(r("Channel")) },
+    ], false),
+    "Location": o([
+        { json: "x", js: "x", typ: 0 },
+        { json: "y", js: "y", typ: 0 },
+    ], false),
+    "IframeChannelSelected": o([
+        { json: "payload", js: "payload", typ: r("IframeChannelSelectedPayload") },
+        { json: "type", js: "type", typ: r("IframeChannelSelectedType") },
+    ], false),
+    "IframeChannelSelectedPayload": o([
+        { json: "selected", js: "selected", typ: u(null, "") },
+    ], false),
     "IframeHandshake": o([
         { json: "payload", js: "payload", typ: r("IframeHandshakePayload") },
         { json: "type", js: "type", typ: r("IframeHandshakeType") },
@@ -4695,6 +4819,12 @@ const typeMap: any = {
     ],
     "GetUserChannelsResponseType": [
         "getUserChannelsResponse",
+    ],
+    "IframeChannelsType": [
+        "iframeChannels",
+    ],
+    "IframeChannelSelectedType": [
+        "iframeChannelSelected",
     ],
     "IframeHandshakeType": [
         "iframeHandshake",
