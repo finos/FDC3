@@ -24,14 +24,14 @@
           "title": "iframeHandshake Payload",
           "type": "object",
           "properties": {
-            "resolverDetails": {
-              "title": "FDC3 version",
+            "implementationDetails": {
+              "title": "Implementation Details",
               "type": "string",
-              "description": "Implementation details, such as vendor and version details, for logging purposes."
+              "description": "Details about the UI implementation in the iframe, such as vendor and version, for logging purposes."
             }
           },
           "additionalProperties": false,
-          "required": ["resolverDetails"]
+          "required": ["implementationDetails"]
         }
       },
       "required": [

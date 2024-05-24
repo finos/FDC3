@@ -1,27 +1,27 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/api/iframeHandshake.schema.json",
-  "title": "iframe Handshake",
-  "description": "Handshake message sent by the DA proxy code in getAgent() to an iframe, that it has injected into the page, with a MessagePort appended that should be used for subsequent communication steps.",
+  "$id": "https://fdc3.finos.org/schemas/next/api/iframeHello.schema.json",
+  "title": "iframe Hello",
+  "description": "Hello message sent by the DA proxy code in getAgent() to an iframe, that it has injected into the page, with a MessagePort appended that should be used for subsequent communication steps.",
   "type": "object",
   "allOf": [
     {
-      "$ref": "#/$defs/IframeHandshakeBase"
+      "$ref": "#/$defs/IframeHelloBase"
     },
     {
       "$ref": "iFrameMessage.schema.json"
     }
   ],
   "$defs": {
-    "IframeHandshakeBase": {
+    "IframeHelloBase": {
       "type": "object",
       "properties": {
         "type": {
-          "title": "iframeHandshake Message Type",
-          "const": "iframeHandshake"
+          "title": "iframeHello Message Type",
+          "const": "iframeHello"
         },
         "payload": {
-          "title": "iframeHandshake Payload",
+          "title": "iframeHello Payload",
           "type": "object",
           "properties": {
             "fdc3Version": {

@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, AppRequestMessage, AgentResponseMessage, AgentEventMessage, AddContextListenerRequest, AddContextListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEventEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocolHello, WebConnectionProtocolLoadURL, WCP3Handshake, WCP4ValidateAppIdentity, WCP5ValidateAppIdentityFailedResponse, WebConnectionProtocolMessage } from "./file";
+//   import { Convert, AppRequestMessage, AgentResponseMessage, AgentEventMessage, AddContextListenerRequest, AddContextListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEventEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocolHello, WebConnectionProtocolLoadURL, WCP3Handshake, WCP4ValidateAppIdentity, WCP5ValidateAppIdentityFailedResponse, WebConnectionProtocolMessage } from "./file";
 //
 //   const fDC3DesktopAgentAPISchema = Convert.toFDC3DesktopAgentAPISchema(json);
 //   const commonDefinitions = Convert.toCommonDefinitions(json);
@@ -37,6 +37,12 @@
 //   const getOrCreateChannelResponse = Convert.toGetOrCreateChannelResponse(json);
 //   const getUserChannelsRequest = Convert.toGetUserChannelsRequest(json);
 //   const getUserChannelsResponse = Convert.toGetUserChannelsResponse(json);
+//   const iframeHandshake = Convert.toIframeHandshake(json);
+//   const iframeHello = Convert.toIframeHello(json);
+//   const iframeMessage = Convert.toIframeMessage(json);
+//   const iframeResolve = Convert.toIframeResolve(json);
+//   const iframeResolveAction = Convert.toIframeResolveAction(json);
+//   const intentEvent = Convert.toIntentEvent(json);
 //   const intentListenerUnsubscribeRequest = Convert.toIntentListenerUnsubscribeRequest(json);
 //   const intentListenerUnsubscribeResponse = Convert.toIntentListenerUnsubscribeResponse(json);
 //   const joinUserChannelRequest = Convert.toJoinUserChannelRequest(json);
@@ -120,6 +126,10 @@ export interface AppRequestMessageMeta {
  *
  * Field that represents the source application that the request being responded to was
  * received from, for debugging purposes.
+ *
+ * The App resolution option chosen
+ *
+ * Details of the application instance that raised the intent
  *
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
@@ -243,7 +253,7 @@ export interface AgentEventMessageMeta {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
-export type EventMessageType = "broadcastEvent" | "channelChangedEvent" | "privateChannelOnAddContextListenerEvent" | "privateChannelOnDisconnectEvent" | "privateChannelOnUnsubscribeEvent";
+export type EventMessageType = "intentEvent" | "broadcastEvent" | "channelChangedEvent" | "privateChannelOnAddContextListenerEvent" | "privateChannelOnDisconnectEvent" | "privateChannelOnUnsubscribeEvent";
 
 /**
  * A request to add a context listener to a specified Channel OR to the current user
@@ -500,6 +510,8 @@ export interface BroadcastEventPayload {
  * The context object that was broadcast.
  *
  * The context object that is to be broadcast.
+ *
+ * The context object passed with the raised intent.
  *
  * The `fdc3.context` type defines the basic contract or "shape" for all data exchanged by
  * FDC3 operations. As such, it is not really meant to be used on its own, but is imported
@@ -1777,6 +1789,214 @@ export interface GetUserChannelsResponsePayload {
  */
 
 /**
+ * Handshake message sent back by an iframe to the DA proxy code indicating that it is setup
+ * and ready to communicate over the MessagePort.
+ *
+ * A message used to communicate with iframes injected by `getAgent()` for displaying UI
+ * elements such as the intent resolver or channel selector. Used for messages sent in
+ * either direction.
+ */
+export interface IframeHandshake {
+    /**
+     * The message payload
+     */
+    payload: IframeHandshakePayload;
+    /**
+     * Identifies the type of the message to or from the iframe.
+     */
+    type: "iframeHandshake";
+}
+
+/**
+ * The message payload
+ */
+export interface IframeHandshakePayload {
+    /**
+     * Details about the UI implementation in the iframe, such as vendor and version, for
+     * logging purposes.
+     */
+    implementationDetails: string;
+}
+
+/**
+ * Identifies the type of the message to or from the iframe.
+ */
+
+/**
+ * Hello message sent by the DA proxy code in getAgent() to an iframe, that it has injected
+ * into the page, with a MessagePort appended that should be used for subsequent
+ * communication steps.
+ *
+ * A message used to communicate with iframes injected by `getAgent()` for displaying UI
+ * elements such as the intent resolver or channel selector. Used for messages sent in
+ * either direction.
+ */
+export interface IframeHello {
+    /**
+     * The message payload
+     */
+    payload: IframeHelloPayload;
+    /**
+     * Identifies the type of the message to or from the iframe.
+     */
+    type: "iframeHello";
+}
+
+/**
+ * The message payload
+ */
+export interface IframeHelloPayload {
+    /**
+     * The version of FDC3 API that the Desktop Agent proxy is providing support for.
+     */
+    fdc3Version: string;
+}
+
+/**
+ * Identifies the type of the message to or from the iframe.
+ */
+
+/**
+ * A message used to communicate with iframes injected by `getAgent()` for displaying UI
+ * elements such as the intent resolver or channel selector. Used for messages sent in
+ * either direction.
+ */
+export interface IframeMessage {
+    /**
+     * The message payload
+     */
+    payload?: { [key: string]: any };
+    /**
+     * Identifies the type of the message to or from the iframe.
+     */
+    type: IframeMessageType;
+}
+
+/**
+ * Identifies the type of the message to or from the iframe.
+ */
+export type IframeMessageType = "iframeHello" | "iframeHandshake" | "iframeResolve" | "iframeResolveAction" | "iframeChannels" | "iframeChannelSelected" | "iframeChannelToggle" | "iframeChannelDrag";
+
+/**
+ * Setup message sent by the DA proxy code in getAgent() to an intent resolver UI in an
+ * iframe with the resolver data to setup the UI.
+ *
+ * A message used to communicate with iframes injected by `getAgent()` for displaying UI
+ * elements such as the intent resolver or channel selector. Used for messages sent in
+ * either direction.
+ */
+export interface IframeResolve {
+    /**
+     * The message payload
+     */
+    payload: IframeResolvePayload;
+    /**
+     * Identifies the type of the message to or from the iframe.
+     */
+    type: "iframeResolve";
+}
+
+/**
+ * The message payload
+ */
+export interface IframeResolvePayload {
+    /**
+     * An array of AppIntent objects defining the resolution options.
+     */
+    appIntents: AppIntent[];
+    context:    Context;
+}
+
+/**
+ * Identifies the type of the message to or from the iframe.
+ */
+
+/**
+ * Message from an intent resolver UI in an iframe to DA proxy code in getAgent() reporting
+ * a user action.
+ *
+ * A message used to communicate with iframes injected by `getAgent()` for displaying UI
+ * elements such as the intent resolver or channel selector. Used for messages sent in
+ * either direction.
+ */
+export interface IframeResolveAction {
+    /**
+     * The message payload
+     */
+    payload: IframeResolveActionPayload;
+    /**
+     * Identifies the type of the message to or from the iframe.
+     */
+    type: "iframeResolveAction";
+}
+
+/**
+ * The message payload
+ */
+export interface IframeResolveActionPayload {
+    action: Action;
+    /**
+     * The App resolution option chosen
+     */
+    appIdentifier?: AppIdentifier;
+    /**
+     * The intent resolved
+     */
+    intent?: string;
+}
+
+export type Action = "hover" | "click" | "cancel";
+
+/**
+ * Identifies the type of the message to or from the iframe.
+ */
+
+/**
+ * An event message from the Desktop Agent to an app indicating that it has been selected to
+ * resolve a raised intent and context.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app representing an event.
+ */
+export interface IntentEvent {
+    /**
+     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     */
+    meta: BroadcastEventMeta;
+    /**
+     * The message payload contains details of the event that the app is being notified about.
+     */
+    payload: IntentEventPayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Response' appended.
+     */
+    type: "intentEvent";
+}
+
+/**
+ * The message payload contains details of the event that the app is being notified about.
+ */
+export interface IntentEventPayload {
+    /**
+     * The context object passed with the raised intent.
+     */
+    context: Context;
+    /**
+     * The intent that was raised.
+     */
+    intent: string;
+    /**
+     * Details of the application instance that raised the intent
+     */
+    originatingApp: AppIdentifier;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
  * A request to unsubscribe a context listener.
  *
  * A request message from an FDC3-enabled app to a Desktop Agent.
@@ -2796,7 +3016,7 @@ export interface WCP4ValidateAppIdentity {
     /**
      * The message payload, containing data pertaining to this connection step.
      */
-    payload: PayloadClass;
+    payload: WCP4ValidateAppIdentityPayload;
     /**
      * Identifies the type of the connection step message.
      */
@@ -2806,7 +3026,7 @@ export interface WCP4ValidateAppIdentity {
 /**
  * The message payload, containing data pertaining to this connection step.
  */
-export interface PayloadClass {
+export interface WCP4ValidateAppIdentityPayload {
     /**
      * URL for an App Directory record that provides identity details for the application
      * attempting to connect
@@ -3181,6 +3401,54 @@ export class Convert {
 
     public static getUserChannelsResponseToJson(value: GetUserChannelsResponse): string {
         return JSON.stringify(uncast(value, r("GetUserChannelsResponse")), null, 2);
+    }
+
+    public static toIframeHandshake(json: string): IframeHandshake {
+        return cast(JSON.parse(json), r("IframeHandshake"));
+    }
+
+    public static iframeHandshakeToJson(value: IframeHandshake): string {
+        return JSON.stringify(uncast(value, r("IframeHandshake")), null, 2);
+    }
+
+    public static toIframeHello(json: string): IframeHello {
+        return cast(JSON.parse(json), r("IframeHello"));
+    }
+
+    public static iframeHelloToJson(value: IframeHello): string {
+        return JSON.stringify(uncast(value, r("IframeHello")), null, 2);
+    }
+
+    public static toIframeMessage(json: string): IframeMessage {
+        return cast(JSON.parse(json), r("IframeMessage"));
+    }
+
+    public static iframeMessageToJson(value: IframeMessage): string {
+        return JSON.stringify(uncast(value, r("IframeMessage")), null, 2);
+    }
+
+    public static toIframeResolve(json: string): IframeResolve {
+        return cast(JSON.parse(json), r("IframeResolve"));
+    }
+
+    public static iframeResolveToJson(value: IframeResolve): string {
+        return JSON.stringify(uncast(value, r("IframeResolve")), null, 2);
+    }
+
+    public static toIframeResolveAction(json: string): IframeResolveAction {
+        return cast(JSON.parse(json), r("IframeResolveAction"));
+    }
+
+    public static iframeResolveActionToJson(value: IframeResolveAction): string {
+        return JSON.stringify(uncast(value, r("IframeResolveAction")), null, 2);
+    }
+
+    public static toIntentEvent(json: string): IntentEvent {
+        return cast(JSON.parse(json), r("IntentEvent"));
+    }
+
+    public static intentEventToJson(value: IntentEvent): string {
+        return JSON.stringify(uncast(value, r("IntentEvent")), null, 2);
     }
 
     public static toIntentListenerUnsubscribeRequest(json: string): IntentListenerUnsubscribeRequest {
@@ -3925,6 +4193,51 @@ const typeMap: any = {
         { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
         { json: "userChannels", js: "userChannels", typ: u(undefined, a(r("Channel"))) },
     ], false),
+    "IframeHandshake": o([
+        { json: "payload", js: "payload", typ: r("IframeHandshakePayload") },
+        { json: "type", js: "type", typ: r("IframeHandshakeType") },
+    ], false),
+    "IframeHandshakePayload": o([
+        { json: "implementationDetails", js: "implementationDetails", typ: "" },
+    ], false),
+    "IframeHello": o([
+        { json: "payload", js: "payload", typ: r("IframeHelloPayload") },
+        { json: "type", js: "type", typ: r("IframeHelloType") },
+    ], false),
+    "IframeHelloPayload": o([
+        { json: "fdc3Version", js: "fdc3Version", typ: "" },
+    ], false),
+    "IframeMessage": o([
+        { json: "payload", js: "payload", typ: u(undefined, m("any")) },
+        { json: "type", js: "type", typ: r("IframeMessageType") },
+    ], false),
+    "IframeResolve": o([
+        { json: "payload", js: "payload", typ: r("IframeResolvePayload") },
+        { json: "type", js: "type", typ: r("IframeResolveType") },
+    ], false),
+    "IframeResolvePayload": o([
+        { json: "appIntents", js: "appIntents", typ: a(r("AppIntent")) },
+        { json: "context", js: "context", typ: r("Context") },
+    ], false),
+    "IframeResolveAction": o([
+        { json: "payload", js: "payload", typ: r("IframeResolveActionPayload") },
+        { json: "type", js: "type", typ: r("IframeResolveActionType") },
+    ], false),
+    "IframeResolveActionPayload": o([
+        { json: "action", js: "action", typ: r("Action") },
+        { json: "appIdentifier", js: "appIdentifier", typ: u(undefined, r("AppIdentifier")) },
+        { json: "intent", js: "intent", typ: u(undefined, "") },
+    ], false),
+    "IntentEvent": o([
+        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
+        { json: "payload", js: "payload", typ: r("IntentEventPayload") },
+        { json: "type", js: "type", typ: r("IntentEventType") },
+    ], false),
+    "IntentEventPayload": o([
+        { json: "context", js: "context", typ: r("Context") },
+        { json: "intent", js: "intent", typ: "" },
+        { json: "originatingApp", js: "originatingApp", typ: r("AppIdentifier") },
+    ], false),
     "IntentListenerUnsubscribeRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
         { json: "payload", js: "payload", typ: r("IntentListenerUnsubscribeRequestPayload") },
@@ -4149,10 +4462,10 @@ const typeMap: any = {
     ], false),
     "WCP4ValidateAppIdentity": o([
         { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: r("PayloadClass") },
+        { json: "payload", js: "payload", typ: r("WCP4ValidateAppIdentityPayload") },
         { json: "type", js: "type", typ: r("WCP4ValidateAppIdentityType") },
     ], false),
-    "PayloadClass": o([
+    "WCP4ValidateAppIdentityPayload": o([
         { json: "appDUrl", js: "appDUrl", typ: u(undefined, "") },
         { json: "appId", js: "appId", typ: "" },
         { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
@@ -4251,6 +4564,7 @@ const typeMap: any = {
     "EventMessageType": [
         "broadcastEvent",
         "channelChangedEvent",
+        "intentEvent",
         "privateChannelOnAddContextListenerEvent",
         "privateChannelOnDisconnectEvent",
         "privateChannelOnUnsubscribeEvent",
@@ -4381,6 +4695,36 @@ const typeMap: any = {
     ],
     "GetUserChannelsResponseType": [
         "getUserChannelsResponse",
+    ],
+    "IframeHandshakeType": [
+        "iframeHandshake",
+    ],
+    "IframeHelloType": [
+        "iframeHello",
+    ],
+    "IframeMessageType": [
+        "iframeChannelDrag",
+        "iframeChannelSelected",
+        "iframeChannelToggle",
+        "iframeChannels",
+        "iframeHandshake",
+        "iframeHello",
+        "iframeResolve",
+        "iframeResolveAction",
+    ],
+    "IframeResolveType": [
+        "iframeResolve",
+    ],
+    "Action": [
+        "cancel",
+        "click",
+        "hover",
+    ],
+    "IframeResolveActionType": [
+        "iframeResolveAction",
+    ],
+    "IntentEventType": [
+        "intentEvent",
     ],
     "IntentListenerUnsubscribeRequestType": [
         "intentListenerUnsubscribeRequest",

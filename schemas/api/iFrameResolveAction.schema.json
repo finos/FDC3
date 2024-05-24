@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/api/iframeResolveAction.schema.json",
-  "title": "iframe Resolve",
-  "description": "Setup message sent by the DA proxy code in getAgent() to an intent resolver UI in an iframe with the resolver data to setup the UI.",
+  "title": "iframe Resolve Action",
+  "description": "Message from an intent resolver UI in an iframe to DA proxy code in getAgent() reporting a user action.",
   "type": "object",
   "allOf": [
     {
@@ -34,7 +34,7 @@
       "additionalProperties": false
     },
     "iframeResolveActionPayload": {
-      "title": "iframeResolveAction Payload",
+      "title": "iframeResolve Action Payload",
       "type": "object",
       "properties": {
         "intent": {
@@ -68,7 +68,7 @@
       "additionalProperties": false
     },
     "iframeResolveCancelPayload": {
-      "title": "iframeResolveCancel Payload",
+      "title": "iframeResolve Cancel Payload",
       "type": "object",
       "properties": {
         "action": {
