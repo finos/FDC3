@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/iframeChannels.schema.json",
+  "title": "iframe Channels",
+  "description": "Setup message sent by the DA proxy code in getAgent() to a channel selector UI in an iframe with the channel definitions and current channel selection.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/IframeChannelsBase"
+    },
+    {
+      "$ref": "iFrameMessage.schema.json"
+    }
+  ],
+  "$defs": {
+    "IframeChannelsBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "iframeChannels Message Type",
+          "const": "iframeChannels"
+        },
+        "payload": {
+          "title": "iframeChannels Payload",
+          "type": "object",
+          "properties": {
+            "userChannels": {
+              "title": "User Channels",
+              "description": "User Channel definitions",
+              "type": "array",
+              "items": {
+                "$ref": "api.schema.json#/definitions/Channel"
+              }
+            },
+            "selected": {
+              "title": "Selected Channel",
+              "description": "The id of the channel taht should be currently selected, or `null` if none should be selected",
+              "oneOf": [
+                {"type": "string"}, {"type": "null"}
+              ]
+            },
+            "location": {
+              "title": "Location",
+              "description": "If the channel selector was previously displayed in this window its location may be restored by setting the location coordinates",
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "integer"
+                },
+                "y": {
+                  "type": "integer"
+                }
+              },
+              "required": ["x", "y"],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false,
+          "required": ["userChannels", "selected"]
+        }
+      },
+      "required": [
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
+
