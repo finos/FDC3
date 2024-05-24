@@ -9,6 +9,7 @@
       "title": "Event Message Type",
       "type": "string",
       "enum": [
+        "intentEvent",
         "broadcastEvent",
         "channelChangedEvent",
         "privateChannelOnAddContextListenerEvent",
