@@ -37,7 +37,7 @@ interface FDC3Event {
   readonly type: FDC3EventType;
   readonly details: any;
 }
-````
+```
 
 Type representing the format of event objects that may be received via the FDC3 API's `addEventListener` function. Will always include both `type` and `details`, which describe type of the event and any additional details respectively.
 
@@ -47,13 +47,13 @@ Type representing the format of event objects that may be received via the FDC3 
 
 
 ### `FDC3ChannelChangedEvent`
-````ts
+```ts
 interface FDC3ChannelChangedEvent extends FDC3Event {
   readonly type: FDC3EventType.USER_CHANNEL_CHANGED;
   readonly details: {
     currentChannelId: string | null
   };
 }
-````
+```
 
 Type representing the format of USER_CHANNEL_CHANGED events. The identity of the channel joined is provided as `details.currentChannelId`, which will be `null` if the app is no longer joined to any channel.
