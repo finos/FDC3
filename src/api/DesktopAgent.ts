@@ -380,7 +380,7 @@ export interface DesktopAgent {
    * Register a handler for events from the Desktop Agent. Whenever the handler function 
    * is called it will be passed an event object with details related to the event.
    * 
-   * ````js
+   * ```js
    * // any event type
    * const listener = await fdc3.addEventListener(null, event => { ... });
    * 
@@ -389,7 +389,7 @@ export interface DesktopAgent {
    * console.log(`Received event ${event.type}\n\tDetails: ${event.details}`);
    * //do something else with the event
    * });
-   * ````
+   * ```
    * 
    * @param {FDC3EventType|null} type If non-null, only events of the specified type will be received by the handler. 
    * @param {EventHandler} handler A function that events received will be passed to. 

@@ -95,9 +95,9 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, 
 - [`ContextHandler`](Types#contexthandler)
 
 ### `addEventListener`
-````ts
+```ts
 addEventListener(type: FDC3EventType  | null, handler: EventHandler): Promise<Listener>;
-````
+```
 
 Registers a handler for non-context and non-intent events from the Desktop Agent. If the consumer is only interested in an event of a particular type, they can specify that type. If the consumer is able to receive events of any type or will inspect types received, then they can pass `null` as the `type` parameter to receive all event types.
 
