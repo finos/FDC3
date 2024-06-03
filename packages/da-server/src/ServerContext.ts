@@ -35,6 +35,7 @@ export interface ServerContext {
     isAppConnected(app: AppMetadata): Promise<boolean>
 
     /**
+     * Called when an app connects, happens sometime after it is opened.
      */
     setAppConnected(app: AppMetadata): Promise<void>
 

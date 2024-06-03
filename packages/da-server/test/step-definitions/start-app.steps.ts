@@ -6,7 +6,12 @@ import { matchData } from '../support/matching';
 
 When('{string} is opened', function (this: CustomWorld, app: string) {
   const meta = createMeta(this, app)
-  this.sc.connectedApps.push(meta.source)
+  this.sc.setAppConnected(meta.source)
+});
+
+When('{string} is closed', function (this: CustomWorld, app: string) {
+  const meta = createMeta(this, app)
+  this.sc.disconnectApp(meta.source)
 });
 
 When('{string} sends hello', function (this: CustomWorld, app: string) {

@@ -220,7 +220,7 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    findIntentsByContextRequest(r: FindIntentsByContextAgentRequest, sc: ServerContext, from: AppMetadata): void {
+    async findIntentsByContextRequest(r: FindIntentsByContextAgentRequest, sc: ServerContext, from: AppMetadata): Promise<void> {
 
         // TODO: Add result type
         const { context } = r.payload
@@ -264,11 +264,11 @@ export class IntentHandler implements MessageHandler {
     }
 
 
-    findIntentRequest(r: FindIntentAgentRequest, sc: ServerContext, from: AppMetadata): void {
+    async findIntentRequest(r: FindIntentAgentRequest, sc: ServerContext, from: AppMetadata): Promise<void> {
         const { intent, context, resultType } = r.payload
 
-        const apps2 = this.retrieveListeners(context?.type, intent, resultType, sc).
-            map(lr => {
+        const apps2 = (await this.retrieveListeners(context?.type, intent, resultType, sc))
+            .map(lr => {
                 return {
                     appId: lr.appId,
                     instanceId: lr.instanceId
@@ -312,7 +312,7 @@ export class IntentHandler implements MessageHandler {
         sc.post(out, from)
     }
 
-    retrieveListeners(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined, sc: ServerContext): ListenerRegistration[] {
+    async retrieveListeners(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined, sc: ServerContext): Promise<ListenerRegistration[]> {
         const template: ListenerRegistration = {
             appId: undefined,
             instanceId: undefined,
@@ -321,11 +321,15 @@ export class IntentHandler implements MessageHandler {
             resultType
         }
 
+        const activeApps = await sc.getConnectedApps()
+
         const matching = this.regs.filter(r => matches(template, r))
-        const active = matching.filter(async r => await sc.isAppConnected({
-            instanceId: r.instanceId,
-            appId: r.appId!!
-        }))
+
+        console.log(`Matched listeners returned ${matching.length}`)
+
+        const active = matching.filter(r => activeApps.find(a => a.instanceId == r.instanceId))
+
+        console.log(`Active listeners returned ${active.length}`)
 
         return active
     }

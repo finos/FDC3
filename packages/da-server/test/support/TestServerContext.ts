@@ -20,7 +20,12 @@ export class TestServerContext implements ServerContext {
         this.cw = cw
     }
 
-    async setAppConnected(_app: AppMetadata): Promise<void> {
+    async setAppConnected(app: AppMetadata): Promise<void> {
+        this.connectedApps.push(app)
+    }
+
+    async disconnectApp(app: AppMetadata): Promise<void> {
+        this.connectedApps = this.connectedApps.filter(ca => ca.instanceId !== app.instanceId)
     }
 
     async open(appId: string): Promise<AppMetadata> {
