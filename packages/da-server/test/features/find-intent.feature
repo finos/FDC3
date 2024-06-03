@@ -8,6 +8,7 @@ Feature: Find Intent API
       | returnBook  | fdc3.book    | {empty}          |
       | streamAny   | fdc3.book    | channel          |
     And A newly instantiated FDC3 Server
+    And "App/b1" is opened
     And "App1/b1" registers an intent listener for "returnBook"
 
   Scenario: Unsuccessful Find Intents Request
@@ -66,6 +67,13 @@ Feature: Find Intent API
 
   Scenario: Disconnecting The Intent Listener
     When "App1/b1" unsubscribes an intent listener for "returnBook"
+    When "App1/a1" finds intents with intent "returnBook" and contextType "fdc3.book" and result type "{empty}"
+    Then messaging will have outgoing posts
+      | msg.type           | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length | to.instanceId | msg.payload.appIntent.apps[0].appId |
+      | findIntentResponse | returnBook                        |                                 1 | a1            | libraryApp                          |
+
+  Scenario: Find Intent excludes results for a closed app with intent listener
+    When "App1/b1" is closed
     When "App1/a1" finds intents with intent "returnBook" and contextType "fdc3.book" and result type "{empty}"
     Then messaging will have outgoing posts
       | msg.type           | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length | to.instanceId | msg.payload.appIntent.apps[0].appId |

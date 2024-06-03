@@ -75,7 +75,7 @@ export class DemoServerContext implements ServerContext {
 
     goodbye(id: string) {
         this.instances = this.instances.filter(i => i.appId.instanceId !== id)
-        console.log(`${this.instances.length} apps open`)
+        console.log(`Closed ${id} ${JSON.stringify(this.instances.map(i => i.appId.instanceId))} apps open`)
     }
 
     openTab(url: string): Window {
@@ -133,8 +133,11 @@ export class DemoServerContext implements ServerContext {
     }
 
     async isAppConnected(app: AppMetadata): Promise<boolean> {
-        return (await this.getConnectedApps()).filter(ai =>
+        const out = (await this.getConnectedApps()).filter(ai =>
             (ai.appId == app.appId) && (ai.instanceId == app.instanceId)).length > 0
+
+        console.log(`Checking ${app.instanceId} = ${out}`)
+        return out
     }
 
     log(message: string): void {
