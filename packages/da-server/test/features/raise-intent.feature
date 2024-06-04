@@ -9,30 +9,33 @@ Feature: Raising Intents
     And A newly instantiated FDC3 Server
     And "App1/a1" is opened
     And "App1/b1" is opened
-    And "App1/b1" sends hello
     And "App1/b1" registers an intent listener for "returnBook"
-  # Scenario: Raising An Intent To A Non-Existent App
-  #   When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "NonExistentApp"
-  #   Then messaging will have outgoing posts
-  #     | msg.type            | msg.payload.error    | to.instanceId |
-  #     | raiseIntentResponse | TargetAppUnavailable | a1            |
-  # Scenario: Raising An Intent To A Non-Existent App Instance
-  #   When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "AppZ/b1"
-  #   Then messaging will have outgoing posts
-  #     | msg.type            | msg.payload.error         | to.instanceId |
-  #     | raiseIntentResponse | TargetInstanceUnavailable | a1            |
-  # Scenario: Raising An Intent To A Running App
-  #   When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "App1/b1"
-  #   Then messaging will have outgoing posts
-  #     | msg.type           | msg.payload.intent | to.instanceId |
-  #     | raiseIntentRequest | returnBook         | b1            |
-  # Scenario: Raising An Intent To A Non-Running App
-  #   When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "libraryApp"
-  #   And "libraryApp/0" is opened
-  #   And "libraryApp/0" registers an intent listener for "returnBook"
-  #   Then messaging will have outgoing posts
-  #     | msg.type           | msg.payload.intent | to.instanceId | to.appId   | msg.payload.context.type |
-  #     | raiseIntentRequest | returnBook         |             0 | libraryApp | fdc3.book                |
+
+  Scenario: Raising An Intent To A Non-Existent App
+    When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "NonExistentApp"
+    Then messaging will have outgoing posts
+      | msg.type            | msg.payload.error    | to.instanceId |
+      | raiseIntentResponse | TargetAppUnavailable | a1            |
+
+  Scenario: Raising An Intent To A Non-Existent App Instance
+    When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "AppZ/b1"
+    Then messaging will have outgoing posts
+      | msg.type            | msg.payload.error         | to.instanceId |
+      | raiseIntentResponse | TargetInstanceUnavailable | a1            |
+
+  Scenario: Raising An Intent To A Running App
+    When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "App1/b1"
+    Then messaging will have outgoing posts
+      | msg.type           | msg.payload.intent | to.instanceId |
+      | raiseIntentRequest | returnBook         | b1            |
+
+  Scenario: Raising An Intent To A Non-Running App
+    When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "libraryApp"
+    And "libraryApp/0" is opened
+    And "libraryApp/0" registers an intent listener for "returnBook"
+    Then messaging will have outgoing posts
+      | msg.type           | msg.payload.intent | to.instanceId | to.appId   | msg.payload.context.type |
+      | raiseIntentRequest | returnBook         |             0 | libraryApp | fdc3.book                |
 
   Scenario: Raising an Intent to a Non-Existent App Instance
     And "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "unusedApp/u1"
