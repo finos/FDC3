@@ -1,6 +1,6 @@
 {
   "name": "@kite9/da-server",
-  "version": "0.0.17",
+  "version": "0.0.19",
   "files": [
     "dist"
   ],
