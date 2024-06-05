@@ -127,19 +127,15 @@ export class DefaultIntentSupport implements IntentSupport {
         if (app) {
             // ensure app matches
             matched = this.filterApps(matched, app)
-
-            if (matched.apps.length == 0) {
-                if (app.instanceId) {
-                    throw new Error(ResolveError.TargetInstanceUnavailable)
-                } else {
-                    throw new Error(ResolveError.TargetAppUnavailable)
-                }
-            }
-        } else if (matched.apps.length == 0) {
-            throw new Error(ResolveError.NoAppsFound)
         }
 
-        if (matched.apps.length == 1) {
+        if (matched.apps.length == 0) {
+            if (app?.instanceId) {
+                throw new Error(ResolveError.TargetInstanceUnavailable)
+            } else {
+                throw new Error(ResolveError.NoAppsFound)
+            }
+        } else if (matched.apps.length == 1) {
             return this.raiseSpecificIntent(intent, context, matched.apps[0])
         } else {
             // need to do the intent resolver

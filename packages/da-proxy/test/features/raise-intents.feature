@@ -18,6 +18,10 @@ Feature: Basic Intents Support
     When I call "api" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{chipShop}"
     Then "{result}" is an error with message "TargetAppUnavailable"
 
+  Scenario: Raising An Invalid Intent to the server (non existent intent)
+    When I call "api" with "raiseIntent" with parameters "NonExistentIntent" and "{instrumentContext}"
+    Then "{result}" is an error with message "NoAppsFound"
+
   Scenario: Raising An Invalid Intent to the server
     When I call "api" with "raiseIntentForContext" with parameters "{intrumentContext}" and "{t1}"
     Then "{result}" is an error with message "NoAppsFound"

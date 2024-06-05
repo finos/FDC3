@@ -103,15 +103,24 @@ export class BroadcastHandler implements MessageHandler {
         this.regs.push(lr)
     }
 
-    handleBroadcast(arg0: PrivateChannelBroadcastAgentRequest | BroadcastAgentRequest, sc: ServerContext) {
+    async handleBroadcast(arg0: PrivateChannelBroadcastAgentRequest | BroadcastAgentRequest, sc: ServerContext) {
         const channelId = arg0.payload.channelId
         const context = arg0.payload.context
         const contextType = context.type
+        const lr = this.regs
+        const privateChannel = arg0.type == "PrivateChannel.broadcast"
 
-        this.regs
-            .filter(r => {
-                return (r.channelId == channelId) && ((r.contextType == null) || (r.contextType == contextType))
-            })
+        function getPrivateChannelRecipients(): AppMetadata[] {
+            return lr
+                .filter(r => {
+                    return (r.channelId == channelId) && ((r.contextType == null) || (r.contextType == contextType))
+                })
+        }
+
+        const destinations: AppMetadata[] = privateChannel ? getPrivateChannelRecipients() : await sc.getConnectedApps()
+
+        destinations
+            .filter(r => r.instanceId !== arg0.meta.source?.instanceId)
             .forEach(r => {
                 // forward on the broadcast message with added destination details
                 const out = {
@@ -133,7 +142,7 @@ export class BroadcastHandler implements MessageHandler {
 
 
         // store channel state for new da-proxies connecting
-        if (arg0.type == 'broadcastRequest') {
+        if (!privateChannel) {
             var channelState: ContextElement[] = this.state[channelId] ?? []
 
             // remove previous context of same type

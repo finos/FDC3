@@ -38,6 +38,8 @@ class SimpleIntentResolver implements IntentResolver {
 
 export const CHANNEL_STATE = 'CHANNEL_STATE'
 
+
+
 Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
 
     if (!this.messaging) {
