@@ -1,7 +1,7 @@
 {
   "name": "@kite9/demo",
   "private": true,
-  "version": "0.0.19",
+  "version": "0.0.23",
   "scripts": {
     "dev": "nodemon -w src/server -x tsx src/server/main.ts",
     "start": "NODE_ENV=production tsx src/server/main.ts",
