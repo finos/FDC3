@@ -528,7 +528,7 @@
     "image": "/img/users/connectifi.png",
     "infoLink": "https://hubs.ly/Q02krHRh0",
     "docsLink": "https://www.connectifi.co/post/interop-security-scorecard",
-    "type": "examples-and-training",
+    "type": "tools-and-training",
     "badges": [],
     "description": "Questions about security and identity in FDC3 are even more critical now, as adopters look to address higher value use cases through application interoperability.  The Interop Security Scorecard is a free, easy to use, and vendor-agnostic framework to evaluate FDC3 implementations across multiple vectors."
   },
