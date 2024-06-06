@@ -5,15 +5,15 @@ sidebar_label: 1. Equity sell side trader
 layout: use_case
 ---
 
-## Preconditions
+![A diagrammatic representation of the applications available to the trader](/img/use-cases/1.png)
+
 On their desktop, this user has:
-- Their firm's internal research & analytics platform containing liquidity tools and internal research. The product is running and the liquidity tool is open
-- An installed chat application - product is running
-- A third party market data terminal with 3 open applications. These applications are all 'linked' through a channel. 
-    - A Watchlist
-    - An Order Book
-    - An Overview of pricing and fundamental data
-- A third party Charting Application access via a browser window. This is not open. 
+
+- Their firm's internal research & analytics platform, providing liquidity tools and internal research. The product is running and the **liquidity tool** is open.
+- An installed **chat application** is running.
+A **Watchlist** of stocks the trader is interested in
+A third-party **Charting Application** is available that the user accesses via a browser window. This is not open. 
+An **Overview** which gives pricing and fundamental data for stocks
 
 ## Workflow 1
 The user receives a message in the chat application containing an instrument identifier for Tesla. They want to do some analysis on Tesla and so see what applications are available through right clicking on the identifier for Tesla. A menu will appear within the chat application showing applications that can be launched from the Messenger tool. The menu shows two apps, both for analysis; one in the internal platform, the other in the market data terminal. 

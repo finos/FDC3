@@ -36,10 +36,15 @@
   },
   "resolutions": {
     "got": "^11.8.5",
-    "trim": "1.0.1"
+    "trim": "1.0.1",
+    "axios": "0.28.1"
   },
   "overrides": {
     "got": "^11.8.5",
     "trim": "1.0.1"
+  },
+  "dependencies": {
+    "trim": "1.0.1",
+    "axios": "0.28.1"
   }
 }

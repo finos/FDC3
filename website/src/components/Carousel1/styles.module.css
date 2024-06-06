@@ -1,0 +1,47 @@
+.carouselContainer {
+	display: flex;
+	flex-direction: column;
+}
+
+.carouselWrapper {
+	height: auto;
+}
+
+.controls {
+	display: flex;
+}
+
+.leftArrow, .rightArrow {
+	background: #0086bf44;
+	border: 1px solid #ace;
+	border-radius: .5rem;
+	color: white;
+	font-size: 1rem;
+	line-height: 1.2em;
+	margin: 1rem;
+	padding: 1rem;
+	text-decoration: none !important;
+	text-align: center;
+	flex-basis: 45%;
+}
+
+.leftArrow {
+	align-self: flex-start;
+}
+
+.rightArrow {
+	align-self: flex-end;
+}
+
+
+.show {
+	min-height: 50rem;
+}
+
+.hide {
+	display: none;
+}
+
+.inactive {
+	color: #0086bf44;
+}
