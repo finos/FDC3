@@ -2,7 +2,7 @@ function setType(theType) {
 	let typeToSet = theType;
 
 	console.log("Setting filter type: " + typeToSet);
-	document.querySelectorAll(".button.filter").forEach((elem) => {elem.classList.remove("selected")});
+	document.querySelectorAll(".cta.filter").forEach((elem) => {elem.classList.remove("selected")});
 	const selectedButton = document.getElementById(typeToSet);
 	if (selectedButton){
 		selectedButton.classList.add("selected");
