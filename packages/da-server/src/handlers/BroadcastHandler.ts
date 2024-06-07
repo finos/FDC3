@@ -6,8 +6,8 @@ import {
     PrivateChannelOnUnsubscribeAgentRequest,
     PrivateChannelBroadcastAgentRequest
 } from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { ContextElement } from "@finos/fdc3";
-import { OnAddContextListenerAgentRequest, OnUnsubscribeAgentRequest } from "@kite9/fdc3-common";
+import { ChannelError, ContextElement } from "@finos/fdc3";
+import { OnAddContextListenerAgentRequest, OnUnsubscribeAgentRequest, RegisterChannelAgentRequest } from "@kite9/fdc3-common";
 
 type ListenerRegistration = {
     appId: string,
@@ -36,11 +36,13 @@ function createListenerRegistration(msg:
 }
 
 type ChannelState = { [channelId: string]: ContextElement[] }
+type ChannelType = { [channelId: string]: 'user' | 'app' | 'private' }
 
 export class BroadcastHandler implements MessageHandler {
 
     private regs: ListenerRegistration[] = []
     private state: ChannelState = {}
+    private type: ChannelType = {}
     private readonly desktopAgentName: string
 
     constructor(name: string) {
@@ -49,6 +51,10 @@ export class BroadcastHandler implements MessageHandler {
 
     accept(msg: any, sc: ServerContext, from: AppMetadata) {
         switch (msg.type as string | null) {
+            // channel registration
+            case 'registerChannelRequest': return this.registerChannel(msg as RegisterChannelAgentRequest, sc, from)
+
+            // private channels
             case 'PrivateChannel.broadcast': return this.handleBroadcast(msg as PrivateChannelBroadcastAgentRequest, sc)
             case 'PrivateChannel.onAddContextListener': return this.handleOnAddContextListener(msg as PrivateChannelOnAddContextListenerAgentRequest, sc)
             case 'PrivateChannel.onUnsubscribe': return this.handleOnUnsubscribe(msg as PrivateChannelOnUnsubscribeAgentRequest, sc)
@@ -154,6 +160,30 @@ export class BroadcastHandler implements MessageHandler {
         }
 
     }
+
+    registerChannel(r: RegisterChannelAgentRequest, sc: ServerContext, from: AppMetadata) {
+        const id = r.payload.channelId
+        const type = r.payload.type
+
+        const existingType = this.type[id]
+
+        if ((existingType) && (existingType != type)) {
+            sc.post({
+                type: "registerChannelResponse",
+                payload: {
+                    error: ChannelError.AccessDenied
+                }
+            }, from)
+        } else {
+            this.type[id] = type
+            sc.post({
+                type: "registerChannelResponse",
+                payload: {
+                }
+            }, from)
+        }
+    }
+
 }
 
 

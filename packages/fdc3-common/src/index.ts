@@ -1,6 +1,6 @@
 import { AppIdentifier, AppMetadata, DesktopAgent, IntentMetadata, IntentResult } from "@finos/fdc3";
 import { exchange, exchangePostMessage, exchangeForMessagePort } from "./exchange";
-import { AppIntent, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerAgentRequestMeta, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AgentRequestMessage, AgentResponseMessage, AppIntent, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerAgentRequestMeta, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 /** 
  * We need to add options here. 
@@ -12,7 +12,6 @@ export type Options = {
     frame?: Window,
     waitForMs?: number,
     intentResolver?: IntentResolver,
-    middlewares: MessagingMiddleware[]
 }
 
 export { exchange, exchangePostMessage, exchangeForMessagePort }
@@ -106,6 +105,23 @@ export type OnUnsubscribeIntentListenerAgentRequest = {
     }
 }
 
+export type RegisterChannelAgentRequest = {
+    type: 'registerChannelRequest',
+    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
+    payload: {
+        channelId: string,
+        type: 'user' | 'private' | 'app'
+    }
+}
+
+export type RegisterChannelAgentResponse = {
+    type: 'registerChannelResponse',
+    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
+    payload: {
+        error?: string
+    }
+}
+
 /**
  * Contains the details of a single intent and application resolved
  * by the IntentResolver implementation
@@ -143,19 +159,3 @@ export type IntentResolutionChoiceAgentResponse = {
 
 export type IntentResolutionChoiceAgentRequest = IntentResolutionChoiceAgentResponse
 
-
-// Middleware for security and anything else..
-export interface MessagingMiddleware {
-
-    /**
-     * A function that mutates the message to be sent to the desktop agent
-     */
-    preSend(msg: object): Promise<object>
-
-    /**
-     * A function that processes messages from the desktop agent prior to
-     * being handled by the da-proxy.
-     */
-    postReceive(msg: object): Promise<object>
-
-}
