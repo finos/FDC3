@@ -82,6 +82,21 @@ export class DefaultIntentSupport implements IntentSupport {
         return result.payload.appIntents
     }
 
+    private async createResultPromise(messageOut: RaiseIntentAgentRequest): Promise<IntentResult> {
+        const rp = await this.messaging.waitFor<RaiseIntentResultAgentResponse>(m => (
+            (m.meta.requestUuid == messageOut.meta.requestUuid) &&
+            (m.type == 'raiseIntentResultResponse')))
+
+        if (!rp) {
+            // probably a timeout
+            return;
+        } else {
+            const ir = await convertIntentResult(rp, this.messaging)
+            this.intentResolver.intentChosen(ir)
+            return ir
+        }
+    }
+
     private async raiseSpecificIntent(intent: string, context: Context, app: AppIdentifier): Promise<IntentResolution> {
         const messageOut: RaiseIntentAgentRequest = {
             type: "raiseIntentRequest",
@@ -93,12 +108,7 @@ export class DefaultIntentSupport implements IntentSupport {
             meta: this.messaging.createMeta() as RaiseIntentAgentRequestMeta
         }
 
-        const resultPromise = this.messaging.waitFor<RaiseIntentResultAgentResponse>(m => (
-            (m.meta.requestUuid == messageOut.meta.requestUuid) &&
-            (m.type == 'raiseIntentResultResponse')))
-            .then(ir => convertIntentResult(ir, this.messaging))
-            .then(ir => this.intentResolver.intentChosen(ir))
-
+        const resultPromise = this.createResultPromise(messageOut)
         const resolution = await this.messaging.exchange(messageOut, "raiseIntentResponse") as RaiseIntentAgentResponse
         const error = (resolution as any as RaiseIntentAgentErrorResponse).payload.error
 

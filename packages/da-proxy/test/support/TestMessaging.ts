@@ -11,6 +11,7 @@ import { GetAppMetadata } from "./responses/GetAppMetadata";
 import { FindInstances } from "./responses/FindInstances";
 import { Open } from "./responses/Open";
 import { Handshake } from "./responses/Handshake";
+import { RegisterChannel } from "./responses/RegisterChannel";
 
 export interface IntentDetail {
     app?: AppIdentifier,
@@ -87,7 +88,8 @@ export class TestMessaging extends AbstractMessaging {
         new GetAppMetadata(),
         new FindInstances(),
         new Open(),
-        new Handshake()
+        new Handshake(),
+        new RegisterChannel()
     ]
 
     constructor(channelState: { [key: string]: ContextElement[] }) {
