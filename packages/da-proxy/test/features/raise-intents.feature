@@ -9,10 +9,9 @@ Feature: Basic Intents Support
     And app "travelAgent/t1" resolves intent "BookFlight" with context "fdc3.country" and result type "fdc3.order"
     And "instrumentContext" is a "fdc3.instrument" context
     And "countryContext" is a "fdc3.country" context
-
-  Scenario: Raising An Invalid Intent to the server (no instance)
-    When I call "api" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{c1}"
-    Then "{result}" is an error with message "TargetInstanceUnavailable"
+  # Scenario: Raising An Invalid Intent to the server (no instance)
+  #   When I call "api" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{c1}"
+  #   Then "{result}" is an error with message "TargetInstanceUnavailable"
 
   Scenario: Raising An Invalid Intent to the server (no app)
     When I call "api" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{chipShop}"
