@@ -1,4 +1,4 @@
-import { AppMetadata, ErrorMessage, FindIntentAgentRequest, FindIntentAgentResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppDestinationIdentifier, AppMetadata, ErrorMessage, FindIntentAgentRequest, FindIntentAgentResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { MessageHandler } from "../BasicFDC3Server";
 import { ServerContext } from "../ServerContext";
 import { Directory } from "../directory/DirectoryInterface";
@@ -199,24 +199,33 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
+    async appHandlesIntent(target: AppDestinationIdentifier, intentName: string, contextType: string | undefined): Promise<boolean> {
+        return this.directory.retrieveIntents(contextType, intentName, undefined)
+            .filter(i => i.appId == target.appId)
+            .length > 0
+    }
+
     async raiseIntentRequest(arg0: RaiseIntentAgentRequest, sc: ServerContext): Promise<void> {
         const target = arg0.payload.app
-        if (target.instanceId) {
-            // ok, targeting a specific, known instance
+        if (this.directory.retrieveAppsById(target.appId).length == 0) {
+            // app doesn't exist
+            return sendError(arg0, sc, ResolveError.TargetAppUnavailable)
+        } else if (!await this.appHandlesIntent(target, arg0.payload.intent, arg0.payload.context.type)) {
+            // app doesn't handle the intent
+            return sendError(arg0, sc, ResolveError.NoAppsFound)
+        } else if (target.instanceId) {
             if (await sc.isAppConnected(target)) {
+                // ok, targeting a specific, known instance
                 return forwardRequest(arg0, target, sc, this)
             } else {
                 // instance doesn't exist
                 return sendError(arg0, sc, ResolveError.TargetInstanceUnavailable)
             }
-        } else if (this.directory.retrieveAppsById(target.appId).length > 0) {
+        } else {
             // app exists but needs starting
             const pi = new PendingIntent(arg0, sc, this)
             this.pendingIntents.add(pi)
             return sc.open(target.appId).then(() => { return undefined })
-        } else {
-            // app doesn't exist
-            return sendError(arg0, sc, ResolveError.TargetAppUnavailable)
         }
     }
 

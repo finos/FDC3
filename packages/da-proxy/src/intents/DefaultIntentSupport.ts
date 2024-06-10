@@ -143,6 +143,7 @@ export class DefaultIntentSupport implements IntentSupport {
 
     async raiseIntent(intent: string, context: Context, app?: AppIdentifier | undefined): Promise<IntentResolution> {
         var matched = await this.findIntent(intent, context, undefined)
+        console.log("Matched intents:")
 
         if (app) {
             // ensure app matches

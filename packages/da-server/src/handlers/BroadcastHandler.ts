@@ -39,10 +39,8 @@ function channelEventListenerMatches(lr1: ChannelEventListener, lr2: ChannelEven
         (lr1.eventType == lr2.eventType)
 }
 
-function channelEventListenerInvoked(cel: ChannelEventListener, lr: ListenerRegistration, eventType: ChannelEventType): boolean {
-    return (cel.appId == lr.appId) &&
-        (cel.instanceId == lr.instanceId) &&
-        (cel.channelId == lr.channelId) &&
+function channelEventListenerInvoked(cel: ChannelEventListener, channel: string, eventType: ChannelEventType): boolean {
+    return (cel.channelId == channel) &&
         (cel.eventType == eventType)
 }
 
@@ -61,7 +59,7 @@ function createListenerRegistration(msg:
 type ChannelState = { [channelId: string]: ContextElement[] }
 type ChannelType = { [channelId: string]: 'user' | 'app' | 'private' }
 
-type EventMessage = PrivateChannelOnUnsubscribeAgentRequest | OnUnsubscribeAgentRequest | PrivateChannelOnAddContextListenerAgentRequest | OnAddContextListenerAgentRequest
+type EventMessage = PrivateChannelOnUnsubscribeAgentRequest | OnUnsubscribeAgentRequest | PrivateChannelOnAddContextListenerAgentRequest | OnAddContextListenerAgentRequest | PrivateChannelOnDisconnectAgentRequest
 
 export class BroadcastHandler implements MessageHandler {
 
@@ -149,9 +147,9 @@ export class BroadcastHandler implements MessageHandler {
 
     }
 
-    invokeEventListeners(msg: EventMessage, lr: ListenerRegistration, eventType: ChannelEventType, sc: ServerContext) {
+    invokeEventListeners(msg: EventMessage, channel: string, eventType: ChannelEventType, sc: ServerContext) {
         this.eventListeners
-            .filter(e => channelEventListenerInvoked(e, lr, eventType))
+            .filter(e => channelEventListenerInvoked(e, channel, eventType))
             .forEach(e => sc.post(msg, { appId: e.appId, instanceId: e.instanceId }))
     }
 
@@ -172,7 +170,7 @@ export class BroadcastHandler implements MessageHandler {
                 contextType: lr.contextType
             }
 
-        } as EventMessage, lr, 'onUnsubscribe', sc)
+        } as EventMessage, lr.channelId, 'onUnsubscribe', sc)
     }
 
     handleOnUnsubscribe(arg0: PrivateChannelOnUnsubscribeAgentRequest | OnUnsubscribeAgentRequest, sc: ServerContext) {
@@ -185,14 +183,15 @@ export class BroadcastHandler implements MessageHandler {
         const toUnsubscribe = this.contextListeners.filter(r => (r.appId == from.appId) && (r.instanceId == from.instanceId) && (r.channelId == arg0.payload.channelId))
         toUnsubscribe.forEach(u => this.unsubscribe(u, sc, 'PrivateChannel.onUnsubscribe'))
 
-        // now, fire the disconnect event listeners
+        // now, fire the disconnect to any event listeners
+        this.invokeEventListeners(arg0, arg0.payload.channelId, 'onDisconnect', sc)
         //this.eventListeners.filter(cel => (cel.appId == from.appId))
     }
 
     handleOnAddContextListener(arg0: PrivateChannelOnAddContextListenerAgentRequest | OnAddContextListenerAgentRequest, sc: ServerContext) {
         const lr = createListenerRegistration(arg0)
         this.contextListeners.push(lr)
-        this.invokeEventListeners(arg0, lr, 'onAddContextListener', sc)
+        this.invokeEventListeners(arg0, lr.channelId, 'onAddContextListener', sc)
     }
 
     async handleBroadcast(arg0: PrivateChannelBroadcastAgentRequest | BroadcastAgentRequest, sc: ServerContext) {
