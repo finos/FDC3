@@ -2,7 +2,7 @@
   "name": "@kite9/client",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "scripts": {
     "build": "tsc --module es2022",
     "clean": "rimraf dist; rimraf cucumber-report.html; rimraf coverage"

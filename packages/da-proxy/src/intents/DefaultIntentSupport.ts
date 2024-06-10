@@ -84,8 +84,8 @@ export class DefaultIntentSupport implements IntentSupport {
 
     private async createResultPromise(messageOut: RaiseIntentAgentRequest): Promise<IntentResult> {
         const rp = await this.messaging.waitFor<RaiseIntentResultAgentResponse>(m => (
-            (m.meta.requestUuid == messageOut.meta.requestUuid) &&
-            (m.type == 'raiseIntentResultResponse')))
+            (m.type == 'raiseIntentResultResponse') &&
+            (m.meta.requestUuid == messageOut.meta.requestUuid)))
 
         if (!rp) {
             // probably a timeout
