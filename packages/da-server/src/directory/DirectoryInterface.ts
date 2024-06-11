@@ -13,9 +13,15 @@ export type DirectoryApp = schemas['Application'];
 
 export interface Directory {
 
+    retrieveAllApps(): DirectoryApp[]
+
     retrieveApps(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): DirectoryApp[]
+
+    retrieveAllIntents(): DirectoryIntent[]
+
+    retrieveIntents(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): DirectoryIntent[]
 
     retrieveAppsById(appId: string): DirectoryApp[]
 
-    retrieveAllApps(): DirectoryApp[]
+
 }

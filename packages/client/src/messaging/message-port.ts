@@ -1,6 +1,6 @@
 import { DesktopAgent } from "@finos/fdc3";
-import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultChannel, DefaultHandshakeSupport } from "da-proxy";
-import { APIResponseMessage, FDC3_PORT_TRANSFER_RESPONSE_TYPE, FDC3_PORT_TRANSFER_REQUEST_TYPE, Options, exchangeForMessagePort, APIResponseMessageParentWindow, APIResponseMessageIFrame } from "fdc3-common"
+import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultChannel, DefaultHandshakeSupport } from "@kite9/da-proxy";
+import { APIResponseMessage, FDC3_PORT_TRANSFER_RESPONSE_TYPE, Options, exchangeForMessagePort, APIResponseMessageIFrame } from "@kite9/fdc3-common"
 import { MessagePortMessaging } from "./MessagePortMessaging";
 import { DesktopAgentIntentResolver } from "../intent-resolution/DesktopAgentIntentResolver";
 
@@ -72,6 +72,13 @@ function buildUserChannelState(messaging: MessagePortMessaging) {
         new DefaultChannel(messaging, "one", "user", {
             color: "red",
             name: "THE RED CHANNEL"
+        }),
+        new DefaultChannel(messaging, "two", "user", {
+            color: "blue",
+            name: "THE BLUE CHANNEL"
+        }), new DefaultChannel(messaging, "two", "user", {
+            color: "green",
+            name: "THE GREEN CHANNEL"
         })
     ]
 }

@@ -1,5 +1,5 @@
 import { DesktopAgent } from '@finos/fdc3'
-import { APIResponseMessage, Loader, Options, FDC3_API_RESPONSE_MESSAGE_TYPE, FDC3_API_REQUEST_MESSAGE_TYPE } from 'fdc3-common'
+import { APIResponseMessage, Loader, Options, FDC3_API_RESPONSE_MESSAGE_TYPE, FDC3_API_REQUEST_MESSAGE_TYPE } from '@kite9/fdc3-common'
 import { messagePortInit } from '../messaging/message-port';
 
 const loader: Loader = (options: Options) => {

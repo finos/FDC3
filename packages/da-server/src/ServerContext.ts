@@ -1,5 +1,8 @@
 import { AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
+/**
+ * Handles messaging to apps and opening apps
+ */
 export interface ServerContext {
 
     /**
@@ -20,16 +23,21 @@ export interface ServerContext {
     open(appId: string): Promise<AppMetadata>
 
     /**
-     * Returns the list of apps open at the current time.
+     * Returns the list of apps open and connected to FDC3 at the current time.
      * Note, it is the implementor's job to ensure this list is
      * up-to-date in the event of app crashes or disconnections.
      */
-    getOpenApps(): Promise<AppMetadata[]>
+    getConnectedApps(): Promise<AppMetadata[]>
 
     /**
-     * Helper function for determining if an app is currently open
+     * Helper function for determining if an app is currently open and connected to the da
      */
-    isAppOpen(app: AppMetadata): Promise<boolean>
+    isAppConnected(app: AppMetadata): Promise<boolean>
+
+    /**
+     * Called when an app connects, happens sometime after it is opened.
+     */
+    setAppConnected(app: AppMetadata): Promise<void>
 
     /**
      * Allows you to write a log message somewhere

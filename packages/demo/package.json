@@ -1,7 +1,7 @@
 {
-  "name": "demo",
+  "name": "@kite9/demo",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.30",
   "scripts": {
     "dev": "nodemon -w src/server -x tsx src/server/main.ts",
     "start": "NODE_ENV=production tsx src/server/main.ts",
@@ -11,16 +11,17 @@
     "@types/express": "^4.17.15",
     "@types/node": "^20.9.3",
     "nodemon": "^3.0.1",
+    "rimraf": "^5.0.7",
     "vite": "^5.0.2"
   },
   "dependencies": {
     "@finos/fdc3": "^2.1.0-beta.6",
+    "@kite9/client": "workspace:*",
+    "@kite9/da-server": "workspace:*",
+    "@kite9/fdc3-common": "workspace:*",
     "@types/uuid": "^9.0.8",
     "@types/ws": "^8.5.10",
-    "client": "workspace:*",
-    "da-server": "workspace:*",
     "express": "^4.18.3",
-    "fdc3-common": "workspace:*",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "tsx": "^4.5.0",

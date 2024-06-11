@@ -7,6 +7,13 @@
     ],
     "outDir": "dist",
   },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "test/**",
+    "dist/**"
+  ],
   "references": [
     {
       "path": "../fdc3-common"

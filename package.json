@@ -1,15 +1,23 @@
 {
-  "name": "@finos/web-fdc3",
+  "name": "@kite9/web-fdc3",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.30",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces foreach --all run build"
+    "clean": "yarn workspaces foreach --all run clean",
+    "build": "yarn workspaces foreach --all run build",
+    "test": "yarn workspaces foreach --all run test"
   },
   "packageManager": "yarn@4.1.1",
   "devDependencies": {
     "typescript": "^5.3.2"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "dependencies": {
+    "rimraf": "^5.0.7"
   }
 }

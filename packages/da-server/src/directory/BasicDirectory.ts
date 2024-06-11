@@ -1,22 +1,16 @@
-import { Directory, DirectoryApp } from "./DirectoryInterface"
-import { components } from '../directory-schema'
+import { Directory, DirectoryApp, DirectoryIntent } from "./DirectoryInterface"
 
-type schemas = components['schemas']
-type DirectoryIntent = schemas['Intent'] & { intentName: string, appId: string }
-
-export function genericResultTypeSame(a: string | undefined, b: string | undefined) {
-    if (a == b) {
-        return true;
-    } else if (a == undefined) {
-        return true;
-    } else if (b == undefined) {
-        return true;
-    } else if (a.startsWith("channel<") && b == "channel") {
-        return true;
-    } else if (b.startsWith("channel<") && a == "channel") {
-        return true;
+export function genericResultTypeSame(real: string | undefined, required: string | undefined) {
+    if (required == undefined) {
+        return true
+    } else if (real == required) {
+        return true
+    } else if (real == undefined) {
+        return false    // required is not undefined, so asking for something
+    } else if (real.startsWith("channel<") && required == "channel") {
+        return true
     } else {
-        return false;
+        return false
     }
 }
 
@@ -32,9 +26,11 @@ export class BasicDirectory implements Directory {
     }
 
     private intentMatches(i: DirectoryIntent, contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): boolean {
-        return ((intentName == undefined) || (i.intentName == intentName)) &&
-            ((contextType == undefined) || (i.contexts == null) || (i.contexts.includes(contextType))) &&
+        const out = ((intentName == undefined) || (i.intentName == intentName)) &&
+            ((contextType == undefined) || (i.contexts.includes(contextType))) &&
             (genericResultTypeSame(i.resultType, resultType))
+        console.log(`Intent ${JSON.stringify(i)} matches ? ${out}}"`)
+        return out
     }
 
     private retrieveIntentsForApp(a: DirectoryApp): DirectoryIntent[] {
@@ -43,11 +39,24 @@ export class BasicDirectory implements Directory {
         const lfAugmented = lfa.map(([key, value]) => {
             return {
                 intentName: key,
-                ...value,
+                ...(value as any),
                 appId: a.appId
             }
         })
-        return lfAugmented
+        return lfAugmented as DirectoryIntent[]
+    }
+
+    retrieveAllIntents(): DirectoryIntent[] {
+        const allIntents = this.retrieveAllApps()
+            .flatMap(a => this.retrieveIntentsForApp(a))
+
+        return allIntents
+    }
+
+    retrieveIntents(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): DirectoryIntent[] {
+        const matchingIntents = this.retrieveAllIntents()
+            .filter(i => this.intentMatches(i, contextType, intentName, resultType))
+        return matchingIntents
     }
 
     retrieveApps(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined): DirectoryApp[] {
@@ -56,6 +65,7 @@ export class BasicDirectory implements Directory {
                 .filter(i => this.intentMatches(i, contextType, intentName, resultType))
                 .length > 0)
     }
+
 
     retrieveAppsById(appId: string): DirectoryApp[] {
         return this.retrieveAllApps().filter(a => a.appId == appId)

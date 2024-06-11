@@ -6,6 +6,7 @@ import { DefaultChannel } from "./DefaultChannel";
 import { StatefulChannel } from "./StatefulChannel";
 import { DefaultContextListener } from "../listeners/DefaultContextListener";
 import { ContextElement } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { RegisterChannelAgentRequest, RegisterChannelAgentResponse } from "@kite9/fdc3-common";
 
 export class DefaultChannelSupport implements ChannelSupport {
 
@@ -51,14 +52,34 @@ export class DefaultChannelSupport implements ChannelSupport {
         }
     }
 
-    getOrCreate(id: string): Promise<Channel> {
-        const out = new DefaultChannel(this.messaging, id, "app", this.getDisplayMetadata(id))
-        return Promise.resolve(out)
+    async registerChannel(channelId: string, type: "user" | "app" | "private"): Promise<void> {
+        const response = await this.messaging.exchange<RegisterChannelAgentResponse>({
+            meta: this.messaging.createMeta(),
+            type: 'registerChannelRequest',
+            payload: {
+                channelId,
+                type
+            }
+        } as RegisterChannelAgentRequest,
+            'registerChannelResponse')
+
+        const error = response.payload.error
+        if (error) {
+            throw new Error(error)
+        }
     }
 
-    createPrivateChannel(): Promise<PrivateChannel> {
-        const out = new DefaultPrivateChannel(this.messaging, this.messaging.createUUID())
-        return Promise.resolve(out);
+
+    async getOrCreate(id: string): Promise<Channel> {
+        await this.registerChannel(id, 'app')
+        const out = new DefaultChannel(this.messaging, id, "app", this.getDisplayMetadata(id))
+        return out
+    }
+
+    async createPrivateChannel(): Promise<PrivateChannel> {
+        const id = this.messaging.createUUID()
+        await this.registerChannel(id, 'private')
+        return new DefaultPrivateChannel(this.messaging, id)
     }
 
     leaveUserChannel(): Promise<void> {
