@@ -6,26 +6,26 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
-
     /* output setting */
-    "lib": ["es2021", "DOM"],
+    "lib": [
+      "es2021",
+      "DOM"
+    ],
     "target": "ESNext",
     "composite": true,
-
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,                 
-    "noImplicitThis": true,               
-    "noImplicitReturns": true,           
-
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
     /* From Coverage Work */
-    "emitDeclarationOnly": true,                      
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    /* From Distribution Work */
+    "declarationMap": true
   }
 }

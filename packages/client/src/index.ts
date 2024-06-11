@@ -1,5 +1,5 @@
 import { DesktopAgent } from '@finos/fdc3'
-import { Options } from 'fdc3-common';
+import { Options } from '@kite9/fdc3-common';
 import postMessage from './strategies/post-message'
 //import electronEvent from './strategies/electron-event'
 
@@ -7,7 +7,8 @@ export const DEFAULT_OPTIONS: Options = {
     setWindowGlobal: false,
     fireFdc3Ready: false,
     strategies: [postMessage], //, electronEvent],
-    frame: window.opener ?? window.parent
+    frame: window.opener ?? window.parent,
+    middlewares: []
 }
 
 /**

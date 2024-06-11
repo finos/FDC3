@@ -22,6 +22,9 @@ Given("app {string} resolves intent {string}", function (this: CustomWorld, appS
         intent,
     })
     this.props[instanceId] = app
+    this.props[appId] = {
+        appId
+    }
 })
 
 Given("app {string} resolves intent {string} with result type {string}", function (this: CustomWorld, appStr: string, intent: string, resultType: string) {
@@ -33,6 +36,9 @@ Given("app {string} resolves intent {string} with result type {string}", functio
         resultType
     })
     this.props[instanceId] = app
+    this.props[appId] = {
+        appId
+    }
 })
 
 Given("app {string} resolves intent {string} with context {string}", function (this: CustomWorld, appStr: string, intent: string, context: string) {
@@ -44,6 +50,9 @@ Given("app {string} resolves intent {string} with context {string}", function (t
         context
     })
     this.props[instanceId] = app
+    this.props[appId] = {
+        appId
+    }
 })
 
 Given("app {string} resolves intent {string} with context {string} and result type {string}", function (this: CustomWorld, appStr: string, intent: string, context: string, resultType: string) {

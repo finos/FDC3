@@ -1,18 +1,21 @@
 import { AppMetadata } from '@finos/fdc3/dist/bridging/BridgingTypes';
-import { Directory, DirectoryApp, ServerContext } from 'da-server'
+import { Directory, DirectoryApp, ServerContext } from '@kite9/da-server'
 import { Socket, io } from 'socket.io-client';
 import { v4 as uuid } from 'uuid'
 import { APP_HELLO, FDC3_DA_EVENT } from '../../message-types';
 import { AppIdentifier, OpenError } from '@finos/fdc3';
-import { AppChecker, DesktopAgentDetailResolver, DesktopAgentDetails, DesktopAgentPortResolver } from 'fdc3-common';
+import { AppChecker, DesktopAgentDetailResolver, DesktopAgentDetails, DesktopAgentPortResolver } from '@kite9/fdc3-common';
 import { link } from './util';
 
 enum Opener { Tab, Frame, Nested }
 
+enum State { Pending, Connected }
+
 type AppRegistration = {
     appId: AppIdentifier,
-    window: Window
-    url: string
+    window: Window,
+    url: string,
+    state: State
 }
 
 enum Approach { IFRAME, PARENT_POST_MESSAGE }
@@ -38,6 +41,13 @@ export class DemoServerContext implements ServerContext {
         this.desktopAgentUUID = desktopAgentUUID
     }
 
+    async setAppConnected(app: AppMetadata): Promise<void> {
+        const theApp = this.instances.find(i => (i.appId.appId == app.appId) && (i.appId.instanceId == app.instanceId))
+        if (theApp) {
+            theApp.state = State.Connected
+        }
+    }
+
     getOpener(): Opener {
         const cb = document.getElementById("opener") as HTMLInputElement;
         const val = cb.value
@@ -61,6 +71,11 @@ export class DemoServerContext implements ServerContext {
         ifrm.style.height = "480px";
         document.body.appendChild(ifrm);
         return ifrm.contentWindow!!;
+    }
+
+    goodbye(id: string) {
+        this.instances = this.instances.filter(i => i.appId.instanceId !== id)
+        console.log(`Closed ${id} ${JSON.stringify(this.instances.map(i => i.appId.instanceId))} apps open`)
     }
 
     openTab(url: string): Window {
@@ -101,7 +116,8 @@ export class DemoServerContext implements ServerContext {
             this.instances.push({
                 appId: metadata,
                 url,
-                window
+                window,
+                state: State.Pending
             })
 
             return metadata
@@ -110,13 +126,18 @@ export class DemoServerContext implements ServerContext {
         throw new Error(OpenError.AppNotFound)
     }
 
-    async getOpenApps(): Promise<AppMetadata[]> {
-        return this.instances.map(i => i.appId)
+    async getConnectedApps(): Promise<AppMetadata[]> {
+        return this.instances
+            .filter(i => i.state == State.Connected)
+            .map(i => i.appId)
     }
 
-    async isAppOpen(app: AppMetadata): Promise<boolean> {
-        return (await this.getOpenApps()).filter(ai =>
+    async isAppConnected(app: AppMetadata): Promise<boolean> {
+        const out = (await this.getConnectedApps()).filter(ai =>
             (ai.appId == app.appId) && (ai.instanceId == app.instanceId)).length > 0
+
+        console.log(`Checking ${app.instanceId} = ${out}`)
+        return out
     }
 
     log(message: string): void {

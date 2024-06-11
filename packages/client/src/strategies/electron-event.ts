@@ -1,5 +1,5 @@
 import { DesktopAgent, fdc3Ready } from "@finos/fdc3";
-import { Loader, Options } from "fdc3-common";
+import { Loader, Options } from "@kite9/fdc3-common";
 
 /**
  * This approach will resolve the loader promise if the fdc3Ready event occurs.
@@ -11,7 +11,7 @@ const loader: Loader = (_options: Options) => {
         fdc3Ready().then(() => {
             resolve(window.fdc3);
         })
-      
+
     });
 
     return out;

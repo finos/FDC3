@@ -1,4 +1,4 @@
-import { FDC3_PORT_TRANSFER_RESPONSE_TYPE } from "fdc3-common";
+import { FDC3_PORT_TRANSFER_RESPONSE_TYPE } from "@kite9/fdc3-common";
 import { io } from "socket.io-client"
 import { link } from "./util";
 import { AppIdentifier } from "@finos/fdc3";

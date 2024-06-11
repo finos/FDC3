@@ -1,10 +1,10 @@
 import { Context, AppIntent, AppIdentifier, IntentResolution, IntentHandler, Listener, ResolveError, IntentResult } from "@finos/fdc3";
 import { IntentSupport } from "./IntentSupport";
 import { Messaging } from "../Messaging";
-import { AppDestinationIdentifier, FindIntentAgentRequest, FindIntentAgentRequestMeta, FindIntentAgentResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentRequestMeta, FindIntentsByContextAgentResponse, RaiseIntentAgentRequest, RaiseIntentAgentRequestMeta, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppDestinationIdentifier, FindIntentAgentErrorResponse, FindIntentAgentRequest, FindIntentAgentRequestMeta, FindIntentAgentResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentRequestMeta, FindIntentsByContextAgentResponse, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentRequestMeta, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { DefaultIntentResolution } from "./DefaultIntentResolution";
 import { DefaultIntentListener } from "../listeners/DefaultIntentListener";
-import { IntentResolver } from "fdc3-common";
+import { IntentResolver } from "@kite9/fdc3-common";
 import { DefaultChannel } from "../channels/DefaultChannel";
 import { DefaultPrivateChannel } from "../channels/DefaultPrivateChannel";
 
@@ -49,14 +49,18 @@ export class DefaultIntentSupport implements IntentSupport {
         }
 
         const result = await this.messaging.exchange(messageOut, "findIntentResponse") as FindIntentAgentResponse
+        const error = (result as any as FindIntentAgentErrorResponse).payload.error
 
-        if (result.payload.appIntent.apps.length == 0) {
+        if (error) {
+            // server error
+            throw new Error(error)
+        } else if (result.payload.appIntent.apps.length == 0) {
             throw new Error(ResolveError.NoAppsFound)
-        }
-
-        return {
-            intent: result.payload.appIntent.intent,
-            apps: result.payload.appIntent.apps
+        } else {
+            return {
+                intent: result.payload.appIntent.intent,
+                apps: result.payload.appIntent.apps
+            }
         }
     }
 
@@ -78,6 +82,21 @@ export class DefaultIntentSupport implements IntentSupport {
         return result.payload.appIntents
     }
 
+    private async createResultPromise(messageOut: RaiseIntentAgentRequest): Promise<IntentResult> {
+        const rp = await this.messaging.waitFor<RaiseIntentResultAgentResponse>(m => (
+            (m.type == 'raiseIntentResultResponse') &&
+            (m.meta.requestUuid == messageOut.meta.requestUuid)))
+
+        if (!rp) {
+            // probably a timeout
+            return;
+        } else {
+            const ir = await convertIntentResult(rp, this.messaging)
+            this.intentResolver.intentChosen(ir)
+            return ir
+        }
+    }
+
     private async raiseSpecificIntent(intent: string, context: Context, app: AppIdentifier): Promise<IntentResolution> {
         const messageOut: RaiseIntentAgentRequest = {
             type: "raiseIntentRequest",
@@ -89,13 +108,14 @@ export class DefaultIntentSupport implements IntentSupport {
             meta: this.messaging.createMeta() as RaiseIntentAgentRequestMeta
         }
 
-        const resultPromise = this.messaging.waitFor<RaiseIntentResultAgentResponse>(m => (
-            (m.meta.requestUuid == messageOut.meta.requestUuid) &&
-            (m.type == 'raiseIntentResultResponse')))
-            .then(ir => convertIntentResult(ir, this.messaging))
-            .then(ir => this.intentResolver.intentChosen(ir))
-
+        const resultPromise = this.createResultPromise(messageOut)
         const resolution = await this.messaging.exchange(messageOut, "raiseIntentResponse") as RaiseIntentAgentResponse
+        const error = (resolution as any as RaiseIntentAgentErrorResponse).payload.error
+
+        if (error) {
+            throw new Error(error)
+        }
+
         const details = resolution.payload.intentResolution
 
         return new DefaultIntentResolution(
@@ -107,8 +127,11 @@ export class DefaultIntentSupport implements IntentSupport {
         )
     }
 
-    private matchAppId(a: AppIdentifier, b: AppIdentifier) {
-        return (a.appId == b.appId) && ((a.instanceId == null) || a.instanceId == b.instanceId)
+    private matchAppId(found: AppIdentifier, req: AppIdentifier) {
+        return (found.appId == req.appId) &&
+            (((found.instanceId == null) && (req.instanceId == null)) // request was not for a particular instance
+                ||
+                (found.instanceId == req.instanceId))    // requested exact instance.
     }
 
     private filterApps(appIntent: AppIntent, app: AppIdentifier): AppIntent {
@@ -120,15 +143,27 @@ export class DefaultIntentSupport implements IntentSupport {
 
     async raiseIntent(intent: string, context: Context, app?: AppIdentifier | undefined): Promise<IntentResolution> {
         var matched = await this.findIntent(intent, context, undefined)
+        console.log("Matched intents:")
 
         if (app) {
             // ensure app matches
             matched = this.filterApps(matched, app)
+
+            if (matched.apps.length == 0) {
+                if (app?.instanceId) {
+                    throw new Error(ResolveError.TargetInstanceUnavailable)
+                } else {
+                    // try to start the app
+                    return this.raiseSpecificIntent(intent, context, app);
+                }
+            }
         }
 
         if (matched.apps.length == 0) {
+            // user didn't supply an app, and no intent matches
             throw new Error(ResolveError.NoAppsFound)
         } else if (matched.apps.length == 1) {
+            // use the found app
             return this.raiseSpecificIntent(intent, context, matched.apps[0])
         } else {
             // need to do the intent resolver

@@ -2,7 +2,7 @@ import { When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { BroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { contextMap, createMeta } from './generic.steps';
-import { OnAddContextListenerAgentRequest, OnUnsubscribeAgentRequest } from 'fdc3-common';
+import { OnAddContextListenerAgentRequest, OnUnsubscribeAgentRequest } from '@kite9/fdc3-common';
 
 When('{string} adds a context listener on {string} with type {string}', function (this: CustomWorld, app: string, channelId: string, contextType: string) {
   const meta = createMeta(this, app)

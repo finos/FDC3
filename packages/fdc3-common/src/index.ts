@@ -1,6 +1,6 @@
 import { AppIdentifier, AppMetadata, DesktopAgent, IntentMetadata, IntentResult } from "@finos/fdc3";
 import { exchange, exchangePostMessage, exchangeForMessagePort } from "./exchange";
-import { AppIntent, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerAgentRequestMeta, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AgentRequestMessage, AgentResponseMessage, AppIntent, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerAgentRequestMeta, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 /** 
  * We need to add options here. 
@@ -11,7 +11,7 @@ export type Options = {
     strategies?: Loader[],
     frame?: Window,
     waitForMs?: number,
-    intentResolver?: IntentResolver
+    intentResolver?: IntentResolver,
 }
 
 export { exchange, exchangePostMessage, exchangeForMessagePort }
@@ -105,6 +105,23 @@ export type OnUnsubscribeIntentListenerAgentRequest = {
     }
 }
 
+export type RegisterChannelAgentRequest = {
+    type: 'registerChannelRequest',
+    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
+    payload: {
+        channelId: string,
+        type: 'user' | 'private' | 'app'
+    }
+}
+
+export type RegisterChannelAgentResponse = {
+    type: 'registerChannelResponse',
+    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
+    payload: {
+        error?: string
+    }
+}
+
 /**
  * Contains the details of a single intent and application resolved
  * by the IntentResolver implementation
@@ -141,3 +158,4 @@ export type IntentResolutionChoiceAgentResponse = {
 }
 
 export type IntentResolutionChoiceAgentRequest = IntentResolutionChoiceAgentResponse
+
