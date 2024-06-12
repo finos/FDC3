@@ -73,7 +73,10 @@
                 "intents": {
                     "listensFor": {
                         "ViewNews": {
-                            "displayName": "View News"
+                            "displayName": "View News",
+                            "contexts": [
+                                "fdc3.instrument"
+                            ]
                         }
                     }
                 }
@@ -96,10 +99,16 @@
                 "intents": {
                     "listensFor": {
                         "ViewNews": {
-                            "displayName": "View News"
+                            "displayName": "View News",
+                            "contexts": [
+                                "fdc3.instrument"
+                            ]
                         },
                         "ViewQuote": {
-                            "displayName": "View Quote"
+                            "displayName": "View Quote",
+                            "contexts": [
+                                "fdc3.instrument"
+                            ]
                         }
                     }
                 }
