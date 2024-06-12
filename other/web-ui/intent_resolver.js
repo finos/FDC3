@@ -28,6 +28,13 @@ const setup = (data, callback) => {
       const listRef = tab.getAttribute("data-list-ref");
       document.getElementById(listRef).setAttribute("data-visible", "true");
     });
+  });
+
+  document.getElementById("cancel").addEventListener("click", () => {
+    callback({
+      type: "iframeResolveAction",
+      action: "cancel"
+    });
   })
 }
 
@@ -53,15 +60,27 @@ const fillList = ({apps, openApps}, intent, callback) => {
     node.appendChild(span);
 
     node.addEventListener('mouseenter', () => callback({
+      type: "iframeResolveAction",
       appId,
       intent,
-      action: "hover"
+      action: "hover",
+      newOrOpen: "new"
     }));
-    node.addEventListener('click', () => callback({
-      appId,
-      intent,
-      action: "click"
-    }));
+    node.addEventListener('click', () => {
+      callback({
+        type: "iframeResolveAction",
+        appId,
+        intent,
+        action: "click",
+        newOrOpen: "new"
+      });
+      callback({
+        type: "iframeResolve",
+        appId,
+        intent,
+        newOrOpen: "new"
+      });
+    });
 
     newList.appendChild(node);
   });
@@ -89,17 +108,30 @@ const fillList = ({apps, openApps}, intent, callback) => {
     node.appendChild(span);
 
     node.addEventListener('mouseenter', () => callback({
+      type: "iframeResolveAction",
       appId,
       windowId,
       intent,
-      action: "hover"
+      action: "hover",
+      newOrOpen: "open"
     }));
-    node.addEventListener('click', () => callback({
-      appId,
-      windowId,
-      intent,
-      action: "click"
-    }));
+    node.addEventListener('click', () => {
+      callback({
+        type: "iframeResolveAction",
+        appId,
+        windowId,
+        intent,
+        action: "click",
+        newOrOpen: "open"
+      });
+      callback({
+        type: "iframeResolve",
+        appId,
+        intent,
+        windowId,
+        newOrOpen: "open"
+      })
+    });
 
     openList.appendChild(node);
   });
@@ -116,5 +148,5 @@ window.addEventListener('message', ({ ports }) => {
     });
   };
   // STEP 2A: Send confirmation over port to parent
-  ports[0].postMessage('Returning handshake');
+  ports[0].postMessage({type: 'iframeHandshake'});
 });
