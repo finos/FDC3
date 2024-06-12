@@ -1,6 +1,6 @@
-import { AppIdentifier, AppMetadata, DesktopAgent, IntentMetadata, IntentResult } from "@finos/fdc3";
+import { AppIdentifier, AppMetadata, DesktopAgent, IntentMetadata, IntentResult, Channel, ContextElement } from "@finos/fdc3";
 import { exchange, exchangePostMessage, exchangeForMessagePort } from "./exchange";
-import { AgentRequestMessage, AgentResponseMessage, AppIntent, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerAgentRequestMeta, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppIntent, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerAgentRequestMeta, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 /** 
  * We need to add options here. 
@@ -12,7 +12,9 @@ export type Options = {
     frame?: Window,
     waitForMs?: number,
     intentResolver?: IntentResolver,
+    channelSelector?: ChannelSelector
 }
+
 
 export { exchange, exchangePostMessage, exchangeForMessagePort }
 
@@ -28,8 +30,10 @@ export type Loader = (options: Options) => Promise<DesktopAgent>
 /**
  * These are details such as login information sent from the desktop back to the 
  * app in order to initialise the api.
+ * 
+ * TODO: remove this type
  */
-export type DesktopAgentDetails = { [key: string]: string | number | boolean }
+export type DesktopAgentDetails = { [key: string]: any }
 
 /**
  * Use these to return details specific to the window/app needing a connection
@@ -41,6 +45,36 @@ export type DesktopAgentDetailResolver = (o: Window, a: AppIdentifier) => Deskto
  */
 export type DesktopAgentPortResolver = (o: Window, a: AppIdentifier) => MessagePort | null
 
+export interface CSSPositioning {
+    width?: string,
+    height?: string,
+    position?: string,
+    zIndex?: string,
+    left?: string,
+    right?: string,
+    top?: string,
+    bottom?: string
+    transition?: string
+
+    // maybe add others here
+}
+
+export type ChannelSelectorDetails = {
+    icon?: {
+        src: string,
+        css?: CSSPositioning,
+    },
+    selector?: {
+        uri: string,
+        css?: CSSPositioning
+    }
+}
+
+export type IntentResolverDetails = {
+    uri: string,
+    css?: CSSPositioning
+}
+
 /**
  * This is the object that the desktop agent must get back to the App.
  * In the first instance, the only approach to instantiating the desktop
@@ -50,7 +84,8 @@ export type APIResponseMessage = {
     type: "FDC3-API-Response",
     method: "message-port",
     appIdentifier: AppIdentifier,
-    resolverUri: string,
+    intentResolver: IntentResolverDetails,
+    channelSelector: ChannelSelectorDetails,
     desktopAgentId: string
     // fdc3Version: string,
     // supportedFDC3Versions: string[],
@@ -133,6 +168,17 @@ export interface SingleAppIntent {
 
 }
 
+export type ChannelState = { [channelId: string]: ContextElement[] }
+
+
+export interface ChannelSelector {
+
+    updateChannel(channelId: string | null, availableChannels: Channel[]): void
+
+    setChannelChangeCallback(callback: (channelId: string) => void): void
+
+}
+
 export interface IntentResolver {
 
     /**
@@ -157,5 +203,18 @@ export type IntentResolutionChoiceAgentResponse = {
     }
 }
 
+
 export type IntentResolutionChoiceAgentRequest = IntentResolutionChoiceAgentResponse
+
+
+export type ChannelSelectionChoiceAgentRequest = {
+    type: 'channelSelectionChoice',
+    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
+    payload: {
+        channelId: string,
+        cancelled: boolean,
+    }
+}
+
+export type ChannelSelectionChoiceAgentResponse = ChannelSelectionChoiceAgentRequest
 

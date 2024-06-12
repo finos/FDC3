@@ -12,12 +12,6 @@ export const supply: Supplier = (
 
     function createResponseMessage(source: Window, appId: AppIdentifier): APIResponseMessage {
         return {
-            //provider: "string",
-            //authRequired: true,
-            //authToken: "secret",
-            //desktopAgentBridgeVersion: "demo",
-            //supportedFDC3Versions: [ '2.0'],
-            //fdc3Version: "2.0",
             type: FDC3_API_RESPONSE_MESSAGE_TYPE,
             ...detailsResolver(source, appId),
 
