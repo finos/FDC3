@@ -1,10 +1,11 @@
 import { AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { FDC3Server } from "./FDC3Server";
 import { ServerContext } from "./ServerContext";
-import { BroadcastHandler, ChannelState } from "./handlers/BroadcastHandler";
+import { BroadcastHandler } from "./handlers/BroadcastHandler";
 import { IntentHandler } from "./handlers/IntentHandler";
 import { Directory } from "./directory/DirectoryInterface";
 import { OpenHandler } from "./handlers/OpenHandler";
+import { ChannelState } from "@kite9/fdc3-common";
 
 export interface MessageHandler {
 

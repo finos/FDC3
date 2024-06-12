@@ -3,7 +3,6 @@ import { BasicFDC3Server, DefaultFDC3Server } from "./BasicFDC3Server"
 import { FDC3Server } from "./FDC3Server"
 import { Directory, DirectoryApp, DirectoryIntent } from "./directory/DirectoryInterface"
 import { BasicDirectory } from "./directory/BasicDirectory"
-import { ChannelState } from "./handlers/BroadcastHandler"
 
 export {
     type ServerContext,
@@ -13,6 +12,5 @@ export {
     type Directory,
     BasicDirectory,
     type DirectoryApp,
-    type DirectoryIntent,
-    type ChannelState
+    type DirectoryIntent
 }

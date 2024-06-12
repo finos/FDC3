@@ -5,7 +5,7 @@
 import * as fdc3_2 from "fdc3-2.0";
 import * as fdc3_1 from "fdc3-1.2";
 import { group } from "console";
-import { fdc3Ready, getClientAPI } from 'client'
+import { fdc3Ready, getClientAPI } from '@kite9/client'
 
 const fdc3ReadyPromise = fdc3Ready()
 
