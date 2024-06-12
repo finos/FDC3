@@ -5,7 +5,7 @@ import { APP_GOODBYE, DA_HELLO, FDC3_APP_EVENT } from "../../message-types";
 import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
 import { DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/da-server";
-
+import { ChannelState } from "@kite9/fdc3-common";
 
 
 function createAppStartButton(app: DirectoryApp, sc: ServerContext): HTMLDivElement {
@@ -37,7 +37,13 @@ window.addEventListener("load", () => {
         await directory.load("/static/da/appd.json")
         //        await directory.load("/static/da/local-conformance-2_0.v2.json")
         const sc = new DemoServerContext(socket, directory, desktopAgentUUID)
-        const fdc3Server = new DefaultFDC3Server(sc, directory, "FDC3-Web-Demo")
+        const initialChannels: ChannelState = {
+            "one": [],
+            "two": [],
+            "three": [],
+            "four": []
+        }
+        const fdc3Server = new DefaultFDC3Server(sc, directory, "FDC3-Web-Demo", initialChannels)
 
         socket.on(FDC3_APP_EVENT, (msg, from) => {
             fdc3Server.receive(msg, from)

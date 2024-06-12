@@ -1,13 +1,9 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { AppMetadata, BroadcastAgentRequest, ConnectionStep2Hello, ConnectionStep3Handshake, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelEventListenerRemovedAgentRequest, PrivateChannelOnDisconnectAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { ServerContext } from "../ServerContext";
-import {
-    PrivateChannelOnAddContextListenerAgentRequest,
-    PrivateChannelOnUnsubscribeAgentRequest,
-    PrivateChannelBroadcastAgentRequest
-} from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnUnsubscribeAgentRequest, PrivateChannelBroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { ChannelError, ContextElement } from "@finos/fdc3";
-import { OnAddContextListenerAgentRequest, OnUnsubscribeAgentRequest, RegisterChannelAgentRequest } from "@kite9/fdc3-common";
+import { OnAddContextListenerAgentRequest, OnUnsubscribeAgentRequest, RegisterChannelAgentRequest, ChannelSelectionChoiceAgentRequest, ChannelSelectionChoiceAgentResponse, ChannelState } from "@kite9/fdc3-common";
 
 type ListenerRegistration = {
     appId: string,
@@ -56,7 +52,6 @@ function createListenerRegistration(msg:
     }
 }
 
-type ChannelState = { [channelId: string]: ContextElement[] }
 type ChannelType = { [channelId: string]: 'user' | 'app' | 'private' }
 
 type EventMessage = PrivateChannelOnUnsubscribeAgentRequest | OnUnsubscribeAgentRequest | PrivateChannelOnAddContextListenerAgentRequest | OnAddContextListenerAgentRequest | PrivateChannelOnDisconnectAgentRequest
@@ -70,8 +65,9 @@ export class BroadcastHandler implements MessageHandler {
 
     private readonly desktopAgentName: string
 
-    constructor(name: string) {
+    constructor(name: string, initialChannelState: ChannelState) {
         this.desktopAgentName = name
+        this.state = initialChannelState
     }
 
     accept(msg: any, sc: ServerContext, from: AppMetadata) {
@@ -94,6 +90,7 @@ export class BroadcastHandler implements MessageHandler {
 
             // handling state synchronisation of channels
             case 'hello': return this.handleHello(msg as ConnectionStep2Hello, sc, from)
+            case 'channelSelectionChoice': return this.handleChannelSelectionChoice(msg as ChannelSelectionChoiceAgentRequest, from, sc)
         }
     }
 
@@ -118,6 +115,12 @@ export class BroadcastHandler implements MessageHandler {
     handleEventListenerAdded(arg0: PrivateChannelEventListenerAddedAgentRequest, from: AppMetadata) {
         const el = this.createChannelEventListener(arg0, from)
         this.eventListeners.push(el)
+    }
+
+    handleChannelSelectionChoice(arg0: ChannelSelectionChoiceAgentRequest, from: AppMetadata, sc: ServerContext): void | PromiseLike<void> {
+        // currently, this is a no-op, just pass the same message to the app
+        const out = arg0 as ChannelSelectionChoiceAgentResponse
+        sc.post(out, from)
     }
 
     handleHello(_hello: ConnectionStep2Hello, sc: ServerContext, from: AppMetadata) {

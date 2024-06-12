@@ -1,0 +1,32 @@
+.tabs {
+    display: flex;
+    flex-direction: column;
+}
+
+.tab {
+    flex-grow: 0;
+    flex-shrink: 0;
+    gap: .5rem;
+    border-radius: 0;
+    border-top-left-radius: .5rem;
+    border-bottom-left-radius: .5rem;
+    margin-left: 1rem;
+    margin-top: .5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-shadow: -4px 4px 3px #00000030;
+}
+
+.inactiveTab {
+    background: linear-gradient(90deg, rgba(0, 0, 0, .1) 90%, rgba(0, 0, 0, .7) 100%);
+}
+
+.activeTab {
+    background: linear-gradient(165deg, rgba(255, 255, 255, .4) 0%, rgba(255, 255, 255, 0) 20%);
+}
+
+.activeTab:hover {}
+
+.inactiveTab:hover {
+    background: linear-gradient(90deg, rgba(255, 255, 255, .1) 90%, rgba(0, 0, 0, .8) 100%);
+}

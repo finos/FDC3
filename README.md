@@ -89,6 +89,8 @@ The project is divided into several different yarn workspaces:
 
 ## Issues To Resolve
 
+### Protocol
+
 - Desktop Agent Briding needs extending with types from `fdc3-common/index.ts`
 - Move exchange into client, instead of common.
 - How does the da-server tell the da-proxy about the channel metadata? We need a message to get the list of user channels from the server.
@@ -101,6 +103,30 @@ The project is divided into several different yarn workspaces:
 - test intent resolvers on different domains
 - factor out test codes into module
 - handle setting connected on the server context.
+- we shoulnd't be using meta for routing - check this.
+- How does the da-server tell the da-proxy about the channel metadata?  We need a message to get the list of user channels from the server.
+
+
+### Da-Server
+
+- add server tests for intent resolution choice
+- channel selector choice
+- How does the da-server decide on a desktop agent name (maybe it just has one?)
+
+### Client
+
+- TESTING!
+- fdc3Ready timeout
+- Move exchange into client, instead of common.
+- dragable channel selector icon
+- test intent resolvers on different domains
+- AppChecker / AppDetailsResolver / AppPortResolver - this is all too complex.
+- use cookie for the da id.
+
+### Demo
+
+- get it to work without desktop agent window running
+- run the conformance suite
 
 ## Idea
 

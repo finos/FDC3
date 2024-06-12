@@ -6,23 +6,46 @@ import { DefaultChannel } from "./DefaultChannel";
 import { StatefulChannel } from "./StatefulChannel";
 import { DefaultContextListener } from "../listeners/DefaultContextListener";
 import { ContextElement } from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { RegisterChannelAgentRequest, RegisterChannelAgentResponse } from "@kite9/fdc3-common";
+import { RegisterChannelAgentRequest, RegisterChannelAgentResponse, ChannelSelector } from "@kite9/fdc3-common";
+
+const NO_OP_CHANNEL_SELECTOR: ChannelSelector = {
+
+    updateChannel(_channelId: string | null): void {
+        // does nothing
+    },
+
+    setChannelChangeCallback(_callback: (channelId: string) => void): void {
+        // also does nothing
+    }
+
+}
 
 export class DefaultChannelSupport implements ChannelSupport {
 
     readonly messaging: Messaging
+    readonly channelSelector: ChannelSelector
     protected userChannel: StatefulChannel | null
     protected userChannelState: StatefulChannel[]
     protected userChannelListeners: DefaultContextListener[] = []
 
-    constructor(messaging: Messaging, userChannelState: StatefulChannel[], initialChannelId: string | null) {
+    constructor(messaging: Messaging, userChannelState: StatefulChannel[], initialChannelId: string | null = null, channelSelector: ChannelSelector = NO_OP_CHANNEL_SELECTOR) {
         this.messaging = messaging;
         this.userChannelState = userChannelState;
         this.userChannel = userChannelState.find(c => c.id == initialChannelId) ?? null;
+        this.channelSelector = channelSelector
+        this.channelSelector.updateChannel(initialChannelId, userChannelState)
+        this.channelSelector.setChannelChangeCallback((channelId: string) => {
+            if (channelId == null) {
+                this.leaveUserChannel()
+            } else {
+                this.joinUserChannel(channelId)
+            }
+        })
     }
 
     mergeChannelState(newState: { [key: string]: ContextElement[]; }): void {
         this.userChannel = null
+        // update known channels
         this.userChannelState.forEach(uc => {
             const incoming = newState[uc.id] ?? []
             incoming.forEach((context) => {
@@ -32,6 +55,23 @@ export class DefaultChannelSupport implements ChannelSupport {
                 }
             });
         })
+
+        // ensure we have new channels
+        for (const [id, contexts] of Object.entries(newState)) {
+            const existing = this.userChannelState.find(c => c.id == id)
+            if (!existing) {
+                const newChannel = new DefaultChannel(this.messaging, id, 'user', {
+                    // todo - figure out how to source these
+                    name: 'channel named ' + id,
+                    color: '#abc',
+                    glyph: "circle.png"
+                })
+                contexts.forEach(c => {
+                    newChannel.latestContextMap.set(c.type, c)
+                })
+                this.userChannelState.push(newChannel)
+            }
+        }
     }
 
     hasUserChannelMembershipAPIs(): boolean {
@@ -87,6 +127,7 @@ export class DefaultChannelSupport implements ChannelSupport {
         this.userChannelListeners.forEach(
             l => l.updateUnderlyingChannel(null, new Map())
         )
+        this.channelSelector.updateChannel(null, this.userChannelState)
         return Promise.resolve();
     }
 
@@ -95,6 +136,7 @@ export class DefaultChannelSupport implements ChannelSupport {
             const newUserChannel = this.userChannelState.find(c => c.id == id)
             if (newUserChannel) {
                 this.userChannel = newUserChannel;
+                this.channelSelector.updateChannel(id, this.userChannelState)
                 this.userChannelListeners.forEach(
                     l => l.updateUnderlyingChannel(newUserChannel.id, newUserChannel.getState()))
             } else {
