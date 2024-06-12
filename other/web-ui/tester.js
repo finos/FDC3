@@ -132,46 +132,75 @@ const exampleResolverData = {
   }
 };
 
+let selected = recommendedChannels[2].id;
+let expanded = true;
+
 const openChannelIframe = e => {
   const channel = new MessageChannel();
-  let handshook = false;
 
   // STEP 2B: Receive confirmation over port from iframe
-  channel.port1.onmessage = e => {
-    if (!handshook) {
-      // STEP 3A: Send channel data to iframe
-      channel.port1.postMessage(recommendedChannels);
-      handshook = true;
-      return;
+  channel.port1.onmessage = ({data}) => {
+    switch(data.type){
+
+      // User clicked on one of the channels in the channel selector
+      case "iframeChannelSelected": {
+        // STEP 4B: Receive user selection information from iframe
+        selected = data.channel;
+        // explicit fall-through
+      }
+      
+      // Handshake completed. Send channel data to iframe
+      case "iframeHandshake": {
+        // STEP 3A: Send channel data to iframe
+        channel.port1.postMessage({
+          type: "iframeChannels", 
+          channels: recommendedChannels, 
+          selected
+        });
+        break;
+      }
+
     }
 
-    // STEP 4B: Receive user selection information from iframe
-    document.getElementById('channel-user-selection').innerHTML = e.data;
   };
+
   e.target.disabled = true;
 
   const iframe = document.getElementById("channel-iframe");
   iframe.parentElement.setAttribute("data-visible", "true");
 
+  const resizeButton = document.getElementById("dimensions-btn-channel");
+  resizeButton.setAttribute("data-visible", "true");
+  resizeButton.addEventListener("click", () => {
+    expanded = !expanded;
+    channel.port1.postMessage({type: "iframeChannelResize", expanded})
+    iframe.setAttribute("data-expanded", expanded);
+    resizeButton.textContent = expanded ? "Collapse" : "Expand";
+  });
+
   // STEP 1A: Send port to iframe
-  iframe.contentWindow.postMessage('Begin handshake', '*', [channel.port2]);
+  iframe.contentWindow.postMessage({type: 'iframeHello'}, '*', [channel.port2]);
 };
 
 const openResolverIframe = e => {
   const channel = new MessageChannel();
-  let handshook = false;
 
   // STEP 2B: Receive confirmation over port from iframe
-  channel.port1.onmessage = e => {
-    if (!handshook) {
-      // STEP 3A: Send channel data to iframe
-      channel.port1.postMessage(exampleResolverData);
-      handshook = true;
-      return;
+  channel.port1.onmessage = ({data}) => {
+    switch(data.type){
+      case "iframeHandshake": {
+        // STEP 3A: Send channel data to iframe
+        channel.port1.postMessage(exampleResolverData);
+        break;
+      }
+      case "iframeResolveAction":
+      case "iframeResolve": {
+        // STEP 4B: Receive user selection information from iframe
+        document.getElementById('resolver-user-selection').innerHTML = prettyPrintJson.toHtml(data);
+        break;
+      }
     }
 
-    // STEP 4B: Receive user selection information from iframe
-    document.getElementById('resolver-user-selection').innerHTML = prettyPrintJson.toHtml(e.data);
   };
   e.target.disabled = true;
 
@@ -179,7 +208,7 @@ const openResolverIframe = e => {
   iframe.parentElement.setAttribute("data-visible", "true");
 
   // STEP 1A: Send port to iframe
-  iframe.contentWindow.postMessage('Begin handshake', '*', [channel.port2]);
+  iframe.contentWindow.postMessage({type: 'iframeHello'}, '*', [channel.port2]);
 };
 
 window.addEventListener('load', () => {

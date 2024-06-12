@@ -19,6 +19,20 @@
 h1 {
     text-align: center;
 }
+
+#channel-iframe {
+    border: none;
+
+    &[data-expanded="true"]{
+        height: 210px;
+        width: 150px;
+    }
+
+    &[data-expanded="false"]{
+        height: 36px;
+        width: 50px;
+    }
+}
         </style>
     </head>
     <body>
@@ -29,8 +43,9 @@ h1 {
                 <h2>Channel Selector</h2>
         
                 <button id="send-btn-channel" style="margin-bottom: 8px">Begin</button>
+                <button id="dimensions-btn-channel" data-visible="false">Expand</button>
                 <div class="iframe-container" data-visible="false">
-                    <iframe id="channel-iframe" src="./channel_selector.html" height="300" width="300"></iframe>
+                    <iframe id="channel-iframe" src="./channel_selector.html" data-expanded="true"></iframe>
                 </div>
         
                 <div class="returned">
@@ -44,7 +59,7 @@ h1 {
         
                 <button id="send-btn-resolver" style="margin-bottom: 8px">Begin</button>
                 <div class="iframe-container" data-visible="false">
-                    <iframe id="resolver-iframe" src="./intent_resolver.html" height="300" width="300"></iframe>
+                    <iframe id="resolver-iframe" src="./intent_resolver.html" width="260px" height="400px"></iframe>
                 </div>
         
                 <div class="returned">

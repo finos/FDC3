@@ -3,7 +3,18 @@
     <head>
         <title>Channel selector</title>
         <style>
+            
+.glyph {
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 16px;
+    border-width: 1px;
+    border-style: solid;
+    font-weight: bold;
+}
+
 #list {
+    display: none;
     & > div {
         font-size: 18px;
         height: 24px;
@@ -16,25 +27,29 @@
             cursor: pointer;
         }
     }
-    .glyph {
-        font-size: 12px;
-        padding: 2px 6px;
-        border-radius: 16px;
-        border-width: 1px;
-        border-style: solid;
-        font-weight: bold;
-    }
     .name {
         margin-left: 8px;
         position: relative;
         top: 2px;
     }
 }
+#tokens {
+    display: none;
+}
+
+body[data-expanded="true"] #list {
+    display: block;
+}
+body[data-expanded="false"] #tokens {
+    display: block;
+}
         </style>
     </head>
-    <body>
+    <body data-expanded="true">
         <div id="list">
         </div>
+
+        <div id="tokens"></div>
 
         <script src="./channel_selector.js"></script>
     </body>

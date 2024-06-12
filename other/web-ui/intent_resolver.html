@@ -7,7 +7,7 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
-    height: 150px;
+    height: 235px;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #ace;
@@ -69,6 +69,13 @@ h1 {
         color: #fff;
     }
 }
+#cancel {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    border-radius: 4px;
+    text-align: center;
+}
         </style>
     </head>
     <body data-visible="false">
@@ -95,6 +102,8 @@ h1 {
 
         <div id="open-list" class="list" data-visible="false">
         </div>
+
+        <button id="cancel">Cancel</button>
 
         <script src="./intent_resolver.js"></script>
     </body>
