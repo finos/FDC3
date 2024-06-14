@@ -8,7 +8,6 @@ export const DEFAULT_OPTIONS: Options = {
     fireFdc3Ready: false,
     strategies: [postMessage], //, electronEvent],
     frame: window.opener ?? window.parent,
-    middlewares: []
 }
 
 /**
