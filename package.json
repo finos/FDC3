@@ -8,18 +8,18 @@
   "scripts": {
     "clean": "yarn workspaces foreach --all run clean",
     "build": "yarn workspaces foreach --all run build",
-    "test": "yarn workspaces foreach --all run test"
+    "test": "yarn workspaces foreach --all run test",
+    "dev": "concurrently \"cd packages/addon && yarn dev\" \"cd packages/fdc3-workbench && yarn dev\" \"cd packages/demo && yarn dev\""
   },
   "packageManager": "yarn@4.1.1",
   "devDependencies": {
+    "concurrently": "8.2.2",
     "eslint": "7.17.0",
     "prettier": "2.2.1",
+    "rimraf": "^5.0.7",
     "typescript": "^5.3.2"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
-  },
-  "dependencies": {
-    "rimraf": "^5.0.7"
   }
 }
