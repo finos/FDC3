@@ -1,5 +1,5 @@
-import { Messaging } from "da-proxy";
-import { ChannelSelector, ChannelSelectorDetails, CSSPositioning, ChannelSelectionChoiceAgentRequest } from "fdc3-common";
+import { Messaging } from "@kite9/da-proxy";
+import { ChannelSelector, ChannelSelectorDetails, CSSPositioning, ChannelSelectionChoiceAgentRequest } from "@kite9/fdc3-common";
 import { Channel } from "@finos/fdc3";
 import { DEFAULT_CONTAINER_CSS } from "../intent-resolution/DefaultDesktopAgentIntentResolver";
 
