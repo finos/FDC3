@@ -45,33 +45,25 @@ export type DesktopAgentDetailResolver = (o: Window, a: AppIdentifier) => Deskto
  */
 export type DesktopAgentPortResolver = (o: Window, a: AppIdentifier) => MessagePort | null
 
-export interface CSSPositioning {
-    width?: string,
-    height?: string,
-    position?: string,
-    zIndex?: string,
-    left?: string,
-    right?: string,
-    top?: string,
-    bottom?: string
-    transition?: string
+export interface CSSPositioning { [key: string]: string }
 
-    // maybe add others here
-}
+export const CSS_ELEMENTS = ["width",
+    "height",
+    "position",
+    "zIndex",
+    "left",
+    "right",
+    "top",
+    "bottom",
+    "transition"]
 
 export type ChannelSelectorDetails = {
-    icon?: {
-        src: string,
-        css?: CSSPositioning,
-    },
-    selector?: {
-        uri: string,
-        css?: CSSPositioning
-    }
+    uri?: string,
+    css?: CSSPositioning
 }
 
 export type IntentResolverDetails = {
-    uri: string,
+    uri?: string,
     css?: CSSPositioning
 }
 

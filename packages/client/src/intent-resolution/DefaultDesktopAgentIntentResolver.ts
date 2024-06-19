@@ -1,14 +1,17 @@
 import { AppIntent, IntentResult } from "@finos/fdc3";
 import { Messaging } from "@kite9/da-proxy";
-import { IntentResolver, SingleAppIntent, IntentResolutionChoiceAgentResponse, IntentResolverDetails, CSSPositioning } from "@kite9/fdc3-common";
+import { IntentResolver, SingleAppIntent, IntentResolutionChoiceAgentResponse, IntentResolverDetails, CSS_ELEMENTS } from "@kite9/fdc3-common";
 
-export const DEFAULT_CONTAINER_CSS: CSSPositioning = {
-    position: "fixed",
-    zIndex: "1000",
-    left: "10%",
-    top: "10%",
-    right: "10%",
-    bottom: "10%"
+export const DEFAULT_INTENT_RESOLVER_DETAILS: IntentResolverDetails = {
+    uri: "http://localhost:4000/intent_resolver.html",
+    css: {
+        position: "fixed",
+        zIndex: "1000",
+        left: "10%",
+        top: "10%",
+        right: "10%",
+        bottom: "10%"
+    }
 }
 
 /**
@@ -22,9 +25,9 @@ export class DefaultDesktopAgentIntentResolver implements IntentResolver {
     private readonly details: IntentResolverDetails
     private container: HTMLDivElement | undefined = undefined
 
-    constructor(m: Messaging, details: IntentResolverDetails) {
+    constructor(m: Messaging, details: IntentResolverDetails | null) {
         this.m = m
-        this.details = details
+        this.details = details ?? DEFAULT_INTENT_RESOLVER_DETAILS
     }
 
     async intentChosen(ir: IntentResult): Promise<IntentResult> {
@@ -55,10 +58,11 @@ export class DefaultDesktopAgentIntentResolver implements IntentResolver {
     }
 
     themeContainer(container: HTMLDivElement) {
-        const css = this.details.css ?? DEFAULT_CONTAINER_CSS
-        for (const [key, value] of Object.entries(css)) {
+        const css = this.details.css ?? DEFAULT_INTENT_RESOLVER_DETAILS.css!!
+        for (const k in CSS_ELEMENTS) {
+            const value: string | undefined = css[(k as string)]
             if (value != null) {
-                container.style.setProperty(key, value as string)
+                container.style.setProperty(k, value)
             }
         }
     }

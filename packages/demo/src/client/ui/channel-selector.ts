@@ -1,7 +1,7 @@
 import { AppIdentifier } from "@finos/fdc3";
 import { io } from "socket.io-client"
 import { FDC3_APP_EVENT } from "../../message-types";
-import { ChannelSelectionChoiceAgentRequest } from "fdc3-common";
+import { ChannelSelectionChoiceAgentRequest } from "@kite9/fdc3-common";
 import { v4 as uuid } from 'uuid'
 
 function getQueryVariable(variable: string): string {

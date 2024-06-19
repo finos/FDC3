@@ -27,6 +27,15 @@ function getApproach(): Approach {
     return out;
 }
 
+enum UI { DEFAULT, DEMO }
+
+function getUi(): UI {
+    const cb = document.getElementById("ui") as HTMLInputElement;
+    const val = cb.value
+    var out: UI = UI[val as keyof typeof UI]; //Works with --noImplicitAny
+    return out;
+}
+
 export class DemoServerContext implements ServerContext {
 
     private readonly socket: Socket
@@ -163,35 +172,20 @@ export class DemoServerContext implements ServerContext {
     detailsResolver: DesktopAgentDetailResolver = (o: Window, a: AppIdentifier) => {
         const apiKey = "ABC"
 
-        const intentResolver: IntentResolverDetails = {
+        const intentResolver: IntentResolverDetails | null = (getUi() == UI.DEMO) ? {
             uri: window.location.origin + "/static/da/intent-resolver.html"
-        }
+        } : null
 
-        const channelSelector: ChannelSelectorDetails = {
-            icon: {
-                src: window.location.origin + "/static/da/noun-mailbox-6010513.png",
-                // css: {
-                //     width: "15px",
-                //     height: "15px",
-                //     right: "20px",
-                //     bottom: "20px",
-                //     position: "fixed"
-                // }
-            },
-            selector: {
-                uri: window.location.origin + "/static/da/channel-selector.html",
-                css: {
-                    transition: "width 2s, height 4s",
-                    position: "fixed",
-                    zIndex: "1000",
-                    right: "20px",
-                    bottom: "20px",
-                    width: "300px",
-                    height: "300px"
-                }
+        const channelSelector: ChannelSelectorDetails | null = (getUi() == UI.DEMO) ? {
+            uri: window.location.origin + "/static/da/noun-mailbox-6010513.png",
+            css: {
+                width: "15px",
+                height: "15px",
+                right: "20px",
+                bottom: "20px",
+                position: "fixed"
             }
-
-        }
+        } : null
 
         if (getApproach() == Approach.IFRAME) {
             return {
