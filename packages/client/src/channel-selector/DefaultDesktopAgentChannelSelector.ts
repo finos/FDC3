@@ -1,15 +1,17 @@
 import { Messaging } from "@kite9/da-proxy";
 import { ChannelSelector, ChannelSelectorDetails, CSSPositioning, ChannelSelectionChoiceAgentRequest } from "@kite9/fdc3-common";
 import { Channel } from "@finos/fdc3";
-import { DEFAULT_CONTAINER_CSS } from "../intent-resolution/DefaultDesktopAgentIntentResolver";
 
-const DEFAULT_ICON_CSS: CSSPositioning = {
-    position: "fixed",
-    zIndex: "1000",
-    right: "10px",
-    bottom: "10px",
-    width: "50px",
-    height: "50px"
+const DEFAULT_CHANNEL_SELECTOR_DETAILS: ChannelSelectorDetails = {
+    uri: "http://localhost:4000/channel_selector.html",
+    css: {
+        position: "fixed",
+        zIndex: "1000",
+        right: "10px",
+        bottom: "10px",
+        width: "50px",
+        height: "50px"
+    }
 }
 
 /**
@@ -28,9 +30,9 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
     private currentId: string | null = null
     private callback: ((channelId: string) => void) | null = null
 
-    constructor(m: Messaging, details: ChannelSelectorDetails) {
+    constructor(m: Messaging, details: ChannelSelectorDetails | null) {
         this.m = m
-        this.details = details
+        this.details = details ?? DEFAULT_CHANNEL_SELECTOR_DETAILS
     }
 
     removeFrame() {
@@ -59,31 +61,31 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
         ifrm.style.border = "0"
     }
 
-    updateChannel(channelId: string | null, availableChannels: Channel[]): void {
-        this.availableChannels = availableChannels
-        this.currentId = channelId
-        const src = this.details?.icon?.src
-        if (src) {
-            // the DA is asking for an icon
-            if (this.icon == undefined) {
-                this.icon = document.createElement("img")
-                this.theme(this.icon, this.details.icon?.css ?? DEFAULT_ICON_CSS)
-                document.body.appendChild(this.icon)
+    updateChannel(_channelId: string | null, _availableChannels: Channel[]): void {
+        // this.availableChannels = availableChannels
+        // this.currentId = channelId
+        // const src = this.details?.icon?.src
+        // if (src) {
+        //     // the DA is asking for an icon
+        //     if (this.icon == undefined) {
+        //         this.icon = document.createElement("img")
+        //         this.theme(this.icon, this.details.icon?.css ?? DEFAULT_ICON_CSS)
+        //         document.body.appendChild(this.icon)
 
-                const popup = this.details.selector
-                if (popup?.uri) {
-                    // need to allow for dragging here too
-                    this.icon.addEventListener("touchend", () => this.chooseChannel())
-                    this.icon.addEventListener("mouseup", () => this.chooseChannel())
-                }
-            }
+        //         const popup = this.details.selector
+        //         if (popup?.uri) {
+        //             // need to allow for dragging here too
+        //             this.icon.addEventListener("touchend", () => this.chooseChannel())
+        //             this.icon.addEventListener("mouseup", () => this.chooseChannel())
+        //         }
+        //     }
 
-            this.icon.src = this.buildSrc(src, channelId)
-        }
+        //     this.icon.src = this.buildSrc(src, channelId)
+        // }
     }
 
     buildUrl(): string {
-        return this.details.selector?.uri
+        return this.details.uri
             + "?currentId=" + encodeURIComponent(JSON.stringify(this.currentId))
             + "&availableChannels=" + encodeURIComponent(JSON.stringify(this.serializeChannels()))
             + "&source=" + encodeURIComponent(JSON.stringify(this.m.getSource()))
@@ -104,7 +106,7 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
         this.container = document.createElement("div")
         const ifrm = document.createElement("iframe")
 
-        this.theme(this.container, this.details.selector?.css ?? DEFAULT_CONTAINER_CSS)
+        this.theme(this.container, this.details.css ?? DEFAULT_CHANNEL_SELECTOR_DETAILS.css!!)
         this.themeFrame(ifrm)
 
         ifrm.setAttribute("src", this.buildUrl())
