@@ -63,7 +63,10 @@ export class DefaultDesktopAgentIntentResolver implements IntentResolver {
             const value: string | undefined = css[(k as string)]
             if (value != null) {
                 container.style.setProperty(k, value)
+            } else {
+                this.container?.style.removeProperty(k)
             }
+
         }
     }
 

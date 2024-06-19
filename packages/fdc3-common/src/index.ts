@@ -55,11 +55,14 @@ export const CSS_ELEMENTS = ["width",
     "right",
     "top",
     "bottom",
-    "transition"]
+    "transition",
+    "maxHeight",
+    "maxWidth"]
 
 export type ChannelSelectorDetails = {
     uri?: string,
-    css?: CSSPositioning
+    expandedCss?: CSSPositioning,
+    collapsedCss?: CSSPositioning
 }
 
 export type IntentResolverDetails = {
@@ -210,3 +213,44 @@ export type ChannelSelectionChoiceAgentRequest = {
 
 export type ChannelSelectionChoiceAgentResponse = ChannelSelectionChoiceAgentRequest
 
+/**
+ * Messages from the app to the channel selector / intent resolver
+ */
+export type ChannelDetails = {
+    id: string;
+    displayMetadata: {
+        name: string;
+        color: string;
+        glyph?: string;
+    }
+};
+
+export type SelectorMessageChannels = {
+    type: "SelectorMessageChannels";
+    channels: ChannelDetails[];
+    selected: string;
+}
+
+
+/** 
+ * From the channel selector to the app
+ */
+export type SelectorMessageChoice = {
+    type: "SelectorMessageChoice";
+    channelId: string;
+}
+
+/** 
+ * From the channel selector to the app
+ */
+export type SelectorMessageResize = {
+    type: "SelectorMessageResize";
+    expanded: boolean;
+}
+
+/**
+ * From the channel selector to the app, on startup
+ */
+export type SelectorMessageInitialize = {
+    type: "SelectorMessageInitialize"
+}
