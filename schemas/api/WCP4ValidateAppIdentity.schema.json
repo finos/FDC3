@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json",
-  "title": "WCP4ValidateAppIdentity",
+  "title": "Web Connection Protocol 4 Validate App Identity",
   "description": "Identity Validation request from an app attempting to connect to a Desktop Agent.",
   "type": "object",
   "allOf": [

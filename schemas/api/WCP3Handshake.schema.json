@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json",
-  "title": "WCP3Handshake",
+  "title": "Web Connection Protocol 3 Handshake",
   "description": "Handshake message sent by the Desktop Agent to the app (with a MessagePort appended) that should be used for subsequent communication steps.",
   "type": "object",
   "allOf": [
