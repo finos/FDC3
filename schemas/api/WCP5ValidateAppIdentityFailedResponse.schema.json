@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityFailedResponse.schema.json",
-  "title": "WCP5ValidateAppIdentityFailedResponse",
+  "title": "Web Connection Protocol 5 Validate App Identity Failed Response",
   "description": "Message sent by the Desktop Agent to an app if their identity validation fails.",
   "type": "object",
   "allOf": [

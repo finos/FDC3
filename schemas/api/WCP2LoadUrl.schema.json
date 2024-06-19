@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json",
-  "title": "Web Connection Protocol LoadUrl",
+  "title": "Web Connection Protocol 2 Load Url",
   "description": "Response from a Desktop Agent to an application requesting access to it indicating that it should load a specified URL into a hidden iframe in order to establish connectivity to a Desktop Agent",
   "type": "object",
   "allOf": [
