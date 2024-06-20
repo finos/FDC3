@@ -77,7 +77,8 @@ export class DefaultDesktopAgentIntentResolver implements IntentResolver {
 
     themeContainer(container: HTMLDivElement) {
         const css = this.details.css ?? DEFAULT_INTENT_RESOLVER_DETAILS.css!!
-        for (const k in CSS_ELEMENTS) {
+        for (let i = 0; i < CSS_ELEMENTS.length; i++) {
+            const k = CSS_ELEMENTS[i]
             const value: string | undefined = css[(k as string)]
             if (value != null) {
                 container.style.setProperty(k, value)
