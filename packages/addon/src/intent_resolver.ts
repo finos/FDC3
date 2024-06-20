@@ -1,16 +1,28 @@
-const setup = (data, callback) => {
+import { Icon } from "@finos/fdc3";
+import { AppIntent } from "@finos/fdc3";
+import { ResolverIntents, ResolverMessageChoice, SingleAppIntent } from "@kite9/fdc3-common";
+
+const setup = (data: ResolverIntents, callback: (s: SingleAppIntent | null) => void) => {
   document.body.setAttribute("data-visible", "true");
-  document.getElementById("displayContext").textContent = data.context ?? "*";
-  console.log("setup: ", data);
-  const intentSelect = document.getElementById("displayIntent");
-  data.intents.forEach(({intent, displayName}) => {
-    const option = document.createElement("option");
-    option.textContent = displayName;
-    option.value = intent;
-    intentSelect.appendChild(option);
+
+  const intentSelect = document.getElementById("displayIntent") as HTMLSelectElement
+
+  const justIntents = data.appIntents.map(ai => ai.intent)
+  const doneIntents = new Set()
+
+  justIntents.forEach(({ name, displayName }) => {
+    if (!doneIntents.has(name)) {
+      doneIntents.add(name);
+      const option = document.createElement("option");
+      option.textContent = displayName;
+      option.value = name;
+      intentSelect.appendChild(option);
+    }
   });
-  intentSelect.addEventListener("change", (e) => fillList(data.options[e.target.value], e.target.value, callback));
-  fillList(data.options[intentSelect.value], intentSelect.value, callback);
+
+  intentSelect.addEventListener("change", (e: any) => fillList(data.appIntents.filter(ai => ai.intent.name == e?.target?.value), e?.target?.value, callback));
+
+  fillList(data.appIntents.filter(ai => ai.intent.name == intentSelect.value), intentSelect.value, callback);
 
   const tabs = Array.from(document.querySelectorAll("[role='tab']"))
   tabs.forEach((tab) => {
@@ -25,128 +37,129 @@ const setup = (data, callback) => {
       });
 
       tab.setAttribute("aria-selected", "true");
-      const listRef = tab.getAttribute("data-list-ref");
-      document.getElementById(listRef).setAttribute("data-visible", "true");
+      const listRef = tab.getAttribute("data-list-ref")!!;
+      document.getElementById(listRef)!!.setAttribute("data-visible", "true");
     });
   });
 
-  document.getElementById("cancel").addEventListener("click", () => {
-    callback({
-      type: "iframeResolveAction",
-      action: "cancel"
-    });
+  document.getElementById("cancel")!!.addEventListener("click", () => {
+    callback(null);
   })
 }
 
-const fillList = ({apps, openApps}, intent, callback) => {
-  const newList = document.getElementById('new-list');
+function createIcon(icons: Icon[] | undefined): HTMLElement {
+  const img = document.createElement("img");
+  if (icons && icons.length > 0) {
+    img.src = icons[0].src;
+  } else {
+    img.style.opacity = "0";
+  }
+
+  return img
+}
+
+const fillList = (ai: AppIntent[], intent: string, callback: (s: SingleAppIntent) => void) => {
+  const allApps = ai.flatMap(a => a.apps)
+  const openApps = allApps.filter(a => a.instanceId)
+  const newApps = allApps.filter(a => !a.instanceId)
+
+  // first, populate the "New Apps" tab
+  const newList = document.getElementById('new-list')!!
+
   newList.innerHTML = '';
-  apps.forEach(({ appId, title, icon }) => {
+  newApps.forEach(({ appId, title, icons }) => {
     const node = document.createElement('div');
     node.setAttribute('tabIndex', '0');
     node.setAttribute("data-appId", appId);
 
     const span = document.createElement("span");
-    span.textContent = title;
+    span.textContent = title ?? appId;
 
-    const img = document.createElement("img");
-    if(icon?.src){
-        img.src = icon.src;
-    }else{
-        img.style.opacity = 0;
-    }
+    const img = createIcon(icons)
 
     node.appendChild(img);
     node.appendChild(span);
 
-    node.addEventListener('mouseenter', () => callback({
-      type: "iframeResolveAction",
-      appId,
-      intent,
-      action: "hover",
-      newOrOpen: "new"
-    }));
     node.addEventListener('click', () => {
       callback({
-        type: "iframeResolveAction",
-        appId,
-        intent,
-        action: "click",
-        newOrOpen: "new"
-      });
-      callback({
-        type: "iframeResolve",
-        appId,
-        intent,
-        newOrOpen: "new"
-      });
+        intent: {
+          name: intent,
+          displayName: "Whatever"
+        },
+        chosenApp: {
+          appId
+        }
+      })
     });
 
     newList.appendChild(node);
-  });
-  document.getElementById("count-new-apps").textContent = `(${apps.length})`;
 
-  const openList = document.getElementById('open-list');
+  });
+
+  // then, populate the "Open Apps" tab
+  const openList = document.getElementById('open-list')!!
   openList.innerHTML = '';
-  openApps.forEach(({ appId, title, windowId }) => {
-    const appd = apps.find((app) => app.appId === appId);
+
+  openApps.forEach(({ appId, title, icons, instanceId }) => {
     const node = document.createElement('div');
     node.setAttribute('tabIndex', '0');
     node.setAttribute("data-appId", appId);
 
     const span = document.createElement("span");
-    span.textContent = title;
+    span.textContent = title ?? appId;
 
-    const img = document.createElement("img");
-    if(appd.icon?.src){
-        img.src = appd.icon.src;
-    }else{
-        img.style.opacity = 0;
-    }
+    const img = createIcon(icons)
 
     node.appendChild(img);
     node.appendChild(span);
 
-    node.addEventListener('mouseenter', () => callback({
-      type: "iframeResolveAction",
-      appId,
-      windowId,
-      intent,
-      action: "hover",
-      newOrOpen: "open"
-    }));
     node.addEventListener('click', () => {
       callback({
-        type: "iframeResolveAction",
-        appId,
-        windowId,
-        intent,
-        action: "click",
-        newOrOpen: "open"
-      });
-      callback({
-        type: "iframeResolve",
-        appId,
-        intent,
-        windowId,
-        newOrOpen: "open"
+        intent: {
+          name: intent,
+          displayName: "Whatever"
+        },
+        chosenApp: {
+          appId,
+          instanceId
+        }
       })
     });
 
     openList.appendChild(node);
   });
-  document.getElementById("count-open-apps").textContent = `(${openApps.length})`;
+
 };
 
-// STEP 1B: Receive port from parent
-window.addEventListener('message', ({ ports }) => {
-  // STEP 3B: Receive channel data from parent
-  ports[0].onmessage = ({ data }) => {
-    setup(data, msg => {
-      // STEP 4A: Send user selection information to parent
-      ports[0].postMessage(msg);
-    });
-  };
-  // STEP 2A: Send confirmation over port to parent
-  ports[0].postMessage({type: 'iframeHandshake'});
-});
+window.addEventListener("load", () => {
+
+  const parent = window.parent;
+
+  const mc = new MessageChannel();
+  const myPort = mc.port1
+  myPort.start()
+
+  parent.postMessage({ type: "SelectorMessageInitialize" }, "*", [mc.port2]);
+
+  function callback(si: SingleAppIntent | null) {
+    myPort.postMessage({
+      type: "ResolverMessageChoice",
+      payload: si
+    } as ResolverMessageChoice)
+  }
+
+  myPort.addEventListener("message", (e) => {
+    if (e.data.type == 'ResolverIntents') {
+      const details = e.data as ResolverIntents
+      console.log(JSON.stringify("INTENT DETAILS: " + JSON.stringify(details)))
+
+      setup(details, callback)
+    }
+  })
+
+  document.getElementById("cancel")!!.addEventListener("click", () => {
+    callback(null);
+  })
+
+
+})

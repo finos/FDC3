@@ -177,10 +177,17 @@ export class DemoServerContext implements ServerContext {
         } : null
 
         const channelSelector: ChannelSelectorDetails | null = (getUi() == UI.DEMO) ? {
-            uri: window.location.origin + "/static/da/noun-mailbox-6010513.png",
-            css: {
-                width: "15px",
-                height: "15px",
+            uri: window.location.origin + "/static/da/channel-selector.html",
+            collapsedCss: {
+                width: "45px",
+                height: "45px",
+                right: "20px",
+                bottom: "20px",
+                position: "fixed"
+            },
+            expandedCss: {
+                width: "300px",
+                height: "300px",
                 right: "20px",
                 bottom: "20px",
                 position: "fixed"

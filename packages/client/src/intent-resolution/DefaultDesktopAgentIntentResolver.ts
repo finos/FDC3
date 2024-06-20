@@ -1,6 +1,6 @@
-import { AppIntent, IntentResult } from "@finos/fdc3";
+import { AppIdentifier, AppIntent, IntentResult } from "@finos/fdc3";
 import { Messaging } from "@kite9/da-proxy";
-import { IntentResolver, SingleAppIntent, IntentResolutionChoiceAgentResponse, IntentResolverDetails, CSS_ELEMENTS } from "@kite9/fdc3-common";
+import { IntentResolver, SingleAppIntent, IntentResolverDetails, CSS_ELEMENTS, ResolverMessageChoice, ResolverIntents } from "@kite9/fdc3-common";
 
 export const DEFAULT_INTENT_RESOLVER_DETAILS: IntentResolverDetails = {
     uri: "http://localhost:4000/intent_resolver.html",
@@ -35,14 +35,37 @@ export class DefaultDesktopAgentIntentResolver implements IntentResolver {
         return ir
     }
 
-    async chooseIntent(appIntents: AppIntent[]): Promise<SingleAppIntent> {
-        this.openFrame(appIntents)
-
-        const choice = await this.m.waitFor<IntentResolutionChoiceAgentResponse>(m => m.type == 'intentResolutionChoice')
-
+    async chooseIntent(appIntents: AppIntent[], source: AppIdentifier) {
+        const iframe = await this.openFrame()
+        const chosen = await this.receiveChosenIntent(iframe, appIntents, source)
         this.removeFrame()
+        return chosen
+    }
 
-        return choice.payload
+    async receiveChosenIntent(iframe: Window, appIntents: AppIntent[], source: AppIdentifier): Promise<SingleAppIntent> {
+        return new Promise((resolve, _reject) => {
+            window.addEventListener("message", (e) => {
+                if (e.source == iframe && e.data.type == 'SelectorMessageInitialize') {
+                    const port = e.ports[0]
+                    port.start()
+                    port.onmessage = (e) => {
+                        switch (e.data.type) {
+                            case 'ResolverMessageChoice':
+                                const choice = e.data as ResolverMessageChoice
+                                resolve(choice.payload)
+
+                        }
+                    }
+
+                    // send the available channels details
+                    port.postMessage({
+                        type: "ResolverIntents",
+                        appIntents,
+                        source
+                    } as ResolverIntents)
+                }
+            })
+        })
     }
 
     removeFrame() {
@@ -50,11 +73,6 @@ export class DefaultDesktopAgentIntentResolver implements IntentResolver {
             document.body.removeChild(this.container)
             this.container = undefined
         }
-    }
-
-    buildUrl(appIntents: AppIntent[]): string {
-        return this.details.uri + "?intentDetails=" + encodeURIComponent(JSON.stringify(appIntents)) +
-            "&source=" + encodeURIComponent(JSON.stringify(this.m.getSource()))
     }
 
     themeContainer(container: HTMLDivElement) {
@@ -77,7 +95,7 @@ export class DefaultDesktopAgentIntentResolver implements IntentResolver {
         ifrm.style.border = "0"
     }
 
-    openFrame(appIntents: AppIntent[]): void {
+    async openFrame(): Promise<Window> {
         this.removeFrame()
 
         this.container = document.createElement("div")
@@ -86,9 +104,10 @@ export class DefaultDesktopAgentIntentResolver implements IntentResolver {
         this.themeContainer(this.container)
         this.themeFrame(ifrm)
 
-        ifrm.setAttribute("src", this.buildUrl(appIntents))
+        ifrm.setAttribute("src", this.details.uri ?? DEFAULT_INTENT_RESOLVER_DETAILS.uri!!)
 
         this.container.appendChild(ifrm)
         document.body.appendChild(this.container)
+        return ifrm.contentWindow!!
     }
 }

@@ -192,10 +192,7 @@ export interface IntentResolver {
 export type IntentResolutionChoiceAgentResponse = {
     type: 'intentResolutionChoice',
     meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
-    payload: {
-        intent: IntentMetadata,
-        chosenApp: AppMetadata
-    }
+    payload: SingleAppIntent
 }
 
 
@@ -237,7 +234,7 @@ export type SelectorMessageChannels = {
  */
 export type SelectorMessageChoice = {
     type: "SelectorMessageChoice";
-    channelId: string;
+    channelId: string | null;
 }
 
 /** 
@@ -249,8 +246,25 @@ export type SelectorMessageResize = {
 }
 
 /**
- * From the channel selector to the app, on startup
+ * From the channel selector/intent resolver to the app, on startup
  */
 export type SelectorMessageInitialize = {
     type: "SelectorMessageInitialize"
+}
+
+/** 
+ * From the intent resolver to the app
+ */
+export type ResolverMessageChoice = {
+    type: "ResolverMessageChoice";
+    payload: SingleAppIntent
+}
+
+/**
+ * From the app to the intent resolver
+ */
+export type ResolverIntents = {
+    type: "ResolverIntents";
+    appIntents: AppIntent[],
+    source: AppIdentifier
 }

@@ -2643,6 +2643,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "addon@workspace:packages/addon"
   dependencies:
+    "@finos/fdc3": "npm:^2.1.0-beta.4"
     "@kite9/fdc3-common": "workspace:*"
     typescript: "npm:^5.2.2"
     vite: "npm:^5.2.0"
