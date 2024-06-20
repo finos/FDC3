@@ -14,18 +14,25 @@ const init = async () => {
 
     const stx: any = window.stxx;
 
-	try {
-		stx.callbacks.symbolChange = () => {
-            const ticker = stx.chart.symbol;
-            fdc3.broadcast({
-                type: "fdc3.instrument",
-                name: ticker,
-                id: {ticker}
-            });
-        };
-	} catch (err) {
-		console.error("Component initialization failed: ", err);
-	}
+    // If the user changes the symbol, broadcast the new symbol
+    stx.callbacks.symbolChange = () => {
+        const ticker = stx.chart.symbol;
+        fdc3.broadcast({
+            type: "fdc3.instrument",
+            name: ticker,
+            id: {ticker}
+        });
+    };
+
+    // Listen for changes to fdc3.instrument, and update the symbol
+    fdc3.addContextListener("fdc3.instrument", (context) => {
+        stx.newChart(context.id.ticker);
+    });
+
+    // Listen for ViewChart events
+    fdc3.addIntentListener("ViewChart", (context) => {
+        stx.newChart(context.id.ticker);
+    })
 };
 
 
