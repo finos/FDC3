@@ -45,33 +45,28 @@ export type DesktopAgentDetailResolver = (o: Window, a: AppIdentifier) => Deskto
  */
 export type DesktopAgentPortResolver = (o: Window, a: AppIdentifier) => MessagePort | null
 
-export interface CSSPositioning {
-    width?: string,
-    height?: string,
-    position?: string,
-    zIndex?: string,
-    left?: string,
-    right?: string,
-    top?: string,
-    bottom?: string
-    transition?: string
+export interface CSSPositioning { [key: string]: string }
 
-    // maybe add others here
-}
+export const CSS_ELEMENTS = ["width",
+    "height",
+    "position",
+    "zIndex",
+    "left",
+    "right",
+    "top",
+    "bottom",
+    "transition",
+    "maxHeight",
+    "maxWidth"]
 
 export type ChannelSelectorDetails = {
-    icon?: {
-        src: string,
-        css?: CSSPositioning,
-    },
-    selector?: {
-        uri: string,
-        css?: CSSPositioning
-    }
+    uri?: string,
+    expandedCss?: CSSPositioning,
+    collapsedCss?: CSSPositioning
 }
 
 export type IntentResolverDetails = {
-    uri: string,
+    uri?: string,
     css?: CSSPositioning
 }
 
@@ -197,10 +192,7 @@ export interface IntentResolver {
 export type IntentResolutionChoiceAgentResponse = {
     type: 'intentResolutionChoice',
     meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
-    payload: {
-        intent: IntentMetadata,
-        chosenApp: AppMetadata
-    }
+    payload: SingleAppIntent
 }
 
 
@@ -218,3 +210,61 @@ export type ChannelSelectionChoiceAgentRequest = {
 
 export type ChannelSelectionChoiceAgentResponse = ChannelSelectionChoiceAgentRequest
 
+/**
+ * Messages from the app to the channel selector / intent resolver
+ */
+export type ChannelDetails = {
+    id: string;
+    displayMetadata: {
+        name: string;
+        color: string;
+        glyph?: string;
+    }
+};
+
+export type SelectorMessageChannels = {
+    type: "SelectorMessageChannels";
+    channels: ChannelDetails[];
+    selected: string;
+}
+
+
+/** 
+ * From the channel selector to the app
+ */
+export type SelectorMessageChoice = {
+    type: "SelectorMessageChoice";
+    channelId: string | null;
+}
+
+/** 
+ * From the channel selector to the app
+ */
+export type SelectorMessageResize = {
+    type: "SelectorMessageResize";
+    expanded: boolean;
+}
+
+/**
+ * From the channel selector/intent resolver to the app, on startup
+ */
+export type SelectorMessageInitialize = {
+    type: "SelectorMessageInitialize"
+}
+
+/** 
+ * From the intent resolver to the app
+ */
+export type ResolverMessageChoice = {
+    type: "ResolverMessageChoice";
+    payload: SingleAppIntent
+}
+
+/**
+ * From the app to the intent resolver
+ */
+export type ResolverIntents = {
+    type: "ResolverIntents";
+    appIntents: AppIntent[],
+    source: AppIdentifier
+}
