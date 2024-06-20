@@ -157,6 +157,14 @@
                 "url": "http://localhost:8095/static/chartiq/index.html"
             },
             "interop": {
+                "intents": {
+                    "listensFor": {
+                        "ViewChart": {
+                            "displayName": "View Chart",
+                            "contexts": ["fdc3.instrument"]
+                        }
+                    }
+                },
                 "userChannels": {
                     "broadcasts": ["fdc3.instrument"]
                 }
