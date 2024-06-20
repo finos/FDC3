@@ -28,7 +28,7 @@ window.addEventListener("load", () => {
             channels = details.channels
             channelId = details.selected
 
-            const selectedColor = (channelId ? (channels.find(c => c.id == channelId)?.displayMetadata?.color) : null) ?? 'black'
+            const selectedColor = (channelId ? (channels.find(c => c.id == channelId)?.displayMetadata?.color) : null) ?? 'white'
             logo.style.backgroundColor = selectedColor
         }
     })

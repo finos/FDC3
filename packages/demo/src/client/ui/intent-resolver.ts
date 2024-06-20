@@ -1,89 +1,57 @@
-import { AppIdentifier, AppIntent, IntentMetadata } from "@finos/fdc3";
-import { AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { io } from "socket.io-client"
-import { FDC3_APP_EVENT } from "../../message-types";
-import { IntentResolutionChoiceAgentRequest } from "@kite9/fdc3-common";
-import { v4 as uuid } from 'uuid'
+import { ResolverIntents, ResolverMessageChoice, SingleAppIntent } from "@kite9/fdc3-common";
 
-function getQueryVariable(variable: string): string {
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] == variable) {
-            return pair[1];
-        }
-    }
+window.addEventListener("load", () => {
 
-    return ""
-}
+    const parent = window.parent;
 
-function getAppIntents(): AppIntent[] {
-    const intentDetails = getQueryVariable("intentDetails")
-    const decoded = decodeURIComponent(intentDetails)
-    const object: AppIntent[] = JSON.parse(decoded)
-    return object
-}
-
-function getSource(): AppIdentifier {
-    const source = getQueryVariable("source")
-    const decoded = decodeURIComponent(source)
-    const object: AppIdentifier = JSON.parse(decoded)
-    return object
-}
-
-const socket = io()
-
-socket.on("connect", async () => {
-
-    const intentDetails = getAppIntents()
-    const source = getSource()
+    const mc = new MessageChannel();
+    const myPort = mc.port1
+    myPort.start()
 
     const list = document.getElementById("intent-list")!!
 
-    function sendChosenIntent(intent: IntentMetadata, app: AppMetadata, source: AppMetadata) {
-        const out: IntentResolutionChoiceAgentRequest = {
-            type: "intentResolutionChoice",
-            meta: {
-                requestUuid: uuid(),
-                timestamp: new Date(),
-                source
-            },
-            payload: {
-                chosenApp: app,
-                intent: intent,
-            }
-        }
+    parent.postMessage({ type: "SelectorMessageInitialize" }, "*", [mc.port2]);
 
-        socket.emit(FDC3_APP_EVENT, out, source)
+    function callback(si: SingleAppIntent | null) {
+        myPort.postMessage({
+            type: "ResolverMessageChoice",
+            payload: si
+        } as ResolverMessageChoice)
     }
 
-    const debug = document.createElement("p")
-    debug.textContent = JSON.stringify(source)
-    document.body.appendChild(debug)
+    myPort.addEventListener("message", (e) => {
+        if (e.data.type == 'ResolverIntents') {
+            const details = e.data as ResolverIntents
+            console.log(JSON.stringify("INTENT DETAILS: " + JSON.stringify(details)))
 
-    intentDetails.forEach(intent => {
+            details.appIntents.forEach(intent => {
 
-        intent.apps.forEach(app => {
-            const li = document.createElement("li")
-            const a = document.createElement("a")
-            const description = document.createElement("em")
+                intent.apps.forEach(app => {
+                    const li = document.createElement("li")
+                    const a = document.createElement("a")
+                    const description = document.createElement("em")
 
-            if (app.instanceId) {
-                description.textContent = `${intent.intent.displayName ?? ""} on app instance ${app.instanceId} of ${app.appId}`
-            } else {
-                description.textContent = ` ${intent.intent.displayName ?? ""} on a new instance of ${app.appId}`
-            }
+                    if (app.instanceId) {
+                        description.textContent = `${intent.intent.displayName ?? ""} on app instance ${app.instanceId} of ${app.appId}`
+                    } else {
+                        description.textContent = ` ${intent.intent.displayName ?? ""} on a new instance of ${app.appId}`
+                    }
 
-            a.textContent = intent.intent.name
+                    a.textContent = intent.intent.name
 
-            li.appendChild(a)
-            li.appendChild(description)
-            list.appendChild(li)
-            a.setAttribute("href", "#")
-            a.onclick = () => sendChosenIntent(intent.intent, app, source)
-        })
-
+                    li.appendChild(a)
+                    li.appendChild(description)
+                    list.appendChild(li)
+                    a.setAttribute("href", "#")
+                    a.onclick = () => callback({ intent: intent.intent, chosenApp: app })
+                })
+            })
+        }
     })
+
+    document.getElementById("cancel")!!.addEventListener("click", () => {
+        callback(null);
+    })
+
 
 })
