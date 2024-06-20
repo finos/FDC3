@@ -135,6 +135,17 @@
             "type": "web",
             "details": {
                 "url": "http://localhost:8095/static/ag-grid/index.html"
+            },
+            "interop": {
+                "intents": {
+                    "raises": {
+                        "ViewChart": ["fdc3.instrument"]
+                    }
+                },
+                "userChannels": {
+                    "broadcasts": ["fdc3.instrument"],
+                    "listensFor": ["fdc3.instrument"]
+                }
             }
         }
     ],
