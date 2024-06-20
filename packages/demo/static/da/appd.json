@@ -127,6 +127,15 @@
             "version": "1.0.0",
             "publisher": "FINOS",
             "icons": []
+        },
+        {
+            "appId": "grid",
+            "name": "grid",
+            "title": "AG-Grid",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:8095/static/ag-grid/index.html"
+            }
         }
     ],
     "message": "OK"
