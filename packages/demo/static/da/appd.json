@@ -147,6 +147,15 @@
                     "listensFor": ["fdc3.instrument"]
                 }
             }
+        },
+        {
+            "appId": "chartiq",
+            "name": "chartiq",
+            "title": "ChartIQ",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:8095/static/chartiq/index.html"
+            }
         }
     ],
     "message": "OK"
