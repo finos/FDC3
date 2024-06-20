@@ -1,16 +1,36 @@
 <html lang="en">
-
-<head>
+  <head>
     <title>Desktop Agent Intent Resolver</title>
     <meta charset="UTF-8" />
     <script type="module" src="/src/client/ui/channel-selector.ts"></script>
-</head>
+    <style>
+      body[data-expanded="true"] #logo {
+        display: none;
+      }
 
-<body style="background-color: #ddd;">
-    <h1>Channel Selector</h1>
-    <ul id="channel-list"></ul>
+      body[data-expanded="true"] #selector {
+        display: block;
+      }
 
-    <button id="close">Close</button>
-</body>
+      body[data-expanded="false"] #logo {
+        display: block;
+      }
 
+      body[data-expanded="false"] #selector {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body data-expanded="false">
+    <div id="selector" style="background-color: #ddd">
+      <h1>Channel Selector</h1>
+      <ul id="channel-list"></ul>
+
+      <button id="close">Close</button>
+    </div>
+    <div id="logo">
+      <img src="noun-mailbox-6010513.png" alt="Demo Icon" width="100%" />
+    </div>
+  </body>
 </html>

@@ -1,91 +1,66 @@
-import { AppIdentifier } from "@finos/fdc3";
-import { io } from "socket.io-client"
-import { FDC3_APP_EVENT } from "../../message-types";
-import { ChannelSelectionChoiceAgentRequest } from "@kite9/fdc3-common";
-import { v4 as uuid } from 'uuid'
+import { ChannelDetails, SelectorMessageChannels } from "@kite9/fdc3-common";
 
-function getQueryVariable(variable: string): string {
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] == variable) {
-            return pair[1];
-        }
-    }
+var channels: ChannelDetails[] = []
+var channelId: string | null = null
 
-    return ""
-}
 
-function getAvailableChannels(): any[] {
-    const intentDetails = getQueryVariable("availableChannels")
-    const decoded = decodeURIComponent(intentDetails)
-    const object: any[] = JSON.parse(decoded)
-    return object
-}
-
-function getCurrentChannel(): string {
-    const source = getQueryVariable("currentId")
-    const decoded = decodeURIComponent(source)
-    const object: string = JSON.parse(decoded)
-    return object
-}
-
-function getSource(): AppIdentifier {
-    const source = getQueryVariable("source")
-    const decoded = decodeURIComponent(source)
-    const object: AppIdentifier = JSON.parse(decoded)
-    return object
-}
-
-const socket = io()
-
-socket.on("connect", async () => {
-
-    const currentChannelId = getCurrentChannel()
-    const channels = getAvailableChannels()
-    const source = getSource()
-
+window.addEventListener("load", () => {
+    const parent = window.parent;
+    const logo = document.getElementById("logo")!!
     const list = document.getElementById("channel-list")!!
     const close = document.getElementById("close")!!
 
-    function sendChosenChannel(channelId: string, cancelled: boolean) {
-        const out: ChannelSelectionChoiceAgentRequest = {
-            type: "channelSelectionChoice",
-            payload: {
-                cancelled,
-                channelId
-            },
-            meta: {
-                requestUuid: uuid(),
-                timestamp: new Date(),
-                source
-            },
-        }
+    const mc = new MessageChannel();
+    const myPort = mc.port1
+    myPort.start()
 
-        socket.emit(FDC3_APP_EVENT, out, source)
+    parent.postMessage({ type: "SelectorMessageInitialize" }, "*", [mc.port2]);
+
+    function changeSize(expanded: boolean) {
+        document.body.setAttribute("data-expanded", "" + expanded);
+        myPort.postMessage({ type: "SelectorMessageResize", expanded })
     }
 
-    const debug = document.createElement("p")
-    debug.textContent = JSON.stringify(source)
-    document.body.appendChild(debug)
+    myPort.addEventListener("message", (e) => {
+        if (e.data.type == 'SelectorMessageChannels') {
+            const details = e.data as SelectorMessageChannels
+            console.log(JSON.stringify("CHANNEL DETAILS: " + JSON.stringify(details)))
+            channels = details.channels
+            channelId = details.selected
 
-    channels.forEach(channel => {
-
-        const li = document.createElement("li")
-        li.style.backgroundColor = channel.displayMetadata.color
-        const a = document.createElement("a")
-        const description = document.createElement("em")
-        description.textContent = channel.displayMetadata.name = (channel.id == currentChannelId ? " CURRENT CHANNEL " : "")
-        a.textContent = channel.id
-
-        li.appendChild(a)
-        li.appendChild(description)
-        list.appendChild(li)
-        a.setAttribute("href", "#")
-        a.onclick = () => sendChosenChannel(channel.id, false)
+            const selectedColor = (channelId ? (channels.find(c => c.id == channelId)?.displayMetadata?.color) : null) ?? 'black'
+            logo.style.backgroundColor = selectedColor
+        }
     })
 
-    close.onclick = () => sendChosenChannel("", true)
+    logo.addEventListener("click", () => {
+        list.innerHTML = ''
+        channels.forEach(channel => {
+
+            const li = document.createElement("li")
+            li.style.backgroundColor = channel.displayMetadata.color
+            const a = document.createElement("a")
+            const description = document.createElement("em")
+            description.textContent = channel.displayMetadata.name = (channel.id == channelId ? " CURRENT CHANNEL " : "")
+            a.textContent = channel.id
+
+            li.appendChild(a)
+            li.appendChild(description)
+            list.appendChild(li)
+            a.setAttribute("href", "#")
+            a.onclick = () => {
+                changeSize(false)
+                myPort.postMessage({ type: "SelectorMessageChoice", channelId: channel.id })
+            }
+        })
+
+        // ask the parent container to increase the window size
+        changeSize(true)
+    })
+
+    close.addEventListener("click", () => {
+        changeSize(false)
+    })
+
 
 })
