@@ -2643,6 +2643,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "addon@workspace:packages/addon"
   dependencies:
+    "@finos/fdc3": "npm:^2.1.0-beta.4"
+    "@kite9/fdc3-common": "workspace:*"
     typescript: "npm:^5.2.2"
     vite: "npm:^5.2.0"
   languageName: unknown
@@ -8850,13 +8852,6 @@ __metadata:
   version: 0.6.1
   resolution: "source-map@npm:0.6.1"
   checksum: 10c0/ab55398007c5e5532957cb0beee2368529618ac0ab372d789806f5718123cc4367d57de3904b4e6a4170eb5a0b0f41373066d02ca0735a0c4d75c7d328d3e011
-  languageName: node
-  linkType: hard
-
-"source-map@npm:^0.7.3":
-  version: 0.7.4
-  resolution: "source-map@npm:0.7.4"
-  checksum: 10c0/dc0cf3768fe23c345ea8760487f8c97ef6fca8a73c83cd7c9bf2fde8bc2c34adb9c0824d6feb14bc4f9e37fb522e18af621543f1289038a66ac7586da29aa7dc
   languageName: node
   linkType: hard
 

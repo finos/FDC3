@@ -78,7 +78,8 @@ function buildUserChannelState(messaging: MessagePortMessaging) {
         new DefaultChannel(messaging, "two", "user", {
             color: "blue",
             name: "THE BLUE CHANNEL"
-        }), new DefaultChannel(messaging, "two", "user", {
+        }),
+        new DefaultChannel(messaging, "three", "user", {
             color: "green",
             name: "THE GREEN CHANNEL"
         })

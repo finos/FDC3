@@ -1,15 +1,26 @@
 import { Messaging } from "@kite9/da-proxy";
-import { ChannelSelector, ChannelSelectorDetails, CSSPositioning, ChannelSelectionChoiceAgentRequest } from "@kite9/fdc3-common";
+import { ChannelSelector, ChannelSelectorDetails, CSS_ELEMENTS, CSSPositioning, SelectorMessageChannels, SelectorMessageChoice, SelectorMessageResize } from "@kite9/fdc3-common";
 import { Channel } from "@finos/fdc3";
-import { DEFAULT_CONTAINER_CSS } from "../intent-resolution/DefaultDesktopAgentIntentResolver";
 
-const DEFAULT_ICON_CSS: CSSPositioning = {
-    position: "fixed",
-    zIndex: "1000",
-    right: "10px",
-    bottom: "10px",
-    width: "50px",
-    height: "50px"
+const DEFAULT_CHANNEL_SELECTOR_DETAILS: ChannelSelectorDetails = {
+    uri: "http://localhost:4000/channel_selector.html",
+    collapsedCss: {
+        position: "fixed",
+        zIndex: "1000",
+        right: "10px",
+        bottom: "10px",
+        width: "50px",
+        height: "50px"
+    },
+    expandedCss: {
+        position: "fixed",
+        zIndex: "1000",
+        right: "10px",
+        bottom: "10px",
+        width: "450px",
+        maxHeight: "600px",
+        transition: "all 0.5s ease-out allow-discrete"
+    }
 }
 
 /**
@@ -23,31 +34,27 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
     private readonly m: Messaging
     private readonly details: ChannelSelectorDetails
     private container: HTMLDivElement | undefined = undefined
-    private icon: HTMLImageElement | undefined = undefined
+    private iframe: Window | undefined = undefined
     private availableChannels: Channel[] = []
-    private currentId: string | null = null
+    private channelId: string | null = null
     private callback: ((channelId: string) => void) | null = null
+    private port: MessagePort | undefined = undefined
 
-    constructor(m: Messaging, details: ChannelSelectorDetails) {
+    constructor(m: Messaging, details: ChannelSelectorDetails | null) {
         this.m = m
-        this.details = details
+        this.details = details ?? DEFAULT_CHANNEL_SELECTOR_DETAILS
+        this.setupMessageListener()
+        this.openFrame()
     }
 
-    removeFrame() {
-        if (this.container) {
-            document.body.removeChild(this.container)
-            this.container = undefined
-        }
-    }
-
-    buildSrc(src: string, channelId: string | null): string {
-        return src + (channelId ? "?channelId=" + encodeURIComponent(channelId) : "")
-    }
-
-    theme(e: HTMLElement, css: CSSPositioning) {
-        for (const [key, value] of Object.entries(css)) {
+    themeContainer(css: CSSPositioning) {
+        for (let i = 0; i < CSS_ELEMENTS.length; i++) {
+            const k = CSS_ELEMENTS[i]
+            const value: string | undefined = css[(k as string)]
             if (value != null) {
-                e.style.setProperty(key, value as string)
+                this.container?.style.setProperty(k, value)
+            } else {
+                this.container?.style.removeProperty(k)
             }
         }
     }
@@ -59,34 +66,34 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
         ifrm.style.border = "0"
     }
 
-    updateChannel(channelId: string | null, availableChannels: Channel[]): void {
-        this.availableChannels = availableChannels
-        this.currentId = channelId
-        const src = this.details?.icon?.src
-        if (src) {
-            // the DA is asking for an icon
-            if (this.icon == undefined) {
-                this.icon = document.createElement("img")
-                this.theme(this.icon, this.details.icon?.css ?? DEFAULT_ICON_CSS)
-                document.body.appendChild(this.icon)
-
-                const popup = this.details.selector
-                if (popup?.uri) {
-                    // need to allow for dragging here too
-                    this.icon.addEventListener("touchend", () => this.chooseChannel())
-                    this.icon.addEventListener("mouseup", () => this.chooseChannel())
+    private setupMessageListener() {
+        window.addEventListener("message", (e) => {
+            if (e.source == this.iframe && e.data.type == 'SelectorMessageInitialize') {
+                this.port = e.ports[0]
+                this.port.start()
+                this.port.onmessage = (e) => {
+                    switch (e.data.type) {
+                        case 'SelectorMessageChoice':
+                            const choice = e.data as SelectorMessageChoice
+                            if ((choice.channelId) && (this.callback)) {
+                                this.callback(choice.channelId)
+                            }
+                            break
+                        case 'SelectorMessageResize':
+                            const resize = e.data as SelectorMessageResize
+                            if (resize.expanded) {
+                                this.themeContainer(this.details.expandedCss!!)
+                            } else {
+                                this.themeContainer(this.details.collapsedCss!!)
+                            }
+                            break
+                    }
                 }
+
+                // send the available channels details
+                this.updateChannel(this.channelId, this.availableChannels)
             }
-
-            this.icon.src = this.buildSrc(src, channelId)
-        }
-    }
-
-    buildUrl(): string {
-        return this.details.selector?.uri
-            + "?currentId=" + encodeURIComponent(JSON.stringify(this.currentId))
-            + "&availableChannels=" + encodeURIComponent(JSON.stringify(this.serializeChannels()))
-            + "&source=" + encodeURIComponent(JSON.stringify(this.m.getSource()))
+        })
     }
 
     serializeChannels(): any {
@@ -98,36 +105,39 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
         })
     }
 
-    openFrame(): void {
-        this.removeFrame()
+    updateChannel(channelId: string | null, availableChannels: Channel[]): void {
+        // record the settings here
+        this.channelId = channelId
+        this.availableChannels = availableChannels
 
+        // also send to the iframe
+        this.port?.postMessage({
+            type: 'SelectorMessageChannels',
+            channels: this.availableChannels.map(ch => {
+                return {
+                    id: ch.id,
+                    displayMetadata: ch.displayMetadata
+                }
+            }),
+            selected: channelId
+        } as SelectorMessageChannels)
+    }
+
+    private openFrame(): void {
         this.container = document.createElement("div")
         const ifrm = document.createElement("iframe")
 
-        this.theme(this.container, this.details.selector?.css ?? DEFAULT_CONTAINER_CSS)
+        this.themeContainer(this.details.collapsedCss ?? DEFAULT_CHANNEL_SELECTOR_DETAILS.collapsedCss!!)
         this.themeFrame(ifrm)
 
-        ifrm.setAttribute("src", this.buildUrl())
-
+        ifrm.setAttribute("src", this.details.uri!!)
         this.container.appendChild(ifrm)
         document.body.appendChild(this.container)
+        this.iframe = ifrm.contentWindow!!
     }
 
     setChannelChangeCallback(callback: (channelId: string) => void): void {
         this.callback = callback
     }
-
-    async chooseChannel(): Promise<void> {
-        this.openFrame()
-
-        const choice = await this.m.waitFor<ChannelSelectionChoiceAgentRequest>(m => m.type == 'channelSelectionChoice')
-
-        this.removeFrame()
-
-        if ((!choice.payload.cancelled) && (this.callback)) {
-            return this.callback(choice.payload.channelId)
-        }
-    }
-
 
 }

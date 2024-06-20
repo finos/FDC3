@@ -11,5 +11,9 @@
   "devDependencies": {
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
+  },
+  "dependencies": {
+    "@finos/fdc3": "^2.1.0-beta.4",
+    "@kite9/fdc3-common": "workspace:*"
   }
 }
