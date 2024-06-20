@@ -155,6 +155,11 @@
             "type": "web",
             "details": {
                 "url": "http://localhost:8095/static/chartiq/index.html"
+            },
+            "interop": {
+                "userChannels": {
+                    "broadcasts": ["fdc3.instrument"]
+                }
             }
         }
     ],
