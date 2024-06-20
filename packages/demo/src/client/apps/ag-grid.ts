@@ -167,14 +167,8 @@ const numberCellFormatter = ({ value }: FormatterParams) =>
   `$${Math.floor(value).toString().replace(dollarFormatterRegEx, "$1,")}`;
 const gainLossFormatter = ({ value }: FormatterParams) =>
   value > 0 ? "gain" : "loss";
-// function gainLossFormatter(params) {
-//     return `<span class=${params.value > 0 ? "gain" : "loss"}> ${params.value > 0 ? "+" : ""} $${Math.floor(params.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}</span>`;
-// }
 const percentCellFormatter = ({ value }: FormatterParams) =>
   value > 0 ? "gain" : "loss";
-// function percentCellFormatter(params) {
-//     return `<span class=${params.value > 0 ? "gain" : "loss"}>${Math.floor(params.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}%</span>`;
-// }
 
 // Create a list of the data, that we modify as we go. if you are using an immutable
 // data store (such as Redux) then this would be similar to your store of data.
@@ -227,33 +221,28 @@ const createTradeRecord = (security: string, portfolio: string, book: string): T
     };
 }
 
+function BtnCellRenderer() {}
 
-class BtnCellRenderer {
-    // @ts-ignore
-    private eGui: HTMLButtonElement;
-    private params = {};
-    
-    // @ts-ignore
-    init(params: any){
-        this.params = params;
-        this.eGui = document.createElement("button");
-        // @ts-ignore
-        this.eGui.innerHTML = this.params.title;
-        this.eGui.addEventListener("click", this.btnClickHandler);
-    }
+BtnCellRenderer.prototype.init = function(params: any) {
+  this.params = params;
 
-    getGui(){
-        return this.eGui;
-    }
-    
-    destroy(){
-        this.eGui.removeEventListener("click", this.btnClickHandler);
-    }
-    
-    btnClickHandler(){
-        // @ts-ignore
-        this.params.clicked(this.params);
-    }
+  this.eGui = document.createElement('button');
+  this.eGui.innerHTML = params.title;
+
+  this.btnClickedHandler = this.btnClickedHandler.bind(this);
+  this.eGui.addEventListener('click', this.btnClickedHandler);
+}
+
+BtnCellRenderer.prototype.getGui = function() {
+  return this.eGui;
+}
+
+BtnCellRenderer.prototype.destroy = function() {
+  this.eGui.removeEventListener('click', this.btnClickedHandler);
+}
+
+BtnCellRenderer.prototype.btnClickedHandler = function() {
+  this.params.clicked(this.params);
 }
 
 const setupGridOptions = {
