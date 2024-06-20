@@ -4,6 +4,38 @@
     <title>Desktop Agent</title>
     <meta charset="UTF-8" />
     <script type="module" src="/src/client/da/dummy-desktop-agent.ts"></script>
+    <style>
+#app-list {
+    margin-top: 16px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, 170px);
+    grid-template-rows: masonry;
+}
+
+.app {
+    width: 150px;
+    height: 200px;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 8px;
+    position: relative;
+
+    h3 {
+        margin: 8px 0;
+    }
+
+    p {
+        font-style: italic;
+    }
+
+    button {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+    }
+}
+    </style>
 </head>
 
 <body>
