@@ -521,5 +521,25 @@
     "description": "Dow Jones’ Interoperable Modules enable seamless integration of Dow Jones’ news into workflows, applications and content. Featuring premium financial and business content from trusted Dow Jones brands such as The Wall Street Journal, Barron’s, MarketWatch and Investor’s Business Daily, these news and data modules leverage FDC3 standards to enhance system interoperability. <br /> <br />As part of the workspace ecosystem, Dow Jones’ news and data modules help financial services firms optimize the financial professional’s experience. Modules are easily integrated into your company’s workflow, analytics and other platforms to make it easier to offer a personalized user experience. ",
     "badges": [],
     "type": "application-provider"
+  },
+  {
+    "title": "Interop Security Scorecard",
+    "publisher": "Connectifi Co.",
+    "image": "/img/users/connectifi.png",
+    "infoLink": "https://hubs.ly/Q02krHRh0",
+    "docsLink": "https://www.connectifi.co/post/interop-security-scorecard",
+    "type": "tools-and-training",
+    "badges": [],
+    "description": "Questions about security and identity in FDC3 are even more critical now, as adopters look to address higher value use cases through application interoperability.  The Interop Security Scorecard is a free, easy to use, and vendor-agnostic framework to evaluate FDC3 implementations across multiple vectors."
+  },
+  {
+    "title": "Connectifi FDC3 Sandbox",
+    "publisher": "Connectifi Co.",
+    "image": "/img/users/connectifi.png",
+    "infoLink": "https://apps.connectifi-interop.com/sandbox",
+    "docsLink": "https://www.connectifi.co/post/getting-started",
+    "type": "demos",
+    "badges": [],
+    "description": "The Connectifi FDC3 Sandbox is a free FDC3 development tool that uses the Connectifi cloud service to securely enable interoperability across applications regardless of technology or device they are running on.  It uses the FDC3 standard and works without installs so that FDC3 can be used directly in a browser, bridging across desktop containers and across devices."
   }
 ]
