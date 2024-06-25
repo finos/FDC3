@@ -40,6 +40,9 @@ interface DesktopAgent {
   getCurrentChannel() : Promise<Channel | null>;
   leaveCurrentChannel() : Promise<void>;
 
+  // non-context events 
+  addEventListener(type: FDC3EventType  | null, handler: EventHandler): Promise<Listener>;
+
   //implementation info
   getInfo(): Promise<ImplementationMetadata>;
 
@@ -90,6 +93,30 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, 
 - [`Listener`](Types#listener)
 - [`Context`](Types#context)
 - [`ContextHandler`](Types#contexthandler)
+
+### `addEventListener`
+```ts
+addEventListener(type: FDC3EventType  | null, handler: EventHandler): Promise<Listener>;
+```
+
+Registers a handler for non-context and non-intent events from the Desktop Agent. If the consumer is only interested in an event of a particular type, they can specify that type. If the consumer is able to receive events of any type or will inspect types received, then they can pass `null` as the `type` parameter to receive all event types.
+
+Whenever the handler function is called it will be passed an event object with details related to the event.
+
+**Examples:**
+
+```js
+// any event type
+const listener = await fdc3.addEventListener(null, event => { ... });
+
+// listener for a specific event type that logs its details
+const userChannelChangedListener = await fdc3.addEventListener(FDC3EventType.USER_CHANNEL_CHANGED, event => { 
+  console.log(`Received event ${event.type}\n\tDetails: ${event.details}`);
+  //do something else with the event
+});
+````
+
+
 
 ### `addIntentListener`
 

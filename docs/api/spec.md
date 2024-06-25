@@ -113,6 +113,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Include implementations of the following [Desktop Agent](ref/DesktopAgent) API functions, as defined in this Standard:
   - [`addContextListener`](ref/DesktopAgent#addcontextlistener)
   - [`addIntentListener`](ref/DesktopAgent#addintentlistener)
+  - [`addEventListener`](ref/DesktopAgent#addEventListener)
   - [`broadcast`](ref/DesktopAgent#broadcast)
   - [`createPrivateChannel`](ref/DesktopAgent#createprivatechannel)
   - [`findInstances`](ref/DesktopAgent#findinstances)
