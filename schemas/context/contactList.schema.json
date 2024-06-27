@@ -11,6 +11,18 @@
         "type": {
           "const": "fdc3.contactList"
         },
+        "id": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Contact List Identifiers",
+          "description": "One or more identifiers that refer to the contact list in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future."
+        },
+        "name": {
+          "type": "string",
+          "description": "An optional human-readable summary of the contact list"
+        },
         "contacts": {
           "type": "array",
           "title": "List of Contacts",
