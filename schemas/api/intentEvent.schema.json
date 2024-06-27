@@ -49,7 +49,7 @@
 			},
 			"additionalProperties": false,
 			"required": [
-				"intent", "context", "originatingApp"
+				"intent", "context"
 			]
 		}
 	}
