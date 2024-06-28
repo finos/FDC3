@@ -375,7 +375,7 @@ export interface TimeRangeObject {
      * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
      */
     startTime?: Date;
-    type:       "fdc3.timerange";
+    type:       "fdc3.timeRange";
     id?:        { [key: string]: any };
     name?:      string;
     [property: string]: any;
@@ -1826,7 +1826,7 @@ export interface TimeRange {
      * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
      */
     startTime?: Date;
-    type:       "fdc3.timerange";
+    type:       "fdc3.timeRange";
     id?:        { [key: string]: any };
     name?:      string;
     [property: string]: any;
@@ -2793,7 +2793,7 @@ const typeMap: any = {
         "fdc3.instrument",
     ],
     "TimeRangeType": [
-        "fdc3.timerange",
+        "fdc3.timeRange",
     ],
     "ChartStyle": [
         "bar",

@@ -472,7 +472,7 @@ describe('test version comparison functions', () => {
     expect(isStandardContextType('fdc3.portfolio')).toBe(true);
     expect(isStandardContextType('fdc3.position')).toBe(true);
     expect(isStandardContextType('fdc3.nothing')).toBe(true);
-    expect(isStandardContextType('fdc3.timerange')).toBe(true);
+    expect(isStandardContextType('fdc3.timeRange')).toBe(true);
     expect(isStandardContextType('fdc3.transactionResult')).toBe(true);
     expect(isStandardContextType('fdc3.valuation')).toBe(true);
   });

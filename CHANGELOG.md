@@ -8,8 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
-* Corrected inconsistent camel-casing of the `fdc3.timeRange` context type which appeared as `fdc3.timerange` in a number of places. ([#1240][https://github.com/finos/FDC3/pull/1240])
-* Corrected an error in the `fdc3.TransactionResult` schema which resulted in the `message` property being omitted from the generated TypeScript types for it. ([#1251][https://github.com/finos/FDC3/pull/1251])
+* Corrected inconsistent camel-casing of the `fdc3.timeRange` context type which appeared as `fdc3.timerange` in a number of places. ([#1240](https://github.com/finos/FDC3/pull/1240))
+* Corrected an error in the `fdc3.TransactionResult` schema which resulted in the `message` property being omitted from the generated TypeScript types for it. ([#1251](https://github.com/finos/FDC3/pull/1251))
 
 ## [FDC3 Standard 2.1](https://github.com/finos/FDC3/compare/v2.0..v2.1) - 2023-09-13
 
@@ -95,7 +95,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added a recommended set of user channel definitions to the API docs and typescript sources ([#727](https://github.com/finos/FDC3/pull/727))
 * Added the optional exposure of originating app metadata to messages received via `addContextListener` and `addIntentListener` via the new `ContextMetadata` type. ([#725](https://github.com/finos/FDC3/pull/725))
 * Added the current app's `AppMetadata` to the `ImplementationMetadata` returned by `fdc3.getInfo()` allowing an app to retrieve its own metadata, according to the Desktop Agent ([#726](https://github.com/finos/FDC3/pull/726))
-* Added a context type representing a range of time (`fdc3.timerange`). ([#706](https://github.com/finos/FDC3/pull/706))
+* Added a context type representing a range of time (`fdc3.timeRange`). ([#706](https://github.com/finos/FDC3/pull/706))
 * Added a context type representing a Currency (`fdc3.currency`). ([#708](https://github.com/finos/FDC3/pull/708))
 * Added a context type representing the price and value of a holding (`fdc3.valuation`). ([#709](https://github.com/finos/FDC3/pull/709))
 * Added a context type representing a Chart (`fdc3.chart`). ([#715](https://github.com/finos/FDC3/pull/715))
