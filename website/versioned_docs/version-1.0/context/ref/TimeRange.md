@@ -28,7 +28,7 @@ Notes:
 
 ## Type
 
-`fdc3.timerange`
+`fdc3.timeRange`
 
 ## Schema
 

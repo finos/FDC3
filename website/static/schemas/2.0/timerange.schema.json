@@ -16,7 +16,7 @@
     }
   ],
   "properties": {
-    "type": { "const": "fdc3.timerange" },
+    "type": { "const": "fdc3.timeRange" },
     "startTime": { "type": "string", "format": "date-time" },
     "endTime":  {"type": "string", "format": "date-time" }
   },
