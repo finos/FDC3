@@ -8,7 +8,7 @@
     {
       "properties": {
         "type": {
-          "const": "fdc3.timerange"
+          "const": "fdc3.timeRange"
         },
         "startTime": {
           "type": "string",

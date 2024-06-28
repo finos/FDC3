@@ -218,7 +218,7 @@ The following are standard FDC3 context types:
 - [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/2.1/context/portfolio.schema.json))
 - [`fdc3.position`](ref/Position) ([schema](/schemas/2.1/context/position.schema.json))
 - [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/2.1/context/nothing.schema.json))
-- [`fdc3.timerange`](ref/TimeRange) ([schema](/schemas/2.1/context/timerange.schema.json))
+- [`fdc3.timeRange`](ref/TimeRange) ([schema](/schemas/2.1/context/timerange.schema.json))
 - [`fdc3.transactionResult`](ref/TransactionResult) ([schema](/schemas/2.1/context/transactionresult.schema.json))
 - [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/2.1/context/valuation.schema.json))
 
