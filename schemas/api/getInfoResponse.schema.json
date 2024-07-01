@@ -1,0 +1,64 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/getInfoResponse.schema.json",
+	"type": "object",
+	"title": "GetInfo Response",
+	"description": "A response to a getInfo request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/GetInfoResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/GetInfoSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/GetInfoErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"GetInfoResponseType": {
+			"title": "GetInfo Response Message Type",
+			"const": "getInfoResponse"
+		},
+		"GetInfoSuccessResponsePayload": {
+			"title": "GetInfo Response Payload",
+			"type": "object",
+			"properties": {
+				"implementationMetadata": {
+					"$ref": "api.schema.json#/definitions/ImplementationMetadata"
+				}
+			},
+			"required": [
+				"implementationMetadata"
+			],
+			"additionalProperties": false
+		},
+		"GetInfoErrorResponsePayload": {
+			"title": "GetInfo Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "common.schema.json#/$defs/ErrorMessages"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

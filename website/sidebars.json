@@ -16,6 +16,7 @@
         "items": [
           "api/spec",
           "api/supported-platforms",
+          "api/ref/GetAgent",
           "api/ref/DesktopAgent",
           "api/ref/Channel",
           "api/ref/PrivateChannel",

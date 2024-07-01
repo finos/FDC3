@@ -25,15 +25,27 @@ let sources = '';
 
 let dirIndex = 0;
 
+//skip duplicate paths (we might want to specify some files to go first, and might duplicate them)
+const paths = new Set();
+const addAPath = (aPath,paths,sources) => {
+  if (!paths.has(aPath)) {
+    paths.add(aPath)
+    return sources + ` --src ${aPath}`;
+  } else {
+    console.log(`skipping duplicate path ${aPath}`);
+    return sources;
+  }
+}
+
 while (dirIndex < inputs.length) {
   if (inputs[dirIndex].endsWith('.schema.json')) {
-    sources += `--src ${path.join(inputs[dirIndex])} `;
+    sources = addAPath(path.join(inputs[dirIndex]),paths,sources);
   } else {
     fs.readdirSync(inputs[dirIndex], { withFileTypes: true }).forEach(file => {
       if (file.isDirectory()) {
         inputs.push(path.join(inputs[dirIndex], file.name));
       } else if (file.name.endsWith('.schema.json')) {
-        sources += `--src ${path.join(inputs[dirIndex], file.name)} `;
+        sources = addAPath(path.join(inputs[dirIndex], file.name),paths,sources);
       }
     });
   }
