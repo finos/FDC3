@@ -57,15 +57,7 @@ FDC3 and the Desktop Agent API it defines are intended to be independent of part
 
 Specifically, the use of ['unions'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of primitive values in API type and metadata objects, or function parameters SHOULD be avoided as they often cannot be replicated in other languages. Unions of more complex types (such as specific [Context](ref/Context) Types) may be used where a suitable interface is available or can be created to allow the required polymorphism in languages other than TypeScript.
 
-### API Access
-
-FDC3 Desktop Agent implementations may provide a number of different types of interface for apps to connect with the agent:
-
-- [Web Preload](specs/preloadDesktopAgents.md) - DAs that use a technology that allows the `fdc3` interface to be instantiated on the global object (`window.fdc3`) without any action by the app itself. Example technologies that support preloading include DAs built with Electron, Webviews, and Browser Extensions.
-- [Web Proxy](specs/browserResidentDesktopAgents) - DAs that run in standard browsers (and therefore can't instantiate `window.fdc3` within an application's window) may use `window.postMessage`-based Web Connection Protocol and FDC3 Wire Protocol to implement communication between an App and a Desktop Agent in different windows or frames.
-- Native language adaptors - DAs that run in native containers MAY provide proprietary libraries to connect to the Desktop Agent.
-
-For implementation details relating to these interfaces and particular languages, please see [Supported Platforms](supported-platforms).
+For implementation details relating to particular languages, and how to access the API in those languages, please see [Supported Platforms](supported-platforms).
 
 ### Standards vs. Implementation
 
@@ -98,8 +90,8 @@ There is currently no method of discovering all the apps supported by a Desktop 
 
 An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 
-- Provide the FDC3 API to web applications via a global accessible as [`window.fdc3`](#api-access).
-- Provide a global [`fdc3Ready`](#api-access) event that is fired when the API is ready for use.
+- Provide the FDC3 API to web applications via a global accessible as [`window.fdc3`](support-platforms#web).
+- Provide a global [`fdc3Ready`](support-platforms#web) event to web applications that is fired when the API is ready for use.
 - Provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to `raiseIntentForContext` that return multiple options), such as a resolver UI.
   - Intent resolution MUST take into account any specified input or return context types
   - Requests for resolution to apps returning a channel MUST include any apps that are registered as returning a channel with a specific type.
