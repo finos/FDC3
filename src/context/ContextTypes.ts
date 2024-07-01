@@ -236,8 +236,11 @@ export interface InstrumentElement {
      * `id` field that is not globally unique.
      */
     market?: SearchCriteriaMarket;
-    type:    "fdc3.instrument";
-    name?:   string;
+    /**
+     * An optional human-readable name for the instrument
+     */
+    name?: string;
+    type:  "fdc3.instrument";
     [property: string]: any;
 }
 
@@ -785,13 +788,15 @@ export interface SearchCriteria {
      * `id` field that is not globally unique.
      */
     market?: SearchCriteriaMarket;
-    type:    SearchCriteriaType;
     /**
+     * An optional human-readable name for the instrument
+     *
      * An optional human-readable name for the contact
      *
      * An optional human-readable name for the organization
      */
     name?: string;
+    type:  SearchCriteriaType;
     [property: string]: any;
 }
 
@@ -1201,8 +1206,11 @@ export interface Instrument {
      * `id` field that is not globally unique.
      */
     market?: PurpleMarket;
-    type:    "fdc3.instrument";
-    name?:   string;
+    /**
+     * An optional human-readable name for the instrument
+     */
+    name?: string;
+    type:  "fdc3.instrument";
     [property: string]: any;
 }
 
@@ -2499,8 +2507,8 @@ const typeMap: any = {
     "InstrumentElement": o([
         { json: "id", js: "id", typ: r("PurpleInstrumentIdentifiers") },
         { json: "market", js: "market", typ: u(undefined, r("SearchCriteriaMarket")) },
-        { json: "type", js: "type", typ: r("InstrumentType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("InstrumentType") },
     ], "any"),
     "PurpleInstrumentIdentifiers": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
@@ -2612,8 +2620,8 @@ const typeMap: any = {
     "SearchCriteria": o([
         { json: "id", js: "id", typ: r("Identifiers") },
         { json: "market", js: "market", typ: u(undefined, r("SearchCriteriaMarket")) },
-        { json: "type", js: "type", typ: r("SearchCriteriaType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("SearchCriteriaType") },
     ], "any"),
     "Identifiers": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
@@ -2688,8 +2696,8 @@ const typeMap: any = {
     "Instrument": o([
         { json: "id", js: "id", typ: r("FluffyInstrumentIdentifiers") },
         { json: "market", js: "market", typ: u(undefined, r("PurpleMarket")) },
-        { json: "type", js: "type", typ: r("InstrumentType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("InstrumentType") },
     ], "any"),
     "FluffyInstrumentIdentifiers": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
