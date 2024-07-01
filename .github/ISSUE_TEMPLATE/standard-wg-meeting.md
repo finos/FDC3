@@ -43,7 +43,7 @@ Thursday DD MMM yyyy - 10am (US eastern timezone EDT/EST) / 3pm (London, GMT/BST
 
  Please click the following links at the start of the meeting if you have not done so previously.
 
- - [View the CSL](https://raw.githubusercontent.com/finos/FDC3/main/LICENSE)
+ - [View the CSL](https://raw.githubusercontent.com/finos/FDC3/main/LICENSE.md)
  - [View the GOVERNANCE of the Project](https://github.com/finos/FDC3/blob/main/GOVERNANCE.md)
  - [Click here to start a PR](https://github.com/finos/FDC3/edit/main/NOTICES.md). 
    - Edit the page to add your details.
