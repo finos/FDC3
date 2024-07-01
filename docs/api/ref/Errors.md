@@ -442,9 +442,6 @@ public static class ResultError
 </TabItem>
 </Tabs>
 
-</TabItem>
-</Tabs>
-
 ## `BridgingError`
 
 `@experimental`
