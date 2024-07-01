@@ -1239,7 +1239,8 @@ export interface FindIntentsByContextRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextRequestPayload {
-    context: Context;
+    context:     Context;
+    resultType?: string;
 }
 
 /**
@@ -2177,7 +2178,7 @@ export interface IntentEventPayload {
     /**
      * Details of the application instance that raised the intent
      */
-    originatingApp: AppIdentifier;
+    originatingApp?: AppIdentifier;
 }
 
 /**
@@ -4329,6 +4330,7 @@ const typeMap: any = {
     ], false),
     "FindIntentsByContextRequestPayload": o([
         { json: "context", js: "context", typ: r("Context") },
+        { json: "resultType", js: "resultType", typ: u(undefined, "") },
     ], false),
     "FindIntentsByContextsByContextResponse": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
@@ -4537,7 +4539,7 @@ const typeMap: any = {
     "IntentEventPayload": o([
         { json: "context", js: "context", typ: r("Context") },
         { json: "intent", js: "intent", typ: "" },
-        { json: "originatingApp", js: "originatingApp", typ: r("AppIdentifier") },
+        { json: "originatingApp", js: "originatingApp", typ: u(undefined, r("AppIdentifier")) },
     ], false),
     "IntentListenerUnsubscribeRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
