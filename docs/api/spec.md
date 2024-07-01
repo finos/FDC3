@@ -51,13 +51,21 @@ The FDC3 API specification consists of interfaces.  It is expected that each Des
 
 Other interfaces defined in the spec are not critical to define as concrete types.  Rather, the Desktop Agent should expect to have objects of the interface shape passed into or out of their library.
 
+### Implementation language
+
+FDC3 and the Desktop Agent API it defines are intended to be independent of particular programming languages and platforms and hence the original definitions, produced in TypeScript, may be translated into other languages. However, this also places limitations on the API definitions as they need to be widely implementable in other languages.
+
+Specifically, the use of ['unions'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of primitive values in API type and metadata objects, or function parameters SHOULD be avoided as they often cannot be replicated in other languages. Unions of more complex types (such as specific [Context](ref/Context) Types) may be used where a suitable interface is available or can be created to allow the required polymorphism in languages other than TypeScript.
+
+### API Access
+
 FDC3 Desktop Agent implementations may provide a number of different types of interface for apps to connect with the agent:
 
 - [Web Preload](specs/preloadDesktopAgents.md) - DAs that use a technology that allows the `fdc3` interface to be instantiated on the global object (`window.fdc3`) without any action by the app itself. Example technologies that support preloading include DAs built with Electron, Webviews, and Browser Extensions.
 - [Web Proxy](specs/browserResidentDesktopAgents) - DAs that run in standard browsers (and therefore can't instantiate `window.fdc3` within an application's window) may use `window.postMessage`-based Web Connection Protocol and FDC3 Wire Protocol to implement communication between an App and a Desktop Agent in different windows or frames.
 - Native language adaptors - DAs that run in native containers MAY provide proprietary libraries to connect to the Desktop Agent.
 
-For implementation details relating to these interfaces and particular languages, , please see [Supported Platforms](supported-platforms).
+For implementation details relating to these interfaces and particular languages, please see [Supported Platforms](supported-platforms).
 
 ### Standards vs. Implementation
 
@@ -100,6 +108,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Include implementations of the following [Desktop Agent](ref/DesktopAgent) API functions, as defined in this Standard:
   - [`addContextListener`](ref/DesktopAgent#addcontextlistener)
   - [`addIntentListener`](ref/DesktopAgent#addintentlistener)
+  - [`addEventListener`](ref/DesktopAgent#addEventListener)
   - [`broadcast`](ref/DesktopAgent#broadcast)
   - [`createPrivateChannel`](ref/DesktopAgent#createprivatechannel)
   - [`findInstances`](ref/DesktopAgent#findinstances)
