@@ -62,7 +62,7 @@ interface Context {
 
 or in JSON Schema as:
 
-```JSON
+```json
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "https://fdc3.finos.org/schemas/next/context/context.schema.json",
@@ -103,6 +103,39 @@ It may be as simple as adding an optional `$version` property to types, but it c
 ### Field Type Conventions
 
 This Standard defines a number of conventions for the fields of context types that all context objects SHOULD adhere to in order to reduce or prevent competing conventions from being established in both standardized types and proprietary types created by app developers.
+
+#### Avoid union types / composition of primitive types
+
+Both Typescript and JSON Schema allow for a type of polymorphism in types and interfaces that is hard to represent in other languages: allowing the type of a variable to be a ['union'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of other, unrelated types. E.g.: in TypeScript
+
+```ts
+type Example = SomeOtherType | YetAnotherType;
+```
+
+Similar constructs are allowed in JSON Schema by [combining or composing schemas](https://json-schema.org/understanding-json-schema/reference/combining) using the `anyOf` or `oneOf` keywords to specify that a value can take the form defined in one-or-more or one-of-several sub-schemas.
+
+```json
+"recipients": {
+    "title": "Email Recipients",
+    "description": "One or more recipients for the email.",
+    "oneOf": [
+        {
+            "$ref": "contact.schema.json#"
+        },
+        {
+            "$ref": "contactList.schema.json#"
+        }
+    ]
+}
+```
+
+However, other languages can be less flexible. In most languages, polymorphism of object types is possible via the implementation and/or extension of an interface (for example all context types are derived from the [Context](ref/Context) schema, which can be modelled as an interface). However, this approach is not possible if one of the types in the union is a primitive, meaning it's not a class and can't be modified to implement an interface, e.g.:
+
+```ts
+type Example2 = SomeOtherType | number;
+```
+
+Hence, to ensure that FDC3 context objects are implementable in other languages context schemas MUST NOT use `anyOf`/`oneOf` compositions of primitive types in JSON schema (and, hence, unions of primitive types in TypeScript) and SHOULD avoid compositions of Object types unless a concept that can be defined as an interface (such as [Context](ref/Context)) is available.
 
 #### Identifiers
 
