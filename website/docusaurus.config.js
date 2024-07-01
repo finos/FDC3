@@ -50,7 +50,7 @@ module.exports={
   "plugins": [],
   "themeConfig": {
     "prism": {
-      "additionalLanguages": ["csharp"]
+      "additionalLanguages": ["json","csharp"]
     },
     "algolia": {
       "appId": "YW91L9TW76",

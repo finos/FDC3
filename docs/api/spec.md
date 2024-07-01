@@ -51,6 +51,12 @@ The FDC3 API specification consists of interfaces.  It is expected that each Des
 
 Other interfaces defined in the spec are not critical to define as concrete types.  Rather, the Desktop Agent should expect to have objects of the interface shape passed into or out of their library.
 
+### Implementation language
+
+FDC3 and the Desktop Agent API it defines are intended to be independent of particular programming languages and platforms and hence the original definitions, produced in TypeScript, may be translated into other languages. However, this also places limitations on the API definitions as they need to be widely implementable in other languages.
+
+Specifically, the use of ['unions'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of primitive values in API type and metadata objects, or function parameters SHOULD be avoided as they often cannot be replicated in other languages. Unions of more complex types (such as specific [Context](ref/Context) Types) may be used where a suitable interface is available or can be created to allow the required polymorphism in languages other than TypeScript.
+
 For implementation details relating to particular languages, and how to access the API in those languages, please see [Supported Platforms](supported-platforms).
 
 ### Standards vs. Implementation
@@ -84,8 +90,8 @@ There is currently no method of discovering all the apps supported by a Desktop 
 
 An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 
-- Provide the FDC3 API to web applications via a global accessible as [`window.fdc3`](#api-access).
-- Provide a global [`fdc3Ready`](#api-access) event that is fired when the API is ready for use.
+- Provide the FDC3 API to web applications via a global accessible as [`window.fdc3`](support-platforms#web).
+- Provide a global [`fdc3Ready`](support-platforms#web) event to web applications that is fired when the API is ready for use.
 - Provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to `raiseIntentForContext` that return multiple options), such as a resolver UI.
   - Intent resolution MUST take into account any specified input or return context types
   - Requests for resolution to apps returning a channel MUST include any apps that are registered as returning a channel with a specific type.
@@ -94,6 +100,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Include implementations of the following [Desktop Agent](ref/DesktopAgent) API functions, as defined in this Standard:
   - [`addContextListener`](ref/DesktopAgent#addcontextlistener)
   - [`addIntentListener`](ref/DesktopAgent#addintentlistener)
+  - [`addEventListener`](ref/DesktopAgent#addEventListener)
   - [`broadcast`](ref/DesktopAgent#broadcast)
   - [`createPrivateChannel`](ref/DesktopAgent#createprivatechannel)
   - [`findInstances`](ref/DesktopAgent#findinstances)
