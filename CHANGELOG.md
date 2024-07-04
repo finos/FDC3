@@ -4,19 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
-
-### Added
-
-* Added clarification that `id` field values SHOULD always be strings to context schema definition (a restriction that can't easily be represented in the generated types). ([#1149](https://github.com/finos/FDC3/pull/1149))
-
-### Changed
-
-### Deprecated
+## [npm v2.1.1] - 2024-06-28
 
 ### Fixed
 
-* Added missing `desktopAgent` field to ImplementationMetadata objects returned for all agents connect to a DesktopAgent bridge in Connection Step 6 connectAgentsUpdate messages and refined the schema used to collect this info in step 3 handshake. ([#1177](https://github.com/finos/FDC3/pull/1177))
+* Corrected inconsistent camel-casing of the `fdc3.timeRange` context type which appeared as `fdc3.timerange` in a number of places. ([#1240][https://github.com/finos/FDC3/pull/1240])
+* Corrected an error in the `fdc3.TransactionResult` schema which resulted in the `message` property being omitted from the generated TypeScript types for it. ([#1251][https://github.com/finos/FDC3/pull/1251])
 
 ## [FDC3 Standard 2.1](https://github.com/finos/FDC3/compare/v2.0..v2.1) - 2023-09-13
 
