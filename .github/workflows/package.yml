@@ -24,6 +24,9 @@ on:
       - '.github/workflows/docusaurus.yml'
       - 'docs/**'
       - 'website/**'
+permissions:
+  contents: read
+
 jobs:
   package-build:
     name: Build on Node ${{ matrix.node }} and ${{ matrix.os }}
