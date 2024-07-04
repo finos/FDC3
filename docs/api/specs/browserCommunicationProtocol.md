@@ -1,3 +1,9 @@
+---
+id: browserCommunicationProtocol
+sidebar_label: Browser Communication Protocol
+title: Browser Communication Protocol (next)
+---
+
 # Browser Communication Protocol (BCP)
 
 BCP constitutes a set of messages that are used by the `@finos/fdc3` library to communicate with Browser-Resident DAs. Each message takes the form of a Flux Standard Action (FSA). Communications are bidirectional and occur over HTML standard MessagePorts. All messages are query/response. Responses may contain requested data or may simply be acknowledgement of receipt.
@@ -28,7 +34,7 @@ When the API calls the unsubscriber for a listener then `BCPRemoveContextListene
 
 ## Intents
 
-Refer [Private Channel examples](../api/ref/PrivateChannel.md#server-side-example) to understand how intent transactions work.
+Refer [Private Channel examples](../ref/PrivateChannel.md#server-side-example) to understand how intent transactions work.
 
 When an app ("client") calls `raiseIntent()` or `raiseIntentByContext()`, the library MUST send the corresponding `BCPRaiseIntent` or `BCPRaiseIntentByContext` message to the DA.
 

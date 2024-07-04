@@ -1,16 +1,30 @@
-# FDC for the Web: Browser-Resident Desktop Agent Specification
+---
+id: browserDesktopAgents
+sidebar_label: Browser Desktop Agents
+title: Browser Desktop Agents (next)
+---
 
 This document specifies the required behavior for Browser-Resident Desktop Agents (DA). Such agents allow FDC3 applications running directly in a browser to participate in FDC3 interop by way of a `getAgent()` function that is provided by FINOS. This approach is in contrast to "Preload DAs" which run on technology that allows the FDC3 interface to be injected (such as Electron, WebView or Browser Extension based implementations.)
 
-> Note - Prior to FDC 3.0, only Preload DAs were supported.
+This specification only applies to apps running in a browser and therefore assumes use of JavaScript and HTML APIs. Implementations in other languages such as .NET are not covered. Along with this specification, a new general connection strategy has been established for _all_ FDC3 compliant applications: FDC3 compliant apps SHOULD make use of the `@finos/fdc3` library to establish their FDC3 interface (a `DesktopAgent` object instance). Apps that follow these guidelines will be able to interop through either Browser-Resident DAs or Preload DAs without code modification. We refer to this concept as Write Once Run Anywhere (WORA).
 
-> Note - Along with this specification, a new general connection strategy has been established for _all_ FDC3 compliant applications: FDC3 compliant apps SHOULD make use of the `@finos/fdc3` library to establish their FDC3 interface (a `DesktopAgent` object instance). Apps that follow these guidelines will be able to interop through either Browser-Resident DAs or Preload DAs without code modification. We refer to this concept as Write Once Run Anywhere (WORA).
+:::info
 
-> Note - This specification only applies to apps running in a browser and therefore assumes use of JavaScript and HTML APIs. Implementations in other languages such as .NET are not covered by this specification. 
+Prior to FDC3 2.2, only Preload DAs were supported.
 
-This document only covers the requirements for _implementors of Browser-Resident DAs_. The `getAgent()` function that applications use to gain access to an fdc3 interface is provided by the `@finos/fdc3` library. Many behavioral details of `getAgent()` are purposefully omitted from this document in order to reduce the required scope of understanding. Please refer to the [getAgent() specification](getAgent.md) for information on how the client side operates.
+:::
 
-> Note - When referencing "DA" in this document we will hereafter always mean a "Browser-Resident Desktop Agent" - code that runs in a browser page (iframe or window) and which conforms to this specification.
+:::note
+
+This document only covers the requirements for _implementors of Browser-Resident DAs_. The `getAgent()` function that applications use to gain access to an fdc3 interface is provided by the `@finos/fdc3` library. Many behavioral details of `getAgent()` are purposefully omitted from this document in order to reduce the required scope of understanding. Please refer to the [getAgent() specification in the FDC3 Web Connection Protocol](webConnectionProtocol.md) for information on how the client side operates.
+
+:::
+
+:::note
+
+When referencing "DA" in this document we will hereafter always mean a "Browser-Resident Desktop Agent" - code that runs in a browser page (iframe or window) and which conforms to this specification.
+
+:::
 
 ## Launching apps
 
@@ -92,7 +106,7 @@ The first BCP message received should be a "WCPValidateAppIdentity" message. Wit
 > Note - Apps that call `window.open()` to create new instances of themselves can appear to be their Parent. This is because browsers may clone SessionStorage for newly opened windows. When a child window calls `getAgent()` with the same appId as the parent window, it will appear to the DA that a navigation event occurred on the parent window (because `instanceUuid` will be set, and will appear to match the appId). DAs therefore MUST track the WindowProxy object that is used to establish each connection and use it as an additional comparison criteria.
 
 Example BCP validation
-```JavaScript
+```js
 const processValidateAppIdentityBCP = (connection, e) => {
     const { data, source, origin } = e;
 
@@ -218,6 +232,3 @@ A DA may implement its own Channel Selector and Intent Resolver or may utilize t
 DAs are responsible for tracking when app windows close by checking `win.closed` in a loop.
 
 https://stackoverflow.com/questions/9388380/capture-the-close-event-of-popup-window-in-javascript/48240128#48240128
-
-
-

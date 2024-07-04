@@ -1,4 +1,8 @@
-# Specification for getAgent() function
+---
+id: webConnectionProtocol
+sidebar_label: Web Connection Protocol
+title: FDC3 Web Connection Protocol (next)
+---
 
 `getAgent()` is implemented in the `@finos/fdc3` library. This specification details how it retrieves and provides FDC3 interface object.
 

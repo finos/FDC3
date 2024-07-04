@@ -90,12 +90,11 @@ There is currently no method of discovering all the apps supported by a Desktop 
 
 An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 
-- Provide the FDC3 API to web applications via a global accessible as [`window.fdc3`](support-platforms#web).
-- Provide a global [`fdc3Ready`](support-platforms#web) event to web applications that is fired when the API is ready for use.
-- Provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to `raiseIntentForContext` that return multiple options), such as a resolver UI.
-  - Intent resolution MUST take into account any specified input or return context types
-  - Requests for resolution to apps returning a channel MUST include any apps that are registered as returning a channel with a specific type.
-- Return (JavaScript or platform appropriate) Error Objects with messages from the [`ChannelError`](ref/Errors#channelerror), [`OpenError`](ref/Errors#openerror), [`ResolveError`](ref/Errors#resolveerror) and [`ResultError`](ref/Errors#resulterror) enumerations as appropriate.
+- Provide the FDC3 API to web applications via one of the standardized interfaces for web applications:
+  - A global accessible as [`window.fdc3`](support-platforms#web) and a global [`fdc3Ready`](support-platforms#web) event that is fired when it has been made available.
+  - `window.postMessage` and the HTML CHannel Messaging API as defined in the [FDC3 Web Connection Protocol](webConnectionProtocol) and [FDC3 Browser Communication Protocol](specs/browserCommunicationProtocol).
+- Implement the [Browser-Resident Desktop Agent spec](specs/browserResidentDesktopAgents.md) if it is intended to support apps running in a standard browser.
+- Implement the [Preload Desktop Agent spec](specs/preloadDesktopAgents.md) if it is intended to support apps running in a container or other environment that supports injecting a global `fdc3` object.
 - Accept as input and return as output data structures that are compatible with the interfaces defined in this Standard.
 - Include implementations of the following [Desktop Agent](ref/DesktopAgent) API functions, as defined in this Standard:
   - [`addContextListener`](ref/DesktopAgent#addcontextlistener)
@@ -113,12 +112,14 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
   - [`open`](ref/DesktopAgent#open)
   - [`raiseIntent`](ref/DesktopAgent#raiseintent)
   - [`raiseIntentForContext`](ref/DesktopAgent#raiseintentforcontext)
+- Provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to `raiseIntentForContext` that return multiple options), such as a resolver UI.
+  - Intent resolution MUST take into account any specified input or return context types
+  - Requests for resolution to apps returning a channel MUST include any apps that are registered as returning a channel with a specific type.
+- Return (JavaScript or platform appropriate) Error Objects with messages from the [`ChannelError`](ref/Errors#channelerror), [`OpenError`](ref/Errors#openerror), [`ResolveError`](ref/Errors#resolveerror) and [`ResultError`](ref/Errors#resulterror) enumerations as appropriate.
 - Provide an ID for each [`PrivateChannel`](ref/PrivateChannel) created via [`createPrivateChannel`](ref/DesktopAgent#createprivatechannel) and prevent them from being retrieved via [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) by ID.
 - Only require app directories that they connect to to have implemented only the minimum requirements specified in the [App Directory API Part](../app-directory/spec) of this Standard.
 - Provide details of whether they implement optional features of the Desktop Agent API in the `optionalFeatures` property of the [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned by the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function.
 - Allow, by default, at least a 15 second timeout for an application, launched via [`fdc3.open`](../api/ref/DesktopAgent#open), [`fdc3.raiseIntent`](../api/ref/DesktopAgent#raiseintent) or [`fdc3.raiseIntentForContext`](../api/ref/DesktopAgent#raiseintentforcontext) to add any context listener (via [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener)) or intent listener (via [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener)) necessary to deliver context or intent and context to it on launch. This timeout only applies to listeners needed to receive context on launch; further intent and context listeners not required on launch MAY be added later.
-- Implement the [Browser-Resident Desktop Agent spec](specs/browserResidentDesktopAgents.md) if it is intended to support apps running in a standard browser.
-- Implement the [Preload Desktop Agent spec](specs/preloadDesktopAgents.md) if it is intended to support apps running in a container or other environment that supports injecting a global `fdc3` object.
 
 An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 
