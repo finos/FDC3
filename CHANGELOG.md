@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 * Corrected inconsistent camel-casing of the `fdc3.timeRange` context type which appeared as `fdc3.timerange` in a number of places. ([#1240][https://github.com/finos/FDC3/pull/1240])
+* Corrected an error in the `fdc3.TransactionResult` schema which resulted in the `message` property being omitted from the generated TypeScript types for it. ([#1251][https://github.com/finos/FDC3/pull/1251])
 
 ## [FDC3 Standard 2.1](https://github.com/finos/FDC3/compare/v2.0..v2.1) - 2023-09-13
 
