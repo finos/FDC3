@@ -25,16 +25,16 @@ A person contact that can be engaged with through email, calling, messaging, CMS
 
 Identifiers that relate to the Contact represented by this context
 
-**Type**: `object`
+**type**: `object`
 
-#### Subproperties
-##### email
-- Type: `string`
-- Description: `The email address for the contact`
+**Subproperties:**
+#### `email`
+- **type**: `string`
+- **description**: Email address:  The email address for the contact
 
-##### FDS_ID
-- Type: `string`
-- Description: `FactSet Permanent Identifier representing the contact`
+#### `FDS_ID`
+- **type**: `string`
+- **description**: FDS ID:  FactSet Permanent Identifier representing the contact
 
 
 **Example Value**: 

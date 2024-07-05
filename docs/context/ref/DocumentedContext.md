@@ -19,7 +19,7 @@
 
 Context data objects may include a name property that can be used for more information, or display purposes. Some derived types may require the name object as mandatory, depending on use case.
 
-**Type**: `string`
+**type**: `string`
 
 ### `id`
 
@@ -27,5 +27,5 @@ Context data objects may include a set of equivalent key-value pairs that can be
 
 Identifiers do not make sense for all types of data, so the `id` property is therefore optional, but some derived types may choose to require at least one identifier. Identifier values SHOULD always be of type string.
 
-**Type**: `object`
+**type**: `object`
 

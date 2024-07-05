@@ -33,7 +33,7 @@ The OrderList schema does not explicitly include identifiers in the id section, 
 
 An array of order contexts that forms the list.
 
-**Type**: `array`
+**type**: `array`
 
 
 **Example Value**: 

@@ -23,7 +23,7 @@ A collection of settings to start a new chat conversation
 
 Name to apply to the chat created
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 
@@ -87,28 +87,28 @@ An initial message to post in the chat when created.
 
 Option settings that affect the creation of the chat
 
-**Type**: `object`
+**type**: `object`
 
-#### Subproperties
-##### groupRecipients
-- Type: `boolean`
-- Description: `if false a separate chat will be created for each member`
+**Subproperties:**
+#### `groupRecipients`
+- **type**: `boolean`
+- **description**: Group recipients option:  if false a separate chat will be created for each member
 
-##### isPublic
-- Type: `boolean`
-- Description: `if true the room will be visible to everyone in the chat application`
+#### `isPublic`
+- **type**: `boolean`
+- **description**: Public chat option:  if true the room will be visible to everyone in the chat application
 
-##### allowHistoryBrowsing
-- Type: `boolean`
-- Description: `if true members will be allowed to browse past messages`
+#### `allowHistoryBrowsing`
+- **type**: `boolean`
+- **description**: Allow history browsing option:  if true members will be allowed to browse past messages
 
-##### allowMessageCopy
-- Type: `boolean`
-- Description: `if true members will be allowed to copy/paste messages`
+#### `allowMessageCopy`
+- **type**: `boolean`
+- **description**: Allow message copy option:  if true members will be allowed to copy/paste messages
 
-##### allowAddUser
-- Type: `boolean`
-- Description: `if true members will be allowed to add other members to the chat`
+#### `allowAddUser`
+- **type**: `boolean`
+- **description**: All adding users option:  if true members will be allowed to add other members to the chat
 
 
 **Example Value**: 

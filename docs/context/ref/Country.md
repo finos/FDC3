@@ -47,24 +47,24 @@ Notes:
 
 ### `id`
 
-**Type**: `object`
+**type**: `object`
 
-#### Subproperties
-##### COUNTRY_ISOALPHA2
-- Type: `string`
-- Description: `Two-letter ISO country code`
+**Subproperties:**
+#### `COUNTRY_ISOALPHA2`
+- **type**: `string`
+- **description**: COUNTRY_ISOALPHA2:  Two-letter ISO country code
 
-##### COUNTRY_ISOALPHA3
-- Type: `string`
-- Description: `Three-letter ISO country code`
+#### `COUNTRY_ISOALPHA3`
+- **type**: `string`
+- **description**: COUNTRY_ISOALPHA3:  Three-letter ISO country code
 
-##### ISOALPHA2
-- Type: `string`
-- Description: `Two-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.`
+#### `ISOALPHA2`
+- **type**: `string`
+- **description**: ISOALPHA2:  Two-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.
 
-##### ISOALPHA3
-- Type: `string`
-- Description: `Three-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.`
+#### `ISOALPHA3`
+- **type**: `string`
+- **description**: ISOALPHA3:  Three-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.
 
 
 **Example Value**: 

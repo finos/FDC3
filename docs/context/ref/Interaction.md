@@ -28,20 +28,20 @@ An `Interaction` is a significant direct exchange of ideas or information betwee
 
 Can be used by a target application to pass an identifier back to the originating application after an interaction record has been created, updated or deleted. An interaction ID does not need to be populated by the originating application, however the target application could store it for future reference and SHOULD return it in a `TransactionResult`.
 
-**Type**: `object`
+**type**: `object`
 
-#### Subproperties
-##### URI
-- Type: `string`
-- Description: `Can be used by a target application to pass a record's link back to the originating application. This offers the originating application a way to open the record for a user to view.`
+**Subproperties:**
+#### `URI`
+- **type**: `string`
+- **description**: Interaction URI:  Can be used by a target application to pass a record's link back to the originating application. This offers the originating application a way to open the record for a user to view.
 
-##### SALESFORCE
-- Type: `string`
-- Description: `Interactions ID in Salesforce`
+#### `SALESFORCE`
+- **type**: `string`
+- **description**: Salesforce ID:  Interactions ID in Salesforce
 
-##### SINGLETRACK
-- Type: `string`
-- Description: `Interaction ID in SingleTrack`
+#### `SINGLETRACK`
+- **type**: `string`
+- **description**: SingleTrack ID:  Interaction ID in SingleTrack
 
 
 **Example Value**: 
@@ -102,7 +102,7 @@ The time range over which the interaction occurred
 
 A human-readable description of the interaction
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 
@@ -130,7 +130,7 @@ The contact that initiated the interaction
 
 Used to represent the application or service that the interaction was created from to aid in tracing the source of an interaction.
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 

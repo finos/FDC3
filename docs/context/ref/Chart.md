@@ -48,7 +48,7 @@ In addition to handling requests to plot charts, a charting application may use 
 
 An array of instrument contexts whose data should be plotted.
 
-**Type**: `array`
+**type**: `array`
 
 
 **Example Value**: 
@@ -91,7 +91,7 @@ The time range that should be plotted
 
 The type of chart that should be plotted
 
-**Type**: `string`
+**type**: `string`
 
 **Possible values**: `line`, `bar`, `stacked-bar`, `mountain`, `candle`, `pie`, `scatter`, `histogram`, `heatmap`, `custom`
 
@@ -103,7 +103,7 @@ The type of chart that should be plotted
 
 It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` array as context objects.
 
-**Type**: `array`
+**type**: `array`
 
 
 **Example Value**: 

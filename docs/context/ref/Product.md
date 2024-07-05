@@ -39,7 +39,7 @@ The Product schema does not explicitly include identifiers in the id section, as
 
 One or more identifiers that refer to the product. Specific key names for systems are expected to be standardized in future.
 
-**Type**: `object`
+**type**: `object`
 
 
 **Example Value**: 
@@ -53,7 +53,7 @@ One or more identifiers that refer to the product. Specific key names for system
 
 A human-readable summary of the product.
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 

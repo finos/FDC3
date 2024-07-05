@@ -28,16 +28,16 @@ A chat message to be sent through an instant messaging application. Can contain 
 
 A map of string mime-type to string content
 
-**Type**: `object`
+**type**: `object`
 
-#### Subproperties
-##### text/plain
-- Type: `string`
-- Description: `Plain text encoded content.`
+**Subproperties:**
+#### `text/plain`
+- **type**: `string`
+- **description**: Plain text:  Plain text encoded content.
 
-##### text/markdown
-- Type: `string`
-- Description: `Markdown encoded content`
+#### `text/markdown`
+- **type**: `string`
+- **description**: Markdown text:  Markdown encoded content
 
 
 **Example Value**: 
@@ -51,7 +51,7 @@ A map of string mime-type to string content
 
 A map of string IDs to entities that should be attached to the message, such as an action to perform, a file attachment, or other FDC3 context object.
 
-**Type**: `object`
+**type**: `object`
 
 
 **Example Value**: 

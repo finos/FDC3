@@ -32,7 +32,7 @@ The contact list schema does not explicitly include identifiers in the `id` sect
 
 An array of contact contexts that forms the list.
 
-**Type**: `array`
+**type**: `array`
 
 
 **Example Value**: 

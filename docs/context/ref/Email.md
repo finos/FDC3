@@ -41,7 +41,7 @@ One or more recipients for the email.
 
 Subject line for the email.
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 
@@ -51,7 +51,7 @@ Subject line for the email.
 
 Body content for the email.
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 

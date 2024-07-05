@@ -33,20 +33,20 @@ It is valid to include extra properties and metadata as part of the organization
 
 Identifiers for the organization, at least one must be provided.
 
-**Type**: `object`
+**type**: `object`
 
-#### Subproperties
-##### LEI
-- Type: `string`
-- Description: `The Legal Entity Identifier (LEI) is a 20-character, alpha-numeric code based on the ISO 17442 standard developed by the International Organization for Standardization (ISO). It connects to key reference information that enables clear and unique identification of legal entities participating in financial transactions.`
+**Subproperties:**
+#### `LEI`
+- **type**: `string`
+- **description**: Legal Entity Identifier:  The Legal Entity Identifier (LEI) is a 20-character, alpha-numeric code based on the ISO 17442 standard developed by the International Organization for Standardization (ISO). It connects to key reference information that enables clear and unique identification of legal entities participating in financial transactions.
 
-##### PERMID
-- Type: `string`
-- Description: `Refinitiv Permanent Identifiers, or PermID for the organization`
+#### `PERMID`
+- **type**: `string`
+- **description**: Organization:  Refinitiv Permanent Identifiers, or PermID for the organization
 
-##### FDS_ID
-- Type: `string`
-- Description: `FactSet Permanent Identifier representing the organization`
+#### `FDS_ID`
+- **type**: `string`
+- **description**: Organization:  FactSet Permanent Identifier representing the organization
 
 
 **Example Value**: 

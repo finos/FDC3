@@ -28,44 +28,44 @@ It is valid to include extra properties and metadata as part of the instrument p
 Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant for tickers as used by an exchange.
 If the identifier you want to share is not a ticker or one of the other standardized fields, define a property that makes it clear what the value represents. Doing so will make interpretation easier for the developers of target applications.
 
-**Type**: `object`
+**type**: `object`
 
-#### Subproperties
-##### BBG
-- Type: `string`
-- Description: `<https://www.bloomberg.com/>`
+**Subproperties:**
+#### `BBG`
+- **type**: `string`
+- **description**: Bloomberg security:  <https://www.bloomberg.com/>
 
-##### CUSIP
-- Type: `string`
-- Description: `<https://www.cusip.com/>`
+#### `CUSIP`
+- **type**: `string`
+- **description**: CUSIP:  <https://www.cusip.com/>
 
-##### FDS_ID
-- Type: `string`
-- Description: `<https://www.factset.com/>`
+#### `FDS_ID`
+- **type**: `string`
+- **description**: FactSet Permanent Security Identifier:  <https://www.factset.com/>
 
-##### FIGI
-- Type: `string`
-- Description: `<https://www.openfigi.com/>`
+#### `FIGI`
+- **type**: `string`
+- **description**: Open FIGI:  <https://www.openfigi.com/>
 
-##### ISIN
-- Type: `string`
-- Description: `<https://www.isin.org/>`
+#### `ISIN`
+- **type**: `string`
+- **description**: ISIN:  <https://www.isin.org/>
 
-##### PERMID
-- Type: `string`
-- Description: `<https://permid.org/>`
+#### `PERMID`
+- **type**: `string`
+- **description**: Refinitiv PERMID:  <https://permid.org/>
 
-##### RIC
-- Type: `string`
-- Description: ` <https://www.refinitiv.com/>`
+#### `RIC`
+- **type**: `string`
+- **description**: Refinitiv Identification Code:   <https://www.refinitiv.com/>
 
-##### SEDOL
-- Type: `string`
-- Description: `<https://www.lseg.com/sedol>`
+#### `SEDOL`
+- **type**: `string`
+- **description**: SEDOL:  <https://www.lseg.com/sedol>
 
-##### ticker
-- Type: `string`
-- Description: `Unstandardized stock tickers`
+#### `ticker`
+- **type**: `string`
+- **description**: Stock ticker:  Unstandardized stock tickers
 
 
 **Example Value**: 
@@ -81,24 +81,24 @@ If the identifier you want to share is not a ticker or one of the other standard
 
 The `market` map can be used to further specify the instrument and help achieve interoperability between disparate data sources. This is especially useful when using an `id` field that is not globally unique.
 
-**Type**: `object`
+**type**: `object`
 
-#### Subproperties
-##### MIC
-- Type: `string`
-- Description: `<https://en.wikipedia.org/wiki/Market_Identifier_Code>`
+**Subproperties:**
+#### `MIC`
+- **type**: `string`
+- **description**: Market Identifier Code:  <https://en.wikipedia.org/wiki/Market_Identifier_Code>
 
-##### name
-- Type: `string`
-- Description: `Human readable market name`
+#### `name`
+- **type**: `string`
+- **description**: Market Name:  Human readable market name
 
-##### COUNTRY_ISOALPHA2
-- Type: `string`
-- Description: `<https://www.iso.org/iso-3166-country-codes.html>`
+#### `COUNTRY_ISOALPHA2`
+- **type**: `string`
+- **description**: Country ISO Code:  <https://www.iso.org/iso-3166-country-codes.html>
 
-##### BBG
-- Type: `string`
-- Description: `<https://www.bloomberg.com/>`
+#### `BBG`
+- **type**: `string`
+- **description**: Bloomberg Market Identifier:  <https://www.bloomberg.com/>
 
 
 **Example Value**: 
