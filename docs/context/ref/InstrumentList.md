@@ -1,82 +1,86 @@
 ---
-id: InstrumentList
-sidebar_label: InstrumentList
 title: InstrumentList
-hide_title: true
+description: >-
+  A collection of instruments. Use this type for use cases that require not just
+  a single instrument, but multiple (e.g. to populate a watchlist). However,
+  when holding information for each instrument is required, it is recommended to
+  use the [Portfolio](Portfolio) type.
+
+
+  The instrument list schema does not explicitly include identifiers in the `id`
+  section, as there is not a common standard for such identifiers. Applications
+  can, however, populate this part of the contract with custom identifiers if so
+  desired.
+sidebar_label: InstrumentList
+
 ---
-# `InstrumentList`
 
-A collection of instruments. Use this type for use cases that require not just a single instrument, but multiple (e.g. to populate a watchlist).
+# InstrumentList
 
-When holding information for each instrument is required, it is recommended to use the [Portfolio](Portfolio) type, though.
+A collection of instruments. Use this type for use cases that require not just a single instrument, but multiple (e.g. to populate a watchlist). However, when holding information for each instrument is required, it is recommended to use the [Portfolio](Portfolio) type.
 
-Notes:
+The instrument list schema does not explicitly include identifiers in the `id` section, as there is not a common standard for such identifiers. Applications can, however, populate this part of the contract with custom identifiers if so desired.
 
-- The instrument list schema does not explicitly include identifiers in the `id` section, as there
-is not a common standard for such identifiers. Applications can, however, populate
-this part of the contract with custom identifiers if so desired.
+## Schema
+
+<https://github.com/finos/FDC3/tree/main/schemas/context/instrumentList.schema.json>
 
 ## Type
 
 `fdc3.instrumentList`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/instrumentList.schema.json>
+### `instruments`
 
-## Details
+An array of instrument contexts that forms the list.
 
-| Property      | Type         | Required | Example Value                  |
-|---------------|--------------|----------|--------------------------------|
-| `type`        | string       | Yes      | `'fdc3.instrumentList'`        |
-| `name`        | string       | No       | `'Interesting instruments...'` |
-| `id`          | object       | No       | `{ customId: '5464' }`         |
-| `instruments` | Instrument[] | Yes      | `[instrument1, instrument2]`   |
+**Type**: `array`
+
+
+**Example Value**: 
+```json
+[
+  {
+    "type": "fdc3.instrument",
+    "id": {
+      "ticker": "AAPL"
+    },
+    "market": {
+      "MIC": "XNAS"
+    }
+  },
+  {
+    "type": "fdc3.instrument",
+    "id": {
+      "ISIN": "US5949181045"
+    }
+  }
+]
+```
 
 ## Example
 
-```js
-const instruments = {
-    type: "fdc3.instrumentList",
-    instruments: [
-        {
-            type: "fdc3.instrument",
-            id: {
-                ticker: "AAPL"
-            },
-            market: {
-                MIC: "XNAS"
-            }
-        },
-        {
-            type: "fdc3.instrument",
-            id: {
-                ISIN: "US5949181045"
-            }
-        },
-    ]
+```json
+{
+  "type": "fdc3.instrumentList",
+  "instruments": [
+    {
+      "type": "fdc3.instrument",
+      "id": {
+        "ticker": "AAPL"
+      },
+      "market": {
+        "MIC": "XNAS"
+      }
+    },
+    {
+      "type": "fdc3.instrument",
+      "id": {
+        "ISIN": "US5949181045"
+      }
+    }
+  ]
 }
-
-fdc3.joinUserChannel('Channel 1')
-fdc3.broadcast(instruments)
 ```
 
-## See Also
-
-Other Types
-
-- [Instrument](Instrument)
-- [Position](Position)
-- [Portfolio](Portfolio)
-
-Intents
-
-- [ViewAnalysis](../../intents/ref/ViewAnalysis)
-- [ViewChart](../../intents/ref/ViewChart)
-- [ViewInstrument](../../intents/ref/ViewInstrument)
-- [ViewNews](../../intents/ref/ViewNews)
-- [ViewQuote](../../intents/ref/ViewQuote)
-
-FINOS Financial Objects
-
-- [InstrumentList](https://fo.finos.org/docs/objects/instrumentlist)

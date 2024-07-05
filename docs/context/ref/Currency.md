@@ -1,40 +1,60 @@
 ---
-id: Currency
-sidebar_label: Currency
 title: Currency
-hide_title: true
+description: A context representing an individual Currency.
+sidebar_label: Currency
+
 ---
 
-# `Currency`
+# Currency
 
 A context representing an individual Currency.
+
+## Schema
+
+<https://github.com/finos/FDC3/tree/main/schemas/context/currency.schema.json>
 
 ## Type
 
 `fdc3.currency`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/currency.schema.json>
+### `name`
 
-## Details
+The name of the currency for display purposes
 
-| Property                | Type    | Required | Example Value     |
-|-------------------------|---------|----------|-------------------|
-| `type`                  | string  | Yes      | `'fdc3.currency'` |
-| `name`                  | string  | No       | `'US Dollar'`     |
-| `id.CURRENCY_ISOCODE` * | string  | Yes      | `'USD'`           |
+**Type**: `string`
 
-\* The `CURRENCY_ISOCODE` should conform to 3 character alphabetic codes defined in [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html).
+
+**Example Value**: 
+`US Dollar`
+
+### `id`
+
+**Type**: `object`
+
+#### Subproperties
+##### CURRENCY_ISOCODE
+- Type: `string`
+- Description: `The `CURRENCY_ISOCODE` should conform to 3 character alphabetic codes defined in [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html)`
+
+
+**Example Value**: 
+```json
+{
+  "CURRENCY_ISOCODE": "USD"
+}
+```
 
 ## Example
 
-```js
-const currency = {
-    type: 'fdc3.currency',
-    name: 'US Dollar',
-    id: {
-        CURRENCY_ISOCODE: "USD"
-    }
+```json
+{
+  "type": "fdc3.currency",
+  "name": "US Dollar",
+  "id": {
+    "CURRENCY_ISOCODE": "USD"
+  }
 }
 ```
+

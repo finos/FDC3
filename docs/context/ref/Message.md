@@ -1,77 +1,133 @@
 ---
-id: Message
-sidebar_label: Message
 title: Message
-hide_title: true
----
-# `Message`
+description: >-
+  A chat message to be sent through an instant messaging application. Can
+  contain one or several text bodies (organized by mime-type, plaintext or
+  markdown), as well as attached entities (either arbitrary file attachments or
+  FDC3 actions to be embedded in the message). To be put inside a
+  ChatInitSettings object.
+sidebar_label: Message
 
-A chat message to be sent through an instant messaging application. Can contain one or several text bodies (organised by mime-type, plaintext or markdown), 
-as well as attached entities (either arbitrary file attachments or FDC3 actions to be embedded in the message). To be put inside a ChatInitSettings object.
+---
+
+# Message
+
+A chat message to be sent through an instant messaging application. Can contain one or several text bodies (organized by mime-type, plaintext or markdown), as well as attached entities (either arbitrary file attachments or FDC3 actions to be embedded in the message). To be put inside a ChatInitSettings object.
+
+## Schema
+
+<https://github.com/finos/FDC3/tree/main/schemas/context/message.schema.json>
 
 ## Type
 
 `fdc3.message`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/message.schema.json>
+### `text`
 
-## Details
+A map of string mime-type to string content
 
-| Property          | Type                                      | Required | Example Value           |
-|-------------------|-------------------------------------------|----------|-------------------------|
-| `type`            | string                                    | Yes      | `'fdc3.message'`        |
-| `text`            | map of string mime-type to string content | No       | { text/plain: 'Hello' } |
-| `entities`        | map of json entity to string id           | No       | See Below               |
+**Type**: `object`
 
-## Example
+#### Subproperties
+##### text/plain
+- Type: `string`
+- Description: `Plain text encoded content.`
 
-```js
-const message = {
-  type: 'fdc3.message',
-  text: {
-    'text/plain': 'Hey all, can we discuss the issue together? I attached a screenshot and a link to the current exchange rate'
+##### text/markdown
+- Type: `string`
+- Description: `Markdown encoded content`
+
+
+**Example Value**: 
+```json
+{
+  "text/plain": "Hey all, can we discuss the issue together? I attached a screenshot and a link to the current exchange rate"
+}
+```
+
+### `entities`
+
+A map of string IDs to entities that should be attached to the message, such as an action to perform, a file attachment, or other FDC3 context object.
+
+**Type**: `object`
+
+
+**Example Value**: 
+```json
+{
+  "picture1": {
+    "type": "fdc3.fileAttachment",
+    "data": {
+      "name": "myImage.png",
+      "dataUri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII"
+    }
   },
-  entities: {
-      'picture1': {
-          type: 'fdc3.fileAttachment',
-          data: {
-          name: 'myImage.png',
-                dataUri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII'
+  "eurusd_action": {
+    "type": "fdc3.action",
+    "title": "Click to view Chart",
+    "intent": "ViewChart",
+    "context": {
+      "type": "fdc3.chart",
+      "instruments": [
+        {
+          "type": "fdc3.instrument",
+          "id": {
+            "ticker": "EURUSD"
           }
-      },
-      'eurusd_action': {
-        type: 'fdc3.action',
-        title: 'Click to view Chart',
-        intent: 'ViewChart',
-        context: {
-            type: 'fdc3.chart',
-            instruments: [
-                {
-                    type: 'fdc3.instrument',
-                    id: {
-                        ticker: 'EURUSD'
-                    }
-                }
-            ],
-            range: {
-                type: 'fdc3.dateRange',
-                starttime: '2020-09-01T08:00:00.000Z',
-                endtime: '2020-10-31T08:00:00.000Z'
-            },
-            style: 'candle'
         }
+      ],
+      "range": {
+        "type": "fdc3.dateRange",
+        "starttime": "2020-09-01T08:00:00.000Z",
+        "endtime": "2020-10-31T08:00:00.000Z"
+      },
+      "style": "candle"
     }
   }
 }
 ```
 
-## See Also
+## Example
 
-Other Types
-* [ChatInitSettings](ChatInitSettings)
-* [Action](Action)
+```json
+{
+  "type": "fdc3.message",
+  "text": {
+    "text/plain": "Hey all, can we discuss the issue together? I attached a screenshot and a link to the current exchange rate"
+  },
+  "entities": {
+    "picture1": {
+      "type": "fdc3.fileAttachment",
+      "data": {
+        "name": "myImage.png",
+        "dataUri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII"
+      }
+    },
+    "eurusd_action": {
+      "type": "fdc3.action",
+      "title": "Click to view Chart",
+      "intent": "ViewChart",
+      "context": {
+        "type": "fdc3.chart",
+        "instruments": [
+          {
+            "type": "fdc3.instrument",
+            "id": {
+              "ticker": "EURUSD"
+            }
+          }
+        ],
+        "range": {
+          "type": "fdc3.dateRange",
+          "starttime": "2020-09-01T08:00:00.000Z",
+          "endtime": "2020-10-31T08:00:00.000Z"
+        },
+        "style": "candle"
+      }
+    }
+  }
+}
+```
 
-Intents
-* [StartChat](../../intents/ref/StartChat)

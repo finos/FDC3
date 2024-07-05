@@ -1,99 +1,176 @@
 ---
-id: Chart
-sidebar_label: Chart
 title: Chart
-hide_title: true
+description: >-
+  A context type representing details of a Chart, which may be used to request
+  plotting of a particular chart or to otherwise share details of its
+  composition, such as:
+
+
+  - A list of instruments for comparison
+
+  - The time period to plot the chart over
+
+  - The style of chart (line, bar, mountain, candle etc.)
+
+  - Other settings such as indicators to calculate, or data representing
+  drawings and annotations.
+
+
+  In addition to handling requests to plot charts, a charting application may
+  use this type to output a representation of what it is currently displaying so
+  that it can be recorded by another application.
+sidebar_label: Chart
+
 ---
-# `Chart`
+
+# Chart
 
 A context type representing details of a Chart, which may be used to request plotting of a particular chart or to otherwise share details of its composition, such as:
 
 - A list of instruments for comparison
 - The time period to plot the chart over
 - The style of chart (line, bar, mountain, candle etc.)
-- Other settings such as indicators to calculate, or data representing drawings and annotations
+- Other settings such as indicators to calculate, or data representing drawings and annotations.
 
 In addition to handling requests to plot charts, a charting application may use this type to output a representation of what it is currently displaying so that it can be recorded by another application.
+
+## Schema
+
+<https://github.com/finos/FDC3/tree/main/schemas/context/chart.schema.json>
 
 ## Type
 
 `fdc3.chart`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/chart.schema.json>
+### `instruments`
 
-## Details
+An array of instrument contexts whose data should be plotted.
 
-| Property         | Type            | Required | Example Value        |
-|------------------|-----------------|----------|----------------------|
-| `type`           | string          | Yes      | `'fdc3.chart'`     |
-| `instruments`    | Instrument[]  | Yes      | <pre>[<br/>&emsp;&emsp;{<br/>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.instrument",<br/>&emsp;&emsp;&emsp;&emsp;"id": {<br/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"ticker": "AAPL"<br/>&emsp;&emsp;&emsp;&emsp;}<br/>&emsp;&emsp;},<br/>&emsp;&emsp;{<br/>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.instrument",<br/>&emsp;&emsp;&emsp;&emsp;"id": {<br/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"ticker": "MSFT"<br/>&emsp;&emsp;&emsp;&emsp;}<br/>&emsp;&emsp;}<br/>]</pre> |
-| `range` | TimeRange  | No       | <pre>{<br/>&emsp;&emsp;"type": "fdc3.timeRange",<br/>&emsp;&emsp;"startTime": "2022-03-30T15:44:44+00:00",<br/>&emsp;&emsp;"endTime": "2022-04-30T23:59:59+00:00"<br/>}</pre>            |
-| `style`    | string  | No       | one of: `'line'`, `'bar'`, `'stacked-bar'`, `'mountain'`, `'candle'`, `'pie'`, `'scatter'`, `'histogram'`, `'heatmap'`, `'custom'`      |
-| `otherConfig`* | array  | No |  `[ {/* additional config context objects */} ]`  |
+**Type**: `array`
 
-::: info
+
+**Example Value**: 
+```json
+[
+  {
+    "type": "fdc3.instrument",
+    "id": {
+      "ticker": "AAPL"
+    }
+  },
+  {
+    "type": "fdc3.instrument",
+    "id": {
+      "ticker": "GOOG"
+    }
+  }
+]
+```
+
+### `range`
+
+The time range that should be plotted
+
+**Reference**: [timerange](../timerange)
+
+
+
+
+**Example Value**: 
+```json
+{
+  "type": "fdc3.timeRange",
+  "startTime": "2020-09-01T08:00:00.000Z",
+  "endTime": "2020-10-31T08:00:00.000Z"
+}
+```
+
+### `style`
+
+The type of chart that should be plotted
+
+**Type**: `string`
+
+**Possible values**: `line`, `bar`, `stacked-bar`, `mountain`, `candle`, `pie`, `scatter`, `histogram`, `heatmap`, `custom`
+
+
+**Example Value**: 
+`line`
+
+### `otherConfig`
 
 It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` array as context objects.
 
-:::
+**Type**: `array`
+
+
+**Example Value**: 
+```json
+[
+  {
+    "type": "somevendor.someproduct.indicator",
+    "name": "stddev",
+    "parameters": {
+      "period": 10,
+      "matype": "exponential"
+    }
+  },
+  {
+    "type": "someothervendor.someotherproduct.formula",
+    "formula": "standard-deviation",
+    "fields": {
+      "lookback": 10,
+      "type": "ema"
+    }
+  }
+]
+```
 
 ## Example
 
-```js
-const chart = {
-    type: "fdc3.chart",
-    instruments: [
-        {
-            type: "fdc3.instrument",
-            id: {
-                ticker: "AAPL"
-            }
-        },
-        {
-            type: "fdc3.instrument",
-            id: {
-                ticker: "GOOG"
-            }
-        }
-    ],
-    range: {
-        type: "fdc3.timeRange",
-        startTime: "2020-09-01T08:00:00.000Z",
-        endTime: "2020-10-31T08:00:00.000Z"
+```json
+{
+  "type": "fdc3.chart",
+  "instruments": [
+    {
+      "type": "fdc3.instrument",
+      "id": {
+        "ticker": "AAPL"
+      }
     },
-    style: "line",
-    otherConfig: [
-        {
-            type: "somevendor.someproduct.indicator",
-            name: "stddev",
-            parameters: {
-                period: 10,
-                matype: "exponential"
-            }
-        },
-        {
-            type: "someothervendor.someotherproduct.formula",
-            formula: "standard-deviation",
-            fields: {
-                lookback: 10,
-                type: "ema"
-            }
-        }
-    ]
-};
-
-fdc3.raiseIntent("ViewChart", chart);
+    {
+      "type": "fdc3.instrument",
+      "id": {
+        "ticker": "GOOG"
+      }
+    }
+  ],
+  "range": {
+    "type": "fdc3.timeRange",
+    "startTime": "2020-09-01T08:00:00.000Z",
+    "endTime": "2020-10-31T08:00:00.000Z"
+  },
+  "style": "line",
+  "otherConfig": [
+    {
+      "type": "somevendor.someproduct.indicator",
+      "name": "stddev",
+      "parameters": {
+        "period": 10,
+        "matype": "exponential"
+      }
+    },
+    {
+      "type": "someothervendor.someotherproduct.formula",
+      "formula": "standard-deviation",
+      "fields": {
+        "lookback": 10,
+        "type": "ema"
+      }
+    }
+  ]
+}
 ```
 
-## See Also
-
-Other Types
-
-- [Instrument](Instrument)
-- [TimeRange](TimeRange)
-
-Intents
-
-- [ViewChart](../../intents/ref/ViewChart)
