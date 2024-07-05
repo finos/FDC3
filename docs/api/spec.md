@@ -67,9 +67,9 @@ The surface area of FDC3 standardization (shown in *white* above) itself is quit
 
 For example:
 
-- workspace management
-- user identity and SSO
-- entitlements
+- Workspace management
+- User identity and SSO
+- Entitlements
 - UX of application resolution
 
 Are all areas of functionality that any feature-complete desktop agent would implement, but are not currently areas considered for standardization under FDC3.
@@ -90,11 +90,10 @@ There is currently no method of discovering all the apps supported by a Desktop 
 
 An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 
-- Provide the FDC3 API to web applications via one of the standardized interfaces for web applications:
-  - A global accessible as [`window.fdc3`](support-platforms#web) and a global [`fdc3Ready`](support-platforms#web) event that is fired when it has been made available.
-  - `window.postMessage` and the HTML CHannel Messaging API as defined in the [FDC3 Web Connection Protocol](webConnectionProtocol) and [FDC3 Browser Communication Protocol](specs/browserCommunicationProtocol).
-- Implement the [Browser-Resident Desktop Agent spec](specs/browserResidentDesktopAgents.md) if it is intended to support apps running in a standard browser.
-- Implement the [Preload Desktop Agent spec](specs/preloadDesktopAgents.md) if it is intended to support apps running in a container or other environment that supports injecting a global `fdc3` object.
+- Be able to provide the FDC3 API to applications in accordance with with any requirements defined for that platform, as defined in [Supported Platforms](supported-platforms) and linked specifications:
+  - For web applications this includes:
+    - Implementing the [Browser-Resident Desktop Agent spec](specs/browserResidentDesktopAgents.md) if it is intended to support apps running in a standard web browser.
+    - Implementing the [Preload Desktop Agent spec](specs/preloadDesktopAgents.md) if it is intended to support apps running in a container or other environment that supports injecting a global `fdc3` object.
 - Accept as input and return as output data structures that are compatible with the interfaces defined in this Standard.
 - Include implementations of the following [Desktop Agent](ref/DesktopAgent) API functions, as defined in this Standard:
   - [`addContextListener`](ref/DesktopAgent#addcontextlistener)
