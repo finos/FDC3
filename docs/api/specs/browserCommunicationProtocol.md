@@ -8,7 +8,11 @@ title: Browser Communication Protocol (next)
 
 BCP constitutes a set of messages that are used by the `@finos/fdc3` library to communicate with Browser-Resident DAs. Each message takes the form of a Flux Standard Action (FSA). Communications are bidirectional and occur over HTML standard MessagePorts. All messages are query/response. Responses may contain requested data or may simply be acknowledgement of receipt.
 
-> Note - We refer to "the library" to mean the code imported from `@finos/fdc3` and initiated from a call to `getAgent()`.
+:::note
+
+We refer to "the library" to mean the code imported from `@finos/fdc3` and initiated from a call to `getAgent()`.
+
+:::
 
 Type definitions for all BCP messages can be found here: [bcp.ts](TODO).
 
@@ -74,4 +78,3 @@ FDC3's `PrivateChannel` object has some specific functions, each of which has a 
 The DA should send `BCPPrivateChannelOnAddContextListener` and `BCPPrivateChannelOnUnsubscribe` messages whenever `BCPAddContextListener` or `BCPRemoveContextListener` is called on a private channel. These will be delivered to the library regardless of whether a client has actually called `onAddContextListener()` and `onUnsubscribe()`. It is the library's responsibility to track these calls and either deliver or discard the messages accordingly.
 
 Likewise, the DA should send `BCPPrivateChannelOnDisconnect` whenever the `BCPPrivateChannelDisconnect` message is received. It is the library's responsibility to deliver or discard this message.
-
