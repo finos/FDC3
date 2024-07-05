@@ -64,7 +64,7 @@ The position schema does not explicitly include identifiers in the `id` section,
 
 The amount of the holding, e.g. a number of shares
 
-**Type**: `number`
+**type**: `number`
 
 
 **Example Value**: 

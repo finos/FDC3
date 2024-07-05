@@ -37,11 +37,15 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
     
     if (propertyDetails.properties && Object.entries(propertyDetails.properties).length > 0) {
         // console.log("Sub props for "+propertyName+" - ",propertyDetails.properties.entries())
-        markdownContent += '#### Subproperties\n';
+        markdownContent += '**Subproperties:**\n';
         for (const [subpropertyName, subpropertyDetails] of Object.entries(propertyDetails.properties)) {
-            markdownContent += `##### ${subpropertyName}\n`;
-            markdownContent += `- Type: \`${subpropertyDetails.type}\`\n`;
-            markdownContent += `- Description: \`${subpropertyDetails.description}\`\n\n`;
+            markdownContent += `#### \`${subpropertyName}\`\n`;
+            if (propertyDetails?.required && propertyDetails?.required.includes(subpropertyName)) {
+                markdownContent += `- **required**\n`;
+            }
+            markdownContent += `- **type**: \`${subpropertyDetails.type}\`\n`;
+            markdownContent += `- **description**: ${subpropertyDetails.title ? subpropertyDetails.title + ": " : ""} ${subpropertyDetails.description ? subpropertyDetails.description : ""}\n\n`;
+            
         };
     }
 
@@ -60,7 +64,7 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
 }
 
 function renderType(ref) {
-    return `**Type**: \`${ref}\`\n\n`;
+    return `**type**: \`${ref}\`\n\n`;
 }
 
 function renderEnum(ref) {
@@ -127,11 +131,11 @@ function generateObjectMD(schema, title, schemaFolderName, filePath) {
     }
 
     //if working on windows you may have the wrong slashes...
-    console.log(filePath);
-    const workingPath = filePath.replaceAll("\\","/");
-    console.log("\t" + workingPath);
-    const url = workingPath.replace("../schemas/", `https://github.com/finos/FDC3/tree/main/schemas/`);
-    console.log("\t" + url);
+    // console.log(filePath);
+     const workingPath = filePath.replaceAll("\\","/");
+    // console.log("\t" + workingPath);
+     const url = workingPath.replace("../schemas/", `https://github.com/finos/FDC3/tree/main/schemas/`);
+    // console.log("\t" + url);
     markdownContent += `## Schema\n\n<${url}>\n\n`;
 
     if (hasAllOf(schema.allOf) || hasProperties(schema)) {

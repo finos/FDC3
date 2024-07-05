@@ -33,7 +33,7 @@ The TradeList schema does not explicitly include identifiers in the id section, 
 
 An array of trade contexts that forms the list.
 
-**Type**: `array`
+**type**: `array`
 
 
 **Example Value**: 

@@ -28,7 +28,7 @@ A context type representing the result of a transaction initiated via FDC3, whic
 
 The status of the transaction being reported.
 
-**Type**: `string`
+**type**: `string`
 
 **Possible values**: `Created`, `Deleted`, `Updated`, `Failed`
 

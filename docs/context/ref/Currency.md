@@ -23,7 +23,7 @@ A context representing an individual Currency.
 
 The name of the currency for display purposes
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 
@@ -31,12 +31,12 @@ The name of the currency for display purposes
 
 ### `id`
 
-**Type**: `object`
+**type**: `object`
 
-#### Subproperties
-##### CURRENCY_ISOCODE
-- Type: `string`
-- Description: `The `CURRENCY_ISOCODE` should conform to 3 character alphabetic codes defined in [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html)`
+**Subproperties:**
+#### `CURRENCY_ISOCODE`
+- **type**: `string`
+- **description**: CURRENCY_ISOCODE:  The `CURRENCY_ISOCODE` should conform to 3 character alphabetic codes defined in [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html)
 
 
 **Example Value**: 

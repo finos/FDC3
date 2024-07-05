@@ -30,7 +30,7 @@ An array of criteria that should match chats returned from by a search.
 
 Empty search criteria can be supported to allow resetting of filters.
 
-**Type**: `array`
+**type**: `array`
 
 
 **Example Value**: 

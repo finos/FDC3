@@ -80,7 +80,7 @@ Notes:
 
 The start time of the range, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 
@@ -96,7 +96,7 @@ The start time of the range, encoded according to [ISO 8601-1:2019](https://www.
 
 The end time of the range, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 

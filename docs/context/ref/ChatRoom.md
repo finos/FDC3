@@ -23,7 +23,7 @@ Reference to the chat room which could be used to send a message to the room
 
 The name of the service that hosts the chat
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 
@@ -33,7 +33,7 @@ The name of the service that hosts the chat
 
 Identifier(s) for the chat - currently unstandardized
 
-**Type**: `object`
+**type**: `object`
 
 
 **Example Value**: 
@@ -47,7 +47,7 @@ Identifier(s) for the chat - currently unstandardized
 
 Universal url to access to the room. It could be opened from a browser, a mobile app, etc...
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 
@@ -57,7 +57,7 @@ Universal url to access to the room. It could be opened from a browser, a mobile
 
 Display name for the chat room
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 

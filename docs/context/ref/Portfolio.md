@@ -47,7 +47,7 @@ The portfolio schema does not explicitly include identifiers in the `id` section
 
 The List of Positions which make up the Portfolio
 
-**Type**: `array`
+**type**: `array`
 
 
 **Example Value**: 

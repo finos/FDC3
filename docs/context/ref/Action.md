@@ -39,7 +39,7 @@ Accepts an optional `app` parameter in order to specify a specific app.
 
 A human readable display name for the action
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 
@@ -49,7 +49,7 @@ A human readable display name for the action
 
 Optional Intent to raise to perform the actions. Should reference an intent type name, such as those defined in the FDC3 Standard. If intent is not set then `fdc3.raiseIntentForContext` should be used to perform the action as this will usually allow the user to choose the intent to raise.
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 

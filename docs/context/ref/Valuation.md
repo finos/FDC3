@@ -23,7 +23,7 @@ A context type representing the price and value of a holding.
 
 The value of the holding, expresses in the nominated currency.
 
-**Type**: `number`
+**type**: `number`
 
 
 **Example Value**: 
@@ -33,7 +33,7 @@ The value of the holding, expresses in the nominated currency.
 
 The price per unit the the valuation is based on.
 
-**Type**: `number`
+**type**: `number`
 
 
 **Example Value**: 
@@ -43,7 +43,7 @@ The price per unit the the valuation is based on.
 
 The valuation currency, which should conform to 3 character alphabetic codes defined in [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html)
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 
@@ -53,7 +53,7 @@ The valuation currency, which should conform to 3 character alphabetic codes def
 
 The time at which the valuation was performed, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 
@@ -61,7 +61,7 @@ The time at which the valuation was performed, encoded according to [ISO 8601-1:
 
 The time at which this valuation expires, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 

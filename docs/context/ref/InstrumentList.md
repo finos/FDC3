@@ -35,7 +35,7 @@ The instrument list schema does not explicitly include identifiers in the `id` s
 
 An array of instrument contexts that forms the list.
 
-**Type**: `array`
+**type**: `array`
 
 
 **Example Value**: 

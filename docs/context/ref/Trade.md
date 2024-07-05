@@ -39,7 +39,7 @@ This type currently only defines a required `id` field, which should provide a r
 
 One or more identifiers that refer to the trade in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
 
-**Type**: `object`
+**type**: `object`
 
 
 **Example Value**: 
@@ -53,7 +53,7 @@ One or more identifiers that refer to the trade in an OMS, EMS or related system
 
 A human-readable summary of the trade.
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 

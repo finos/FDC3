@@ -37,7 +37,7 @@ This type currently only defines a required `id` field, which should provide a r
 
 One or more identifiers that refer to the order in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
 
-**Type**: `object`
+**type**: `object`
 
 
 **Example Value**: 
@@ -59,7 +59,7 @@ One or more identifiers that refer to the order in an OMS, EMS or related system
 
 An optional human-readable summary of the order.
 
-**Type**: `string`
+**type**: `string`
 
 
 **Example Value**: 
@@ -71,12 +71,12 @@ An optional human-readable summary of the order.
 
 Optional additional details about the order, which may include a product element that is an, as yet undefined but extensible, Context
 
-**Type**: `object`
+**type**: `object`
 
-#### Subproperties
-##### product
-- Type: `undefined`
-- Description: `undefined`
+**Subproperties:**
+#### `product`
+- **type**: `undefined`
+- **description**:  
 
 
 **Example Value**: 

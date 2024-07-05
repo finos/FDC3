@@ -17,9 +17,9 @@
 
 ### `name`
 
-**Type**: `string`
+**type**: `string`
 
 ### `id`
 
-**Type**: `object`
+**type**: `object`
 
