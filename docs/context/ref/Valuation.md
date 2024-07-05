@@ -1,44 +1,81 @@
 ---
-id: Valuation
-sidebar_label: Valuation
 title: Valuation
-hide_title: true
+description: A context type representing the price and value of a holding.
+sidebar_label: Valuation
+
 ---
-# `Valuation`
+
+# Valuation
 
 A context type representing the price and value of a holding.
+
+## Schema
+
+<https://github.com/finos/FDC3/tree/main/schemas/context/valuation.schema.json>
 
 ## Type
 
 `fdc3.valuation`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/valuation.schema.json>
+### `value`
 
-## Details
+The value of the holding, expresses in the nominated currency.
 
-| Property             | Type    | Required | Example Value                 |
-|----------------------|---------|----------|-------------------------------|
-| `type`               | string  | Yes      | `'fdc3.valuation'`            |
-| `value`              | number  | Yes      | `500.0`                       |
-| `price`              | number  | No       | `5.0`                         |
-| `CURRENCY_ISOCODE` * | string  | Yes      | `GBP`                         |
-| `valuationTime` **   | string  | No       | `"2022-05-12T16:16:24.815Z"`  |
-| `expiryTime` **      | string  | No       | `"2022-05-13T16:16:24+01:00"` |
+**Type**: `number`
 
-\* The `CURRENCY_ISOCODE` should conform to 3 character alphabetic codes defined in [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html).
 
-\*\* Time fields SHOULD conform to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
+**Example Value**: 
+`500`
+
+### `price`
+
+The price per unit the the valuation is based on.
+
+**Type**: `number`
+
+
+**Example Value**: 
+`5`
+
+### `CURRENCY_ISOCODE`
+
+The valuation currency, which should conform to 3 character alphabetic codes defined in [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html)
+
+**Type**: `string`
+
+
+**Example Value**: 
+`USD`
+
+### `valuationTime`
+
+The time at which the valuation was performed, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
+
+**Type**: `string`
+
+
+**Example Value**: 
+### `expiryTime`
+
+The time at which this valuation expires, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
+
+**Type**: `string`
+
+
+**Example Value**: 
+`2022-05-13T16:16:24+01:00`
 
 ## Example
 
-```js
-const valuation = {
-    type: 'fdc3.valuation',
-    value: 500.0,
-    price: 5.0,
-    CURRENCY_ISOCODE: 'USD',
-    expiryTime: "2022-05-13T16:16:24+01:00"
+```json
+{
+  "type": "fdc3.valuation",
+  "value": 500,
+  "price": 5,
+  "CURRENCY_ISOCODE": "USD",
+  "expiryTime": "2022-05-13T16:16:24+01:00"
 }
 ```
+

@@ -1,66 +1,72 @@
 ---
-id: Organization
-sidebar_label: Organization
 title: Organization
-hide_title: true
+description: >-
+  An entity that can be used when referencing private companies and other
+  organizations where a specific instrument is not available or desired e.g. CRM
+  and News workflows.
+
+
+  It is valid to include extra properties and metadata as part of the
+  organization payload, but the minimum requirement is for at least one
+  specified identifier to be provided.
+sidebar_label: Organization
+
 ---
-# `Organization`
+
+# Organization
 
 An entity that can be used when referencing private companies and other organizations where a specific instrument is not available or desired e.g. CRM and News workflows.
 
-Notes:
+It is valid to include extra properties and metadata as part of the organization payload, but the minimum requirement is for at least one specified identifier to be provided.
 
-- It is valid to include extra properties and metadata as part of the organization payload, but the minimum requirement
-is for at least one specified identifier to be provided.
+## Schema
+
+<https://github.com/finos/FDC3/tree/main/schemas/context/organization.schema.json>
 
 ## Type
 
 `fdc3.organization`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/organization.schema.json>
+### `id`
 
-## Details
+Identifiers for the organization, at least one must be provided.
 
-| Property    | Type    | Required | Example Value             |
-|-------------|---------|----------|---------------------------|
-| `type`      | string  | Yes      | `'fdc3.organization'`     |
-| `name`      | string  | No       | `'Cargill, Incorporated'` |
-| `id.LEI`    | string  | No       | `'QXZYQNMR4JZ5RIRN4T31'`  |
-| `id.PERMID` | string  | No       | `'4296555324'`            |
-| `id.FDS_ID` | string  | No       | `'00161G-E'`              |
+**Type**: `object`
+
+#### Subproperties
+##### LEI
+- Type: `string`
+- Description: `The Legal Entity Identifier (LEI) is a 20-character, alpha-numeric code based on the ISO 17442 standard developed by the International Organization for Standardization (ISO). It connects to key reference information that enables clear and unique identification of legal entities participating in financial transactions.`
+
+##### PERMID
+- Type: `string`
+- Description: `Refinitiv Permanent Identifiers, or PermID for the organization`
+
+##### FDS_ID
+- Type: `string`
+- Description: `FactSet Permanent Identifier representing the organization`
+
+
+**Example Value**: 
+```json
+{
+  "LEI": "QXZYQNMR4JZ5RIRN4T31",
+  "FDS_ID": "00161G-E"
+}
+```
 
 ## Example
 
-```js
-const organization = {
-    type: "fdc3.organization",
-    name: "Cargill, Incorporated",
-    id: {
-        LEI: "QXZYQNMR4JZ5RIRN4T31",
-        FDS_ID: "00161G-E"
-    }
+```json
+{
+  "type": "fdc3.organization",
+  "name": "Cargill, Incorporated",
+  "id": {
+    "LEI": "QXZYQNMR4JZ5RIRN4T31",
+    "FDS_ID": "00161G-E"
+  }
 }
-
-fdc3.broadcast(organization)
 ```
 
-## See Also
-
-Other Types
-
-- [Instrument](Instrument)
-
-Intents
-
-- [ViewNews](../../intents/ref/ViewNews)
-- [ViewAnalysis](../../intents/ref/viewAnalysis)
-- [ViewProfile](../../intents/ref/ViewProfile)
-- [ViewResearch](../../intents/ref/ViewResearch)
-- [ViewInteractions](../../intents/ref/ViewInteractions)
-- [ViewOrders](../../intents/ref/ViewOrders)
-
-FINOS Financial Objects
-
-- [Organization](https://fo.finos.org/docs/objects/organization)

@@ -108,7 +108,7 @@ function hasProperties(schema) {
 }
 
 // Function to generate Markdown content from JSON schema
-function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
+function generateObjectMD(schema, title, schemaFolderName, filePath) {
 
     const objectName = schema.title;
 
@@ -126,7 +126,12 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
         markdownContent += renderEnum(schema.enum);
     }
 
-    const url = filePath.replace("schemas/", `https://github.com/finos/FDC3/tree/main/schemas/`);
+    //if working on windows you may have the wrong slashes...
+    console.log(filePath);
+    const workingPath = filePath.replaceAll("\\","/");
+    console.log("\t" + workingPath);
+    const url = workingPath.replace("../schemas/", `https://github.com/finos/FDC3/tree/main/schemas/`);
+    console.log("\t" + url);
     markdownContent += `## Schema\n\n<${url}>\n\n`;
 
     if (hasAllOf(schema.allOf) || hasProperties(schema)) {
@@ -170,13 +175,15 @@ function generateObjectMD(schema, title, schemaFolderName, filePath, version) {
 
         const frontMatter = generateFrontMatter(objectName, schema.description);
 
-        const outputFileName = `./website/versioned_docs/version-${version}/${schemaFolderName}/schemas/${title.replace(/\s+/g, '')}.md`;
+        const outputDocName = `${title.replace(/\s+/g, '')}`;
+        const outputDocsPath = `${schemaFolderName}/ref/${outputDocName}`;
+        const outputFilePath = `../docs/${schemaFolderName}/ref/${outputDocName}.md`;
 
-        fse.outputFileSync(outputFileName, `---\n${yaml.dump(frontMatter)}\n---\n\n${markdownContent}`);
+        fse.outputFileSync(outputFilePath, `---\n${yaml.dump(frontMatter)}\n---\n\n${markdownContent}`);
 
         // objectName must not contain any spaces
         if (objectName != null) {
-            return schemaFolderName + '/schemas/' + objectName.replace(/\s+/g, '');
+            return outputDocsPath;
         }
     }
 }
@@ -193,35 +200,35 @@ function generateFrontMatter(title, description) {
     };
 }
 
-function processSchemaFile(schemaFile, schemaFolderName, version) {
+function processSchemaFile(schemaFile, schemaFolderName) {
     const schemaData = fse.readJSONSync(schemaFile);
 
     // if there is allOf, then it is an object
     const allOfArray = schemaData.allOf;
     let sidebarItems = [];
     if (Array.isArray(allOfArray) && allOfArray.length > 0) {
-        sidebarItems.push(generateObjectMD(schemaData, null, schemaFolderName, schemaFile, version));
+        sidebarItems.push(generateObjectMD(schemaData, null, schemaFolderName, schemaFile));
     }
     if (schemaData.definitions) {
         for (const [objectName, objectDetails] of Object.entries(schemaData.definitions)) {
-            sidebarItems.push(generateObjectMD(objectDetails, objectName, schemaFolderName, schemaFile, version));
+            sidebarItems.push(generateObjectMD(objectDetails, objectName, schemaFolderName, schemaFile));
         }
     }
 
     return sidebarItems;
 }
 
-function parseSchemaFolder(schemaFolderName, version) {
+function parseSchemaFolder(schemaFolderName) {
     // Read all files in the schema folder
-    const schemaFiles = fse.readdirSync("./schemas/"+schemaFolderName)
+    const schemaFiles = fse.readdirSync("../schemas/"+schemaFolderName)
     .filter(file => file.endsWith('.json'))
     // nosemgrep
-    .map(file => path.join("./schemas/"+schemaFolderName, file));
+    .map(file => path.join("../schemas/"+schemaFolderName, file));
 
     // Process each schema file
     let sidebarItems = [];
     for (const schemaFile of schemaFiles) {
-        sidebarItems.push(processSchemaFile(schemaFile, schemaFolderName, version));
+        sidebarItems.push(processSchemaFile(schemaFile, schemaFolderName));
     }
 
     // filter out null values
@@ -230,30 +237,43 @@ function parseSchemaFolder(schemaFolderName, version) {
 
 function main() {
 
-    const versions = fse.readdirSync('./website/versioned_docs').map(version => version.split('-')[1]);
+    //generate markdown docs for the current schema versions in the current docs draft
 
-    versions.forEach(version => {
+    let sidebarObject = fse.readJsonSync(`./sidebars.json`)    
 
-        let sidebarObject = fse.readJsonSync(`./website/versioned_sidebars/version-${version}-sidebars.json`)    
+    let sidebarContextObject = {
+        "type": "category",
+        "label": "Context Data Part",
+        "items": ["context/spec"]
+    }
 
-        let sidebarContextObject = {
-            "type": "category",
-            "label": "Context Data Part",
-            "items": []
+    sidebarContextObject.items = sidebarContextObject.items.concat(parseSchemaFolder('context'));
+
+    if (sidebarObject.docs["FDC3 Standard"] == null) {
+        sidebarObject.docs["FDC3 Standard"] = [];
+    }
+
+    //replace existing element
+    let foundIt = false;
+    sidebarObject.docs["FDC3 Standard"].map((elem) => {
+
+        if (elem.label == "Context Data Part"){
+            foundIt = true;
+            elem.items = sidebarContextObject.items;
+            console.log("Replaced content of 'Context Data Part' of website navigation.");
         }
-
-        sidebarContextObject.items = parseSchemaFolder('context', version);
-
-        if (sidebarObject.docs["FDC3 Standard"] == null) {
-            sidebarObject.docs["FDC3 Standard"] = [];
-        }
-
-        sidebarObject.docs["FDC3 Standard"].push(sidebarContextObject)
-
-        fse.outputJSONSync(
-            `./website/versioned_sidebars/version-${version}-sidebars.json`, 
-            sidebarObject, { spaces: 2 });
+        
     });
+
+    //or create it if not found
+    if (!foundIt){
+        console.warn("'Context Data Part' not found in website navigation, adding it as a new section...");
+        sidebarObject.docs["FDC3 Standard"].push(sidebarContextObject)
+    }
+    fse.outputJSONSync(
+        `./sidebars.json`,
+        sidebarObject, { spaces: 2 });
+
 }
 
 if (require.main === module) {
