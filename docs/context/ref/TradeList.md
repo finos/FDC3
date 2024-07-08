@@ -29,14 +29,15 @@ The TradeList schema does not explicitly include identifiers in the id section, 
 
 ## Properties
 
-### `trades`
-
-An array of trade contexts that forms the list.
+<details>
+  <summary><code>trades</code> <strong>(required)</strong></summary>
 
 **type**: `array`
 
+An array of trade contexts that forms the list.
 
-**Example Value**: 
+
+**Example**: 
 ```json
 [
   {
@@ -78,6 +79,8 @@ An array of trade contexts that forms the list.
   }
 ]
 ```
+
+</details>
 
 ## Example
 

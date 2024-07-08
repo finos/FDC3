@@ -21,12 +21,13 @@ A context representing a chat message. Typically used to send the message or to 
 
 ## Properties
 
-### `chatRoom`
+<details>
+  <summary><code>chatRoom</code> <strong>(required)</strong></summary>
 
-**Reference**: [chatRoom](../chatRoom)
+**type**: [chatRoom](../chatRoom)
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.chat.room",
@@ -37,12 +38,15 @@ A context representing a chat message. Typically used to send the message or to 
 }
 ```
 
-### `message`
+</details>
 
-**Reference**: [message](../message)
+<details>
+  <summary><code>message</code> <strong>(required)</strong></summary>
+
+**type**: [message](../message)
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.message",
@@ -60,6 +64,8 @@ A context representing a chat message. Typically used to send the message or to 
   }
 }
 ```
+
+</details>
 
 ## Example
 

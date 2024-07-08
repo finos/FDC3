@@ -21,12 +21,13 @@ A collection of information to be used to initiate an email with a Contact or Co
 
 ## Properties
 
-### `recipients`
+<details>
+  <summary><code>recipients</code> <strong>(required)</strong></summary>
 
 One or more recipients for the email.
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.contact",
@@ -37,25 +38,33 @@ One or more recipients for the email.
 }
 ```
 
-### `subject`
+</details>
+
+<details>
+  <summary><code>subject</code></summary>
+
+**type**: `string`
 
 Subject line for the email.
 
-**type**: `string`
 
-
-**Example Value**: 
+**Example**: 
 `The information you requested`
 
-### `textBody`
+</details>
+
+<details>
+  <summary><code>textBody</code></summary>
+
+**type**: `string`
 
 Body content for the email.
 
-**type**: `string`
 
-
-**Example Value**: 
+**Example**: 
 `Blah, blah, blah ...`
+
+</details>
 
 ## Example
 

@@ -19,49 +19,61 @@ Reference to the chat room which could be used to send a message to the room
 
 ## Properties
 
-### `providerName`
-
-The name of the service that hosts the chat
+<details>
+  <summary><code>providerName</code> <strong>(required)</strong></summary>
 
 **type**: `string`
 
+The name of the service that hosts the chat
 
-**Example Value**: 
+
+**Example**: 
 `Symphony`
 
-### `id`
+</details>
 
-Identifier(s) for the chat - currently unstandardized
+<details>
+  <summary><code>id</code> <strong>(required)</strong></summary>
 
 **type**: `object`
 
+Identifier(s) for the chat - currently unstandardized
 
-**Example Value**: 
+
+**Example**: 
 ```json
 {
   "streamId": "j75xqXy25NBOdacUI3FNBH"
 }
 ```
 
-### `url`
+</details>
+
+<details>
+  <summary><code>url</code></summary>
+
+**type**: `string`
 
 Universal url to access to the room. It could be opened from a browser, a mobile app, etc...
 
-**type**: `string`
 
-
-**Example Value**: 
+**Example**: 
 `http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA`
 
-### `name`
+</details>
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
 
 Display name for the chat room
 
-**type**: `string`
 
-
-**Example Value**: 
+**Example**: 
 `My new room`
+
+</details>
 
 ## Example
 

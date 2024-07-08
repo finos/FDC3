@@ -43,14 +43,15 @@ The position schema does not explicitly include identifiers in the `id` section,
 
 ## Properties
 
-### `instrument`
+<details>
+  <summary><code>instrument</code> <strong>(required)</strong></summary>
+
+**type**: [instrument](../instrument)
 
 
 
-**Reference**: [instrument](../instrument)
 
-
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.instrument",
@@ -60,15 +61,20 @@ The position schema does not explicitly include identifiers in the `id` section,
 }
 ```
 
-### `holding`
+</details>
 
-The amount of the holding, e.g. a number of shares
+<details>
+  <summary><code>holding</code> <strong>(required)</strong></summary>
 
 **type**: `number`
 
+The amount of the holding, e.g. a number of shares
 
-**Example Value**: 
+
+**Example**: 
 `2000000`
+
+</details>
 
 ## Example
 

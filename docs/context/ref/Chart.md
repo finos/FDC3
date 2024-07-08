@@ -44,14 +44,15 @@ In addition to handling requests to plot charts, a charting application may use 
 
 ## Properties
 
-### `instruments`
-
-An array of instrument contexts whose data should be plotted.
+<details>
+  <summary><code>instruments</code> <strong>(required)</strong></summary>
 
 **type**: `array`
 
+An array of instrument contexts whose data should be plotted.
 
-**Example Value**: 
+
+**Example**: 
 ```json
 [
   {
@@ -69,16 +70,19 @@ An array of instrument contexts whose data should be plotted.
 ]
 ```
 
-### `range`
+</details>
+
+<details>
+  <summary><code>range</code></summary>
 
 The time range that should be plotted
 
-**Reference**: [timerange](../timerange)
+**type**: [timerange](../timerange)
 
 
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.timeRange",
@@ -87,26 +91,42 @@ The time range that should be plotted
 }
 ```
 
-### `style`
+</details>
 
-The type of chart that should be plotted
+<details>
+  <summary><code>style</code></summary>
 
 **type**: `string`
 
-**Possible values**: `line`, `bar`, `stacked-bar`, `mountain`, `candle`, `pie`, `scatter`, `histogram`, `heatmap`, `custom`
+The type of chart that should be plotted
+
+**possible values**:
+- `line`,
+- `bar`,
+- `stacked-bar`,
+- `mountain`,
+- `candle`,
+- `pie`,
+- `scatter`,
+- `histogram`,
+- `heatmap`,
+- `custom`
 
 
-**Example Value**: 
+**Example**: 
 `line`
 
-### `otherConfig`
+</details>
 
-It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` array as context objects.
+<details>
+  <summary><code>otherConfig</code></summary>
 
 **type**: `array`
 
+It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` array as context objects.
 
-**Example Value**: 
+
+**Example**: 
 ```json
 [
   {
@@ -127,6 +147,8 @@ It is common for charts to support other configuration, such as indicators, anno
   }
 ]
 ```
+
+</details>
 
 ## Example
 

@@ -21,28 +21,32 @@ A person contact that can be engaged with through email, calling, messaging, CMS
 
 ## Properties
 
-### `id`
-
-Identifiers that relate to the Contact represented by this context
+<details>
+  <summary><code>id</code> <strong>(required)</strong></summary>
 
 **type**: `object`
 
+Identifiers that relate to the Contact represented by this context
+
 **Subproperties:**
-#### `email`
+
+`email`
 - **type**: `string`
 - **description**: Email address:  The email address for the contact
 
-#### `FDS_ID`
+`FDS_ID`
 - **type**: `string`
 - **description**: FDS ID:  FactSet Permanent Identifier representing the contact
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "email": "jane.doe@mail.com"
 }
 ```
+
+</details>
 
 ## Example
 
