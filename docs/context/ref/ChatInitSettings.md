@@ -19,24 +19,28 @@ A collection of settings to start a new chat conversation
 
 ## Properties
 
-### `chatName`
-
-Name to apply to the chat created
+<details>
+  <summary><code>chatName</code></summary>
 
 **type**: `string`
 
+Name to apply to the chat created
 
-**Example Value**: 
+
+**Example**: 
 `Chat ABCD`
 
-### `members`
+</details>
+
+<details>
+  <summary><code>members</code></summary>
+
+**type**: [contactList](../contactList)
 
 Contacts to add to the chat
 
-**Reference**: [contactList](../contactList)
 
-
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.contactList",
@@ -59,12 +63,15 @@ Contacts to add to the chat
 }
 ```
 
-### `message`
+</details>
+
+<details>
+  <summary><code>message</code></summary>
 
 An initial message to post in the chat when created.
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.message",
@@ -83,35 +90,39 @@ An initial message to post in the chat when created.
 }
 ```
 
-### `options`
+</details>
 
-Option settings that affect the creation of the chat
+<details>
+  <summary><code>options</code></summary>
 
 **type**: `object`
 
+Option settings that affect the creation of the chat
+
 **Subproperties:**
-#### `groupRecipients`
+
+`groupRecipients`
 - **type**: `boolean`
 - **description**: Group recipients option:  if false a separate chat will be created for each member
 
-#### `isPublic`
+`isPublic`
 - **type**: `boolean`
 - **description**: Public chat option:  if true the room will be visible to everyone in the chat application
 
-#### `allowHistoryBrowsing`
+`allowHistoryBrowsing`
 - **type**: `boolean`
 - **description**: Allow history browsing option:  if true members will be allowed to browse past messages
 
-#### `allowMessageCopy`
+`allowMessageCopy`
 - **type**: `boolean`
 - **description**: Allow message copy option:  if true members will be allowed to copy/paste messages
 
-#### `allowAddUser`
+`allowAddUser`
 - **type**: `boolean`
 - **description**: All adding users option:  if true members will be allowed to add other members to the chat
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "groupRecipients": true,
@@ -120,6 +131,8 @@ Option settings that affect the creation of the chat
   "allowMessageCopy": true
 }
 ```
+
+</details>
 
 ## Example
 

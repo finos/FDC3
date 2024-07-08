@@ -22,7 +22,10 @@ A context type that represents a simple search criterion, based on a list of oth
 
 ## Properties
 
-### `criteria`
+<details>
+  <summary><code>criteria</code> <strong>(required)</strong></summary>
+
+**type**: `array`
 
 An array of criteria that should match chats returned from by a search.
 
@@ -30,10 +33,8 @@ An array of criteria that should match chats returned from by a search.
 
 Empty search criteria can be supported to allow resetting of filters.
 
-**type**: `array`
 
-
-**Example Value**: 
+**Example**: 
 ```json
 [
   {
@@ -53,6 +54,8 @@ Empty search criteria can be supported to allow resetting of filters.
   "annual return"
 ]
 ```
+
+</details>
 
 ## Example
 

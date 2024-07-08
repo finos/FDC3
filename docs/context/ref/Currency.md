@@ -19,32 +19,39 @@ A context representing an individual Currency.
 
 ## Properties
 
-### `name`
-
-The name of the currency for display purposes
+<details>
+  <summary><code>name</code></summary>
 
 **type**: `string`
 
+The name of the currency for display purposes
 
-**Example Value**: 
+
+**Example**: 
 `US Dollar`
 
-### `id`
+</details>
+
+<details>
+  <summary><code>id</code> <strong>(required)</strong></summary>
 
 **type**: `object`
 
 **Subproperties:**
-#### `CURRENCY_ISOCODE`
+
+`CURRENCY_ISOCODE`
 - **type**: `string`
 - **description**: CURRENCY_ISOCODE:  The `CURRENCY_ISOCODE` should conform to 3 character alphabetic codes defined in [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html)
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "CURRENCY_ISOCODE": "USD"
 }
 ```
+
+</details>
 
 ## Example
 

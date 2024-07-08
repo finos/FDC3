@@ -19,53 +19,68 @@ A context type representing the price and value of a holding.
 
 ## Properties
 
-### `value`
+<details>
+  <summary><code>value</code> <strong>(required)</strong></summary>
+
+**type**: `number`
 
 The value of the holding, expresses in the nominated currency.
 
-**type**: `number`
 
-
-**Example Value**: 
+**Example**: 
 `500`
 
-### `price`
+</details>
+
+<details>
+  <summary><code>price</code></summary>
+
+**type**: `number`
 
 The price per unit the the valuation is based on.
 
-**type**: `number`
 
-
-**Example Value**: 
+**Example**: 
 `5`
 
-### `CURRENCY_ISOCODE`
+</details>
+
+<details>
+  <summary><code>CURRENCY_ISOCODE</code> <strong>(required)</strong></summary>
+
+**type**: `string`
 
 The valuation currency, which should conform to 3 character alphabetic codes defined in [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html)
 
-**type**: `string`
 
-
-**Example Value**: 
+**Example**: 
 `USD`
 
-### `valuationTime`
+</details>
+
+<details>
+  <summary><code>valuationTime</code></summary>
+
+**type**: `string`
 
 The time at which the valuation was performed, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
 
+
+**Example**: 
+</details>
+
+<details>
+  <summary><code>expiryTime</code></summary>
+
 **type**: `string`
-
-
-**Example Value**: 
-### `expiryTime`
 
 The time at which this valuation expires, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
 
-**type**: `string`
 
-
-**Example Value**: 
+**Example**: 
 `2022-05-13T16:16:24+01:00`
+
+</details>
 
 ## Example
 

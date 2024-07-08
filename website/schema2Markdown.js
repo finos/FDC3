@@ -9,12 +9,13 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
         //skip rendering the type property as it should be rendered at the top level
         return markdownContent;
     }   
-    markdownContent += `### \`${propertyName}\`\n\n`;
-    if (required) { markdownContent += `**(required)**\n`; }
+    //markdownContent += `### \`${propertyName}\`\n\n`;
+    
+    markdownContent += "<details>\n";
+    markdownContent += `  <summary><code>${propertyName}</code>${required ? " <strong>(required)</strong>" : ""}</summary>\n\n`;
+    
+    //if (required) { markdownContent += `**(required)**\n\n`; }
 
-    if (propertyDetails.description != null) {
-        markdownContent += `${escape(propertyDetails.description)}\n\n`;
-    }
 
     if (propertyDetails.type) {
         markdownContent += renderType(propertyDetails.type);
@@ -24,6 +25,11 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
         if (contextRef) {
             markdownContent += renderRef(contextRef);
         }
+    }
+
+    
+    if (propertyDetails.description != null) {
+        markdownContent += `${escape(propertyDetails.description)}\n\n`;
     }
 
     if (propertyDetails.enum) {
@@ -37,9 +43,9 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
     
     if (propertyDetails.properties && Object.entries(propertyDetails.properties).length > 0) {
         // console.log("Sub props for "+propertyName+" - ",propertyDetails.properties.entries())
-        markdownContent += '**Subproperties:**\n';
+        markdownContent += '**Subproperties:**\n\n';
         for (const [subpropertyName, subpropertyDetails] of Object.entries(propertyDetails.properties)) {
-            markdownContent += `#### \`${subpropertyName}\`\n`;
+            markdownContent += `\`${subpropertyName}\`\n`;
             if (propertyDetails?.required && propertyDetails?.required.includes(subpropertyName)) {
                 markdownContent += `- **required**\n`;
             }
@@ -51,7 +57,7 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
 
     if (schemaExamples) {
         schemaExamples.forEach((example) => {
-            markdownContent += `\n**Example Value**: \n`;
+            markdownContent += `\n**Example**: \n`;
             if (typeof example[propertyName] === 'object') {
                 markdownContent += `\`\`\`json\n${JSON.stringify(example[propertyName], null, 2)}\n\`\`\`\n\n`;
             } else if (example[propertyName]) {
@@ -59,17 +65,14 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
             }
         });
     }
+
+    markdownContent += "</details>\n\n";
     
     return markdownContent;
 }
 
 function renderType(ref) {
     return `**type**: \`${ref}\`\n\n`;
-}
-
-function renderEnum(ref) {
-    // for each item in ref, wrap it in backticks and join with a comma
-    return `**Possible values**: ${ref.map((item) => `\`${item}\``).join(', ')}\n\n`;
 }
 
 function renderRef(contextRef) {
@@ -97,7 +100,12 @@ function renderRef(contextRef) {
         refLabel = objectName;
     }
     // We need to prepend ../ since Docusaurus forces a trailing slash at the end of each URL
-    return `**Reference**: [${refLabel}](../${objectRef})\n\n`;
+    return `**type**: [${refLabel}](../${objectRef})\n\n`;
+}
+
+function renderEnum(ref) {
+    // for each item in ref, wrap it in backticks and join with a comma
+    return `**possible values**:\n${ref.map((item) => `- \`${item}\``).join(',\n')}\n\n`;
 }
 
 function hasAllOf(allOfArray) {
@@ -146,6 +154,7 @@ function generateObjectMD(schema, title, schemaFolderName, filePath) {
         }
         
         const properties = root.properties;
+        const requiredProperties = root.required;
         const typeString = properties?.type?.const;
         const ref = root.$ref;
                 
@@ -154,8 +163,9 @@ function generateObjectMD(schema, title, schemaFolderName, filePath) {
         markdownContent += `## Properties\n\n`; 
 
         for (const [propertyName, propertyDetails] of Object.entries(properties)) {
-            if (propertyName != "type"){ 
-                markdownContent += processProperty(propertyName, propertyDetails, schema.examples);
+            if (propertyName != "type"){
+                const required = !!requiredProperties?.includes(propertyName);
+                markdownContent += processProperty(propertyName, propertyDetails, schema.examples, required);
             }
         }
 

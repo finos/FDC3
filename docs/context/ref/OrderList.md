@@ -29,14 +29,15 @@ The OrderList schema does not explicitly include identifiers in the id section, 
 
 ## Properties
 
-### `orders`
-
-An array of order contexts that forms the list.
+<details>
+  <summary><code>orders</code> <strong>(required)</strong></summary>
 
 **type**: `array`
 
+An array of order contexts that forms the list.
 
-**Example Value**: 
+
+**Example**: 
 ```json
 [
   {
@@ -53,6 +54,8 @@ An array of order contexts that forms the list.
   }
 ]
 ```
+
+</details>
 
 ## Example
 

@@ -35,36 +35,43 @@ The Product schema does not explicitly include identifiers in the id section, as
 
 ## Properties
 
-### `id`
-
-One or more identifiers that refer to the product. Specific key names for systems are expected to be standardized in future.
+<details>
+  <summary><code>id</code> <strong>(required)</strong></summary>
 
 **type**: `object`
 
+One or more identifiers that refer to the product. Specific key names for systems are expected to be standardized in future.
 
-**Example Value**: 
+
+**Example**: 
 ```json
 {
   "productId": "ABC123"
 }
 ```
 
-### `name`
+</details>
 
-A human-readable summary of the product.
+<details>
+  <summary><code>name</code></summary>
 
 **type**: `string`
 
+A human-readable summary of the product.
 
-**Example Value**: 
-### `instrument`
+
+**Example**: 
+</details>
+
+<details>
+  <summary><code>instrument</code></summary>
+
+**type**: [instrument](../instrument)
 
  financial instrument that relates to the definition of this product
 
-**Reference**: [instrument](../instrument)
 
-
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.instrument",
@@ -73,6 +80,8 @@ A human-readable summary of the product.
   }
 }
 ```
+
+</details>
 
 ## Example
 

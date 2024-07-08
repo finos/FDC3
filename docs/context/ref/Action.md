@@ -35,34 +35,41 @@ Accepts an optional `app` parameter in order to specify a specific app.
 
 ## Properties
 
-### `title`
+<details>
+  <summary><code>title</code> <strong>(required)</strong></summary>
+
+**type**: `string`
 
 A human readable display name for the action
 
-**type**: `string`
 
-
-**Example Value**: 
+**Example**: 
 `Click to view Chart`
 
-### `intent`
+</details>
+
+<details>
+  <summary><code>intent</code></summary>
+
+**type**: `string`
 
 Optional Intent to raise to perform the actions. Should reference an intent type name, such as those defined in the FDC3 Standard. If intent is not set then `fdc3.raiseIntentForContext` should be used to perform the action as this will usually allow the user to choose the intent to raise.
 
-**type**: `string`
 
-
-**Example Value**: 
+**Example**: 
 `ViewChart`
 
-### `context`
+</details>
+
+<details>
+  <summary><code>context</code> <strong>(required)</strong></summary>
+
+**type**: [context](../context)
 
 A context object with which the action will be performed
 
-**Reference**: [context](../context)
 
-
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.chart",
@@ -83,22 +90,27 @@ A context object with which the action will be performed
 }
 ```
 
-### `app`
+</details>
+
+<details>
+  <summary><code>app</code></summary>
 
 An optional target application identifier that should perform the action
 
-**Reference**: [api/AppIdentifier](../../../api/schemas/AppIdentifier)
+**type**: [api/AppIdentifier](../../../api/schemas/AppIdentifier)
 
 
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "appId": "MyChartViewingApp",
   "instanceId": "instance1"
 }
 ```
+
+</details>
 
 ## Example
 

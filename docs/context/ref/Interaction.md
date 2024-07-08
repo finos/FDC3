@@ -24,35 +24,40 @@ An `Interaction` is a significant direct exchange of ideas or information betwee
 
 ## Properties
 
-### `id`
-
-Can be used by a target application to pass an identifier back to the originating application after an interaction record has been created, updated or deleted. An interaction ID does not need to be populated by the originating application, however the target application could store it for future reference and SHOULD return it in a `TransactionResult`.
+<details>
+  <summary><code>id</code></summary>
 
 **type**: `object`
 
+Can be used by a target application to pass an identifier back to the originating application after an interaction record has been created, updated or deleted. An interaction ID does not need to be populated by the originating application, however the target application could store it for future reference and SHOULD return it in a `TransactionResult`.
+
 **Subproperties:**
-#### `URI`
+
+`URI`
 - **type**: `string`
 - **description**: Interaction URI:  Can be used by a target application to pass a record's link back to the originating application. This offers the originating application a way to open the record for a user to view.
 
-#### `SALESFORCE`
+`SALESFORCE`
 - **type**: `string`
 - **description**: Salesforce ID:  Interactions ID in Salesforce
 
-#### `SINGLETRACK`
+`SINGLETRACK`
 - **type**: `string`
 - **description**: SingleTrack ID:  Interaction ID in SingleTrack
 
 
-**Example Value**: 
-### `participants`
+**Example**: 
+</details>
+
+<details>
+  <summary><code>participants</code> <strong>(required)</strong></summary>
+
+**type**: [contactList](../contactList)
 
 A list of contacts involved in the interaction
 
-**Reference**: [contactList](../contactList)
 
-
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.contactList",
@@ -75,14 +80,17 @@ A list of contacts involved in the interaction
 }
 ```
 
-### `timeRange`
+</details>
+
+<details>
+  <summary><code>timeRange</code> <strong>(required)</strong></summary>
+
+**type**: [timerange](../timerange)
 
 The time range over which the interaction occurred
 
-**Reference**: [timerange](../timerange)
 
-
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.timeRange",
@@ -90,32 +98,41 @@ The time range over which the interaction occurred
 }
 ```
 
-### `interactionType`
+</details>
+
+<details>
+  <summary><code>interactionType</code> <strong>(required)</strong></summary>
 
 `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or `'Meeting'` although other string values are permitted.
 
 
-**Example Value**: 
+**Example**: 
 `Instant Message`
 
-### `description`
+</details>
 
-A human-readable description of the interaction
+<details>
+  <summary><code>description</code> <strong>(required)</strong></summary>
 
 **type**: `string`
 
+A human-readable description of the interaction
 
-**Example Value**: 
+
+**Example**: 
 `Laboris libero dapibus fames elit adipisicing eu, fermentum, dignissimos laboriosam, erat, risus qui deserunt. Praesentium! Reiciendis. Hic harum nostrud, harum potenti amet? Mauris. Pretium aliquid animi, eget eiusmod integer proident. Architecto ipsum blandit ducimus, possimus illum sunt illum necessitatibus ab litora sed, nonummy integer minus corrupti ducimus iste senectus accumsan, fugiat nostrud? Pede vero dictumst excepturi, iure earum consequuntur voluptatum`
 
-### `initiator`
+</details>
+
+<details>
+  <summary><code>initiator</code></summary>
+
+**type**: [contact](../contact)
 
 The contact that initiated the interaction
 
-**Reference**: [contact](../contact)
 
-
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.contact",
@@ -126,15 +143,20 @@ The contact that initiated the interaction
 }
 ```
 
-### `origin`
+</details>
 
-Used to represent the application or service that the interaction was created from to aid in tracing the source of an interaction.
+<details>
+  <summary><code>origin</code></summary>
 
 **type**: `string`
 
+Used to represent the application or service that the interaction was created from to aid in tracing the source of an interaction.
 
-**Example Value**: 
+
+**Example**: 
 `Outlook`
+
+</details>
 
 ## Example
 

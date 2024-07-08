@@ -31,14 +31,15 @@ The instrument list schema does not explicitly include identifiers in the `id` s
 
 ## Properties
 
-### `instruments`
-
-An array of instrument contexts that forms the list.
+<details>
+  <summary><code>instruments</code> <strong>(required)</strong></summary>
 
 **type**: `array`
 
+An array of instrument contexts that forms the list.
 
-**Example Value**: 
+
+**Example**: 
 ```json
 [
   {
@@ -58,6 +59,8 @@ An array of instrument contexts that forms the list.
   }
 ]
 ```
+
+</details>
 
 ## Example
 

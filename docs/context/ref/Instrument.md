@@ -19,7 +19,10 @@ A financial instrument from any asset class.
 
 ## Properties
 
-### `id`
+<details>
+  <summary><code>id</code> <strong>(required)</strong></summary>
+
+**type**: `object`
 
 Any combination of instrument identifiers can be used together to resolve ambiguity, or for a better match. Not all applications will use the same instrument identifiers, which is why FDC3 allows for multiple to be specified. In general, the more identifiers an application can provide, the easier it will be to achieve interoperability.
 
@@ -28,47 +31,46 @@ It is valid to include extra properties and metadata as part of the instrument p
 Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant for tickers as used by an exchange.
 If the identifier you want to share is not a ticker or one of the other standardized fields, define a property that makes it clear what the value represents. Doing so will make interpretation easier for the developers of target applications.
 
-**type**: `object`
-
 **Subproperties:**
-#### `BBG`
+
+`BBG`
 - **type**: `string`
 - **description**: Bloomberg security:  <https://www.bloomberg.com/>
 
-#### `CUSIP`
+`CUSIP`
 - **type**: `string`
 - **description**: CUSIP:  <https://www.cusip.com/>
 
-#### `FDS_ID`
+`FDS_ID`
 - **type**: `string`
 - **description**: FactSet Permanent Security Identifier:  <https://www.factset.com/>
 
-#### `FIGI`
+`FIGI`
 - **type**: `string`
 - **description**: Open FIGI:  <https://www.openfigi.com/>
 
-#### `ISIN`
+`ISIN`
 - **type**: `string`
 - **description**: ISIN:  <https://www.isin.org/>
 
-#### `PERMID`
+`PERMID`
 - **type**: `string`
 - **description**: Refinitiv PERMID:  <https://permid.org/>
 
-#### `RIC`
+`RIC`
 - **type**: `string`
 - **description**: Refinitiv Identification Code:   <https://www.refinitiv.com/>
 
-#### `SEDOL`
+`SEDOL`
 - **type**: `string`
 - **description**: SEDOL:  <https://www.lseg.com/sedol>
 
-#### `ticker`
+`ticker`
 - **type**: `string`
 - **description**: Stock ticker:  Unstandardized stock tickers
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "ticker": "MSFT",
@@ -77,36 +79,42 @@ If the identifier you want to share is not a ticker or one of the other standard
 }
 ```
 
-### `market`
+</details>
 
-The `market` map can be used to further specify the instrument and help achieve interoperability between disparate data sources. This is especially useful when using an `id` field that is not globally unique.
+<details>
+  <summary><code>market</code></summary>
 
 **type**: `object`
 
+The `market` map can be used to further specify the instrument and help achieve interoperability between disparate data sources. This is especially useful when using an `id` field that is not globally unique.
+
 **Subproperties:**
-#### `MIC`
+
+`MIC`
 - **type**: `string`
 - **description**: Market Identifier Code:  <https://en.wikipedia.org/wiki/Market_Identifier_Code>
 
-#### `name`
+`name`
 - **type**: `string`
 - **description**: Market Name:  Human readable market name
 
-#### `COUNTRY_ISOALPHA2`
+`COUNTRY_ISOALPHA2`
 - **type**: `string`
 - **description**: Country ISO Code:  <https://www.iso.org/iso-3166-country-codes.html>
 
-#### `BBG`
+`BBG`
 - **type**: `string`
 - **description**: Bloomberg Market Identifier:  <https://www.bloomberg.com/>
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "MIC": "XNAS"
 }
 ```
+
+</details>
 
 ## Example
 

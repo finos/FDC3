@@ -43,14 +43,15 @@ The portfolio schema does not explicitly include identifiers in the `id` section
 
 ## Properties
 
-### `positions`
-
-The List of Positions which make up the Portfolio
+<details>
+  <summary><code>positions</code> <strong>(required)</strong></summary>
 
 **type**: `array`
 
+The List of Positions which make up the Portfolio
 
-**Example Value**: 
+
+**Example**: 
 ```json
 [
   {
@@ -85,6 +86,8 @@ The List of Positions which make up the Portfolio
   }
 ]
 ```
+
+</details>
 
 ## Example
 

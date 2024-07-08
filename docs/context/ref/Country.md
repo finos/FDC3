@@ -45,34 +45,38 @@ Notes:
 
 ## Properties
 
-### `id`
+<details>
+  <summary><code>id</code> <strong>(required)</strong></summary>
 
 **type**: `object`
 
 **Subproperties:**
-#### `COUNTRY_ISOALPHA2`
+
+`COUNTRY_ISOALPHA2`
 - **type**: `string`
 - **description**: COUNTRY_ISOALPHA2:  Two-letter ISO country code
 
-#### `COUNTRY_ISOALPHA3`
+`COUNTRY_ISOALPHA3`
 - **type**: `string`
 - **description**: COUNTRY_ISOALPHA3:  Three-letter ISO country code
 
-#### `ISOALPHA2`
+`ISOALPHA2`
 - **type**: `string`
 - **description**: ISOALPHA2:  Two-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.
 
-#### `ISOALPHA3`
+`ISOALPHA3`
 - **type**: `string`
 - **description**: ISOALPHA3:  Three-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "COUNTRY_ISOALPHA2": "SE"
 }
 ```
+
+</details>
 
 ## Example
 

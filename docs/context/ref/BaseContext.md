@@ -15,11 +15,17 @@
 
 ## Properties
 
-### `name`
+<details>
+  <summary><code>name</code></summary>
 
 **type**: `string`
 
-### `id`
+</details>
+
+<details>
+  <summary><code>id</code></summary>
 
 **type**: `object`
+
+</details>
 

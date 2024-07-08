@@ -24,26 +24,34 @@ A context type representing the result of a transaction initiated via FDC3, whic
 
 ## Properties
 
-### `status`
-
-The status of the transaction being reported.
+<details>
+  <summary><code>status</code> <strong>(required)</strong></summary>
 
 **type**: `string`
 
-**Possible values**: `Created`, `Deleted`, `Updated`, `Failed`
+The status of the transaction being reported.
+
+**possible values**:
+- `Created`,
+- `Deleted`,
+- `Updated`,
+- `Failed`
 
 
-**Example Value**: 
+**Example**: 
 `Updated`
 
-### `context`
+</details>
+
+<details>
+  <summary><code>context</code></summary>
+
+**type**: [context](../context)
 
 A context object returned by the transaction, possibly with updated data.
 
-**Reference**: [context](../context)
 
-
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.contact",
@@ -53,6 +61,8 @@ A context object returned by the transaction, possibly with updated data.
   }
 }
 ```
+
+</details>
 
 ## Example
 

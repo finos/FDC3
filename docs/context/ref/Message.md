@@ -24,37 +24,42 @@ A chat message to be sent through an instant messaging application. Can contain 
 
 ## Properties
 
-### `text`
-
-A map of string mime-type to string content
+<details>
+  <summary><code>text</code></summary>
 
 **type**: `object`
 
+A map of string mime-type to string content
+
 **Subproperties:**
-#### `text/plain`
+
+`text/plain`
 - **type**: `string`
 - **description**: Plain text:  Plain text encoded content.
 
-#### `text/markdown`
+`text/markdown`
 - **type**: `string`
 - **description**: Markdown text:  Markdown encoded content
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "text/plain": "Hey all, can we discuss the issue together? I attached a screenshot and a link to the current exchange rate"
 }
 ```
 
-### `entities`
+</details>
 
-A map of string IDs to entities that should be attached to the message, such as an action to perform, a file attachment, or other FDC3 context object.
+<details>
+  <summary><code>entities</code></summary>
 
 **type**: `object`
 
+A map of string IDs to entities that should be attached to the message, such as an action to perform, a file attachment, or other FDC3 context object.
 
-**Example Value**: 
+
+**Example**: 
 ```json
 {
   "picture1": {
@@ -88,6 +93,8 @@ A map of string IDs to entities that should be attached to the message, such as 
   }
 }
 ```
+
+</details>
 
 ## Example
 

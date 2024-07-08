@@ -28,14 +28,15 @@ The contact list schema does not explicitly include identifiers in the `id` sect
 
 ## Properties
 
-### `contacts`
-
-An array of contact contexts that forms the list.
+<details>
+  <summary><code>contacts</code> <strong>(required)</strong></summary>
 
 **type**: `array`
 
+An array of contact contexts that forms the list.
 
-**Example Value**: 
+
+**Example**: 
 ```json
 [
   {
@@ -54,6 +55,8 @@ An array of contact contexts that forms the list.
   }
 ]
 ```
+
+</details>
 
 ## Example
 

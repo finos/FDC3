@@ -33,14 +33,15 @@ This type currently only defines a required `id` field, which should provide a r
 
 ## Properties
 
-### `id`
-
-One or more identifiers that refer to the order in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
+<details>
+  <summary><code>id</code> <strong>(required)</strong></summary>
 
 **type**: `object`
 
+One or more identifiers that refer to the order in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
 
-**Example Value**: 
+
+**Example**: 
 ```json
 {
   "myOMS": "12345"
@@ -48,38 +49,45 @@ One or more identifiers that refer to the order in an OMS, EMS or related system
 ```
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "myOMS": "ABC123"
 }
 ```
 
-### `name`
+</details>
 
-An optional human-readable summary of the order.
+<details>
+  <summary><code>name</code></summary>
 
 **type**: `string`
 
+An optional human-readable summary of the order.
 
-**Example Value**: 
+
+**Example**: 
 `...`
 
 
-**Example Value**: 
-### `details`
+**Example**: 
+</details>
 
-Optional additional details about the order, which may include a product element that is an, as yet undefined but extensible, Context
+<details>
+  <summary><code>details</code></summary>
 
 **type**: `object`
 
+Optional additional details about the order, which may include a product element that is an, as yet undefined but extensible, Context
+
 **Subproperties:**
-#### `product`
+
+`product`
 - **type**: `undefined`
 - **description**:  
 
 
-**Example Value**: 
+**Example**: 
 ```json
 {
   "product": {
@@ -98,7 +106,9 @@ Optional additional details about the order, which may include a product element
 ```
 
 
-**Example Value**: 
+**Example**: 
+</details>
+
 ## Examples
 
 ```json

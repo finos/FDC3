@@ -35,38 +35,45 @@ This type currently only defines a required `id` field, which should provide a r
 
 ## Properties
 
-### `id`
-
-One or more identifiers that refer to the trade in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
+<details>
+  <summary><code>id</code> <strong>(required)</strong></summary>
 
 **type**: `object`
 
+One or more identifiers that refer to the trade in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
 
-**Example Value**: 
+
+**Example**: 
 ```json
 {
   "myEMS": "12345"
 }
 ```
 
-### `name`
+</details>
 
-A human-readable summary of the trade.
+<details>
+  <summary><code>name</code></summary>
 
 **type**: `string`
 
+A human-readable summary of the trade.
 
-**Example Value**: 
+
+**Example**: 
 `...`
 
-### `product`
+</details>
+
+<details>
+  <summary><code>product</code> <strong>(required)</strong></summary>
+
+**type**: [product](../product)
 
 A product that is the subject of the trade.
 
-**Reference**: [product](../product)
 
-
-**Example Value**: 
+**Example**: 
 ```json
 {
   "type": "fdc3.product",
@@ -81,6 +88,8 @@ A product that is the subject of the trade.
   }
 }
 ```
+
+</details>
 
 ## Example
 
