@@ -1939,6 +1939,10 @@ export interface TransactionResult {
      */
     context?: ContextElement;
     /**
+     * A human readable message describing the outcome of the transaction.
+     */
+    message?: string;
+    /**
      * The status of the transaction being reported.
      */
     status: TransactionStatus;
@@ -2766,6 +2770,7 @@ const typeMap: any = {
     ], "any"),
     "TransactionResult": o([
         { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
+        { json: "message", js: "message", typ: u(undefined, "") },
         { json: "status", js: "status", typ: r("TransactionStatus") },
         { json: "type", js: "type", typ: r("TransactionResultType") },
         { json: "id", js: "id", typ: u(undefined, m("any")) },
