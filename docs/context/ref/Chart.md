@@ -1,24 +1,5 @@
 ---
 title: Chart
-description: >-
-  A context type representing details of a Chart, which may be used to request
-  plotting of a particular chart or to otherwise share details of its
-  composition, such as:
-
-
-  - A list of instruments for comparison
-
-  - The time period to plot the chart over
-
-  - The style of chart (line, bar, mountain, candle etc.)
-
-  - Other settings such as indicators to calculate, or data representing
-  drawings and annotations.
-
-
-  In addition to handling requests to plot charts, a charting application may
-  use this type to output a representation of what it is currently displaying so
-  that it can be recorded by another application.
 sidebar_label: Chart
 
 ---

@@ -1,6 +1,5 @@
 ---
 title: Instrument
-description: A financial instrument from any asset class.
 sidebar_label: Instrument
 
 ---

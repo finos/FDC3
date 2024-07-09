@@ -1,6 +1,5 @@
 ---
 title: Currency
-description: A context representing an individual Currency.
 sidebar_label: Currency
 
 ---

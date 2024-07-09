@@ -1,11 +1,5 @@
 ---
 title: Interaction
-description: >-
-  An `Interaction` is a significant direct exchange of ideas or information
-  between a number of participants, e.g. a Sell Side party and one or more Buy
-  Side parties. An `Interaction` might be a call, a meeting (physical or
-  virtual), an IM or the preparation of some specialist data, such as financial
-  data for a given company or sector.
 sidebar_label: Interaction
 
 ---

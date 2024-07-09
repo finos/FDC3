@@ -1,24 +1,5 @@
 ---
 title: Position
-description: >-
-  A financial position made up of an instrument and a holding in that
-  instrument. This type is a good example of how new context types can be
-  composed from existing types.
-
-
-  In this case, the instrument and the holding amount for that instrument are
-  required values.
-
-
-  The [Position](Position) type goes hand-in-hand with the
-  [Portfolio](Portfolio) type, which represents multiple holdings in a
-  combination of instruments.
-
-
-  The position schema does not explicitly include identifiers in the `id`
-  section, as there is not a common standard for such identifiers. Applications
-  can, however, populate this part of the contract with custom identifiers if so
-  desired.
 sidebar_label: Position
 
 ---

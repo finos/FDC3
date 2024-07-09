@@ -1,14 +1,5 @@
 ---
 title: Organization
-description: >-
-  An entity that can be used when referencing private companies and other
-  organizations where a specific instrument is not available or desired e.g. CRM
-  and News workflows.
-
-
-  It is valid to include extra properties and metadata as part of the
-  organization payload, but the minimum requirement is for at least one
-  specified identifier to be provided.
 sidebar_label: Organization
 
 ---

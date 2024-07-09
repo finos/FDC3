@@ -1,8 +1,5 @@
 ---
 title: Email
-description: >-
-  A collection of information to be used to initiate an email with a Contact or
-  ContactList.
 sidebar_label: Email
 
 ---

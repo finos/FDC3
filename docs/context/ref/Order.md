@@ -1,18 +1,5 @@
 ---
 title: Order
-description: >-
-  @experimental context type representing an order. To be used with OMS and EMS
-  systems.
-
-
-  This type currently only defines a required `id` field, which should provide a
-  reference to the order in one or more systems, an optional human readable
-  `name` field to be used to summarize the order and an optional `details` field
-  that may be used to provide additional detail about the order, including a
-  context representing a `product`, which may be extended with arbitrary
-  properties. The `details.product` field is currently typed as a unspecified
-  Context type, but both `details` and `details.product` are expected to be
-  standardized in future.
 sidebar_label: Order
 
 ---

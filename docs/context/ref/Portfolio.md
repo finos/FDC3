@@ -1,24 +1,5 @@
 ---
 title: Portfolio
-description: >-
-  A financial portfolio made up of multiple positions (holdings) in several
-  instruments. Contrast this with e.g. the [InstrumentList](InstrumentList)
-  type, which is just a list of instruments.
-
-
-  This is a good example of how types can be composed and extended with extra
-  properties to define more complex types.
-
-
-  The Portfolio type consists of an array of [Position](Position) types, each of
-  which refers to a single [Instrument](Instrument) and a holding amount for
-  that instrument.
-
-
-  The portfolio schema does not explicitly include identifiers in the `id`
-  section, as there bis not a common standard for such identifiers. Applications
-  can, however, populate this part of the contract with custom identifiers if so
-  desired.
 sidebar_label: Portfolio
 
 ---

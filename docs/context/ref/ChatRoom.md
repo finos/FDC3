@@ -1,6 +1,5 @@
 ---
 title: Chat Room
-description: Reference to the chat room which could be used to send a message to the room
 sidebar_label: Chat Room
 
 ---
