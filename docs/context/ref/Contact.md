@@ -13,7 +13,7 @@ A person contact that can be engaged with through email, calling, messaging, CMS
 
 ## Schema
 
-<https://github.com/finos/FDC3/tree/main/schemas/context/contact.schema.json>
+<https://fdc3.finos.org/schemas/next/context/contact.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/contact.schema.json))
 
 ## Type
 

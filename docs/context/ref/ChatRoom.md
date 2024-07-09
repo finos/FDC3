@@ -11,7 +11,7 @@ Reference to the chat room which could be used to send a message to the room
 
 ## Schema
 
-<https://github.com/finos/FDC3/tree/main/schemas/context/chatRoom.schema.json>
+<https://fdc3.finos.org/schemas/next/context/chatRoom.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/chatRoom.schema.json))
 
 ## Type
 

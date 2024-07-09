@@ -35,7 +35,7 @@ The portfolio schema does not explicitly include identifiers in the `id` section
 
 ## Schema
 
-<https://github.com/finos/FDC3/tree/main/schemas/context/portfolio.schema.json>
+<https://fdc3.finos.org/schemas/next/context/portfolio.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/portfolio.schema.json))
 
 ## Type
 

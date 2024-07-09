@@ -37,7 +37,7 @@ Notes:
 
 ## Schema
 
-<https://github.com/finos/FDC3/tree/main/schemas/context/country.schema.json>
+<https://fdc3.finos.org/schemas/next/context/country.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/country.schema.json))
 
 ## Type
 

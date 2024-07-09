@@ -13,7 +13,7 @@ A collection of information to be used to initiate an email with a Contact or Co
 
 ## Schema
 
-<https://github.com/finos/FDC3/tree/main/schemas/context/email.schema.json>
+<https://fdc3.finos.org/schemas/next/context/email.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/email.schema.json))
 
 ## Type
 
