@@ -34,6 +34,13 @@ The OrderList schema does not explicitly include identifiers in the id section, 
 
 **type**: `array`
 
+<details>
+  <summary><code>Items</code></summary>
+
+**type**: [Order](Order)
+
+</details>
+
 An array of order contexts that forms the list.
 
 </details>

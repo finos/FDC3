@@ -29,21 +29,36 @@ An `Interaction` is a significant direct exchange of ideas or information betwee
 
 **type**: `object`
 
-Can be used by a target application to pass an identifier back to the originating application after an interaction record has been created, updated or deleted. An interaction ID does not need to be populated by the originating application, however the target application could store it for future reference and SHOULD return it in a `TransactionResult`.
-
 **Subproperties:**
 
-`URI`
-- **type**: `string`
-- **description**: Interaction URI:  Can be used by a target application to pass a record's link back to the originating application. This offers the originating application a way to open the record for a user to view.
+<details>
+  <summary><code>URI</code></summary>
 
-`SALESFORCE`
-- **type**: `string`
-- **description**: Salesforce ID:  Interactions ID in Salesforce
+**type**: `string`
 
-`SINGLETRACK`
-- **type**: `string`
-- **description**: SingleTrack ID:  Interaction ID in SingleTrack
+Can be used by a target application to pass a record's link back to the originating application. This offers the originating application a way to open the record for a user to view.
+
+</details>
+
+<details>
+  <summary><code>SALESFORCE</code></summary>
+
+**type**: `string`
+
+Interactions ID in Salesforce
+
+</details>
+
+<details>
+  <summary><code>SINGLETRACK</code></summary>
+
+**type**: `string`
+
+Interaction ID in SingleTrack
+
+</details>
+
+Can be used by a target application to pass an identifier back to the originating application after an interaction record has been created, updated or deleted. An interaction ID does not need to be populated by the originating application, however the target application could store it for future reference and SHOULD return it in a `TransactionResult`.
 
 </details>
 
@@ -67,6 +82,15 @@ The time range over which the interaction occurred
 
 <details>
   <summary><code>interactionType</code> <strong>(required)</strong></summary>
+
+**Any of:**
+
+**type**: `string`
+
+
+**type**: `string`
+
+
 
 `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or `'Meeting'` although other string values are permitted.
 

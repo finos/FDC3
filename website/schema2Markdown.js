@@ -2,34 +2,71 @@ const fse = require('fs-extra');
 const yaml = require('js-yaml');
 const path = require('path');
 
-function processProperty(propertyName, propertyDetails, propertyExamples, required, currentSchemaFilePath) {
+
+
+function processProperty(propertyName, propertyDetails, required, currentSchemaFilePath) {
     let markdownContent = '';
 
     if (propertyName === 'type') {
         //skip rendering the type property as it should be rendered at the top level
         return markdownContent;
     }   
-    //markdownContent += `### \`${propertyName}\`\n\n`;
     
     markdownContent += "<details>\n";
     markdownContent += `  <summary><code>${propertyName}</code>${required ? " <strong>(required)</strong>" : ""}</summary>\n\n`;
     
-    //if (required) { markdownContent += `**(required)**\n\n`; }
-
-
+    //Note this block doesn't support inline property definitions... only base types and references, 
+    //  it will not render an object or array defined inline beyond stating that it is one
     if (propertyDetails.type) {
         markdownContent += renderType(propertyDetails.type);
-    } else if (propertyDetails.$ref) {
-        //const contextRef = propertyDetails.properties?.context?.$ref || propertyDetails.$ref;
 
-        //if (contextRef) {
-            markdownContent += renderRef(propertyDetails.$ref, currentSchemaFilePath);
-        //} 
+        if (propertyDetails.type == "object") {
+            if (propertyDetails.properties && Object.entries(propertyDetails.properties).length > 0) {
+                // console.log("Sub props for "+propertyName+" - ",propertyDetails.properties.entries())
+                markdownContent += '**Subproperties:**\n\n';
+                
+                for (const [subpropertyName, subpropertyDetails] of Object.entries(propertyDetails.properties)) {
+                    let subPropRequired = propertyDetails?.required?.includes(subpropertyName) ?? false;
+                    markdownContent += processProperty(subpropertyName, subpropertyDetails, subPropRequired, currentSchemaFilePath);
+                    
+                    // markdownContent += `\`${subpropertyName}\`\n`;
+                    // if (propertyDetails?.required && propertyDetails?.required.includes(subpropertyName)) {
+                    //     markdownContent += `- **required**\n`;
+                    // }
+                    // markdownContent += `- **type**: \`${subpropertyDetails.type}\`\n`;
+                    // markdownContent += `- **description**: ${subpropertyDetails.title ? subpropertyDetails.title + ": " : ""} ${subpropertyDetails.description ? subpropertyDetails.description : ""}\n\n`;
+                    
+                };
+            } else {
+                console.warn(`    No sub properties defined for object property ${propertyName}, property details:\n${JSON.stringify(propertyDetails, null, 2)}`);
+            }
+        } else if (propertyDetails.type == "array") {
+            if (propertyDetails.items) {
+                markdownContent += processProperty("Items", propertyDetails.items, false, currentSchemaFilePath);
+
+            } else {
+                console.warn(`    No type defined for array ${propertyName} items, property details:\n${JSON.stringify(propertyDetails, null, 2)}`);
+            }
+        }
+    } else if (propertyDetails.$ref) {
+        markdownContent += renderRef(propertyDetails.$ref, currentSchemaFilePath);
+    } else if (propertyDetails.oneOf || propertyDetails.anyOf || propertyDetails.allOf) {
+        //this block assumes composite properties are composed base types or references, doesn't support inline object or array definitions
+        markdownContent += `${propertyDetails.oneOf ? "**One of:**" : propertyDetails.anyOf ? "**Any of:**" : propertyDetails.allOf ? "**All of:**" : ""}\n\n`;
+        const typeArr = propertyDetails.oneOf ?? propertyDetails.anyOf ?? propertyDetails.allOf;
+        markdownContent += `${typeArr.map((item) => {
+            if (item.type){
+                return renderType(item.type);
+            } else if (item.$ref) {
+                return renderRef(item.$ref, currentSchemaFilePath);
+            } else {
+                console.warn(`    Failed to determine property type for composite property ${propertyName}, property details:\n${JSON.stringify(propertyDetails, null, 2)}`);
+            }
+        }).join('\n')}\n\n`;
     } else {
-        console.warn(`    Failed to determine property type for ${propertyName}`);
+        console.warn(`    Failed to determine property type for ${propertyName}, property details:\n${JSON.stringify(propertyDetails, null, 2)}`);
     }
 
-    
     if (propertyDetails.description != null) {
         markdownContent += `${escape(propertyDetails.description)}\n\n`;
     }
@@ -38,28 +75,8 @@ function processProperty(propertyName, propertyDetails, propertyExamples, requir
         markdownContent += renderEnum(propertyDetails.enum);
     }
 
-    if (propertyDetails.allOf) {
-        //assumes that the allOf will be a combination of refs... inline definitions not supported
-        markdownContent += `${propertyDetails.allOf.map((item) => renderRef(item.$ref, currentSchemaFilePath)).join(', ')}\n\n`;
-    }
-
-    
-    if (propertyDetails.properties && Object.entries(propertyDetails.properties).length > 0) {
-        // console.log("Sub props for "+propertyName+" - ",propertyDetails.properties.entries())
-        markdownContent += '**Subproperties:**\n\n';
-        for (const [subpropertyName, subpropertyDetails] of Object.entries(propertyDetails.properties)) {
-            markdownContent += `\`${subpropertyName}\`\n`;
-            if (propertyDetails?.required && propertyDetails?.required.includes(subpropertyName)) {
-                markdownContent += `- **required**\n`;
-            }
-            markdownContent += `- **type**: \`${subpropertyDetails.type}\`\n`;
-            markdownContent += `- **description**: ${subpropertyDetails.title ? subpropertyDetails.title + ": " : ""} ${subpropertyDetails.description ? subpropertyDetails.description : ""}\n\n`;
-            
-        };
-    }
-
-    if (propertyExamples) {
-        propertyExamples.forEach((example) => {
+    if (propertyDetails.examples) {
+        propertyDetails.examples.forEach((example) => {
             markdownContent += `\n**Example**: \n\n`;
             markdownContent += `\`\`\`js\n${JSON.stringify(example, null, 2)}\n\`\`\`\n\n`;
         });
@@ -183,7 +200,7 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
         for (const [propertyName, propertyDetails] of Object.entries(properties)) {
             if (propertyName != "type"){
                 const required = !!requiredProperties?.includes(propertyName);
-                markdownContent += processProperty(propertyName, propertyDetails, propertyDetails.examples, required, workingPath);
+                markdownContent += processProperty(propertyName, propertyDetails, required, workingPath);
             }
         }
 

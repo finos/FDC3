@@ -29,17 +29,27 @@ A chat message to be sent through an instant messaging application. Can contain 
 
 **type**: `object`
 
-A map of string mime-type to string content
-
 **Subproperties:**
 
-`text/plain`
-- **type**: `string`
-- **description**: Plain text:  Plain text encoded content.
+<details>
+  <summary><code>text/plain</code></summary>
 
-`text/markdown`
-- **type**: `string`
-- **description**: Markdown text:  Markdown encoded content
+**type**: `string`
+
+Plain text encoded content.
+
+</details>
+
+<details>
+  <summary><code>text/markdown</code></summary>
+
+**type**: `string`
+
+Markdown encoded content
+
+</details>
+
+A map of string mime-type to string content
 
 </details>
 

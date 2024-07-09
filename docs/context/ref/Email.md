@@ -24,6 +24,15 @@ A collection of information to be used to initiate an email with a Contact or Co
 <details>
   <summary><code>recipients</code> <strong>(required)</strong></summary>
 
+**One of:**
+
+**type**: [Contact](Contact)
+
+
+**type**: [ContactList](ContactList)
+
+
+
 One or more recipients for the email.
 
 </details>

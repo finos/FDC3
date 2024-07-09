@@ -33,7 +33,7 @@ Notes:
 
 ## Schema
 
-https://fdc3.finos.org/schemas/2.0/timerange.schema.json
+https://fdc3.finos.org/schemas/2.0/timeRange.schema.json
 
 ## Details
 

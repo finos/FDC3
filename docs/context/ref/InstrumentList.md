@@ -36,6 +36,13 @@ The instrument list schema does not explicitly include identifiers in the `id` s
 
 **type**: `array`
 
+<details>
+  <summary><code>Items</code></summary>
+
+**type**: [Instrument](Instrument)
+
+</details>
+
 An array of instrument contexts that forms the list.
 
 </details>

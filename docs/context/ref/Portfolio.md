@@ -48,6 +48,13 @@ The portfolio schema does not explicitly include identifiers in the `id` section
 
 **type**: `array`
 
+<details>
+  <summary><code>Items</code></summary>
+
+**type**: [Position](Position)
+
+</details>
+
 The List of Positions which make up the Portfolio
 
 </details>

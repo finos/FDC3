@@ -68,7 +68,7 @@ Notes:
 
 ## Schema
 
-<https://github.com/finos/FDC3/tree/main/schemas/context/timerange.schema.json>
+<https://github.com/finos/FDC3/tree/main/schemas/context/timeRange.schema.json>
 
 ## Type
 

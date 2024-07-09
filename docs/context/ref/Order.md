@@ -56,13 +56,16 @@ An optional human-readable summary of the order.
 
 **type**: `object`
 
-Optional additional details about the order, which may include a product element that is an, as yet undefined but extensible, Context
-
 **Subproperties:**
 
-`product`
-- **type**: `undefined`
-- **description**:  
+<details>
+  <summary><code>product</code></summary>
+
+**type**: [Product](Product)
+
+</details>
+
+Optional additional details about the order, which may include a product element that is an, as yet undefined but extensible, Context
 
 </details>
 

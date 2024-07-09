@@ -48,6 +48,15 @@ A context object returned by the transaction, possibly with updated data.
 
 </details>
 
+<details>
+  <summary><code>message</code></summary>
+
+**type**: `string`
+
+A human readable message describing the outcome of the transaction.
+
+</details>
+
 ## Example
 
 ```json

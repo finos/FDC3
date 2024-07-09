@@ -33,6 +33,13 @@ The contact list schema does not explicitly include identifiers in the `id` sect
 
 **type**: `array`
 
+<details>
+  <summary><code>Items</code></summary>
+
+**type**: [Contact](Contact)
+
+</details>
+
 An array of contact contexts that forms the list.
 
 </details>
