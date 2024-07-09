@@ -22,28 +22,20 @@ function processProperty(propertyName, propertyDetails, required, currentSchemaF
 
         if (propertyDetails.type == "object") {
             if (propertyDetails.properties && Object.entries(propertyDetails.properties).length > 0) {
-                // console.log("Sub props for "+propertyName+" - ",propertyDetails.properties.entries())
                 markdownContent += '**Subproperties:**\n\n';
                 
                 for (const [subpropertyName, subpropertyDetails] of Object.entries(propertyDetails.properties)) {
                     let subPropRequired = propertyDetails?.required?.includes(subpropertyName) ?? false;
                     markdownContent += processProperty(subpropertyName, subpropertyDetails, subPropRequired, currentSchemaFilePath);
-                    
-                    // markdownContent += `\`${subpropertyName}\`\n`;
-                    // if (propertyDetails?.required && propertyDetails?.required.includes(subpropertyName)) {
-                    //     markdownContent += `- **required**\n`;
-                    // }
-                    // markdownContent += `- **type**: \`${subpropertyDetails.type}\`\n`;
-                    // markdownContent += `- **description**: ${subpropertyDetails.title ? subpropertyDetails.title + ": " : ""} ${subpropertyDetails.description ? subpropertyDetails.description : ""}\n\n`;
-                    
                 };
+            } else if (propertyDetails.additionalProperties && Object.entries(propertyDetails.additionalProperties).length > 0) {
+                markdownContent += processProperty("Additional Properties", propertyDetails.additionalProperties, false, currentSchemaFilePath);
             } else {
-                console.warn(`    No sub properties defined for object property ${propertyName}, property details:\n${JSON.stringify(propertyDetails, null, 2)}`);
+                console.warn(`    No sub or additional properties defined for object property ${propertyName}`);
             }
         } else if (propertyDetails.type == "array") {
             if (propertyDetails.items) {
                 markdownContent += processProperty("Items", propertyDetails.items, false, currentSchemaFilePath);
-
             } else {
                 console.warn(`    No type defined for array ${propertyName} items, property details:\n${JSON.stringify(propertyDetails, null, 2)}`);
             }

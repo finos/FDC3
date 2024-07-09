@@ -40,6 +40,13 @@ The Product schema does not explicitly include identifiers in the id section, as
 
 **type**: `object`
 
+<details>
+  <summary><code>Additional Properties</code></summary>
+
+**type**: `string`
+
+</details>
+
 One or more identifiers that refer to the product. Specific key names for systems are expected to be standardized in future.
 
 </details>
