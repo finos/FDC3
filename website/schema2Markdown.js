@@ -2,7 +2,7 @@ const fse = require('fs-extra');
 const yaml = require('js-yaml');
 const path = require('path');
 
-function processProperty(propertyName, propertyDetails, schemaExamples, required) {
+function processProperty(propertyName, propertyDetails, propertyExamples, required, currentSchemaFilePath) {
     let markdownContent = '';
 
     if (propertyName === 'type') {
@@ -19,12 +19,14 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
 
     if (propertyDetails.type) {
         markdownContent += renderType(propertyDetails.type);
-    } else {
-        const contextRef = propertyDetails.properties?.context?.$ref || propertyDetails.$ref;
+    } else if (propertyDetails.$ref) {
+        //const contextRef = propertyDetails.properties?.context?.$ref || propertyDetails.$ref;
 
-        if (contextRef) {
-            markdownContent += renderRef(contextRef);
-        }
+        //if (contextRef) {
+            markdownContent += renderRef(propertyDetails.$ref, currentSchemaFilePath);
+        //} 
+    } else {
+        console.warn(`    Failed to determine property type for ${propertyName}`);
     }
 
     
@@ -37,7 +39,8 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
     }
 
     if (propertyDetails.allOf) {
-        markdownContent += `${propertyDetails.allOf.map((item) => renderRef(item.$ref)).join(', ')}\n\n`;
+        //assumes that the allOf will be a combination of refs... inline definitions not supported
+        markdownContent += `${propertyDetails.allOf.map((item) => renderRef(item.$ref, currentSchemaFilePath)).join(', ')}\n\n`;
     }
 
     
@@ -55,14 +58,10 @@ function processProperty(propertyName, propertyDetails, schemaExamples, required
         };
     }
 
-    if (schemaExamples) {
-        schemaExamples.forEach((example) => {
-            markdownContent += `\n**Example**: \n`;
-            if (typeof example[propertyName] === 'object') {
-                markdownContent += `\`\`\`json\n${JSON.stringify(example[propertyName], null, 2)}\n\`\`\`\n\n`;
-            } else if (example[propertyName]) {
-                markdownContent += `\`${example[propertyName]}\`\n\n`;
-            }
+    if (propertyExamples) {
+        propertyExamples.forEach((example) => {
+            markdownContent += `\n**Example**: \n\n`;
+            markdownContent += `\`\`\`js\n${JSON.stringify(example, null, 2)}\n\`\`\`\n\n`;
         });
     }
 
@@ -75,32 +74,54 @@ function renderType(ref) {
     return `**type**: \`${ref}\`\n\n`;
 }
 
-function renderRef(contextRef) {
+function renderRef(contextRef, currentSchemaFilePath) {
+    //There are two main types of refs to handle: 
+    // - refs to other context types
+    // - refs to API types
+    //References should be treated like URLs, they are either resolved absolutely, relatively or relative to the current doc's root
+    //  most refs in current context docs are relative, but we can't assume they always will be
+    //  We may also being dealing with definitions with the current file or other files.
+
+    //Examples:
+    // - ../api/api.schema.json#/definitions/AppIdentifier
+    // - #/$defs/AgentResponseMeta
+    // - instrument.schema.json
+    // - context.schema.json#/definitions/BaseContext
+
     const [filePath, objectPath] = contextRef.split('#'); // ../api/api.schema.json, /definitions/AppIdentifier
-    const objectType = filePath.split('/').pop().split('.')[0]; // api
+    let schemaData = null;
+    let standardPart = null;
+    if (!filePath && objectPath) {
+        //its a path inside the current file
+        schemaData = retrieveSchemaFile(currentSchemaFilePath);
+    } else {
+        //its a ref to a different file
+        schemaData = retrieveSchemaFile(filePath, currentSchemaFilePath);
 
-    // FROM ../api/api.schema.json#/definitions/AppIdentifier
-    // TO   ../api/schemas/Appidentifier
-
-    // FROM timerange.schema.json#
-    // TO   timerange/schemas/timerange
-
-    let objectName = objectType;
-    if (objectPath) {
-        objectName = objectPath.split('/').pop(); // AppIdentifier
+        //determine if the reference is to a different section, e.g. to the API schemas
+        standardPart = retrieveFolderName(filePath);
     }
+    
+    const title = retrieveTitleFromSchemaData(schemaData,objectPath);
+    const outputDocName = `${title.replace(/\s+/g, '')}`;
 
-    let objectRef = objectName;
-    if (filePath.startsWith('../')) {
-        objectRef = "../../" + objectType + "/schemas/" + objectName;
-    }
+    if (!standardPart) {
+        //its either in an unknown part or the current part of the Standard
 
-    let refLabel = `${objectType}/${objectName}`;
-    if (objectType == objectName) {
-        refLabel = objectName;
+        //handle the generic Context type as it doesn't have a reference page
+        if (title == "Context"){
+            return `**type**: [Context](/docs/next/context/spec#the-context-interface)\n\n`;
+        } else {
+            return `**type**: [${title}](${outputDocName})\n\n`;
+        }
+    } else {
+        //custom handling for other standard parts...
+        return `**type**: ${standardPart}/${title}\n\n`;
+
+        //TODO handle API schema refs 
+        // - which are currently split across two different docs pages (Types and Metadata)
+        // - perhaps reunite these pages and just link to the resulting page.
     }
-    // We need to prepend ../ since Docusaurus forces a trailing slash at the end of each URL
-    return `**type**: [${refLabel}](../${objectRef})\n\n`;
 }
 
 function renderEnum(ref) {
@@ -120,13 +141,10 @@ function hasProperties(schema) {
 }
 
 // Function to generate Markdown content from JSON schema
-function generateObjectMD(schema, title, schemaFolderName, filePath) {
-
-    const objectName = schema.title;
-
-    if (schema.title != null) {
-        title = schema.title;
-    }
+function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
+    //If the schema doesn't contain a title, 
+    // it may have been embedded in a definition who's name would have been passed in
+    title = schema.title ?? objectName;
 
     let markdownContent = `# ${title}\n\n`;
 
@@ -165,7 +183,7 @@ function generateObjectMD(schema, title, schemaFolderName, filePath) {
         for (const [propertyName, propertyDetails] of Object.entries(properties)) {
             if (propertyName != "type"){
                 const required = !!requiredProperties?.includes(propertyName);
-                markdownContent += processProperty(propertyName, propertyDetails, schema.examples, required);
+                markdownContent += processProperty(propertyName, propertyDetails, propertyDetails.examples, required, workingPath);
             }
         }
 
@@ -187,18 +205,16 @@ function generateObjectMD(schema, title, schemaFolderName, filePath) {
             });
         }
 
-        const frontMatter = generateFrontMatter(objectName, schema.description);
+        const frontMatter = generateFrontMatter(title, schema.description);
 
+        // outputDocName must not contain any spaces
         const outputDocName = `${title.replace(/\s+/g, '')}`;
         const outputDocsPath = `${schemaFolderName}/ref/${outputDocName}`;
         const outputFilePath = `../docs/${schemaFolderName}/ref/${outputDocName}.md`;
 
         fse.outputFileSync(outputFilePath, `---\n${yaml.dump(frontMatter)}\n---\n\n${markdownContent}`);
 
-        // objectName must not contain any spaces
-        if (objectName != null) {
-            return outputDocsPath;
-        }
+        return outputDocsPath;
     }
 }
 
@@ -231,6 +247,87 @@ function processSchemaFile(schemaFile, schemaFolderName) {
 
     return sidebarItems;
 }
+/**
+ * Given a path to a schema file, retrieves the schema file contents.
+ * If a currentFilePath is specified the path is resolved relative to it 
+ * (as it is assumed that the path to be resolved is relative to that file).
+ * 
+ * Does not support retrieving schemas via a full URL.
+ * 
+ * @param {string} schemaFilePath 
+ * @param {string} currentFilePath 
+ * @returns Contents of the referenced schema file
+ */
+function retrieveSchemaFile (schemaFilePath, currentFilePath) {
+    let resolvedPath
+
+    if (currentFilePath) {
+        //resolve the file path relative to the current file
+        const currentFilePathData = path.parse(currentFilePath);
+        const schemaFilePathData = path.parse(schemaFilePath);
+        const pathComponents = [];
+        if (currentFilePathData.dir) {pathComponents.push(currentFilePathData.dir);}
+        if (schemaFilePathData.dir) {pathComponents.push(schemaFilePathData.dir);}
+        pathComponents.push(schemaFilePathData.base);
+        resolvedPath = path.join(...pathComponents);
+    }
+    
+    //read the file
+    return fse.readJSONSync(resolvedPath);
+}
+
+function retrieveFolderName (schemaFilePath) {
+    const schemaFilePathData = path.parse(schemaFilePath);
+    //fix windows paths
+    const workingPath = schemaFilePathData.dir.replaceAll("\\","/");
+    const parts = workingPath.split("/");
+    return parts[parts.length-1];
+}
+
+/**
+ * Retrieve the content at a particular path in a schema object.
+ * @param {*} schemaData 
+ * @param {*} pathInSchema 
+ * @returns 
+ */
+function retrievePathInSchema(schemaData, pathInSchema) {
+    let outputData = schemaData;
+    const pathComponents = pathInSchema.split("/");
+    pathComponents.forEach((component) => {
+        if (component && outputData) { outputData = outputData[component]; }
+    });
+    if (!outputData){
+        console.error(`    Failed to retrieve path: ${pathInSchema} from schema data: ${JSON.stringify(schemaData, null, 2)}`);
+    }
+    return outputData;
+}
+
+/**
+ * Retrieves the title element from a schema object, with an optional path 
+ * (e.g. to a definition) within that schema.
+ * @param {*} schemaData 
+ * @param {*} pathInSchema 
+ * @returns 
+ */
+function retrieveTitleFromSchemaData(schemaData, pathInSchema) {
+    //if a path within the schema was specified, navigate to it
+    if (pathInSchema){
+        schemaData = retrievePathInSchema(schemaData, pathInSchema);
+    }
+    
+    if (schemaData?.title) {
+        return schemaData.title;
+    } else {
+        if (pathInSchema) {
+            console.warn(`    Reference: ${pathInSchema} didn't have a title in the provided schemaData, returning the name of the reference instead. schemaData: ${JSON.stringify(schemaData, null, 2)}`);
+            return pathInSchema.split('/').pop().split('.')[0];
+        } else {
+            console.error(`    Failed to retrieve title  from schemaData: ${JSON.stringify(schemaData, null, 2)}`);
+        }
+
+        return null;
+    }
+}
 
 function parseSchemaFolder(schemaFolderName) {
     // Read all files in the schema folder
@@ -242,7 +339,13 @@ function parseSchemaFolder(schemaFolderName) {
     // Process each schema file
     let sidebarItems = [];
     for (const schemaFile of schemaFiles) {
-        sidebarItems.push(processSchemaFile(schemaFile, schemaFolderName));
+        
+        if (path.basename(schemaFile) === "context.schema.json"){
+            console.log(`  Skipping ${schemaFile}`);
+        } else {
+            console.log(`  Processing schema File: ${schemaFile}`);
+            sidebarItems.push(processSchemaFile(schemaFile, schemaFolderName));
+        }
     }
 
     // filter out null values
@@ -250,7 +353,7 @@ function parseSchemaFolder(schemaFolderName) {
 }
 
 function main() {
-
+    console.log("Generating Context reference pages...")
     //generate markdown docs for the current schema versions in the current docs draft
 
     let sidebarObject = fse.readJsonSync(`./sidebars.json`)    

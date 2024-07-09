@@ -68,14 +68,6 @@ Notes:
 - **type**: `string`
 - **description**: ISOALPHA3:  Three-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.
 
-
-**Example**: 
-```json
-{
-  "COUNTRY_ISOALPHA2": "SE"
-}
-```
-
 </details>
 
 ## Example

@@ -35,27 +35,6 @@ The contact list schema does not explicitly include identifiers in the `id` sect
 
 An array of contact contexts that forms the list.
 
-
-**Example**: 
-```json
-[
-  {
-    "type": "fdc3.contact",
-    "name": "Jane Doe",
-    "id": {
-      "email": "jane.doe@mail.com"
-    }
-  },
-  {
-    "type": "fdc3.contact",
-    "name": "John Doe",
-    "id": {
-      "email": "john.doe@mail.com"
-    }
-  }
-]
-```
-
 </details>
 
 ## Example

@@ -38,14 +38,6 @@ Identifiers that relate to the Contact represented by this context
 - **type**: `string`
 - **description**: FDS ID:  FactSet Permanent Identifier representing the contact
 
-
-**Example**: 
-```json
-{
-  "email": "jane.doe@mail.com"
-}
-```
-
 </details>
 
 ## Example

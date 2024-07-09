@@ -26,18 +26,6 @@ A collection of information to be used to initiate an email with a Contact or Co
 
 One or more recipients for the email.
 
-
-**Example**: 
-```json
-{
-  "type": "fdc3.contact",
-  "name": "Jane Doe",
-  "id": {
-    "email": "jane.doe@example.com"
-  }
-}
-```
-
 </details>
 
 <details>
@@ -47,10 +35,6 @@ One or more recipients for the email.
 
 Subject line for the email.
 
-
-**Example**: 
-`The information you requested`
-
 </details>
 
 <details>
@@ -59,10 +43,6 @@ Subject line for the email.
 **type**: `string`
 
 Body content for the email.
-
-
-**Example**: 
-`Blah, blah, blah ...`
 
 </details>
 

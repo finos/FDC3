@@ -26,10 +26,6 @@ A context representing an individual Currency.
 
 The name of the currency for display purposes
 
-
-**Example**: 
-`US Dollar`
-
 </details>
 
 <details>
@@ -42,14 +38,6 @@ The name of the currency for display purposes
 `CURRENCY_ISOCODE`
 - **type**: `string`
 - **description**: CURRENCY_ISOCODE:  The `CURRENCY_ISOCODE` should conform to 3 character alphabetic codes defined in [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html)
-
-
-**Example**: 
-```json
-{
-  "CURRENCY_ISOCODE": "USD"
-}
-```
 
 </details>
 

@@ -46,20 +46,9 @@ The position schema does not explicitly include identifiers in the `id` section,
 <details>
   <summary><code>instrument</code> <strong>(required)</strong></summary>
 
-**type**: [instrument](../instrument)
+**type**: [Instrument](Instrument)
 
 
-
-
-**Example**: 
-```json
-{
-  "type": "fdc3.instrument",
-  "id": {
-    "ticker": "AAPL"
-  }
-}
-```
 
 </details>
 
@@ -69,10 +58,6 @@ The position schema does not explicitly include identifiers in the `id` section,
 **type**: `number`
 
 The amount of the holding, e.g. a number of shares
-
-
-**Example**: 
-`2000000`
 
 </details>
 

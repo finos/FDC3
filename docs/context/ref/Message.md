@@ -41,14 +41,6 @@ A map of string mime-type to string content
 - **type**: `string`
 - **description**: Markdown text:  Markdown encoded content
 
-
-**Example**: 
-```json
-{
-  "text/plain": "Hey all, can we discuss the issue together? I attached a screenshot and a link to the current exchange rate"
-}
-```
-
 </details>
 
 <details>
@@ -57,42 +49,6 @@ A map of string mime-type to string content
 **type**: `object`
 
 A map of string IDs to entities that should be attached to the message, such as an action to perform, a file attachment, or other FDC3 context object.
-
-
-**Example**: 
-```json
-{
-  "picture1": {
-    "type": "fdc3.fileAttachment",
-    "data": {
-      "name": "myImage.png",
-      "dataUri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII"
-    }
-  },
-  "eurusd_action": {
-    "type": "fdc3.action",
-    "title": "Click to view Chart",
-    "intent": "ViewChart",
-    "context": {
-      "type": "fdc3.chart",
-      "instruments": [
-        {
-          "type": "fdc3.instrument",
-          "id": {
-            "ticker": "EURUSD"
-          }
-        }
-      ],
-      "range": {
-        "type": "fdc3.dateRange",
-        "starttime": "2020-09-01T08:00:00.000Z",
-        "endtime": "2020-10-31T08:00:00.000Z"
-      },
-      "style": "candle"
-    }
-  }
-}
-```
 
 </details>
 

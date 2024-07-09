@@ -50,43 +50,6 @@ The portfolio schema does not explicitly include identifiers in the `id` section
 
 The List of Positions which make up the Portfolio
 
-
-**Example**: 
-```json
-[
-  {
-    "type": "fdc3.position",
-    "instrument": {
-      "type": "fdc3.instrument",
-      "id": {
-        "ticker": "AAPL"
-      }
-    },
-    "holding": 2000000
-  },
-  {
-    "type": "fdc3.position",
-    "instrument": {
-      "type": "fdc3.instrument",
-      "id": {
-        "ticker": "MSFT"
-      }
-    },
-    "holding": 1500000
-  },
-  {
-    "type": "fdc3.position",
-    "instrument": {
-      "type": "fdc3.instrument",
-      "id": {
-        "ticker": "IBM"
-      }
-    },
-    "holding": 3000000
-  }
-]
-```
-
 </details>
 
 ## Example

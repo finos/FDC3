@@ -36,25 +36,6 @@ The OrderList schema does not explicitly include identifiers in the id section, 
 
 An array of order contexts that forms the list.
 
-
-**Example**: 
-```json
-[
-  {
-    "type": "fdc3.order",
-    "id": {
-      "myOMS": "ABC123"
-    }
-  },
-  {
-    "type": "fdc3.order",
-    "id": {
-      "myOMS": "DEF456"
-    }
-  }
-]
-```
-
 </details>
 
 ## Example

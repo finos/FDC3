@@ -42,14 +42,6 @@ This type currently only defines a required `id` field, which should provide a r
 
 One or more identifiers that refer to the trade in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
 
-
-**Example**: 
-```json
-{
-  "myEMS": "12345"
-}
-```
-
 </details>
 
 <details>
@@ -59,35 +51,14 @@ One or more identifiers that refer to the trade in an OMS, EMS or related system
 
 A human-readable summary of the trade.
 
-
-**Example**: 
-`...`
-
 </details>
 
 <details>
   <summary><code>product</code> <strong>(required)</strong></summary>
 
-**type**: [product](../product)
+**type**: [Product](Product)
 
 A product that is the subject of the trade.
-
-
-**Example**: 
-```json
-{
-  "type": "fdc3.product",
-  "id": {
-    "productId": "ABC123"
-  },
-  "instrument": {
-    "type": "fdc3.instrument",
-    "id": {
-      "ticker": "MSFT"
-    }
-  }
-}
-```
 
 </details>
 

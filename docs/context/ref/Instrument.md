@@ -69,16 +69,6 @@ If the identifier you want to share is not a ticker or one of the other standard
 - **type**: `string`
 - **description**: Stock ticker:  Unstandardized stock tickers
 
-
-**Example**: 
-```json
-{
-  "ticker": "MSFT",
-  "RIC": "MSFT.OQ",
-  "ISIN": "US5949181045"
-}
-```
-
 </details>
 
 <details>
@@ -105,14 +95,6 @@ The `market` map can be used to further specify the instrument and help achieve 
 `BBG`
 - **type**: `string`
 - **description**: Bloomberg Market Identifier:  <https://www.bloomberg.com/>
-
-
-**Example**: 
-```json
-{
-  "MIC": "XNAS"
-}
-```
 
 </details>
 
