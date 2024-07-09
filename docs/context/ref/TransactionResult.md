@@ -1,11 +1,5 @@
 ---
 title: TransactionResult
-description: >-
-  A context type representing the result of a transaction initiated via FDC3,
-  which SHOULD be returned as an `IntentResult` by intents that create,
-  retrieve, update or delete content or records in another application. Its
-  purpose is to provide a status and message (where needed) for the transaction
-  and MAY wrap a returned context object.
 sidebar_label: TransactionResult
 
 ---

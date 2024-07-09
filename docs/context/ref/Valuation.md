@@ -1,6 +1,5 @@
 ---
 title: Valuation
-description: A context type representing the price and value of a holding.
 sidebar_label: Valuation
 
 ---

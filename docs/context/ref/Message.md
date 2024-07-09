@@ -1,11 +1,5 @@
 ---
 title: Message
-description: >-
-  A chat message to be sent through an instant messaging application. Can
-  contain one or several text bodies (organized by mime-type, plaintext or
-  markdown), as well as attached entities (either arbitrary file attachments or
-  FDC3 actions to be embedded in the message). To be put inside a
-  ChatInitSettings object.
 sidebar_label: Message
 
 ---

@@ -1,8 +1,5 @@
 ---
 title: Chat Message
-description: >-
-  A context representing a chat message. Typically used to send the message or
-  to pre-populate a message for sending.
 sidebar_label: Chat Message
 
 ---

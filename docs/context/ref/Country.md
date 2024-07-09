@@ -1,24 +1,5 @@
 ---
 title: Country
-description: >-
-  A country entity.
-
-
-  Notes:
-
-
-  - It is valid to include extra properties and metadata as part of the country
-  payload, but the minimum requirement is for at least one standardized
-  identifier to be provided
-
-    - `COUNTRY_ISOALPHA2` SHOULD be preferred.
-
-  - Try to only use country identifiers as intended and specified in the [ISO
-  standard](https://en.wikipedia.org/wiki/ISO_3166-1). E.g. the
-  `COUNTRY_ISOALPHA2` property must be a recognized value and not a proprietary
-  two-letter code. If the identifier you want to share is not a standardized and
-  recognized one, rather define a property that makes it clear what value it is.
-  This makes it easier for target applications.
 sidebar_label: Country
 
 ---

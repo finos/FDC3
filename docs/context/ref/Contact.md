@@ -1,8 +1,5 @@
 ---
 title: Contact
-description: >-
-  A person contact that can be engaged with through email, calling, messaging,
-  CMS, etc.
 sidebar_label: Contact
 
 ---

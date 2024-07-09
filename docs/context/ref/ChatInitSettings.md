@@ -1,6 +1,5 @@
 ---
 title: ChatInitSettings
-description: A collection of settings to start a new chat conversation
 sidebar_label: ChatInitSettings
 
 ---

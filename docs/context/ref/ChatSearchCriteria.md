@@ -1,9 +1,5 @@
 ---
 title: Chat Search Criteria
-description: >-
-  A context type that represents a simple search criterion, based on a list of
-  other context objects, that can be used to search or filter messages in a chat
-  application.
 sidebar_label: Chat Search Criteria
 
 ---

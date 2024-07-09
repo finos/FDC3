@@ -1,18 +1,5 @@
 ---
 title: Product
-description: >-
-  @experimental context type representing a tradable product. To be used with
-  OMS and EMS systems.
-
-
-  This type is currently only loosely defined as an extensible context object,
-  with an optional instrument field.
-
-
-  The Product schema does not explicitly include identifiers in the id section,
-  as there is not a common standard for such identifiers. Applications can,
-  however, populate this part of the contract with custom identifiers if so
-  desired.
 sidebar_label: Product
 
 ---

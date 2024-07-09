@@ -1,13 +1,5 @@
 ---
 title: ContactList
-description: >-
-  A collection of contacts, e.g. for chatting to or calling multiple contacts.
-
-
-  The contact list schema does not explicitly include identifiers in the `id`
-  section, as there is not a common standard for such identifiers. Applications
-  can, however, populate this part of the contract with custom identifiers if so
-  desired.
 sidebar_label: ContactList
 
 ---

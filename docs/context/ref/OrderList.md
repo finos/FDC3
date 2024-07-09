@@ -1,14 +1,5 @@
 ---
 title: OrderList
-description: >-
-  @experimental A list of orders. Use this type for use cases that require not
-  just a single order, but multiple.
-
-
-  The OrderList schema does not explicitly include identifiers in the id
-  section, as there is not a common standard for such identifiers. Applications
-  can, however, populate this part of the contract with custom identifiers if so
-  desired.
 sidebar_label: OrderList
 
 ---
