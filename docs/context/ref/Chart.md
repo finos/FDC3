@@ -49,6 +49,13 @@ In addition to handling requests to plot charts, a charting application may use 
 
 **type**: `array`
 
+<details>
+  <summary><code>Items</code></summary>
+
+**type**: [Instrument](Instrument)
+
+</details>
+
 An array of instrument contexts whose data should be plotted.
 
 </details>
@@ -56,11 +63,9 @@ An array of instrument contexts whose data should be plotted.
 <details>
   <summary><code>range</code></summary>
 
-The time range that should be plotted
-
 **type**: [TimeRange](TimeRange)
 
-
+The time range that should be plotted
 
 </details>
 
@@ -89,6 +94,13 @@ The type of chart that should be plotted
   <summary><code>otherConfig</code></summary>
 
 **type**: `array`
+
+<details>
+  <summary><code>Items</code></summary>
+
+**type**: [Context](/docs/next/context/spec#the-context-interface)
+
+</details>
 
 It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` array as context objects.
 

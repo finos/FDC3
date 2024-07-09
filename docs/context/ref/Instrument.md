@@ -24,50 +24,95 @@ A financial instrument from any asset class.
 
 **type**: `object`
 
+**Subproperties:**
+
+<details>
+  <summary><code>BBG</code></summary>
+
+**type**: `string`
+
+<https://www.bloomberg.com/\>
+
+</details>
+
+<details>
+  <summary><code>CUSIP</code></summary>
+
+**type**: `string`
+
+<https://www.cusip.com/\>
+
+</details>
+
+<details>
+  <summary><code>FDS_ID</code></summary>
+
+**type**: `string`
+
+<https://www.factset.com/\>
+
+</details>
+
+<details>
+  <summary><code>FIGI</code></summary>
+
+**type**: `string`
+
+<https://www.openfigi.com/\>
+
+</details>
+
+<details>
+  <summary><code>ISIN</code></summary>
+
+**type**: `string`
+
+<https://www.isin.org/\>
+
+</details>
+
+<details>
+  <summary><code>PERMID</code></summary>
+
+**type**: `string`
+
+<https://permid.org/\>
+
+</details>
+
+<details>
+  <summary><code>RIC</code></summary>
+
+**type**: `string`
+
+ <https://www.refinitiv.com/\>
+
+</details>
+
+<details>
+  <summary><code>SEDOL</code></summary>
+
+**type**: `string`
+
+<https://www.lseg.com/sedol\>
+
+</details>
+
+<details>
+  <summary><code>ticker</code></summary>
+
+**type**: `string`
+
+Unstandardized stock tickers
+
+</details>
+
 Any combination of instrument identifiers can be used together to resolve ambiguity, or for a better match. Not all applications will use the same instrument identifiers, which is why FDC3 allows for multiple to be specified. In general, the more identifiers an application can provide, the easier it will be to achieve interoperability.
 
 It is valid to include extra properties and metadata as part of the instrument payload, but the minimum requirement is for at least one instrument identifier to be provided.
 
 Try to only use instrument identifiers as intended. E.g. the `ticker` property is meant for tickers as used by an exchange.
 If the identifier you want to share is not a ticker or one of the other standardized fields, define a property that makes it clear what the value represents. Doing so will make interpretation easier for the developers of target applications.
-
-**Subproperties:**
-
-`BBG`
-- **type**: `string`
-- **description**: Bloomberg security:  <https://www.bloomberg.com/>
-
-`CUSIP`
-- **type**: `string`
-- **description**: CUSIP:  <https://www.cusip.com/>
-
-`FDS_ID`
-- **type**: `string`
-- **description**: FactSet Permanent Security Identifier:  <https://www.factset.com/>
-
-`FIGI`
-- **type**: `string`
-- **description**: Open FIGI:  <https://www.openfigi.com/>
-
-`ISIN`
-- **type**: `string`
-- **description**: ISIN:  <https://www.isin.org/>
-
-`PERMID`
-- **type**: `string`
-- **description**: Refinitiv PERMID:  <https://permid.org/>
-
-`RIC`
-- **type**: `string`
-- **description**: Refinitiv Identification Code:   <https://www.refinitiv.com/>
-
-`SEDOL`
-- **type**: `string`
-- **description**: SEDOL:  <https://www.lseg.com/sedol>
-
-`ticker`
-- **type**: `string`
-- **description**: Stock ticker:  Unstandardized stock tickers
 
 </details>
 
@@ -76,25 +121,45 @@ If the identifier you want to share is not a ticker or one of the other standard
 
 **type**: `object`
 
-The `market` map can be used to further specify the instrument and help achieve interoperability between disparate data sources. This is especially useful when using an `id` field that is not globally unique.
-
 **Subproperties:**
 
-`MIC`
-- **type**: `string`
-- **description**: Market Identifier Code:  <https://en.wikipedia.org/wiki/Market_Identifier_Code>
+<details>
+  <summary><code>MIC</code></summary>
 
-`name`
-- **type**: `string`
-- **description**: Market Name:  Human readable market name
+**type**: `string`
 
-`COUNTRY_ISOALPHA2`
-- **type**: `string`
-- **description**: Country ISO Code:  <https://www.iso.org/iso-3166-country-codes.html>
+<https://en.wikipedia.org/wiki/Market_Identifier_Code\>
 
-`BBG`
-- **type**: `string`
-- **description**: Bloomberg Market Identifier:  <https://www.bloomberg.com/>
+</details>
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+Human readable market name
+
+</details>
+
+<details>
+  <summary><code>COUNTRY_ISOALPHA2</code></summary>
+
+**type**: `string`
+
+<https://www.iso.org/iso-3166-country-codes.html\>
+
+</details>
+
+<details>
+  <summary><code>BBG</code></summary>
+
+**type**: `string`
+
+<https://www.bloomberg.com/\>
+
+</details>
+
+The `market` map can be used to further specify the instrument and help achieve interoperability between disparate data sources. This is especially useful when using an `id` field that is not globally unique.
 
 </details>
 

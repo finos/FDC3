@@ -40,6 +40,15 @@ Contacts to add to the chat
 <details>
   <summary><code>message</code></summary>
 
+**One of:**
+
+**type**: `string`
+
+
+**type**: [Message](Message)
+
+
+
 An initial message to post in the chat when created.
 
 </details>
@@ -49,29 +58,54 @@ An initial message to post in the chat when created.
 
 **type**: `object`
 
-Option settings that affect the creation of the chat
-
 **Subproperties:**
 
-`groupRecipients`
-- **type**: `boolean`
-- **description**: Group recipients option:  if false a separate chat will be created for each member
+<details>
+  <summary><code>groupRecipients</code></summary>
 
-`isPublic`
-- **type**: `boolean`
-- **description**: Public chat option:  if true the room will be visible to everyone in the chat application
+**type**: `boolean`
 
-`allowHistoryBrowsing`
-- **type**: `boolean`
-- **description**: Allow history browsing option:  if true members will be allowed to browse past messages
+if false a separate chat will be created for each member
 
-`allowMessageCopy`
-- **type**: `boolean`
-- **description**: Allow message copy option:  if true members will be allowed to copy/paste messages
+</details>
 
-`allowAddUser`
-- **type**: `boolean`
-- **description**: All adding users option:  if true members will be allowed to add other members to the chat
+<details>
+  <summary><code>isPublic</code></summary>
+
+**type**: `boolean`
+
+if true the room will be visible to everyone in the chat application
+
+</details>
+
+<details>
+  <summary><code>allowHistoryBrowsing</code></summary>
+
+**type**: `boolean`
+
+if true members will be allowed to browse past messages
+
+</details>
+
+<details>
+  <summary><code>allowMessageCopy</code></summary>
+
+**type**: `boolean`
+
+if true members will be allowed to copy/paste messages
+
+</details>
+
+<details>
+  <summary><code>allowAddUser</code></summary>
+
+**type**: `boolean`
+
+if true members will be allowed to add other members to the chat
+
+</details>
+
+Option settings that affect the creation of the chat
 
 </details>
 

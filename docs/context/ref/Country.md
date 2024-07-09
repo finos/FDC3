@@ -52,21 +52,41 @@ Notes:
 
 **Subproperties:**
 
-`COUNTRY_ISOALPHA2`
-- **type**: `string`
-- **description**: COUNTRY_ISOALPHA2:  Two-letter ISO country code
+<details>
+  <summary><code>COUNTRY_ISOALPHA2</code></summary>
 
-`COUNTRY_ISOALPHA3`
-- **type**: `string`
-- **description**: COUNTRY_ISOALPHA3:  Three-letter ISO country code
+**type**: `string`
 
-`ISOALPHA2`
-- **type**: `string`
-- **description**: ISOALPHA2:  Two-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.
+Two-letter ISO country code
 
-`ISOALPHA3`
-- **type**: `string`
-- **description**: ISOALPHA3:  Three-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.
+</details>
+
+<details>
+  <summary><code>COUNTRY_ISOALPHA3</code></summary>
+
+**type**: `string`
+
+Three-letter ISO country code
+
+</details>
+
+<details>
+  <summary><code>ISOALPHA2</code></summary>
+
+**type**: `string`
+
+Two-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.
+
+</details>
+
+<details>
+  <summary><code>ISOALPHA3</code></summary>
+
+**type**: `string`
+
+Three-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.
+
+</details>
 
 </details>
 

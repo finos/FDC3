@@ -34,6 +34,13 @@ The TradeList schema does not explicitly include identifiers in the id section, 
 
 **type**: `array`
 
+<details>
+  <summary><code>Items</code></summary>
+
+**type**: [Trade](Trade)
+
+</details>
+
 An array of trade contexts that forms the list.
 
 </details>
