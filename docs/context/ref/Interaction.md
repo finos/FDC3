@@ -16,7 +16,7 @@ An `Interaction` is a significant direct exchange of ideas or information betwee
 
 ## Schema
 
-<https://github.com/finos/FDC3/tree/main/schemas/context/interaction.schema.json>
+<https://fdc3.finos.org/schemas/next/context/interaction.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/interaction.schema.json))
 
 ## Type
 

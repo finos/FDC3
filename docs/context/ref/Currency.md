@@ -11,7 +11,7 @@ A context representing an individual Currency.
 
 ## Schema
 
-<https://github.com/finos/FDC3/tree/main/schemas/context/currency.schema.json>
+<https://fdc3.finos.org/schemas/next/context/currency.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/currency.schema.json))
 
 ## Type
 
