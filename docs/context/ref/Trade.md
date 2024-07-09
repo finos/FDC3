@@ -40,6 +40,13 @@ This type currently only defines a required `id` field, which should provide a r
 
 **type**: `object`
 
+<details>
+  <summary><code>Additional Properties</code></summary>
+
+**type**: `string`
+
+</details>
+
 One or more identifiers that refer to the trade in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
 
 </details>

@@ -58,6 +58,20 @@ A map of string mime-type to string content
 
 **type**: `object`
 
+<details>
+  <summary><code>Additional Properties</code></summary>
+
+**Any of:**
+
+**type**: [Action](Action)
+
+
+**type**: `object`
+
+
+
+</details>
+
 A map of string IDs to entities that should be attached to the message, such as an action to perform, a file attachment, or other FDC3 context object.
 
 </details>
