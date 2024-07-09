@@ -235,7 +235,6 @@ function escape(text) {
 function generateFrontMatter(title, description) {
     return {
         title: title,
-        description: description,
         sidebar_label: title,
     };
 }
