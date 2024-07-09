@@ -26,10 +26,6 @@ Reference to the chat room which could be used to send a message to the room
 
 The name of the service that hosts the chat
 
-
-**Example**: 
-`Symphony`
-
 </details>
 
 <details>
@@ -38,14 +34,6 @@ The name of the service that hosts the chat
 **type**: `object`
 
 Identifier(s) for the chat - currently unstandardized
-
-
-**Example**: 
-```json
-{
-  "streamId": "j75xqXy25NBOdacUI3FNBH"
-}
-```
 
 </details>
 
@@ -56,10 +44,6 @@ Identifier(s) for the chat - currently unstandardized
 
 Universal url to access to the room. It could be opened from a browser, a mobile app, etc...
 
-
-**Example**: 
-`http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA`
-
 </details>
 
 <details>
@@ -68,10 +52,6 @@ Universal url to access to the room. It could be opened from a browser, a mobile
 **type**: `string`
 
 Display name for the chat room
-
-
-**Example**: 
-`My new room`
 
 </details>
 

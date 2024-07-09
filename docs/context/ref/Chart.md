@@ -51,25 +51,6 @@ In addition to handling requests to plot charts, a charting application may use 
 
 An array of instrument contexts whose data should be plotted.
 
-
-**Example**: 
-```json
-[
-  {
-    "type": "fdc3.instrument",
-    "id": {
-      "ticker": "AAPL"
-    }
-  },
-  {
-    "type": "fdc3.instrument",
-    "id": {
-      "ticker": "GOOG"
-    }
-  }
-]
-```
-
 </details>
 
 <details>
@@ -77,19 +58,9 @@ An array of instrument contexts whose data should be plotted.
 
 The time range that should be plotted
 
-**type**: [timerange](../timerange)
+**type**: [TimeRange](TimeRange)
 
 
-
-
-**Example**: 
-```json
-{
-  "type": "fdc3.timeRange",
-  "startTime": "2020-09-01T08:00:00.000Z",
-  "endTime": "2020-10-31T08:00:00.000Z"
-}
-```
 
 </details>
 
@@ -112,10 +83,6 @@ The type of chart that should be plotted
 - `heatmap`,
 - `custom`
 
-
-**Example**: 
-`line`
-
 </details>
 
 <details>
@@ -124,29 +91,6 @@ The type of chart that should be plotted
 **type**: `array`
 
 It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` array as context objects.
-
-
-**Example**: 
-```json
-[
-  {
-    "type": "somevendor.someproduct.indicator",
-    "name": "stddev",
-    "parameters": {
-      "period": 10,
-      "matype": "exponential"
-    }
-  },
-  {
-    "type": "someothervendor.someotherproduct.formula",
-    "formula": "standard-deviation",
-    "fields": {
-      "lookback": 10,
-      "type": "ema"
-    }
-  }
-]
-```
 
 </details>
 

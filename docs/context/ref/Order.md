@@ -40,22 +40,6 @@ This type currently only defines a required `id` field, which should provide a r
 
 One or more identifiers that refer to the order in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
 
-
-**Example**: 
-```json
-{
-  "myOMS": "12345"
-}
-```
-
-
-**Example**: 
-```json
-{
-  "myOMS": "ABC123"
-}
-```
-
 </details>
 
 <details>
@@ -65,12 +49,6 @@ One or more identifiers that refer to the order in an OMS, EMS or related system
 
 An optional human-readable summary of the order.
 
-
-**Example**: 
-`...`
-
-
-**Example**: 
 </details>
 
 <details>
@@ -86,27 +64,6 @@ Optional additional details about the order, which may include a product element
 - **type**: `undefined`
 - **description**:  
 
-
-**Example**: 
-```json
-{
-  "product": {
-    "type": "fdc3.product",
-    "id": {
-      "productId": "ABC123"
-    },
-    "instrument": {
-      "type": "fdc3.instrument",
-      "id": {
-        "ticker": "MSFT"
-      }
-    }
-  }
-}
-```
-
-
-**Example**: 
 </details>
 
 ## Examples

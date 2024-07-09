@@ -83,16 +83,6 @@ Notes:
 
 The start time of the range, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
 
-
-**Example**: 
-`2022-03-30T15:44:44Z`
-
-
-**Example**: 
-`2022-03-30T15:44:44+00:00`
-
-
-**Example**: 
 </details>
 
 <details>
@@ -101,16 +91,6 @@ The start time of the range, encoded according to [ISO 8601-1:2019](https://www.
 **type**: `string`
 
 The end time of the range, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
-
-
-**Example**: 
-`2022-04-30T23:59:59ZS`
-
-
-**Example**: 
-
-**Example**: 
-`2022-03-30T16:44:44.123Z`
 
 </details>
 

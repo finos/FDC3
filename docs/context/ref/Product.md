@@ -42,14 +42,6 @@ The Product schema does not explicitly include identifiers in the id section, as
 
 One or more identifiers that refer to the product. Specific key names for systems are expected to be standardized in future.
 
-
-**Example**: 
-```json
-{
-  "productId": "ABC123"
-}
-```
-
 </details>
 
 <details>
@@ -59,27 +51,14 @@ One or more identifiers that refer to the product. Specific key names for system
 
 A human-readable summary of the product.
 
-
-**Example**: 
 </details>
 
 <details>
   <summary><code>instrument</code></summary>
 
-**type**: [instrument](../instrument)
+**type**: [Instrument](Instrument)
 
  financial instrument that relates to the definition of this product
-
-
-**Example**: 
-```json
-{
-  "type": "fdc3.instrument",
-  "id": {
-    "ticker": "MSFT"
-  }
-}
-```
 
 </details>
 

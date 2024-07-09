@@ -1,5 +1,6 @@
 ---
-{}
+title: DocumentedContext
+sidebar_label: DocumentedContext
 
 ---
 

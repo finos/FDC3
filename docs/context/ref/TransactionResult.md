@@ -37,30 +37,14 @@ The status of the transaction being reported.
 - `Updated`,
 - `Failed`
 
-
-**Example**: 
-`Updated`
-
 </details>
 
 <details>
   <summary><code>context</code></summary>
 
-**type**: [context](../context)
+**type**: [Context](/docs/next/context/spec#the-context-interface)
 
 A context object returned by the transaction, possibly with updated data.
-
-
-**Example**: 
-```json
-{
-  "type": "fdc3.contact",
-  "name": "Jane Doe",
-  "id": {
-    "email": "jane.doe@mail.com"
-  }
-}
-```
 
 </details>
 

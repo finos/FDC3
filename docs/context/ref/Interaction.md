@@ -45,58 +45,23 @@ Can be used by a target application to pass an identifier back to the originatin
 - **type**: `string`
 - **description**: SingleTrack ID:  Interaction ID in SingleTrack
 
-
-**Example**: 
 </details>
 
 <details>
   <summary><code>participants</code> <strong>(required)</strong></summary>
 
-**type**: [contactList](../contactList)
+**type**: [ContactList](ContactList)
 
 A list of contacts involved in the interaction
-
-
-**Example**: 
-```json
-{
-  "type": "fdc3.contactList",
-  "contacts": [
-    {
-      "type": "fdc3.contact",
-      "name": "Jane Doe",
-      "id": {
-        "email": "jane.doe@mail.com"
-      }
-    },
-    {
-      "type": "fdc3.contact",
-      "name": "John Doe",
-      "id": {
-        "email": "john.doe@mail.com"
-      }
-    }
-  ]
-}
-```
 
 </details>
 
 <details>
   <summary><code>timeRange</code> <strong>(required)</strong></summary>
 
-**type**: [timerange](../timerange)
+**type**: [TimeRange](TimeRange)
 
 The time range over which the interaction occurred
-
-
-**Example**: 
-```json
-{
-  "type": "fdc3.timeRange",
-  "startTime": "2022-02-10T15:12:00Z"
-}
-```
 
 </details>
 
@@ -104,10 +69,6 @@ The time range over which the interaction occurred
   <summary><code>interactionType</code> <strong>(required)</strong></summary>
 
 `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or `'Meeting'` although other string values are permitted.
-
-
-**Example**: 
-`Instant Message`
 
 </details>
 
@@ -118,30 +79,14 @@ The time range over which the interaction occurred
 
 A human-readable description of the interaction
 
-
-**Example**: 
-`Laboris libero dapibus fames elit adipisicing eu, fermentum, dignissimos laboriosam, erat, risus qui deserunt. Praesentium! Reiciendis. Hic harum nostrud, harum potenti amet? Mauris. Pretium aliquid animi, eget eiusmod integer proident. Architecto ipsum blandit ducimus, possimus illum sunt illum necessitatibus ab litora sed, nonummy integer minus corrupti ducimus iste senectus accumsan, fugiat nostrud? Pede vero dictumst excepturi, iure earum consequuntur voluptatum`
-
 </details>
 
 <details>
   <summary><code>initiator</code></summary>
 
-**type**: [contact](../contact)
+**type**: [Contact](Contact)
 
 The contact that initiated the interaction
-
-
-**Example**: 
-```json
-{
-  "type": "fdc3.contact",
-  "name": "Jane Doe",
-  "id": {
-    "email": "jane.doe@mail.com"
-  }
-}
-```
 
 </details>
 
@@ -151,10 +96,6 @@ The contact that initiated the interaction
 **type**: `string`
 
 Used to represent the application or service that the interaction was created from to aid in tracing the source of an interaction.
-
-
-**Example**: 
-`Outlook`
 
 </details>
 

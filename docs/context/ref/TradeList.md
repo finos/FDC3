@@ -36,50 +36,6 @@ The TradeList schema does not explicitly include identifiers in the id section, 
 
 An array of trade contexts that forms the list.
 
-
-**Example**: 
-```json
-[
-  {
-    "type": "fdc3.trade",
-    "name": "...",
-    "id": {
-      "myEMS": "12345"
-    },
-    "product": {
-      "type": "fdc3.product",
-      "id": {
-        "productId": "ABC123"
-      },
-      "instrument": {
-        "type": "fdc3.instrument",
-        "id": {
-          "ticker": "MSFT"
-        }
-      }
-    }
-  },
-  {
-    "type": "fdc3.trade",
-    "id": {
-      "myEMS": "67890"
-    },
-    "product": {
-      "type": "fdc3.product",
-      "id": {
-        "productId": "DEF456"
-      },
-      "instrument": {
-        "type": "fdc3.instrument",
-        "id": {
-          "ticker": "TSLA"
-        }
-      }
-    }
-  }
-]
-```
-
 </details>
 
 ## Example

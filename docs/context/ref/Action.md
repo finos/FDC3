@@ -42,10 +42,6 @@ Accepts an optional `app` parameter in order to specify a specific app.
 
 A human readable display name for the action
 
-
-**Example**: 
-`Click to view Chart`
-
 </details>
 
 <details>
@@ -55,60 +51,23 @@ A human readable display name for the action
 
 Optional Intent to raise to perform the actions. Should reference an intent type name, such as those defined in the FDC3 Standard. If intent is not set then `fdc3.raiseIntentForContext` should be used to perform the action as this will usually allow the user to choose the intent to raise.
 
-
-**Example**: 
-`ViewChart`
-
 </details>
 
 <details>
   <summary><code>context</code> <strong>(required)</strong></summary>
 
-**type**: [context](../context)
+**type**: [Context](/docs/next/context/spec#the-context-interface)
 
 A context object with which the action will be performed
-
-
-**Example**: 
-```json
-{
-  "type": "fdc3.chart",
-  "instruments": [
-    {
-      "type": "fdc3.instrument",
-      "id": {
-        "ticker": "EURUSD"
-      }
-    }
-  ],
-  "range": {
-    "type": "fdc3.dateRange",
-    "starttime": "2020-09-01T08:00:00.000Z",
-    "endtime": "2020-10-31T08:00:00.000Z"
-  },
-  "style": "candle"
-}
-```
 
 </details>
 
 <details>
   <summary><code>app</code></summary>
 
+**type**: api/AppIdentifier
+
 An optional target application identifier that should perform the action
-
-**type**: [api/AppIdentifier](../../../api/schemas/AppIdentifier)
-
-
-
-
-**Example**: 
-```json
-{
-  "appId": "MyChartViewingApp",
-  "instanceId": "instance1"
-}
-```
 
 </details>
 

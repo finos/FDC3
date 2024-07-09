@@ -26,10 +26,6 @@ A context type representing the price and value of a holding.
 
 The value of the holding, expresses in the nominated currency.
 
-
-**Example**: 
-`500`
-
 </details>
 
 <details>
@@ -38,10 +34,6 @@ The value of the holding, expresses in the nominated currency.
 **type**: `number`
 
 The price per unit the the valuation is based on.
-
-
-**Example**: 
-`5`
 
 </details>
 
@@ -52,10 +44,6 @@ The price per unit the the valuation is based on.
 
 The valuation currency, which should conform to 3 character alphabetic codes defined in [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html)
 
-
-**Example**: 
-`USD`
-
 </details>
 
 <details>
@@ -65,8 +53,6 @@ The valuation currency, which should conform to 3 character alphabetic codes def
 
 The time at which the valuation was performed, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
 
-
-**Example**: 
 </details>
 
 <details>
@@ -75,10 +61,6 @@ The time at which the valuation was performed, encoded according to [ISO 8601-1:
 **type**: `string`
 
 The time at which this valuation expires, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator included.
-
-
-**Example**: 
-`2022-05-13T16:16:24+01:00`
 
 </details>
 

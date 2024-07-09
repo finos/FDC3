@@ -33,28 +33,6 @@ An array of criteria that should match chats returned from by a search.
 
 Empty search criteria can be supported to allow resetting of filters.
 
-
-**Example**: 
-```json
-[
-  {
-    "type": "fdc3.contact",
-    "name": "Jane Doe",
-    "id": {
-      "email": "jane.doe@mail.com"
-    }
-  },
-  {
-    "type": "fdc3.instrument",
-    "id": {
-      "ticker": "TSLA"
-    },
-    "name": "Tesla, inc."
-  },
-  "annual return"
-]
-```
-
 </details>
 
 ## Example

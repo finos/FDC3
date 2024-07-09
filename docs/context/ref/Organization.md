@@ -50,15 +50,6 @@ Identifiers for the organization, at least one must be provided.
 - **type**: `string`
 - **description**: Organization:  FactSet Permanent Identifier representing the organization
 
-
-**Example**: 
-```json
-{
-  "LEI": "QXZYQNMR4JZ5RIRN4T31",
-  "FDS_ID": "00161G-E"
-}
-```
-
 </details>
 
 ## Example

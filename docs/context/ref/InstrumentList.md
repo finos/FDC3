@@ -38,28 +38,6 @@ The instrument list schema does not explicitly include identifiers in the `id` s
 
 An array of instrument contexts that forms the list.
 
-
-**Example**: 
-```json
-[
-  {
-    "type": "fdc3.instrument",
-    "id": {
-      "ticker": "AAPL"
-    },
-    "market": {
-      "MIC": "XNAS"
-    }
-  },
-  {
-    "type": "fdc3.instrument",
-    "id": {
-      "ISIN": "US5949181045"
-    }
-  }
-]
-```
-
 </details>
 
 ## Example
