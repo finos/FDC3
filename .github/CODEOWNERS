@@ -1,8 +1,5 @@
 # fdc3-maintainers will be default reviewers for everything in the repo unless a later match takes precedence
 * @finos/fdc3-maintainers
 
-# Any changes to docs (specs) should also be reviewed by fdc3-editors
-/docs/ @finos/fdc3-editors @finos/fdc3-maintainers
-
 # Any changes to this CODEOWNERS file should be reviewed by finos-admins
 /.github/CODEOWNERS @finos/finos-admins
