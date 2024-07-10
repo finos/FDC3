@@ -6,13 +6,52 @@ import { AppIntent, PrivateChannelOnAddContextListenerAgentRequest, PrivateChann
  * We need to add options here. 
  */
 export type Options = {
+    /**
+     * Set this true if you wish to have window.fdc3 set to the desktop agent once it is found
+     */
     setWindowGlobal?: boolean,
+    /**
+     * Set this to true if you want to fire an fdc3.ready event on the window.  This is for backwards compatibility with FDC3 2.0 and the old
+     * window.fdc3 approach.
+     */
     fireFdc3Ready?: boolean,
+
+    /**
+     * Override this if you want to customise the loaders used.  By default, it will use the postMessage and electronEvent strategies.
+     */
     strategies?: Loader[],
+
+    /**
+     * Override this if you want to supply your own fallback approach for getting the FDC3 api. By default, it will throw an error.
+     */
+    fallbackStrategy?: Loader,
+
+    /**
+     * This is the frame/window that the desktop agent should be found in.  By default, it will use the opener or parent window.
+     */
     frame?: Window,
+
+    /**
+     * This is the time to wait for the strategies to find a desktop agent.  By default, it is 20 seconds.
+     */
     waitForMs?: number,
+
+    /**
+     * If you wish to opt-out of the desktop agent's own intent resolver and supply an implementation, do so here.
+     */
     intentResolver?: IntentResolver,
-    channelSelector?: ChannelSelector
+
+    /**
+     * If you wish to opt-out of the desktop agent's own channel selector and supply an implementation, do so here.
+     */
+    channelSelector?: ChannelSelector,
+
+    /**
+     * The initial path is used by the desktop to check that it is talking to the right application when applications share the same origin.
+     * If the application tries to load the desktop agent from a window with a different URL from the one provided to the desktop agent in the app 
+     * directory, you'll need to set it here.
+     */
+    appInitialPath?: string
 }
 
 
@@ -165,7 +204,9 @@ export interface SingleAppIntent {
 
 export type ChannelState = { [channelId: string]: ContextElement[] }
 
-
+/**
+ * Interface used by the desktop agent proxy to handle the channel selection process.
+ */
 export interface ChannelSelector {
 
     updateChannel(channelId: string | null, availableChannels: Channel[]): void
@@ -174,10 +215,13 @@ export interface ChannelSelector {
 
 }
 
+/**
+ * Interface used by the desktop agent proxy to handle the intent resolution process.
+ */
 export interface IntentResolver {
 
     /**
-     * Called when the user needs to resolve an intent
+     * Called when the user needs to resolve an intent.  
      */
     chooseIntent(appIntents: AppIntent[], source: AppIdentifier): Promise<SingleAppIntent>
 
