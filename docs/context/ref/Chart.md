@@ -53,11 +53,7 @@ The time range that should be plotted
 <details>
   <summary><code>style</code></summary>
 
-**type**: `string`
-
-The type of chart that should be plotted
-
-**possible values**:
+**type**: `string` with values:
 - `line`,
 - `bar`,
 - `stacked-bar`,
@@ -68,6 +64,8 @@ The type of chart that should be plotted
 - `histogram`,
 - `heatmap`,
 - `custom`
+
+The type of chart that should be plotted
 
 </details>
 
