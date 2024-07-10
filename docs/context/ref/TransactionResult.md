@@ -21,15 +21,13 @@ A context type representing the result of a transaction initiated via FDC3, whic
 <details>
   <summary><code>status</code> <strong>(required)</strong></summary>
 
-**type**: `string`
-
-The status of the transaction being reported.
-
-**possible values**:
+**type**: `string` with values:
 - `Created`,
 - `Deleted`,
 - `Updated`,
 - `Failed`
+
+The status of the transaction being reported.
 
 </details>
 

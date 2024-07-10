@@ -18,7 +18,8 @@ function processProperty(propertyName, propertyDetails, required, currentSchemaF
     //Note this block doesn't support inline property definitions... only base types and references, 
     //  it will not render an object or array defined inline beyond stating that it is one
     if (propertyDetails.type) {
-        markdownContent += renderType(propertyDetails.type);
+        //if enum doesn't exist, its ignored
+        markdownContent += renderType(propertyDetails.type, propertyDetails.enum);
 
         if (propertyDetails.type == "object") {
             if (propertyDetails.properties && Object.entries(propertyDetails.properties).length > 0) {
@@ -48,7 +49,8 @@ function processProperty(propertyName, propertyDetails, required, currentSchemaF
         const typeArr = propertyDetails.oneOf ?? propertyDetails.anyOf ?? propertyDetails.allOf;
         markdownContent += `${typeArr.map((item) => {
             if (item.type){
-                return renderType(item.type);
+                //if enum doesn't exist its ignored
+                return renderType(item.type, item.enum);
             } else if (item.$ref) {
                 return renderRef(item.$ref, currentSchemaFilePath);
             } else {
@@ -63,10 +65,6 @@ function processProperty(propertyName, propertyDetails, required, currentSchemaF
         markdownContent += `${escape(propertyDetails.description)}\n\n`;
     }
 
-    if (propertyDetails.enum) {
-        markdownContent += renderEnum(propertyDetails.enum);
-    }
-
     if (propertyDetails.examples) {
         propertyDetails.examples.forEach((example) => {
             markdownContent += `\n**Example**: \n\n`;
@@ -79,8 +77,17 @@ function processProperty(propertyName, propertyDetails, required, currentSchemaF
     return markdownContent;
 }
 
-function renderType(ref) {
-    return `**type**: \`${ref}\`\n\n`;
+function renderType(type, optionalEnum) {
+    if (optionalEnum) {
+        return `**type**: \`${type}\` with values:\n${optionalEnum.map((item) => `- \`${item}\``).join(',\n')}\n\n`;
+    } else {
+        return `**type**: \`${type}\`\n\n`;
+    }
+}
+
+function renderEnum(ref) {
+    // for each item in ref, wrap it in backticks and join with a comma
+    return `**possible values**:\n${ref.map((item) => `- \`${item}\``).join(',\n')}\n\n`;
 }
 
 function renderRef(contextRef, currentSchemaFilePath) {
@@ -133,11 +140,6 @@ function renderRef(contextRef, currentSchemaFilePath) {
     }
 }
 
-function renderEnum(ref) {
-    // for each item in ref, wrap it in backticks and join with a comma
-    return `**possible values**:\n${ref.map((item) => `- \`${item}\``).join(',\n')}\n\n`;
-}
-
 function hasAllOf(allOfArray) {
     return Array.isArray(allOfArray) && 
         allOfArray.length > 0 && 
@@ -161,17 +163,15 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
         markdownContent += `${escape(schema.description)}\n\n`; 
     }
 
+    //If the schema has a top level enum (e.g. API error schemas) then it needs rendering here.
     if (schema.enum) {
         markdownContent += renderEnum(schema.enum);
     }
 
     //if working on windows you may have the wrong slashes...
-    // console.log(filePath);
      const workingPath = filePath.replaceAll("\\","/");
-    // console.log("\t" + workingPath);
     const url = schema.$id;
     const githubUrl = workingPath.replace("../schemas/", `https://github.com/finos/FDC3/tree/main/schemas/`);
-    // console.log("\t" + url);
     markdownContent += `## Schema\n\n<${url}> ([github](${githubUrl}))\n\n`;
 
     if (hasAllOf(schema.allOf) || hasProperties(schema)) {
