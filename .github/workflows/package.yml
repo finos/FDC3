@@ -41,6 +41,7 @@ jobs:
             - 'rollup.config.js'
             - 's2tQuicktypeUtil.js'
             - 'tsconfig.json'
+            - '.github/workflows/package.yml'
             
   package-build:
     name: Build on Node ${{ matrix.node }} and ${{ matrix.os }}
@@ -77,6 +78,11 @@ jobs:
       - name: Build
         if: ${{ needs.changes.outputs.builtFiles == 'true' }}
         run:  npm run build
+
+      - name: Checkout repo
+        if: ${{ needs.changes.outputs.builtFiles == 'false' }}
+        run: 'echo "Build steps skipped as no relevant changes were detected"'
+
 
   package-publish:
     if: ${{ github.event_name == 'push' && needs.changes.outputs.builtFiles == 'true'}}
