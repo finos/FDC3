@@ -7,14 +7,13 @@ name: npm-build
 on:
   push:
     branches:
-      - main
-      - release/*
+      - release/**
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
   pull_request:
     branches:
       - main
-      - release/*
+      - release/**
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
 jobs:
