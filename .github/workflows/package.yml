@@ -83,7 +83,10 @@ jobs:
     - name: Check package version
       id: check-version
       uses: tehpsalmist/npm-publish-status-action@deb911186cfe5134094f49183364da10a986e4e7
-
+      with:
+        node-version: 20
+        registry-url: ${{ matrix.registry }}
+        
     # Disabled when switching from PostHog/check-package-version as the new lib 
     #   just tells you if your version exists or not 
     # - name: Package version info
@@ -94,11 +97,11 @@ jobs:
 
     - name: Report already published status
       if: steps.check-version.outputs.exists == '1' 
-      run: 'echo "package version already exists on npm registry"'
+      run: 'echo "package version already exists in registry ${{ matrix.registry }}"'
       
     - name: Report not yet published status
       if: steps.check-version.outputs.exists == '0' 
-      run: 'echo "package version does not exist on npm registry, publishing..."'
+      run: 'echo "package version does not exist in registry ${{ matrix.registry }}, publishing..."'
       
     - name: Install dependencies
       if: steps.check-version.outputs.exists == '0' 
