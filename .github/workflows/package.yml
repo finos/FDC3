@@ -8,23 +8,43 @@ on:
   push:
     branches:
       - main
-      - release/**
+      - release/*
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
-      - 'docs/**'
-      - 'website/**'
   pull_request:
     branches:
       - main
       - release/*
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
-      - 'docs/**'
-      - 'website/**'
 jobs:
+# JOB to run change detection
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    # Set job outputs to values from the filter step
+    outputs:
+      builtFiles: ${{ steps.filter.outputs.builtFiles }}
+    steps:
+    # For pull requests it's not necessary to checkout the code
+    - uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          builtFiles:
+            - '.eslint*'
+            - 'src/**'
+            - 'schemas/**'
+            - 'package-lock.json'
+            - 'package.json'
+            - 'rollup.config.js'
+            - 's2tQuicktypeUtil.js'
+            - 'tsconfig.json'
+            
   package-build:
     name: Build on Node ${{ matrix.node }} and ${{ matrix.os }}
-
+    needs: changes
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -33,28 +53,34 @@ jobs:
 
     steps:
       - name: Checkout repo
+        if: ${{ needs.changes.outputs.builtFiles == 'true' }}
         uses: actions/checkout@v4
 
       - name: Use Node ${{ matrix.node }}
+        if: ${{ needs.changes.outputs.builtFiles == 'true' }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 
       - name: Install dependencies
+        if: ${{ needs.changes.outputs.builtFiles == 'true' }}
         uses: bahmutov/npm-install@2509f13e8485d88340a789a3f7ca11aaac47c9fc #v1.8.36
 
       - name: Lint
+        if: ${{ needs.changes.outputs.builtFiles == 'true' }}
         run: npm run lint
 
       - name: Test
+        if: ${{ needs.changes.outputs.builtFiles == 'true' }}
         run:  npm run test --ci --coverage --maxWorkers=2
 
       - name: Build
+        if: ${{ needs.changes.outputs.builtFiles == 'true' }}
         run:  npm run build
 
   package-publish:
-    if: ${{ github.event_name == 'push' }}
-    needs: package-build
+    if: ${{ github.event_name == 'push' && needs.changes.outputs.builtFiles == 'true'}}
+    needs: [changes,package-build]
     name: Publish package to ${{ matrix.name }}
     runs-on: ubuntu-latest
     permissions:
