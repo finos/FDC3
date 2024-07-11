@@ -3,7 +3,7 @@ name: npm-build
 # Only trigger on:
 # - main branch
 # - PR or Pull Request event types
-# - Exclide Docusaurus files: this file, docs/** and website/**
+# - Exclude Docusaurus files: this file, docs/** and website/**
 on:
   push:
     branches:
@@ -60,6 +60,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      packages: write
     strategy:
       matrix:
        include:
