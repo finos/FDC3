@@ -17,7 +17,7 @@ on:
     types: [opened, reopened, edited, ready_for_review]
     branches:
       - main
-      - release/*
+      - release/**
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
 jobs:
