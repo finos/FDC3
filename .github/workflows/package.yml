@@ -30,8 +30,8 @@ jobs:
     outputs:
       builtFiles: ${{ steps.filter.outputs.builtFiles }}
     steps:
-    # For pull requests it's not necessary to checkout the code
-    - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36
+    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+    - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 #v3.0.2
       id: filter
       with:
         filters: |
@@ -58,11 +58,11 @@ jobs:
     steps:
       - name: Checkout repo
         if: ${{ needs.changes.outputs.builtFiles == 'true' }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Use Node ${{ matrix.node }}
         if: ${{ needs.changes.outputs.builtFiles == 'true' }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
           node-version: ${{ matrix.node }}
 
