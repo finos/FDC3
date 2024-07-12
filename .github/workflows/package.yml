@@ -128,19 +128,19 @@ jobs:
         echo "Published versions: ${{ steps.check-version.outputs.versions }}"
 
     - name: Report published status
-      if: ${{ contains(steps.check-version.versions, steps.package-version.outputs.version) }}
+      if: ${{ contains(fromJson(steps.check-version.versions), fromJson(steps.package-version.outputs.version)) }}
       run: 'echo "package version ${{steps.package-version.outputs.version}} already exists in registry ${{ matrix.registry }}, NOT publishing..."'
         
     - name: Report not yet published status
-      if: ${{ !contains(steps.check-version.versions, steps.package-version.outputs.version) }}
+      if: ${{ !contains(fromJson(steps.check-version.versions), fromJson(steps.package-version.outputs.version)) }}
       run: 'echo "package version does not exist in registry ${{ matrix.registry }}, publishing..."'
       
     - name: Install dependencies
-      if: ${{ !contains(steps.check-version.versions, steps.package-version.outputs.version) }}
+      if: ${{ !contains(fromJson(steps.check-version.versions), fromJson(steps.package-version.outputs.version)) }}
       uses: bahmutov/npm-install@2509f13e8485d88340a789a3f7ca11aaac47c9fc #v1.8.36
 
     - name: Publish
-      if: ${{ !contains(steps.check-version.versions, steps.package-version.outputs.version) }}
+      if: ${{ !contains(fromJson(steps.check-version.versions), fromJson(steps.package-version.outputs.version)) }}
       run:  npm publish --provenance --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets[matrix.token-name] }}
