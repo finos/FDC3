@@ -1,5 +1,4 @@
-import { AppIdentifier, AppMetadata, DesktopAgent, IntentMetadata, IntentResult, Channel, ContextElement } from "@finos/fdc3";
-import { exchange, exchangePostMessage, exchangeForMessagePort } from "./exchange";
+import { AppIdentifier, DesktopAgent, IntentMetadata, IntentResult, Channel, ContextElement } from "@finos/fdc3";
 import { AppIntent, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerAgentRequestMeta, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 /** 
@@ -53,9 +52,6 @@ export type Options = {
      */
     appInitialPath?: string
 }
-
-
-export { exchange, exchangePostMessage, exchangeForMessagePort }
 
 export type AppChecker = (o: Window) => AppIdentifier | undefined;
 

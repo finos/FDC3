@@ -1,5 +1,4 @@
 import { AppIdentifier, AppIntent, IntentResult } from "@finos/fdc3";
-import { Messaging } from "@kite9/da-proxy";
 import { IntentResolver, SingleAppIntent, IntentResolverDetails, CSS_ELEMENTS, ResolverMessageChoice, ResolverIntents } from "@kite9/fdc3-common";
 
 export const DEFAULT_INTENT_RESOLVER_DETAILS: IntentResolverDetails = {
@@ -21,12 +20,10 @@ export const DEFAULT_INTENT_RESOLVER_DETAILS: IntentResolverDetails = {
  */
 export class DefaultDesktopAgentIntentResolver implements IntentResolver {
 
-    private readonly m: Messaging
     private readonly details: IntentResolverDetails
     private container: HTMLDivElement | undefined = undefined
 
-    constructor(m: Messaging, details: IntentResolverDetails | null) {
-        this.m = m
+    constructor(details: IntentResolverDetails | null) {
         this.details = details ?? DEFAULT_INTENT_RESOLVER_DETAILS
     }
 

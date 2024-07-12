@@ -17,7 +17,6 @@ This is a minimal proof-of-concept for FDC3 For the Web.
     yarn install
     yarn workspaces foreach --all install
     yarn workspaces foreach --all run build
-    cd packages/demo
     yarn dev
     ```
 
@@ -92,7 +91,6 @@ The project is divided into several different yarn workspaces:
 ### Protocol
 
 - Desktop Agent Briding needs extending with types from `fdc3-common/index.ts`
-- Move exchange into client, instead of common.
 - How does the da-server tell the da-proxy about the channel metadata? We need a message to get the list of user channels from the server.
 - How does the da-server decide on a desktop agent name (maybe it just has one?)
 - AppChecker / AppDetailsResolver / AppPortResolver - this is all too complex.
@@ -104,8 +102,7 @@ The project is divided into several different yarn workspaces:
 - factor out test codes into module
 - handle setting connected on the server context.
 - we shoulnd't be using meta for routing - check this.
-- How does the da-server tell the da-proxy about the channel metadata?  We need a message to get the list of user channels from the server.
-
+- How does the da-server tell the da-proxy about the channel metadata? We need a message to get the list of user channels from the server.
 
 ### Da-Server
 

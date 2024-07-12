@@ -1,9 +1,10 @@
 import { DesktopAgent } from "@finos/fdc3";
 import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultChannel, DefaultHandshakeSupport } from "@kite9/da-proxy";
-import { APIResponseMessage, FDC3_PORT_TRANSFER_RESPONSE_TYPE, Options, exchangeForMessagePort, APIResponseMessageIFrame } from "@kite9/fdc3-common"
+import { APIResponseMessage, FDC3_PORT_TRANSFER_RESPONSE_TYPE, Options, APIResponseMessageIFrame } from "@kite9/fdc3-common"
 import { MessagePortMessaging } from "./MessagePortMessaging";
 import { DefaultDesktopAgentIntentResolver } from "../intent-resolution/DefaultDesktopAgentIntentResolver";
 import { DefaultDesktopAgentChannelSelector } from "../channel-selector/DefaultDesktopAgentChannelSelector";
+import { exchangeForMessagePort } from "./exchange";
 
 /**
  * Given a message port, constructs a desktop agent to communicate via that.
@@ -13,8 +14,8 @@ export async function createDesktopAgentAPI(mp: MessagePort, data: APIResponseMe
 
     const messaging = new MessagePortMessaging(mp, data.appIdentifier)
 
-    const intentResolver = options.intentResolver ?? new DefaultDesktopAgentIntentResolver(messaging, data.intentResolver)
-    const channelSelector = options.channelSelector ?? new DefaultDesktopAgentChannelSelector(messaging, data.channelSelector)
+    const intentResolver = options.intentResolver ?? new DefaultDesktopAgentIntentResolver(data.intentResolver)
+    const channelSelector = options.channelSelector ?? new DefaultDesktopAgentChannelSelector(data.channelSelector)
     const userChannelState = buildUserChannelState(messaging)
 
     const version = "2.0"

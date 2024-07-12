@@ -1,4 +1,3 @@
-import { Messaging } from "@kite9/da-proxy";
 import { ChannelSelector, ChannelSelectorDetails, CSS_ELEMENTS, CSSPositioning, SelectorMessageChannels, SelectorMessageChoice, SelectorMessageResize } from "@kite9/fdc3-common";
 import { Channel } from "@finos/fdc3";
 
@@ -31,7 +30,6 @@ const DEFAULT_CHANNEL_SELECTOR_DETAILS: ChannelSelectorDetails = {
  */
 export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
 
-    private readonly m: Messaging
     private readonly details: ChannelSelectorDetails
     private container: HTMLDivElement | undefined = undefined
     private iframe: Window | undefined = undefined
@@ -40,8 +38,7 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
     private callback: ((channelId: string) => void) | null = null
     private port: MessagePort | undefined = undefined
 
-    constructor(m: Messaging, details: ChannelSelectorDetails | null) {
-        this.m = m
+    constructor(details: ChannelSelectorDetails | null) {
         this.details = details ?? DEFAULT_CHANNEL_SELECTOR_DETAILS
         this.setupMessageListener()
         this.openFrame()

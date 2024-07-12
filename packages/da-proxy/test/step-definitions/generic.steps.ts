@@ -8,37 +8,6 @@ import { BasicDesktopAgent, DefaultAppSupport, DefaultChannelSupport, DefaultInt
 import { IntentResolver, SingleAppIntent } from '@kite9/fdc3-common';
 import { AppIntent, IntentResult } from '@finos/fdc3';
 
-/**
-     * This super-simple intent resolver just resolves to the first
-     * intent / app in the list.
-     */
-class SimpleIntentResolver implements IntentResolver {
-
-    cw: CustomWorld
-
-    constructor(cw: CustomWorld) {
-        this.cw = cw;
-    }
-
-    async intentChosen(ir: IntentResult): Promise<IntentResult> {
-        this.cw.props['intent-result'] = ir
-        return ir
-    }
-
-    async chooseIntent(appIntents: AppIntent[]): Promise<SingleAppIntent> {
-        const out = {
-            intent: appIntents[0].intent,
-            chosenApp: appIntents[0].apps[0]
-        }
-
-        this.cw.props['intent-resolution'] = out
-        return out
-    }
-}
-
-export const CHANNEL_STATE = 'CHANNEL_STATE'
-
-
 
 Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
 
