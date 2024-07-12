@@ -3,28 +3,48 @@ name: npm-build
 # Only trigger on:
 # - main branch
 # - PR or Pull Request event types
-# - Exclide Docusaurus files: this file, docs/** and website/**
+# - Exclude Docusaurus files: this file, docs/** and website/**
 on:
   push:
+    branches:
+      - release/**
+    paths-ignore:
+      - '.github/workflows/docusaurus.yml'
+  pull_request:
     branches:
       - main
       - release/**
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
-      - 'docs/**'
-      - 'website/**'
-  pull_request:
-    branches:
-      - main
-      - release/*
-    paths-ignore:
-      - '.github/workflows/docusaurus.yml'
-      - 'docs/**'
-      - 'website/**'
 jobs:
+# JOB to run change detection
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    # Set job outputs to values from the filter step
+    outputs:
+      builtFiles: ${{ steps.filter.outputs.builtFiles }}
+    steps:
+    # For pull requests it's not necessary to checkout the code
+    - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36
+      id: filter
+      with:
+        filters: |
+          builtFiles:
+            - '.eslint*'
+            - 'src/**'
+            - 'schemas/**'
+            - 'package-lock.json'
+            - 'package.json'
+            - 'rollup.config.js'
+            - 's2tQuicktypeUtil.js'
+            - 'tsconfig.json'
+            - '.github/workflows/package.yml'
+            
   package-build:
     name: Build on Node ${{ matrix.node }} and ${{ matrix.os }}
-
+    needs: changes
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -33,33 +53,45 @@ jobs:
 
     steps:
       - name: Checkout repo
+        if: ${{ needs.changes.outputs.builtFiles == 'true' }}
         uses: actions/checkout@v4
 
       - name: Use Node ${{ matrix.node }}
+        if: ${{ needs.changes.outputs.builtFiles == 'true' }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 
       - name: Install dependencies
+        if: ${{ needs.changes.outputs.builtFiles == 'true' }}
         uses: bahmutov/npm-install@2509f13e8485d88340a789a3f7ca11aaac47c9fc #v1.8.36
 
       - name: Lint
+        if: ${{ needs.changes.outputs.builtFiles == 'true' }}
         run: npm run lint
 
       - name: Test
+        if: ${{ needs.changes.outputs.builtFiles == 'true' }}
         run:  npm run test --ci --coverage --maxWorkers=2
 
       - name: Build
+        if: ${{ needs.changes.outputs.builtFiles == 'true' }}
         run:  npm run build
 
+      - name: Checkout repo
+        if: ${{ needs.changes.outputs.builtFiles == 'false' }}
+        run: 'echo "Build steps skipped as no relevant changes were detected"'
+
+
   package-publish:
-    if: ${{ github.event_name == 'push' }}
-    needs: package-build
+    if: ${{ github.event_name == 'push' && needs.changes.outputs.builtFiles == 'true'}}
+    needs: [changes,package-build]
     name: Publish package to ${{ matrix.name }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
+      packages: write
     strategy:
       matrix:
        include:
@@ -82,7 +114,10 @@ jobs:
     - name: Check package version
       id: check-version
       uses: tehpsalmist/npm-publish-status-action@deb911186cfe5134094f49183364da10a986e4e7
-
+      with:
+        node-version: 20
+        registry-url: ${{ matrix.registry }}
+        
     # Disabled when switching from PostHog/check-package-version as the new lib 
     #   just tells you if your version exists or not 
     # - name: Package version info
@@ -93,11 +128,11 @@ jobs:
 
     - name: Report already published status
       if: steps.check-version.outputs.exists == '1' 
-      run: 'echo "package version already exists on npm registry"'
+      run: 'echo "package version already exists in registry ${{ matrix.registry }}"'
       
     - name: Report not yet published status
       if: steps.check-version.outputs.exists == '0' 
-      run: 'echo "package version does not exist on npm registry, publishing..."'
+      run: 'echo "package version does not exist in registry ${{ matrix.registry }}, publishing..."'
       
     - name: Install dependencies
       if: steps.check-version.outputs.exists == '0' 
