@@ -111,8 +111,6 @@ jobs:
 
     - name: Read package version
       uses: zvonimirsun/read-package-version-actions@44935516da55bda046f7b39a93e11255987aa81a #v2
-      with: 
-        path: "./path/to/package.json"
       id: package-version
 
     - name: Show version number
