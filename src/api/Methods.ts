@@ -18,6 +18,8 @@ import {
   StandardContextType,
   StandardIntent,
   ContextType,
+  FDC3EventType,
+  EventHandler,
 } from '..';
 import { StandardContextsSet } from '../internal/contextConfiguration';
 import { StandardIntentsSet } from '../internal/intentConfiguration';
@@ -122,6 +124,10 @@ export function addContextListener(
   } else {
     return rejectIfNoGlobal(() => window.fdc3.addContextListener(null, contextTypeOrHandler as ContextHandler));
   }
+}
+
+export function addEventListener(eventType: FDC3EventType, handler: EventHandler): Promise<Listener> {
+  return rejectIfNoGlobal(() => window.fdc3.addEventListener(eventType, handler));
 }
 
 export function getUserChannels(): Promise<Channel[]> {
