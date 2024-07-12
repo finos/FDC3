@@ -1986,7 +1986,8 @@ export interface FindIntentsByContextAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextAgentRequestPayload {
-    context: ContextElement;
+    context:     ContextElement;
+    resultType?: string;
 }
 
 /**
@@ -2114,7 +2115,8 @@ export interface FindIntentsByContextBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextBridgeRequestPayload {
-    context: ContextElement;
+    context:     ContextElement;
+    resultType?: string;
 }
 
 /**
@@ -5280,6 +5282,7 @@ const typeMap: any = {
     ], false),
     "FindIntentsByContextAgentRequestPayload": o([
         { json: "context", js: "context", typ: r("ContextElement") },
+        { json: "resultType", js: "resultType", typ: u(undefined, "") },
     ], false),
     "FindIntentsByContextAgentResponse": o([
         { json: "meta", js: "meta", typ: r("FindIntentsByContextAgentResponseMeta") },
@@ -5322,6 +5325,7 @@ const typeMap: any = {
     ], false),
     "FindIntentsByContextBridgeRequestPayload": o([
         { json: "context", js: "context", typ: r("ContextElement") },
+        { json: "resultType", js: "resultType", typ: u(undefined, "") },
     ], false),
     "FindIntentsByContextBridgeResponse": o([
         { json: "meta", js: "meta", typ: r("FindIntentsByContextBridgeResponseMeta") },
