@@ -122,9 +122,11 @@ jobs:
       with:
         package: "@finos/fdc3"
         registry: ${{ matrix.registry }}
-        details: "false"
       id: check-version
-      
+
+    - run: |
+        echo "Published versions: ${{ steps.check-version.outputs.versions }}"
+
     - name: Report published status
       if: ${{ contains(steps.check-version.versions, steps.package-version.outputs.version) }}
       run: 'echo "package version ${{steps.package-version.outputs.version}} already exists in registry ${{ matrix.registry }}, NOT publishing..."'
