@@ -112,10 +112,22 @@ const listener = await addIntentListener('ViewAnalysis', instrument => {
 
 ## Native
 
+### .NET
+
+For a .NET application to be FDC3-enabled, it needs to run in the context of a platform provider that makes the FDC3 API available.  The manner in which you get a reference to the desktop agent can be highly dependent on the provider chosen.  For those looking to implement your own desktop agent, a recommended and typical design is to register an instance of the desktop agent at startup which can be injected into any class constructors that need references through inversion of control.  More details for creating your own DesktopAgent can be found in the [fdc3-dotnet repository](https://github.com/finos/fdc3-dotnet).
+
+#### Usage
+
+FDC3 offers the [`Finos.Fdc3` NuGet package](https://www.nuget.org/packages/Finos.Fdc3) that can by used by .NET applications to target operations from the [API Specification](api/spec) in a consistent way. Each FDC3-compliant desktop agent that the application runs in, can then provide an implementation of the FDC3 API operations.
+
+
+
+<!--
 The FDC3 Standard does not currently define wire formats for an app to communicate with a Desktop Agent, nor does it define language specific API bindings, other than JavaScript and TypeScript. Hence, for a native application to be FDC3-enabled, it needs to either:
 
 - Make use of a shared library (such as a .NET DLL or JAR file) that provides it with an implementation of the FDC3 API (which ties it to a specific desktop agent implementation).
 - Model itself as a Desktop Agent (rather than just an app working with one) and use the Agent Bridging protocol to connect to a Desktop Agent Bridge and work through it to interoperate with apps managed by other Desktop Agents.
+-->
 
 ## Hybrid
 
