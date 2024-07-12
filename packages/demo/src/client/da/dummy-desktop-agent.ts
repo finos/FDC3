@@ -1,4 +1,4 @@
-import { supply } from "@kite9/da-server/src/supply/post-message";
+import { desktopAgentSupplier } from "@kite9/da-server";
 import { io } from "socket.io-client"
 import { v4 as uuid } from 'uuid'
 import { APP_GOODBYE, DA_HELLO, FDC3_APP_EVENT } from "../../message-types";
@@ -60,7 +60,7 @@ window.addEventListener("load", () => {
         })
 
         // set up desktop agent handler here using FDC3 Web Loader (or whatever we call it)
-        supply(sc.appChecker, sc.detailsResolver, sc.portResolver)
+        desktopAgentSupplier(sc.appChecker, sc.detailsResolver, sc.portResolver)
     })
 })
 

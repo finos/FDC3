@@ -6,7 +6,7 @@ const loader: Loader = (options: Options) => {
 
     const out = new Promise<DesktopAgent>((resolve, reject) => {
         // setup listener for message and retrieve JS URL from it
-        window.addEventListener("message", (event) => {
+        globalThis.window.addEventListener("message", (event) => {
             const data: APIResponseMessage = event.data;
             if ((data.type == FDC3_API_RESPONSE_MESSAGE_TYPE) && (data.method == 'message-port')) {
                 return resolve(messagePortInit(event, options));
