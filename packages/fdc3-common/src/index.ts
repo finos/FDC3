@@ -58,7 +58,8 @@ export type AppChecker = (o: Window) => AppIdentifier | undefined;
 export type Supplier = (
     checker: AppChecker,
     detailsResolver: DesktopAgentDetailResolver,
-    portResolver?: DesktopAgentPortResolver) => void;
+    portResolver?: DesktopAgentPortResolver,
+    on?: Window) => void;
 
 export type Loader = (options: Options) => Promise<DesktopAgent>
 

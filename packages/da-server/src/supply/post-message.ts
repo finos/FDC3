@@ -5,10 +5,11 @@ import { APIResponseMessage, AppChecker, DesktopAgentDetailResolver, Supplier, F
  * This configures the postMessage listener to respond to requests for desktop agent APIs.
  * Called by the server-side desktop agent.
  */
-export const supply: Supplier = (
+export const desktopAgentSupplier: Supplier = (
     checker: AppChecker,
     detailsResolver: DesktopAgentDetailResolver,
-    portResolver: DesktopAgentPortResolver = () => null) => {
+    portResolver: DesktopAgentPortResolver = () => null,
+    on: Window = globalThis.window) => {
 
     function createResponseMessage(source: Window, appId: AppIdentifier): APIResponseMessage {
         return {
@@ -34,7 +35,7 @@ export const supply: Supplier = (
         }
     }
 
-    window.addEventListener(
+    on.addEventListener(
         "message",
         (event) => {
             const data = event.data;

@@ -6,20 +6,20 @@ import postMessage from './strategies/post-message'
 
 const DEFAULT_WAIT_FOR_MS = 20000;
 
-export const DEFAULT_OPTIONS: Options = {
-    setWindowGlobal: false,
-    fireFdc3Ready: false,
-    strategies: [postMessage, electronEvent],
-    frame: globalThis.window.opener ?? globalThis.window.parent,
-    waitForMs: DEFAULT_WAIT_FOR_MS,
-}
-
 /**
  * This return an FDC3 API.  Should be called by application code.
  * 
  * @param optionsOverride - options to override the default options
  */
-export function getAgentAPI(optionsOverride: Options = DEFAULT_OPTIONS): Promise<DesktopAgent> {
+export function getAgentAPI(optionsOverride?: Options): Promise<DesktopAgent> {
+
+    const DEFAULT_OPTIONS: Options = {
+        setWindowGlobal: false,
+        fireFdc3Ready: false,
+        strategies: [postMessage, electronEvent],
+        frame: globalThis.window.opener ?? globalThis.window.parent,
+        waitForMs: DEFAULT_WAIT_FOR_MS,
+    }
 
     const options = {
         ...DEFAULT_OPTIONS,
@@ -65,7 +65,6 @@ export function getAgentAPI(optionsOverride: Options = DEFAULT_OPTIONS): Promise
  */
 export function fdc3Ready(waitForMs = DEFAULT_WAIT_FOR_MS): Promise<DesktopAgent> {
     return getAgentAPI({
-        ...DEFAULT_OPTIONS,
         waitForMs,
         setWindowGlobal: true,
         fireFdc3Ready: true
