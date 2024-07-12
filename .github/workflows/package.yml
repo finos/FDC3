@@ -121,6 +121,7 @@ jobs:
       with:
         package: "@finos/fdc3"
         registry: ${{ matrix.registry }}
+        debug: "true"
       id: check-version
 
     - run: |
