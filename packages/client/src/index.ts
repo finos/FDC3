@@ -10,7 +10,7 @@ export const DEFAULT_OPTIONS: Options = {
     setWindowGlobal: false,
     fireFdc3Ready: false,
     strategies: [postMessage, electronEvent],
-    frame: window.opener ?? window.parent,
+    frame: globalThis.window.opener ?? globalThis.window.parent,
     waitForMs: DEFAULT_WAIT_FOR_MS,
 }
 
@@ -19,7 +19,7 @@ export const DEFAULT_OPTIONS: Options = {
  * 
  * @param optionsOverride - options to override the default options
  */
-export function getClientAPI(optionsOverride: Options = DEFAULT_OPTIONS): Promise<DesktopAgent> {
+export function getAgentAPI(optionsOverride: Options = DEFAULT_OPTIONS): Promise<DesktopAgent> {
 
     const options = {
         ...DEFAULT_OPTIONS,
@@ -27,15 +27,13 @@ export function getClientAPI(optionsOverride: Options = DEFAULT_OPTIONS): Promis
     }
 
     function handleGenericOptions(da: DesktopAgent) {
-        if ((options.setWindowGlobal) && (window.fdc3 == null)) {
-            window.fdc3 = da;
+        if ((options.setWindowGlobal) && (globalThis.window.fdc3 == null)) {
+            globalThis.window.fdc3 = da;
         }
 
         if (options.fireFdc3Ready) {
-            window.dispatchEvent(new Event("fdc3Ready"));
+            globalThis.window.dispatchEvent(new Event("fdc3Ready"));
         }
-
-        sessionStorage.setItem("fdc3", "true");
 
         return da;
     }
@@ -66,7 +64,7 @@ export function getClientAPI(optionsOverride: Options = DEFAULT_OPTIONS): Promis
  * @returns A DesktopAgent promise.
  */
 export function fdc3Ready(waitForMs = DEFAULT_WAIT_FOR_MS): Promise<DesktopAgent> {
-    return getClientAPI({
+    return getAgentAPI({
         ...DEFAULT_OPTIONS,
         waitForMs,
         setWindowGlobal: true,

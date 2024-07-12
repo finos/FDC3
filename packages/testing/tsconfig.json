@@ -2,8 +2,7 @@
   "extends": "../../tsconfig.root.json",
   "compilerOptions": {
     "rootDirs": [
-      "src",
-      "test"
+      "src"
     ],
     "outDir": "dist",
   },
@@ -17,9 +16,6 @@
   "references": [
     {
       "path": "../fdc3-common"
-    },
-    {
-      "path": "../testing"
     }
   ]
 }

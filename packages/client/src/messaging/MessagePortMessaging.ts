@@ -1,8 +1,8 @@
 import { AppIdentifier } from "@finos/fdc3"
 import { AbstractMessaging } from "@kite9/da-proxy"
 import { RegisterableListener } from "@kite9/da-proxy/src/listeners/RegisterableListener"
-import { exchangePostMessage } from "@kite9/fdc3-common"
 import { v4 as uuidv4 } from "uuid"
+import { exchangePostMessage } from "./exchange"
 
 export class MessagePortMessaging extends AbstractMessaging {
 

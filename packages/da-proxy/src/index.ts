@@ -12,9 +12,11 @@ import { IntentSupport } from "./intents/IntentSupport";
 
 import { DefaultAppSupport } from "./apps/DefaultAppSupport";
 import { AppSupport } from "./apps/AppSupport";
+import { NoopAppSupport } from "./apps/NoopAppSupport";
 
 import { HandshakeSupport } from "./handshake/HandshakeSupport";
 import { DefaultHandshakeSupport } from "./handshake/DefaultHandshakeSupport";
+import { NoopHandshakeSupport } from "./handshake/NoopHandshakeSupport";
 
 import { DesktopAgentProvider } from "./DesktopAgentProvider";
 
@@ -32,5 +34,7 @@ export {
     DefaultIntentSupport,
     type DesktopAgentProvider,
     type HandshakeSupport,
-    DefaultHandshakeSupport
+    DefaultHandshakeSupport,
+    NoopHandshakeSupport,
+    NoopAppSupport
 }
