@@ -1,9 +1,12 @@
 name: npm-build
 
-# Only trigger on:
-# - main branch
-# - PR or Pull Request event types
-# - Exclude Docusaurus files: this file, docs/** and website/**
+# This workflow publishes releases to NPM, after checking that the version they would create does not already exist.
+# Hence, it will only publish if the version number in package.json is not already listed at: 
+# https://www.npmjs.com/package/@finos/fdc3?activeTab=versions
+# The workflow will:
+# - Only trigger on a push or PR merge to a release/* branch in the repository
+# - Ignore Docusaurus workflow, docs/** and website/** as they don't affect the NPM module build
+# WARNING: the workflow does NOT confirm that the version number in package JSON matches the branch name, which should be manually confirmed
 on:
   push:
     branches:
@@ -11,6 +14,7 @@ on:
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
   pull_request:
+    types: [opened, reopened, edited, ready_for_review]
     branches:
       - main
       - release/**
@@ -27,7 +31,7 @@ jobs:
       builtFiles: ${{ steps.filter.outputs.builtFiles }}
     steps:
     - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-    - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36
+    - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 #3.0.2
       id: filter
       with:
         filters: |
@@ -105,42 +109,38 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
+    - name: Read package version
+      uses: zvonimirsun/read-package-version-actions@44935516da55bda046f7b39a93e11255987aa81a #v2
+      with: 
+        path: "./path/to/package.json"
+      id: package-version
 
-    - name: Configure Node
-      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+    - name: Show version number
+      run: echo "Version is ${{ steps.package-version.outputs.version }}"
+      # Version is 0.5.0
+
+    - name: Check published package version
+      uses: yakubique/npm-versions@e73acdbc6488150e38727a1db47c8671ec1cca0e #v1.2
       with:
-        node-version: 20
-        registry-url: ${{ matrix.registry }}
-
-    - name: Check package version
+        package: "@finos/fdc3"
+        registry: ${{ matrix.registry }}
+        details: "false"
       id: check-version
-      uses: tehpsalmist/npm-publish-status-action@deb911186cfe5134094f49183364da10a986e4e7
-      with:
-        node-version: 20
-        registry-url: ${{ matrix.registry }}
-        
-    # Disabled when switching from PostHog/check-package-version as the new lib 
-    #   just tells you if your version exists or not 
-    # - name: Package version info
-    #   run: |
-    #     echo "Committed version: ${{ steps.check-version.outputs.committed-version }}"
-    #     echo "Published version: ${{ steps.check-version.published-version }}"
-    #     echo "Is version new: ${{ steps.check-version.outputs.is-new-version }}"
-
-    - name: Report already published status
-      if: steps.check-version.outputs.exists == '1' 
-      run: 'echo "package version already exists in registry ${{ matrix.registry }}"'
       
+    - name: Report published status
+      if: ${{ contains(steps.check-version.versions, steps.package-version.outputs.version) }}
+      run: 'echo "package version ${{steps.package-version.outputs.version}} already exists in registry ${{ matrix.registry }}, NOT publishing..."'
+        
     - name: Report not yet published status
-      if: steps.check-version.outputs.exists == '0' 
+      if: ${{ !contains(steps.check-version.versions, steps.package-version.outputs.version) }}
       run: 'echo "package version does not exist in registry ${{ matrix.registry }}, publishing..."'
       
     - name: Install dependencies
-      if: steps.check-version.outputs.exists == '0' 
+      if: ${{ !contains(steps.check-version.versions, steps.package-version.outputs.version) }}
       uses: bahmutov/npm-install@2509f13e8485d88340a789a3f7ca11aaac47c9fc #v1.8.36
 
     - name: Publish
-      if: steps.check-version.outputs.exists == '0' 
+      if: ${{ !contains(steps.check-version.versions, steps.package-version.outputs.version) }}
       run:  npm publish --provenance --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets[matrix.token-name] }}
