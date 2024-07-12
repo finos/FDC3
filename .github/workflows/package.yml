@@ -20,6 +20,8 @@ on:
       - release/**
     paths-ignore:
       - '.github/workflows/docusaurus.yml'
+permissions:
+  contents: read
 jobs:
 # JOB to run change detection
   changes:
