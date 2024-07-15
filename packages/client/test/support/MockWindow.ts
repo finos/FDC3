@@ -20,6 +20,7 @@ export class MockWindow {
     }
 
     eventHandlers: EventHandler[] = []
+    events: any[] = []
 
     parent: MockWindow | null = null
 
@@ -40,6 +41,7 @@ export class MockWindow {
     }
 
     dispatchEvent(event: Event): void {
+        this.events.push({ type: event.type, data: (event as any).data })
         this.eventHandlers.forEach((e) => {
             if (e.type === event.type) {
                 e.callback(event)
