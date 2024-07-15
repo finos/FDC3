@@ -81,6 +81,11 @@ export function setupGenericSteps() {
         expect(handleResolve(field, this)).toBeNull()
     })
 
+    Then('{string} is not null', function (this: PropsWorld, field: string) {
+        expect(handleResolve(field, this)).toBeDefined()
+    })
+
+
     Then('{string} is undefined', function (this: PropsWorld, field: string) {
         expect(handleResolve(field, this)).toBeUndefined()
     })
