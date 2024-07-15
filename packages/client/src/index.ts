@@ -1,6 +1,5 @@
 import { DesktopAgent } from '@finos/fdc3'
 import { Options } from '@kite9/fdc3-common';
-import fail from './strategies/fail';
 import electronEvent from './strategies/electron-event'
 import postMessage from './strategies/post-message'
 
@@ -38,23 +37,17 @@ export function getAgentAPI(optionsOverride?: Options): Promise<DesktopAgent> {
         return da;
     }
 
-    function waitThenFallback(options: Options): Promise<DesktopAgent> {
-        const fallbackStrategy = options.fallbackStrategy ?? fail
-
-        return new Promise<DesktopAgent>((_, reject) => {
-            setTimeout(() => reject(new Error('timeout succeeded')), options.waitForMs);
-        }).then(() => fallbackStrategy(options))
-    }
-
-    const toProcess = [
-        ...options.strategies!!,
-        waitThenFallback
-    ]
-
-    const strategies = toProcess.map(s => s(options));
+    const strategies = options.strategies!!.map(s => s(options));
 
     return Promise.race(strategies)
         .then(da => handleGenericOptions(da))
+        .catch((error) => {
+            if (options.fallbackStrategy) {
+                return options.fallbackStrategy(options)
+            } else {
+                throw error
+            }
+        })
 }
 
 /**
