@@ -4,12 +4,15 @@ Feature: Different Strategies for Accessing the Desktop Agent
     Given A Dummy Desktop Agent in "dummy-api"
     And "dummyFailover" is a function which returns a promise of "{dummy-api}"
     And a browser document in "document"
+    And a client window in "window"
 
-  Scenario: Running inside a Browser and using post message
-    Given Parent Window listens for postMessage events
-    And I call getAgentAPI for a promise result
-    And I refer to "{result}" as "theAPIPromise"
+  Scenario: Running inside a Browser and using post message with direct message ports
+    Given Parent Window listens for postMessage events, returns direct message response
     And we wait for a period of "200" ms
+    And I call getAgentAPI for a promise result with the following options
+      | setWindowGlobal | fireFdc3Ready |
+      | true            | true          |
+    And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
     And I call "{result}" with "getInfo"
     Then "{result}" is an object with the following contents
@@ -20,6 +23,35 @@ Feature: Different Strategies for Accessing the Desktop Agent
     Then "{iframe}" is an object with the following contents
       | tag    | atts.name             | atts.src                                    | style.width | style.height |
       | iframe | FDC3 Channel Selector | http://localhost:4000/channel_selector.html |        100% |         100% |
+    And "{window.fdc3}" is not null
+    And "{window.events}" is an array of objects with the following contents
+      | type      | data.type         | data.methods | data.method  |
+      | message   | FDC3-API-Request  | post-message | {null}       |
+      | message   | FDC3-API-Response | {null}       | message-port |
+      | fdc3Ready | {null}            | {null}       | {null}       |
+  # Scenario: Running inside a Browser using the embedded iframe strategy
+  #   Given Parent Window listens for postMessage events, returns iframe response
+  #   And we wait for a period of "200" ms
+  #   And I call getAgentAPI for a promise result with the following options
+  #     | setWindowGlobal | fireFdc3Ready |
+  #     | true            | true          |
+  #   And I refer to "{result}" as "theAPIPromise"
+  #   Then the promise "{theAPIPromise}" should resolve
+  #   And I call "{result}" with "getInfo"
+  #   Then "{result}" is an object with the following contents
+  #     | fdc3Version | appMetadata.appId | provider          |
+  #     |         2.0 | Test App Id       | cucumber-provider |
+  #   And I refer to "{document.body.children[0]}" as "channel-selector"
+  #   And I refer to "{channel-selector.children[0]}" as "iframe"
+  #   Then "{iframe}" is an object with the following contents
+  #     | tag    | atts.name             | atts.src                                    | style.width | style.height |
+  #     | iframe | FDC3 Channel Selector | http://localhost:4000/channel_selector.html |        100% |         100% |
+  #   And "{window.fdc3}" is not null
+  #   And "{window.events}" is an array of objects with the following contents
+  #     | type      | data.type         | data.methods | data.method  |
+  #     | message   | FDC3-API-Request  | post-message | {null}       |
+  #     | message   | FDC3-API-Response | {null}       | message-port |
+  #     | fdc3Ready | {null}            | {null}       | {null}       |
 
   Scenario: Running inside an Electron Container. In this scenario, window.fdc3 is set by the electron container and returned by getAgentAPI
     Given I call getAgentAPI for a promise result

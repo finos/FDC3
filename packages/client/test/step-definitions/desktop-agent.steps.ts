@@ -18,7 +18,7 @@ setupGenericSteps()
 
 var theServer: FDC3Server | null = null
 
-Given('Parent Window listens for postMessage events', async function (this: CustomWorld) {
+Given('Parent Window listens for postMessage events, returns direct message response', async function (this: CustomWorld) {
     const dummyInstanceId = { appId: "Test App Id", instanceId: "1" }
 
     const appChecker: AppChecker = _o => { return dummyInstanceId }
@@ -26,7 +26,6 @@ Given('Parent Window listens for postMessage events', async function (this: Cust
     const detailsResolver = (_o: Window, _a: any) => {
         return {
             apiKey: "ABC",
-            uri: "http://localhost:8080/static/da/embed.html",
             desktopAgentId: "123",
             intentResolver: null,
             channelSelector: null
@@ -44,6 +43,28 @@ Given('Parent Window listens for postMessage events', async function (this: Cust
         }
 
         return channel.port1
+    }
+
+    desktopAgentSupplier(appChecker, detailsResolver, portResolver, mockWindow as any)
+})
+
+Given('Parent Window listens for postMessage events, returns iframe response', async function (this: CustomWorld) {
+    const dummyInstanceId = { appId: "Test App Id", instanceId: "1" }
+
+    const appChecker: AppChecker = _o => { return dummyInstanceId }
+
+    const detailsResolver = (_o: Window, _a: any) => {
+        return {
+            apiKey: "ABC",
+            uri: "http://localhost:8080/static/da/embed.html",
+            desktopAgentId: "123",
+            intentResolver: null,
+            channelSelector: null,
+        }
+    }
+
+    const portResolver = (_o: Window, _a: any) => {
+        return null
     }
 
     desktopAgentSupplier(appChecker, detailsResolver, portResolver, mockWindow as any)
@@ -93,7 +114,8 @@ When('I call getAgentAPI for a promise result with the following options', funct
             .map(([k, v]) => {
                 const val = handleResolve(v, this)
                 const val2 = isNaN(val) ? val : Number(val)
-                return [k, val2]
+                const val3 = val2 === "true" ? true : val2 === "false" ? false : val2
+                return [k, val3]
             })
         )
         this.props['result'] = getAgentAPI(toArgs as Options)
@@ -105,6 +127,12 @@ When('I call getAgentAPI for a promise result with the following options', funct
 Given('a browser document in {string}', async function (this: CustomWorld, field: string) {
     this.props[field] = globalThis.document as any;
     (globalThis.document as any as MockDocument).reset();
+})
+
+Given('a client window in {string}', async function (this: CustomWorld, field: string) {
+    this.props[field] = globalThis.window as any;
     (globalThis.window as any as MockWindow).reset();
 
 })
+
+
