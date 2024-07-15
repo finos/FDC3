@@ -10,7 +10,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
     And I refer to "{result}" as "theAPIPromise"
     And we wait for a period of "200" ms
     Then the promise "{theAPIPromise}" should resolve
-    And "{result.getInfo()}" should be an object with the following fields
+    And "{result.getInfo()}"  is an object with the following contents
       | blah  | blah  |
       | thing | thang |
 #   Scenario: Running inside an Electron Container
