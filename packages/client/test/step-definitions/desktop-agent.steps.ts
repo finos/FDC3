@@ -19,9 +19,6 @@ setupGenericSteps()
 var theServer: FDC3Server | null = null
 
 Given('Parent Window listens for postMessage events', async function (this: CustomWorld) {
-
-    (globalThis.window as any as MockWindow).reset()
-
     const dummyInstanceId = { appId: "Test App Id", instanceId: "1" }
 
     const appChecker: AppChecker = _o => { return dummyInstanceId }
@@ -106,6 +103,8 @@ When('I call getAgentAPI for a promise result with the following options', funct
 })
 
 Given('a browser document in {string}', async function (this: CustomWorld, field: string) {
-    this.props[field] = globalThis.document as any
-    (globalThis.document as any as MockDocument).reset()
+    this.props[field] = globalThis.document as any;
+    (globalThis.document as any as MockDocument).reset();
+    (globalThis.window as any as MockWindow).reset();
+
 })

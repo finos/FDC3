@@ -108,9 +108,9 @@ export function setupGenericSteps() {
         this.props[field] = 0;
     })
 
-    Given('{string} is a function which returns {string}', function (this: PropsWorld, fnName: string, field: string) {
+    Given('{string} is a function which returns a promise of {string}', function (this: PropsWorld, fnName: string, field: string) {
         const value = handleResolve(field, this)
-        this.props[fnName] = () => {
+        this.props[fnName] = async () => {
             return value
         }
     })
