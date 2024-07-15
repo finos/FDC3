@@ -50,6 +50,10 @@ export class MockDocument {
     }
 
     body = new MockElement("body")
+
+    reset() {
+        this.body = new MockElement("body")
+    }
 }
 
 

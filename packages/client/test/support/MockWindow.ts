@@ -1,3 +1,4 @@
+import { DesktopAgent } from "@finos/fdc3"
 
 
 
@@ -12,6 +13,7 @@ type EventHandler = {
 export class MockWindow {
 
     name: string
+    fdc3: DesktopAgent | undefined
 
     constructor(name: string) {
         this.name = name
@@ -53,6 +55,11 @@ export class MockWindow {
             ports: transfer,
             source: this.parent ?? this // when posting from client, set source to self
         } as any)
+    }
+
+    reset() {
+        this.eventHandlers = []
+        this.fdc3 = undefined
     }
 }
 

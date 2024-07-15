@@ -4,8 +4,8 @@ import { TestMessaging } from '../support/TestMessaging';
 import { handleResolve, setupGenericSteps, SimpleIntentResolver } from '@kite9/testing';
 import { BasicDesktopAgent, DefaultChannelSupport, DefaultIntentSupport, NoopAppSupport, NoopHandshakeSupport } from '@kite9/da-proxy';
 import { BasicDirectory, DefaultFDC3Server, FDC3Server, desktopAgentSupplier } from '@kite9/da-server';
-import { mockWindow } from '../support/Mockwindow';
-import { mockDocument } from '../support/MockDocument';
+import { MockWindow, mockWindow } from '../support/Mockwindow';
+import { MockDocument, mockDocument } from '../support/MockDocument';
 import { getAgentAPI } from '../../src';
 import { AppChecker, Options } from '@kite9/fdc3-common';
 import { TestServerContext } from '../support/TestServerContext';
@@ -19,6 +19,8 @@ setupGenericSteps()
 var theServer: FDC3Server | null = null
 
 Given('Parent Window listens for postMessage events', async function (this: CustomWorld) {
+
+    (globalThis.window as any as MockWindow).reset()
 
     const dummyInstanceId = { appId: "Test App Id", instanceId: "1" }
 
@@ -105,4 +107,5 @@ When('I call getAgentAPI for a promise result with the following options', funct
 
 Given('a browser document in {string}', async function (this: CustomWorld, field: string) {
     this.props[field] = globalThis.document as any
+    (globalThis.document as any as MockDocument).reset()
 })
