@@ -17,7 +17,7 @@
     "@kite9/da-server": "workspace:*",
     "@kite9/fdc3-common": "workspace:*",
     "@types/uuid": "^10.0.0",
-    "uuid": "^10.0.0"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",

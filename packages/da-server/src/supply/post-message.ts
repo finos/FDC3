@@ -48,10 +48,7 @@ export const desktopAgentSupplier: Supplier = (
                     console.log(`API Request Origin:  ${origin}`);
                     const message = createResponseMessage(source, appDetails)
                     const transferrables = createTransferrableArray(source, appDetails)
-                    source.postMessage(message, {
-                        targetOrigin: origin,
-                        transfer: transferrables
-                    })
+                    source.postMessage(message, origin, transferrables)
                 }
             }
         });

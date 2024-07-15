@@ -4,67 +4,16 @@ import { TestMessaging } from '../support/TestMessaging';
 import { handleResolve, setupGenericSteps, SimpleIntentResolver } from '@kite9/testing';
 import { BasicDesktopAgent, DefaultChannelSupport, DefaultIntentSupport, NoopAppSupport, NoopHandshakeSupport } from '@kite9/da-proxy';
 import { desktopAgentSupplier } from '@kite9/da-server';
-
-
-type EventHandler = {
-    type: string,
-    callback: (e: Event) => void
-}
-
-class MockWindow {
-
-    name: string
-
-    constructor(name: string) {
-        this.name = name
-    }
-
-    eventHandlers: EventHandler[] = []
-
-    parent: MockWindow | null = null
-
-    addEventListener(type: string, callback: (e: Event) => void): void {
-        this.eventHandlers.push({ type, callback })
-    }
-
-    dispatchEvent(event: Event): void {
-        this.eventHandlers.forEach((e) => {
-            if (e.type === event.type) {
-                e.callback(event)
-            }
-        })
-    }
-
-    postMessage(msg: object, targetOrigin: string | undefined, ports: MessagePort[] | undefined): void {
-        this.dispatchEvent({
-            type: 'message',
-            data: msg,
-            origin: targetOrigin,
-            ports,
-            source: this.parent ?? this // when posting from client, set source to self
-        } as any)
-    }
-}
-
-/**
- * This allows us to handle fdc3.ready events
- */
-globalThis.window = new MockWindow("client") as any
-
-/**
- * Need to do this after we've set up window
- */
+import { mockWindow } from '../support/Mockwindow';
 import { getAgentAPI } from '../../src';
 import { AppChecker } from '@kite9/fdc3-common';
 
+globalThis.window = mockWindow as any
+globalThis.window.parent = mockWindow as any
 
 setupGenericSteps()
 
 Given('Parent Window listens for postMessage events', async function (this: CustomWorld) {
-
-    const parent = new MockWindow("parent")
-    // sets the parent window
-    globalThis.window.parent = parent as any
 
     const appChecker: AppChecker = _o => { return { appId: "app1" } }
 
@@ -85,9 +34,7 @@ Given('Parent Window listens for postMessage events', async function (this: Cust
         return channel.port1
     }
 
-    desktopAgentSupplier(appChecker, detailsResolver, portResolver, parent as any)
-
-
+    desktopAgentSupplier(appChecker, detailsResolver, portResolver, mockWindow as any)
 })
 
 Given('A Dummy Desktop Agent in {string}', async function (this: CustomWorld, field: string) {

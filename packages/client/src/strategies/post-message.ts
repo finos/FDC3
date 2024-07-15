@@ -6,15 +6,20 @@ const loader: Loader = (options: Options) => {
 
     const out = new Promise<DesktopAgent>((resolve, reject) => {
         // setup listener for message and retrieve JS URL from it
-        globalThis.window.addEventListener("message", (event) => {
+        const el = (event: MessageEvent) => {
             const data: APIResponseMessage = event.data;
-            if ((data.type == FDC3_API_RESPONSE_MESSAGE_TYPE) && (data.method == 'message-port')) {
-                return resolve(messagePortInit(event, options));
+            if (data.type == FDC3_API_RESPONSE_MESSAGE_TYPE) {
+                globalThis.window.removeEventListener("message", el);
+                if (data.method == 'message-port') {
+                    return resolve(messagePortInit(event, options));
+                } else {
+                    // need either a port or a uri
+                    return reject("Incorrect API Response Message: " + JSON.stringify(data));
+                }
             }
+        }
 
-            // need either a port or a uri
-            return reject("Incorrect API Response Message: " + JSON.stringify(data));
-        }, { once: true });
+        globalThis.window.addEventListener("message", el)
     });
 
     const da = options.frame;
@@ -25,7 +30,7 @@ const loader: Loader = (options: Options) => {
             methods: ['post-message']
         }
 
-        da.postMessage(requestMessage, "*");
+        da.postMessage(requestMessage, da.location.origin);
     }
 
     return out;
