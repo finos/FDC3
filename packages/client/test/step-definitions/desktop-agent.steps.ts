@@ -1,4 +1,4 @@
-import { Given, When } from '@cucumber/cucumber'
+import { DataTable, Given, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { TestMessaging } from '../support/TestMessaging';
 import { handleResolve, setupGenericSteps, SimpleIntentResolver } from '@kite9/testing';
@@ -7,7 +7,7 @@ import { BasicDirectory, DefaultFDC3Server, FDC3Server, desktopAgentSupplier } f
 import { mockWindow } from '../support/Mockwindow';
 import { mockDocument } from '../support/MockDocument';
 import { getAgentAPI } from '../../src';
-import { AppChecker } from '@kite9/fdc3-common';
+import { AppChecker, Options } from '@kite9/fdc3-common';
 import { TestServerContext } from '../support/TestServerContext';
 
 globalThis.window = mockWindow as any
@@ -82,6 +82,22 @@ Given('`window.fdc3` is injected into the runtime with the value in {string}', a
 When('I call getAgentAPI for a promise result', function (this: CustomWorld) {
     try {
         this.props['result'] = getAgentAPI()
+    } catch (error) {
+        this.props['result'] = error
+    }
+})
+
+When('I call getAgentAPI for a promise result with the following options', function (this: CustomWorld, dt: DataTable) {
+    try {
+        const first = dt.hashes()[0]
+        const toArgs = Object.fromEntries(Object.entries(first)
+            .map(([k, v]) => {
+                const val = handleResolve(v, this)
+                const val2 = isNaN(val) ? val : Number(val)
+                return [k, val2]
+            })
+        )
+        this.props['result'] = getAgentAPI(toArgs as Options)
     } catch (error) {
         this.props['result'] = error
     }
