@@ -64,7 +64,7 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
     }
 
     private setupMessageListener() {
-        window.addEventListener("message", (e) => {
+        globalThis.window.addEventListener("message", (e) => {
             if (e.source == this.iframe && e.data.type == 'SelectorMessageInitialize') {
                 this.port = e.ports[0]
                 this.port.start()
@@ -121,8 +121,8 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
     }
 
     private openFrame(): void {
-        this.container = document.createElement("div")
-        const ifrm = document.createElement("iframe")
+        this.container = globalThis.document.createElement("div")
+        const ifrm = globalThis.document.createElement("iframe")
 
         this.themeContainer(this.details.collapsedCss ?? DEFAULT_CHANNEL_SELECTOR_DETAILS.collapsedCss!!)
         this.themeFrame(ifrm)
