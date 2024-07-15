@@ -10,9 +10,10 @@ Feature: Different Strategies for Accessing the Desktop Agent
     And I refer to "{result}" as "theAPIPromise"
     And we wait for a period of "200" ms
     Then the promise "{theAPIPromise}" should resolve
-    And "{result.getInfo()}"  is an object with the following contents
-      | blah  | blah  |
-      | thing | thang |
+    And I call "{result}" with "getInfo"
+    Then "{result}" is an object with the following contents
+      | fdc3Version | appMetadata.appId | provider          |
+      |         2.0 | Test App Id       | cucumber-provider |
 #   Scenario: Running inside an Electron Container
 # In this scenario, window.fdc3 is set by the electron container and returned by getAgentAPI
 #     Given I call getAgentAPI for a promise result

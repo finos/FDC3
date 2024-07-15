@@ -60,7 +60,7 @@ export function setupGenericSteps() {
     });
 
     When('I refer to {string} as {string}', async function (this: PropsWorld, from: string, to: string) {
-        this.props[to] = this.props[from];
+        this.props[to] = handleResolve(from, this);
     })
 
     Then('{string} is an array of objects with the following contents', function (this: PropsWorld, field: string, dt: DataTable) {

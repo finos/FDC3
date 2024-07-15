@@ -3,19 +3,26 @@ import { CustomWorld } from '../world';
 import { TestMessaging } from '../support/TestMessaging';
 import { handleResolve, setupGenericSteps, SimpleIntentResolver } from '@kite9/testing';
 import { BasicDesktopAgent, DefaultChannelSupport, DefaultIntentSupport, NoopAppSupport, NoopHandshakeSupport } from '@kite9/da-proxy';
-import { desktopAgentSupplier } from '@kite9/da-server';
+import { BasicDirectory, DefaultFDC3Server, FDC3Server, desktopAgentSupplier } from '@kite9/da-server';
 import { mockWindow } from '../support/Mockwindow';
+import { mockDocument } from '../support/MockDocument';
 import { getAgentAPI } from '../../src';
 import { AppChecker } from '@kite9/fdc3-common';
+import { TestServerContext } from '../support/TestServerContext';
 
 globalThis.window = mockWindow as any
 globalThis.window.parent = mockWindow as any
+globalThis.document = mockDocument as any
 
 setupGenericSteps()
 
+var theServer: FDC3Server | null = null
+
 Given('Parent Window listens for postMessage events', async function (this: CustomWorld) {
 
-    const appChecker: AppChecker = _o => { return { appId: "app1" } }
+    const dummyInstanceId = { appId: "Test App Id", instanceId: "1" }
+
+    const appChecker: AppChecker = _o => { return dummyInstanceId }
 
     const detailsResolver = (_o: Window, _a: any) => {
         return {
@@ -30,6 +37,12 @@ Given('Parent Window listens for postMessage events', async function (this: Cust
     const portResolver = (_o: Window, _a: any) => {
         const channel = new MessageChannel()
         channel.port2.start()
+
+        const dir = new BasicDirectory([dummyInstanceId])
+        theServer = new DefaultFDC3Server(new TestServerContext(this, channel.port2), dir, "Client Test Server", {})
+        channel.port2.onmessage = (event) => {
+            theServer?.receive(event.data, dummyInstanceId)
+        }
 
         return channel.port1
     }
