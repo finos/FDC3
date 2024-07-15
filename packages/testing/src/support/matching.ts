@@ -34,11 +34,7 @@ export function indexOf(cw: PropsWorld, rows: Record<string, string>[], data: an
 export function handleResolve(name: string, on: PropsWorld): any {
     if (name.startsWith("{") && name.endsWith("}")) {
         const stripped = name.substring(1, name.length - 1)
-        const parts = stripped.split(".")
-        var out = on.props[parts[0]]
-        for (let i = 1; i < parts.length; i++) {
-            out = out[parts[i]]
-        }
+        const out = JSONPath({ path: stripped, json: on.props })[0];
         return out
     } else {
         return name

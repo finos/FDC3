@@ -2,14 +2,12 @@
 
 class MockCSSStyleDeclaration {
 
-    props: { [name: string]: any } = {}
-
     setProperty(name: string, value: string) {
-        this.props[name] = value
+        (this as any)[name] = value
     }
 
     removeProperty(name: string) {
-        delete this.props[name]
+        delete (this as any)[name]
     }
 
 }

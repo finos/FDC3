@@ -86,3 +86,7 @@ When('I call getAgentAPI for a promise result', function (this: CustomWorld) {
         this.props['result'] = error
     }
 })
+
+Given('a browser document in {string}', async function (this: CustomWorld, field: string) {
+    this.props[field] = globalThis.document as any
+})
