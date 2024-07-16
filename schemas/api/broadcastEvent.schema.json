@@ -40,6 +40,11 @@
 					"$ref": "../context/context.schema.json",
 					"title": "Context",
 					"description": "The context object that was broadcast."
+				},
+				"originatingApp": {
+					"title": "Originating AppIdentifier",
+					"description": "Details of the application instance that broadcast the context",
+					"$ref": "api.schema.json#/definitions/AppIdentifier"
 				}
 			},
 			"additionalProperties": false,
