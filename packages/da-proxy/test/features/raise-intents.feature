@@ -10,26 +10,26 @@ Feature: Basic Intents Support
     And "instrumentContext" is a "fdc3.instrument" context
     And "countryContext" is a "fdc3.country" context
   # Scenario: Raising An Invalid Intent to the server (no instance)
-  #   When I call "api" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{c1}"
+  #   When I call "{api}" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{c1}"
   #   Then "{result}" is an error with message "TargetInstanceUnavailable"
 
   Scenario: Raising An Invalid Intent to the server (no app)
-    When I call "api" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{chipShop}"
+    When I call "{api}" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{chipShop}"
     Then "{result}" is an error with message "TargetAppUnavailable"
 
   Scenario: Raising An Invalid Intent to the server (non existent intent)
-    When I call "api" with "raiseIntent" with parameters "NonExistentIntent" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" with parameters "NonExistentIntent" and "{instrumentContext}"
     Then "{result}" is an error with message "NoAppsFound"
 
   Scenario: Raising An Invalid Intent to the server
-    When I call "api" with "raiseIntentForContext" with parameters "{intrumentContext}" and "{t1}"
+    When I call "{api}" with "raiseIntentForContext" with parameters "{intrumentContext}" and "{t1}"
     Then "{result}" is an error with message "NoAppsFound"
 
   Scenario: Raising an intent and invoking the intent resolver when it's not clear which intent is required
             The intent resolver built in to the tests will just take the first matching application
             that would resolve the intent.
 
-    When I call "api" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId |
       | chipShop     | c1                |
@@ -38,19 +38,19 @@ Feature: Basic Intents Support
             The intent resolver built in to the tests will just take the first matching application
             that would resolve an intent.
 
-    When I call "api" with "raiseIntentForContext" with parameter "{instrumentContext}"
+    When I call "{api}" with "raiseIntentForContext" with parameter "{instrumentContext}"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId |
       | bank         | b1                |
 
   Scenario: Raising Intent exactly right, so the resolver isn't required
-    When I call "api" with "raiseIntent" with parameters "Buy" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" with parameters "Buy" and "{instrumentContext}"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId |
       | bank         | b1                |
 
   Scenario: Raising Intent By Context exactly right, so the resolver isn't required
-    When I call "api" with "raiseIntentForContext" with parameters "{countryContext}" and "{t1}"
+    When I call "{api}" with "raiseIntentForContext" with parameters "{countryContext}" and "{t1}"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId |
       | travelAgent  | t1                |

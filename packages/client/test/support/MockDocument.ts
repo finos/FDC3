@@ -1,3 +1,4 @@
+import { MockWindow } from "./Mockwindow"
 
 
 class MockCSSStyleDeclaration {
@@ -12,7 +13,7 @@ class MockCSSStyleDeclaration {
 
 }
 
-class MockElement {
+export class MockElement {
 
     tag: string
     atts: { [name: string]: any } = {}
@@ -40,13 +41,38 @@ class MockElement {
 export class MockDocument {
 
     name: string
+    window: Window
 
-    constructor(name: string) {
+    constructor(name: string, window: Window) {
         this.name = name
+        this.window = window
     }
 
     createElement(tag: string): HTMLElement {
-        return new MockElement(tag) as any
+        if (tag == 'iframe') {
+            const mw = new MockWindow("iframe")
+
+            // pass on messages from client to parent
+            mw.addEventListener("message", (e) => {
+                console.log("iframe received message " + JSON.stringify(e))
+                this.window.dispatchEvent(e)
+            })
+
+            // communicate back from iframe to parent
+            const channel = new MessageChannel()
+            channel.port2.start()
+
+            const dir = new BasicDirectory([dummyInstanceId])
+            theServer = new DefaultFDC3Server(new TestServerContext(this, channel.port2), dir, "Client Test Server", {})
+            channel.port2.onmessage = (event) => {
+                theServer?.receive(event.data, dummyInstanceId)
+            }
+
+            return mw as any
+        } else {
+            return new MockElement(tag) as any
+        }
+
     }
 
     body = new MockElement("body")
@@ -55,7 +81,3 @@ export class MockDocument {
         this.body = new MockElement("body")
     }
 }
-
-
-// for the purposes of testing, set up a single document
-export const mockDocument = new MockDocument("mockDocument")

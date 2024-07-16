@@ -3,7 +3,7 @@ import { Context } from '@finos/fdc3';
 import { handleResolve, matchData } from '../support/matching';
 import { CustomWorld } from '../world/index';
 import { AgentRequestMessage, BroadcastAgentRequest, PrivateChannelBroadcastAgentRequest, PrivateChannelOnDisconnectAgentRequest, PrivateChannelOnUnsubscribeAgentRequest, RequestMessageType } from '@finos/fdc3/dist/bridging/BridgingTypes'
-import { CHANNEL_STATE } from './generic.steps';
+import { CHANNEL_STATE } from '@kite9/testing/dist/src/agent';
 
 const contextMap: Record<string, any> = {
   "fdc3.instrument": {
