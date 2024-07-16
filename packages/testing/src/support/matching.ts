@@ -7,7 +7,11 @@ import { DataTable } from "@cucumber/cucumber";
 
 
 export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: any): boolean {
-    cw.log(`Comparing with ${JSON.stringify(data)}`)
+    try {
+        cw.log(`Comparing with ${JSON.stringify(data)}`)
+    } catch (e) {
+        console.log("Can't stringify data")
+    }
     for (const [field, actual] of Object.entries(t)) {
         const found = JSONPath({ path: field, json: data })[0];
         const resolved = handleResolve(actual, cw)

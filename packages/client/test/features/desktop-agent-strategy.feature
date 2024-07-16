@@ -3,11 +3,10 @@ Feature: Different Strategies for Accessing the Desktop Agent
   Background: Desktop Agent API
     Given A Dummy Desktop Agent in "dummy-api"
     And "dummyFailover" is a function which returns a promise of "{dummy-api}"
-    And a browser document in "document"
-    And a client window in "window"
+    And a browser document in "document" and window in "window"
 
   Scenario: Running inside a Browser and using post message with direct message ports
-    Given Parent Window listens for postMessage events, returns direct message response
+    Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
     And we wait for a period of "200" ms
     And I call getAgentAPI for a promise result with the following options
       | setWindowGlobal | fireFdc3Ready |
@@ -29,9 +28,10 @@ Feature: Different Strategies for Accessing the Desktop Agent
       | message   | FDC3-API-Request  | post-message | {null}       |
       | message   | FDC3-API-Response | {null}       | message-port |
       | fdc3Ready | {null}            | {null}       | {null}       |
+    Then I call "{da}" with "shutdown"
 
   Scenario: Running inside a Browser using the embedded iframe strategy
-    Given Parent Window listens for postMessage events, returns iframe response
+    Given Parent Window desktop "da" listens for postMessage events in "{window}", returns iframe response
     And we wait for a period of "200" ms
     And I call getAgentAPI for a promise result with the following options
       | setWindowGlobal | fireFdc3Ready |
@@ -53,6 +53,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
       | message   | FDC3-API-Request  | post-message | {null}       |
       | message   | FDC3-API-Response | {null}       | message-port |
       | fdc3Ready | {null}            | {null}       | {null}       |
+    Then I call "{da}" with "shutdown"
 
   Scenario: Running inside an Electron Container.
     In this scenario, window.fdc3 is set by the electron container and returned by getAgentAPI
