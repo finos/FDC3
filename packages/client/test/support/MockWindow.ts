@@ -1,4 +1,5 @@
 import { DesktopAgent } from "@finos/fdc3"
+import { MockElement } from "./MockDocument"
 
 
 
@@ -10,13 +11,12 @@ type EventHandler = {
 /**
  * Used for routing of post-message events while running tests
  */
-export class MockWindow {
+export class MockWindow extends MockElement {
 
-    name: string
     fdc3: DesktopAgent | undefined
 
-    constructor(name: string) {
-        this.name = name
+    constructor(tag: string) {
+        super(tag)
     }
 
     eventHandlers: EventHandler[] = []
@@ -30,7 +30,7 @@ export class MockWindow {
 
     addEventListener(type: string, callback: (e: Event) => void): void {
         this.eventHandlers.push({ type, callback })
-        console.log("Added event handler")
+        console.log("Added event handler " + this.tag)
     }
 
     removeEventListener(type: string, el: EventListener): void {

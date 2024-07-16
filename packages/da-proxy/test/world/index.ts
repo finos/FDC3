@@ -1,4 +1,4 @@
-import { World, setWorldConstructor } from "@cucumber/cucumber";
+import { setWorldConstructor } from "@cucumber/cucumber";
 import { TestMessaging } from "../support/TestMessaging";
 import { PropsWorld } from "@kite9/testing";
 
