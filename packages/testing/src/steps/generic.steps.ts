@@ -11,7 +11,7 @@ export function setupGenericSteps() {
             const object = await promise
             this.props['result'] = object
         } catch (error) {
-            console.log(error)
+            this.props['result'] = error
         }
     })
 
