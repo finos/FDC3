@@ -9,8 +9,8 @@ Feature: Different Strategies for Accessing the Desktop Agent
     Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
     And we wait for a period of "200" ms
     And I call getAgentAPI for a promise result with the following options
-      | setWindowGlobal | fireFdc3Ready |
-      | true            | true          |
+      | setWindowGlobal | fireFdc3Ready | waitForMs |
+      | true            | true          |      3000 |
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
     And I call "{result}" with "getInfo"

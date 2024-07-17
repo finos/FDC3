@@ -12,23 +12,27 @@ export const EMBED_URL = "http://localhost:8080/static/da/embed.html"
 
 export type ConnectionDetails = {
     externalPort: MessagePort,
-    channel: MessageChannel,
+    internalPort: MessagePort
     server: DefaultFDC3Server
 }
 
 export function buildConnection(world: CustomWorld): ConnectionDetails {
-    const channel = new MessageChannel()
-    channel.port2.start()
+    const mc = new MessageChannel()
+    const internalPort = mc.port1
+    const externalPort = mc.port2
+
+    internalPort.start()
 
     const dir = new BasicDirectory([dummyInstanceId])
-    const theServer = new DefaultFDC3Server(new TestServerContext(world, channel.port2), dir, "Client Test Server", {})
-    channel.port2.onmessage = (event) => {
-        theServer?.receive(event.data, dummyInstanceId)
-    }
+    const theServer = new DefaultFDC3Server(new TestServerContext(world, internalPort as any as MessagePort), dir, "Client Test Server", {})
+
+    internalPort.addEventListener("message", (e) => {
+        theServer?.receive((e as any).data, dummyInstanceId)
+    })
 
     return {
-        externalPort: channel.port1,
-        channel: channel,
+        externalPort: externalPort as any as MessagePort,
+        internalPort: internalPort as any as MessagePort,
         server: theServer
     }
 }
@@ -50,8 +54,8 @@ export class MockFDC3Server {
 
     shutdown() {
         this.instances.forEach(i => {
-            i.channel.port1.close()
-            i.channel.port2.close()
+            i.externalPort.close()
+            i.internalPort.close()
         })
     }
 

@@ -1,6 +1,6 @@
 import { AppIdentifier } from "@finos/fdc3"
 import { AbstractMessaging } from "@kite9/da-proxy"
-import { RegisterableListener } from "@kite9/da-proxy/src/listeners/RegisterableListener"
+import { RegisterableListener } from "@kite9/da-proxy"
 import { v4 as uuidv4 } from "uuid"
 import { exchangePostMessage } from "./exchange"
 
@@ -9,6 +9,7 @@ export class MessagePortMessaging extends AbstractMessaging {
     private readonly appId: AppIdentifier
     private readonly mp: MessagePort
     private readonly listeners: Map<string, RegisterableListener> = new Map()
+    deliveryTimeoutMs: number = 10000
 
     constructor(mp: MessagePort, appId: AppIdentifier) {
         super()
@@ -53,7 +54,7 @@ export class MessagePortMessaging extends AbstractMessaging {
     }
 
     exchange<X>(message: object, expectedTypeName: string): Promise<X> {
-        return exchangePostMessage(this.mp, expectedTypeName, message).then(e => {
+        return exchangePostMessage(this.mp, expectedTypeName, message, this.deliveryTimeoutMs).then(e => {
             return e.data as X
         });
     }

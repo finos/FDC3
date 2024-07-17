@@ -1,5 +1,5 @@
 import { DesktopAgent } from "@finos/fdc3";
-import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultChannel, DefaultHandshakeSupport } from "@kite9/da-proxy";
+import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultHandshakeSupport, StatefulChannel } from "@kite9/da-proxy";
 import { APIResponseMessage, FDC3_PORT_TRANSFER_RESPONSE_TYPE, Options, APIResponseMessageIFrame } from "@kite9/fdc3-common"
 import { MessagePortMessaging } from "./MessagePortMessaging";
 import { DefaultDesktopAgentIntentResolver } from "../intent-resolution/DefaultDesktopAgentIntentResolver";
@@ -16,7 +16,7 @@ export async function createDesktopAgentAPI(mp: MessagePort, data: APIResponseMe
 
     const intentResolver = options.intentResolver ?? new DefaultDesktopAgentIntentResolver(data.intentResolver)
     const channelSelector = options.channelSelector ?? new DefaultDesktopAgentChannelSelector(data.channelSelector)
-    const userChannelState = buildUserChannelState(messaging)
+    const userChannelState = [] as StatefulChannel[] //buildUserChannelState(messaging)
 
     const version = "2.0"
     const cs = new DefaultChannelSupport(messaging, userChannelState, null, channelSelector)
@@ -47,7 +47,7 @@ export async function messagePortInit(event: MessageEvent, options: Options): Pr
                 "&desktopAgentId=" + encodeURIComponent(iframeData.desktopAgentId));
         }
 
-        const mp = await exchangeForMessagePort(window, FDC3_PORT_TRANSFER_RESPONSE_TYPE, action) as MessagePort
+        const mp = await exchangeForMessagePort(window, FDC3_PORT_TRANSFER_RESPONSE_TYPE, action, options.waitForMs!!) as MessagePort
         return createDesktopAgentAPI(mp, event.data, options);
 
     } else {
@@ -66,23 +66,4 @@ function openFrame(url: string): Window {
     ifrm.style.height = "0px"
     document.body.appendChild(ifrm)
     return ifrm.contentWindow!!
-}
-
-function buildUserChannelState(messaging: MessagePortMessaging) {
-    // TODO: Figure out how to set initial user channels.  
-    // Should probably be in the message from the server.
-    return [
-        new DefaultChannel(messaging, "one", "user", {
-            color: "red",
-            name: "THE RED CHANNEL"
-        }),
-        new DefaultChannel(messaging, "two", "user", {
-            color: "blue",
-            name: "THE BLUE CHANNEL"
-        }),
-        new DefaultChannel(messaging, "three", "user", {
-            color: "green",
-            name: "THE GREEN CHANNEL"
-        })
-    ]
 }
