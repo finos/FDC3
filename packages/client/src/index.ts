@@ -15,7 +15,7 @@ export function getAgentAPI(optionsOverride?: Options): Promise<DesktopAgent> {
     const DEFAULT_OPTIONS: Options = {
         setWindowGlobal: false,
         fireFdc3Ready: false,
-        strategies: [postMessage, electronEvent],
+        strategies: [electronEvent, postMessage],
         frame: globalThis.window.opener ?? globalThis.window.parent,
         waitForMs: DEFAULT_WAIT_FOR_MS,
     }

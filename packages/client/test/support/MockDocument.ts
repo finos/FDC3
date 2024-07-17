@@ -1,5 +1,5 @@
 import { FDC3_PORT_TRANSFER_RESPONSE_TYPE } from "@kite9/fdc3-common"
-import { EMBED_URL, ServerDetails, buildFDC3ServerInstance } from "./MockFDC3Server"
+import { EMBED_URL, MockFDC3Server, buildConnection } from "./MockFDC3Server"
 import { CustomWorld } from "../world"
 import { DesktopAgent } from "@finos/fdc3"
 
@@ -61,6 +61,7 @@ export class MockWindow extends MockElement {
 
     eventHandlers: EventHandler[] = []
     events: any[] = []
+    serverInstance: MockFDC3Server | null = null
 
     parent: MockWindow | null = null
 
@@ -102,12 +103,13 @@ export class MockWindow extends MockElement {
     shutdown() {
         this.eventHandlers = []
         this.fdc3 = undefined
+        if (this.serverInstance) {
+            this.serverInstance.shutdown()
+        }
     }
 }
 
 class MockIFrame extends MockWindow {
-
-    serverInstance: ServerDetails | null = null
 
     constructor(tag: string, cw: CustomWorld, window: MockWindow) {
         super(tag, cw)
@@ -119,19 +121,12 @@ class MockIFrame extends MockWindow {
         const parent = this.parent as MockWindow
 
         if ((name == 'src') && (value.startsWith(EMBED_URL))) {
-            this.serverInstance = buildFDC3ServerInstance(this.cw)
+            const connection = buildConnection(this.cw)
+            parent.serverInstance?.instances.push(connection)
 
             parent.postMessage({
                 type: FDC3_PORT_TRANSFER_RESPONSE_TYPE,
-            }, parent.location.origin, [this.serverInstance.externalPort!!])
-        }
-    }
-
-    shutdown(): void {
-        super.shutdown()
-        if (this.serverInstance) {
-            this.serverInstance.channel.port1.close()
-            this.serverInstance.channel.port2.close()
+            }, parent.location.origin, [connection.externalPort!!])
         }
     }
 }
