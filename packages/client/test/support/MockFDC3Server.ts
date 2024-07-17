@@ -10,13 +10,13 @@ const appChecker: AppChecker = _o => { return dummyInstanceId }
 
 export const EMBED_URL = "http://localhost:8080/static/da/embed.html"
 
-export type ServerDetails = {
+export type ConnectionDetails = {
     externalPort: MessagePort,
     channel: MessageChannel,
     server: DefaultFDC3Server
 }
 
-export function buildFDC3ServerInstance(world: CustomWorld): ServerDetails {
+export function buildConnection(world: CustomWorld): ConnectionDetails {
     const channel = new MessageChannel()
     channel.port2.start()
 
@@ -35,7 +35,7 @@ export function buildFDC3ServerInstance(world: CustomWorld): ServerDetails {
 
 export class MockFDC3Server {
 
-    private instances: ServerDetails[] = []
+    instances: ConnectionDetails[] = []
     private useIframe: boolean
     private window: MockWindow
     private world: CustomWorld
@@ -45,6 +45,7 @@ export class MockFDC3Server {
         this.window = window
         this.world = world
         this.init()
+        this.window.serverInstance = this
     }
 
     shutdown() {
@@ -67,7 +68,7 @@ export class MockFDC3Server {
 
     portResolver = (_o: Window, _a: any) => {
         if (!this.useIframe) {
-            const details = buildFDC3ServerInstance(this.world)
+            const details = buildConnection(this.world)
             this.instances.push(details)
             return details.externalPort
         } else {
