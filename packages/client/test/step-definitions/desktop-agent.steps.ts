@@ -80,7 +80,6 @@ Given('a browser document in {string} and window in {string}', async function (t
     const mw = new MockWindow("mockWindow", this)
     globalThis.window = mw as any
     this.props[w] = globalThis.window;
-    (globalThis.window as any as MockWindow).reset();
 
     // to keep it simple, mock app window parent is set to itself, to avoid excess routing
     mw.parent = mw;
@@ -88,5 +87,4 @@ Given('a browser document in {string} and window in {string}', async function (t
     // mock document exists in the window
     globalThis.document = new MockDocument("mockDocument", mw) as any
     this.props[d] = globalThis.document as any;
-    (globalThis.document as any as MockDocument).reset();
 })

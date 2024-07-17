@@ -10,10 +10,32 @@ const appChecker: AppChecker = _o => { return dummyInstanceId }
 
 export const EMBED_URL = "http://localhost:8080/static/da/embed.html"
 
+export type ServerDetails = {
+    externalPort: MessagePort,
+    channel: MessageChannel,
+    server: DefaultFDC3Server
+}
+
+export function buildFDC3ServerInstance(world: CustomWorld): ServerDetails {
+    const channel = new MessageChannel()
+    channel.port2.start()
+
+    const dir = new BasicDirectory([dummyInstanceId])
+    const theServer = new DefaultFDC3Server(new TestServerContext(world, channel.port2), dir, "Client Test Server", {})
+    channel.port2.onmessage = (event) => {
+        theServer?.receive(event.data, dummyInstanceId)
+    }
+
+    return {
+        externalPort: channel.port1,
+        channel: channel,
+        server: theServer
+    }
+}
+
 export class MockFDC3Server {
 
-    externalPort: MessagePort | null = null
-    private channel: MessageChannel | null = null
+    private instances: ServerDetails[] = []
     private useIframe: boolean
     private window: MockWindow
     private world: CustomWorld
@@ -26,10 +48,10 @@ export class MockFDC3Server {
     }
 
     shutdown() {
-        if (this.channel) {
-            this.channel.port1.close()
-            this.channel.port2.close()
-        }
+        this.instances.forEach(i => {
+            i.channel.port1.close()
+            i.channel.port2.close()
+        })
     }
 
 
@@ -44,16 +66,13 @@ export class MockFDC3Server {
     }
 
     portResolver = (_o: Window, _a: any) => {
-        this.channel = new MessageChannel()
-        this.channel.port2.start()
-
-        const dir = new BasicDirectory([dummyInstanceId])
-        const theServer = new DefaultFDC3Server(new TestServerContext(this.world, this.channel.port2), dir, "Client Test Server", {})
-        this.channel.port2.onmessage = (event) => {
-            theServer?.receive(event.data, dummyInstanceId)
+        if (!this.useIframe) {
+            const details = buildFDC3ServerInstance(this.world)
+            this.instances.push(details)
+            return details.externalPort
+        } else {
+            return null
         }
-        this.externalPort = this.channel.port1
-        return this.channel.port1
     }
 
     init() {

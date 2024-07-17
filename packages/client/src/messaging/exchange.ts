@@ -6,13 +6,11 @@ export function exchange(p: MessagePort | Window | BroadcastChannel, toType: str
     return new Promise((resolve, reject) => {
         var done = false;
         const listener = (m: Event) => {
-            if (m instanceof MessageEvent) {
-                console.log("Received: " + m.data.type)
-                if (m.data.type == toType) {
-                    done = true;
-                    p.removeEventListener("message", listener);
-                    resolve(m);
-                }
+            console.log("Received: " + (m as any)?.data?.type)
+            if ((m as any)?.data?.type == toType) {
+                done = true;
+                p.removeEventListener("message", listener);
+                resolve(m as MessageEvent);
             }
         }
 
