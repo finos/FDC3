@@ -1,8 +1,7 @@
 import { FDC3_PORT_TRANSFER_RESPONSE_TYPE } from "@kite9/fdc3-common"
-import { EMBED_URL, MockFDC3Server } from "./MockFDC3Server"
+import { EMBED_URL, ServerDetails, buildFDC3ServerInstance } from "./MockFDC3Server"
 import { CustomWorld } from "../world"
 import { DesktopAgent } from "@finos/fdc3"
-
 
 class MockCSSStyleDeclaration {
 
@@ -100,13 +99,15 @@ export class MockWindow extends MockElement {
         } as any)
     }
 
-    reset() {
+    shutdown() {
         this.eventHandlers = []
         this.fdc3 = undefined
     }
 }
 
 class MockIFrame extends MockWindow {
+
+    serverInstance: ServerDetails | null = null
 
     constructor(tag: string, cw: CustomWorld, window: MockWindow) {
         super(tag, cw)
@@ -117,12 +118,20 @@ class MockIFrame extends MockWindow {
         this.atts[name] = value
         const parent = this.parent as MockWindow
 
-        if ((name == 'src') && (value == EMBED_URL)) {
-            const theServer = new MockFDC3Server(this, true, this.cw)
+        if ((name == 'src') && (value.startsWith(EMBED_URL))) {
+            this.serverInstance = buildFDC3ServerInstance(this.cw)
 
             parent.postMessage({
                 type: FDC3_PORT_TRANSFER_RESPONSE_TYPE,
-            }, parent.location.origin, [theServer.externalPort!!])
+            }, parent.location.origin, [this.serverInstance.externalPort!!])
+        }
+    }
+
+    shutdown(): void {
+        super.shutdown()
+        if (this.serverInstance) {
+            this.serverInstance.channel.port1.close()
+            this.serverInstance.channel.port2.close()
         }
     }
 }
@@ -131,6 +140,7 @@ export class MockDocument {
 
     name: string
     window: MockWindow
+    iframes: MockIFrame[] = []
 
     constructor(name: string, window: MockWindow) {
         this.name = name
@@ -140,6 +150,7 @@ export class MockDocument {
     createElement(tag: string): HTMLElement {
         if (tag == 'iframe') {
             const mw = new MockIFrame("iframe", this.window.cw, this.window)
+            this.iframes.push(mw)
             return mw as any
         } else {
             return new MockElement(tag) as any
@@ -148,7 +159,8 @@ export class MockDocument {
 
     body = new MockElement("body")
 
-    reset() {
-        this.body = new MockElement("body")
+    shutdown() {
+        this.window.shutdown()
+        this.iframes.forEach(i => i.shutdown())
     }
 }
