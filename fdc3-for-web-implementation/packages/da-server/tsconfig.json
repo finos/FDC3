@@ -1,0 +1,23 @@
+{
+    "extends": "../../tsconfig.root.json",
+    "compilerOptions": {
+        "rootDirs": [
+            "src",
+            "test",
+            "generated"
+        ],
+        "outDir": "dist",
+    },
+    "include": [
+        "src",
+        "generated",
+    ],
+    "exclude": [
+        "dist/**"
+    ],
+    "references": [
+        {
+            "path": "../fdc3-common"
+        }
+    ]
+}
