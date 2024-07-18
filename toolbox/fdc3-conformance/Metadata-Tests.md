@@ -7,7 +7,7 @@ You will need to pre-populate the AppDirectory with the following items:
 |-----|------------------------------------------|
 | A   | Generic AppD Record which contains at least the following fields:<br>- `name`<br>- `version`<br>- `title`<br>- `tooltip`<br>- `description`<br>- `icons` (`Array<Icon>`)<br>- `screenshots` (`Array<Image>`)<br>- `interop.intents.listensFor` (`aTestingIntent` with at least context type `testContextX`)  |
 
-## Retrieve `AppMetadata` [2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) 
+## Retrieve `AppMetadata` ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) 
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
@@ -16,7 +16,7 @@ You will need to pre-populate the AppDirectory with the following items:
 
 - `GetAppMetadata`: perform the above steps
 
-## Instance Metadata [2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) 
+## Instance Metadata ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) 
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
@@ -29,7 +29,7 @@ You will need to pre-populate the AppDirectory with the following items:
 
 - `AppInstanceMetadata`: Perform the above steps
 
-## Finding Instances [2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) 
+## Finding Instances ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) 
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
