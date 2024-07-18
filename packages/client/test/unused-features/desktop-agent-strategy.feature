@@ -1,9 +1,9 @@
 Feature: Different Strategies for Accessing the Desktop Agent
 
   Background: Desktop Agent API
-    Given A Dummy Desktop Agent in "dummy-api"
+    Given a browser document in "document" and window in "window"
+    And A Dummy Desktop Agent in "dummy-api"
     And "dummyFailover" is a function which returns a promise of "{dummy-api}"
-    And a browser document in "document" and window in "window"
 
   Scenario: Running inside a Browser and using post message with direct message ports
     Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response

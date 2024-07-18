@@ -1,12 +1,15 @@
 import { DataTable, Given, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { TestMessaging } from '../support/TestMessaging';
-import { handleResolve, setupGenericSteps, SimpleIntentResolver } from '@kite9/testing';
-import { BasicDesktopAgent, DefaultChannelSupport, DefaultIntentSupport, NoopAppSupport, NoopHandshakeSupport } from '@kite9/da-proxy';
+import { handleResolve, setupGenericSteps } from '@kite9/testing';
+import { BasicDesktopAgent, DefaultChannelSupport, DefaultIntentSupport, Messaging, NoopAppSupport, NoopHandshakeSupport } from '@kite9/da-proxy';
 import { MockDocument, MockWindow } from '../support/MockDocument';
 import { getAgentAPI } from '../../src';
 import { Options } from '@kite9/fdc3-common';
 import { MockFDC3Server } from '../support/MockFDC3Server';
+import { DefaultDesktopAgentIntentResolver } from '../../src/intent-resolution/DefaultDesktopAgentIntentResolver';
+import { DefaultDesktopAgentChannelSelector } from '../../src/channel-selector/DefaultDesktopAgentChannelSelector';
+import { DefaultChannel } from '@kite9/da-proxy/src';
 
 setupGenericSteps()
 Given('Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response', async function (this: CustomWorld, field: string, w: string) {
@@ -21,6 +24,25 @@ Given('Parent Window desktop {string} listens for postMessage events in {string}
     this.props[field] = mock
 })
 
+function buildUserChannelState(messaging: Messaging): DefaultChannel[] {
+    // TODO: Figure out how to set initial user channels.  
+    // Should probably be in the message from the server.
+    return [
+        new DefaultChannel(messaging, "one", "user", {
+            color: "red",
+            name: "THE RED CHANNEL"
+        }),
+        new DefaultChannel(messaging, "two", "user", {
+            color: "blue",
+            name: "THE BLUE CHANNEL"
+        }),
+        new DefaultChannel(messaging, "three", "user", {
+            color: "green",
+            name: "THE GREEN CHANNEL"
+        })
+    ]
+}
+
 Given('A Dummy Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
 
     if (!this.messaging) {
@@ -28,9 +50,11 @@ Given('A Dummy Desktop Agent in {string}', async function (this: CustomWorld, fi
     }
 
     const version = "2.0"
-    const cs = new DefaultChannelSupport(this.messaging, [], null)
+    const intentResolver = new DefaultDesktopAgentIntentResolver({ uri: "https://localhost:8080/dummy-intent-resolver.html" })
+    const channelSelector = new DefaultDesktopAgentChannelSelector({ uri: "https://localhost:8080/dummy-channel-selector.html" })
+    const cs = new DefaultChannelSupport(this.messaging, buildUserChannelState(this.messaging), null, channelSelector)
     const hs = new NoopHandshakeSupport()
-    const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this))
+    const is = new DefaultIntentSupport(this.messaging, intentResolver)
     const as = new NoopAppSupport(this.messaging, {
         appId: "Test App Id",
         desktopAgent: "Test DA",
