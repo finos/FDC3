@@ -1,0 +1,73 @@
+{
+	"parser": "@typescript-eslint/parser",
+	"env": {
+		"browser": true,
+		"es6": true,
+		"commonjs": true
+	},
+	"extends": ["plugin:react/recommended", "prettier"],
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	},
+	"globals": {
+		"fdc3": "readonly"
+	},
+	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"ecmaVersion": 2018,
+		"sourceType": "module"
+	},
+	"plugins": ["react", "import", "@typescript-eslint"],
+	"rules": {
+		"react/jsx-uses-vars": 2,
+		"class-methods-use-this": 0,
+		"no-plusplus": 0,
+		"no-undef": 2,
+		"prefer-arrow-callback": 1,
+		"prefer-destructuring": [
+			"warn",
+			{
+				"object": true,
+				"array": false
+			}
+		],
+		"quote-props": ["warn", "as-needed"],
+		"lines-between-class-members": 1,
+		"@typescript-eslint/no-unused-vars": 1,
+		"prefer-template": 1,
+		"arrow-parens": 1,
+		"no-extra-semi": 1,
+		"no-shadow": 1,
+		"import/first": 1,
+		"@typescript-eslint/no-use-before-define": 1,
+		"no-redeclare": 1,
+		"arrow-body-style": [
+			"warn",
+			"as-needed",
+			{
+				"requireReturnForObjectLiteral": true
+			}
+		],
+		"one-var-declaration-per-line": ["warn", "always"],
+		"no-mixed-operators": 1,
+		"no-multiple-empty-lines": 1,
+		"no-multi-spaces": 1,
+		"default-case": 1,
+		"no-unneeded-ternary": 1,
+		"operator-assignment": ["warn", "never"],
+		"object-property-newline": [
+			"warn",
+			{
+				"allowAllPropertiesOnSameLine": true
+			}
+		],
+		"new-cap": 1,
+		"no-case-declarations": 1,
+		"react/prop-types": 0,
+		"react/no-string-refs": 0
+	}
+}
