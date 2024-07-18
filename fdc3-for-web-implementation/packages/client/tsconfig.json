@@ -1,0 +1,27 @@
+{
+    "extends": "../../tsconfig.root.json",
+    "compilerOptions": {
+        "rootDirs": [
+            "src",
+            "test"
+        ],
+        "outDir": "dist",
+    },
+    "include": [
+        "src"
+    ],
+    "references": [
+        {
+            "path": "../da-proxy"
+        },
+        {
+            "path": "../fdc3-common"
+        },
+        {
+            "path": "../testing"
+        },
+        {
+            "path": "../da-server"
+        }
+    ]
+}
