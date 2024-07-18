@@ -111,9 +111,12 @@ export class MockWindow extends MockElement {
 
 class MockIFrame extends MockWindow {
 
+    contentWindow: Window
+
     constructor(tag: string, cw: CustomWorld, window: MockWindow) {
         super(tag, cw)
         this.parent = window
+        this.contentWindow = this as any
     }
 
     setAttribute(name: string, value: string): void {

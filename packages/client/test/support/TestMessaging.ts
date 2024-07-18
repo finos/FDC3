@@ -46,4 +46,14 @@ export class TestMessaging extends AbstractMessaging {
         return Promise.resolve();
     }
 
+    receive(m: any) {
+        this.listeners.forEach((v, k) => {
+            if (v.filter(m)) {
+                console.log("Processing in " + k)
+                v.action(m)
+            } else {
+                console.log("Ignoring in " + k)
+            }
+        })
+    }
 }

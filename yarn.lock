@@ -1397,6 +1397,7 @@ __metadata:
     "@kite9/da-server": "workspace:*"
     "@kite9/fdc3-common": "workspace:*"
     "@kite9/testing": "workspace:*"
+    "@types/node": "npm:^20.14.11"
     "@types/uuid": "npm:^10.0.0"
     expect: "npm:^29.7.0"
     jsonpath-plus: "npm:^9.0.0"
@@ -2221,6 +2222,15 @@ __metadata:
   version: 14.18.63
   resolution: "@types/node@npm:14.18.63"
   checksum: 10c0/626a371419a6a0e11ca460b22bb4894abe5d75c303739588bc96267e380aa8b90ba5a87bc552400584f0ac2a84b5c458dadcbcf0dfd2396ebeb765f7a7f95893
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.14.11":
+  version: 20.14.11
+  resolution: "@types/node@npm:20.14.11"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: 10c0/5306becc0ff41d81b1e31524bd376e958d0741d1ce892dffd586b9ae0cb6553c62b0d62abd16da8bea6b9a2c17572d360450535d7c073794b0cef9cb4e39691e
   languageName: node
   linkType: hard
 
