@@ -38,6 +38,11 @@ export class MockElement {
     appendChild(child: HTMLElement) {
         this.children.push(child)
     }
+
+    removeChild(child: HTMLElement) {
+        this.children.splice(this.children.indexOf(child), 1)
+    }
+
 }
 
 

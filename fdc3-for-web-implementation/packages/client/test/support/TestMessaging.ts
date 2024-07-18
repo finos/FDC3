@@ -3,14 +3,30 @@ import { AgentRequestMessage } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { AbstractMessaging } from "@kite9/da-proxy";
 import { RegisterableListener } from "@kite9/da-proxy/dist/src/listeners/RegisterableListener";
 import { v4 as uuidv4 } from 'uuid'
+import { FindIntent } from "./responses/FindIntent";
+import { RaiseIntent } from "./responses/RaiseIntent";
+
+
+export interface AutomaticResponse {
+
+    filter: (t: string) => boolean,
+    action: (input: object, m: TestMessaging) => Promise<void>
+
+}
 
 export class TestMessaging extends AbstractMessaging {
 
     readonly listeners: Map<string, RegisterableListener> = new Map()
+    readonly allPosts: AgentRequestMessage[] = []
 
     constructor() {
         super()
     }
+
+    readonly automaticResponses: AutomaticResponse[] = [
+        new FindIntent(),
+        new RaiseIntent()
+    ]
 
     register(l: RegisterableListener) {
         this.listeners.set(l.id, l)
@@ -42,7 +58,15 @@ export class TestMessaging extends AbstractMessaging {
     }
 
 
-    post(_message: AgentRequestMessage): Promise<void> {
+    post(message: AgentRequestMessage): Promise<void> {
+        this.allPosts.push(message)
+        for (let i = 0; i < this.automaticResponses.length; i++) {
+            const ar = this.automaticResponses[i]
+            if (ar.filter(message.type)) {
+                return ar.action(message, this)
+            }
+        }
+
         return Promise.resolve();
     }
 
