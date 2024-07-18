@@ -7,7 +7,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 - `BasicIL1`: You can create an intent listener by calling `fdc3.addIntentListener(<intent name>,<handler>)`. A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
 - `BasicGI1`: An application can retrieve an `ImplementationMetadata` object to find out the version of FDC3 it is using and the provider details by calling:
     - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `fdc3.getInfo()` 
-    - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await fdc3.getInfo()` 
+    - ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) `await fdc3.getInfo()` 
 - `BasicAC1`: An application can retrieve a named 'App' channel via the `fdc3.getOrCreateChannel(<name>)` function. The `Channel` object returned conforms to the defined interface.
 - `BasicUC1`: An application can query the available user/system channels, which are returned as an array of `Channel` Objects conforming to the defined interface.  The API call is:
   - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `fdc3.getSystemChannels()`
@@ -15,7 +15,7 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 - `BasicJC1`: The application should be able to join one of the user/system channels with the channel's id.  Having done so, the current channel should NOT be null, and be set for the application _to the channel for the id given_.  After you leave the current channel, it should go back to being `null`.
   - The channel is joined with:
     - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `fdc3.joinChannel(<channelId>)` 
-    - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `fdc3.joinUserChannel(<channelId>)` 
+    - ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) `fdc3.joinUserChannel(<channelId>)` 
   - A `Channel` object representing the current channel is retrieved with:
     - `fdc3.getCurrentChannel()` to get the current channel.
   - The channel is left with: 
