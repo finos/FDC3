@@ -1,4 +1,4 @@
-# User Channel Tests  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+# User Channel Tests  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) [2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) 
 
 _NB:  User Channels were called System Channels in FDC3 1.2.  The new terminology is used in this specification_
 

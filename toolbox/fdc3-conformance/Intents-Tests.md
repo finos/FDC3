@@ -45,7 +45,7 @@ Also we assume a fourth app **D** that is going to discover the intents in the o
 -  `FailedResolve1-3` As with `TargetedResolve1-3`, but use `fdc3.raiseIntent(‘aTestingIntent’, {testContextY}, <A’s App Name>)` and variations.  You will receive `NoAppsFound` Error
 -  `FailedResolve4` As above, but use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, <C’s App Name>)`.  You will receive `NoAppsFound` Error
 
-## Current Intents Tests ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+## Current Intents Tests [2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) 
 
 _Please note that API calls (and associated test cases) relating to API calls based on the `name` property of an appD record (used to specify a target application) were deprecated in FDC3 2.0 in favour of those based on `AppIdentifier`. Hence, those API calls have become optional and test cases related to them have been removed._
 
