@@ -1,7 +1,7 @@
 import { AppIdentifier, AppMetadata, Context } from "@finos/fdc3";
 import { AppSupport } from "./AppSupport";
 import { Messaging } from "../Messaging";
-import { AppDestinationIdentifier, FindInstancesAgentRequest, FindInstancesAgentRequestMeta, FindInstancesAgentResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentRequestMeta, GetAppMetadataAgentResponse, OpenAgentRequest, OpenAgentRequestMeta } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { FindInstancesRequest, GetAppMetadataResponse, FindInstancesResponse, GetAppMetadataRequest, OpenRequest } from "@kite9/fdc3-common"
 
 
 export class DefaultAppSupport implements AppSupport {
@@ -26,35 +26,43 @@ export class DefaultAppSupport implements AppSupport {
     }
 
     findInstances(app: AppIdentifier): Promise<AppIdentifier[]> {
-        const request: FindInstancesAgentRequest = {
+        const request: FindInstancesRequest = {
             type: "findInstancesRequest",
             payload: {
                 app
             },
-            meta: this.messaging.createMeta() as FindInstancesAgentRequestMeta
+            meta: this.messaging.createMeta() as any
         }
 
-        return this.messaging.exchange<FindInstancesAgentResponse>(request, "findInstancesResponse").then(d => {
-            return d.payload.appIdentifiers
+        return this.messaging.exchange<FindInstancesResponse>(request, "findInstancesResponse").then(d => {
+            if (d.payload.error) {
+                throw new Error(d.payload.error)
+            } else {
+                return d.payload.appIdentifiers!!
+            }
         });
     }
 
     getAppMetadata(app: AppIdentifier): Promise<AppMetadata> {
-        const request: GetAppMetadataAgentRequest = {
+        const request: GetAppMetadataRequest = {
             type: "getAppMetadataRequest",
             payload: {
-                app: app as AppDestinationIdentifier
+                app: app as AppIdentifier
             },
-            meta: this.messaging.createMeta() as GetAppMetadataAgentRequestMeta
+            meta: this.messaging.createMeta() as any
         }
 
-        return this.messaging.exchange<GetAppMetadataAgentResponse>(request, "getAppMetadataResponse").then(d => {
-            return d.payload.appMetadata
+        return this.messaging.exchange<GetAppMetadataResponse>(request, "getAppMetadataResponse").then(d => {
+            if (d.payload.error) {
+                throw new Error(d.payload.error)
+            } else {
+                return d.payload.appMetadata!!
+            }
         });
     }
 
     open(app: AppIdentifier, context?: Context | undefined): Promise<AppIdentifier> {
-        const request: OpenAgentRequest = {
+        const request = {
             type: "openRequest",
             payload: {
                 app: {
@@ -62,10 +70,10 @@ export class DefaultAppSupport implements AppSupport {
                     instanceId: app.instanceId,
                     desktopAgent: this.desktopAgent
                 },
-                context
+                context /* ISSUE: #1276 */
             },
-            meta: this.messaging.createMeta() as OpenAgentRequestMeta
-        }
+            meta: this.messaging.createMeta() as any
+        } as OpenRequest
 
         return this.messaging.exchange<any>(request, "openResponse")
             .then(d => {

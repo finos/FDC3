@@ -17,8 +17,6 @@ import { AppSupport } from "./apps/AppSupport";
 import { HandshakeSupport } from "./handshake/HandshakeSupport";
 import { DefaultHandshakeSupport } from "./handshake/DefaultHandshakeSupport";
 
-import { DesktopAgentProvider } from "./DesktopAgentProvider";
-
 export {
     type Messaging,
     AbstractMessaging,
@@ -31,7 +29,6 @@ export {
     DefaultAppSupport,
     DefaultChannelSupport,
     DefaultIntentSupport,
-    type DesktopAgentProvider,
     type HandshakeSupport,
     DefaultHandshakeSupport,
     RegisterableListener
