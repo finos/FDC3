@@ -13,11 +13,9 @@ import { RegisterableListener } from "./listeners/RegisterableListener";
 
 import { DefaultAppSupport } from "./apps/DefaultAppSupport";
 import { AppSupport } from "./apps/AppSupport";
-import { NoopAppSupport } from "./apps/NoopAppSupport";
 
 import { HandshakeSupport } from "./handshake/HandshakeSupport";
 import { DefaultHandshakeSupport } from "./handshake/DefaultHandshakeSupport";
-import { NoopHandshakeSupport } from "./handshake/NoopHandshakeSupport";
 
 import { DesktopAgentProvider } from "./DesktopAgentProvider";
 
@@ -36,7 +34,5 @@ export {
     type DesktopAgentProvider,
     type HandshakeSupport,
     DefaultHandshakeSupport,
-    NoopHandshakeSupport,
-    NoopAppSupport,
     RegisterableListener
 }
