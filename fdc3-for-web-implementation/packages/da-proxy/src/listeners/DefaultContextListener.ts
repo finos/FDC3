@@ -1,7 +1,7 @@
 import { Context, ContextHandler } from "@finos/fdc3";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
-import { BroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { BroadcastRequest } from "@kite9/fdc3-common";
 
 export class DefaultContextListener extends AbstractListener<ContextHandler> {
 
@@ -22,7 +22,7 @@ export class DefaultContextListener extends AbstractListener<ContextHandler> {
         this.contextType = contextType
     }
 
-    filter(m: BroadcastAgentRequest): boolean {
+    filter(m: BroadcastRequest): boolean {
         return (m.type == this.messageType)
             && (m.payload.channelId == this.channelId)
             && ((m.payload.context?.type == this.contextType) || (this.contextType == null));
