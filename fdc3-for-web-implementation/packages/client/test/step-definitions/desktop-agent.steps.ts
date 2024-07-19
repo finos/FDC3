@@ -2,7 +2,7 @@ import { DataTable, Given, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { TestMessaging } from '../support/TestMessaging';
 import { handleResolve, setupGenericSteps } from '@kite9/testing';
-import { BasicDesktopAgent, DefaultChannelSupport, DefaultIntentSupport, Messaging, NoopAppSupport, NoopHandshakeSupport } from '@kite9/da-proxy';
+import { BasicDesktopAgent, DefaultChannelSupport, DefaultIntentSupport, Messaging, NoopHandshakeSupport } from '@kite9/da-proxy';
 import { MockDocument, MockWindow } from '../support/MockDocument';
 import { getAgentAPI } from '../../src';
 import { Options } from '@kite9/fdc3-common';
@@ -10,6 +10,7 @@ import { MockFDC3Server } from '../support/MockFDC3Server';
 import { DefaultDesktopAgentIntentResolver } from '../../src/intent-resolution/DefaultDesktopAgentIntentResolver';
 import { DefaultDesktopAgentChannelSelector } from '../../src/channel-selector/DefaultDesktopAgentChannelSelector';
 import { DefaultChannel } from '@kite9/da-proxy/src';
+import { NoopAppSupport } from '../../src/apps/NoopAppSupport';
 
 setupGenericSteps()
 Given('Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response', async function (this: CustomWorld, field: string, w: string) {
