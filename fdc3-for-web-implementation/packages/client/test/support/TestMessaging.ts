@@ -1,7 +1,7 @@
 import { AppIdentifier } from "@finos/fdc3";
-import { AgentRequestMessage } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AgentRequestMessage } from "@kite9/fdc3-common";
 import { AbstractMessaging } from "@kite9/da-proxy";
-import { RegisterableListener } from "@kite9/da-proxy/dist/src/listeners/RegisterableListener";
+import { RegisterableListener } from "@kite9/da-proxy";
 import { v4 as uuidv4 } from 'uuid'
 import { FindIntent } from "./responses/FindIntent";
 import { RaiseIntent } from "./responses/RaiseIntent";

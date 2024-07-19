@@ -309,3 +309,8 @@ export type ResolverIntents = {
     appIntents: AppIntent[],
     source: AppIdentifier
 }
+
+/** 
+ * TODO: Fix this when we have the proper monorepo structure
+ */
+export * from './BrowserTypes'
