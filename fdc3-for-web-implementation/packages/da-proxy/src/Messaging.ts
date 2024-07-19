@@ -29,7 +29,7 @@ export interface Messaging {
      */
     unregister(id: string): void
 
-    createMeta(): object
+    createMeta(): object /* ISSUE: #1275 */
 
     /**
      * Waits for a specific matching message
