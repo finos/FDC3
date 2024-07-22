@@ -13,7 +13,7 @@
       }
     },
     "range": {
-      "$ref": "timeRange.schema.json#"
+      "$ref": "timerange.schema.json#"
     },
     "style": {
       "type": "string",
