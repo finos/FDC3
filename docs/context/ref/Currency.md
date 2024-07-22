@@ -1,40 +1,59 @@
 ---
-id: Currency
-sidebar_label: Currency
 title: Currency
-hide_title: true
+sidebar_label: Currency
+
 ---
 
-# `Currency`
+# Currency
 
 A context representing an individual Currency.
+
+## Schema
+
+<https://fdc3.finos.org/schemas/next/context/currency.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/currency.schema.json))
 
 ## Type
 
 `fdc3.currency`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/currency.schema.json>
+<details>
+  <summary><code>name</code></summary>
 
-## Details
+**type**: `string`
 
-| Property                | Type    | Required | Example Value     |
-|-------------------------|---------|----------|-------------------|
-| `type`                  | string  | Yes      | `'fdc3.currency'` |
-| `name`                  | string  | No       | `'US Dollar'`     |
-| `id.CURRENCY_ISOCODE` * | string  | Yes      | `'USD'`           |
+The name of the currency for display purposes
 
-\* The `CURRENCY_ISOCODE` should conform to 3 character alphabetic codes defined in [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html).
+</details>
+
+<details>
+  <summary><code>id</code> <strong>(required)</strong></summary>
+
+**type**: `object`
+
+**Subproperties:**
+
+<details>
+  <summary><code>CURRENCY_ISOCODE</code></summary>
+
+**type**: `string`
+
+The `CURRENCY_ISOCODE` should conform to 3 character alphabetic codes defined in [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html)
+
+</details>
+
+</details>
 
 ## Example
 
-```js
-const currency = {
-    type: 'fdc3.currency',
-    name: 'US Dollar',
-    id: {
-        CURRENCY_ISOCODE: "USD"
-    }
+```json
+{
+  "type": "fdc3.currency",
+  "name": "US Dollar",
+  "id": {
+    "CURRENCY_ISOCODE": "USD"
+  }
 }
 ```
+
