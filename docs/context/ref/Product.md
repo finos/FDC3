@@ -6,7 +6,7 @@ sidebar_label: Product
 
 # Product
 
-[@experiemental](/docs/fdc3-compliance#experimental-features) context type representing a tradable product. To be used with OMS and EMS systems.
+[@experimental](/docs/fdc3-compliance#experimental-features) context type representing a tradable product. To be used with OMS and EMS systems.
 
 This type is currently only loosely defined as an extensible context object, with an optional instrument field.
 
