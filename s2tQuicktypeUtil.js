@@ -16,21 +16,23 @@
 
 const path = require('path');
 const fs = require('fs');
+const { forEachChild } = require('typescript');
 const exec = require('child_process').exec;
 
 const args = process.argv.slice(2);
 const outputFile = args.pop();
 const inputs = args;
+const toProcess = [];
 
 console.log('Inputs schema files: ' + inputs.join(' | '));
 console.log('Output file argument: ' + outputFile);
 
 let sources = '';
 let additionalSchemaFiles = ''
-let dirIndex = 0;
 
 //skip duplicate paths (we might want to specify some files to go first, and might duplicate them)
-const paths = new Set();
+const allPaths = new Set();
+
 const addAPath = (aPath,paths,sources,type) => {
   if (!paths.has(aPath)) {
     paths.add(aPath)
@@ -41,20 +43,22 @@ const addAPath = (aPath,paths,sources,type) => {
   }
 }
 
-while (dirIndex < inputs.length) {
-  if (inputs[dirIndex].endsWith('.schema.json')) {
+//process the content of folders to produce code for top-level types
+let inputIndex = 0;
+while (inputIndex < inputs.length) {
+  if (inputs[inputIndex].endsWith('.schema.json')) {
     //add individual files with -S as additional schema files used in references (rather than ones that need a top-level output)
-    sources = addAPath(path.join(inputs[dirIndex]),paths,additionalSchemaFiles, "-S");
+    additionalSchemaFiles = addAPath(path.join(inputs[inputIndex]),allPaths,additionalSchemaFiles, "-S");
   } else {
-    fs.readdirSync(inputs[dirIndex], { withFileTypes: true }).forEach(file => {
+    fs.readdirSync(inputs[inputIndex], { withFileTypes: true }).forEach(file => {
       if (file.isDirectory()) {
-        inputs.push(path.join(inputs[dirIndex], file.name));
+        inputs.push(path.join(inputs[inputIndex], file.name));
       } else if (file.name.endsWith('.schema.json')) {
-        sources = addAPath(path.join(inputs[dirIndex], file.name),paths,sources, "--src");
+        sources = addAPath(path.join(inputs[inputIndex], file.name),allPaths,sources, "--src");
       }
     });
   }
-  dirIndex++;
+  inputIndex++;
 }
 
 // Normalise path to local quicktype executable.
