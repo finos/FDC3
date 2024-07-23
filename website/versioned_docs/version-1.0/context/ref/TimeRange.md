@@ -28,11 +28,11 @@ Notes:
 
 ## Type
 
-`fdc3.timerange`
+`fdc3.timeRange`
 
 ## Schema
 
-https://fdc3.finos.org/schemas/next/timerange.schema.json
+https://fdc3.finos.org/schemas/next/timeRange.schema.json
 
 ## Details
 
