@@ -1,10 +1,10 @@
 ---
-title: Chat Message
-sidebar_label: Chat Message
+title: ChatMessage
+sidebar_label: ChatMessage
 
 ---
 
-# Chat Message
+# ChatMessage
 
 A context representing a chat message. Typically used to send the message or to pre-populate a message for sending.
 
@@ -21,7 +21,7 @@ A context representing a chat message. Typically used to send the message or to 
 <details>
   <summary><code>chatRoom</code> <strong>(required)</strong></summary>
 
-**type**: [Chat Room](ChatRoom)
+**type**: [ChatRoom](ChatRoom)
 
 </details>
 
