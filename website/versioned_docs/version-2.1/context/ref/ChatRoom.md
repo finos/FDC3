@@ -1,7 +1,7 @@
 ---
 id: ChatRoom
 sidebar_label: ChatRoom
-title: ChatRoom
+title: Chat Room
 hide_title: true
 ---
 # `ChatRoom`
