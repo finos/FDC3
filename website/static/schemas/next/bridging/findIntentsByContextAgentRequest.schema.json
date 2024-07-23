@@ -27,6 +27,10 @@
           "properties": {
             "context": {
               "$ref": "../context/context.schema.json"
+            },
+            "resultType": {
+              "title": "Result type argument",
+              "type": "string"
             }
           },
           "required": ["context"],
