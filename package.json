@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -26,7 +26,8 @@
     "lint": "eslint src/ test/ --ext .ts --fix",
     "prepack": "npm run build",
     "typegen": "node s2tQuicktypeUtil.js schemas/context src/context/ContextTypes.ts",
-    "typegen-bridging": "node s2tQuicktypeUtil.js schemas/api schemas/bridging schemas/context/context.schema.json src/bridging/BridgingTypes.ts"
+    "typegen-bridging": "node s2tQuicktypeUtil.js schemas/api schemas/bridging schemas/context/context.schema.json src/bridging/BridgingTypes.ts",
+    "schema-2-markdown": "node schema2Markdown.js"
   },
   "husky": {
     "hooks": {
