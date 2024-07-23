@@ -1,6 +1,6 @@
 ---
 id: ChatRoom
-sidebar_label: Chat Room
+sidebar_label: ChatRoom
 title: ChatRoom
 hide_title: true
 ---
