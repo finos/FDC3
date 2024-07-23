@@ -1,10 +1,10 @@
 ---
-title: Chat Search Criteria
-sidebar_label: Chat Search Criteria
+title: ChatSearchCriteria
+sidebar_label: ChatSearchCriteria
 
 ---
 
-# Chat Search Criteria
+# ChatSearchCriteria
 
 A context type that represents a simple search criterion, based on a list of other context objects, that can be used to search or filter messages in a chat application.
 

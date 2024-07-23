@@ -1,11 +1,9 @@
 ---
-id: ChatRoom
-sidebar_label: ChatRoom
 title: ChatRoom
-hide_title: true
+sidebar_label: ChatRoom
 ---
 
-# Chat Room
+# ChatRoom
 
 Reference to the chat room which could be used to send a message to the room
 
