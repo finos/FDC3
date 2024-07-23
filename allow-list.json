@@ -1,0 +1,5 @@
+{
+    "ignore": [
+        { "id": "CVE-2023-45857", "reason": "False positive as already on 0.28.1" }
+    ]
+}
