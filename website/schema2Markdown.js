@@ -62,7 +62,7 @@ function processProperty(propertyName, propertyDetails, required, currentSchemaF
     }
 
     if (propertyDetails.description != null) {
-        markdownContent += `${escape(propertyDetails.description)}\n\n`;
+        markdownContent += `${escapeExperimental(propertyDetails.description)}\n\n`;
     }
 
     if (propertyDetails.examples) {
@@ -160,7 +160,7 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
     let markdownContent = `# ${title}\n\n`;
 
     if (schema.description != null) {
-        markdownContent += `${escape(schema.description)}\n\n`; 
+        markdownContent += `${escapeExperimental(schema.description)}\n\n`; 
     }
 
     //If the schema has a top level enum (e.g. API error schemas) then it needs rendering here.
@@ -228,8 +228,8 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
     }
 }
 
-function escape(text) {
-    return text.replace(/>/g, '\\>').replace(/@experimental/g, '[@experiemental](/docs/fdc3-compliance#experimental-features)');
+function escapeExperimental(text) {
+    return text.replace(/@experimental/g, '[@experimental](/docs/fdc3-compliance#experimental-features)');
 }
 
 function generateFrontMatter(title, description) {
