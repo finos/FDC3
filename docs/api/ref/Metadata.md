@@ -576,7 +576,7 @@ interface IntentMetadata {
    * @deprecated Use the intent name for display as display name may vary for
    * each application as it is defined in the app's AppD record.
    */
-  readonly displayName: string;
+  readonly displayName?: string;
 }
 ```
 

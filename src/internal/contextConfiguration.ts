@@ -21,7 +21,7 @@ const STANDARD_CONTEXT_TYPES = exhaustiveStringTuple<StandardContextType>()(
   'fdc3.portfolio',
   'fdc3.position',
   'fdc3.nothing',
-  'fdc3.timerange',
+  'fdc3.timeRange',
   'fdc3.transactionResult',
   'fdc3.valuation'
 );

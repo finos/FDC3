@@ -29,11 +29,17 @@ Notes:
 
 ## Type
 
-`fdc3.timerange`
+`fdc3.timeRange`
+
+:::warning
+
+The `fdc3.timeRange` context type is inconsistently used in FDC3 2.0, occasionally appearing as `fdc3.timerange`. This has been corrected in FDC3 2.1 to always use the camel-case form `fdc3.timeRange`.
+
+:::
 
 ## Schema
 
-https://fdc3.finos.org/schemas/2.0/timerange.schema.json
+https://fdc3.finos.org/schemas/2.0/timeRange.schema.json
 
 ## Details
 

@@ -185,7 +185,6 @@
             },
             "additionalProperties": false,
             "required": [
-                "displayName",
                 "name"
             ]
         },
