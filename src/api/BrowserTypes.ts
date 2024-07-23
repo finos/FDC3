@@ -1209,7 +1209,7 @@ export interface IntentMetadata {
     /**
      * Display name for the intent.
      */
-    displayName: string;
+    displayName?: string;
     /**
      * The unique name of the intent that can be invoked by the raiseIntent call
      */
@@ -4319,7 +4319,7 @@ const typeMap: any = {
         { json: "intent", js: "intent", typ: r("IntentMetadata") },
     ], false),
     "IntentMetadata": o([
-        { json: "displayName", js: "displayName", typ: "" },
+        { json: "displayName", js: "displayName", typ: u(undefined, "") },
         { json: "name", js: "name", typ: "" },
     ], false),
     "FindIntentsByContextRequest": o([
