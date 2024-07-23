@@ -25,9 +25,9 @@
     "test": "jest --verbose",
     "lint": "eslint src/ test/ --ext .ts --fix",
     "prepack": "npm run build",
-    "typegen": "node s2tQuicktypeUtil.js schemas/context src/context/ContextTypes.ts",
-    "typegen-browser": "node s2tQuicktypeUtil.js schemas/api/api.schema.json schemas/api/common.schema.json schemas/api/appRequest.schema.json schemas/api/agentResponse.schema.json schemas/api/agentEvent.schema.json schemas/api src/api/BrowserTypes.ts",
-    "typegen-bridging": "node s2tQuicktypeUtil.js schemas/api/api.schema.json schemas/api/common.schema.json schemas/bridging schemas/context/context.schema.json src/bridging/BridgingTypes.ts"
+    "typegen": "cd schemas && node ../s2tQuicktypeUtil.js context ../src/context/ContextTypes.ts",
+    "typegen-browser": "cd schemas && node ../s2tQuicktypeUtil.js api/api.schema.json api/common.schema.json context/context.schema.json api ../src/api/BrowserTypes.ts",
+    "typegen-bridging": "cd schemas && node ../s2tQuicktypeUtil.js api/api.schema.json api/common.schema.json api/broadcastRequest.schema.json api/findInstancesRequest.schema.json api/findInstancesResponse.schema.json api/findIntentRequest.schema.json api/findIntentResponse.schema.json api/findIntentsByContextRequest.schema.json api/findIntentsByContextResponse.schema.json api/getAppMetadataRequest.schema.json api/getAppMetadataResponse.schema.json api/openRequest.schema.json api/openResponse.schema.json api/raiseIntentRequest.schema.json api/raiseIntentResponse.schema.json api/raiseIntentResultResponse.schema.json context/context.schema.json api/ bridging ../src/bridging/BridgingTypes.ts"
   },
   "husky": {
     "hooks": {
