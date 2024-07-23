@@ -39,7 +39,7 @@ The `fdc3.timeRange` context type is inconsistently used in FDC3 2.0, occasional
 
 ## Schema
 
-https://fdc3.finos.org/schemas/2.0/timerange.schema.json
+https://fdc3.finos.org/schemas/2.0/timeRange.schema.json
 
 ## Details
 
