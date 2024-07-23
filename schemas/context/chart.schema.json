@@ -19,9 +19,7 @@
         "range": {
           "title": "Time Range",
           "description": "The time range that should be plotted",
-          "allOf": [{
-            "$ref": "timerange.schema.json#"
-          }]
+          "$ref": "timeRange.schema.json#"
         },
         "style": {
           "title": "Chart style",
