@@ -26,21 +26,34 @@ export abstract class AbstractListener<X> implements RegisterableListener {
 
     abstract action(m: any): void
 
-    async listenerNotification(type: string | null): Promise<void> {
+    async listenerNotification(type: string | null): Promise<string | null> {
         if (type) {
             const requestType = type + "Request"
             const responseType = type + "Response"
-
-            // send notification
-            const notificationMessage = {
-                meta: this.messaging.createMeta(),
-                payload: {
-                    ...this.payloadDetails
-                },
-                requestType
+            var notificationMessage: any
+            if (this.id) {
+                notificationMessage = {
+                    meta: this.messaging.createMeta(),
+                    payload: {
+                        listenerUUID: this.id
+                    },
+                    type: requestType
+                }
+            } else {
+                // send subscription notification
+                notificationMessage = {
+                    meta: this.messaging.createMeta(),
+                    payload: {
+                        ...this.payloadDetails
+                    },
+                    type: requestType
+                }
             }
 
-            this.messaging.exchange<any>(notificationMessage, responseType!!)
+            const response = await this.messaging.exchange<any>(notificationMessage, responseType!!)
+            return response?.payload?.listenerUUID ?? null
+        } else {
+            return null
         }
     }
 
@@ -50,14 +63,8 @@ export abstract class AbstractListener<X> implements RegisterableListener {
     }
 
     async register() {
-        const response = await this.messaging.exchange<any>({
-            meta: this.messaging.createMeta(),
-            type: this.subscribeType + 'Request',
-            payload: this.payloadDetails,
-        }, this.subscribeType + 'Response')
-
-        this.id = response.payload.listenerUUID
+        const id = await this.listenerNotification(this.subscribeType)!!
+        this.id = id
         this.messaging.register(this)
-        this.listenerNotification(this.subscribeType)
     }
 }

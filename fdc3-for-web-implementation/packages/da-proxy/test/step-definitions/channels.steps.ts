@@ -1,6 +1,6 @@
 import { DataTable, Given, Then, When } from '@cucumber/cucumber'
 import { Context } from '@finos/fdc3';
-import { handleResolve, matchData } from '../support/matching';
+import { handleResolve, matchData } from '@kite9/testing';
 import { CustomWorld } from '../world/index';
 import { CHANNEL_STATE } from '@kite9/testing/dist/src/agent';
 import { BroadcastEvent, AgentResponseMessage, ResponseMessageType } from '@kite9/fdc3-common'
@@ -34,8 +34,7 @@ Given('{string} is a {string} context', function (this: CustomWorld, field: stri
 Given('{string} is a {string} message on channel {string} with context {string}', function (this: CustomWorld, field: string, type: string, channel: string, context: string) {
   const message = {
     meta: {
-      ...this.messaging!!.createMeta(),
-      eventUuid: this.messaging?.createUUID()
+      ...this.messaging!!.createEventMeta(),
     },
     payload: {
       "channelId": handleResolve(channel, this),
@@ -101,7 +100,7 @@ Given('{string} pipes context to {string}', function (this: CustomWorld, context
 
 When('messaging receives a {string} with payload:', function (this: CustomWorld, type: ResponseMessageType, docString: string) {
   const message: AgentResponseMessage = {
-    meta: this.messaging!!.createMeta(),
+    meta: this.messaging!!.createResponseMeta(),
     payload: JSON.parse(docString),
     type
   }
@@ -138,7 +137,7 @@ Given("channel {string} has context {string}", function (this: CustomWorld, chan
   state[channel] = cs
 })
 
-Given('User Channels a, b and c', function (this: CustomWorld) {
+Given('User Channels one, two and three', function (this: CustomWorld) {
   this.props[CHANNEL_STATE] = {
     "one": [],
     "two": [],

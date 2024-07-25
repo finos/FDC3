@@ -1,6 +1,6 @@
 import { Given } from '@cucumber/cucumber'
 import { CustomWorld } from '../world/index';
-import { handleResolve } from '../support/matching';
+import { handleResolve } from '@kite9/testing';
 import { RaiseIntentAgentRequest } from '@finos/fdc3/dist/bridging/BridgingTypes';
 import { Context, ContextMetadata } from '@finos/fdc3';
 import { createDefaultChannels } from '../support/DefaultUserChannels';

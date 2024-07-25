@@ -1,7 +1,12 @@
 import { DataTable, Given, Then, When } from '@cucumber/cucumber'
+import Ajv2019 from "ajv/dist/2019";
+import * as draft7MetaSchema from "ajv/dist/refs/json-schema-draft-07.json"
+import addFormats from "ajv-formats"
 import { expect } from 'expect';
 import { doesRowMatch, handleResolve, matchData } from '../support/matching';
 import { PropsWorld } from '../world';
+import fs from 'fs';
+import path from 'path';
 
 export function setupGenericSteps() {
 
@@ -125,4 +130,34 @@ export function setupGenericSteps() {
             setTimeout(() => resolve(), parseInt(ms))
         })
     });
+
+    Given('schemas loaded', async function (this: PropsWorld) {
+        const ajv = new Ajv2019();
+        ajv.addMetaSchema(draft7MetaSchema)
+        addFormats(ajv);
+        const schemaDir = '../../../schemas/api'
+
+        fs.readdir(schemaDir, (err, files) => {
+            if (err) throw err;
+
+            files.forEach(file => {
+                if (file.endsWith('.json')) {
+                    const filePath = path.join(schemaDir, file);
+                    fs.readFile(filePath, 'utf8', (err, contents) => {
+                        if (err) throw err;
+                        const schema = JSON.parse(contents);
+                        ajv.addSchema(schema);
+                        //console.log(`Content of ${file}: ${contents}`);
+                    });
+                }
+            });
+        })
+
+        fs.readFile('../../../schemas/context/context.schema.json', 'utf8', (_err, contents) => {
+            const schema = JSON.parse(contents);
+            ajv.addSchema(schema);
+        })
+
+        this.props['ajv'] = ajv;
+    })
 }

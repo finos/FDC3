@@ -1,7 +1,8 @@
 Feature: Broadcasting
 
   Background: Desktop Agent API
-    Given User Channels a, b and c
+    Given schemas loaded
+    Given User Channels one, two and three
     Given A Desktop Agent in "api"
     Given "instrumentMessageOne" is a "broadcastEvent" message on channel "channel-name" with context "fdc3.instrument"
     Given "countryMessageOne" is a "broadcastEvent" message on channel "channel-name" with context "fdc3.country"
@@ -12,8 +13,8 @@ Feature: Broadcasting
     And I refer to "{result}" as "channel1"
     And I call "{channel1}" with "broadcast" with parameter "{instrumentContext}"
     Then messaging will have posts
-      | payload.channelId | payload.context.type | payload.context.name |
-      | channel-name      | fdc3.instrument      | Apple                |
+      | payload.channelId | payload.context.type | payload.context.name | matches_type     |
+      | channel-name      | fdc3.instrument      | Apple                | broadcastRequest |
 
   Scenario: Broadcasting using the api directly, with no user channel set
     When I call "{api}" with "broadcast" with parameter "{instrumentContext}"
@@ -24,5 +25,5 @@ Feature: Broadcasting
     When I call "{api}" with "joinUserChannel" with parameter "one"
     And I call "{api}" with "broadcast" with parameter "{instrumentContext}"
     Then messaging will have posts
-      | payload.channelId | payload.context.type | payload.context.name |
-      | one               | fdc3.instrument      | Apple                |
+      | payload.channelId | payload.context.type | payload.context.name | matches_type     |
+      | one               | fdc3.instrument      | Apple                | broadcastRequest |
