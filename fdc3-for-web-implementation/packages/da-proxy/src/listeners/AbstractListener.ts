@@ -27,23 +27,29 @@ export abstract class AbstractListener<X> implements RegisterableListener {
 
     abstract action(m: any): void
 
-    listenerNotification(type: string | null) {
+    async listenerNotification(type: string | null): Promise<void> {
         if (type) {
+            const requestType = type + "Request"
+            const responseType = type + "Response"
+
             // send notification
             const notificationMessage = {
                 meta: this.messaging.createMeta(),
                 payload: {
                     ...this.payloadDetails
                 },
-                type
+                requestType
             }
 
-            this.messaging.post(notificationMessage)
+            const out = await this.messaging.exchange<any>(notificationMessage, responseType!!)
+            if (out?.payload?.error) {
+                throw new Error(out.payload.error)
+            }
         }
     }
 
-    unsubscribe(): void {
+    async unsubscribe(): Promise<void> {
         this.messaging.unregister(this.id)
-        this.listenerNotification(this.unsubscribeType)
+        await this.listenerNotification(this.unsubscribeType)
     }
 }

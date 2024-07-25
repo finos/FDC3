@@ -29,7 +29,7 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
         const am = await this.apps.getThisAppMetadata()
         return {
             fdc3Version: this.fdc3Version,
-            provider: this.handshake.getHandshakePayload()?.implementationMetadata.provider ?? "undefined",
+            provider: (await this.handshake.getImplementationMetadata()).provider ?? "undefined",
             appMetadata: am,
             optionalFeatures: {
                 OriginatingAppMetadata: this.apps.hasOriginatingAppMetadata(),
@@ -130,12 +130,14 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
         return this.apps.getAppMetadata(app);
     }
 
-    disconnect(): Promise<void> {
-        return this.handshake.disconnect()
+    async disconnect(): Promise<void> {
+        await this.handshake.disconnect()
+        await this.channels.disconnect()
     }
 
-    connect(): Promise<void> {
-        return this.handshake.connect()
+    async connect(): Promise<void> {
+        await this.handshake.connect()
+        await this.channels.connect()
     }
 
 }

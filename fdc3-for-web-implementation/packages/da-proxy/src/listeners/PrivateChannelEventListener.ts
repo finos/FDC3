@@ -1,6 +1,6 @@
-import { PrivateChannelBroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes"
 import { Messaging } from "../Messaging"
 import { AbstractListener } from "./AbstractListener"
+import { BroadcastEvent } from "@kite9/fdc3-common"
 
 type EVENT_TYPES_WITH_TYPE_HANDLER = "onAddContextListener" | "onUnsubscribe"
 export type EVENT_TYPES = EVENT_TYPES_WITH_TYPE_HANDLER | "onDisconnect"
@@ -20,7 +20,7 @@ abstract class AbstractPrivateChannelEventListener<X> extends AbstractListener<X
         this.listenerType = listenerType
     }
 
-    filter(m: PrivateChannelBroadcastAgentRequest) {
+    filter(m: BroadcastEvent) {
         return (m.type == "PrivateChannel." + this.listenerType) && (this.channelId == m.payload?.channelId);
     }
 

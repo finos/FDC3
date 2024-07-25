@@ -1,5 +1,4 @@
 import { TestMessaging } from '../support/TestMessaging';
-import { createDefaultChannels } from '../support/DefaultUserChannels';
 import { Given } from '@cucumber/cucumber'
 import { CustomWorld } from '../world/index';
 import { BasicDesktopAgent, DefaultAppSupport, DefaultChannelSupport, DefaultIntentSupport, DefaultHandshakeSupport } from '../../src';
@@ -14,8 +13,8 @@ Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: s
     }
 
     const version = "2.0"
-    const cs = new DefaultChannelSupport(this.messaging, createDefaultChannels(this.messaging), null)
-    const hs = new DefaultHandshakeSupport(this.messaging, [version], cs)
+    const cs = new DefaultChannelSupport(this.messaging)
+    const hs = new DefaultHandshakeSupport(this.messaging, version)
     const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this))
     const as = new DefaultAppSupport(this.messaging, {
         appId: "Test App Id",
