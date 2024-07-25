@@ -2,8 +2,8 @@ Feature: Channel Listeners Support
 
   Background: Desktop Agent API
     Given A Desktop Agent in "api1"
-    Given "instrumentMessageOne" is a "broadcastRequest" message on channel "channel-name" with context "fdc3.instrument"
-    Given "countryMessageOne" is a "broadcastRequest" message on channel "channel-name" with context "fdc3.country"
+    Given "instrumentMessageOne" is a "broadcastEvent" message on channel "channel-name" with context "fdc3.instrument"
+    Given "countryMessageOne" is a "broadcastEvent" message on channel "channel-name" with context "fdc3.country"
     Given "instrumentContext" is a "fdc3.instrument" context
 
   Scenario: Configuring two context listeners should mean they both pick up data

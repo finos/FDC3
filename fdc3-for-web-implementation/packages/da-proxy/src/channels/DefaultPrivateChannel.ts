@@ -12,36 +12,36 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
     }
 
     onAddContextListener(handler: (contextType?: string | undefined) => void): Listener {
-        const l = new PrivateChannelEventListenerType(this.messaging, this.id, "onAddContextListener", handler);
+        const l = new PrivateChannelEventListenerType(this.messaging, this.id, "privateChannelOnAddContextListenerEvent", handler);
+        l.register()
         return l;
     }
 
     onUnsubscribe(handler: (contextType?: string | undefined) => void): Listener {
-        const l = new PrivateChannelEventListenerType(this.messaging, this.id, "onUnsubscribe", handler);
+        const l = new PrivateChannelEventListenerType(this.messaging, this.id, "privateChannelOnUnsubscribeEvent", handler);
+        l.register()
         return l;
     }
 
     onDisconnect(handler: () => void): Listener {
         const l = new PrivateChannelEventListenerVoid(this.messaging, this.id, handler);
+        l.register()
         return l;
     }
 
     async disconnect(): Promise<void> {
-        const response = await this.messaging.exchange<PrivateChannelDisconnectResponse>({
+        await this.messaging.exchange<PrivateChannelDisconnectResponse>({
             meta: this.messaging.createMeta(),
             payload: {
                 channelId: this.id,
             },
             type: "privateChannelDisconnectRequest"
         } as PrivateChannelDisconnectRequest, 'privateChannelDisconnectResponse')
-
-        if (response.payload.error) {
-            throw new Error(response.payload.error)
-        }
     }
 
-    addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
+    async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
         const listener = new DefaultContextListener(this.messaging, this.id, contextType, theHandler);
-        return Promise.resolve(listener)
+        listener.register()
+        return listener
     }
 }

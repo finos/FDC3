@@ -22,16 +22,23 @@ export abstract class AbstractMessaging implements Messaging {
                 action: (m) => {
                     this.unregister(id)
                     resolve(m)
-                }
+                },
+                register: () => Promise.resolve()
             } as RegisterableListener);
         })
     }
 
-    exchange<X>(message: any, expectedTypeName: string): Promise<X> {
+    async exchange<X>(message: any, expectedTypeName: string): Promise<X> {
         this.post(message)
-        return this.waitFor(m =>
+        const out: any = await this.waitFor(m =>
             (m.type == expectedTypeName)
             && ((m.meta.requestUuid == message.meta.requestUuid)
                 || (message.meta.requestUuid == undefined)))
+
+        if (out?.payload?.error) {
+            throw new Error(out.payload.error)
+        } else {
+            return out
+        }
     }
 }

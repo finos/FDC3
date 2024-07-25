@@ -12,8 +12,8 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
         super(messaging,
             { intent },
             action,
-            "onAddIntentListener",
-            "onUnsubscribeIntentListener")
+            "addIntentListener",
+            "intentListenerUnsubscribe")
 
         this.intent = intent
     }
