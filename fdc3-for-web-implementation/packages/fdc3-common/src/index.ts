@@ -1,6 +1,4 @@
-import { AppIdentifier, DesktopAgent, IntentMetadata, IntentResult, Channel, ContextElement } from "@finos/fdc3";
-import { AppIntent, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerAgentRequestMeta, PrivateChannelOnUnsubscribeAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
-
+import { AppIntent, AppIdentifier, DesktopAgent, IntentMetadata, IntentResult, Channel } from "@finos/fdc3";
 /** 
  * We need to add options here. 
  */
@@ -146,47 +144,6 @@ export const FDC3_USER_CHANNELS_RESPONSE_TYPE = 'FDC3-User-Channels-Response';
 export const FDC3_PORT_TRANSFER_REQUEST_TYPE = 'FDC3-Port-Transfer-Request';
 export const FDC3_PORT_TRANSFER_RESPONSE_TYPE = 'FDC3-Port-Transfer-Response';
 
-/** Message Types Not Defined By Bridging, But Needed */
-export type OnAddContextListenerAgentRequest = PrivateChannelOnAddContextListenerAgentRequest & {
-    type: "onAddContextListener"
-}
-
-export type OnUnsubscribeAgentRequest = PrivateChannelOnUnsubscribeAgentRequest & {
-    type: "onUnsubscribe"
-}
-
-export type OnAddIntentListenerAgentRequest = {
-    type: 'onAddIntentListener',
-    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
-    payload: {
-        intent: string,
-    }
-}
-
-export type OnUnsubscribeIntentListenerAgentRequest = {
-    type: 'onUnsubscribeIntentListener',
-    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
-    payload: {
-        intent: string,
-    }
-}
-
-export type RegisterChannelAgentRequest = {
-    type: 'registerChannelRequest',
-    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
-    payload: {
-        channelId: string,
-        type: 'user' | 'private' | 'app'
-    }
-}
-
-export type RegisterChannelAgentResponse = {
-    type: 'registerChannelResponse',
-    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
-    payload: {
-        error?: string
-    }
-}
 
 /**
  * Contains the details of a single intent and application resolved
@@ -198,8 +155,6 @@ export interface SingleAppIntent {
     chosenApp: AppIdentifier
 
 }
-
-export type ChannelState = { [channelId: string]: ContextElement[] }
 
 /**
  * Interface used by the desktop agent proxy to handle the channel selection process.
@@ -232,7 +187,6 @@ export interface IntentResolver {
 
 export type IntentResolutionChoiceAgentResponse = {
     type: 'intentResolutionChoice',
-    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
     payload: SingleAppIntent
 }
 
@@ -242,7 +196,6 @@ export type IntentResolutionChoiceAgentRequest = IntentResolutionChoiceAgentResp
 
 export type ChannelSelectionChoiceAgentRequest = {
     type: 'channelSelectionChoice',
-    meta: PrivateChannelOnAddContextListenerAgentRequestMeta,
     payload: {
         channelId: string,
         cancelled: boolean,

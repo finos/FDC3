@@ -1,7 +1,7 @@
-import { Context, ContextHandler } from "@finos/fdc3";
+import { ContextHandler } from "@finos/fdc3";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
-import { BroadcastRequest } from "@kite9/fdc3-common";
+import { BroadcastEvent } from "@kite9/fdc3-common";
 
 export class DefaultContextListener extends AbstractListener<ContextHandler> {
 
@@ -13,16 +13,16 @@ export class DefaultContextListener extends AbstractListener<ContextHandler> {
         channelId: string | null,
         contextType: string | null,
         handler: ContextHandler,
-        messageType: string = "broadcastRequest",
-        subscribeType: string | null = "onAddContextListener",
-        unsubscribeType: string | null = "onUnsubscribe") {
+        messageType: string = "broadcastEvent",
+        subscribeType: string | null = "addContextListener",
+        unsubscribeType: string | null = "contextListenerUnsubscribe") {
         super(messaging, { channelId, contextType }, handler, subscribeType, unsubscribeType)
         this.channelId = channelId
         this.messageType = messageType
         this.contextType = contextType
     }
 
-    filter(m: BroadcastRequest): boolean {
+    filter(m: BroadcastEvent): boolean {
         return (m.type == this.messageType)
             && (m.payload.channelId == this.channelId)
             && ((m.payload.context?.type == this.contextType) || (this.contextType == null));
@@ -30,17 +30,5 @@ export class DefaultContextListener extends AbstractListener<ContextHandler> {
 
     action(m: any): void {
         this.handler(m.payload.context)
-    }
-
-    /**
-     * This is used for user channels when changing to a new channel
-     */
-    updateUnderlyingChannel(id: string | null, latestContextMap: Map<string, Context>) {
-        this.channelId = id;
-        latestContextMap.forEach((v, k) => {
-            if ((this.contextType == null) || (this.contextType == k)) {
-                this.handler(v);
-            }
-        })
     }
 }

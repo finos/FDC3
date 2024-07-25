@@ -1,7 +1,7 @@
 import { Channel, ContextHandler, Listener, PrivateChannel } from "@finos/fdc3"
-import { ContextElement } from "@finos/fdc3/dist/bridging/BridgingTypes"
+import { Connectable } from "../Connectable"
 
-export interface ChannelSupport {
+export interface ChannelSupport extends Connectable {
 
     hasUserChannelMembershipAPIs(): boolean
 
@@ -18,7 +18,5 @@ export interface ChannelSupport {
     joinUserChannel(id: string): Promise<void>
 
     addContextListener(handler: ContextHandler, type: string | null): Promise<Listener>
-
-    mergeChannelState(newState: { [key: string]: ContextElement[] }): void
 
 }

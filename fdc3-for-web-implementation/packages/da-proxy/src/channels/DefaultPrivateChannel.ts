@@ -1,69 +1,47 @@
-import { Context, ContextHandler, Listener, PrivateChannel } from "@finos/fdc3";
+import { ContextHandler, Listener, PrivateChannel } from "@finos/fdc3";
 import { DefaultChannel } from "./DefaultChannel";
 import { Messaging } from "../Messaging";
-import { PrivateChannelBroadcastAgentRequest, PrivateChannelOnDisconnectAgentRequest} from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { PrivateChannelEventListenerType, PrivateChannelEventListenerVoid } from "../listeners/PrivateChannelEventListener";
 import { DefaultContextListener } from "../listeners/DefaultContextListener";
-
+import { PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse } from '@kite9/fdc3-common'
 
 export class DefaultPrivateChannel extends DefaultChannel implements PrivateChannel {
 
     constructor(messaging: Messaging, id: string) {
         super(messaging, id, "private")
     }
-    
-    broadcast(context: Context): Promise<void> {
-        const message : PrivateChannelBroadcastAgentRequest = {
-            meta: this.messaging.createMeta() as PrivateChannelBroadcastAgentRequest['meta'],
-            payload: {
-                channelId : this.id,
-                context
-            },
-            type: "PrivateChannel.broadcast"
-        }
-        return this.messaging.post(message);
-    }
 
     onAddContextListener(handler: (contextType?: string | undefined) => void): Listener {
-        const l = new PrivateChannelEventListenerType(this.messaging, this.id, "onAddContextListener", handler); 
-        this.listeners.push(l);
+        const l = new PrivateChannelEventListenerType(this.messaging, this.id, "onAddContextListener", handler);
         return l;
     }
 
     onUnsubscribe(handler: (contextType?: string | undefined) => void): Listener {
-        const l = new PrivateChannelEventListenerType(this.messaging, this.id,  "onUnsubscribe", handler); 
-        this.listeners.push(l);
+        const l = new PrivateChannelEventListenerType(this.messaging, this.id, "onUnsubscribe", handler);
         return l;
     }
 
     onDisconnect(handler: () => void): Listener {
-        const l = new PrivateChannelEventListenerVoid(this.messaging, this.id, handler); 
-        this.listeners.push(l);
+        const l = new PrivateChannelEventListenerVoid(this.messaging, this.id, handler);
         return l;
     }
 
-    disconnect(): void {
-        // unsubscribe all existing listeners
-        this.listeners.forEach( l => l.unsubscribe());
-        
-        // disconnect.
-        const disconnectMessage : PrivateChannelOnDisconnectAgentRequest = {
-            meta: this.messaging.createMeta() as PrivateChannelOnDisconnectAgentRequest['meta'] ,
+    async disconnect(): Promise<void> {
+        const response = await this.messaging.exchange<PrivateChannelDisconnectResponse>({
+            meta: this.messaging.createMeta(),
             payload: {
                 channelId: this.id,
             },
-            type: "PrivateChannel.onDisconnect"
-        }
+            type: "privateChannelDisconnectRequest"
+        } as PrivateChannelDisconnectRequest, 'privateChannelDisconnectResponse')
 
-        this.messaging.post(disconnectMessage)
+        if (response.payload.error) {
+            throw new Error(response.payload.error)
+        }
     }
-    
+
     addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
-        const listener = new DefaultContextListener(this.messaging, this.id, contextType, theHandler, 
-            "PrivateChannel.broadcast",
-            "PrivateChannel.onAddContextListener",
-            "PrivateChannel.onUnsubscribe");
-        this.listeners.push(listener)
-        return Promise.resolve(listener)   
+        const listener = new DefaultContextListener(this.messaging, this.id, contextType, theHandler);
+        return Promise.resolve(listener)
     }
 }

@@ -4,7 +4,7 @@ Feature: Basic User Channels Support
     Given A Desktop Agent in "api"
     And I call "{api}" with "createPrivateChannel"
     And I refer to "{result}" as "privateChannel"
-    And "instrumentMessageOne" is a "PrivateChannel.broadcastRequest" message on channel "{privateChannel}" with context "fdc3.instrument"
+    And "instrumentMessageOne" is a "broadcastEvent" message on channel "{privateChannel}" with context "fdc3.instrument"
 
   Scenario: Adding and then unsubscribing a context listener will send a notification of each event to the agent
     Given "contextHandler" pipes context to "context"

@@ -4,7 +4,6 @@ import { AbstractMessaging } from "./messaging/AbstractMessaging";
 
 import { DefaultChannel } from "./channels/DefaultChannel";
 import { ChannelSupport } from "./channels/ChannelSupport";
-import { StatefulChannel } from "./channels/StatefulChannel";
 
 import { DefaultIntentSupport } from "./intents/DefaultIntentSupport";
 import { DefaultChannelSupport } from "./channels/DefaultChannelSupport";
@@ -22,7 +21,6 @@ export {
     AbstractMessaging,
     BasicDesktopAgent,
     DefaultChannel,
-    type StatefulChannel,
     type AppSupport,
     type IntentSupport,
     type ChannelSupport,

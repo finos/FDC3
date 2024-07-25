@@ -1,7 +1,7 @@
-import { ConnectionStep2Hello, ConnectionStep3Handshake, ConnectionStep3HandshakePayload } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { Messaging } from "../Messaging";
-import { ChannelSupport } from "../channels/ChannelSupport";
 import { HandshakeSupport } from "./HandshakeSupport";
+import { GetInfoResponse, GetInfoRequest } from "@kite9/fdc3-common";
+import { ImplementationMetadata } from "@finos/fdc3";
 
 /**
  * This will eventually need extending to allow for auth handshaking.
@@ -9,41 +9,38 @@ import { HandshakeSupport } from "./HandshakeSupport";
 export class DefaultHandshakeSupport implements HandshakeSupport {
 
     readonly messaging: Messaging
-    readonly acceptableFDC3Versions: string[]
-    readonly channels: ChannelSupport
-    private handshakePayload: ConnectionStep3HandshakePayload | null = null
+    readonly fdc3Version: string
+    private implementationMetadata: ImplementationMetadata | null = null
 
-    constructor(messaging: Messaging, acceptableFDC3Versions: string[], cs: ChannelSupport) {
+    constructor(messaging: Messaging, fdc3Version: string) {
         this.messaging = messaging
-        this.acceptableFDC3Versions = acceptableFDC3Versions
-        this.channels = cs
+        this.fdc3Version = fdc3Version
     }
 
     async connect(): Promise<void> {
-        const hello: ConnectionStep2Hello = {
-            type: "hello",
-            payload: {
-                desktopAgentBridgeVersion: "1.0",
-                supportedFDC3Versions: this.acceptableFDC3Versions,
-                authRequired: false,
-            },
-            meta: {
-                timestamp: new Date()
+    }
+
+    async disconnect(): Promise<void> {
+    }
+
+    async getImplementationMetadata(): Promise<ImplementationMetadata> {
+        if (!this.implementationMetadata) {
+            const response = await this.messaging.exchange<GetInfoResponse>({
+                meta: this.messaging.createMeta(),
+                type: 'getInfoRequest',
+            } as GetInfoRequest,
+                'getInfoResponse')
+
+            const error = response.payload.error
+
+            if (error) {
+                throw new Error(error)
             }
+
+            this.implementationMetadata = response.payload.implementationMetadata!!
         }
 
-        const handshake = await this.messaging.exchange<ConnectionStep3Handshake>(hello, "handshake")
-        this.channels.mergeChannelState(handshake.payload.channelsState)
-        this.handshakePayload = handshake.payload
-        return Promise.resolve()
+        return this.implementationMetadata;
     }
 
-    disconnect(): Promise<void> {
-        // does nothing yet
-        return Promise.resolve()
-    }
-
-    getHandshakePayload(): ConnectionStep3HandshakePayload | null {
-        return this.handshakePayload
-    }
 }

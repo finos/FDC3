@@ -1,69 +1,55 @@
-import { Context, ContextHandler, DisplayMetadata, Listener } from "@finos/fdc3"
+import { Context, ContextHandler, DisplayMetadata, Listener, Channel } from "@finos/fdc3"
 import { Messaging } from "../Messaging"
-import { BroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes"
 import { DefaultContextListener } from "../listeners/DefaultContextListener"
-import { StatefulChannel } from "./StatefulChannel"
-import { NonNotifyingContextListener } from "../listeners/NonNotifyingContextListener"
+import { BroadcastRequest, BroadcastResponse, GetCurrentContextResponse, GetCurrentContextRequest } from '@kite9/fdc3-common'
 
-export class DefaultChannel implements StatefulChannel {
+export class DefaultChannel implements Channel {
 
     readonly messaging: Messaging
     readonly id: string
     readonly type: "user" | "app" | "private"
     readonly displayMetadata?: DisplayMetadata | undefined;
 
-    readonly latestContextMap: Map<string, Context> = new Map()
-    private latestContext: Context | null = null 
-    readonly listeners: Listener[] = []
-
-    constructor(messaging: Messaging, id: string, type: "user" | "app" | "private", displayMetadata? : DisplayMetadata) {
+    constructor(messaging: Messaging, id: string, type: "user" | "app" | "private", displayMetadata?: DisplayMetadata) {
         this.messaging = messaging
         this.id = id
         this.type = type
         this.displayMetadata = displayMetadata
-        this._addCurrentContextListener();
     }
 
-    broadcast(context: Context): Promise<void> {
-        const message : BroadcastAgentRequest = {
-            meta: {
-                requestUuid: this.messaging.createUUID(),
-                timestamp: new Date(),
-                source: this.messaging.getSource()
-            },
+    async broadcast(context: Context): Promise<void> {
+        await this.messaging.exchange<BroadcastResponse>({
+            meta: this.messaging.createMeta(),
             payload: {
-                channelId : this.id,
+                channelId: this.id,
                 context
             },
             type: "broadcastRequest"
-        }
-        return this.messaging.post(message);
+        } as BroadcastRequest, 'broadcastResponse')
     }
 
-    getCurrentContext(contextType?: string | undefined): Promise<Context | null> {
-        if (contextType) {
-            return Promise.resolve(this.latestContextMap.get(contextType) ?? null)
+    async getCurrentContext(contextType?: string | undefined): Promise<Context | null> {
+        // first, ensure channel state is up-to-date
+        const response = await this.messaging.exchange<GetCurrentContextResponse>({
+            meta: this.messaging.createMeta(),
+            payload: {
+                channelId: this.id,
+                contextType
+            },
+            type: "getCurrentContextRequest"
+        } as GetCurrentContextRequest, 'getCurrentContextResponse')
+
+        if (response.payload.error) {
+            throw new Error(response.payload.error)
         } else {
-            return Promise.resolve(this.latestContext);
+            return response.payload.context ?? null
         }
-    }
-
-    /**
-     * Special internal listener that keeps track of current context
-     */
-    _addCurrentContextListener() {
-        const listener = new NonNotifyingContextListener(this.messaging, this.id, null, (ctx) => {
-            this.latestContextMap.set(ctx.type, ctx);
-            this.latestContext = ctx;
-        });
-
-        this.listeners.push(listener)
     }
 
     addContextListener(contextType: any, handler?: ContextHandler): Promise<Listener> {
-        let theContextType : string | null
+        let theContextType: string | null
         let theHandler: ContextHandler
-        
+
         if (contextType == null) {
             theContextType = null;
             theHandler = handler as ContextHandler;
@@ -76,17 +62,12 @@ export class DefaultChannel implements StatefulChannel {
             theHandler = contextType as ContextHandler;
         }
 
-        return this.addContextListenerInner(theContextType, theHandler);     
+        return this.addContextListenerInner(theContextType, theHandler);
     }
 
     addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
         const listener = new DefaultContextListener(this.messaging, this.id, contextType, theHandler);
-        this.listeners.push(listener)
-        return Promise.resolve(listener)   
-    }
-
-    getState() : Map<string, Context> {
-        return this.latestContextMap;
+        return Promise.resolve(listener)
     }
 }
 
