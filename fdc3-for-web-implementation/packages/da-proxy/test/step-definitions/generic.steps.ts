@@ -5,7 +5,6 @@ import { BasicDesktopAgent, DefaultAppSupport, DefaultChannelSupport, DefaultInt
 import { SimpleIntentResolver, setupGenericSteps } from '@kite9/testing';
 import { CHANNEL_STATE } from '@kite9/testing/dist/src/agent';
 
-
 Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
 
     if (!this.messaging) {

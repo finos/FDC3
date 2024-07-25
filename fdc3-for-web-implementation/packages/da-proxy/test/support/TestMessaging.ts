@@ -16,6 +16,7 @@ import { Broadcast } from "./responses/Broadcast";
 import { JoinUserChannel } from "./responses/JoinUserChannel";
 import { GetUserChannels } from "./responses/GetUserChannels";
 import { RegisterListeners } from "./responses/RegisterListeners";
+import { UnsubscribeListeners } from "./responses/UnsubscribeListeners";
 
 export interface IntentDetail {
     app?: AppIdentifier,
@@ -98,7 +99,8 @@ export class TestMessaging extends AbstractMessaging {
         new Broadcast(),
         new JoinUserChannel(),
         new GetUserChannels(),
-        new RegisterListeners()
+        new RegisterListeners(),
+        new UnsubscribeListeners()
     ]
 
     constructor(channelState: { [key: string]: Context }) {
@@ -151,8 +153,27 @@ export class TestMessaging extends AbstractMessaging {
         return {
             "requestUuid": this.createUUID(),
             "timestamp": new Date(),
-            "source": this.getSource(),
-            "responseUuid": this.createUUID()
+            "source": this.getSource()
+        }
+    }
+
+    /**
+     * Used in testing steps
+     */
+    createResponseMeta() {
+        return {
+            ...this.createMeta(),
+            responseUuid: this.createUUID()
+        }
+    }
+
+    /**
+     * Used in testing steps
+     */
+    createEventMeta() {
+        return {
+            ...this.createMeta(),
+            eventUuid: this.createUUID()
         }
     }
 

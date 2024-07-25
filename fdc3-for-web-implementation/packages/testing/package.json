@@ -23,6 +23,8 @@
     "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "4.12.0",
     "@typescript-eslint/parser": "4.12.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "cucumber-console-formatter": "1.0.0",
     "eslint": "7.17.0",
     "eslint-config-prettier": "7.1.0",

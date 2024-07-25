@@ -1,6 +1,7 @@
 Feature: Channel Listeners Support
 
   Background: Desktop Agent API
+    Given schemas loaded
     Given A Desktop Agent in "api1"
     Given "instrumentMessageOne" is a "broadcastEvent" message on channel "channel-name" with context "fdc3.instrument"
     Given "countryMessageOne" is a "broadcastEvent" message on channel "channel-name" with context "fdc3.country"
@@ -17,6 +18,25 @@ Feature: Channel Listeners Support
       | id.ticker | type            | name  |
       | AAPL      | fdc3.instrument | Apple |
       | AAPL      | fdc3.instrument | Apple |
+    Then messaging will have posts
+      | payload.channelId | payload.contextType | matches_type              |
+      | channel-name      | {null}              | getOrCreateChannelRequest |
+      | channel-name      | fdc3.instrument     | addContextListenerRequest |
+      | channel-name      | fdc3.instrument     | addContextListenerRequest |
+
+  Scenario: Unsubscribing a context listener prevents it collecting data.
+    Given "resultHandler" pipes context to "contexts"
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And I call "{result}" with "unsubscribe"
+    And messaging receives "{instrumentMessageOne}"
+    Then "{contexts}" is empty
+    And messaging will have posts
+      | payload.channelId | payload.contextType | matches_type                      |
+      | channel-name      | {null}              | getOrCreateChannelRequest         |
+      | channel-name      | fdc3.instrument     | addContextListenerRequest         |
+      | {null}            | {null}              | contextListenerUnsubscribeRequest |
 
   Scenario: I can create a listener which listens for any context type
         In this version we are using the deprecated no-args approach
@@ -31,6 +51,10 @@ Feature: Channel Listeners Support
       | type            | name   |
       | fdc3.instrument | Apple  |
       | fdc3.country    | Sweden |
+    And messaging will have posts
+      | payload.channelId | payload.contextType | matches_type              |
+      | channel-name      | {null}              | getOrCreateChannelRequest |
+      | channel-name      | {null}              | addContextListenerRequest |
 
   Scenario: I can create a listener which listens for any context type
         In this version we are using the non-deprecated 2 args approach
@@ -45,9 +69,7 @@ Feature: Channel Listeners Support
       | type            | name   |
       | fdc3.instrument | Apple  |
       | fdc3.country    | Sweden |
-
-  Scenario: I can't register an app channel with the same ID as a private channel
-    When I call "{api1}" with "createPrivateChannel"
-    And I refer to "{result}" as "privateChannel"
-    And I call "{api1}" with "getOrCreateChannel" with parameter "{privateChannel.id}"
-    Then "{result}" is an error with message "AccessDenied"
+    And messaging will have posts
+      | payload.channelId | payload.contextType | matches_type              |
+      | channel-name      | {null}              | getOrCreateChannelRequest |
+      | channel-name      | {null}              | addContextListenerRequest |

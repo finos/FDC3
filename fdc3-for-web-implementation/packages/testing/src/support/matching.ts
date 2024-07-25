@@ -2,23 +2,31 @@ import { JSONPath } from "jsonpath-plus";
 import { PropsWorld } from "../world";
 import expect from "expect";
 import { DataTable } from "@cucumber/cucumber";
-
-
-
+import Ajv from "ajv/dist/2019";
 
 export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: any): boolean {
     try {
-        cw.log(`Comparing with ${JSON.stringify(data)}`)
+        cw.log(`Comparing with ${JSON.stringify(data, null, 2)}`)
     } catch (e) {
         console.log("Can't stringify data")
     }
     for (const [field, actual] of Object.entries(t)) {
-        const found = JSONPath({ path: field, json: data })[0];
-        const resolved = handleResolve(actual, cw)
+        if (field == 'matches_type') {
+            const validator: Ajv = cw.props['ajv']
+            const validate = validator.getSchema('https://fdc3.finos.org/schemas/next/api/' + actual + '.schema.json')!!
+            const valid = validate(data)
+            if (!valid) {
+                cw.log(`Validation failed: ${JSON.stringify(validate.errors)}`)
+                return false
+            }
+        } else {
+            const found = JSONPath({ path: field, json: data })[0];
+            const resolved = handleResolve(actual, cw)
 
-        if (found != resolved) {
-            cw.log("Match failed on " + field)
-            return false;
+            if (found != resolved) {
+                cw.log("Match failed on " + field)
+                return false;
+            }
         }
     }
 
@@ -50,7 +58,7 @@ export function matchData(cw: PropsWorld, actual: any[], dt: DataTable) {
     const rowCount = tableData.length
 
     var resultCopy = JSON.parse(JSON.stringify(actual)) as any[];
-    cw.log(`result ${JSON.stringify(resultCopy)} length ${resultCopy.length}`)
+    cw.log(`result ${JSON.stringify(resultCopy, null, 2)} length ${resultCopy.length}`)
     expect(resultCopy).toHaveLength(rowCount);
     var row = 0
 
@@ -60,7 +68,7 @@ export function matchData(cw: PropsWorld, actual: any[], dt: DataTable) {
         if (doesRowMatch(cw, matchingRow, rr)) {
             return false
         } else {
-            cw.log(`Couldn't match row: ${JSON.stringify(rr)}`)
+            cw.log(`Couldn't match row: ${JSON.stringify(rr, null, 2)}`)
             return true
         }
     })

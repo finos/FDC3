@@ -48,3 +48,9 @@ Feature: Relaying Private Channel Broadcast messages
     And "App2/a1" adds a context listener on private channel "channel1" with type "fdc3.instrument"
     Then messaging will have outgoing posts
       | msg.type | msg.payload.channelId | msg.payload.contextType | to.appId | to.instanceId |
+
+  Scenario: I can't register an app channel with the same ID as a private channel
+    When I call "{api1}" with "createPrivateChannel"
+    And I refer to "{result}" as "privateChannel"
+    And I call "{api1}" with "getOrCreateChannel" with parameter "{privateChannel.id}"
+    Then "{result}" is an error with message "AccessDenied"
