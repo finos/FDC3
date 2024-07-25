@@ -31,12 +31,6 @@ export class DefaultHandshakeSupport implements HandshakeSupport {
             } as GetInfoRequest,
                 'getInfoResponse')
 
-            const error = response.payload.error
-
-            if (error) {
-                throw new Error(error)
-            }
-
             this.implementationMetadata = response.payload.implementationMetadata!!
         }
 

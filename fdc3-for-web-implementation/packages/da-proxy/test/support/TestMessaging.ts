@@ -15,6 +15,7 @@ import { GetOrCreateChannel } from "./responses/GetOrCreateChannel";
 import { Broadcast } from "./responses/Broadcast";
 import { JoinUserChannel } from "./responses/JoinUserChannel";
 import { GetUserChannels } from "./responses/GetUserChannels";
+import { RegisterListeners } from "./responses/RegisterListeners";
 
 export interface IntentDetail {
     app?: AppIdentifier,
@@ -96,7 +97,8 @@ export class TestMessaging extends AbstractMessaging {
         new GetOrCreateChannel(),
         new Broadcast(),
         new JoinUserChannel(),
-        new GetUserChannels()
+        new GetUserChannels(),
+        new RegisterListeners()
     ]
 
     constructor(channelState: { [key: string]: Context }) {
@@ -134,7 +136,11 @@ export class TestMessaging extends AbstractMessaging {
     }
 
     register(l: RegisterableListener) {
-        this.listeners.set(l.id, l)
+        if (l.id == null) {
+            throw new Error("Listener must have ID set")
+        } else {
+            this.listeners.set(l.id, l)
+        }
     }
 
     unregister(id: string) {

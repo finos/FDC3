@@ -35,11 +35,7 @@ export class DefaultAppSupport implements AppSupport {
         }
 
         return this.messaging.exchange<FindInstancesResponse>(request, "findInstancesResponse").then(d => {
-            if (d.payload.error) {
-                throw new Error(d.payload.error)
-            } else {
-                return d.payload.appIdentifiers!!
-            }
+            return d.payload.appIdentifiers!!
         });
     }
 
@@ -53,15 +49,11 @@ export class DefaultAppSupport implements AppSupport {
         }
 
         return this.messaging.exchange<GetAppMetadataResponse>(request, "getAppMetadataResponse").then(d => {
-            if (d.payload.error) {
-                throw new Error(d.payload.error)
-            } else {
-                return d.payload.appMetadata!!
-            }
+            return d.payload.appMetadata!!
         });
     }
 
-    open(app: AppIdentifier, context?: Context | undefined): Promise<AppIdentifier> {
+    async open(app: AppIdentifier, context?: Context | undefined): Promise<AppIdentifier> {
         const request = {
             type: "openRequest",
             payload: {
@@ -75,14 +67,8 @@ export class DefaultAppSupport implements AppSupport {
             meta: this.messaging.createMeta() as any
         } as OpenRequest
 
-        return this.messaging.exchange<any>(request, "openResponse")
-            .then(d => {
-                const error = d.payload.error
-                if (error) {
-                    throw new Error(error)
-                }
-                return d.payload.appIdentifier
-            })
+        const out = await this.messaging.exchange<any>(request, "openResponse")
+        return out.payload.appIdentifier
     }
 
     async getThisAppMetadata(): Promise<AppMetadata> {

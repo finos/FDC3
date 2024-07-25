@@ -14,8 +14,8 @@ export class DefaultContextListener extends AbstractListener<ContextHandler> {
         contextType: string | null,
         handler: ContextHandler,
         messageType: string = "broadcastEvent",
-        subscribeType: string | null = "addContextListener",
-        unsubscribeType: string | null = "contextListenerUnsubscribe") {
+        subscribeType: string = "addContextListener",
+        unsubscribeType: string = "contextListenerUnsubscribe") {
         super(messaging, { channelId, contextType }, handler, subscribeType, unsubscribeType)
         this.channelId = channelId
         this.messageType = messageType

@@ -8,19 +8,18 @@ import { RegisterableListener } from "./RegisterableListener"
 export abstract class AbstractListener<X> implements RegisterableListener {
 
     readonly messaging: Messaging
-    private readonly unsubscribeType: string | null
+    private readonly subscribeType: string
+    private readonly unsubscribeType: string
     private readonly payloadDetails: Record<string, string | null>
-    readonly id: string
+    id: string | null = null
     readonly handler: X
 
-    constructor(messaging: Messaging, payloadDetails: Record<string, string | null>, handler: X, subscribeType: string | null, unsubscribeType: string | null) {
+    constructor(messaging: Messaging, payloadDetails: Record<string, string | null>, handler: X, subscribeType: string, unsubscribeType: string) {
         this.messaging = messaging
-        this.id = this.messaging.createUUID()
         this.handler = handler
         this.payloadDetails = payloadDetails
+        this.subscribeType = subscribeType
         this.unsubscribeType = unsubscribeType
-        this.messaging.register(this)
-        this.listenerNotification(subscribeType)
     }
 
     abstract filter(m: any): boolean
@@ -41,15 +40,24 @@ export abstract class AbstractListener<X> implements RegisterableListener {
                 requestType
             }
 
-            const out = await this.messaging.exchange<any>(notificationMessage, responseType!!)
-            if (out?.payload?.error) {
-                throw new Error(out.payload.error)
-            }
+            this.messaging.exchange<any>(notificationMessage, responseType!!)
         }
     }
 
     async unsubscribe(): Promise<void> {
-        this.messaging.unregister(this.id)
+        this.messaging.unregister(this.id!!)
         await this.listenerNotification(this.unsubscribeType)
+    }
+
+    async register() {
+        const response = await this.messaging.exchange<any>({
+            meta: this.messaging.createMeta(),
+            type: this.subscribeType + 'Request',
+            payload: this.payloadDetails,
+        }, this.subscribeType + 'Response')
+
+        this.id = response.payload.listenerUUID
+        this.messaging.register(this)
+        this.listenerNotification(this.subscribeType)
     }
 }

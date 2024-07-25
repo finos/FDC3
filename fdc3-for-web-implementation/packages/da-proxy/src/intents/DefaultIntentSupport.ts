@@ -56,20 +56,13 @@ export class DefaultIntentSupport implements IntentSupport {
         }
 
         const result = await this.messaging.exchange(messageOut, "findIntentResponse") as FindIntentResponse
-        const error = result.payload.error
-
-        if (error) {
-            // server error
-            throw new Error(error)
+        const appIntent = result.payload.appIntent!!
+        if (appIntent.apps.length == 0) {
+            throw new Error(ResolveError.NoAppsFound)
         } else {
-            const appIntent = result.payload.appIntent!!
-            if (appIntent.apps.length == 0) {
-                throw new Error(ResolveError.NoAppsFound)
-            } else {
-                return {
-                    intent: appIntent.intent,
-                    apps: appIntent.apps
-                }
+            return {
+                intent: appIntent.intent,
+                apps: appIntent.apps
             }
         }
     }
@@ -84,18 +77,13 @@ export class DefaultIntentSupport implements IntentSupport {
         }
 
         const result = await this.messaging.exchange(messageOut, "findIntentsByContextResponse") as FindIntentsByContextsByContextResponse /* ISSUE: $1277 */
-        const error = result.payload.error
-        if (error) {
-            // server error
-            throw new Error(error)
+        const appIntents = result.payload.appIntents!!
+        if (appIntents.length == 0) {
+            throw new Error(ResolveError.NoAppsFound)
         } else {
-            const appIntents = result.payload.appIntents!!
-            if (appIntents.length == 0) {
-                throw new Error(ResolveError.NoAppsFound)
-            } else {
-                return appIntents
-            }
+            return appIntents
         }
+
     }
 
     private async createResultPromise(messageOut: RaiseIntentRequest): Promise<IntentResult> {
@@ -126,12 +114,6 @@ export class DefaultIntentSupport implements IntentSupport {
 
         const resultPromise = this.createResultPromise(messageOut)
         const resolution = await this.messaging.exchange(messageOut, "raiseIntentResponse") as RaiseIntentResponse
-        const error = resolution.payload.error
-
-        if (error) {
-            throw new Error(error)
-        }
-
         const details = resolution.payload.intentResolution!!
 
         return new DefaultIntentResolution(

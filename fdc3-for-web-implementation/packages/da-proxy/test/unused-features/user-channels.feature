@@ -2,8 +2,8 @@ Feature: Basic User Channels Support
 
   Background: Desktop Agent API
     Given A Desktop Agent in "api"
-    Given "instrumentMessageOne" is a "broadcastRequest" message on channel "one" with context "fdc3.instrument"
-    Given "countryMessageOne" is a "broadcastRequest" message on channel "one" with context "fdc3.country"
+    Given "instrumentMessageOne" is a "broadcastEvent" message on channel "one" with context "fdc3.instrument"
+    Given "countryMessageOne" is a "broadcastEvent" message on channel "one" with context "fdc3.country"
 
   Scenario: List User Channels
         There should be a selection of user channels to choose from

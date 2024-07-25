@@ -39,11 +39,7 @@ export class DefaultChannel implements Channel {
             type: "getCurrentContextRequest"
         } as GetCurrentContextRequest, 'getCurrentContextResponse')
 
-        if (response.payload.error) {
-            throw new Error(response.payload.error)
-        } else {
-            return response.payload.context ?? null
-        }
+        return response.payload.context ?? null
     }
 
     addContextListener(contextType: any, handler?: ContextHandler): Promise<Listener> {
@@ -65,9 +61,10 @@ export class DefaultChannel implements Channel {
         return this.addContextListenerInner(theContextType, theHandler);
     }
 
-    addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
+    async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
         const listener = new DefaultContextListener(this.messaging, this.id, contextType, theHandler);
-        return Promise.resolve(listener)
+        await listener.register()
+        return listener
     }
 }
 
