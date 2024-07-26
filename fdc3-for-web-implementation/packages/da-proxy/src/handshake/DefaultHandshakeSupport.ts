@@ -28,6 +28,8 @@ export class DefaultHandshakeSupport implements HandshakeSupport {
             const response = await this.messaging.exchange<GetInfoResponse>({
                 meta: this.messaging.createMeta(),
                 type: 'getInfoRequest',
+                payload: {
+                }
             } as GetInfoRequest,
                 'getInfoResponse')
 

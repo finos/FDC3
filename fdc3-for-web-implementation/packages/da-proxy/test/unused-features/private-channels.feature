@@ -32,14 +32,15 @@ Feature: Basic User Channels Support
     And we wait for a period of "100" ms
     And I call "{theListener}" with "unsubscribe"
     Then messaging will have posts
-      | type                                          | payload.listenerType                    | payload.privateChannelId | payload.listenerUUID | matches_type                                  |
-      | privateChannelAddEventListenerRequest         | privateChannelOnAddContextListenerEvent | {privateChannel.id}      | {null}               | privateChannelAddEventListenerRequest         |
-      | privateChannelUnsubscribeEventListenerRequest | {null}                                  | {null}                   | {theListener.id}     | privateChannelUnsubscribeEventListenerRequest |
+      | type                                          | payload.listenerType | payload.privateChannelId | payload.listenerUUID | matches_type                                  |
+      | privateChannelAddEventListenerRequest         | onAddContextListener | {privateChannel.id}      | {null}               | privateChannelAddEventListenerRequest         |
+      | privateChannelUnsubscribeEventListenerRequest | {null}               | {null}                   | {theListener.id}     | privateChannelUnsubscribeEventListenerRequest |
 
   Scenario: Adding an "onAddContextListener" on a given Private Channel to receive a notification
-    Given "onAddContextListenerMessage" is a "PrivateChannel.onAddContextListener" message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
+    Given "onAddContextListenerMessage" is a "privateChannelOnAddContextListenerEvent" message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
     And "typesHandler" pipes types to "types"
     When I call "{privateChannel}" with "onAddContextListener" with parameter "{typesHandler}"
+    And we wait for a period of "100" ms
     And messaging receives "{onAddContextListenerMessage}"
     Then "{types}" is an array of strings with the following values
       | value           |
@@ -48,16 +49,19 @@ Feature: Basic User Channels Support
   Scenario: Adding and then unsubscribing an "onUnsubscribe" listener will send a notification of each event to the agent
     Given "typesHandler" pipes types to "types"
     When I call "{privateChannel}" with "onUnsubscribe" with parameter "{typesHandler}"
-    And I call "{result}" with "unsubscribe"
+    And we wait for a period of "100" ms
+    And I refer to "{result}" as "theListener"
+    And I call "{theListener}" with "unsubscribe"
     Then messaging will have posts
-      | type                                | payload.listenerType | payload.channelId   |
-      | PrivateChannel.eventListenerAdded   | onUnsubscribe        | {privateChannel.id} |
-      | PrivateChannel.eventListenerRemoved | onUnsubscribe        | {privateChannel.id} |
+      | type                                          | payload.listenerType | payload.privateChannelId | payload.listenerUUID | matches_type                                  |
+      | privateChannelAddEventListenerRequest         | onUnsubscribe        | {privateChannel.id}      | {null}               | privateChannelAddEventListenerRequest         |
+      | privateChannelUnsubscribeEventListenerRequest | {null}               | {null}                   | {theListener.id}     | privateChannelUnsubscribeEventListenerRequest |
 
   Scenario: Adding an "onUnsubscribe" on a given Private Channel to receive a notification
-    Given "onUnsubscribeListenerMessage" is a "PrivateChannel.onUnsubscribe" message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
+    Given "onUnsubscribeListenerMessage" is a "privateChannelOnUnsubscribeEvent" message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
     And "typesHandler" pipes types to "types"
     When I call "{privateChannel}" with "onUnsubscribe" with parameter "{typesHandler}"
+    And we wait for a period of "100" ms
     And messaging receives "{onUnsubscribeListenerMessage}"
     Then "{types}" is an array of strings with the following values
       | value           |
@@ -66,16 +70,19 @@ Feature: Basic User Channels Support
   Scenario: Adding and then unsubscribing an "onDisconnect" listener will send a notification of each event to the agent
     Given "voidHandler" is a invocation counter into "count"
     When I call "{privateChannel}" with "onDisconnect" with parameter "{voidHandler}"
-    And I call "{result}" with "unsubscribe"
+    And I refer to "{result}" as "theListener"
+    And we wait for a period of "100" ms
+    And I call "{theListener}" with "unsubscribe"
     Then messaging will have posts
-      | type                                | payload.listenerType |
-      | PrivateChannel.eventListenerAdded   | onDisconnect         |
-      | PrivateChannel.eventListenerRemoved | onDisconnect         |
+      | type                                          | payload.listenerType | payload.privateChannelId | payload.listenerUUID | matches_type                                  |
+      | privateChannelAddEventListenerRequest         | onDisconnect         | {privateChannel.id}      | {null}               | privateChannelAddEventListenerRequest         |
+      | privateChannelUnsubscribeEventListenerRequest | {null}               | {null}                   | {theListener.id}     | privateChannelUnsubscribeEventListenerRequest |
 
   Scenario: Adding an "onDisconnect" on a given Private Channel to receive a notification
-    Given "onDisconnectListenerMessage" is a "PrivateChannel.onDisconnect" message on channel "{privateChannel.id}"
+    Given "onDisconnectListenerMessage" is a "privateChannelOnDisconnectEvent" message on channel "{privateChannel.id}"
     And "voidHandler" is a invocation counter into "count"
     When I call "{privateChannel}" with "onDisconnect" with parameter "{voidHandler}"
+    And we wait for a period of "100" ms
     And messaging receives "{onDisconnectListenerMessage}"
     Then "{count}" is "1"
 
@@ -83,18 +90,5 @@ Feature: Basic User Channels Support
     Given "instrumentContext" is a "fdc3.instrument" context
     When I call "{privateChannel}" with "broadcast" with parameter "{instrumentContext}"
     Then messaging will have posts
-      | type                     | payload.channelId   | payload.context.type | payload.context.name |
-      | PrivateChannel.broadcast | {privateChannel.id} | fdc3.instrument      | Apple                |
-
-  Scenario: When disconnecting, a disconnect message is sent and unsubscribe is sent from each listener.
-    Given "typesHandler" pipes types to "types"
-    When I call "{privateChannel}" with "onAddContextListener" with parameter "{typesHandler}"
-    And I call "{privateChannel}" with "onUnsubscribe" with parameter "{typesHandler}"
-    And I call "{privateChannel}" with "disconnect"
-    Then messaging will have posts
-      | type                                | payload.channelId   | payload.listenerType |
-      | PrivateChannel.eventListenerAdded   | {privateChannel.id} | onAddContextListener |
-      | PrivateChannel.eventListenerAdded   | {privateChannel.id} | onUnsubscribe        |
-      | PrivateChannel.eventListenerRemoved | {privateChannel.id} | onAddContextListener |
-      | PrivateChannel.eventListenerRemoved | {privateChannel.id} | onUnsubscribe        |
-      | PrivateChannel.onDisconnect         | {privateChannel.id} | {empty}              |
+      | type             | payload.channelId   | payload.context.type | payload.context.name | matches_type     |
+      | broadcastRequest | {privateChannel.id} | fdc3.instrument      | Apple                | broadcastRequest |

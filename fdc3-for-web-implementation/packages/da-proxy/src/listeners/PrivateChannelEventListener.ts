@@ -2,15 +2,15 @@ import { Messaging } from "../Messaging"
 import { AbstractListener } from "./AbstractListener"
 import { BroadcastEvent } from "@kite9/fdc3-common"
 
-type EVENT_TYPES_WITH_TYPE_HANDLER = "privateChannelOnAddContextListenerEvent" | "privateChannelOnUnsubscribeEvent"
-export type EVENT_TYPES = EVENT_TYPES_WITH_TYPE_HANDLER | "privateChannelOnDisconnectEvent"
+type EVENT_TYPES_WITH_TYPE_HANDLER = "onAddContextListener" | "onUnsubscribe"
+export type EVENT_TYPES = EVENT_TYPES_WITH_TYPE_HANDLER | "onDisconnect"
 
-/**
- * For handling 
- * PrivateChannelOnAddContextListenerEvent, 
- * PrivateChannelOnDisconnectEvent, 
- * PrivateChannelOnUnsubscribeEvent
- */
+const EVENT_NAMES: { [k: string]: string } = {
+    onAddContextListener: "privateChannelOnAddContextListenerEvent",
+    onDisconnect: "privateChannelOnDisconnectEvent",
+    onUnsubscribe: "privateChannelOnUnsubscribeEvent"
+}
+
 abstract class AbstractPrivateChannelEventListener<X> extends AbstractListener<X> {
 
     readonly privateChannelId: string
@@ -27,7 +27,7 @@ abstract class AbstractPrivateChannelEventListener<X> extends AbstractListener<X
     }
 
     filter(m: BroadcastEvent) {
-        return (m.type == this.listenerType) && (this.privateChannelId == (m.payload as any)?.privateChannelId); /* ISSUE: 1293 */
+        return (m.type == EVENT_NAMES[this.listenerType]) && (this.privateChannelId == (m.payload as any)?.privateChannelId); /* ISSUE: 1293 */
     }
 
     abstract action(m: any): void
@@ -39,7 +39,7 @@ export class PrivateChannelEventListenerVoid extends AbstractPrivateChannelEvent
         messaging: Messaging,
         channelId: string,
         handler: () => void) {
-        super(messaging, channelId, "privateChannelOnDisconnectEvent", handler)
+        super(messaging, channelId, "onDisconnect", handler)
     }
 
     action(_m: any): void {

@@ -6,7 +6,7 @@ import { DefaultIntentListener } from "../listeners/DefaultIntentListener";
 import { IntentResolver } from "@kite9/fdc3-common";
 import { DefaultChannel } from "../channels/DefaultChannel";
 import { DefaultPrivateChannel } from "../channels/DefaultPrivateChannel";
-import { RaiseIntentResultResponse, FindIntentRequest, FindIntentResponse, AddContextListenerRequestMeta, FindIntentsByContextRequest, FindIntentsByContextsByContextResponse, RaiseIntentRequest, RaiseIntentResponse } from "@kite9/fdc3-common"
+import { RaiseIntentResultResponse, FindIntentRequest, FindIntentResponse, AddContextListenerRequestMeta, FindIntentsByContextRequest, FindIntentsByContextsResponse, RaiseIntentRequest, RaiseIntentResponse } from "@kite9/fdc3-common"
 
 function convertIntentResult(m: RaiseIntentResultResponse, messaging: Messaging): Promise<IntentResult> {
     const error = m.payload.error
@@ -52,7 +52,7 @@ export class DefaultIntentSupport implements IntentSupport {
                 context,
                 resultType
             },
-            meta: this.messaging.createMeta() as AddContextListenerRequestMeta /* ISSUE: #1275 */
+            meta: this.messaging.createMeta() as any /* ISSUE: #1275 */
         }
 
         const result = await this.messaging.exchange(messageOut, "findIntentResponse") as FindIntentResponse
@@ -61,7 +61,7 @@ export class DefaultIntentSupport implements IntentSupport {
             throw new Error(ResolveError.NoAppsFound)
         } else {
             return {
-                intent: appIntent.intent,
+                intent: appIntent.intent as any /* ISSUE: 1295 */,
                 apps: appIntent.apps
             }
         }
@@ -76,12 +76,12 @@ export class DefaultIntentSupport implements IntentSupport {
             meta: this.messaging.createMeta() as AddContextListenerRequestMeta /* ISSUE: #1275 */
         }
 
-        const result = await this.messaging.exchange(messageOut, "findIntentsByContextResponse") as FindIntentsByContextsByContextResponse /* ISSUE: $1277 */
+        const result = await this.messaging.exchange(messageOut, "findIntentsByContextResponse") as FindIntentsByContextsResponse
         const appIntents = result.payload.appIntents!!
         if (appIntents.length == 0) {
             throw new Error(ResolveError.NoAppsFound)
         } else {
-            return appIntents
+            return appIntents as any /* ISSUE: 1295 */
         }
 
     }
