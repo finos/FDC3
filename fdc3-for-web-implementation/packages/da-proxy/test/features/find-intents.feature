@@ -1,7 +1,8 @@
 Feature: Basic Intents Support
 
   Background: Desktop Agent API
-    Given A Desktop Agent in "api"
+    Given schemas loaded
+    And A Desktop Agent in "api"
     And app "chipShop/c1" resolves intent "OrderFood" with result type "void"
     And app "chipShop/c2" resolves intent "OrderFood" with result type "channel<fdc3.chips>"
     And app "library/l1" resolves intent "BorrowBooks" with result type "channel<fdc3.book>"
@@ -20,10 +21,16 @@ Feature: Basic Intents Support
       | appId       | instanceId |
       | bank        | b1         |
       | travelAgent | t1         |
+    And messaging will have posts
+      | payload.intent | matches_type      |
+      | Buy            | findIntentRequest |
 
   Scenario: Find Intent can return an error when an intent doesn't match
     When I call "{api}" with "findIntent" with parameter "Bob"
     Then "{result}" is an error with message "NoAppsFound"
+    And messaging will have posts
+      | payload.intent | matches_type      |
+      | Bob            | findIntentRequest |
 
   Scenario: Find Intent can filter by a context type
     When I call "{api}" with "findIntent" with parameters "Buy" and "{instrumentContext}"
@@ -33,8 +40,11 @@ Feature: Basic Intents Support
     And "{result.apps}" is an array of objects with the following contents
       | appId |
       | bank  |
+    And messaging will have posts
+      | payload.intent | payload.context.type | payload.context.id.ticker | matches_type      |
+      | Buy            | fdc3.instrument      | AAPL                      | findIntentRequest |
 
-  Scenario: Find Intent can filter by generic result Type
+  Scenario: Find Intent can filter by generic result type
     When I call "{api}" with "findIntent" with parameters "OrderFood" and "{empty}" and "channel<fdc3.chips>"
     Then "{result.intent}" is an object with the following contents
       | name      |
@@ -42,6 +52,9 @@ Feature: Basic Intents Support
     And "{result.apps}" is an array of objects with the following contents
       | appId    | instanceId |
       | chipShop | c2         |
+    And messaging will have posts
+      | payload.intent | payload.resultType  | matches_type      |
+      | OrderFood      | channel<fdc3.chips> | findIntentRequest |
 
   Scenario: Find Intents By Context
     When I call "{api}" with "findIntentsByContext" with parameter "{instrumentContext}"
@@ -49,7 +62,13 @@ Feature: Basic Intents Support
       | intent.name | apps[0].appId | apps.length |
       | Buy         | bank          |           1 |
       | Sell        | bank          |           1 |
+    And messaging will have posts
+      | payload.context.type | payload.context.id.ticker | matches_type                |
+      | fdc3.instrument      | AAPL                      | findIntentsByContextRequest |
 
   Scenario: Find Intents By Context can return an error when an intent doesn't match
     When I call "{api}" with "findIntentsByContext" with parameter "{crazyContext}"
     Then "{result}" is an error with message "NoAppsFound"
+    And messaging will have posts
+      | payload.context.type | payload.context.bogus | matches_type                |
+      | fdc3.unsupported     | {true}                | findIntentsByContextRequest |

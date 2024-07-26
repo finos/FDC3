@@ -54,3 +54,17 @@ Feature: Relaying Private Channel Broadcast messages
     And I refer to "{result}" as "privateChannel"
     And I call "{api1}" with "getOrCreateChannel" with parameter "{privateChannel.id}"
     Then "{result}" is an error with message "AccessDenied"
+
+  Scenario: When disconnecting, a disconnect message is sent and unsubscribe is sent from each listener.
+    Given "typesHandler" pipes types to "types"
+    When I call "{privateChannel}" with "onAddContextListener" with parameter "{typesHandler}"
+    And I call "{privateChannel}" with "onUnsubscribe" with parameter "{typesHandler}"
+    And we wait for a period of "100" ms
+    And I call "{privateChannel}" with "disconnect"
+    Then messaging will have posts
+      | type                                | payload.channelId   | payload.listenerType |
+      | PrivateChannel.eventListenerAdded   | {privateChannel.id} | onAddContextListener |
+      | PrivateChannel.eventListenerAdded   | {privateChannel.id} | onUnsubscribe        |
+      | PrivateChannel.eventListenerRemoved | {privateChannel.id} | onAddContextListener |
+      | PrivateChannel.eventListenerRemoved | {privateChannel.id} | onUnsubscribe        |
+      | PrivateChannel.onDisconnect         | {privateChannel.id} | {empty}              |
