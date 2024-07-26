@@ -1,58 +1,60 @@
 ---
-id: OrderList
-sidebar_label: OrderList
 title: OrderList
-hide_title: true
+sidebar_label: OrderList
+
 ---
-# `OrderList`
 
-[`@experimental`](/docs/fdc3-compliance#experimental-features) A list of orders. Use this type for use cases that require not just a single order, but multiple.
+# OrderList
 
-Notes:
+[@experiemental](/docs/fdc3-compliance#experimental-features) A list of orders. Use this type for use cases that require not just a single order, but multiple.
 
-- The OrderList schema does not explicitly include identifiers in the id section, as there is not a common standard for such identifiers. Applications can, however, populate this part of the contract with custom identifiers if so desired.
+The OrderList schema does not explicitly include identifiers in the id section, as there is not a common standard for such identifiers. Applications can, however, populate this part of the contract with custom identifiers if so desired.
+
+## Schema
+
+<https://fdc3.finos.org/schemas/next/context/orderList.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/orderList.schema.json))
 
 ## Type
 
 `fdc3.orderList`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/orderList.schema.json>
+<details>
+  <summary><code>orders</code> <strong>(required)</strong></summary>
 
-## Details
+**type**: `array`
 
-| Property     | Type       | Required | Example Value             |
-|--------------|------------|----------|---------------------------|
-| `type`       | string     | Yes      | `'fdc3.orderList'`        |
-| `id`         | object     | No       | `{ listId: '1234' }` |
-| `name`       | string     | No       | `'Today's orders'`    |
-| `orders`     | Trade[]    | Yes      | `[order1, order2]`  |
+<details>
+  <summary><code>Items</code></summary>
+
+**type**: [Order](Order)
+
+</details>
+
+An array of order contexts that forms the list.
+
+</details>
 
 ## Example
 
-```js
-const orderList = {
-    type: "fdc3.orderList",
-    orders: [
-        {
-            "type": "fdc3.order",
-            "id": {
-                "myOMS": "ABC123"
-            }
-        },
-        {
-            "type": "fdc3.order",
-            "id": {
-                "myOMS": "DEF456"
-            }
-        }
-    ]
-};
+```json
+{
+  "type": "fdc3.orderList",
+  "orders": [
+    {
+      "type": "fdc3.order",
+      "id": {
+        "myOMS": "ABC123"
+      }
+    },
+    {
+      "type": "fdc3.order",
+      "id": {
+        "myOMS": "DEF456"
+      }
+    }
+  ]
+}
 ```
 
-## See Also
-
-Other Types
-
-- [Order](Order)

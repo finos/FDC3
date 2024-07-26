@@ -49,7 +49,7 @@ export interface Action {
     /**
      * An optional target application identifier that should perform the action
      */
-    app?: ActionTargetApp;
+    app?: AppIdentifier;
     /**
      * A context object with which the action will be performed
      */
@@ -83,7 +83,7 @@ export interface Action {
  * If the `instanceId` field is set then the `AppMetadata` object represents a specific
  * instance of the application that may be addressed using that Id.
  */
-export interface ActionTargetApp {
+export interface AppIdentifier {
     /**
      * The unique application identifier located within a specific application directory
      * instance. An example of an appId might be 'app@sub.root'
@@ -375,7 +375,7 @@ export interface TimeRangeObject {
      * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
      */
     startTime?: Date;
-    type:       "fdc3.timerange";
+    type:       "fdc3.timeRange";
     id?:        { [key: string]: any };
     name?:      string;
     [property: string]: any;
@@ -531,7 +531,7 @@ export interface PurpleAction {
     /**
      * An optional target application identifier that should perform the action
      */
-    app?: ActionTargetApp;
+    app?: AppIdentifier;
     /**
      * A context object with which the action will be performed
      */
@@ -1389,7 +1389,7 @@ export interface FluffyAction {
     /**
      * An optional target application identifier that should perform the action
      */
-    app?: ActionTargetApp;
+    app?: AppIdentifier;
     /**
      * A context object with which the action will be performed
      */
@@ -1826,7 +1826,7 @@ export interface TimeRange {
      * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
      */
     startTime?: Date;
-    type:       "fdc3.timerange";
+    type:       "fdc3.timeRange";
     id?:        { [key: string]: any };
     name?:      string;
     [property: string]: any;
@@ -1938,6 +1938,10 @@ export interface TransactionResult {
      * A context object returned by the transaction, possibly with updated data.
      */
     context?: ContextElement;
+    /**
+     * A human readable message describing the outcome of the transaction.
+     */
+    message?: string;
     /**
      * The status of the transaction being reported.
      */
@@ -2382,7 +2386,7 @@ function r(name: string) {
 
 const typeMap: any = {
     "Action": o([
-        { json: "app", js: "app", typ: u(undefined, r("ActionTargetApp")) },
+        { json: "app", js: "app", typ: u(undefined, r("AppIdentifier")) },
         { json: "context", js: "context", typ: r("ContextElement") },
         { json: "intent", js: "intent", typ: u(undefined, "") },
         { json: "title", js: "title", typ: "" },
@@ -2390,7 +2394,7 @@ const typeMap: any = {
         { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
-    "ActionTargetApp": o([
+    "AppIdentifier": o([
         { json: "appId", js: "appId", typ: "" },
         { json: "desktopAgent", js: "desktopAgent", typ: u(undefined, "") },
         { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
@@ -2471,7 +2475,7 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "PurpleAction": o([
-        { json: "app", js: "app", typ: u(undefined, r("ActionTargetApp")) },
+        { json: "app", js: "app", typ: u(undefined, r("AppIdentifier")) },
         { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
         { json: "intent", js: "intent", typ: u(undefined, "") },
         { json: "title", js: "title", typ: u(undefined, "") },
@@ -2651,7 +2655,7 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "FluffyAction": o([
-        { json: "app", js: "app", typ: u(undefined, r("ActionTargetApp")) },
+        { json: "app", js: "app", typ: u(undefined, r("AppIdentifier")) },
         { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
         { json: "intent", js: "intent", typ: u(undefined, "") },
         { json: "title", js: "title", typ: u(undefined, "") },
@@ -2766,6 +2770,7 @@ const typeMap: any = {
     ], "any"),
     "TransactionResult": o([
         { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
+        { json: "message", js: "message", typ: u(undefined, "") },
         { json: "status", js: "status", typ: r("TransactionStatus") },
         { json: "type", js: "type", typ: r("TransactionResultType") },
         { json: "id", js: "id", typ: u(undefined, m("any")) },
@@ -2788,7 +2793,7 @@ const typeMap: any = {
         "fdc3.instrument",
     ],
     "TimeRangeType": [
-        "fdc3.timerange",
+        "fdc3.timeRange",
     ],
     "ChartStyle": [
         "bar",
