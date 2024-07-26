@@ -27,6 +27,7 @@ For the purposes of this Standard, the following definitions apply. Other terms 
 - **DAB**: Acronym of Desktop Agent Bridge.
 - **Desktop Agent**: A desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain. The primary interface of the FDC3 API.
 - **Desktop Agent Bridge**: An independent service that Desktop Agents connect to which allows them to relay requests to other Desktop Agents also connected to the bridge, allowing FDC3-based interop to extend across multiple Desktop Agents and machines.
+- **Desktop Agent Preload**: An 'injected' or 'preloaded' Desktop Agent API implementation, typically provided by an electron (or similar) container or browser extension, which is made available to web applications at `window.fdc3` and may be returned by the `getAgent()` function defined in the FDC3 Web Connection Protocol.
 - **FDC3 API**: A baseline, consistent developer interface for interoperability between applications.
 - **GUID**: Globally Unique IDentifier, synonymous with UUID. Defined by [IETF RFC4122](references).
 - **interop**: Shorthand for interoperability.
@@ -40,3 +41,4 @@ For the purposes of this Standard, the following definitions apply. Other terms 
 - **resolving an intent**: The act of mapping a specified intent and context object to an application.
 - **standard intent**: An intent defined by this Standard.
 - **UUID**: Universally Unique IDentifier, synonymous with GUID. Defined by [IETF RFC4122](references).
+- **Web Connection Protocol**: A defined set of steps for a web application to connect to Desktop Agents that implement any of the interfaces defined for web applications in the FDC3 Standard.

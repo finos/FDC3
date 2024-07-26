@@ -9,24 +9,31 @@ There are two main categories of platform: web and native, both of which are des
 
 ## Web
 
-For a web application to use the FDC3 API it needs to retrieve a copy of the `DesktopAgent` API interface, which it will use to communicate with the desktop agent (this interface is often referred to as the `fdc3` object or the "FDC3 API").
+For a web application to use the FDC3 API it needs to retrieve a copy of the `DesktopAgent` API interface, which it will use to communicate with the Desktop Agent (this interface is often referred to as the `fdc3` object or the "FDC3 API"). 
 
 There are two standardized types of interface to a DA that a web application may use (which is appropriate depends on where the web application is run):
 
-- **Preload**: Used where the desktop agent is able to inject the the `DesktopAgent` API at `window.fdc3` allowing an app to access it directly, for example in an Electron app or where a browser Browser Extension is in use.
-- **Proxy**: Used when running in standard web browser (without an extension) and the desktop agent has to run in a different window or frame to the application and must be communicated with via Cross-document messaging with `postMessage` and `MessagePorts` (see the [HTML5 Living Standard](https://html.spec.whatwg.org/multipage/web-messaging.html) for more details). A 'proxy' class implementing the Desktop Agent API is used to abstract the details of Cross-document messaging, allowing the application to work with the FDC3 API directly.
+- **Desktop Agent Preload**: Used where the Desktop Agent is able to inject the the `DesktopAgent` API at `window.fdc3` allowing an app to access it directly, for example in an Electron app or where a browser Browser Extension is in use.
+- **Desktop Agent Proxy**: Used when running in a standard web browser (without a browser extension or similar customization). The Desktop Agent will often be running in a different window or frame to the application and must be communicated with via cross-document messaging with `postMessage` and `MessagePorts` (see the [HTML5 Living Standard](https://html.spec.whatwg.org/multipage/web-messaging.html) for more details). A 'proxy' class implementing the Desktop Agent API is used to abstract the details of cross-document messaging, allowing the application to work with the FDC3 API directly.
 
 The FDC3 Standard defines a [Web Connection Protocol (WCP)](specs/webConnectionProtocol) that allows apps to work with either interface, by detecting which is applicable. The FDC3 NPM module implements the `getAgent()` function defined by WCP and can return an injected Desktop Agent, a Desktop Agent Proxy, or other Desktop Agent implementation enabled by a non-standard interface.
 
-Hence, FDC3 apps SHOULD obtain access to a `DesktopAgent` object (`fdc3`) by importing or loading the `@finos/fdc3` library and then calling the provided `getAgent()` function, ensuring that they can support either of the standardized interfaces.
+Hence, FDC3 apps SHOULD obtain access to a `DesktopAgent` object (`fdc3`) by importing or loading the `@finos/fdc3` library and then calling the provided `getAgent()` function, ensuring that they can support any of the standardized interfaces.
 
 :::note
 
-In prior versions of FDC3 (<= 2.1) Apps were required to use the 'Preload' interface, i.e. they relied on the existence of the `window.fdc3` object, which meant that apps running in a standard web browser had to import libraries specific to the Desktop Agent implementation in use. From FDC3 2.2 onwards the 'Proxy' interface is available, which allows apps in a standard web browser to connect to any Desktop Agent that implements that interface.
+In prior versions of FDC3 (<= 2.1) Apps were required to use the 'Desktop Agent Preload' interface, i.e. they relied on the existence of the `window.fdc3` object, which meant that apps running in a standard web browser had to import libraries specific to the Desktop Agent implementation in use. From FDC3 2.2 onwards the 'Desktop Agent Proxy' interface is available, which allows apps in a standard web browser to connect to any Desktop Agent that implements that interface.
 
-Hence, from FDC3 2.2 onwards apps should switch from using `window.fdc3` directly to calling the `getAgent()` function to retrieve a `DesktopAgent` API interface.
+Hence, from FDC3 2.2 onwards apps SHOULD call the `getAgent()` to retrieve a `DesktopAgent` API interface.
 
 :::
+
+### getAgent
+
+//TODO: rewrite this section after updating getAgent docs for using URLs and param for setting window.fdc3.
+//  Provide a brief introduction and link to getAgent reference
+
+
 
 :::tip
 
@@ -89,7 +96,7 @@ Applications MAY provide additional fields related to configuration or failover 
 
 > Note: Applications SHOULD provide visual feedback to users indicating that the app is in the process of connecting. Once the FDC3 interface is accessible the application SHOULD update that visual feedback.
 
-### Failover function
+#### Failover function
 
 Interface retrieval can time out, for instance if the DA doesn't exist or is unresponsive. The default timeout of 750 milliseconds can be overridden by setting the `timeout` field. An application may also provide a failover function which will be called if an interface cannot be retrieved or times out.
 
@@ -135,7 +142,7 @@ There are two main ways FDC3 can be used from web applications:
 
 #### 1. Direct Usage
 
-Simply rely on the global object being made available by your desktop agent, and address the API directly:
+Simply rely on the global object being made available by your Desktop Agent, and address the API directly:
 
 ```js
 function sendData() {
@@ -154,7 +161,7 @@ if (window.fdc3) {
 
 #### 2. NPM Wrapper
 
-FDC3 offers the [`@finos/fdc3` npm package](https://www.npmjs.com/package/@finos/fdc3) that can by used by web applications to target operations from the [API Specification](api/spec) in a consistent way. Each FDC3-compliant desktop agent that the application runs in, can then provide an implementation of the FDC3 API operations.
+FDC3 offers the [`@finos/fdc3` npm package](https://www.npmjs.com/package/@finos/fdc3) that can by used by web applications to target operations from the [API Specification](api/spec) in a consistent way. Each FDC3-compliant Desktop Agent that the application runs in, can then provide an implementation of the FDC3 API operations.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -210,7 +217,7 @@ const listener = await addIntentListener('ViewAnalysis', instrument => {
 
 The FDC3 Standard does not currently define wire formats for an app to communicate with a Desktop Agent, nor does it define language specific API bindings, other than JavaScript and TypeScript. Hence, for a native application to be FDC3-enabled, it needs to either:
 
-- Make use of a shared library (such as a .NET DLL or JAR file) that provides it with an implementation of the FDC3 API (which ties it to a specific desktop agent implementation).
+- Make use of a shared library (such as a .NET DLL or JAR file) that provides it with an implementation of the FDC3 API (which ties it to a specific Desktop Agent implementation).
 - Model itself as a Desktop Agent (rather than just an app working with one) and use the Agent Bridging protocol to connect to a Desktop Agent Bridge and work through it to interoperate with apps managed by other Desktop Agents.
 
 ## Hybrid
