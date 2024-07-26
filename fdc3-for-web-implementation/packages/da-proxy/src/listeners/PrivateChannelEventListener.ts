@@ -13,21 +13,21 @@ export type EVENT_TYPES = EVENT_TYPES_WITH_TYPE_HANDLER | "privateChannelOnDisco
  */
 abstract class AbstractPrivateChannelEventListener<X> extends AbstractListener<X> {
 
-    readonly channelId: string
+    readonly privateChannelId: string
     readonly listenerType: string
 
     constructor(
         messaging: Messaging,
-        channelId: string,
+        privateChannelId: string,
         listenerType: string,
         handler: X) {
-        super(messaging, { channelId, listenerType }, handler, "privateChannelAddEventListener", "privateChannelUnsubscribeEventListener")
-        this.channelId = channelId;
+        super(messaging, { privateChannelId, listenerType }, handler, "privateChannelAddEventListener", "privateChannelUnsubscribeEventListener")
+        this.privateChannelId = privateChannelId;
         this.listenerType = listenerType
     }
 
     filter(m: BroadcastEvent) {
-        return (m.type == this.listenerType) && (this.channelId == m.payload?.channelId);
+        return (m.type == this.listenerType) && (this.privateChannelId == (m.payload as any)?.privateChannelId); /* ISSUE: 1293 */
     }
 
     abstract action(m: any): void

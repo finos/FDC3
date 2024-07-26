@@ -41,7 +41,7 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
 
     async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
         const listener = new DefaultContextListener(this.messaging, this.id, contextType, theHandler);
-        listener.register()
+        await listener.register()
         return listener
     }
 }

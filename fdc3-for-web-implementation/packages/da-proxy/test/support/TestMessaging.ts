@@ -17,6 +17,7 @@ import { JoinUserChannel } from "./responses/JoinUserChannel";
 import { GetUserChannels } from "./responses/GetUserChannels";
 import { RegisterListeners } from "./responses/RegisterListeners";
 import { UnsubscribeListeners } from "./responses/UnsubscribeListeners";
+import { CreatePrivateChannel } from "./responses/CreatePrivateChannel";
 
 export interface IntentDetail {
     app?: AppIdentifier,
@@ -100,7 +101,8 @@ export class TestMessaging extends AbstractMessaging {
         new JoinUserChannel(),
         new GetUserChannels(),
         new RegisterListeners(),
-        new UnsubscribeListeners()
+        new UnsubscribeListeners(),
+        new CreatePrivateChannel()
     ]
 
     constructor(channelState: { [key: string]: Context }) {
