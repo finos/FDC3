@@ -12,13 +12,13 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
     }
 
     onAddContextListener(handler: (contextType?: string | undefined) => void): Listener {
-        const l = new PrivateChannelEventListenerType(this.messaging, this.id, "privateChannelOnAddContextListenerEvent", handler);
+        const l = new PrivateChannelEventListenerType(this.messaging, this.id, "onAddContextListener", handler);
         l.register()
         return l;
     }
 
     onUnsubscribe(handler: (contextType?: string | undefined) => void): Listener {
-        const l = new PrivateChannelEventListenerType(this.messaging, this.id, "privateChannelOnUnsubscribeEvent", handler);
+        const l = new PrivateChannelEventListenerType(this.messaging, this.id, "onUnsubscribe", handler);
         l.register()
         return l;
     }

@@ -1,7 +1,8 @@
 Feature: Desktop Agent Information
 
   Background: Desktop Agent API
-    Given A Desktop Agent in "api"
+    Given schemas loaded
+    And A Desktop Agent in "api"
     And app "chipShop/c1"
 
   Scenario: Getting App metadata
@@ -9,6 +10,9 @@ Feature: Desktop Agent Information
     Then "{result}" is an object with the following contents
       | appId    | name          | description          |
       | chipShop | Metadata Name | Metadata Description |
+    And messaging will have posts
+      | payload.app.appId | payload.app.instanceId | matches_type          |
+      | chipShop          | c1                     | getAppMetadataRequest |
 
   Scenario: Getting own info
     When I call "{api}" with "getInfo"
@@ -18,6 +22,9 @@ Feature: Desktop Agent Information
     And "{result.appMetadata}" is an object with the following contents
       | appId       | name          | description          |
       | Test App Id | Metadata Name | Metadata Description |
+    And messaging will have posts
+      | matches_type   |
+      | getInfoRequest |
 
   Scenario: Getting instance information
     When I call "{api}" with "findInstances" with parameter "{c1}"
@@ -26,6 +33,9 @@ Feature: Desktop Agent Information
       | One   |          1 |
       | Two   |          2 |
       | Three |          3 |
+    And messaging will have posts
+      | payload.app.appId | payload.app.instanceId | matches_type         |
+      | chipShop          | c1                     | findInstancesRequest |
 
   Scenario: Checking own info caching (called twice)
     When I call "{api}" with "getInfo"
@@ -36,3 +46,6 @@ Feature: Desktop Agent Information
     And "{result.appMetadata}" is an object with the following contents
       | appId       | name          | description          |
       | Test App Id | Metadata Name | Metadata Description |
+    And messaging will have posts
+      | matches_type   |
+      | getInfoRequest |
