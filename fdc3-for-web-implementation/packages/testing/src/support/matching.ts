@@ -24,7 +24,7 @@ export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: an
             const resolved = handleResolve(actual, cw)
 
             if (found != resolved) {
-                cw.log("Match failed on " + field)
+                cw.log("Match failed on " + field + " '" + found + "' vs '" + resolved + "'")
                 return false;
             }
         }
@@ -46,8 +46,16 @@ export function indexOf(cw: PropsWorld, rows: Record<string, string>[], data: an
 export function handleResolve(name: string, on: PropsWorld): any {
     if (name.startsWith("{") && name.endsWith("}")) {
         const stripped = name.substring(1, name.length - 1)
-        const out = JSONPath({ path: stripped, json: on.props })[0];
-        return out
+        if (stripped == 'null') {
+            return null
+        } else if (stripped == 'true') {
+            return true
+        } else if (stripped == 'false') {
+            return false
+        } else {
+            const out = JSONPath({ path: stripped, json: on.props })[0];
+            return out
+        }
     } else {
         return name
     }
