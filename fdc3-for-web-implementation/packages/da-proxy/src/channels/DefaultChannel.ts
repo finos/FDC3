@@ -42,7 +42,7 @@ export class DefaultChannel implements Channel {
         return response.payload.context ?? null
     }
 
-    addContextListener(contextType: any, handler?: ContextHandler): Promise<Listener> {
+    async addContextListener(contextType: any, handler?: ContextHandler): Promise<Listener> {
         let theContextType: string | null
         let theHandler: ContextHandler
 
@@ -58,7 +58,7 @@ export class DefaultChannel implements Channel {
             theHandler = contextType as ContextHandler;
         }
 
-        return this.addContextListenerInner(theContextType, theHandler);
+        return await this.addContextListenerInner(theContextType, theHandler);
     }
 
     async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
