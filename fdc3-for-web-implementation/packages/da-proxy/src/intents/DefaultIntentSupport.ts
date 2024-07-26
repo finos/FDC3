@@ -190,7 +190,9 @@ export class DefaultIntentSupport implements IntentSupport {
     }
 
     async addIntentListener(intent: string, handler: IntentHandler): Promise<Listener> {
-        return new DefaultIntentListener(this.messaging, intent, handler);
+        const out = new DefaultIntentListener(this.messaging, intent, handler);
+        await out.register()
+        return out
     }
 
 }
