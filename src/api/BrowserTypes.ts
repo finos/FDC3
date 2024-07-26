@@ -2489,8 +2489,7 @@ export type OpenErrorResponsePayload = "MalformedContext" | "AppNotFound" | "App
  */
 
 /**
- * An event message from the Desktop Agent to an app indicating that another app has added a
- * context listener to a specific PrivateChannel.
+ * A request to add an event listener to a specific PrivateChannel.
  *
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
@@ -2515,15 +2514,21 @@ export interface PrivateChannelAddEventListenerRequest {
  */
 export interface TPayload {
     /**
-     * The type of the context listener to add to the channel, or null if it should listen to
-     * all types.
+     * The type of PrivateChannel event that the listener should be applied to.
      */
-    contextType: null | string;
+    listenerType: PrivateChannelEventListenerTypes;
     /**
      * The Id of the PrivateChannel that the listener should be added to.
      */
     privateChannelId: string;
 }
+
+/**
+ * The type of PrivateChannel event that the listener should be applied to.
+ *
+ * Event listener type names for Private Channel events
+ */
+export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsubscribe" | "onDisconnect";
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -4608,7 +4613,7 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("PrivateChannelAddEventListenerRequestType") },
     ], false),
     "TPayload": o([
-        { json: "contextType", js: "contextType", typ: u(null, "") },
+        { json: "listenerType", js: "listenerType", typ: r("PrivateChannelEventListenerTypes") },
         { json: "privateChannelId", js: "privateChannelId", typ: "" },
     ], false),
     "PrivateChannelAddEventListenerResponse": o([
@@ -5095,6 +5100,11 @@ const typeMap: any = {
     ],
     "OpenResponseType": [
         "openResponse",
+    ],
+    "PrivateChannelEventListenerTypes": [
+        "onAddContextListener",
+        "onDisconnect",
+        "onUnsubscribe",
     ],
     "PrivateChannelAddEventListenerRequestType": [
         "privateChannelAddEventListenerRequest",
