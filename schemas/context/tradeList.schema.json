@@ -18,7 +18,20 @@
           },
           "title": "List of Trades",
           "description": "An array of trade contexts that forms the list."
+        },
+        "id": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Trade List Identifiers",
+          "description": "One or more identifiers that refer to the trade list in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future."
+        },
+        "name": {
+          "type": "string",
+          "description": "An optional human-readable name for the trade list"
         }
+
       },
       "required": [
         "type",
