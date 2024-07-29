@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.30",
   "scripts": {
-    "dev": "nodemon -w src/server -x tsx src/server/main.ts"
+    "dev": "nodemon -w src/server src/server/main.ts"
   },
   "devDependencies": {
     "@types/express": "^4.17.15",
@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@finos/fdc3": "^2.1.0-beta.6",
-    "@kite9/client": "workspace:*",
-    "@kite9/da-server": "workspace:*",
-    "@kite9/fdc3-common": "workspace:*",
+    "@kite9/client": "0.0.30",
+    "@kite9/da-server": "0.0.30",
+    "@kite9/fdc3-common": "0.0.31",
     "@types/uuid": "^9.0.8",
     "@types/ws": "^8.5.10",
     "express": "^4.18.3",

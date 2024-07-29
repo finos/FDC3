@@ -3,16 +3,21 @@
   "private": true,
   "version": "0.0.30",
   "workspaces": [
-    "packages/*"
+    "packages/fdc3-common",
+    "packages/addon",
+    "packages/da-proxy",
+    "packages/da-server",
+    "packages/client",
+    "packages/demo"
+   
   ],
   "scripts": {
-    "clean": "yarn workspaces foreach --all run clean",
-    "build": "yarn workspaces foreach --all run build",
-    "test": "yarn workspaces foreach --all run test",
-    "dev": "concurrently \"cd packages/addon && yarn dev\" \"cd packages/fdc3-workbench && yarn dev\" \"cd packages/demo && yarn dev\"",
+    "clean": "npm run clean --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "dev": "concurrently \"cd packages/addon && npm run dev\" \"cd packages/fdc3-workbench && npm run dev\" \"cd packages/demo && npm run dev\"",
     "docs": "yarn typedocs --out docs packages/fdc3-common/index.ts /packages/client/**"
   },
-  "packageManager": "yarn@4.3.1+sha256.2535167e742927e1d2a1610d5004576e4e8f764d2ca5470d19536790f55cd6e2",
   "devDependencies": {
     "concurrently": "8.2.2",
     "eslint": "7.17.0",

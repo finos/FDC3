@@ -126,7 +126,7 @@ const exampleResolverData: ResolverIntents = {
 let selected = recommendedChannels[2].id;
 let expanded = true;
 
-const openChannelIframe = e => {
+const openChannelIframe = (e: MouseEvent) => {
   const channel = new MessageChannel();
 
   // STEP 2B: Receive confirmation over port from iframe
@@ -155,7 +155,8 @@ const openChannelIframe = e => {
 
   };
 
-  e.target.disabled = true;
+  const {target} = e;
+  if(target) (target as HTMLButtonElement).disabled = true;
 
   const iframe = document.querySelector<HTMLIFrameElement>("#channel-iframe")!;
   iframe.parentElement?.setAttribute("data-visible", "true");
@@ -173,7 +174,7 @@ const openChannelIframe = e => {
   iframe.contentWindow?.postMessage({ type: 'iframeHello' }, '*', [channel.port2]);
 };
 
-const openResolverIframe = e => {
+const openResolverIframe = (e: MouseEvent )=> {
   const channel = new MessageChannel();
 
   // STEP 2B: Receive confirmation over port from iframe
@@ -187,13 +188,16 @@ const openResolverIframe = e => {
       case "iframeResolveAction":
       case "iframeResolve": {
         // STEP 4B: Receive user selection information from iframe
-        document.getElementById('resolver-user-selection')!.innerHTML = prettyPrintJson.toHtml(data);
+
+        // TODO - prettyPrintJson dependency is not referenced, re-enable when added
+        // document.getElementById('resolver-user-selection')!.innerHTML = prettyPrintJson.toHtml(data);
         break;
       }
     }
 
   };
-  e.target.disabled = true;
+  const {target} = e;
+  if(target) (target as HTMLButtonElement).disabled = true;
 
   const iframe = document.querySelector<HTMLIFrameElement>("#resolver-iframe");
   iframe!.parentElement?.setAttribute("data-visible", "true");
