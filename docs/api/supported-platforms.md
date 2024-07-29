@@ -9,7 +9,7 @@ There are two main categories of platform: web and native, both of which are des
 
 ## Web
 
-For a web application to use the FDC3 API it needs to retrieve a copy of the `DesktopAgent` API interface, which it will use to communicate with the Desktop Agent (this interface is often referred to as the `fdc3` object or the "FDC3 API"). 
+For a web application to use the FDC3 API it needs to retrieve a copy of the `DesktopAgent` API interface, which it will use to communicate with the Desktop Agent (this interface is often referred to as the `fdc3` object or the "FDC3 API").
 
 There are two standardized types of interface to a DA that a web application may use (which is appropriate depends on where the web application is run):
 
