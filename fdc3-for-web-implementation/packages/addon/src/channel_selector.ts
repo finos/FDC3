@@ -48,7 +48,7 @@ window.addEventListener("load", () => {
     myPort.postMessage({ type: "SelectorMessageResize", expanded })
   }
 
-  myPort.addEventListener("message", (e) => {
+  myPort.addEventListener("message", (e: MessageEvent) => {
     if (e.data.type == 'SelectorMessageChannels') {
       const details = e.data as SelectorMessageChannels
       console.log(JSON.stringify("CHANNEL DETAILS: " + JSON.stringify(details)))

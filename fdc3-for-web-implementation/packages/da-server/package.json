@@ -8,13 +8,13 @@
   "types": "dist/src/index.d.ts",
   "scripts": {
     "clean": "rimraf dist; rimraf generated; rimraf node_modules; rimraf coverage; rimraf .nyc_output; rimraf cucumber-report.html",
-    "directory-openapi": "npx openapi-typescript https://fdc3.finos.org/schemas/2.1/appd.schema.json --output generated/directory-schema.ts",
+    "directory-openapi": "npx openapi-typescript ../../../src/app-directory/specification/appd.schema.json --output generated/directory-schema.ts",
     "test": "run directory-openapi; tsc; nyc --reporter=lcov --reporter=text cucumber-js",
-    "build": "run directory-openapi; tsc --module es2022"
+    "build": "npm run directory-openapi && tsc --module es2022"
   },
   "dependencies": {
     "@finos/fdc3": "^2.1.0-beta.4",
-    "@kite9/fdc3-common": "workspace:*",
+    "@kite9/fdc3-common": "0.0.31",
     "@types/uuid": "^9.0.7",
     "uuid": "^9.0.1"
   },
