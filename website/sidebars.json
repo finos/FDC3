@@ -31,7 +31,7 @@
               "api/specs/preloadDesktopAgents",
               "api/specs/browserDesktopAgents",
               "api/specs/webConnectionProtocol",
-              "api/specs/browserCommunicationProtocol"
+              "api/specs/desktopAgentCommunicationProtocol"
             ]
           }
         ]

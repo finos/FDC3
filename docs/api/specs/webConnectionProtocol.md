@@ -141,7 +141,7 @@ The `DesktopAgent` instantiated by calls to `getAgent()` uses the Desktop Agent 
 
 BCP uses the HTML Channel Messaging API, communicating via the `MessagePort` object that was established by the Web Connection Protocol (WCP) covered above.
 
-See [Desktop Agent Communication Protocol ](./browserCommunicationProtocol.md)
+See [Desktop Agent Communication Protocol ](./desktopAgentCommunicationProtocol .md)
 
 ## Built in UI (Channel Selector and Intent Resolver)
 

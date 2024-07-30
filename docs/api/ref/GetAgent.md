@@ -4,14 +4,13 @@ sidebar_label: GetAgent
 title: GetAgent
 ---
 
-The `getAgent()` is the recommended way to connect to a Desktop Agent in a web applications. The function allows web applications to retrieve a Desktop Agent API interface to work with, whether they are running in an environment that supports injection of the Desktop Agent API (e.g. a Desktop container or browser with an extension) or in a standard web browser, where a proxy based on the FDC3 Web Connection Protocol (WCP) and Desktop Agent Communication Protocol (DACP) is used to connect to Desktop Agent. Hence, it allows applications to be written that will work in either scenario without modification or the inclusion of vendor-specific libraries.
+The `getAgent()` is the recommended way to connect to a Desktop Agent in a web applications. The function allows web applications to retrieve a Desktop Agent API interface to work with, whether they are running in an environment that supports injection of the Desktop Agent API (e.g. a Desktop container or browser with an extension) or in a standard web browser, where a proxy based on the [FDC3 Web Connection Protocol (WCP)](../specs/webConnectionProtocol) and [Desktop Agent Communication Protocol (DACP)](../specs/desktopAgentCommunicationProtocol) is used to connect to Desktop Agent. Hence, it allows applications to be written that will work in either scenario without modification or the inclusion of vendor-specific libraries.
 
 The small number of arguments are accepted that can affect the behavior of `getAgent` and to provide a fallback in case a Desktop Agent is not found, allowing the application to start its own agent or use another mechanism (such a proprietary adaptor) to connect to one.
 
-As web applications can navigate to or be navigated by users to different URLs and become different applications, validation of apps identity is often necessary. The web application's current URL is passed to web browser-based Desktop Agents to allow them to establish the app's identity =- usually connecting it with an App Directory record already known to the Desktop Agent. For more details on identity validation see Web section of the [Supported Platforms page](../supported-platforms#web).
+As web applications can navigate to or be navigated by users to different URLs and become different applications, validation of apps identity is often necessary. The web application's current URL is passed to web browser-based Desktop Agents to allow them to establish the app's identity - usually connecting it with an App Directory record already known to the Desktop Agent. For more details on identity validation see the identity validation section of the  [Web Connection Protocol (WCP)](specs/webConnectionProtocol).
 
-If no Desktop Agent is found, or an issue prevent connection to it, the `getAgent()` function will eventually reject
-its promise, which apps can handle to set themselves up to run without connection to a Desktop Agent or to display an error.
+If no Desktop Agent is found, or an issue prevent connection to it, the `getAgent()` function will eventually reject its promise, which apps can handle to set themselves up to run without connection to a Desktop Agent or to display an error.
 
 ```ts
 /** 
@@ -124,9 +123,47 @@ enum AgentError {
 } 
 ```
 
+## Failover function
+
+Interface retrieval can time out, for instance if the DA doesn't exist or is unresponsive. The default timeout of 750 milliseconds can be overridden by setting the `timeout` field. An application may also provide a failover function which will be called if an interface cannot be retrieved or times out.
+
+Example: Decreasing the timeout and providing a failover function
+
+```js
+    const fdc3 = await getAgent({
+        appId: “myApp@yourorg.org”,
+        timeout: 250,
+        failover: async (params) => {
+            // return WindowProxy | URL | DesktopAgent
+        }
+    }); 
+```
+
+The failover function allows an application to provide a backup mechanism for connecting to a DA. It is called only when establishment through normal procedures fails or times out.
+
+> Note - Failover can occur quicker than the timeout. For instance when an end user opens an FDC3 app in a new browser tab it will immediately failover because there will be no injected DesktopAgent and there will be no parent or opener windows.
+
+> Note - A second timeout is started when the failover function is called. So the total possible elapsed time to establish a connection is 2X the established timeout when a failover function is provided.
+
+> Note - If you wish to _completely override FDC3s standard mechanisms_, then do not use a failover function. Instead, simply skip the `getAgent()` call and provide your own DesktopAgent object.
+
+Failover functions MUST be asynchronous MUST resolve to one of the following types: 
+
+1) DesktopAgent
+    The application may choose to directly import or load code that provides a `DesktopAgent` implementation. `getAgent()` will then resolve to the provided `DesktopAgent`.
+2) WindowProxy (Window object)
+    The application may open a window or create a hidden iframe which may then provide access to a compliant browser-resident DA. Resolve to the `WindowProxy` object for the window or iframe. The `getAgent()` call will then use the supplied `WindowProxy` to establish a connection.
+3) URL
+    If a URL is provided, then `getAgent()` will load that url in a hidden iframe and attempt to establish connectivity to a browser-resident DA within that iframe.
+
+    If the failover function returns any other result, or if communication cannot be established with the provided `WindowProxy` or URL within the specified timeout, then `getAgent()` will reject with the "AgentNotFound" error.
+
 ## Persisted Connection Data
 
-The `getAgent()` function uses SessionStorage ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage), [HTML Living Standard](https://html.spec.whatwg.org/multipage/webstorage.html)) to persist information on an instance of an app and how it connected to a Desktop Agent in order to ensure a consistent connection type and instance Id, in case it navigates or is refreshed. The details persisted conform to the following type:
+The `getAgent()` function uses SessionStorage ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage), [HTML Living Standard](https://html.spec.whatwg.org/multipage/webstorage.html)) to persist information on an instance of an app and how it connected to a Desktop Agent in order to ensure a consistent connection type and instance Id, in case it navigates or is refreshed. Applications are not expected to interact with this information directly, rather it is set and used by the `getAgent()` implementation.
+
+
+The details persisted conform to the following type:
 
 ```ts
 /** Type representing data on the Desktop Agent that an app 
