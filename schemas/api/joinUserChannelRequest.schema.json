@@ -3,7 +3,7 @@
 	"$id": "https://fdc3.finos.org/schemas/next/api/joinUserChannelRequest.schema.json",
 	"type": "object",
 	"title": "JoinUserChannel Request",
-	"description": "Request to join the app to the specified User channel.",
+	"description": "Request to join the app to the specified User channel. On successfully joining a channel, client code should make subsequent requests to get the current context of that channel for all registered context listeners and then call their handlers with it.",
 	"allOf": [
 		{
 			"$ref": "appRequest.schema.json"
