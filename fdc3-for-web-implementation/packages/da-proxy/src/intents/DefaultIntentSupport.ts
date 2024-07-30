@@ -9,28 +9,23 @@ import { DefaultPrivateChannel } from "../channels/DefaultPrivateChannel";
 import { RaiseIntentResultResponse, FindIntentRequest, FindIntentResponse, AddContextListenerRequestMeta, FindIntentsByContextRequest, FindIntentsByContextsResponse, RaiseIntentRequest, RaiseIntentResponse } from "@kite9/fdc3-common"
 
 function convertIntentResult(m: RaiseIntentResultResponse, messaging: Messaging): Promise<IntentResult> {
-    const error = m.payload.error
-    if (error) {
-        throw new Error(error)
-    } else {
-        const result = m.payload.intentResult!!
-        if (result.channel) {
-            const c = result.channel!!;
-            switch (c.type) {
-                case 'private':
-                    return new Promise((resolve) => resolve(new DefaultPrivateChannel(messaging, c.id)))
-                case 'app':
-                case 'user':
-                default:
-                    return new Promise((resolve) => resolve(new DefaultChannel(messaging, c.id, c.type, c.displayMetadata)))
-            }
-        } else if (result.context) {
-            return new Promise((resolve) => {
-                resolve(result.context)
-            })
-        } else {
-            return new Promise((resolve) => (resolve()))
+    const result = m.payload.intentResult!!
+    if (result.channel) {
+        const c = result.channel!!;
+        switch (c.type) {
+            case 'private':
+                return new Promise((resolve) => resolve(new DefaultPrivateChannel(messaging, c.id)))
+            case 'app':
+            case 'user':
+            default:
+                return new Promise((resolve) => resolve(new DefaultChannel(messaging, c.id, c.type, c.displayMetadata)))
         }
+    } else if (result.context) {
+        return new Promise((resolve) => {
+            resolve(result.context)
+        })
+    } else {
+        return new Promise((resolve) => (resolve()))
     }
 }
 

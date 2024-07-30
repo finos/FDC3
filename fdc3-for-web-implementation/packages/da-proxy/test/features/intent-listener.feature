@@ -31,8 +31,8 @@ Feature: Intent Listeners
     When I call "{api1}" with "addIntentListener" with parameters "BuyStock" and "{resultHandler}"
     And messaging receives "{intentMessageOne}"
     Then messaging will have posts
-      | type                      | payload.intentResult.channel.type | payload.intentResult.channel.id | payload.intentResult.channel.displayMetadata.color | matches_type              |
-      | raiseIntentResultResponse | user                              | one                             | red                                                | raiseIntentResultResponse |
+      | type                      | payload.intentResult.channel.type | payload.intentResult.channel.id | matches_type              |
+      | raiseIntentResultResponse | private                           | some-channel-id                 | raiseIntentResultResponse |
 
   Scenario: Intent Listeners Can Return A Void Result
     Given "resultHandler" returns a void promise
