@@ -188,6 +188,7 @@ Feature: Basic User Channels Support
   Scenario: Context gets replayed if I change user channels
     Given "resultHandler" pipes context to "contexts"
     When I call "{api}" with "joinUserChannel" with parameter "one"
+    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
     And I call "{api}" with "broadcast" with parameter "{instrumentContext}"
     And I call "{api}" with "leaveCurrentChannel"
     And I call "{api}" with "joinUserChannel" with parameter "one"

@@ -92,3 +92,10 @@ Feature: Basic User Channels Support
     Then messaging will have posts
       | type             | payload.channelId   | payload.context.type | payload.context.name | matches_type     |
       | broadcastRequest | {privateChannel.id} | fdc3.instrument      | Apple                | broadcastRequest |
+
+  Scenario: I disconnect from a private channel
+    And I call "{privateChannel}" with "disconnect"
+    And messaging will have posts
+      | payload.channelId   | matches_type                    |
+      | {null}              | createPrivateChannelRequest     |
+      | {privateChannel.id} | privateChannelDisconnectRequest |

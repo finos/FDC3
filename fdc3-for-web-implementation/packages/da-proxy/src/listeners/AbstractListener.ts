@@ -26,35 +26,32 @@ export abstract class AbstractListener<X> implements RegisterableListener {
 
     abstract action(m: any): void
 
-    async listenerNotification(type: string | null): Promise<string | null> {
-        if (type) {
-            const requestType = type + "Request"
-            const responseType = type + "Response"
-            var notificationMessage: any
-            if (this.id) {
-                notificationMessage = {
-                    meta: this.messaging.createMeta(),
-                    payload: {
-                        listenerUUID: this.id
-                    },
-                    type: requestType
-                }
-            } else {
-                // send subscription notification
-                notificationMessage = {
-                    meta: this.messaging.createMeta(),
-                    payload: {
-                        ...this.payloadDetails
-                    },
-                    type: requestType
-                }
+    async listenerNotification(type: string): Promise<string | null> {
+        const requestType = type + "Request"
+        const responseType = type + "Response"
+        var notificationMessage: any
+        if (this.id) {
+            notificationMessage = {
+                meta: this.messaging.createMeta(),
+                payload: {
+                    listenerUUID: this.id
+                },
+                type: requestType
             }
-
-            const response = await this.messaging.exchange<any>(notificationMessage, responseType!!)
-            return response?.payload?.listenerUUID ?? null
         } else {
-            return null
+            // send subscription notification
+            notificationMessage = {
+                meta: this.messaging.createMeta(),
+                payload: {
+                    ...this.payloadDetails
+                },
+                type: requestType
+            }
         }
+
+        const response = await this.messaging.exchange<any>(notificationMessage, responseType!!)
+        return response?.payload?.listenerUUID ?? null
+
     }
 
     async unsubscribe(): Promise<void> {
