@@ -1,7 +1,7 @@
 import { setupGenericSteps } from "./steps/generic.steps";
 import { doesRowMatch, handleResolve, indexOf, matchData } from './support/matching'
 import { PropsWorld } from "./world";
-import { SimpleIntentResolver } from "./agent";
+import { SimpleIntentResolver, CHANNEL_STATE } from "./agent";
 
 export {
     PropsWorld,
@@ -10,5 +10,6 @@ export {
     indexOf,
     matchData,
     setupGenericSteps,
-    SimpleIntentResolver
+    SimpleIntentResolver,
+    CHANNEL_STATE
 }
