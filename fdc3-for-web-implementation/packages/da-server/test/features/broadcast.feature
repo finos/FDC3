@@ -30,3 +30,27 @@ Feature: Relaying Broadcast messages
     Then messaging will have outgoing posts
       | msg.type  | msg.payload.requestedName | msg.payload.channelsState['channel1'].length | msg.payload.channelsState['channel1'][0].type |
       | handshake | cucumber-fdc3-server      |                                            1 | fdc3.instrument                               |
+
+  Scenario: Adding a listener to a user channel replays Context
+        Although the message is sent before the listener is added, history from the channel will get replayed
+
+    Given "resultHandler" pipes context to "contexts"
+    When messaging receives "{instrumentMessageOne}"
+    And messaging receives "{countryMessageOne}"
+    And I call "{api}" with "joinUserChannel" with parameter "one"
+    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
+
+  Scenario: Joining a user channel replays Context to typed listeners
+        Although the message is sent before the channel is joined, history from the channel will get replayed
+        to the listener
+
+    Given "resultHandler" pipes context to "contexts"
+    When messaging receives "{instrumentMessageOne}"
+    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And I call "{api}" with "joinUserChannel" with parameter "one"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |

@@ -42,9 +42,7 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
     async broadcast(context: Context): Promise<void> {
         const channel = await this.channels.getUserChannel()
         if (channel) {
-            return channel.broadcast(context)
-        } else {
-            return Promise.resolve();
+            return await channel.broadcast(context)
         }
     }
 
