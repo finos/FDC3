@@ -10,6 +10,7 @@
       "type": "string",
       "enum": [
         "addContextListenerResponse",
+        "addEventListenerResponse",
         "addIntentListenerResponse",
         "broadcastResponse",
         "contextListenerUnsubscribeResponse",

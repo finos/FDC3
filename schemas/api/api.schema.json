@@ -467,6 +467,32 @@
                 "intent",
                 "source"
             ]
+        },
+        "FDC3EventType": {
+            "title": "FDC3 Event Type",
+            "description": "The type of a (non-context and non-intent) event that may be received via the FDC3 API's addEventListener function.",
+            "type": "string",
+            "enum": [
+                "USER_CHANNEL_CHANGED"
+            ]
+        },
+        "FDC3Event": {
+            "title": "FDC3 Event",
+            "description": "An event object received via the FDC3 API's addEventListener function. Will always include both type and details, which describe type of the event and any additional details respectively.",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/FDC3EventType"
+                },
+                "details": {
+                    "title": "Event details",
+                    "description": "Additional details of the event, such as the `currentChannelId` for a CHANNEL_CHANGED event",
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            },
+            "required":["type","details"],
+            "additionalProperties": false
         }
     }
 }
