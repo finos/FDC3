@@ -83,7 +83,10 @@
 
 /**
  * A request to add a context listener to a specified Channel OR to the current user
- * channel.
+ * channel. Where the listener is added to the current user channel (channelId == null), and
+ * this app has already been added to a user channel, client code should make a subsequent
+ * request to get the current context of that channel for this listener and then call its
+ * handler with it.
  *
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
@@ -187,7 +190,10 @@ export interface AddContextListenerRequestPayload {
  */
 
 /**
- * A response to a addContextListener request.
+ * A response to a addContextListener request. Where the listener was added to the current
+ * user channel (channelId == null), and this app has already been added to a user channel,
+ * client code should make a subsequent request to get the current context of that channel
+ * for this listener and then call its handler with it.
  *
  * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
  * payload contains an `error` property, the request was unsuccessful.
@@ -2389,7 +2395,9 @@ export interface IntentListenerUnsubscribeResponse {
  */
 
 /**
- * Request to join the app to the specified User channel.
+ * Request to join the app to the specified User channel. On successfully joining a channel,
+ * client code should make subsequent requests to get the current context of that channel
+ * for all registered context listeners and then call their handlers with it.
  *
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
@@ -2425,7 +2433,9 @@ export interface JoinUserChannelRequestPayload {
  */
 
 /**
- * A response to a joinUserChannel request.
+ * A response to a joinUserChannel request. On receipt of this response, client code should
+ * make subsequent requests to get the current context of that channel for all registered
+ * context listeners and then call their handlers with it.
  *
  * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
  * payload contains an `error` property, the request was unsuccessful.
