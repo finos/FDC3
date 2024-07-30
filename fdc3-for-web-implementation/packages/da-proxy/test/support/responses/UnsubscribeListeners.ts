@@ -4,8 +4,7 @@ import { createResponseMeta } from "./support";
 export class UnsubscribeListeners implements AutomaticResponse {
 
     filter(t: string) {
-        return (t == 'contextListenerUnsubscribeRequest') ||
-            (t == 'intentListenerUnsubscribeRequest') ||
+        return (t == 'intentListenerUnsubscribeRequest') ||
             (t == 'privateChannelUnsubscribeEventListenerRequest')
     }
 

@@ -18,7 +18,7 @@ export class DefaultChannel implements Channel {
     }
 
     async broadcast(context: Context): Promise<void> {
-        await this.messaging.exchange<BroadcastResponse>({
+        const done = await this.messaging.exchange<BroadcastResponse>({
             meta: this.messaging.createMeta(),
             payload: {
                 channelId: this.id,
@@ -26,6 +26,7 @@ export class DefaultChannel implements Channel {
             },
             type: "broadcastRequest"
         } as BroadcastRequest, 'broadcastResponse')
+        console.log("broadcast done", done)
     }
 
     async getCurrentContext(contextType?: string | undefined): Promise<Context | null> {
@@ -34,7 +35,7 @@ export class DefaultChannel implements Channel {
             meta: this.messaging.createMeta(),
             payload: {
                 channelId: this.id,
-                contextType
+                contextType: contextType ?? null
             },
             type: "getCurrentContextRequest"
         } as GetCurrentContextRequest, 'getCurrentContextResponse')

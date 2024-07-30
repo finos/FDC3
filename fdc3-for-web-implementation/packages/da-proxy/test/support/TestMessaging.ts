@@ -12,8 +12,7 @@ import { FindInstances } from "./responses/FindInstances";
 import { Open } from "./responses/Open";
 import { Handshake } from "./responses/Handshake";
 import { GetOrCreateChannel } from "./responses/GetOrCreateChannel";
-import { Broadcast } from "./responses/Broadcast";
-import { JoinUserChannel } from "./responses/JoinUserChannel";
+import { ChannelState } from "./responses/ChannelState";
 import { GetUserChannels } from "./responses/GetUserChannels";
 import { RegisterListeners } from "./responses/RegisterListeners";
 import { UnsubscribeListeners } from "./responses/UnsubscribeListeners";
@@ -97,8 +96,7 @@ export class TestMessaging extends AbstractMessaging {
         new Open(),
         new Handshake(),
         new GetOrCreateChannel(),
-        new Broadcast(),
-        new JoinUserChannel(),
+        new ChannelState(),
         new GetUserChannels(),
         new RegisterListeners(),
         new UnsubscribeListeners(),

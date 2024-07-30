@@ -1,9 +1,10 @@
-import { ContextHandler } from "@finos/fdc3";
+import { ContextHandler, Context } from "@finos/fdc3";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
 import { BroadcastEvent } from "@kite9/fdc3-common";
+import { FollowingContextListener } from "./FollowingContextListener";
 
-export class DefaultContextListener extends AbstractListener<ContextHandler> {
+export class DefaultContextListener extends AbstractListener<ContextHandler> implements FollowingContextListener {
 
     private channelId: string | null
     private readonly messageType: string
@@ -20,6 +21,15 @@ export class DefaultContextListener extends AbstractListener<ContextHandler> {
         this.channelId = channelId
         this.messageType = messageType
         this.contextType = contextType
+    }
+
+    async changeChannel(channelId: string, newChannelState: Context[]): Promise<void> {
+        this.channelId = channelId
+        for (let c of newChannelState) {
+            if ((c.type == this.contextType) || (this.contextType == null)) {
+                await this.handler(c)
+            }
+        }
     }
 
     filter(m: BroadcastEvent): boolean {

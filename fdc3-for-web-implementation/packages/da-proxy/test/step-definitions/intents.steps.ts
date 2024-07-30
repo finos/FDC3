@@ -3,7 +3,6 @@ import { CustomWorld } from '../world/index';
 import { handleResolve } from '@kite9/testing';
 import { RaiseIntentAgentRequest } from '@finos/fdc3/dist/bridging/BridgingTypes';
 import { Context, ContextMetadata } from '@finos/fdc3';
-import { createDefaultChannels } from '../support/DefaultUserChannels';
 
 Given("app {string}", function (this: CustomWorld, appStr: string) {
     const [appId, instanceId] = appStr.split("/")
@@ -163,7 +162,14 @@ Given('{string} returns a context item', function (this: CustomWorld, intentHand
 
 Given('{string} returns a channel', function (this: CustomWorld, intentHandlerName: string) {
     this.props[intentHandlerName] = async () => {
-        return createDefaultChannels(this.messaging!!)[0]
+        return {
+            type: 'private',
+            id: 'some-channel-id',
+            displayMetadata: {
+                color: "ochre",
+                name: "Some Channel"
+            }
+        }
     }
 })
 
