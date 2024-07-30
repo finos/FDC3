@@ -2,8 +2,8 @@ import { DataTable, Given, Then, When } from '@cucumber/cucumber'
 import { Context } from '@finos/fdc3';
 import { handleResolve, matchData } from '@kite9/testing';
 import { CustomWorld } from '../world/index';
-import { CHANNEL_STATE } from '@kite9/testing/dist/src/agent';
 import { BroadcastEvent, AgentResponseMessage, ResponseMessageType, PrivateChannelOnUnsubscribeEvent, PrivateChannelOnDisconnectEvent } from '@kite9/fdc3-common'
+import { CHANNEL_STATE } from '@kite9/testing';
 
 const contextMap: Record<string, any> = {
   "fdc3.instrument": {

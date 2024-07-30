@@ -1,4 +1,4 @@
-import { getClientAPI } from "@kite9/client";
+import { getAgentAPI } from "@kite9/client";
 import "./ag-grid.css";
 
 // DATA
@@ -109,7 +109,7 @@ const init = async () => {
     // INITIALIZE FDC3
     try {
         // LINE CURRENTLY FAILS
-        window.fdc3 = await getClientAPI();
+        window.fdc3 = await getAgentAPI();
         console.log(window.fdc3);
 
         // Listen for contexts
