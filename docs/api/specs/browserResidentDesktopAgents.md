@@ -207,7 +207,7 @@ const authenticateApp = (connection, e) => {
 
 Each message should be responded to with its corresponding response when a response should contain data, or with `BCPAck` if only an acknowledgement is required.
 
-See [Desktop Agent Communication Protocol ](./browserCommunicationProtocol.md)
+See [Desktop Agent Communication Protocol ](./desktopAgentCommunicationProtocol .md)
 
 See bcp.ts for a full list of BCP messages. 
 

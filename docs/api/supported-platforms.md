@@ -9,6 +9,20 @@ There are two main categories of platform: web and native, both of which are des
 
 ## Web
 
+:::tip
+
+The recommended way to get access to the FDC3 Desktop Agent API in an application is to to import and call the `getAgent` function from the FDC3 NPM module, which supports all standard's compliant Desktop Agents for web applications:
+
+```ts
+import { DesktopAgent, getAgent } from "@finos/fdc3";
+
+const fdc3: DesktopAgent = await getAgent();
+```
+
+[For more details on the getAgent() function and arguments you can pass to it, see its reference page.](ref/GetAgent)
+
+:::
+
 For a web application to use the FDC3 API it needs to retrieve a copy of the `DesktopAgent` API interface, which it will use to communicate with the Desktop Agent (this interface is often referred to as the `fdc3` object or the "FDC3 API").
 
 There are two standardized types of interface to a DA that a web application may use (which is appropriate depends on where the web application is run):
@@ -28,23 +42,13 @@ Hence, from FDC3 2.2 onwards apps SHOULD call the `getAgent()` to retrieve a `De
 
 :::
 
+As web applications can navigate to or be navigated by users to different URLs and become different applications, validation of apps identity is often necessary. The web application's current URL is passed to web browser-based Desktop Agents to allow them to establish the app's identity - usually connecting it with an App Directory record already known to the Desktop Agent. For more details on identity validation see the Identity Validation section of the [Web Connection Protocol (WCP)](specs/webConnectionProtocol).
+
 ### getAgent
 
 //TODO: rewrite this section after updating getAgent docs for using URLs and param for setting window.fdc3.
 //  Provide a brief introduction and link to getAgent reference
 
-
-:::tip
-
-To simplify migration of an app that works with `window.fdc3` to using `getAgent()`, simply set the `fdc3 property on the global object yourself, i.e.:
-
-```ts
-getAgent({ appId: “yourApp@yourorg.org” }))
-.then((fdc3: DesktopAgent) => { window.fdc3 = fdc3 })
-.catch((error) => { console.error(`Failed to retrieve FDC3 Desktop Agent: ${error}`) });
-```
-
-:::
 
 As Web applications can navigate (or be navigated by users) to different URLs and become different application, apps MUST pass details of their identity to `getAgent()`. This can be done in one of two ways.
 
@@ -95,40 +99,7 @@ Applications MAY provide additional fields related to configuration or failover 
 
 > Note: Applications SHOULD provide visual feedback to users indicating that the app is in the process of connecting. Once the FDC3 interface is accessible the application SHOULD update that visual feedback.
 
-#### Failover function
 
-Interface retrieval can time out, for instance if the DA doesn't exist or is unresponsive. The default timeout of 750 milliseconds can be overridden by setting the `timeout` field. An application may also provide a failover function which will be called if an interface cannot be retrieved or times out.
-
-Example: Decreasing the timeout and providing a failover function
-
-```js
-    const fdc3 = await getAgent({
-        appId: “myApp@yourorg.org”,
-        timeout: 250,
-        failover: async (params) => {
-            // return WindowProxy | URL | DesktopAgent
-        }
-    }); 
-```
-
-The failover function allows an application to provide a backup mechanism for connecting to a DA. It is called only when establishment through normal procedures fails or times out.
-
-> Note - Failover can occur quicker than the timeout. For instance when an end user opens an FDC3 app in a new browser tab it will immediately failover because there will be no injected DesktopAgent and there will be no parent or opener windows.
-
-> Note - A second timeout is started when the failover function is called. So the total possible elapsed time to establish a connection is 2X the established timeout when a failover function is provided.
-
-> Note - If you wish to _completely override FDC3s standard mechanisms_, then do not use a failover function. Instead, simply skip the `getAgent()` call and provide your own DesktopAgent object.
-
-Failover functions MUST be asynchronous MUST resolve to one of the following types: 
-
-1) DesktopAgent
-    The application may choose to directly import or load code that provides a `DesktopAgent` implementation. `getAgent()` will then resolve to the provided `DesktopAgent`.
-2) WindowProxy (Window object)
-    The application may open a window or create a hidden iframe which may then provide access to a compliant browser-resident DA. Resolve to the `WindowProxy` object for the window or iframe. The `getAgent()` call will then use the supplied `WindowProxy` to establish a connection.
-3) URL
-    If a URL is provided, then `getAgent()` will load that url in a hidden iframe and attempt to establish connectivity to a browser-resident DA within that iframe.
-
-    If the failover function returns any other result, or if communication cannot be established with the provided `WindowProxy` or URL within the specified timeout, then `getAgent()` will reject with the "AgentNotFound" error.
 
 
 
