@@ -34,7 +34,6 @@ Hence, from FDC3 2.2 onwards apps SHOULD call the `getAgent()` to retrieve a `De
 //  Provide a brief introduction and link to getAgent reference
 
 
-
 :::tip
 
 To simplify migration of an app that works with `window.fdc3` to using `getAgent()`, simply set the `fdc3 property on the global object yourself, i.e.:
