@@ -4,12 +4,12 @@
   "version": "0.0.30",
   "workspaces": [
     "packages/fdc3-common",
+    "packages/testing",
     "packages/addon",
     "packages/da-proxy",
     "packages/da-server",
     "packages/client",
     "packages/demo"
-   
   ],
   "scripts": {
     "clean": "npm run clean --workspaces --if-present",
