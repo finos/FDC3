@@ -6,7 +6,7 @@ sidebar_label: Trade
 
 # Trade
 
-[@experiemental](/docs/fdc3-compliance#experimental-features) context type representing a trade. To be used with execution systems.
+[@experimental](/docs/fdc3-compliance#experimental-features) context type representing a trade. To be used with execution systems.
 
 This type currently only defines a required `id` field, which should provide a reference to the trade in one or more systems, an optional human readable `name` field to be used to summarize the trade and a required `product` field that may be used to provide additional detail about the trade, which is currently typed as a unspecified Context type, but `product` is expected to be standardized in future.
 
