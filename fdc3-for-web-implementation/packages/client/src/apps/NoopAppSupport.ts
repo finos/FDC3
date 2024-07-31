@@ -1,6 +1,6 @@
 import { AppIdentifier, AppMetadata } from "@finos/fdc3";
-import { Messaging } from "../Messaging";
-import { DefaultAppSupport } from "./DefaultAppSupport";
+import { Messaging } from "@kite9/da-proxy";
+import { DefaultAppSupport } from "@kite9/da-proxy";
 
 export class NoopAppSupport extends DefaultAppSupport {
 
