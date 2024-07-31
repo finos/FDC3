@@ -50,7 +50,8 @@ module.exports={
   "plugins": [],
   "themeConfig": {
     "prism": {
-      "additionalLanguages": ["json","csharp"]
+      "additionalLanguages": ["json","csharp","typescript"],
+      "theme": require('prism-react-renderer/themes/vsDark')
     },
     "algolia": {
       "appId": "YW91L9TW76",
