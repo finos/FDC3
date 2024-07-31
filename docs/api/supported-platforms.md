@@ -123,9 +123,16 @@ await raiseIntent('ViewAnalysis', {
 
 ## Native
 
+The FDC3 Standard currently only defines language specific API bindings for JavaScript/TypeScript and .NET, but is intended to be implemented in other languages (which can make use of the [Desktop Agent Communication Protocol (DACP)](../specs/desktopAgentCommunicationProtocol) as a wire protocol, but need to define a suitable connection protocol, which includes a defined communication channel to do so).  
+
+Hence, for a native application to be FDC3-enabled, it needs to either:
+
+- Make use of a shared library (such as a .NET DLL or JAR file) that provides it with an implementation of the FDC3 API (which ties it to a specific Desktop Agent implementation).
+- Model itself as a Desktop Agent (rather than just an app working with one) and use the Agent Bridging protocol to connect to a Desktop Agent Bridge and work through it to interoperate with apps managed by other Desktop Agents.
+
 ### .NET
 
-For a .NET application to be FDC3-enabled, it needs to run in the context of a platform provider that makes the FDC3 API available.  The manner in which you get a reference to the desktop agent can be highly dependent on the provider chosen.  For those looking to implement your own desktop agent, a recommended and typical design is to register an instance of the desktop agent at startup which can be injected into any class constructors that need references through inversion of control.  More details for creating your own DesktopAgent can be found in the [fdc3-dotnet repository](https://github.com/finos/fdc3-dotnet).
+For a .NET application to be FDC3-enabled, it needs to run in the context of a platform provider that makes the FDC3 API available.  The manner in which you get a reference to the desktop agent can be highly dependent on the provider chosen.  For those looking to implement your own desktop agent, a recommended and typical design is to register an instance of the Desktop Agent at startup which can be injected into any class constructors that need references through inversion of control.  More details for creating your own DesktopAgent can be found in the [fdc3-dotnet repository](https://github.com/finos/fdc3-dotnet).
 
 #### Usage
 
