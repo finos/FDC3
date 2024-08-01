@@ -1089,6 +1089,8 @@ export interface PayloadClass {
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
  *
+ * Should be set if the raiseIntent request returned an error.
+ *
  * Constants representing the errors that can be encountered when calling the `findIntent`,
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
@@ -3574,6 +3576,9 @@ export interface RaiseIntentAgentErrorResponseMeta {
  * Error message payload containing an standardized error string.
  */
 export interface RaiseIntentAgentErrorResponsePayload {
+    /**
+     * Should be set if the raiseIntent request returned an error.
+     */
     error: FindInstancesErrors;
 }
 
@@ -3730,15 +3735,18 @@ export interface RaiseIntentAgentResponseMeta {
 }
 
 /**
- * Response to a raiseIntent request that was successfully resolved
- *
  * The message payload typically contains return values for FDC3 API functions.
  */
 export interface RaiseIntentAgentResponsePayload {
+    /**
+     * Should be set if the raiseIntent request was successfully resolved
+     */
     intentResolution: IntentResolution;
 }
 
 /**
+ * Should be set if the raiseIntent request was successfully resolved
+ *
  * IntentResolution provides a standard format for data returned upon resolving an intent.
  *
  * ```javascript
@@ -3816,6 +3824,9 @@ export interface RaiseIntentBridgeErrorResponseMeta {
  * raised the original request.
  */
 export interface RaiseIntentBridgeErrorResponsePayload {
+    /**
+     * Should be set if the raiseIntent request returned an error.
+     */
     error: FindInstancesErrors;
 }
 
@@ -3898,11 +3909,12 @@ export interface RaiseIntentBridgeResponseMeta {
 }
 
 /**
- * Response to a raiseIntent request that was successfully resolved
- *
  * The message payload typically contains return values for FDC3 API functions.
  */
 export interface RaiseIntentBridgeResponsePayload {
+    /**
+     * Should be set if the raiseIntent request was successfully resolved
+     */
     intentResolution: IntentResolution;
 }
 

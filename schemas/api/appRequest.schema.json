@@ -25,6 +25,7 @@
         "getOrCreateChannelRequest",
         "getUserChannelsRequest",
         "intentListenerUnsubscribeRequest",
+        "intentResultRequest",
         "joinUserChannelRequest",
         "leaveCurrentChannelRequest",
         "openRequest",
