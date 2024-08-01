@@ -108,7 +108,7 @@ const fdc3: DesktopAgent = await getAgent();
 await sendData(fdc3);
 ```
 
-#### 2. es6 Function Wrappers
+#### 2. es6-style Function Wrappers
 
 The npm package provides a wrapper around FDC3, allowing you to use it with ES6 import syntax:
 
