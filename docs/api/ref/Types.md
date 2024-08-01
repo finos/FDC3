@@ -148,7 +148,7 @@ A Listener object is returned when an application subscribes to intents or conte
 
 ```typescript
 interface Listener {
-  unsubscribe(): void;
+  unsubscribe(): Promise<void>;
 }
 ```
 

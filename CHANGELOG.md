@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+* `Listener.unsubscribe()` was made async (the return type was changed from `void` to `Promise<void>`) for consistency with the rest of the API. ([#X](https://github.com/finos/FDC3/pull/X))
+
 ### Deprecated
 
 * Made `IntentMetadata.displayName` optional as it is deprecated. ([#1280](https://github.com/finos/FDC3/pull/1280))
