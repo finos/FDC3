@@ -3372,6 +3372,11 @@ export interface WebConnectionProtocol1HelloPayload {
      */
     fdc3Version: string;
     /**
+     * URL to use for the identity of the application. Desktop Agents MUST validate that the
+     * origin of the message matches the URL, but MAY implement custom comparison logic.
+     */
+    identityUrl: string;
+    /**
      * A flag that may be used to indicate that an intent resolver is or is not required. Set to
      * false if no intents, or only targeted intents, are raised
      */
@@ -3488,16 +3493,10 @@ export interface WebConnectionProtocol4ValidateAppIdentity {
  */
 export interface WebConnectionProtocol4ValidateAppIdentityPayload {
     /**
-     * URL for an App Directory record that provides identity details for the application
-     * attempting to connect
+     * URL to use for the identity of the application. Desktop Agents MUST validate that the
+     * origin of the message matches the URL, but MAY implement custom comparison logic.
      */
-    appDUrl?: string;
-    /**
-     * appId for the application attempting to connect. The appId must be fully qualified
-     * (appId@host.domain.appD) such that the URL for the appD record can be determined for
-     * identity validation purposes, or appDUrl must also be specified.
-     */
-    appId: string;
+    identityUrl: string;
     /**
      * If an application has previously connected to the desktop agent, it may specify its prior
      * instance id and associated instance UUID to request the same same instance Id be assigned.
@@ -5085,6 +5084,7 @@ const typeMap: any = {
     "WebConnectionProtocol1HelloPayload": o([
         { json: "channelSelector", js: "channelSelector", typ: u(undefined, true) },
         { json: "fdc3Version", js: "fdc3Version", typ: "" },
+        { json: "identityUrl", js: "identityUrl", typ: "" },
         { json: "resolver", js: "resolver", typ: u(undefined, true) },
     ], "any"),
     "WebConnectionProtocol2LoadURL": o([
@@ -5111,8 +5111,7 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("WebConnectionProtocol4ValidateAppIdentityType") },
     ], false),
     "WebConnectionProtocol4ValidateAppIdentityPayload": o([
-        { json: "appDUrl", js: "appDUrl", typ: u(undefined, "") },
-        { json: "appId", js: "appId", typ: "" },
+        { json: "identityUrl", js: "identityUrl", typ: "" },
         { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
         { json: "instanceUuid", js: "instanceUuid", typ: u(undefined, "") },
     ], false),
