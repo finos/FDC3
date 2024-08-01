@@ -1,67 +1,40 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { ServerContext } from "../ServerContext";
-import { AppIdentifier, AppMetadata, ChannelError, Context, ContextElement } from "@finos/fdc3";
+import { AppIdentifier, AppMetadata, ChannelError, Context } from "@finos/fdc3";
 import { successResponse, errorResponse, onlyUnique } from "./support";
 import {
-    GetCurrentContextRequest, GetCurrentContextResponse
-    BroadcastRequest, BroadcastResponse
-    ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse
-    AddContextListenerRequest, AddContextListenerResponse
-    PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse
-    PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse,
-    GetOrCreateChannelRequest, GetOrCreateChannelResponse,
-    GetUserChannelsRequest, GetUserChannelsResponse,
-    LeaveCurrentChannelRequest, LeaveCurrentChannelResponse,
-    JoinUserChannelRequest, JoinUserChannelResponse,
-    GetCurrentChannelRequest, GetCurrentChannelResponse, Context,
+    PrivateChannelEventListenerTypes,
+    GetCurrentContextRequest,
+    BroadcastRequest,
+    ContextListenerUnsubscribeRequest,
+    AddContextListenerRequest,
+    PrivateChannelDisconnectRequest,
+    PrivateChannelAddEventListenerRequest,
+    PrivateChannelUnsubscribeEventListenerRequest,
+    GetOrCreateChannelRequest,
+    GetUserChannelsRequest,
+    LeaveCurrentChannelRequest,
+    JoinUserChannelRequest,
+    GetCurrentChannelRequest, AgentEventMessage,
 } from "@kite9/fdc3-common";
 
-type ListenerRegistration = {
+type ContextListenerRegistration = {
     appId: string,
     instanceId: string,
+    listenerUuid: string,
     channelId: string | null,
     contextType: string | null
     userChannelListener: boolean
 }
 
-function listenerRegistrationMatches(lr1: ListenerRegistration, lr2: ListenerRegistration): boolean {
-    return (lr1.appId == lr2.appId) &&
-        (lr1.instanceId == lr2.instanceId) &&
-        (lr1.channelId == lr2.channelId) &&
-        (lr1.contextType == lr2.contextType)
-}
+type NotificationAgentEventMessage = 'privateChannelOnAddContextListenerEvent' | 'privateChannelOnDisconnectEvent' | 'privateChannelOnUnsubscribeEvent'
 
-type ChannelEventType = 'onAddContextListener' | 'onUnsubscribe' | 'onDisconnect'
-
-type ChannelEventListener = {
+type PrivateChannelEventListener = {
     appId: string,
     instanceId: string,
     channelId: string,
-    eventType: ChannelEventType,
-}
-
-function channelEventListenerMatches(lr1: ChannelEventListener, lr2: ChannelEventListener): boolean {
-    return (lr1.appId == lr2.appId) &&
-        (lr1.instanceId == lr2.instanceId) &&
-        (lr1.channelId == lr2.channelId) &&
-        (lr1.eventType == lr2.eventType)
-}
-
-function channelEventListenerInvoked(cel: ChannelEventListener, channel: string, eventType: ChannelEventType): boolean {
-    return (cel.channelId == channel) &&
-        (cel.eventType == eventType)
-}
-
-function createListenerRegistration(msg:
-    PrivateChannelOnAddContextListenerAgentRequest |
-    PrivateChannelOnUnsubscribeAgentRequest): ListenerRegistration {
-
-    return {
-        appId: msg.meta.source?.appId!!,
-        instanceId: msg.meta.source?.instanceId!!,
-        channelId: msg.payload.channelId,
-        contextType: msg.payload.contextType
-    }
+    eventType: PrivateChannelEventListenerTypes,
+    listenerUuid: string
 }
 
 enum ChannelType { 'user', 'app', 'private' }
@@ -72,17 +45,14 @@ type ChannelState = {
     context: Context[]
 }
 
-
 export class BroadcastHandler implements MessageHandler {
 
-    private readonly contextListeners: ListenerRegistration[] = []
-    private readonly eventListeners: ChannelEventListener[] = []
-    private readonly desktopAgentName: string
+    private contextListeners: ContextListenerRegistration[] = []
+    private readonly eventListeners: PrivateChannelEventListener[] = []
     private readonly state: ChannelState[] = []
     private readonly currentChannel: { [instanceId: string]: ChannelState } = {}
 
-    constructor(name: string, initialChannelState: ChannelState[]) {
-        this.desktopAgentName = name
+    constructor(initialChannelState: ChannelState[]) {
         this.state = initialChannelState
     }
 
@@ -94,8 +64,11 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    getChannelById(id: string): ChannelState | undefined {
-        return this.state.find(c => c.id == id)
+    getChannelById(id: string | null): ChannelState | null {
+        if (id == null) {
+            return null
+        }
+        return this.state.find(c => c.id == id) ?? null
     }
 
     getListeners(appId: AppIdentifier) {
@@ -111,34 +84,115 @@ export class BroadcastHandler implements MessageHandler {
     }
 
     updateChannelState(channelId: string, context: Context) {
-        throw new Error("Method not implemented.");
+        const cs = this.getChannelById(channelId)
+        if (cs) {
+            cs.context = cs.context.filter(c => c.type != context.type)
+            cs.context.unshift(context)
+        }
     }
 
     accept(msg: any, sc: ServerContext, from: AppMetadata) {
-        switch (msg.type as string | null) {
-            // app channels registration
-            case 'getOrCreateChannelRequest': return this.handleGetOrCreateRequest(msg as GetOrCreateChannelRequest, sc, from)
+        try {
+            switch (msg.type as string | null) {
+                // app channels registration
+                case 'getOrCreateChannelRequest': return this.handleGetOrCreateRequest(msg as GetOrCreateChannelRequest, sc, from)
 
-            // user channel management
-            case 'getUserChannelsRequest': return this.handleGetUserChannelsRequest(msg as GetUserChannelsRequest, sc, from)
-            case 'leaveUserChannelRequest': return this.handleLeaveCurrentChannelRequest(msg as LeaveCurrentChannelRequest, sc, from)
-            case 'joinUserChannelRequest': return this.handleJoinUserChannelRequest(msg as JoinUserChannelRequest, sc, from)
-            case 'getCurrentChannelRequest': return this.handleGetCurrentChannelRequest(msg as GetCurrentChannelRequest, sc, from)
+                // user channel management
+                case 'getUserChannelsRequest': return this.handleGetUserChannelsRequest(msg as GetUserChannelsRequest, sc, from)
+                case 'leaveUserChannelRequest': return this.handleLeaveCurrentChannelRequest(msg as LeaveCurrentChannelRequest, sc, from)
+                case 'joinUserChannelRequest': return this.handleJoinUserChannelRequest(msg as JoinUserChannelRequest, sc, from)
+                case 'getCurrentChannelRequest': return this.handleGetCurrentChannelRequest(msg as GetCurrentChannelRequest, sc, from)
 
-            // general broadcast
-            case 'broadcastRequest': return this.handleBroadcastRequest(msg as BroadcastRequest, sc)
+                // general broadcast
+                case 'broadcastRequest': return this.handleBroadcastRequest(msg as BroadcastRequest, sc)
 
-            // context listeners
-            case 'addContextListenerRequest': return this.handleAddContextListenerRequest(msg as AddContextListenerRequest, sc)
-            case 'contextListenerUnsubscribeRequest': return this.handleContextListenerUnsubscribeRequest(msg as ContextListenerUnsubscribeRequest, sc)
+                // context listeners
+                case 'addContextListenerRequest': return this.handleAddContextListenerRequest(msg as AddContextListenerRequest, sc, from)
+                case 'contextListenerUnsubscribeRequest': return this.handleContextListenerUnsubscribeRequest(msg as ContextListenerUnsubscribeRequest, sc, from)
 
-            // private channels
-            case 'privateChannelDisconnectRequest': return this.handlePrivateChannelDisconnectRequest(msg as PrivateChannelDisconnectRequest, from, sc)
-            case 'privateChannelAddEventListenerRequest': return this.handlePrivateChannelAddEventListenerRequest(msg as PrivateChannelEventListenerAddedRequest, from)
-            case 'privateChannelUnsubscribeEventListenerRequest': return this.handlePrivateChannelUnsubscribeEventListenerRequest(msg as PrivateChannelUnsubscribeEventListenerRequest, from)
+                // private channels
+                case 'privateChannelDisconnectRequest': return this.handlePrivateChannelDisconnectRequest(msg as PrivateChannelDisconnectRequest, sc, from)
+                case 'privateChannelAddEventListenerRequest': return this.handlePrivateChannelAddEventListenerRequest(msg as PrivateChannelAddEventListenerRequest, from, sc)
+                case 'privateChannelUnsubscribeEventListenerRequest': return this.handlePrivateChannelUnsubscribeEventListenerRequest(msg as PrivateChannelUnsubscribeEventListenerRequest, sc, from)
 
-            // handling state synchronisation of channels
-            case 'getCurrentContextRequest': return this.handleGetCurrentContextRequest(msg as GetCurrentContextRequest, from, sc)
+                // handling state synchronisation of channels
+                case 'getCurrentContextRequest': return this.handleGetCurrentContextRequest(msg as GetCurrentContextRequest, sc, from)
+            }
+        } catch (e: any) {
+            const responseType = msg.type.replace(new RegExp("Request$"), 'Response')
+            errorResponse(sc, msg, from, e.message ?? e, responseType)
+        }
+    }
+
+    handleGetCurrentContextRequest(arg0: GetCurrentContextRequest, sc: ServerContext, from: AppMetadata) {
+        const channel = this.getChannelById(arg0.payload.channelId)
+        const type = arg0.payload.contextType
+
+        if (channel) {
+            const context = channel.context.find(c => c.type == type)
+            successResponse(sc, arg0, from, { context }, 'getCurrentContextResponse')
+        } else {
+            errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'getCurrentContextResponse')
+        }
+    }
+
+    handlePrivateChannelUnsubscribeEventListenerRequest(arg0: PrivateChannelUnsubscribeEventListenerRequest, sc: ServerContext, from: AppMetadata) {
+        const i = this.eventListeners.findIndex(r => r.listenerUuid == arg0.payload.listenerUUID)
+        if (i > -1) {
+            this.eventListeners.splice(i, 1)
+            successResponse(sc, arg0, from, {}, 'privateChannelUnsubscribeEventListenerResponse')
+        } else {
+            errorResponse(sc, arg0, from, "ListenerNotFound", 'privateChannelUnsubscribeEventListenerResponse')
+        }
+    }
+
+    handlePrivateChannelDisconnectRequest(arg0: PrivateChannelDisconnectRequest, sc: ServerContext, from: AppMetadata) {
+        const toUnsubscribe = this.contextListeners
+            .filter(r => (r.appId == from.appId) && (r.instanceId == from.instanceId))
+            .filter(r => r.channelId == arg0.payload.channelId)
+
+        toUnsubscribe.forEach(u => {
+            this.invokeEventListeners(arg0.payload.channelId, "onUnsubscribe", 'privateChannelOnUnsubscribeEvent', sc, u.contextType)
+        })
+
+        this.contextListeners = this.contextListeners.filter(r => !toUnsubscribe.includes(r))
+        this.invokeEventListeners(arg0.payload.channelId, "onDisconnect", 'privateChannelOnDisconnectEvent', sc)
+        successResponse(sc, arg0, from, {}, 'privateChannelDisconnectResponse')
+    }
+
+    handleContextListenerUnsubscribeRequest(arg0: ContextListenerUnsubscribeRequest, sc: ServerContext, from: AppMetadata) {
+        const i = this.contextListeners
+            .findIndex(r => (r.listenerUuid == arg0.payload.listenerUUID) && (r.instanceId == from.instanceId))
+
+        if (i > -1) {
+            const rl = this.contextListeners[i]
+            const channel = this.getChannelById(rl.channelId)
+            this.invokeEventListeners(channel?.id, "onUnsubscribe", 'privateChannelOnUnsubscribeEvent', sc)
+            this.contextListeners.splice(i, 1)
+            successResponse(sc, arg0, from, {}, 'contextListenerUnsubscribeResponse')
+        } else {
+            errorResponse(sc, arg0, from, "ListenerNotFound", 'contextListenerUnsubscribeResponse')
+        }
+    }
+
+    handleAddContextListenerRequest(arg0: AddContextListenerRequest, sc: ServerContext, from: AppMetadata) {
+        const channel = this.getChannelById(arg0.payload?.channelId)
+
+        if (channel == null) {
+            errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'addContextListenerResponse')
+        } else {
+            const lr: ContextListenerRegistration = {
+                appId: from.appId,
+                instanceId: from.instanceId ?? 'no-instance-id',
+                channelId: channel.id,
+                listenerUuid: sc.createUUID(),
+                contextType: arg0.payload.contextType,
+                userChannelListener: channel.type == ChannelType.user
+            }
+
+            this.contextListeners.push(lr)
+            this.invokeEventListeners(channel.id, "onAddContextListener", "privateChannelOnAddContextListenerEvent", sc, arg0.payload.contextType ?? undefined)
+            successResponse(sc, arg0, from, { listenerUUID: lr.listenerUuid }, 'addContextListenerResponse')
         }
     }
 
@@ -226,152 +280,53 @@ export class BroadcastHandler implements MessageHandler {
         successResponse(sc, arg0, from, { channels: userChannels.map(c => ({ id: c.id, type: c.type })) }, 'getUserChannelsResponse')
     }
 
-    // createChannelEventListener(arg0: PrivateChannelEventListenerRemovedAgentRequest | PrivateChannelEventListenerAddedAgentRequest, from: AppMetadata): ChannelEventListener {
-    //     const el: ChannelEventListener = {
-    //         appId: from.appId,
-    //         instanceId: from.instanceId!!,
-    //         channelId: arg0.payload.channelId,
-    //         eventType: arg0.payload.listenerType
-    //     }
-    //     return el
-    // }
+    handleEventListenerRemoved(arg0: PrivateChannelUnsubscribeEventListenerRequest, from: AppMetadata, sc: ServerContext) {
+        const fi = this.eventListeners.findIndex(e => e.listenerUuid == arg0.payload.listenerUUID)
+        if (fi > -1) {
+            this.eventListeners.splice(fi, 1)
+            successResponse(sc, arg0, from, {}, 'privateChannelUnsubscribeEventListenerResponse')
+        } else {
+            errorResponse(sc, arg0, from, "ListenerNotFound", 'privateChannelUnsubscribeEventListenerResponse')
+        }
+    }
 
-    // handleEventListenerRemoved(arg0: PrivateChannelUnsubscribeEventListenerRequest, from: AppMetadata) {
-    //     const toRemove = this.createChannelEventListener(arg0, from)
-    //     const fi = this.eventListeners.findIndex(e => channelEventListenerMatches(e, toRemove))
-    //     if (fi > -1) {
-    //         this.eventListeners.splice(fi, 1)
-    //     }
-    // }
+    handlePrivateChannelAddEventListenerRequest(arg0: PrivateChannelAddEventListenerRequest, from: AppMetadata, sc: ServerContext) {
+        const channel = this.getChannelById(arg0.payload.privateChannelId)
 
-    // handlePrivateChannelAddEventListenerRequest(arg0: PrivateChannelAddEventListenerRequest, from: AppMetadata) {
-    //     const el = this.createChannelEventListener(arg0, from)
-    //     this.eventListeners.push(el)
-    // }
+        if ((channel == null) || (channel.type != ChannelType.private)) {
+            errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'privateChannelAddEventListenerResponse')
+        } else {
+            const el = {
+                appId: from.appId!!,
+                instanceId: from.instanceId!!,
+                channelId: arg0.payload.privateChannelId,
+                eventType: arg0.payload.listenerType,
+                listenerUuid: sc.createUUID(),
+            } as PrivateChannelEventListener
+            this.eventListeners.push(el)
+            successResponse(sc, arg0, from, { listenerUUID: el.listenerUuid }, 'privateChannelAddEventListenerResponse')
+        }
+    }
 
+    invokeEventListeners(channelId: string | undefined, eventType: PrivateChannelEventListenerTypes, messageType: NotificationAgentEventMessage, sc: ServerContext, contextType?: string) {
+        if (channelId) {
+            const msg = {
+                type: messageType,
+                meta: {
+                    eventUuid: sc.createUUID(),
+                    timestamp: new Date()
+                },
+                payload: {
+                    channelId,
+                    contextType: contextType
+                }
+            } as AgentEventMessage
 
-
-    // invokeEventListeners(msg: EventMessage, channel: string, eventType: ChannelEventType, sc: ServerContext) {
-    //     this.eventListeners
-    //         .filter(e => channelEventListenerInvoked(e, channel, eventType))
-    //         .forEach(e => sc.post(msg, { appId: e.appId, instanceId: e.instanceId }))
-    // }
-
-    // unsubscribe(lr: ListenerRegistration, sc: ServerContext, type: 'onUnsubscribe' | 'PrivateChannel.onUnsubscribe') {
-    //     const fi = this.contextListeners.findIndex((e) => listenerRegistrationMatches(e, lr))
-    //     if (fi > -1) {
-    //         this.contextListeners.splice(fi, 1)
-    //     }
-
-    //     this.invokeEventListeners({
-    //         type,
-    //         meta: {
-    //             requestUuid: sc.createUUID(),
-    //             timestamp: new Date(),
-    //         },
-    //         payload: {
-    //             channelId: lr.channelId,
-    //             contextType: lr.contextType
-    //         }
-
-    //     } as EventMessage, lr.channelId, 'onUnsubscribe', sc)
-    // }
-
-    // handleOnUnsubscribe(arg0: PrivateChannelOnUnsubscribeAgentRequest | OnUnsubscribeAgentRequest, sc: ServerContext) {
-    //     const lr = createListenerRegistration(arg0)
-    //     this.unsubscribe(lr, sc, arg0.type)
-    // }
-
-    // handleOnDisconnect(arg0: PrivateChannelOnDisconnectAgentRequest, from: AppMetadata, sc: ServerContext) {
-    //     // first, unsubscribe all listeners from this app to the channel
-    //     const toUnsubscribe = this.contextListeners.filter(r => (r.appId == from.appId) && (r.instanceId == from.instanceId) && (r.channelId == arg0.payload.channelId))
-    //     toUnsubscribe.forEach(u => this.unsubscribe(u, sc, 'PrivateChannel.onUnsubscribe'))
-
-    //     // now, fire the disconnect to any event listeners
-    //     this.invokeEventListeners(arg0, arg0.payload.channelId, 'onDisconnect', sc)
-    //     //this.eventListeners.filter(cel => (cel.appId == from.appId))
-    // }
-
-    // handleOnAddContextListener(arg0: PrivateChannelOnAddContextListenerAgentRequest | OnAddContextListenerAgentRequest, sc: ServerContext) {
-    //     const lr = createListenerRegistration(arg0)
-    //     this.contextListeners.push(lr)
-    //     this.invokeEventListeners(arg0, lr.channelId, 'onAddContextListener', sc)
-    // }
-
-    // async handleBroadcast(arg0: PrivateChannelBroadcastAgentRequest | BroadcastAgentRequest, sc: ServerContext) {
-    //     const channelId = arg0.payload.channelId
-    //     const context = arg0.payload.context
-    //     const contextType = context.type
-    //     const lr = this.contextListeners
-    //     const privateChannel = arg0.type == "PrivateChannel.broadcast"
-
-    //     function getPrivateChannelRecipients(): AppMetadata[] {
-    //         return lr
-    //             .filter(r => {
-    //                 return (r.channelId == channelId) && ((r.contextType == null) || (r.contextType == contextType))
-    //             })
-    //     }
-
-    //     const destinations: AppMetadata[] = privateChannel ? getPrivateChannelRecipients() : await sc.getConnectedApps()
-
-    //     destinations
-    //         .filter(r => r.instanceId !== arg0.meta.source?.instanceId)
-    //         .forEach(r => {
-    //             // forward on the broadcast message with added destination details
-    //             const out = {
-    //                 meta: {
-    //                     source: arg0.meta.source,
-    //                     destination: {
-    //                         appId: r.appId,
-    //                         instanceId: r.instanceId
-    //                     },
-    //                     requestUuid: arg0.meta.requestUuid,
-    //                     timestamp: arg0.meta.timestamp
-    //                 },
-    //                 type: arg0.type,
-    //                 payload: arg0.payload
-    //             } as PrivateChannelBroadcastAgentRequest | BroadcastAgentRequest
-
-    //             sc.post(out, r)
-    //         })
-
-
-    //     // store channel state for new da-proxies connecting
-    //     if (!privateChannel) {
-    //         var channelState: ContextElement[] = this.state[channelId] ?? []
-
-    //         // remove previous context of same type
-    //         channelState = channelState.filter(ce => ce.type != contextType)
-    //         this.state[channelId] = channelState
-
-    //         // add the new element of context
-    //         channelState.push(context)
-    //     }
-
-    // }
-
-    // registerChannel(r: RegisterChannelAgentRequest, sc: ServerContext, from: AppMetadata) {
-    //     const id = r.payload.channelId
-    //     const type = r.payload.type
-
-    //     const existingType = this.type[id]
-
-    //     if ((existingType) && (existingType != type)) {
-    //         sc.post({
-    //             type: "registerChannelResponse",
-    //             payload: {
-    //                 error: ChannelError.AccessDenied
-    //             }
-    //         }, from)
-    //     } else {
-    //         this.type[id] = type
-    //         sc.post({
-    //             type: "registerChannelResponse",
-    //             payload: {
-    //             }
-    //         }, from)
-    //     }
-    // }
+            this.eventListeners
+                .filter(e => (e.channelId == channelId) && (e.eventType == eventType))
+                .forEach(e => sc.post(msg, { appId: e.appId, instanceId: e.instanceId }))
+        }
+    }
 
 }
 
