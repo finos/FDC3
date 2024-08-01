@@ -6,7 +6,7 @@ sidebar_label: OrderList
 
 # OrderList
 
-[@experiemental](/docs/fdc3-compliance#experimental-features) A list of orders. Use this type for use cases that require not just a single order, but multiple.
+[@experimental](/docs/fdc3-compliance#experimental-features) A list of orders. Use this type for use cases that require not just a single order, but multiple.
 
 The OrderList schema does not explicitly include identifiers in the id section, as there is not a common standard for such identifiers. Applications can, however, populate this part of the contract with custom identifiers if so desired.
 

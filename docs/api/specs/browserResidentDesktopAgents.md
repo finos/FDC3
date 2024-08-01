@@ -72,7 +72,7 @@ window.addEventListener("message", (event) => {
 });
 ```
 
-## Responding to app communications with Browser Communication Protocol (BCP)
+## Responding to app communications with Desktop Agent Communication Protocol (DACP)
 
 BCP processing should begin by setting up an inactive connection instance. This instance will become active after the first BCP "WCPValidateAppIdentity" message is received and processed (or deleted if it fails). It is important to remember the WindowProxy (event.source).
 
@@ -207,7 +207,7 @@ const authenticateApp = (connection, e) => {
 
 Each message should be responded to with its corresponding response when a response should contain data, or with `BCPAck` if only an acknowledgement is required.
 
-See [Browser Communication Protocol](./browserCommunicationProtocol.md)
+See [Desktop Agent Communication Protocol ](./desktopAgentCommunicationProtocol .md)
 
 See bcp.ts for a full list of BCP messages. 
 

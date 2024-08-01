@@ -10,6 +10,7 @@
       "type": "string",
       "enum": [
         "addContextListenerRequest",
+        "addEventListenerRequest",
         "addIntentListenerRequest",
         "broadcastRequest",
         "contextListenerUnsubscribeRequest",
@@ -24,6 +25,7 @@
         "getOrCreateChannelRequest",
         "getUserChannelsRequest",
         "intentListenerUnsubscribeRequest",
+        "intentResultRequest",
         "joinUserChannelRequest",
         "leaveCurrentChannelRequest",
         "openRequest",
