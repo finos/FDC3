@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Added clarification that `id` field values SHOULD always be strings to context schema definition (a restriction that can't easily be represented in the generated types). ([#1149](https://github.com/finos/FDC3/pull/1149))
 * Added requirement that Standard versions SHOULD avoid the use unions in context and API definitions wherever possible as these can be hard to replicate and MUST avoid unions of primitive types as these can be impossible to replicate in other languages. ([#120](https://github.com/finos/FDC3/pull/1200))
+* Added `addEventListener` to the `DesktopAgent` API to provide support for event listener for non-context and non-intent events, including a USER_CHANNEL_CHANGED event ([#1207](https://github.com/finos/FDC3/pull/1207))
+* Added an `async` `addEventListener` function to the `PrivateChannel` API to replace the deprecated, synchronous `onAddContextListener`, `onUnsubscribe` and `onDisconnect` functions and to keep consistency with the DesktopAgent API. ([#X](https://github.com/finos/FDC3/pull/X))
 
 ### Changed
 
@@ -18,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Deprecated
 
 * Made `IntentMetadata.displayName` optional as it is deprecated. ([#1280](https://github.com/finos/FDC3/pull/1280))
+* Deprecated `PrivateChannel`'s synchronous `onAddContextListener`, `onUnsubscribe` and `onDisconnect` functions in favour of an `async` `addEventListener` function consistent with the one added to `DesktopAgent`. ([#X](https://github.com/finos/FDC3/pull/X))
 
 ### Fixed
 
