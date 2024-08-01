@@ -7,7 +7,7 @@ You will need to pre-populate the AppDirectory with the following items:
 |-----|------------------------------------------|
 | A   | Generic AppD Record which contains at least the following fields:<br>- `name`<br>- `version`<br>- `title`<br>- `tooltip`<br>- `description`<br>- `icons` (`Array<Icon>`)<br>- `screenshots` (`Array<Image>`)<br>- `interop.intents.listensFor` (`aTestingIntent` with at least context type `testContextX`)  |
 
-## Retrieve `AppMetadata` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+## Retrieve `AppMetadata` ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) 
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
@@ -16,7 +16,7 @@ You will need to pre-populate the AppDirectory with the following items:
 
 - `GetAppMetadata`: perform the above steps
 
-## Instance Metadata ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+## Instance Metadata ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) 
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
@@ -29,7 +29,7 @@ You will need to pre-populate the AppDirectory with the following items:
 
 - `AppInstanceMetadata`: Perform the above steps
 
-## Finding Instances ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+## Finding Instances ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) 
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
@@ -46,12 +46,12 @@ You will need to pre-populate the AppDirectory with the following items:
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1.getInfo    |Retrieve the `ImplementationMetadata` for the DesktopAgent with <br/> - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `let implMetadata = fdc3.getInfo()`  <br/> - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `fdc3.getInfo().then((implMetadata) => { subsequent steps }`   <br />**Note that the use of `then` is deliberate and intended to confirm that a promise returned (as this function switched from synchronous to asynchronous in 2.0)**|
-| Test   | 2.CheckVersion  | Check that the `fdc3Version` variable is present and at or greater than:  <br /> -  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) 1.2 <br /> - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) 2.0  <br />(which you can do with the [`versionIsAtLeast` function from FDC3's Methods.ts](https://github.com/finos/FDC3/blob/add64f8302c6dcdc8437cf0e245101e927b69ec2/src/api/Methods.ts#L207):<br>`const isFDC3v2 = versionIsAtLeast(implMetadata, "2.0")`  |
+| Test   | 1.getInfo    |Retrieve the `ImplementationMetadata` for the DesktopAgent with <br/> - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `let implMetadata = fdc3.getInfo()`  <br/> - ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) `fdc3.getInfo().then((implMetadata) => { subsequent steps }`   <br />**Note that the use of `then` is deliberate and intended to confirm that a promise returned (as this function switched from synchronous to asynchronous in 2.0)**|
+| Test   | 2.CheckVersion  | Check that the `fdc3Version` variable is present and at or greater than:  <br /> -  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) 1.2 <br /> - ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) 2.0  <br />(which you can do with the [`versionIsAtLeast` function from FDC3's Methods.ts](https://github.com/finos/FDC3/blob/add64f8302c6dcdc8437cf0e245101e927b69ec2/src/api/Methods.ts#L207):<br>`const isFDC3v2 = versionIsAtLeast(implMetadata, "2.0")`  |
 | Test   | 3.CheckProvider  | Check that the `provider` variable is present and not an empty string  |
-| Test   | 4.CheckFeatures  | ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) Check that the `optionalFeatures`, `optionalFeatures.OriginatingAppMetadata` and `optionalFeatures.UserChannelMembershipAPIs` variables are all present and that the latter two provide boolean values  |
+| Test   | 4.CheckFeatures  | ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) Check that the `optionalFeatures`, `optionalFeatures.OriginatingAppMetadata` and `optionalFeatures.UserChannelMembershipAPIs` variables are all present and that the latter two provide boolean values  |
 
-- ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `GetInfo1`: Perform the above steps 
+- ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) `GetInfo1`: Perform the above steps 
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
@@ -59,4 +59,4 @@ You will need to pre-populate the AppDirectory with the following items:
 | A | 2.getInfo     |   Retrieve the `ImplementationMetadata` for the DesktopAgent with: <br  />`fdc3.getInfo().then((implMetadata) => {  ... subsequent steps ...}` <br/> This should include `AppMetadata` for the retrieving app. |
 | A + Test | 3.Confirm  | Check that `implMetadata.appMetadata` contains an `appId` and `instanceId` matching that retrieved in the first step (will require transmission of the details from A to Test or vice-versa). Also compare the `AppMetadata` object to the expected definition for the fields provided above during setup and ensure that the metadata matches. |
 
-- ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `GetInfo2`: Perform the above steps. 
+- ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue) `GetInfo2`: Perform the above steps. 
