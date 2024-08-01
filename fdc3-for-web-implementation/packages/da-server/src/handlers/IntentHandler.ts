@@ -1,78 +1,53 @@
-import { AppDestinationIdentifier, AppMetadata, ErrorMessage, FindIntentAgentRequest, FindIntentAgentResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { MessageHandler } from "../BasicFDC3Server";
 import { ServerContext } from "../ServerContext";
 import { Directory } from "../directory/DirectoryInterface";
-import { genericResultTypeSame } from "../directory/BasicDirectory";
-import { AppIntent, ResolveError } from "@finos/fdc3";
-import { IntentResolutionChoiceAgentRequest, IntentResolutionChoiceAgentResponse, OnAddIntentListenerAgentRequest, OnUnsubscribeIntentListenerAgentRequest } from "@kite9/fdc3-common";
+import { AppIntent, AppMetadata, ResolveError } from "@finos/fdc3";
+import {
+    AddIntentListenerRequest,
+    FindIntentRequest, FindIntentsByContextRequest,
+    IntentEvent,
+    IntentListenerUnsubscribeRequest,
+    RaiseIntentRequest,
+    RaiseIntentResponse,
+    RaiseIntentResultResponse
+} from "@kite9/fdc3-common";
+import { errorResponse, successResponse } from "./support";
 
 
 type ListenerRegistration = {
     appId: string | undefined,
     instanceId: string | undefined,
     intentName: string | undefined,
-    contextType: string | undefined,
-    resultType: string | undefined
-}
-
-function createListenerRegistrationNameOnly(msg: OnAddIntentListenerAgentRequest | OnUnsubscribeIntentListenerAgentRequest): ListenerRegistration {
-    return {
-        appId: msg.meta.source?.appId!!,
-        instanceId: msg.meta.source?.instanceId!!,
-        intentName: msg.payload.intent,
-        contextType: undefined,
-        resultType: undefined
-    }
-}
-
-function sameOrUndefined(a: string | undefined, b: string | undefined) {
-    return (a == b) || (a == undefined) || (b == undefined)
-}
-
-function matches(a: ListenerRegistration, b: ListenerRegistration): boolean {
-    return (sameOrUndefined(a.appId, b.appId)) &&
-        (a.intentName == b.intentName) &&
-        (sameOrUndefined(a.contextType, b.contextType)) &&
-        (genericResultTypeSame(a.resultType, b.resultType))
+    listenerUUID: string
 }
 
 /**
  * Re-writes the request to forward it on to the target application
  */
-async function forwardRequest(arg0: RaiseIntentAgentRequest, to: AppMetadata, sc: ServerContext, ih: IntentHandler): Promise<void> {
-    const out: RaiseIntentAgentRequest = {
-        type: 'raiseIntentRequest',
-        payload: arg0.payload,
+async function forwardRequest(arg0: RaiseIntentRequest, from: AppMetadata, to: AppMetadata, sc: ServerContext, ih: IntentHandler): Promise<void> {
+    const out: IntentEvent = {
+        type: 'intentEvent',
+        payload: {
+            context: arg0.payload.context,
+            intent: arg0.payload.intent,
+            originatingApp: from
+        },
         meta: {
-            source: arg0.meta.source,
-            destination: arg0.payload.app,
-            requestUuid: arg0.meta.requestUuid,
-            timestamp: arg0.meta.timestamp
+            eventUuid: sc.createUUID(),
+            timestamp: new Date()
         }
     }
 
     // register the resolution destination
-    ih.pendingResolutions.set(arg0.meta.requestUuid, arg0.meta.source)
-
-    return sc.post(out, to)
-}
-
-async function sendError(arg0: RaiseIntentAgentRequest, sc: ServerContext, e: ErrorMessage) {
-    const out: RaiseIntentAgentErrorResponse = {
-        type: 'raiseIntentResponse',
-        meta: {
-            requestUuid: arg0.meta.requestUuid,
-            responseUuid: sc.createUUID(),
-            timestamp: new Date()
-        },
-        payload: {
-            error: e
+    ih.pendingResolutions.set(arg0.meta.requestUuid, from)
+    await sc.post(out, to)
+    successResponse(sc, arg0, from, {
+        intentResolution: {
+            intent: arg0.payload.intent,
+            source: to
         }
-    }
-
-    sc.post(out, arg0.meta.source)
+    }, 'raiseIntentResponse')
 }
-
 
 /**
  * A pending intent is one for an app that hasn't registered it's intent listener yet.
@@ -83,36 +58,35 @@ async function sendError(arg0: RaiseIntentAgentRequest, sc: ServerContext, e: Er
 class PendingIntent {
 
     complete: boolean = false
-    r: RaiseIntentAgentRequest
-    expecting: ListenerRegistration
+    r: RaiseIntentRequest
+    expectingAppId: string
+    expectingIntent: string
     sc: ServerContext
     ih: IntentHandler
+    from: AppMetadata
 
-    constructor(r: RaiseIntentAgentRequest, sc: ServerContext, ih: IntentHandler) {
+    constructor(r: RaiseIntentRequest, sc: ServerContext, ih: IntentHandler, expectingAppId: string, expectingIntent: string, from: AppMetadata) {
         this.r = r
-        this.expecting = {
-            appId: r.payload.app.appId,
-            instanceId: undefined,
-            intentName: r.payload.intent,
-            contextType: r.payload.context?.type,
-            resultType: undefined
-        }
+        this.expectingAppId = expectingAppId
+        this.expectingIntent = expectingIntent
         this.sc = sc
         this.ih = ih
+        this.from = from
 
         // handle the timeout
         setTimeout(() => {
             if (!this.complete) {
-                sendError(r, sc, ResolveError.IntentDeliveryFailed)
+                errorResponse(sc, r, from, ResolveError.IntentDeliveryFailed, 'raiseIntentResponse')
+                this.ih.pendingIntents.delete(this)
             }
         }, ih.timeoutMs)
     }
 
-    async accept(arg0: any): Promise<void> {
-        const actual = createListenerRegistrationNameOnly(arg0)
-        if (matches(this.expecting, actual) && !this.complete) {
+    async accept(arg0: ListenerRegistration): Promise<void> {
+        if ((arg0.appId == this.expectingAppId) && (arg0.intentName == this.expectingIntent)) {
             this.complete = true
-            forwardRequest(this.r, arg0.meta.source, this.sc, this.ih)
+            this.ih.pendingIntents.delete(this)
+            forwardRequest(this.r, this.from, { appId: arg0.appId, instanceId: arg0.instanceId }, this.sc, this.ih)
         }
     }
 }
@@ -121,7 +95,7 @@ export class IntentHandler implements MessageHandler {
 
     private readonly directory: Directory
     private readonly regs: ListenerRegistration[] = []
-    private readonly pendingIntents: Set<PendingIntent> = new Set()
+    readonly pendingIntents: Set<PendingIntent> = new Set()
     readonly pendingResolutions: Map<string, AppMetadata> = new Map()
     readonly timeoutMs: number
 
@@ -132,28 +106,24 @@ export class IntentHandler implements MessageHandler {
 
     async accept(msg: any, sc: ServerContext, from: AppMetadata): Promise<void> {
         switch (msg.type as string) {
-            case 'findIntentsByContextRequest': return this.findIntentsByContextRequest(msg as FindIntentsByContextAgentRequest, sc, from)
-            case 'findIntentRequest': return this.findIntentRequest(msg as FindIntentAgentRequest, sc, from)
-            case 'raiseIntentRequest': return this.raiseIntentRequest(msg as RaiseIntentAgentRequest, sc)
-            case 'onAddIntentListener': return this.onAddIntentListener(msg as OnAddIntentListenerAgentRequest, sc)
-            case 'onUnsubscribeIntentListener': return this.onUnsubscribe(msg as OnUnsubscribeIntentListenerAgentRequest, sc)
-            case 'raiseIntentResponse': return this.raiseIntentResponse(msg as RaiseIntentAgentResponse, sc)
-            case 'raiseIntentResultResponse': return this.raiseIntentResultResponse(msg as RaiseIntentResultAgentResponse, sc)
-            case 'intentResolutionChoice': return this.intentResolutionChoice(msg as IntentResolutionChoiceAgentRequest, from, sc)
+            case 'findIntentsByContextRequest': return this.findIntentsByContextRequest(msg as FindIntentsByContextRequest, sc, from)
+            case 'findIntentRequest': return this.findIntentRequest(msg as FindIntentRequest, sc, from)
+            case 'raiseIntentRequest': return this.raiseIntentRequest(msg as RaiseIntentRequest, sc, from)
+            case 'addIntentListenerRequest': return this.onAddIntentListener(msg as AddIntentListenerRequest, sc, from)
+            case 'intentListenerUnsubscribeRequest': return this.onUnsubscribe(msg as IntentListenerUnsubscribeRequest, sc, from)
+            case 'raiseIntentResponse': return this.raiseIntentResponse(msg as RaiseIntentResponse, sc) /* ISSUE: 1303 */
+            case 'raiseIntentResultResponse': return this.raiseIntentResultResponse(msg as RaiseIntentResultResponse, sc)
         }
     }
-    intentResolutionChoice(arg0: IntentResolutionChoiceAgentResponse, from: AppMetadata, sc: ServerContext): void | PromiseLike<void> {
-        // currently, this is a no-op, just pass the same message to the app
-        const out = arg0 as IntentResolutionChoiceAgentResponse
-        sc.post(out, from)
-    }
 
-
-    raiseIntentResponse(arg0: RaiseIntentAgentResponse, sc: ServerContext): void | PromiseLike<void> {
+    /**
+     * Called when target app handles an intent
+     */
+    raiseIntentResponse(arg0: RaiseIntentResponse, sc: ServerContext): void | PromiseLike<void> {
         const requestId = arg0.meta.requestUuid
         const to = this.pendingResolutions.get(requestId)
         if (to) {
-            const out: RaiseIntentAgentResponse = {
+            const out: RaiseIntentResponse = {
                 meta: arg0.meta,
                 type: "raiseIntentResponse",
                 payload: arg0.payload
@@ -163,12 +133,12 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    raiseIntentResultResponse(arg0: RaiseIntentResultAgentResponse, sc: ServerContext): void | PromiseLike<void> {
+    raiseIntentResultResponse(arg0: RaiseIntentResultResponse, sc: ServerContext): void | PromiseLike<void> {
         const requestId = arg0.meta.requestUuid
         const to = this.pendingResolutions.get(requestId)
         if (to) {
             this.pendingResolutions.delete(requestId)
-            const out: RaiseIntentResultAgentResponse = {
+            const out: RaiseIntentResultResponse = {
                 meta: arg0.meta,
                 type: "raiseIntentResultResponse",
                 payload: arg0.payload
@@ -178,21 +148,33 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    onUnsubscribe(arg0: OnUnsubscribeIntentListenerAgentRequest, _sc: ServerContext): void {
-        const lr = createListenerRegistrationNameOnly(arg0)
-        const fi = this.regs.findIndex((e) => matches(e, lr))
+    onUnsubscribe(arg0: IntentListenerUnsubscribeRequest, sc: ServerContext, from: AppMetadata): void {
+        const id = arg0.payload.listenerUUID
+        const fi = this.regs.findIndex((e) => e.listenerUUID == id)
         if (fi > -1) {
             this.regs.splice(fi, 1)
+            successResponse(sc, arg0, from, {}, 'intentListenerUnsubscribeResponse')
+        } else {
+            errorResponse(sc, arg0, from, "Non-Existent Listener", 'intentListenerUnsubscribeResponse')
         }
     }
 
-    onAddIntentListener(arg0: OnAddIntentListenerAgentRequest, _sc: ServerContext): void {
-        const lr = createListenerRegistrationNameOnly(arg0)
+    onAddIntentListener(arg0: AddIntentListenerRequest, sc: ServerContext, from: AppMetadata): void {
+        const lr = {
+            appId: from.appId,
+            instanceId: from.instanceId,
+            intentName: arg0.payload.intent,
+            listenerUUID: sc.createUUID()
+        } as ListenerRegistration
+
         this.regs.push(lr)
+        successResponse(sc, arg0, from, {
+            listenerUUID: lr.listenerUUID
+        }, 'addIntentListenerResponse')
 
         // see if this intent listener is the destination for any pending intents
         for (let x of this.pendingIntents) {
-            x.accept(arg0)
+            x.accept(lr)
             if (x.complete) {
                 this.pendingIntents.delete(x)
             }
@@ -205,18 +187,18 @@ export class IntentHandler implements MessageHandler {
             .length > 0
     }
 
-    async raiseIntentRequest(arg0: RaiseIntentAgentRequest, sc: ServerContext): Promise<void> {
+    async raiseIntentRequest(arg0: RaiseIntentRequest, sc: ServerContext, from: AppMetadata): Promise<void> {
         const target = arg0.payload.app
-        if (this.directory.retrieveAppsById(target.appId).length == 0) {
+        if ((target?.appId) && (this.directory.retrieveAppsById(target.appId).length == 0)) {
             // app doesn't exist
-            return sendError(arg0, sc, ResolveError.TargetAppUnavailable)
+            return errorResponse(sc, arg0, from, ResolveError.TargetAppUnavailable, 'raiseIntentResponse')
         } else if (!await this.appHandlesIntent(target, arg0.payload.intent, arg0.payload.context.type)) {
             // app doesn't handle the intent
-            return sendError(arg0, sc, ResolveError.NoAppsFound)
-        } else if (target.instanceId) {
+            return errorResponse(sc, arg0, from, ResolveError.NoAppsFound, 'raiseIntentResponse')
+        } else if (target?.instanceId) {
             if (await sc.isAppConnected(target)) {
                 // ok, targeting a specific, known instance
-                return forwardRequest(arg0, target, sc, this)
+                return forwardRequest(arg0, from, target, sc, this)
             } else {
                 // instance doesn't exist
                 return sendError(arg0, sc, ResolveError.TargetInstanceUnavailable)
@@ -229,7 +211,7 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    async findIntentsByContextRequest(r: FindIntentsByContextAgentRequest, sc: ServerContext, from: AppMetadata): Promise<void> {
+    async findIntentsByContextRequest(r: FindIntentsByContextRequest, sc: ServerContext, from: AppMetadata): Promise<void> {
 
         // TODO: Add result type
         const { context } = r.payload
@@ -257,26 +239,17 @@ export class IntentHandler implements MessageHandler {
             }
         })
 
-        const out = {
-            meta: {
-                requestUuid: r.meta.requestUuid,
-                timestamp: new Date(),
-                responseUuid: sc.createUUID()
-            },
-            type: "findIntentsByContextResponse",
-            payload: {
-                appIntents: apps2
-            }
-        } as FindIntentsByContextAgentResponse
-
-        sc.post(out, from)
+        successResponse(sc, r, from, {
+            appIntents: apps2
+        }, 'findIntentsByContextResponse')
     }
 
 
-    async findIntentRequest(r: FindIntentAgentRequest, sc: ServerContext, from: AppMetadata): Promise<void> {
+    async findIntentRequest(r: FindIntentRequest, sc: ServerContext, from: AppMetadata): Promise<void> {
         const { intent, context, resultType } = r.payload
 
-        const apps2 = (await this.retrieveListeners(context?.type, intent, resultType, sc))
+        // listeners for connected applications
+        const apps2 = (await this.retrieveListeners(intent, sc))
             .map(lr => {
                 return {
                     appId: lr.appId,
@@ -284,6 +257,7 @@ export class IntentHandler implements MessageHandler {
                 }
             }) as AppMetadata[]
 
+        // directory entries
         const apps1 = this.directory.retrieveApps(context?.type, intent, resultType)
             .map(a => {
                 return {
@@ -300,44 +274,23 @@ export class IntentHandler implements MessageHandler {
         const allMatchingIntents = this.directory.retrieveIntents(context?.type, intent, resultType)
         const displayName = (allMatchingIntents.length > 0) ? allMatchingIntents[0].displayName : undefined
 
-        const out = {
-            meta: {
-                requestUuid: r.meta.requestUuid,
-                timestamp: new Date(),
-                responseUuid: sc.createUUID()
-            },
-            type: "findIntentResponse",
-            payload: {
-                appIntent: {
-                    intent: {
-                        name: intent,
-                        displayName
-                    },
-                    apps: [...apps1, ...apps2]
-                }
+        successResponse(sc, r, from, {
+            appIntent: {
+                intent: {
+                    name: intent,
+                    displayName
+                },
+                apps: [...apps1, ...apps2]
             }
-        } as FindIntentAgentResponse
-
-        sc.post(out, from)
+        }, 'findIntentResponse')
     }
 
-    async retrieveListeners(contextType: string | undefined, intentName: string | undefined, resultType: string | undefined, sc: ServerContext): Promise<ListenerRegistration[]> {
-        const template: ListenerRegistration = {
-            appId: undefined,
-            instanceId: undefined,
-            contextType,
-            intentName,
-            resultType
-        }
-
+    async retrieveListeners(intentName: string | undefined, sc: ServerContext): Promise<ListenerRegistration[]> {
         const activeApps = await sc.getConnectedApps()
-
-        const matching = this.regs.filter(r => matches(template, r))
+        const matching = this.regs.filter(r => r.intentName == intentName)
 
         console.log(`Matched listeners returned ${matching.length}`)
-
         const active = matching.filter(r => activeApps.find(a => a.instanceId == r.instanceId))
-
         console.log(`Active listeners returned ${active.length}`)
 
         return active

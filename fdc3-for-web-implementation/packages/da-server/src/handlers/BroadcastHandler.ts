@@ -39,7 +39,7 @@ type PrivateChannelEventListener = {
 
 enum ChannelType { 'user', 'app', 'private' }
 
-type ChannelState = {
+export type ChannelState = {
     id: string,
     type: ChannelType,
     context: Context[]
@@ -152,7 +152,7 @@ export class BroadcastHandler implements MessageHandler {
             .filter(r => r.channelId == arg0.payload.channelId)
 
         toUnsubscribe.forEach(u => {
-            this.invokeEventListeners(arg0.payload.channelId, "onUnsubscribe", 'privateChannelOnUnsubscribeEvent', sc, u.contextType)
+            this.invokeEventListeners(arg0.payload.channelId, "onUnsubscribe", 'privateChannelOnUnsubscribeEvent', sc, u.contextType ?? undefined)
         })
 
         this.contextListeners = this.contextListeners.filter(r => !toUnsubscribe.includes(r))
