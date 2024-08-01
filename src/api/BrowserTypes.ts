@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerEvent, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextsResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IframeChannelDrag, IframeChannelResize, IframeChannels, IframeChannelSelected, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocolMessage } from "./file";
+//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerEvent, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextsResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IframeChannelDrag, IframeChannelResize, IframeChannels, IframeChannelSelected, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocolMessage } from "./file";
 //
 //   const addContextListenerRequest = Convert.toAddContextListenerRequest(json);
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
@@ -50,6 +50,8 @@
 //   const intentEvent = Convert.toIntentEvent(json);
 //   const intentListenerUnsubscribeRequest = Convert.toIntentListenerUnsubscribeRequest(json);
 //   const intentListenerUnsubscribeResponse = Convert.toIntentListenerUnsubscribeResponse(json);
+//   const intentResultRequest = Convert.toIntentResultRequest(json);
+//   const intentResultResponse = Convert.toIntentResultResponse(json);
 //   const joinUserChannelRequest = Convert.toJoinUserChannelRequest(json);
 //   const joinUserChannelResponse = Convert.toJoinUserChannelResponse(json);
 //   const leaveCurrentChannelRequest = Convert.toLeaveCurrentChannelRequest(json);
@@ -571,7 +573,7 @@ export interface AgentResponseMessageResponsePayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
-export type ResponseMessageType = "addContextListenerResponse" | "addEventListenerResponse" | "addIntentListenerResponse" | "broadcastResponse" | "contextListenerUnsubscribeResponse" | "createPrivateChannelResponse" | "findInstancesResponse" | "findIntentResponse" | "findIntentsByContextResponse" | "getAppMetadataResponse" | "getCurrentChannelResponse" | "getCurrentContextResponse" | "getInfoResponse" | "getOrCreateChannelResponse" | "getUserChannelsResponse" | "intentListenerUnsubscribeResponse" | "joinUserChannelResponse" | "leaveCurrentChannelResponse" | "openResponse" | "privateChannelAddEventListenerResponse" | "privateChannelDisconnectResponse" | "privateChannelUnsubscribeEventListenerResponse" | "raiseIntentForContextResponse" | "raiseIntentResponse" | "raiseIntentResultResponse";
+export type ResponseMessageType = "addContextListenerResponse" | "addEventListenerResponse" | "addIntentListenerResponse" | "broadcastResponse" | "contextListenerUnsubscribeResponse" | "createPrivateChannelResponse" | "findInstancesResponse" | "findIntentResponse" | "findIntentsByContextResponse" | "getAppMetadataResponse" | "getCurrentChannelResponse" | "getCurrentContextResponse" | "getInfoResponse" | "getOrCreateChannelResponse" | "getUserChannelsResponse" | "intentListenerUnsubscribeResponse" | "intentResultResponse" | "joinUserChannelResponse" | "leaveCurrentChannelResponse" | "openResponse" | "privateChannelAddEventListenerResponse" | "privateChannelDisconnectResponse" | "privateChannelUnsubscribeEventListenerResponse" | "raiseIntentForContextResponse" | "raiseIntentResponse" | "raiseIntentResultResponse";
 
 /**
  * A request message from an FDC3-enabled app to a Desktop Agent.
@@ -611,7 +613,7 @@ export interface AppRequestMessageMeta {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  */
-export type RequestMessageType = "addContextListenerRequest" | "addEventListenerRequest" | "addIntentListenerRequest" | "broadcastRequest" | "contextListenerUnsubscribeRequest" | "createPrivateChannelRequest" | "findInstancesRequest" | "findIntentRequest" | "findIntentsByContextRequest" | "getAppMetadataRequest" | "getCurrentChannelRequest" | "getCurrentContextRequest" | "getInfoRequest" | "getOrCreateChannelRequest" | "getUserChannelsRequest" | "intentListenerUnsubscribeRequest" | "joinUserChannelRequest" | "leaveCurrentChannelRequest" | "openRequest" | "privateChannelAddEventListenerRequest" | "privateChannelDisconnectRequest" | "privateChannelUnsubscribeEventListenerRequest" | "raiseIntentForContextRequest" | "raiseIntentRequest";
+export type RequestMessageType = "addContextListenerRequest" | "addEventListenerRequest" | "addIntentListenerRequest" | "broadcastRequest" | "contextListenerUnsubscribeRequest" | "createPrivateChannelRequest" | "findInstancesRequest" | "findIntentRequest" | "findIntentsByContextRequest" | "getAppMetadataRequest" | "getCurrentChannelRequest" | "getCurrentContextRequest" | "getInfoRequest" | "getOrCreateChannelRequest" | "getUserChannelsRequest" | "intentListenerUnsubscribeRequest" | "intentResultRequest" | "joinUserChannelRequest" | "leaveCurrentChannelRequest" | "openRequest" | "privateChannelAddEventListenerRequest" | "privateChannelDisconnectRequest" | "privateChannelUnsubscribeEventListenerRequest" | "raiseIntentForContextRequest" | "raiseIntentRequest";
 
 /**
  * An event message from the Desktop Agent to an app indicating that context has been
@@ -1247,6 +1249,8 @@ export interface Image {
  * listeners and used to identify it in messages (e.g. when unsubscribing).
  *
  * Unique identifier for a for an attempt to connect to a Desktop Agent
+ *
+ * Should be set if the raiseIntent request returned an error.
  */
 export type FindInstancesErrors = "MalformedContext" | "DesktopAgentNotFound" | "ResolverUnavailable" | "IntentDeliveryFailed" | "NoAppsFound" | "ResolverTimeout" | "TargetAppUnavailable" | "TargetInstanceUnavailable" | "UserCancelledResolution" | "AgentDisconnected" | "NotConnectedToBridge" | "ResponseToBridgeTimedOut" | "MalformedMessage";
 
@@ -1326,6 +1330,9 @@ export interface FindIntentResponsePayload {
 
 /**
  * An interface that relates an intent to apps
+ *
+ * Used if a raiseIntent request requires additional resolution (e.g. by showing an intent
+ * resolver) before it can be handled.
  */
 export interface AppIntent {
     /**
@@ -2395,6 +2402,74 @@ export interface IntentListenerUnsubscribeResponse {
  */
 
 /**
+ * A request to deliver a result for an intent (which may include a `void` result that just
+ * indicates that the handler has run, returning no result).
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface IntentResultRequest {
+    /**
+     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+     */
+    meta: AddContextListenerRequestMeta;
+    /**
+     * The message payload typically contains the arguments to FDC3 API functions.
+     */
+    payload: IntentResultRequestPayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Request' appended.
+     */
+    type: "intentResultRequest";
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface IntentResultRequestPayload {
+    intentResult: PurpleIntentResult;
+}
+
+export interface PurpleIntentResult {
+    context?: Context;
+    channel?: Channel;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+
+/**
+ * A response to a request to deliver an intent result.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
+ * payload contains an `error` property, the request was unsuccessful.
+ */
+export interface IntentResultResponse {
+    /**
+     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     */
+    meta: AddContextListenerResponseMeta;
+    /**
+     * A payload for a response to an API call that will contain any return values or an `error`
+     * property containing a standardized error message indicating that the request was
+     * unsuccessful.
+     */
+    payload: BroadcastResponseResponsePayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Response' appended.
+     */
+    type: "intentResultResponse";
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
  * Request to join the app to the specified User channel. On successfully joining a channel,
  * client code should make subsequent requests to get the current context of that channel
  * for all registered context listeners and then call their handlers with it.
@@ -3024,6 +3099,10 @@ export interface RaiseIntentForContextResponse {
      * A payload for a response to an API call that will contain any return values or an `error`
      * property containing a standardized error message indicating that the request was
      * unsuccessful.
+     *
+     * There are 3 possible responses to a raiseIntentForContext request, each of which sets a
+     * single property in the payload: Success (`intentResolution`), Needs further resolution
+     * (`appIntents`) or Error (`error`).
      */
     payload: RaiseIntentForContextResponsePayload;
     /**
@@ -3038,20 +3117,34 @@ export interface RaiseIntentForContextResponse {
  * property containing a standardized error message indicating that the request was
  * unsuccessful.
  *
- * Response to a raiseIntent request that was successfully resolved
+ * There are 3 possible responses to a raiseIntentForContext request, each of which sets a
+ * single property in the payload: Success (`intentResolution`), Needs further resolution
+ * (`appIntents`) or Error (`error`).
  *
  * Response to a raiseIntentForContext request that needs additional resolution (i.e. show
  * an intent resolver UI)
  *
- * Response to a raiseIntent request that resulted in an error
+ * Used if a raiseIntent request resulted in an error
  */
 export interface RaiseIntentForContextResponsePayload {
-    error?:            FindInstancesErrors;
+    /**
+     * Should be set if the raiseIntent request returned an error.
+     */
+    error?: FindInstancesErrors;
+    /**
+     * Used if the raiseIntent request was successfully resolved
+     */
     intentResolution?: IntentResolution;
-    appIntents?:       AppIntent[];
+    /**
+     * Used if a raiseIntentForContext request requires additional resolution (e.g. by showing
+     * an intent resolver) before it can be handled.
+     */
+    appIntents?: AppIntent[];
 }
 
 /**
+ * Used if the raiseIntent request was successfully resolved
+ *
  * IntentResolution provides a standard format for data returned upon resolving an intent.
  *
  * ```javascript
@@ -3146,6 +3239,10 @@ export interface RaiseIntentResponse {
      * A payload for a response to an API call that will contain any return values or an `error`
      * property containing a standardized error message indicating that the request was
      * unsuccessful.
+     *
+     * There are 3 possible responses to a raiseIntent request, each of which sets a single
+     * property in the payload: Success (`intentResolution`), Needs further resolution
+     * (`appIntent`) or Error (`error`).
      */
     payload: RaiseIntentResponsePayload;
     /**
@@ -3160,17 +3257,29 @@ export interface RaiseIntentResponse {
  * property containing a standardized error message indicating that the request was
  * unsuccessful.
  *
- * Response to a raiseIntent request that was successfully resolved
+ * There are 3 possible responses to a raiseIntent request, each of which sets a single
+ * property in the payload: Success (`intentResolution`), Needs further resolution
+ * (`appIntent`) or Error (`error`).
  *
  * Response to a raiseIntent request that needs additional resolution (i.e. show an intent
- * resolver UI)
+ * resolver UI).
  *
- * Response to a raiseIntent request that resulted in an error
+ * Used if a raiseIntent request resulted in an error
  */
 export interface RaiseIntentResponsePayload {
-    error?:            FindInstancesErrors;
+    /**
+     * Should be set if the raiseIntent request returned an error.
+     */
+    error?: FindInstancesErrors;
+    /**
+     * Used if the raiseIntent request was successfully resolved
+     */
     intentResolution?: IntentResolution;
-    appIntent?:        AppIntent;
+    /**
+     * Used if a raiseIntent request requires additional resolution (e.g. by showing an intent
+     * resolver) before it can be handled.
+     */
+    appIntent?: AppIntent;
 }
 
 /**
@@ -3194,7 +3303,7 @@ export interface RaiseIntentResultResponse {
      * property containing a standardized error message indicating that the request was
      * unsuccessful.
      */
-    payload: ResponsePayload;
+    payload: RaiseIntentResultResponsePayload;
     /**
      * Identifies the type of the message and it is typically set to the FDC3 function name that
      * the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -3207,12 +3316,12 @@ export interface RaiseIntentResultResponse {
  * property containing a standardized error message indicating that the request was
  * unsuccessful.
  */
-export interface ResponsePayload {
+export interface RaiseIntentResultResponsePayload {
     error?:        ResponsePayloadError;
-    intentResult?: IntentResult;
+    intentResult?: FluffyIntentResult;
 }
 
-export interface IntentResult {
+export interface FluffyIntentResult {
     context?: Context;
     channel?: Channel;
 }
@@ -3885,6 +3994,22 @@ export class Convert {
 
     public static intentListenerUnsubscribeResponseToJson(value: IntentListenerUnsubscribeResponse): string {
         return JSON.stringify(uncast(value, r("IntentListenerUnsubscribeResponse")), null, 2);
+    }
+
+    public static toIntentResultRequest(json: string): IntentResultRequest {
+        return cast(JSON.parse(json), r("IntentResultRequest"));
+    }
+
+    public static intentResultRequestToJson(value: IntentResultRequest): string {
+        return JSON.stringify(uncast(value, r("IntentResultRequest")), null, 2);
+    }
+
+    public static toIntentResultResponse(json: string): IntentResultResponse {
+        return cast(JSON.parse(json), r("IntentResultResponse"));
+    }
+
+    public static intentResultResponseToJson(value: IntentResultResponse): string {
+        return JSON.stringify(uncast(value, r("IntentResultResponse")), null, 2);
     }
 
     public static toJoinUserChannelRequest(json: string): JoinUserChannelRequest {
@@ -4753,6 +4878,23 @@ const typeMap: any = {
         { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
         { json: "type", js: "type", typ: r("IntentListenerUnsubscribeResponseType") },
     ], false),
+    "IntentResultRequest": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
+        { json: "payload", js: "payload", typ: r("IntentResultRequestPayload") },
+        { json: "type", js: "type", typ: r("IntentResultRequestType") },
+    ], false),
+    "IntentResultRequestPayload": o([
+        { json: "intentResult", js: "intentResult", typ: r("PurpleIntentResult") },
+    ], false),
+    "PurpleIntentResult": o([
+        { json: "context", js: "context", typ: u(undefined, r("Context")) },
+        { json: "channel", js: "channel", typ: u(undefined, r("Channel")) },
+    ], false),
+    "IntentResultResponse": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
+        { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
+        { json: "type", js: "type", typ: r("IntentResultResponseType") },
+    ], false),
     "JoinUserChannelRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
         { json: "payload", js: "payload", typ: r("JoinUserChannelRequestPayload") },
@@ -4920,14 +5062,14 @@ const typeMap: any = {
     ], false),
     "RaiseIntentResultResponse": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("ResponsePayload") },
+        { json: "payload", js: "payload", typ: r("RaiseIntentResultResponsePayload") },
         { json: "type", js: "type", typ: r("RaiseIntentResultResponseType") },
     ], false),
-    "ResponsePayload": o([
+    "RaiseIntentResultResponsePayload": o([
         { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
-        { json: "intentResult", js: "intentResult", typ: u(undefined, r("IntentResult")) },
+        { json: "intentResult", js: "intentResult", typ: u(undefined, r("FluffyIntentResult")) },
     ], false),
-    "IntentResult": o([
+    "FluffyIntentResult": o([
         { json: "context", js: "context", typ: u(undefined, r("Context")) },
         { json: "channel", js: "channel", typ: u(undefined, r("Channel")) },
     ], false),
@@ -5088,6 +5230,7 @@ const typeMap: any = {
         "getOrCreateChannelResponse",
         "getUserChannelsResponse",
         "intentListenerUnsubscribeResponse",
+        "intentResultResponse",
         "joinUserChannelResponse",
         "leaveCurrentChannelResponse",
         "openResponse",
@@ -5115,6 +5258,7 @@ const typeMap: any = {
         "getOrCreateChannelRequest",
         "getUserChannelsRequest",
         "intentListenerUnsubscribeRequest",
+        "intentResultRequest",
         "joinUserChannelRequest",
         "leaveCurrentChannelRequest",
         "openRequest",
@@ -5280,6 +5424,12 @@ const typeMap: any = {
     ],
     "IntentListenerUnsubscribeResponseType": [
         "intentListenerUnsubscribeResponse",
+    ],
+    "IntentResultRequestType": [
+        "intentResultRequest",
+    ],
+    "IntentResultResponseType": [
+        "intentResultResponse",
     ],
     "JoinUserChannelRequestType": [
         "joinUserChannelRequest",

@@ -25,6 +25,7 @@
         "getOrCreateChannelResponse",
         "getUserChannelsResponse",
         "intentListenerUnsubscribeResponse",
+        "intentResultResponse",
         "joinUserChannelResponse",
         "leaveCurrentChannelResponse",
         "openResponse",
