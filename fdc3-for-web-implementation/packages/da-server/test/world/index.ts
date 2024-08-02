@@ -6,7 +6,7 @@ import { BasicDirectory } from "../../src/directory/BasicDirectory";
 export class CustomWorld extends World {
 
     sc = new TestServerContext(this)
-    server = new DefaultFDC3Server(this.sc, new BasicDirectory([]), 'cucumber-server', {})
+    server = new DefaultFDC3Server(this.sc, new BasicDirectory([]), [])
     props: Record<string, any> = {}
 }
 

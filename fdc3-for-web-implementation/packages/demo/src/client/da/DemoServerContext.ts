@@ -1,4 +1,3 @@
-import { AppMetadata } from '@finos/fdc3/dist/bridging/BridgingTypes';
 import { Directory, DirectoryApp, ServerContext } from '@kite9/da-server'
 import { Socket, io } from 'socket.io-client';
 import { v4 as uuid } from 'uuid'

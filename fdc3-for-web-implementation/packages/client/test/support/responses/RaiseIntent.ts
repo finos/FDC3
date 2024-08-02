@@ -1,4 +1,3 @@
-import { RaiseIntentAgentRequest, RaiseIntentAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
 
 

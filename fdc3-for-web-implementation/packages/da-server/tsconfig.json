@@ -13,11 +13,15 @@
         "generated",
     ],
     "exclude": [
+        "test/**",
         "dist/**"
     ],
     "references": [
         {
             "path": "../fdc3-common"
+        },
+        {
+            "path": "../testing"
         }
     ]
 }

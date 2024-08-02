@@ -1,4 +1,3 @@
-import { FindInstancesAgentRequest, FindInstancesAgentResponse, FindInstancesAgentResponseMeta } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
 
 

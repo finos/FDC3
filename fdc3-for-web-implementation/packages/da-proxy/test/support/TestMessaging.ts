@@ -1,5 +1,5 @@
-import { AppIdentifier, Context } from "@finos/fdc3";
-import { AppRequestMessage, AgentResponseMessage, IntentResult, Channel } from "@kite9/fdc3-common";
+import { AppIdentifier, Context, IntentResult, Channel } from "@finos/fdc3";
+import { AppRequestMessage, AgentResponseMessage } from "@kite9/fdc3-common";
 import { v4 as uuidv4 } from 'uuid'
 import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";
 import { RegisterableListener } from "../../src/listeners/RegisterableListener";
@@ -192,7 +192,7 @@ export class TestMessaging extends AbstractMessaging {
 
     private ir: IntentResult = {
 
-    }
+    } as any
 
     getIntentResult() {
         return this.ir

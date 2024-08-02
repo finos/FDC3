@@ -3,6 +3,7 @@ import { CustomWorld } from '../world';
 import { TestServerContext } from '../support/TestServerContext';
 import { DefaultFDC3Server } from '../../src/BasicFDC3Server';
 import { BasicDirectory } from '../../src/directory/BasicDirectory';
+import { ChannelType } from '../../src/handlers/BroadcastHandler';
 
 export const APP_FIELD = 'apps'
 
@@ -54,6 +55,22 @@ Given('A newly instantiated FDC3 Server', function (this: CustomWorld) {
 
 
     this.sc = new TestServerContext(this)
-    this.server = new DefaultFDC3Server(this.sc, d, "cucumber-fdc3-server", {}, 2000, 2000)
+    this.server = new DefaultFDC3Server(this.sc, d, [
+        {
+            id: 'one',
+            type: ChannelType.user,
+            context: []
+        },
+        {
+            id: 'two',
+            type: ChannelType.user,
+            context: []
+        },
+        {
+            id: 'three',
+            type: ChannelType.user,
+            context: []
+        }
+    ], 2000, 2000)
 
 });
