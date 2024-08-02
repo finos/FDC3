@@ -1,17 +1,19 @@
 import { AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { FDC3Server } from "./FDC3Server";
-import { ServerContext } from "./ServerContext";
+import { InstanceUUID, ServerContext } from "./ServerContext";
 import { BroadcastHandler, ChannelState } from "./handlers/BroadcastHandler";
 import { IntentHandler } from "./handlers/IntentHandler";
 import { Directory } from "./directory/DirectoryInterface";
 import { OpenHandler } from "./handlers/OpenHandler";
+import { AppRequestMessage } from "@kite9/fdc3-common";
+
 
 export interface MessageHandler {
 
     /**
      * Handles an AgentRequestMessage from the messaging source
      */
-    accept(msg: any, sc: ServerContext, from: AppMetadata): void
+    accept(msg: any, sc: ServerContext, from: InstanceUUID): void
 }
 
 /**
@@ -27,7 +29,7 @@ export class BasicFDC3Server implements FDC3Server {
         this.sc = sc;
     }
 
-    receive(message: any, from: AppMetadata): void {
+    receive(message: AppRequestMessage, from: InstanceUUID): void {
         this.sc.log(`MessageReceived: \n ${JSON.stringify(message, null, 2)}`)
         this.handlers.forEach(h => h.accept(message, this.sc, from))
     }
