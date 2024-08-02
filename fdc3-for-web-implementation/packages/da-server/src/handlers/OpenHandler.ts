@@ -40,6 +40,7 @@ class PendingApp {
     }
 
     private onSuccess() {
+        this.sc.setAppConnected(this.openedApp!!)
         successResponse(this.sc, this.msg, this.source, { appIdentifier: this.openedApp }, 'openResponse')
     }
 
@@ -179,7 +180,7 @@ export class OpenHandler implements MessageHandler {
 
         try {
             const uuid = await sc.open(source.appId)
-            this.pending.set(uuid, new PendingApp(sc, arg0, context, source, this.timeoutMs))
+            this.pending.set(uuid, new PendingApp(sc, arg0, context, from, this.timeoutMs))
         } catch (e: any) {
             errorResponse(sc, arg0, from, e.message, 'openResponse')
         }

@@ -61,7 +61,7 @@ export interface ServerContext {
     /**
      * Helper function for determining if an app is currently open and connected to the da
      */
-    isAppConnected(app: AppMetadata): Promise<boolean>
+    isAppConnected(app: AppIdentifier): Promise<boolean>
 
     /**
      * Allows you to write a log message somewhere

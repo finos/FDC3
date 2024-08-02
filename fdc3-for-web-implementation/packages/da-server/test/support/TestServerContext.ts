@@ -1,5 +1,4 @@
 import { ServerContext, InstanceUUID } from '../../src/ServerContext'
-import { v4 as uuidv4 } from 'uuid'
 import { CustomWorld } from '../world'
 import { OpenError, AppIdentifier } from '@finos/fdc3'
 
@@ -74,7 +73,7 @@ export class TestServerContext implements ServerContext {
     }
 
     createUUID(): string {
-        return uuidv4()
+        return "uuid" + this.nextUUID++
     }
 
     getInstanceUUID(appId: AppIdentifier): InstanceUUID | undefined {
