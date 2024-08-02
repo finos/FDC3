@@ -1,6 +1,6 @@
 import { MessageHandler } from "../BasicFDC3Server";
-import { ServerContext } from "../ServerContext";
-import { AppIdentifier, AppMetadata, ChannelError, Context } from "@finos/fdc3";
+import { InstanceUUID, ServerContext } from "../ServerContext";
+import { AppIdentifier, AppIdentifier, ChannelError, Context } from "@finos/fdc3";
 import { successResponse, errorResponse, onlyUnique } from "./support";
 import {
     PrivateChannelEventListenerTypes,
@@ -56,7 +56,7 @@ export class BroadcastHandler implements MessageHandler {
         this.state = initialChannelState
     }
 
-    getCurrentChannel(from: AppMetadata): ChannelState | null {
+    getCurrentChannel(from: AppIdentifier): ChannelState | null {
         if (from.instanceId) {
             return this.currentChannel[from.instanceId]
         } else {
@@ -91,8 +91,15 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    accept(msg: any, sc: ServerContext, from: AppMetadata) {
+    accept(msg: any, sc: ServerContext, uuid: InstanceUUID) {
         try {
+            const from = sc.getInstanceDetails(uuid)
+
+            if (from == null) {
+                // this handler only deals with connected apps
+                return
+            }
+
             switch (msg.type as string | null) {
                 // app channels registration
                 case 'getOrCreateChannelRequest': return this.handleGetOrCreateRequest(msg as GetOrCreateChannelRequest, sc, from)
@@ -124,7 +131,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    handleGetCurrentContextRequest(arg0: GetCurrentContextRequest, sc: ServerContext, from: AppMetadata) {
+    handleGetCurrentContextRequest(arg0: GetCurrentContextRequest, sc: ServerContext, from: AppIdentifier) {
         const channel = this.getChannelById(arg0.payload.channelId)
         const type = arg0.payload.contextType
 
@@ -136,7 +143,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    handlePrivateChannelUnsubscribeEventListenerRequest(arg0: PrivateChannelUnsubscribeEventListenerRequest, sc: ServerContext, from: AppMetadata) {
+    handlePrivateChannelUnsubscribeEventListenerRequest(arg0: PrivateChannelUnsubscribeEventListenerRequest, sc: ServerContext, from: AppIdentifier) {
         const i = this.eventListeners.findIndex(r => r.listenerUuid == arg0.payload.listenerUUID)
         if (i > -1) {
             this.eventListeners.splice(i, 1)
@@ -146,7 +153,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    handlePrivateChannelDisconnectRequest(arg0: PrivateChannelDisconnectRequest, sc: ServerContext, from: AppMetadata) {
+    handlePrivateChannelDisconnectRequest(arg0: PrivateChannelDisconnectRequest, sc: ServerContext, from: AppIdentifier) {
         const toUnsubscribe = this.contextListeners
             .filter(r => (r.appId == from.appId) && (r.instanceId == from.instanceId))
             .filter(r => r.channelId == arg0.payload.channelId)
@@ -160,7 +167,7 @@ export class BroadcastHandler implements MessageHandler {
         successResponse(sc, arg0, from, {}, 'privateChannelDisconnectResponse')
     }
 
-    handleContextListenerUnsubscribeRequest(arg0: ContextListenerUnsubscribeRequest, sc: ServerContext, from: AppMetadata) {
+    handleContextListenerUnsubscribeRequest(arg0: ContextListenerUnsubscribeRequest, sc: ServerContext, from: AppIdentifier) {
         const i = this.contextListeners
             .findIndex(r => (r.listenerUuid == arg0.payload.listenerUUID) && (r.instanceId == from.instanceId))
 
@@ -175,7 +182,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    handleAddContextListenerRequest(arg0: AddContextListenerRequest, sc: ServerContext, from: AppMetadata) {
+    handleAddContextListenerRequest(arg0: AddContextListenerRequest, sc: ServerContext, from: AppIdentifier) {
         const channel = this.getChannelById(arg0.payload?.channelId)
 
         if (channel == null) {
@@ -222,7 +229,7 @@ export class BroadcastHandler implements MessageHandler {
         this.updateChannelState(arg0.payload.channelId, arg0.payload.context)
     }
 
-    handleGetCurrentChannelRequest(arg0: GetCurrentChannelRequest, sc: ServerContext, from: AppMetadata) {
+    handleGetCurrentChannelRequest(arg0: GetCurrentChannelRequest, sc: ServerContext, from: AppIdentifier) {
         const currentChannel = this.getCurrentChannel(from)
         successResponse(sc, arg0, from, {
             channel: {
@@ -231,7 +238,7 @@ export class BroadcastHandler implements MessageHandler {
         }, 'getCurrentChannelResponse')
     }
 
-    handleJoinUserChannelRequest(arg0: JoinUserChannelRequest, sc: ServerContext, from: AppMetadata) {
+    handleJoinUserChannelRequest(arg0: JoinUserChannelRequest, sc: ServerContext, from: AppIdentifier) {
         // check it's a user channel
         const newChannel = this.getChannelById(arg0.payload.channelId)
         if ((newChannel == null) || (newChannel.type != ChannelType.user)) {
@@ -245,7 +252,7 @@ export class BroadcastHandler implements MessageHandler {
         successResponse(sc, arg0, from, {}, 'joinUserChannelResponse')
     }
 
-    handleLeaveCurrentChannelRequest(arg0: LeaveCurrentChannelRequest, sc: ServerContext, from: AppMetadata) {
+    handleLeaveCurrentChannelRequest(arg0: LeaveCurrentChannelRequest, sc: ServerContext, from: AppIdentifier) {
         const instanceId = from.instanceId ?? 'no-instance-id'
         const currentChannel = this.currentChannel[instanceId]
         if (currentChannel) {
@@ -255,7 +262,7 @@ export class BroadcastHandler implements MessageHandler {
         successResponse(sc, arg0, from, {}, 'leaveUserChannelResponse')
     }
 
-    handleGetOrCreateRequest(arg0: GetOrCreateChannelRequest, sc: ServerContext, from: AppMetadata) {
+    handleGetOrCreateRequest(arg0: GetOrCreateChannelRequest, sc: ServerContext, from: AppIdentifier) {
         const id = arg0.payload.channelId
         var channel = this.getChannelById(id)
         if (channel) {
@@ -275,12 +282,12 @@ export class BroadcastHandler implements MessageHandler {
     }
 
 
-    handleGetUserChannelsRequest(arg0: GetUserChannelsRequest, sc: ServerContext, from: AppMetadata) {
+    handleGetUserChannelsRequest(arg0: GetUserChannelsRequest, sc: ServerContext, from: AppIdentifier) {
         const userChannels = this.state.filter(c => c.type == ChannelType.user)
         successResponse(sc, arg0, from, { channels: userChannels.map(c => ({ id: c.id, type: c.type })) }, 'getUserChannelsResponse')
     }
 
-    handleEventListenerRemoved(arg0: PrivateChannelUnsubscribeEventListenerRequest, from: AppMetadata, sc: ServerContext) {
+    handleEventListenerRemoved(arg0: PrivateChannelUnsubscribeEventListenerRequest, from: AppIdentifier, sc: ServerContext) {
         const fi = this.eventListeners.findIndex(e => e.listenerUuid == arg0.payload.listenerUUID)
         if (fi > -1) {
             this.eventListeners.splice(fi, 1)
@@ -290,7 +297,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    handlePrivateChannelAddEventListenerRequest(arg0: PrivateChannelAddEventListenerRequest, from: AppMetadata, sc: ServerContext) {
+    handlePrivateChannelAddEventListenerRequest(arg0: PrivateChannelAddEventListenerRequest, from: AppIdentifier, sc: ServerContext) {
         const channel = this.getChannelById(arg0.payload.privateChannelId)
 
         if ((channel == null) || (channel.type != ChannelType.private)) {
