@@ -1,5 +1,5 @@
 import { AutomaticResponse, IntentDetail, TestMessaging } from "../TestMessaging";
-
+import { OpenRequest, OpenResponse } from "@kite9/fdc3-common";
 
 export class Open implements AutomaticResponse {
 
@@ -8,13 +8,13 @@ export class Open implements AutomaticResponse {
     }
 
     action(input: object, m: TestMessaging) {
-        const out = this.createOpenResponse(input as OpenAgentRequest, m.intentDetails[0], m)
+        const out = this.createOpenResponse(input as OpenRequest, m.intentDetails[0], m)
 
         setTimeout(() => { m.receive(out) }, 100)
         return Promise.resolve()
     }
 
-    private createOpenResponse(m: OpenAgentRequest, id: IntentDetail, tm: TestMessaging): OpenAgentResponse | OpenAgentErrorResponse {
+    private createOpenResponse(m: OpenRequest, id: IntentDetail, tm: TestMessaging): OpenResponse {
         const found = tm.intentDetails.find(id => id.app?.appId == m.payload.app.appId)
 
         if (found) {
@@ -27,7 +27,7 @@ export class Open implements AutomaticResponse {
                         instanceId: "abc123"
                     }
                 }
-            } as OpenAgentResponse
+            } as OpenResponse
         } else {
             return {
                 meta: m.meta as any,
@@ -35,7 +35,7 @@ export class Open implements AutomaticResponse {
                 payload: {
                     error: "AppNotFound"
                 }
-            } as OpenAgentErrorResponse
+            } as OpenResponse
         }
     }
 }

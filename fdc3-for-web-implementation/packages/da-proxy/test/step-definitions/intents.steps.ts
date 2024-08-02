@@ -1,6 +1,7 @@
 import { Given } from '@cucumber/cucumber'
 import { CustomWorld } from '../world/index';
 import { handleResolve } from '@kite9/testing';
+import { RaiseIntentRequest } from '@kite9/fdc3-common';
 import { Context, ContextMetadata } from '@finos/fdc3';
 
 Given("app {string}", function (this: CustomWorld, appStr: string) {
@@ -111,15 +112,11 @@ Given("Raise Intent will return a private channel", function (this: CustomWorld)
 })
 
 Given('{string} is a raiseIntentRequest message with intent {string} and context {string}', function (this: CustomWorld, field: string, intent: string, context: string) {
-    const msg: RaiseIntentAgentRequest = {
+    const msg: RaiseIntentRequest = {
         type: 'raiseIntentRequest',
         meta: {
             requestUuid: this.messaging?.createUUID()!!,
             timestamp: new Date(),
-            destination: {
-                desktopAgent: '',
-                appId: ''
-            },
             source: {
                 appId: 'something'
             }

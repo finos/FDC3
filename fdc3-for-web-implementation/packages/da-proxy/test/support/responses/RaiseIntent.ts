@@ -1,5 +1,5 @@
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from "../TestMessaging";
-
+import { RaiseIntentRequest, RaiseIntentResponse, IntentResultResponse } from "@kite9/fdc3-common";
 
 export class RaiseIntent implements AutomaticResponse {
 
@@ -7,8 +7,8 @@ export class RaiseIntent implements AutomaticResponse {
         return t == 'raiseIntentRequest'
     }
 
-    createRaiseIntentAgentResponseMessage(intentRequest: RaiseIntentAgentRequest, using: IntentDetail, m: TestMessaging): RaiseIntentAgentResponse {
-        const out: RaiseIntentAgentResponse = {
+    createRaiseIntentAgentResponseMessage(intentRequest: RaiseIntentRequest, using: IntentDetail, m: TestMessaging): RaiseIntentResponse {
+        const out: RaiseIntentResponse = {
             meta: {
                 ...intentRequest.meta,
                 responseUuid: m.createUUID()
@@ -25,8 +25,8 @@ export class RaiseIntent implements AutomaticResponse {
         return out
     }
 
-    createRaiseIntentResultResponseMesssage(intentRequest: RaiseIntentAgentRequest, m: TestMessaging): RaiseIntentResultAgentResponse {
-        const out: RaiseIntentResultAgentResponse = {
+    createRaiseIntentResultResponseMesssage(intentRequest: RaiseIntentRequest, m: TestMessaging): IntentResultResponse {
+        const out: IntentResultResponse = {
             meta: {
                 ...intentRequest.meta,
                 responseUuid: m.createUUID()
@@ -34,14 +34,14 @@ export class RaiseIntent implements AutomaticResponse {
             payload: {
                 intentResult: m.getIntentResult()
             },
-            type: "raiseIntentResultResponse"
+            type: "intentResultResponse"
         }
 
         return out
     }
 
     action(input: object, m: TestMessaging) {
-        const intentRequest = input as RaiseIntentAgentRequest
+        const intentRequest = input as RaiseIntentRequest
         const payload = intentRequest.payload
         const intent = payload.intent
         const context = payload?.context?.type

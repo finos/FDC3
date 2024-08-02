@@ -1,5 +1,5 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-
+import { GetAppMetadataRequest, GetAppMetadataResponse } from "@kite9/fdc3-common";
 
 export class GetAppMetadata implements AutomaticResponse {
 
@@ -9,15 +9,15 @@ export class GetAppMetadata implements AutomaticResponse {
     }
 
     action(input: object, m: TestMessaging) {
-        const out = this.createMetadataResponseMessage(input as GetAppMetadataAgentRequest)
+        const out = this.createMetadataResponseMessage(input as GetAppMetadataRequest)
 
         setTimeout(() => { m.receive(out) }, 100)
         return Promise.resolve()
     }
 
-    private createMetadataResponseMessage(m: GetAppMetadataAgentRequest): GetAppMetadataAgentResponse {
+    private createMetadataResponseMessage(m: GetAppMetadataRequest): GetAppMetadataResponse {
         return {
-            meta: m.meta as GetAppMetadataAgentResponseMeta,
+            meta: m.meta as any,
             type: "getAppMetadataResponse",
             payload: {
                 appMetadata: {
