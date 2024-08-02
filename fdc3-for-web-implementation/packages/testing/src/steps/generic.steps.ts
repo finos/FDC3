@@ -135,28 +135,30 @@ export function setupGenericSteps() {
         const ajv = new Ajv2019();
         ajv.addMetaSchema(draft7MetaSchema)
         addFormats(ajv);
-        const schemaDir = '../../../schemas/api'
+        //const schemaDir = '../../../schemas/api'
 
-        fs.readdir(schemaDir, (err, files) => {
-            if (err) throw err;
+        const f2 = fs
+        const p = path
 
-            files.forEach(file => {
+        const abspath = p.join(process.cwd(), '../../../schemas/api')
+
+        try {
+            f2.readdirSync(abspath).forEach(file => {
                 if (file.endsWith('.json')) {
-                    const filePath = path.join(schemaDir, file);
-                    fs.readFile(filePath, 'utf8', (err, contents) => {
-                        if (err) throw err;
-                        const schema = JSON.parse(contents);
-                        ajv.addSchema(schema);
-                        //console.log(`Content of ${file}: ${contents}`);
-                    });
+                    const filePath = p.join(abspath, file);
+                    const contents = fs.readFileSync(filePath, 'utf8');
+                    const schema = JSON.parse(contents);
+                    ajv.addSchema(schema);
+                    //console.log(`Content of ${file}: ${contents}`);
                 }
             });
-        })
+        } catch (error) {
+            console.log(error)
+        }
 
-        fs.readFile('../../../schemas/context/context.schema.json', 'utf8', (_err, contents) => {
-            const schema = JSON.parse(contents);
-            ajv.addSchema(schema);
-        })
+        const contents = fs.readFileSync('../../../schemas/context/context.schema.json', 'utf8')
+        const schema = JSON.parse(contents);
+        ajv.addSchema(schema);
 
         this.props['ajv'] = ajv;
     })

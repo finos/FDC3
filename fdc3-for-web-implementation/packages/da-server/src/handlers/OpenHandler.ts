@@ -81,7 +81,7 @@ export class OpenHandler implements MessageHandler {
 
             case 'addContextListenerRequest': return this.handleAddContextListener(msg as AddContextListenerRequest, sc, sc.getInstanceDetails(uuid))
 
-            case 'WCP4Validate': return this.handleValidate(msg as WebConnectionProtocol4ValidateAppIdentity, sc, uuid)
+            case 'WCP4ValidateAppIdentity': return this.handleValidate(msg as WebConnectionProtocol4ValidateAppIdentity, sc, uuid)
         }
     }
 

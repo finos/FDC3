@@ -11,7 +11,15 @@ export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: an
         console.log("Can't stringify data")
     }
     for (const [field, actual] of Object.entries(t)) {
-        if (field == 'matches_type') {
+        if (field.endsWith('matches_type')) {
+            // validation mode
+
+            if (field.length > 'matches_type'.length) {
+                // deals with the case where we're validating part of the object
+                const path = field.substring(0, field.length - 'matches_type'.length - 1)
+                data = JSONPath({ path: path, json: data })[0];
+            }
+
             const validator: Ajv = cw.props['ajv']
             const validate = validator.getSchema('https://fdc3.finos.org/schemas/next/api/' + actual + '.schema.json')!!
             const valid = validate(data)
