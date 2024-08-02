@@ -1,7 +1,7 @@
-import { IntentHandler, IntentResult, AppIdentifier, Context } from "@finos/fdc3";
+import { IntentHandler, IntentResult, AppIdentifier } from "@finos/fdc3";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
-import { RaiseIntentRequest, RaiseIntentResultResponse, ResponsePayload, RaiseIntentResponse, IntentResult as BridgeIntentResult } from "@kite9/fdc3-common"
+import { RaiseIntentRequest, RaiseIntentResponse, IntentResultResponse } from "@kite9/fdc3-common"
 
 
 export class DefaultIntentListener extends AbstractListener<IntentHandler> {
@@ -54,44 +54,44 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
 
     private handleIntentResultResponse(done: Promise<IntentResult>, m: RaiseIntentRequest) {
         done.then(ir => {
-            const out: RaiseIntentResultResponse = {
-                type: "raiseIntentResultResponse",
+            const out: IntentResultResponse = {
+                type: "intentResultResponse",
                 meta: {
                     responseUuid: this.messaging.createUUID(),
                     requestUuid: m.meta.requestUuid,
                     timestamp: new Date()
                 },
                 payload: {
-                    intentResult: convertIntentResult(ir)
-                } as ResponsePayload
+                    intentResult: ir
+                }
             };
             this.messaging.post(out);
         });
     }
 }
 
-export function convertIntentResult(intentResult: IntentResult): BridgeIntentResult {
-    if (intentResult == null) {
-        return {
-            // empty result
-        }
-    }
-    switch (intentResult.type) {
-        case 'user':
-        case 'app':
-        case 'private':
-            // it's a channel
-            return {
-                channel: {
-                    type: intentResult.type,
-                    id: intentResult.id as string,
-                    displayMetadata: intentResult.displayMetadata
-                }
-            }
-        default:
-            // it's a context
-            return {
-                context: intentResult as Context
-            }
-    }
-}
+// export function convertIntentResult(intentResult: IntentResult): BridgeIntentResult {
+//     if (intentResult == null) {
+//         return {
+//             // empty result
+//         }
+//     }
+//     switch (intentResult.type) {
+//         case 'user':
+//         case 'app':
+//         case 'private':
+//             // it's a channel
+//             return {
+//                 channel: {
+//                     type: intentResult.type,
+//                     id: intentResult.id as string,
+//                     displayMetadata: intentResult.displayMetadata
+//                 }
+//             }
+//         default:
+//             // it's a context
+//             return {
+//                 context: intentResult as Context
+//             }
+//     }
+// }

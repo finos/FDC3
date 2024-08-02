@@ -1,5 +1,5 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-
+import { FindInstancesRequest, FindInstancesResponse } from "@kite9/fdc3-common";
 
 export class FindInstances implements AutomaticResponse {
 
@@ -8,15 +8,15 @@ export class FindInstances implements AutomaticResponse {
     }
 
     action(input: object, m: TestMessaging) {
-        const out = this.createFindInstancesResponse(input as FindInstancesAgentRequest)
+        const out = this.createFindInstancesResponse(input as FindInstancesRequest)
 
         setTimeout(() => { m.receive(out) }, 100)
         return Promise.resolve()
     }
 
-    private createFindInstancesResponse(m: FindInstancesAgentRequest): FindInstancesAgentResponse {
+    private createFindInstancesResponse(m: FindInstancesRequest): FindInstancesResponse {
         return {
-            meta: m.meta as FindInstancesAgentResponseMeta,
+            meta: m.meta as any,
             type: "findInstancesResponse",
             payload: {
                 appIdentifiers: [
