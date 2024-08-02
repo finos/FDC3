@@ -144,18 +144,18 @@ Represented as a union type in TypeScript, however, this type may be rendered as
 
 ## `Listener`
 
-A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](DesktopAgent#addintentlistener) or [`addContextListener`](DesktopAgent#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
+A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](DesktopAgent#addintentlistener), [`addContextListener`](DesktopAgent#addcontextlistener) or [`addEventListener`](DesktopAgent#addeventlistener) on the [DesktopAgent](DesktopAgent) object or (PrivateChannel#addeventlistener) on the [PrivateChannel](PrivateChannel) object.
 
 ```typescript
 interface Listener {
-  unsubscribe(): void;
+  unsubscribe(): Promise<void>;
 }
 ```
 
 ### `unsubscribe`
 
 ```ts
-unsubscribe(): void;
+unsubscribe(): Promise<void>;
 ```
 
 Allows an application to unsubscribe from listening to intents or context broadcasts.

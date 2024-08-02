@@ -6,7 +6,9 @@
 import { DesktopAgent } from './api/DesktopAgent';
 import * as BridgingTypes from './bridging/BridgingTypes';
 
-export * from './api/AppIdentifier';
+export * from './context/ContextTypes';
+//explicit overwrite of conflicting & equivalent export from ContextTypes
+export {AppIdentifier} from './api/AppIdentifier';
 export * from './api/AppIntent';
 export * from './api/AppMetadata';
 export * from './api/Channel';
@@ -25,7 +27,6 @@ export * from './api/PrivateChannel';
 export * from './api/RecommendedChannels';
 export * from './api/Types';
 export * from './context/ContextType';
-export * from './context/ContextTypes';
 export * from './intents/Intents';
 export * from './api/Events'
 
