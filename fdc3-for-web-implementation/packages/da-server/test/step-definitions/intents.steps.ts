@@ -1,11 +1,8 @@
-import { DataTable, Given, When } from "@cucumber/cucumber";
+import { DataTable, Given } from "@cucumber/cucumber";
 import { CustomWorld } from "../world";
 import { DirectoryApp } from "../../src/directory/DirectoryInterface";
 import { APP_FIELD } from "./generic.steps";
-import { FindIntentAgentRequest, FindIntentsByContextAgentRequest, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { handleResolve } from "../support/matching";
-import { createMeta, contextMap } from './generic.steps';
-import { OnAddIntentListenerAgentRequest, OnUnsubscribeIntentListenerAgentRequest } from "@kite9/fdc3-common";
+import { handleResolve } from "@kite9/testing";
 
 type ListensFor = {
     [key: string]: {
@@ -61,152 +58,152 @@ Given('{string} is an app with the following intents', function (this: CustomWor
 
 });
 
-When('{string} finds intents with intent {string} and contextType {string} and result type {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, resultType: string) {
-    const meta = createMeta(this, appStr)
-    const message = {
-        meta,
-        payload: {
-            intent: handleResolve(intentName, this)!!,
-            resultType: handleResolve(resultType, this),
-            context: contextMap[contextType]
-        },
-        type: 'findIntentRequest'
-    } as FindIntentAgentRequest
+// When('{string} finds intents with intent {string} and contextType {string} and result type {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, resultType: string) {
+//     const meta = createMeta(this, appStr)
+//     const message = {
+//         meta,
+//         payload: {
+//             intent: handleResolve(intentName, this)!!,
+//             resultType: handleResolve(resultType, this),
+//             context: contextMap[contextType]
+//         },
+//         type: 'findIntentRequest'
+//     } as FindIntentAgentRequest
 
-    this.server.receive(message, meta.source)
-});
+//     this.server.receive(message, meta.source)
+// });
 
-When('{string} finds intents with contextType {string}', function (this: CustomWorld, appStr: string, contextType: string) {
-    const meta = createMeta(this, appStr)
-    const message = {
-        meta,
-        payload: {
-            context: contextMap[contextType]
-        },
-        type: 'findIntentsByContextRequest'
-    } as FindIntentsByContextAgentRequest
+// When('{string} finds intents with contextType {string}', function (this: CustomWorld, appStr: string, contextType: string) {
+//     const meta = createMeta(this, appStr)
+//     const message = {
+//         meta,
+//         payload: {
+//             context: contextMap[contextType]
+//         },
+//         type: 'findIntentsByContextRequest'
+//     } as FindIntentsByContextAgentRequest
 
-    this.server.receive(message, meta.source)
-});
+//     this.server.receive(message, meta.source)
+// });
 
-Given('{string} registers an intent listener for {string}', function (this: CustomWorld, appStr: string, intent: string) {
-    const meta = createMeta(this, appStr)
-    const message = {
-        type: 'onAddIntentListener',
-        meta,
-        payload: {
-            intent: handleResolve(intent, this)
-        }
-    } as OnAddIntentListenerAgentRequest
-    this.server.receive(message, meta.source)
-});
+// Given('{string} registers an intent listener for {string}', function (this: CustomWorld, appStr: string, intent: string) {
+//     const meta = createMeta(this, appStr)
+//     const message = {
+//         type: 'onAddIntentListener',
+//         meta,
+//         payload: {
+//             intent: handleResolve(intent, this)
+//         }
+//     } as OnAddIntentListenerAgentRequest
+//     this.server.receive(message, meta.source)
+// });
 
-Given('{string} registers an intent listener for {string} with contextType {string}', function (this: CustomWorld, appStr: string, intent: string, contextType: string) {
-    const meta = createMeta(this, appStr)
-    const message = {
-        type: 'onAddIntentListener',
-        meta,
-        payload: {
-            intent: handleResolve(intent, this),
-            contextType: handleResolve(contextType, this)
-        }
-    } as OnAddIntentListenerAgentRequest
-    this.server.receive(message, meta.source)
-});
-
-
-Given('{string} unsubscribes an intent listener for {string}', function (this: CustomWorld, appStr: string, intent: string) {
-    const meta = createMeta(this, appStr)
-    const message = {
-        type: 'onUnsubscribeIntentListener',
-        meta,
-        payload: {
-            intent: handleResolve(intent, this),
-        }
-    } as OnUnsubscribeIntentListenerAgentRequest
-    this.server.receive(message, meta.source)
-});
-
-function raise(cw: CustomWorld, intentName: string, contextType: string, dest: string, meta: any): RaiseIntentAgentRequest {
-    const destMeta = createMeta(cw, dest)
-    const message = {
-        type: 'raiseIntentRequest',
-        meta: {
-            ...meta,
-            destination: {
-                ...destMeta.source,
-                desktopAgent: 'n/a'
-            }
-        },
-        payload: {
-            intent: handleResolve(intentName, cw),
-            context: contextMap[contextType],
-            app: destMeta.source
-        }
-    } as RaiseIntentAgentRequest
-    return message;
-}
-
-When('{string} raises an intent for {string} with contextType {string} on app {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, dest: string) {
-    const meta = createMeta(this, appStr)
-    const message = raise(this, intentName, contextType, dest, meta)
-    this.server.receive(message, meta.source)
-});
-
-When('{string} raises an intent for {string} with contextType {string} on app {string} with requestUuid {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, dest: string, requestUuid: string) {
-    const meta = {
-        ...createMeta(this, appStr), requestUuid
-    }
-    const message = raise(this, intentName, contextType, dest, meta)
-    this.server.receive(message, meta.source)
-})
+// Given('{string} registers an intent listener for {string} with contextType {string}', function (this: CustomWorld, appStr: string, intent: string, contextType: string) {
+//     const meta = createMeta(this, appStr)
+//     const message = {
+//         type: 'onAddIntentListener',
+//         meta,
+//         payload: {
+//             intent: handleResolve(intent, this),
+//             contextType: handleResolve(contextType, this)
+//         }
+//     } as OnAddIntentListenerAgentRequest
+//     this.server.receive(message, meta.source)
+// });
 
 
-When('we wait for the intent timeout', function (this: CustomWorld) {
-    return new Promise<void>((resolve, _reject) => {
-        setTimeout(() => resolve(), 2100)
-    })
-});
+// Given('{string} unsubscribes an intent listener for {string}', function (this: CustomWorld, appStr: string, intent: string) {
+//     const meta = createMeta(this, appStr)
+//     const message = {
+//         type: 'onUnsubscribeIntentListener',
+//         meta,
+//         payload: {
+//             intent: handleResolve(intent, this),
+//         }
+//     } as OnUnsubscribeIntentListenerAgentRequest
+//     this.server.receive(message, meta.source)
+// });
 
-When('{string} sends a raiseIntentResponse for intent {string} with requestUuid {string}', function (this: CustomWorld, appStr: string, intentName: string, requestUuid: string) {
-    const meta = createMeta(this, appStr)
-    const message = {
-        type: 'raiseIntentResponse',
-        meta: {
-            requestUuid,
-            responseUuid: this.sc.createUUID(),
-            timestamp: new Date()
-        },
-        payload: {
-            intentResolution: {
-                intent: intentName,
-                source: {
-                    ...meta.source
-                }
-            }
-        }
-    } as RaiseIntentAgentResponse
-    this.server.receive(message, meta.source)
-});
+// function raise(cw: CustomWorld, intentName: string, contextType: string, dest: string, meta: any): RaiseIntentAgentRequest {
+//     const destMeta = createMeta(cw, dest)
+//     const message = {
+//         type: 'raiseIntentRequest',
+//         meta: {
+//             ...meta,
+//             destination: {
+//                 ...destMeta.source,
+//                 desktopAgent: 'n/a'
+//             }
+//         },
+//         payload: {
+//             intent: handleResolve(intentName, cw),
+//             context: contextMap[contextType],
+//             app: destMeta.source
+//         }
+//     } as RaiseIntentAgentRequest
+//     return message;
+// }
 
-When('{string} sends a raiseIntentResultResponse with requestUuid {string}', function (this: CustomWorld, appStr: string, requestUuid: string) {
-    const meta = createMeta(this, appStr)
-    const message = {
-        type: 'raiseIntentResultResponse',
-        meta: {
-            requestUuid,
-            responseUuid: this.sc.createUUID(),
-            timestamp: new Date()
-        },
-        payload: {
-            intentResult: {
-                context: {
-                    "type": "fdc3.something",
-                    "name": "Some Name"
-                }
-            }
-        }
-    } as RaiseIntentResultAgentResponse
+// When('{string} raises an intent for {string} with contextType {string} on app {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, dest: string) {
+//     const meta = createMeta(this, appStr)
+//     const message = raise(this, intentName, contextType, dest, meta)
+//     this.server.receive(message, meta.source)
+// });
 
-    this.server.receive(message, meta.source)
-});
+// When('{string} raises an intent for {string} with contextType {string} on app {string} with requestUuid {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, dest: string, requestUuid: string) {
+//     const meta = {
+//         ...createMeta(this, appStr), requestUuid
+//     }
+//     const message = raise(this, intentName, contextType, dest, meta)
+//     this.server.receive(message, meta.source)
+// })
+
+
+// When('we wait for the intent timeout', function (this: CustomWorld) {
+//     return new Promise<void>((resolve, _reject) => {
+//         setTimeout(() => resolve(), 2100)
+//     })
+// });
+
+// When('{string} sends a raiseIntentResponse for intent {string} with requestUuid {string}', function (this: CustomWorld, appStr: string, intentName: string, requestUuid: string) {
+//     const meta = createMeta(this, appStr)
+//     const message = {
+//         type: 'raiseIntentResponse',
+//         meta: {
+//             requestUuid,
+//             responseUuid: this.sc.createUUID(),
+//             timestamp: new Date()
+//         },
+//         payload: {
+//             intentResolution: {
+//                 intent: intentName,
+//                 source: {
+//                     ...meta.source
+//                 }
+//             }
+//         }
+//     } as RaiseIntentAgentResponse
+//     this.server.receive(message, meta.source)
+// });
+
+// When('{string} sends a raiseIntentResultResponse with requestUuid {string}', function (this: CustomWorld, appStr: string, requestUuid: string) {
+//     const meta = createMeta(this, appStr)
+//     const message = {
+//         type: 'raiseIntentResultResponse',
+//         meta: {
+//             requestUuid,
+//             responseUuid: this.sc.createUUID(),
+//             timestamp: new Date()
+//         },
+//         payload: {
+//             intentResult: {
+//                 context: {
+//                     "type": "fdc3.something",
+//                     "name": "Some Name"
+//                 }
+//             }
+//         }
+//     } as RaiseIntentResultAgentResponse
+
+//     this.server.receive(message, meta.source)
+// });

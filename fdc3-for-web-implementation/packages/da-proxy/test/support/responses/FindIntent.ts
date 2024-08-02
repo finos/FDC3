@@ -1,4 +1,3 @@
-import { FindIntentAgentRequest, FindIntentAgentResponse, FindIntentAgentResponseMeta } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from "../TestMessaging";
 
 export class FindIntent implements AutomaticResponse {

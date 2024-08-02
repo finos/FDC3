@@ -1,6 +1,6 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { InstanceUUID, ServerContext } from "../ServerContext";
-import { AppIdentifier, AppIdentifier, ChannelError, Context } from "@finos/fdc3";
+import { AppIdentifier, ChannelError, Context } from "@finos/fdc3";
 import { successResponse, errorResponse, onlyUnique } from "./support";
 import {
     PrivateChannelEventListenerTypes,
@@ -37,7 +37,7 @@ type PrivateChannelEventListener = {
     listenerUuid: string
 }
 
-enum ChannelType { 'user', 'app', 'private' }
+export enum ChannelType { 'user', 'app', 'private' }
 
 export type ChannelState = {
     id: string,
@@ -92,13 +92,14 @@ export class BroadcastHandler implements MessageHandler {
     }
 
     accept(msg: any, sc: ServerContext, uuid: InstanceUUID) {
-        try {
-            const from = sc.getInstanceDetails(uuid)
+        const from = sc.getInstanceDetails(uuid)
 
-            if (from == null) {
-                // this handler only deals with connected apps
-                return
-            }
+        if (from == null) {
+            // this handler only deals with connected apps
+            return
+        }
+
+        try {
 
             switch (msg.type as string | null) {
                 // app channels registration

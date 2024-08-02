@@ -1,4 +1,3 @@
-import { AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { AppIdentifier } from "@kite9/fdc3-common";
 
 
@@ -46,6 +45,11 @@ export interface ServerContext {
      * This is used in situations where an app is reconnecting to the same desktop agent.
      */
     getInstanceDetails(uuid: InstanceUUID): AppIdentifier | undefined
+
+    /**
+     * Registers an app as connected to the desktop agent. 
+     */
+    setAppConnected(app: AppIdentifier): Promise<void>
 
     /**
      * Returns the list of apps open and connected to FDC3 at the current time.

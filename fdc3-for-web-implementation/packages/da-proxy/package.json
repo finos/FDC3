@@ -13,8 +13,7 @@
   },
   "dependencies": {
     "@finos/fdc3": "^2.1.0-beta.4",
-    "@kite9/fdc3-common": "0.0.31",
-    "@kite9/testing": "0.0.30"
+    "@kite9/fdc3-common": "0.0.31"
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",
@@ -35,6 +34,7 @@
     "is-ci": "2.0.0",
     "jsonpath-plus": "^7.2.0",
     "nyc": "15.1.0",
+    "@kite9/testing": "0.0.30",
     "prettier": "2.2.1",
     "rimraf": "^5.0.7",
     "ts-node": "^10.9.2",

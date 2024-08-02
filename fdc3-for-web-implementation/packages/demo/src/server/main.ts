@@ -2,7 +2,6 @@ import express from "express";
 import ViteExpress from "vite-express";
 import { Server, Socket } from "socket.io"
 import { APP_GOODBYE, APP_HELLO, DA_HELLO, FDC3_APP_EVENT, FDC3_DA_EVENT } from "../message-types";
-import { AppIdentifier } from "@finos/fdc3/dist/bridging/BridgingTypes";
 
 const app = express();
 

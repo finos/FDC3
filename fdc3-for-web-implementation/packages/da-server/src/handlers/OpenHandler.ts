@@ -19,27 +19,36 @@ enum AppState { Opening, DeliveringContext, Done }
 
 class PendingApp {
 
+    private readonly sc: ServerContext
+    private readonly msg: OpenRequest
     readonly context: ContextElement | undefined
     readonly source: AppMetadata
     state: AppState = AppState.Opening
-    private onSuccess: () => void
+    private openedApp: AppIdentifier | undefined = undefined
 
-    constructor(context: ContextElement | undefined, source: AppMetadata,
-        onSuccess: () => void,
-        onError: () => void,
-        timeoutMs: number) {
+    constructor(sc: ServerContext, msg: OpenRequest, context: ContextElement | undefined, source: AppIdentifier, timeoutMs: number) {
         this.context = context
         this.source = source
-        this.onSuccess = onSuccess
+        this.sc = sc
+        this.msg = msg
 
         setTimeout(() => {
             if (this.state != AppState.Done) {
-                onError()
+                this.onError()
             }
         }, timeoutMs)
     }
 
-    setOpened() {
+    private onSuccess() {
+        successResponse(this.sc, this.msg, this.source, { appIdentifier: this.openedApp }, 'openResponse')
+    }
+
+    private onError() {
+        errorResponse(this.sc, this.msg, this.source, OpenError.AppTimeout, 'openResponse')
+    }
+
+    setOpened(openedApp: AppIdentifier) {
+        this.openedApp = openedApp
         if (this.context) {
             this.state = AppState.DeliveringContext
         } else {
@@ -169,17 +178,14 @@ export class OpenHandler implements MessageHandler {
         const context = arg0.payload.context
 
         try {
-            const details = await sc.open(source.appId)
-            this.pending.set(details.instanceId!!, new PendingApp(context, source,
-                () => successResponse(sc, arg0, from, { appIdentifier: details }, 'openResponse'),
-                () => errorResponse(sc, arg0, from, OpenError.AppTimeout, 'openResponse'),
-                this.timeoutMs))
+            const uuid = await sc.open(source.appId)
+            this.pending.set(uuid, new PendingApp(sc, arg0, context, source, this.timeoutMs))
         } catch (e: any) {
             errorResponse(sc, arg0, from, e.message, 'openResponse')
         }
     }
 
-    handleValidate(arg0: WebConnectionProtocol4ValidateAppIdentity, sc: ServerContext, from: InstanceUUID): void | PromiseLike<void> {
+    async handleValidate(arg0: WebConnectionProtocol4ValidateAppIdentity, sc: ServerContext, from: InstanceUUID): Promise<void> {
         const _this = this
 
         const responseMeta = {
@@ -214,12 +220,12 @@ export class OpenHandler implements MessageHandler {
         if (arg0.payload.instanceUuid) {
             // existing app reconnecting
             const instanceUUID: InstanceUUID = arg0.payload.instanceUuid
-            const appIdentity = sc.getInstanceDetails(arg0.payload.instanceUuid)
+            const appIdentity = await sc.getInstanceDetails(arg0.payload.instanceUuid)
 
             if (appIdentity) {
                 // in this case, the app is reconnecting, so let's just re-assign the 
                 // identity
-                sc.setInstanceDetails(from, appIdentity)
+                await sc.setInstanceDetails(from, appIdentity)
                 returnSuccess(appIdentity)
             } else {
                 // we can't find the app, so we need to reject it
@@ -236,14 +242,14 @@ export class OpenHandler implements MessageHandler {
                 appId: arg0.payload.appId,
                 instanceId: sc.createUUID()
             } as AppIdentifier
-            sc.setInstanceDetails(from, appIdentity)
+            await sc.setInstanceDetails(from, appIdentity)
             returnSuccess(appIdentity)
 
-            // make sure anyone listening for this app to open is informed
+            // make sure if the opener is listening for this app to open gets informed
             const pendingOpen = this.pending.get(from)
             if (pendingOpen) {
                 if (pendingOpen.state == AppState.Opening) {
-                    pendingOpen.setOpened()
+                    pendingOpen.setOpened(appIdentity)
                 }
             }
         }

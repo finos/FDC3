@@ -1,19 +1,21 @@
 Feature: Opening and Requesting App Details
 
   Background:
-    Given "libraryApp" is an app with the following intents
+    Given schemas loaded
+    And "libraryApp" is an app with the following intents
       | Intent Name | Context Type | Result Type |
       | returnBook  | fdc3.book    | {empty}     |
     And "storageApp" is an app with the following intents
       | Intent Name | Context Type | Result Type |
       | loanBook    | fdc3.book    | fdc3.loan   |
     And A newly instantiated FDC3 Server
+    And "libraryApp/a1" is opened with connection id "lx1"
 
   Scenario: Looking up app metadata
     When "libraryApp/a1" requests metadata for "storageApp"
     Then messaging will have outgoing posts
-      | msg.type               | msg.payload.appMetadata.appId | to.instanceId |
-      | getAppMetadataResponse | storageApp                    | a1            |
+      | msg.type               | msg.payload.appMetadata.appId | to.instanceId | matches_type           |
+      | getAppMetadataResponse | storageApp                    | a1            | getAppMetadataResponse |
 
   Scenario: Looking up app metadata from missing app
     When "libraryApp/a1" requests metadata for "unknownApp"
