@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerEvent, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextsResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IframeChannelDrag, IframeChannelResize, IframeChannels, IframeChannelSelected, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocolMessage } from "./file";
+//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerEvent, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IframeChannelDrag, IframeChannelResize, IframeChannels, IframeChannelSelected, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocolMessage } from "./file";
 //
 //   const addContextListenerRequest = Convert.toAddContextListenerRequest(json);
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
@@ -25,7 +25,7 @@
 //   const findIntentRequest = Convert.toFindIntentRequest(json);
 //   const findIntentResponse = Convert.toFindIntentResponse(json);
 //   const findIntentsByContextRequest = Convert.toFindIntentsByContextRequest(json);
-//   const findIntentsByContextsResponse = Convert.toFindIntentsByContextsResponse(json);
+//   const findIntentsByContextResponse = Convert.toFindIntentsByContextResponse(json);
 //   const getAppMetadataRequest = Convert.toGetAppMetadataRequest(json);
 //   const getAppMetadataResponse = Convert.toGetAppMetadataResponse(json);
 //   const getCurrentChannelRequest = Convert.toGetCurrentChannelRequest(json);
@@ -1407,7 +1407,7 @@ export interface FindIntentsByContextRequestPayload {
  * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
  * payload contains an `error` property, the request was unsuccessful.
  */
-export interface FindIntentsByContextsResponse {
+export interface FindIntentsByContextResponse {
     /**
      * Metadata for messages sent by a Desktop Agent to an App in response to an API call
      */
@@ -1417,7 +1417,7 @@ export interface FindIntentsByContextsResponse {
      * property containing a standardized error message indicating that the request was
      * unsuccessful.
      */
-    payload: FindIntentsByContextsResponsePayload;
+    payload: FindIntentsByContextResponsePayload;
     /**
      * Identifies the type of the message and it is typically set to the FDC3 function name that
      * the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -1430,7 +1430,7 @@ export interface FindIntentsByContextsResponse {
  * property containing a standardized error message indicating that the request was
  * unsuccessful.
  */
-export interface FindIntentsByContextsResponsePayload {
+export interface FindIntentsByContextResponsePayload {
     error?:      FindInstancesErrors;
     appIntents?: AppIntent[];
 }
@@ -3795,12 +3795,12 @@ export class Convert {
         return JSON.stringify(uncast(value, r("FindIntentsByContextRequest")), null, 2);
     }
 
-    public static toFindIntentsByContextsResponse(json: string): FindIntentsByContextsResponse {
-        return cast(JSON.parse(json), r("FindIntentsByContextsResponse"));
+    public static toFindIntentsByContextResponse(json: string): FindIntentsByContextResponse {
+        return cast(JSON.parse(json), r("FindIntentsByContextResponse"));
     }
 
-    public static findIntentsByContextsResponseToJson(value: FindIntentsByContextsResponse): string {
-        return JSON.stringify(uncast(value, r("FindIntentsByContextsResponse")), null, 2);
+    public static findIntentsByContextResponseToJson(value: FindIntentsByContextResponse): string {
+        return JSON.stringify(uncast(value, r("FindIntentsByContextResponse")), null, 2);
     }
 
     public static toGetAppMetadataRequest(json: string): GetAppMetadataRequest {
@@ -4655,12 +4655,12 @@ const typeMap: any = {
         { json: "context", js: "context", typ: r("Context") },
         { json: "resultType", js: "resultType", typ: u(undefined, "") },
     ], false),
-    "FindIntentsByContextsResponse": o([
+    "FindIntentsByContextResponse": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("FindIntentsByContextsResponsePayload") },
-        { json: "type", js: "type", typ: r("FindIntentsByContextsResponseType") },
+        { json: "payload", js: "payload", typ: r("FindIntentsByContextResponsePayload") },
+        { json: "type", js: "type", typ: r("FindIntentsByContextResponseType") },
     ], false),
-    "FindIntentsByContextsResponsePayload": o([
+    "FindIntentsByContextResponsePayload": o([
         { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
         { json: "appIntents", js: "appIntents", typ: u(undefined, a(r("AppIntent"))) },
     ], false),
@@ -5326,7 +5326,7 @@ const typeMap: any = {
     "FindIntentsByContextRequestType": [
         "findIntentsByContextRequest",
     ],
-    "FindIntentsByContextsResponseType": [
+    "FindIntentsByContextResponseType": [
         "findIntentsByContextResponse",
     ],
     "GetAppMetadataRequestType": [
