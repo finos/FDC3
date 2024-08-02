@@ -18,49 +18,10 @@
       "description": "A secondary response to a request to raise an intent used to deliver the intent result",
       "properties": {
         "type": {
-          "title": "RaiseIntent Result Response Message type",
-          "const": "raiseIntentResultResponse"
+          "$ref": "../api/raiseIntentResultResponse.schema.json#/$defs/RaiseIntentResultResponseType"
         },
         "payload": {
-          "title": "RaiseIntent Result Response Payload",
-          "type": "object",
-          "properties": {
-            "intentResult": {
-              "title": "IntentResult",
-              "anyOf": [
-                {
-                  "type": "object",
-                  "title": "IntentResult Context",
-                  "properties": {
-                    "context": {
-                      "$ref": "../context/context.schema.json"
-                    }
-                  },
-                  "required": ["context"],
-                  "additionalProperties": false
-                },
-                {
-                  "type": "object",
-                  "title": "IntentResult Channel",
-                  "properties": {
-                    "channel": {
-                      "$ref": "../api/api.schema.json#/definitions/Channel"
-                    }
-                  },
-                  "required": ["channel"],
-                  "additionalProperties": false
-                },
-                {
-                  "type": "object",
-                  "title": "IntentResult Void",
-                  "properties": {},
-                  "additionalProperties": false
-                }
-              ]
-            }
-          },
-          "required": ["intentResult"],
-          "additionalProperties": false
+          "$ref": "../api/raiseIntentResultResponse.schema.json#/$defs/RaiseIntentResultSuccessResponsePayload"
         },
         "meta": {
           "title": "RaiseIntent Result Response Metadata",

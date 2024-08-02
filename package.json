@@ -20,18 +20,18 @@
   "scripts": {
     "clean": "rimraf dist",
     "start": "rollup -c rollup.config.js --bundleConfigAsCjs -w",
-    "prebuild": "npm run clean && npm run typegen && npm run typegen-bridging && npm run lint",
+    "prebuild": "npm run clean && npm run typegen && npm run typegen-browser && npm run typegen-bridging && npm run lint",
     "build": "rollup -c rollup.config.js --silent --bundleConfigAsCjs",
     "test": "jest --verbose",
     "lint": "eslint src/ test/ --ext .ts --fix",
     "prepack": "npm run build",
-    "typegen": "node s2tQuicktypeUtil.js schemas/context src/context/ContextTypes.ts",
-    "typegen-bridging": "node s2tQuicktypeUtil.js schemas/api schemas/bridging schemas/context/context.schema.json src/bridging/BridgingTypes.ts",
-    "schema-2-markdown": "node schema2Markdown.js"
+    "typegen": "cd schemas && node ../s2tQuicktypeUtil.js context ../src/context/ContextTypes.ts",
+    "typegen-browser": "cd schemas && node ../s2tQuicktypeUtil.js api/api.schema.json api/common.schema.json context/context.schema.json api ../src/api/BrowserTypes.ts",
+    "typegen-bridging": "cd schemas && node ../s2tQuicktypeUtil.js api/api.schema.json api/common.schema.json api/broadcastRequest.schema.json api/findInstancesRequest.schema.json api/findInstancesResponse.schema.json api/findIntentRequest.schema.json api/findIntentResponse.schema.json api/findIntentsByContextRequest.schema.json api/findIntentsByContextResponse.schema.json api/getAppMetadataRequest.schema.json api/getAppMetadataResponse.schema.json api/openRequest.schema.json api/openResponse.schema.json api/raiseIntentRequest.schema.json api/raiseIntentResponse.schema.json api/raiseIntentResultResponse.schema.json context/context.schema.json bridging ../src/bridging/BridgingTypes.ts"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint"
+      "pre-commit": "npm run prebuild"
     }
   },
   "prettier": {

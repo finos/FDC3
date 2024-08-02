@@ -1,0 +1,44 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/intentListenerUnsubscribeRequest.schema.json",
+	"type": "object",
+	"title": "IntentListenerUnsubscribe Request",
+	"description": "A request to unsubscribe a context listener.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/IntentListenerUnsubscribeRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/IntentListenerUnsubscribeRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"IntentListenerUnsubscribeRequestType": {
+			"title": "IntentListenerUnsubscribe Request Message Type",
+			"const": "intentListenerUnsubscribeRequest"
+		},
+		"IntentListenerUnsubscribeRequestPayload": {
+			"title": "IntentListenerUnsubscribe Request Payload",
+			"type": "object",
+			"properties": {
+				"listenerUUID": {
+					"$ref": "common.schema.json#/$defs/ListenerUuid"
+				}
+			},
+			"required": [
+				"listenerUUID"
+			],
+			"additionalProperties": false
+		}
+	}
+}

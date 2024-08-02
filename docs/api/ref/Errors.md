@@ -7,7 +7,42 @@ import TabItem from '@theme/TabItem';
 
 FDC3 API operations may sometimes result in an error, which must be returned to the caller. Errors should be returned by rejecting the promise returned by the API with a JavaScript `Error` object (or equivalent for the language of the implementation). The `Error` Object's message should be chosen from the appropriate Error enumeration below.
 
+## `AgentError`
+
+Contains constants representing the errors that can be encountered when calling the [`getAgent`](getAgent) function to establish connectivity to a Desktop Agent. Primarily used with web applications, but may also be used in other language
+implementations.
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+enum AgentError { 
+    /** Returned if no Desktop Agent was found by any means available or 
+     * if the Agent previously connected to is not contactable on a  
+     * subsequent connection attempt.*/
+    AgentNotFound = "AgentNotFound",
+
+    /** Returned if validation of the app identity by the Desktop Agent 
+     * Failed or the app is not being allowed to connect to the Desktop Agent 
+     * for another reason. */ 
+    AccessDenied = "AccessDenied",
+
+    /** Returned if an error or exception occurs while trying to set  
+     * up communication with a Desktop Agent. */ 
+    ErrorOnConnect = "ErrorOnConnect",
+
+    /** Returned if either the failover function itself, or what it returned,  
+     * was not the right type. */ 
+    InvalidFailover = "InvalidFailover" 
+} 
+```
+</TabItem>
+</Tabs>
+
+
 ## `ChannelError`
+
+Contains constants representing the errors that can be encountered when calling channels using the [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`getOrCreateChannel`](DesktopAgent#getorcreatechannel) methods, or the [`getCurrentContext`](Channel#getcurrentcontext), [`broadcast`](Channel#broadcast) or [`addContextListener`](Channel#addcontextlistener) methods on the `Channel` object.
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -75,8 +110,6 @@ public static class ChannelError
 </TabItem>
 </Tabs>
 
-Contains constants representing the errors that can be encountered when calling channels using the [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`getOrCreateChannel`](DesktopAgent#getorcreatechannel) methods, or the [`getCurrentContext`](Channel#getcurrentcontext), [`broadcast`](Channel#broadcast) or [`addContextListener`](Channel#addcontextlistener) methods on the `Channel` object.
-
 **See also:**
 
 - [`DesktopAgent.createPrivateChannel`](DesktopAgent#createprivatechannel)
@@ -87,6 +120,8 @@ Contains constants representing the errors that can be encountered when calling 
 - [`Channel.getCurrentContext`](Channel#getcurrentcontext)
 
 ## `OpenError`
+
+Contains constants representing the errors that can be encountered when calling the [`open`](DesktopAgent#open) method on the [DesktopAgent](DesktopAgent) object.
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -161,13 +196,13 @@ public static class OpenError
 </TabItem>
 </Tabs>
 
-Contains constants representing the errors that can be encountered when calling the [`open`](DesktopAgent#open) method on the [DesktopAgent](DesktopAgent) object.
-
 **See also:**
 
 - [`DesktopAgent.open`](DesktopAgent#open)
 
 ## `ResolveError`
+
+Contains constants representing the errors that can be encountered when calling the [`findIntent`](DesktopAgent#findintent), [`findIntentsByContext`](DesktopAgent#findintentsbycontext), [`raiseIntent`](DesktopAgent#raiseintent) or [`raiseIntentForContext`](DesktopAgent#raiseintentforcontext) methods on the [DesktopAgent](DesktopAgent).
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -285,8 +320,6 @@ public static class ResolveError
 </TabItem>
 </Tabs>
 
-Contains constants representing the errors that can be encountered when calling the [`findIntent`](DesktopAgent#findintent), [`findIntentsByContext`](DesktopAgent#findintentsbycontext), [`raiseIntent`](DesktopAgent#raiseintent) or [`raiseIntentForContext`](DesktopAgent#raiseintentforcontext) methods on the [DesktopAgent](DesktopAgent).
-
 **See also:**
 
 - [`DesktopAgent.findIntent`](DesktopAgent#findintent)
@@ -295,6 +328,8 @@ Contains constants representing the errors that can be encountered when calling 
 - [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 
 ## `ResultError`
+
+Contains constants representing the errors that can be encountered when calling the [`getResult`](DesktopAgent#findintent) method on the [IntentResolution](Metadata#intentresolution) Object.
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -336,8 +371,6 @@ public static class ResultError
 </TabItem>
 </Tabs>
 
-Contains constants representing the errors that can be encountered when calling the [`getResult`](DesktopAgent#findintent) method on the [IntentResolution](Metadata#intentresolution) Object.
-
 **See also:**
 
 - [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
@@ -346,7 +379,7 @@ Contains constants representing the errors that can be encountered when calling 
 
 ## `BridgingError`
 
-`@experimental`
+[`@experimental`](../../fdc3-compliance#experimental-features)
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
