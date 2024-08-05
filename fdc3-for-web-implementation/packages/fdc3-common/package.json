@@ -1,6 +1,6 @@
 {
   "name": "@kite9/fdc3-common",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "files": [
     "dist"
   ],
@@ -8,7 +8,7 @@
   "types": "dist/src/index.d.ts",
   "scripts": {
     "build": "tsc --module es2022",
-    "clean": "rimraf dist;",
+    "clean": "rimraf dist",
     "test": "tsc"
   },
   "dependencies": {
