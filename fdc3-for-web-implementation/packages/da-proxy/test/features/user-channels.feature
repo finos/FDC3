@@ -202,3 +202,16 @@ Feature: Basic User Channels Support
       | {null}            | {null}              | {null}               | getCurrentChannelRequest   |
       | one               | fdc3.instrument     | {null}               | addContextListenerRequest  |
       | {null}            | {null}              | {null}               | leaveCurrentChannelRequest |
+    And check the latest context is got from the server.
+
+  Scenario: Joining a user channel replays Context to typed listeners
+        Although the message is sent before the channel is joined, history from the channel will get replayed
+        to the listener
+
+    Given "resultHandler" pipes context to "contexts"
+    When messaging receives "{instrumentMessageOne}"
+    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And I call "{api}" with "joinUserChannel" with parameter "one"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
