@@ -33,7 +33,7 @@
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@fontsource/roboto": "^4.4.5",
     "@fontsource/source-code-pro": "^4.5.0",
-    "@kite9/client": "workspace:*",
+    "@kite9/client": "latest",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.59",
