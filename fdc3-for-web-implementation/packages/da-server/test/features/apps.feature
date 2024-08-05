@@ -62,11 +62,11 @@ Feature: Opening and Requesting App Details
       | findInstancesResponse |                                 0 | a1            |
 
   Scenario: Find Instances with Some Apps Running
-    When "App1/a1" is opened with connection id "abc"
-    And "App1/a1" sends validate
-    And "App1/b1" is opened with connection id "def"
-    And "App1/b1" sends validate
-    And "libraryApp/li" findsInstances of "App1"
+    When "storageApp/a1" is opened with connection id "abc"
+    And "storageApp/a1" sends validate
+    And "storageApp/b1" is opened with connection id "def"
+    And "storageApp/b1" sends validate
+    And "libraryApp/li" findsInstances of "storageApp"
     Then messaging will have outgoing posts
       | msg.matches_type      | msg.payload.appIdentifiers.length | msg.payload.appIdentifiers[0].instanceId | msg.payload.appIdentifiers[1].instanceId | to.instanceId |
       | findInstancesResponse |                                 2 | a1                                       | b1                                       | li            |
