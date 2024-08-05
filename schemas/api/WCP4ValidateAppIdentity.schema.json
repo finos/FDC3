@@ -24,14 +24,9 @@
           "title": "WCP4ValidateAppIdentity Payload",
           "type": "object",
           "properties": {
-            "appId": {
-              "title": "appId",
-              "description": "appId for the application attempting to connect. The appId must be fully qualified (appId@host.domain.appD) such that the URL for the appD record can be determined for identity validation purposes, or appDUrl must also be specified.",
-              "type": "string"
-            },
-            "appDUrl": {
-              "title": "appDUrl",
-              "description": "URL for an App Directory record that provides identity details for the application attempting to connect",
+            "identityUrl": {
+              "title": "Identity URL",
+              "description": "URL to use for the identity of the application. Desktop Agents MUST validate that the origin of the message matches the URL, but MAY implement custom comparison logic.",
               "type": "string",
               "format": "uri"
             },
@@ -48,7 +43,7 @@
           },
           "additionalProperties": false,
           "required": [
-            "appId"
+            "identityUrl"
           ]
         },
         "meta": true
