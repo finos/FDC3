@@ -30,6 +30,22 @@ When('{string} sends validate', function (this: CustomWorld, uuid: string) {
   this.server.receive(message, uuid)
 });
 
+When('{string} revalidates', function (this: CustomWorld, uuid: string) {
+
+  const message: WebConnectionProtocol4ValidateAppIdentity = {
+    type: 'WCP4ValidateAppIdentity',
+    meta: {
+      connectionAttemptUuid: this.sc.createUUID(),
+      timestamp: new Date()
+    },
+    payload: {
+      instanceUuid: uuid
+    } as any /* ISSUE: 1301 */
+  }
+
+  this.server.receive(message, uuid)
+});
+
 Then('running apps will be', async function (this: CustomWorld, dataTable: DataTable) {
   const apps = await this.sc.getConnectedApps()
   matchData(this, apps, dataTable)

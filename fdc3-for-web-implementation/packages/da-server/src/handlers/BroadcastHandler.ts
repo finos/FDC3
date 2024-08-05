@@ -175,7 +175,7 @@ export class BroadcastHandler implements MessageHandler {
         if (i > -1) {
             const rl = this.contextListeners[i]
             const channel = this.getChannelById(rl.channelId)
-            this.invokeEventListeners(channel?.id, "onUnsubscribe", 'privateChannelOnUnsubscribeEvent', sc)
+            this.invokeEventListeners(channel?.id ?? null, "onUnsubscribe", 'privateChannelOnUnsubscribeEvent', sc)
             this.contextListeners.splice(i, 1)
             successResponse(sc, arg0, from, {}, 'contextListenerUnsubscribeResponse')
         } else {
@@ -184,24 +184,34 @@ export class BroadcastHandler implements MessageHandler {
     }
 
     handleAddContextListenerRequest(arg0: AddContextListenerRequest, sc: ServerContext, from: AppIdentifier) {
-        const channel = this.getChannelById(arg0.payload?.channelId)
+        var channelId = null
+        var channelType = ChannelType.user
 
-        if (channel == null) {
-            errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'addContextListenerResponse')
-        } else {
-            const lr: ContextListenerRegistration = {
-                appId: from.appId,
-                instanceId: from.instanceId ?? 'no-instance-id',
-                channelId: channel.id,
-                listenerUuid: sc.createUUID(),
-                contextType: arg0.payload.contextType,
-                userChannelListener: channel.type == ChannelType.user
+        if (arg0.payload?.channelId) {
+            const channel = this.getChannelById(arg0.payload?.channelId)
+            channelType = channel?.type ?? ChannelType.user
+
+            if (channel == null) {
+                errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'addContextListenerResponse')
+                return
+            } else {
+                channelId = channel.id
             }
-
-            this.contextListeners.push(lr)
-            this.invokeEventListeners(channel.id, "onAddContextListener", "privateChannelOnAddContextListenerEvent", sc, arg0.payload.contextType ?? undefined)
-            successResponse(sc, arg0, from, { listenerUUID: lr.listenerUuid }, 'addContextListenerResponse')
         }
+
+        const lr: ContextListenerRegistration = {
+            appId: from.appId,
+            instanceId: from.instanceId ?? 'no-instance-id',
+            channelId: channelId,
+            listenerUuid: sc.createUUID(),
+            contextType: arg0.payload.contextType,
+            userChannelListener: channelType == ChannelType.user
+        }
+
+        this.contextListeners.push(lr)
+        this.invokeEventListeners(channelId, "onAddContextListener", "privateChannelOnAddContextListenerEvent", sc, arg0.payload.contextType ?? undefined)
+        successResponse(sc, arg0, from, { listenerUUID: lr.listenerUuid }, 'addContextListenerResponse')
+
     }
 
     handleBroadcastRequest(arg0: BroadcastRequest, sc: ServerContext) {
@@ -316,7 +326,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    invokeEventListeners(channelId: string | undefined, eventType: PrivateChannelEventListenerTypes, messageType: NotificationAgentEventMessage, sc: ServerContext, contextType?: string) {
+    invokeEventListeners(channelId: string | null, eventType: PrivateChannelEventListenerTypes, messageType: NotificationAgentEventMessage, sc: ServerContext, contextType?: string) {
         if (channelId) {
             const msg = {
                 type: messageType,
