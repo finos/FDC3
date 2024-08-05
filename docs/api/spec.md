@@ -51,6 +51,8 @@ The FDC3 API specification consists of interfaces.  It is expected that each Des
 
 Other interfaces defined in the spec are not critical to define as concrete types.  Rather, the Desktop Agent should expect to have objects of the interface shape passed into or out of their library.
 
+The means to access an API interface is defined separately for each language in which FDC3 is implemented. These definitions are important as they affect whether applicaitons can be written in a vendor agnostic format so that they run under any Standards-conformant implementation. For details of how to access an API interface in particular languages please see [Supported Platforms](supported-platforms).
+
 ### Implementation language
 
 FDC3 and the Desktop Agent API it defines are intended to be independent of particular programming languages and platforms and hence the original definitions, produced in TypeScript, may be translated into other languages. However, this also places limitations on the API definitions as they need to be widely implementable in other languages.
