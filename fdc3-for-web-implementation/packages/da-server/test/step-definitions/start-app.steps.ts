@@ -15,9 +15,7 @@ When('{string} is closed', function (this: CustomWorld, app: string) {
   this.sc.disconnectApp(meta.source)
 });
 
-When('{string} sends validate', function (this: CustomWorld, app: string) {
-  const meta = createMeta(this, app)
-  const uuid = this.sc.getInstanceUUID(meta.source)!!
+When('{string} sends validate', function (this: CustomWorld, uuid: string) {
 
   const message: WebConnectionProtocol4ValidateAppIdentity = {
     type: 'WCP4ValidateAppIdentity',
@@ -26,8 +24,7 @@ When('{string} sends validate', function (this: CustomWorld, app: string) {
       timestamp: new Date()
     },
     payload: {
-      appId: meta.source.appId
-    }
+    } as any /* ISSUE: 1301 */
   }
 
   this.server.receive(message, uuid)
