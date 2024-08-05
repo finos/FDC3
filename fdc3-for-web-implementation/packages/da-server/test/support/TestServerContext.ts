@@ -35,13 +35,14 @@ export class TestServerContext implements ServerContext {
     }
 
     async open(appId: string): Promise<InstanceUUID> {
+        const ni = this.nextInstanceId++
         if (appId.includes("missing")) {
             throw new Error(OpenError.AppNotFound)
         } else {
-            const uuid = "UUID-" + this.nextUUID++
+            const uuid = "uuid-" + ni
             const out = {
                 appId,
-                instanceId: "" + this.nextInstanceId++
+                instanceId: "" + ni
             } as AppIdentifier
             this.instances[uuid] = out
             return uuid

@@ -3,6 +3,7 @@ import { CustomWorld } from '../world';
 // import { BroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { createMeta } from './generic.steps';
 import { AddContextListenerRequest } from '@kite9/fdc3-common';
+import { handleResolve } from "@kite9/testing";
 
 When('{string} adds a context listener on {string} with type {string}', function (this: CustomWorld, app: string, channelId: string, contextType: string) {
   const meta = createMeta(this, app)
@@ -10,7 +11,7 @@ When('{string} adds a context listener on {string} with type {string}', function
   const message = {
     meta,
     payload: {
-      channelId,
+      channelId: handleResolve(channelId, this),
       contextType
     },
     type: 'addContextListenerRequest'

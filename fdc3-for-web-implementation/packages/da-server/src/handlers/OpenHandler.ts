@@ -80,7 +80,7 @@ export class OpenHandler implements MessageHandler {
             case 'findInstancesRequest': return this.findInstances(msg as FindInstancesRequest, sc, sc.getInstanceDetails(uuid))
             case 'getAppMetadataRequest': return this.getAppMetadata(msg as GetAppMetadataRequest, sc, sc.getInstanceDetails(uuid))
 
-            case 'addContextListenerRequest': return this.handleAddContextListener(msg as AddContextListenerRequest, sc, sc.getInstanceDetails(uuid))
+            case 'addContextListenerRequest': return this.handleAddContextListener(msg as AddContextListenerRequest, sc, uuid)
 
             case 'WCP4ValidateAppIdentity': return this.handleValidate(msg as WebConnectionProtocol4ValidateAppIdentity, sc, uuid)
         }
@@ -89,15 +89,14 @@ export class OpenHandler implements MessageHandler {
     /**
      * This deals with sending pending context to listeners of newly-opened apps.
      */
-    handleAddContextListener(arg0: AddContextListenerRequest, sc: ServerContext, from: AppIdentifier | undefined): void {
+    handleAddContextListener(arg0: AddContextListenerRequest, sc: ServerContext, from: InstanceUUID): void {
         if (from == undefined) {
             return
         }
 
-        const instanceId = arg0.meta.source?.instanceId
-        const pendingOpen = instanceId ? this.pending.get(instanceId) : undefined
+        const pendingOpen = this.pending.get(from)
 
-        if (pendingOpen && instanceId) {
+        if (pendingOpen) {
             const channelId = arg0.payload.channelId!!
             const contextType = arg0.payload.contextType
 
@@ -119,7 +118,7 @@ export class OpenHandler implements MessageHandler {
                     }
 
                     pendingOpen.setDone()
-                    this.pending.delete(instanceId)
+                    this.pending.delete(from)
                     sc.post(message, arg0.meta.source!!)
                 }
             }
@@ -194,6 +193,15 @@ export class OpenHandler implements MessageHandler {
             timestamp: new Date()
         }
 
+        function returnError() {
+            sc.post({
+                meta: responseMeta,
+                payload: {
+                    message: 'App Instance not found'
+                }
+            } as WebConnectionProtocol5ValidateAppIdentityFailedResponse, from)
+        }
+
         function returnSuccess(appIdentity: AppIdentifier) {
             const aopMetadata = _this.filterPublicDetails(_this.directory.retrieveAppsById(appIdentity.appId)[0], appIdentity)
             sc.post({
@@ -239,19 +247,19 @@ export class OpenHandler implements MessageHandler {
             }
         } else {
             // we need to assign an identity to this app
-            const appIdentity = {
-                appId: arg0.payload.appId,
-                instanceId: sc.createUUID()
-            } as AppIdentifier
-            await sc.setInstanceDetails(from, appIdentity)
-            returnSuccess(appIdentity)
+            const appIdentity = sc.getInstanceDetails(from)
+            if (appIdentity) {
+                returnSuccess(appIdentity)
 
-            // make sure if the opener is listening for this app to open gets informed
-            const pendingOpen = this.pending.get(from)
-            if (pendingOpen) {
-                if (pendingOpen.state == AppState.Opening) {
-                    pendingOpen.setOpened(appIdentity)
+                // make sure if the opener is listening for this app to open gets informed
+                const pendingOpen = this.pending.get(from)
+                if (pendingOpen) {
+                    if (pendingOpen.state == AppState.Opening) {
+                        pendingOpen.setOpened(appIdentity)
+                    }
                 }
+            } else {
+                returnError()
             }
         }
     }
