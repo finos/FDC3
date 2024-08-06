@@ -15,7 +15,7 @@ import {
     GetUserChannelsRequest,
     LeaveCurrentChannelRequest,
     JoinUserChannelRequest,
-    GetCurrentChannelRequest, AgentEventMessage,
+    GetCurrentChannelRequest, AgentEventMessage, CreatePrivateChannelRequest
 } from "@kite9/fdc3-common";
 
 type ContextListenerRegistration = {
@@ -112,14 +112,17 @@ export class BroadcastHandler implements MessageHandler {
                 case 'getCurrentChannelRequest': return this.handleGetCurrentChannelRequest(msg as GetCurrentChannelRequest, sc, from)
 
                 // general broadcast
-                case 'broadcastRequest': return this.handleBroadcastRequest(msg as BroadcastRequest, sc)
+                case 'broadcastRequest': return this.handleBroadcastRequest(msg as BroadcastRequest, sc, from)
 
                 // context listeners
                 case 'addContextListenerRequest': return this.handleAddContextListenerRequest(msg as AddContextListenerRequest, sc, from)
                 case 'contextListenerUnsubscribeRequest': return this.handleContextListenerUnsubscribeRequest(msg as ContextListenerUnsubscribeRequest, sc, from)
 
-                // private channels
+                // private channels create/disconnect
+                case 'createPrivateChannelRequest': return this.handleCreatePrivateChannelRequest(msg as CreatePrivateChannelRequest, sc, from)
                 case 'privateChannelDisconnectRequest': return this.handlePrivateChannelDisconnectRequest(msg as PrivateChannelDisconnectRequest, sc, from)
+
+                // private channel event listeners
                 case 'privateChannelAddEventListenerRequest': return this.handlePrivateChannelAddEventListenerRequest(msg as PrivateChannelAddEventListenerRequest, from, sc)
                 case 'privateChannelUnsubscribeEventListenerRequest': return this.handlePrivateChannelUnsubscribeEventListenerRequest(msg as PrivateChannelUnsubscribeEventListenerRequest, sc, from)
 
@@ -130,6 +133,16 @@ export class BroadcastHandler implements MessageHandler {
             const responseType = msg.type.replace(new RegExp("Request$"), 'Response')
             errorResponse(sc, msg, from, e.message ?? e, responseType)
         }
+    }
+    handleCreatePrivateChannelRequest(arg0: CreatePrivateChannelRequest, sc: ServerContext, from: AppIdentifier) {
+        const id = sc.createUUID()
+        this.state.push({
+            id,
+            type: ChannelType.private,
+            context: []
+        })
+
+        successResponse(sc, arg0, from, { channel: { id, type: ChannelType.private } }, 'createPrivateChannelResponse')
     }
 
     handleGetCurrentContextRequest(arg0: GetCurrentContextRequest, sc: ServerContext, from: AppIdentifier) {
@@ -175,7 +188,7 @@ export class BroadcastHandler implements MessageHandler {
         if (i > -1) {
             const rl = this.contextListeners[i]
             const channel = this.getChannelById(rl.channelId)
-            this.invokeEventListeners(channel?.id ?? null, "onUnsubscribe", 'privateChannelOnUnsubscribeEvent', sc)
+            this.invokeEventListeners(channel?.id ?? null, "onUnsubscribe", 'privateChannelOnUnsubscribeEvent', sc, rl.contextType ?? undefined)
             this.contextListeners.splice(i, 1)
             successResponse(sc, arg0, from, {}, 'contextListenerUnsubscribeResponse')
         } else {
@@ -214,7 +227,7 @@ export class BroadcastHandler implements MessageHandler {
 
     }
 
-    handleBroadcastRequest(arg0: BroadcastRequest, sc: ServerContext) {
+    handleBroadcastRequest(arg0: BroadcastRequest, sc: ServerContext, from: AppIdentifier) {
         const matchingListeners = this.contextListeners
             .filter(r => r.channelId == arg0.payload.channelId)
             .filter(r => r.contextType == null || r.contextType == arg0.payload.context.type)
@@ -238,6 +251,7 @@ export class BroadcastHandler implements MessageHandler {
         })
 
         this.updateChannelState(arg0.payload.channelId, arg0.payload.context)
+        successResponse(sc, arg0, from, {}, 'broadcastResponse')
     }
 
     handleGetCurrentChannelRequest(arg0: GetCurrentChannelRequest, sc: ServerContext, from: AppIdentifier) {
@@ -279,16 +293,16 @@ export class BroadcastHandler implements MessageHandler {
         if (channel) {
             if (channel.type != ChannelType.app) {
                 errorResponse(sc, arg0, from, ChannelError.AccessDenied, 'getOrCreateChannelResponse')
+                return
             }
-        } else {
-            channel = {
-                id: id,
-                type: ChannelType.app,
-                context: []
-            }
-            this.state.push(channel)
         }
 
+        channel = {
+            id: id,
+            type: ChannelType.app,
+            context: []
+        }
+        this.state.push(channel)
         successResponse(sc, arg0, from, { channel: { id: channel.id, type: channel.type, } }, 'getOrCreateChannelResponse')
     }
 
@@ -326,8 +340,8 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    invokeEventListeners(channelId: string | null, eventType: PrivateChannelEventListenerTypes, messageType: NotificationAgentEventMessage, sc: ServerContext, contextType?: string) {
-        if (channelId) {
+    invokeEventListeners(privateChannelId: string | null, eventType: PrivateChannelEventListenerTypes, messageType: NotificationAgentEventMessage, sc: ServerContext, contextType?: string) {
+        if (privateChannelId) {
             const msg = {
                 type: messageType,
                 meta: {
@@ -335,13 +349,13 @@ export class BroadcastHandler implements MessageHandler {
                     timestamp: new Date()
                 },
                 payload: {
-                    channelId,
+                    privateChannelId,
                     contextType: contextType
                 }
             } as AgentEventMessage
 
             this.eventListeners
-                .filter(e => (e.channelId == channelId) && (e.eventType == eventType))
+                .filter(e => (e.channelId == privateChannelId) && (e.eventType == eventType))
                 .forEach(e => sc.post(msg, { appId: e.appId, instanceId: e.instanceId }))
         }
     }

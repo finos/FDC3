@@ -5,11 +5,7 @@ import { DataTable } from "@cucumber/cucumber";
 import Ajv from "ajv/dist/2019";
 
 export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: any): boolean {
-    try {
-        cw.log(`Comparing with ${JSON.stringify(data, null, 2)}`)
-    } catch (e) {
-        console.log("Can't stringify data")
-    }
+
     for (const [field, actual] of Object.entries(t)) {
         if (field.endsWith('matches_type')) {
             // validation mode
@@ -25,8 +21,11 @@ export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: an
             const validate = validator.getSchema('https://fdc3.finos.org/schemas/next/api/' + actual + '.schema.json')!!
             const valid = validate(valdata)
             if (!valid) {
-                valdata
-                cw.log(`Validation failed: ${JSON.stringify(validate.errors)}`)
+                try {
+                    cw.log(`Comparing Validation failed: ${JSON.stringify(data, null, 2)} \n ${JSON.stringify(validate.errors)}`)
+                } catch (e) {
+                    cw.log(`Comparing Validation failed: ${JSON.stringify(validate.errors)}`)
+                }
                 return false
             }
         } else {
@@ -34,7 +33,11 @@ export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: an
             const resolved = handleResolve(actual, cw)
 
             if (found != resolved) {
-                cw.log("Match failed on " + field + " '" + found + "' vs '" + resolved + "'")
+                try {
+                    cw.log(`Comparing Validation failed: ${JSON.stringify(data, null, 2)} \n Match failed on ${field} '${found}' vs '${resolved}'`)
+                } catch (e) {
+                    cw.log("Match failed on " + field + " '" + found + "' vs '" + resolved + "'")
+                }
                 return false;
             }
         }
