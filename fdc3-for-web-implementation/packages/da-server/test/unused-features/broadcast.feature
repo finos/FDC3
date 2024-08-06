@@ -9,8 +9,9 @@ Feature: Relaying Broadcast messages
   Scenario: Broadcast message to no-one
     When "App1/a1" broadcasts "fdc3.instrument" on "one"
     Then messaging will have outgoing posts
-      | msg.source.AppId |
-    And messaging will have 0 posts
+      | msg.matches_type  |
+      | broadcastResponse |
+    And messaging will have 1 posts
 
   Scenario: Broadcast message sent to one listener
     When "App2/a2" adds a context listener on "one" with type "fdc3.instrument"

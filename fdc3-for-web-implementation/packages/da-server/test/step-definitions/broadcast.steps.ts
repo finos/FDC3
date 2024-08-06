@@ -58,7 +58,7 @@ When('{string} broadcasts {string} on {string}', function (this: CustomWorld, ap
   const message = {
     meta,
     payload: {
-      channelId,
+      channelId: handleResolve(channelId, this),
       context: contextMap[contextType]
     },
     type: 'broadcastRequest'

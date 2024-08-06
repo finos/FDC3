@@ -1,88 +1,67 @@
-// import { When } from '@cucumber/cucumber'
-// import { CustomWorld } from '../world';
-// import { contextMap, createMeta } from './generic.steps';
+import { When } from '@cucumber/cucumber'
+import { CustomWorld } from '../world';
+import { createMeta } from './generic.steps';
+import {
+    CreatePrivateChannelRequest,
+    PrivateChannelAddEventListenerRequest,
+    PrivateChannelUnsubscribeEventListenerRequest,
+    PrivateChannelDisconnectRequest
+} from '@kite9/fdc3-common'
+import { handleResolve } from "@kite9/testing";
+
+When('{string} creates a private channel', function (this: CustomWorld, app: string) {
+    const meta = createMeta(this, app)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+    const message = {
+        meta,
+        payload: {},
+        type: 'createPrivateChannelRequest'
+    } as CreatePrivateChannelRequest
+
+    this.server.receive(message, uuid)
+})
+
+When('{string} removes event listener {string}', function (this: CustomWorld, app: string, listenerUUID: string) {
+    const meta = createMeta(this, app)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+    const message = {
+        meta,
+        payload: {
+            listenerUUID
+        },
+        type: 'privateChannelUnsubscribeEventListenerRequest'
+    } as PrivateChannelUnsubscribeEventListenerRequest
+
+    this.server.receive(message, uuid)
+})
+
+When('{string} adds an {string} on {string}', function (this: CustomWorld, app: string, listenerType: string, channelId: string) {
+    const meta = createMeta(this, app)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+    const message = {
+        meta,
+        payload: {
+            privateChannelId: handleResolve(channelId, this),
+            listenerType
+        },
+        type: 'privateChannelAddEventListenerRequest'
+    } as PrivateChannelAddEventListenerRequest
+
+    this.server.receive(message, uuid)
+})
 
 
-// When('{string} adds a context listener on private channel {string} with type {string}', function (this: CustomWorld, app: string, channelId: string, contextType: string) {
-//   const meta = createMeta(this, app)
-//   const message = {
-//     meta,
-//     payload: {
-//       channelId,
-//       contextType
-//     },
-//     type: 'PrivateChannel.onAddContextListener'
-//   } as PrivateChannelOnAddContextListenerAgentRequest
+When('{string} disconnects from private channel {string}', function (this: CustomWorld, app: string, channelId: string) {
+    const meta = createMeta(this, app)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
 
-//   this.server.receive(message, meta.source)
-// })
+    const message = {
+        meta,
+        payload: {
+            channelId: handleResolve(channelId, this),
+        },
+        type: 'privateChannelDisconnectRequest'
+    } as PrivateChannelDisconnectRequest
 
-// When('{string} removes a context listener on private channel {string} with type {string}', function (this: CustomWorld, app: string, channelId: string, contextType: string) {
-//   const meta = createMeta(this, app)
-//   const message = {
-//     meta,
-//     payload: {
-//       channelId,
-//       contextType
-//     },
-//     type: 'PrivateChannel.onUnsubscribe'
-//   } as PrivateChannelOnUnsubscribeAgentRequest
-
-//   this.server.receive(message, meta.source)
-// })
-
-
-// When('{string} removes an {string} on private channel {string}', function (this: CustomWorld, app: string, listenerType: string, channelId: string) {
-//   const meta = createMeta(this, app)
-//   const message = {
-//     meta,
-//     payload: {
-//       channelId,
-//       listenerType
-//     },
-//     type: 'PrivateChannel.eventListenerRemoved'
-//   } as PrivateChannelEventListenerRemovedAgentRequest
-
-//   this.server.receive(message, meta.source)
-// })
-
-// When('{string} adds an {string} on private channel {string}', function (this: CustomWorld, app: string, listenerType: string, channelId: string) {
-//   const meta = createMeta(this, app)
-//   const message = {
-//     meta,
-//     payload: {
-//       channelId,
-//       listenerType
-//     },
-//     type: 'PrivateChannel.eventListenerAdded'
-//   } as PrivateChannelEventListenerAddedAgentRequest
-
-//   this.server.receive(message, meta.source)
-// })
-
-// When('{string} broadcasts {string} on private channel {string}', function (this: CustomWorld, app: string, contextType: string, channelId: string) {
-//   const meta = createMeta(this, app)
-//   const message = {
-//     meta,
-//     payload: {
-//       channelId,
-//       context: contextMap[contextType]
-//     },
-//     type: 'PrivateChannel.broadcast'
-//   } as PrivateChannelBroadcastAgentRequest
-
-//   this.server.receive(message, meta.source)
-// })
-
-// When('{string} disconnects from private channel {string}', function (this: CustomWorld, app: string, channelId: string) {
-//   const meta = createMeta(this, app)
-//   const message = {
-//     meta,
-//     payload: {
-//       channelId
-//     },
-//     type: 'PrivateChannel.onDisconnect'
-//   } as PrivateChannelOnDisconnectAgentRequest
-
-//   this.server.receive(message, meta.source)
-// })
+    this.server.receive(message, uuid)
+})
