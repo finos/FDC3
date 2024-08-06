@@ -274,14 +274,14 @@ export class IntentHandler implements MessageHandler {
         if ((possibleAppTargets.length == 1) && (possibleDirectoryTargets.length <= 1)) {
             // in this case, there is a single running app that can handle the intent
             return forwardRequest(arg0, from, possibleAppTargets[0], sc, this)
-        } else if ((possibleAppTargets.length == 0) || (possibleDirectoryTargets.length == 0)) {
+        } else if ((possibleAppTargets.length == 0) && (possibleDirectoryTargets.length == 0)) {
             // nothing can resolve the intent, fail
             return errorResponse(sc, arg0, from, ResolveError.NoAppsFound, 'raiseIntentResponse')
         } else {
             const theIntent = await this.getIntentDetails(arg0.payload.intent, possibleDirectoryTargets[0].appId)
             // need to use the resolver to choose a running app
             return successResponse(sc, arg0, from, {
-                appIntents: {
+                appIntent: {
                     apps: [
                         ...possibleDirectoryTargets,
                         ...possibleAppTargets

@@ -138,25 +138,28 @@ Given('{string} unsubscribes an intent listener with id {string}', function (thi
     this.server.receive(message, uuid)
 });
 
-function raise(cw: CustomWorld, intentName: string, contextType: string, dest: string, meta: any): RaiseIntentRequest {
-    const destMeta = createMeta(cw, dest)
+function raise(cw: CustomWorld, intentName: string, contextType: string, dest: string | null, meta: any): RaiseIntentRequest {
+    const destMeta = dest != null ? createMeta(cw, dest) : null
     const message = {
         type: 'raiseIntentRequest',
         meta: {
             ...meta,
-            destination: {
-                ...destMeta.source,
-                desktopAgent: 'n/a'
-            }
         },
         payload: {
             intent: handleResolve(intentName, cw),
             context: contextMap[contextType],
-            app: destMeta.source
+            app: dest ? destMeta!!.source : null
         }
     } as RaiseIntentRequest
     return message;
 }
+
+When('{string} raises an intent for {string} with contextType {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string) {
+    const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+    const message = raise(this, intentName, contextType, null, meta)
+    this.server.receive(message, uuid)
+});
 
 When('{string} raises an intent for {string} with contextType {string} on app {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, dest: string) {
     const meta = createMeta(this, appStr)
