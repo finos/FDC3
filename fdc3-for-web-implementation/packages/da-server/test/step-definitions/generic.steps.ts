@@ -34,6 +34,14 @@ export const contextMap: Record<string, any> = {
         "id": {
             "ISBN": "1234"
         }
+    },
+    "fdc3.magazine": {
+        "type": "fdc3.magazine",
+        "title": "The Economist",
+        "price": 3.99,
+        "id": {
+            "ISSN": "1234"
+        }
     }
 }
 
