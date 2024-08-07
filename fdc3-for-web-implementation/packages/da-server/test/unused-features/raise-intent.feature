@@ -82,5 +82,14 @@ Feature: Raising Intents
   Scenario: User Must Choose An Intent using The Intent Resolver
     When "App1/a1" raises an intent for "borrowBook" with contextType "fdc3.book"
     Then messaging will have outgoing posts
-      | msg.type            | msg.payload.appIntent.apps[0].appId | msg.payload.appIntent.apps[1].appId | msg.payload.appIntent.intent.name | msg.payload.appIntent.intent.displayName | to.instanceId | to.appId |
-      | raiseIntentResponse | libraryApp                          | listenerApp                         | borrowBook                        | borrow book                              | a1            | App1     |
+      | msg.type            | msg.payload.appIntent.intent.name | msg.payload.appIntent.intent.displayName | to.instanceId | to.appId |
+      | raiseIntentResponse | borrowBook                        | borrowBook                               | a1            | App1     |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntent.apps[0].appId | msg.payload.appIntent.apps[0].instanceId |
+      | listenerApp                         | b1                                       |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntent.apps[1].appId | msg.payload.appIntent.apps[1].instanceId |
+      | libraryApp                          | {null}                                   |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntent.apps[2].appId | msg.payload.appIntent.apps[2].instanceId |
+      | listenerApp                         | {null}                                   |

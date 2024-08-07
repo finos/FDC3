@@ -9,6 +9,7 @@ import {
     AddIntentListenerRequest,
     IntentListenerUnsubscribeRequest,
     RaiseIntentRequest,
+    RaiseIntentForContextRequest,
     IntentResultRequest
 } from "@kite9/fdc3-common";
 
@@ -153,6 +154,35 @@ function raise(cw: CustomWorld, intentName: string, contextType: string, dest: s
     } as RaiseIntentRequest
     return message;
 }
+
+function raiseWithContext(cw: CustomWorld, contextType: string, dest: string | null, meta: any): RaiseIntentForContextRequest {
+    const destMeta = dest != null ? createMeta(cw, dest) : null
+    const message = {
+        type: 'raiseIntentForContextRequest',
+        meta: {
+            ...meta,
+        },
+        payload: {
+            context: contextMap[contextType],
+            app: dest ? destMeta!!.source : null
+        }
+    } as RaiseIntentForContextRequest
+    return message;
+}
+
+When('{string} raises an intent with contextType {string}', function (this: CustomWorld, appStr: string, contextType: string) {
+    const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+    const message = raiseWithContext(this, contextType, null, meta)
+    this.server.receive(message, uuid)
+});
+
+When('{string} raises an intent with contextType {string} on app {string}', function (this: CustomWorld, appStr: string, contextType: string, dest: string) {
+    const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+    const message = raiseWithContext(this, contextType, dest, meta)
+    this.server.receive(message, uuid)
+});
 
 When('{string} raises an intent for {string} with contextType {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string) {
     const meta = createMeta(this, appStr)

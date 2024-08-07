@@ -3,10 +3,18 @@ import { AgentResponseMessage, AppIdentifier, AppRequestMessage } from "@kite9/f
 
 
 export function successResponse(sc: ServerContext, request: AppRequestMessage, to: AppIdentifier, payload: any, type: string) {
+    return successResponseId(sc, request.meta.requestUuid, to, payload, type);
+}
+
+export function errorResponse(sc: ServerContext, request: AppRequestMessage, to: AppIdentifier, error: string, type: string) {
+    return errorResponseId(sc, request.meta.requestUuid, to, error, type);
+}
+
+export function successResponseId(sc: ServerContext, requestId: string, to: AppIdentifier, payload: any, type: string) {
     sc.post({
         meta: {
             responseUuid: sc.createUUID(),
-            requestUuid: request.meta.requestUuid,
+            requestUuid: requestId,
             timestamp: new Date()
         },
         type,
@@ -14,11 +22,11 @@ export function successResponse(sc: ServerContext, request: AppRequestMessage, t
     } as AgentResponseMessage, to)
 }
 
-export function errorResponse(sc: ServerContext, request: AppRequestMessage, to: AppIdentifier, error: string, type: string) {
+export function errorResponseId(sc: ServerContext, requestId: string, to: AppIdentifier, error: string, type: string) {
     sc.post({
         meta: {
             responseUuid: sc.createUUID(),
-            requestUuid: request.meta.requestUuid,
+            requestUuid: requestId,
             timestamp: new Date()
         },
         type,

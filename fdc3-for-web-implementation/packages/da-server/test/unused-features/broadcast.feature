@@ -21,6 +21,7 @@ Feature: Relaying Broadcast messages
       | msg.matches_type           | to.appId | to.instanceId | msg.payload.channelId | msg.payload.context.type | msg.payload.context.id.ticker |
       | addContextListenerResponse | App2     | a2            | {null}                | {null}                   | {null}                        |
       | broadcastEvent             | App2     | a2            | one                   | fdc3.instrument          | AAPL                          |
+      | broadcastResponse          | App1     | a1            | {null}                | {null}                   | {null}                        |
 
   Scenario: Broadcast message sent but listener has unsubscribed
     When "App2/a2" adds a context listener on "one" with type "fdc3.instrument"
@@ -30,6 +31,7 @@ Feature: Relaying Broadcast messages
       | msg.matches_type                   | to.appId | to.instanceId | msg.payload.listenerUUID |
       | addContextListenerResponse         | App2     | a2            | uuid3                    |
       | contextListenerUnsubscribeResponse | App2     | a2            | {null}                   |
+      | broadcastResponse                  | App1     | a1            | {null}                   |
 
   Scenario: Get The Latest Context From A Channel
     Given "App1/a1" broadcasts "fdc3.instrument" on "one"
