@@ -11,7 +11,9 @@ import {
     IntentResultRequest,
     AppIdentifier,
     IntentMetadata,
-    Context
+    Context,
+    AddEventListenerEventMeta,
+    BroadcastResponseResponsePayload
 } from "@kite9/fdc3-common";
 import { errorResponse, errorResponseId, successResponse, successResponseId } from "./support";
 
@@ -31,6 +33,23 @@ type IntentRequest = {
     type: 'raiseIntentResponse' | 'raiseIntentForContextResponse'
 }
 
+/** ISSUE: 1303 */
+export interface IntentResultEvent {
+    /**
+    * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+    */
+    meta: AddEventListenerEventMeta;
+    /**
+     * The message payload contains details of the event that the app is being notified about.
+     */
+    payload: BroadcastResponseResponsePayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Response' appended.
+     */
+    type: "intentResultEvent";
+}
+
 /**
  * Re-writes the request to forward it on to the target application
  */
@@ -43,7 +62,7 @@ async function forwardRequest(arg0: IntentRequest, to: AppIdentifier, sc: Server
             originatingApp: arg0.from
         },
         meta: {
-            eventUuid: sc.createUUID(),
+            eventUuid: arg0.requestUuid,
             timestamp: new Date()
         }
     }
@@ -130,22 +149,28 @@ export class IntentHandler implements MessageHandler {
             // raising intents and returning results
             case 'raiseIntentRequest': return this.raiseIntentRequest(msg as RaiseIntentRequest, sc, from)
             case 'raiseIntentForContextRequest': return this.raiseIntentForContextRequest(msg as RaiseIntentForContextRequest, sc, from)
-            case 'intentResultRequest': return this.intentResultRequest(msg as IntentResultRequest, sc)
+            case 'intentResultRequest': return this.intentResultRequest(msg as IntentResultRequest, sc, from)
         }
     }
 
     /**
      * Called when target app handles an intent
      */
-    intentResultRequest(arg0: IntentResultRequest, sc: ServerContext): void | PromiseLike<void> {
+    intentResultRequest(arg0: IntentResultRequest, sc: ServerContext, from: AppIdentifier): void | PromiseLike<void> {
         const requestId = arg0.meta.requestUuid
         const to = this.pendingResolutions.get(requestId)
         if (to) {
+            // post the result to the app that raised the intent
             successResponse(sc, arg0, to!!, {
                 intentResult: arg0.payload.intentResult
-            }, 'intentResultResponse')
+            }, 'intentResultEvent')
 
+            // respond to the app that handled the intent
+            successResponse(sc, arg0, from, {}, 'intentResultResponse')
             this.pendingResolutions.delete(requestId)
+        } else {
+            // no-one waiting for this result
+            errorResponse(sc, arg0, from, "No-one waiting for this result", 'intentResultResponse')
         }
     }
 
