@@ -214,27 +214,45 @@ When('we wait for the intent timeout', function (this: CustomWorld) {
     })
 });
 
-// When('{string} sends a raiseIntentResponse for intent {string} with requestUuid {string}', function (this: CustomWorld, appStr: string, intentName: string, requestUuid: string) {
-//     const meta = createMeta(this, appStr)
-//     const uuid = this.sc.getInstanceUUID(meta.source)!!
-//     const message = {
-//         type: 'raiseIntentResponse',
-//         meta: {
-//             requestUuid,
-//             responseUuid: this.sc.createUUID(),
-//             timestamp: new Date()
-//         },
-//         payload: {
-//             intentResolution: {
-//                 intent: intentName,
-//                 source: {
-//                     ...meta.source
-//                 }
-//             }
-//         }
-//     } as RaiseIntentResponse
-//     this.server.receive(message, uuid)
-// });
+When('{string} sends a intentResultRequest with requestUuid {string} and contextType {string}', function (this: CustomWorld, appStr: string, requestUuid: string, contextType: string) {
+    const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+    const message: IntentResultRequest = {
+        type: 'intentResultRequest',
+        meta: {
+            requestUuid,
+            timestamp: new Date()
+        },
+        payload: {
+            intentResult: {
+                context: contextMap[contextType]
+            }
+        }
+    }
+    this.server.receive(message, uuid)
+})
+
+When('{string} sends a intentResultRequest with requestUuid {string} and private channel {string}', function (this: CustomWorld, appStr: string, requestUuid: string, channelId: string) {
+    const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+
+    const message: IntentResultRequest = {
+        type: 'intentResultRequest',
+        meta: {
+            requestUuid,
+            timestamp: new Date()
+        },
+        payload: {
+            intentResult: {
+                channel: {
+                    type: 'private',
+                    id: channelId
+                }
+            }
+        }
+    }
+    this.server.receive(message, uuid)
+})
 
 When('{string} sends a intentResultRequest with requestUuid {string}', function (this: CustomWorld, appStr: string, requestUuid: string) {
     const meta = createMeta(this, appStr)
