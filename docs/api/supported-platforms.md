@@ -11,6 +11,28 @@ There are two main categories of platform: web and native, both of which are des
 
 For a web application to be FDC3-enabled, it needs to run in the context of an environment or **_Platform Provider_** that makes the FDC3 API available to the application. This environment could be a browser extension, a web or native app, or a fully-fledged desktop container framework.
 
+### API Access & Globals
+
+The FDC3 API can be made available to an application through a number of different methods.  In the case of web applications, a Desktop Agent MUST provide the FDC3 API via a global accessible as `window.fdc3`. Implementors MAY additionally make the API available through modules, imports, or other means.
+
+The global `window.fdc3` must only be available after the API is ready to use. To enable applications to avoid using the API before it is ready, implementors MUST provide a global `fdc3Ready` event that is fired when the API is ready for use. Implementations should first check for the existence of the FDC3 API and add a listener for this event if it is not found:
+
+```ts
+function fdc3Action() {
+  // Make some fdc3 API calls here
+}
+
+if (window.fdc3) {
+  fdc3Action();
+} else {
+  window.addEventListener('fdc3Ready', fdc3Action);
+}
+```
+
+Since FDC3 is typically available to the whole web application, Desktop Agents are expected to make the [`DesktopAgent`](DesktopAgent) interface available at a global level.
+
+The global `window.fdc3` should only be available after the API is ready to use. To prevent the API from being used before it is ready, implementors should provide an `fdc3Ready` event.
+
 ### Usage
 
 There are two main ways FDC3 can be used from web applications:
@@ -19,7 +41,7 @@ There are two main ways FDC3 can be used from web applications:
 
 Simply rely on the global object being made available by your desktop agent, and address the API directly:
 
-```javascript
+```js
 function sendData() {
   window.fdc3.broadcast({
     type: 'fdc3.instrument',
@@ -36,7 +58,7 @@ if (window.fdc3) {
 
 #### 2. NPM Wrapper
 
-FDC3 offers the [`@finos/fdc3` npm package](https://www.npmjs.com/package/@finos/fdc3) that can by used by web applications to target operations from the [API Specification](api/spec) in a consistent way. Each FDC3-compliant desktop agent that the application runs in, can then provide an implementation of the FDC3 API operations.
+FDC3 offers the [`@finos/fdc3` npm package](https://www.npmjs.com/package/@finos/fdc3) that can be used by web applications to target operations from the [API Specification](api/spec) in a consistent way. Each FDC3-compliant desktop agent that the application runs in, can then provide an implementation of the FDC3 API operations.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -88,16 +110,16 @@ const listener = await addIntentListener('ViewAnalysis', instrument => {
 });
 ```
 
-**See also:**
-
-- [`fdc3Ready() Function`](api/ref/Globals#fdc3ready-function)
-
 ## Native
 
-The FDC3 Standard does not currently define wire formats for an app to communicate with a Desktop Agent, nor does it define language specific API bindings, other than JavaScript and TypeScript. Hence, for a native application to be FDC3-enabled, it needs to either:
+### .NET
 
-- Make use of a shared library (such as a .NET DLL or JAR file) that provides it with an implementation of the FDC3 API (which ties it to a specific desktop agent implementation).
-- Model itself as a Desktop Agent (rather than just an app working with one) and use the Agent Bridging protocol to connect to a Desktop Agent Bridge and work through it to interoperate with apps managed by other Desktop Agents.
+For a .NET application to be FDC3-enabled, it needs to run in the context of a platform provider that makes the FDC3 API available.  The manner in which you get a reference to the desktop agent can be highly dependent on the provider chosen.  For those looking to implement your own desktop agent, a recommended and typical design is to register an instance of the desktop agent at startup which can be injected into any class constructors that need references through inversion of control.  More details for creating your own DesktopAgent can be found in the [fdc3-dotnet repository](https://github.com/finos/fdc3-dotnet).
+
+#### Usage
+
+FDC3 offers the [`Finos.Fdc3` NuGet package](https://www.nuget.org/packages/Finos.Fdc3) that can be used by .NET applications to target operations from the [API Specification](api/spec) in a consistent way. Each FDC3-compliant desktop agent that the application runs in, can then provide an implementation of the FDC3 API operations.
+
 
 ## Hybrid
 
