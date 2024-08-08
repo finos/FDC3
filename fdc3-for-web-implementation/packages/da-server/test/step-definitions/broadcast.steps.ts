@@ -12,7 +12,7 @@ When('{string} adds a context listener on {string} with type {string}', function
     meta,
     payload: {
       channelId: handleResolve(channelId, this),
-      contextType
+      contextType: handleResolve(contextType, this)
     },
     type: 'addContextListenerRequest'
   } as AddContextListenerRequest
