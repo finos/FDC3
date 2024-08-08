@@ -67,17 +67,29 @@ Given('A newly instantiated FDC3 Server', function (this: CustomWorld) {
         {
             id: 'one',
             type: ChannelType.user,
-            context: []
+            context: [],
+            displayMetadata: {
+                name: 'One Channel',
+                color: 'orange'
+            }
         },
         {
             id: 'two',
             type: ChannelType.user,
-            context: []
+            context: [],
+            displayMetadata: {
+                name: 'Two Channel',
+                color: 'skyblue'
+            }
         },
         {
             id: 'three',
             type: ChannelType.user,
-            context: []
+            context: [],
+            displayMetadata: {
+                name: 'Three Channel',
+                color: 'ochre'
+            }
         }
     ], 2000, 2000)
 

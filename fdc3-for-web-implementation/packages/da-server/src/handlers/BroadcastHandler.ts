@@ -15,7 +15,7 @@ import {
     GetUserChannelsRequest,
     LeaveCurrentChannelRequest,
     JoinUserChannelRequest,
-    GetCurrentChannelRequest, AgentEventMessage, CreatePrivateChannelRequest
+    GetCurrentChannelRequest, AgentEventMessage, CreatePrivateChannelRequest, DisplayMetadata
 } from "@kite9/fdc3-common";
 
 type ContextListenerRegistration = {
@@ -42,7 +42,8 @@ export enum ChannelType { 'user', 'app', 'private' }
 export type ChannelState = {
     id: string,
     type: ChannelType,
-    context: Context[]
+    context: Context[],
+    displayMetadata: DisplayMetadata
 }
 
 export class BroadcastHandler implements MessageHandler {
@@ -57,11 +58,7 @@ export class BroadcastHandler implements MessageHandler {
     }
 
     getCurrentChannel(from: AppIdentifier): ChannelState | null {
-        if (from.instanceId) {
-            return this.currentChannel[from.instanceId]
-        } else {
-            return null
-        }
+        return this.currentChannel[from.instanceId!!]
     }
 
     getChannelById(id: string | null): ChannelState | null {
@@ -71,8 +68,16 @@ export class BroadcastHandler implements MessageHandler {
         return this.state.find(c => c.id == id) ?? null
     }
 
+    convertChannelTypeToString(type: ChannelType): string {
+        switch (type) {
+            case ChannelType.app: return 'app'
+            case ChannelType.user: return 'user'
+            case ChannelType.private: return 'private'
+        }
+    }
+
     getListeners(appId: AppIdentifier) {
-        return this.contextListeners.filter(r => r.appId == appId.appId)
+        return this.contextListeners.filter(r => r.instanceId == appId.instanceId)
     }
 
     moveUserChannelListeners(app: AppIdentifier, channelId: string | null) {
@@ -107,7 +112,7 @@ export class BroadcastHandler implements MessageHandler {
 
                 // user channel management
                 case 'getUserChannelsRequest': return this.handleGetUserChannelsRequest(msg as GetUserChannelsRequest, sc, from)
-                case 'leaveUserChannelRequest': return this.handleLeaveCurrentChannelRequest(msg as LeaveCurrentChannelRequest, sc, from)
+                case 'leaveCurrentChannelRequest': return this.handleLeaveCurrentChannelRequest(msg as LeaveCurrentChannelRequest, sc, from)
                 case 'joinUserChannelRequest': return this.handleJoinUserChannelRequest(msg as JoinUserChannelRequest, sc, from)
                 case 'getCurrentChannelRequest': return this.handleGetCurrentChannelRequest(msg as GetCurrentChannelRequest, sc, from)
 
@@ -139,10 +144,12 @@ export class BroadcastHandler implements MessageHandler {
         this.state.push({
             id,
             type: ChannelType.private,
-            context: []
+            context: [],
+            displayMetadata: {
+            }
         })
 
-        successResponse(sc, arg0, from, { channel: { id, type: ChannelType.private } }, 'createPrivateChannelResponse')
+        successResponse(sc, arg0, from, { channel: { id, type: this.convertChannelTypeToString(ChannelType.private) } }, 'createPrivateChannelResponse')
     }
 
     handleGetCurrentContextRequest(arg0: GetCurrentContextRequest, sc: ServerContext, from: AppIdentifier) {
@@ -150,8 +157,8 @@ export class BroadcastHandler implements MessageHandler {
         const type = arg0.payload.contextType
 
         if (channel) {
-            const context = channel.context.find(c => c.type == type)
-            successResponse(sc, arg0, from, { context }, 'getCurrentContextResponse')
+            const context = type ? (channel.context.find(c => c.type == type) ?? null) : (channel.context[0] ?? null)
+            successResponse(sc, arg0, from, { context: context }, 'getCurrentContextResponse')
         } else {
             errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'getCurrentContextResponse')
         }
@@ -256,11 +263,17 @@ export class BroadcastHandler implements MessageHandler {
 
     handleGetCurrentChannelRequest(arg0: GetCurrentChannelRequest, sc: ServerContext, from: AppIdentifier) {
         const currentChannel = this.getCurrentChannel(from)
-        successResponse(sc, arg0, from, {
-            channel: {
-                id: currentChannel?.id ?? null,
-            }
-        }, 'getCurrentChannelResponse')
+        if (currentChannel) {
+            successResponse(sc, arg0, from, {
+                channel: {
+                    id: currentChannel.id,
+                    type: this.convertChannelTypeToString(currentChannel.type),
+                    displayMetadata: currentChannel.displayMetadata
+                }
+            }, 'getCurrentChannelResponse')
+        } else {
+            successResponse(sc, arg0, from, { channel: null }, 'getCurrentChannelResponse')
+        }
     }
 
     handleJoinUserChannelRequest(arg0: JoinUserChannelRequest, sc: ServerContext, from: AppIdentifier) {
@@ -284,7 +297,7 @@ export class BroadcastHandler implements MessageHandler {
             delete this.currentChannel[instanceId]
             this.moveUserChannelListeners(from, null)
         }
-        successResponse(sc, arg0, from, {}, 'leaveUserChannelResponse')
+        successResponse(sc, arg0, from, {}, 'leaveCurrentChannelResponse')
     }
 
     handleGetOrCreateRequest(arg0: GetOrCreateChannelRequest, sc: ServerContext, from: AppIdentifier) {
@@ -300,7 +313,8 @@ export class BroadcastHandler implements MessageHandler {
         channel = {
             id: id,
             type: ChannelType.app,
-            context: []
+            context: [],
+            displayMetadata: {}
         }
         this.state.push(channel)
         successResponse(sc, arg0, from, { channel: { id: channel.id, type: channel.type, } }, 'getOrCreateChannelResponse')
@@ -309,17 +323,7 @@ export class BroadcastHandler implements MessageHandler {
 
     handleGetUserChannelsRequest(arg0: GetUserChannelsRequest, sc: ServerContext, from: AppIdentifier) {
         const userChannels = this.state.filter(c => c.type == ChannelType.user)
-        successResponse(sc, arg0, from, { channels: userChannels.map(c => ({ id: c.id, type: c.type })) }, 'getUserChannelsResponse')
-    }
-
-    handleEventListenerRemoved(arg0: PrivateChannelUnsubscribeEventListenerRequest, from: AppIdentifier, sc: ServerContext) {
-        const fi = this.eventListeners.findIndex(e => e.listenerUuid == arg0.payload.listenerUUID)
-        if (fi > -1) {
-            this.eventListeners.splice(fi, 1)
-            successResponse(sc, arg0, from, {}, 'privateChannelUnsubscribeEventListenerResponse')
-        } else {
-            errorResponse(sc, arg0, from, "ListenerNotFound", 'privateChannelUnsubscribeEventListenerResponse')
-        }
+        successResponse(sc, arg0, from, { userChannels: userChannels.map(c => ({ id: c.id, type: this.convertChannelTypeToString(c.type), displayMetadata: c.displayMetadata })) }, 'getUserChannelsResponse')
     }
 
     handlePrivateChannelAddEventListenerRequest(arg0: PrivateChannelAddEventListenerRequest, from: AppIdentifier, sc: ServerContext) {

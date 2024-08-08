@@ -76,24 +76,25 @@ export class OpenHandler implements MessageHandler {
 
     async accept(msg: any, sc: ServerContext, uuid: InstanceUUID): Promise<void> {
         switch (msg.type as string) {
-            case 'openRequest': return this.open(msg as OpenRequest, sc, sc.getInstanceDetails(uuid))
-            case 'findInstancesRequest': return this.findInstances(msg as FindInstancesRequest, sc, sc.getInstanceDetails(uuid))
-            case 'getAppMetadataRequest': return this.getAppMetadata(msg as GetAppMetadataRequest, sc, sc.getInstanceDetails(uuid))
-
             case 'addContextListenerRequest': return this.handleAddContextListener(msg as AddContextListenerRequest, sc, uuid)
-
             case 'WCP4ValidateAppIdentity': return this.handleValidate(msg as WebConnectionProtocol4ValidateAppIdentity, sc, uuid)
         }
+
+        const from = sc.getInstanceDetails(uuid)
+        if (from) {
+            switch (msg.type as string) {
+                case 'openRequest': return this.open(msg as OpenRequest, sc, from)
+                case 'findInstancesRequest': return this.findInstances(msg as FindInstancesRequest, sc, from)
+                case 'getAppMetadataRequest': return this.getAppMetadata(msg as GetAppMetadataRequest, sc, from)
+            }
+        }
+
     }
 
     /**
      * This deals with sending pending context to listeners of newly-opened apps.
      */
     handleAddContextListener(arg0: AddContextListenerRequest, sc: ServerContext, from: InstanceUUID): void {
-        if (from == undefined) {
-            return
-        }
-
         const pendingOpen = this.pending.get(from)
 
         if (pendingOpen) {
@@ -139,11 +140,7 @@ export class OpenHandler implements MessageHandler {
         }
     }
 
-    getAppMetadata(arg0: GetAppMetadataRequest, sc: ServerContext, from: AppIdentifier | undefined): void {
-        if (from == undefined) {
-            return
-        }
-
+    getAppMetadata(arg0: GetAppMetadataRequest, sc: ServerContext, from: AppIdentifier): void {
         const appID = arg0.payload.app
         const details = this.directory.retrieveAppsById(appID.appId)
         if (details.length > 0) {
@@ -156,11 +153,7 @@ export class OpenHandler implements MessageHandler {
     }
 
 
-    async findInstances(arg0: FindInstancesRequest, sc: ServerContext, from: AppIdentifier | undefined): Promise<void> {
-        if (from == undefined) {
-            return
-        }
-
+    async findInstances(arg0: FindInstancesRequest, sc: ServerContext, from: AppIdentifier): Promise<void> {
         const appId = arg0.payload.app.appId
         const openApps = await sc.getConnectedApps()
         const matching = openApps.filter(a => a.appId == appId)
@@ -169,10 +162,7 @@ export class OpenHandler implements MessageHandler {
         }, 'findInstancesResponse')
     }
 
-    async open(arg0: OpenRequest, sc: ServerContext, from: AppIdentifier | undefined): Promise<void> {
-        if (from == undefined) {
-            return
-        }
+    async open(arg0: OpenRequest, sc: ServerContext, from: AppIdentifier): Promise<void> {
 
         const source = arg0.payload.app
         const context = arg0.payload.context

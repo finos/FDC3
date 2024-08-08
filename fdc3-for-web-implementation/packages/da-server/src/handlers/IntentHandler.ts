@@ -10,7 +10,6 @@ import {
     RaiseIntentRequest, RaiseIntentForContextRequest,
     IntentResultRequest,
     AppIdentifier,
-    IntentMetadata,
     Context,
     AddEventListenerEventMeta,
     BroadcastResponseResponsePayload
@@ -207,38 +206,12 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    async appHandlesIntent(target: AppIdentifier, intentName: string, contextType: string | undefined): Promise<boolean> {
-        return this.directory.retrieveIntents(contextType, intentName, undefined)
-            .filter(i => i.appId == target.appId)
-            .length > 0
-    }
-
     hasListener(instanceId: string, intentName: string): boolean {
         return this.regs.find(r => (r.instanceId == instanceId) && (r.intentName == intentName)) != null
     }
 
     async getRunningApps(appId: string, sc: ServerContext): Promise<AppIdentifier[]> {
         return (await sc.getConnectedApps()).filter(a => a.appId == appId)
-    }
-
-    async getIntentDetails(intentName: string, appId: string): Promise<IntentMetadata> {
-        const apps = this.directory.retrieveAppsById(appId)
-
-        for (const a of apps) {
-            for (const [key, value] of Object.entries(a.interop?.intents?.listensFor ?? {})) {
-                if (key == intentName) {
-                    return {
-                        name: key,
-                        displayName: value.displayName
-                    }
-                }
-            }
-        }
-
-        return {
-            name: intentName,
-            displayName: intentName
-        }
     }
 
     async startWithPendingIntent(arg0: IntentRequest, sc: ServerContext, target: AppIdentifier): Promise<void> {
