@@ -1,5 +1,5 @@
-import { AppIdentifier } from "@finos/fdc3";
-import { AgentRequestMessage, AgentResponseMessage, ConnectionStep3Handshake, ContextElement, IntentResult } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppIdentifier, Context, Channel } from "@finos/fdc3";
+import { AppRequestMessage, AgentResponseMessage, PurpleIntentResult } from "@kite9/fdc3-common";
 import { v4 as uuidv4 } from 'uuid'
 import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";
 import { RegisterableListener } from "../../src/listeners/RegisterableListener";
@@ -11,7 +11,13 @@ import { GetAppMetadata } from "./responses/GetAppMetadata";
 import { FindInstances } from "./responses/FindInstances";
 import { Open } from "./responses/Open";
 import { Handshake } from "./responses/Handshake";
-import { RegisterChannel } from "./responses/RegisterChannel";
+import { GetOrCreateChannel } from "./responses/GetOrCreateChannel";
+import { ChannelState } from "./responses/ChannelState";
+import { GetUserChannels } from "./responses/GetUserChannels";
+import { RegisterListeners } from "./responses/RegisterListeners";
+import { UnsubscribeListeners } from "./responses/UnsubscribeListeners";
+import { CreatePrivateChannel } from "./responses/CreatePrivateChannel";
+import { DisconnectPrivateChannel } from "./responses/DisconnectPrivateChannel";
 
 export interface IntentDetail {
     app?: AppIdentifier,
@@ -76,10 +82,11 @@ export function intentDetailMatches(instance: IntentDetail, template: IntentDeta
 
 export class TestMessaging extends AbstractMessaging {
 
-    readonly allPosts: AgentRequestMessage[] = []
+    readonly allPosts: AppRequestMessage[] = []
     readonly listeners: Map<string, RegisterableListener> = new Map()
     readonly intentDetails: IntentDetail[] = []
-    readonly channelState: { [key: string]: ContextElement[] }
+    readonly channelState: { [key: string]: Context }
+    currentChannel: Channel | null = null
 
     readonly automaticResponses: AutomaticResponse[] = [
         new FindIntent(),
@@ -89,10 +96,16 @@ export class TestMessaging extends AbstractMessaging {
         new FindInstances(),
         new Open(),
         new Handshake(),
-        new RegisterChannel()
+        new GetOrCreateChannel(),
+        new ChannelState(),
+        new GetUserChannels(),
+        new RegisterListeners(),
+        new UnsubscribeListeners(),
+        new CreatePrivateChannel(),
+        new DisconnectPrivateChannel()
     ]
 
-    constructor(channelState: { [key: string]: ContextElement[] }) {
+    constructor(channelState: { [key: string]: Context }) {
         super()
         this.channelState = channelState
     }
@@ -109,7 +122,7 @@ export class TestMessaging extends AbstractMessaging {
     }
 
 
-    post(message: AgentRequestMessage): Promise<void> {
+    post(message: AppRequestMessage): Promise<void> {
         this.allPosts.push(message)
 
         for (let i = 0; i < this.automaticResponses.length; i++) {
@@ -127,7 +140,11 @@ export class TestMessaging extends AbstractMessaging {
     }
 
     register(l: RegisterableListener) {
-        this.listeners.set(l.id, l)
+        if (l.id == null) {
+            throw new Error("Listener must have ID set")
+        } else {
+            this.listeners.set(l.id, l)
+        }
     }
 
     unregister(id: string) {
@@ -138,12 +155,31 @@ export class TestMessaging extends AbstractMessaging {
         return {
             "requestUuid": this.createUUID(),
             "timestamp": new Date(),
-            "source": this.getSource(),
-            "responseUuid": this.createUUID()
+            "source": this.getSource()
         }
     }
 
-    receive(m: AgentRequestMessage | AgentResponseMessage | ConnectionStep3Handshake, log?: ICreateLog) {
+    /**
+     * Used in testing steps
+     */
+    createResponseMeta() {
+        return {
+            ...this.createMeta(),
+            responseUuid: this.createUUID()
+        }
+    }
+
+    /**
+     * Used in testing steps
+     */
+    createEventMeta() {
+        return {
+            ...this.createMeta(),
+            eventUuid: this.createUUID()
+        }
+    }
+
+    receive(m: AgentResponseMessage, log?: ICreateLog) {
         this.listeners.forEach((v, k) => {
             if (v.filter(m)) {
                 log ? log("Processing in " + k) : ""
@@ -154,15 +190,14 @@ export class TestMessaging extends AbstractMessaging {
         })
     }
 
-    private ir: IntentResult = {
-
+    private ir: PurpleIntentResult = {
     }
 
     getIntentResult() {
         return this.ir
     }
 
-    setIntentResult(o: IntentResult) {
+    setIntentResult(o: PurpleIntentResult) {
         this.ir = o
     }
 }

@@ -1,5 +1,5 @@
-import { FindIntentAgentRequest, FindIntentAgentResponse, FindIntentAgentResponseMeta } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from "../TestMessaging";
+import { FindIntentRequest, FindIntentResponse } from "@kite9/fdc3-common";
 
 export class FindIntent implements AutomaticResponse {
 
@@ -8,7 +8,7 @@ export class FindIntent implements AutomaticResponse {
     }
 
     action(input: object, m: TestMessaging) {
-        const intentRequest = input as FindIntentAgentRequest
+        const intentRequest = input as FindIntentRequest
         const payload = intentRequest.payload
         const intent = payload.intent
         const context = payload?.context?.type
@@ -25,9 +25,9 @@ export class FindIntent implements AutomaticResponse {
         return Promise.resolve()
     }
 
-    private createFindIntentResponseMessage(m: FindIntentAgentRequest, relevant: IntentDetail[]): FindIntentAgentResponse {
+    private createFindIntentResponseMessage(m: FindIntentRequest, relevant: IntentDetail[]): FindIntentResponse {
         return {
-            meta: m.meta as FindIntentAgentResponseMeta,
+            meta: m.meta as any,
             type: "findIntentResponse",
             payload: {
                 appIntent: {

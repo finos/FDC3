@@ -8,42 +8,60 @@ import { RegisterableListener } from "./RegisterableListener"
 export abstract class AbstractListener<X> implements RegisterableListener {
 
     readonly messaging: Messaging
-    private readonly unsubscribeType: string | null
+    private readonly subscribeType: string
+    private readonly unsubscribeType: string
     private readonly payloadDetails: Record<string, string | null>
-    readonly id: string
+    id: string | null = null
     readonly handler: X
 
-    constructor(messaging: Messaging, payloadDetails: Record<string, string | null>, handler: X, subscribeType: string | null, unsubscribeType: string | null) {
+    constructor(messaging: Messaging, payloadDetails: Record<string, string | null>, handler: X, subscribeType: string, unsubscribeType: string) {
         this.messaging = messaging
-        this.id = this.messaging.createUUID()
         this.handler = handler
         this.payloadDetails = payloadDetails
+        this.subscribeType = subscribeType
         this.unsubscribeType = unsubscribeType
-        this.messaging.register(this)
-        this.listenerNotification(subscribeType)
     }
 
     abstract filter(m: any): boolean
 
     abstract action(m: any): void
 
-    listenerNotification(type: string | null) {
-        if (type) {
-            // send notification
-            const notificationMessage = {
+    async listenerNotification(type: string): Promise<string | null> {
+        const requestType = type + "Request"
+        const responseType = type + "Response"
+        var notificationMessage: any
+        if (this.id) {
+            notificationMessage = {
+                meta: this.messaging.createMeta(),
+                payload: {
+                    listenerUUID: this.id
+                },
+                type: requestType
+            }
+        } else {
+            // send subscription notification
+            notificationMessage = {
                 meta: this.messaging.createMeta(),
                 payload: {
                     ...this.payloadDetails
                 },
-                type
+                type: requestType
             }
-
-            this.messaging.post(notificationMessage)
         }
+
+        const response = await this.messaging.exchange<any>(notificationMessage, responseType!!)
+        return response?.payload?.listenerUUID ?? null
+
     }
 
-    unsubscribe(): void {
-        this.messaging.unregister(this.id)
-        this.listenerNotification(this.unsubscribeType)
+    async unsubscribe(): Promise<void> {
+        this.messaging.unregister(this.id!!)
+        await this.listenerNotification(this.unsubscribeType)
+    }
+
+    async register() {
+        const id = await this.listenerNotification(this.subscribeType)!!
+        this.id = id
+        this.messaging.register(this)
     }
 }

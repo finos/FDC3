@@ -1,8 +1,8 @@
 import { ServerContext } from '@kite9/da-server'
 import { v4 as uuidv4 } from 'uuid'
 import { CustomWorld } from '../world'
-import { AppMetadata } from '@finos/fdc3/dist/bridging/BridgingTypes'
 import { OpenError } from '@finos/fdc3'
+import { AppMetadata } from '@kite9/fdc3-common'
 
 type MessageRecord = {
     to: AppMetadata,

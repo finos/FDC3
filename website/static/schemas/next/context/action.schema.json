@@ -25,9 +25,7 @@
         "app": {
           "title": "Action Target App",
           "description": "An optional target application identifier that should perform the action",
-          "allOf": [
-            { "$ref": "../api/api.schema.json#/definitions/AppIdentifier" }
-          ]
+          "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
         }
       },
       "required": [

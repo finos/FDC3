@@ -25,11 +25,17 @@ https://fdc3.finos.org/schemas/2.0/chart.schema.json
 
 ## Details
 
+:::warning
+
+The `fdc3.timeRange` context type is inconsistently used in FDC3 2.0, occasionally appearing as `fdc3.timerange`. This has been corrected in FDC3 2.1 to always use the camel case form `fdc3.timeRange`.
+
+:::
+
 | Property         | Type            | Required | Example Value        |
 |------------------|-----------------|----------|----------------------|
 | `type`           | string          | Yes      | `'fdc3.chart'`     |
 | `instruments`    | Instrument[]  | Yes      | <pre>[<br/>&emsp;&emsp;{<br/>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.instrument",<br/>&emsp;&emsp;&emsp;&emsp;"id": {<br/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"ticker": "AAPL"<br/>&emsp;&emsp;&emsp;&emsp;}<br/>&emsp;&emsp;},<br/>&emsp;&emsp;{<br/>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.instrument",<br/>&emsp;&emsp;&emsp;&emsp;"id": {<br/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"ticker": "MSFT"<br/>&emsp;&emsp;&emsp;&emsp;}<br/>&emsp;&emsp;}<br/>]</pre> |
-| `range` | TimeRange  | No       | <pre>{<br/>&emsp;&emsp;"type": "fdc3.timerange",<br/>&emsp;&emsp;"startTime": "2022-03-30T15:44:44+00:00",<br/>&emsp;&emsp;"endTime": "2022-04-30T23:59:59+00:00"<br/>}</pre>            |
+| `range` | TimeRange  | No       | <pre>{<br/>&emsp;&emsp;"type": "fdc3.timeRange",<br/>&emsp;&emsp;"startTime": "2022-03-30T15:44:44+00:00",<br/>&emsp;&emsp;"endTime": "2022-04-30T23:59:59+00:00"<br/>}</pre>            |
 | `style`    | string  | No       | one of: `'line'`, `'bar'`, `'stacked-bar'`, `'mountain'`, `'candle'`, `'pie'`, `'scatter'`, `'histogram'`, `'heatmap'`, `'custom'`      |
 | `otherConfig`* | object  | No |  `{ /* unstandardized additional config */}`  |
 

@@ -1,73 +1,62 @@
 ---
-id: ContactList
-sidebar_label: ContactList
 title: ContactList
-hide_title: true
+sidebar_label: ContactList
+
 ---
-# `ContactList`
+
+# ContactList
 
 A collection of contacts, e.g. for chatting to or calling multiple contacts.
 
-Notes:
+The contact list schema does not explicitly include identifiers in the `id` section, as there is not a common standard for such identifiers. Applications can, however, populate this part of the contract with custom identifiers if so desired.
 
-- The contact list schema does not explicitly include identifiers in the `id` section, as there
-is not a common standard for such identifiers. Applications can, however, populate
-this part of the contract with custom identifiers if so desired.
+## Schema
+
+<https://fdc3.finos.org/schemas/next/context/contactList.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/contactList.schema.json))
 
 ## Type
 
 `fdc3.contactList`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/contactList.schema.json>
+<details>
+  <summary><code>contacts</code> <strong>(required)</strong></summary>
 
-## Details
+**type**: `array`
 
-| Property    | Type      | Required | Example Value          |
-|-------------|-----------|----------|------------------------|
-| `type`      | string    | Yes      | `'fdc3.contactList'`   |
-| `id`        | object    | No       | `{ customId: '5576' }` |
-| `name`      | string    | No       | `'My address book'`    |
-| `contacts`  | Contact[] | Yes      | `[contact1, contact2]` |
+<details>
+  <summary><code>Items</code></summary>
+
+**type**: [Contact](Contact)
+
+</details>
+
+An array of contact contexts that forms the list.
+
+</details>
 
 ## Example
 
-```js
-const contacts = {
-    type: "fdc3.contactList",
-    contacts: [
-        {
-            type: "fdc3.contact",
-            name: "Jane Doe",
-            id: {
-                email: "jane.doe@mail.com"
-            }
-        },
-        {
-            type: "fdc3.contact",
-            name: "John Doe",
-            id: {
-                email: "john.doe@mail.com"
-            }
-        },
-    ]
+```json
+{
+  "type": "fdc3.contactList",
+  "contacts": [
+    {
+      "type": "fdc3.contact",
+      "name": "Jane Doe",
+      "id": {
+        "email": "jane.doe@mail.com"
+      }
+    },
+    {
+      "type": "fdc3.contact",
+      "name": "John Doe",
+      "id": {
+        "email": "john.doe@mail.com"
+      }
+    }
+  ]
 }
-fdc3.raiseIntent("StartChat", contacts)
 ```
 
-## See Also
-
-Other Types
-
-- [Contact](Contact)
-
-Intents
-
-- [CreateInteraction](../../intents/ref/CreateInteraction)
-- [StartChat](../../intents/ref/StartChat)
-- [StartCall](../../intents/ref/StartCall)
-
-FINOS Financial Objects
-
-- [ContactList](https://fo.finos.org/docs/objects/contactlist)

@@ -26,7 +26,7 @@ export type StandardContextType =
   | 'fdc3.portfolio'
   | 'fdc3.position'
   | 'fdc3.nothing'
-  | 'fdc3.timerange'
+  | 'fdc3.timeRange'
   | 'fdc3.transactionResult'
   | 'fdc3.valuation';
 
@@ -67,7 +67,7 @@ export enum ContextTypes {
   Portfolio = 'fdc3.portfolio',
   Position = 'fdc3.position',
   ChatSearchCriteria = 'fdc3.chat.searchCriteria',
-  TimeRange = 'fdc3.timerange',
+  TimeRange = 'fdc3.timeRange',
   TransactionResult = 'fdc3.transactionResult',
   Valuation = 'fdc3.valuation',
 }

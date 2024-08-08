@@ -1,30 +1,30 @@
-import { ConnectionStep3Handshake } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-
+import { GetInfoResponse, GetInfoRequest } from "@kite9/fdc3-common";
+import { createResponseMeta } from "./support";
 
 export class Handshake implements AutomaticResponse {
 
     filter(t: string) {
-        return t == 'hello'
+        return t == 'getInfoRequest'
     }
 
-    action(_input: object, m: TestMessaging) {
-        const out = this.createResponse(m)
+    action(input: object, m: TestMessaging) {
+        const out = this.createResponse(input as GetInfoRequest)
 
         setTimeout(() => { m.receive(out) }, 100)
         return Promise.resolve()
     }
 
-    private createResponse(m: TestMessaging): ConnectionStep3Handshake {
+    private createResponse(i: GetInfoRequest): GetInfoResponse {
         return {
-            meta: {
-                requestUuid: m.createUUID(),
-                timestamp: new Date()
-            },
-            type: "handshake",
+            meta: createResponseMeta(i.meta),
+            type: "getInfoResponse",
             payload: {
-                requestedName: "cucumber-app",
                 implementationMetadata: {
+                    appMetadata: {
+                        appId: "cucumber-app",
+                        instanceId: "cucumber-instance",
+                    },
                     fdc3Version: "2.0",
                     optionalFeatures: {
                         DesktopAgentBridging: false,
@@ -33,9 +33,7 @@ export class Handshake implements AutomaticResponse {
                     },
                     provider: "cucumber-provider",
                     providerVersion: "test"
-                },
-                channelsState: m.channelState ?? {}
-
+                }
             }
         }
     }

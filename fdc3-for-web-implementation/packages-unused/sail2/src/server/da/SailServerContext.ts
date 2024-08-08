@@ -1,4 +1,3 @@
-import { AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { ServerContext } from "da-server";
 import { Socket } from "socket.io";
 import { v4 as uuidv4 } from 'uuid'

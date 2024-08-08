@@ -24,6 +24,12 @@
           "title": "WCP1Hello Payload",
           "type": "object",
           "properties": {
+            "identityUrl": {
+              "title": "Identity URL",
+              "description": "URL to use for the identity of the application. Desktop Agents MUST validate that the origin of the message matches the URL, but MAY implement custom comparison logic.",
+              "type": "string",
+              "format": "uri"
+            },
             "fdc3Version": {
               "title": "FDC3 version",
               "description": "The version of FDC3 API that the app supports.",
@@ -40,11 +46,11 @@
               "type": "boolean"
             }
           },
-          "required": ["fdc3Version"]
+          "required": ["identityUrl","fdc3Version"]
         },
         "meta": true
       },
-      "required": ["type", "payload", "meta"],
+      "required": [ "type", "payload", "meta"],
       "additionalProperties": false
     }
   }

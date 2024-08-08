@@ -1,9 +1,8 @@
 import { Given } from '@cucumber/cucumber'
 import { CustomWorld } from '../world/index';
-import { handleResolve } from '../support/matching';
-import { RaiseIntentAgentRequest } from '@finos/fdc3/dist/bridging/BridgingTypes';
+import { handleResolve } from '@kite9/testing';
+import { RaiseIntentRequest } from '@kite9/fdc3-common';
 import { Context, ContextMetadata } from '@finos/fdc3';
-import { createDefaultChannels } from '../support/DefaultUserChannels';
 
 Given("app {string}", function (this: CustomWorld, appStr: string) {
     const [appId, instanceId] = appStr.split("/")
@@ -113,15 +112,11 @@ Given("Raise Intent will return a private channel", function (this: CustomWorld)
 })
 
 Given('{string} is a raiseIntentRequest message with intent {string} and context {string}', function (this: CustomWorld, field: string, intent: string, context: string) {
-    const msg: RaiseIntentAgentRequest = {
+    const msg: RaiseIntentRequest = {
         type: 'raiseIntentRequest',
         meta: {
             requestUuid: this.messaging?.createUUID()!!,
             timestamp: new Date(),
-            destination: {
-                desktopAgent: '',
-                appId: ''
-            },
             source: {
                 appId: 'something'
             }
@@ -163,7 +158,14 @@ Given('{string} returns a context item', function (this: CustomWorld, intentHand
 
 Given('{string} returns a channel', function (this: CustomWorld, intentHandlerName: string) {
     this.props[intentHandlerName] = async () => {
-        return createDefaultChannels(this.messaging!!)[0]
+        return {
+            type: 'private',
+            id: 'some-channel-id',
+            displayMetadata: {
+                color: "ochre",
+                name: "Some Channel"
+            }
+        }
     }
 })
 

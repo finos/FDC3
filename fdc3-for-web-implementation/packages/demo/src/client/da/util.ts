@@ -1,6 +1,5 @@
 import { Socket } from "socket.io-client"
 import { FDC3_APP_EVENT, FDC3_DA_EVENT } from "../../message-types"
-import { AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes"
 
 
 export function link(socket: Socket, channel: MessageChannel, app: AppMetadata) {

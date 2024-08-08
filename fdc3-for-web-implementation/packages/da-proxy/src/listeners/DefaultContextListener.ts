@@ -1,9 +1,10 @@
-import { Context, ContextHandler } from "@finos/fdc3";
+import { ContextHandler, Context } from "@finos/fdc3";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
-import { BroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { BroadcastEvent } from "@kite9/fdc3-common";
+import { FollowingContextListener } from "./FollowingContextListener";
 
-export class DefaultContextListener extends AbstractListener<ContextHandler> {
+export class DefaultContextListener extends AbstractListener<ContextHandler> implements FollowingContextListener {
 
     private channelId: string | null
     private readonly messageType: string
@@ -13,16 +14,25 @@ export class DefaultContextListener extends AbstractListener<ContextHandler> {
         channelId: string | null,
         contextType: string | null,
         handler: ContextHandler,
-        messageType: string = "broadcastRequest",
-        subscribeType: string | null = "onAddContextListener",
-        unsubscribeType: string | null = "onUnsubscribe") {
+        messageType: string = "broadcastEvent",
+        subscribeType: string = "addContextListener",
+        unsubscribeType: string = "contextListenerUnsubscribe") {
         super(messaging, { channelId, contextType }, handler, subscribeType, unsubscribeType)
         this.channelId = channelId
         this.messageType = messageType
         this.contextType = contextType
     }
 
-    filter(m: BroadcastAgentRequest): boolean {
+    async changeChannel(channelId: string, newChannelState: Context[]): Promise<void> {
+        this.channelId = channelId
+        for (let c of newChannelState) {
+            if ((c.type == this.contextType) || (this.contextType == null)) {
+                await this.handler(c)
+            }
+        }
+    }
+
+    filter(m: BroadcastEvent): boolean {
         return (m.type == this.messageType)
             && (m.payload.channelId == this.channelId)
             && ((m.payload.context?.type == this.contextType) || (this.contextType == null));
@@ -30,17 +40,5 @@ export class DefaultContextListener extends AbstractListener<ContextHandler> {
 
     action(m: any): void {
         this.handler(m.payload.context)
-    }
-
-    /**
-     * This is used for user channels when changing to a new channel
-     */
-    updateUnderlyingChannel(id: string | null, latestContextMap: Map<string, Context>) {
-        this.channelId = id;
-        latestContextMap.forEach((v, k) => {
-            if ((this.contextType == null) || (this.contextType == k)) {
-                this.handler(v);
-            }
-        })
     }
 }

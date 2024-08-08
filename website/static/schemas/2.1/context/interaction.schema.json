@@ -41,7 +41,7 @@
         "timeRange": {
           "title": "Interaction Time range",
           "description": "The time range over which the interaction occurred",
-          "$ref": "timerange.schema.json#"
+          "$ref": "timeRange.schema.json#"
         },
         "interactionType": {
           "title": "Interaction Type",

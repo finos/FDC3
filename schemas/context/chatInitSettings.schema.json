@@ -21,7 +21,7 @@
         "message": {
           "title": "Initial chat message",
           "description": "An initial message to post in the chat when created.",
-          "anyOf": [
+          "oneOf": [
             {
               "type": "string"
             },

@@ -178,15 +178,25 @@ var contactListener = await _desktopAgent.AddContextListener<Contact>("fdc3.cont
 - [`ContextHandler`](Types#contexthandler)
 
 ### `addEventListener`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 addEventListener(type: FDC3EventType  | null, handler: EventHandler): Promise<Listener>;
 ```
+
+</TabItem>
+</Tabs>
 
 Registers a handler for non-context and non-intent events from the Desktop Agent. If the consumer is only interested in an event of a particular type, they can specify that type. If the consumer is able to receive events of any type or will inspect types received, then they can pass `null` as the `type` parameter to receive all event types.
 
 Whenever the handler function is called it will be passed an event object with details related to the event.
 
 **Examples:**
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```js
 // any event type
@@ -197,9 +207,10 @@ const userChannelChangedListener = await fdc3.addEventListener(FDC3EventType.USE
   console.log(`Received event ${event.type}\n\tDetails: ${event.details}`);
   //do something else with the event
 });
-````
+```
 
-
+</TabItem>
+</Tabs>
 
 ### `addIntentListener`
 

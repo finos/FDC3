@@ -1,5 +1,5 @@
-import { ConnectionStep3HandshakePayload } from "@finos/fdc3/dist/bridging/BridgingTypes"
 import { Connectable } from "../Connectable"
+import { ImplementationMetadata } from "@finos/fdc3"
 
 /**
  * Handles messaging around connection and disconnection of the proxy
@@ -7,6 +7,5 @@ import { Connectable } from "../Connectable"
  */
 export interface HandshakeSupport extends Connectable {
 
-    getHandshakePayload(): ConnectionStep3HandshakePayload | null
-
+    getImplementationMetadata(): Promise<ImplementationMetadata>
 }

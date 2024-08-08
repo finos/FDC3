@@ -6,10 +6,6 @@ export class CustomWorld extends PropsWorld {
 
     messaging: TestMessaging | null = null
 
-    log: (s: string) => void = (s: string) => {
-        console.log(s)
-    }
-
 }
 
 setWorldConstructor(CustomWorld)
