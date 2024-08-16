@@ -26,23 +26,15 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
     }
 
     async getInfo(): Promise<ImplementationMetadata> {
-        const am = await this.apps.getThisAppMetadata()
-        return {
-            fdc3Version: this.fdc3Version,
-            provider: (await this.handshake.getImplementationMetadata()).provider ?? "undefined",
-            appMetadata: am,
-            optionalFeatures: {
-                OriginatingAppMetadata: this.apps.hasOriginatingAppMetadata(),
-                UserChannelMembershipAPIs: this.channels.hasUserChannelMembershipAPIs(),
-                DesktopAgentBridging: this.apps.hasDesktopAgentBridging()
-            }
-        }
+        return this.handshake.getImplementationMetadata()
     }
 
     async broadcast(context: Context): Promise<void> {
         const channel = await this.channels.getUserChannel()
         if (channel) {
-            return await channel.broadcast(context)
+            return channel.broadcast(context)
+        } else {
+            return Promise.resolve();
         }
     }
 
@@ -128,14 +120,12 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
         return this.apps.getAppMetadata(app);
     }
 
-    async disconnect(): Promise<void> {
-        await this.handshake.disconnect()
-        await this.channels.disconnect()
+    disconnect(): Promise<void> {
+        return this.handshake.disconnect()
     }
 
-    async connect(): Promise<void> {
-        await this.handshake.connect()
-        await this.channels.connect()
+    connect(): Promise<void> {
+        return this.handshake.connect()
     }
 
 }

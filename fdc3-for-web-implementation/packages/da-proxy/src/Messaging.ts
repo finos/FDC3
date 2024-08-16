@@ -1,7 +1,8 @@
-import { AppIdentifier } from "@finos/fdc3";
+import { AppIdentifier, ImplementationMetadata } from "@finos/fdc3";
+import { Connectable } from "./Connectable";
 import { RegisterableListener } from "./listeners/RegisterableListener";
 
-export interface Messaging {
+export interface Messaging extends Connectable {
 
     /**
      * Source for outgoing message
@@ -41,4 +42,9 @@ export interface Messaging {
      * @param message Performs a request / response message pass
      */
     exchange<X>(message: object, expectedTypeName: string): Promise<X>
+
+    /**
+     * Implementation metadata retrieved through the validation process
+     */
+    getImplementationMetadata(): Promise<ImplementationMetadata>
 }

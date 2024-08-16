@@ -1,5 +1,5 @@
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from "../TestMessaging";
-import { FindIntentsByContextRequest, FindIntentsByContextsResponse } from "@kite9/fdc3-common";
+import { FindIntentsByContextRequest, FindIntentsByContextResponse } from "@kite9/fdc3-common";
 
 
 export class FindIntentByContext implements AutomaticResponse {
@@ -23,7 +23,7 @@ export class FindIntentByContext implements AutomaticResponse {
     }
 
 
-    private createFindIntentsByContextResponseMessage(m: FindIntentsByContextRequest, relevant: IntentDetail[]): FindIntentsByContextsResponse {
+    private createFindIntentsByContextResponseMessage(m: FindIntentsByContextRequest, relevant: IntentDetail[]): FindIntentsByContextResponse {
         const relevantIntents = [...new Set<string>(relevant.map(r => r.intent!!))]
 
         return {

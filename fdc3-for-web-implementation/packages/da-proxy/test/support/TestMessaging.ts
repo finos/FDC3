@@ -1,4 +1,4 @@
-import { AppIdentifier, Context, Channel } from "@finos/fdc3";
+import { AppIdentifier, Context, Channel, ImplementationMetadata } from "@finos/fdc3";
 import { AppRequestMessage, AgentResponseMessage, PurpleIntentResult } from "@kite9/fdc3-common";
 import { v4 as uuidv4 } from 'uuid'
 import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";
@@ -199,5 +199,29 @@ export class TestMessaging extends AbstractMessaging {
 
     setIntentResult(o: PurpleIntentResult) {
         this.ir = o
+    }
+
+    async connect(): Promise<void> {
+    }
+
+    async disconnect(): Promise<void> {
+    }
+
+    async getImplementationMetadata(): Promise<ImplementationMetadata> {
+        return {
+            fdc3Version: "2.2",
+            provider: "Cucumber Test",
+            providerVersion: "1.0",
+            optionalFeatures: {
+                DesktopAgentBridging: false,
+                OriginatingAppMetadata: true,
+                UserChannelMembershipAPIs: true
+            },
+            appMetadata: {
+                name: "Cucumber Test App",
+                version: "1.0",
+                appId: "cucumber-test-app"
+            }
+        } as ImplementationMetadata
     }
 }

@@ -1,8 +1,11 @@
-import { AppIdentifier } from "@finos/fdc3";
+import { AppIdentifier, ImplementationMetadata } from "@finos/fdc3";
 import { Messaging } from "../Messaging";
 import { RegisterableListener } from "../listeners/RegisterableListener";
 
 export abstract class AbstractMessaging implements Messaging {
+
+    abstract connect(): Promise<void>
+    abstract disconnect(): Promise<void>
 
     abstract getSource(): AppIdentifier
     abstract createUUID(): string
@@ -12,6 +15,8 @@ export abstract class AbstractMessaging implements Messaging {
     abstract unregister(id: string): void
 
     abstract createMeta(): object
+
+    abstract getImplementationMetadata(): Promise<ImplementationMetadata>
 
     waitFor<X>(filter: (m: any) => boolean): Promise<X> {
         const id = this.createUUID()

@@ -4,7 +4,7 @@ import { TestMessaging } from '../support/TestMessaging';
 import { handleResolve, setupGenericSteps } from '@kite9/testing';
 import { BasicDesktopAgent, DefaultChannelSupport, DefaultIntentSupport, Messaging, NoopHandshakeSupport } from '@kite9/da-proxy';
 import { MockDocument, MockWindow } from '../support/MockDocument';
-import { getAgentAPI } from '../../src';
+import { getClient } from '../../src';
 import { Options } from '@kite9/fdc3-common';
 import { MockFDC3Server } from '../support/MockFDC3Server';
 import { DefaultDesktopAgentIntentResolver } from '../../src/intent-resolution/DefaultDesktopAgentIntentResolver';
@@ -77,7 +77,7 @@ Given('`window.fdc3` is injected into the runtime with the value in {string}', a
 
 When('I call getAgentAPI for a promise result', function (this: CustomWorld) {
     try {
-        this.props['result'] = getAgentAPI()
+        this.props['result'] = getClient()
     } catch (error) {
         this.props['result'] = error
     }
@@ -94,7 +94,7 @@ When('I call getAgentAPI for a promise result with the following options', funct
                 return [k, val3]
             })
         )
-        this.props['result'] = getAgentAPI(toArgs as Options)
+        this.props['result'] = getClient(toArgs as Options)
     } catch (error) {
         this.props['result'] = error
     }
