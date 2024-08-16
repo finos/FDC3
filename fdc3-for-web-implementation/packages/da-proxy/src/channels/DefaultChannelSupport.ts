@@ -111,7 +111,7 @@ export class DefaultChannelSupport implements ChannelSupport {
         } as LeaveCurrentChannelRequest,
             'leaveCurrentChannelResponse')
 
-        this.followingListeners.forEach(l => l.changeChannel(null, []))
+        this.followingListeners.forEach(l => l.changeChannel(null))
     }
 
     async joinUserChannel(id: string) {
@@ -124,7 +124,9 @@ export class DefaultChannelSupport implements ChannelSupport {
         } as JoinUserChannelRequest,
             'joinUserChannelResponse')
 
-        this.followingListeners.forEach(l => l.changeChannel(id, []))
+        for (const l of this.followingListeners) {
+            await l.changeChannel(new DefaultChannel(this.messaging, id, "user"))
+        }
     }
 
     async addContextListener(handler: ContextHandler, type: string | null): Promise<Listener> {

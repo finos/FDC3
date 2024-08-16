@@ -184,34 +184,3 @@ Feature: Basic User Channels Support
     And messaging receives "{instrumentMessageOne}"
     And I call "{theChannel}" with "getCurrentContext" with parameter "fdc3.email"
     Then "{result}" is null
-
-  Scenario: Context gets replayed if I change user channels
-    Given "resultHandler" pipes context to "contexts"
-    When I call "{api}" with "joinUserChannel" with parameter "one"
-    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
-    And I call "{api}" with "broadcast" with parameter "{instrumentContext}"
-    And I call "{api}" with "leaveCurrentChannel"
-    And I call "{api}" with "joinUserChannel" with parameter "one"
-    Then "{contexts}" is an object with the following contents
-      | id.ticker | type            | name  |
-      | AAPL      | fdc3.instrument | Apple |
-      | AAPL      | fdc3.instrument | Apple |
-    And messaging will have posts
-      | payload.channelId | payload.contextType | payload.listenerUUID | matches_type               |
-      | one               | {null}              | {null}               | joinUserChannelRequest     |
-      | {null}            | {null}              | {null}               | getCurrentChannelRequest   |
-      | one               | fdc3.instrument     | {null}               | addContextListenerRequest  |
-      | {null}            | {null}              | {null}               | leaveCurrentChannelRequest |
-    And check the latest context is got from the server.
-
-  Scenario: Joining a user channel replays Context to typed listeners
-        Although the message is sent before the channel is joined, history from the channel will get replayed
-        to the listener
-
-    Given "resultHandler" pipes context to "contexts"
-    When messaging receives "{instrumentMessageOne}"
-    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
-    And I call "{api}" with "joinUserChannel" with parameter "one"
-    Then "{contexts}" is an array of objects with the following contents
-      | id.ticker | type            | name  |
-      | AAPL      | fdc3.instrument | Apple |

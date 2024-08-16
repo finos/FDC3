@@ -1,4 +1,4 @@
-import { ContextHandler, Context } from "@finos/fdc3";
+import { ContextHandler, Channel } from "@finos/fdc3";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
 import { BroadcastEvent } from "@kite9/fdc3-common";
@@ -23,11 +23,15 @@ export class DefaultContextListener extends AbstractListener<ContextHandler> imp
         this.contextType = contextType
     }
 
-    async changeChannel(channelId: string, newChannelState: Context[]): Promise<void> {
-        this.channelId = channelId
-        for (let c of newChannelState) {
-            if ((c.type == this.contextType) || (this.contextType == null)) {
-                await this.handler(c)
+    async changeChannel(channel: Channel | null): Promise<void> {
+        if (channel == null) {
+            this.channelId = null
+            return
+        } else {
+            this.channelId = channel.id
+            const context = await channel.getCurrentContext(this.contextType ?? undefined)
+            if (context) {
+                this.handler(context)
             }
         }
     }

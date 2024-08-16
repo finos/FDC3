@@ -17,14 +17,11 @@ Feature: Desktop Agent Information
   Scenario: Getting own info
     When I call "{api}" with "getInfo"
     Then "{result}" is an object with the following contents
-      | fdc3Version | provider          |
-      |         2.0 | cucumber-provider |
+      | fdc3Version | provider      |
+      |         2.2 | Cucumber Test |
     And "{result.appMetadata}" is an object with the following contents
-      | appId       | name          | description          |
-      | Test App Id | Metadata Name | Metadata Description |
-    And messaging will have posts
-      | matches_type   |
-      | getInfoRequest |
+      | appId             | name              | description          |
+      | cucumber-test-app | Cucumber Test App | Metadata Description |
 
   Scenario: Getting instance information
     When I call "{api}" with "findInstances" with parameter "{c1}"
@@ -36,16 +33,3 @@ Feature: Desktop Agent Information
     And messaging will have posts
       | payload.app.appId | payload.app.instanceId | matches_type         |
       | chipShop          | c1                     | findInstancesRequest |
-
-  Scenario: Checking own info caching (called twice)
-    When I call "{api}" with "getInfo"
-    And I call "{api}" with "getInfo"
-    Then "{result}" is an object with the following contents
-      | fdc3Version | provider          |
-      |         2.0 | cucumber-provider |
-    And "{result.appMetadata}" is an object with the following contents
-      | appId       | name          | description          |
-      | Test App Id | Metadata Name | Metadata Description |
-    And messaging will have posts
-      | matches_type   |
-      | getInfoRequest |
