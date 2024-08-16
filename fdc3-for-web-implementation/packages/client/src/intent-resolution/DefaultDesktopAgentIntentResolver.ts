@@ -23,8 +23,11 @@ export class DefaultDesktopAgentIntentResolver implements IntentResolver {
     private readonly details: IntentResolverDetails
     private container: HTMLDivElement | undefined = undefined
 
-    constructor(details: IntentResolverDetails | null) {
-        this.details = details ?? DEFAULT_INTENT_RESOLVER_DETAILS
+    constructor(url: string | null) {
+        this.details = {
+            ...DEFAULT_INTENT_RESOLVER_DETAILS,
+            uri: url ?? DEFAULT_INTENT_RESOLVER_DETAILS.uri!!
+        }
     }
 
     async intentChosen(ir: IntentResult): Promise<IntentResult> {

@@ -1,5 +1,5 @@
 import { DesktopAgent } from "@finos/fdc3";
-import { Loader, Options } from "@kite9/fdc3-common";
+import { Loader, GetAgentParams } from "@kite9/fdc3-common";
 
 
 function poll(endTime: number, resolve: (value: DesktopAgent | PromiseLike<DesktopAgent>) => void, reject: (reason?: any) => void) {
@@ -17,11 +17,11 @@ function poll(endTime: number, resolve: (value: DesktopAgent | PromiseLike<Deskt
  * This approach will resolve the loader promise if the fdc3Ready event occurs.
  * This is done by electron implementations setting window.fdc3.
  */
-const loader: Loader = (options: Options) => {
+const loader: Loader = (options: GetAgentParams) => {
 
     const out = new Promise<DesktopAgent>((resolve, reject) => {
-        const endPollTime = Date.now() + options.waitForMs!!
-        console.log("Starting poll: " + endPollTime + " " + options.waitForMs + " " + new Date())
+        const endPollTime = Date.now() + options.timeout!!
+        console.log("Starting poll: " + endPollTime + " " + options.timeout + " " + new Date())
         poll(endPollTime, resolve, reject)
     });
 

@@ -6,7 +6,7 @@ import { DefaultIntentListener } from "../listeners/DefaultIntentListener";
 import { IntentResolver } from "@kite9/fdc3-common";
 import { DefaultChannel } from "../channels/DefaultChannel";
 import { DefaultPrivateChannel } from "../channels/DefaultPrivateChannel";
-import { RaiseIntentResultResponse, FindIntentRequest, FindIntentResponse, AddContextListenerRequestMeta, FindIntentsByContextRequest, FindIntentsByContextsResponse, RaiseIntentRequest, RaiseIntentResponse } from "@kite9/fdc3-common"
+import { RaiseIntentResultResponse, FindIntentRequest, FindIntentResponse, AddContextListenerRequestMeta, FindIntentsByContextRequest, FindIntentsByContextResponse, RaiseIntentRequest, RaiseIntentResponse } from "@kite9/fdc3-common"
 
 function convertIntentResult(m: RaiseIntentResultResponse, messaging: Messaging): Promise<IntentResult> {
     const result = m.payload.intentResult!!
@@ -71,7 +71,7 @@ export class DefaultIntentSupport implements IntentSupport {
             meta: this.messaging.createMeta() as AddContextListenerRequestMeta /* ISSUE: #1275 */
         }
 
-        const result = await this.messaging.exchange(messageOut, "findIntentsByContextResponse") as FindIntentsByContextsResponse
+        const result = await this.messaging.exchange(messageOut, "findIntentsByContextResponse") as FindIntentsByContextResponse
         const appIntents = result.payload.appIntents!!
         if (appIntents.length == 0) {
             throw new Error(ResolveError.NoAppsFound)
