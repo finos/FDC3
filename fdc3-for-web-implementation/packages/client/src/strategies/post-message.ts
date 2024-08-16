@@ -1,10 +1,8 @@
-import { Loader, GetAgentParams, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3HandshakePayload, WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload, DesktopAgentDetails } from '@kite9/fdc3-common'
+import { Loader, GetAgentParams, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL } from '@kite9/fdc3-common'
 import { FDC3_VERSION } from '..';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { v4 as uuidv4 } from "uuid"
-
-const DESKTOP_AGENT_SESSION_DETAILS_KEY = "fdc3-desktop-agent-details"
-
+import { ConnectionDetails } from '../messaging/MessagePortMessaging';
 
 function collectPossibleTargets(w: Window): Window[] {
     return [
@@ -49,60 +47,9 @@ function openFrame(url: string): Window {
     return ifrm.contentWindow!!
 }
 
-/**
- * Sends the validate message to w
- */
-function sendWCP4Validate(w: MessageEventSource, options: GetAgentParams, connectionAttemptUuid: string, origin: string) {
-    var instanceUuid = null
-    const detailsStr: string | null = globalThis.sessionStorage.getItem(DESKTOP_AGENT_SESSION_DETAILS_KEY)
-    if (detailsStr) {
-        const details = JSON.parse(detailsStr) as DesktopAgentDetails
-        instanceUuid = details.instanceUuid
-    }
-
-    const requestMessage = {
-        type: 'WCP4ValidateAppIdentity',
-        meta: {
-            connectionAttemptUuid: connectionAttemptUuid,
-            timestamp: new Date()
-        },
-        payload: {
-            identityUrl: options.identityUrl!!,
-            instanceUuid
-        } as any /* ISSUE: 1301 */
-    }
-
-    w.postMessage(requestMessage, { targetOrigin: origin });
-}
-
-function storeSesssionDetails(data: ConnectionDetails) {
-    const details: DesktopAgentDetails = {
-        agentType: 'PROXY_PARENT',
-        instanceUuid: data.identity?.instanceUuid,
-        appId: data.identity?.appId,
-        instanceId: data.identity?.instanceId,
-    }
-
-    globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_DETAILS_KEY, JSON.stringify(details))
-}
-
-type ConnectionDetails = {
-    connectionAttemptUuid: string
-    handshake?: WebConnectionProtocol3HandshakePayload,
-    identity?: WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload
-    messagePort?: MessagePort
-}
-
-
 function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): Promise<ConnectionDetails> {
 
-
     return new Promise<ConnectionDetails>((resolve, _reject) => {
-
-        const returnData: ConnectionDetails = {
-            connectionAttemptUuid: connectionAttemptUuid,
-        }
-
         // setup listener for message and retrieve JS URL from it
         const el = (event: MessageEvent) => {
             const data = event.data;
@@ -111,14 +58,12 @@ function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): 
                     // in this case, we need to load the URL with the embedded Iframe
                     openFrame((data as WebConnectionProtocol2LoadURL).payload.iframeUrl);
                 } else if (data.type == 'WCP3Handshake') {
-                    returnData.handshake = data.payload;
-                    sendWCP4Validate(event.source!!, options, connectionAttemptUuid, event.origin);
-                } else if (data.type == 'WCP5ValidateAppIdentitySuccessResponse') {
-                    globalThis.window.removeEventListener("message", el);
-                    returnData.identity = data.payload;
-                    returnData.messagePort = event.ports[0];
-                    storeSesssionDetails(returnData);
-                    resolve(returnData);
+                    resolve({
+                        connectionAttemptUuid: connectionAttemptUuid,
+                        handshake: data.payload,
+                        messagePort: event.ports[0],
+                        options: options
+                    })
                 }
             }
         }
@@ -148,7 +93,7 @@ const loader: Loader = async (options: GetAgentParams) => {
     // wait for one of the windows to return the data we need
     const data = await promise
     resolved = true
-    return createDesktopAgentAPI(data.messagePort!!, data.handshake!!, data.identity!!);
+    return createDesktopAgentAPI(data);
 
 }
 

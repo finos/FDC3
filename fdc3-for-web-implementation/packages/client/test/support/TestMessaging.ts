@@ -1,8 +1,8 @@
 import { AppIdentifier } from "@finos/fdc3";
-import { AgentRequestMessage } from "@kite9/fdc3-common";
-import { AbstractMessaging } from "@kite9/da-proxy";
 import { RegisterableListener } from "@kite9/da-proxy";
+import { AppRequestMessage } from "@kite9/fdc3-common";
 import { v4 as uuidv4 } from 'uuid'
+import { AbstractWebMessaging } from "../../src/messaging/AbstractWebMessaging";
 import { FindIntent } from "./responses/FindIntent";
 import { RaiseIntent } from "./responses/RaiseIntent";
 
@@ -14,13 +14,18 @@ export interface AutomaticResponse {
 
 }
 
-export class TestMessaging extends AbstractMessaging {
+export class TestMessaging extends AbstractWebMessaging {
 
     readonly listeners: Map<string, RegisterableListener> = new Map()
-    readonly allPosts: AgentRequestMessage[] = []
+    readonly allPosts: AppRequestMessage[] = []
 
     constructor() {
-        super()
+        super({
+            channelSelector: true,
+            intentResolver: true,
+            timeout: 2000,
+            dontSetWindowFdc3: false
+        }, 'abc123')
     }
 
     readonly automaticResponses: AutomaticResponse[] = [
@@ -29,7 +34,7 @@ export class TestMessaging extends AbstractMessaging {
     ]
 
     register(l: RegisterableListener) {
-        this.listeners.set(l.id, l)
+        this.listeners.set(l.id!!, l)
     }
 
     unregister(id: string) {
@@ -58,7 +63,7 @@ export class TestMessaging extends AbstractMessaging {
     }
 
 
-    post(message: AgentRequestMessage): Promise<void> {
+    post(message: AppRequestMessage): Promise<void> {
         this.allPosts.push(message)
         for (let i = 0; i < this.automaticResponses.length; i++) {
             const ar = this.automaticResponses[i]

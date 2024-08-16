@@ -1,24 +1,26 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { GetInfoResponse, GetInfoRequest } from "@kite9/fdc3-common";
-import { createResponseMeta } from "./support";
+import { WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-common";
 
 export class Handshake implements AutomaticResponse {
 
     filter(t: string) {
-        return t == 'getInfoRequest'
+        return t == 'WCP4ValidateAppIdentity'
     }
 
     action(input: object, m: TestMessaging) {
-        const out = this.createResponse(input as GetInfoRequest)
+        const out = this.createResponse(input as WebConnectionProtocol4ValidateAppIdentity)
 
         setTimeout(() => { m.receive(out) }, 100)
         return Promise.resolve()
     }
 
-    private createResponse(i: GetInfoRequest): GetInfoResponse {
+    private createResponse(i: WebConnectionProtocol4ValidateAppIdentity): WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
         return {
-            meta: createResponseMeta(i.meta),
-            type: "getInfoResponse",
+            meta: {
+                connectionAttemptUuid: i.meta.connectionAttemptUuid,
+                timestamp: new Date(),
+            },
+            type: "WCP5ValidateAppIdentityResponse",
             payload: {
                 implementationMetadata: {
                     appMetadata: {
@@ -33,7 +35,10 @@ export class Handshake implements AutomaticResponse {
                     },
                     provider: "cucumber-provider",
                     providerVersion: "test"
-                }
+                },
+                appId: 'cucumber-app',
+                instanceId: 'cucumber-instance',
+                instanceUuid: 'some-instance-uuid',
             }
         }
     }

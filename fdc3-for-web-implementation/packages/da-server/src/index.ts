@@ -4,6 +4,7 @@ import { FDC3Server } from "./FDC3Server"
 import { Directory, DirectoryApp, DirectoryIntent } from "./directory/DirectoryInterface"
 import { BasicDirectory } from "./directory/BasicDirectory"
 import { desktopAgentSupplier } from "./supply/post-message"
+import { BroadcastHandler } from "./handlers/BroadcastHandler"
 
 export {
     type ServerContext,
@@ -14,5 +15,6 @@ export {
     BasicDirectory,
     type DirectoryApp,
     type DirectoryIntent,
-    desktopAgentSupplier
+    desktopAgentSupplier,
+    BroadcastHandler
 }

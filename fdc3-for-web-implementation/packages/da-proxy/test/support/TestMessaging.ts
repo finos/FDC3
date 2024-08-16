@@ -1,5 +1,5 @@
 import { AppIdentifier, Context, Channel, ImplementationMetadata } from "@finos/fdc3";
-import { AppRequestMessage, AgentResponseMessage, PurpleIntentResult } from "@kite9/fdc3-common";
+import { AppRequestMessage, PurpleIntentResult, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-common";
 import { v4 as uuidv4 } from 'uuid'
 import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";
 import { RegisterableListener } from "../../src/listeners/RegisterableListener";
@@ -91,7 +91,13 @@ export class TestMessaging extends AbstractMessaging {
     readonly automaticResponses: AutomaticResponse[]
 
     constructor(channelState: { [key: string]: Context[] }) {
-        super()
+        super({
+            timeout: 0,
+            channelSelector: false,
+            intentResolver: false,
+            dontSetWindowFdc3: false
+        }, "test")
+
         this.channelState = channelState
         this.automaticResponses = [
             new FindIntent(),
@@ -180,7 +186,7 @@ export class TestMessaging extends AbstractMessaging {
         }
     }
 
-    receive(m: AgentResponseMessage, log?: ICreateLog) {
+    receive(m: any, log?: ICreateLog) {
         this.listeners.forEach((v, k) => {
             if (v.filter(m)) {
                 log ? log("Processing in " + k) : ""
@@ -202,12 +208,6 @@ export class TestMessaging extends AbstractMessaging {
         this.ir = o
     }
 
-    async connect(): Promise<void> {
-    }
-
-    async disconnect(): Promise<void> {
-    }
-
     async getImplementationMetadata(): Promise<ImplementationMetadata> {
         return {
             fdc3Version: "2.2",
@@ -225,5 +225,13 @@ export class TestMessaging extends AbstractMessaging {
                 description: "Metadata Description"
             }
         } as ImplementationMetadata
+    }
+
+    retrieveInstanceUuid(): string | undefined {
+        return (globalThis as any).instanceUuid as string | undefined
+    }
+
+    storeInstanceUuid(validationResponse: WebConnectionProtocol5ValidateAppIdentitySuccessResponse): void {
+        (globalThis as any).instanceUuid = validationResponse.payload.instanceUuid
     }
 }

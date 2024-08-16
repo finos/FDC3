@@ -15,14 +15,12 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
     readonly channels: ChannelSupport
     readonly intents: IntentSupport
     readonly apps: AppSupport
-    readonly fdc3Version: string
 
-    constructor(handshake: HandshakeSupport, channels: ChannelSupport, intents: IntentSupport, apps: AppSupport, fdc3Version: string) {
+    constructor(handshake: HandshakeSupport, channels: ChannelSupport, intents: IntentSupport, apps: AppSupport) {
         this.handshake = handshake
         this.intents = intents
         this.channels = channels
         this.apps = apps
-        this.fdc3Version = fdc3Version
     }
 
     async getInfo(): Promise<ImplementationMetadata> {
