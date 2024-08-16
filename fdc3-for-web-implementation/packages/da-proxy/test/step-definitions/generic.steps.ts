@@ -15,11 +15,7 @@ Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: s
     const cs = new DefaultChannelSupport(this.messaging)
     const hs = new DefaultHandshakeSupport(this.messaging)
     const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this))
-    const as = new DefaultAppSupport(this.messaging, {
-        appId: "Test App Id",
-        desktopAgent: "Test DA",
-        instanceId: "123-ABC"
-    }, 'cucumber-desktop-agent')
+    const as = new DefaultAppSupport(this.messaging)
 
     const da = new BasicDesktopAgent(hs, cs, is, as, version)
     await da.connect()

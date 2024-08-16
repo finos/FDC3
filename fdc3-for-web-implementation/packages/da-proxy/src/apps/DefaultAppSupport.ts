@@ -7,14 +7,9 @@ import { FindInstancesRequest, GetAppMetadataResponse, FindInstancesResponse, Ge
 export class DefaultAppSupport implements AppSupport {
 
     readonly messaging: Messaging
-    readonly appIdentifier: AppIdentifier
-    private thisAppMetadata: AppMetadata | null = null
-    private readonly desktopAgent: string
 
-    constructor(messaging: Messaging, appIdentifier: AppIdentifier, desktopAgent: string) {
+    constructor(messaging: Messaging) {
         this.messaging = messaging
-        this.appIdentifier = appIdentifier
-        this.desktopAgent = desktopAgent
     }
 
     hasDesktopAgentBridging(): boolean {
@@ -60,23 +55,14 @@ export class DefaultAppSupport implements AppSupport {
                 app: {
                     appId: app.appId,
                     instanceId: app.instanceId,
-                    desktopAgent: this.desktopAgent
                 },
-                context /* ISSUE: #1276 */
+                context
             },
             meta: this.messaging.createMeta() as any
         } as OpenRequest
 
         const out = await this.messaging.exchange<any>(request, "openResponse")
         return out.payload.appIdentifier
-    }
-
-    async getThisAppMetadata(): Promise<AppMetadata> {
-        if (!this.thisAppMetadata) {
-            this.thisAppMetadata = await this.getAppMetadata(this.appIdentifier)
-        }
-
-        return this.thisAppMetadata
     }
 
 }

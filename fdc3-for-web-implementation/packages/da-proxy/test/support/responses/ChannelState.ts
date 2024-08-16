@@ -18,6 +18,11 @@ export class ChannelState implements AutomaticResponse {
     private listeners: { [channel: string]: string[] } = {}
     private contextHistory: { [channel: string]: Context[] } = {}
 
+
+    constructor(contextHistory: { [channel: string]: Context[] }) {
+        this.contextHistory = contextHistory
+    }
+
     filter(t: string) {
         return (t == 'broadcastRequest')
             || (t == 'joinUserChannelRequest')

@@ -85,29 +85,30 @@ export class TestMessaging extends AbstractMessaging {
     readonly allPosts: AppRequestMessage[] = []
     readonly listeners: Map<string, RegisterableListener> = new Map()
     readonly intentDetails: IntentDetail[] = []
-    readonly channelState: { [key: string]: Context }
+    readonly channelState: { [key: string]: Context[] }
     currentChannel: Channel | null = null
 
-    readonly automaticResponses: AutomaticResponse[] = [
-        new FindIntent(),
-        new FindIntentByContext(),
-        new RaiseIntent(),
-        new GetAppMetadata(),
-        new FindInstances(),
-        new Open(),
-        new Handshake(),
-        new GetOrCreateChannel(),
-        new ChannelState(),
-        new GetUserChannels(),
-        new RegisterListeners(),
-        new UnsubscribeListeners(),
-        new CreatePrivateChannel(),
-        new DisconnectPrivateChannel()
-    ]
+    readonly automaticResponses: AutomaticResponse[]
 
-    constructor(channelState: { [key: string]: Context }) {
+    constructor(channelState: { [key: string]: Context[] }) {
         super()
         this.channelState = channelState
+        this.automaticResponses = [
+            new FindIntent(),
+            new FindIntentByContext(),
+            new RaiseIntent(),
+            new GetAppMetadata(),
+            new FindInstances(),
+            new Open(),
+            new Handshake(),
+            new GetOrCreateChannel(),
+            new ChannelState(this.channelState),
+            new GetUserChannels(),
+            new RegisterListeners(),
+            new UnsubscribeListeners(),
+            new CreatePrivateChannel(),
+            new DisconnectPrivateChannel()
+        ]
     }
 
     getSource(): AppIdentifier {
@@ -220,7 +221,8 @@ export class TestMessaging extends AbstractMessaging {
             appMetadata: {
                 name: "Cucumber Test App",
                 version: "1.0",
-                appId: "cucumber-test-app"
+                appId: "cucumber-test-app",
+                description: "Metadata Description"
             }
         } as ImplementationMetadata
     }

@@ -2,7 +2,7 @@ import { AppIdentifier, AppMetadata, Context } from "@finos/fdc3";
 
 
 export interface AppSupport {
-    
+
     hasDesktopAgentBridging(): boolean;
 
     hasOriginatingAppMetadata(): boolean;
@@ -11,8 +11,6 @@ export interface AppSupport {
 
     getAppMetadata(app: AppIdentifier): Promise<AppMetadata>
 
-    open(app: AppIdentifier, context?: Context) : Promise<AppIdentifier>
-
-    getThisAppMetadata(): Promise<AppMetadata>
+    open(app: AppIdentifier, context?: Context): Promise<AppIdentifier>
 
 }
