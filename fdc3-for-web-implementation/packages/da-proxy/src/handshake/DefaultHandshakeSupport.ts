@@ -14,11 +14,11 @@ export class DefaultHandshakeSupport implements HandshakeSupport {
     }
 
     async connect(): Promise<void> {
-        this.messaging.connect()
+        return this.messaging.connect()
     }
 
     async disconnect(): Promise<void> {
-        this.messaging.disconnect()
+        return this.messaging.disconnect()
     }
 
     async getImplementationMetadata(): Promise<ImplementationMetadata> {

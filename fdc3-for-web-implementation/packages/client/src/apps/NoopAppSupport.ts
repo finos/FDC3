@@ -4,8 +4,8 @@ import { DefaultAppSupport } from "@kite9/da-proxy";
 
 export class NoopAppSupport extends DefaultAppSupport {
 
-    constructor(messaging: Messaging, appIdentifier: AppIdentifier, desktopAgent: string) {
-        super(messaging, appIdentifier, desktopAgent);
+    constructor(messaging: Messaging) {
+        super(messaging);
     }
 
     async getAppMetadata(app: AppIdentifier): Promise<AppMetadata> {

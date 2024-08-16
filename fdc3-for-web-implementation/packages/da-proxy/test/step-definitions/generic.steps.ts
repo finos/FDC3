@@ -11,13 +11,12 @@ Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: s
         this.messaging = new TestMessaging(this.props[CHANNEL_STATE]);
     }
 
-    const version = "2.0"
     const cs = new DefaultChannelSupport(this.messaging)
     const hs = new DefaultHandshakeSupport(this.messaging)
     const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this))
     const as = new DefaultAppSupport(this.messaging)
 
-    const da = new BasicDesktopAgent(hs, cs, is, as, version)
+    const da = new BasicDesktopAgent(hs, cs, is, as)
     await da.connect()
 
     this.props[field] = da
