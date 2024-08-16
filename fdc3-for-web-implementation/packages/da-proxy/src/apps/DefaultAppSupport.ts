@@ -12,14 +12,6 @@ export class DefaultAppSupport implements AppSupport {
         this.messaging = messaging
     }
 
-    hasDesktopAgentBridging(): boolean {
-        return true
-    }
-
-    hasOriginatingAppMetadata(): boolean {
-        return true
-    }
-
     findInstances(app: AppIdentifier): Promise<AppIdentifier[]> {
         const request: FindInstancesRequest = {
             type: "findInstancesRequest",

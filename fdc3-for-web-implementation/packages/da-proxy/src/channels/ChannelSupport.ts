@@ -2,8 +2,6 @@ import { Channel, ContextHandler, Listener, PrivateChannel } from "@finos/fdc3"
 
 export interface ChannelSupport {
 
-    hasUserChannelMembershipAPIs(): boolean
-
     getUserChannel(): Promise<Channel | null>
 
     getUserChannels(): Promise<Channel[]>

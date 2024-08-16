@@ -46,10 +46,6 @@ export class DefaultChannelSupport implements ChannelSupport {
         })
     }
 
-    hasUserChannelMembershipAPIs(): boolean {
-        return true
-    }
-
     async getUserChannel(): Promise<Channel | null> {
         const response = await this.messaging.exchange<GetCurrentChannelResponse>({
             meta: this.messaging.createMeta(),
