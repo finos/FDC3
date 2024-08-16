@@ -88,3 +88,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
       | fdc3Version | appMetadata.appId | provider |
       |         2.0 | Test App Id       | None     |
     Then I call "{document}" with "shutdown"
+
+  Scenario: Recovery from SessionState
+  Here, we recover the details of the session from the session state, obviating the need to 
+  make a request to the parent iframe.

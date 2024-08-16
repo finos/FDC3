@@ -1,6 +1,9 @@
 import { ChannelSelector, ChannelSelectorDetails, CSS_ELEMENTS, CSSPositioning, SelectorMessageChannels, SelectorMessageChoice, SelectorMessageResize } from "@kite9/fdc3-common";
 import { Channel } from "@finos/fdc3";
 
+
+
+
 const DEFAULT_CHANNEL_SELECTOR_DETAILS: ChannelSelectorDetails = {
     uri: "http://localhost:4000/channel_selector.html",
     collapsedCss: {
@@ -38,8 +41,12 @@ export class DefaultDesktopAgentChannelSelector implements ChannelSelector {
     private callback: ((channelId: string) => void) | null = null
     private port: MessagePort | undefined = undefined
 
-    constructor(details: ChannelSelectorDetails | null) {
-        this.details = details ?? DEFAULT_CHANNEL_SELECTOR_DETAILS
+    constructor(url: string | null) {
+        this.details = {
+            ...DEFAULT_CHANNEL_SELECTOR_DETAILS,
+            uri: url ?? DEFAULT_CHANNEL_SELECTOR_DETAILS.uri!!
+        }
+
         this.setupMessageListener()
         this.openFrame()
     }

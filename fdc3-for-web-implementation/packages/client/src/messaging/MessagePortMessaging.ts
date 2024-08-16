@@ -38,7 +38,11 @@ export class MessagePortMessaging extends AbstractMessaging {
     }
 
     register(l: RegisterableListener): void {
-        this.listeners.set(l.id, l)
+        if (l.id != null) {
+            this.listeners.set(l.id, l)
+        } else {
+            throw new Error("Listener must have an id")
+        }
     }
 
     unregister(id: string): void {
