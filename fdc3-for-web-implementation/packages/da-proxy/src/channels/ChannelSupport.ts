@@ -1,7 +1,6 @@
 import { Channel, ContextHandler, Listener, PrivateChannel } from "@finos/fdc3"
-import { Connectable } from "../Connectable"
 
-export interface ChannelSupport extends Connectable {
+export interface ChannelSupport {
 
     hasUserChannelMembershipAPIs(): boolean
 

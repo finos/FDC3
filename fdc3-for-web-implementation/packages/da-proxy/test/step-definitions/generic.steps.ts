@@ -13,7 +13,7 @@ Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: s
 
     const version = "2.0"
     const cs = new DefaultChannelSupport(this.messaging)
-    const hs = new DefaultHandshakeSupport(this.messaging, version)
+    const hs = new DefaultHandshakeSupport(this.messaging)
     const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this))
     const as = new DefaultAppSupport(this.messaging, {
         appId: "Test App Id",

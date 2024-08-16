@@ -1,6 +1,6 @@
 import { AppIdentifier, DesktopAgent } from "@finos/fdc3";
 import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultHandshakeSupport } from "@kite9/da-proxy";
-import { WebConnectionProtocol3HandshakePayload, WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload } from "@kite9/fdc3-common"
+import { WebConnectionProtocol3HandshakePayload } from "@kite9/fdc3-common"
 import { MessagePortMessaging } from "./MessagePortMessaging";
 import { DefaultDesktopAgentIntentResolver } from "../intent-resolution/DefaultDesktopAgentIntentResolver";
 import { DefaultDesktopAgentChannelSelector } from "../channel-selector/DefaultDesktopAgentChannelSelector";
@@ -11,8 +11,7 @@ import { NullChannelSelector } from "../channel-selector/NullChannelSelector";
  * Given a message port, constructs a desktop agent to communicate via that.
  */
 export async function createDesktopAgentAPI(mp: MessagePort,
-    handshake: WebConnectionProtocol3HandshakePayload,
-    identity: WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload): Promise<DesktopAgent> {
+    handshake: WebConnectionProtocol3HandshakePayload): Promise<DesktopAgent> {
 
     mp.start()
 

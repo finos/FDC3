@@ -46,13 +46,6 @@ export class DefaultChannelSupport implements ChannelSupport {
         })
     }
 
-    async connect(): Promise<void> {
-    }
-
-    disconnect(): Promise<void> {
-        return Promise.resolve()
-    }
-
     hasUserChannelMembershipAPIs(): boolean {
         return true
     }
