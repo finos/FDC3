@@ -4,11 +4,20 @@ import { createDesktopAgentAPI } from '../messaging/message-port';
 import { v4 as uuidv4 } from "uuid"
 import { ConnectionDetails } from '../messaging/MessagePortMessaging';
 
-function collectPossibleTargets(w: Window): Window[] {
-    return [
-        w.opener,
-        collectPossibleTargets(w.parent),
-    ].filter((w) => w != null);
+function collectPossibleTargets(w: Window, found: Window[]) {
+    if (w) {
+        if (found.indexOf(w) == -1) {
+            found.push(w);
+        }
+
+        if (found.indexOf(w.opener) == -1) {
+            collectPossibleTargets(w.opener, found);
+        }
+
+        if (found.indexOf(w.parent) == -1) {
+            collectPossibleTargets(w.parent, found);
+        }
+    }
 }
 
 
@@ -60,7 +69,7 @@ function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): 
                 } else if (data.type == 'WCP3Handshake') {
                     resolve({
                         connectionAttemptUuid: connectionAttemptUuid,
-                        handshake: data.payload,
+                        handshake: data,
                         messagePort: event.ports[0],
                         options: options
                     })
@@ -87,7 +96,9 @@ const loader: Loader = async (options: GetAgentParams) => {
 
     // ok, begin the process
     const promise = helloExchange(options, connectionAttemptUuid)
-    const targets = collectPossibleTargets(globalThis.window);
+
+    const targets: Window[] = []
+    collectPossibleTargets(globalThis.window, targets);
     targets.forEach((t) => sendWCP1Hello(t, options, connectionAttemptUuid, t.origin))
 
     // wait for one of the windows to return the data we need

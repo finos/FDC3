@@ -1,3 +1,4 @@
+import { RaiseIntentRequest, RaiseIntentResponse } from "@kite9/fdc3-common";
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
 
 
@@ -7,8 +8,8 @@ export class RaiseIntent implements AutomaticResponse {
         return t == 'raiseIntentRequest'
     }
 
-    createRaiseIntentAgentResponseMessage(intentRequest: RaiseIntentAgentRequest, m: TestMessaging): RaiseIntentAgentResponse {
-        const out: RaiseIntentAgentResponse = {
+    createRaiseIntentAgentResponseMessage(intentRequest: RaiseIntentRequest, m: TestMessaging): RaiseIntentResponse {
+        const out: RaiseIntentResponse = {
             meta: {
                 ...intentRequest.meta,
                 responseUuid: m.createUUID()
@@ -16,7 +17,7 @@ export class RaiseIntent implements AutomaticResponse {
             payload: {
                 intentResolution: {
                     intent: intentRequest.payload.intent,
-                    source: intentRequest.payload.app
+                    source: intentRequest.payload.app!!
                 }
             },
             type: "raiseIntentResponse"
@@ -26,7 +27,7 @@ export class RaiseIntent implements AutomaticResponse {
     }
 
     action(input: object, m: TestMessaging) {
-        const intentRequest = input as RaiseIntentAgentRequest
+        const intentRequest = input as RaiseIntentRequest
         // this sends out the intent resolution
         const out1 = this.createRaiseIntentAgentResponseMessage(intentRequest, m)
         setTimeout(() => { m.receive(out1) }, 100)

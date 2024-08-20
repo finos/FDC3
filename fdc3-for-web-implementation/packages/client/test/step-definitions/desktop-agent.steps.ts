@@ -10,6 +10,7 @@ import { MockFDC3Server } from '../support/MockFDC3Server';
 import { DefaultDesktopAgentIntentResolver } from '../../src/intent-resolution/DefaultDesktopAgentIntentResolver';
 import { DefaultDesktopAgentChannelSelector } from '../../src/channel-selector/DefaultDesktopAgentChannelSelector';
 import { NoopAppSupport } from '../../src/apps/NoopAppSupport';
+import { MockStorage } from '../support/MockStorage';
 
 setupGenericSteps()
 Given('Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response', async function (this: CustomWorld, field: string, w: string) {
@@ -24,24 +25,6 @@ Given('Parent Window desktop {string} listens for postMessage events in {string}
     this.props[field] = mock
 })
 
-// function buildUserChannelState(messaging: Messaging): DefaultChannel[] {
-//     // TODO: Figure out how to set initial user channels.  
-//     // Should probably be in the message from the server.
-//     return [
-//         new DefaultChannel(messaging, "one", "user", {
-//             color: "red",
-//             name: "THE RED CHANNEL"
-//         }),
-//         new DefaultChannel(messaging, "two", "user", {
-//             color: "blue",
-//             name: "THE BLUE CHANNEL"
-//         }),
-//         new DefaultChannel(messaging, "three", "user", {
-//             color: "green",
-//             name: "THE GREEN CHANNEL"
-//         })
-//     ]
-// }
 
 Given('A Dummy Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
 
@@ -106,4 +89,9 @@ Given('a browser document in {string} and window in {string}', async function (t
     // mock document exists in the window
     globalThis.document = new MockDocument("mockDocument", mw) as any
     this.props[d] = globalThis.document as any;
+
+    // browser storage
+    globalThis.sessionStorage = new MockStorage() as any
+
+    // window's app identity
 })

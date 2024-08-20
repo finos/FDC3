@@ -1,4 +1,5 @@
 import { AppIntent, AppIdentifier, DesktopAgent, IntentMetadata, IntentResult, Channel } from "@finos/fdc3";
+import { WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake } from "./BrowserTypes";
 import { GetAgentParams } from "./GetAgent";
 
 export type AppChecker = (o: Window) => AppIdentifier | undefined;
@@ -12,22 +13,14 @@ export type Supplier = (
 export type Loader = (options: GetAgentParams) => Promise<DesktopAgent>
 
 /**
- * These are details such as login information sent from the desktop back to the 
- * app in order to initialise the api.
- * 
- * TODO: remove this type
- */
-export type DesktopAgentDetails = { [key: string]: any }
-
-/**
  * Use these to return details specific to the window/app needing a connection
  */
-export type DesktopAgentDetailResolver = (o: Window, a: AppIdentifier) => DesktopAgentDetails
+export type DesktopAgentDetailResolver = (o: Window, a: WebConnectionProtocol1Hello) => WebConnectionProtocol3Handshake | WebConnectionProtocol2LoadURL
 
 /**
- * Return a MessagePort specific to the window/app in question
+ * Same as above, but for the port
  */
-export type DesktopAgentPortResolver = (o: Window, a: AppIdentifier) => MessagePort | null
+export type DesktopAgentPortResolver = (o: Window, a: WebConnectionProtocol1Hello) => MessagePort | null
 
 export interface CSSPositioning { [key: string]: string }
 
