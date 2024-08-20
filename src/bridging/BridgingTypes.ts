@@ -3571,7 +3571,7 @@ export interface RaiseIntentAgentErrorResponseMeta {
 }
 
 /**
- * Response to a raiseIntent request that resulted in an error
+ * Used if a raiseIntent request resulted in an error
  *
  * Error message payload containing an standardized error string.
  */
@@ -3739,13 +3739,13 @@ export interface RaiseIntentAgentResponseMeta {
  */
 export interface RaiseIntentAgentResponsePayload {
     /**
-     * Should be set if the raiseIntent request was successfully resolved
+     * Used if the raiseIntent request was successfully resolved
      */
     intentResolution: IntentResolution;
 }
 
 /**
- * Should be set if the raiseIntent request was successfully resolved
+ * Used if the raiseIntent request was successfully resolved
  *
  * IntentResolution provides a standard format for data returned upon resolving an intent.
  *
@@ -3818,7 +3818,7 @@ export interface RaiseIntentBridgeErrorResponseMeta {
 }
 
 /**
- * Response to a raiseIntent request that resulted in an error
+ * Used if a raiseIntent request resulted in an error
  *
  * The error message payload contains details of an error return to the app or agent that
  * raised the original request.
@@ -3913,7 +3913,7 @@ export interface RaiseIntentBridgeResponseMeta {
  */
 export interface RaiseIntentBridgeResponsePayload {
     /**
-     * Should be set if the raiseIntent request was successfully resolved
+     * Used if the raiseIntent request was successfully resolved
      */
     intentResolution: IntentResolution;
 }

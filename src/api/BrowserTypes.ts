@@ -617,7 +617,8 @@ export type RequestMessageType = "addContextListenerRequest" | "addEventListener
 
 /**
  * An event message from the Desktop Agent to an app indicating that context has been
- * broadcast on a channel it is listening to.
+ * broadcast on a channel it is listening to, or specifically to this app instance if it was
+ * launched via `fdc3.open` and context was passed.
  *
  * A message from a Desktop Agent to an FDC3-enabled app representing an event.
  */
@@ -642,9 +643,10 @@ export interface BroadcastEvent {
  */
 export interface BroadcastEventPayload {
     /**
-     * The Id of the channel that the broadcast was sent on.
+     * The Id of the channel that the broadcast was sent on. May be `null` if the context is
+     * being broadcast due to a call `fdc3.open` that passed context.
      */
-    channelId: string;
+    channelId: null | string;
     /**
      * The context object that was broadcast.
      */
@@ -4504,7 +4506,7 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("BroadcastEventType") },
     ], false),
     "BroadcastEventPayload": o([
-        { json: "channelId", js: "channelId", typ: "" },
+        { json: "channelId", js: "channelId", typ: u(null, "") },
         { json: "context", js: "context", typ: r("Context") },
         { json: "originatingApp", js: "originatingApp", typ: u(undefined, r("AppIdentifier")) },
     ], false),
