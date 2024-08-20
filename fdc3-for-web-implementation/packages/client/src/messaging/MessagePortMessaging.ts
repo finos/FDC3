@@ -43,11 +43,7 @@ export class MessagePortMessaging extends AbstractWebMessaging {
     }
 
     register(l: RegisterableListener): void {
-        if (l.id != null) {
-            this.listeners.set(l.id, l)
-        } else {
-            throw new Error("Listener must have an id")
-        }
+        this.listeners.set(l.id!!, l)
     }
 
     unregister(id: string): void {

@@ -85,14 +85,6 @@ function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): 
 
 const loader: Loader = async (options: GetAgentParams) => {
     const connectionAttemptUuid = uuidv4();
-    var resolved = false
-
-    // timeout
-    setTimeout(() => {
-        if (!resolved) {
-            throw new Error("Timeout waiting for connection");
-        }
-    }, options.timeout!!)
 
     // ok, begin the process
     const promise = helloExchange(options, connectionAttemptUuid)
@@ -103,7 +95,6 @@ const loader: Loader = async (options: GetAgentParams) => {
 
     // wait for one of the windows to return the data we need
     const data = await promise
-    resolved = true
     return createDesktopAgentAPI(data);
 
 }
