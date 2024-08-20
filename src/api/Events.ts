@@ -3,29 +3,37 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
+/**
+ * Type defining a basic event object that may be emitted by an FDC3 API interface
+ * such as DesktopAgent or PrivateChannel. There are more specific event types
+ * defined for each interface. 
+ */
+export interface ApiEvent {
+  readonly type: string;
+  readonly details: any;
+}
+
 /** Type representing a handler function for events from the Desktop Agent
  * or a PrivateChannel. 
- * @param event The handler function will be passed an `FDC3Event` or
- * `PrivateChannelEvent` Object providing details of the event (such as a
- * change of channel membership for the app, or type of context listener added)
+ * @param event The handler function will be passed an `ApiEvent` (or more specifically
+ *  an `FDC3Event` or `PrivateChannelEvent`) Object providing details of the event (such 
+ * as a change of channel membership for the app, or type of context listener added)
  * as the only parameter.
  */
-export type EventHandler = (event: FDC3Event | PrivateChannelEvent ) => void;
+export type EventHandler = (event: ApiEvent ) => void;
 
 /**
- * Enumeration defining the types of (non-context and non-intent) events that may be received
-   via the FDC3 API's `addEventListener` function. 
+ * Type defining valid type strings for DesktopAgent interface events.
  */
-export enum FDC3EventType {
-  USER_CHANNEL_CHANGED = "USER_CHANNEL_CHANGED"
-}
+export type FDC3EventTypes = "USER_CHANNEL_CHANGED";
+
 
 /**
  * Type defining the format of event objects that may be received
-   via the FDC3 API's `addEventListener` function.
+ * via the FDC3 API's `addEventListener` function.
  */
-export interface FDC3Event {
-  readonly type: FDC3EventType;
+export interface FDC3Event extends ApiEvent {
+  readonly string: FDC3EventTypes;
   readonly details: any;
 }
 
@@ -33,29 +41,23 @@ export interface FDC3Event {
  * Type defining the format of event USER_CHANNEL_CHANGED objects
  */
 export interface FDC3ChannelChangedEvent extends FDC3Event {
-  readonly type: FDC3EventType.USER_CHANNEL_CHANGED;
+  readonly type: "USER_CHANNEL_CHANGED";
   readonly details: {
     currentChannelId: string | null
   };
 }
 
 /**
- * Enumeration defining the types of events that may be received
-   via a PrivateChannel's `addEventListener` function.
+ * Type defining valid type strings for Private Channel events.
  */
-  export enum PrivateChannelEventType {
-  ADD_CONTEXT_LISTENER = "addContextListener",
-  UNSUBSCRIBE = "unsubscribe",
-  DISCONNECT = "disconnect"
-}
-  
-  
+export type PrivateChannelEventTypes = "addContextListener" | "unsubscribe" | "disconnect";
+
 /**
  * Type defining the format of event objects that may be received
  * via a PrivateChannel's `addEventListener` function.
  */
 export interface PrivateChannelEvent {
-  readonly type: PrivateChannelEventType;
+  readonly type: PrivateChannelEventTypes;
   readonly details: any;
 }
 
@@ -69,7 +71,7 @@ export interface PrivateChannelEvent {
  * which will be `null` if all event types are being listened to.
  */
 export interface PrivateChannelAddContextListenerEvent extends PrivateChannelEvent {
-  readonly type: PrivateChannelEventType.ADD_CONTEXT_LISTENER;
+  readonly type: "addContextListener";
   readonly details: {
     contextType: string | null
   };
@@ -84,7 +86,7 @@ export interface PrivateChannelAddContextListenerEvent extends PrivateChannelEve
  * which will be `null` if all event types were being listened to.
  */
 export interface PrivateChannelUnsubscribeEvent extends PrivateChannelEvent {
-  readonly type: PrivateChannelEventType.UNSUBSCRIBE;
+  readonly type: "unsubscribe";
   readonly details: {
     contextType: string | null
   };
@@ -97,6 +99,6 @@ export interface PrivateChannelUnsubscribeEvent extends PrivateChannelEvent {
  * No details are provided.
  */
 export interface PrivateChannelDisconnectEvent extends PrivateChannelEvent {
-  readonly type: PrivateChannelEventType.DISCONNECT;
+  readonly type: "disconnect";
   readonly details: null | undefined;
 }

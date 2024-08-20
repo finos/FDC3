@@ -5,7 +5,7 @@
 
 import { Listener } from './Listener';
 import { Channel } from './Channel';
-import { EventHandler, PrivateChannelEventType } from './Events';
+import { EventHandler, PrivateChannelEventTypes } from './Events';
 
 /**
  * Object representing a private context channel, which is intended to support
@@ -43,7 +43,7 @@ export interface PrivateChannel extends Channel {
    * @param {EventHandler} handler A function that events received will be passed to. 
    * 
    */ 
-  addEventListener(type: PrivateChannelEventType  | null, handler: EventHandler): Promise<Listener>;
+  addEventListener(type: PrivateChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
   
   /**
    * May be called to indicate that a participant will no longer interact with this channel.

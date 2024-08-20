@@ -17,7 +17,7 @@ It is intended that Desktop Agent implementations:
 ```ts
 interface  PrivateChannel extends Channel {
   // functions
-  addEventListener(type: PrivateChannelEventType  | null, handler: EventHandler): Promise<Listener>;
+  addEventListener(type: PrivateChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
   disconnect(): Promise<void>;
 
   //deprecated functions
@@ -120,7 +120,7 @@ try {
 ### `addEventListener`
 
 ```ts
-addEventListener(type: PrivateChannelEventType  | null, handler: EventHandler): Promise<Listener>;
+addEventListener(type: PrivateChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
 ```
 
 Register a handler for events from the PrivateChannel. Whenever the handler function is called it will be passed an event object with details related to the event.
@@ -142,7 +142,8 @@ const channelChangedListener: Listener = await myPrivateChannel.addEventListener
 
 **See also:**
 
-- [`PrivateChannelEventType`](./Events#privatechanneleventtype)
+- [`PrivateChannelEventTypes`](./Events#privatechanneleventtypes)
+- [`PrivateChannelEvent`](./Events#privatechannelevent)
 - [`EventHandler`](./Events#eventhandler)
 
 ### `disconnect`
