@@ -1,4 +1,4 @@
-import { DesktopAgentDetails, GetAgentParams, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-common";
+import { DesktopAgentDetails, WebDesktopAgentType, GetAgentParams, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-common";
 import { RegisterableListener, AbstractMessaging } from "@kite9/da-proxy";
 
 const DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY = "fdc3-desktop-agent-details"
@@ -25,7 +25,7 @@ export abstract class AbstractWebMessaging extends AbstractMessaging {
      */
     storeInstanceUuid(vr: WebConnectionProtocol5ValidateAppIdentitySuccessResponse) {
         const details: DesktopAgentDetails = {
-            agentType: 'PROXY_PARENT',
+            agentType: WebDesktopAgentType.PROXY_PARENT,
             instanceUuid: vr.payload.instanceUuid,
             appId: vr.payload.appId,
             instanceId: vr.payload.instanceId,
@@ -42,7 +42,9 @@ export abstract class AbstractWebMessaging extends AbstractMessaging {
 
         if (detailsStr) {
             const details = JSON.parse(detailsStr) as DesktopAgentDetails
-            return details.instanceUuid
+            if (details.agentType == WebDesktopAgentType.PROXY_PARENT) {
+                return details.instanceUuid
+            }
         }
 
         return undefined;

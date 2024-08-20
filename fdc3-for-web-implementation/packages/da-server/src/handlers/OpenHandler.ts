@@ -218,23 +218,15 @@ export class OpenHandler implements MessageHandler {
 
         if (arg0.payload.instanceUuid) {
             // existing app reconnecting
-            const instanceUUID: InstanceUUID = arg0.payload.instanceUuid
-            const appIdentity = await sc.getInstanceDetails(arg0.payload.instanceUuid)
+            const appIdentity = sc.getInstanceDetails(arg0.payload.instanceUuid)
 
             if (appIdentity) {
                 // in this case, the app is reconnecting, so let's just re-assign the 
                 // identity
-                await sc.setInstanceDetails(from, appIdentity)
+                sc.setInstanceDetails(from, appIdentity)
                 returnSuccess(appIdentity)
-            } else {
-                // we can't find the app, so we need to reject it
-                sc.post({
-                    meta: responseMeta,
-                    payload: {
-                        message: 'App Instance not found'
-                    }
-                } as WebConnectionProtocol5ValidateAppIdentityFailedResponse, instanceUUID)
             }
+
         } else {
             // we need to assign an identity to this app
             const appIdentity = sc.getInstanceDetails(from)

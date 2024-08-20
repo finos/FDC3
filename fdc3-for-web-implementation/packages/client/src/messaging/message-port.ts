@@ -23,11 +23,14 @@ export async function createDesktopAgentAPI(cd: ConnectionDetails): Promise<Desk
 
     const messaging = new MessagePortMessaging(cd)
 
-    const intentResolver = cd.handshake.payload.resolver ?
+    const useResolver = cd.handshake.payload.resolver && cd.options.intentResolver
+    const useSelector = cd.handshake.payload.channelSelector && cd.options.channelSelector
+
+    const intentResolver = useResolver ?
         new DefaultDesktopAgentIntentResolver(string(cd.handshake.payload.resolver)) :
         new NullIntentResolver()
 
-    const channelSelector = cd.handshake.payload.channelSelector ?
+    const channelSelector = useSelector ?
         new DefaultDesktopAgentChannelSelector(string(cd.handshake.payload.channelSelector))
         : new NullChannelSelector()
 

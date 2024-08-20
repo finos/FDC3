@@ -1,7 +1,7 @@
-import { FDC3_PORT_TRANSFER_RESPONSE_TYPE } from "@kite9/fdc3-common"
 import { EMBED_URL, MockFDC3Server, buildConnection } from "./MockFDC3Server"
 import { CustomWorld } from "../world"
 import { DesktopAgent } from "@finos/fdc3"
+import { WebConnectionProtocol3Handshake } from "@kite9/fdc3-common"
 
 class MockCSSStyleDeclaration {
 
@@ -129,12 +129,23 @@ class MockIFrame extends MockWindow {
         const parent = this.parent as MockWindow
 
         if ((name == 'src') && (value.startsWith(EMBED_URL))) {
+            const params = new URLSearchParams(value.substring(EMBED_URL.length) + 1)
+            const connectionAttemptUuid = params.get("connectionAttemptUuid")!!
             const connection = buildConnection(this.cw)
             parent.serverInstance?.instances.push(connection)
 
             parent.postMessage({
-                type: FDC3_PORT_TRANSFER_RESPONSE_TYPE,
-            }, parent.location.origin, [connection.externalPort!!])
+                type: "WCP3Handshake",
+                meta: {
+                    connectionAttemptUuid: connectionAttemptUuid,
+                    timestamp: new Date()
+                },
+                payload: {
+                    fdc3Version: "2.2",
+                    resolver: "https://mock.fdc3.com/resolver",
+                    channelSelector: "https://mock.fdc3.com/channelSelector",
+                }
+            } as WebConnectionProtocol3Handshake, origin, [connection.externalPort])
         }
     }
 }

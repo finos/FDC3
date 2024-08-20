@@ -1,11 +1,11 @@
-import { ServerContext } from '@kite9/da-server'
-import { v4 as uuidv4 } from 'uuid'
+import { ServerContext, InstanceUUID } from '@kite9/da-server'
 import { CustomWorld } from '../world'
-import { OpenError } from '@finos/fdc3'
-import { AppMetadata } from '@kite9/fdc3-common'
+import { OpenError, AppIdentifier, AppMetadata } from '@finos/fdc3'
+
 
 type MessageRecord = {
-    to: AppMetadata,
+    to?: AppIdentifier,
+    uuid?: InstanceUUID,
     msg: object
 }
 
@@ -13,41 +13,53 @@ export class TestServerContext implements ServerContext {
 
     public postedMessages: MessageRecord[] = []
     private readonly cw: CustomWorld
-    public connectedApps: AppMetadata[] = []
+    public connectedApps: AppIdentifier[] = []
+    private readonly instances: { [uuid: InstanceUUID]: AppIdentifier } = {}
     private nextInstanceId: number = 0
+    private nextUUID: number = 0
     private port: MessagePort
-
 
     constructor(cw: CustomWorld, port: MessagePort) {
         this.cw = cw
         this.port = port
     }
 
-    async setAppConnected(app: AppMetadata): Promise<void> {
-        this.connectedApps.push(app)
+    getInstanceDetails(uuid: string) {
+        return this.instances[uuid]
     }
 
-    async disconnectApp(app: AppMetadata): Promise<void> {
+    setInstanceDetails(uuid: InstanceUUID, app: AppIdentifier) {
+        this.instances[uuid] = app
+    }
+
+    async disconnectApp(app: AppIdentifier): Promise<void> {
         this.connectedApps = this.connectedApps.filter(ca => ca.instanceId !== app.instanceId)
     }
 
-    async open(appId: string): Promise<AppMetadata> {
+    async open(appId: string): Promise<InstanceUUID> {
+        const ni = this.nextInstanceId++
         if (appId.includes("missing")) {
             throw new Error(OpenError.AppNotFound)
         } else {
+            const uuid = "uuid-" + ni
             const out = {
                 appId,
-                instanceId: "" + this.nextInstanceId++
-            } as AppMetadata
-            return out
+                instanceId: "" + ni
+            } as AppIdentifier
+            this.instances[uuid] = out
+            return uuid
         }
     }
 
-    async getConnectedApps(): Promise<AppMetadata[]> {
+    async setAppConnected(app: AppIdentifier): Promise<void> {
+        this.connectedApps.push(app)
+    }
+
+    async getConnectedApps(): Promise<AppIdentifier[]> {
         return this.connectedApps
     }
 
-    async isAppConnected(app: AppMetadata): Promise<boolean> {
+    async isAppConnected(app: AppIdentifier): Promise<boolean> {
         const openApps = await this.getConnectedApps()
         const found = openApps.find(a => (a.appId == app.appId) && (a.instanceId == app.instanceId))
         return found != null
@@ -64,10 +76,21 @@ export class TestServerContext implements ServerContext {
     }
 
     createUUID(): string {
-        return uuidv4()
+        return "uuid" + this.nextUUID++
     }
 
-    post(msg: object, _to: AppMetadata): Promise<void> {
+    getInstanceUUID(appId: AppIdentifier): InstanceUUID | undefined {
+        for (let [key, value] of Object.entries(this.instances)) {
+            if (value.instanceId === appId?.instanceId) {
+                return key;
+            }
+        }
+
+        return undefined;
+
+    }
+
+    post(msg: object, _to: AppMetadata | InstanceUUID): Promise<void> {
         this.port.postMessage(msg)
         return Promise.resolve();
     }
