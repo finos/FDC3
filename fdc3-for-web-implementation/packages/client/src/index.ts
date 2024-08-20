@@ -8,6 +8,17 @@ const DEFAULT_WAIT_FOR_MS = 20000;
 export const FDC3_VERSION = "2.2"
 
 /**
+ * Handles getAgent timeout
+ */
+function timeout(options: GetAgentParams): Promise<DesktopAgent> {
+    return new Promise<DesktopAgent>((_resolve, reject) => {
+        setTimeout(() => {
+            reject(new Error("Timeout waiting for connection"))
+        }, options.timeout!!)
+    })
+}
+
+/**
  * This return an FDC3 API.  Should be called by application code.
  * 
  * @param optionsOverride - options to override the default options
@@ -29,7 +40,8 @@ export const getAgent: getAgentType = (optionsOverride?: GetAgentParams) => {
 
     const STRATEGIES = [
         electronEvent,
-        postMessage
+        postMessage,
+        timeout
     ]
 
     function handleGenericOptions(da: DesktopAgent) {
@@ -44,7 +56,6 @@ export const getAgent: getAgentType = (optionsOverride?: GetAgentParams) => {
     const strategies = STRATEGIES.map(s => s(options));
 
     return Promise.race(strategies)
-        .then(da => handleGenericOptions(da))
         .catch(async (error) => {
             if (options.failover) {
                 const o = await options.failover(options)
@@ -60,6 +71,7 @@ export const getAgent: getAgentType = (optionsOverride?: GetAgentParams) => {
                 throw error
             }
         })
+        .then(da => handleGenericOptions(da))
 }
 
 /**

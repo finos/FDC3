@@ -86,7 +86,7 @@ export class MockFDC3Server {
                                 timestamp: new Date()
                             },
                             payload: {
-                                iframeUrl: EMBED_URL
+                                iframeUrl: EMBED_URL + "?connectionAttemptUuid=" + data.meta.connectionAttemptUuid
                             }
                         } as WebConnectionProtocol2LoadURL, origin)
                     } else {

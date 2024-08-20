@@ -129,23 +129,29 @@ class MockIFrame extends MockWindow {
         const parent = this.parent as MockWindow
 
         if ((name == 'src') && (value.startsWith(EMBED_URL))) {
-            const params = new URLSearchParams(value.substring(EMBED_URL.length) + 1)
+            const paramStr = value.substring(EMBED_URL.length + 1)
+            const params = new URLSearchParams(paramStr)
             const connectionAttemptUuid = params.get("connectionAttemptUuid")!!
             const connection = buildConnection(this.cw)
             parent.serverInstance?.instances.push(connection)
+            connection.context.setInstanceDetails('uuid', { appId: 'Test App Id', instanceId: '1' })
 
-            parent.postMessage({
-                type: "WCP3Handshake",
-                meta: {
-                    connectionAttemptUuid: connectionAttemptUuid,
-                    timestamp: new Date()
-                },
-                payload: {
-                    fdc3Version: "2.2",
-                    resolver: "https://mock.fdc3.com/resolver",
-                    channelSelector: "https://mock.fdc3.com/channelSelector",
-                }
-            } as WebConnectionProtocol3Handshake, origin, [connection.externalPort])
+            try {
+                parent.postMessage({
+                    type: "WCP3Handshake",
+                    meta: {
+                        connectionAttemptUuid: connectionAttemptUuid,
+                        timestamp: new Date()
+                    },
+                    payload: {
+                        fdc3Version: "2.2",
+                        resolver: "https://mock.fdc3.com/resolver",
+                        channelSelector: "https://mock.fdc3.com/channelSelector",
+                    }
+                } as WebConnectionProtocol3Handshake, EMBED_URL, [connection.externalPort])
+            } catch (e) {
+                console.error(e)
+            }
         }
     }
 }
