@@ -4,10 +4,26 @@ title: Events
 
 In addition to intent and context events, the FDC3 API and PrivateChannel API may be used to listen for other types of events via their `addEventListener()` functions.
 
+## `ApiEvent`
+
+Type defining a basic event object that may be emitted by an FDC3 API interface such as DesktopAgent or PrivateChannel. There are more specific event types defined for each interface.
+
+```ts
+interface ApiEvent {
+  readonly type: string;
+  readonly details: any;
+}
+```
+
+**See also:**
+
+- [`FDC3Event`](#fdc3event)
+- [`PrivateChannelEvent`](#privatechannelevent)
+
 ## `EventHandler`
 
 ```ts
-type EventHandler = (event: FDC3Event | PrivateChannelEvent) => void;
+type EventHandler = (event: ApiEvent) => void;
 ```
 
 Describes a callback that handles non-context and non-intent events. Provides the details of the event.
@@ -16,28 +32,27 @@ Used when attaching listeners to events.
 
 **See also:**
 
-- [`DesktopAgent.addEventListener`](DesktopAgent#addEventListener)
-- [`FDC3Event`](#fdc3event)
+- [`DesktopAgent.addEventListener`](DesktopAgent#addeventlistener)
+- [`PrivateChannel.addEventListener`](PrivateChannel#addeventlistener)
+- [`ApiEvent`](#apievent)
 
-## `FDC3EventType`
+## `FDC3EventTypes`
 
 ```ts
-enum FDC3EventType {
-  USER_CHANNEL_CHANGED = "USER_CHANNEL_CHANGED"
-}
+type FDC3EventTypes = "USER_CHANNEL_CHANGED";
 ```
 
-Enumeration defining the types of (non-context and non-intent) events that may be received via the FDC3 API's `addEventListener` function.
+Type defining valid type strings for DesktopAgent interface events.
 
 **See also:**
 
-- [`DesktopAgent.addEventListener`](DesktopAgent#addEventListener)
+- [`DesktopAgent.addEventListener`](DesktopAgent#addeventlistener)
 
 ## `FDC3Event`
 
 ```ts
-interface FDC3Event {
-  readonly type: FDC3EventType;
+interface FDC3Event extends ApiEvent{
+  readonly type: FDC3EventTypes;
   readonly details: any;
 }
 ```
@@ -48,14 +63,14 @@ Events will always include both `type` and `details` properties, which describe 
 
 **See also:**
 
-- [`DesktopAgent.addEventListener`](DesktopAgent#addEventListener)
-- [`FDC3EventType`](#fdc3eventtype)
+- [`DesktopAgent.addEventListener`](DesktopAgent#addeventlistener)
+- [`FDC3EventTypes`](#fdc3eventtypes)
 
 ### `FDC3ChannelChangedEvent`
 
 ```ts
 interface FDC3ChannelChangedEvent extends FDC3Event {
-  readonly type: FDC3EventType.USER_CHANNEL_CHANGED;
+  readonly type: "USER_CHANNEL_CHANGED";
   readonly details: {
     currentChannelId: string | null
   };
@@ -66,27 +81,23 @@ Type representing the format of USER_CHANNEL_CHANGED events.
 
 The identity of the channel joined is provided as `details.currentChannelId`, which will be `null` if the app is no longer joined to any channel.
 
-## `PrivateChannelEventType`
+## `PrivateChannelEventTypes`
 
 ```ts
-enum PrivateChannelEventType {
-  ADD_CONTEXT_LISTENER = "addContextListener",
-  UNSUBSCRIBE = "unsubscribe",
-  DISCONNECT = "disconnect"
-}
+type PrivateChannelEventTypes = "addContextListener" | "unsubscribe" | "disconnect";
 ```
 
-Enumeration defining the types of (non-context and non-intent) events that may be received via a PrivateChannel's `addEventListener` function.
+Type defining valid type strings for Private Channel events.
 
 **See also:**
 
-- [`PrivateChannel.addEventListener`](PrivateChannel#addEventListener)
+- [`PrivateChannel.addEventListener`](PrivateChannel#addeventlistener)
 
 ## `PrivateChannelEvent`
 
 ```ts
-interface PrivateChannelEvent {
-  readonly type: PrivateChannelEventType;
+interface PrivateChannelEvent extends ApiEvent {
+  readonly type: PrivateChannelEventTypes;
   readonly details: any;
 }
 ```
@@ -95,14 +106,14 @@ Type defining the format of event objects that may be received via a PrivateChan
 
 **See also:**
 
-- [`PrivateChannel.addEventListener`](PrivateChannel#addEventListener)
-- [`PrivateChannelEventType`](#privatechanneleventtype)
+- [`PrivateChannel.addEventListener`](PrivateChannel#addeventlistener)
+- [`PrivateChannelEventTypes`](#privatechanneleventtypes)
 
 ### `PrivateChannelAddContextListenerEvent`
 
 ```ts
 interface PrivateChannelAddContextListenerEvent extends PrivateChannelEvent {
-  readonly type: PrivateChannelEventType.ADD_CONTEXT_LISTENER;
+  readonly type: "addContextListener";
   readonly details: {
     contextType: string | null
   };
@@ -117,7 +128,7 @@ The context type of the listener added is provided as `details.contextType`, whi
 
 ```ts
 interface PrivateChannelUnsubscribeEvent extends PrivateChannelEvent {
-  readonly type: PrivateChannelEventType.UNSUBSCRIBE;
+  readonly type: "unsubscribe";
   readonly details: {
     contextType: string | null
   };
@@ -132,7 +143,7 @@ The context type of the  listener removed is provided as `details.contextType`, 
 
 ```ts
 export interface PrivateChannelDisconnectEvent extends PrivateChannelEvent {
-  readonly type: PrivateChannelEventType.DISCONNECT;
+  readonly type: "disconnect";
   readonly details: null | undefined;
 }
 ```
