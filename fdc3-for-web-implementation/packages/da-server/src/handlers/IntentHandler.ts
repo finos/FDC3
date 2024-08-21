@@ -1,5 +1,5 @@
 import { MessageHandler } from "../BasicFDC3Server";
-import { InstanceUUID, ServerContext } from "../ServerContext";
+import { InstanceID, ServerContext } from "../ServerContext";
 import { Directory } from "../directory/DirectoryInterface";
 import { AppIntent, ResolveError } from "@finos/fdc3";
 import {
@@ -68,7 +68,7 @@ async function forwardRequest(arg0: IntentRequest, to: AppIdentifier, sc: Server
 
     // register the resolution destination
     ih.pendingResolutions.set(arg0.requestUuid, arg0.from)
-    await sc.post(out, to)
+    await sc.post(out, to.instanceId!!)
     successResponseId(sc, arg0.requestUuid, arg0.from, {
         intentResolution: {
             intent: arg0.intent,
@@ -128,7 +128,7 @@ export class IntentHandler implements MessageHandler {
         this.timeoutMs = timeoutMs
     }
 
-    async accept(msg: any, sc: ServerContext, uuid: InstanceUUID): Promise<void> {
+    async accept(msg: any, sc: ServerContext, uuid: InstanceID): Promise<void> {
         const from = sc.getInstanceDetails(uuid)
 
         if (from == null) {

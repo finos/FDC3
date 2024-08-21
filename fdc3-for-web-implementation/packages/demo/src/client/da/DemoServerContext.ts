@@ -1,10 +1,8 @@
-import { Directory, DirectoryApp, ServerContext } from '@kite9/da-server'
-import { Socket, io } from 'socket.io-client';
+import { Directory, DirectoryApp, InstanceID, ServerContext } from '@kite9/da-server'
+import { Socket } from 'socket.io-client';
 import { v4 as uuid } from 'uuid'
-import { APP_HELLO, FDC3_DA_EVENT } from '../../message-types';
+import { FDC3_DA_EVENT } from '../../message-types';
 import { AppIdentifier, OpenError } from '@finos/fdc3';
-import { AppChecker, DesktopAgentDetailResolver, DesktopAgentDetails, DesktopAgentPortResolver, ChannelSelectorDetails, IntentResolverDetails } from '@kite9/fdc3-common';
-import { link } from './util';
 
 enum Opener { Tab, Frame, Nested }
 
@@ -17,40 +15,55 @@ type AppRegistration = {
     state: State
 }
 
-enum Approach { IFRAME, PARENT_POST_MESSAGE }
-
-function getApproach(): Approach {
-    const cb = document.getElementById("approach") as HTMLInputElement;
-    const val = cb.value
-    var out: Approach = Approach[val as keyof typeof Approach]; //Works with --noImplicitAny
-    return out;
-}
-
-enum UI { DEFAULT, DEMO }
-
-function getUi(): UI {
-    const cb = document.getElementById("ui") as HTMLInputElement;
-    const val = cb.value
-    var out: UI = UI[val as keyof typeof UI]; //Works with --noImplicitAny
-    return out;
-}
 
 export class DemoServerContext implements ServerContext {
 
     private readonly socket: Socket
     private readonly directory: Directory
-    private readonly desktopAgentUUID: string
 
-    private instances: AppRegistration[] = []
+    private connections: AppRegistration[] = []
+    private instances: Map<InstanceID, string> = new Map()
 
-    constructor(socket: Socket, directory: Directory, desktopAgentUUID: string) {
+    constructor(socket: Socket, directory: Directory) {
         this.socket = socket
         this.directory = directory
-        this.desktopAgentUUID = desktopAgentUUID
     }
 
-    async setAppConnected(app: AppMetadata): Promise<void> {
-        const theApp = this.instances.find(i => (i.appId.appId == app.appId) && (i.appId.instanceId == app.instanceId))
+    /**
+     * Sets the appId and instanceId for a given connection UUID
+     */
+    setInstanceDetails(uuid: InstanceID, meta: AppIdentifier): void {
+        console.log(`Setting ${uuid} to ${meta.appId}`)
+        this.instances.set(uuid, meta.appId)
+    }
+
+    getInstanceForWindow(window: Window): AppIdentifier | undefined {
+        const out = this.connections.find(i => i.window == window)
+        if (out) {
+            return out.appId
+        } else {
+            return undefined
+        }
+    }
+
+    /**
+     * Returns the UUID for a particular instance of an app.
+     * This is used in situations where an app is reconnecting to the same desktop agent.
+     */
+    getInstanceDetails(uuid: InstanceID): AppIdentifier | undefined {
+        const out = this.instances.get(uuid)
+        if (out) {
+            return {
+                appId: out,
+                instanceId: uuid
+            }
+        } else {
+            return undefined
+        }
+    }
+
+    async setAppConnected(app: AppIdentifier): Promise<void> {
+        const theApp = this.connections.find(i => (i.appId.appId == app.appId) && (i.appId.instanceId == app.instanceId))
         if (theApp) {
             theApp.state = State.Connected
         }
@@ -67,8 +80,11 @@ export class DemoServerContext implements ServerContext {
         return uuid()
     }
 
-    async post(message: object, to: AppMetadata): Promise<void> {
-        console.log(`Responding with: ${JSON.stringify(message, null, 2)} to ${JSON.stringify(to, null, 2)}`)
+    /**
+     * Post an outgoing message to a particular app
+     */
+    async post(message: object, to: InstanceID): Promise<void> {
+        console.log(`Responding with: ${JSON.stringify(message, null, 2)} to ${to}`)
         this.socket.emit(FDC3_DA_EVENT, message, to)
     }
 
@@ -82,8 +98,8 @@ export class DemoServerContext implements ServerContext {
     }
 
     goodbye(id: string) {
-        this.instances = this.instances.filter(i => i.appId.instanceId !== id)
-        console.log(`Closed ${id} ${JSON.stringify(this.instances.map(i => i.appId.instanceId))} apps open`)
+        this.connections = this.connections.filter(i => i.appId.instanceId !== id)
+        console.log(`Closed ${id} ${JSON.stringify(this.connections.map(i => i.appId.instanceId))} apps open`)
     }
 
     openTab(url: string): Window {
@@ -109,38 +125,42 @@ export class DemoServerContext implements ServerContext {
             case Opener.Frame:
                 return this.openFrame(url);
         }
-        throw new Error("unsupported")
     }
 
-    async open(appId: string): Promise<AppMetadata> {
+    async open(appId: string): Promise<InstanceID> {
         const details: DirectoryApp[] = this.directory.retrieveAppsById(appId) as DirectoryApp[]
         if (details.length > 0) {
             const url = (details[0].details as any)?.url ?? undefined
             const window = this.openUrl(url)
+            const instanceId: InstanceID = this.createUUID()
             const metadata = {
                 appId,
-                instanceId: this.createUUID()
+                instanceId,
+                window
             }
-            this.instances.push({
+
+            this.setInstanceDetails(instanceId, metadata)
+
+            this.connections.push({
                 appId: metadata,
                 url,
                 window,
                 state: State.Pending
             })
 
-            return metadata
+            return instanceId
         }
 
         throw new Error(OpenError.AppNotFound)
     }
 
-    async getConnectedApps(): Promise<AppMetadata[]> {
-        return this.instances
+    async getConnectedApps(): Promise<AppIdentifier[]> {
+        return this.connections
             .filter(i => i.state == State.Connected)
             .map(i => i.appId)
     }
 
-    async isAppConnected(app: AppMetadata): Promise<boolean> {
+    async isAppConnected(app: AppIdentifier): Promise<boolean> {
         const out = (await this.getConnectedApps()).filter(ai =>
             (ai.appId == app.appId) && (ai.instanceId == app.instanceId)).length > 0
 
@@ -162,69 +182,5 @@ export class DemoServerContext implements ServerContext {
 
     fdc3Version(): string {
         return "2.0"
-    }
-
-    // for a given window, allows us to determine which app it is (if any)
-    appChecker: AppChecker = o => this.instances.find(i => i.window == o)?.appId
-
-    // this is for when the API is using an iframe, and needs to know the address to load
-    detailsResolver: DesktopAgentDetailResolver = (o: Window, a: AppIdentifier) => {
-        const apiKey = "ABC"
-
-        const intentResolver: IntentResolverDetails | null = (getUi() == UI.DEMO) ? {
-            uri: window.location.origin + "/static/da/intent-resolver.html"
-        } : null
-
-        const channelSelector: ChannelSelectorDetails | null = (getUi() == UI.DEMO) ? {
-            uri: window.location.origin + "/static/da/channel-selector.html",
-            collapsedCss: {
-                width: "45px",
-                height: "45px",
-                right: "20px",
-                bottom: "20px",
-                position: "fixed"
-            },
-            expandedCss: {
-                width: "300px",
-                height: "300px",
-                right: "20px",
-                bottom: "20px",
-                position: "fixed"
-            }
-        } : null
-
-        if (getApproach() == Approach.IFRAME) {
-            return {
-                apiKey,
-                uri: window.location.origin + "/static/da/embed.html",
-                desktopAgentId: this.desktopAgentUUID,
-                intentResolver,
-                channelSelector
-            } as DesktopAgentDetails
-        } else {
-            return {
-                apiKey,
-                desktopAgentId: this.desktopAgentUUID,
-                intentResolver,
-                channelSelector
-            } as DesktopAgentDetails
-        }
-    }
-
-    portResolver: DesktopAgentPortResolver = (o: Window, a: AppIdentifier) => {
-        if (getApproach() == Approach.IFRAME) {
-            return null;
-        } else {
-            const channel = new MessageChannel()
-            const socket = io()
-
-            socket.on("connect", () => {
-                console.log("Server creating socket")
-                link(socket, channel, a)
-                socket.emit(APP_HELLO, this.desktopAgentUUID, a)
-            })
-
-            return channel.port1;
-        }
     }
 }

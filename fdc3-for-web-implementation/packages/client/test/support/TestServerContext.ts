@@ -1,11 +1,11 @@
-import { ServerContext, InstanceUUID } from '@kite9/da-server'
+import { ServerContext, InstanceID } from '@kite9/da-server'
 import { CustomWorld } from '../world'
-import { OpenError, AppIdentifier, AppMetadata } from '@finos/fdc3'
+import { OpenError, AppIdentifier } from '@finos/fdc3'
 
 
 type MessageRecord = {
     to?: AppIdentifier,
-    uuid?: InstanceUUID,
+    uuid?: InstanceID,
     msg: object
 }
 
@@ -14,7 +14,7 @@ export class TestServerContext implements ServerContext {
     public postedMessages: MessageRecord[] = []
     private readonly cw: CustomWorld
     public connectedApps: AppIdentifier[] = []
-    private readonly instances: { [uuid: InstanceUUID]: AppIdentifier } = {}
+    private readonly instances: { [uuid: InstanceID]: AppIdentifier } = {}
     private nextInstanceId: number = 0
     private nextUUID: number = 0
     private port: MessagePort
@@ -28,7 +28,7 @@ export class TestServerContext implements ServerContext {
         return this.instances[uuid]
     }
 
-    setInstanceDetails(uuid: InstanceUUID, app: AppIdentifier) {
+    setInstanceDetails(uuid: InstanceID, app: AppIdentifier) {
         this.instances[uuid] = app
     }
 
@@ -36,7 +36,7 @@ export class TestServerContext implements ServerContext {
         this.connectedApps = this.connectedApps.filter(ca => ca.instanceId !== app.instanceId)
     }
 
-    async open(appId: string): Promise<InstanceUUID> {
+    async open(appId: string): Promise<InstanceID> {
         const ni = this.nextInstanceId++
         if (appId.includes("missing")) {
             throw new Error(OpenError.AppNotFound)
@@ -79,7 +79,10 @@ export class TestServerContext implements ServerContext {
         return "uuid" + this.nextUUID++
     }
 
-    getInstanceUUID(appId: AppIdentifier): InstanceUUID | undefined {
+    /**
+     * USED FOR TESTING
+     */
+    getInstanceUUID(appId: AppIdentifier): InstanceID | undefined {
         for (let [key, value] of Object.entries(this.instances)) {
             if (value.instanceId === appId?.instanceId) {
                 return key;
@@ -90,7 +93,7 @@ export class TestServerContext implements ServerContext {
 
     }
 
-    post(msg: object, _to: AppMetadata | InstanceUUID): Promise<void> {
+    post(msg: object, _to: InstanceID): Promise<void> {
         this.port.postMessage(msg)
         return Promise.resolve();
     }

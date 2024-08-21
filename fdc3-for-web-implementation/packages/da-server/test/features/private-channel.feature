@@ -53,7 +53,7 @@ Feature: Relaying Private Channel Broadcast messages
   Scenario: addContextListener Event Listener add and removed, shouldn't fire when addContextListener called.
     When "App2/a2" adds an "onAddContextListener" on "{channel1Id}"
     And "App2/a2" removes event listener "uuid6"
-    And "App2/a1" adds a context listener on "{channel1Id}" with type "fdc3.instrument"
+    And "App1/a1" adds a context listener on "{channel1Id}" with type "fdc3.instrument"
     Then messaging will have outgoing posts
       | msg.matches_type                               | to.appId | to.instanceId | msg.payload.privateChannelId | msg.payload.contextType | msg.payload.listenerUUID |
       | privateChannelAddEventListenerResponse         | App2     | a2            | {null}                       | {null}                  | uuid6                    |

@@ -1,11 +1,11 @@
-import { ServerContext, InstanceUUID } from '../../src/ServerContext'
+import { ServerContext, InstanceID } from '../../src/ServerContext'
 import { CustomWorld } from '../world'
 import { OpenError, AppIdentifier } from '@finos/fdc3'
 
 
 type MessageRecord = {
     to?: AppIdentifier,
-    uuid?: InstanceUUID,
+    uuid?: InstanceID,
     msg: object
 }
 
@@ -14,7 +14,7 @@ export class TestServerContext implements ServerContext {
     public postedMessages: MessageRecord[] = []
     private readonly cw: CustomWorld
     public connectedApps: AppIdentifier[] = []
-    private readonly instances: { [uuid: InstanceUUID]: AppIdentifier } = {}
+    private readonly instances: { [uuid: InstanceID]: string } = {}
     private nextInstanceId: number = 0
     private nextUUID: number = 0
 
@@ -23,28 +23,32 @@ export class TestServerContext implements ServerContext {
     }
 
     getInstanceDetails(uuid: string) {
-        return this.instances[uuid]
+        const appId = this.instances[uuid]
+        if (appId) {
+            return {
+                appId,
+                instanceId: uuid
+            }
+        } else {
+            return undefined
+        }
     }
 
-    setInstanceDetails(uuid: InstanceUUID, app: AppIdentifier) {
-        this.instances[uuid] = app
+    setInstanceDetails(uuid: InstanceID, appId: AppIdentifier) {
+        this.instances[uuid] = appId.appId
     }
 
     async disconnectApp(app: AppIdentifier): Promise<void> {
         this.connectedApps = this.connectedApps.filter(ca => ca.instanceId !== app.instanceId)
     }
 
-    async open(appId: string): Promise<InstanceUUID> {
+    async open(appId: string): Promise<InstanceID> {
         const ni = this.nextInstanceId++
         if (appId.includes("missing")) {
             throw new Error(OpenError.AppNotFound)
         } else {
             const uuid = "uuid-" + ni
-            const out = {
-                appId,
-                instanceId: "" + ni
-            } as AppIdentifier
-            this.instances[uuid] = out
+            this.instances[uuid] = appId
             return uuid
         }
     }
@@ -77,27 +81,11 @@ export class TestServerContext implements ServerContext {
         return "uuid" + this.nextUUID++
     }
 
-    getInstanceUUID(appId: AppIdentifier): InstanceUUID | undefined {
-        for (let [key, value] of Object.entries(this.instances)) {
-            if (value.instanceId === appId?.instanceId) {
-                return key;
-            }
-        }
-
-        return undefined;
-
-    }
-
-    async post(msg: object, to: AppIdentifier | InstanceUUID): Promise<void> {
+    async post(msg: object, to: InstanceID): Promise<void> {
         if (to == null) {
             this.postedMessages.push({ msg })
-        } else if (typeof to === 'string') {
-            const appId = this.instances[to as InstanceUUID]
-            this.postedMessages.push({ msg, to: appId, uuid: to as InstanceUUID })
         } else {
-            const instanceId = (to as any).instanceId!!
-            const uuid = this.getInstanceUUID(instanceId) ?? "none"
-            this.postedMessages.push({ msg, to: (to as any), uuid })
+            this.postedMessages.push({ msg, to: this.getInstanceDetails(to), uuid: to })
         }
     }
 
@@ -105,4 +93,11 @@ export class TestServerContext implements ServerContext {
         this.cw.log(message)
     }
 
+    /**
+     * USED FOR TESTING
+     */
+    getInstanceUUID(appId: AppIdentifier): InstanceID {
+        this.setInstanceDetails(appId.instanceId!!, appId)
+        return appId.instanceId!!
+    }
 }

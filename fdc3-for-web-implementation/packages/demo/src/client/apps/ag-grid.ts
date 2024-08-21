@@ -1,4 +1,4 @@
-import { getAgentAPI } from "@kite9/client";
+import { getAgent } from "@kite9/client";
 import "./ag-grid.css";
 
 // DATA
@@ -56,78 +56,78 @@ const portfolios = [
 // FDC3 FUNCTIONS
 
 const cellDoubleClickEventHandler = (event: any) => {
-    if(event.column.left === 0 && event.value?.trim() !== ""){
-        passContext(event.value);
-    }
+  if (event.column.left === 0 && event.value?.trim() !== "") {
+    passContext(event.value);
+  }
 }
 const passContext = (ticker: string) => {
-    window.fdc3.broadcast({
-        type: "fdc3.instrument",
-        name: ticker,
-        id: {
-            ticker
-        }
-    })
+  window.fdc3.broadcast({
+    type: "fdc3.instrument",
+    name: ticker,
+    id: {
+      ticker
+    }
+  })
 }
 const raiseIntent = (intent: string, ticker: string) => {
-    window.fdc3.raiseIntent(intent, {
-        type: "fdc3.instrument",
-        name: ticker,
-        id: {
-            ticker
-        }
-    })
+  window.fdc3.raiseIntent(intent, {
+    type: "fdc3.instrument",
+    name: ticker,
+    id: {
+      ticker
+    }
+  })
 }
 
 const init = async () => {
-    // Initialize AG-Grid
+  // Initialize AG-Grid
+  // @ts-ignore
+  const { gridOptions } = new agGrid.Grid<HTMLDivElement>(
+    document.querySelector("#myGrid"), // element
+    setupGridOptions  // options (rows of data, interactions, etc)
+  );
+
+  // Handle changes to the filter box
+  const filterBox = document.querySelector<HTMLInputElement>("#quick-filter-box")!;
+
+  // Whenever a user types, filter the blotter by the search text
+  filterBox.addEventListener("input", (e) => {
     // @ts-ignore
-    const {gridOptions} = new agGrid.Grid<HTMLDivElement>(
-      document.querySelector("#myGrid"), // element
-      setupGridOptions  // options (rows of data, interactions, etc)
-    );
+    gridOptions.api.setQuickFilter(e?.target.value);
+  });
 
-    // Handle changes to the filter box
-    const filterBox = document.querySelector<HTMLInputElement>("#quick-filter-box")!;
-
-    // Whenever a user types, filter the blotter by the search text
-    filterBox.addEventListener("input", (e) => {
-        // @ts-ignore
-        gridOptions.api.setQuickFilter(e?.target.value);
-    });
-    
-    // If the user presses ENTER, broadcast the search query as the context
-    filterBox.addEventListener("keyup", (e) => {
-        // @ts-ignore
-        if(e.key === "Enter" && e.target?.value?.trim() !== ""){
-            // @ts-ignore
-            passContext(e.target.value.toUpperCase());
-        }
-    })
-  
-    
-    // INITIALIZE FDC3
-    try {
-        // LINE CURRENTLY FAILS
-        window.fdc3 = await getAgentAPI();
-        console.log(window.fdc3);
-
-        // Listen for contexts
-        window.fdc3.addContextListener((context) => {
-            // We only care about type=fdc3.instrument. 
-            // Ignore anything else.
-            if(context.type !== "fdc3.instrument") return;
-
-            const symbol = context.id.ticker;
-            // Show the symbol in the search box
-            filterBox.value = symbol;
-            // Apply a filter based on the symbol
-            gridOptions.api.setQuickFilter(symbol);
-        });
-    } catch (err) {
-        console.log("waiting...");
-        console.error(err);
+  // If the user presses ENTER, broadcast the search query as the context
+  filterBox.addEventListener("keyup", (e) => {
+    // @ts-ignore
+    if (e.key === "Enter" && e.target?.value?.trim() !== "") {
+      // @ts-ignore
+      passContext(e.target.value.toUpperCase());
     }
+  })
+
+
+  // INITIALIZE FDC3
+  try {
+    // LINE CURRENTLY FAILS
+    window.fdc3 = await getAgent();
+    console.log(window.fdc3);
+
+    // Listen for contexts
+    window.fdc3.addContextListener((context) => {
+      // We only care about type=fdc3.instrument. 
+      // Ignore anything else.
+      if (context.type !== "fdc3.instrument") return;
+
+      const symbol = context.id.ticker;
+      // Show the symbol in the search box
+      filterBox.value = symbol;
+      // Apply a filter based on the symbol
+      gridOptions.api.setQuickFilter(symbol);
+    });
+  } catch (err) {
+    console.log("waiting...");
+    console.error(err);
+  }
 };
 
 const dollarFormatterRegEx = /(\d)(?=(\d{3})+(?!\d))/g;
@@ -136,21 +136,21 @@ type FormatterParams = {
   value: number;
 };
 type TradeRecord = {
-    security: string;
-    portfolio: string;
-    book: string;
-    trade: number;
-    submitterID: number;
-    submitterDealID: number;
-    bidFlag: "Buy" | "Sell";
-    current: number;
-    previous: number;
-    chng: number;
-    pctchng: number;
-    h52: number;
-    l52:  number;
-    hlrange: number;
-    pe: number;
+  security: string;
+  portfolio: string;
+  book: string;
+  trade: number;
+  submitterID: number;
+  submitterDealID: number;
+  bidFlag: "Buy" | "Sell";
+  current: number;
+  previous: number;
+  chng: number;
+  pctchng: number;
+  h52: number;
+  l52: number;
+  hlrange: number;
+  pe: number;
 }
 type onReadyParams = {
   api: {
@@ -194,36 +194,36 @@ const createRowData = () => {
   return rowData;
 }
 const createTradeRecord = (security: string, portfolio: string, book: string): TradeRecord => {
-    let previous = Math.floor(Math.random() * 100000) + 100;
-    let current = previous + Math.floor(Math.random() * 10000) - 2000;
-    let difference = current - previous;
+  let previous = Math.floor(Math.random() * 100000) + 100;
+  let current = previous + Math.floor(Math.random() * 10000) - 2000;
+  let difference = current - previous;
 
-    let l52 = Math.floor(Math.random() * 100000) + 100;
-    let h52 = l52 + Math.floor(Math.random() * 10000) - 2000;
+  let l52 = Math.floor(Math.random() * 100000) + 100;
+  let h52 = l52 + Math.floor(Math.random() * 10000) - 2000;
 
-    return {
-        security,
-        portfolio,
-        book,
-        trade: createTradeId(),
-        submitterID: randomBetween(10, 1000),
-        submitterDealID: randomBetween(10, 1000),
-        bidFlag: (Math.random() < .5) ? 'Buy' : 'Sell',
-        current: current,
-        previous: previous,
-        chng: difference,
-        pctchng: (difference / previous) * 100,
-        h52: h52,
-        l52: l52,
-        hlrange: h52 - l52,
-        pe: randomBetween(385, 100000) / 100
+  return {
+    security,
+    portfolio,
+    book,
+    trade: createTradeId(),
+    submitterID: randomBetween(10, 1000),
+    submitterDealID: randomBetween(10, 1000),
+    bidFlag: (Math.random() < .5) ? 'Buy' : 'Sell',
+    current: current,
+    previous: previous,
+    chng: difference,
+    pctchng: (difference / previous) * 100,
+    h52: h52,
+    l52: l52,
+    hlrange: h52 - l52,
+    pe: randomBetween(385, 100000) / 100
 
-    };
+  };
 }
 
-function BtnCellRenderer() {}
+function BtnCellRenderer() { }
 
-BtnCellRenderer.prototype.init = function(params: any) {
+BtnCellRenderer.prototype.init = function (params: any) {
   this.params = params;
 
   this.eGui = document.createElement('button');
@@ -233,15 +233,15 @@ BtnCellRenderer.prototype.init = function(params: any) {
   this.eGui.addEventListener('click', this.btnClickedHandler);
 }
 
-BtnCellRenderer.prototype.getGui = function() {
+BtnCellRenderer.prototype.getGui = function () {
   return this.eGui;
 }
 
-BtnCellRenderer.prototype.destroy = function() {
+BtnCellRenderer.prototype.destroy = function () {
   this.eGui.removeEventListener('click', this.btnClickedHandler);
 }
 
-BtnCellRenderer.prototype.btnClickedHandler = function() {
+BtnCellRenderer.prototype.btnClickedHandler = function () {
   this.params.clicked(this.params);
 }
 
@@ -313,8 +313,8 @@ const setupGridOptions = {
       cellRenderer: "btnCellRenderer",
       cellRendererParams: {
         title: "View chart",
-        clicked: (params: {node: {key: string}}) => {
-          raiseIntent("ViewChart",params.node.key);
+        clicked: (params: { node: { key: string } }) => {
+          raiseIntent("ViewChart", params.node.key);
         },
       },
     },

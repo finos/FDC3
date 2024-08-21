@@ -1,4 +1,4 @@
-import { ServerContext, InstanceUUID } from "./ServerContext"
+import { ServerContext, InstanceID } from "./ServerContext"
 import { BasicFDC3Server, DefaultFDC3Server } from "./BasicFDC3Server"
 import { FDC3Server } from "./FDC3Server"
 import { Directory, DirectoryApp, DirectoryIntent } from "./directory/DirectoryInterface"
@@ -6,7 +6,7 @@ import { BasicDirectory } from "./directory/BasicDirectory"
 import { BroadcastHandler } from "./handlers/BroadcastHandler"
 
 export {
-    type InstanceUUID,
+    type InstanceID,
     type ServerContext,
     BasicFDC3Server,
     DefaultFDC3Server,

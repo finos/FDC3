@@ -2,7 +2,6 @@ import express from "express";
 import ViteExpress from "vite-express";
 import { Server, Socket } from "socket.io"
 import { APP_GOODBYE, APP_HELLO, DA_HELLO, FDC3_APP_EVENT, FDC3_DA_EVENT } from "../message-types";
-import { AppIdentifier } from "@finos/fdc3";
 
 const app = express();
 
@@ -43,8 +42,7 @@ io.on('connection', (socket: Socket) => {
     console.log("A da connected: " + id)
   })
 
-  socket.on(APP_HELLO, function (id: string, appID: AppIdentifier) {
-    myId = appID.instanceId!!
+  socket.on(APP_HELLO, function (id: string, myId: string) {
     const instance = instances.get(id)
 
     if (instance != undefined) {
@@ -52,7 +50,7 @@ io.on('connection', (socket: Socket) => {
       instance.apps.set(myId, socket)
       myInstance = instance
     } else {
-      console.log("App Tried Connecting to non-existent DA Instance " + id + " " + appID.appId + " " + appID.instanceId)
+      console.log("App Tried Connecting to non-existent DA Instance " + id + " " + myId)
     }
   })
 
@@ -62,12 +60,12 @@ io.on('connection', (socket: Socket) => {
 
     if ((myInstance == null) && (data.type == 'intentResolutionChoice')) {
       // message from app's intent resolver
-      myInstance = Array.from(instances.values()).find(cw => cw.apps.get(from.instanceId))
+      myInstance = Array.from(instances.values()).find(cw => cw.apps.get(from))
     }
 
     if ((myInstance == null) && (data.type == 'channelSelectionChoice')) {
       // message from app's channelSelector
-      myInstance = Array.from(instances.values()).find(cw => cw.apps.get(from.instanceId))
+      myInstance = Array.from(instances.values()).find(cw => cw.apps.get(from))
     }
 
     if (myInstance != undefined) {
@@ -77,7 +75,7 @@ io.on('connection', (socket: Socket) => {
 
   socket.on(FDC3_DA_EVENT, function (data, to): void {
     // send message to app
-    const destSocket = myInstance?.apps.get(to.instanceId)
+    const destSocket = myInstance?.apps.get(to)
     if (destSocket) {
       destSocket.emit(FDC3_DA_EVENT, data, to)
     } else {

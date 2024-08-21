@@ -19,7 +19,7 @@ export function successResponseId(sc: ServerContext, requestId: string, to: AppI
         },
         type,
         payload,
-    } as AgentResponseMessage, to)
+    } as AgentResponseMessage, to.instanceId!!)
 }
 
 export function errorResponseId(sc: ServerContext, requestId: string, to: AppIdentifier, error: string, type: string) {
@@ -33,7 +33,7 @@ export function errorResponseId(sc: ServerContext, requestId: string, to: AppIde
         payload: {
             error
         },
-    } as AgentResponseMessage, to)
+    } as AgentResponseMessage, to.instanceId!!)
 }
 
 /* 

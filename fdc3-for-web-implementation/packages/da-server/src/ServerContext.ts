@@ -7,7 +7,7 @@ import { AppIdentifier } from "@kite9/fdc3-common";
  * It is important that this is unguessable as it is a "password" of sorts used to 
  * identify the app between reconnections.
  */
-export type InstanceUUID = string
+export type InstanceID = string
 
 /**
  * Handles messaging to apps and opening apps
@@ -22,29 +22,29 @@ export interface ServerContext {
     /**
      * Post an outgoing message to a particular app
      */
-    post(message: object, to: AppIdentifier): Promise<void>
+    post(message: object, instanceId: InstanceID): Promise<void>
 
     /**
      * Post an outgoing message to a particular app
      */
-    post(message: object, to: InstanceUUID): Promise<void>
+    post(message: object, instanceId: InstanceID): Promise<void>
 
     /**
      * Opens a new instance of an application.  
      * Promise completes once the application window is opened
      */
-    open(appId: string): Promise<InstanceUUID>
+    open(appId: string): Promise<InstanceID>
 
     /**
-     * Sets the appId and instanceId for a given connection UUID
+     * Registers a particular instance id with a given app id
      */
-    setInstanceDetails(uuid: InstanceUUID, meta: AppIdentifier): void
+    setInstanceDetails(uuid: InstanceID, appId: AppIdentifier): void
 
     /**
      * Returns the UUID for a particular instance of an app.
      * This is used in situations where an app is reconnecting to the same desktop agent.
      */
-    getInstanceDetails(uuid: InstanceUUID): AppIdentifier | undefined
+    getInstanceDetails(uuid: InstanceID): AppIdentifier | undefined
 
     /**
      * Registers an app as connected to the desktop agent. 

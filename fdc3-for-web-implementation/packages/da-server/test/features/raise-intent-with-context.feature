@@ -18,7 +18,7 @@ Feature: Raising Intents For Context
     And "listenerApp/b1" registers an intent listener for "returnBook"
 
   Scenario: Raising an Intent to a Non-Existent App
-    And "App1/a1" raises an intent with contextType "fdc3.book" on app "completelyMadeUp"
+    And "App1/a1" raises an intent with contextType "fdc3.magazine" on app "completelyMadeUp"
     Then messaging will have outgoing posts
       | msg.type                      | msg.payload.error    | to.instanceId | to.appId |
       | raiseIntentForContextResponse | TargetAppUnavailable | a1            | App1     |
