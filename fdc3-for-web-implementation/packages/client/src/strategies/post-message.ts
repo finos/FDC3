@@ -91,7 +91,7 @@ const loader: Loader = async (options: GetAgentParams) => {
 
     const targets: Window[] = []
     collectPossibleTargets(globalThis.window, targets);
-    targets.forEach((t) => sendWCP1Hello(t, options, connectionAttemptUuid, t.origin))
+    targets.forEach((t) => sendWCP1Hello(t, options, connectionAttemptUuid, globalThis.document.referrer))
 
     // wait for one of the windows to return the data we need
     const data = await promise
