@@ -15,6 +15,7 @@
         "broadcastResponse",
         "contextListenerUnsubscribeResponse",
         "createPrivateChannelResponse",
+        "eventListenerUnsubscribeResponse",
         "findInstancesResponse",
         "findIntentResponse",
         "findIntentsByContextResponse",
