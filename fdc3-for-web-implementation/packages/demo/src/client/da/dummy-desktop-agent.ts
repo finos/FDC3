@@ -43,37 +43,6 @@ function getUi(): UI {
     return out;
 }
 
-
-type ConnectionDetails = {
-    externalPort: MessagePort,
-    internalPort: MessagePort
-    server: DefaultFDC3Server
-    context: DemoServerContext
-}
-
-
-// export function buildConnection(): ConnectionDetails {
-//     const mc = new MessageChannel()
-//     const internalPort = mc.port1
-//     const externalPort = mc.port2
-
-//     internalPort.start()
-
-//     const theServer = new DefaultFDC3Server(theContext, dir, channelDetails)
-
-//     internalPort.addEventListener("message", (e) => {
-//         theServer?.receive((e as any).data, "uuid")
-//     })
-
-//     return {
-//         externalPort: externalPort as any as MessagePort,
-//         internalPort: internalPort as any as MessagePort,
-//         server: theServer,
-//         context: theContext
-//     }
-// }
-
-
 window.addEventListener("load", () => {
 
     let desktopAgentUUID = uuid()
@@ -84,8 +53,8 @@ window.addEventListener("load", () => {
         socket.emit(DA_HELLO, desktopAgentUUID)
 
         const directory = new FDC3_2_1_JSONDirectory()
-        await directory.load("/static/da/appd.json")
-        //await directory.load("/static/da/local-conformance-2_0.v2.json")
+        //await directory.load("/static/da/appd.json")
+        await directory.load("/static/da/local-conformance-2_0.v2.json")
         const sc = new DemoServerContext(socket, directory)
 
         const channelDetails: ChannelState[] = [
