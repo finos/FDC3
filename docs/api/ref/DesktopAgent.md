@@ -188,8 +188,8 @@ addEventListener(type: FDC3EventType  | null, handler: EventHandler): Promise<Li
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
-```
-Not implemented
+```csharp
+// Not implemented
 ```
 </TabItem>
 </Tabs>
@@ -216,8 +216,8 @@ const userChannelChangedListener = await fdc3.addEventListener(FDC3EventType.USE
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
-```
-Not implemented
+```csharp
+// Not implemented
 ```
 </TabItem>
 </Tabs>
@@ -1459,8 +1459,8 @@ addContextListener(handler: ContextHandler): Promise<Listener>;
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
-```
-Not implemented
+```csharp
+// Not implemented
 ```
 </TabItem>
 </Tabs>
@@ -1482,8 +1482,8 @@ getSystemChannels() : Promise<Array<Channel>>;
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
-```
-Not implemented
+```csharp
+// Not implemented
 ```
 </TabItem>
 </Tabs>
@@ -1504,8 +1504,8 @@ joinChannel(channelId: string) : Promise<void>;
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
-```
-Not implemented
+```csharp
+// Not implemented
 ```
 </TabItem>
 </Tabs>
@@ -1527,8 +1527,8 @@ open(name: string, context?: Context): Promise<AppIdentifier>;
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
-```
-Not implemented
+```csharp
+// Not implemented
 ```
 </TabItem>
 </Tabs>
@@ -1550,8 +1550,8 @@ raiseIntent(intent: string, context: Context, name: string): Promise<IntentResol
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
-```
-Not implemented
+```csharp
+// Not implemented
 ```
 </TabItem>
 </Tabs>
@@ -1573,8 +1573,8 @@ raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
-```
-Not implemented
+```csharp
+// Not implemented
 ```
 </TabItem>
 </Tabs>

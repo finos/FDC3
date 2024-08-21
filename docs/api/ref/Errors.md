@@ -374,8 +374,8 @@ enum BridgingError {
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
-```
-Not implemented
+```csharp
+// Not implemented
 ```
 </TabItem>
 
