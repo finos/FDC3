@@ -1,6 +1,6 @@
 {
-  "name": "fdc3-workbench",
-  "version": "0.0.30",
+  "name": "fdc3-workbench2",
+  "version": "0.0.40",
   "private": true,
   "homepage": ".",
   "license": "Apache-2.0",
@@ -33,7 +33,7 @@
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@fontsource/roboto": "^4.4.5",
     "@fontsource/source-code-pro": "^4.5.0",
-    "@kite9/client": "latest",
+    "@kite9/client": "0.0.40",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.59",
