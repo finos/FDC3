@@ -15,6 +15,7 @@
         "broadcastRequest",
         "contextListenerUnsubscribeRequest",
         "createPrivateChannelRequest",
+        "eventListenerUnsubscribeRequest",
         "findInstancesRequest",
         "findIntentRequest",
         "findIntentsByContextRequest",
