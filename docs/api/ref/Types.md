@@ -172,9 +172,11 @@ interface DesktopAgentIdentifier {
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
+
 ```csharp
 // Not implemented
 ```
+
 </TabItem>
 
 </Tabs>

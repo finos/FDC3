@@ -447,9 +447,11 @@ public addContextListener(handler: ContextHandler): Promise<Listener>;
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
+
 ```csharp
 // Not implemented
 ```
+
 </TabItem>
 
 </Tabs>
