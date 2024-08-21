@@ -1,5 +1,5 @@
 import { FDC3Server } from "./FDC3Server";
-import { InstanceUUID, ServerContext } from "./ServerContext";
+import { InstanceID, ServerContext } from "./ServerContext";
 import { BroadcastHandler, ChannelState } from "./handlers/BroadcastHandler";
 import { IntentHandler } from "./handlers/IntentHandler";
 import { Directory } from "./directory/DirectoryInterface";
@@ -12,7 +12,7 @@ export interface MessageHandler {
     /**
      * Handles an AgentRequestMessage from the messaging source
      */
-    accept(msg: any, sc: ServerContext, from: InstanceUUID): void
+    accept(msg: any, sc: ServerContext, from: InstanceID): void
 }
 
 /**
@@ -28,7 +28,7 @@ export class BasicFDC3Server implements FDC3Server {
         this.sc = sc;
     }
 
-    receive(message: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity, from: InstanceUUID): void {
+    receive(message: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity, from: InstanceID): void {
         this.sc.log(`MessageReceived: \n ${JSON.stringify(message, null, 2)}`)
         this.handlers.forEach(h => h.accept(message, this.sc, from))
     }

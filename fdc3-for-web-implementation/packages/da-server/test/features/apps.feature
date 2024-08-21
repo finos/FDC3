@@ -28,8 +28,8 @@ Feature: Opening and Requesting App Details
     And "uuid-0" sends validate
     Then messaging will have outgoing posts
       | msg.matches_type                | msg.payload.appIdentifier.appId | msg.payload.appIdentifier.instanceId | msg.payload.appId | msg.payload.instanceId | to.instanceId | to.appId   |
-      | WCP5ValidateAppIdentityResponse | {null}                          | {null}                               | storageApp        |                      0 |             0 | storageApp |
-      | openResponse                    | storageApp                      |                                    0 | {null}            | {null}                 | a1            | libraryApp |
+      | WCP5ValidateAppIdentityResponse | {null}                          | {null}                               | storageApp        | uuid-0                 | uuid-0        | storageApp |
+      | openResponse                    | storageApp                      | uuid-0                               | {null}            | {null}                 | a1            | libraryApp |
 
   Scenario: Storage App Reconnects
     When "libraryApp/a1" opens app "storageApp"
@@ -38,9 +38,9 @@ Feature: Opening and Requesting App Details
     And "uuid-0" revalidates
     Then messaging will have outgoing posts
       | msg.matches_type                | msg.payload.appIdentifier.appId | msg.payload.appIdentifier.instanceId | msg.payload.appId | msg.payload.instanceId | to.instanceId | to.appId   |
-      | WCP5ValidateAppIdentityResponse | {null}                          | {null}                               | storageApp        |                      0 |             0 | storageApp |
-      | openResponse                    | storageApp                      |                                    0 | {null}            | {null}                 | a1            | libraryApp |
-      | WCP5ValidateAppIdentityResponse | {null}                          | {null}                               | storageApp        |                      0 |             0 | storageApp |
+      | WCP5ValidateAppIdentityResponse | {null}                          | {null}                               | storageApp        | uuid-0                 | uuid-0        | storageApp |
+      | openResponse                    | storageApp                      | uuid-0                               | {null}            | {null}                 | a1            | libraryApp |
+      | WCP5ValidateAppIdentityResponse | {null}                          | {null}                               | storageApp        | uuid-0                 | uuid-0        | storageApp |
 
   Scenario: Opening An App With Context
 ISSUE: 1310 causes this to fail right now
@@ -48,13 +48,13 @@ ISSUE: 1310 causes this to fail right now
     When "libraryApp/a1" opens app "storageApp" with context data "fdc3.instrument"
     And "uuid-0" sends validate
     And we wait for a period of "100" ms
-    And "storageApp/0" adds a context listener on "{null}" with type "fdc3.instrument"
+    And "storageApp/uuid-0" adds a context listener on "{null}" with type "fdc3.instrument"
     Then messaging will have outgoing posts
       | msg.matches_type                | msg.payload.channelId | msg.payload.context.type | to.instanceId | to.appId   |
-      | WCP5ValidateAppIdentityResponse | {null}                | {null}                   |             0 | storageApp |
-      | addContextListenerResponse      | {empty}               | {empty}                  |             0 | storageApp |
+      | WCP5ValidateAppIdentityResponse | {null}                | {null}                   | uuid-0        | storageApp |
+      | addContextListenerResponse      | {empty}               | {empty}                  | uuid-0        | storageApp |
       | openResponse                    | {empty}               | {empty}                  | a1            | libraryApp |
-      | broadcastEvent                  | {null}                | fdc3.instrument          |             0 | storageApp |
+      | broadcastEvent                  | {null}                | fdc3.instrument          | uuid-0        | storageApp |
 
   Scenario: Opening An App With Context, But No Listener Added
     When "libraryApp/a1" opens app "storageApp" with context data "fdc3.instrument"
@@ -62,7 +62,7 @@ ISSUE: 1310 causes this to fail right now
     And we wait for the listener timeout
     Then messaging will have outgoing posts
       | msg.type                        | msg.payload.error | to.instanceId | to.appId   |
-      | WCP5ValidateAppIdentityResponse | {null}            |             0 | storageApp |
+      | WCP5ValidateAppIdentityResponse | {null}            | uuid-0        | storageApp |
       | openResponse                    | AppTimeout        | a1            | libraryApp |
 
   Scenario: Opening A Missing App
@@ -89,5 +89,5 @@ ISSUE: 1310 causes this to fail right now
   Scenario: Unknown App Attempts Reconnect
     When "uuid-0" revalidates
     Then messaging will have outgoing posts
-      | msg.type                        | msg.payload.error      |
-      | WCP5ValidateAppIdentityResponse | App Instance not found |
+      | msg.type                              | msg.payload.message    |
+      | WCP5ValidateAppIdentityFailedResponse | App Instance not found |

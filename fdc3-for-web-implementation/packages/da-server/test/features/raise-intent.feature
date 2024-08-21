@@ -64,7 +64,7 @@ Feature: Raising Intents
       | appId       | instanceId |
       | App1        | a1         |
       | listenerApp | b1         |
-      | libraryApp  |          0 |
+      | libraryApp  | uuid-0     |
 
   Scenario: Raising An Intent To A Broken App that doesn't add an intent listener
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "libraryApp"
@@ -74,7 +74,7 @@ Feature: Raising Intents
       | appId       | instanceId |
       | App1        | a1         |
       | listenerApp | b1         |
-      | libraryApp  |          0 |
+      | libraryApp  | uuid-0     |
     Then messaging will have outgoing posts
       | msg.type            | msg.payload.error    | to.instanceId | to.appId |
       | raiseIntentResponse | IntentDeliveryFailed | a1            | App1     |

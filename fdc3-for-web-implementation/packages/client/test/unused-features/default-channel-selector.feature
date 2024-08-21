@@ -3,7 +3,6 @@ Feature: Default Channel Selector
   Background: Desktop Agent API
     Given a browser document in "document" and window in "window"
     And A Dummy Desktop Agent in "dummy-api"
-    And "dummyFailover" is a function which returns a promise of "{dummy-api}"
     And Testing ends after "5000" ms
 
   Scenario: App Requests Channel Change

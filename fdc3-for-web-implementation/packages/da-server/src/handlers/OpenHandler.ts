@@ -1,5 +1,5 @@
 import { MessageHandler } from "../BasicFDC3Server";
-import { InstanceUUID, ServerContext } from "../ServerContext";
+import { InstanceID, ServerContext } from "../ServerContext";
 import { Directory, DirectoryApp } from "../directory/DirectoryInterface";
 import { ContextElement, OpenError, ResolveError } from "@finos/fdc3";
 import {
@@ -66,7 +66,7 @@ class PendingApp {
 export class OpenHandler implements MessageHandler {
 
     private readonly directory: Directory
-    readonly pending: Map<InstanceUUID, PendingApp> = new Map()
+    readonly pending: Map<InstanceID, PendingApp> = new Map()
     readonly timeoutMs: number
 
     constructor(d: Directory, timeoutMs: number) {
@@ -74,7 +74,7 @@ export class OpenHandler implements MessageHandler {
         this.timeoutMs = timeoutMs
     }
 
-    async accept(msg: any, sc: ServerContext, uuid: InstanceUUID): Promise<void> {
+    async accept(msg: any, sc: ServerContext, uuid: InstanceID): Promise<void> {
         switch (msg.type as string) {
             case 'addContextListenerRequest': return this.handleAddContextListener(msg as AddContextListenerRequest, sc, uuid)
             case 'WCP4ValidateAppIdentity': return this.handleValidate(msg as WebConnectionProtocol4ValidateAppIdentity, sc, uuid)
@@ -94,7 +94,7 @@ export class OpenHandler implements MessageHandler {
     /**
      * This deals with sending pending context to listeners of newly-opened apps.
      */
-    handleAddContextListener(arg0: AddContextListenerRequest, sc: ServerContext, from: InstanceUUID): void {
+    handleAddContextListener(arg0: AddContextListenerRequest, sc: ServerContext, from: InstanceID): void {
         const pendingOpen = this.pending.get(from)
 
         if (pendingOpen) {
@@ -120,7 +120,7 @@ export class OpenHandler implements MessageHandler {
 
                     pendingOpen.setDone()
                     this.pending.delete(from)
-                    sc.post(message, arg0.meta.source!!)
+                    sc.post(message, arg0.meta.source?.instanceId!!)
                 }
             }
         }
@@ -175,7 +175,7 @@ export class OpenHandler implements MessageHandler {
         }
     }
 
-    async handleValidate(arg0: WebConnectionProtocol4ValidateAppIdentity, sc: ServerContext, from: InstanceUUID): Promise<void> {
+    async handleValidate(arg0: WebConnectionProtocol4ValidateAppIdentity, sc: ServerContext, from: InstanceID): Promise<void> {
         const _this = this
 
         const responseMeta = {
@@ -186,6 +186,7 @@ export class OpenHandler implements MessageHandler {
         function returnError() {
             sc.post({
                 meta: responseMeta,
+                type: 'WCP5ValidateAppIdentityFailedResponse',
                 payload: {
                     message: 'App Instance not found'
                 }
@@ -213,7 +214,7 @@ export class OpenHandler implements MessageHandler {
                         appMetadata: aopMetadata
                     }
                 }
-            } as WebConnectionProtocol5ValidateAppIdentitySuccessResponse, appIdentity)
+            } as WebConnectionProtocol5ValidateAppIdentitySuccessResponse, appIdentity.instanceId!!)
         }
 
         if (arg0.payload.instanceUuid) {
@@ -224,25 +225,25 @@ export class OpenHandler implements MessageHandler {
                 // in this case, the app is reconnecting, so let's just re-assign the 
                 // identity
                 sc.setInstanceDetails(from, appIdentity)
-                returnSuccess(appIdentity)
-            }
-
-        } else {
-            // we need to assign an identity to this app
-            const appIdentity = sc.getInstanceDetails(from)
-            if (appIdentity) {
-                returnSuccess(appIdentity)
-
-                // make sure if the opener is listening for this app to open gets informed
-                const pendingOpen = this.pending.get(from)
-                if (pendingOpen) {
-                    if (pendingOpen.state == AppState.Opening) {
-                        pendingOpen.setOpened(appIdentity)
-                    }
-                }
-            } else {
-                returnError()
+                return returnSuccess(appIdentity)
             }
         }
+
+        // we need to assign an identity to this app
+        const appIdentity = sc.getInstanceDetails(from)
+        if (appIdentity) {
+            returnSuccess(appIdentity)
+
+            // make sure if the opener is listening for this app to open gets informed
+            const pendingOpen = this.pending.get(from)
+            if (pendingOpen) {
+                if (pendingOpen.state == AppState.Opening) {
+                    pendingOpen.setOpened(appIdentity)
+                }
+            }
+        } else {
+            returnError()
+        }
+
     }
 }

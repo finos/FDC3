@@ -1,10 +1,10 @@
-import { getClientAPI } from "@kite9/client";
+import { getAgent } from "@kite9/client";
 
 const init = async () => {
-    const fdc3 = await getClientAPI();
+    const fdc3 = await getAgent();
     console.log("get fdc3", fdc3);
 
-    
+
     const cc = await fdc3.getCurrentChannel()
 
     if (cc == null) {
@@ -20,7 +20,7 @@ const init = async () => {
         fdc3.broadcast({
             type: "fdc3.instrument",
             name: ticker,
-            id: {ticker}
+            id: { ticker }
         });
     };
 

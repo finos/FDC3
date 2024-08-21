@@ -1,5 +1,5 @@
 import { MessageHandler } from "../BasicFDC3Server";
-import { InstanceUUID, ServerContext } from "../ServerContext";
+import { InstanceID, ServerContext } from "../ServerContext";
 import { AppIdentifier, ChannelError, Context } from "@finos/fdc3";
 import { successResponse, errorResponse, onlyUnique } from "./support";
 import {
@@ -96,7 +96,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    accept(msg: any, sc: ServerContext, uuid: InstanceUUID) {
+    accept(msg: any, sc: ServerContext, uuid: InstanceID) {
         const from = sc.getInstanceDetails(uuid)
 
         if (from == null) {
@@ -254,7 +254,7 @@ export class BroadcastHandler implements MessageHandler {
                     channelId: arg0.payload.channelId,
                     context: arg0.payload.context
                 }
-            }, app)
+            }, app.instanceId)
         })
 
         this.updateChannelState(arg0.payload.channelId, arg0.payload.context)
@@ -360,7 +360,7 @@ export class BroadcastHandler implements MessageHandler {
 
             this.eventListeners
                 .filter(e => (e.channelId == privateChannelId) && (e.eventType == eventType))
-                .forEach(e => sc.post(msg, { appId: e.appId, instanceId: e.instanceId }))
+                .forEach(e => sc.post(msg, e.instanceId))
         }
     }
 

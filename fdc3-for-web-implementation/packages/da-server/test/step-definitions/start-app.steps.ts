@@ -26,7 +26,7 @@ When('{string} sends validate', function (this: CustomWorld, uuid: string) {
     payload: {
     } as any /* ISSUE: 1301 */
   }
-  this.sc.setAppConnected(identity)
+  this.sc.setAppConnected(identity!!)
   this.server.receive(message, uuid)
 });
 

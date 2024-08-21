@@ -62,7 +62,7 @@ function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): 
         // setup listener for message and retrieve JS URL from it
         const el = (event: MessageEvent) => {
             const data = event.data;
-            if (data.meta.connectionAttemptUuid == connectionAttemptUuid) {
+            if (data?.meta?.connectionAttemptUuid == connectionAttemptUuid) {
                 if (data.type == 'WCP2LoadUrl') {
                     // in this case, we need to load the URL with the embedded Iframe
                     openFrame((data as WebConnectionProtocol2LoadURL).payload.iframeUrl);
