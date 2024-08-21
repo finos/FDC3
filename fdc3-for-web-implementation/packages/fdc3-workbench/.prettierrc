@@ -1,7 +1,0 @@
-{
-    "useTabs": true,
-    "arrowParens": "always",
-    "trailingComma": "es5",
-    "proseWrap": "always",
-    "printWidth": 120
-}

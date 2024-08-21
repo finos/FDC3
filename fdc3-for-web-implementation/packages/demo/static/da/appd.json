@@ -21,7 +21,7 @@
             "description": "App will connect to the desktop agent on startup and listen to messages on the red channel",
             "type": "web",
             "details": {
-                "url": "http://localhost:8095/static/app2/index.html"
+                "url": "http://robs-pro:8095/static/app2/index.html"
             },
             "hostManifests": {},
             "version": "1.0.0",
@@ -139,12 +139,18 @@
             "interop": {
                 "intents": {
                     "raises": {
-                        "ViewChart": ["fdc3.instrument"]
+                        "ViewChart": [
+                            "fdc3.instrument"
+                        ]
                     }
                 },
                 "userChannels": {
-                    "broadcasts": ["fdc3.instrument"],
-                    "listensFor": ["fdc3.instrument"]
+                    "broadcasts": [
+                        "fdc3.instrument"
+                    ],
+                    "listensFor": [
+                        "fdc3.instrument"
+                    ]
                 }
             }
         },
@@ -161,12 +167,16 @@
                     "listensFor": {
                         "ViewChart": {
                             "displayName": "View Chart",
-                            "contexts": ["fdc3.instrument"]
+                            "contexts": [
+                                "fdc3.instrument"
+                            ]
                         }
                     }
                 },
                 "userChannels": {
-                    "broadcasts": ["fdc3.instrument"]
+                    "broadcasts": [
+                        "fdc3.instrument"
+                    ]
                 }
             }
         }
