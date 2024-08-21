@@ -8,11 +8,11 @@ assignees: ''
 ---
 
 ### Question Area
-[ ] App Directory
-[ ] API
-[ ] Context Data
-[ ] Intents
-[ ] Use Cases
-[ ] Other
+ - [ ] App Directory
+ - [ ] API
+ - [ ] Context Data
+ - [ ] Intents
+ - [ ] Use Cases
+ - [ ] Other
 
 ### Question
