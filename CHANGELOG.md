@@ -10,8 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Added clarification that `id` field values SHOULD always be strings to context schema definition (a restriction that can't easily be represented in the generated types). ([#1149](https://github.com/finos/FDC3/pull/1149))
 * Added requirement that Standard versions SHOULD avoid the use unions in context and API definitions wherever possible as these can be hard to replicate and MUST avoid unions of primitive types as these can be impossible to replicate in other languages. ([#120](https://github.com/finos/FDC3/pull/1200))
+* Added reference materials and supported platforms information for FDC3 in .NET via the [finos/fdc3-dotnet](https://github.com/finos/fdc3-dotnet) project. ([#1108](https://github.com/finos/FDC3/pull/1108))
 
 ### Changed
+
+The supported platforms page in the FDC3 documentation was moved into the API section as the information it provides all relates to FDC3 Desktop Agent API implementations. ([#1108](https://github.com/finos/FDC3/pull/1108))
 
 ### Deprecated
 
