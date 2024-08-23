@@ -406,6 +406,14 @@ enum BridgingError {
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
+
 </Tabs>
 
 Contains constants representing the errors that can be encountered when queries are forwarded to a Desktop Agent Bridge, but one or more remote Desktop Agents connected to it disconnects, times-out or a malformed message is encountered while a particular request is in flight. These errors may be returned via the FDC3 API when a Desktop Agent is (or was) connected to a Desktop Agent Bridge.
