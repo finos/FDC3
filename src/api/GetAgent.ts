@@ -51,7 +51,7 @@ export type getAgent = (
  * MUST match the origin of the application (scheme, hostname, and port) or  
  * it will be ignored. If not specified, the app's current URL will be used.  
  * 
- * @property {number} timeout Number of millisecs to allow for an fdc3  
+ * @property {number} timeout Number of milliseconds to allow for an fdc3  
  * implementation to be found before calling the failover function or 
  * rejecting (default 1000). Note that the timeout is cancelled as soon as a 
  * Desktop Agent is detected. There may be additional set-up steps to perform 
@@ -72,9 +72,9 @@ export type getAgent = (
  * @property {boolean} dontSetWindowFdc3 For backwards compatibility, `getAgent` 
  * will set a reference to the Desktop Agent implementation at `window.fdc3` 
  * if one does not already exist, and will fire the fdc3Ready event. Setting  
- * this flag to `false` will inhibit that behaviour, leaving `window.fdc3` unset. 
+ * this flag to `false` will inhibit that behavior, leaving `window.fdc3` unset. 
  *  
- * @property {function} failover A optional function that provides an  
+ * @property {function} failover An optional function that provides a  
  * means of connecting to or starting a Desktop Agent, which will be called 
  * if no Desktop Agent is detected. Must return either a Desktop Agent  
  * implementation directly (e.g. by using a proprietary adaptor) or a  
@@ -84,11 +84,11 @@ export type getAgent = (
  * and Desktop Agent Communication Protocols. 
  */ 
 type GetAgentParams = { 
-  timeout: number, 
+  timeout?: number, 
   identityUrl?: string, 
-  channelSelector: boolean, 
-  intentResolver: boolean,
-  dontSetWindowFdc3: boolean,
+  channelSelector?: boolean, 
+  intentResolver?: boolean,
+  dontSetWindowFdc3?: boolean,
   failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent> 
 }; 
 
