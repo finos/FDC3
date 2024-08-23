@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-The supported platforms page in the FDC3 documentation was moved into the API section as the information it provides all relates to FDC3 Desktop Agent API implementations. ([#1108](https://github.com/finos/FDC3/pull/1108))
+* The supported platforms page in the FDC3 documentation was moved into the API section as the information it provides all relates to FDC3 Desktop Agent API implementations. ([#1108](https://github.com/finos/FDC3/pull/1108))
 
 ### Deprecated
 
