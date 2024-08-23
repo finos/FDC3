@@ -66,7 +66,7 @@ A small number of arguments are accepted that can affect the behavior of `getAge
  * MUST match the origin of the application (scheme, hostname, and port) or  
  * it will be ignored. If not specified, the app's current URL will be used.  
  * 
- * @property {number} timeout Number of millisecs to allow for an fdc3  
+ * @property {number} timeout Number of milliseconds to allow for an fdc3  
  * implementation to be found before calling the failover function or 
  * rejecting (default 1000). Note that the timeout is cancelled as soon as a 
  * Desktop Agent is detected. There may be additional set-up steps to perform 
@@ -89,7 +89,7 @@ A small number of arguments are accepted that can affect the behavior of `getAge
  * if one does not already exist, and will fire the fdc3Ready event. Setting  
  * this flag to `false` will inhibit that behavior, leaving `window.fdc3` unset. 
  *  
- * @property {function} failover A optional function that provides an  
+ * @property {function} failover An optional function that provides a  
  * means of connecting to or starting a Desktop Agent, which will be called 
  * if no Desktop Agent is detected. Must return either a Desktop Agent  
  * implementation directly (e.g. by using a proprietary adaptor) or a  
@@ -99,11 +99,11 @@ A small number of arguments are accepted that can affect the behavior of `getAge
  * and Desktop Agent Communication Protocols. 
  */ 
 type GetAgentParams = { 
-    timeout: number, 
+    timeout?: number, 
     identityUrl?: string, 
-    channelSelector: boolean, 
-    intentResolver: boolean,
-    dontSetWindowFdc3: boolean,
+    channelSelector?: boolean, 
+    intentResolver?: boolean,
+    dontSetWindowFdc3?: boolean,
     failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent> 
 };
 ```
