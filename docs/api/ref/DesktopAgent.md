@@ -187,6 +187,13 @@ addEventListener(type: FDC3EventType  | null, handler: EventHandler): Promise<Li
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
 </Tabs>
 
 Registers a handler for non-context and non-intent events from the Desktop Agent. If the consumer is only interested in an event of a particular type, they can specify that type. If the consumer is able to receive events of any type or will inspect types received, then they can pass `null` as the `type` parameter to receive all event types.
@@ -207,6 +214,13 @@ const userChannelChangedListener = await fdc3.addEventListener(FDC3EventType.USE
   console.log(`Received event ${event.type}\n\tDetails: ${event.details}`);
   //do something else with the event
 });
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
 ```
 
 </TabItem>
@@ -1448,6 +1462,13 @@ addContextListener(handler: ContextHandler): Promise<Listener>;
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
 </Tabs>
 
 Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard <2.0.
@@ -1466,6 +1487,13 @@ getSystemChannels() : Promise<Array<Channel>>;
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
 </Tabs>
 
 Alias to the [`getUserChannels`](#getuserchannels) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
@@ -1480,6 +1508,13 @@ Alias to the [`getUserChannels`](#getuserchannels) function provided for backwar
 
 ```ts
 joinChannel(channelId: string) : Promise<void>;
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
 ```
 
 </TabItem>
@@ -1501,6 +1536,13 @@ open(name: string, context?: Context): Promise<AppIdentifier>;
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
 </Tabs>
 
 Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
@@ -1519,6 +1561,13 @@ raiseIntent(intent: string, context: Context, name: string): Promise<IntentResol
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
 </Tabs>
 
 Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
@@ -1534,6 +1583,13 @@ Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`
 
 ```ts
 raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
 ```
 
 </TabItem>
