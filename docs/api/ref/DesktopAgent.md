@@ -110,7 +110,7 @@ Whenever the handler function is called it will be passed an event object with d
 const listener = await fdc3.addEventListener(null, event => { ... });
 
 // listener for a specific event type that logs its details
-const userChannelChangedListener = await fdc3.addEventListener("USER_CHANNEL_CHANGED", event => { 
+const userChannelChangedListener = await fdc3.addEventListener("userChannelChanged ", event => { 
   console.log(`Received event ${event.type}\n\tDetails: ${event.details}`);
   //do something else with the event
 });

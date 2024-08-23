@@ -34,7 +34,7 @@ export interface PrivateChannel extends Channel {
    * 
    * // listener for a specific event type 
    * const channelChangedListener = await myPrivateChannel.addEventListener(
-   *    PrivateChannelEventType.USER_CHANNEL_CHANGED, 
+   *    "addContextListener", 
    *    event => { ... }
    * );
    * ```

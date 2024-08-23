@@ -39,7 +39,7 @@ Used when attaching listeners to events.
 ## `FDC3EventTypes`
 
 ```ts
-type FDC3EventTypes = "USER_CHANNEL_CHANGED";
+type FDC3EventTypes = "userChannelChanged";
 ```
 
 Type defining valid type strings for DesktopAgent interface events.
@@ -70,14 +70,14 @@ Events will always include both `type` and `details` properties, which describe 
 
 ```ts
 interface FDC3ChannelChangedEvent extends FDC3Event {
-  readonly type: "USER_CHANNEL_CHANGED";
+  readonly type: "userChannelChanged";
   readonly details: {
     currentChannelId: string | null
   };
 }
 ```
 
-Type representing the format of USER_CHANNEL_CHANGED events.
+Type representing the format of `userChannelChanged`  events.
 
 The identity of the channel joined is provided as `details.currentChannelId`, which will be `null` if the app is no longer joined to any channel.
 

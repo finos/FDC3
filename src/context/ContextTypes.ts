@@ -258,35 +258,35 @@ export interface InstrumentElement {
  */
 export interface PurpleInstrumentIdentifiers {
     /**
-     * <https://www.bloomberg.com/>
+     * https://www.bloomberg.com/
      */
     BBG?: string;
     /**
-     * <https://www.cusip.com/>
+     * https://www.cusip.com/
      */
     CUSIP?: string;
     /**
-     * <https://www.factset.com/>
+     * https://www.factset.com/
      */
     FDS_ID?: string;
     /**
-     * <https://www.openfigi.com/>
+     * https://www.openfigi.com/
      */
     FIGI?: string;
     /**
-     * <https://www.isin.org/>
+     * https://www.isin.org/
      */
     ISIN?: string;
     /**
-     * <https://permid.org/>
+     * https://permid.org/
      */
     PERMID?: string;
     /**
-     * <https://www.refinitiv.com/>
+     * https://www.refinitiv.com/
      */
     RIC?: string;
     /**
-     * <https://www.lseg.com/sedol>
+     * https://www.lseg.com/sedol
      */
     SEDOL?: string;
     /**
@@ -303,15 +303,15 @@ export interface PurpleInstrumentIdentifiers {
  */
 export interface OrganizationMarket {
     /**
-     * <https://www.bloomberg.com/>
+     * https://www.bloomberg.com/
      */
     BBG?: string;
     /**
-     * <https://www.iso.org/iso-3166-country-codes.html>
+     * https://www.iso.org/iso-3166-country-codes.html
      */
     COUNTRY_ISOALPHA2?: string;
     /**
-     * <https://en.wikipedia.org/wiki/Market_Identifier_Code>
+     * https://en.wikipedia.org/wiki/Market_Identifier_Code
      */
     MIC?: string;
     /**
@@ -798,15 +798,15 @@ export interface OrganizationObject {
  */
 export interface Identifiers {
     /**
-     * <https://www.bloomberg.com/>
+     * https://www.bloomberg.com/
      */
     BBG?: string;
     /**
-     * <https://www.cusip.com/>
+     * https://www.cusip.com/
      */
     CUSIP?: string;
     /**
-     * <https://www.factset.com/>
+     * https://www.factset.com/
      *
      * FactSet Permanent Identifier representing the organization
      *
@@ -814,25 +814,25 @@ export interface Identifiers {
      */
     FDS_ID?: string;
     /**
-     * <https://www.openfigi.com/>
+     * https://www.openfigi.com/
      */
     FIGI?: string;
     /**
-     * <https://www.isin.org/>
+     * https://www.isin.org/
      */
     ISIN?: string;
     /**
-     * <https://permid.org/>
+     * https://permid.org/
      *
      * Refinitiv Permanent Identifiers, or PermID for the organization
      */
     PERMID?: string;
     /**
-     * <https://www.refinitiv.com/>
+     * https://www.refinitiv.com/
      */
     RIC?: string;
     /**
-     * <https://www.lseg.com/sedol>
+     * https://www.lseg.com/sedol
      */
     SEDOL?: string;
     /**
@@ -1181,35 +1181,35 @@ export interface Instrument {
  */
 export interface FluffyInstrumentIdentifiers {
     /**
-     * <https://www.bloomberg.com/>
+     * https://www.bloomberg.com/
      */
     BBG?: string;
     /**
-     * <https://www.cusip.com/>
+     * https://www.cusip.com/
      */
     CUSIP?: string;
     /**
-     * <https://www.factset.com/>
+     * https://www.factset.com/
      */
     FDS_ID?: string;
     /**
-     * <https://www.openfigi.com/>
+     * https://www.openfigi.com/
      */
     FIGI?: string;
     /**
-     * <https://www.isin.org/>
+     * https://www.isin.org/
      */
     ISIN?: string;
     /**
-     * <https://permid.org/>
+     * https://permid.org/
      */
     PERMID?: string;
     /**
-     * <https://www.refinitiv.com/>
+     * https://www.refinitiv.com/
      */
     RIC?: string;
     /**
-     * <https://www.lseg.com/sedol>
+     * https://www.lseg.com/sedol
      */
     SEDOL?: string;
     /**
@@ -1226,15 +1226,15 @@ export interface FluffyInstrumentIdentifiers {
  */
 export interface PurpleMarket {
     /**
-     * <https://www.bloomberg.com/>
+     * https://www.bloomberg.com/
      */
     BBG?: string;
     /**
-     * <https://www.iso.org/iso-3166-country-codes.html>
+     * https://www.iso.org/iso-3166-country-codes.html
      */
     COUNTRY_ISOALPHA2?: string;
     /**
-     * <https://en.wikipedia.org/wiki/Market_Identifier_Code>
+     * https://en.wikipedia.org/wiki/Market_Identifier_Code
      */
     MIC?: string;
     /**

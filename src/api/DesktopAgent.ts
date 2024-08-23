@@ -385,7 +385,7 @@ export interface DesktopAgent {
    * const listener = await fdc3.addEventListener(null, event => { ... });
    * 
    * // listener for a specific event type that logs its details
-   * const userChannelChangedListener = await fdc3.addEventListener(FDC3EventType.USER_CHANNEL_CHANGED, event => { 
+   * const userChannelChangedListener = await fdc3.addEventListener("userChannelChanged", event => { 
    * console.log(`Received event ${event.type}\n\tDetails: ${event.details}`);
    * //do something else with the event
    * });
