@@ -14,7 +14,8 @@
         "WCP3Handshake",
         "WCP4ValidateAppIdentity",
         "WCP5ValidateAppIdentityFailedResponse",
-        "WCP5ValidateAppIdentityResponse"
+        "WCP5ValidateAppIdentityResponse",
+        "WCP6Goodbye"
       ],
       "description": "Identifies the type of the connection step message."
     },
