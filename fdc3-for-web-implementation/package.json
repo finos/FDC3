@@ -1,7 +1,7 @@
 {
   "name": "@kite9/web-fdc3",
   "private": true,
-  "version": "0.0.41",
+  "version": "0.0.42",
   "workspaces": [
     "packages/fdc3-common",
     "packages/testing",
@@ -16,13 +16,15 @@
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "dev": "concurrently \"cd packages/addon && npm run dev\" \"cd packages/fdc3-workbench && npm run dev\" \"cd packages/demo && npm run dev\"",
-    "docs": "yarn typedocs --out docs packages/fdc3-common/index.ts /packages/client/**"
+    "docs": "yarn typedocs --out docs packages/fdc3-common/index.ts /packages/client/**",
+    "version": "npm version $npm_package_version --no-git-tag-version --workspaces && npm exec syncpack -- fix-mismatches --types 'local'"
   },
   "devDependencies": {
     "concurrently": "8.2.2",
     "eslint": "7.17.0",
     "prettier": "2.2.1",
-    "rimraf": "^5.0.7",
+    "rimraf": "^6.0.1",
+    "syncpack": "^12.4.0",
     "typedoc": "^0.26.4",
     "typescript": "^5.3.2"
   },
