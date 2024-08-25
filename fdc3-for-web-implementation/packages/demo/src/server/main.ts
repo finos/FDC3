@@ -21,12 +21,15 @@ type ConnectedWorld = {
   apps: Map<string, Socket>
 }
 
+enum ConnectionType { APP, DA }
+
 const instances: Map<string, ConnectedWorld> = new Map()
 
 io.on('connection', (socket: Socket) => {
 
   var myInstance: ConnectedWorld | undefined
   var myId: string | undefined
+  var connectionType: ConnectionType | undefined
 
   socket.on(DA_HELLO, function (id) {
     myId = id
@@ -37,18 +40,21 @@ io.on('connection', (socket: Socket) => {
 
     instance.server = socket
     instances.set(id, instance)
+    connectionType = ConnectionType.DA
     console.log("instances " + instances.size)
     myInstance = instance
     console.log("A da connected: " + id)
   })
 
-  socket.on(APP_HELLO, function (id: string, myId: string) {
+  socket.on(APP_HELLO, function (id: string, appId: string) {
     const instance = instances.get(id)
 
     if (instance != undefined) {
-      console.log("An app connected: " + id)
-      instance.apps.set(myId, socket)
+      console.log(`An app connected to DA ${id} with id ${appId}`)
+      instance.apps.set(appId, socket)
       myInstance = instance
+      connectionType = ConnectionType.APP
+      myId = appId
     } else {
       console.log("App Tried Connecting to non-existent DA Instance " + id + " " + myId)
     }
@@ -56,7 +62,7 @@ io.on('connection', (socket: Socket) => {
 
   socket.on(FDC3_APP_EVENT, function (data, from): void {
     // message from app to da
-    console.log(JSON.stringify(data))
+    //  console.log(JSON.stringify(data))
 
     if ((myInstance == null) && (data.type == 'intentResolutionChoice')) {
       // message from app's intent resolver
@@ -85,11 +91,12 @@ io.on('connection', (socket: Socket) => {
 
   socket.on("disconnect", function (): void {
     if (myInstance) {
-      if (myInstance.server.id == socket.id) {
+      if (connectionType == ConnectionType.DA) {
+        console.log("DA disconnected: " + myId)
         instances.delete(myId!!)
       } else {
         myInstance.apps.delete(myId!!)
-        console.log(`Apparent disconnect: ${myInstance.apps.size} remaining`)
+        console.log(`App Disconnected: ${myId} ( ${myInstance.apps.size} remaining )`)
         myInstance.server.emit(APP_GOODBYE, myId!!)
       }
     }

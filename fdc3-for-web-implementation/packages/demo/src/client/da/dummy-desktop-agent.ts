@@ -72,10 +72,6 @@ window.addEventListener("load", () => {
             sc.goodbye(id)
         })
 
-        // socket.on(APP_HELLO, (id: string) => {
-        //     sc.setInstanceDetails(id, { appId: 'Test App Id', instanceId: '1' })
-        // })
-
         // let's create buttons for some apps
         const appList = document.getElementById('app-list') as HTMLOListElement
         directory.retrieveAllApps().forEach(app => {

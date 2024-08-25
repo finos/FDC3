@@ -1,5 +1,5 @@
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from "../TestMessaging";
-import { RaiseIntentRequest, RaiseIntentResponse, IntentResultResponse } from "@kite9/fdc3-common";
+import { RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "@kite9/fdc3-common";
 
 export class RaiseIntent implements AutomaticResponse {
 
@@ -25,8 +25,8 @@ export class RaiseIntent implements AutomaticResponse {
         return out
     }
 
-    createRaiseIntentResultResponseMesssage(intentRequest: RaiseIntentRequest, m: TestMessaging): IntentResultResponse {
-        const out: IntentResultResponse = {
+    createRaiseIntentResultResponseMesssage(intentRequest: RaiseIntentRequest, m: TestMessaging): RaiseIntentResultResponse {
+        const out: RaiseIntentResultResponse = {
             meta: {
                 ...intentRequest.meta,
                 responseUuid: m.createUUID()
@@ -34,7 +34,7 @@ export class RaiseIntent implements AutomaticResponse {
             payload: {
                 intentResult: m.getIntentResult()
             },
-            type: "intentResultResponse"
+            type: "raiseIntentResultResponse"
         }
 
         return out

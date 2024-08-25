@@ -33,7 +33,7 @@ export abstract class AbstractMessaging implements Messaging {
         }
     }
 
-    waitFor<X>(filter: (m: any) => boolean): Promise<X> {
+    waitFor<X>(filter: (m: any) => boolean, timeoutErrorMessage?: string): Promise<X> {
         const id = this.createUUID()
         return new Promise<X>((resolve, reject) => {
             var done = false;
@@ -51,13 +51,15 @@ export abstract class AbstractMessaging implements Messaging {
 
             this.register(l);
 
-            setTimeout(() => {
-                this.unregister(id)
-                if (!done) {
-                    console.log(`Rejecting after ${this.timeout}ms`)
-                    reject(new Error(OpenError.AppTimeout))
-                }
-            }, this.timeout);
+            if (timeoutErrorMessage) {
+                setTimeout(() => {
+                    this.unregister(id)
+                    if (!done) {
+                        console.log(`Rejecting after ${this.timeout}ms`)
+                        reject(new Error(timeoutErrorMessage))
+                    }
+                }, this.timeout);
+            }
 
         })
     }
@@ -66,7 +68,7 @@ export abstract class AbstractMessaging implements Messaging {
     async exchange<X>(message: any, expectedTypeName: string): Promise<X> {
         const prom = this.waitFor(m =>
             (m.type == expectedTypeName)
-            && (m.meta.requestUuid == message.meta.requestUuid))
+            && (m.meta.requestUuid == message.meta.requestUuid), OpenError.AppTimeout)
         this.post(message)
         const out: any = await prom
         if (out?.payload?.error) {
