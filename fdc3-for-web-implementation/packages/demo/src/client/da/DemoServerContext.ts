@@ -137,8 +137,13 @@ export class DemoServerContext implements ServerContext<AppRegistration> {
         throw new Error(OpenError.AppNotFound)
     }
 
-    async getConnectedApps(): Promise<AppRegistration[]> {
-        return this.connections
+    async getConnectedApps(): Promise<AppIdentifier[]> {
+        return this.connections.map(c => {
+            return {
+                appId: c.appId,
+                instanceId: c.instanceId
+            }
+        })
     }
 
     async isAppConnected(app: AppIdentifier): Promise<boolean> {

@@ -1,4 +1,4 @@
-import { AppIdentifier, ImplementationMetadata } from "@finos/fdc3";
+import { AppIdentifier, ImplementationMetadata, OpenError } from "@finos/fdc3";
 import { Messaging } from "../Messaging";
 import { RegisterableListener } from "../listeners/RegisterableListener";
 import { GetAgentParams, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-common";
@@ -7,6 +7,7 @@ export abstract class AbstractMessaging implements Messaging {
 
     private readonly options: GetAgentParams
     private readonly connectionAttemptUuid: string
+    private readonly timeout: number
     private appId: AppIdentifier | null = null
     private implementationMetadata: ImplementationMetadata | null = null
 
@@ -18,9 +19,10 @@ export abstract class AbstractMessaging implements Messaging {
 
     abstract createMeta(): object
 
-    constructor(options: GetAgentParams, connectionAttemptUuid: string) {
+    constructor(options: GetAgentParams, connectionAttemptUuid: string, timeout: number = 10000) {
         this.options = options
         this.connectionAttemptUuid = connectionAttemptUuid
+        this.timeout = timeout
     }
 
     getSource(): AppIdentifier {
@@ -33,18 +35,33 @@ export abstract class AbstractMessaging implements Messaging {
 
     waitFor<X>(filter: (m: any) => boolean): Promise<X> {
         const id = this.createUUID()
-        return new Promise<X>((resolve, _reject) => {
-            this.register({
+        return new Promise<X>((resolve, reject) => {
+            var done = false;
+            const l: RegisterableListener = {
                 id,
                 filter: filter,
                 action: (m) => {
+                    done = true
                     this.unregister(id)
                     resolve(m)
                 },
                 register: () => Promise.resolve()
-            } as RegisterableListener);
+            } as RegisterableListener
+
+
+            this.register(l);
+
+            setTimeout(() => {
+                this.unregister(id)
+                if (!done) {
+                    console.log(`Rejecting after ${this.timeout}ms`)
+                    reject(new Error(OpenError.AppTimeout))
+                }
+            }, this.timeout);
+
         })
     }
+
 
     async exchange<X>(message: any, expectedTypeName: string): Promise<X> {
         const prom = this.waitFor(m =>
