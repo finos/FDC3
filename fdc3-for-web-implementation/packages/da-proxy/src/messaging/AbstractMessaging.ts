@@ -1,4 +1,4 @@
-import { AppIdentifier, ImplementationMetadata, OpenError } from "@finos/fdc3";
+import { AppIdentifier, ImplementationMetadata } from "@finos/fdc3";
 import { Messaging } from "../Messaging";
 import { RegisterableListener } from "../listeners/RegisterableListener";
 import { GetAgentParams, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-common";
@@ -68,7 +68,7 @@ export abstract class AbstractMessaging implements Messaging {
     async exchange<X>(message: any, expectedTypeName: string): Promise<X> {
         const prom = this.waitFor(m =>
             (m.type == expectedTypeName)
-            && (m.meta.requestUuid == message.meta.requestUuid), OpenError.AppTimeout)
+            && (m.meta.requestUuid == message.meta.requestUuid), `Timeout waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`)
         this.post(message)
         const out: any = await prom
         if (out?.payload?.error) {

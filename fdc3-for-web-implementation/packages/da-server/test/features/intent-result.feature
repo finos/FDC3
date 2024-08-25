@@ -31,3 +31,14 @@ ISSUE: 1303 prevents the use of matches_type
       | raiseIntentResponse       | ABC123               | App1       | a1            | l1                                             | {null}                              |
       | raiseIntentResultResponse | ABC123               | App1       | a1            | {null}                                         | pc1                                 |
       | intentResultResponse      | ABC123               | LibraryApp | l1            | {null}                                         | {null}                              |
+
+  Scenario: App Returns A Void Intent Result
+  ISSUE: 1303 prevents the use of matches_type
+
+    When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "LibraryApp/l1" with requestUuid "ABC123"
+    When "LibraryApp/l1" sends a intentResultRequest with requestUuid "ABC123" and void contents
+    Then messaging will have outgoing posts
+      | msg.type                  | msg.meta.requestUuid | to.appId   | to.instanceId | msg.payload.intentResolution.source.instanceId | msg.payload.intentResult.channel.id | msg.payload.intentResult.context.type |
+      | raiseIntentResponse       | ABC123               | App1       | a1            | l1                                             | {null}                              | {null}                                |
+      | raiseIntentResultResponse | ABC123               | App1       | a1            | {null}                                         | {null}                              | {null}                                |
+      | intentResultResponse      | ABC123               | LibraryApp | l1            | {null}                                         | {null}                              | {null}                                |

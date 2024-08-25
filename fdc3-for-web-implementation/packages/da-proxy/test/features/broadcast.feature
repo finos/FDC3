@@ -25,5 +25,7 @@ Feature: Broadcasting
     When I call "{api}" with "joinUserChannel" with parameter "one"
     And I call "{api}" with "broadcast" with parameter "{instrumentContext}"
     Then messaging will have posts
-      | payload.channelId | payload.context.type | payload.context.name | matches_type     |
-      | one               | fdc3.instrument      | Apple                | broadcastRequest |
+      | payload.channelId | payload.context.type | payload.context.name | matches_type             |
+      | one               | {null}               | {null}               | joinUserChannelRequest   |
+      | {null}            | {null}               | {null}               | getCurrentChannelRequest |
+      | one               | fdc3.instrument      | Apple                | broadcastRequest         |

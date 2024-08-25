@@ -6,6 +6,15 @@ Feature: Intents Can Return Different Results
     And app "chipShop/c1" resolves intent "OrderFood"
     And "instrumentContext" is a "fdc3.instrument" context
 
+  Scenario: void is returned in the result
+    Given Raise Intent will return no result
+    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    And I call "{result}" with "getResult"
+    Then "{result}" is undefined
+    And messaging will have posts
+      | payload.intent | payload.context.type | payload.context.id.ticker | payload.app.appId | payload.app.instanceId | matches_type       |
+      | OrderFood      | fdc3.instrument      | AAPL                      | chipShop          | c1                     | raiseIntentRequest |
+
   Scenario: Context Data is returned in the result
     Given Raise Intent will return a context of "{instrumentContext}"
     When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
