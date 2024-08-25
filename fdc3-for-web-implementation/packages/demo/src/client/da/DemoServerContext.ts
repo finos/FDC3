@@ -8,21 +8,18 @@ enum Opener { Tab, Frame, Nested }
 
 enum State { Pending, Connected }
 
-type AppRegistration = {
-    appId: AppIdentifier,
+type AppRegistration = AppIdentifier & {
     window: Window,
     url: string,
     state: State
 }
 
 
-export class DemoServerContext implements ServerContext {
+export class DemoServerContext implements ServerContext<AppRegistration> {
 
     private readonly socket: Socket
     private readonly directory: Directory
-
     private connections: AppRegistration[] = []
-    private instances: Map<InstanceID, string> = new Map()
 
     constructor(socket: Socket, directory: Directory) {
         this.socket = socket
@@ -32,40 +29,32 @@ export class DemoServerContext implements ServerContext {
     /**
      * Sets the appId and instanceId for a given connection UUID
      */
-    setInstanceDetails(uuid: InstanceID, meta: AppIdentifier): void {
+    setInstanceDetails(uuid: InstanceID, meta: AppRegistration): void {
         console.log(`Setting ${uuid} to ${meta.appId}`)
-        this.instances.set(uuid, meta.appId)
+        this.connections.push({
+            ...meta,
+            instanceId: uuid
+        })
     }
 
-    getInstanceForWindow(window: Window): AppIdentifier | undefined {
-        const out = this.connections.find(i => i.window == window)
-        if (out) {
-            return out.appId
-        } else {
-            return undefined
-        }
+    getInstanceForWindow(window: Window): AppRegistration | undefined {
+        return this.connections.find(i => i.window == window)
     }
 
     /**
      * Returns the UUID for a particular instance of an app.
      * This is used in situations where an app is reconnecting to the same desktop agent.
      */
-    getInstanceDetails(uuid: InstanceID): AppIdentifier | undefined {
-        const out = this.instances.get(uuid)
-        if (out) {
-            return {
-                appId: out,
-                instanceId: uuid
-            }
-        } else {
-            return undefined
-        }
+    getInstanceDetails(uuid: InstanceID): AppRegistration | undefined {
+        return this.connections.find(i => i.instanceId == uuid)
     }
 
     async setAppConnected(app: AppIdentifier): Promise<void> {
-        const theApp = this.connections.find(i => (i.appId.appId == app.appId) && (i.appId.instanceId == app.instanceId))
+        const theApp = this.connections.find(i => i.instanceId == app.instanceId)
         if (theApp) {
             theApp.state = State.Connected
+        } else {
+            throw new Error("No app found with id " + app.instanceId)
         }
     }
 
@@ -98,8 +87,8 @@ export class DemoServerContext implements ServerContext {
     }
 
     goodbye(id: string) {
-        this.connections = this.connections.filter(i => i.appId.instanceId !== id)
-        console.log(`Closed ${id} ${JSON.stringify(this.connections.map(i => i.appId.instanceId))} apps open`)
+        this.connections = this.connections.filter(i => i.instanceId !== id)
+        console.log(`Closed ${id} ${JSON.stringify(this.connections.map(i => i.instanceId))} apps open`)
     }
 
     openTab(url: string): Window {
@@ -137,28 +126,19 @@ export class DemoServerContext implements ServerContext {
                 appId,
                 instanceId,
                 window,
-                url
+                url,
+                state: State.Pending
             }
 
             this.setInstanceDetails(instanceId, metadata)
-
-            this.connections.push({
-                appId: metadata,
-                url,
-                window,
-                state: State.Pending
-            })
-
             return instanceId
         }
 
         throw new Error(OpenError.AppNotFound)
     }
 
-    async getConnectedApps(): Promise<AppIdentifier[]> {
+    async getConnectedApps(): Promise<AppRegistration[]> {
         return this.connections
-            .filter(i => i.state == State.Connected)
-            .map(i => i.appId)
     }
 
     async isAppConnected(app: AppIdentifier): Promise<boolean> {

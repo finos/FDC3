@@ -3,12 +3,12 @@ import { v4 as uuid } from 'uuid'
 import { APP_GOODBYE, APP_HELLO, DA_HELLO, FDC3_APP_EVENT } from "../../message-types";
 import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
-import { BasicDirectory, DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/da-server";
-import { WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake } from "@kite9/fdc3-common";
+import { DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/da-server";
+import { WebConnectionProtocol2LoadURL } from "@kite9/fdc3-common";
 import { ChannelState, ChannelType } from "@kite9/da-server/src/handlers/BroadcastHandler";
 
 
-function createAppStartButton(app: DirectoryApp, sc: ServerContext): HTMLDivElement {
+function createAppStartButton(app: DirectoryApp, sc: ServerContext<any>): HTMLDivElement {
     const div = document.createElement("div") as HTMLDivElement
     div.classList.add("app")
     const h3 = document.createElement("h3")
