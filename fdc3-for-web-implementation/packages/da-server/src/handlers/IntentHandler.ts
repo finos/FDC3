@@ -10,9 +10,7 @@ import {
     RaiseIntentRequest, RaiseIntentForContextRequest,
     IntentResultRequest,
     AppIdentifier,
-    Context,
-    AddEventListenerEventMeta,
-    BroadcastResponseResponsePayload
+    Context
 } from "@kite9/fdc3-common";
 import { errorResponse, errorResponseId, successResponse, successResponseId } from "./support";
 
@@ -32,22 +30,6 @@ type IntentRequest = {
     type: 'raiseIntentResponse' | 'raiseIntentForContextResponse'
 }
 
-/** ISSUE: 1303 */
-export interface IntentResultEvent {
-    /**
-    * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
-    */
-    meta: AddEventListenerEventMeta;
-    /**
-     * The message payload contains details of the event that the app is being notified about.
-     */
-    payload: BroadcastResponseResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "intentResultEvent";
-}
 
 /**
  * Re-writes the request to forward it on to the target application
@@ -165,7 +147,7 @@ export class IntentHandler implements MessageHandler {
             // post the result to the app that raised the intent
             successResponse(sc, arg0, to!!, {
                 intentResult: arg0.payload.intentResult
-            }, 'intentResultEvent')
+            }, 'raiseIntentResultResponse')
 
             // respond to the app that handled the intent
             successResponse(sc, arg0, from, {}, 'intentResultResponse')

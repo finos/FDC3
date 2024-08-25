@@ -1,7 +1,7 @@
 {
   "name": "@kite9/demo",
   "private": true,
-  "version": "0.0.42",
+  "version": "0.0.45",
   "scripts": {
     "dev": "nodemon -w src/server src/server/main.ts"
   },
@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@finos/fdc3": "^2.1.0-beta.6",
-    "@kite9/client": "0.0.42",
-    "@kite9/da-server": "0.0.42",
-    "@kite9/fdc3-common": "0.0.42",
+    "@kite9/client": "0.0.45",
+    "@kite9/da-server": "0.0.45",
+    "@kite9/fdc3-common": "0.0.45",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.10",
     "express": "^4.18.3",

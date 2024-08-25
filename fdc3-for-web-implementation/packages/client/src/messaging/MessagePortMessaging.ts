@@ -2,7 +2,6 @@ import { AbstractWebMessaging } from './AbstractWebMessaging'
 import { RegisterableListener } from "@kite9/da-proxy"
 import { GetAgentParams, WebConnectionProtocol3Handshake } from "@kite9/fdc3-common"
 import { v4 as uuidv4 } from "uuid"
-import { exchangePostMessage } from "./exchange"
 
 /**
  * Details needed to set up the Messaging instance
@@ -18,10 +17,9 @@ export class MessagePortMessaging extends AbstractWebMessaging {
 
     private readonly cd: ConnectionDetails
     private readonly listeners: Map<string, RegisterableListener> = new Map()
-    deliveryTimeoutMs: number = 10000
 
-    constructor(cd: ConnectionDetails) {
-        super(cd.options, cd.connectionAttemptUuid)
+    constructor(cd: ConnectionDetails, deliveryTimeoutMs?: number) {
+        super(cd.options, cd.connectionAttemptUuid, deliveryTimeoutMs)
         this.cd = cd;
 
         this.cd.messagePort.onmessage = (m) => {
@@ -57,13 +55,6 @@ export class MessagePortMessaging extends AbstractWebMessaging {
             "source": this.getSource()
         }
     }
-
-    exchange<X>(message: object, expectedTypeName: string): Promise<X> {
-        return exchangePostMessage(this.cd.messagePort, expectedTypeName, message, this.deliveryTimeoutMs).then(e => {
-            return e.data as X
-        });
-    }
-
 
 }
 
