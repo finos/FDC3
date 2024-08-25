@@ -86,12 +86,14 @@ function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): 
 const loader: Loader = async (options: GetAgentParams) => {
     const connectionAttemptUuid = uuidv4();
 
+    const targets: Window[] = []
+    collectPossibleTargets(globalThis.window, targets);
+
     // ok, begin the process
     const promise = helloExchange(options, connectionAttemptUuid)
 
-    const targets: Window[] = []
-    collectPossibleTargets(globalThis.window, targets);
-    targets.forEach((t) => sendWCP1Hello(t, options, connectionAttemptUuid, globalThis.document.referrer))
+    // use of '*': See https://github.com/finos/FDC3/issues/1316
+    targets.forEach((t) => sendWCP1Hello(t, options, connectionAttemptUuid, "*"))
 
     // wait for one of the windows to return the data we need
     const data = await promise

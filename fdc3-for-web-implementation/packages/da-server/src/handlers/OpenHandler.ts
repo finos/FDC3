@@ -19,14 +19,14 @@ enum AppState { Opening, DeliveringContext, Done }
 
 class PendingApp {
 
-    private readonly sc: ServerContext
+    private readonly sc: ServerContext<any>
     private readonly msg: OpenRequest
     readonly context: ContextElement | undefined
     readonly source: AppMetadata
     state: AppState = AppState.Opening
     private openedApp: AppIdentifier | undefined = undefined
 
-    constructor(sc: ServerContext, msg: OpenRequest, context: ContextElement | undefined, source: AppIdentifier, timeoutMs: number) {
+    constructor(sc: ServerContext<any>, msg: OpenRequest, context: ContextElement | undefined, source: AppIdentifier, timeoutMs: number) {
         this.context = context
         this.source = source
         this.sc = sc
@@ -41,7 +41,12 @@ class PendingApp {
 
     private onSuccess() {
         this.sc.setAppConnected(this.openedApp!!)
-        successResponse(this.sc, this.msg, this.source, { appIdentifier: this.openedApp }, 'openResponse')
+        successResponse(this.sc, this.msg, this.source, {
+            appIdentifier: {
+                appId: this.openedApp!!.appId,
+                instanceId: this.openedApp!!.instanceId
+            }
+        }, 'openResponse')
     }
 
     private onError() {
@@ -74,7 +79,7 @@ export class OpenHandler implements MessageHandler {
         this.timeoutMs = timeoutMs
     }
 
-    async accept(msg: any, sc: ServerContext, uuid: InstanceID): Promise<void> {
+    async accept(msg: any, sc: ServerContext<any>, uuid: InstanceID): Promise<void> {
         switch (msg.type as string) {
             case 'addContextListenerRequest': return this.handleAddContextListener(msg as AddContextListenerRequest, sc, uuid)
             case 'WCP4ValidateAppIdentity': return this.handleValidate(msg as WebConnectionProtocol4ValidateAppIdentity, sc, uuid)
@@ -94,7 +99,7 @@ export class OpenHandler implements MessageHandler {
     /**
      * This deals with sending pending context to listeners of newly-opened apps.
      */
-    handleAddContextListener(arg0: AddContextListenerRequest, sc: ServerContext, from: InstanceID): void {
+    handleAddContextListener(arg0: AddContextListenerRequest, sc: ServerContext<any>, from: InstanceID): void {
         const pendingOpen = this.pending.get(from)
 
         if (pendingOpen) {
@@ -114,7 +119,10 @@ export class OpenHandler implements MessageHandler {
                         payload: {
                             channelId,
                             context: pendingOpen.context,
-                            originatingApp: pendingOpen.source
+                            originatingApp: {
+                                appId: pendingOpen.source.appId,
+                                instanceId: pendingOpen.source.instanceId
+                            }
                         }
                     }
 
@@ -140,7 +148,7 @@ export class OpenHandler implements MessageHandler {
         }
     }
 
-    getAppMetadata(arg0: GetAppMetadataRequest, sc: ServerContext, from: AppIdentifier): void {
+    getAppMetadata(arg0: GetAppMetadataRequest, sc: ServerContext<any>, from: AppIdentifier): void {
         const appID = arg0.payload.app
         const details = this.directory.retrieveAppsById(appID.appId)
         if (details.length > 0) {
@@ -153,7 +161,7 @@ export class OpenHandler implements MessageHandler {
     }
 
 
-    async findInstances(arg0: FindInstancesRequest, sc: ServerContext, from: AppIdentifier): Promise<void> {
+    async findInstances(arg0: FindInstancesRequest, sc: ServerContext<any>, from: AppIdentifier): Promise<void> {
         const appId = arg0.payload.app.appId
         const openApps = await sc.getConnectedApps()
         const matching = openApps.filter(a => a.appId == appId)
@@ -162,7 +170,7 @@ export class OpenHandler implements MessageHandler {
         }, 'findInstancesResponse')
     }
 
-    async open(arg0: OpenRequest, sc: ServerContext, from: AppIdentifier): Promise<void> {
+    async open(arg0: OpenRequest, sc: ServerContext<any>, from: AppIdentifier): Promise<void> {
 
         const source = arg0.payload.app
         const context = arg0.payload.context
@@ -175,7 +183,7 @@ export class OpenHandler implements MessageHandler {
         }
     }
 
-    async handleValidate(arg0: WebConnectionProtocol4ValidateAppIdentity, sc: ServerContext, from: InstanceID): Promise<void> {
+    async handleValidate(arg0: WebConnectionProtocol4ValidateAppIdentity, sc: ServerContext<any>, from: InstanceID): Promise<void> {
         const _this = this
 
         const responseMeta = {

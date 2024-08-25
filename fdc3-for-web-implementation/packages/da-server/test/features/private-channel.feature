@@ -3,8 +3,8 @@ Feature: Relaying Private Channel Broadcast messages
   Background:
     Given schemas loaded
     And A newly instantiated FDC3 Server
-    And "App1/a1" is opened with connection id "abc"
-    And "App2/a2" is opened with connection id "def"
+    And "App1/a1" is opened with connection id "a1"
+    And "App2/a2" is opened with connection id "a2"
     And "App2/a1" creates a private channel
     And I refer to "uuid3" as "channel1Id"
 

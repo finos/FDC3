@@ -6,8 +6,8 @@ Feature: Intent Results Are Correctly Delivered
       | Intent Name | Context Type | Result Type |
       | returnBook  | fdc3.book    | {empty}     |
     And A newly instantiated FDC3 Server
-    And "LibraryApp/l1" is opened with connection id "abc"
-    And "App1/a1" is opened with connection id "def"
+    And "LibraryApp/l1" is opened with connection id "l1"
+    And "App1/a1" is opened with connection id "a1"
     And "LibraryApp/l1" registers an intent listener for "returnBook"
 
   Scenario: App Returns An Intent Response

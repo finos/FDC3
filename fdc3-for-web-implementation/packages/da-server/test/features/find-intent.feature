@@ -9,8 +9,8 @@ Feature: Find Intent API
       | returnBook  | fdc3.book    | {empty}          |
       | streamAny   | fdc3.book    | channel          |
     And A newly instantiated FDC3 Server
-    And "App1/a1" is opened with connection id "abc"
-    And "App1/b1" is opened with connection id "def"
+    And "App1/a1" is opened with connection id "a1"
+    And "App1/b1" is opened with connection id "b1"
     And "App1/b1" registers an intent listener for "returnBook"
 
   Scenario: Unsuccessful Find Intents Request

@@ -6,7 +6,7 @@ import { BasicDesktopAgent, DefaultChannelSupport, DefaultHandshakeSupport, Defa
 import { MockDocument, MockWindow } from '../support/MockDocument';
 import { getAgent } from '../../src';
 import { GetAgentParams } from '@kite9/fdc3-common';
-import { MockFDC3Server } from '../support/MockFDC3Server';
+import { dummyInstanceId, MockFDC3Server } from '../support/MockFDC3Server';
 import { DefaultDesktopAgentIntentResolver } from '../../src/intent-resolution/DefaultDesktopAgentIntentResolver';
 import { DefaultDesktopAgentChannelSelector } from '../../src/channel-selector/DefaultDesktopAgentChannelSelector';
 import { NoopAppSupport } from '../../src/apps/NoopAppSupport';
@@ -15,14 +15,16 @@ import { MockStorage } from '../support/MockStorage';
 setupGenericSteps()
 Given('Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response', async function (this: CustomWorld, field: string, w: string) {
     const mockWindow = handleResolve(w, this)
-    const mock = new MockFDC3Server(mockWindow as any, false, this)
-    this.props[field] = mock
+    this.mockFDC3Server = new MockFDC3Server(mockWindow as any, false, this.mockContext)
+    this.props[field] = this.mockFDC3Server
+    this.mockContext.open(dummyInstanceId.appId)
 })
 
 Given('Parent Window desktop {string} listens for postMessage events in {string}, returns iframe response', async function (this: CustomWorld, field: string, w: string) {
     const mockWindow = handleResolve(w, this)
-    const mock = new MockFDC3Server(mockWindow as any, true, this)
-    this.props[field] = mock
+    this.mockFDC3Server = new MockFDC3Server(mockWindow as any, true, this.mockContext)
+    this.props[field] = this.mockFDC3Server
+    this.mockContext.open(dummyInstanceId.appId)
 })
 
 
@@ -93,5 +95,4 @@ Given('a browser document in {string} and window in {string}', async function (t
     // browser storage
     globalThis.sessionStorage = new MockStorage() as any
 
-    // window's app identity
 })

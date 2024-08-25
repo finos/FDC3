@@ -12,8 +12,8 @@ Feature: Raising Intents
     And "unusedApp" is an app with the following intents
       | Intent Name | Context Type | Result Type |
     And A newly instantiated FDC3 Server
-    And "App1/a1" is opened with connection id "abc"
-    And "listenerApp/b1" is opened with connection id "def"
+    And "App1/a1" is opened with connection id "a1"
+    And "listenerApp/b1" is opened with connection id "b1"
     And "listenerApp/b1" registers an intent listener for "returnBook"
 
   Scenario: Raising an Intent to a Non-Existent App
@@ -54,16 +54,16 @@ Feature: Raising Intents
   Scenario: Raising An Intent To A Non-Running App without A Context Type in the listener
     When "App1/a1" raises an intent for "stampBook" with contextType "fdc3.book" on app "libraryApp"
     And "uuid-0" sends validate
-    And "libraryApp/0" registers an intent listener for "stampBook"
+    And "libraryApp/uuid-0" registers an intent listener for "stampBook"
     Then messaging will have outgoing posts
       | msg.matches_type          | msg.payload.intent | to.instanceId | to.appId   | msg.payload.context.type |
-      | addIntentListenerResponse | {null}             |             0 | libraryApp | {null}                   |
-      | intentEvent               | stampBook          |             0 | libraryApp | fdc3.book                |
+      | addIntentListenerResponse | {null}             | uuid-0        | libraryApp | {null}                   |
+      | intentEvent               | stampBook          | uuid-0        | libraryApp | fdc3.book                |
       | raiseIntentResponse       | {null}             | a1            | App1       | {null}                   |
     And running apps will be
       | appId       | instanceId |
-      | App1        | a1         |
       | listenerApp | b1         |
+      | App1        | a1         |
       | libraryApp  | uuid-0     |
 
   Scenario: Raising An Intent To A Broken App that doesn't add an intent listener
@@ -72,8 +72,8 @@ Feature: Raising Intents
     And we wait for the intent timeout
     Then running apps will be
       | appId       | instanceId |
-      | App1        | a1         |
       | listenerApp | b1         |
+      | App1        | a1         |
       | libraryApp  | uuid-0     |
     Then messaging will have outgoing posts
       | msg.type            | msg.payload.error    | to.instanceId | to.appId |
