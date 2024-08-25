@@ -12,7 +12,7 @@ export type InstanceID = string
 /**
  * Handles messaging to apps and opening apps
  */
-export interface ServerContext {
+export interface ServerContext<X extends AppIdentifier> {
 
     /**
      * UUID for outgoing message
@@ -38,13 +38,13 @@ export interface ServerContext {
     /**
      * Registers a particular instance id with a given app id
      */
-    setInstanceDetails(uuid: InstanceID, appId: AppIdentifier): void
+    setInstanceDetails(uuid: InstanceID, details: X): void
 
     /**
      * Returns the UUID for a particular instance of an app.
      * This is used in situations where an app is reconnecting to the same desktop agent.
      */
-    getInstanceDetails(uuid: InstanceID): AppIdentifier | undefined
+    getInstanceDetails(uuid: InstanceID): X | undefined
 
     /**
      * Registers an app as connected to the desktop agent. 

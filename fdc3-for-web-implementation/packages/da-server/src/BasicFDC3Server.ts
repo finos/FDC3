@@ -12,7 +12,7 @@ export interface MessageHandler {
     /**
      * Handles an AgentRequestMessage from the messaging source
      */
-    accept(msg: any, sc: ServerContext, from: InstanceID): void
+    accept(msg: any, sc: ServerContext<any>, from: InstanceID): void
 }
 
 /**
@@ -21,9 +21,9 @@ export interface MessageHandler {
 export class BasicFDC3Server implements FDC3Server {
 
     private handlers: MessageHandler[]
-    private sc: ServerContext
+    private sc: ServerContext<any>
 
-    constructor(handlers: MessageHandler[], sc: ServerContext) {
+    constructor(handlers: MessageHandler[], sc: ServerContext<any>) {
         this.handlers = handlers
         this.sc = sc;
     }
@@ -36,7 +36,7 @@ export class BasicFDC3Server implements FDC3Server {
 
 export class DefaultFDC3Server extends BasicFDC3Server {
 
-    constructor(sc: ServerContext, directory: Directory, userChannels: ChannelState[], intentTimeoutMs: number = 20000, openHandlerTimeoutMs: number = 3000) {
+    constructor(sc: ServerContext<any>, directory: Directory, userChannels: ChannelState[], intentTimeoutMs: number = 20000, openHandlerTimeoutMs: number = 3000) {
         super([
             new BroadcastHandler(userChannels),
             new IntentHandler(directory, intentTimeoutMs),

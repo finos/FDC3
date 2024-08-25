@@ -2,6 +2,14 @@ import { ServerContext, InstanceID } from '@kite9/da-server'
 import { CustomWorld } from '../world'
 import { OpenError, AppIdentifier } from '@finos/fdc3'
 
+type ConnectionDetails = AppIdentifier & {
+    msg?: object
+    connected: boolean,
+    connectionId: string,
+    externalPort: MessagePort,
+    internalPort: MessagePort,
+    url: string
+}
 
 type MessageRecord = {
     to?: AppIdentifier,
@@ -9,31 +17,36 @@ type MessageRecord = {
     msg: object
 }
 
-export class TestServerContext implements ServerContext {
+export class TestServerContext implements ServerContext<ConnectionDetails> {
 
     public postedMessages: MessageRecord[] = []
     private readonly cw: CustomWorld
-    public connectedApps: AppIdentifier[] = []
-    private readonly instances: { [uuid: InstanceID]: AppIdentifier } = {}
+    private instances: ConnectionDetails[] = []
     private nextInstanceId: number = 0
     private nextUUID: number = 0
-    private port: MessagePort
 
-    constructor(cw: CustomWorld, port: MessagePort) {
+    constructor(cw: CustomWorld) {
         this.cw = cw
-        this.port = port
     }
 
     getInstanceDetails(uuid: string) {
-        return this.instances[uuid]
+        return this.instances.find(ca => ca.instanceId === uuid)
     }
 
-    setInstanceDetails(uuid: InstanceID, app: AppIdentifier) {
-        this.instances[uuid] = app
+    setInstanceDetails(uuid: InstanceID, appId: ConnectionDetails) {
+        this.instances = this.instances.filter(ca => ca.connectionId !== uuid)
+        this.instances.push({
+            ...appId,
+            connectionId: uuid
+        })
+    }
+
+    getMatchingInstance(url: string): ConnectionDetails | undefined {
+        return this.instances.find(ca => ca.url === url)
     }
 
     async disconnectApp(app: AppIdentifier): Promise<void> {
-        this.connectedApps = this.connectedApps.filter(ca => ca.instanceId !== app.instanceId)
+        this.instances = this.instances.filter(ca => ca.instanceId !== app.instanceId)
     }
 
     async open(appId: string): Promise<InstanceID> {
@@ -41,27 +54,47 @@ export class TestServerContext implements ServerContext {
         if (appId.includes("missing")) {
             throw new Error(OpenError.AppNotFound)
         } else {
-            const uuid = "uuid-" + ni
-            const out = {
+            const mc = new MessageChannel()
+            const internalPort = mc.port1
+            const externalPort = mc.port2
+
+            internalPort.start()
+
+            const connectionDetails = {
                 appId,
-                instanceId: "" + ni
-            } as AppIdentifier
-            this.instances[uuid] = out
-            return uuid
+                instanceId: "uuid-" + ni,
+                connected: false,
+                connectionId: "uuid-" + ni,
+                externalPort,
+                internalPort,
+                url: "https://dummyOrigin.test/path"
+            }
+
+            this.instances.push(connectionDetails)
+            internalPort.onmessage = (msg) => {
+                console.log(`Received message on internalPort ${appId}: ${JSON.stringify(msg.data)}`)
+                this.cw.mockFDC3Server?.receive(msg.data, connectionDetails.instanceId)
+            }
+
+            return connectionDetails.connectionId
         }
     }
 
     async setAppConnected(app: AppIdentifier): Promise<void> {
-        this.connectedApps.push(app)
+        this.instances.find(ca => (ca.instanceId == app.instanceId))!!.connected = true
     }
 
     async getConnectedApps(): Promise<AppIdentifier[]> {
-        return this.connectedApps
+        return this.instances.filter(ca => ca.connected).map(x => {
+            return {
+                appId: x.appId,
+                instanceId: x.instanceId
+            }
+        })
     }
 
     async isAppConnected(app: AppIdentifier): Promise<boolean> {
-        const openApps = await this.getConnectedApps()
-        const found = openApps.find(a => (a.appId == app.appId) && (a.instanceId == app.instanceId))
+        const found = this.instances.find(a => (a.appId == app.appId) && (a.instanceId == app.instanceId) && (a.connected))
         return found != null
     }
 
@@ -83,18 +116,12 @@ export class TestServerContext implements ServerContext {
      * USED FOR TESTING
      */
     getInstanceUUID(appId: AppIdentifier): InstanceID | undefined {
-        for (let [key, value] of Object.entries(this.instances)) {
-            if (value.instanceId === appId?.instanceId) {
-                return key;
-            }
-        }
-
-        return undefined;
-
+        return this.instances.find(ca => (ca.appId == appId.appId) && (ca.instanceId == appId.instanceId) && (ca.connected))?.instanceId
     }
 
-    post(msg: object, _to: InstanceID): Promise<void> {
-        this.port.postMessage(msg)
+    post(msg: object, to: InstanceID): Promise<void> {
+        const details = this.getInstanceDetails(to)
+        details?.internalPort.postMessage(msg)
         return Promise.resolve();
     }
 

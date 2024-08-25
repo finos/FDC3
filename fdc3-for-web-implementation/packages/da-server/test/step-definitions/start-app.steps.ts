@@ -6,7 +6,10 @@ import { OpenRequest, GetAppMetadataRequest, FindInstancesRequest, WebConnection
 
 When('{string} is opened with connection id {string}', function (this: CustomWorld, app: string, uuid: string) {
   const meta = createMeta(this, app)
-  this.sc.setInstanceDetails(uuid, meta.source)
+  this.sc.setInstanceDetails(uuid, {
+    ...meta.source,
+    connected: true
+  })
   this.sc.setAppConnected(meta.source)
 });
 

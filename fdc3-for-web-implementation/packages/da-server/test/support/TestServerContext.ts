@@ -2,6 +2,10 @@ import { ServerContext, InstanceID } from '../../src/ServerContext'
 import { CustomWorld } from '../world'
 import { OpenError, AppIdentifier } from '@finos/fdc3'
 
+type ConnectionDetails = AppIdentifier & {
+    msg?: object
+    connected: boolean
+}
 
 type MessageRecord = {
     to?: AppIdentifier,
@@ -9,12 +13,11 @@ type MessageRecord = {
     msg: object
 }
 
-export class TestServerContext implements ServerContext {
+export class TestServerContext implements ServerContext<ConnectionDetails> {
 
     public postedMessages: MessageRecord[] = []
     private readonly cw: CustomWorld
-    public connectedApps: AppIdentifier[] = []
-    private readonly instances: { [uuid: InstanceID]: string } = {}
+    private instances: ConnectionDetails[] = []
     private nextInstanceId: number = 0
     private nextUUID: number = 0
 
@@ -23,23 +26,19 @@ export class TestServerContext implements ServerContext {
     }
 
     getInstanceDetails(uuid: string) {
-        const appId = this.instances[uuid]
-        if (appId) {
-            return {
-                appId,
-                instanceId: uuid
-            }
-        } else {
-            return undefined
-        }
+        return this.instances.find(ca => ca.instanceId === uuid)
     }
 
-    setInstanceDetails(uuid: InstanceID, appId: AppIdentifier) {
-        this.instances[uuid] = appId.appId
+    setInstanceDetails(uuid: InstanceID, appId: ConnectionDetails) {
+        if (uuid != appId.instanceId) {
+            throw new Error("UUID mismatch")
+        }
+        this.instances = this.instances.filter(ca => ca.instanceId !== uuid)
+        this.instances.push(appId)
     }
 
     async disconnectApp(app: AppIdentifier): Promise<void> {
-        this.connectedApps = this.connectedApps.filter(ca => ca.instanceId !== app.instanceId)
+        this.instances = this.instances.filter(ca => ca.instanceId !== app.instanceId)
     }
 
     async open(appId: string): Promise<InstanceID> {
@@ -48,22 +47,26 @@ export class TestServerContext implements ServerContext {
             throw new Error(OpenError.AppNotFound)
         } else {
             const uuid = "uuid-" + ni
-            this.instances[uuid] = appId
+            this.instances.push({ appId, instanceId: uuid, connected: false })
             return uuid
         }
     }
 
     async setAppConnected(app: AppIdentifier): Promise<void> {
-        this.connectedApps.push(app)
+        this.instances.find(ca => (ca.instanceId == app.instanceId))!!.connected = true
     }
 
     async getConnectedApps(): Promise<AppIdentifier[]> {
-        return this.connectedApps
+        return this.instances.filter(ca => ca.connected).map(x => {
+            return {
+                appId: x.appId,
+                instanceId: x.instanceId
+            }
+        })
     }
 
     async isAppConnected(app: AppIdentifier): Promise<boolean> {
-        const openApps = await this.getConnectedApps()
-        const found = openApps.find(a => (a.appId == app.appId) && (a.instanceId == app.instanceId))
+        const found = this.instances.find(a => (a.appId == app.appId) && (a.instanceId == app.instanceId) && (a.connected))
         return found != null
     }
 
@@ -85,7 +88,14 @@ export class TestServerContext implements ServerContext {
         if (to == null) {
             this.postedMessages.push({ msg })
         } else {
-            this.postedMessages.push({ msg, to: this.getInstanceDetails(to), uuid: to })
+            const id = this.getInstanceDetails(to)
+            const app = id ? {
+                appId: id!!.appId,
+                instanceId: id!!.instanceId
+            } : undefined
+            this.postedMessages.push({
+                msg, to: app, uuid: to
+            })
         }
     }
 
@@ -97,7 +107,11 @@ export class TestServerContext implements ServerContext {
      * USED FOR TESTING
      */
     getInstanceUUID(appId: AppIdentifier): InstanceID {
-        this.setInstanceDetails(appId.instanceId!!, appId)
+        this.setInstanceDetails(appId.instanceId!!, {
+            appId: appId.appId,
+            instanceId: appId.instanceId,
+            connected: true
+        })
         return appId.instanceId!!
     }
 }

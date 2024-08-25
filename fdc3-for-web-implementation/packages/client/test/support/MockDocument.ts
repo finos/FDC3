@@ -1,4 +1,4 @@
-import { EMBED_URL, MockFDC3Server, buildConnection } from "./MockFDC3Server"
+import { EMBED_URL } from "./MockFDC3Server"
 import { CustomWorld } from "../world"
 import { DesktopAgent } from "@finos/fdc3"
 import { WebConnectionProtocol3Handshake } from "@kite9/fdc3-common"
@@ -66,12 +66,12 @@ export class MockWindow extends MockElement {
 
     eventHandlers: EventHandler[] = []
     events: any[] = []
-    serverInstance: MockFDC3Server | null = null
 
     parent: MockWindow | null = null
 
     location = {
-        origin: "https://dummyOrigin.test"
+        origin: "https://dummyOrigin.test",
+        href: "https://dummyOrigin.test/path"
     }
 
     addEventListener(type: string, callback: (e: Event) => void): void {
@@ -108,8 +108,8 @@ export class MockWindow extends MockElement {
     shutdown() {
         this.eventHandlers = []
         this.fdc3 = undefined
-        if (this.serverInstance) {
-            this.serverInstance.shutdown()
+        if (this.cw.mockFDC3Server) {
+            this.cw.mockFDC3Server.shutdown()
         }
     }
 }
@@ -132,10 +132,7 @@ class MockIFrame extends MockWindow {
             const paramStr = value.substring(EMBED_URL.length + 1)
             const params = new URLSearchParams(paramStr)
             const connectionAttemptUuid = params.get("connectionAttemptUuid")!!
-            const connection = buildConnection(this.cw)
-            parent.serverInstance?.instances.push(connection)
-            connection.context.setInstanceDetails('uuid', { appId: 'Test App Id', instanceId: '1' })
-
+            const connection = {} as any // this.serverInstance.theContext.createConnection(connectionAttemptUuid, this)
             try {
                 parent.postMessage({
                     type: "WCP3Handshake",

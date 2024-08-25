@@ -13,8 +13,8 @@ Feature: Raising Intents For Context
     And "unusedApp" is an app with the following intents
       | Intent Name | Context Type | Result Type |
     And A newly instantiated FDC3 Server
-    And "App1/a1" is opened with connection id "abc"
-    And "listenerApp/b1" is opened with connection id "def"
+    And "App1/a1" is opened with connection id "a1"
+    And "listenerApp/b1" is opened with connection id "b1"
     And "listenerApp/b1" registers an intent listener for "returnBook"
 
   Scenario: Raising an Intent to a Non-Existent App

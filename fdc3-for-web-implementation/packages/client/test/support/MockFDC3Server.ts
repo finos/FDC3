@@ -1,70 +1,39 @@
 import { BasicDirectory, DefaultFDC3Server } from "@kite9/da-server"
 import { WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake } from "@kite9/fdc3-common"
 import { TestServerContext } from "./TestServerContext"
-import { CustomWorld } from "../world"
 import { MockWindow } from "./MockDocument"
 import { ChannelState, ChannelType } from "@kite9/da-server/src/handlers/BroadcastHandler"
 
-const dummyInstanceId = { appId: "Test App Id", instanceId: "1" }
+export const dummyInstanceId = { appId: "Test App Id", instanceId: "1" }
 
 export const EMBED_URL = "http://localhost:8080/static/da/embed.html"
 
-export type ConnectionDetails = {
-    externalPort: MessagePort,
-    internalPort: MessagePort
-    server: DefaultFDC3Server
-    context: TestServerContext
-}
+export class MockFDC3Server extends DefaultFDC3Server {
 
-export function buildConnection(world: CustomWorld): ConnectionDetails {
-    const mc = new MessageChannel()
-    const internalPort = mc.port1
-    const externalPort = mc.port2
-
-    internalPort.start()
-
-    const channelDetails: ChannelState[] = [
-        { id: "one", type: ChannelType.user, context: [], displayMetadata: { name: "THE RED CHANNEL", color: "red" } },
-        { id: "two", type: ChannelType.user, context: [], displayMetadata: { name: "THE BLUE CHANNEL", color: "blue" } },
-        { id: "three", type: ChannelType.user, context: [], displayMetadata: { name: "THE GREEN CHANNEL", color: "green" } }
-    ]
-
-    const dir = new BasicDirectory([dummyInstanceId])
-    const theContext = new TestServerContext(world, internalPort as any as MessagePort)
-    const theServer = new DefaultFDC3Server(theContext, dir, channelDetails)
-
-    internalPort.addEventListener("message", (e) => {
-        theServer?.receive((e as any).data, "uuid")
-    })
-
-    return {
-        externalPort: externalPort as any as MessagePort,
-        internalPort: internalPort as any as MessagePort,
-        server: theServer,
-        context: theContext
-    }
-}
-
-export class MockFDC3Server {
-
-    instances: ConnectionDetails[] = []
     private useIframe: boolean
     private window: MockWindow
-    private world: CustomWorld
+    private tsc: TestServerContext
 
-    constructor(window: MockWindow, useIframe: boolean, world: CustomWorld) {
+    constructor(window: MockWindow, useIframe: boolean, ctx: TestServerContext) {
+        const channelDetails: ChannelState[] = [
+            { id: "one", type: ChannelType.user, context: [], displayMetadata: { name: "THE RED CHANNEL", color: "red" } },
+            { id: "two", type: ChannelType.user, context: [], displayMetadata: { name: "THE BLUE CHANNEL", color: "blue" } },
+            { id: "three", type: ChannelType.user, context: [], displayMetadata: { name: "THE GREEN CHANNEL", color: "green" } }
+        ]
+
+        const dir = new BasicDirectory([dummyInstanceId])
+        super(ctx, dir, channelDetails)
         this.useIframe = useIframe
         this.window = window
-        this.world = world
+        this.tsc = ctx
         this.init()
-        this.window.serverInstance = this
     }
 
     shutdown() {
-        this.instances.forEach(i => {
-            i.externalPort.close()
-            i.internalPort.close()
-        })
+        // this.theContext.forEach(i => {
+        //     i.externalPort.close()
+        //     i.internalPort.close()
+        // })
     }
 
     init() {
@@ -90,10 +59,7 @@ export class MockFDC3Server {
                             }
                         } as WebConnectionProtocol2LoadURL, origin)
                     } else {
-                        const details = buildConnection(this.world)
-                        details.context.setInstanceDetails('uuid', { appId: 'Test App Id', instanceId: '1' })
-                        this.instances.push(details)
-
+                        const details = this.tsc.getMatchingInstance(data.payload.identityUrl)
                         source.postMessage({
                             type: "WCP3Handshake",
                             meta: {
@@ -105,7 +71,7 @@ export class MockFDC3Server {
                                 resolver: "https://mock.fdc3.com/resolver",
                                 channelSelector: "https://mock.fdc3.com/channelSelector",
                             }
-                        } as WebConnectionProtocol3Handshake, origin, [details.externalPort])
+                        } as WebConnectionProtocol3Handshake, origin, [details!!.externalPort])
                     }
                 }
             });

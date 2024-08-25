@@ -9,7 +9,7 @@ Feature: Opening and Requesting App Details
       | Intent Name | Context Type | Result Type |
       | loanBook    | fdc3.book    | fdc3.loan   |
     And A newly instantiated FDC3 Server
-    And "libraryApp/a1" is opened with connection id "lx1"
+    And "libraryApp/a1" is opened with connection id "a1"
 
   Scenario: Looking up app metadata
     When "libraryApp/a1" requests metadata for "storageApp"
@@ -78,8 +78,8 @@ ISSUE: 1310 causes this to fail right now
       | findInstancesResponse |                                 0 | a1            |
 
   Scenario: Find Instances with Some Apps Running
-    When "storageApp/b1" is opened with connection id "abc"
-    And "storageApp/b2" is opened with connection id "def"
+    When "storageApp/b1" is opened with connection id "b1"
+    And "storageApp/b2" is opened with connection id "b2"
     And "libraryApp/a1" findsInstances of "storageApp"
     And we wait for a period of "100" ms
     Then messaging will have outgoing posts

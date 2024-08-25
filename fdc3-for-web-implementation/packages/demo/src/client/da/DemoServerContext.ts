@@ -136,7 +136,8 @@ export class DemoServerContext implements ServerContext {
             const metadata = {
                 appId,
                 instanceId,
-                window
+                window,
+                url
             }
 
             this.setInstanceDetails(instanceId, metadata)

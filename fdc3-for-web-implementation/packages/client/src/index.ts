@@ -30,7 +30,7 @@ export const getAgent: getAgentType = (optionsOverride?: GetAgentParams) => {
         channelSelector: true,
         intentResolver: true,
         timeout: DEFAULT_WAIT_FOR_MS,
-        identityUrl: window.location.href
+        identityUrl: globalThis.window.location.href
     }
 
     const options = {
