@@ -35,7 +35,7 @@ export interface Messaging extends Connectable {
     /**
      * Waits for a specific matching message
      */
-    waitFor<X>(filter: (m: any) => boolean): Promise<X>
+    waitFor<X>(filter: (m: any) => boolean, timeoutErrorMessage?: string): Promise<X>
 
     /**
      * 

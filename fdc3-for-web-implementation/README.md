@@ -133,9 +133,11 @@ address of the embed page in the cookie? Problem is, the cookie is scoped to the
 ## Releasing
 
 ```
-```
+// first, update version number in package.json
 npm login
-npm version 0.0.10 --workspaces (doesn't work as it doesn't update dependencies)
+npm version <version from package.json> --workspaces
+npm run syncpack
+npm run build
 npm publish --access=public --workspaces
-
+npm up
 ```

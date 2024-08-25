@@ -6,9 +6,9 @@ import { DefaultIntentListener } from "../listeners/DefaultIntentListener";
 import { IntentResolver } from "@kite9/fdc3-common";
 import { DefaultChannel } from "../channels/DefaultChannel";
 import { DefaultPrivateChannel } from "../channels/DefaultPrivateChannel";
-import { IntentResultResponse, FindIntentRequest, FindIntentResponse, AddContextListenerRequestMeta, FindIntentsByContextRequest, FindIntentsByContextResponse, RaiseIntentRequest, RaiseIntentResponse } from "@kite9/fdc3-common"
+import { FindIntentRequest, FindIntentResponse, AddContextListenerRequestMeta, FindIntentsByContextRequest, FindIntentsByContextResponse, RaiseIntentRequest, RaiseIntentResultResponse, RaiseIntentResponse } from "@kite9/fdc3-common"
 
-function convertIntentResult(m: IntentResultResponse, messaging: Messaging): Promise<IntentResult> {
+function convertIntentResult(m: RaiseIntentResultResponse, messaging: Messaging): Promise<IntentResult> {
     const result = m.payload.intentResult!!
     if (result.channel) {
         const c = result.channel!!;
@@ -82,8 +82,8 @@ export class DefaultIntentSupport implements IntentSupport {
     }
 
     private async createResultPromise(messageOut: RaiseIntentRequest): Promise<IntentResult> {
-        const rp = await this.messaging.waitFor<IntentResultResponse>(m => (
-            (m.type == 'intentResultResponse') &&
+        const rp = await this.messaging.waitFor<RaiseIntentResultResponse>(m => (
+            (m.type == 'raiseIntentResultResponse') &&
             (m.meta.requestUuid == messageOut.meta.requestUuid)))
 
         if (!rp) {

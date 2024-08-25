@@ -1,6 +1,6 @@
 {
   "name": "@kite9/client",
-  "version": "0.0.45",
+  "version": "0.0.47",
   "files": [
     "dist"
   ],
@@ -13,14 +13,14 @@
   },
   "dependencies": {
     "@finos/fdc3": "^2.1.0-beta.6",
-    "@kite9/da-proxy": "0.0.45",
-    "@kite9/fdc3-common": "0.0.45",
+    "@kite9/da-proxy": "0.0.47",
+    "@kite9/fdc3-common": "0.0.47",
     "@types/uuid": "^10.0.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",
-    "@kite9/da-server": "0.0.45",
+    "@kite9/da-server": "0.0.47",
     "@types/node": "^20.14.11",
     "expect": "^29.7.0",
     "jsonpath-plus": "^9.0.0",
