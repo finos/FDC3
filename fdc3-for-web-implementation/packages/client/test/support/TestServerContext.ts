@@ -119,6 +119,13 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
         return this.instances.find(ca => (ca.appId == appId.appId) && (ca.instanceId == appId.instanceId) && (ca.connected))?.instanceId
     }
 
+    /**
+     * USED FOR TESTING
+     */
+    getFirstInstance() {
+        return this.instances[0]
+    }
+
     post(msg: object, to: InstanceID): Promise<void> {
         const details = this.getInstanceDetails(to)
         details?.internalPort.postMessage(msg)
