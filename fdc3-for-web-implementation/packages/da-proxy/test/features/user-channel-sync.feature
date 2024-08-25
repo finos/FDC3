@@ -2,6 +2,7 @@ Feature: Updating User Channel State
 
   Background:
     Given schemas loaded
+    Given User Channels one, two and three
     Given "instrumentContext" is a "fdc3.instrument" context
     And "crazyContext" is a "fdc3.unsupported" context
     And channel "one" has context "{instrumentContext}"

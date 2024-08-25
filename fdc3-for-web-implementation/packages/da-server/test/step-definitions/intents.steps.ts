@@ -232,6 +232,24 @@ When('{string} sends a intentResultRequest with requestUuid {string} and context
     this.server.receive(message, uuid)
 })
 
+
+When('{string} sends a intentResultRequest with requestUuid {string} and void contents', function (this: CustomWorld, appStr: string, requestUuid: string) {
+    const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+    const message: IntentResultRequest = {
+        type: 'intentResultRequest',
+        meta: {
+            requestUuid,
+            timestamp: new Date()
+        },
+        payload: {
+            intentResult: {
+            }
+        }
+    }
+    this.server.receive(message, uuid)
+})
+
 When('{string} sends a intentResultRequest with requestUuid {string} and private channel {string}', function (this: CustomWorld, appStr: string, requestUuid: string, channelId: string) {
     const meta = createMeta(this, appStr)
     const uuid = this.sc.getInstanceUUID(meta.source)!!

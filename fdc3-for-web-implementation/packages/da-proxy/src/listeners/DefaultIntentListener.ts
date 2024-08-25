@@ -1,7 +1,7 @@
 import { IntentHandler, IntentResult, AppIdentifier, Context } from "@finos/fdc3";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
-import { RaiseIntentRequest, RaiseIntentResponse, IntentResultResponse, FluffyIntentResult as BridgeIntentResult } from "@kite9/fdc3-common"
+import { RaiseIntentResponse, IntentResultResponse, FluffyIntentResult as BridgeIntentResult, IntentEvent, IntentResultRequest } from "@kite9/fdc3-common"
 
 
 export class DefaultIntentListener extends AbstractListener<IntentHandler> {
@@ -18,28 +18,26 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
         this.intent = intent
     }
 
-    filter(m: RaiseIntentRequest): boolean {
-        return (m.type == 'raiseIntentRequest') && (m.payload.intent == this.intent)
+    filter(m: IntentEvent): boolean {
+        return (m.type == 'intentEvent') && (m.payload.intent == this.intent)
     }
 
-    action(m: RaiseIntentRequest): void {
-        this.handleIntentResponse(m as any)
+    action(m: IntentEvent): void {
+        this.handleIntentResponse(m)
 
         const done = this.handler(m.payload.context, {
-            source: m.meta.source as AppIdentifier// ISSUE: #1275
+            source: m.payload.originatingApp as AppIdentifier
         })
 
-        if (done != null) {
-            this.handleIntentResultResponse(done, m);
-        }
+        this.handleIntentResult(done, m);
     }
 
-    private handleIntentResponse(m: RaiseIntentRequest) {
+    private handleIntentResponse(m: IntentEvent) {
         const out: RaiseIntentResponse = {
             type: "raiseIntentResponse",
             meta: {
                 responseUuid: this.messaging.createUUID(),
-                requestUuid: m.meta.requestUuid,
+                requestUuid: m.meta.eventUuid,
                 timestamp: new Date()
             },
             payload: {
@@ -52,21 +50,31 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
         this.messaging.post(out);
     }
 
-    private handleIntentResultResponse(done: Promise<IntentResult>, m: RaiseIntentRequest) {
-        done.then(ir => {
-            const out: IntentResultResponse = {
-                type: "intentResultResponse",
-                meta: {
-                    responseUuid: this.messaging.createUUID(),
-                    requestUuid: m.meta.requestUuid,
-                    timestamp: new Date()
-                },
-                payload: {
-                    intentResult: convertIntentResult(ir)
-                }
-            };
-            this.messaging.post(out);
-        });
+    private intentResultRequestMessage(ir: IntentResult, m: IntentEvent): IntentResultRequest {
+        const out: IntentResultRequest = {
+            type: "intentResultRequest",
+            meta: {
+                requestUuid: m.meta.eventUuid,
+                timestamp: new Date()
+            },
+            payload: {
+                intentResult: convertIntentResult(ir)
+            }
+        };
+
+        return out
+    }
+
+    private handleIntentResult(done: Promise<IntentResult> | void, m: IntentEvent) {
+        if (done == null) {
+            // send an empty intent result response
+            return this.messaging.exchange<IntentResultResponse>(this.intentResultRequestMessage(undefined, m), "intentResultResponse");
+        } else {
+            // respond after promise completes
+            return done.then(ir => {
+                return this.messaging.exchange<IntentResultResponse>(this.intentResultRequestMessage(ir, m), "intentResultResponse");
+            });
+        }
     }
 }
 

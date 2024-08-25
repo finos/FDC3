@@ -1,8 +1,9 @@
-Feature: Basic User Channels Support
+Feature: Basic Private Channels Support
 
   Background: Desktop Agent API
     Given schemas loaded
-    Given A Desktop Agent in "api"
+    And User Channels one, two and three
+    And A Desktop Agent in "api"
     And I call "{api}" with "createPrivateChannel"
     And I refer to "{result}" as "privateChannel"
     And "instrumentMessageOne" is a "broadcastEvent" message on channel "{privateChannel.id}" with context "fdc3.instrument"

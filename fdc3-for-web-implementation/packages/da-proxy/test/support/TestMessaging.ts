@@ -18,6 +18,7 @@ import { RegisterListeners } from "./responses/RegisterListeners";
 import { UnsubscribeListeners } from "./responses/UnsubscribeListeners";
 import { CreatePrivateChannel } from "./responses/CreatePrivateChannel";
 import { DisconnectPrivateChannel } from "./responses/DisconnectPrivateChannel";
+import { IntentResult } from "./responses/IntentResult";
 
 export interface IntentDetail {
     app?: AppIdentifier,
@@ -96,13 +97,14 @@ export class TestMessaging extends AbstractMessaging {
             channelSelector: false,
             intentResolver: false,
             dontSetWindowFdc3: false
-        }, "test")
+        }, "test", 200)
 
         this.channelState = channelState
         this.automaticResponses = [
             new FindIntent(),
             new FindIntentByContext(),
             new RaiseIntent(),
+            new IntentResult(),
             new GetAppMetadata(),
             new FindInstances(),
             new Open(),
