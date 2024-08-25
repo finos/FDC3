@@ -132,7 +132,7 @@ class MockIFrame extends MockWindow {
             const paramStr = value.substring(EMBED_URL.length + 1)
             const params = new URLSearchParams(paramStr)
             const connectionAttemptUuid = params.get("connectionAttemptUuid")!!
-            const connection = {} as any // this.serverInstance.theContext.createConnection(connectionAttemptUuid, this)
+            const connection = this.cw.mockContext.getFirstInstance()
             try {
                 parent.postMessage({
                     type: "WCP3Handshake",
@@ -145,7 +145,7 @@ class MockIFrame extends MockWindow {
                         resolver: "https://mock.fdc3.com/resolver",
                         channelSelector: "https://mock.fdc3.com/channelSelector",
                     }
-                } as WebConnectionProtocol3Handshake, EMBED_URL, [connection.externalPort])
+                } as WebConnectionProtocol3Handshake, EMBED_URL, [connection!!.externalPort])
             } catch (e) {
                 console.error(e)
             }
