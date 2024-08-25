@@ -1,6 +1,6 @@
 import { io } from "socket.io-client"
 import { v4 as uuid } from 'uuid'
-import { APP_GOODBYE, APP_HELLO, DA_HELLO, FDC3_APP_EVENT } from "../../message-types";
+import { APP_GOODBYE, DA_HELLO, FDC3_APP_EVENT } from "../../message-types";
 import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
 import { DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/da-server";
@@ -53,8 +53,8 @@ window.addEventListener("load", () => {
         socket.emit(DA_HELLO, desktopAgentUUID)
 
         const directory = new FDC3_2_1_JSONDirectory()
-        await directory.load("/static/da/appd.json")
-        //await directory.load("/static/da/local-conformance-2_0.v2.json")
+        //await directory.load("/static/da/appd.json")
+        await directory.load("/static/da/local-conformance-2_0.v2.json")
         const sc = new DemoServerContext(socket, directory)
 
         const channelDetails: ChannelState[] = [
@@ -72,9 +72,9 @@ window.addEventListener("load", () => {
             sc.goodbye(id)
         })
 
-        socket.on(APP_HELLO, (id: string) => {
-            sc.setInstanceDetails(id, { appId: 'Test App Id', instanceId: '1' })
-        })
+        // socket.on(APP_HELLO, (id: string) => {
+        //     sc.setInstanceDetails(id, { appId: 'Test App Id', instanceId: '1' })
+        // })
 
         // let's create buttons for some apps
         const appList = document.getElementById('app-list') as HTMLOListElement
