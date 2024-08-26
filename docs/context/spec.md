@@ -40,14 +40,19 @@ Each Standardized context type defined by the FDC3 Standard has an associated [J
 
 ## The Context Interface
 
-Context can be summarized as:
+The Context interface defines the basic contract or "shape" for all data exchanged by FDC3 operations. As such, it is not meant to be used on its own, but is imported by more specific type definitions (standardized or custom) to provide the structure and properties shared by all FDC3 context data types.
+
+The Context interface can be summarized as:
 
 - Having a unique _type_ identifier, used for routing.
 - Optionally providing a name.
 - Optionally providing a map of equivalent identifiers.
 - Any other properties or metadata.
 
-Hence, the Context Interface can be represented in TypeScript as:
+The key element of FDC3 context types is their mandatory `type` property, which is used to identify what type of data the
+object represents, and what shape it has. The FDC3 context type, and all derived types, define the minimum set of fields a context data object of a particular type can be expected to have, but this can always be extended with custom fields as appropriate.
+
+Hence, the Context interface can be represented in TypeScript as:
 
 ```typescript
 interface Context {
@@ -68,7 +73,7 @@ or in JSON Schema as:
     "$id": "https://fdc3.finos.org/schemas/next/context/context.schema.json",
     "type": "object",
     "title": "Context",
-    "description": "The `fdc3.context` type defines the basic contract or \"shape\" for all data exchanged by FDC3 operations. As such, it is not really meant to be used on its own, but is imported by more specific type definitions (standardized or custom) to provide the structure and properties shared by all FDC3 context data types.\n\nThe key element of FDC3 context types is their mandatory `type` property, which is used to identify what type of data the object represents, and what shape it has.\n\nThe FDC3 context type, and all derived types, define the minimum set of fields a context data object of a particular type can be expected to have, but this can always be extended with custom fields as appropriate.",
+    "description": "The `fdc3.context` type defines the basic contract for all data exchanged by FDC3 operations.",
     "properties": {
         "type": {
             "type": "string"
@@ -90,21 +95,62 @@ or in JSON Schema as:
 }
 ```
 
-### Namespacing
+:::note
 
-All well-known types at FDC3 level should be prefixed with `fdc3`. For private type definitions, or type definitions issued by other organizations, different namespaces can be used, e.g. `blackrock.fund`, etc.
+This is a simplified version of the schema for illustrative purposes, the fully documented Context schema, which is composed with other FDC3 Standard context schemas, can be found at: <https://fdc3.finos.org/schemas/next/context/context.schema.json>.
 
-### Versioning
+:::
 
-The specification recognizes that evolving context data definitions over time, and helping applications to deal with changes to types, are very important.
+### `type`
 
-It may be as simple as adding an optional `$version` property to types, but it could also be a set of guidelines for adding new properties, without removing or changing existing ones. For example, web technologies like REST or GraphQL do not take a particular opinion about versioning.
+The type property is the only _required_ part of the FDC3 context data schema. The FDC3 [API](../../api/spec) relies on the `type` property being present to route shared context data appropriately.
 
-### Field Type Conventions
+FDC3 [Intents](../../intents/spec) also register the context data types they support in an FDC3 [App Directory](../../app-directory/overview), used for intent discovery and routing.
 
-This Standard defines a number of conventions for the fields of context types that all context objects SHOULD adhere to in order to reduce or prevent competing conventions from being established in both standardized types and proprietary types created by app developers.
+Standardized FDC3 context types have well-known `type` properties prefixed with the `fdc3` namespace, e.g. `fdc3.instrument`.
+For non-standard types, e.g. those defined and used by a particular organization, the convention is to prefix them with an
+organization-specific namespace, e.g. `blackrock.fund`.
 
-#### Avoid union types / composition of primitive types
+See the [Context Data Specification](../../context/spec) for more information about context data types.
+
+#### Namespacing
+
+All well-known types at FDC3 level are prefixed with `fdc3`. For private type definitions, or type definitions issued by other organizations, different namespaces MUST be used, e.g. `blackrock.fund`, etc.
+
+### `name`
+
+Context data objects may include an optional name property that can be used for more information, or display purposes. Some
+derived types may require the name object as mandatory, depending on use case.
+
+### `id`
+
+Context data objects may include a set of equivalent key-value pairs in the `id` property that can be used to help applications identify and look up the context type they receive in their own domain. The idea behind this design is that applications can provide as many equivalent identifiers to a target application as possible, e.g. an instrument may be represented by an ISIN, CUSIP or Bloomberg identifier.
+
+Identifiers do not make sense for all types of data, so the `id` property is therefore optional, but some derived types choose to require at least one identifier.
+
+Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifier is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.
+
+Identifier values SHOULD always be of type string.
+
+All standard identifier names are reserved names. Applications may use their own identifiers ad hoc. For example:
+
+```json
+"id": {
+    "CUSIP":"037833100",
+    "foo":"bar"
+}
+```
+
+The identifier "foo" is proprietary, an application that can use it is free to do so. However, since multiple applications may want to use the "foo" name and may use it to mean different things, there is a need for applications to ensure that their identifiers use naming conventions that will avoid collision. The recommended approach here is to prefix the identifier name with a namespace. For example:
+
+```json
+"id": {
+    "CUSIP":"037833100",
+    "com.company.foo": "000C7F-E"
+}
+```
+
+### Avoid union types / composition of primitive types
 
 Both Typescript and JSON Schema allow for a type of polymorphism in types and interfaces that is hard to represent in other languages: allowing the type of a variable to be a ['union'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of other, unrelated types. E.g.: in TypeScript
 
@@ -137,31 +183,9 @@ type Example2 = SomeOtherType | number;
 
 Hence, to ensure that FDC3 context objects are implementable in other languages context schemas MUST NOT use `anyOf`/`oneOf` compositions of primitive types in JSON schema (and, hence, unions of primitive types in TypeScript) and SHOULD avoid compositions of Object types unless a concept that can be defined as an interface (such as [Context](ref/Context)) is available.
 
-#### Identifiers
+### Other Field Type Conventions
 
-An `id` field with type `object` is defined in the base [fdc3.context](ref/Context) type, from which all other context objects are derived, and SHOULD be used to encapsulate identifiers. Specific context types may define subfields for specific identifiers as needed.
-
-Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifier is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.
-
-Identifier values SHOULD always be of type string.
-
-All standard identifier names are reserved names. Applications may use their own identifiers ad hoc. For example:
-
-```json
-"id": {
-    "CUSIP":"037833100",
-    "foo":"bar"
-}
-```
-
-The identifier "foo" is proprietary, an application that can use it is free to do so. However, since multiple applications may want to use the "foo" name and may use it to mean different things, there is a need for applications to ensure that their identifiers use naming conventions that will avoid collision. The recommended approach here is to prefix the identifier name with a namespace. For example:
-
-```json
-"id": {
-    "CUSIP":"037833100",
-    "com.company.foo": "000C7F-E"
-}
-```
+This Standard defines a number of conventions for the fields of context types that all context objects SHOULD adhere to in order to reduce or prevent competing conventions from being established in both standardized types and proprietary types created by app developers.
 
 #### Times
 
@@ -253,7 +277,7 @@ The following are standard FDC3 context types:
 - [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/next/context/portfolio.schema.json))
 - [`fdc3.position`](ref/Position) ([schema](/schemas/next/context/position.schema.json))
 - [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/next/context/nothing.schema.json))
-- [`fdc3.timeRange`](ref/TimeRange) ([schema](/schemas/next/context/timerange.schema.json))
+- [`fdc3.timeRange`](ref/TimeRange) ([schema](/schemas/next/context/timeRange.schema.json))
 - [`fdc3.transactionResult`](ref/TransactionResult) ([schema](/schemas/next/context/transactionresult.schema.json))
 - [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/context/valuation.schema.json))
 

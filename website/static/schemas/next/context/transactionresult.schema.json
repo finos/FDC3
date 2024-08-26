@@ -26,12 +26,12 @@
           "$ref": "context.schema.json#",
           "title": "Transaction Result Context",
           "description": "A context object returned by the transaction, possibly with updated data."
+        },
+        "message": {
+          "type": "string",
+          "title": "Transaction Message",
+          "description": "A human readable message describing the outcome of the transaction."
         }
-      },
-      "message": {
-        "type": "string",
-        "title": "Transaction Message",
-        "description": "A human readable message describing the outcome of the transaction."
       },
       "required": [
         "type",
