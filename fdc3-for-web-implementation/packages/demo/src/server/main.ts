@@ -84,8 +84,6 @@ io.on('connection', (socket: Socket) => {
     const destSocket = myInstance?.apps.get(to)
     if (destSocket) {
       destSocket.emit(FDC3_DA_EVENT, data, to)
-    } else {
-      console.log("Unknown dest " + JSON.stringify(to))
     }
   })
 

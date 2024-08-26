@@ -65,10 +65,11 @@ export abstract class AbstractMessaging implements Messaging {
     }
 
 
-    async exchange<X>(message: any, expectedTypeName: string): Promise<X> {
+    async exchange<X>(message: any, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X> {
+        const errorMessage = timeoutErrorMessage ?? `Timeout waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`
         const prom = this.waitFor(m =>
             (m.type == expectedTypeName)
-            && (m.meta.requestUuid == message.meta.requestUuid), `Timeout waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`)
+            && (m.meta.requestUuid == message.meta.requestUuid), errorMessage)
         this.post(message)
         const out: any = await prom
         if (out?.payload?.error) {

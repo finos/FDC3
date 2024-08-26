@@ -19,7 +19,7 @@ Feature: Basic User Channels Support
       | three | user | red                   | triangle              | The three channel    |
     And messaging will have posts
       | meta.source.appId | meta.source.instanceId | matches_type           |
-      | SomeDummyApp      | some.dummy.instance    | getUserChannelsRequest |
+      | cucumber-app      | cucumber-instance      | getUserChannelsRequest |
 
   Scenario: List User Channels via Deprecated API call
         There should be a selection of user channels to choose from
@@ -32,7 +32,7 @@ Feature: Basic User Channels Support
       | three | user | red                   | triangle              | The three channel    |
     And messaging will have posts
       | meta.source.appId | meta.source.instanceId | matches_type           |
-      | SomeDummyApp      | some.dummy.instance    | getUserChannelsRequest |
+      | cucumber-app      | cucumber-instance      | getUserChannelsRequest |
 
   Scenario: Initial User Channel
         At startup, the user channel shouldn't be set
@@ -41,7 +41,7 @@ Feature: Basic User Channels Support
     Then "{result}" is null
     And messaging will have posts
       | meta.source.appId | meta.source.instanceId | matches_type             |
-      | SomeDummyApp      | some.dummy.instance    | getCurrentChannelRequest |
+      | cucumber-app      | cucumber-instance      | getCurrentChannelRequest |
 
   Scenario: Changing Channel
         You should be able to join a channel knowing it's ID.

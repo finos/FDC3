@@ -228,7 +228,7 @@ export class IntentHandler implements MessageHandler {
 
         if (requestsWithListeners.length == 0) {
             // intent not handled (no listener registered)
-            return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.IntentDeliveryFailed, arg0[0].type)
+            return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.NoAppsFound, arg0[0].type)
         }
 
         if (requestsWithListeners.length == 1) {
@@ -274,10 +274,10 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    oneRunningInstance(appIntent: AppIntent): boolean {
-        const instances = appIntent.apps.filter(a => a.instanceId).length
-        const uniqueApps = appIntent.apps.map(a => a.appId).filter((v, i, a) => a.indexOf(v) === i).length
-        return (uniqueApps == 1) && (instances == 1)
+    oneAppOnly(appIntent: AppIntent): boolean {
+        const apps = appIntent.apps.map(a => a.appId)
+        const uniqueApps = apps.filter((v, i, a) => a.indexOf(v) === i).length
+        return (uniqueApps == 1)
     }
 
     async raiseIntentToAnyApp(arg0: IntentRequest[], sc: ServerContext<any>): Promise<void> {
@@ -308,11 +308,12 @@ export class IntentHandler implements MessageHandler {
 
         if (appIntents.length == 1) {
             const theAppIntent = appIntents[0]
-            if (this.oneRunningInstance(theAppIntent)) {
-                if (theAppIntent.apps[0].instanceId) {
+            if (this.oneAppOnly(theAppIntent)) {
+                const instanceCount = theAppIntent.apps.filter(a => a.instanceId).length
+                if (instanceCount == 1) {
                     // app is running
                     return forwardRequest(arg0[0], theAppIntent.apps[0], sc, this)
-                } else {
+                } else if (instanceCount == 0) {
                     return this.startWithPendingIntent({
                         ...arg0[0],
                         intent: theAppIntent.intent.name

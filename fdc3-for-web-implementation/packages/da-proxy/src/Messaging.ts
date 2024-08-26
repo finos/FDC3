@@ -41,7 +41,7 @@ export interface Messaging extends Connectable {
      * 
      * @param message Performs a request / response message pass
      */
-    exchange<X>(message: object, expectedTypeName: string): Promise<X>
+    exchange<X>(message: object, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X>
 
     /**
      * Implementation metadata retrieved through the validation process

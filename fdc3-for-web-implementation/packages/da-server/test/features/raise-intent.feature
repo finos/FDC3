@@ -28,6 +28,12 @@ Feature: Raising Intents
       | msg.type            | msg.payload.error         | to.instanceId |
       | raiseIntentResponse | TargetInstanceUnavailable | a1            |
 
+  Scenario: Context Not Handled By App
+    When "App1/a1" raises an intent for "borrowBook" with contextType "fdc3.bizboz" on app "listenerApp/b1"
+    Then messaging will have outgoing posts
+      | msg.type            | msg.payload.error | to.instanceId |
+      | raiseIntentResponse | NoAppsFound       | a1            |
+
   Scenario: Raising An Intent To A Running App
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "listenerApp/b1"
     Then messaging will have outgoing posts
@@ -93,3 +99,27 @@ Feature: Raising Intents
     Then messaging will have outgoing posts
       | msg.payload.appIntent.apps[2].appId | msg.payload.appIntent.apps[2].instanceId |
       | listenerApp                         | {null}                                   |
+
+  Scenario: Raising An Invalid Intent to the server (no instance)
+    When "App1/a1" raises an intent for "borrowBook" with contextType "fdc3.book" on app "listenerApp/c1"
+    Then messaging will have outgoing posts
+      | msg.payload.error         | msg.type            |
+      | TargetInstanceUnavailable | raiseIntentResponse |
+
+  Scenario: Raising An Invalid Intent to the server (no app)
+    When "App1/a1" raises an intent for "borrowBook" with contextType "fdc3.book" on app "nonExistentApp"
+    Then messaging will have outgoing posts
+      | msg.payload.error    | msg.type            |
+      | TargetAppUnavailable | raiseIntentResponse |
+
+  Scenario: Raising An Invalid Intent to the server (non existent intent)
+    When "App1/a1" raises an intent for "nonExistentIntent" with contextType "fdc3.book"
+    Then messaging will have outgoing posts
+      | msg.payload.error | msg.type            |
+      | NoAppsFound       | raiseIntentResponse |
+
+  Scenario: Raising An Invalid Intent to the server
+    When "App1/a1" raises an intent for "nonExistentIntent" with contextType "fdc3.book" on app "listenerApp/b1"
+    Then messaging will have outgoing posts
+      | msg.payload.error | msg.type            |
+      | NoAppsFound       | raiseIntentResponse |
