@@ -27,7 +27,7 @@ export class IntentResult implements AutomaticResponse {
         const intentRequest = input as IntentResultRequest
         const payload = intentRequest.payload
 
-        m.setIntentResult(payload.intentResult)
+        m.setIntentResult(payload.intentResult as any)
 
         // next, send the result response
         const out2 = this.createIntentResultResponseMessage(intentRequest, m)

@@ -17,11 +17,11 @@ Feature: Desktop Agent Information
   Scenario: Getting own info
     When I call "{api}" with "getInfo"
     Then "{result}" is an object with the following contents
-      | fdc3Version | provider      |
-      |         2.2 | Cucumber Test |
+      | fdc3Version | provider          |
+      |         2.0 | cucumber-provider |
     And "{result.appMetadata}" is an object with the following contents
-      | appId             | name              | description          |
-      | cucumber-test-app | Cucumber Test App | Metadata Description |
+      | appId        | instanceId        |
+      | cucumber-app | cucumber-instance |
 
   Scenario: Getting instance information
     When I call "{api}" with "findInstances" with parameter "{c1}"

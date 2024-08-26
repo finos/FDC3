@@ -3,7 +3,7 @@ import { IntentSupport } from "./IntentSupport";
 import { Messaging } from "../Messaging";
 import { DefaultIntentResolution } from "./DefaultIntentResolution";
 import { DefaultIntentListener } from "../listeners/DefaultIntentListener";
-import { IntentResolver } from "@kite9/fdc3-common";
+import { IntentResolver, RaiseIntentForContextRequest, RaiseIntentForContextResponse } from "@kite9/fdc3-common";
 import { DefaultChannel } from "../channels/DefaultChannel";
 import { DefaultPrivateChannel } from "../channels/DefaultPrivateChannel";
 import { FindIntentRequest, FindIntentResponse, AddContextListenerRequestMeta, FindIntentsByContextRequest, FindIntentsByContextResponse, RaiseIntentRequest, RaiseIntentResultResponse, RaiseIntentResponse } from "@kite9/fdc3-common"
@@ -81,7 +81,7 @@ export class DefaultIntentSupport implements IntentSupport {
 
     }
 
-    private async createResultPromise(messageOut: RaiseIntentRequest): Promise<IntentResult> {
+    private async createResultPromise(messageOut: RaiseIntentRequest | RaiseIntentForContextRequest): Promise<IntentResult> {
         const rp = await this.messaging.waitFor<RaiseIntentResultResponse>(m => (
             (m.type == 'raiseIntentResultResponse') &&
             (m.meta.requestUuid == messageOut.meta.requestUuid)))
@@ -96,7 +96,7 @@ export class DefaultIntentSupport implements IntentSupport {
         }
     }
 
-    private async raiseSpecificIntent(intent: string, context: Context, app: AppIdentifier): Promise<IntentResolution> {
+    async raiseIntent(intent: string, context: Context, app: AppIdentifier): Promise<IntentResolution> {
         const messageOut: RaiseIntentRequest = {
             type: "raiseIntentRequest",
             payload: {
@@ -108,7 +108,7 @@ export class DefaultIntentSupport implements IntentSupport {
         }
 
         const resultPromise = this.createResultPromise(messageOut)
-        const resolution = await this.messaging.exchange(messageOut, "raiseIntentResponse") as RaiseIntentResponse
+        const resolution = await this.messaging.exchange(messageOut, "raiseIntentResponse", ResolveError.IntentDeliveryFailed) as RaiseIntentResponse
         const details = resolution.payload.intentResolution!!
 
         return new DefaultIntentResolution(
@@ -119,69 +119,26 @@ export class DefaultIntentSupport implements IntentSupport {
         )
     }
 
-    private matchAppId(found: AppIdentifier, req: AppIdentifier) {
-        return (found.appId == req.appId) &&
-            (((found.instanceId == null) && (req.instanceId == null)) // request was not for a particular instance
-                ||
-                (found.instanceId == req.instanceId))    // requested exact instance.
-    }
-
-    private filterApps(appIntent: AppIntent, app: AppIdentifier): AppIntent {
-        return {
-            apps: appIntent.apps.filter(a => this.matchAppId(a, app)),
-            intent: appIntent.intent
-        }
-    }
-
-    async raiseIntent(intent: string, context: Context, app?: AppIdentifier | undefined): Promise<IntentResolution> {
-        var matched = await this.findIntent(intent, context, undefined)
-        console.log("Matched intents:")
-
-        if (app) {
-            // ensure app matches
-            matched = this.filterApps(matched, app)
-
-            if ((matched.apps.length == 0) && (app?.instanceId)) {
-                // user wanted a specific instance, which doesn't exist
-                throw new Error(ResolveError.TargetInstanceUnavailable)
-            } else if ((matched.apps.length == 0) && (app?.appId)) {
-                // user wanted a specific app, which doesn't support the intent
-                throw new Error(ResolveError.TargetAppUnavailable)
-            } else {
-                return this.raiseSpecificIntent(intent, context, app);
-            }
-        }
-
-        if (matched.apps.length == 0) {
-            // user didn't supply an app, and no intent matches
-            throw new Error(ResolveError.NoAppsFound)
-        } else if (matched.apps.length == 1) {
-            // use the found app
-            return this.raiseSpecificIntent(intent, context, matched.apps[0])
-        } else {
-            // need to do the intent resolver
-            const chosentIntent = await this.intentResolver.chooseIntent([matched], this.messaging.getSource())
-            return this.raiseSpecificIntent(chosentIntent.intent.name, context, chosentIntent.chosenApp)
-        }
-    }
-
     async raiseIntentForContext(context: Context, app?: AppIdentifier | undefined): Promise<IntentResolution> {
-        var matched = await this.findIntentsByContext(context)
-
-        if (app) {
-            matched = matched.map(m => this.filterApps(m, app))
-            matched = matched.filter(m => m.apps.length > 0)
+        const messageOut: RaiseIntentForContextRequest = {
+            type: "raiseIntentForContextRequest",
+            payload: {
+                context,
+                app: app
+            },
+            meta: this.messaging.createMeta() as AddContextListenerRequestMeta /* ISSUE: #1275 */
         }
 
-        if (matched.length == 0) {
-            throw new Error(ResolveError.NoAppsFound)
-        } else if ((matched.length == 1) && (matched[0].apps.length == 1)) {
-            return this.raiseSpecificIntent(matched[0].intent.name, context, matched[0].apps[0])
-        } else {
-            // need to do the intent resolver
-            const chosentIntent = await this.intentResolver.chooseIntent(matched, this.messaging.getSource())
-            return this.raiseSpecificIntent(chosentIntent.intent.name, context, chosentIntent.chosenApp)
-        }
+        const resultPromise = this.createResultPromise(messageOut)
+        const resolution = await this.messaging.exchange(messageOut, "raiseIntentForContextResponse", ResolveError.IntentDeliveryFailed) as RaiseIntentForContextResponse
+        const details = resolution.payload.intentResolution!!
+
+        return new DefaultIntentResolution(
+            this.messaging,
+            resultPromise,
+            details.source,
+            details.intent
+        )
     }
 
     async addIntentListener(intent: string, handler: IntentHandler): Promise<Listener> {

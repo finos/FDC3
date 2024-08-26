@@ -1,5 +1,5 @@
-import { AppIdentifier, Context, Channel, ImplementationMetadata } from "@finos/fdc3";
-import { AppRequestMessage, PurpleIntentResult, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-common";
+import { AppIdentifier, Context, Channel } from "@finos/fdc3";
+import { AppRequestMessage, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-common";
 import { v4 as uuidv4 } from 'uuid'
 import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";
 import { RegisterableListener } from "../../src/listeners/RegisterableListener";
@@ -24,7 +24,7 @@ export interface IntentDetail {
     app?: AppIdentifier,
     intent?: string,
     context?: string,
-    resultType?: string
+    resultType?: string,
 }
 
 export interface AutomaticResponse {
@@ -32,6 +32,14 @@ export interface AutomaticResponse {
     filter: (t: string) => boolean,
     action: (input: object, m: TestMessaging) => Promise<void>
 
+}
+
+
+export interface PossibleIntentResult {
+    context?: Context;
+    channel?: any;
+    error?: string;
+    timeout?: boolean
 }
 
 function matchStringOrUndefined(expected: string | undefined, actual: string | undefined) {
@@ -119,13 +127,6 @@ export class TestMessaging extends AbstractMessaging {
         ]
     }
 
-    getSource(): AppIdentifier {
-        return {
-            appId: "SomeDummyApp",
-            instanceId: "some.dummy.instance"
-        }
-    }
-
     createUUID(): string {
         return uuidv4()
     }
@@ -199,34 +200,15 @@ export class TestMessaging extends AbstractMessaging {
         })
     }
 
-    private ir: PurpleIntentResult = {
+    private ir: PossibleIntentResult = {
     }
 
     getIntentResult() {
         return this.ir
     }
 
-    setIntentResult(o: PurpleIntentResult) {
+    setIntentResult(o: PossibleIntentResult) {
         this.ir = o
-    }
-
-    async getImplementationMetadata(): Promise<ImplementationMetadata> {
-        return {
-            fdc3Version: "2.2",
-            provider: "Cucumber Test",
-            providerVersion: "1.0",
-            optionalFeatures: {
-                DesktopAgentBridging: false,
-                OriginatingAppMetadata: true,
-                UserChannelMembershipAPIs: true
-            },
-            appMetadata: {
-                name: "Cucumber Test App",
-                version: "1.0",
-                appId: "cucumber-test-app",
-                description: "Metadata Description"
-            }
-        } as ImplementationMetadata
     }
 
     retrieveInstanceUuid(): string | undefined {

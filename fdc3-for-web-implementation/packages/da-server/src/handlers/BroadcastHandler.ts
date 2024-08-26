@@ -149,7 +149,7 @@ export class BroadcastHandler implements MessageHandler {
             }
         })
 
-        successResponse(sc, arg0, from, { channel: { id, type: this.convertChannelTypeToString(ChannelType.private) } }, 'createPrivateChannelResponse')
+        successResponse(sc, arg0, from, { privateChannel: { id, type: this.convertChannelTypeToString(ChannelType.private) } }, 'createPrivateChannelResponse')
     }
 
     handleGetCurrentContextRequest(arg0: GetCurrentContextRequest, sc: ServerContext<any>, from: AppIdentifier) {

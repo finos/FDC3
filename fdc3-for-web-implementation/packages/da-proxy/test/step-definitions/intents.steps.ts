@@ -72,8 +72,22 @@ Given("Raise Intent will return a context of {string}", function (this: CustomWo
     })
 })
 
+
+Given("Raise Intent will throw a {string} error", function (this: CustomWorld, error: string) {
+    this.messaging?.setIntentResult({
+        error
+    })
+})
+
 Given("Raise Intent will return no result", function (this: CustomWorld) {
     this.messaging?.setIntentResult({})
+})
+
+
+Given("Raise Intent will timeout", function (this: CustomWorld) {
+    this.messaging?.setIntentResult({
+        timeout: true
+    })
 })
 
 Given("Raise Intent will return an app channel", function (this: CustomWorld) {

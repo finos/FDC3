@@ -8,6 +8,12 @@ Feature: Relaying Private Channel Broadcast messages
     And "App2/a1" creates a private channel
     And I refer to "uuid3" as "channel1Id"
 
+  Scenario: Creating a new private channel
+    When "App2/a1" creates a private channel
+    Then messaging will have outgoing posts
+      | msg.matches_type             | msg.payload.privateChannel.id | msg.payload.privateChannel.type | to.appId | to.instanceId |
+      | createPrivateChannelResponse | uuid6                         | private                         | App2     | a1            |
+
   Scenario: Broadcast message to no-one
     When "App1/a1" broadcasts "fdc3.instrument" on "{channel1Id}"
     Then messaging will have outgoing posts
@@ -65,3 +71,26 @@ Feature: Relaying Private Channel Broadcast messages
     Then messaging will have outgoing posts
       | msg.type                   | to.appId | to.instanceId | msg.payload.error |
       | getOrCreateChannelResponse | App2     | a2            | AccessDenied      |
+
+  Scenario: Subscribe to a non-existent channel
+    When "App2/a2" adds a context listener on "IDontExist" with type "fdc3.instrument"
+    Then messaging will have outgoing posts
+      | msg.type                   | to.appId | to.instanceId | msg.payload.error |
+      | addContextListenerResponse | App2     | a2            | NoChannelFound    |
+
+  Scenario: Can't unsubscribe an unconnected listener
+    When "App2/a2" adds a context listener on "{channelId}" with type "fdc3.instrument"
+    And "App2/a2" removes context listener with id "uuid6"
+    And "App2/a2" removes context listener with id "uuid6"
+    Then messaging will have outgoing posts
+      | msg.type                           | to.appId | to.instanceId | msg.payload.error |
+      | contextListenerUnsubscribeResponse | App2     | a2            | {null}            |
+      | contextListenerUnsubscribeResponse | App2     | a2            | ListenerNotFound  |
+
+  Scenario: Can't unsubscribe an someone else's listener
+    When "App2/a2" adds a context listener on "{channelId}" with type "fdc3.instrument"
+    And "App1/a1" removes context listener with id "uuid6"
+    Then messaging will have outgoing posts
+      | msg.type                           | to.appId | to.instanceId | msg.payload.error |
+      | addContextListenerResponse         | App2     | a2            | {null}            |
+      | contextListenerUnsubscribeResponse | App1     | a1            | ListenerNotFound  |
