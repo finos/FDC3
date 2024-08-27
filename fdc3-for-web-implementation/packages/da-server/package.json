@@ -1,6 +1,6 @@
 {
   "name": "@kite9/da-server",
-  "version": "0.0.30",
+  "version": "0.0.50",
   "files": [
     "dist"
   ],
@@ -9,23 +9,24 @@
   "scripts": {
     "clean": "rimraf dist; rimraf generated; rimraf node_modules; rimraf coverage; rimraf .nyc_output; rimraf cucumber-report.html",
     "directory-openapi": "npx openapi-typescript ../../../src/app-directory/specification/appd.schema.json --output generated/directory-schema.ts",
-    "test": "npm run directory-openapi; nyc --reporter=lcov --reporter=text cucumber-js",
+    "test": "npm run directory-openapi; tsc; nyc --reporter=lcov --reporter=text cucumber-js",
     "build": "npm run directory-openapi && tsc --module es2022"
   },
   "dependencies": {
-    "@finos/fdc3": "^2.1.0-beta.4",
-    "@kite9/fdc3-common": "0.0.31",
-    "@types/uuid": "^9.0.7",
+    "@finos/fdc3": "^2.1.0-beta.6",
+    "@types/uuid": "^10.0.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",
     "@cucumber/html-formatter": "11.0.4",
     "@cucumber/pretty-formatter": "1.0.1",
+    "@kite9/fdc3-common": "0.0.50",
+    "@kite9/testing": "0.0.50",
     "@types/expect": "24.3.0",
     "@types/lodash": "4.14.167",
-    "@types/node": "14.14.20",
-    "@types/uuid": "^9.0.7",
+    "@types/node": "^20.14.11",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "4.12.0",
     "@typescript-eslint/parser": "4.12.0",
     "cucumber-console-formatter": "1.0.0",
@@ -35,7 +36,7 @@
     "eslint-plugin-prettier": "3.3.1",
     "expect": "^29.7.0",
     "is-ci": "2.0.0",
-    "jsonpath-plus": "^7.2.0",
+    "jsonpath-plus": "^9.0.0",
     "nyc": "15.1.0",
     "openapi-typescript": "^6.7.4",
     "prettier": "2.2.1",

@@ -1,8 +1,8 @@
-import { IntentHandler, IntentResult } from "@finos/fdc3";
+import { IntentHandler, IntentResult, AppIdentifier, Context } from "@finos/fdc3";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
-import { RaiseIntentAgentRequest, RaiseIntentResultAgentResponse, IntentResult as BridgeIntentResult, RaiseIntentAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { Context, Channel } from "@finos/fdc3"
+import { RaiseIntentResponse, IntentResultResponse, FluffyIntentResult as BridgeIntentResult, IntentEvent, IntentResultRequest } from "@kite9/fdc3-common"
+
 
 export class DefaultIntentListener extends AbstractListener<IntentHandler> {
 
@@ -12,34 +12,32 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
         super(messaging,
             { intent },
             action,
-            "onAddIntentListener",
-            "onUnsubscribeIntentListener")
+            "addIntentListener",
+            "intentListenerUnsubscribe")
 
         this.intent = intent
     }
 
-    filter(m: RaiseIntentAgentRequest): boolean {
-        return (m.type == 'raiseIntentRequest') && (m.payload.intent == this.intent)
+    filter(m: IntentEvent): boolean {
+        return (m.type == 'intentEvent') && (m.payload.intent == this.intent)
     }
 
-    action(m: RaiseIntentAgentRequest): void {
+    action(m: IntentEvent): void {
         this.handleIntentResponse(m)
 
         const done = this.handler(m.payload.context, {
-            source: m.meta.source
+            source: m.payload.originatingApp as AppIdentifier
         })
 
-        if (done != null) {
-            this.handleIntentResultResponse(done, m);
-        }
+        this.handleIntentResult(done, m);
     }
 
-    private handleIntentResponse(m: RaiseIntentAgentRequest) {
-        const out: RaiseIntentAgentResponse = {
+    private handleIntentResponse(m: IntentEvent) {
+        const out: RaiseIntentResponse = {
             type: "raiseIntentResponse",
             meta: {
                 responseUuid: this.messaging.createUUID(),
-                requestUuid: m.meta.requestUuid,
+                requestUuid: m.meta.eventUuid,
                 timestamp: new Date()
             },
             payload: {
@@ -52,26 +50,35 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
         this.messaging.post(out);
     }
 
-    private handleIntentResultResponse(done: Promise<IntentResult>, m: RaiseIntentAgentRequest) {
-        (done as Promise<IntentResult>)
-            .then(intentResult => {
-                const out: RaiseIntentResultAgentResponse = {
-                    type: "raiseIntentResultResponse",
-                    meta: {
-                        responseUuid: this.messaging.createUUID(),
-                        requestUuid: m.meta.requestUuid,
-                        timestamp: new Date()
-                    },
-                    payload: {
-                        intentResult: convertIntentResult(intentResult)
-                    }
-                };
-                this.messaging.post(out);
+    private intentResultRequestMessage(ir: IntentResult, m: IntentEvent): IntentResultRequest {
+        const out: IntentResultRequest = {
+            type: "intentResultRequest",
+            meta: {
+                requestUuid: m.meta.eventUuid,
+                timestamp: new Date()
+            },
+            payload: {
+                intentResult: convertIntentResult(ir)
+            }
+        };
+
+        return out
+    }
+
+    private handleIntentResult(done: Promise<IntentResult> | void, m: IntentEvent) {
+        if (done == null) {
+            // send an empty intent result response
+            return this.messaging.exchange<IntentResultResponse>(this.intentResultRequestMessage(undefined, m), "intentResultResponse");
+        } else {
+            // respond after promise completes
+            return done.then(ir => {
+                return this.messaging.exchange<IntentResultResponse>(this.intentResultRequestMessage(ir, m), "intentResultResponse");
             });
+        }
     }
 }
 
-export function convertIntentResult(intentResult: Context | Channel | void): BridgeIntentResult {
+function convertIntentResult(intentResult: IntentResult): BridgeIntentResult {
     if (intentResult == null) {
         return {
             // empty result
@@ -85,7 +92,7 @@ export function convertIntentResult(intentResult: Context | Channel | void): Bri
             return {
                 channel: {
                     type: intentResult.type,
-                    id: (intentResult as Channel).id,
+                    id: intentResult.id as string,
                     displayMetadata: intentResult.displayMetadata
                 }
             }

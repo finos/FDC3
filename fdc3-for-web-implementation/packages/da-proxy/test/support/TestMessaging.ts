@@ -1,5 +1,5 @@
-import { AppIdentifier } from "@finos/fdc3";
-import { AgentRequestMessage, AgentResponseMessage, ConnectionStep3Handshake, ContextElement, IntentResult } from "@finos/fdc3/dist/bridging/BridgingTypes";
+import { AppIdentifier, Context, Channel } from "@finos/fdc3";
+import { AppRequestMessage, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-common";
 import { v4 as uuidv4 } from 'uuid'
 import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";
 import { RegisterableListener } from "../../src/listeners/RegisterableListener";
@@ -11,13 +11,20 @@ import { GetAppMetadata } from "./responses/GetAppMetadata";
 import { FindInstances } from "./responses/FindInstances";
 import { Open } from "./responses/Open";
 import { Handshake } from "./responses/Handshake";
-import { RegisterChannel } from "./responses/RegisterChannel";
+import { GetOrCreateChannel } from "./responses/GetOrCreateChannel";
+import { ChannelState } from "./responses/ChannelState";
+import { GetUserChannels } from "./responses/GetUserChannels";
+import { RegisterListeners } from "./responses/RegisterListeners";
+import { UnsubscribeListeners } from "./responses/UnsubscribeListeners";
+import { CreatePrivateChannel } from "./responses/CreatePrivateChannel";
+import { DisconnectPrivateChannel } from "./responses/DisconnectPrivateChannel";
+import { IntentResult } from "./responses/IntentResult";
 
 export interface IntentDetail {
     app?: AppIdentifier,
     intent?: string,
     context?: string,
-    resultType?: string
+    resultType?: string,
 }
 
 export interface AutomaticResponse {
@@ -25,6 +32,14 @@ export interface AutomaticResponse {
     filter: (t: string) => boolean,
     action: (input: object, m: TestMessaging) => Promise<void>
 
+}
+
+
+export interface PossibleIntentResult {
+    context?: Context;
+    channel?: any;
+    error?: string;
+    timeout?: boolean
 }
 
 function matchStringOrUndefined(expected: string | undefined, actual: string | undefined) {
@@ -76,32 +91,40 @@ export function intentDetailMatches(instance: IntentDetail, template: IntentDeta
 
 export class TestMessaging extends AbstractMessaging {
 
-    readonly allPosts: AgentRequestMessage[] = []
+    readonly allPosts: AppRequestMessage[] = []
     readonly listeners: Map<string, RegisterableListener> = new Map()
     readonly intentDetails: IntentDetail[] = []
-    readonly channelState: { [key: string]: ContextElement[] }
+    readonly channelState: { [key: string]: Context[] }
+    currentChannel: Channel | null = null
 
-    readonly automaticResponses: AutomaticResponse[] = [
-        new FindIntent(),
-        new FindIntentByContext(),
-        new RaiseIntent(),
-        new GetAppMetadata(),
-        new FindInstances(),
-        new Open(),
-        new Handshake(),
-        new RegisterChannel()
-    ]
+    readonly automaticResponses: AutomaticResponse[]
 
-    constructor(channelState: { [key: string]: ContextElement[] }) {
-        super()
+    constructor(channelState: { [key: string]: Context[] }) {
+        super({
+            timeout: 0,
+            channelSelector: false,
+            intentResolver: false,
+            dontSetWindowFdc3: false
+        }, "test", 200)
+
         this.channelState = channelState
-    }
-
-    getSource(): AppIdentifier {
-        return {
-            appId: "SomeDummyApp",
-            instanceId: "some.dummy.instance"
-        }
+        this.automaticResponses = [
+            new FindIntent(),
+            new FindIntentByContext(),
+            new RaiseIntent(),
+            new IntentResult(),
+            new GetAppMetadata(),
+            new FindInstances(),
+            new Open(),
+            new Handshake(),
+            new GetOrCreateChannel(),
+            new ChannelState(this.channelState),
+            new GetUserChannels(),
+            new RegisterListeners(),
+            new UnsubscribeListeners(),
+            new CreatePrivateChannel(),
+            new DisconnectPrivateChannel()
+        ]
     }
 
     createUUID(): string {
@@ -109,7 +132,7 @@ export class TestMessaging extends AbstractMessaging {
     }
 
 
-    post(message: AgentRequestMessage): Promise<void> {
+    post(message: AppRequestMessage): Promise<void> {
         this.allPosts.push(message)
 
         for (let i = 0; i < this.automaticResponses.length; i++) {
@@ -127,7 +150,11 @@ export class TestMessaging extends AbstractMessaging {
     }
 
     register(l: RegisterableListener) {
-        this.listeners.set(l.id, l)
+        if (l.id == null) {
+            throw new Error("Listener must have ID set")
+        } else {
+            this.listeners.set(l.id, l)
+        }
     }
 
     unregister(id: string) {
@@ -138,12 +165,31 @@ export class TestMessaging extends AbstractMessaging {
         return {
             "requestUuid": this.createUUID(),
             "timestamp": new Date(),
-            "source": this.getSource(),
-            "responseUuid": this.createUUID()
+            "source": this.getSource()
         }
     }
 
-    receive(m: AgentRequestMessage | AgentResponseMessage | ConnectionStep3Handshake, log?: ICreateLog) {
+    /**
+     * Used in testing steps
+     */
+    createResponseMeta() {
+        return {
+            ...this.createMeta(),
+            responseUuid: this.createUUID()
+        }
+    }
+
+    /**
+     * Used in testing steps
+     */
+    createEventMeta() {
+        return {
+            ...this.createMeta(),
+            eventUuid: this.createUUID()
+        }
+    }
+
+    receive(m: any, log?: ICreateLog) {
         this.listeners.forEach((v, k) => {
             if (v.filter(m)) {
                 log ? log("Processing in " + k) : ""
@@ -154,15 +200,22 @@ export class TestMessaging extends AbstractMessaging {
         })
     }
 
-    private ir: IntentResult = {
-
+    private ir: PossibleIntentResult = {
     }
 
     getIntentResult() {
         return this.ir
     }
 
-    setIntentResult(o: IntentResult) {
+    setIntentResult(o: PossibleIntentResult) {
         this.ir = o
+    }
+
+    retrieveInstanceUuid(): string | undefined {
+        return (globalThis as any).instanceUuid as string | undefined
+    }
+
+    storeInstanceUuid(validationResponse: WebConnectionProtocol5ValidateAppIdentitySuccessResponse): void {
+        (globalThis as any).instanceUuid = validationResponse.payload.instanceUuid
     }
 }

@@ -1,18 +1,18 @@
-import { AppMetadata } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { FDC3Server } from "./FDC3Server";
-import { ServerContext } from "./ServerContext";
-import { BroadcastHandler } from "./handlers/BroadcastHandler";
+import { InstanceID, ServerContext } from "./ServerContext";
+import { BroadcastHandler, ChannelState } from "./handlers/BroadcastHandler";
 import { IntentHandler } from "./handlers/IntentHandler";
 import { Directory } from "./directory/DirectoryInterface";
 import { OpenHandler } from "./handlers/OpenHandler";
-import { ChannelState } from "@kite9/fdc3-common";
+import { AppRequestMessage, WebConnectionProtocol4ValidateAppIdentity } from "@kite9/fdc3-common";
+
 
 export interface MessageHandler {
 
     /**
      * Handles an AgentRequestMessage from the messaging source
      */
-    accept(msg: any, sc: ServerContext, from: AppMetadata): void
+    accept(msg: any, sc: ServerContext<any>, from: InstanceID): void
 }
 
 /**
@@ -21,14 +21,14 @@ export interface MessageHandler {
 export class BasicFDC3Server implements FDC3Server {
 
     private handlers: MessageHandler[]
-    private sc: ServerContext
+    private sc: ServerContext<any>
 
-    constructor(handlers: MessageHandler[], sc: ServerContext) {
+    constructor(handlers: MessageHandler[], sc: ServerContext<any>) {
         this.handlers = handlers
         this.sc = sc;
     }
 
-    receive(message: any, from: AppMetadata): void {
+    receive(message: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity, from: InstanceID): void {
         this.sc.log(`MessageReceived: \n ${JSON.stringify(message, null, 2)}`)
         this.handlers.forEach(h => h.accept(message, this.sc, from))
     }
@@ -36,9 +36,9 @@ export class BasicFDC3Server implements FDC3Server {
 
 export class DefaultFDC3Server extends BasicFDC3Server {
 
-    constructor(sc: ServerContext, directory: Directory, name: string, userChannels: ChannelState, intentTimeoutMs: number = 20000, openHandlerTimeoutMs: number = 3000) {
+    constructor(sc: ServerContext<any>, directory: Directory, userChannels: ChannelState[], intentTimeoutMs: number = 20000, openHandlerTimeoutMs: number = 3000) {
         super([
-            new BroadcastHandler(name, userChannels),
+            new BroadcastHandler(userChannels),
             new IntentHandler(directory, intentTimeoutMs),
             new OpenHandler(directory, openHandlerTimeoutMs)
         ], sc)

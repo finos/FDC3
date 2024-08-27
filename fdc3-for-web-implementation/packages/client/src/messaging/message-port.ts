@@ -1,69 +1,47 @@
 import { DesktopAgent } from "@finos/fdc3";
-import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultHandshakeSupport, StatefulChannel } from "@kite9/da-proxy";
-import { APIResponseMessage, FDC3_PORT_TRANSFER_RESPONSE_TYPE, Options, APIResponseMessageIFrame } from "@kite9/fdc3-common"
-import { MessagePortMessaging } from "./MessagePortMessaging";
+import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultHandshakeSupport } from "@kite9/da-proxy";
+import { ConnectionDetails, MessagePortMessaging } from "./MessagePortMessaging";
 import { DefaultDesktopAgentIntentResolver } from "../intent-resolution/DefaultDesktopAgentIntentResolver";
 import { DefaultDesktopAgentChannelSelector } from "../channel-selector/DefaultDesktopAgentChannelSelector";
-import { exchangeForMessagePort } from "./exchange";
+import { NullIntentResolver } from "../intent-resolution/NullIIntentResolver";
+import { NullChannelSelector } from "../channel-selector/NullChannelSelector";
 
 /**
  * Given a message port, constructs a desktop agent to communicate via that.
  */
-export async function createDesktopAgentAPI(mp: MessagePort, data: APIResponseMessage, options: Options): Promise<DesktopAgent> {
-    mp.start()
+export async function createDesktopAgentAPI(cd: ConnectionDetails): Promise<DesktopAgent> {
 
-    const messaging = new MessagePortMessaging(mp, data.appIdentifier)
+    cd.messagePort.start()
 
-    const intentResolver = options.intentResolver ?? new DefaultDesktopAgentIntentResolver(data.intentResolver)
-    const channelSelector = options.channelSelector ?? new DefaultDesktopAgentChannelSelector(data.channelSelector)
-    const userChannelState = [] as StatefulChannel[] //buildUserChannelState(messaging)
+    function string(o: string | boolean): string | null {
+        if ((o == true) || (o == false)) {
+            return null
+        } else {
+            return o
+        }
+    }
 
-    const version = "2.0"
-    const cs = new DefaultChannelSupport(messaging, userChannelState, null, channelSelector)
-    const hs = new DefaultHandshakeSupport(messaging, [version], cs)
+    const messaging = new MessagePortMessaging(cd)
+
+    const useResolver = cd.handshake.payload.resolver && cd.options.intentResolver
+    const useSelector = cd.handshake.payload.channelSelector && cd.options.channelSelector
+
+    const intentResolver = useResolver ?
+        new DefaultDesktopAgentIntentResolver(string(cd.handshake.payload.resolver)) :
+        new NullIntentResolver()
+
+    const channelSelector = useSelector ?
+        new DefaultDesktopAgentChannelSelector(string(cd.handshake.payload.channelSelector))
+        : new NullChannelSelector()
+
+    const cs = new DefaultChannelSupport(messaging, channelSelector)
+    const hs = new DefaultHandshakeSupport(messaging)
     const is = new DefaultIntentSupport(messaging, intentResolver)
-    const as = new DefaultAppSupport(messaging, data.appIdentifier, "WebFDC3")
-    const da = new BasicDesktopAgent(hs, cs, is, as, version)
+    const as = new DefaultAppSupport(messaging)
+    const da = new BasicDesktopAgent(hs, cs, is, as)
     await da.connect()
     return da
 }
 
-/**
- * Initialises the desktop agent by opening an iframe or talking to the parent window.
- * on the desktop agent host and communicating via a messsage port to it.
- * 
- * It is up to the desktop agent to arrange communucation between other
- * windows. 
- */
-export async function messagePortInit(event: MessageEvent, options: Options): Promise<DesktopAgent> {
 
-    if (event.ports[0]) {
-        return createDesktopAgentAPI(event.ports[0], event.data, options);
-    } else if ((event.data as APIResponseMessageIFrame).uri) {
-        const action = () => {
-            const iframeData = event.data as APIResponseMessageIFrame
-            return openFrame(iframeData.uri +
-                "?source=" + encodeURIComponent(JSON.stringify(iframeData.appIdentifier)) +
-                "&desktopAgentId=" + encodeURIComponent(iframeData.desktopAgentId));
-        }
 
-        const mp = await exchangeForMessagePort(window, FDC3_PORT_TRANSFER_RESPONSE_TYPE, action, options.waitForMs!!) as MessagePort
-        return createDesktopAgentAPI(mp, event.data, options);
-
-    } else {
-        throw new Error(`Couldn't initialise message port with ${JSON.stringify(event)}`)
-    }
-}
-
-/**
- * The desktop agent requests that the client opens a URL in order to provide a message port.
- */
-function openFrame(url: string): Window {
-    var ifrm = document.createElement("iframe")
-    ifrm.setAttribute("src", url)
-    ifrm.setAttribute("name", "FDC3 Communications")
-    ifrm.style.width = "0px"
-    ifrm.style.height = "0px"
-    document.body.appendChild(ifrm)
-    return ifrm.contentWindow!!
-}

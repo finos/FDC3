@@ -1,8 +1,8 @@
 import { DataTable, Given, Then, When } from '@cucumber/cucumber'
 import { Context } from '@finos/fdc3';
-import { handleResolve, matchData } from '../support/matching';
+import { handleResolve, matchData } from '@kite9/testing';
 import { CustomWorld } from '../world/index';
-import { AgentRequestMessage, BroadcastAgentRequest, PrivateChannelBroadcastAgentRequest, PrivateChannelOnDisconnectAgentRequest, PrivateChannelOnUnsubscribeAgentRequest, RequestMessageType } from '@finos/fdc3/dist/bridging/BridgingTypes'
+import { BroadcastEvent, AgentResponseMessage, ResponseMessageType, PrivateChannelOnUnsubscribeEvent, PrivateChannelOnDisconnectEvent } from '@kite9/fdc3-common'
 import { CHANNEL_STATE } from '@kite9/testing';
 
 const contextMap: Record<string, any> = {
@@ -33,25 +33,27 @@ Given('{string} is a {string} context', function (this: CustomWorld, field: stri
 
 Given('{string} is a {string} message on channel {string} with context {string}', function (this: CustomWorld, field: string, type: string, channel: string, context: string) {
   const message = {
-    meta: this.messaging!!.createMeta(),
+    meta: {
+      ...this.messaging!!.createEventMeta(),
+    },
     payload: {
       "channelId": handleResolve(channel, this),
       "context": contextMap[context]
     },
     type: type
-  } as PrivateChannelBroadcastAgentRequest | BroadcastAgentRequest
+  } as BroadcastEvent
 
   this.props[field] = message;
 })
 
 Given('{string} is a {string} message on channel {string}', function (this: CustomWorld, field: string, type: string, channel: string) {
   const message = {
-    meta: this.messaging!!.createMeta(),
+    meta: this.messaging!!.createEventMeta(),
     payload: {
-      "channelId": handleResolve(channel, this),
+      privateChannelId: handleResolve(channel, this),
     },
     type
-  } as PrivateChannelOnDisconnectAgentRequest
+  } as PrivateChannelOnDisconnectEvent
 
   this.props[field] = message;
 })
@@ -71,13 +73,13 @@ Given('{string} is a {string} message on channel {string} with listenerType as {
 
 Given('{string} is a {string} message on channel {string} with contextType as {string}', function (this: CustomWorld, field: string, type: string, channel: string, contextType: string) {
   const message = {
-    meta: this.messaging!!.createMeta(),
+    meta: this.messaging!!.createEventMeta(),
     payload: {
-      "channelId": handleResolve(channel, this),
+      privateChannelId: handleResolve(channel, this),
       contextType
     },
     type
-  } as PrivateChannelOnUnsubscribeAgentRequest
+  } as PrivateChannelOnUnsubscribeEvent
 
   this.props[field] = message;
 })
@@ -96,9 +98,9 @@ Given('{string} pipes context to {string}', function (this: CustomWorld, context
   }
 })
 
-When('messaging receives a {string} with payload:', function (this: CustomWorld, type: RequestMessageType, docString: string) {
-  const message: AgentRequestMessage = {
-    meta: this.messaging!!.createMeta(),
+When('messaging receives a {string} with payload:', function (this: CustomWorld, type: ResponseMessageType, docString: string) {
+  const message: AgentResponseMessage = {
+    meta: this.messaging!!.createResponseMeta(),
     payload: JSON.parse(docString),
     type
   }
@@ -134,3 +136,11 @@ Given("channel {string} has context {string}", function (this: CustomWorld, chan
   cs.push(ctxObject)
   state[channel] = cs
 })
+
+Given('User Channels one, two and three', function (this: CustomWorld) {
+  this.props[CHANNEL_STATE] = {
+    "one": [],
+    "two": [],
+    "three": []
+  }
+});

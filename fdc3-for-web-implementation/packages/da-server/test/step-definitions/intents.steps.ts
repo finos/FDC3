@@ -1,11 +1,17 @@
 import { DataTable, Given, When } from "@cucumber/cucumber";
 import { CustomWorld } from "../world";
 import { DirectoryApp } from "../../src/directory/DirectoryInterface";
-import { APP_FIELD } from "./generic.steps";
-import { FindIntentAgentRequest, FindIntentsByContextAgentRequest, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { handleResolve } from "../support/matching";
-import { createMeta, contextMap } from './generic.steps';
-import { OnAddIntentListenerAgentRequest, OnUnsubscribeIntentListenerAgentRequest } from "@kite9/fdc3-common";
+import { APP_FIELD, contextMap, createMeta } from "./generic.steps";
+import { handleResolve } from "@kite9/testing";
+import {
+    FindIntentRequest,
+    FindIntentsByContextRequest,
+    AddIntentListenerRequest,
+    IntentListenerUnsubscribeRequest,
+    RaiseIntentRequest,
+    RaiseIntentForContextRequest,
+    IntentResultRequest
+} from "@kite9/fdc3-common";
 
 type ListensFor = {
     [key: string]: {
@@ -63,6 +69,7 @@ Given('{string} is an app with the following intents', function (this: CustomWor
 
 When('{string} finds intents with intent {string} and contextType {string} and result type {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, resultType: string) {
     const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
     const message = {
         meta,
         payload: {
@@ -71,94 +78,133 @@ When('{string} finds intents with intent {string} and contextType {string} and r
             context: contextMap[contextType]
         },
         type: 'findIntentRequest'
-    } as FindIntentAgentRequest
+    } as FindIntentRequest
 
-    this.server.receive(message, meta.source)
+    this.server.receive(message, uuid)
 });
 
 When('{string} finds intents with contextType {string}', function (this: CustomWorld, appStr: string, contextType: string) {
     const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
     const message = {
         meta,
         payload: {
             context: contextMap[contextType]
         },
         type: 'findIntentsByContextRequest'
-    } as FindIntentsByContextAgentRequest
+    } as FindIntentsByContextRequest
 
-    this.server.receive(message, meta.source)
+    this.server.receive(message, uuid)
 });
 
 Given('{string} registers an intent listener for {string}', function (this: CustomWorld, appStr: string, intent: string) {
     const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+
     const message = {
-        type: 'onAddIntentListener',
+        type: 'addIntentListenerRequest',
         meta,
         payload: {
             intent: handleResolve(intent, this)
         }
-    } as OnAddIntentListenerAgentRequest
-    this.server.receive(message, meta.source)
+    } as AddIntentListenerRequest
+    this.server.receive(message, uuid)
 });
 
 Given('{string} registers an intent listener for {string} with contextType {string}', function (this: CustomWorld, appStr: string, intent: string, contextType: string) {
     const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
     const message = {
-        type: 'onAddIntentListener',
+        type: 'addIntentListenerRequest',
         meta,
         payload: {
             intent: handleResolve(intent, this),
             contextType: handleResolve(contextType, this)
         }
-    } as OnAddIntentListenerAgentRequest
-    this.server.receive(message, meta.source)
+    } as AddIntentListenerRequest
+    this.server.receive(message, uuid)
 });
 
 
-Given('{string} unsubscribes an intent listener for {string}', function (this: CustomWorld, appStr: string, intent: string) {
+Given('{string} unsubscribes an intent listener with id {string}', function (this: CustomWorld, appStr: string, id: string) {
     const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
     const message = {
-        type: 'onUnsubscribeIntentListener',
+        type: 'intentListenerUnsubscribeRequest',
         meta,
         payload: {
-            intent: handleResolve(intent, this),
+            listenerUUID: handleResolve(id, this),
         }
-    } as OnUnsubscribeIntentListenerAgentRequest
-    this.server.receive(message, meta.source)
+    } as IntentListenerUnsubscribeRequest
+    this.server.receive(message, uuid)
 });
 
-function raise(cw: CustomWorld, intentName: string, contextType: string, dest: string, meta: any): RaiseIntentAgentRequest {
-    const destMeta = createMeta(cw, dest)
+function raise(cw: CustomWorld, intentName: string, contextType: string, dest: string | null, meta: any): RaiseIntentRequest {
+    const destMeta = dest != null ? createMeta(cw, dest) : null
     const message = {
         type: 'raiseIntentRequest',
         meta: {
             ...meta,
-            destination: {
-                ...destMeta.source,
-                desktopAgent: 'n/a'
-            }
         },
         payload: {
             intent: handleResolve(intentName, cw),
             context: contextMap[contextType],
-            app: destMeta.source
+            app: dest ? destMeta!!.source : null
         }
-    } as RaiseIntentAgentRequest
+    } as RaiseIntentRequest
     return message;
 }
 
+function raiseWithContext(cw: CustomWorld, contextType: string, dest: string | null, meta: any): RaiseIntentForContextRequest {
+    const destMeta = dest != null ? createMeta(cw, dest) : null
+    const message = {
+        type: 'raiseIntentForContextRequest',
+        meta: {
+            ...meta,
+        },
+        payload: {
+            context: contextMap[contextType],
+            app: dest ? destMeta!!.source : null
+        }
+    } as RaiseIntentForContextRequest
+    return message;
+}
+
+When('{string} raises an intent with contextType {string}', function (this: CustomWorld, appStr: string, contextType: string) {
+    const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+    const message = raiseWithContext(this, contextType, null, meta)
+    this.server.receive(message, uuid)
+});
+
+When('{string} raises an intent with contextType {string} on app {string}', function (this: CustomWorld, appStr: string, contextType: string, dest: string) {
+    const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+    const message = raiseWithContext(this, contextType, dest, meta)
+    this.server.receive(message, uuid)
+});
+
+When('{string} raises an intent for {string} with contextType {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string) {
+    const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+    const message = raise(this, intentName, contextType, null, meta)
+    this.server.receive(message, uuid)
+});
+
 When('{string} raises an intent for {string} with contextType {string} on app {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, dest: string) {
     const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
     const message = raise(this, intentName, contextType, dest, meta)
-    this.server.receive(message, meta.source)
+    this.server.receive(message, uuid)
 });
 
 When('{string} raises an intent for {string} with contextType {string} on app {string} with requestUuid {string}', function (this: CustomWorld, appStr: string, intentName: string, contextType: string, dest: string, requestUuid: string) {
     const meta = {
         ...createMeta(this, appStr), requestUuid
     }
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
     const message = raise(this, intentName, contextType, dest, meta)
-    this.server.receive(message, meta.source)
+    this.server.receive(message, uuid)
 })
 
 
@@ -168,31 +214,69 @@ When('we wait for the intent timeout', function (this: CustomWorld) {
     })
 });
 
-When('{string} sends a raiseIntentResponse for intent {string} with requestUuid {string}', function (this: CustomWorld, appStr: string, intentName: string, requestUuid: string) {
+When('{string} sends a intentResultRequest with requestUuid {string} and contextType {string}', function (this: CustomWorld, appStr: string, requestUuid: string, contextType: string) {
     const meta = createMeta(this, appStr)
-    const message = {
-        type: 'raiseIntentResponse',
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+    const message: IntentResultRequest = {
+        type: 'intentResultRequest',
         meta: {
             requestUuid,
-            responseUuid: this.sc.createUUID(),
             timestamp: new Date()
         },
         payload: {
-            intentResolution: {
-                intent: intentName,
-                source: {
-                    ...meta.source
+            intentResult: {
+                context: contextMap[contextType]
+            }
+        }
+    }
+    this.server.receive(message, uuid)
+})
+
+
+When('{string} sends a intentResultRequest with requestUuid {string} and void contents', function (this: CustomWorld, appStr: string, requestUuid: string) {
+    const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+    const message: IntentResultRequest = {
+        type: 'intentResultRequest',
+        meta: {
+            requestUuid,
+            timestamp: new Date()
+        },
+        payload: {
+            intentResult: {
+            }
+        }
+    }
+    this.server.receive(message, uuid)
+})
+
+When('{string} sends a intentResultRequest with requestUuid {string} and private channel {string}', function (this: CustomWorld, appStr: string, requestUuid: string, channelId: string) {
+    const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
+
+    const message: IntentResultRequest = {
+        type: 'intentResultRequest',
+        meta: {
+            requestUuid,
+            timestamp: new Date()
+        },
+        payload: {
+            intentResult: {
+                channel: {
+                    type: 'private',
+                    id: channelId
                 }
             }
         }
-    } as RaiseIntentAgentResponse
-    this.server.receive(message, meta.source)
-});
+    }
+    this.server.receive(message, uuid)
+})
 
-When('{string} sends a raiseIntentResultResponse with requestUuid {string}', function (this: CustomWorld, appStr: string, requestUuid: string) {
+When('{string} sends a intentResultRequest with requestUuid {string}', function (this: CustomWorld, appStr: string, requestUuid: string) {
     const meta = createMeta(this, appStr)
+    const uuid = this.sc.getInstanceUUID(meta.source)!!
     const message = {
-        type: 'raiseIntentResultResponse',
+        type: 'intentResultRequest',
         meta: {
             requestUuid,
             responseUuid: this.sc.createUUID(),
@@ -206,7 +290,7 @@ When('{string} sends a raiseIntentResultResponse with requestUuid {string}', fun
                 }
             }
         }
-    } as RaiseIntentResultAgentResponse
+    } as IntentResultRequest
 
-    this.server.receive(message, meta.source)
+    this.server.receive(message, uuid)
 });

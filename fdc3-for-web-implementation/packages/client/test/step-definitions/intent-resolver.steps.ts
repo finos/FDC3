@@ -2,6 +2,7 @@ import { Given, When } from "@cucumber/cucumber";
 import { CustomWorld } from "../world";
 import { handleResolve } from "@kite9/testing";
 
+
 const contextMap: Record<string, any> = {
     "fdc3.instrument": {
         "type": "fdc3.instrument",
@@ -28,6 +29,18 @@ Given('{string} is a {string} context', function (this: CustomWorld, field: stri
     this.props[field] = contextMap[type];
 })
 
+When('I call {string} with {string} with parameters {string} and {string} for a promise', function (this: CustomWorld, field: string, fnName: string, param1: string, param2: string) {
+    try {
+        const object = handleResolve(field, this)
+        const fn = object[fnName];
+        const arg0 = handleResolve(param1, this)
+        const arg1 = handleResolve(param2, this)
+        const result = fn.call(object, arg0, arg1)
+        this.props['result'] = result;
+    } catch (error) {
+        this.props['result'] = error
+    }
+});
 
 Given('{string} receives a {string} message for the intent resolver and pipes comms to {string}', async function (this: CustomWorld, frame: string, type: string, output: string) {
     const channelSelectorIframe = handleResolve(frame, this)
@@ -54,10 +67,4 @@ Given('{string} receives a {string} message for the intent resolver and pipes co
     internalPort.onmessage = (e) => {
         out.push({ type: e.type, data: e.data })
     }
-});
-
-When('messaging receives {string}', function (this: CustomWorld, field: string) {
-    const message = handleResolve(field, this)
-    this.log(`Sending: ${JSON.stringify(message)}`)
-    this.messaging!!.receive(message);
 });

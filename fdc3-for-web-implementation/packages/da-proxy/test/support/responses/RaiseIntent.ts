@@ -1,6 +1,5 @@
-import { RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentResultAgentResponse } from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from "../TestMessaging";
-
+import { AutomaticResponse, IntentDetail, TestMessaging } from "../TestMessaging";
+import { RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "@kite9/fdc3-common";
 
 export class RaiseIntent implements AutomaticResponse {
 
@@ -8,59 +7,84 @@ export class RaiseIntent implements AutomaticResponse {
         return t == 'raiseIntentRequest'
     }
 
-    createRaiseIntentAgentResponseMessage(intentRequest: RaiseIntentAgentRequest, using: IntentDetail, m: TestMessaging): RaiseIntentAgentResponse {
-        const out: RaiseIntentAgentResponse = {
-            meta: {
-                ...intentRequest.meta,
-                responseUuid: m.createUUID()
-            },
-            payload: {
-                intentResolution: {
-                    intent: using.intent!!,
-                    source: using.app!!
-                }
-            },
-            type: "raiseIntentResponse"
-        }
+    createRaiseIntentAgentResponseMessage(intentRequest: RaiseIntentRequest, using: IntentDetail, m: TestMessaging): RaiseIntentResponse {
+        const result = m.getIntentResult()
+        if (result.error) {
+            const out: RaiseIntentResponse = {
+                meta: {
+                    ...intentRequest.meta,
+                    responseUuid: m.createUUID()
+                },
+                payload: {
+                    error: result.error as any
+                },
+                type: "raiseIntentResponse"
+            }
 
-        return out
+            return out
+        } else {
+            const out: RaiseIntentResponse = {
+                meta: {
+                    ...intentRequest.meta,
+                    responseUuid: m.createUUID()
+                },
+                payload: {
+                    intentResolution: {
+                        intent: using.intent!!,
+                        source: using.app!!
+                    }
+                },
+                type: "raiseIntentResponse"
+            }
+
+            return out
+        }
     }
 
-    createRaiseIntentResultResponseMesssage(intentRequest: RaiseIntentAgentRequest, m: TestMessaging): RaiseIntentResultAgentResponse {
-        const out: RaiseIntentResultAgentResponse = {
-            meta: {
-                ...intentRequest.meta,
-                responseUuid: m.createUUID()
-            },
-            payload: {
-                intentResult: m.getIntentResult()
-            },
-            type: "raiseIntentResultResponse"
+    createRaiseIntentResultResponseMesssage(intentRequest: RaiseIntentRequest, m: TestMessaging): RaiseIntentResultResponse | undefined {
+        const result = m.getIntentResult()
+        if (result.error) {
+            return undefined
+        } else {
+            const out: RaiseIntentResultResponse = {
+                meta: {
+                    ...intentRequest.meta,
+                    responseUuid: m.createUUID()
+                },
+                payload: {
+                    intentResult: m.getIntentResult()
+                },
+                type: "raiseIntentResultResponse"
+            }
+
+            return out
         }
 
-        return out
     }
 
     action(input: object, m: TestMessaging) {
-        const intentRequest = input as RaiseIntentAgentRequest
+        const intentRequest = input as RaiseIntentRequest
         const payload = intentRequest.payload
         const intent = payload.intent
         const context = payload?.context?.type
-        const template: IntentDetail = {
+        const app = payload?.app
+        const using: IntentDetail = {
             intent,
-            context
+            context,
+            app
         }
 
-        const relevant = m.intentDetails.filter(id => intentDetailMatches(id, template, false))
-        const using = relevant[0]
+        if (!m.getIntentResult()?.timeout) {
+            // this sends out the intent resolution
+            const out1 = this.createRaiseIntentAgentResponseMessage(intentRequest, using, m)
+            setTimeout(() => { m.receive(out1) }, 100)
 
-        // this sends out the intent resolution
-        const out1 = this.createRaiseIntentAgentResponseMessage(intentRequest, using, m)
-        setTimeout(() => { m.receive(out1) }, 100)
-
-        // next, send the result response
-        const out2 = this.createRaiseIntentResultResponseMesssage(intentRequest, m)
-        setTimeout(() => { m.receive(out2) }, 300)
+            // next, send the result response
+            const out2 = this.createRaiseIntentResultResponseMesssage(intentRequest, m)
+            if (out2) {
+                setTimeout(() => { m.receive(out2) }, 300)
+            }
+        }
         return Promise.resolve()
     }
 }

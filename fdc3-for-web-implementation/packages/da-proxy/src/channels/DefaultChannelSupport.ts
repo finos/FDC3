@@ -1,12 +1,20 @@
-import { Channel, ChannelError, ContextHandler, DisplayMetadata, Listener, PrivateChannel } from "@finos/fdc3";
+import { Channel, ContextHandler, Listener, PrivateChannel } from "@finos/fdc3";
 import { Messaging } from "../Messaging";
 import { ChannelSupport } from "./ChannelSupport";
 import { DefaultPrivateChannel } from "./DefaultPrivateChannel";
 import { DefaultChannel } from "./DefaultChannel";
-import { StatefulChannel } from "./StatefulChannel";
 import { DefaultContextListener } from "../listeners/DefaultContextListener";
-import { ContextElement } from "@finos/fdc3/dist/bridging/BridgingTypes";
-import { RegisterChannelAgentRequest, RegisterChannelAgentResponse, ChannelSelector } from "@kite9/fdc3-common";
+import {
+    ChannelSelector,
+    GetUserChannelsRequest, GetUserChannelsResponse,
+    GetOrCreateChannelResponse, GetOrCreateChannelRequest,
+    CreatePrivateChannelRequest, CreatePrivateChannelResponse,
+    Channel as ChannelDetail,
+    JoinUserChannelResponse, JoinUserChannelRequest,
+    GetCurrentChannelResponse, GetCurrentChannelRequest,
+    LeaveCurrentChannelRequest, LeaveCurrentChannelResponse,
+} from "@kite9/fdc3-common";
+import { FollowingContextListener } from "../listeners/FollowingContextListener";
 
 const NO_OP_CHANNEL_SELECTOR: ChannelSelector = {
 
@@ -17,23 +25,18 @@ const NO_OP_CHANNEL_SELECTOR: ChannelSelector = {
     setChannelChangeCallback(_callback: (channelId: string) => void): void {
         // also does nothing
     }
-
 }
 
 export class DefaultChannelSupport implements ChannelSupport {
 
     readonly messaging: Messaging
     readonly channelSelector: ChannelSelector
-    protected userChannel: StatefulChannel | null
-    protected userChannelState: StatefulChannel[]
-    protected userChannelListeners: DefaultContextListener[] = []
+    protected userChannels: Channel[] | null = null
+    private followingListeners: FollowingContextListener[] = []
 
-    constructor(messaging: Messaging, userChannelState: StatefulChannel[], initialChannelId: string | null = null, channelSelector: ChannelSelector = NO_OP_CHANNEL_SELECTOR) {
+    constructor(messaging: Messaging, channelSelector: ChannelSelector = NO_OP_CHANNEL_SELECTOR) {
         this.messaging = messaging;
-        this.userChannelState = userChannelState;
-        this.userChannel = userChannelState.find(c => c.id == initialChannelId) ?? null;
         this.channelSelector = channelSelector
-        this.channelSelector.updateChannel(initialChannelId, userChannelState)
         this.channelSelector.setChannelChangeCallback((channelId: string) => {
             if (channelId == null) {
                 this.leaveUserChannel()
@@ -43,118 +46,100 @@ export class DefaultChannelSupport implements ChannelSupport {
         })
     }
 
-    mergeChannelState(newState: { [key: string]: ContextElement[]; }): void {
-        this.userChannel = null
-        // update known channels
-        this.userChannelState.forEach(uc => {
-            const incoming = newState[uc.id] ?? []
-            incoming.forEach((context) => {
-                const existing = uc.getState()
-                if (!existing.get(context.type)) {
-                    existing.set(context.type, context)
-                }
-            });
-        })
-
-        // ensure we have new channels
-        for (const [id, contexts] of Object.entries(newState)) {
-            const existing = this.userChannelState.find(c => c.id == id)
-            if (!existing) {
-                const newChannel = new DefaultChannel(this.messaging, id, 'user', {
-                    // todo - figure out how to source these
-                    name: 'channel named ' + id,
-                    color: '#abc',
-                    glyph: "circle.png"
-                })
-                contexts.forEach(c => {
-                    newChannel.latestContextMap.set(c.type, c)
-                })
-                this.userChannelState.push(newChannel)
-            }
-        }
-    }
-
-    hasUserChannelMembershipAPIs(): boolean {
-        return true
-    }
-
-    getUserChannel(): Promise<Channel | null> {
-        return Promise.resolve(this.userChannel);
-    }
-
-    getUserChannels(): Promise<Channel[]> {
-        return Promise.resolve(this.userChannelState);
-    }
-
-    getDisplayMetadata(_id: string): DisplayMetadata {
-        return {
-
-        }
-    }
-
-    async registerChannel(channelId: string, type: "user" | "app" | "private"): Promise<void> {
-        const response = await this.messaging.exchange<RegisterChannelAgentResponse>({
+    async getUserChannel(): Promise<Channel | null> {
+        const response = await this.messaging.exchange<GetCurrentChannelResponse>({
             meta: this.messaging.createMeta(),
-            type: 'registerChannelRequest',
-            payload: {
-                channelId,
-                type
-            }
-        } as RegisterChannelAgentRequest,
-            'registerChannelResponse')
+            type: 'getCurrentChannelRequest',
+            payload: {}
+        } as GetCurrentChannelRequest, 'getCurrentChannelResponse')
 
-        const error = response.payload.error
-        if (error) {
-            throw new Error(error)
+        if (response.payload?.channel?.id) {
+            return new DefaultChannel(this.messaging, response.payload.channel.id, "user", response.payload.channel.displayMetadata)
+        } else {
+            return null
         }
     }
 
+    async getUserChannels(): Promise<Channel[]> {
+        if (!this.userChannels) {
+            const response = await this.messaging.exchange<GetUserChannelsResponse>({
+                meta: this.messaging.createMeta(),
+                type: 'getUserChannelsRequest',
+                payload: {}
+            } as GetUserChannelsRequest, 'getUserChannelsResponse')
+
+            const channels: ChannelDetail[] = response.payload.userChannels ?? []
+            this.userChannels = channels.map(c => new DefaultChannel(this.messaging, c.id, "user", c.displayMetadata));
+        }
+        return this.userChannels
+    }
 
     async getOrCreate(id: string): Promise<Channel> {
-        await this.registerChannel(id, 'app')
-        const out = new DefaultChannel(this.messaging, id, "app", this.getDisplayMetadata(id))
+        const response = await this.messaging.exchange<GetOrCreateChannelResponse>({
+            meta: this.messaging.createMeta(),
+            type: 'getOrCreateChannelRequest',
+            payload: {
+                channelId: id
+            }
+        } as GetOrCreateChannelRequest,
+            'getOrCreateChannelResponse')
+
+        const out = new DefaultChannel(this.messaging, id, "app", response.payload.channel?.displayMetadata!!)
         return out
     }
 
     async createPrivateChannel(): Promise<PrivateChannel> {
-        const id = this.messaging.createUUID()
-        await this.registerChannel(id, 'private')
-        return new DefaultPrivateChannel(this.messaging, id)
+        const response = await this.messaging.exchange<CreatePrivateChannelResponse>({
+            meta: this.messaging.createMeta(),
+            type: 'createPrivateChannelRequest',
+            payload: {}
+        } as CreatePrivateChannelRequest,
+            'createPrivateChannelResponse')
+
+        return new DefaultPrivateChannel(this.messaging, response.payload?.privateChannel?.id!!)
     }
 
-    leaveUserChannel(): Promise<void> {
-        this.userChannel = null;
-        this.userChannelListeners.forEach(
-            l => l.updateUnderlyingChannel(null, new Map())
-        )
-        this.channelSelector.updateChannel(null, this.userChannelState)
-        return Promise.resolve();
+    async leaveUserChannel(): Promise<void> {
+        await this.messaging.exchange<LeaveCurrentChannelResponse>({
+            meta: this.messaging.createMeta(),
+            type: 'leaveCurrentChannelRequest',
+            payload: {}
+        } as LeaveCurrentChannelRequest,
+            'leaveCurrentChannelResponse')
+
+        this.followingListeners.forEach(l => l.changeChannel(null))
     }
 
-    joinUserChannel(id: string) {
-        if (this.userChannel?.id != id) {
-            const newUserChannel = this.userChannelState.find(c => c.id == id)
-            if (newUserChannel) {
-                this.userChannel = newUserChannel;
-                this.channelSelector.updateChannel(id, this.userChannelState)
-                this.userChannelListeners.forEach(
-                    l => l.updateUnderlyingChannel(newUserChannel.id, newUserChannel.getState()))
-            } else {
-                throw new Error(ChannelError.NoChannelFound)
+    async joinUserChannel(id: string) {
+        await this.messaging.exchange<JoinUserChannelResponse>({
+            meta: this.messaging.createMeta(),
+            type: 'joinUserChannelRequest',
+            payload: {
+                channelId: id
+            }
+        } as JoinUserChannelRequest,
+            'joinUserChannelResponse')
+
+        for (const l of this.followingListeners) {
+            await l.changeChannel(new DefaultChannel(this.messaging, id, "user"))
+        }
+    }
+
+    async addContextListener(handler: ContextHandler, type: string | null): Promise<Listener> {
+        const _container = this
+
+        class UnsubscribingDefaultContextListener extends DefaultContextListener {
+            async unsubscribe(): Promise<void> {
+                super.unsubscribe()
+                _container.followingListeners = _container.followingListeners.filter(l => l != this)
             }
         }
 
-        return Promise.resolve()
-    }
-
-    addContextListener(handler: ContextHandler, type: string | null): Promise<Listener> {
-        const uc = this.userChannel
-        const listener = new DefaultContextListener(this.messaging, uc?.id ?? null, type, handler)
-        this.userChannelListeners.push(listener);
-        if (uc) {
-            listener.updateUnderlyingChannel(uc.id, uc.getState())
-        }
-        return Promise.resolve(listener);
+        const currentChannelId = (await this.getUserChannel())?.id ?? null
+        const listener = new UnsubscribingDefaultContextListener(this.messaging, currentChannelId, type, handler)
+        this.followingListeners.push(listener)
+        await listener.register()
+        return listener
     }
 
 

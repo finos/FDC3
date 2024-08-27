@@ -1,7 +1,7 @@
-import { FDC3_PORT_TRANSFER_RESPONSE_TYPE } from "@kite9/fdc3-common"
-import { EMBED_URL, MockFDC3Server, buildConnection } from "./MockFDC3Server"
+import { EMBED_URL } from "./MockFDC3Server"
 import { CustomWorld } from "../world"
 import { DesktopAgent } from "@finos/fdc3"
+import { WebConnectionProtocol3Handshake } from "@kite9/fdc3-common"
 
 class MockCSSStyleDeclaration {
 
@@ -38,6 +38,11 @@ export class MockElement {
     appendChild(child: HTMLElement) {
         this.children.push(child)
     }
+
+    removeChild(child: HTMLElement) {
+        this.children.splice(this.children.indexOf(child), 1)
+    }
+
 }
 
 
@@ -61,12 +66,12 @@ export class MockWindow extends MockElement {
 
     eventHandlers: EventHandler[] = []
     events: any[] = []
-    serverInstance: MockFDC3Server | null = null
 
     parent: MockWindow | null = null
 
     location = {
-        origin: "https://dummyOrigin.test"
+        origin: "https://dummyOrigin.test",
+        href: "https://dummyOrigin.test/path"
     }
 
     addEventListener(type: string, callback: (e: Event) => void): void {
@@ -103,8 +108,8 @@ export class MockWindow extends MockElement {
     shutdown() {
         this.eventHandlers = []
         this.fdc3 = undefined
-        if (this.serverInstance) {
-            this.serverInstance.shutdown()
+        if (this.cw.mockFDC3Server) {
+            this.cw.mockFDC3Server.shutdown()
         }
     }
 }
@@ -124,12 +129,26 @@ class MockIFrame extends MockWindow {
         const parent = this.parent as MockWindow
 
         if ((name == 'src') && (value.startsWith(EMBED_URL))) {
-            const connection = buildConnection(this.cw)
-            parent.serverInstance?.instances.push(connection)
-
-            parent.postMessage({
-                type: FDC3_PORT_TRANSFER_RESPONSE_TYPE,
-            }, parent.location.origin, [connection.externalPort!!])
+            const paramStr = value.substring(EMBED_URL.length + 1)
+            const params = new URLSearchParams(paramStr)
+            const connectionAttemptUuid = params.get("connectionAttemptUuid")!!
+            const connection = this.cw.mockContext.getFirstInstance()
+            try {
+                parent.postMessage({
+                    type: "WCP3Handshake",
+                    meta: {
+                        connectionAttemptUuid: connectionAttemptUuid,
+                        timestamp: new Date()
+                    },
+                    payload: {
+                        fdc3Version: "2.2",
+                        resolver: "https://mock.fdc3.com/resolver",
+                        channelSelector: "https://mock.fdc3.com/channelSelector",
+                    }
+                } as WebConnectionProtocol3Handshake, EMBED_URL, [connection!!.externalPort])
+            } catch (e) {
+                console.error(e)
+            }
         }
     }
 }

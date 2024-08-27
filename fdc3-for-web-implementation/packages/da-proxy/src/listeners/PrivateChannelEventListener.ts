@@ -1,27 +1,33 @@
-import { PrivateChannelBroadcastAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes"
 import { Messaging } from "../Messaging"
 import { AbstractListener } from "./AbstractListener"
+import { BroadcastEvent } from "@kite9/fdc3-common"
 
 type EVENT_TYPES_WITH_TYPE_HANDLER = "onAddContextListener" | "onUnsubscribe"
 export type EVENT_TYPES = EVENT_TYPES_WITH_TYPE_HANDLER | "onDisconnect"
 
+const EVENT_NAMES: { [k: string]: string } = {
+    onAddContextListener: "privateChannelOnAddContextListenerEvent",
+    onDisconnect: "privateChannelOnDisconnectEvent",
+    onUnsubscribe: "privateChannelOnUnsubscribeEvent"
+}
+
 abstract class AbstractPrivateChannelEventListener<X> extends AbstractListener<X> {
 
-    readonly channelId: string
+    readonly privateChannelId: string
     readonly listenerType: string
 
     constructor(
         messaging: Messaging,
-        channelId: string,
+        privateChannelId: string,
         listenerType: string,
         handler: X) {
-        super(messaging, { channelId, listenerType }, handler, "PrivateChannel.eventListenerAdded", "PrivateChannel.eventListenerRemoved")
-        this.channelId = channelId;
+        super(messaging, { privateChannelId, listenerType }, handler, "privateChannelAddEventListener", "privateChannelUnsubscribeEventListener")
+        this.privateChannelId = privateChannelId;
         this.listenerType = listenerType
     }
 
-    filter(m: PrivateChannelBroadcastAgentRequest) {
-        return (m.type == "PrivateChannel." + this.listenerType) && (this.channelId == m.payload?.channelId);
+    filter(m: BroadcastEvent) {
+        return (m.type == EVENT_NAMES[this.listenerType]) && (this.privateChannelId == (m.payload as any)?.privateChannelId); /* ISSUE: 1293 */
     }
 
     abstract action(m: any): void

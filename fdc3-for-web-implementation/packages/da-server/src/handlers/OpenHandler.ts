@@ -1,59 +1,60 @@
-import { AppDestinationIdentifier, AppMetadata, BroadcastAgentRequest, ConnectionStep2Hello, FindInstancesAgentRequest, FindInstancesAgentResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataAgentResponsePayload, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenAgentResponseMeta, OpenErrorMessage, PrivateChannelOnAddContextListenerAgentRequest } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { MessageHandler } from "../BasicFDC3Server";
-import { ServerContext } from "../ServerContext";
+import { InstanceID, ServerContext } from "../ServerContext";
 import { Directory, DirectoryApp } from "../directory/DirectoryInterface";
 import { ContextElement, OpenError, ResolveError } from "@finos/fdc3";
-import { OnAddContextListenerAgentRequest } from "@kite9/fdc3-common";
-
-function filterPublicDetails(appD: DirectoryApp, appID: AppDestinationIdentifier): GetAppMetadataAgentResponsePayload['appMetadata'] {
-    return {
-        appId: appD.appId,
-        name: appD.name,
-        version: appD.version,
-        title: appD.title,
-        tooltip: appD.tooltip,
-        description: appD.description,
-        icons: appD.icons,
-        screenshots: appD.screenshots,
-        instanceId: appID.instanceId
-    }
-}
-
-type BasicMeta = OpenAgentResponseMeta
-
-function createReplyMeta(msg: any, sc: ServerContext): BasicMeta {
-    return {
-        requestUuid: msg.meta.requestUuid,
-        responseUuid: sc.createUUID(),
-        timestamp: new Date()
-    }
-}
+import {
+    AddContextListenerRequest,
+    AppIdentifier, AppMetadata,
+    BroadcastEvent,
+    FindInstancesRequest,
+    GetAppMetadataRequest,
+    OpenRequest,
+    WebConnectionProtocol4ValidateAppIdentity,
+    WebConnectionProtocol5ValidateAppIdentityFailedResponse,
+    WebConnectionProtocol5ValidateAppIdentitySuccessResponse
+} from "@kite9/fdc3-common";
+import { errorResponse, successResponse } from "./support";
 
 enum AppState { Opening, DeliveringContext, Done }
 
-class PendingApps {
+class PendingApp {
 
+    private readonly sc: ServerContext<any>
+    private readonly msg: OpenRequest
     readonly context: ContextElement | undefined
     readonly source: AppMetadata
     state: AppState = AppState.Opening
-    private onSuccess: () => void
+    private openedApp: AppIdentifier | undefined = undefined
 
-    constructor(context: ContextElement | undefined, source: AppMetadata,
-        onSuccess: () => void,
-        onError: () => void,
-        timeoutMs: number) {
+    constructor(sc: ServerContext<any>, msg: OpenRequest, context: ContextElement | undefined, source: AppIdentifier, timeoutMs: number) {
         this.context = context
         this.source = source
-        this.onSuccess = onSuccess
+        this.sc = sc
+        this.msg = msg
 
         setTimeout(() => {
             if (this.state != AppState.Done) {
-                onError()
+                this.onError()
             }
         }, timeoutMs)
     }
 
-    setOpened() {
+    private onSuccess() {
+        this.sc.setAppConnected(this.openedApp!!)
+        successResponse(this.sc, this.msg, this.source, {
+            appIdentifier: {
+                appId: this.openedApp!!.appId,
+                instanceId: this.openedApp!!.instanceId
+            }
+        }, 'openResponse')
+    }
+
+    private onError() {
+        errorResponse(this.sc, this.msg, this.source, OpenError.AppTimeout, 'openResponse')
+    }
+
+    setOpened(openedApp: AppIdentifier) {
+        this.openedApp = openedApp
         if (this.context) {
             this.state = AppState.DeliveringContext
         } else {
@@ -70,8 +71,7 @@ class PendingApps {
 export class OpenHandler implements MessageHandler {
 
     private readonly directory: Directory
-    private readonly pending: Map<string, PendingApps> = new Map()
-
+    readonly pending: Map<InstanceID, PendingApp> = new Map()
     readonly timeoutMs: number
 
     constructor(d: Directory, timeoutMs: number) {
@@ -79,139 +79,179 @@ export class OpenHandler implements MessageHandler {
         this.timeoutMs = timeoutMs
     }
 
-    async accept(msg: any, sc: ServerContext, from: AppMetadata): Promise<void> {
+    async accept(msg: any, sc: ServerContext<any>, uuid: InstanceID): Promise<void> {
         switch (msg.type as string) {
-            case 'openRequest': return this.open(msg as OpenAgentRequest, sc, from)
-            case 'findInstancesRequest': return this.findInstances(msg as FindInstancesAgentRequest, sc, from)
-            case 'getAppMetadataRequest': return this.getAppMetadata(msg as GetAppMetadataAgentRequest, sc, from)
-            case 'onAddContextListener': return this.handleOnAddContextListener(msg as OnAddContextListenerAgentRequest, sc)
-            case 'hello': return this.handleHello(msg as ConnectionStep2Hello, sc, from)
+            case 'addContextListenerRequest': return this.handleAddContextListener(msg as AddContextListenerRequest, sc, uuid)
+            case 'WCP4ValidateAppIdentity': return this.handleValidate(msg as WebConnectionProtocol4ValidateAppIdentity, sc, uuid)
         }
+
+        const from = sc.getInstanceDetails(uuid)
+        if (from) {
+            switch (msg.type as string) {
+                case 'openRequest': return this.open(msg as OpenRequest, sc, from)
+                case 'findInstancesRequest': return this.findInstances(msg as FindInstancesRequest, sc, from)
+                case 'getAppMetadataRequest': return this.getAppMetadata(msg as GetAppMetadataRequest, sc, from)
+            }
+        }
+
     }
 
-    handleOnAddContextListener(arg0: PrivateChannelOnAddContextListenerAgentRequest | OnAddContextListenerAgentRequest, sc: ServerContext) {
-        const instanceId = arg0.meta.source?.instanceId
-        const pendingOpen = instanceId ? this.pending.get(instanceId) : undefined
+    /**
+     * This deals with sending pending context to listeners of newly-opened apps.
+     */
+    handleAddContextListener(arg0: AddContextListenerRequest, sc: ServerContext<any>, from: InstanceID): void {
+        const pendingOpen = this.pending.get(from)
 
-        if (pendingOpen && instanceId) {
-            const channelId = arg0.payload.channelId
+        if (pendingOpen) {
+            const channelId = arg0.payload.channelId!!
             const contextType = arg0.payload.contextType
 
             if ((pendingOpen.context) && (pendingOpen.state == AppState.DeliveringContext)) {
                 if ((contextType == pendingOpen.context.type) || (contextType == undefined)) {
                     // ok, we can deliver to this listener
 
-                    const message: BroadcastAgentRequest = {
+                    const message: BroadcastEvent = {
                         meta: {
-                            requestUuid: sc.createUUID(),
-                            source: pendingOpen.source,
+                            eventUuid: sc.createUUID(),
                             timestamp: new Date()
                         },
-                        type: "broadcastRequest",
+                        type: "broadcastEvent",
                         payload: {
                             channelId,
-                            context: pendingOpen.context
+                            context: pendingOpen.context,
+                            originatingApp: {
+                                appId: pendingOpen.source.appId,
+                                instanceId: pendingOpen.source.instanceId
+                            }
                         }
                     }
 
                     pendingOpen.setDone()
-                    this.pending.delete(instanceId)
-                    sc.post(message, arg0.meta.source!!)
+                    this.pending.delete(from)
+                    sc.post(message, arg0.meta.source?.instanceId!!)
                 }
             }
         }
     }
 
-    getAppMetadata(arg0: GetAppMetadataAgentRequest, sc: ServerContext, from: AppMetadata): void {
+    filterPublicDetails(appD: DirectoryApp, appID: AppIdentifier): AppMetadata {
+        return {
+            appId: appD.appId,
+            name: appD.name,
+            version: appD.version,
+            title: appD.title,
+            tooltip: appD.tooltip,
+            description: appD.description,
+            icons: appD.icons,
+            screenshots: appD.screenshots,
+            instanceId: appID.instanceId
+        }
+    }
+
+    getAppMetadata(arg0: GetAppMetadataRequest, sc: ServerContext<any>, from: AppIdentifier): void {
         const appID = arg0.payload.app
         const details = this.directory.retrieveAppsById(appID.appId)
         if (details.length > 0) {
-            // returning first matching app record
-            const response: GetAppMetadataAgentResponse = {
-                type: "getAppMetadataResponse",
-                meta: createReplyMeta(arg0, sc),
-                payload: {
-                    appMetadata: filterPublicDetails(details[0], appID)
-                }
-            }
-            sc.post(response, from)
+            successResponse(sc, arg0, from, {
+                appMetadata: this.filterPublicDetails(details[0], appID)
+            }, 'getAppMetadataResponse')
         } else {
-            const response: GetAppMetadataAgentErrorResponse = {
-                type: "getAppMetadataResponse",
-                meta: createReplyMeta(arg0, sc),
-                payload: {
-                    error: ResolveError.TargetAppUnavailable
-                }
-            }
-            sc.post(response, from)
+            errorResponse(sc, arg0, from, ResolveError.TargetAppUnavailable, 'getAppMetadataResponse')
         }
     }
 
 
-    async findInstances(arg0: FindInstancesAgentRequest, sc: ServerContext, from: AppMetadata): Promise<void> {
+    async findInstances(arg0: FindInstancesRequest, sc: ServerContext<any>, from: AppIdentifier): Promise<void> {
         const appId = arg0.payload.app.appId
         const openApps = await sc.getConnectedApps()
         const matching = openApps.filter(a => a.appId == appId)
-        const response: FindInstancesAgentResponse = {
-            type: 'findInstancesResponse',
-            meta: createReplyMeta(arg0, sc),
-            payload: {
-                appIdentifiers: matching
-            }
-        }
-
-        sc.post(response, from)
+        successResponse(sc, arg0, from, {
+            appIdentifiers: matching
+        }, 'findInstancesResponse')
     }
 
-    async open(arg0: OpenAgentRequest, sc: ServerContext, from: AppMetadata): Promise<void> {
-
-        function createErrorMessage(e: string): OpenAgentErrorResponse {
-            const message: OpenAgentErrorResponse = {
-                meta: createReplyMeta(arg0, sc),
-                type: "openResponse",
-                payload: {
-                    error: e as OpenErrorMessage
-                }
-            }
-            return message;
-        }
-
-        function createSuccessMessage(details: AppMetadata): OpenAgentResponse {
-            const message: OpenAgentResponse = {
-                meta: createReplyMeta(arg0, sc),
-                type: "openResponse",
-                payload: {
-                    appIdentifier: details
-                }
-            }
-            return message
-        }
+    async open(arg0: OpenRequest, sc: ServerContext<any>, from: AppIdentifier): Promise<void> {
 
         const source = arg0.payload.app
         const context = arg0.payload.context
 
         try {
-            const details = await sc.open(source.appId)
-            this.pending.set(details.instanceId!!, new PendingApps(context, source,
-                () => sc.post(createSuccessMessage(details), from),
-                () => sc.post(createErrorMessage(OpenError.AppTimeout), from),
-                this.timeoutMs))
+            const uuid = await sc.open(source.appId)
+            this.pending.set(uuid, new PendingApp(sc, arg0, context, from, this.timeoutMs))
         } catch (e: any) {
-            const message = createErrorMessage(e.message)
-            sc.post(message, from)
+            errorResponse(sc, arg0, from, e.message, 'openResponse')
         }
     }
 
-    handleHello(_arg0: ConnectionStep2Hello, sc: ServerContext, opening: AppMetadata): void | PromiseLike<void> {
-        sc.setAppConnected(opening)
+    async handleValidate(arg0: WebConnectionProtocol4ValidateAppIdentity, sc: ServerContext<any>, from: InstanceID): Promise<void> {
+        const _this = this
 
-        const instanceId = opening.instanceId
-        const pendingOpen = instanceId ? this.pending.get(instanceId) : undefined
+        const responseMeta = {
+            connectionAttemptUuid: arg0.meta.connectionAttemptUuid,
+            timestamp: new Date()
+        }
 
-        if (pendingOpen) {
-            if (pendingOpen.state == AppState.Opening) {
-                pendingOpen.setOpened()
+        function returnError() {
+            sc.post({
+                meta: responseMeta,
+                type: 'WCP5ValidateAppIdentityFailedResponse',
+                payload: {
+                    message: 'App Instance not found'
+                }
+            } as WebConnectionProtocol5ValidateAppIdentityFailedResponse, from)
+        }
+
+        function returnSuccess(appIdentity: AppIdentifier) {
+            const aopMetadata = _this.filterPublicDetails(_this.directory.retrieveAppsById(appIdentity.appId)[0], appIdentity)
+            sc.post({
+                meta: responseMeta,
+                type: 'WCP5ValidateAppIdentityResponse',
+                payload: {
+                    appId: appIdentity.appId,
+                    instanceId: appIdentity.instanceId,
+                    instanceUuid: from,
+                    implementationMetadata: {
+                        provider: sc.provider(),
+                        providerVersion: sc.providerVersion(),
+                        fdc3Version: sc.fdc3Version(),
+                        optionalFeatures: {
+                            DesktopAgentBridging: false,
+                            OriginatingAppMetadata: true,
+                            UserChannelMembershipAPIs: true
+                        },
+                        appMetadata: aopMetadata
+                    }
+                }
+            } as WebConnectionProtocol5ValidateAppIdentitySuccessResponse, appIdentity.instanceId!!)
+        }
+
+        if (arg0.payload.instanceUuid) {
+            // existing app reconnecting
+            const appIdentity = sc.getInstanceDetails(arg0.payload.instanceUuid)
+
+            if (appIdentity) {
+                // in this case, the app is reconnecting, so let's just re-assign the 
+                // identity
+                sc.setInstanceDetails(from, appIdentity)
+                return returnSuccess(appIdentity)
             }
         }
+
+        // we need to assign an identity to this app
+        const appIdentity = sc.getInstanceDetails(from)
+        if (appIdentity) {
+            returnSuccess(appIdentity)
+
+            // make sure if the opener is listening for this app to open gets informed
+            const pendingOpen = this.pending.get(from)
+            if (pendingOpen) {
+                if (pendingOpen.state == AppState.Opening) {
+                    pendingOpen.setOpened(appIdentity)
+                }
+            }
+        } else {
+            returnError()
+        }
+
     }
 }
