@@ -87,7 +87,7 @@ A small number of arguments are accepted that can affect the behavior of `getAge
  * @property {boolean} dontSetWindowFdc3 For backwards compatibility, `getAgent` 
  * will set a reference to the Desktop Agent implementation at `window.fdc3` 
  * if one does not already exist, and will fire the fdc3Ready event. Setting  
- * this flag to `false` will inhibit that behavior, leaving `window.fdc3` unset. 
+ * this flag to `true` will inhibit that behavior, leaving `window.fdc3` unset. 
  *  
  * @property {function} failover An optional function that provides a  
  * means of connecting to or starting a Desktop Agent, which will be called 
