@@ -20,14 +20,15 @@ For the purposes of this Standard, the following definitions apply. Other terms 
 - **application-specific intent**: A custom intent defined by an application or applications, independent of the Standard.
 - **Bridge**: Shorthand for Desktop Agent Bridge.
 - **bridging**: Shorthand for the exchange of messages across a Desktop Agent Bridge for the purposes of extending interop between apps managed by different Desktop Agents.
+- **Bridge Connection Protocol (BCP)**: A defined set of steps for a Desktop Agent to connect to a Desktop Agent Bridge.
+- **Bridge Messaging Protocol (BMP)**: Protocol for Desktop Agents to communicate with each other over a Desktop Agent Bridge.
 - **Channel**: A grouping of apps for the purposes of sharing stateful pieces of data. A secondary interface of the FDC3 API.
 - **context channels**: A mechanism to allow sets of apps to share stateful pieces of data among themselves, and to be alerted when that data changes.
 - **context**: Shorthand for context data.
 - **context data**: Objects encoding common identifiers and data in a standardized format that can be passed between apps via context channels or used in conjunction with intents to invoke actions creating a seamless cross-application workflow. Diverse context data types are created to encode different types of data, each having their own _type_ field and unique set of data fields.
-- **DAB**: Acronym of Desktop Agent Bridge.
 - **Desktop Agent**: A desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain. The primary interface of the FDC3 API.
-- **Desktop Agent Bridge**: An independent service that Desktop Agents connect to which allows them to relay requests to other Desktop Agents also connected to the bridge, allowing FDC3-based interop to extend across multiple Desktop Agents and machines.
-- **Desktop Agent Communication Protocol**: JSON communication protocol for the Desktop Agent API. Used by a Desktop Agent Proxy interface over the Channel Messaging API (as specified by the Web Connection Protocol) to communicate with a Desktop Agent running in another window/frame.
+- **Desktop Agent Bridge (DAB)**: An independent service that Desktop Agents connect to which allows them to relay requests to other Desktop Agents also connected to the bridge, allowing FDC3-based interop to extend across multiple Desktop Agents and machines.
+- **Desktop Agent Communication Protocol (DACP)**: JSON communication protocol for the Desktop Agent API. Used by a Desktop Agent Proxy interface over the Channel Messaging API (as specified by the Web Connection Protocol) to communicate with a Desktop Agent running in another window/frame.
 - **Desktop Agent Preload**: An 'injected' or 'preloaded' Desktop Agent API implementation, typically provided by an electron (or similar) container or browser extension, which is made available to web applications at `window.fdc3` and may be returned by the `getAgent()` function defined in the FDC3 Web Connection Protocol.
 - **Desktop Agent Proxy**: An interface to a web-based Desktop Agent (implementation of the Desktop Agent API) that uses the Web Connection Protocol and Desktop Agent Communication protocol to communicate with a Desktop Agent implementation running in another frame or window. Returned by the `getAgent()` function provided by the FDC3 NPM module where a browser-based Desktop Agent is detected. 
 - **FDC3 API**: A baseline, consistent developer interface for interoperability between applications.
@@ -43,4 +44,4 @@ For the purposes of this Standard, the following definitions apply. Other terms 
 - **resolving an intent**: The act of mapping a specified intent and context object to an application.
 - **standard intent**: An intent defined by this Standard.
 - **UUID**: Universally Unique IDentifier, synonymous with GUID. Defined by [IETF RFC4122](references).
-- **Web Connection Protocol**: A defined set of steps for a web application to connect to Desktop Agents that implement any of the interfaces defined for web applications in the FDC3 Standard, including both preloaded Desktop Agent interfaces and Browser-based Desktop Agents that work with a Desktop Agent Proxy.
+- **Web Connection Protocol (WCP)**: A defined set of steps for a web application to connect to Desktop Agents that implement any of the interfaces defined for web applications in the FDC3 Standard, including both preloaded Desktop Agent interfaces and Browser-based Desktop Agents that work with a Desktop Agent Proxy.
