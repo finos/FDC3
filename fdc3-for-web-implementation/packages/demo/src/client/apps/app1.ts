@@ -1,4 +1,4 @@
-import { getClientAPI } from '@kite9/client'
+import { getAgent } from '@kite9/client'
 
 function createContext(i: number) {
     return {
@@ -15,7 +15,7 @@ function createContext(i: number) {
  */
 async function startBroadcasting() {
     console.log("starting...")
-    const fdc3 = await getClientAPI();
+    const fdc3 = await getAgent();
     console.log("got api...")
     const cc = await fdc3.getCurrentChannel()
 

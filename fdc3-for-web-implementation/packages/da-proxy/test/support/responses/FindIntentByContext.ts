@@ -1,5 +1,5 @@
-import { FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, FindIntentsByContextAgentResponseMeta } from "@finos/fdc3/dist/bridging/BridgingTypes";
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from "../TestMessaging";
+import { FindIntentsByContextRequest, FindIntentsByContextResponse } from "@kite9/fdc3-common";
 
 
 export class FindIntentByContext implements AutomaticResponse {
@@ -9,7 +9,7 @@ export class FindIntentByContext implements AutomaticResponse {
     }
 
     action(input: object, m: TestMessaging) {
-        const intentRequest = input as FindIntentsByContextAgentRequest
+        const intentRequest = input as FindIntentsByContextRequest
         const payload = intentRequest.payload
         const context = payload?.context?.type
         const template: IntentDetail = {
@@ -23,11 +23,11 @@ export class FindIntentByContext implements AutomaticResponse {
     }
 
 
-    private createFindIntentsByContextResponseMessage(m: FindIntentsByContextAgentRequest, relevant: IntentDetail[]): FindIntentsByContextAgentResponse {
+    private createFindIntentsByContextResponseMessage(m: FindIntentsByContextRequest, relevant: IntentDetail[]): FindIntentsByContextResponse {
         const relevantIntents = [...new Set<string>(relevant.map(r => r.intent!!))]
 
         return {
-            meta: m.meta as FindIntentsByContextAgentResponseMeta,
+            meta: m.meta as any,
             type: "findIntentsByContextResponse",
             payload: {
                 appIntents:

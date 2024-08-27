@@ -1,4 +1,3 @@
-import { FDC3_PORT_TRANSFER_RESPONSE_TYPE } from "@kite9/fdc3-common";
 import { io } from "socket.io-client"
 import { link } from "./util";
 import { AppIdentifier } from "@finos/fdc3";
@@ -17,13 +16,17 @@ function getQueryVariable(variable: string): string {
     }
 
     return ""
+
 }
 
-function getSource(): AppIdentifier {
-    const source = getQueryVariable("source")
-    const decoded = decodeURIComponent(source)
-    const object: AppIdentifier = JSON.parse(decoded)
-    return object
+function getConnectionAttemptUuid(): string {
+    const uuid = getQueryVariable("connectionAttemptUuid")
+    return uuid
+}
+
+function getSource(): string {
+    const source = getQueryVariable("instanceId")
+    return source
 }
 
 function getDeskopAgentId(): string {
@@ -43,11 +46,22 @@ window.addEventListener("load", () => {
 
         link(socket, channel, source)
 
+        socket.emit(APP_HELLO, desktopAgentUUID, source)
+
         // sned the other end of the channel to the app
         appWindow.postMessage({
-            type: FDC3_PORT_TRANSFER_RESPONSE_TYPE,
+            type: 'WCP3Handshake',
+            meta: {
+                connectionAttemptUuid: getConnectionAttemptUuid(),
+                timestamp: new Date()
+            },
+            payload: {
+                fdc3Version: "2.2",
+                resolver: window.location.origin + "/static/da/intent-resolver.html",
+                channelSelector: window.location.origin + "/static/da/channel-selector.html",
+            }
         }, "*", [channel.port1])
 
-        socket.emit(APP_HELLO, desktopAgentUUID, source)
+
     })
 })

@@ -1,32 +1,41 @@
 Feature: Relaying Broadcast messages
 
   Background:
-    Given A newly instantiated FDC3 Server
-    And "App1/a1" is opened
-    And "App2/a2" is opened
-  # Scenario: Broadcast message to no-one
-  #   When "App1/a1" broadcasts "fdc3.instrument" on "channel1"
-  #   Then messaging will have outgoing posts
-  #     | msg.source.AppId |
-  #   And messaging will have 0 posts
+    Given schemas loaded
+    And A newly instantiated FDC3 Server
+    And "App1/a1" is opened with connection id "a1"
+    And "App2/a2" is opened with connection id "a2"
+
+  Scenario: Broadcast message to no-one
+    When "App1/a1" broadcasts "fdc3.instrument" on "one"
+    Then messaging will have outgoing posts
+      | msg.matches_type  |
+      | broadcastResponse |
+    And messaging will have 1 posts
 
   Scenario: Broadcast message sent to one listener
-    When "App2/a2" adds a context listener on "channel1" with type "fdc3.instrument"
-    And "App1/a1" broadcasts "fdc3.instrument" on "channel1"
+    When "App2/a2" adds a context listener on "one" with type "fdc3.instrument"
+    And we wait for a period of "100" ms
+    And "App1/a1" broadcasts "fdc3.instrument" on "one"
     Then messaging will have outgoing posts
-      | msg.meta.source.appId | msg.meta.source.instanceId | msg.payload.context.type | msg.meta.destination.appId | msg.meta.destination.instanceId |
-      | App1                  | a1                         | fdc3.instrument          | App2                       | a2                              |
-  # Scenario: Broadcast message sent but listener has unsubscribed
-  #   When "App2/a2" adds a context listener on "channel1" with type "fdc3.instrument"
-  #   And "App2/a2" removes context listener on "channel1" with type "fdc3.instrument"
-  #   And "App1/a1" broadcasts "fdc3.instrument" on "channel1"
-  #   Then messaging will have outgoing posts
-  #     | msg.source.AppId | msg.source.instanceId | msg.payload.context.type |
+      | msg.matches_type           | to.appId | to.instanceId | msg.payload.channelId | msg.payload.context.type | msg.payload.context.id.ticker |
+      | addContextListenerResponse | App2     | a2            | {null}                | {null}                   | {null}                        |
+      | broadcastEvent             | App2     | a2            | one                   | fdc3.instrument          | AAPL                          |
+      | broadcastResponse          | App1     | a1            | {null}                | {null}                   | {null}                        |
 
-  Scenario: Handle channel state synchronisation for new apps
-    When "App1/a1" broadcasts "fdc3.instrument" on "channel1"
-    And "App1/a1" broadcasts "fdc3.instrument" on "channel1"
-    And "App2/a2" sends hello
+  Scenario: Broadcast message sent but listener has unsubscribed
+    When "App2/a2" adds a context listener on "one" with type "fdc3.instrument"
+    And "App2/a2" removes context listener with id "uuid3"
+    And "App1/a1" broadcasts "fdc3.instrument" on "one"
     Then messaging will have outgoing posts
-      | msg.type  | msg.payload.requestedName | msg.payload.channelsState['channel1'].length | msg.payload.channelsState['channel1'][0].type |
-      | handshake | cucumber-fdc3-server      |                                            1 | fdc3.instrument                               |
+      | msg.matches_type                   | to.appId | to.instanceId | msg.payload.listenerUUID |
+      | addContextListenerResponse         | App2     | a2            | uuid3                    |
+      | contextListenerUnsubscribeResponse | App2     | a2            | {null}                   |
+      | broadcastResponse                  | App1     | a1            | {null}                   |
+
+  Scenario: Get The Latest Context From A Channel
+    Given "App1/a1" broadcasts "fdc3.instrument" on "one"
+    And "App1/a1" asks for the latest context on "one" with type "fdc3.instrument"
+    Then messaging will have outgoing posts
+      | msg.matches_type          | to.appId | to.instanceId | msg.payload.context.id.ticker | msg.payload.context.type |
+      | getCurrentContextResponse | App1     | a1            | AAPL                          | fdc3.instrument          |

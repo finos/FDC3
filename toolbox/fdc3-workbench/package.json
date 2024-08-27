@@ -31,6 +31,7 @@
     ]
   },
   "devDependencies": {
+    "@kite9/client": "0.0.41",
     "@types/jsoneditor": "^8.6.1",
     "@typescript-eslint/eslint-plugin": "^5.48.0",
     "@typescript-eslint/parser": "^5.48.0",

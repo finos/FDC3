@@ -1,8 +1,7 @@
 import { DataTable, Then } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
-import { matchData } from '../support/matching';
 import expect from "expect";
-
+import { setupGenericSteps, matchData } from '@kite9/testing';
 
 
 Then('messaging will have outgoing posts', function (this: CustomWorld, dt: DataTable) {
@@ -18,3 +17,5 @@ Then('messaging will have outgoing posts', function (this: CustomWorld, dt: Data
 Then('messaging will have {int} posts', function (this: CustomWorld, count: number) {
   expect(this.sc.postedMessages.length).toEqual(count)
 })
+
+setupGenericSteps()

@@ -1,7 +1,8 @@
-import { AppIdentifier } from "@finos/fdc3";
+import { AppIdentifier, ImplementationMetadata } from "@finos/fdc3";
+import { Connectable } from "./Connectable";
 import { RegisterableListener } from "./listeners/RegisterableListener";
 
-export interface Messaging {
+export interface Messaging extends Connectable {
 
     /**
      * Source for outgoing message
@@ -29,16 +30,21 @@ export interface Messaging {
      */
     unregister(id: string): void
 
-    createMeta(): object
+    createMeta(): object /* ISSUE: #1275 */
 
     /**
      * Waits for a specific matching message
      */
-    waitFor<X>(filter: (m: any) => boolean): Promise<X>
+    waitFor<X>(filter: (m: any) => boolean, timeoutErrorMessage?: string): Promise<X>
 
     /**
      * 
      * @param message Performs a request / response message pass
      */
-    exchange<X>(message: object, expectedTypeName: string): Promise<X>
+    exchange<X>(message: object, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X>
+
+    /**
+     * Implementation metadata retrieved through the validation process
+     */
+    getImplementationMetadata(): Promise<ImplementationMetadata>
 }

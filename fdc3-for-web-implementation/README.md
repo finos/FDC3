@@ -133,8 +133,11 @@ address of the embed page in the cookie? Problem is, the cookie is scoped to the
 ## Releasing
 
 ```
-yarn npm login
-yarn workspaces foreach --all version 0.0.10 (or whatever)
-yarn workspaces foreach --all npm publish --access=public
-
+// first, update version number in package.json
+npm login
+npm version <version from package.json> --workspaces
+npm run syncpack
+npm run build
+npm publish --access=public --workspaces
+npm up
 ```

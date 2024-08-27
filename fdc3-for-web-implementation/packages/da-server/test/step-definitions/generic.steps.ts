@@ -3,6 +3,7 @@ import { CustomWorld } from '../world';
 import { TestServerContext } from '../support/TestServerContext';
 import { DefaultFDC3Server } from '../../src/BasicFDC3Server';
 import { BasicDirectory } from '../../src/directory/BasicDirectory';
+import { ChannelType } from '../../src/handlers/BroadcastHandler';
 
 export const APP_FIELD = 'apps'
 
@@ -33,6 +34,14 @@ export const contextMap: Record<string, any> = {
         "id": {
             "ISBN": "1234"
         }
+    },
+    "fdc3.magazine": {
+        "type": "fdc3.magazine",
+        "title": "The Economist",
+        "price": 3.99,
+        "id": {
+            "ISSN": "1234"
+        }
     }
 }
 
@@ -54,6 +63,34 @@ Given('A newly instantiated FDC3 Server', function (this: CustomWorld) {
 
 
     this.sc = new TestServerContext(this)
-    this.server = new DefaultFDC3Server(this.sc, d, "cucumber-fdc3-server", {}, 2000, 2000)
+    this.server = new DefaultFDC3Server(this.sc, d, [
+        {
+            id: 'one',
+            type: ChannelType.user,
+            context: [],
+            displayMetadata: {
+                name: 'One Channel',
+                color: 'orange'
+            }
+        },
+        {
+            id: 'two',
+            type: ChannelType.user,
+            context: [],
+            displayMetadata: {
+                name: 'Two Channel',
+                color: 'skyblue'
+            }
+        },
+        {
+            id: 'three',
+            type: ChannelType.user,
+            context: [],
+            displayMetadata: {
+                name: 'Three Channel',
+                color: 'ochre'
+            }
+        }
+    ], 2000, 2000)
 
 });

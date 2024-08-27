@@ -1,9 +1,9 @@
-import { getClientAPI } from '@kite9/client'
+import { getAgent } from '@kite9/client'
 
 /**
  * This demonstrates using the API via a promise
  */
-getClientAPI().then(async fdc3 => {
+getAgent().then(async fdc3 => {
     console.log("in promise")
     const log = document.getElementById("log");
     const reso = await fdc3.raiseIntent("ViewQuote", {
