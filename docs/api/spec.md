@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 The role of FDC3 API is to establish a baseline interface for interoperability between applications. Because FDC3 is largely an agreement between existing platforms and applications, standards should be optimized for ease of adoption rather than functional completeness. Functionality absent from a FDC3 specification is in no way a commentary on its importance.
 
-The following sections examine the API's use-cases and core concepts. The APIs a fully defined in both subsequent pages of this Part and a full set of TypeScript definitions in the [src](https://github.com/finos/FDC3/tree/main/src/api) directory of the [FDC3 GitHub repository](https://github.com/finos/FDC3/).
+The following sections examine the API's use-cases and core concepts. The API is fully defined in both subsequent pages of this Part and a full set of TypeScript definitions in the [src](https://github.com/finos/FDC3/tree/main/src/api) directory of the [FDC3 GitHub repository](https://github.com/finos/FDC3/).
 
 ## Components
 
@@ -50,6 +50,8 @@ The FDC3 API specification consists of interfaces.  It is expected that each Des
 - [`Listener`](ref/Types#listener)
 
 Other interfaces defined in the spec are not critical to define as concrete types.  Rather, the Desktop Agent should expect to have objects of the interface shape passed into or out of their library.
+
+The means to access an API interface is defined separately for each language in which FDC3 is implemented. These definitions are important as they affect whether applicaitons can be written in a vendor agnostic format so that they run under any Standards-conformant implementation. For details of how to access an API interface in particular languages please see [Supported Platforms](supported-platforms).
 
 ### Implementation language
 

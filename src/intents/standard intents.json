@@ -1,64 +1,22 @@
 {
   "intents": [
-    {
-      "name": "CreateInteraction",
-      "displayName": "Create Interaction"
-    },
-    {
-      "name": "StartCall",
-      "displayName": "Call"
-    },
-    {
-      "name": "StartChat",
-      "displayName": "Chat"
-    },
-    {
-      "name": "StartEmail",
-      "displayName": "Email"
-    },
-    {
-      "name": "ViewChart",
-      "displayName": "Chart"
-    },
-    {
-      "name": "ViewContact",
-      "displayName": "View"
-    },
-    {
-      "name": "ViewQuote",
-      "displayName": "Quote"
-    },
-    {
-      "name": "ViewNews",
-      "displayName": "News"
-    },
-    {
-      "name": "ViewInstrument",
-      "displayName": "Details"
-    },
-    {
-      "name": "ViewAnalysis",
-      "displayName": "Analyze"
-    },
-    {
-      "name": "ViewHoldings",
-      "displayName": "Holdings"
-    },
-    {
-      "name": "ViewProfile",
-      "displayName": "Profile"
-    },
-    {
-      "name": "ViewResearch",
-      "displayName": "Research"
-    },
-    {
-      "name": "ViewInteractions",
-      "displayName": "Interactions"
-    },
-    {
-      "name": "ViewOrders",
-      "displayName": "Orders"
-    }
+    "CreateInteraction",
+    "SendChatMessage",
+    "StartCall",
+    "StartChat",
+    "StartEmail",
+    "ViewAnalysis",
+    "ViewChat",
+    "ViewChart",
+    "ViewContact",
+    "ViewHoldings",
+    "ViewInstrument",
+    "ViewInteractions",
+    "ViewMessages",
+    "ViewNews",
+    "ViewOrders",
+    "ViewProfile",
+    "ViewQuote",
+    "ViewResearch"
   ]
 }

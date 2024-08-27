@@ -3,7 +3,7 @@
 	"$id": "https://fdc3.finos.org/schemas/next/api/privateChannelAddEventListenerRequest.schema.json",
 	"type": "object",
 	"title": "PrivateChannelAddEventListener Request",
-	"description": "An event message from the Desktop Agent to an app indicating that another app has added a context listener to a specific PrivateChannel.",
+	"description": "A request to add an event listener to a specific PrivateChannel.",
 	"allOf": [
 		{
 			"$ref": "appRequest.schema.json"
@@ -36,23 +36,16 @@
 					"description": "The Id of the PrivateChannel that the listener should be added to.",
 					"type": "string"
 				},
-				"contextType": {
-					"title": "Context type",
-					"description": "The type of the context listener to add to the channel, or null if it should listen to all types.",
-					"oneOf": [
-						{
-							"type": "string"
-						},
-						{
-							"type": "null"
-						}
-					]
+				"listenerType": {
+					"title": "Event listener type",
+					"description": "The type of PrivateChannel event that the listener should be applied to.",
+					"$ref": "common.schema.json#/$defs/PrivateChannelEventListenerTypes"
 				}
 			},
 			"additionalProperties": false,
 			"required": [
 				"privateChannelId",
-				"contextType"
+				"listenerType"
 			]
 		}
 	}

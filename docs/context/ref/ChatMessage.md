@@ -1,65 +1,64 @@
 ---
-id: ChatMessage
-sidebar_label: ChatMessage
 title: ChatMessage
-hide_title: true
+sidebar_label: ChatMessage
+
 ---
-# `ChatMessage`
+
+# ChatMessage
 
 A context representing a chat message. Typically used to send the message or to pre-populate a message for sending.
+
+## Schema
+
+<https://fdc3.finos.org/schemas/next/context/chatMessage.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/chatMessage.schema.json))
 
 ## Type
 
 `fdc3.chat.message`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/chatMessage.schema.json>
+<details>
+  <summary><code>chatRoom</code> <strong>(required)</strong></summary>
 
-## Details
+**type**: [ChatRoom](ChatRoom)
 
-| Property    | Type    | Required | Example Value     |
-|-------------|---------|----------|-------------------|
-| `type`      | string  | Yes      | `'fdc3.chat.message'`  |
-| `chatRoom`      | ChatRoom  | Yes       | `{ type: 'fdc3.chat.room', providerName: 'Symphony', id:{ streamId: 'j75xqXy25NBOdacUI3FNBH'} }`      |
-| `message`  | [Message](https://fdc3.finos.org/schemas/next/message.schema.json)  | Yes       | `'A message to send'` |
+</details>
+
+<details>
+  <summary><code>message</code> <strong>(required)</strong></summary>
+
+**type**: [Message](Message)
+
+</details>
 
 ## Example
 
-```js
-const chatMessage = {
-    type: "fdc3.chat.message",
-    chatRoom: {
-        type: 'fdc3.chat.room',
-        providerName: "Symphony",
-        id: {
-            streamId: "j75xqXy25NBOdacUI3FNBH"
-        }
+```json
+{
+  "type": "fdc3.chat.message",
+  "chatRoom": {
+    "type": "fdc3.chat.room",
+    "providerName": "Symphony",
+    "id": {
+      "streamId": "j75xqXy25NBOdacUI3FNBH"
+    }
+  },
+  "message": {
+    "type": "fdc3.message",
+    "text": {
+      "text/plain": "Hey all, can we discuss the issue together? I attached a screenshot"
     },
-    message: {
-      type: 'fdc3.message',
-      text: {
-        'text/plain': 'Hey all, can we discuss the issue together? I attached a screenshot'
-      },
-      entities: {
-         '0': {
-             type: 'fdc3.fileAttachment',
-              data: {
-              name: 'myImage.png',
-                    dataUri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII'
-              }
-          }
+    "entities": {
+      "0": {
+        "type": "fdc3.fileAttachment",
+        "data": {
+          "name": "myImage.png",
+          "dataUri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII"
+        }
       }
     }
+  }
 }
 ```
 
-## See Also
-
-Intents
-- [StartChat](../../intents/ref/StartChat)
-- [StartCall](../../intents/ref/StartCall)
-- [SendChatMessage](../../intents/ref/SendChatMessage)
-
-FINOS Financial Objects
-- [Contact](https://fo.finos.org/docs/objects/contact)

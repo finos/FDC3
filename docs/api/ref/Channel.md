@@ -446,6 +446,14 @@ public addContextListener(handler: ContextHandler): Promise<Listener>;
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
+
 </Tabs>
 
 Adds a listener for incoming contexts whenever a broadcast happens on the channel.
