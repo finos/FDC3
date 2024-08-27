@@ -7,6 +7,39 @@ import TabItem from '@theme/TabItem';
 
 FDC3 API operations may sometimes result in an error, which must be returned to the caller. Errors should be returned by rejecting the promise returned by the API with a JavaScript `Error` object (or equivalent for the language of the implementation). The `Error` Object's message should be chosen from the appropriate Error enumeration below.
 
+## `AgentError`
+
+Contains constants representing the errors that can be encountered when calling the [`getAgent`](getAgent) function to establish connectivity to a Desktop Agent. Primarily used with web applications, but may also be used in other language
+implementations.
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+enum AgentError { 
+    /** Returned if no Desktop Agent was found by any means available or 
+     * if the Agent previously connected to is not contactable on a  
+     * subsequent connection attempt.*/
+    AgentNotFound = "AgentNotFound",
+
+    /** Returned if validation of the app identity by the Desktop Agent 
+     * Failed or the app is not being allowed to connect to the Desktop Agent 
+     * for another reason. */ 
+    AccessDenied = "AccessDenied",
+
+    /** Returned if an error or exception occurs while trying to set  
+     * up communication with a Desktop Agent. */ 
+    ErrorOnConnect = "ErrorOnConnect",
+
+    /** Returned if either the failover function itself, or what it returned,  
+     * was not the right type. */ 
+    InvalidFailover = "InvalidFailover" 
+} 
+```
+</TabItem>
+</Tabs>
+
+
 ## `ChannelError`
 
 Contains constants representing the errors that can be encountered when calling channels using the [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`getOrCreateChannel`](DesktopAgent#getorcreatechannel) methods, or the [`getCurrentContext`](Channel#getcurrentcontext), [`broadcast`](Channel#broadcast) or [`addContextListener`](Channel#addcontextlistener) methods on the `Channel` object.
@@ -344,107 +377,9 @@ public static class ResultError
 - [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 - [`IntentResolution`](Metadata#intentresolution)
 
-## `AgentError`
-
-Contains constants representing the errors that can be encountered when calling the [`getAgent`](getAgent) function to establish connectivity to a Desktop Agent. Primarily used with web applications, but may also be used in other language
-implementations.
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-enum AgentError {
-  /** Returned when connectivity to a DA cannot be established via any
-   *  available strategy.*/
-  AgentNotFound = "AgentNotFound",
-
-  /** Returned when a browser-based Desktop agent does not conform to the FDC3
-   *  Web Connection Protocol.*/
-  InvalidAgent = "InvalidAgent",
-
-  /** Returned when the app fails DA identity verification.**/
-  IdentityValidationFailed = "IdentityValidationFailed",
-
-  /** Returned when the app does not pass one of the required identity
-   *  parameters indicating an app directory record.*/
-  NoAppIdentityProvided = "NoAppIdentityProvided",
-
-  /** Returned when the DA refuses a connection from application.*/
-  AccessDenied = "AccessDenied",
-  
-  /** Returned when the failover function itself, or its resolution is not the
-   *  right type.*/
-  InvalidFailover = "InvalidFailover",
- 
-  /** Returned when reestablishment of an instance via persisted StorageSession
-   *  data fails (e.g. after a page navigation).*/
-  ReestablishConnectionFailed = "ReestablishConnectionFailed"
- 
-  /** Returned when any other error or exception occurs.*/
-  ErrorOnConnect ="ErrorOnConnect"
-}
-
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-public static class ResultError
-{
-    /// <summary>
-    /// Returned when connectivity to a DA cannot be established via any
-    /// available strategy.
-    /// </summary>
-    public static readonly string AgentNotFound = nameof(AgentNotFound);
-
-    /// <summary>
-    /// Returned when a browser-based Desktop agent does not conform to the FDC3
-    /// Web Connection Protocol.
-    /// </summary>
-    public static readonly string InvalidAgent = nameof(InvalidAgent);
-
-    /// <summary>
-    /// Returned when the app fails DA identity verification.
-    /// </summary>
-    public static readonly string IdentityValidationFailed = nameof(IdentityValidationFailed);
-
-    /// <summary>
-    /// Returned when the app does not pass one of the required identity
-    /// parameters indicating an app directory record.
-    /// </summary>
-    public static readonly string NoAppIdentityProvided = nameof(NoAppIdentityProvided);
-
-    /// <summary>
-    /// Returned when the DA refuses a connection from application.
-    /// </summary>
-    public static readonly string AccessDenied = nameof(AccessDenied);
-
-    /// <summary>
-    /// Returned when the failover function itself, or its resolution is not the
-    /// right type.
-    /// </summary>
-    public static readonly string InvalidFailover = nameof(InvalidFailover);
-
-    /// <summary>
-    /// Returned when reestablishment of an instance via persisted StorageSession
-    /// data fails (e.g. after a page navigation).
-    /// </summary>
-    public static readonly string ReestablishConnectionFailed = nameof(ReestablishConnectionFailed);
-
-    /// <summary>
-    /// Returned when any other error or exception occurs.
-    /// </summary>
-    public static readonly string ErrorOnConnect = nameof(ErrorOnConnect);
-}
-```
-
-</TabItem>
-</Tabs>
-
 ## `BridgingError`
 
-`@experimental`
+[`@experimental`](../../fdc3-compliance#experimental-features)
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -471,6 +406,14 @@ enum BridgingError {
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
+
 </Tabs>
 
 Contains constants representing the errors that can be encountered when queries are forwarded to a Desktop Agent Bridge, but one or more remote Desktop Agents connected to it disconnects, times-out or a malformed message is encountered while a particular request is in flight. These errors may be returned via the FDC3 API when a Desktop Agent is (or was) connected to a Desktop Agent Bridge.
