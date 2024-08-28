@@ -1,17 +1,17 @@
 import { AutomaticResponse, IntentDetail, intentDetailMatches, TestMessaging } from "../TestMessaging";
-import { RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "@kite9/fdc3-common";
+import { RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentResultResponse } from "@kite9/fdc3-common";
 import { ResolveError } from "@finos/fdc3"
 
-export class RaiseIntent implements AutomaticResponse {
+export class RaiseIntentForContext implements AutomaticResponse {
 
     filter(t: string) {
-        return t == 'raiseIntentRequest'
+        return t == 'raiseIntentForContextRequest'
     }
 
-    createCannedRaiseIntentResponseMessage(intentRequest: RaiseIntentRequest, m: TestMessaging): RaiseIntentResponse {
+    createCannedRaiseIntentForContextResponseMessage(intentRequest: RaiseIntentForContextRequest, m: TestMessaging): RaiseIntentForContextResponse {
         const result = m.getIntentResult()!!
         if (result.error) {
-            const out: RaiseIntentResponse = {
+            const out: RaiseIntentForContextResponse = {
                 meta: {
                     ...intentRequest.meta,
                     responseUuid: m.createUUID()
@@ -19,40 +19,40 @@ export class RaiseIntent implements AutomaticResponse {
                 payload: {
                     error: result.error as any
                 },
-                type: "raiseIntentResponse"
+                type: "raiseIntentForContextResponse"
             }
 
             return out
         } else {
-            const out: RaiseIntentResponse = {
+            const out: RaiseIntentForContextResponse = {
                 meta: {
                     ...intentRequest.meta,
                     responseUuid: m.createUUID()
                 },
                 payload: {
                     intentResolution: {
-                        intent: intentRequest.payload.intent,
+                        intent: "some-canned-intent",
                         source: {
                             appId: "some-app",
                             instanceId: "abc123"
                         }
                     }
                 },
-                type: "raiseIntentResponse"
+                type: "raiseIntentForContextResponse"
             }
 
             return out
         }
     }
 
-    private createRaiseIntentResponseMessage(intentRequest: RaiseIntentRequest, relevant: IntentDetail[], m: TestMessaging): RaiseIntentResponse {
+    private createRaiseIntentForContextResponseMessage(intentRequest: RaiseIntentForContextRequest, relevant: IntentDetail[], m: TestMessaging): RaiseIntentForContextResponse {
         if (relevant.length == 0) {
             return {
                 meta: {
                     ...intentRequest.meta,
                     responseUuid: m.createUUID()
                 },
-                type: "raiseIntentResponse",
+                type: "raiseIntentForContextResponse",
                 payload: {
                     error: ResolveError.NoAppsFound
                 }
@@ -63,7 +63,7 @@ export class RaiseIntent implements AutomaticResponse {
                     ...intentRequest.meta,
                     responseUuid: m.createUUID()
                 },
-                type: "raiseIntentResponse",
+                type: "raiseIntentForContextResponse",
                 payload: {
                     intentResolution: {
                         intent: relevant[0].intent!!,
@@ -77,26 +77,22 @@ export class RaiseIntent implements AutomaticResponse {
                     ...intentRequest.meta,
                     responseUuid: m.createUUID()
                 },
-                type: "raiseIntentResponse",
+                type: "raiseIntentForContextResponse",
                 payload: {
-                    appIntent: {
-                        apps: relevant.map(r => {
-                            return {
-                                appId: r?.app?.appId!!,
-                                instanceId: r?.app?.instanceId
+                    appIntents: relevant.map(r => {
+                        return {
+                            apps: [r.app!!],
+                            intent: {
+                                name: r.intent!!
                             }
-                        }),
-                        intent: {
-                            displayName: intentRequest.payload.intent,
-                            name: intentRequest.payload.intent
                         }
-                    }
+                    })
                 }
             }
         }
     }
 
-    createRaiseIntentResultResponseMesssage(intentRequest: RaiseIntentRequest, m: TestMessaging): RaiseIntentResultResponse | undefined {
+    createRaiseIntentResultResponseMesssage(intentRequest: RaiseIntentForContextRequest, m: TestMessaging): RaiseIntentResultResponse | undefined {
         const result = m.getIntentResult()!!
         if (result.error) {
             return undefined
@@ -117,28 +113,26 @@ export class RaiseIntent implements AutomaticResponse {
 
     }
 
-    action(input: object, m: TestMessaging) {
-        const intentRequest = input as RaiseIntentRequest
-        const payload = intentRequest.payload
-        const intent = payload.intent
-        const context = payload?.context?.type
 
+    action(input: object, m: TestMessaging) {
+        const intentRequest = input as RaiseIntentForContextRequest
+        const payload = intentRequest.payload
+        const context = payload?.context?.type
 
         if (m.getIntentResult() == undefined) {
             // we're going to figure out the right response based on the app details (a la FindIntent)
             const app = payload?.app
             const using: IntentDetail = {
-                intent,
                 context,
                 app
             }
 
             const relevant = m.intentDetails.filter(id => intentDetailMatches(id, using, false))
-            const request = this.createRaiseIntentResponseMessage(intentRequest, relevant, m)
+            const request = this.createRaiseIntentForContextResponseMessage(intentRequest, relevant, m)
             setTimeout(() => { m.receive(request) }, 100)
         } else if (!m.getIntentResult()?.timeout) {
             // this sends out the pre-set intent resolution
-            const out1 = this.createCannedRaiseIntentResponseMessage(intentRequest, m)
+            const out1 = this.createCannedRaiseIntentForContextResponseMessage(intentRequest, m)
             setTimeout(() => { m.receive(out1) }, 100)
 
             // next, send the result response

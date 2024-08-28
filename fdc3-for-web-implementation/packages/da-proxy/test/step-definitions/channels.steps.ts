@@ -24,6 +24,9 @@ const contextMap: Record<string, any> = {
   "fdc3.unsupported": {
     "type": "fdc3.unsupported",
     "bogus": true
+  },
+  "fdc3.cancel-me": {
+    "type": "fdc3.cancel-me"
   }
 }
 

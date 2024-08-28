@@ -19,6 +19,7 @@ import { UnsubscribeListeners } from "./responses/UnsubscribeListeners";
 import { CreatePrivateChannel } from "./responses/CreatePrivateChannel";
 import { DisconnectPrivateChannel } from "./responses/DisconnectPrivateChannel";
 import { IntentResult } from "./responses/IntentResult";
+import { RaiseIntentForContext } from "./responses/RaiseIntentForContext";
 
 export interface IntentDetail {
     app?: AppIdentifier,
@@ -112,6 +113,7 @@ export class TestMessaging extends AbstractMessaging {
             new FindIntent(),
             new FindIntentByContext(),
             new RaiseIntent(),
+            new RaiseIntentForContext(),
             new IntentResult(),
             new GetAppMetadata(),
             new FindInstances(),
@@ -200,8 +202,7 @@ export class TestMessaging extends AbstractMessaging {
         })
     }
 
-    private ir: PossibleIntentResult = {
-    }
+    private ir: PossibleIntentResult | null = null
 
     getIntentResult() {
         return this.ir

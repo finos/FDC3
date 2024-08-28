@@ -1,0 +1,14 @@
+import { AppIntent } from "@finos/fdc3";
+import { Context, IntentResolver } from "@kite9/fdc3-common";
+import { IntentResolutionChoice } from "@kite9/fdc3-common/src/IntentResolver";
+
+
+export class NullIntentResolver implements IntentResolver {
+
+    async init(): Promise<void> {
+    }
+
+    chooseIntent(_appIntents: AppIntent[], _ctx: Context): Promise<IntentResolutionChoice | void> {
+        throw new Error("Method not implemented.");
+    }
+}
