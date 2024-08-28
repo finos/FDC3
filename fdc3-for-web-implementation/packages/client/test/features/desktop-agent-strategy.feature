@@ -2,38 +2,38 @@ Feature: Different Strategies for Accessing the Desktop Agent
 
   Background: Desktop Agent API
     Given a browser document in "document" and window in "window"
-    And Testing ends after "5000" ms
+    And Testing ends after "8000" ms
 
   Scenario: Running inside a Browser and using post message with direct message ports
     Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
     And we wait for a period of "200" ms
     And I call getAgentAPI for a promise result with the following options
-      | dontSetWindowFdc3 | timeout |
-      | false             |    3000 |
+      | dontSetWindowFdc3 | timeout | intentResolver | channelSelector |
+      | false             |    8000 | false          | false           |
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
-    # And I call "{result}" with "getInfo"
-    # Then "{result}" is an object with the following contents
-    #   | fdc3Version | appMetadata.appId | provider          |
-    #   |         2.0 | Test App Id       | cucumber-provider |
-    # And I refer to "{document.body.children[0]}" as "channel-selector"
-    # And I refer to "{channel-selector.children[0]}" as "iframe"
+    And I call "{result}" with "getInfo"
+    Then "{result}" is an object with the following contents
+      | fdc3Version | appMetadata.appId | provider          |
+      |         2.0 | Test App Id       | cucumber-provider |
+    And I refer to "{document.body.children[0]}" as "channel-selector"
+    And I refer to "{channel-selector.children[0]}" as "iframe"
     # Then "{iframe}" is an object with the following contents
     #   | tag    | atts.name             | atts.src                              | style.width | style.height |
     #   | iframe | FDC3 Channel Selector | https://mock.fdc3.com/channelSelector |        100% |         100% |
-    # And "{window.fdc3}" is not null
-    # And "{window.events}" is an array of objects with the following contents
-    #   | type      | data.type     |
-    #   | message   | WCP1Hello     |
-    #   | message   | WCP3Handshake |
-    #   | fdc3Ready | {null}        |
-    # Then I call "{document}" with "shutdown"
+    And "{window.fdc3}" is not null
+    And "{window.events}" is an array of objects with the following contents
+      | type      | data.type     |
+      | message   | WCP1Hello     |
+      | message   | WCP3Handshake |
+      | fdc3Ready | {null}        |
+    Then I call "{document}" with "shutdown"
   # Scenario: Running inside a Browser using the embedded iframe strategy
   #   Given Parent Window desktop "da" listens for postMessage events in "{window}", returns iframe response
   #   And we wait for a period of "200" ms
   #   And I call getAgentAPI for a promise result with the following options
   #     | dontSetWindowFdc3 | timeout |
-  #     | false             |    3000 |
+  #     | false             |    8000 |
   #   And I refer to "{result}" as "theAPIPromise"
   #   Then the promise "{theAPIPromise}" should resolve
   #   And I call "{result}" with "getInfo"
@@ -75,7 +75,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
   #   And "dummyFailover" is a function which returns a promise of "{dummy-api}"
   #   And I call getAgentAPI for a promise result with the following options
   #     | failover        | timeout |
-  #     | {dummyFailover} |    3000 |
+  #     | {dummyFailover} |    8000 |
   #   And I refer to "{result}" as "theAPIPromise"
   #   Then the promise "{theAPIPromise}" should resolve
   #   And I call "{result}" with "getInfo"

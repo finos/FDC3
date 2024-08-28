@@ -1,22 +1,12 @@
 import { DesktopAgent, } from '@finos/fdc3'
 import { getAgent as getAgentType, GetAgentParams } from '@kite9/fdc3-common';
-import electronEvent from './strategies/electron-event'
-import postMessage from './strategies/post-message'
+import electronEvent from './strategies/ElectronEventLoader'
+import postMessage from './strategies/PostMessageLoader'
+import timeout from './strategies/TimeoutLoader'
 
 const DEFAULT_WAIT_FOR_MS = 20000;
 
 export const FDC3_VERSION = "2.2"
-
-/**
- * Handles getAgent timeout
- */
-function timeout(options: GetAgentParams): Promise<DesktopAgent> {
-    return new Promise<DesktopAgent>((_resolve, reject) => {
-        setTimeout(() => {
-            reject(new Error("Timeout waiting for connection"))
-        }, options.timeout!!)
-    })
-}
 
 /**
  * This return an FDC3 API.  Should be called by application code.
@@ -53,9 +43,20 @@ export const getAgent: getAgentType = (optionsOverride?: GetAgentParams) => {
         return da;
     }
 
-    const strategies = STRATEGIES.map(s => s(options));
+    const promises = STRATEGIES.map(s => s.get(options));
 
-    return Promise.race(strategies)
+    return Promise.race(promises)
+        .then(da => {
+            // first, cancel the timeout etc.
+            STRATEGIES.forEach(s => s.cancel())
+
+            // either the timeout completes first with an error, or one of the other strategies completes with a DesktopAgent.
+            if (da instanceof Error) {
+                throw da
+            } else {
+                return da as DesktopAgent
+            }
+        })
         .catch(async (error) => {
             if (options.failover) {
                 const o = await options.failover(options)

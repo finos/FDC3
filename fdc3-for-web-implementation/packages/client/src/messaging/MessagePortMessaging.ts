@@ -24,6 +24,7 @@ export class MessagePortMessaging extends AbstractWebMessaging {
 
         this.cd.messagePort.onmessage = (m) => {
             this.listeners.forEach((v, _k) => {
+                console.log("Checking", v, m.data)
                 if (v.filter(m.data)) {
                     v.action(m.data)
                 }
