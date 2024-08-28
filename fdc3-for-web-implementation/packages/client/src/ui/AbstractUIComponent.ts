@@ -86,11 +86,11 @@ export abstract class AbstractUIComponent {
 
         this.themeContainer(INITIAL_CONTAINER_CSS)
         this.themeFrame(ifrm)
+        this.iframe = ifrm.contentWindow!!
 
         ifrm.setAttribute("src", this.url)
         this.container.appendChild(ifrm)
         document.body.appendChild(this.container)
-        this.iframe = ifrm.contentWindow!!
     }
 
     themeContainer(css: CSSPositioning) {

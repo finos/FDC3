@@ -1,11 +1,10 @@
 {
   "name": "@kite9/web-fdc3",
   "private": true,
-  "version": "0.0.50",
+  "version": "0.0.54",
   "workspaces": [
     "packages/fdc3-common",
     "packages/testing",
-    "packages/addon",
     "packages/da-proxy",
     "packages/da-server",
     "packages/client",

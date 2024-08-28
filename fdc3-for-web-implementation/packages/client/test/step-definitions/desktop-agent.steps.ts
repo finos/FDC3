@@ -7,8 +7,8 @@ import { MockDocument, MockWindow } from '../support/MockDocument';
 import { getAgent } from '../../src';
 import { GetAgentParams } from '@kite9/fdc3-common';
 import { dummyInstanceId, MockFDC3Server } from '../support/MockFDC3Server';
-import { DefaultDesktopAgentIntentResolver } from '../../src/intent-resolution/DefaultDesktopAgentIntentResolver';
-import { DefaultDesktopAgentChannelSelector } from '../../src/channel-selector/DefaultDesktopAgentChannelSelector';
+import { DefaultDesktopAgentIntentResolver } from '../../src/ui/DefaultDesktopAgentIntentResolver';
+import { DefaultDesktopAgentChannelSelector } from '../../src/ui/DefaultDesktopAgentChannelSelector';
 import { NoopAppSupport } from '../../src/apps/NoopAppSupport';
 import { MockStorage } from '../support/MockStorage';
 

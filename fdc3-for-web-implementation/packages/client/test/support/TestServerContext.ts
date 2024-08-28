@@ -49,6 +49,23 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
         this.instances = this.instances.filter(ca => ca.instanceId !== app.instanceId)
     }
 
+    // wrapMessagePort(mp: MessagePort) {
+    //     return {
+    //         postMessage(a: any, b: any) {
+    //             mp.postMessage(a, b)
+    //         }
+
+    //         start() {
+    //             mp.start()
+    //         }
+
+    //         close() {
+    //             mp.close()
+    //         }
+
+    //     } as MessagePortEventMap
+    // }
+
     async open(appId: string): Promise<InstanceID> {
         const ni = this.nextInstanceId++
         if (appId.includes("missing")) {
@@ -56,7 +73,10 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
         } else {
             const mc = new MessageChannel()
             const internalPort = mc.port1
-            const externalPort = mc.port2
+            const externalPort = mc.port2;
+
+            (internalPort as any).name = "internalPort-" + ni;
+            (externalPort as any).name = "externalPort-" + ni;
 
             internalPort.start()
 
