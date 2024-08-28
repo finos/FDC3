@@ -1,11 +1,12 @@
 import { io } from "socket.io-client"
 import { v4 as uuid } from 'uuid'
-import { APP_GOODBYE, DA_HELLO, FDC3_APP_EVENT } from "../../message-types";
+import { APP_GOODBYE, APP_HELLO, DA_HELLO, FDC3_APP_EVENT } from "../../message-types";
 import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
 import { DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/da-server";
 import { WebConnectionProtocol2LoadURL } from "@kite9/fdc3-common";
 import { ChannelState, ChannelType } from "@kite9/da-server/src/handlers/BroadcastHandler";
+import { link } from "./util";
 
 
 function createAppStartButton(app: DirectoryApp, sc: ServerContext<any>): HTMLDivElement {
@@ -53,8 +54,8 @@ window.addEventListener("load", () => {
         socket.emit(DA_HELLO, desktopAgentUUID)
 
         const directory = new FDC3_2_1_JSONDirectory()
-        //await directory.load("/static/da/appd.json")
-        await directory.load("/static/da/local-conformance-2_0.v2.json")
+        await directory.load("/static/da/appd.json")
+        //await directory.load("/static/da/local-conformance-2_0.v2.json")
         const sc = new DemoServerContext(socket, directory)
 
         const channelDetails: ChannelState[] = [
@@ -102,22 +103,25 @@ window.addEventListener("load", () => {
                             }
                         } as WebConnectionProtocol2LoadURL, origin)
                     } else {
-                        // const details = buildConnection()
-                        // details.context.setInstanceDetails('uuid', { appId: 'Test App Id', instanceId: '1' })
-                        // connections.push(details)
+                        const instance = sc.getInstanceForWindow(source)!!
+                        const channel = new MessageChannel()
+                        link(socket, channel, instance.instanceId!!)
 
-                        // source.postMessage({
-                        //     type: "WCP3Handshake",
-                        //     meta: {
-                        //         connectionAttemptUuid: data.meta.connectionAttemptUuid,
-                        //         timestamp: new Date()
-                        //     },
-                        //     payload: {
-                        //         fdc3Version: "2.2",
-                        //         resolver: window.location.origin + "/static/da/intent-resolver.html",
-                        //         channelSelector: window.location.origin + "/static/da/channel-selector.html",
-                        //     }
-                        // } as WebConnectionProtocol3Handshake, origin, [details.externalPort])
+                        socket.emit(APP_HELLO, desktopAgentUUID, instance.instanceId)
+
+                        // sned the other end of the channel to the app
+                        source.postMessage({
+                            type: 'WCP3Handshake',
+                            meta: {
+                                connectionAttemptUuid: data.meta.connectionAttemptUuid,
+                                timestamp: new Date()
+                            },
+                            payload: {
+                                fdc3Version: "2.2",
+                                resolver: window.location.origin + "/static/da/intent-resolver.html",
+                                channelSelector: window.location.origin + "/static/da/channel-selector.html",
+                            }
+                        }, origin, [channel.port1])
                     }
                 }
             });

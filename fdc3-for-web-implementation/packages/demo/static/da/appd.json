@@ -129,6 +129,20 @@
             "icons": []
         },
         {
+            "appId": "app7",
+            "name": "App Seven",
+            "title": "Intent Result 2",
+            "description": "App asks for the result of a ViewNews intent",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:8095/static/app7/index.html"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": []
+        },
+        {
             "appId": "grid",
             "name": "grid",
             "title": "AG-Grid",

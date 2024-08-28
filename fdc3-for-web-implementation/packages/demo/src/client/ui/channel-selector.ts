@@ -1,7 +1,27 @@
-import { ChannelDetails, SelectorMessageChannels } from "@kite9/fdc3-common";
+import { IframeChannels } from "@kite9/fdc3-common";
 
-var channels: ChannelDetails[] = []
+var channels: any[] = []
 var channelId: string | null = null
+
+
+const DEFAULT_COLLAPSED_CSS = {
+    position: "fixed",
+    zIndex: "1000",
+    right: "10px",
+    bottom: "10px",
+    width: "50px",
+    height: "50px"
+}
+
+const DEFAULT_EXPANDED_CSS = {
+    position: "fixed",
+    zIndex: "1000",
+    right: "10px",
+    bottom: "10px",
+    width: "450px",
+    maxHeight: "600px",
+    transition: "all 0.5s ease-out allow-discrete"
+}
 
 
 window.addEventListener("load", () => {
@@ -14,19 +34,23 @@ window.addEventListener("load", () => {
     const myPort = mc.port1
     myPort.start()
 
-    parent.postMessage({ type: "SelectorMessageInitialize" }, "*", [mc.port2]);
+    parent.postMessage({ type: "iframeHello" }, "*", [mc.port2]);
 
     function changeSize(expanded: boolean) {
         document.body.setAttribute("data-expanded", "" + expanded);
-        myPort.postMessage({ type: "SelectorMessageResize", expanded })
+        myPort.postMessage({ type: "iframeRestyle", payload: { css: expanded ? DEFAULT_EXPANDED_CSS : DEFAULT_COLLAPSED_CSS } })
     }
 
     myPort.addEventListener("message", (e) => {
-        if (e.data.type == 'SelectorMessageChannels') {
-            const details = e.data as SelectorMessageChannels
+        console.log(e.data.type)
+        if (e.data.type == 'iframeHandshake') {
+            // ok, port is ready, send the iframe position detials
+            myPort.postMessage({ type: "iframeRestyle", payload: { css: DEFAULT_COLLAPSED_CSS } })
+        } else if (e.data.type == 'iframeChannels') {
+            const details = e.data as IframeChannels
             console.log(JSON.stringify("CHANNEL DETAILS: " + JSON.stringify(details)))
-            channels = details.channels
-            channelId = details.selected
+            channels = details.payload.userChannels
+            channelId = details.payload.selected
 
             const selectedColor = (channelId ? (channels.find(c => c.id == channelId)?.displayMetadata?.color) : null) ?? 'white'
             logo.style.backgroundColor = selectedColor
@@ -50,7 +74,8 @@ window.addEventListener("load", () => {
             a.setAttribute("href", "#")
             a.onclick = () => {
                 changeSize(false)
-                myPort.postMessage({ type: "SelectorMessageChoice", channelId: channel.id })
+                channelId = channel.id
+                myPort.postMessage({ type: "iframeChannelSelected", payload: { selected: channel.id } })
             }
         })
 
