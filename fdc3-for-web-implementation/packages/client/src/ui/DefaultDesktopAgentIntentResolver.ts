@@ -1,4 +1,4 @@
-import { AppIdentifier, AppIntent } from "@finos/fdc3";
+import { AppIntent } from "@finos/fdc3";
 import { IframeResolveAction, Context, IframeResolve, IntentResolver, IntentResolutionChoice } from "@kite9/fdc3-common";
 import { AbstractUIComponent } from "./AbstractUIComponent";
 

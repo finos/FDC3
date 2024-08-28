@@ -8,6 +8,10 @@ export const dummyInstanceId = { appId: "Test App Id", instanceId: "1" }
 
 export const EMBED_URL = "http://localhost:8080/static/da/embed.html"
 
+export const CHANNEL_SELECTOR_URL = "https://mock.fdc3.com/channelSelector"
+
+export const INTENT_RESPOLVER_URL = "https://mock.fdc3.com/resolver"
+
 export class MockFDC3Server extends DefaultFDC3Server {
 
     private useIframe: boolean
@@ -68,8 +72,8 @@ export class MockFDC3Server extends DefaultFDC3Server {
                             },
                             payload: {
                                 fdc3Version: "2.2",
-                                resolver: "https://mock.fdc3.com/resolver",
-                                channelSelector: "https://mock.fdc3.com/channelSelector",
+                                resolver: INTENT_RESPOLVER_URL,
+                                channelSelector: CHANNEL_SELECTOR_URL,
                             }
                         } as WebConnectionProtocol3Handshake, origin, [details!!.externalPort])
                     }
