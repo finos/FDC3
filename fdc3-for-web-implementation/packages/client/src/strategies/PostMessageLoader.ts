@@ -85,11 +85,11 @@ function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): 
 }
 
 
-class PostMessageLoader implements Loader {
+export class PostMessageLoader implements Loader {
 
     connectionAttemptUuid = uuidv4();
 
-    async get(options: GetAgentParams): Promise<DesktopAgent | Error> {
+    async get(options: GetAgentParams): Promise<DesktopAgent | void> {
         const targets: Window[] = []
         collectPossibleTargets(globalThis.window, targets);
 
@@ -110,6 +110,3 @@ class PostMessageLoader implements Loader {
 
 
 }
-
-
-export default new PostMessageLoader();

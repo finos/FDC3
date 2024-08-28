@@ -1,8 +1,8 @@
 import { DesktopAgent, } from '@finos/fdc3'
 import { getAgent as getAgentType, GetAgentParams } from '@kite9/fdc3-common';
-import electronEvent from './strategies/ElectronEventLoader'
-import postMessage from './strategies/PostMessageLoader'
-import timeout from './strategies/TimeoutLoader'
+import { ElectronEventLoader } from './strategies/ElectronEventLoader'
+import { PostMessageLoader } from './strategies/PostMessageLoader'
+import { TimeoutLoader } from './strategies/TimeoutLoader'
 
 const DEFAULT_WAIT_FOR_MS = 20000;
 
@@ -29,9 +29,9 @@ export const getAgent: getAgentType = (optionsOverride?: GetAgentParams) => {
     }
 
     const STRATEGIES = [
-        electronEvent,
-        postMessage,
-        timeout
+        new ElectronEventLoader(),
+        new PostMessageLoader(),
+        new TimeoutLoader()
     ]
 
     function handleGenericOptions(da: DesktopAgent) {
@@ -51,10 +51,10 @@ export const getAgent: getAgentType = (optionsOverride?: GetAgentParams) => {
             STRATEGIES.forEach(s => s.cancel())
 
             // either the timeout completes first with an error, or one of the other strategies completes with a DesktopAgent.
-            if (da instanceof Error) {
-                throw da
-            } else {
+            if (da) {
                 return da as DesktopAgent
+            } else {
+                throw new Error("No DesktopAgent found")
             }
         })
         .catch(async (error) => {
