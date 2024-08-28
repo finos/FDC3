@@ -1,8 +1,10 @@
-import { Loader, GetAgentParams, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL } from '@kite9/fdc3-common'
+import { GetAgentParams, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL } from '@kite9/fdc3-common'
 import { FDC3_VERSION } from '..';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { v4 as uuidv4 } from "uuid"
 import { ConnectionDetails } from '../messaging/MessagePortMessaging';
+import { DesktopAgent } from '@finos/fdc3';
+import { Loader } from './Loader';
 
 function collectPossibleTargets(w: Window, found: Window[]) {
     if (w) {
@@ -83,22 +85,31 @@ function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): 
 }
 
 
-const loader: Loader = async (options: GetAgentParams) => {
-    const connectionAttemptUuid = uuidv4();
+class PostMessageLoader implements Loader {
 
-    const targets: Window[] = []
-    collectPossibleTargets(globalThis.window, targets);
+    connectionAttemptUuid = uuidv4();
 
-    // ok, begin the process
-    const promise = helloExchange(options, connectionAttemptUuid)
+    async get(options: GetAgentParams): Promise<DesktopAgent | Error> {
+        const targets: Window[] = []
+        collectPossibleTargets(globalThis.window, targets);
 
-    // use of '*': See https://github.com/finos/FDC3/issues/1316
-    targets.forEach((t) => sendWCP1Hello(t, options, connectionAttemptUuid, "*"))
+        // ok, begin the process
+        const promise = helloExchange(options, this.connectionAttemptUuid)
 
-    // wait for one of the windows to return the data we need
-    const data = await promise
-    return createDesktopAgentAPI(data);
+        // use of '*': See https://github.com/finos/FDC3/issues/1316
+        targets.forEach((t) => sendWCP1Hello(t, options, this.connectionAttemptUuid, "*"))
+
+        // wait for one of the windows to return the data we need
+        const data = await promise
+        return createDesktopAgentAPI(data);
+    }
+
+    cancel(): void {
+
+    }
+
 
 }
 
-export default loader;
+
+export default new PostMessageLoader();

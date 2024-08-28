@@ -3,9 +3,11 @@ import { RegisterableListener } from "@kite9/da-proxy";
 import { AppRequestMessage } from "@kite9/fdc3-common";
 import { v4 as uuidv4 } from 'uuid'
 import { AbstractWebMessaging } from "../../src/messaging/AbstractWebMessaging";
+import { CurrentChannel } from "./responses/CurrentChannel";
 import { FindIntent } from "./responses/FindIntent";
 import { Handshake } from "./responses/Handshake";
 import { RaiseIntent } from "./responses/RaiseIntent";
+import { UserChannels } from "./responses/UserChannels";
 
 
 export interface AutomaticResponse {
@@ -32,7 +34,9 @@ export class TestMessaging extends AbstractWebMessaging {
     readonly automaticResponses: AutomaticResponse[] = [
         new FindIntent(),
         new RaiseIntent(),
-        new Handshake()
+        new Handshake(),
+        new UserChannels(),
+        new CurrentChannel()
     ]
 
     register(l: RegisterableListener) {
