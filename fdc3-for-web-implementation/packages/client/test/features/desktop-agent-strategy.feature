@@ -9,7 +9,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
     And we wait for a period of "200" ms
     And I call getAgentAPI for a promise result with the following options
       | dontSetWindowFdc3 | timeout | intentResolver | channelSelector |
-      | false             |    8000 | false          | false           |
+      | true              |    8000 | false          | false           |
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
     And I call "{result}" with "getInfo"
@@ -18,45 +18,47 @@ Feature: Different Strategies for Accessing the Desktop Agent
       |         2.0 | Test App Id       | cucumber-provider |
     And I refer to "{document.body.children[0]}" as "channel-selector"
     And I refer to "{channel-selector.children[0]}" as "iframe"
-    # Then "{iframe}" is an object with the following contents
-    #   | tag    | atts.name             | atts.src                              | style.width | style.height |
-    #   | iframe | FDC3 Channel Selector | https://mock.fdc3.com/channelSelector |        100% |         100% |
+    And "{window.fdc3}" is undefined
+    And "{window.events}" is an array of objects with the following contents
+      | type    | data.type     |
+      | message | WCP1Hello     |
+      | message | WCP3Handshake |
+    Then I call "{document}" with "shutdown"
+
+  Scenario: Running inside a Browser using the embedded iframe strategy
+    Given Parent Window desktop "da" listens for postMessage events in "{window}", returns iframe response
+    And we wait for a period of "200" ms
+    And I call getAgentAPI for a promise result with the following options
+      | dontSetWindowFdc3 | timeout |
+      | false             |    8000 |
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve
+    And I call "{result}" with "getInfo"
+    Then "{result}" is an object with the following contents
+      | fdc3Version | appMetadata.appId | provider          |
+      |         2.0 | Test App Id       | cucumber-provider |
+    And I refer to "{document.iframes[0]}" as "embedded-iframe"
+    Then "{embedded-iframe}" is an object with the following contents
+      | tag    | atts.name           | style.width | style.height |
+      | iframe | FDC3 Communications |         0px |          0px |
+    And I refer to "{document.iframes[1]}" as "intent-resolver-iframe"
+    And I refer to "{document.iframes[2]}" as "channel-selector-iframe"
+    Then "{channel-selector-iframe}" is an object with the following contents
+      | tag    | atts.name             | atts.src                              | style.width | style.height |
+      | iframe | FDC3 Channel Selector | https://mock.fdc3.com/channelSelector |        100% |         100% |
+    Then "{intent-resolver-iframe}" is an object with the following contents
+      | tag    | atts.name            | atts.src                       | style.width | style.height |
+      | iframe | FDC3 Intent Resolver | https://mock.fdc3.com/resolver |        100% |         100% |
     And "{window.fdc3}" is not null
     And "{window.events}" is an array of objects with the following contents
       | type      | data.type     |
       | message   | WCP1Hello     |
+      | message   | WCP2LoadUrl   |
       | message   | WCP3Handshake |
+      | message   | iframeHello   |
+      | message   | iframeHello   |
       | fdc3Ready | {null}        |
     Then I call "{document}" with "shutdown"
-  # Scenario: Running inside a Browser using the embedded iframe strategy
-  #   Given Parent Window desktop "da" listens for postMessage events in "{window}", returns iframe response
-  #   And we wait for a period of "200" ms
-  #   And I call getAgentAPI for a promise result with the following options
-  #     | dontSetWindowFdc3 | timeout |
-  #     | false             |    8000 |
-  #   And I refer to "{result}" as "theAPIPromise"
-  #   Then the promise "{theAPIPromise}" should resolve
-  #   And I call "{result}" with "getInfo"
-  #   Then "{result}" is an object with the following contents
-  #     | fdc3Version | appMetadata.appId | provider          |
-  #     |         2.0 | Test App Id       | cucumber-provider |
-  #   And I refer to "{document.body.children[0]}" as "embedded-iframe"
-  #   Then "{embedded-iframe}" is an object with the following contents
-  #     | tag    | atts.name           | style.width | style.height |
-  #     | iframe | FDC3 Communications |         0px |          0px |
-  #   And I refer to "{document.body.children[1]}" as "channel-selector"
-  #   And I refer to "{channel-selector.children[0]}" as "channel-selector-iframe"
-  #   Then "{channel-selector-iframe}" is an object with the following contents
-  #     | tag    | atts.name             | atts.src                              | style.width | style.height |
-  #     | iframe | FDC3 Channel Selector | https://mock.fdc3.com/channelSelector |        100% |         100% |
-  #   And "{window.fdc3}" is not null
-  #   And "{window.events}" is an array of objects with the following contents
-  #     | type      | data.type     |
-  #     | message   | WCP1Hello     |
-  #     | message   | WCP2LoadUrl   |
-  #     | message   | WCP3Handshake |
-  #     | fdc3Ready | {null}        |
-  #   Then I call "{document}" with "shutdown"
   # Scenario: Running inside an Electron Container.
   #   In this scenario, window.fdc3 is set by the electron container and returned by getAgentAPI
   #   Given A Dummy Desktop Agent in "dummy-api"
