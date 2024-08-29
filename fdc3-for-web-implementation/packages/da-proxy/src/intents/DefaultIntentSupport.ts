@@ -3,7 +3,7 @@ import { IntentSupport } from "./IntentSupport";
 import { Messaging } from "../Messaging";
 import { DefaultIntentResolution } from "./DefaultIntentResolution";
 import { DefaultIntentListener } from "../listeners/DefaultIntentListener";
-import { IntentResolver, RaiseIntentForContextRequest, RaiseIntentForContextResponse } from "@kite9/fdc3-common";
+import { IntentResolutionChoice, IntentResolver, RaiseIntentForContextRequest, RaiseIntentForContextResponse } from "@kite9/fdc3-common";
 import { DefaultChannel } from "../channels/DefaultChannel";
 import { DefaultPrivateChannel } from "../channels/DefaultPrivateChannel";
 import { FindIntentRequest, FindIntentResponse, AddContextListenerRequestMeta, FindIntentsByContextRequest, FindIntentsByContextResponse, RaiseIntentRequest, RaiseIntentResultResponse, RaiseIntentResponse } from "@kite9/fdc3-common"
@@ -91,12 +91,12 @@ export class DefaultIntentSupport implements IntentSupport {
             return;
         } else {
             const ir = await convertIntentResult(rp, this.messaging)
-            this.intentResolver.intentChosen(ir)
             return ir
         }
     }
 
     async raiseIntent(intent: string, context: Context, app: AppIdentifier): Promise<IntentResolution> {
+        const meta = this.messaging.createMeta()
         const messageOut: RaiseIntentRequest = {
             type: "raiseIntentRequest",
             payload: {
@@ -104,19 +104,34 @@ export class DefaultIntentSupport implements IntentSupport {
                 context,
                 app: app
             },
-            meta: this.messaging.createMeta() as AddContextListenerRequestMeta /* ISSUE: #1275 */
+            meta: meta as any /* ISSUE: #1275 */
         }
 
         const resultPromise = this.createResultPromise(messageOut)
-        const resolution = await this.messaging.exchange(messageOut, "raiseIntentResponse", ResolveError.IntentDeliveryFailed) as RaiseIntentResponse
-        const details = resolution.payload.intentResolution!!
+        const response = await this.messaging.exchange(messageOut, "raiseIntentResponse", ResolveError.IntentDeliveryFailed) as RaiseIntentResponse
 
-        return new DefaultIntentResolution(
-            this.messaging,
-            resultPromise,
-            details.source,
-            details.intent
-        )
+        if (response.payload.appIntent) {
+            // we need to invoke the resolver
+            const result: IntentResolutionChoice | void = await this.intentResolver.chooseIntent([response.payload.appIntent as any], context)
+            if (result) {
+                return new DefaultIntentResolution(
+                    this.messaging,
+                    resultPromise,
+                    result.appId,
+                    result.intent)
+            } else {
+                throw new Error(ResolveError.UserCancelled)
+            }
+        } else {
+            // single intent
+            const details = response.payload.intentResolution!!
+            return new DefaultIntentResolution(
+                this.messaging,
+                resultPromise,
+                details.source,
+                details.intent
+            )
+        }
     }
 
     async raiseIntentForContext(context: Context, app?: AppIdentifier | undefined): Promise<IntentResolution> {
@@ -130,15 +145,28 @@ export class DefaultIntentSupport implements IntentSupport {
         }
 
         const resultPromise = this.createResultPromise(messageOut)
-        const resolution = await this.messaging.exchange(messageOut, "raiseIntentForContextResponse", ResolveError.IntentDeliveryFailed) as RaiseIntentForContextResponse
-        const details = resolution.payload.intentResolution!!
-
-        return new DefaultIntentResolution(
-            this.messaging,
-            resultPromise,
-            details.source,
-            details.intent
-        )
+        const response = await this.messaging.exchange(messageOut, "raiseIntentForContextResponse", ResolveError.IntentDeliveryFailed) as RaiseIntentForContextResponse
+        if (response.payload.appIntents) {
+            // we need to invoke the resolver
+            const result: IntentResolutionChoice | void = await this.intentResolver.chooseIntent(response.payload.appIntents as any[], context)
+            if (result) {
+                return new DefaultIntentResolution(
+                    this.messaging,
+                    resultPromise,
+                    result.appId,
+                    result.intent)
+            } else {
+                throw new Error(ResolveError.UserCancelled)
+            }
+        } else {
+            const details = response.payload.intentResolution!!
+            return new DefaultIntentResolution(
+                this.messaging,
+                resultPromise,
+                details.source,
+                details.intent
+            )
+        }
     }
 
     async addIntentListener(intent: string, handler: IntentHandler): Promise<Listener> {

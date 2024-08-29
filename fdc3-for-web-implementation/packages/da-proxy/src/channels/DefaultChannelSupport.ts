@@ -24,7 +24,16 @@ const NO_OP_CHANNEL_SELECTOR: ChannelSelector = {
 
     setChannelChangeCallback(_callback: (channelId: string) => void): void {
         // also does nothing
+    },
+
+    connect: function (): Promise<void> {
+        return Promise.resolve()
+    },
+
+    disconnect: function (): Promise<void> {
+        return Promise.resolve()
     }
+
 }
 
 export class DefaultChannelSupport implements ChannelSupport {
@@ -107,6 +116,7 @@ export class DefaultChannelSupport implements ChannelSupport {
         } as LeaveCurrentChannelRequest,
             'leaveCurrentChannelResponse')
 
+        this.channelSelector.updateChannel(null, this.userChannels ?? [])
         this.followingListeners.forEach(l => l.changeChannel(null))
     }
 
@@ -119,6 +129,8 @@ export class DefaultChannelSupport implements ChannelSupport {
             }
         } as JoinUserChannelRequest,
             'joinUserChannelResponse')
+
+        this.channelSelector.updateChannel(id, this.userChannels ?? [])
 
         for (const l of this.followingListeners) {
             await l.changeChannel(new DefaultChannel(this.messaging, id, "user"))

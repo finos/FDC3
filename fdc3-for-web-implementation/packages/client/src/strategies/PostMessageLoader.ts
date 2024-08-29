@@ -1,8 +1,10 @@
-import { Loader, GetAgentParams, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL } from '@kite9/fdc3-common'
+import { GetAgentParams, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake } from '@kite9/fdc3-common'
 import { FDC3_VERSION } from '..';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { v4 as uuidv4 } from "uuid"
 import { ConnectionDetails } from '../messaging/MessagePortMessaging';
+import { DesktopAgent } from '@finos/fdc3';
+import { Loader } from './Loader';
 
 function collectPossibleTargets(w: Window, found: Window[]) {
     if (w) {
@@ -56,7 +58,7 @@ function openFrame(url: string): Window {
     return ifrm.contentWindow!!
 }
 
-function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): Promise<ConnectionDetails> {
+export function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): Promise<ConnectionDetails> {
 
     return new Promise<ConnectionDetails>((resolve, _reject) => {
         // setup listener for message and retrieve JS URL from it
@@ -82,23 +84,61 @@ function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): 
 
 }
 
+/**
+ * This is a variation of the PostMessageLoader used for handling failover.  If the failover returns the WindowProxy this is used 
+ * to properly load the desktop agent.
+ */
+export function handleWindowProxy(options: GetAgentParams, provider: () => Promise<WindowProxy | DesktopAgent>): Promise<DesktopAgent> {
+    return new Promise<DesktopAgent>((resolve, _reject) => {
+        const el = (event: MessageEvent) => {
+            const data = event.data;
+            if (data.type == 'WCP3Handshake') {
+                const handshake = data as WebConnectionProtocol3Handshake;
+                globalThis.window.removeEventListener("message", el)
 
-const loader: Loader = async (options: GetAgentParams) => {
-    const connectionAttemptUuid = uuidv4();
+                resolve(createDesktopAgentAPI({
+                    connectionAttemptUuid: handshake.meta.connectionAttemptUuid,
+                    handshake: data,
+                    messagePort: event.ports[0],
+                    options: options
+                }))
+            }
+        }
 
-    const targets: Window[] = []
-    collectPossibleTargets(globalThis.window, targets);
+        globalThis.window.addEventListener("message", el)
 
-    // ok, begin the process
-    const promise = helloExchange(options, connectionAttemptUuid)
-
-    // use of '*': See https://github.com/finos/FDC3/issues/1316
-    targets.forEach((t) => sendWCP1Hello(t, options, connectionAttemptUuid, "*"))
-
-    // wait for one of the windows to return the data we need
-    const data = await promise
-    return createDesktopAgentAPI(data);
-
+        provider().then((providerResult) => {
+            if ((providerResult as any).getInfo) {
+                globalThis.window.removeEventListener("message", el)
+                resolve(providerResult as DesktopAgent)
+            }
+        })
+    })
 }
 
-export default loader;
+
+export class PostMessageLoader implements Loader {
+
+    connectionAttemptUuid = uuidv4();
+
+    async get(options: GetAgentParams): Promise<DesktopAgent | void> {
+        const targets: Window[] = []
+        collectPossibleTargets(globalThis.window, targets);
+
+        // ok, begin the process
+        const promise = helloExchange(options, this.connectionAttemptUuid)
+
+        // use of '*': See https://github.com/finos/FDC3/issues/1316
+        targets.forEach((t) => sendWCP1Hello(t, options, this.connectionAttemptUuid, "*"))
+
+        // wait for one of the windows to return the data we need
+        const data = await promise
+        return createDesktopAgentAPI(data);
+    }
+
+    cancel(): void {
+
+    }
+
+
+}

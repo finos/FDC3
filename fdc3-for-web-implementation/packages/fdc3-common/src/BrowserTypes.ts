@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerEvent, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IframeChannelDrag, IframeChannelResize, IframeChannels, IframeChannelSelected, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocolMessage } from "./file";
+//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerEvent, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IframeChannelDrag, IframeChannelResize, IframeChannels, IframeChannelSelected, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage } from "./file";
 //
 //   const addContextListenerRequest = Convert.toAddContextListenerRequest(json);
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
@@ -20,6 +20,8 @@
 //   const contextListenerUnsubscribeResponse = Convert.toContextListenerUnsubscribeResponse(json);
 //   const createPrivateChannelRequest = Convert.toCreatePrivateChannelRequest(json);
 //   const createPrivateChannelResponse = Convert.toCreatePrivateChannelResponse(json);
+//   const eventListenerUnsubscribeRequest = Convert.toEventListenerUnsubscribeRequest(json);
+//   const eventListenerUnsubscribeResponse = Convert.toEventListenerUnsubscribeResponse(json);
 //   const findInstancesRequest = Convert.toFindInstancesRequest(json);
 //   const findInstancesResponse = Convert.toFindInstancesResponse(json);
 //   const findIntentRequest = Convert.toFindIntentRequest(json);
@@ -78,6 +80,7 @@
 //   const webConnectionProtocol4ValidateAppIdentity = Convert.toWebConnectionProtocol4ValidateAppIdentity(json);
 //   const webConnectionProtocol5ValidateAppIdentityFailedResponse = Convert.toWebConnectionProtocol5ValidateAppIdentityFailedResponse(json);
 //   const webConnectionProtocol5ValidateAppIdentitySuccessResponse = Convert.toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json);
+//   const webConnectionProtocol6Goodbye = Convert.toWebConnectionProtocol6Goodbye(json);
 //   const webConnectionProtocolMessage = Convert.toWebConnectionProtocolMessage(json);
 //
 // These functions will throw an error if the JSON doesn't
@@ -573,7 +576,7 @@ export interface AgentResponseMessageResponsePayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
-export type ResponseMessageType = "addContextListenerResponse" | "addEventListenerResponse" | "addIntentListenerResponse" | "broadcastResponse" | "contextListenerUnsubscribeResponse" | "createPrivateChannelResponse" | "findInstancesResponse" | "findIntentResponse" | "findIntentsByContextResponse" | "getAppMetadataResponse" | "getCurrentChannelResponse" | "getCurrentContextResponse" | "getInfoResponse" | "getOrCreateChannelResponse" | "getUserChannelsResponse" | "intentListenerUnsubscribeResponse" | "intentResultResponse" | "joinUserChannelResponse" | "leaveCurrentChannelResponse" | "openResponse" | "privateChannelAddEventListenerResponse" | "privateChannelDisconnectResponse" | "privateChannelUnsubscribeEventListenerResponse" | "raiseIntentForContextResponse" | "raiseIntentResponse" | "raiseIntentResultResponse";
+export type ResponseMessageType = "addContextListenerResponse" | "addEventListenerResponse" | "addIntentListenerResponse" | "broadcastResponse" | "contextListenerUnsubscribeResponse" | "createPrivateChannelResponse" | "eventListenerUnsubscribeResponse" | "findInstancesResponse" | "findIntentResponse" | "findIntentsByContextResponse" | "getAppMetadataResponse" | "getCurrentChannelResponse" | "getCurrentContextResponse" | "getInfoResponse" | "getOrCreateChannelResponse" | "getUserChannelsResponse" | "intentListenerUnsubscribeResponse" | "intentResultResponse" | "joinUserChannelResponse" | "leaveCurrentChannelResponse" | "openResponse" | "privateChannelAddEventListenerResponse" | "privateChannelDisconnectResponse" | "privateChannelUnsubscribeEventListenerResponse" | "raiseIntentForContextResponse" | "raiseIntentResponse" | "raiseIntentResultResponse";
 
 /**
  * A request message from an FDC3-enabled app to a Desktop Agent.
@@ -613,11 +616,12 @@ export interface AppRequestMessageMeta {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  */
-export type RequestMessageType = "addContextListenerRequest" | "addEventListenerRequest" | "addIntentListenerRequest" | "broadcastRequest" | "contextListenerUnsubscribeRequest" | "createPrivateChannelRequest" | "findInstancesRequest" | "findIntentRequest" | "findIntentsByContextRequest" | "getAppMetadataRequest" | "getCurrentChannelRequest" | "getCurrentContextRequest" | "getInfoRequest" | "getOrCreateChannelRequest" | "getUserChannelsRequest" | "intentListenerUnsubscribeRequest" | "intentResultRequest" | "joinUserChannelRequest" | "leaveCurrentChannelRequest" | "openRequest" | "privateChannelAddEventListenerRequest" | "privateChannelDisconnectRequest" | "privateChannelUnsubscribeEventListenerRequest" | "raiseIntentForContextRequest" | "raiseIntentRequest";
+export type RequestMessageType = "addContextListenerRequest" | "addEventListenerRequest" | "addIntentListenerRequest" | "broadcastRequest" | "contextListenerUnsubscribeRequest" | "createPrivateChannelRequest" | "eventListenerUnsubscribeRequest" | "findInstancesRequest" | "findIntentRequest" | "findIntentsByContextRequest" | "getAppMetadataRequest" | "getCurrentChannelRequest" | "getCurrentContextRequest" | "getInfoRequest" | "getOrCreateChannelRequest" | "getUserChannelsRequest" | "intentListenerUnsubscribeRequest" | "intentResultRequest" | "joinUserChannelRequest" | "leaveCurrentChannelRequest" | "openRequest" | "privateChannelAddEventListenerRequest" | "privateChannelDisconnectRequest" | "privateChannelUnsubscribeEventListenerRequest" | "raiseIntentForContextRequest" | "raiseIntentRequest";
 
 /**
  * An event message from the Desktop Agent to an app indicating that context has been
- * broadcast on a channel it is listening to.
+ * broadcast on a channel it is listening to, or specifically to this app instance if it was
+ * launched via `fdc3.open` and context was passed.
  *
  * A message from a Desktop Agent to an FDC3-enabled app representing an event.
  */
@@ -642,9 +646,10 @@ export interface BroadcastEvent {
  */
 export interface BroadcastEventPayload {
     /**
-     * The Id of the channel that the broadcast was sent on.
+     * The Id of the channel that the broadcast was sent on. May be `null` if the context is
+     * being broadcast due to a call `fdc3.open` that passed context.
      */
-    channelId: string;
+    channelId: null | string;
     /**
      * The context object that was broadcast.
      */
@@ -875,7 +880,7 @@ export interface ContextListenerUnsubscribeRequestPayload {
  */
 
 /**
- * A response to a request to a contextListenerUnsubscribe request.
+ * A response to a contextListenerUnsubscribe request.
  *
  * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
  * payload contains an `error` property, the request was unsuccessful.
@@ -1034,6 +1039,68 @@ export interface DisplayMetadata {
  * Can be "user", "app" or "private".
  */
 export type Type = "app" | "private" | "user";
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
+ * A request to unsubscribe an event listener.
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface EventListenerUnsubscribeRequest {
+    /**
+     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+     */
+    meta: AddContextListenerRequestMeta;
+    /**
+     * The message payload typically contains the arguments to FDC3 API functions.
+     */
+    payload: EventListenerUnsubscribeRequestPayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Request' appended.
+     */
+    type: "eventListenerUnsubscribeRequest";
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface EventListenerUnsubscribeRequestPayload {
+    listenerUUID: string;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+
+/**
+ * A response to an eventListenerUnsubscribe request.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
+ * payload contains an `error` property, the request was unsuccessful.
+ */
+export interface EventListenerUnsubscribeResponse {
+    /**
+     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     */
+    meta: AddContextListenerResponseMeta;
+    /**
+     * A payload for a response to an API call that will contain any return values or an `error`
+     * property containing a standardized error message indicating that the request was
+     * unsuccessful.
+     */
+    payload: BroadcastResponseResponsePayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Response' appended.
+     */
+    type: "eventListenerUnsubscribeResponse";
+}
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -2373,7 +2440,7 @@ export interface IntentListenerUnsubscribeRequestPayload {
  */
 
 /**
- * A response to a request to a intentListenerUnsubscribe request.
+ * A response to a intentListenerUnsubscribe request.
  *
  * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
  * payload contains an `error` property, the request was unsuccessful.
@@ -3588,6 +3655,31 @@ export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload
  */
 
 /**
+ * Goodbye message to be sent to the Desktop Agent when disconnecting (e.g. when closing the
+ * window or navigating). Desktop Agents should close the MessagePort after receiving this
+ * message, but retain instance details in case the application reconnects (e.g. after a
+ * navigation event).
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol6Goodbye {
+    meta: ConnectionStepMetadata;
+    /**
+     * The message payload, containing data pertaining to this connection step.
+     */
+    payload: { [key: string]: any };
+    /**
+     * Identifies the type of the connection step message.
+     */
+    type: "WCP6Goodbye";
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
  * A message used during the connection flow for an application to a Desktop Agent in a
  * browser window. Used for messages sent in either direction.
  */
@@ -3606,7 +3698,7 @@ export interface WebConnectionProtocolMessage {
 /**
  * Identifies the type of the connection step message.
  */
-export type ConnectionStepMessageType = "WCP1Hello" | "WCP2LoadUrl" | "WCP3Handshake" | "WCP4ValidateAppIdentity" | "WCP5ValidateAppIdentityFailedResponse" | "WCP5ValidateAppIdentityResponse";
+export type ConnectionStepMessageType = "WCP1Hello" | "WCP2LoadUrl" | "WCP3Handshake" | "WCP4ValidateAppIdentity" | "WCP5ValidateAppIdentityFailedResponse" | "WCP5ValidateAppIdentityResponse" | "WCP6Goodbye";
 
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
@@ -3753,6 +3845,22 @@ export class Convert {
 
     public static createPrivateChannelResponseToJson(value: CreatePrivateChannelResponse): string {
         return JSON.stringify(uncast(value, r("CreatePrivateChannelResponse")), null, 2);
+    }
+
+    public static toEventListenerUnsubscribeRequest(json: string): EventListenerUnsubscribeRequest {
+        return cast(JSON.parse(json), r("EventListenerUnsubscribeRequest"));
+    }
+
+    public static eventListenerUnsubscribeRequestToJson(value: EventListenerUnsubscribeRequest): string {
+        return JSON.stringify(uncast(value, r("EventListenerUnsubscribeRequest")), null, 2);
+    }
+
+    public static toEventListenerUnsubscribeResponse(json: string): EventListenerUnsubscribeResponse {
+        return cast(JSON.parse(json), r("EventListenerUnsubscribeResponse"));
+    }
+
+    public static eventListenerUnsubscribeResponseToJson(value: EventListenerUnsubscribeResponse): string {
+        return JSON.stringify(uncast(value, r("EventListenerUnsubscribeResponse")), null, 2);
     }
 
     public static toFindInstancesRequest(json: string): FindInstancesRequest {
@@ -4219,6 +4327,14 @@ export class Convert {
         return JSON.stringify(uncast(value, r("WebConnectionProtocol5ValidateAppIdentitySuccessResponse")), null, 2);
     }
 
+    public static toWebConnectionProtocol6Goodbye(json: string): WebConnectionProtocol6Goodbye {
+        return cast(JSON.parse(json), r("WebConnectionProtocol6Goodbye"));
+    }
+
+    public static webConnectionProtocol6GoodbyeToJson(value: WebConnectionProtocol6Goodbye): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol6Goodbye")), null, 2);
+    }
+
     public static toWebConnectionProtocolMessage(json: string): WebConnectionProtocolMessage {
         return cast(JSON.parse(json), r("WebConnectionProtocolMessage"));
     }
@@ -4504,7 +4620,7 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("BroadcastEventType") },
     ], false),
     "BroadcastEventPayload": o([
-        { json: "channelId", js: "channelId", typ: "" },
+        { json: "channelId", js: "channelId", typ: u(null, "") },
         { json: "context", js: "context", typ: r("Context") },
         { json: "originatingApp", js: "originatingApp", typ: u(undefined, r("AppIdentifier")) },
     ], false),
@@ -4576,6 +4692,19 @@ const typeMap: any = {
         { json: "color", js: "color", typ: u(undefined, "") },
         { json: "glyph", js: "glyph", typ: u(undefined, "") },
         { json: "name", js: "name", typ: u(undefined, "") },
+    ], false),
+    "EventListenerUnsubscribeRequest": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
+        { json: "payload", js: "payload", typ: r("EventListenerUnsubscribeRequestPayload") },
+        { json: "type", js: "type", typ: r("EventListenerUnsubscribeRequestType") },
+    ], false),
+    "EventListenerUnsubscribeRequestPayload": o([
+        { json: "listenerUUID", js: "listenerUUID", typ: "" },
+    ], false),
+    "EventListenerUnsubscribeResponse": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
+        { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
+        { json: "type", js: "type", typ: r("EventListenerUnsubscribeResponseType") },
     ], false),
     "FindInstancesRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
@@ -5134,6 +5263,11 @@ const typeMap: any = {
         { json: "instanceId", js: "instanceId", typ: "" },
         { json: "instanceUuid", js: "instanceUuid", typ: "" },
     ], false),
+    "WebConnectionProtocol6Goodbye": o([
+        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "payload", js: "payload", typ: m("any") },
+        { json: "type", js: "type", typ: r("WebConnectionProtocol6GoodbyeType") },
+    ], false),
     "WebConnectionProtocolMessage": o([
         { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
         { json: "payload", js: "payload", typ: m("any") },
@@ -5219,6 +5353,7 @@ const typeMap: any = {
         "broadcastResponse",
         "contextListenerUnsubscribeResponse",
         "createPrivateChannelResponse",
+        "eventListenerUnsubscribeResponse",
         "findInstancesResponse",
         "findIntentResponse",
         "findIntentsByContextResponse",
@@ -5247,6 +5382,7 @@ const typeMap: any = {
         "broadcastRequest",
         "contextListenerUnsubscribeRequest",
         "createPrivateChannelRequest",
+        "eventListenerUnsubscribeRequest",
         "findInstancesRequest",
         "findIntentRequest",
         "findIntentsByContextRequest",
@@ -5295,6 +5431,12 @@ const typeMap: any = {
     ],
     "CreatePrivateChannelResponseType": [
         "createPrivateChannelResponse",
+    ],
+    "EventListenerUnsubscribeRequestType": [
+        "eventListenerUnsubscribeRequest",
+    ],
+    "EventListenerUnsubscribeResponseType": [
+        "eventListenerUnsubscribeResponse",
     ],
     "FindInstancesRequestType": [
         "findInstancesRequest",
@@ -5525,6 +5667,9 @@ const typeMap: any = {
     "WebConnectionProtocol5ValidateAppIdentitySuccessResponseType": [
         "WCP5ValidateAppIdentityResponse",
     ],
+    "WebConnectionProtocol6GoodbyeType": [
+        "WCP6Goodbye",
+    ],
     "ConnectionStepMessageType": [
         "WCP1Hello",
         "WCP2LoadUrl",
@@ -5532,5 +5677,6 @@ const typeMap: any = {
         "WCP4ValidateAppIdentity",
         "WCP5ValidateAppIdentityFailedResponse",
         "WCP5ValidateAppIdentityResponse",
+        "WCP6Goodbye",
     ],
 };

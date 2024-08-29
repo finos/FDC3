@@ -24,6 +24,7 @@ export class MessagePortMessaging extends AbstractWebMessaging {
 
         this.cd.messagePort.onmessage = (m) => {
             this.listeners.forEach((v, _k) => {
+                console.log("Checking", v, m.data)
                 if (v.filter(m.data)) {
                     v.action(m.data)
                 }
@@ -56,5 +57,17 @@ export class MessagePortMessaging extends AbstractWebMessaging {
         }
     }
 
+    waitFor<X>(filter: (m: any) => boolean, timeoutErrorMessage?: string): Promise<X> {
+        console.log("Waiting for", filter, timeoutErrorMessage)
+        return super.waitFor(filter, timeoutErrorMessage).then((v: any) => {
+            console.log("Wait over ", v, timeoutErrorMessage)
+            return v;
+        })
+    }
+
+    async disconnect(): Promise<void> {
+        await super.disconnect()
+        this.cd.messagePort.close()
+    }
 }
 

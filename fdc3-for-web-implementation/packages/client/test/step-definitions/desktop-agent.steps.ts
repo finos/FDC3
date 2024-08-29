@@ -1,16 +1,14 @@
-import { DataTable, Given, When } from '@cucumber/cucumber'
+import { After, DataTable, Given, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
-import { TestMessaging } from '../support/TestMessaging';
 import { handleResolve, setupGenericSteps } from '@kite9/testing';
-import { BasicDesktopAgent, DefaultChannelSupport, DefaultHandshakeSupport, DefaultIntentSupport } from '@kite9/da-proxy';
 import { MockDocument, MockWindow } from '../support/MockDocument';
 import { getAgent } from '../../src';
-import { GetAgentParams } from '@kite9/fdc3-common';
-import { dummyInstanceId, MockFDC3Server } from '../support/MockFDC3Server';
-import { DefaultDesktopAgentIntentResolver } from '../../src/intent-resolution/DefaultDesktopAgentIntentResolver';
-import { DefaultDesktopAgentChannelSelector } from '../../src/channel-selector/DefaultDesktopAgentChannelSelector';
-import { NoopAppSupport } from '../../src/apps/NoopAppSupport';
+import { DesktopAgentDetails, GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-common';
+import { dummyInstanceId, EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
 import { MockStorage } from '../support/MockStorage';
+import { DesktopAgent, ImplementationMetadata } from '@finos/fdc3';
+import { DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY } from '../../src/messaging/AbstractWebMessaging';
+var wtf = require('wtfnode')
 
 setupGenericSteps()
 Given('Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response', async function (this: CustomWorld, field: string, w: string) {
@@ -27,22 +25,37 @@ Given('Parent Window desktop {string} listens for postMessage events in {string}
     this.mockContext.open(dummyInstanceId.appId)
 })
 
+Given('{string} is a function which opens an iframe for communications on {string}', function (this: CustomWorld, fn: string, doc: string) {
+    this.props[fn] = () => {
+        this.mockContext.open(dummyInstanceId.appId)
+        const document = handleResolve(doc, this) as MockDocument
+        var ifrm = document.createElement("iframe")
+        this.mockFDC3Server = new MockFDC3Server(ifrm as any, false, this.mockContext)
+        ifrm.setAttribute("src", EMBED_URL + "?connectionAttemptUuid=123")
+        document.body.appendChild(ifrm)
+        return ifrm
+    }
+});
+
+Given('an existing app instance in {string}', async function (this: CustomWorld, field: string) {
+    const uuid = this.mockContext.open(dummyInstanceId.appId)
+    this.props[field] = uuid
+})
+
 
 Given('A Dummy Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
 
-    if (!this.messaging) {
-        this.messaging = new TestMessaging();
-    }
-
-    const intentResolver = new DefaultDesktopAgentIntentResolver("https://localhost:8080/dummy-intent-resolver.html")
-    const channelSelector = new DefaultDesktopAgentChannelSelector("https://localhost:8080/dummy-channel-selector.html")
-    const cs = new DefaultChannelSupport(this.messaging, channelSelector)
-    const hs = new DefaultHandshakeSupport(this.messaging)
-    const is = new DefaultIntentSupport(this.messaging, intentResolver)
-    const as = new NoopAppSupport(this.messaging)
-
-    const da = new BasicDesktopAgent(hs, cs, is, as)
-    await da.connect()
+    const da: DesktopAgent = {
+        async getInfo(): Promise<ImplementationMetadata> {
+            return {
+                fdc3Version: "2.0",
+                appMetadata: {
+                    appId: "cucumber-app"
+                },
+                provider: "cucumber-provider"
+            } as any
+        }
+    } as any
 
     this.props[field] = da
     this.props['result'] = null
@@ -60,6 +73,14 @@ When('I call getAgentAPI for a promise result', function (this: CustomWorld) {
     } catch (error) {
         this.props['result'] = error
     }
+})
+
+After(function (this: CustomWorld) {
+    console.log("Cleaning up")
+    setTimeout(() => {
+        //console.log((process as any)._getActiveHandles())
+        wtf.dump()
+    }, 10000)
 })
 
 When('I call getAgentAPI for a promise result with the following options', function (this: CustomWorld, dt: DataTable) {
@@ -95,4 +116,15 @@ Given('a browser document in {string} and window in {string}', async function (t
     // browser storage
     globalThis.sessionStorage = new MockStorage() as any
 
+})
+
+Given("the session identity is set to {string}", async function (this: CustomWorld, id: string) {
+    const details: DesktopAgentDetails = {
+        agentType: WebDesktopAgentType.PROXY_PARENT,
+        instanceUuid: handleResolve(id, this),
+        appId: 'cucumber-app',
+        instanceId: 'uuid-0'
+    }
+
+    globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY, JSON.stringify(details))
 })

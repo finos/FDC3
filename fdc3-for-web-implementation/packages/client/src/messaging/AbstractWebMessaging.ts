@@ -1,7 +1,7 @@
 import { DesktopAgentDetails, WebDesktopAgentType, GetAgentParams, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-common";
 import { RegisterableListener, AbstractMessaging } from "@kite9/da-proxy";
 
-const DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY = "fdc3-desktop-agent-details"
+export const DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY = "fdc3-desktop-agent-details"
 
 /**
  * Version of Messaging which is able to store details in the SessionState (i.e. works on the web)

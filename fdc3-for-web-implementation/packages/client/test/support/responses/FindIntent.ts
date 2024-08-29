@@ -1,5 +1,8 @@
 import { FindIntentRequest, FindIntentResponse } from "@kite9/fdc3-common";
-import { AutomaticResponse, TestMessaging } from "../TestMessaging";
+import { TestServerContext } from "../TestServerContext";
+import { InstanceID } from "@kite9/da-server";
+import { AutomaticResponse } from "./AutomaticResponses";
+
 
 export class FindIntent implements AutomaticResponse {
 
@@ -7,10 +10,10 @@ export class FindIntent implements AutomaticResponse {
         return t == 'findIntentRequest'
     }
 
-    action(input: object, m: TestMessaging) {
+    action(input: object, m: TestServerContext, from: InstanceID) {
         const intentRequest = input as FindIntentRequest
         const request = this.createFindIntentResponseMessage(intentRequest)
-        setTimeout(() => { m.receive(request) }, 100)
+        setTimeout(() => { m.post(request, from) }, 100)
         return Promise.resolve()
     }
 
