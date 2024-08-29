@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/iframeRestyle.schema.json",
+  "title": "iframe Restyle",
+  "description": "Message from a UI iframe to the DA proxy code (setup by `getAgent()`) with updated styling information to apply to the iframe. Can be used to implement a pop-open or close interaction or other transition needed by a UI implementation.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/IframeRestyleBase"
+    },
+    {
+      "$ref": "iFrameMessage.schema.json"
+    }
+  ],
+  "$defs": {
+    "IframeRestyleBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "iframeRestyle Message Type",
+          "const": "iframeRestyle"
+        },
+        "payload": {
+          "title": "iframeRestyle Payload",
+          "type": "object",
+          "properties": {
+            "updatedCSS": {
+              "title": "Updated CSS",
+              "type": "object",
+              "description": "A constrained set of CSS properties that should be applied to the iframe.",
+              "properties": {
+                "height": {"type": "string", "title": "height", "description": "The updated height of the iframe"},
+                "width": {"type": "string", "title": "width", "description": "The updated width of the iframe"},
+                "position": {"type": "string", "title": "position", "description": "The updated position CSS to apply to the iframe"},
+                "zIndex": {"type": "string", "title": "zIndex", "description": "The updated zindex to apply to the iframe"},
+                "left": {"type": "string", "title": "left", "description": "The updated left property to apply to the iframe"},
+                "top": {"type": "string", "title": "top", "description": "The updated right property to apply to the iframe"},
+                "transition": {"type": "string", "title": "transition", "description": "The updated transition property to apply to the iframe"},
+                "maxHeight": {"type": "string", "title": "maxHeight", "description": "The updated maximum height to apply to the iframe"},
+                "maxWidth": {"type": "string", "title": "maxWidth", "description": "The updated maximum with to apply to the iframe"}
+              },
+              "required": []
+            },
+            "resizeAnchor": {
+              "title": "Resizing",
+              "description": "Optional property to support resizing. When resizing anchor at the indicated location (without top or left set),\ne.g.\n\t- for top-left and a larger size: the bottom right corner should move down and out.\n\t- for top and smaller size: both the bottom corners should move in and up.",
+              "anyOf": [
+                { "type": "string", "const": "top-left" },
+                { "type": "string", "const": "top" },
+                { "type": "string", "const": "top-right" },
+                { "type": "string", "const": "right" },
+                { "type": "string", "const": "bottom-right" },
+                { "type": "string", "const": "bottom" },
+                { "type": "string", "const": "bottom-left" },
+                { "type": "string", "const": "left" },
+                { "type": "string", "const": "center" }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": ["updatedCSS"]
+        }
+      },
+      "required": [
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
+
