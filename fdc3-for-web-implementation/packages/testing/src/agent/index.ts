@@ -14,7 +14,10 @@ export class SimpleIntentResolver implements IntentResolver {
         this.cw = cw;
     }
 
-    async init(): Promise<void> {
+    async connect(): Promise<void> {
+    }
+
+    async disconnect(): Promise<void> {
     }
 
     async intentChosen(ir: IntentResult): Promise<IntentResult> {

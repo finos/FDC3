@@ -56,6 +56,5 @@ export class MessagePortMessaging extends AbstractWebMessaging {
             "source": this.getSource()
         }
     }
-
 }
 

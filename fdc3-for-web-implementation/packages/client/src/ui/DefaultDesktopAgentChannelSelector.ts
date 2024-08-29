@@ -12,7 +12,6 @@ import { AbstractUIComponent } from "./AbstractUIComponent";
 export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent implements ChannelSelector {
 
     private callback: ((channelId: string) => void) | null = null
-    private port: MessagePort | null = null
 
     constructor(url: string | null) {
         super(url ?? "https://fdc3.finos.org/webui/channel_selector.html", "FDC3 Channel Selector")

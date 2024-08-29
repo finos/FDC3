@@ -5,7 +5,10 @@ import { IntentResolutionChoice } from "@kite9/fdc3-common/src/IntentResolver";
 
 export class NullIntentResolver implements IntentResolver {
 
-    async init(): Promise<void> {
+    async disconnect(): Promise<void> {
+    }
+
+    async connect(): Promise<void> {
     }
 
     chooseIntent(_appIntents: AppIntent[], _ctx: Context): Promise<IntentResolutionChoice | void> {

@@ -1,4 +1,4 @@
-import { DataTable, Given, When } from '@cucumber/cucumber'
+import { After, DataTable, Given, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { TestMessaging } from '../support/TestMessaging';
 import { handleResolve, setupGenericSteps } from '@kite9/testing';
@@ -11,6 +11,7 @@ import { DefaultDesktopAgentIntentResolver } from '../../src/ui/DefaultDesktopAg
 import { DefaultDesktopAgentChannelSelector } from '../../src/ui/DefaultDesktopAgentChannelSelector';
 import { NoopAppSupport } from '../../src/apps/NoopAppSupport';
 import { MockStorage } from '../support/MockStorage';
+var wtf = require('wtfnode')
 
 setupGenericSteps()
 Given('Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response', async function (this: CustomWorld, field: string, w: string) {
@@ -41,7 +42,7 @@ Given('A Dummy Desktop Agent in {string}', async function (this: CustomWorld, fi
     const is = new DefaultIntentSupport(this.messaging, intentResolver)
     const as = new NoopAppSupport(this.messaging)
 
-    const da = new BasicDesktopAgent(hs, cs, is, as)
+    const da = new BasicDesktopAgent(hs, cs, is, as, [hs, intentResolver, channelSelector])
     await da.connect()
 
     this.props[field] = da
@@ -60,6 +61,12 @@ When('I call getAgentAPI for a promise result', function (this: CustomWorld) {
     } catch (error) {
         this.props['result'] = error
     }
+})
+
+After(function (this: CustomWorld) {
+    console.log("Cleaning up")
+    console.log((process as any)._getActiveHandles())
+    setTimeout(() => { wtf.dump() }, 10000)
 })
 
 When('I call getAgentAPI for a promise result with the following options', function (this: CustomWorld, dt: DataTable) {

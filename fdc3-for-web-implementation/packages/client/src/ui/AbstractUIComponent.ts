@@ -1,3 +1,5 @@
+import { Connectable } from "@kite9/fdc3-common";
+
 export interface CSSPositioning { [key: string]: string }
 
 export const INITIAL_CONTAINER_CSS = {
@@ -24,24 +26,30 @@ export const ALLOWED_CSS_ELEMENTS = [
     "display"
 ]
 
-export abstract class AbstractUIComponent {
+export abstract class AbstractUIComponent implements Connectable {
 
     private container: HTMLDivElement | undefined = undefined
     private iframe: Window | undefined = undefined
     private url: string
     private name: string
+    port: MessagePort | null = null
 
     constructor(url: string, name: string) {
         this.url = url
         this.name = name
     }
 
-    async init() {
+    async connect() {
         const portPromise = this.awaitHello()
         this.openFrame()
-        const port = await portPromise
-        await this.setupMessagePort(port)
-        await this.messagePortReady(port)
+        this.port = await portPromise
+        await this.setupMessagePort(this.port)
+        await this.messagePortReady(this.port)
+
+    }
+
+    async disconnect() {
+        this.port?.close()
     }
 
     /**

@@ -34,10 +34,7 @@ export class MockFDC3Server extends DefaultFDC3Server {
     }
 
     shutdown() {
-        // this.theContext.forEach(i => {
-        //     i.externalPort.close()
-        //     i.internalPort.close()
-        // })
+        this.tsc.shutdown()
     }
 
     init() {

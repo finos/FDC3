@@ -35,14 +35,11 @@ export async function createDesktopAgentAPI(cd: ConnectionDetails): Promise<Desk
         new DefaultDesktopAgentChannelSelector(string(cd.handshake.payload.channelSelector))
         : new NullChannelSelector()
 
-    await intentResolver.init()
-    await channelSelector.init()
-
     const cs = new DefaultChannelSupport(messaging, channelSelector)
     const hs = new DefaultHandshakeSupport(messaging)
     const is = new DefaultIntentSupport(messaging, intentResolver)
     const as = new DefaultAppSupport(messaging)
-    const da = new BasicDesktopAgent(hs, cs, is, as)
+    const da = new BasicDesktopAgent(hs, cs, is, as, [hs, intentResolver, channelSelector])
     await da.connect()
 
     populateChannelSelector(cs, channelSelector)
