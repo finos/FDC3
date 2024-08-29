@@ -1,4 +1,4 @@
-import { GetAgentParams, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL } from '@kite9/fdc3-common'
+import { GetAgentParams, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake } from '@kite9/fdc3-common'
 import { FDC3_VERSION } from '..';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { v4 as uuidv4 } from "uuid"
@@ -58,7 +58,7 @@ function openFrame(url: string): Window {
     return ifrm.contentWindow!!
 }
 
-function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): Promise<ConnectionDetails> {
+export function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): Promise<ConnectionDetails> {
 
     return new Promise<ConnectionDetails>((resolve, _reject) => {
         // setup listener for message and retrieve JS URL from it
@@ -82,6 +82,38 @@ function helloExchange(options: GetAgentParams, connectionAttemptUuid: string): 
         globalThis.window.addEventListener("message", el)
     });
 
+}
+
+/**
+ * This is a variation of the PostMessageLoader used for handling failover.  If the failover returns the WindowProxy this is used 
+ * to properly load the desktop agent.
+ */
+export function handleWindowProxy(options: GetAgentParams, provider: () => Promise<WindowProxy | DesktopAgent>): Promise<DesktopAgent> {
+    return new Promise<DesktopAgent>((resolve, _reject) => {
+        const el = (event: MessageEvent) => {
+            const data = event.data;
+            if (data.type == 'WCP3Handshake') {
+                const handshake = data as WebConnectionProtocol3Handshake;
+                globalThis.window.removeEventListener("message", el)
+
+                resolve(createDesktopAgentAPI({
+                    connectionAttemptUuid: handshake.meta.connectionAttemptUuid,
+                    handshake: data,
+                    messagePort: event.ports[0],
+                    options: options
+                }))
+            }
+        }
+
+        globalThis.window.addEventListener("message", el)
+
+        provider().then((providerResult) => {
+            if ((providerResult as any).getInfo) {
+                globalThis.window.removeEventListener("message", el)
+                resolve(providerResult as DesktopAgent)
+            }
+        })
+    })
 }
 
 
