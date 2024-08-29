@@ -30,7 +30,7 @@ export function handleEmbeddedIframeComms(value: string, parent: MockWindow, cw:
     }
 }
 
-export function handleChannelSelectorComms(_value: string, parent: MockWindow, source: Window) {
+export function handleChannelSelectorComms(_value: string, parent: MockWindow, source: Window): MessageChannel {
     const connection = new MessageChannel();
     try {
         parent.dispatchEvent({
@@ -45,9 +45,11 @@ export function handleChannelSelectorComms(_value: string, parent: MockWindow, s
     } catch (e) {
         console.error(e)
     }
+
+    return connection
 }
 
-export function handleIntentResolverComms(_value: string, parent: MockWindow, source: Window) {
+export function handleIntentResolverComms(_value: string, parent: MockWindow, source: Window): MessageChannel {
     const connection = new MessageChannel();
     try {
         parent.dispatchEvent({
@@ -62,4 +64,6 @@ export function handleIntentResolverComms(_value: string, parent: MockWindow, so
     } catch (e) {
         console.error(e)
     }
+
+    return connection
 }

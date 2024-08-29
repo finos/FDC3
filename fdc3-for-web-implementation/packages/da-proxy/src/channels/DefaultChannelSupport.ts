@@ -26,9 +26,14 @@ const NO_OP_CHANNEL_SELECTOR: ChannelSelector = {
         // also does nothing
     },
 
-    init: function (): Promise<void> {
+    connect: function (): Promise<void> {
+        return Promise.resolve()
+    },
+
+    disconnect: function (): Promise<void> {
         return Promise.resolve()
     }
+
 }
 
 export class DefaultChannelSupport implements ChannelSupport {

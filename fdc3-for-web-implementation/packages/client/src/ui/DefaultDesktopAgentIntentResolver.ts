@@ -9,7 +9,6 @@ import { AbstractUIComponent } from "./AbstractUIComponent";
  */
 export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent implements IntentResolver {
 
-    private port: MessagePort | null = null
     private pendingResolve: ((x: IntentResolutionChoice | void) => void) | null = null
 
     constructor(url: string | null) {

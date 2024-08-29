@@ -14,3 +14,4 @@ export * from './GetAgent'
 
 export { ChannelSelector } from './ChannelSelector'
 export { IntentResolver, IntentResolutionChoice } from './IntentResolver'
+export { Connectable } from './Connectable'

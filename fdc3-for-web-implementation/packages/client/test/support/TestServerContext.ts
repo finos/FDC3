@@ -49,22 +49,10 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
         this.instances = this.instances.filter(ca => ca.instanceId !== app.instanceId)
     }
 
-    // wrapMessagePort(mp: MessagePort) {
-    //     return {
-    //         postMessage(a: any, b: any) {
-    //             mp.postMessage(a, b)
-    //         }
-
-    //         start() {
-    //             mp.start()
-    //         }
-
-    //         close() {
-    //             mp.close()
-    //         }
-
-    //     } as MessagePortEventMap
-    // }
+    async shutdown(): Promise<void> {
+        await Promise.all(this.instances.map(i => i.internalPort.close()))
+        await Promise.all(this.instances.map(i => i.externalPort.close()))
+    }
 
     async open(appId: string): Promise<InstanceID> {
         const ni = this.nextInstanceId++

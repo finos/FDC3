@@ -117,6 +117,7 @@ export class MockWindow extends MockElement {
 class MockIFrame extends MockWindow {
 
     contentWindow: Window
+    messageChannels: MessageChannel[] = []
 
     constructor(tag: string, cw: CustomWorld, parent: MockWindow) {
         super(tag, cw)
@@ -132,11 +133,19 @@ class MockIFrame extends MockWindow {
             if (value.startsWith(EMBED_URL)) {
                 handleEmbeddedIframeComms(value, parent, this.cw)
             } else if (value.startsWith(CHANNEL_SELECTOR_URL)) {
-                handleChannelSelectorComms(value, parent, this.contentWindow)
+                this.messageChannels.push(handleChannelSelectorComms(value, parent, this.contentWindow))
             } else if (value.startsWith(INTENT_RESPOLVER_URL)) {
-                handleIntentResolverComms(value, parent, this.contentWindow)
+                this.messageChannels.push(handleIntentResolverComms(value, parent, this.contentWindow))
             }
         }
+    }
+
+    shutdown() {
+        super.shutdown()
+        this.messageChannels.forEach(mc => {
+            mc.port1.close()
+            mc.port2.close()
+        })
     }
 }
 

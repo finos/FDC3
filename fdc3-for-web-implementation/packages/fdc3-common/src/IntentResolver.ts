@@ -1,4 +1,5 @@
 import { AppIdentifier, AppIntent, Context } from "@finos/fdc3";
+import { Connectable } from "./Connectable";
 
 
 export type IntentResolutionChoice = {
@@ -9,12 +10,7 @@ export type IntentResolutionChoice = {
 /**
  * Interface used by the desktop agent proxy to handle the intent resolution process.
  */
-export interface IntentResolver {
-
-    /**
-     * Make sure the intent resolver is ready to be used.
-     */
-    init(): Promise<void>
+export interface IntentResolver extends Connectable {
 
     /**
      * Called when the user needs to resolve an intent.  Returns either the app chosen to

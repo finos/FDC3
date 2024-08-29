@@ -1,5 +1,5 @@
 import { AppIdentifier, ImplementationMetadata } from "@finos/fdc3";
-import { Connectable } from "./Connectable";
+import { Connectable } from "@kite9/fdc3-common";
 import { RegisterableListener } from "./listeners/RegisterableListener";
 
 export interface Messaging extends Connectable {
