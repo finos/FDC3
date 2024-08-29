@@ -1,6 +1,8 @@
 import { Given, When } from "@cucumber/cucumber";
 import { CustomWorld } from "../world";
 import { handleResolve } from "@kite9/testing";
+import { DefaultDesktopAgentIntentResolver } from "../../src/ui/DefaultDesktopAgentIntentResolver";
+import { INTENT_RESPOLVER_URL } from "../support/MockFDC3Server";
 
 
 const contextMap: Record<string, any> = {
@@ -29,6 +31,34 @@ Given('{string} is a {string} context', function (this: CustomWorld, field: stri
     this.props[field] = contextMap[type];
 })
 
+
+Given('An Intent Resolver in {string}', async function (this: CustomWorld, field: string) {
+    const cs = new DefaultDesktopAgentIntentResolver(INTENT_RESPOLVER_URL);
+    this.props[field] = cs
+    await cs.connect()
+})
+
+Given('{string} is an AppIntents array with a ViewNews intent and two apps', function (this: CustomWorld, field: string) {
+    this.props[field] = [
+        {
+            intent: {
+                name: 'ViewNews'
+            },
+            apps: [
+                {
+                    appId: 'app1'
+                },
+                {
+                    appId: 'app2'
+                }
+            ]
+        }
+
+
+    ]
+})
+
+
 When('I call {string} with {string} with parameters {string} and {string} for a promise', function (this: CustomWorld, field: string, fnName: string, param1: string, param2: string) {
     try {
         const object = handleResolve(field, this)
@@ -42,29 +72,55 @@ When('I call {string} with {string} with parameters {string} and {string} for a 
     }
 });
 
-Given('{string} receives a {string} message for the intent resolver and pipes comms to {string}', async function (this: CustomWorld, frame: string, type: string, output: string) {
-    const channelSelectorIframe = handleResolve(frame, this)
-    const mc = new MessageChannel();
-    const internalPort = mc.port1;
-    const externalPort = mc.port2;
+Given('The intent resolver sends an intent selection message', async function (this: CustomWorld) {
+    const port = handleResolve("{document.iframes[0].messageChannels[0].port2}", this)
 
-    if (type == "SelectorMessageInitialize") {
-        globalThis.window.dispatchEvent({
-            type: 'message',
-            data: {
-                type: 'SelectorMessageInitialize'
+    port.postMessage({
+        type: 'iframeResolveAction',
+        payload: {
+            action: 'click',
+            appIdentifier: {
+                appId: 'app1'
             },
-            origin: globalThis.window.location.origin,
-            ports: [externalPort],
-            source: channelSelectorIframe
-        } as any)
-    }
+            intent: 'ViewNews'
+        }
+    })
+})
 
-    const out: any[] = []
-    this.props[output] = out
+Given('The intent resolver cancels the intent selection message', async function (this: CustomWorld) {
+    const port = handleResolve("{document.iframes[0].messageChannels[0].port2}", this)
 
-    internalPort.start()
-    internalPort.onmessage = (e) => {
-        out.push({ type: e.type, data: e.data })
-    }
-});
+    port.postMessage({
+        type: 'iframeResolveAction',
+        payload: {
+            action: 'cancel'
+        }
+    })
+})
+
+// Given('{string} receives a {string} message for the intent resolver and pipes comms to {string}', async function (this: CustomWorld, frame: string, type: string, output: string) {
+//     const channelSelectorIframe = handleResolve(frame, this)
+//     const mc = new MessageChannel();
+//     const internalPort = mc.port1;
+//     const externalPort = mc.port2;
+
+//     if (type == "SelectorMessageInitialize") {
+//         globalThis.window.dispatchEvent({
+//             type: 'message',
+//             data: {
+//                 type: 'SelectorMessageInitialize'
+//             },
+//             origin: globalThis.window.location.origin,
+//             ports: [externalPort],
+//             source: channelSelectorIframe
+//         } as any)
+//     }
+
+//     const out: any[] = []
+//     this.props[output] = out
+
+//     internalPort.start()
+//     internalPort.onmessage = (e) => {
+//         out.push({ type: e.type, data: e.data })
+//     }
+// });
