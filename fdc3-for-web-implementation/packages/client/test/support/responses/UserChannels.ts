@@ -3,6 +3,21 @@ import { InstanceID } from "@kite9/da-server";
 import { AutomaticResponse } from "./AutomaticResponses";
 import { GetUserChannelsRequest, GetUserChannelsResponse } from "@kite9/fdc3-common";
 
+export const USER_CHANNELS = [
+    {
+        id: "one",
+        type: "user"
+    },
+    {
+        id: "two",
+        type: "user"
+    },
+    {
+        id: "three",
+        type: "user"
+    }
+] as any
+
 export class UserChannels implements AutomaticResponse {
 
     filter(t: string) {
@@ -24,21 +39,7 @@ export class UserChannels implements AutomaticResponse {
             },
             type: "getUserChannelsResponse",
             payload: {
-                userChannels: [
-                    {
-                        id: "one",
-                        type: "user"
-                    },
-                    {
-                        id: "two",
-                        type: "user"
-                    },
-                    {
-                        id: "three",
-                        type: "user"
-                    }
-                ]
-
+                userChannels: USER_CHANNELS
             }
         }
     }

@@ -30,7 +30,7 @@ export function handleEmbeddedIframeComms(value: string, parent: MockWindow, cw:
     }
 }
 
-export function handleChannelSelectorComms(_value: string, parent: MockWindow, source: Window): MessageChannel {
+export function handleChannelSelectorComms(_value: string, parent: MockWindow, source: Window, cw: CustomWorld): MessageChannel {
     const connection = new MessageChannel();
     try {
         parent.dispatchEvent({
@@ -42,6 +42,23 @@ export function handleChannelSelectorComms(_value: string, parent: MockWindow, s
             source,
             ports: [connection.port1]
         } as any as Event)
+
+
+        connection.port2.onmessage = (e) => {
+            if (e.data.type == 'iframeHandshake') {
+                setTimeout(() => {
+                    connection.port2.postMessage({
+                        type: 'iframeRestyle',
+                        payload: {
+                            css: {
+                                "width": "100px"
+                            }
+                        }
+                    })
+                }, 100)
+            }
+            cw.props['lastChannelSelectorMessage'] = e.data
+        }
     } catch (e) {
         console.error(e)
     }
@@ -49,7 +66,7 @@ export function handleChannelSelectorComms(_value: string, parent: MockWindow, s
     return connection
 }
 
-export function handleIntentResolverComms(_value: string, parent: MockWindow, source: Window): MessageChannel {
+export function handleIntentResolverComms(_value: string, parent: MockWindow, source: Window, cw: CustomWorld): MessageChannel {
     const connection = new MessageChannel();
     try {
         parent.dispatchEvent({
@@ -61,6 +78,23 @@ export function handleIntentResolverComms(_value: string, parent: MockWindow, so
             source,
             ports: [connection.port1]
         } as any as Event)
+
+        connection.port2.onmessage = (e) => {
+            if (e.type == 'iframeHandshake') {
+                setTimeout(() => {
+                    connection.port2.postMessage({
+                        type: 'iframeRestyle',
+                        payload: {
+                            css: {
+                                "width": "100px"
+                            }
+                        }
+                    })
+                }, 100)
+            }
+
+            cw.props['lastIntentResolverMessage'] = e
+        }
     } catch (e) {
         console.error(e)
     }
