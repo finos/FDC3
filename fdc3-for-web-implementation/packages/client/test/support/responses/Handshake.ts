@@ -1,4 +1,7 @@
-import { AutomaticResponse, TestMessaging } from "../TestMessaging";
+import { TestServerContext } from "../TestServerContext";
+import { InstanceID } from "@kite9/da-server";
+import { AutomaticResponse } from "./AutomaticResponses";
+
 import { WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-common";
 
 export class Handshake implements AutomaticResponse {
@@ -7,10 +10,10 @@ export class Handshake implements AutomaticResponse {
         return t == 'WCP4ValidateAppIdentity'
     }
 
-    action(input: object, m: TestMessaging) {
+    action(input: object, m: TestServerContext, from: InstanceID) {
         const out = this.createResponse(input as WebConnectionProtocol4ValidateAppIdentity)
 
-        setTimeout(() => { m.receive(out) }, 100)
+        setTimeout(() => { m.post(out, from) }, 100)
         return Promise.resolve()
     }
 

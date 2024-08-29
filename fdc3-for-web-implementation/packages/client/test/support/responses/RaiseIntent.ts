@@ -1,5 +1,7 @@
 import { RaiseIntentRequest, RaiseIntentResponse } from "@kite9/fdc3-common";
-import { AutomaticResponse, TestMessaging } from "../TestMessaging";
+import { TestServerContext } from "../TestServerContext";
+import { InstanceID } from "@kite9/da-server";
+import { AutomaticResponse } from "./AutomaticResponses";
 
 
 export class RaiseIntent implements AutomaticResponse {
@@ -8,7 +10,7 @@ export class RaiseIntent implements AutomaticResponse {
         return t == 'raiseIntentRequest'
     }
 
-    createRaiseIntentAgentResponseMessage(intentRequest: RaiseIntentRequest, m: TestMessaging): RaiseIntentResponse {
+    createRaiseIntentAgentResponseMessage(intentRequest: RaiseIntentRequest, m: TestServerContext): RaiseIntentResponse {
         const out: RaiseIntentResponse = {
             meta: {
                 ...intentRequest.meta,
@@ -26,11 +28,11 @@ export class RaiseIntent implements AutomaticResponse {
         return out
     }
 
-    action(input: object, m: TestMessaging) {
+    action(input: object, m: TestServerContext, from: InstanceID) {
         const intentRequest = input as RaiseIntentRequest
         // this sends out the intent resolution
         const out1 = this.createRaiseIntentAgentResponseMessage(intentRequest, m)
-        setTimeout(() => { m.receive(out1) }, 100)
+        setTimeout(() => { m.post(out1, from) }, 100)
         return Promise.resolve()
     }
 }

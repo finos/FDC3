@@ -1,5 +1,7 @@
-import { AutomaticResponse, TestMessaging } from "../TestMessaging";
 import { GetCurrentChannelRequest, GetCurrentChannelResponse } from "@kite9/fdc3-common";
+import { TestServerContext } from "../TestServerContext";
+import { InstanceID } from "@kite9/da-server";
+import { AutomaticResponse } from "./AutomaticResponses";
 
 export class CurrentChannel implements AutomaticResponse {
 
@@ -7,14 +9,13 @@ export class CurrentChannel implements AutomaticResponse {
         return t == 'getCurrentChannelRequest'
     }
 
-    action(input: object, m: TestMessaging) {
+    action(input: object, m: TestServerContext, from: InstanceID) {
         const out = this.createResponse(input as GetCurrentChannelRequest, m)
-
-        setTimeout(() => { m.receive(out) }, 100)
+        setTimeout(() => { m.post(out, from) }, 100)
         return Promise.resolve()
     }
 
-    private createResponse(i: GetCurrentChannelRequest, m: TestMessaging): GetCurrentChannelResponse {
+    private createResponse(i: GetCurrentChannelRequest, m: TestServerContext): GetCurrentChannelResponse {
         return {
             meta: {
                 ...i.meta,
