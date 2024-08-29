@@ -11,7 +11,6 @@ export class NullIntentResolver implements IntentResolver {
     async connect(): Promise<void> {
     }
 
-    chooseIntent(_appIntents: AppIntent[], _ctx: Context): Promise<IntentResolutionChoice | void> {
-        throw new Error("Method not implemented.");
+    async chooseIntent(_appIntents: AppIntent[], _ctx: Context): Promise<IntentResolutionChoice | void> {
     }
 }
