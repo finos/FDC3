@@ -9,13 +9,14 @@
       "title": "Event Message Type",
       "type": "string",
       "enum": [
-        "intentEvent",
+        "addEventListenerEvent",
         "broadcastEvent",
         "channelChangedEvent",
+        "heartbeatEvent",
+        "intentEvent",
         "privateChannelOnAddContextListenerEvent",
         "privateChannelOnDisconnectEvent",
-        "privateChannelOnUnsubscribeEvent",
-        "addEventListenerEvent"
+        "privateChannelOnUnsubscribeEvent"
       ],
       "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Response' appended."
     },
