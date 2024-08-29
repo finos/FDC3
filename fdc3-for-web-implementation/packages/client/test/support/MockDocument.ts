@@ -133,9 +133,9 @@ class MockIFrame extends MockWindow {
             if (value.startsWith(EMBED_URL)) {
                 handleEmbeddedIframeComms(value, parent, this.cw)
             } else if (value.startsWith(CHANNEL_SELECTOR_URL)) {
-                this.messageChannels.push(handleChannelSelectorComms(value, parent, this.contentWindow))
+                this.messageChannels.push(handleChannelSelectorComms(value, parent, this.contentWindow, this.cw))
             } else if (value.startsWith(INTENT_RESPOLVER_URL)) {
-                this.messageChannels.push(handleIntentResolverComms(value, parent, this.contentWindow))
+                this.messageChannels.push(handleIntentResolverComms(value, parent, this.contentWindow, this.cw))
             }
         }
     }
