@@ -1,39 +1,53 @@
-import { BasicDirectory, DefaultFDC3Server } from "@kite9/da-server"
-import { WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake } from "@kite9/fdc3-common"
+import { FDC3Server } from "@kite9/da-server"
+import { AppRequestMessage, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake } from "@kite9/fdc3-common"
 import { TestServerContext } from "./TestServerContext"
 import { MockWindow } from "./MockDocument"
-import { ChannelState, ChannelType } from "@kite9/da-server/src/handlers/BroadcastHandler"
+import { AutomaticResponse } from "./responses/AutomaticResponses"
+import { FindIntent } from "./responses/FindIntent"
+import { RaiseIntent } from "./responses/RaiseIntent"
+import { Handshake } from "./responses/Handshake"
+import { UserChannels } from "./responses/UserChannels"
+import { CurrentChannel } from "./responses/CurrentChannel"
 
 export const dummyInstanceId = { appId: "Test App Id", instanceId: "1" }
 
 export const EMBED_URL = "http://localhost:8080/static/da/embed.html"
 
-export class MockFDC3Server extends DefaultFDC3Server {
+export const CHANNEL_SELECTOR_URL = "https://mock.fdc3.com/channelSelector"
+
+export const INTENT_RESPOLVER_URL = "https://mock.fdc3.com/resolver"
+
+export class MockFDC3Server implements FDC3Server {
 
     private useIframe: boolean
     private window: MockWindow
     private tsc: TestServerContext
 
-    constructor(window: MockWindow, useIframe: boolean, ctx: TestServerContext) {
-        const channelDetails: ChannelState[] = [
-            { id: "one", type: ChannelType.user, context: [], displayMetadata: { name: "THE RED CHANNEL", color: "red" } },
-            { id: "two", type: ChannelType.user, context: [], displayMetadata: { name: "THE BLUE CHANNEL", color: "blue" } },
-            { id: "three", type: ChannelType.user, context: [], displayMetadata: { name: "THE GREEN CHANNEL", color: "green" } }
-        ]
+    readonly automaticResponses: AutomaticResponse[] = [
+        new FindIntent(),
+        new RaiseIntent(),
+        new Handshake(),
+        new UserChannels(),
+        new CurrentChannel()
+    ]
 
-        const dir = new BasicDirectory([dummyInstanceId])
-        super(ctx, dir, channelDetails)
+    constructor(window: MockWindow, useIframe: boolean, ctx: TestServerContext) {
         this.useIframe = useIframe
         this.window = window
         this.tsc = ctx
         this.init()
     }
 
+    receive(message: AppRequestMessage, from: string): void {
+        this.automaticResponses.forEach((r) => {
+            if (r.filter(message.type)) {
+                r.action(message, this.tsc, from)
+            }
+        })
+    }
+
     shutdown() {
-        // this.theContext.forEach(i => {
-        //     i.externalPort.close()
-        //     i.internalPort.close()
-        // })
+        this.tsc.shutdown()
     }
 
     init() {
@@ -68,8 +82,8 @@ export class MockFDC3Server extends DefaultFDC3Server {
                             },
                             payload: {
                                 fdc3Version: "2.2",
-                                resolver: "https://mock.fdc3.com/resolver",
-                                channelSelector: "https://mock.fdc3.com/channelSelector",
+                                resolver: INTENT_RESPOLVER_URL,
+                                channelSelector: CHANNEL_SELECTOR_URL,
                             }
                         } as WebConnectionProtocol3Handshake, origin, [details!!.externalPort])
                     }

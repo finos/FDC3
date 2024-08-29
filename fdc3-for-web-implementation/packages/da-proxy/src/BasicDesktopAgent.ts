@@ -3,7 +3,7 @@ import { ChannelSupport } from "./channels/ChannelSupport";
 import { AppSupport } from "./apps/AppSupport";
 import { IntentSupport } from "./intents/IntentSupport";
 import { HandshakeSupport } from "./handshake/HandshakeSupport";
-import { Connectable } from "./Connectable";
+import { Connectable } from "@kite9/fdc3-common";
 
 /**
  * This splits out the functionality of the desktop agent into 
@@ -15,12 +15,14 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
     readonly channels: ChannelSupport
     readonly intents: IntentSupport
     readonly apps: AppSupport
+    readonly connectables: Connectable[]
 
-    constructor(handshake: HandshakeSupport, channels: ChannelSupport, intents: IntentSupport, apps: AppSupport) {
+    constructor(handshake: HandshakeSupport, channels: ChannelSupport, intents: IntentSupport, apps: AppSupport, connectables: Connectable[]) {
         this.handshake = handshake
         this.intents = intents
         this.channels = channels
         this.apps = apps
+        this.connectables = connectables
     }
 
     async getInfo(): Promise<ImplementationMetadata> {
@@ -118,12 +120,12 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
         return this.apps.getAppMetadata(app);
     }
 
-    disconnect(): Promise<void> {
-        return this.handshake.disconnect()
+    async disconnect(): Promise<void> {
+        await Promise.all(this.connectables.map(c => c.disconnect()))
     }
 
-    connect(): Promise<void> {
-        return this.handshake.connect()
+    async connect(): Promise<void> {
+        await Promise.all(this.connectables.map(c => c.connect()))
     }
 
 }

@@ -137,7 +137,7 @@ address of the embed page in the cookie? Problem is, the cookie is scoped to the
 npm login
 npm version <version from package.json> --workspaces
 npm run syncpack
+npm up
 npm run build
 npm publish --access=public --workspaces
-npm up
 ```

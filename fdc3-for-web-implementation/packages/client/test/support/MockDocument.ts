@@ -1,7 +1,7 @@
-import { EMBED_URL } from "./MockFDC3Server"
+import { CHANNEL_SELECTOR_URL, EMBED_URL, INTENT_RESPOLVER_URL } from "./MockFDC3Server"
 import { CustomWorld } from "../world"
 import { DesktopAgent } from "@finos/fdc3"
-import { WebConnectionProtocol3Handshake } from "@kite9/fdc3-common"
+import { handleChannelSelectorComms, handleEmbeddedIframeComms, handleIntentResolverComms } from "./FrameTypes"
 
 class MockCSSStyleDeclaration {
 
@@ -117,10 +117,11 @@ export class MockWindow extends MockElement {
 class MockIFrame extends MockWindow {
 
     contentWindow: Window
+    messageChannels: MessageChannel[] = []
 
-    constructor(tag: string, cw: CustomWorld, window: MockWindow) {
+    constructor(tag: string, cw: CustomWorld, parent: MockWindow) {
         super(tag, cw)
-        this.parent = window
+        this.parent = parent
         this.contentWindow = this as any
     }
 
@@ -128,28 +129,23 @@ class MockIFrame extends MockWindow {
         this.atts[name] = value
         const parent = this.parent as MockWindow
 
-        if ((name == 'src') && (value.startsWith(EMBED_URL))) {
-            const paramStr = value.substring(EMBED_URL.length + 1)
-            const params = new URLSearchParams(paramStr)
-            const connectionAttemptUuid = params.get("connectionAttemptUuid")!!
-            const connection = this.cw.mockContext.getFirstInstance()
-            try {
-                parent.postMessage({
-                    type: "WCP3Handshake",
-                    meta: {
-                        connectionAttemptUuid: connectionAttemptUuid,
-                        timestamp: new Date()
-                    },
-                    payload: {
-                        fdc3Version: "2.2",
-                        resolver: "https://mock.fdc3.com/resolver",
-                        channelSelector: "https://mock.fdc3.com/channelSelector",
-                    }
-                } as WebConnectionProtocol3Handshake, EMBED_URL, [connection!!.externalPort])
-            } catch (e) {
-                console.error(e)
+        if (name == 'src') {
+            if (value.startsWith(EMBED_URL)) {
+                handleEmbeddedIframeComms(value, parent, this.cw)
+            } else if (value.startsWith(CHANNEL_SELECTOR_URL)) {
+                this.messageChannels.push(handleChannelSelectorComms(value, parent, this.contentWindow, this.cw))
+            } else if (value.startsWith(INTENT_RESPOLVER_URL)) {
+                this.messageChannels.push(handleIntentResolverComms(value, parent, this.contentWindow, this.cw))
             }
         }
+    }
+
+    shutdown() {
+        super.shutdown()
+        this.messageChannels.forEach(mc => {
+            mc.port1.close()
+            mc.port2.close()
+        })
     }
 }
 

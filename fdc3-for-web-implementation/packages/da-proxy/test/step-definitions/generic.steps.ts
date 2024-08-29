@@ -16,7 +16,7 @@ Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: s
     const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this))
     const as = new DefaultAppSupport(this.messaging)
 
-    const da = new BasicDesktopAgent(hs, cs, is, as)
+    const da = new BasicDesktopAgent(hs, cs, is, as, [hs])
     await da.connect()
 
     this.props[field] = da

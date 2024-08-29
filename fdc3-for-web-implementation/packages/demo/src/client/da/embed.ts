@@ -1,6 +1,5 @@
 import { io } from "socket.io-client"
 import { link } from "./util";
-import { AppIdentifier } from "@finos/fdc3";
 import { APP_HELLO } from "../../message-types";
 
 const appWindow = window.parent;
