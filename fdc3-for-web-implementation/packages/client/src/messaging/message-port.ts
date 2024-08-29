@@ -42,7 +42,7 @@ export async function createDesktopAgentAPI(cd: ConnectionDetails): Promise<Desk
     const da = new BasicDesktopAgent(hs, cs, is, as, [hs, intentResolver, channelSelector])
     await da.connect()
 
-    populateChannelSelector(cs, channelSelector)
+    await populateChannelSelector(cs, channelSelector)
 
     return da
 }

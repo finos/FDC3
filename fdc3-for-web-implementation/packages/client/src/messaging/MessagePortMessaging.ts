@@ -56,5 +56,18 @@ export class MessagePortMessaging extends AbstractWebMessaging {
             "source": this.getSource()
         }
     }
+
+    waitFor<X>(filter: (m: any) => boolean, timeoutErrorMessage?: string): Promise<X> {
+        console.log("Waiting for", filter, timeoutErrorMessage)
+        return super.waitFor(filter, timeoutErrorMessage).then((v: any) => {
+            console.log("Wait over ", v, timeoutErrorMessage)
+            return v;
+        })
+    }
+
+    async disconnect(): Promise<void> {
+        await super.disconnect()
+        this.cd.messagePort.close()
+    }
 }
 

@@ -16,7 +16,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
     And I call "{desktopAgent}" with "getInfo"
     Then "{result}" is an object with the following contents
       | fdc3Version | appMetadata.appId | provider          |
-      |         2.0 | Test App Id       | cucumber-provider |
+      |         2.0 | cucumber-app      | cucumber-provider |
     And I refer to "{document.body.children[0]}" as "channel-selector"
     And I refer to "{channel-selector.children[0]}" as "iframe"
     And "{window.fdc3}" is undefined
