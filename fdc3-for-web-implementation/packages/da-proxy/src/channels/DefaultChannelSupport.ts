@@ -16,25 +16,6 @@ import {
 } from "@kite9/fdc3-common";
 import { FollowingContextListener } from "../listeners/FollowingContextListener";
 
-const NO_OP_CHANNEL_SELECTOR: ChannelSelector = {
-
-    updateChannel(_channelId: string | null): void {
-        // does nothing
-    },
-
-    setChannelChangeCallback(_callback: (channelId: string) => void): void {
-        // also does nothing
-    },
-
-    connect: function (): Promise<void> {
-        return Promise.resolve()
-    },
-
-    disconnect: function (): Promise<void> {
-        return Promise.resolve()
-    }
-
-}
 
 export class DefaultChannelSupport implements ChannelSupport {
 
@@ -43,7 +24,7 @@ export class DefaultChannelSupport implements ChannelSupport {
     protected userChannels: Channel[] | null = null
     private followingListeners: FollowingContextListener[] = []
 
-    constructor(messaging: Messaging, channelSelector: ChannelSelector = NO_OP_CHANNEL_SELECTOR) {
+    constructor(messaging: Messaging, channelSelector: ChannelSelector) {
         this.messaging = messaging;
         this.channelSelector = channelSelector
         this.channelSelector.setChannelChangeCallback((channelId: string) => {
