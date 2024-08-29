@@ -111,8 +111,7 @@ export abstract class AbstractMessaging implements Messaging {
 
     private async exchangeValidationWithId<X>(message: any, connectionAttemptUuid: string): Promise<X> {
         const prom = this.waitFor(m =>
-            (m.meta.connectionAttemptUuid == connectionAttemptUuid)
-            && (m.meta.requestUuid == message.meta.requestUuid))
+            (m.meta.connectionAttemptUuid == connectionAttemptUuid))
         this.post(message)
         const out: any = await prom
         if (out?.payload?.message) {

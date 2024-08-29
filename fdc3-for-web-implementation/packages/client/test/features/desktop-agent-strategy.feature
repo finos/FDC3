@@ -2,7 +2,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
 
   Background: Desktop Agent API
     Given a browser document in "document" and window in "window"
-   # And Testing ends after "8000" ms
+    And Testing ends after "8000" ms
 
   Scenario: Running inside a Browser and using post message with direct message ports
     Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
@@ -79,7 +79,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
       |         2.0 | cucumber-app      | cucumber-provider |
     Then I call "{document}" with "shutdown"
 
-  Scenario: Failover Strategy.
+  Scenario: Failover Strategy returning desktop agent
     Given A Dummy Desktop Agent in "dummy-api"
     And "dummyFailover" is a function which returns a promise of "{dummy-api}"
     And I call getAgentAPI for a promise result with the following options
@@ -93,9 +93,45 @@ Feature: Different Strategies for Accessing the Desktop Agent
       |         2.0 | cucumber-app      | cucumber-provider |
     Then I call "{document}" with "shutdown"
 
+  Scenario: Failover Strategy returning a proxy
+    Given "dummyFailover2" is a function which opens an iframe for communications on "{document}"
+    And I call getAgentAPI for a promise result with the following options
+      | failover         | timeout |
+      | {dummyFailover2} |    1000 |
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve
+    And I call "{result}" with "getInfo"
+    Then "{result}" is an object with the following contents
+      | fdc3Version | appMetadata.appId | provider          |
+      |         2.0 | cucumber-app      | cucumber-provider |
+    Then I call "{document}" with "shutdown"
+
   Scenario: Recovery from SessionState
   Here, we recover the details of the session from the session state, obviating the need to 
   make a request to the parent iframe.
 
+    Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
+    And an existing app instance in "instanceID"
+    And the session identity is set to "{instanceID}"
+    And we wait for a period of "200" ms
+    And I call getAgentAPI for a promise result with the following options
+      | dontSetWindowFdc3 | timeout | intentResolver | channelSelector |
+      | true              |    8000 | false          | false           |
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve
+    Then I call "{document}" with "shutdown"
+    And I call "{desktopAgent}" with "disconnect"
+
   Scenario: Failed Recovery from SessionState
   App tries to recover with an ID that doesn't exist.
+
+    Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
+    And we wait for a period of "200" ms
+    And the session identity is set to "BAD_INSTANCE"
+    And I call getAgentAPI for a promise result with the following options
+      | dontSetWindowFdc3 | timeout | intentResolver | channelSelector |
+      | true              |    8000 | false          | false           |
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve
+    And "{result}" is an error with message "Invalid instance"
+    Then I call "{document}" with "shutdown"

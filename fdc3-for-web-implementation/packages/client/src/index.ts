@@ -1,7 +1,7 @@
 import { DesktopAgent, } from '@finos/fdc3'
 import { getAgent as getAgentType, GetAgentParams } from '@kite9/fdc3-common';
 import { ElectronEventLoader } from './strategies/ElectronEventLoader'
-import { PostMessageLoader } from './strategies/PostMessageLoader'
+import { handleWindowProxy, PostMessageLoader } from './strategies/PostMessageLoader'
 import { TimeoutLoader } from './strategies/TimeoutLoader'
 
 const DEFAULT_WAIT_FOR_MS = 20000;
@@ -59,15 +59,8 @@ export const getAgent: getAgentType = (optionsOverride?: GetAgentParams) => {
         })
         .catch(async (error) => {
             if (options.failover) {
-                const o = await options.failover(options)
-
-                if ((o as any).getInfo) {
-                    return o as DesktopAgent
-                } else {
-                    // todo: turn the window proxy into a desktop agent
-                    return o as DesktopAgent
-                }
-
+                const o = await handleWindowProxy(options, () => { return options.failover!!(options) })
+                return o
             } else {
                 throw error
             }
@@ -77,15 +70,15 @@ export const getAgent: getAgentType = (optionsOverride?: GetAgentParams) => {
 
 /**
  * Replaces the original fdc3Ready function from FDC3 2.0 with a new one that uses the new getClientAPI function.
- * 
+ *
  * @param waitForMs Amount of time to wait before failing the promise (20 seconds is the default).
  * @returns A DesktopAgent promise.
  */
-export function fdc3Ready(waitForMs = DEFAULT_WAIT_FOR_MS): Promise<DesktopAgent> {
-    return getAgent({
-        timeout: waitForMs,
-        dontSetWindowFdc3: false,
-        channelSelector: true,
-        intentResolver: true
-    })
-}
+// export function fdc3Ready(waitForMs = DEFAULT_WAIT_FOR_MS): Promise<DesktopAgent> {
+//     return getAgent({
+//         timeout: waitForMs,
+//         dontSetWindowFdc3: false,
+//         channelSelector: true,
+//         intentResolver: true
+//     })
+// }
