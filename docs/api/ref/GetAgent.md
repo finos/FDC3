@@ -18,7 +18,7 @@ import { getAgent, DesktopAgent } from "@finos/fdc3";
 try {
     const fdc3: DesktopAgent = await getAgent();
     //do FDC3 things here
-} catch (e) {
+} catch (e: AgentError) {
     // Failed to connect
 }
 ```
