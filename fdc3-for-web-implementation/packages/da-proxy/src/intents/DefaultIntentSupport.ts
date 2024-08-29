@@ -86,13 +86,9 @@ export class DefaultIntentSupport implements IntentSupport {
             (m.type == 'raiseIntentResultResponse') &&
             (m.meta.requestUuid == messageOut.meta.requestUuid)))
 
-        if (!rp) {
-            // probably a timeout
-            return;
-        } else {
-            const ir = await convertIntentResult(rp, this.messaging)
-            return ir
-        }
+
+        const ir = await convertIntentResult(rp, this.messaging)
+        return ir
     }
 
     async raiseIntent(intent: string, context: Context, app: AppIdentifier): Promise<IntentResolution> {
