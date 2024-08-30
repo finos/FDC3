@@ -37,8 +37,9 @@ module.exports={
         "theme": {
           "customCss": "./src/css/customTheme.css"
         },
-        "googleAnalytics": {
-          "trackingID": "UA-89349362-8"
+        "gtag": {
+          "trackingID": "G-EY9BQJ55YQ",
+          "anonymizeIP": true,
         }
       }
     ]
