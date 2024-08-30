@@ -29,7 +29,7 @@ export const ALLOWED_CSS_ELEMENTS = [
 export abstract class AbstractUIComponent implements Connectable {
 
     private container: HTMLDivElement | undefined = undefined
-    private iframe: Window | undefined = undefined
+    private iframe: HTMLIFrameElement | undefined = undefined
     private url: string
     private name: string
     port: MessagePort | null = null
@@ -75,7 +75,7 @@ export abstract class AbstractUIComponent implements Connectable {
         return new Promise((resolve, _reject) => {
             const ml = (e: MessageEvent) => {
                 console.log("Received UI Message: " + JSON.stringify(e.data))
-                if ((e.source == this.iframe) && (e.data.type == 'iframeHello')) {
+                if ((e.source == this.iframe?.contentWindow) && (e.data.type == 'iframeHello')) {
                     const port = e.ports[0]
                     port.start()
                     globalThis.window.removeEventListener("message", ml)
@@ -90,14 +90,13 @@ export abstract class AbstractUIComponent implements Connectable {
 
     private openFrame(): void {
         this.container = globalThis.document.createElement("div")
-        const ifrm = globalThis.document.createElement("iframe")
+        this.iframe = globalThis.document.createElement("iframe")
 
         this.themeContainer(INITIAL_CONTAINER_CSS)
-        this.themeFrame(ifrm)
-        this.iframe = ifrm.contentWindow!!
+        this.themeFrame(this.iframe)
 
-        ifrm.setAttribute("src", this.url)
-        this.container.appendChild(ifrm)
+        this.iframe.setAttribute("src", this.url)
+        this.container.appendChild(this.iframe)
         document.body.appendChild(this.container)
     }
 

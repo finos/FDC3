@@ -70,15 +70,15 @@ export const getAgent: getAgentType = (optionsOverride?: GetAgentParams) => {
 
 /**
  * Replaces the original fdc3Ready function from FDC3 2.0 with a new one that uses the new getClientAPI function.
- *
+ * 
  * @param waitForMs Amount of time to wait before failing the promise (20 seconds is the default).
  * @returns A DesktopAgent promise.
  */
-// export function fdc3Ready(waitForMs = DEFAULT_WAIT_FOR_MS): Promise<DesktopAgent> {
-//     return getAgent({
-//         timeout: waitForMs,
-//         dontSetWindowFdc3: false,
-//         channelSelector: true,
-//         intentResolver: true
-//     })
-// }
+export function fdc3Ready(waitForMs = DEFAULT_WAIT_FOR_MS): Promise<DesktopAgent> {
+    return getAgent({
+        timeout: waitForMs,
+        dontSetWindowFdc3: false,
+        channelSelector: true,
+        intentResolver: true
+    })
+}
