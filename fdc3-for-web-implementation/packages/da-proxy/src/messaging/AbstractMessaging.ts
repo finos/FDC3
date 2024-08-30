@@ -26,11 +26,7 @@ export abstract class AbstractMessaging implements Messaging {
     }
 
     getSource(): AppIdentifier {
-        if (this.appId == null) {
-            throw new Error("AppId not set")
-        } else {
-            return this.appId;
-        }
+        return this.appId!!
     }
 
     waitFor<X>(filter: (m: any) => boolean, timeoutErrorMessage?: string): Promise<X> {
@@ -44,8 +40,7 @@ export abstract class AbstractMessaging implements Messaging {
                     done = true
                     this.unregister(id)
                     resolve(m)
-                },
-                register: () => Promise.resolve()
+                }
             } as RegisterableListener
 
 
@@ -104,9 +99,7 @@ export abstract class AbstractMessaging implements Messaging {
     }
 
     getImplementationMetadata(): Promise<ImplementationMetadata> {
-        return this.implementationMetadata == null ?
-            Promise.reject("Not connected") :
-            Promise.resolve(this.implementationMetadata)
+        return Promise.resolve(this.implementationMetadata!!)
     }
 
     private async exchangeValidationWithId<X>(message: any, connectionAttemptUuid: string): Promise<X> {
