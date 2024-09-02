@@ -102,7 +102,7 @@ When('I call getAgentAPI for a promise result with the following options', funct
 
 Given('a browser document in {string} and window in {string}', async function (this: CustomWorld, d: string, w: string) {
     // creates the mock app window
-    const mw = new MockWindow("mockWindow", this)
+    const mw = new MockWindow("mockWindow", this, "mocky")
     globalThis.window = mw as any
     this.props[w] = globalThis.window;
 

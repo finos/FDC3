@@ -7,7 +7,8 @@ getAgent().then(async fdc3 => {
     console.log("in promise")
     const log = document.getElementById("log");
     const msg = document.createElement("p");
-    msg.textContent = "FDC3 Loaded: " + JSON.stringify(fdc3.getInfo());
+    const info = await fdc3.getInfo()
+    msg.textContent = "FDC3 Loaded: " + JSON.stringify(info);
     log?.appendChild(msg);
     const channels = await fdc3.getUserChannels()
 
