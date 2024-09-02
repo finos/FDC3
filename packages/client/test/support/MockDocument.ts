@@ -58,10 +58,12 @@ export class MockWindow extends MockElement {
 
     fdc3: DesktopAgent | undefined
     cw: CustomWorld
+    name: string
 
-    constructor(tag: string, cw: CustomWorld) {
+    constructor(tag: string, cw: CustomWorld, name: string) {
         super(tag)
         this.cw = cw
+        this.name = name
     }
 
     eventHandlers: EventHandler[] = []
@@ -119,8 +121,8 @@ class MockIFrame extends MockWindow {
     contentWindow: Window
     messageChannels: MessageChannel[] = []
 
-    constructor(tag: string, cw: CustomWorld, parent: MockWindow) {
-        super(tag, cw)
+    constructor(tag: string, cw: CustomWorld, parent: MockWindow, name: string) {
+        super(tag, cw, name)
         this.parent = parent
         this.contentWindow = this as any
     }
@@ -131,10 +133,13 @@ class MockIFrame extends MockWindow {
 
         if (name == 'src') {
             if (value.startsWith(EMBED_URL)) {
+                this.name = "embedded-iframe"
                 handleEmbeddedIframeComms(value, parent, this.cw)
             } else if (value.startsWith(CHANNEL_SELECTOR_URL)) {
+                this.name = "channel-selector"
                 this.messageChannels.push(handleChannelSelectorComms(value, parent, this.contentWindow, this.cw))
             } else if (value.startsWith(INTENT_RESPOLVER_URL)) {
+                this.name = "intent-resolver"
                 this.messageChannels.push(handleIntentResolverComms(value, parent, this.contentWindow, this.cw))
             }
         }
@@ -162,7 +167,7 @@ export class MockDocument {
 
     createElement(tag: string): HTMLElement {
         if (tag == 'iframe') {
-            const mw = new MockIFrame("iframe", this.window.cw, this.window)
+            const mw = new MockIFrame("iframe", this.window.cw, this.window, "embedded-iframe")
             this.iframes.push(mw)
             return mw as any
         } else {
