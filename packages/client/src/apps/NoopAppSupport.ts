@@ -1,4 +1,4 @@
-import { AppIdentifier, AppMetadata } from "@finos/fdc3";
+import { AppIdentifier, AppMetadata } from "@kite9/fdc3";
 import { Messaging } from "@kite9/da-proxy";
 import { DefaultAppSupport } from "@kite9/da-proxy";
 

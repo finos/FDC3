@@ -1,6 +1,6 @@
 import { CHANNEL_SELECTOR_URL, EMBED_URL, INTENT_RESPOLVER_URL } from "./MockFDC3Server"
 import { CustomWorld } from "../world"
-import { DesktopAgent } from "@finos/fdc3"
+import { DesktopAgent } from "@kite9/fdc3"
 import { handleChannelSelectorComms, handleEmbeddedIframeComms, handleIntentResolverComms } from "./FrameTypes"
 
 class MockCSSStyleDeclaration {

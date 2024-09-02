@@ -1,4 +1,4 @@
-import { ContextHandler, Channel } from "@finos/fdc3";
+import { ContextHandler, Channel } from "@kite9/fdc3";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
 import { BroadcastEvent } from "@kite9/fdc3-common";

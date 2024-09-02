@@ -1,4 +1,4 @@
-import { Channel, } from "@finos/fdc3";
+import { Channel, } from "@kite9/fdc3";
 import { Connectable } from "@kite9/fdc3-common";
 import { ChannelSelector } from "@kite9/fdc3-common";
 

@@ -1,4 +1,4 @@
-import { Channel, ContextHandler, Listener, PrivateChannel } from "@finos/fdc3"
+import { Channel, ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3"
 
 export interface ChannelSupport {
 

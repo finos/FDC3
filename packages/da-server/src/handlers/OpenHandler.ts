@@ -1,7 +1,7 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { InstanceID, ServerContext } from "../ServerContext";
 import { Directory, DirectoryApp } from "../directory/DirectoryInterface";
-import { ContextElement, OpenError, ResolveError } from "@finos/fdc3";
+import { ContextElement, OpenError, ResolveError } from "@kite9/fdc3";
 import {
     AddContextListenerRequest,
     AppIdentifier, AppMetadata,

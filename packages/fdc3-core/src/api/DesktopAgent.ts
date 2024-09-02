@@ -395,8 +395,8 @@ export interface DesktopAgent {
    * @param {FDC3EventType|null} type If non-null, only events of the specified type will be received by the handler. 
    * @param {EventHandler} handler A function that events received will be passed to. 
    * 
-   */ 
-  addEventListener(type: FDC3EventType  | null, handler: EventHandler): Promise<Listener>;
+   */
+  addEventListener(type: FDC3EventType | null, handler: EventHandler): Promise<Listener>;
 
   /**
    * Retrieves a list of the User channels available for the app to join.
@@ -514,7 +514,7 @@ export interface DesktopAgent {
    * of an application based on the version supported by the Desktop Agent and for logging purposes.
    *
    * ```js
-   * import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
+   * import {compareVersionNumbers, versionIsAtLeast} from '@kite9/fdc3';
    *
    * if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
    *   await fdc3.raiseIntentForContext(context);

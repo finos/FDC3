@@ -1,4 +1,4 @@
-import { DesktopAgent } from "@finos/fdc3";
+import { DesktopAgent } from "@kite9/fdc3";
 import { GetAgentParams } from "@kite9/fdc3-common";
 import { Loader } from "./Loader";
 

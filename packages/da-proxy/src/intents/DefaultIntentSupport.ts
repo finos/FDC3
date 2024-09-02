@@ -1,4 +1,4 @@
-import { Context, AppIntent, AppIdentifier, IntentResolution, IntentHandler, Listener, ResolveError, IntentResult } from "@finos/fdc3";
+import { Context, AppIntent, AppIdentifier, IntentResolution, IntentHandler, Listener, ResolveError, IntentResult } from "@kite9/fdc3";
 import { IntentSupport } from "./IntentSupport";
 import { Messaging } from "../Messaging";
 import { DefaultIntentResolution } from "./DefaultIntentResolution";

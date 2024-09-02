@@ -12,7 +12,7 @@
     "clean": "rimraf dist; rimraf cucumber-report.html; rimraf coverage; rimraf .nyc_output; rimraf node_modules"
   },
   "dependencies": {
-    "@finos/fdc3": "2.2.0-beta.0",
+    "@kite9/fdc3": "2.2.0-beta.0",
     "@kite9/da-proxy": "2.2.0-beta.0",
     "@kite9/fdc3-common": "2.2.0-beta.0",
     "@types/uuid": "^10.0.0",

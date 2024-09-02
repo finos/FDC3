@@ -6,7 +6,7 @@ import { getAgent } from '../../src';
 import { DesktopAgentDetails, GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-common';
 import { dummyInstanceId, EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
 import { MockStorage } from '../support/MockStorage';
-import { DesktopAgent, ImplementationMetadata } from '@finos/fdc3';
+import { DesktopAgent, ImplementationMetadata } from '@kite9/fdc3';
 import { DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY } from '../../src/messaging/AbstractWebMessaging';
 var wtf = require('wtfnode')
 

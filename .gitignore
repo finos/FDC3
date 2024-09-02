@@ -21,3 +21,4 @@ website/.docusaurus/**
 website/.yarn
 .nyc_output
 generated/
+cucumber-report.html
