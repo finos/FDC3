@@ -31,7 +31,8 @@
     "build": "npm run build --workspaces --if-present",
     "prebuild": "npm run prebuild --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present"
+    "lint": "npm run lint --workspaces --if-present",
+    "syncpack": "npm exec syncpack fix-mismatches --types 'local'"
   },
   "husky": {
     "hooks": {
@@ -45,5 +46,8 @@
     "trailingComma": "es5",
     "endOfLine": "auto",
     "printWidth": 120
+  },
+  "dependencies": {
+    "syncpack": "^12.4.0"
   }
 }
