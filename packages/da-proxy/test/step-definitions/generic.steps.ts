@@ -3,7 +3,7 @@ import { Given } from '@cucumber/cucumber'
 import { CustomWorld } from '../world/index';
 import { BasicDesktopAgent, DefaultAppSupport, DefaultChannelSupport, DefaultIntentSupport, DefaultHandshakeSupport } from '../../src';
 import { SimpleIntentResolver, setupGenericSteps } from '@kite9/testing';
-import { CHANNEL_STATE } from '@kite9/testing/dist/src/agent';
+import { CHANNEL_STATE, SimpleChannelSelector } from '@kite9/testing/dist/src/agent';
 
 Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
 
@@ -11,7 +11,7 @@ Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: s
         this.messaging = new TestMessaging(this.props[CHANNEL_STATE]);
     }
 
-    const cs = new DefaultChannelSupport(this.messaging)
+    const cs = new DefaultChannelSupport(this.messaging, new SimpleChannelSelector(this))
     const hs = new DefaultHandshakeSupport(this.messaging)
     const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this))
     const as = new DefaultAppSupport(this.messaging)
