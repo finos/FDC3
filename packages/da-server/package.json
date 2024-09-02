@@ -13,7 +13,7 @@
     "build": "npm run directory-openapi && tsc --module es2022"
   },
   "dependencies": {
-    "@finos/fdc3": "2.2.0-beta.0",
+    "@kite9/fdc3": "2.2.0-beta.0",
     "@types/uuid": "^10.0.0",
     "uuid": "^9.0.1"
   },

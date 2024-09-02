@@ -2,7 +2,7 @@ import { Given } from '@cucumber/cucumber'
 import { CustomWorld } from '../world/index';
 import { handleResolve } from '@kite9/testing';
 import { IntentEvent } from '@kite9/fdc3-common';
-import { Context, ContextMetadata } from '@finos/fdc3';
+import { Context, ContextMetadata } from '@kite9/fdc3';
 
 Given("app {string}", function (this: CustomWorld, appStr: string) {
     const [appId, instanceId] = appStr.split("/")

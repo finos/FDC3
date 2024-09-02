@@ -2,7 +2,7 @@ import { Directory, DirectoryApp, InstanceID, ServerContext } from '@kite9/da-se
 import { Socket } from 'socket.io-client';
 import { v4 as uuid } from 'uuid'
 import { FDC3_DA_EVENT } from '../../message-types';
-import { AppIdentifier, OpenError } from '@finos/fdc3';
+import { AppIdentifier, OpenError } from '@kite9/fdc3';
 
 enum Opener { Tab, Frame, Nested }
 

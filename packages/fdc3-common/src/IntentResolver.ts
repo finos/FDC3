@@ -1,4 +1,4 @@
-import { AppIdentifier, AppIntent, Context } from "@finos/fdc3";
+import { AppIdentifier, AppIntent, Context } from "@kite9/fdc3";
 import { Connectable } from "./Connectable";
 
 

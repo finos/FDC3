@@ -1,6 +1,6 @@
 import {
     AppIdentifier
-} from "@finos/fdc3";
+} from "@kite9/fdc3";
 
 export type AppChecker = (o: Window) => AppIdentifier | undefined;
 

@@ -1,6 +1,6 @@
 import { ServerContext, InstanceID } from '../../src/ServerContext'
 import { CustomWorld } from '../world'
-import { OpenError, AppIdentifier } from '@finos/fdc3'
+import { OpenError, AppIdentifier } from '@kite9/fdc3'
 
 type ConnectionDetails = AppIdentifier & {
     msg?: object

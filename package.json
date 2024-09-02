@@ -1,6 +1,6 @@
 {
-  "name": "@finos/fdc3",
-  "version": "2.1.1",
+  "name": "@kite9/fdc3",
+  "version": "2.2.0-beta.0",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -24,7 +24,8 @@
     "packages/da-proxy",
     "packages/da-server",
     "packages/client",
-    "packages/demo"
+    "packages/demo",
+    "toolbox/fdc3-workbench"
   ],
   "scripts": {
     "clean": "npm run clean --workspaces --if-present",
@@ -32,7 +33,8 @@
     "prebuild": "npm run prebuild --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
-    "syncpack": "npm exec syncpack fix-mismatches --types 'local'"
+    "syncpack": "npm exec syncpack fix-mismatches --types 'local'",
+    "dev": "concurrently \"cd toolbox/fdc3-workbench && npm run dev\" \"cd packages/demo && npm run dev\""
   },
   "husky": {
     "hooks": {
@@ -49,5 +51,8 @@
   },
   "dependencies": {
     "syncpack": "^12.4.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }

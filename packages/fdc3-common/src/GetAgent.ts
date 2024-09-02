@@ -2,7 +2,7 @@
  * Typescript related to the getAgent() function. Note that GetAgent.md is a copy of this file which has been modified
  * for display in markdown format.
  */
-import { DesktopAgent } from '@finos/fdc3';
+import { DesktopAgent } from '@kite9/fdc3';
 
 /** 
  * Function used to retrieve an FDC3 Desktop Agent API instance, which  
