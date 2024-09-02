@@ -114,7 +114,7 @@ export enum AgentError {
   /** Returned if either the failover function itself, or what it returned,  
    * was not the right type. */ 
   InvalidFailover = "InvalidFailover" 
-};
+}
 
 /** Type representing data on the Desktop Agent that an app 
  *  connected to that is persisted by the getAgent function 
@@ -183,4 +183,4 @@ export enum WebDesktopAgentType {
   /** Denotes a Desktop Agent that was returned by a failover 
    * function that was passed by the application. */ 
   FAILOVER = "FAILOVER" 
-};
+}

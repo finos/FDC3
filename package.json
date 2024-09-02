@@ -21,18 +21,17 @@
     "packages/fdc3-core",
     "packages/fdc3-common",
     "packages/testing",
-    "packages/addon",
     "packages/da-proxy",
     "packages/da-server",
     "packages/client",
     "packages/demo"
   ],
   "scripts": {
-    "clean": "npm run clean --workspaces --if-present",  
-    "build": "npm run build --workspaces --if-present",  
-    "prebuild": "npm run prebuild --workspaces --if-present",  
-    "test": "npm run test --workspaces --if-present",  
-    "lint": "npm run lint --workspaces --if-present"  
+    "clean": "npm run clean --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "prebuild": "npm run prebuild --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
   },
   "husky": {
     "hooks": {
