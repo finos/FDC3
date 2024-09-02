@@ -188,6 +188,6 @@ Adds a listener that will be called whenever the remote app invokes `Listener.un
 onDisconnect(handler: () => void): Listener;
 ```
 
-Deprecated in favour of the aysnc `addEventListener("disconnect", handler)` function.
+Deprecated in favour of the async `addEventListener("disconnect", handler)` function.
 
 Adds a listener that will be called when the remote app terminates, for example when its window is closed or because disconnect was called.
