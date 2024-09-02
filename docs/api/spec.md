@@ -48,10 +48,9 @@ The FDC3 API specification consists of interfaces.  It is expected that each Des
 - [`Channel`](ref/Channel)
 - [`PrivateChannel`](ref/PrivateChannel)
 - [`Listener`](ref/Types#listener)
+- [Utility types](ref/Types#listener) and [Metadata Objects](ref/Metadata).
 
-Other interfaces defined in the spec are not critical to define as concrete types.  Rather, the Desktop Agent should expect to have objects of the interface shape passed into or out of their library.
-
-The means to access an API interface is defined separately for each language in which FDC3 is implemented. These definitions are important as they affect whether applicaitons can be written in a vendor agnostic format so that they run under any Standards-conformant implementation. For details of how to access an API interface in particular languages please see [Supported Platforms](supported-platforms).
+The means to access the main FDC3 API interface (a `DesktopAgent` implementation) is defined separately for each language in which FDC3 is implemented. These definitions are important as they affect whether applications can be written in a vendor agnostic format so that they run under any Standards-conformant implementation.
 
 ### Implementation language
 
@@ -59,7 +58,7 @@ FDC3 and the Desktop Agent API it defines are intended to be independent of part
 
 Specifically, the use of ['unions'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of primitive values in API type and metadata objects, or function parameters SHOULD be avoided as they often cannot be replicated in other languages. Unions of more complex types (such as specific [Context](ref/Context) Types) may be used where a suitable interface is available or can be created to allow the required polymorphism in languages other than TypeScript.
 
-For implementation details relating to particular languages, and how to access the API in those languages, please see [Supported Platforms](supported-platforms).
+For implementation details relating to particular languages and how to access the API in those languages please see [Supported Platforms](supported-platforms).
 
 ### Standards vs. Implementation
 
