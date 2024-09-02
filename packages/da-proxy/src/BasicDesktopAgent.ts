@@ -1,9 +1,10 @@
-import { AppIdentifier, AppMetadata, Context, ContextHandler, DesktopAgent, ImplementationMetadata, IntentHandler, IntentResolution, Listener } from "@finos/fdc3";
+import { AppIdentifier, AppMetadata, Context, ContextHandler, DesktopAgent, EventHandler, FDC3EventType, ImplementationMetadata, IntentHandler, IntentResolution, Listener } from "@finos/fdc3";
 import { ChannelSupport } from "./channels/ChannelSupport";
 import { AppSupport } from "./apps/AppSupport";
 import { IntentSupport } from "./intents/IntentSupport";
 import { HandshakeSupport } from "./handshake/HandshakeSupport";
 import { Connectable } from "@kite9/fdc3-common";
+import { DesktopAgentDetails } from "@finos/fdc3/dist/api/GetAgent";
 
 /**
  * This splits out the functionality of the desktop agent into 
@@ -23,6 +24,12 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
         this.channels = channels
         this.apps = apps
         this.connectables = connectables
+    }
+    addEventListener(_type: FDC3EventType | null, _handler: EventHandler): Promise<Listener> {
+        throw new Error("Method not implemented.");
+    }
+    validateAppIdentity?({ }: { appId?: string; appDUrl?: string; instanceUuid?: string; }): Promise<DesktopAgentDetails> {
+        throw new Error("Method not implemented.");
     }
 
     async getInfo(): Promise<ImplementationMetadata> {
@@ -127,5 +134,4 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
     async connect(): Promise<void> {
         await Promise.all(this.connectables.map(c => c.connect()))
     }
-
 }
