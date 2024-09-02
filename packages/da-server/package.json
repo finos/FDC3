@@ -1,10 +1,6 @@
 {
   "name": "@kite9/da-server",
-<<<<<<< HEAD:fdc3-for-web-implementation/packages/da-server/package.json
-  "version": "0.0.57",
-=======
   "version": "2.1.1",
->>>>>>> fdc3-for-web-impl:packages/da-server/package.json
   "files": [
     "dist"
   ],
@@ -25,13 +21,8 @@
     "@cucumber/cucumber": "10.3.1",
     "@cucumber/html-formatter": "11.0.4",
     "@cucumber/pretty-formatter": "1.0.1",
-<<<<<<< HEAD:fdc3-for-web-implementation/packages/da-server/package.json
-    "@kite9/fdc3-common": "0.0.57",
-    "@kite9/testing": "0.0.57",
-=======
     "@kite9/fdc3-common": "2.1.1",
     "@kite9/testing": "2.1.1",
->>>>>>> fdc3-for-web-impl:packages/da-server/package.json
     "@types/expect": "24.3.0",
     "@types/lodash": "4.14.167",
     "@types/node": "^20.14.11",

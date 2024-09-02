@@ -1,11 +1,7 @@
 {
   "name": "@kite9/demo",
   "private": true,
-<<<<<<< HEAD:fdc3-for-web-implementation/packages/demo/package.json
-  "version": "0.0.57",
-=======
   "version": "2.1.1",
->>>>>>> fdc3-for-web-impl:packages/demo/package.json
   "scripts": {
     "dev": "nodemon -w src/server src/server/main.ts"
   },
@@ -17,17 +13,10 @@
     "vite": "^5.2.0"
   },
   "dependencies": {
-<<<<<<< HEAD:fdc3-for-web-implementation/packages/demo/package.json
-    "@finos/fdc3": "^2.1.0-beta.6",
-    "@kite9/client": "0.0.57",
-    "@kite9/da-server": "0.0.57",
-    "@kite9/fdc3-common": "0.0.57",
-=======
     "@finos/fdc3": "2.1.1",
     "@kite9/client": "2.1.1",
     "@kite9/da-server": "2.1.1",
     "@kite9/fdc3-common": "2.1.1",
->>>>>>> fdc3-for-web-impl:packages/demo/package.json
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.10",
     "express": "^4.18.3",
