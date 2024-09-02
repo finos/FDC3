@@ -19,3 +19,4 @@ website/.docusaurus/**
 .idea/
 *.iml
 website/.yarn
+.nyc_output

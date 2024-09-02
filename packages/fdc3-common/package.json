@@ -1,0 +1,25 @@
+{
+  "name": "@kite9/fdc3-common",
+<<<<<<< HEAD:fdc3-for-web-implementation/packages/fdc3-common/package.json
+  "version": "0.0.57",
+=======
+  "version": "2.1.1",
+>>>>>>> fdc3-for-web-impl:packages/fdc3-common/package.json
+  "files": [
+    "dist"
+  ],
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "scripts": {
+    "build": "tsc --module es2022",
+    "clean": "rimraf dist",
+    "test": "tsc"
+  },
+  "dependencies": {
+    "@finos/fdc3": "2.1.1"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "typescript": "^5.3.2"
+  }
+}
