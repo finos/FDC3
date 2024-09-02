@@ -14,7 +14,7 @@ const setup = (data: ResolverIntents, callback: (s: SingleAppIntent | null) => v
     if (!doneIntents.has(name)) {
       doneIntents.add(name);
       const option = document.createElement("option");
-      option.textContent = displayName;
+      option.textContent = displayName as string; 
       option.value = name;
       intentSelect.appendChild(option);
     }
