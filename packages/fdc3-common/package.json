@@ -1,6 +1,6 @@
 {
   "name": "@kite9/fdc3-common",
-  "version": "2.1.1",
+  "version": "2.2.0-beta.0",
   "files": [
     "dist"
   ],
@@ -12,7 +12,7 @@
     "test": "tsc"
   },
   "dependencies": {
-    "@finos/fdc3": "2.1.1"
+    "@finos/fdc3": "2.2.0-beta.0"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",

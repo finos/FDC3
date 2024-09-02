@@ -1,5 +1,5 @@
-import { AppIntent, Context, IntentResult } from "@finos/fdc3";
-import { IntentResolver, IntentResolutionChoice } from "@kite9/fdc3-common";
+import { AppIntent, Channel, Context, IntentResult } from "@finos/fdc3";
+import { IntentResolver, IntentResolutionChoice, ChannelSelector } from "@kite9/fdc3-common";
 import { PropsWorld } from "../world";
 
 /**
@@ -45,4 +45,27 @@ export class SimpleIntentResolver implements IntentResolver {
 
 export const CHANNEL_STATE = 'CHANNEL_STATE'
 
+export class SimpleChannelSelector implements ChannelSelector {
+
+    cw: PropsWorld
+
+    constructor(cw: PropsWorld) {
+        this.cw = cw;
+    }
+
+    updateChannel(channelId: string | null, availableChannels: Channel[]): void {
+        this.cw.props['channelId'] = channelId
+        this.cw.props['channels'] = availableChannels
+    }
+
+    setChannelChangeCallback(_callback: (channelId: string) => void): void {
+    }
+
+    async connect(): Promise<void> {
+    }
+
+    async disconnect(): Promise<void> {
+    }
+
+}
 
