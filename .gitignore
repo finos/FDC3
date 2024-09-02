@@ -20,3 +20,4 @@ website/.docusaurus/**
 *.iml
 website/.yarn
 .nyc_output
+generated/
