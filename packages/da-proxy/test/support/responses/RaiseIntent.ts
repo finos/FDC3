@@ -147,7 +147,6 @@ export class RaiseIntent implements AutomaticResponse {
                 setTimeout(() => { m.receive(out2) }, 300)
             }
         }
-
         return Promise.resolve()
     }
 }
