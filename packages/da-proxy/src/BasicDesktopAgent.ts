@@ -29,6 +29,7 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
     addEventListener(_type: FDC3EventType | null, _handler: EventHandler): Promise<Listener> {
         throw new Error("Method not implemented.");
     }
+
     validateAppIdentity?({ }: { appId?: string; appDUrl?: string; instanceUuid?: string; }): Promise<DesktopAgentDetails> {
         throw new Error("Method not implemented.");
     }
