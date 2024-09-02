@@ -62,7 +62,7 @@
     "jest-mock-extended": "3.0.5",
     "prettier": "3.2.5",
     "quicktype": "23.0.78",
-    "rimraf": "^5.0.5",
+    "rimraf": "^6.0.1",
     "rollup": "4.12.1",
     "ts-jest": "29.1.2",
     "tslib": "^2.0.1",
