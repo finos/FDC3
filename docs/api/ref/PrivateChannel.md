@@ -62,7 +62,7 @@ interface IPrivateChannel : IChannel, IIntentResult
 
 ### 'Server-side' example
 
-The intent app establishes and returns a `PrivateChannel` to the client (who is awaiting `getResult()`). When the client calls `addContextlistener()` on that channel, the intent app receives notice via the handler added with `addEventListener()` and knows that the client is ready to start receiving quotes.
+The intent app establishes and returns a `PrivateChannel` to the client (who is awaiting `getResult()`). When the client calls `addContextListener()` on that channel, the intent app receives notice via the handler added with `addEventListener()` and knows that the client is ready to start receiving quotes.
 
 The Desktop Agent knows that a channel is being returned by inspecting the object returned from the handler (e.g. check constructor or look for private member).
 
@@ -268,9 +268,9 @@ Not implemented
 - [Events](./Events)
 - [EventHandler](./Events#eventhandler)
 - [PrivateChannelEvent](./Events#privatechannelevent)
-- [PrivateChannelAddContextListenerEvent]](./Events#privatechanneladdcontextlistenerevent)
-- [PrivateChannelUnsubscribeEvent]](./Events#privatechannelunsubscribeevent)
-- [PrivateChannelDisconnectEvent]](./Events#privatechanneldisconnectevent)
+- [PrivateChannelAddContextListenerEvent](./Events#privatechanneladdcontextlistenerevent)
+- [PrivateChannelUnsubscribeEvent](./Events#privatechannelunsubscribeevent)
+- [PrivateChannelDisconnectEvent](./Events#privatechanneldisconnectevent)
   
 ### `disconnect`
 
@@ -287,6 +287,9 @@ disconnect(): Promise<void>;
 ```csharp
 void Disconnect();
 ```
+
+</TabItem>
+</Tabs>
   
 May be called to indicate that a participant will no longer interact with this channel.
 
@@ -296,18 +299,18 @@ May be called to indicate that a participant will no longer interact with this c
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
-  
+
 ```ts
 onAddContextListener(handler: (contextType?: string) => void): Listener;
 ```
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
-  
+
 ```csharp
 IListener OnAddContextListener(Action<string?> handler);
 ```
-  
+
 </TabItem>
 </Tabs>
   
