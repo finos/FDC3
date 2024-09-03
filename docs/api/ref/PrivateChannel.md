@@ -68,9 +68,9 @@ The Desktop Agent knows that a channel is being returned by inspecting the objec
 
 Although this interaction occurs entirely in frontend code, we refer to it as the 'server-side' interaction as it receives a request and initiates a stream of responses.
 
-
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
 fdc3.addIntentListener("QuoteStream", async (context) => {
     const channel: PrivateChannel = await fdc3.createPrivateChannel();
@@ -178,6 +178,7 @@ try {
     console.error(`Error: Intent was not resolved: ${resolverError}`);
 }
 ```
+
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
