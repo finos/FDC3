@@ -30,6 +30,12 @@
               "type": "string",
               "format": "uri"
             },
+            "actualUrl": {
+              "title": "Actual URL",
+              "description": "The current URL of the page attempting to connect. This may differ from the identityUrl, but the origins MUST match.",
+              "type": "string",
+              "format": "uri"
+            },
             "fdc3Version": {
               "title": "FDC3 version",
               "description": "The version of FDC3 API that the app supports.",
@@ -46,7 +52,7 @@
               "type": "boolean"
             }
           },
-          "required": ["identityUrl","fdc3Version"]
+          "required": ["identityUrl","actualUrl","fdc3Version"]
         },
         "meta": true
       },

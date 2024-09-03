@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerEvent, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatEvent, HeartbeatResponseRequest, IframeChannels, IframeChannelSelected, IframeDrag, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IframeRestyle, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage } from "./file";
+//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerEvent, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IframeChannels, IframeChannelSelected, IframeDrag, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IframeRestyle, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage } from "./file";
 //
 //   const addContextListenerRequest = Convert.toAddContextListenerRequest(json);
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
@@ -40,8 +40,8 @@
 //   const getOrCreateChannelResponse = Convert.toGetOrCreateChannelResponse(json);
 //   const getUserChannelsRequest = Convert.toGetUserChannelsRequest(json);
 //   const getUserChannelsResponse = Convert.toGetUserChannelsResponse(json);
+//   const heartbeatAcknowledgementRequest = Convert.toHeartbeatAcknowledgementRequest(json);
 //   const heartbeatEvent = Convert.toHeartbeatEvent(json);
-//   const heartbeatResponseRequest = Convert.toHeartbeatResponseRequest(json);
 //   const iframeChannels = Convert.toIframeChannels(json);
 //   const iframeChannelSelected = Convert.toIframeChannelSelected(json);
 //   const iframeDrag = Convert.toIframeDrag(json);
@@ -618,7 +618,7 @@ export interface AppRequestMessageMeta {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  */
-export type RequestMessageType = "addContextListenerRequest" | "addEventListenerRequest" | "addIntentListenerRequest" | "broadcastRequest" | "contextListenerUnsubscribeRequest" | "createPrivateChannelRequest" | "eventListenerUnsubscribeRequest" | "findInstancesRequest" | "findIntentRequest" | "findIntentsByContextRequest" | "getAppMetadataRequest" | "getCurrentChannelRequest" | "getCurrentContextRequest" | "getInfoRequest" | "getOrCreateChannelRequest" | "getUserChannelsRequest" | "heartbeatResponseRequest" | "intentListenerUnsubscribeRequest" | "intentResultRequest" | "joinUserChannelRequest" | "leaveCurrentChannelRequest" | "openRequest" | "privateChannelAddEventListenerRequest" | "privateChannelDisconnectRequest" | "privateChannelUnsubscribeEventListenerRequest" | "raiseIntentForContextRequest" | "raiseIntentRequest";
+export type RequestMessageType = "addContextListenerRequest" | "addEventListenerRequest" | "addIntentListenerRequest" | "broadcastRequest" | "contextListenerUnsubscribeRequest" | "createPrivateChannelRequest" | "eventListenerUnsubscribeRequest" | "findInstancesRequest" | "findIntentRequest" | "findIntentsByContextRequest" | "getAppMetadataRequest" | "getCurrentChannelRequest" | "getCurrentContextRequest" | "getInfoRequest" | "getOrCreateChannelRequest" | "getUserChannelsRequest" | "heartbeatAcknowledgementRequest" | "intentListenerUnsubscribeRequest" | "intentResultRequest" | "joinUserChannelRequest" | "leaveCurrentChannelRequest" | "openRequest" | "privateChannelAddEventListenerRequest" | "privateChannelDisconnectRequest" | "privateChannelUnsubscribeEventListenerRequest" | "raiseIntentForContextRequest" | "raiseIntentRequest";
 
 /**
  * An event message from the Desktop Agent to an app indicating that context has been
@@ -2017,6 +2017,43 @@ export interface GetUserChannelsResponsePayload {
  */
 
 /**
+ * A request that serves as an acknowledgement of a heartbeat event from the Desktop Agent
+ * and indicates that an application window or frame is still alive.
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface HeartbeatAcknowledgementRequest {
+    /**
+     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+     */
+    meta: AddContextListenerRequestMeta;
+    /**
+     * The message payload typically contains the arguments to FDC3 API functions.
+     */
+    payload: HeartbeatAcknowledgementRequestPayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Request' appended.
+     */
+    type: "heartbeatAcknowledgementRequest";
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface HeartbeatAcknowledgementRequestPayload {
+    /**
+     * The timestamp of the heartbeatEvent that is being acknowledged.
+     */
+    timestamp: Date;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+
+/**
  * A heartbeat message from the Desktop Agent to an app indicating that the Desktop Agent is
  * alive and that the application should send a heartbeatResponseRequest to the agent in
  * response.
@@ -2052,43 +2089,6 @@ export interface HeartbeatEventPayload {
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
- */
-
-/**
- * A request that serves as a response to a heartbeat event from the Desktop Agent and
- * indicates that an application window or frame is still alive.
- *
- * A request message from an FDC3-enabled app to a Desktop Agent.
- */
-export interface HeartbeatResponseRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: HeartbeatResponseRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "heartbeatResponseRequest";
-}
-
-/**
- * The message payload typically contains the arguments to FDC3 API functions.
- */
-export interface HeartbeatResponseRequestPayload {
-    /**
-     * The timestamp of the heartbeatEvent that is being responded to.
-     */
-    timestamp: Date;
-}
-
-/**
- * Identifies the type of the message and it is typically set to the FDC3 function name that
- * the message relates to, e.g. 'findIntent', with 'Request' appended.
  */
 
 /**
@@ -3580,6 +3580,11 @@ export interface ConnectionStepMetadata {
  */
 export interface WebConnectionProtocol1HelloPayload {
     /**
+     * The current URL of the page attempting to connect. This may differ from the identityUrl,
+     * but the origins MUST match.
+     */
+    actualUrl: string;
+    /**
      * A flag that may be used to indicate that a channel selector UI is or is not required. If
      * the app includes its own UI for displaying
      */
@@ -3709,6 +3714,11 @@ export interface WebConnectionProtocol4ValidateAppIdentity {
  * The message payload, containing data pertaining to this connection step.
  */
 export interface WebConnectionProtocol4ValidateAppIdentityPayload {
+    /**
+     * The current URL of the page attempting to connect. This may differ from the identityUrl,
+     * but the origins MUST match.
+     */
+    actualUrl: string;
     /**
      * URL to use for the identity of the application. Desktop Agents MUST validate that the
      * origin of the message matches the URL, but MAY implement custom comparison logic.
@@ -4157,20 +4167,20 @@ export class Convert {
         return JSON.stringify(uncast(value, r("GetUserChannelsResponse")), null, 2);
     }
 
+    public static toHeartbeatAcknowledgementRequest(json: string): HeartbeatAcknowledgementRequest {
+        return cast(JSON.parse(json), r("HeartbeatAcknowledgementRequest"));
+    }
+
+    public static heartbeatAcknowledgementRequestToJson(value: HeartbeatAcknowledgementRequest): string {
+        return JSON.stringify(uncast(value, r("HeartbeatAcknowledgementRequest")), null, 2);
+    }
+
     public static toHeartbeatEvent(json: string): HeartbeatEvent {
         return cast(JSON.parse(json), r("HeartbeatEvent"));
     }
 
     public static heartbeatEventToJson(value: HeartbeatEvent): string {
         return JSON.stringify(uncast(value, r("HeartbeatEvent")), null, 2);
-    }
-
-    public static toHeartbeatResponseRequest(json: string): HeartbeatResponseRequest {
-        return cast(JSON.parse(json), r("HeartbeatResponseRequest"));
-    }
-
-    public static heartbeatResponseRequestToJson(value: HeartbeatResponseRequest): string {
-        return JSON.stringify(uncast(value, r("HeartbeatResponseRequest")), null, 2);
     }
 
     public static toIframeChannels(json: string): IframeChannels {
@@ -5071,20 +5081,20 @@ const typeMap: any = {
         { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
         { json: "userChannels", js: "userChannels", typ: u(undefined, a(r("Channel"))) },
     ], false),
+    "HeartbeatAcknowledgementRequest": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
+        { json: "payload", js: "payload", typ: r("HeartbeatAcknowledgementRequestPayload") },
+        { json: "type", js: "type", typ: r("HeartbeatAcknowledgementRequestType") },
+    ], false),
+    "HeartbeatAcknowledgementRequestPayload": o([
+        { json: "timestamp", js: "timestamp", typ: Date },
+    ], false),
     "HeartbeatEvent": o([
         { json: "meta", js: "meta", typ: r("AddEventListenerEventMeta") },
         { json: "payload", js: "payload", typ: r("HeartbeatEventPayload") },
         { json: "type", js: "type", typ: r("HeartbeatEventType") },
     ], false),
     "HeartbeatEventPayload": o([
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "HeartbeatResponseRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("HeartbeatResponseRequestPayload") },
-        { json: "type", js: "type", typ: r("HeartbeatResponseRequestType") },
-    ], false),
-    "HeartbeatResponseRequestPayload": o([
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "IframeChannels": o([
@@ -5407,6 +5417,7 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "WebConnectionProtocol1HelloPayload": o([
+        { json: "actualUrl", js: "actualUrl", typ: "" },
         { json: "channelSelector", js: "channelSelector", typ: u(undefined, true) },
         { json: "fdc3Version", js: "fdc3Version", typ: "" },
         { json: "identityUrl", js: "identityUrl", typ: "" },
@@ -5436,6 +5447,7 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("WebConnectionProtocol4ValidateAppIdentityType") },
     ], false),
     "WebConnectionProtocol4ValidateAppIdentityPayload": o([
+        { json: "actualUrl", js: "actualUrl", typ: "" },
         { json: "identityUrl", js: "identityUrl", typ: "" },
         { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
         { json: "instanceUuid", js: "instanceUuid", typ: u(undefined, "") },
@@ -5589,7 +5601,7 @@ const typeMap: any = {
         "getInfoRequest",
         "getOrCreateChannelRequest",
         "getUserChannelsRequest",
-        "heartbeatResponseRequest",
+        "heartbeatAcknowledgementRequest",
         "intentListenerUnsubscribeRequest",
         "intentResultRequest",
         "joinUserChannelRequest",
@@ -5705,11 +5717,11 @@ const typeMap: any = {
     "GetUserChannelsResponseType": [
         "getUserChannelsResponse",
     ],
+    "HeartbeatAcknowledgementRequestType": [
+        "heartbeatAcknowledgementRequest",
+    ],
     "HeartbeatEventType": [
         "heartbeatEvent",
-    ],
-    "HeartbeatResponseRequestType": [
-        "heartbeatResponseRequest",
     ],
     "IframeChannelsType": [
         "iframeChannels",

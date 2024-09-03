@@ -193,7 +193,7 @@ For more details on the connection process, please see the documentation for the
 
 See [Desktop Agent Communication Protocol ](./desktopAgentCommunicationProtocol .md)
 
-See bcp.ts for a full list of BCP messages. 
+See bcp.ts for a full list of BCP messages.
 
 ## Implementing DAs in hidden iframes
 
