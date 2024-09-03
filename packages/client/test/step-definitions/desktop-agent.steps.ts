@@ -126,5 +126,5 @@ Given("the session identity is set to {string}", async function (this: CustomWor
         instanceId: 'uuid-0'
     }
 
-    globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY, JSON.stringify(details))
+    globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY + "-mocky", JSON.stringify(details))
 })

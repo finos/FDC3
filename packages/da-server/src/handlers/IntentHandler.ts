@@ -113,6 +113,10 @@ export class IntentHandler implements MessageHandler {
         this.timeoutMs = timeoutMs
     }
 
+    async narrowIntents(appIntents: AppIntent[], context: Context, sc: ServerContext<any>): Promise<AppIntent[]> {
+        return sc.narrowIntents(appIntents, context)
+    }
+
     async accept(msg: any, sc: ServerContext<any>, uuid: InstanceID): Promise<void> {
         const from = sc.getInstanceDetails(uuid)
 
@@ -264,12 +268,12 @@ export class IntentHandler implements MessageHandler {
 
         if (arg0[0].type == 'raiseIntentResponse') {
             return successResponseId(sc, arg0[0].requestUuid, arg0[0].from, {
-                appIntent: appIntents[0]
+                appIntent: (await this.narrowIntents(appIntents, arg0[0].context, sc))[0]
             }, arg0[0].type)
         } else {
             // raise intent for context
             return successResponseId(sc, arg0[0].requestUuid, arg0[0].from, {
-                appIntents: appIntents
+                appIntents: await this.narrowIntents(appIntents, arg0[0].context, sc)
             }, arg0[0].type)
         }
     }
@@ -324,12 +328,12 @@ export class IntentHandler implements MessageHandler {
 
         if (arg0[0].type == 'raiseIntentResponse') {
             return successResponseId(sc, arg0[0].requestUuid, arg0[0].from, {
-                appIntent: appIntents[0]
+                appIntent: (await this.narrowIntents(appIntents, arg0[0].context, sc))[0]
             }, arg0[0].type)
         } else {
             // raise intent for context
             return successResponseId(sc, arg0[0].requestUuid, arg0[0].from, {
-                appIntents: appIntents
+                appIntents: await this.narrowIntents(appIntents, arg0[0].context, sc)
             }, arg0[0].type)
         }
 
