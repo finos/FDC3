@@ -10,16 +10,15 @@
       "fdc3-compliance",
       "fdc3-glossary",
       "references",
-      "supported-platforms",
       {
         "type": "category",
         "label": "API Part",
         "items": [
           "api/spec",
+          "api/supported-platforms",
           "api/ref/DesktopAgent",
           "api/ref/Channel",
           "api/ref/PrivateChannel",
-          "api/ref/Globals",
           "api/ref/Types",
           "api/ref/Metadata",
           "api/ref/Errors",
