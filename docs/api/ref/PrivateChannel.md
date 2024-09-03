@@ -229,7 +229,20 @@ catch (Exception ex)
 addEventListener(type: PrivateChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
 ```
 
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+Not implemented
+```
+
+</TabItem>
+</Tabs>
+
 Register a handler for events from the PrivateChannel. Whenever the handler function is called it will be passed an event object with details related to the event.
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 // any event type
@@ -239,17 +252,17 @@ const listener: Listener = await myPrivateChannel.addEventListener(null,
     }
 );
 ```
-  
+
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-```
+```csharp
 Not implemented
 ```
 
 </TabItem>
 </Tabs>
-  
+
 **See also:**
 
 - [Events](./Events)
@@ -277,7 +290,6 @@ void Disconnect();
   
 May be called to indicate that a participant will no longer interact with this channel.
 
-  
 ## Deprecated Functions
 
 ### `onAddContextListener`
