@@ -1,3 +1,4 @@
+import { AppIntent, Context } from "@kite9/fdc3";
 import { AppIdentifier } from "@kite9/fdc3-common";
 
 
@@ -82,4 +83,11 @@ export interface ServerContext<X extends AppIdentifier> {
      * Supported version of the FDC3 API of the desktop agent server.
      */
     fdc3Version(): string
+
+    /**
+     * This is called prior to returning intents to the client.  It is a
+     * an opportunity for the server to either present an intent resolver 
+     * or otherwise mess with the availble intents, or do nothing.
+     */
+    narrowIntents(appIntents: AppIntent[], context: Context): Promise<AppIntent[]>
 }
