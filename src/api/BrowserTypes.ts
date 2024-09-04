@@ -1317,6 +1317,8 @@ export interface Image {
  * response to addContextListener, addIntentListener or one of the PrivateChannel event
  * listeners and used to identify it in messages (e.g. when unsubscribing).
  *
+ * Unique identifier for an event message sent from a Desktop Agent to an app.
+ *
  * Unique identifier for a for an attempt to connect to a Desktop Agent
  *
  * Should be set if the raiseIntent request returned an error.
@@ -2620,7 +2622,8 @@ export interface IntentListenerUnsubscribeResponse {
 
 /**
  * A request to deliver a result for an intent (which may include a `void` result that just
- * indicates that the handler has run, returning no result).
+ * indicates that the handler has run, returning no result). The result is tied to the
+ * intentEvent it relates to by quoting the `eventUuid` of the intentEvent in its payload.
  *
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
@@ -2644,10 +2647,14 @@ export interface IntentResultRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface IntentResultRequestPayload {
-    intentResult: PurpleIntentResult;
+    /**
+     * The eventUuid value of the intentEvent that the result being sent relates to.
+     */
+    intentEventUuid?: string;
+    intentResult:     IntentResult;
 }
 
-export interface PurpleIntentResult {
+export interface IntentResult {
     context?: Context;
     channel?: Channel;
 }
@@ -3506,6 +3513,8 @@ export interface RaiseIntentResponsePayload {
 
 /**
  * A secondary response to a request to raise an intent used to deliver the intent result.
+ * This message should quote the original requestUuid of the raiseIntentRequest message in
+ * its `meta.requestUuid` field.
  *
  * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
  * payload contains an `error` property, the request was unsuccessful.
@@ -3535,12 +3544,7 @@ export interface RaiseIntentResultResponse {
  */
 export interface RaiseIntentResultResponsePayload {
     error?:        ResponsePayloadError;
-    intentResult?: FluffyIntentResult;
-}
-
-export interface FluffyIntentResult {
-    context?: Context;
-    channel?: Channel;
+    intentResult?: IntentResult;
 }
 
 /**
@@ -5218,9 +5222,10 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("IntentResultRequestType") },
     ], false),
     "IntentResultRequestPayload": o([
-        { json: "intentResult", js: "intentResult", typ: r("PurpleIntentResult") },
+        { json: "intentEventUuid", js: "intentEventUuid", typ: u(undefined, "") },
+        { json: "intentResult", js: "intentResult", typ: r("IntentResult") },
     ], false),
-    "PurpleIntentResult": o([
+    "IntentResult": o([
         { json: "context", js: "context", typ: u(undefined, r("Context")) },
         { json: "channel", js: "channel", typ: u(undefined, r("Channel")) },
     ], false),
@@ -5401,11 +5406,7 @@ const typeMap: any = {
     ], false),
     "RaiseIntentResultResponsePayload": o([
         { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
-        { json: "intentResult", js: "intentResult", typ: u(undefined, r("FluffyIntentResult")) },
-    ], false),
-    "FluffyIntentResult": o([
-        { json: "context", js: "context", typ: u(undefined, r("Context")) },
-        { json: "channel", js: "channel", typ: u(undefined, r("Channel")) },
+        { json: "intentResult", js: "intentResult", typ: u(undefined, r("IntentResult")) },
     ], false),
     "WebConnectionProtocol1Hello": o([
         { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
