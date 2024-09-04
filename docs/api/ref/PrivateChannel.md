@@ -329,11 +329,11 @@ onUnsubscribe(handler: (contextType?: string) => void): Listener;
   
 </TabItem>
 <TabItem value="dotnet" label=".NET">
-  
+
 ```csharp
 IListener OnUnsubscribe(Action<string?> handler);
 ```
-  
+
 </TabItem>
 </Tabs>
 
