@@ -35,7 +35,7 @@
           "$ref": "common.schema.json#/$defs/Timestamp"
         },
         "eventUuid": {
-          "$ref": "common.schema.json#/$defs/ResponseUuid"
+          "$ref": "common.schema.json#/$defs/EventUuid"
         }
       },
       "required": ["timestamp", "eventUuid"],
