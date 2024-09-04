@@ -283,7 +283,7 @@ disconnect(): Promise<void>;
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
-  
+
 ```csharp
 void Disconnect();
 ```
@@ -352,11 +352,11 @@ onDisconnect(handler: () => void): Listener;
   
 </TabItem>
 <TabItem value="dotnet" label=".NET">
-  
+
 ```csharp
 IListener OnDisconnect(Action handler);
 ```
-  
+
 </TabItem>
 </Tabs>
 
