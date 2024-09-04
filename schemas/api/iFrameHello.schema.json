@@ -32,19 +32,20 @@
             "initialCSS": {
               "title": "Initial CSS",
               "type": "object",
-              "description": "A constrained set of CSS properties that should be set on the iframe before it is displayed.",
+              "description": "A constrained set of CSS properties that should be set on the iframe before it is displayed. Note `position` cannot be specified and should always be set to `fixed`.",
               "properties": {
                 "height": {"type": "string", "title": "height", "description": "The initial height of the iframe"},
                 "width": {"type": "string", "title": "width", "description": "The initial width of the iframe"},
-                "position": {"type": "string", "title": "position", "description": "The initial position CSS to apply to the iframe"},
                 "zIndex": {"type": "string", "title": "zIndex", "description": "The initial zindex to apply to the iframe"},
                 "left": {"type": "string", "title": "left", "description": "The initial left property to apply to the iframe"},
-                "top": {"type": "string", "title": "top", "description": "The initial right property to apply to the iframe"},
+                "top": {"type": "string", "title": "top", "description": "The initial top property to apply to the iframe"},
+                "bottom": {"type": "string", "title": "left", "description": "The initial bottom property to apply to the iframe"},
+                "right": {"type": "string", "title": "top", "description": "The initial right property to apply to the iframe"},
                 "transition": {"type": "string", "title": "transition", "description": "The transition property to apply to the iframe"},
                 "maxHeight": {"type": "string", "title": "maxHeight", "description": "The maximum height to apply to the iframe"},
                 "maxWidth": {"type": "string", "title": "maxWidth", "description": "The maximum with to apply to the iframe"}
               },
-              "required": ["height", "width", "position", "top", "left"]
+              "required": ["height", "width", "top", "left"]
             }
           },
           "additionalProperties": false,
