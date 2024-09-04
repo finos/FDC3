@@ -2271,16 +2271,20 @@ export interface IframeHelloPayload {
     implementationDetails: string;
     /**
      * A constrained set of CSS properties that should be set on the iframe before it is
-     * displayed.
+     * displayed. Note `position` cannot be specified and should always be set to `fixed`.
      */
     initialCSS: InitialCSS;
 }
 
 /**
  * A constrained set of CSS properties that should be set on the iframe before it is
- * displayed.
+ * displayed. Note `position` cannot be specified and should always be set to `fixed`.
  */
 export interface InitialCSS {
+    /**
+     * The initial bottom property to apply to the iframe
+     */
+    bottom?: string;
     /**
      * The initial height of the iframe
      */
@@ -2298,11 +2302,11 @@ export interface InitialCSS {
      */
     maxWidth?: string;
     /**
-     * The initial position CSS to apply to the iframe
-     */
-    position: string;
-    /**
      * The initial right property to apply to the iframe
+     */
+    right?: string;
+    /**
+     * The initial top property to apply to the iframe
      */
     top: string;
     /**
@@ -2444,38 +2448,27 @@ export interface IframeRestyle {
  */
 export interface IframeRestylePayload {
     /**
-     * Optional property to support resizing. When resizing anchor at the indicated location
-     * (without top or left set),
-     * e.g.
-     * - for top-left and a larger size: the bottom right corner should move down and out.
-     * - for top and smaller size: both the bottom corners should move in and up.
-     */
-    resizeAnchor?: Resizing;
-    /**
-     * A constrained set of CSS properties that should be applied to the iframe.
+     * A constrained set of CSS properties that should be applied to the iframe. Note `position`
+     * cannot be set, and should always be `fixed`.
      */
     updatedCSS: UpdatedCSS;
 }
 
 /**
- * Optional property to support resizing. When resizing anchor at the indicated location
- * (without top or left set),
- * e.g.
- * - for top-left and a larger size: the bottom right corner should move down and out.
- * - for top and smaller size: both the bottom corners should move in and up.
- */
-export type Resizing = "top-left" | "top" | "top-right" | "right" | "bottom-right" | "bottom" | "bottom-left" | "left" | "center";
-
-/**
- * A constrained set of CSS properties that should be applied to the iframe.
+ * A constrained set of CSS properties that should be applied to the iframe. Note `position`
+ * cannot be set, and should always be `fixed`.
  */
 export interface UpdatedCSS {
+    /**
+     * The initial bottom property to apply to the iframe
+     */
+    bottom?: string;
     /**
      * The updated height of the iframe
      */
     height?: string;
     /**
-     * The updated left property to apply to the iframe
+     * The initial left property to apply to the iframe
      */
     left?: string;
     /**
@@ -2487,11 +2480,11 @@ export interface UpdatedCSS {
      */
     maxWidth?: string;
     /**
-     * The updated position CSS to apply to the iframe
+     * The initial right property to apply to the iframe
      */
-    position?: string;
+    right?: string;
     /**
-     * The updated right property to apply to the iframe
+     * The initial top property to apply to the iframe
      */
     top?: string;
     /**
@@ -5143,11 +5136,12 @@ const typeMap: any = {
         { json: "initialCSS", js: "initialCSS", typ: r("InitialCSS") },
     ], false),
     "InitialCSS": o([
+        { json: "bottom", js: "bottom", typ: u(undefined, "") },
         { json: "height", js: "height", typ: "" },
         { json: "left", js: "left", typ: "" },
         { json: "maxHeight", js: "maxHeight", typ: u(undefined, "") },
         { json: "maxWidth", js: "maxWidth", typ: u(undefined, "") },
-        { json: "position", js: "position", typ: "" },
+        { json: "right", js: "right", typ: u(undefined, "") },
         { json: "top", js: "top", typ: "" },
         { json: "transition", js: "transition", typ: u(undefined, "") },
         { json: "width", js: "width", typ: "" },
@@ -5179,15 +5173,15 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("IframeRestyleType") },
     ], false),
     "IframeRestylePayload": o([
-        { json: "resizeAnchor", js: "resizeAnchor", typ: u(undefined, r("Resizing")) },
         { json: "updatedCSS", js: "updatedCSS", typ: r("UpdatedCSS") },
     ], false),
     "UpdatedCSS": o([
+        { json: "bottom", js: "bottom", typ: u(undefined, "") },
         { json: "height", js: "height", typ: u(undefined, "") },
         { json: "left", js: "left", typ: u(undefined, "") },
         { json: "maxHeight", js: "maxHeight", typ: u(undefined, "") },
         { json: "maxWidth", js: "maxWidth", typ: u(undefined, "") },
-        { json: "position", js: "position", typ: u(undefined, "") },
+        { json: "right", js: "right", typ: u(undefined, "") },
         { json: "top", js: "top", typ: u(undefined, "") },
         { json: "transition", js: "transition", typ: u(undefined, "") },
         { json: "width", js: "width", typ: u(undefined, "") },
@@ -5759,17 +5753,6 @@ const typeMap: any = {
     ],
     "IframeResolveActionType": [
         "iframeResolveAction",
-    ],
-    "Resizing": [
-        "bottom",
-        "bottom-left",
-        "bottom-right",
-        "center",
-        "left",
-        "right",
-        "top",
-        "top-left",
-        "top-right",
     ],
     "IframeRestyleType": [
         "iframeRestyle",
