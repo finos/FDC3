@@ -76,7 +76,8 @@ The first message received by the Desktop Agent on `MessagePort` `port1` from an
 
 App identity is validated and an `appId` assigned by matching the application to an AppD record already known to the Desktop Agent. This is achieved by matching  `identityUrl`, `actualUrl` fields and `origin` of the `WCPValidateAppIdentity` message (supplied by the application via the `getAgent()` implementation) to the `details.url` field of the known App Directory records.
 
-As web applications may vary their URL during use, or serve multiple applications from the same origin (differentiated by path, search params and/or hash), care must be taken in matching URLs to appD records. Two URLs are sent to the Desktop Agent in the `WCPValidateAppIdentity` message: 
+As web applications may vary their URL during use, or serve multiple applications from the same origin (differentiated by path, search params and/or hash), care must be taken in matching URLs to appD records. Two URLs are sent to the Desktop Agent in the `WCPValidateAppIdentity` message:
+
 - `actualUrl`: the current URL of the application, which MUST be captured automatically by the `getAgent()` implementation.
 - `identityUrl`: the URL to match to the app directory record.
 

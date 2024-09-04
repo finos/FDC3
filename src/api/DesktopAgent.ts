@@ -548,34 +548,6 @@ export interface DesktopAgent {
    */
   getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
 
-  /**
-   * @experimental
-   * Optional function, that can be used by getAgent() to validate app identity
-   * in preload Desktop Agents. Apps should not call this function directly.
-   *
-   * See `getAgent` for instructions.
-   *
-   * `identityUrl` is used to identify an application and may be used to match
-   * to an appD record known to the Desktop Agent. As applications may navigate
-   * to different URLs (changing their path, search parameters or hash) during
-   * normal use they may provide a URL to use to identify themselves. Preload 
-   * Desktop Agents can usually determine the current URL of the window and 
-   * MUST validate that it matches the origin of the `identityUrl`.
-   * 
-   * Instance identity should be determined by a preload Desktop agent
-   * internally, without the need for an instanceUuid as used with Web Desktop Agents.
-   *
-   * In the event that instance identity cannot be validated, the Desktop Agent
-   * MUST prevent further communication with the application.
-   * 
-   * This function is optional but recommended.
-   */
-  validateAppIdentity?({
-    identityUrl
-  }: {
-    identityUrl: string;
-  }): Promise<DesktopAgentDetails>;
-
   //---------------------------------------------------------------------------------------------
   // Deprecated function signatures
   //---------------------------------------------------------------------------------------------
