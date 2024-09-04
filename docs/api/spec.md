@@ -131,7 +131,6 @@ An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 - Make metadata about each context message or intent and context message received (including the app that originated the message) available to the receiving application.
 - Prevent external apps from listening or publishing on a [`PrivateChannel`](ref/PrivateChannel) that they did not request or provide.
 - Enforce compliance with the expected behavior of intents (where Intents specify a contract that is enforceable by schema, for example, return object types) and return an error if the interface is not met.
-- Implement [`validateAppIdentity()`](ref/DesktopAgent#validateappidentity).
 
 An FDC3 Standard compliant Desktop Agent implementation **MAY**:
 

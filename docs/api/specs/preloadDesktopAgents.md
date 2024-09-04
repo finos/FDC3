@@ -9,7 +9,7 @@ A Preload Desktop Agent is an FDC3 Desktop Agents (DA) supporting web applicatio
 
 :::info
 
-> The [getAgent() specification in the  FDC3 Web Connection Protocol](webConnectionProtocol.md) relies on Preload DAs behaving as specified in this document.
+> The [getAgent() specification in the FDC3 Web Connection Protocol](webConnectionProtocol.md) relies on Preload DAs behaving as specified in this document.
 
 :::
 

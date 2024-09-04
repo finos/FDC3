@@ -107,15 +107,9 @@ Apps must identify themselves so that DAs can positively associate them with the
 
 The DA will validate the app's identity against the app window's origin (protocol, domain and port) by positively matching it with either the `details.url` or `details.allowedOrigins` fields in the AppD record referenced by either appId or appDUrl. To ensure the validity of this process, appD records and the application itself SHOULD be served via HTTPS.
 
-1) If the DA is injected (using the `fdc` global object - Preload DA) then:
+1) If the DA is injected (using the `fdc3` global object - Preload DA) then:
 
-    Await the function `fdc3.validateAppIdentity()` if that function exists. `instanceUuid` SHOULD be provided if available from SessionStorage.
-
-    The DA SHOULD validate the app identity against the URL of the window (window.location.href). If successful then it will resolve to an `AppMetaData` object, otherwise it will reject with `IdentityValidationFailed` error.
-
-    After rejection, the DA will not respond to any further FDC3 API calls from the application instance.
-
-    If the `fdc3.validateAppIdentity` function does not exist then simply return the global object as the DesktopAgent. (This should only occur when using legacy Desktop Agents.)
+    Simply return the global object as the DesktopAgent.
 
 2) If the DA is browser-resident, then:
 
