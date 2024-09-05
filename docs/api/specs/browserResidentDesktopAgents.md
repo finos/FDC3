@@ -181,13 +181,33 @@ If an `instanceId` and `instanceUuid` are not provided or do not pass the chjeck
 
 Details of the received `instanceId` and `instanceUuid` are stored by the `getAgent()` implementation in [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) within the application window and are automatically reused when reconnecting to the Desktop Agent. SessionStorage is used as it is scoped to a particular window (rather than origin, as is the case with LocalStorage), allowing separate storage for each app instance.
 
-:::warn
+:::warning
 
 Apps launched via a call to `window.open()` from a window or app instance on the same origin can appear to be the original window. This is because browsers may clone SessionStorage for newly opened windows. When a child window calls `getAgent()` with the same `appId`, `instanceId` and `instanceUuid` as the parent window, it will appear to the DA that a navigation event occurred on the parent window. DAs therefore MUST also compare the `WindowProxy` object that is used to establish each connection to differentiate such cloned instances. If the WindowProxy objects do not match, then a new `instanceId` and `instanceUuid` MUST be assigned.
 
 :::
 
 For more details on the connection process, please see the documentation for the [Web Connection Protocol](./webConnectionProtocol).
+
+### Disconnects
+
+DAs are responsible for tracking when app windows close or navigates, which is necessary to provide accurate responses to the `findIntent`, `findIntentsByContext` & `findInstances` API calls, and to correctly resolve raised intents. 
+
+:::info
+
+The HTML Standard specifies an [onclose event handler on `MessagePort`](https://html.spec.whatwg.org/multipage/web-messaging.html#handler-messageport-onclose) which would provide an ideal event-based solution for tracking the closing of app windows. However, this event is not currently implemented in Chrome/Chromium due to security concerns (it reveals the garbage collection activity of the process holding the other end of the pipe, see comment on [whatwg/html/issues/1766](https://github.com/whatwg/html/issues/1766#issuecomment-1958782062), see also proposals to [restrict when MessagePort's onclose event can fire](https://github.com/whatwg/html/issues/10201)).
+
+:::
+
+Checking whether an application has closed may be achieved by a number of approaches:
+
+- By checking the `closed` property of WindowProxy objects that were received via the `source` property of the original `WCP1Hello` message, or any subsequent message over the `MessageChannel`. `closed` will be true if the window or frame was closed or destroyed, or the window or frame has navigated cross-domain.
+  - However, it should be noted that the `closed` will be `false` if the window has navigated same-domain, but is no longer an FDC3 app or has become a different FDC3 app.
+  - Hence, if an equivalent `WindowProxy` object is received from a different application the DA should consider the original application using that `WindowProxy` to have closed.
+- By receiving a `WCP6Goodbye` message from the application when it is closing. The `getAgent()` implementation automates the sending of this message via the HTML Standard's [Page Life Cycle API](https://wicg.github.io/page-lifecycle/spec.html). Specifically, the `getAgent()` implementation SHOULD attempt to detect windows closing by listening for the `pagehide` event and considering a window to be closed if the event's `persisted` property is `false`.
+  - Note that the pagehide event may not fire if the window's render thread crashes or is closed while 'frozen'.
+- By polling the application for responses via the `heartbeatEvent` and `heartbeatAcknowledgement` messages provided in the [Desktop Agent Communication Protocol](./desktopAgentCommunicationProtocol). These message may be used for both periodic and on-demand polling by DA implementations. On-demand polling could, for example, be used to check that all instances returned in a findIntent response or displayed in an intent resolver are still alive.
+  - Desktop Agents MAY determine their own timeout, or support configuration, to be used for considering an application to have closed as this may be affected by the implementation details of app and DAs.
 
 ## Responding to app communications with Desktop Agent Communication Protocol (DACP)
 
@@ -216,23 +236,3 @@ Communication between the `DesktopAgentProxy` and the iframes it injects is achi
 A further set of messages are provided for working with the injected user interfaces over their `MessageChannel` as part of the DACP, these are: `iFrameRestyle`, `iFrameDrag`, `iFrameChannels`, `iFrameChannelSelected`, `iFrameResolve` and `iFrameResolveAction`.
 
 See the [Desktop Agent Communication Protocol](./desktopAgentCommunicationProtocol) (DACP) for more details.
-
-## Disconnects
-
-DAs are responsible for tracking when app windows close or navigates, which is necessary to provide accurate responses to the `findIntent`, `findIntentsByContext` & `findInstances` API calls, and to correctly resolve raised intents. 
-
-:::info
-
-The HTML Standard specifies an [onclose event handler on `MessagePort`](https://html.spec.whatwg.org/multipage/web-messaging.html#handler-messageport-onclose) which would provide an ideal event-based solution for tracking the closing of app windows. However, this event is not currently implemented in Chrome/Chromium due to security concerns (it reveals the garbage collection activity of the process holding the other end of the pipe, see comment on [whatwg/html/issues/1766](https://github.com/whatwg/html/issues/1766#issuecomment-1958782062), see also proposals to [restrict when MessagePort's onclose event can fire](https://github.com/whatwg/html/issues/10201)).
-
-:::
-
-Checking whether an application has closed may be achieved by a number of approaches:
-
-- By checking the `closed` property of WindowProxy objects that were received via the `source` property of the original `WCP1Hello` message, or any subsequent message over the `MessageChannel`. `closed` will be true if the window or frame was closed or destroyed, or the window or frame has navigated cross-domain.
-  - However, it should be noted that the `closed` will be `false` if the window has navigated same-domain, but is no longer an FDC3 app or has become a different FDC3 app.
-  - Hence, if an equivalent `WindowProxy` object is received from a different application the DA should consider the original application using that `WindowProxy` to have closed.
-- By receiving a `WCP6Goodbye` message from the application when it is closing. The `getAgent()` implementation automates the sending of this message via the HTML Standard's [Page Life Cycle API](https://wicg.github.io/page-lifecycle/spec.html). Specifically, the `getAgent()` implementation SHOULD attempt to detect windows closing by listening for the `pagehide` event and considering a window to be closed if the event's `persisted` property is `false`.
-  - Note that the pagehide event may not fire if the window's render thread crashes or is closed while 'frozen'.
-- By polling the application for responses via the `heartbeatEvent` and `heartbeatAcknowledgement` messages provided in the [Desktop Agent Communication Protocol](./desktopAgentCommunicationProtocol). These message may be used for both periodic and on-demand polling by DA implementations. On-demand polling could, for example, be used to check that all instances returned in a findIntent response or displayed in an intent resolver are still alive.
-  - Desktop Agents MAY determine their own timeout, or support configuration, to be used for considering an application to have closed as this may be affected by the implementation details of app and DAs.
