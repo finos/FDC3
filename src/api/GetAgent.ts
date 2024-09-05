@@ -31,7 +31,7 @@ import { DesktopAgent } from './DesktopAgent';
  * getAgent({ 
  *     identityUrl: "https://example.com/path?param=appName#example",  
  *     channelSelector: false,  
- *     intentresolver: false 
+ *     intentResolver: false 
  * }).then((fdc3) => { 
  *     //do FDC3 stuff here
  * }; 
