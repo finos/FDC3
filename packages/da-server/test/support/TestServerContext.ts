@@ -25,7 +25,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
         this.cw = cw
     }
 
-    async narrowIntents(appIntents: AppIntent[], context: Context): Promise<AppIntent[]> {
+    async narrowIntents(appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
         return appIntents
     }
 

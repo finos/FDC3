@@ -86,12 +86,17 @@ export class OpenHandler implements MessageHandler {
         }
 
         const from = sc.getInstanceDetails(uuid)
-        if (from) {
-            switch (msg.type as string) {
-                case 'openRequest': return this.open(msg as OpenRequest, sc, from)
-                case 'findInstancesRequest': return this.findInstances(msg as FindInstancesRequest, sc, from)
-                case 'getAppMetadataRequest': return this.getAppMetadata(msg as GetAppMetadataRequest, sc, from)
+        try {
+            if (from) {
+                switch (msg.type as string) {
+                    case 'openRequest': return this.open(msg as OpenRequest, sc, from)
+                    case 'findInstancesRequest': return this.findInstances(msg as FindInstancesRequest, sc, from)
+                    case 'getAppMetadataRequest': return this.getAppMetadata(msg as GetAppMetadataRequest, sc, from)
+                }
             }
+        } catch (e: any) {
+            const responseType = msg.type.replace(new RegExp("Request$"), 'Response')
+            errorResponse(sc, msg, from, e.message ?? e, responseType)
         }
 
     }

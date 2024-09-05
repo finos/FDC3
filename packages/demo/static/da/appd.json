@@ -21,7 +21,7 @@
             "description": "App will connect to the desktop agent on startup and listen to messages on the red channel",
             "type": "web",
             "details": {
-                "url": "http://robs-pro:8095/static/app2/index.html"
+                "url": "http://localhost:8095/static/app2/index.html"
             },
             "hostManifests": {},
             "version": "1.0.0",

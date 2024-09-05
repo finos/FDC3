@@ -139,6 +139,7 @@ export class BroadcastHandler implements MessageHandler {
             errorResponse(sc, msg, from, e.message ?? e, responseType)
         }
     }
+
     handleCreatePrivateChannelRequest(arg0: CreatePrivateChannelRequest, sc: ServerContext<any>, from: AppIdentifier) {
         const id = sc.createUUID()
         this.state.push({

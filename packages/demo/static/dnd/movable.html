@@ -1,0 +1,116 @@
+
+<html>
+
+    <style>
+        .background {
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            position: fixed;
+            background-color: #22222202;
+        }
+
+        .handle {
+            position: fixed;
+            right: 10;
+            width: 200px;
+            height: 200px;
+            background-color: red;
+        }
+
+
+    </style>
+
+    <body>
+
+        <div class="Background">
+
+
+        </div>
+
+        <div class="handle" id="myDiv">    
+Drag Me
+
+        </div>
+
+        <script>
+
+
+  
+function dragElement(elmnt) {
+  var posXDrag = 0, posYDrag = 0, posXStart = 0, posYStart = 0;
+  var top = 0, left = 0;
+  
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+
+    function fire(css) {
+        window.parent.postMessage(css, '*');
+    }
+
+    function fireGrow() {
+        fire('left: 0; right: 0; top: 0; bottom: 0; position: fixed; width:100%; height:100%');
+        elmnt.style = `left: ${left}px; right: 0; top: ${top}px; bottom: 0; position: fixed; width:200px height:200px`
+    }
+
+    function fireShrink() {
+        fire(`left: ${left}px; top: ${top}px; position: fixed; width:200px; height:200px`);
+        elmnt.style = `left: 0; right: 0; top: 0; bottom: 0; position: fixed; width:100%; height:100%`
+    }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    posXStart = left + e.clientX;
+    posYStart = top + e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+    fireGrow()
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    posXDrag = posXStart - e.clientX;
+    posYDrag = posYStart - e.clientY;
+    posXStart = e.clientX;
+    posYStart = e.clientY;
+    // set the element's new position:
+    top = Math.max((elmnt.offsetTop - posYDrag),0)
+    left= Math.max((elmnt.offsetLeft - posXDrag), 0)
+    left = Math.min(left, window.innerWidth - 200)
+    elmnt.style.top = top + "px";
+    elmnt.style.left = left + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+    fireShrink()
+    console.log('closeDragElement');
+  }
+
+  fireShrink()
+}
+window.onload = function() {
+    console.log('loaded');
+    dragElement(document.getElementById("myDiv"));
+}
+
+
+        </script>
+
+    </body>
+
+</html>
