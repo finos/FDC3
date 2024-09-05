@@ -221,7 +221,7 @@ See the [Desktop Agent Communication Protocol](./desktopAgentCommunicationProtoc
 
 DAs are responsible for tracking when app windows close or navigates, which is necessary to provide accurate responses to the `findIntent`, `findIntentsByContext` & `findInstances` API calls, and to correctly resolve raised intents. 
 
-::: info
+:::info
 
 The HTML Standard specifies an [onclose event handler on `MessagePort`](https://html.spec.whatwg.org/multipage/web-messaging.html#handler-messageport-onclose) which would provide an ideal event-based solution for tracking the closing of app windows. However, this event is not currently implemented in Chrome/Chromium due to security concerns (it reveals the garbage collection activity of the process holding the other end of the pipe, see comment on [whatwg/html/issues/1766](https://github.com/whatwg/html/issues/1766#issuecomment-1958782062), see also proposals to [restrict when MessagePort's onclose event can fire](https://github.com/whatwg/html/issues/10201)).
 
