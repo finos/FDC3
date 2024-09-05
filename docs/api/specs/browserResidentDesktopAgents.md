@@ -202,12 +202,16 @@ The HTML Standard specifies an [onclose event handler on `MessagePort`](https://
 Checking whether an application has closed may be achieved by a number of approaches:
 
 - By checking the `closed` property of WindowProxy objects that were received via the `source` property of the original `WCP1Hello` message, or any subsequent message over the `MessageChannel`. `closed` will be true if the window or frame was closed or destroyed, or the window or frame has navigated cross-domain.
-  - However, it should be noted that the `closed` will be `false` if the window has navigated same-domain, but is no longer an FDC3 app or has become a different FDC3 app.
-  - Hence, if an equivalent `WindowProxy` object is received from a different application the DA should consider the original application using that `WindowProxy` to have closed.
+  - However, it should be noted that the `closed` will be `false` if the window has navigated same-domain, but is no longer an FDC3 app or has become a different FDC3 app. Hence, checking the `closed` property will not catch all cases.
+  - If an equivalent `WindowProxy` object (`WindowProxy` objects can be compared with `==` and will be equivalent if they represent the same window) is received from a different application the DA should consider the original application using that `WindowProxy` to have closed.
 - By receiving a `WCP6Goodbye` message from the application when it is closing. The `getAgent()` implementation automates the sending of this message via the HTML Standard's [Page Life Cycle API](https://wicg.github.io/page-lifecycle/spec.html). Specifically, the `getAgent()` implementation SHOULD attempt to detect windows closing by listening for the `pagehide` event and considering a window to be closed if the event's `persisted` property is `false`.
   - Note that the pagehide event may not fire if the window's render thread crashes or is closed while 'frozen'.
 - By polling the application for responses via the `heartbeatEvent` and `heartbeatAcknowledgement` messages provided in the [Desktop Agent Communication Protocol](./desktopAgentCommunicationProtocol). These message may be used for both periodic and on-demand polling by DA implementations. On-demand polling could, for example, be used to check that all instances returned in a findIntent response or displayed in an intent resolver are still alive.
   - Desktop Agents MAY determine their own timeout, or support configuration, to be used for considering an application to have closed as this may be affected by the implementation details of app and DAs.
+
+Finally, Desktop Agents SHOULD retain instance details for applications that have closed as they may appear to close during navigation events, or may navigate away and then navigate back. By retaining the instance data (`instanceId`, `instanceUuid` and `WindowProxy`) the same instance identity can be maintained or reissued. There is no standard length of time that such details should be retained, hance, Desktop Agents MAY determine for themselves how long to retain instance details for closed instances.
+
+
 
 ## Responding to app communications with Desktop Agent Communication Protocol (DACP)
 
