@@ -10,6 +10,7 @@ import * as BrowserTypes from './api/BrowserTypes';
 import * as AppIdentifier from './api/AppIdentifier';
 
 export * from './context/ContextTypes';
+
 export { AppIdentifier };
 export * from './api/AppIntent';
 export * from './api/AppMetadata';
@@ -33,7 +34,6 @@ export * from './api/Events'
 export * from './context/ContextType';
 
 export * from './intents/Intents';
-
 
 /* Workaround for conflicts between bridging types, browser type and API types
    and prettier issue with `export * as`. */
