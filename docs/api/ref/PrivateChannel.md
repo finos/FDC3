@@ -345,11 +345,11 @@ Adds a listener that will be called whenever the remote app invokes `Listener.un
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
-  
+
 ```ts
 onDisconnect(handler: () => void): Listener;
 ```
-  
+
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
