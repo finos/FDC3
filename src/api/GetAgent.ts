@@ -36,7 +36,7 @@ import { DesktopAgent } from './DesktopAgent';
  *     //do FDC3 stuff here
  * }; 
  */ 
-export type getAgent = ( 
+export type GetAgentType = ( 
   params?: GetAgentParams,  
 ) => Promise<DesktopAgent>; 
 
