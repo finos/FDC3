@@ -3599,7 +3599,7 @@ export interface WebConnectionProtocol1HelloPayload {
      * A flag that may be used to indicate that an intent resolver is or is not required. Set to
      * false if no intents, or only targeted intents, are raised
      */
-    resolver?: boolean;
+    intentResolver?: boolean;
     [property: string]: any;
 }
 
@@ -3672,7 +3672,7 @@ export interface WebConnectionProtocol3HandshakePayload {
      * `true` to use the default or `false` to disable the channel selector (as the Desktop
      * Agent will handle another way)
      */
-    channelSelector: boolean | string;
+    channelSelectorUrl: boolean | string;
     /**
      * The version of FDC3 API that the Desktop Agent will provide support for.
      */
@@ -3682,7 +3682,7 @@ export interface WebConnectionProtocol3HandshakePayload {
      * `true` to use the default or `false` to disable the intent resolver (as the Desktop Agent
      * will handle another way)
      */
-    resolver: boolean | string;
+    intentResolverUrl: boolean | string;
 }
 
 /**
@@ -5416,7 +5416,7 @@ const typeMap: any = {
         { json: "channelSelector", js: "channelSelector", typ: u(undefined, true) },
         { json: "fdc3Version", js: "fdc3Version", typ: "" },
         { json: "identityUrl", js: "identityUrl", typ: "" },
-        { json: "resolver", js: "resolver", typ: u(undefined, true) },
+        { json: "intentResolver", js: "intentResolver", typ: u(undefined, true) },
     ], "any"),
     "WebConnectionProtocol2LoadURL": o([
         { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
@@ -5432,9 +5432,9 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("WebConnectionProtocol3HandshakeType") },
     ], false),
     "WebConnectionProtocol3HandshakePayload": o([
-        { json: "channelSelector", js: "channelSelector", typ: u(true, "") },
+        { json: "channelSelectorUrl", js: "channelSelectorUrl", typ: u(true, "") },
         { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "resolver", js: "resolver", typ: u(true, "") },
+        { json: "intentResolverUrl", js: "intentResolverUrl", typ: u(true, "") },
     ], false),
     "WebConnectionProtocol4ValidateAppIdentity": o([
         { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
