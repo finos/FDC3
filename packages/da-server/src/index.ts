@@ -4,6 +4,8 @@ import { FDC3Server } from "./FDC3Server"
 import { Directory, DirectoryApp, DirectoryIntent } from "./directory/DirectoryInterface"
 import { BasicDirectory } from "./directory/BasicDirectory"
 import { BroadcastHandler, ChannelState } from "./handlers/BroadcastHandler"
+import { IntentHandler } from "./handlers/IntentHandler"
+import { OpenHandler } from "./handlers/OpenHandler"
 
 export {
     type InstanceID,
@@ -16,5 +18,7 @@ export {
     type DirectoryApp,
     type DirectoryIntent,
     BroadcastHandler,
-    ChannelState
+    ChannelState,
+    IntentHandler,
+    OpenHandler
 }
