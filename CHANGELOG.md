@@ -10,15 +10,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Added clarification that `id` field values SHOULD always be strings to context schema definition (a restriction that can't easily be represented in the generated types). ([#1149](https://github.com/finos/FDC3/pull/1149))
 * Added requirement that Standard versions SHOULD avoid the use unions in context and API definitions wherever possible as these can be hard to replicate and MUST avoid unions of primitive types as these can be impossible to replicate in other languages. ([#120](https://github.com/finos/FDC3/pull/1200))
-* Added reference materials and supported platforms information for FDC3 in .NET via the [finos/fdc3-dotnet](https://github.com/finos/fdc3-dotnet) project. ([#1108](https://github.com/finos/FDC3/pull/1108))
+* Added `addEventListener` to the `DesktopAgent` API to provide support for event listener for non-context and non-intent events, including a `userChannelChanged` event ([#1207](https://github.com/finos/FDC3/pull/1207))
+* Added an `async` `addEventListener` function to the `PrivateChannel` API to replace the deprecated, synchronous `onAddContextListener`, `onUnsubscribe` and `onDisconnect` functions and to keep consistency with the DesktopAgent API. ([#1305](https://github.com/finos/FDC3/pull/1305))
 
 ### Changed
 
+* `Listener.unsubscribe()` was made async (the return type was changed from `void` to `Promise<void>`) for consistency with the rest of the API. ([#1305](https://github.com/finos/FDC3/pull/1305))
+* Added reference materials and supported platforms information for FDC3 in .NET via the [finos/fdc3-dotnet](https://github.com/finos/fdc3-dotnet) project. ([#1108](https://github.com/finos/FDC3/pull/1108))
 * The supported platforms page in the FDC3 documentation was moved into the API section as the information it provides all relates to FDC3 Desktop Agent API implementations. ([#1108](https://github.com/finos/FDC3/pull/1108))
 
 ### Deprecated
 
 * Made `IntentMetadata.displayName` optional as it is deprecated. ([#1280](https://github.com/finos/FDC3/pull/1280))
+* Deprecated `PrivateChannel`'s synchronous `onAddContextListener`, `onUnsubscribe` and `onDisconnect` functions in favour of an `async` `addEventListener` function consistent with the one added to `DesktopAgent` in #1207. ([#1305](https://github.com/finos/FDC3/pull/1305))
 
 ### Fixed
 
