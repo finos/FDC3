@@ -4,29 +4,26 @@ sidebar_label: Web Connection Protocol
 title: FDC3 Web Connection Protocol (next)
 ---
 
-`getAgent()` is implemented in the `@finos/fdc3` library. This specification details how it retrieves and provides FDC3 interface object.
+The FDC3 Web Connection Protocol (WCP) defines the procedure for a web-application to connect to an FDC3 Desktop Agent. The WCP is used to implement a `getAgent()` function in the `@finos/fdc3` library, which is the recommended way for web applications to connect to a Desktop Agent. This specification details how it retrieves and provides the FDC3 `DesktopAgent` interface object. 
 
-## Definition of Terms
+:::tip
 
-**Browser Resident Desktop Agent (DA)**: A Desktop Agent loaded in a window or frame within a web browser (in contrast to a Desktop Agent that "injects" a global fdc3 object).
+See [Support Platforms](../supported-platforms) and the [`getAgent()`](../ref/GetAgent) reference page for more details on using `getAgent()` in an application.
 
-> Note - Throughout this document, when referring to "DA" without any other qualification we mean a Browser-Resident Desktop Agent.
+:::
 
-**getAgent()**: The library function provided by `@finos/fdc3` that discovers and establishes communication to DAs. It may (1) return a reference to an injected `DesktopAgent` instance, (2) use the FDC3 Web Connection Protocol (WCP) to discover a DA (e.g. in a "parent" window or frame) and return a `DesktopAgent` instance that communicates with the DA using the FDC3 Desktop Agent Communication Protocol (DACP), or (3) run an application provided failover function that provides direct or indirect access to a `DesktopAgent`.
+The WCP supports both interfaces to web-based Desktop Agents defined in the FDC3 Standard:
 
-**Web Connection Protocol (WCP)**: A protocol for discovering and establishing communications with a DA. Ths includes a prescribed algorithm as well as some standard messages that are transmitted using `window.postMessage`.
+- **Desktop Agent Preload**: An 'injected' or 'preloaded' Desktop Agent API implementation, typically provided by an electron (or similar) container or browser extension, which is made available to web applications at `window.fdc3`.
+- **Desktop Agent Proxy**: An interface to a web-based Desktop Agent (implementation of the Desktop Agent API) that uses the Desktop Agent Communication protocol to communicate with a Desktop Agent implementation running in another frame or window.
 
-**Desktop Agent Communication Protocol (DACP)**: A protocol that uses the standard HTML Channel Messaging API (MessagePort) to communicate with a DA in a remote iframe or window via messages.
+The WCP allows FDC3-enabled application to detect which FDC3 web-interface is present and returns a `DesktopAgent` interface implementation that the application can use to communicate, without the import of proprietary libraries or code. Hence, the WCP enables FDC3-enabled applications to be run within the scope of any standards compliant Desktop Agent without modification, enabling their developers to Write Once Run Anywhere (WORA).
 
-**Parent**: A browser window or frame that creates the window or iframe in which an application runs. (The parent provides a `WindowProxy` object which is used by WCP.)
+:::tip
 
-**WindowProxy**: An interface defined by the HTML standard that proxies a remote Window object: https://html.spec.whatwg.org/multipage/nav-history-apis.html#the-windowproxy-exotic-object. This is used by WCP.
+See the FDC3 [Glossary](../../fdc3-glossary) and [References](../../references.md) pages for definitions of terms and links to external APIs used throughout this document.
 
-**MessagePort**: An interface defined by the HTML Channel Messaging standard that can be used for cross-domain communication between windows. This is used by BCP.
-
-**Flux Standard Action (FSA)**: An [industry standard](https://github.com/redux-utilities/flux-standard-action) JSON envelope. All WCP and BCP messages are defined as FSAs.
-
-**SessionStorage**: A JavaScript storage API that persists data for web apps (segregated by domain) within a specific window or tab (SessionStorage is identical to the localStorage API but is tied to a particular window/tab, as defined by the HTML Standard: https://html.spec.whatwg.org/multipage/webstorage.html#dom-sessionstorage.)
+:::
 
 ## Establishing Connectivity Using the Web Connection Protocol (WCP)
 
