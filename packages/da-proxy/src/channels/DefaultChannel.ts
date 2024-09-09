@@ -1,4 +1,4 @@
-import { Context, ContextHandler, DisplayMetadata, Listener, Channel } from "@finos/fdc3"
+import { Context, ContextHandler, DisplayMetadata, Listener, Channel } from "@kite9/fdc3"
 import { Messaging } from "../Messaging"
 import { DefaultContextListener } from "../listeners/DefaultContextListener"
 import { BroadcastRequest, BroadcastResponse, GetCurrentContextResponse, GetCurrentContextRequest } from '@kite9/fdc3-common'

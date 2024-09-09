@@ -1,4 +1,4 @@
-import { ContextHandler, Listener, PrivateChannel } from "@finos/fdc3";
+import { ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3";
 import { DefaultChannel } from "./DefaultChannel";
 import { Messaging } from "../Messaging";
 import { PrivateChannelEventListenerType, PrivateChannelEventListenerVoid } from "../listeners/PrivateChannelEventListener";

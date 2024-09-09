@@ -1,5 +1,5 @@
-import { Icon } from "@finos/fdc3";
-import { AppIntent } from "@finos/fdc3";
+import { Icon } from "@kite9/fdc3";
+import { AppIntent } from "@kite9/fdc3";
 import { ResolverIntents, ResolverMessageChoice, SingleAppIntent } from "@kite9/fdc3-common";
 
 const setup = (data: ResolverIntents, callback: (s: SingleAppIntent | null) => void) => {
@@ -14,7 +14,7 @@ const setup = (data: ResolverIntents, callback: (s: SingleAppIntent | null) => v
     if (!doneIntents.has(name)) {
       doneIntents.add(name);
       const option = document.createElement("option");
-      option.textContent = displayName as string; 
+      option.textContent = displayName as string;
       option.value = name;
       intentSelect.appendChild(option);
     }
@@ -151,7 +151,7 @@ window.addEventListener("load", () => {
   myPort.addEventListener("message", (e) => {
     if (e.data.type == 'ResolverIntents') {
       const details = e.data as ResolverIntents
-      console.log(JSON.stringify("INTENT DETAILS: " + JSON.stringify(details)))
+      // console.log(JSON.stringify("INTENT DETAILS: " + JSON.stringify(details)))
 
       setup(details, callback)
     }

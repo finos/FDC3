@@ -51,7 +51,7 @@ window.addEventListener("load", () => {
   myPort.addEventListener("message", (e: MessageEvent) => {
     if (e.data.type == 'SelectorMessageChannels') {
       const details = e.data as SelectorMessageChannels
-      console.log(JSON.stringify("CHANNEL DETAILS: " + JSON.stringify(details)))
+      // console.log(JSON.stringify("CHANNEL DETAILS: " + JSON.stringify(details)))
       channels = details.channels
       channelId = details.selected
 

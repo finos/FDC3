@@ -3,7 +3,7 @@ import { FDC3_VERSION } from '..';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { v4 as uuidv4 } from "uuid"
 import { ConnectionDetails } from '../messaging/MessagePortMessaging';
-import { DesktopAgent } from '@finos/fdc3';
+import { DesktopAgent } from '@kite9/fdc3';
 import { Loader } from './Loader';
 
 function collectPossibleTargets(w: Window, found: Window[]) {

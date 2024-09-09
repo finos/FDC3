@@ -1,6 +1,6 @@
 import { ServerContext, InstanceID } from '../../src/ServerContext'
 import { CustomWorld } from '../world'
-import { OpenError, AppIdentifier } from '@finos/fdc3'
+import { OpenError, AppIdentifier, AppIntent, Context } from '@kite9/fdc3'
 
 type ConnectionDetails = AppIdentifier & {
     msg?: object
@@ -23,6 +23,10 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
 
     constructor(cw: CustomWorld) {
         this.cw = cw
+    }
+
+    async narrowIntents(appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
+        return appIntents
     }
 
     getInstanceDetails(uuid: string) {

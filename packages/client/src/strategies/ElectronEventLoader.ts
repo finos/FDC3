@@ -1,4 +1,4 @@
-import { DesktopAgent } from "@finos/fdc3";
+import { DesktopAgent } from "@kite9/fdc3";
 import { GetAgentParams } from "@kite9/fdc3-common";
 import { Loader } from "./Loader";
 
@@ -30,7 +30,7 @@ export class ElectronEventLoader implements Loader {
     get(params: GetAgentParams): Promise<DesktopAgent | void> {
         return new Promise<DesktopAgent | void>((resolve, reject) => {
             const endPollTime = Date.now() + (params.timeout + 500)
-            console.log("Starting poll: " + endPollTime + " " + params.timeout + " " + Date.now())
+            // console.log("Starting poll: " + endPollTime + " " + params.timeout + " " + Date.now())
             this.poll(endPollTime, resolve, reject)
         });
     }
