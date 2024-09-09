@@ -18,7 +18,7 @@
     ],
     "references": [
         {
-            "path": "../fdc3-common"
+            "path": "../fdc3-core"
         },
         {
             "path": "../testing"

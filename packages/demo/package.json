@@ -13,10 +13,9 @@
     "vite": "^5.2.0"
   },
   "dependencies": {
-    "@kite9/fdc3": "2.2.0-beta.6",
     "@kite9/client": "2.2.0-beta.6",
     "@kite9/da-server": "2.2.0-beta.6",
-    "@kite9/fdc3-common": "2.2.0-beta.6",
+    "@kite9/fdc3-core": "2.2.0-beta.6",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.10",
     "express": "^4.18.3",
