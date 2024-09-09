@@ -30,7 +30,7 @@ export class ElectronEventLoader implements Loader {
     get(params: GetAgentParams): Promise<DesktopAgent | void> {
         return new Promise<DesktopAgent | void>((resolve, reject) => {
             const endPollTime = Date.now() + (params.timeout + 500)
-            console.log("Starting poll: " + endPollTime + " " + params.timeout + " " + Date.now())
+            // console.log("Starting poll: " + endPollTime + " " + params.timeout + " " + Date.now())
             this.poll(endPollTime, resolve, reject)
         });
     }

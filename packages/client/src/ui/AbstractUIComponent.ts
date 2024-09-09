@@ -59,7 +59,7 @@ export abstract class AbstractUIComponent implements Connectable {
         port.addEventListener("message", (e) => {
             const data = e.data
             if (data.type == 'iframeRestyle') {
-                console.log(`Restyling ${JSON.stringify(data.payload)}`)
+                // console.log(`Restyling ${JSON.stringify(data.payload)}`)
                 const css = data.payload.css
                 this.themeContainer(css)
             }
@@ -74,7 +74,7 @@ export abstract class AbstractUIComponent implements Connectable {
     private awaitHello(): Promise<MessagePort> {
         return new Promise((resolve, _reject) => {
             const ml = (e: MessageEvent) => {
-                console.log("Received UI Message: " + JSON.stringify(e.data))
+                // console.log("Received UI Message: " + JSON.stringify(e.data))
                 if ((e.source == this.iframe?.contentWindow) && (e.data.type == 'iframeHello')) {
                     const port = e.ports[0]
                     port.start()
