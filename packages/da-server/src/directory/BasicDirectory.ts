@@ -29,7 +29,7 @@ export class BasicDirectory implements Directory {
         const out = ((intentName == undefined) || (i.intentName == intentName)) &&
             ((contextType == undefined) || ((i.contexts ?? []).includes(contextType))) &&
             (genericResultTypeSame(i.resultType, resultType))
-        console.log(`Intent ${JSON.stringify(i)} matches ? ${out}}"`)
+        //console.log(`Intent ${JSON.stringify(i)} matches ? ${out}}"`)
         return out
     }
 
