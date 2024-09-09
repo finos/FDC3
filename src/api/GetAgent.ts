@@ -53,7 +53,7 @@ export type GetAgentType = (
  * 
  * @property {number} timeout Number of milliseconds to allow for an fdc3  
  * implementation to be found before calling the failover function or 
- * rejecting (default 1000). Note that the timeout is cancelled as soon as a 
+ * rejecting (default 750). Note that the timeout is cancelled as soon as a 
  * Desktop Agent is detected. There may be additional set-up steps to perform 
  * which will happen outside the timeout. 
  * 
