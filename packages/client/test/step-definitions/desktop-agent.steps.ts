@@ -6,7 +6,7 @@ import { getAgent } from '../../src';
 import { DesktopAgentDetails, GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-common';
 import { dummyInstanceId, EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
 import { MockStorage } from '../support/MockStorage';
-import { DesktopAgent, ImplementationMetadata } from '@finos/fdc3';
+import { DesktopAgent, ImplementationMetadata } from '@kite9/fdc3';
 import { DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY } from '../../src/messaging/AbstractWebMessaging';
 var wtf = require('wtfnode')
 
@@ -102,7 +102,7 @@ When('I call getAgentAPI for a promise result with the following options', funct
 
 Given('a browser document in {string} and window in {string}', async function (this: CustomWorld, d: string, w: string) {
     // creates the mock app window
-    const mw = new MockWindow("mockWindow", this)
+    const mw = new MockWindow("mockWindow", this, "mocky")
     globalThis.window = mw as any
     this.props[w] = globalThis.window;
 
@@ -126,5 +126,5 @@ Given("the session identity is set to {string}", async function (this: CustomWor
         instanceId: 'uuid-0'
     }
 
-    globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY, JSON.stringify(details))
+    globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY + "-mocky", JSON.stringify(details))
 })

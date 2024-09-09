@@ -14,7 +14,6 @@ export default defineConfig({
 	},
 	define: {
 		"process.env": "import.meta.env",
-		"process.platform": "({})",
 		"global.process": "globalThis.process",
 	},
 	plugins: [

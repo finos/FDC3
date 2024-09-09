@@ -1,4 +1,4 @@
-import { AppIdentifier, ImplementationMetadata } from "@finos/fdc3";
+import { AppIdentifier, ImplementationMetadata } from "@kite9/fdc3";
 import { Messaging } from "../Messaging";
 import { RegisterableListener } from "../listeners/RegisterableListener";
 import { GetAgentParams, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-common";
@@ -50,7 +50,7 @@ export abstract class AbstractMessaging implements Messaging {
                 setTimeout(() => {
                     this.unregister(id)
                     if (!done) {
-                        console.log(`Rejecting after ${this.timeout}ms`)
+                        console.error(`Rejecting after ${this.timeout}ms`)
                         reject(new Error(timeoutErrorMessage))
                     }
                 }, this.timeout);

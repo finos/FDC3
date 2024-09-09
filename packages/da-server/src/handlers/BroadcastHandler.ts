@@ -1,6 +1,6 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { InstanceID, ServerContext } from "../ServerContext";
-import { AppIdentifier, ChannelError, Context } from "@finos/fdc3";
+import { AppIdentifier, ChannelError, Context } from "@kite9/fdc3";
 import { successResponse, errorResponse, onlyUnique } from "./support";
 import {
     PrivateChannelEventListenerTypes,
@@ -139,6 +139,7 @@ export class BroadcastHandler implements MessageHandler {
             errorResponse(sc, msg, from, e.message ?? e, responseType)
         }
     }
+
     handleCreatePrivateChannelRequest(arg0: CreatePrivateChannelRequest, sc: ServerContext<any>, from: AppIdentifier) {
         const id = sc.createUUID()
         this.state.push({

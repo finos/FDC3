@@ -1,4 +1,4 @@
-import { Channel } from "@finos/fdc3"
+import { Channel } from "@kite9/fdc3"
 import { Connectable } from "./Connectable"
 
 /**

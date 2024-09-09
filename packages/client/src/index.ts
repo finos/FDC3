@@ -1,4 +1,4 @@
-import { DesktopAgent, } from '@finos/fdc3'
+import { DesktopAgent, } from '@kite9/fdc3'
 import { getAgent as getAgentType, GetAgentParams } from '@kite9/fdc3-common';
 import { ElectronEventLoader } from './strategies/ElectronEventLoader'
 import { handleWindowProxy, PostMessageLoader } from './strategies/PostMessageLoader'

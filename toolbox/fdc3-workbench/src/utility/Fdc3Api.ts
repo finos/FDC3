@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: Apache-2.0
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
-import * as fdc3_2 from "fdc3-2.0";
+import * as fdc3_2 from "@kite9/fdc3";
 import * as fdc3_1 from "fdc3-1.2";
 import { group } from "console";
 import { fdc3Ready } from '@kite9/client'

@@ -1,7 +1,7 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { InstanceID, ServerContext } from "../ServerContext";
 import { Directory } from "../directory/DirectoryInterface";
-import { AppIntent, ResolveError } from "@finos/fdc3";
+import { AppIntent, ResolveError } from "@kite9/fdc3";
 import {
     AddIntentListenerRequest,
     FindIntentRequest, FindIntentsByContextRequest,
@@ -113,6 +113,10 @@ export class IntentHandler implements MessageHandler {
         this.timeoutMs = timeoutMs
     }
 
+    async narrowIntents(appIntents: AppIntent[], context: Context, sc: ServerContext<any>): Promise<AppIntent[]> {
+        return sc.narrowIntents(appIntents, context)
+    }
+
     async accept(msg: any, sc: ServerContext<any>, uuid: InstanceID): Promise<void> {
         const from = sc.getInstanceDetails(uuid)
 
@@ -121,19 +125,27 @@ export class IntentHandler implements MessageHandler {
             return
         }
 
-        switch (msg.type as string) {
-            // finding intents
-            case 'findIntentsByContextRequest': return this.findIntentsByContextRequest(msg as FindIntentsByContextRequest, sc, from)
-            case 'findIntentRequest': return this.findIntentRequest(msg as FindIntentRequest, sc, from)
+        try {
 
-            // listeners
-            case 'addIntentListenerRequest': return this.onAddIntentListener(msg as AddIntentListenerRequest, sc, from)
-            case 'intentListenerUnsubscribeRequest': return this.onUnsubscribe(msg as IntentListenerUnsubscribeRequest, sc, from)
 
-            // raising intents and returning results
-            case 'raiseIntentRequest': return this.raiseIntentRequest(msg as RaiseIntentRequest, sc, from)
-            case 'raiseIntentForContextRequest': return this.raiseIntentForContextRequest(msg as RaiseIntentForContextRequest, sc, from)
-            case 'intentResultRequest': return this.intentResultRequest(msg as IntentResultRequest, sc, from)
+            switch (msg.type as string) {
+                // finding intents
+                case 'findIntentsByContextRequest': return this.findIntentsByContextRequest(msg as FindIntentsByContextRequest, sc, from)
+                case 'findIntentRequest': return this.findIntentRequest(msg as FindIntentRequest, sc, from)
+
+                // listeners
+                case 'addIntentListenerRequest': return this.onAddIntentListener(msg as AddIntentListenerRequest, sc, from)
+                case 'intentListenerUnsubscribeRequest': return this.onUnsubscribe(msg as IntentListenerUnsubscribeRequest, sc, from)
+
+                // raising intents and returning results
+                case 'raiseIntentRequest': return this.raiseIntentRequest(msg as RaiseIntentRequest, sc, from)
+                case 'raiseIntentForContextRequest': return this.raiseIntentForContextRequest(msg as RaiseIntentForContextRequest, sc, from)
+                case 'intentResultRequest': return this.intentResultRequest(msg as IntentResultRequest, sc, from)
+            }
+
+        } catch (e: any) {
+            const responseType = msg.type.replace(new RegExp("Request$"), 'Response')
+            errorResponse(sc, msg, from, e.message ?? e, responseType)
         }
     }
 
@@ -244,32 +256,36 @@ export class IntentHandler implements MessageHandler {
         // dealing with a specific app, which may or may not be open
         const runningApps = await this.getRunningApps(target.appId, sc)
 
-        if (runningApps.length == 1) {
-            return this.raiseIntentRequestToSpecificInstance(arg0, sc, runningApps[0])
-        }
+        const appIntents = this.createAppIntents(arg0, [...runningApps, { appId: target.appId }])
 
-        if ((runningApps.length == 0) && (arg0.length == 1)) {
-            // ok, start the app if it exists
-            const appRecords = this.directory.retrieveAppsById(target.appId)
-            if (appRecords.length >= 1) {
-                return this.startWithPendingIntent(arg0[0], sc, target)
-            } else {
-                // app doesn't exist
-                return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.TargetAppUnavailable, arg0[0].type)
+        const narrowedAppIntents = await this.narrowIntents(appIntents, arg0[0].context, sc)
+
+        if (narrowedAppIntents.length == 1) {
+            if ((narrowedAppIntents[0].apps.length == 2) && (narrowedAppIntents[0].apps[0].instanceId)) {
+                // single running instance
+                return this.raiseIntentRequestToSpecificInstance(arg0, sc, runningApps[0])
+            } else if (narrowedAppIntents[0].apps.length == 1) {
+                // no running instance, single app
+                const appRecords = this.directory.retrieveAppsById(target.appId)
+                if (appRecords.length >= 1) {
+                    return this.startWithPendingIntent(arg0[0], sc, target)
+                } else {
+                    // app doesn't exist
+                    return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.TargetAppUnavailable, arg0[0].type)
+                }
             }
         }
 
         // need to use the resolver to choose a running app instance
-        const appIntents = this.createAppIntents(arg0, runningApps)
 
         if (arg0[0].type == 'raiseIntentResponse') {
             return successResponseId(sc, arg0[0].requestUuid, arg0[0].from, {
-                appIntent: appIntents[0]
+                appIntent: narrowedAppIntents[0]
             }, arg0[0].type)
         } else {
             // raise intent for context
             return successResponseId(sc, arg0[0].requestUuid, arg0[0].from, {
-                appIntents: appIntents
+                appIntents: narrowedAppIntents
             }, arg0[0].type)
         }
     }
@@ -301,13 +317,15 @@ export class IntentHandler implements MessageHandler {
             }
         })
 
-        if (appIntents.length == 0) {
+        const narrowedAppIntents = await this.narrowIntents(appIntents, arg0[0].context, sc)
+
+        if (narrowedAppIntents.length == 0) {
             // nothing can resolve the intent, fail
             return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.NoAppsFound, arg0[0].type)
         }
 
-        if (appIntents.length == 1) {
-            const theAppIntent = appIntents[0]
+        if (narrowedAppIntents.length == 1) {
+            const theAppIntent = narrowedAppIntents[0]
             if (this.oneAppOnly(theAppIntent)) {
                 const instanceCount = theAppIntent.apps.filter(a => a.instanceId).length
                 if (instanceCount == 1) {
@@ -324,13 +342,11 @@ export class IntentHandler implements MessageHandler {
 
         if (arg0[0].type == 'raiseIntentResponse') {
             return successResponseId(sc, arg0[0].requestUuid, arg0[0].from, {
-                appIntent: appIntents[0]
+                appIntent: narrowedAppIntents[0]
             }, arg0[0].type)
         } else {
             // raise intent for context
-            return successResponseId(sc, arg0[0].requestUuid, arg0[0].from, {
-                appIntents: appIntents
-            }, arg0[0].type)
+            return successResponseId(sc, arg0[0].requestUuid, arg0[0].from, { appIntents: narrowedAppIntents }, arg0[0].type)
         }
 
     }
@@ -460,9 +476,9 @@ export class IntentHandler implements MessageHandler {
         const activeApps = await sc.getConnectedApps()
         const matching = this.regs.filter(r => r.intentName == intentName)
 
-        console.log(`Matched listeners returned ${matching.length}`)
+        //console.log(`Matched listeners returned ${matching.length}`)
         const active = matching.filter(r => activeApps.find(a => a.instanceId == r.instanceId))
-        console.log(`Active listeners returned ${active.length}`)
+        //console.log(`Active listeners returned ${active.length}`)
 
         return active
     }

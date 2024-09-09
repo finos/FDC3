@@ -21,6 +21,15 @@ export abstract class AbstractWebMessaging extends AbstractMessaging {
     abstract createMeta(): object
 
     /**
+     * Note that we also key by the window name as well, in case multiple iframes are using the same session storage.
+     */
+    private sessionKey(): string {
+        const windowName = globalThis.window.name
+        const keyName = windowName ? DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY + "-" + windowName : DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY
+        return keyName
+    }
+
+    /**
      * Used to allow session-reconnection
      */
     storeInstanceUuid(vr: WebConnectionProtocol5ValidateAppIdentitySuccessResponse) {
@@ -31,14 +40,14 @@ export abstract class AbstractWebMessaging extends AbstractMessaging {
             instanceId: vr.payload.instanceId,
         }
 
-        globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY, JSON.stringify(details))
+        globalThis.sessionStorage.setItem(this.sessionKey(), JSON.stringify(details))
     }
 
     /**
-     * Stores the instanceUuid in session storage in case session needs reconnecting
+     * Stores the instanceUuid in session storage in case session needs reconnecting.
      */
     retrieveInstanceUuid(): string | undefined {
-        const detailsStr: string | null = globalThis.sessionStorage.getItem(DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY)
+        const detailsStr = globalThis.sessionStorage.getItem(this.sessionKey())
 
         if (detailsStr) {
             const details = JSON.parse(detailsStr) as DesktopAgentDetails
