@@ -68,7 +68,7 @@ A small number of arguments are accepted that can affect the behavior of `getAge
  * 
  * @property {number} timeout Number of milliseconds to allow for an fdc3  
  * implementation to be found before calling the failover function or 
- * rejecting (default 1000). Note that the timeout is cancelled as soon as a 
+ * rejecting (default 750). Note that the timeout is cancelled as soon as a 
  * Desktop Agent is detected. There may be additional set-up steps to perform 
  * which will happen outside the timeout. 
  * 
@@ -114,33 +114,7 @@ As web applications can navigate to or be navigated by users to different URLs a
 
 :::
 
-Finally, if there is still no Desktop Agent available, or an issue prevent connection to it, the `getAgent()` function will reject its promise with a message from the `AgentError` enumeration.
-
-```ts
-/** 
- * Contains constants representing the errors that can be encountered when  
- * trying to connect to a web-based Desktop Agent with the getAgent function. 
- */ 
-enum AgentError { 
-    /** Returned if no Desktop Agent was found by any means available or 
-     * if the Agent previously connected to is not contactable on a  
-     * subsequent connection attempt.*/
-    AgentNotFound = "AgentNotFound",
-
-    /** Returned if validation of the app identity by the Desktop Agent 
-     * Failed or the app is not being allowed to connect to the Desktop Agent 
-     * for another reason. */ 
-    AccessDenied = "AccessDenied",
-
-    /** Returned if an error or exception occurs while trying to set  
-     * up communication with a Desktop Agent. */ 
-    ErrorOnConnect = "ErrorOnConnect",
-
-    /** Returned if either the failover function itself, or what it returned,  
-     * was not the right type. */ 
-    InvalidFailover = "InvalidFailover" 
-} 
-```
+Finally, if there is still no Desktop Agent available, or an issue prevent connection to it, the `getAgent()` function will reject its promise with a message from the [`AgentError`](./Errors#agenterror) enumeration.
 
 ## Failover function
 
@@ -166,18 +140,16 @@ If you wish to _completely override FDC3s standard mechanisms_, then do not use 
 
 :::
 
-Failover functions MUST be asynchronous MUST resolve to one of the following types:
+Failover functions MUST be asynchronous and MUST resolve to one of the following types:
 
 1. [`DesktopAgent`](./DesktopAgent)
-    The application may choose to directly import or load code that provides a `DesktopAgent` implementation. `getAgent()` will then resolve to the provided `DesktopAgent`.
-2. [`WindowProxy`](https://html.spec.whatwg.org/multipage/nav-history-apis.html#the-windowproxy-exotic-object) ([MDN](https://developer.mozilla.org/en-US/docs/Glossary/WindowProxy)) 
-    The application may open a window or create a hidden iframe which may then provide access to a compliant browser-resident DA. Ensure that the iframe has loaded (listen for the `load` event) or for separate windows allow a suitable timeout for the window load, then resolve to the `WindowProxy` object for the window or iframe. The `getAgent()` call will then use the supplied `WindowProxy` to establish a connection.
-
-
+  The application may choose to directly import or load code that provides a `DesktopAgent` implementation. `getAgent()` will then resolve to the provided `DesktopAgent`.
+2. [`WindowProxy`](https://html.spec.whatwg.org/multipage/nav-history-apis.html#the-windowproxy-exotic-object) ([MDN](https://developer.mozilla.org/en-US/docs/Glossary/WindowProxy))
+  The application may open a window or create a hidden iframe which may then provide access to a compliant browser-resident DA. Ensure that the iframe has loaded (listen for the `load` event) or for separate windows allow a suitable timeout for the window load, then resolve to the `WindowProxy` object for the window or iframe. The `getAgent()` call will then use the supplied `WindowProxy` to establish a connection.
 
 ## Persisted Connection Data
 
-The `getAgent()` function uses [`SessionStorage`](https://html.spec.whatwg.org/multipage/webstorage.html) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)) to persist information on an instance of an app and how it connected to a Desktop Agent in order to ensure a consistent connection type and instance Id, in case it navigates or is refreshed. Applications are not expected to interact with this information directly, rather it is set and used by the `getAgent()` implementation.
+The `getAgent()` function uses [`SessionStorage`](https://html.spec.whatwg.org/multipage/webstorage.html) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)) to persist information on an instance of an app under the key `"FDC3-Desktop-Agent-Details"` and how it connected to a Desktop Agent in order to ensure a consistent connection type and `instanceId` when reconnecting after navigation or refresh events. Applications are not expected to interact with this information directly, rather it is set and used by the `getAgent()` implementation.
 
 The details persisted conform to the following type:
 

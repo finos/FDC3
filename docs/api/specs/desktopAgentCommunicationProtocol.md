@@ -6,6 +6,12 @@ title: Desktop Agent Communication Protocol  (next)
 
 # Desktop Agent Communication Protocol (DACP)
 
+:::info _[@experimental](../fdc3-compliance#experimental-features)_
+
+The Desktop Agent Communication Protocol (DACP) is an experimental feature added to FDC3 in 2.2. Limited aspects of its design may change in future versions and it is exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
+
+:::
+
 DACP constitutes a set of messages that are used by the `@finos/fdc3` library to communicate with Browser-Resident DAs. Each message takes the form of a Flux Standard Action (FSA). Communications are bidirectional and occur over HTML standard MessagePorts. All messages are query/response. Responses may contain requested data or may simply be acknowledgement of receipt.
 
 :::note
