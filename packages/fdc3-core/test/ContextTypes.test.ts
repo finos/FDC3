@@ -1,4 +1,7 @@
-import { Convert, Contact } from '../src';
+import { ContextTypes } from '@kite9/fdc3-schema';
+
+const Convert = ContextTypes.Convert
+type Contact = ContextTypes.Contact
 
 const json = '{ "type": "fdc3.contact", "id": { "email": "joe@mail.com" } }';
 const contact: Contact = {
