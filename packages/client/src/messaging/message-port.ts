@@ -1,4 +1,4 @@
-import { DesktopAgent } from "@kite9/fdc3";
+import { DesktopAgent } from "@kite9/fdc3-core";
 import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultHandshakeSupport, ChannelSupport } from "@kite9/da-proxy";
 import { ConnectionDetails, MessagePortMessaging } from "./MessagePortMessaging";
 import { DefaultDesktopAgentIntentResolver } from "../ui/DefaultDesktopAgentIntentResolver";

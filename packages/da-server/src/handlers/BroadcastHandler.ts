@@ -1,6 +1,6 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { InstanceID, ServerContext } from "../ServerContext";
-import { AppIdentifier, ChannelError, Context } from "@kite9/fdc3";
+import { AppIdentifier, ChannelError, Context } from "@kite9/fdc3-core";
 import { successResponse, errorResponse, onlyUnique } from "./support";
 import {
     PrivateChannelEventListenerTypes,

@@ -1,4 +1,4 @@
-import { AppIdentifier, AppIntent, Context, IntentHandler, IntentResolution, Listener } from "@kite9/fdc3";
+import { AppIdentifier, AppIntent, Context, IntentHandler, IntentResolution, Listener } from "@kite9/fdc3-core";
 
 export interface IntentSupport {
 

@@ -4,7 +4,8 @@
  */
 
 import { Channel, ContextMetadata } from '..';
-import { Context } from '../context/ContextTypes';
+import { ContextTypes } from '@kite9/fdc3-schema'
+export type Context = ContextTypes.Context
 
 /**
  * Describes a callback that handles a context event.

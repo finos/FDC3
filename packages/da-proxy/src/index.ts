@@ -9,7 +9,7 @@ import { ChannelSelector } from "./channels/ChannelSelector";
 import { DefaultIntentSupport } from "./intents/DefaultIntentSupport";
 import { DefaultChannelSupport } from "./channels/DefaultChannelSupport";
 import { IntentSupport } from "./intents/IntentSupport";
-import { IntentResolver } from "./intents/IntentResolver";
+import { IntentResolver, IntentResolutionChoice } from "./intents/IntentResolver";
 import { RegisterableListener } from "./listeners/RegisterableListener";
 
 import { DefaultAppSupport } from "./apps/DefaultAppSupport";
@@ -36,5 +36,6 @@ export {
     RegisterableListener,
     ChannelSelector,
     IntentResolver,
-    Connectable
+    Connectable,
+    IntentResolutionChoice
 }

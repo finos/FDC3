@@ -1,4 +1,4 @@
-import { AppIdentifier, ImplementationMetadata } from "@kite9/fdc3";
+import { AppIdentifier, ImplementationMetadata } from "@kite9/fdc3-core";
 import { Connectable } from "@kite9/fdc3-common";
 import { RegisterableListener } from "./listeners/RegisterableListener";
 

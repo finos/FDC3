@@ -1,7 +1,7 @@
 /**
- * Browser Communication Protocol (BCP) is used for communication between the "@kite9/fdc3" library and Browser-Resident DAs.
+ * Browser Communication Protocol (BCP) is used for communication between the "@kite9/fdc3-core" library and Browser-Resident DAs.
  */
-import { Context } from "../context/ContextTypes";
+import { ContextTypes } from '@kite9/fdc3-schema'
 import { ContextType } from "../context/ContextType";
 import { AppIdentifier } from "../api/AppIdentifier";
 import { AppMetadata } from "../api/AppMetadata";
@@ -10,6 +10,8 @@ import { ImplementationMetadata } from "../api/ImplementationMetadata";
 import { DisplayMetadata } from "../api/DisplayMetadata";
 import { ContextMetadata } from "../api/ContextMetadata";
 
+
+type Context = ContextTypes.Context
 type BCPMeta = {
 	messageId: string;
 };
