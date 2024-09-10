@@ -58,7 +58,7 @@ Existing `DesktopAgentDetails` records MUST be used to limit discovery actions (
 
 If use of the persisted data fails to establish a connection to the DA then `getAgent()` should reject its promise with `AgentNotFound` error from the [`AgentError`](../ref/Errors#agenterror) enumeration.
 
-#### 1.2 Desktop Agent discovery
+#### 1.2 Desktop Agent Discovery
 
 Next, attempt to discover whether Desktop Agent Preload or Desktop Agent Proxy interfaces are available, within a specified timeout. The optional `params.timeout` argument to `getAgent()` allows an application to specify the timeout that should be used, with a default value of 750ms. Discovery of Desktop Agent Preload or Desktop Agent Proxy interfaces should be conducted in parallel where possible and the timeout cancelled as soon as an interface is discovered. If a `DesktopAgentDetails` record was found in the previous step, limit discovery to the interface specified, or, if an `agentUrl` property was specified in the `DesktopAgentDetails` record, skip the discovery step entirely and proceed to the next step.
 
@@ -202,42 +202,42 @@ See the [Browser-Resident Desktop Agent Specification](./browserResidentDesktopA
 
 If no existing instance identity (`instanceId` and `instanceUuid`) is provided, or instance identity validation fails (as the `instanceUuid` is not known, or either the `appId` or `WindowProxy` objects don't match the previous connection), then the Desktop Agent MUST assign new `instanceId` and `instanceUuid` values.
 
-The Desktop Agent MUST then respond with a [WCP5ValidateAppIdentityResponse](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json) message containing the assigned `appId`, `instanceId` and `instanceUuid` values and the [`ImplementationMetadata`](../ref/Metadata#implementationmetadata) Object for the Desktop Agent. This message indicates that the Destkop Agent will accept the application and we can begin processesing Desktop Agent Communication Protocol (DACP) messages relating to FDC3 API calls over the `MessagePort`.
+The Desktop Agent MUST then respond with a [WCP5ValidateAppIdentityResponse](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json) message containing the assigned `appId`, `instanceId` and `instanceUuid` values and the [`ImplementationMetadata`](../ref/Metadata#implementationmetadata) Object for the Desktop Agent. This message indicates that the Desktop Agent will accept the application and we can begin processing [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) messages relating to FDC3 API calls over the `MessagePort`.
 
 ### Step 3: Persist DesktopAgentDetails to SessionStorage
 
+Once a connection is established, and the app and instance identity determined, a `DesktopAgentDetails` record must be stored in SessionStorage under the `FDC3-Desktop-Agent-Details` key by the `getAgent()` implementation. This record includes:
 
-
-
-
-
+- The `identityUrl` and `actualUrl` passed to `getAgent()`.
+- The `appId`, `instanceId`, and `instanceUuid` assigned by the DA.
+- An `agentUrl` field with the URL provided in any [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) message that was received
+  - Used to skip sub-steps 1-3 in the discovery process described in Step 1.2.
+  - If no [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) message was received, omit this field.
+- An `agentType` field which indicates what type of connection to the DA was established
+  - Used to limit the discovery process in Step 1.2 above to only allow agents of the same type.
+  - the `getAgent()` implementation should determine what value to set, from the `WebDesktopAgentType` enumeration for this field based on what happened during the discovery process.
 
 See the [reference documentation for getAgent()](../ref/GetAgent#persisted-connection-data) for further details of the `DesktopAgentDetails` record that should be saved to SessionStorage.
 
+:::tip
 
-See Persisted Connection Data
+SessionStorage is ephemeral, only existing for the duration of the window's life. Hence, there is no concern with the key being overwritten or conflicting with other DAs.
 
-
-Once a connection is established, the `DesktopAgentDetails` record that was returned by the DA MUST be stored in SessionStorage under the `FDC3-Desktop-Agent-Details` key.
-
-> Note - SessionStorage is ephemeral, only existing for the duration of the window's life. There is no concern with the key being overwritten or conflicting with other DAs.
+:::
 
 ### Step 4: Resolve promise with DesktopAgent interface (step 4)
 
-Resolve the `getAgent()` promise with an object containing the `DesktopAgent` from step 1, and `ImplementationMetadata` and `AppMetadata` which were provided by the  response from step 2. 
+Resolve the `getAgent()` promise with an object containing either a `DesktopAgent` implementation (that was found at `window.fdc3` or returned by a `failover` function) or a 'Desktop Agent Proxy' implementation (a class implementing the `DesktopAgent` interface that uses the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) to communicate with a Desktop Agent over the `MessagePort`).
 
-## WCP Message Schemas and Types
-
-## Communicating using the Desktop Agent Communication Protocol (DACP)
-
-The `DesktopAgent` instantiated by calls to `getAgent()` uses the Desktop Agent Communication Protocol (DACP) to interact with the DA that is located in another frame. This protocol is based on exchanges of a standardized set of Flux Standard Actions (FSAs). The protocol is bi-directional. Every FSA that is transmitted results in a corresponding FSA in return, either containing requested data or simply acknowledging receipt.
-
-BCP uses the HTML Channel Messaging API, communicating via the `MessagePort` object that was established by the Web Connection Protocol (WCP) covered above.
-
-See [Desktop Agent Communication Protocol ](./desktopAgentCommunicationProtocol .md)
-
-## Built in UI (Channel Selector and Intent Resolver)
+## Providing Channel Selector and Intent Resolver UIs
 
 `getAgent()` MUST provide UI for channel selector and intent resolution. These can be OPTIONALLY utilized by the DA. The DA will send the `BCPInitializeChannelSelector` message if it does not have its own way to manage channel selection. It will send `BCPResolveIntent` if it does not have a way to present an intent resolver UI.
 
 `getAgent()` SHOULD implement UI within the app's DOM, for instance with an overlay for channel selector and a modal dialog for intent resolution.
+
+
+## WCP Message Schemas and Types
+
+
+
+
