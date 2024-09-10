@@ -1,5 +1,5 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { GetAppMetadataRequest, GetAppMetadataResponse } from "@kite9/fdc3-common";
+import { GetAppMetadataRequest, GetAppMetadataResponse } from "@kite9/fdc3-core";
 
 export class GetAppMetadata implements AutomaticResponse {
 

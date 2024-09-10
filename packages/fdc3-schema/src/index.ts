@@ -9,9 +9,11 @@ export {
     FindInstancesErrors, IntentMetadata, IntentResolution,
     OpenErrorResponsePayload, OptionalFeatures,
     AppIdentifier, Context, PrivateChannelEventListenerTypes,
-    Convert, AgentResponseMessage, AppIntent,
+    AgentResponseMessage, AppIntent,
     DisplayMetadata, ConnectionStepMessageType, Type,
     Icon, Image, ImplementationMetadata,
     ResponseMessageType, RequestMessageType
 } from '../generated/api/BrowserTypes';
+
+export { Convert } from '../generated/context/ContextTypes'
 

@@ -1,5 +1,5 @@
 import { DesktopAgent } from "@kite9/fdc3-core"
-import { GetAgentParams } from "@kite9/fdc3-common"
+import { GetAgentParams } from "@kite9/fdc3-core"
 
 /**
  * Represents the common interface for a loading strategy

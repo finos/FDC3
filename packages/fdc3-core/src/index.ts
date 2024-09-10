@@ -10,7 +10,6 @@ export * from '@kite9/fdc3-schema'
 export { AppIdentifier } from './api/AppIdentifier';
 export { AppIntent } from './api/AppIntent';
 export { AppMetadata } from './api/AppMetadata';
-export { Channel } from './api/Channel';
 export * from './api/ContextMetadata';
 export * from './api/DesktopAgent';
 export { DisplayMetadata } from './api/DisplayMetadata';
@@ -27,7 +26,13 @@ export * from './api/RecommendedChannels';
 export { ContextHandler, IntentHandler, IntentResult } from './api/Types';
 export * from './context/ContextType';
 export * from './intents/Intents';
+export * from './api/GetAgent';
 export { EventHandler, FDC3ChannelChangedEvent, FDC3Event, FDC3EventType } from './api/Events'
+export * from './ui/ChannelSelector'
+export * from './ui/IntentResolver'
+export * from './ui/Connectable'
+export { Channel } from './api/Channel';
+
 
 declare global {
   interface Window {

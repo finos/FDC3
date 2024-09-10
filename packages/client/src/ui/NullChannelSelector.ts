@@ -1,6 +1,6 @@
 import { Channel, } from "@kite9/fdc3-core";
-import { Connectable } from "@kite9/fdc3-common";
-import { ChannelSelector } from "@kite9/fdc3-common";
+import { Connectable } from "@kite9/fdc3-core";
+import { ChannelSelector } from "@kite9/fdc3-core";
 
 export class NullChannelSelector implements ChannelSelector, Connectable {
 

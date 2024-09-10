@@ -1,5 +1,5 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { FindInstancesRequest, FindInstancesResponse } from "@kite9/fdc3-common";
+import { FindInstancesRequest, FindInstancesResponse } from "@kite9/fdc3-core";
 
 export class FindInstances implements AutomaticResponse {
 

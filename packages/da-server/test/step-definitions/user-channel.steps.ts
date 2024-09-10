@@ -7,7 +7,7 @@ import {
     JoinUserChannelRequest,
     LeaveCurrentChannelRequest,
     GetCurrentContextRequest
-} from '@kite9/fdc3-common'
+} from '@kite9/fdc3-core'
 import { handleResolve } from "@kite9/testing";
 
 

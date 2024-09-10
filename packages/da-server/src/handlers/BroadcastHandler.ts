@@ -16,7 +16,7 @@ import {
     LeaveCurrentChannelRequest,
     JoinUserChannelRequest,
     GetCurrentChannelRequest, AgentEventMessage, CreatePrivateChannelRequest, DisplayMetadata
-} from "@kite9/fdc3-common";
+} from "@kite9/fdc3-core";
 
 type ContextListenerRegistration = {
     appId: string,

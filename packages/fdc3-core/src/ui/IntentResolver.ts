@@ -1,5 +1,7 @@
-import { AppIdentifier, AppIntent, Context } from "@kite9/fdc3-core";
-import { Connectable } from "../Connectable";
+import { Context } from "@kite9/fdc3-schema";
+import { AppIdentifier } from "../api/AppIdentifier";
+import { AppIntent } from "../api/AppIntent";
+import { Connectable } from "./Connectable";
 
 
 export type IntentResolutionChoice = {

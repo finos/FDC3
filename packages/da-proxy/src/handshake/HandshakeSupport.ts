@@ -1,5 +1,4 @@
-import { Connectable } from "@kite9/fdc3-common";
-import { ImplementationMetadata } from "@kite9/fdc3-core"
+import { ImplementationMetadata, Connectable } from "@kite9/fdc3-core"
 
 /**
  * Handles messaging around connection and disconnection of the proxy

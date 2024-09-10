@@ -1,5 +1,5 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse } from "@kite9/fdc3-common";
+import { PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse } from "@kite9/fdc3-core";
 import { createResponseMeta } from "./support";
 
 export class DisconnectPrivateChannel implements AutomaticResponse {

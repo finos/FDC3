@@ -1,4 +1,4 @@
-import { Connectable } from "@kite9/fdc3-common";
+import { Connectable } from "@kite9/fdc3-core";
 
 export interface CSSPositioning { [key: string]: string }
 
