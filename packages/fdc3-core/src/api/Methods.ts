@@ -22,9 +22,7 @@ import {
 } from '..';
 import { StandardContextsSet } from '../internal/contextConfiguration';
 import { StandardIntentsSet } from '../internal/intentConfiguration';
-import { ContextTypes } from '@kite9/fdc3-schema'
-
-type Context = ContextTypes.Context
+import { Context } from '@kite9/fdc3-schema'
 
 const DEFAULT_TIMEOUT = 5000;
 

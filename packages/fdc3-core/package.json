@@ -19,7 +19,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "tsc --module es2022 && npm run lint",
-    "test": "jest --verbose",
+    "test": "tsc; jest --verbose",
     "lint": "eslint src/ --ext .ts --fix"
   },
   "husky": {

@@ -4,35 +4,30 @@
  */
 
 import { DesktopAgent } from './api/DesktopAgent';
-import { BridgingTypes } from '@kite9/fdc3-schema';
-import { ContextTypes } from '@kite9/fdc3-schema';
-import { BrowserTypes } from '@kite9/fdc3-schema';
 
-export * from './api/AppIdentifier';
-export * from './api/AppIntent';
-export * from './api/AppMetadata';
-export * from './api/Channel';
+export * from '@kite9/fdc3-schema'
+
+export { AppIdentifier } from './api/AppIdentifier';
+export { AppIntent } from './api/AppIntent';
+export { AppMetadata } from './api/AppMetadata';
+export { Channel } from './api/Channel';
 export * from './api/ContextMetadata';
 export * from './api/DesktopAgent';
-export * from './api/DisplayMetadata';
+export { DisplayMetadata } from './api/DisplayMetadata';
 export * from './api/Errors';
-export * from './api/Icon';
-export * from './api/Image';
-export * from './api/ImplementationMetadata';
-export * from './api/IntentMetadata';
-export * from './api/IntentResolution';
+export { Icon } from './api/Icon';
+export { Image } from './api/Image';
+export { ImplementationMetadata } from './api/ImplementationMetadata';
+export { IntentMetadata } from './api/IntentMetadata';
+export { IntentResolution } from './api/IntentResolution';
 export * from './api/Listener';
 export * from './api/Methods';
 export * from './api/PrivateChannel';
 export * from './api/RecommendedChannels';
-export * from './api/Types';
+export { ContextHandler, IntentHandler, IntentResult } from './api/Types';
 export * from './context/ContextType';
 export * from './intents/Intents';
-export * from './api/Events'
-
-/* Workaround for conflicts between bridging types and API types
-   and prettier issue with `export * as`. */
-export { BridgingTypes, BrowserTypes, ContextTypes };
+export { EventHandler, FDC3ChannelChangedEvent, FDC3Event, FDC3EventType } from './api/Events'
 
 declare global {
   interface Window {

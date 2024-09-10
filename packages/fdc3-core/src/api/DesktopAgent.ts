@@ -8,7 +8,7 @@ import { Channel } from './Channel';
 import { ContextHandler, IntentHandler } from './Types';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
-import { ContextTypes } from '@kite9/fdc3-schema';
+import { Context } from '@kite9/fdc3-schema';
 import { ImplementationMetadata } from './ImplementationMetadata';
 import { PrivateChannel } from './PrivateChannel';
 import { AppIdentifier } from './AppIdentifier';
@@ -17,8 +17,6 @@ import { DesktopAgentDetails } from './GetAgent';
 import { Intent } from '../intents/Intents';
 import { ContextType } from '../context/ContextType';
 import { EventHandler, FDC3EventType } from './Events';
-
-type Context = ContextTypes.Context
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
