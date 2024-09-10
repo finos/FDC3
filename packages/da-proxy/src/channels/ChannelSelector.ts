@@ -1,5 +1,5 @@
 import { Channel } from "@kite9/fdc3-core"
-import { Connectable } from "./Connectable"
+import { Connectable } from "../Connectable"
 
 /**
  * Interface used by the desktop agent proxy to handle the channel selection process.

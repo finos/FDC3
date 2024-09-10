@@ -18,6 +18,7 @@
     "dist"
   ],
   "workspaces": [
+    "packages/fdc3-schema",
     "packages/fdc3-core",
     "packages/testing",
     "packages/da-proxy",

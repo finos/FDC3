@@ -1,4 +1,4 @@
-import { AppIdentifier, Context, Channel } from "@kite9/fdc3";
+import { AppIdentifier, Context, Channel } from "@kite9/fdc3-core";
 import { AppRequestMessage, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-common";
 import { v4 as uuidv4 } from 'uuid'
 import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";

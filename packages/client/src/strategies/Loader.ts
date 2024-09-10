@@ -1,4 +1,4 @@
-import { DesktopAgent } from "@kite9/fdc3"
+import { DesktopAgent } from "@kite9/fdc3-core"
 import { GetAgentParams } from "@kite9/fdc3-common"
 
 /**

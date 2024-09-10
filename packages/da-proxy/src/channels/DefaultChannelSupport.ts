@@ -1,4 +1,4 @@
-import { Channel, ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3";
+import { Channel, ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3-core";
 import { Messaging } from "../Messaging";
 import { ChannelSupport } from "./ChannelSupport";
 import { DefaultPrivateChannel } from "./DefaultPrivateChannel";

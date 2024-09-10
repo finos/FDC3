@@ -1,6 +1,6 @@
 import { Messaging } from "../Messaging";
 import { HandshakeSupport } from "./HandshakeSupport";
-import { ImplementationMetadata } from "@kite9/fdc3";
+import { ImplementationMetadata } from "@kite9/fdc3-core";
 
 /**
  * This will possibly eventually need extending to allow for auth handshaking.

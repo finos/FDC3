@@ -2,15 +2,16 @@
     "extends": "../../tsconfig.root.json",
     "compilerOptions": {
         "rootDirs": [
-            "src"
+            "src",
+            "generated"
         ],
         "outDir": "dist",
     },
     "include": [
         "src/**/*.ts",
+        "generated/**/*.ts",
     ],
     "exclude": [
-        "test/**",
         "dist/**"
     ],
     "references": []

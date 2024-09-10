@@ -1,5 +1,5 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { ChannelError } from "@kite9/fdc3";
+import { ChannelError } from "@kite9/fdc3-core";
 import { GetOrCreateChannelRequest, GetOrCreateChannelResponse } from "@kite9/fdc3-common"
 import { createResponseMeta } from "./support";
 

@@ -3,10 +3,12 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { Context } from '../context/ContextTypes';
+import { ContextTypes } from '@kite9/fdc3-schema';
 import { ContextHandler } from './Types';
 import { DisplayMetadata } from './DisplayMetadata';
 import { Listener } from './Listener';
+
+type Context = ContextTypes.Context
 
 /**
  * Represents a context channel that applications can use to send and receive

@@ -4,7 +4,9 @@
  */
 
 import { DesktopAgent } from './api/DesktopAgent';
-import * as BridgingTypes from './bridging/BridgingTypes';
+import { BridgingTypes } from '@kite9/fdc3-schema';
+import { ContextTypes } from '@kite9/fdc3-schema';
+import { BrowserTypes } from '@kite9/fdc3-schema';
 
 export * from './api/AppIdentifier';
 export * from './api/AppIntent';
@@ -25,13 +27,12 @@ export * from './api/PrivateChannel';
 export * from './api/RecommendedChannels';
 export * from './api/Types';
 export * from './context/ContextType';
-export * from './context/ContextTypes';
 export * from './intents/Intents';
 export * from './api/Events'
 
 /* Workaround for conflicts between bridging types and API types
    and prettier issue with `export * as`. */
-export { BridgingTypes };
+export { BridgingTypes, BrowserTypes, ContextTypes };
 
 declare global {
   interface Window {
