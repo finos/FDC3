@@ -1,10 +1,7 @@
-import { ChannelDetails, SelectorMessageChannels } from "@kite9/fdc3-common";
+import { IframeChannelsPayload, Channel } from "@kite9/fdc3-common";
 
 
-var channels: ChannelDetails[] = []
-var channelId: string | null = null
-
-function fillChannels(data: ChannelDetails[], selected: string | null, messageClickedChannel: (s: String) => void) {
+const fillChannels = (data: Channel[], selected: string | null, messageClickedChannel: (s: string) => void) => {
   const list = document.getElementById('list')!!;
   list.innerHTML = '';
 
@@ -14,17 +11,23 @@ function fillChannels(data: ChannelDetails[], selected: string | null, messageCl
 
     const span = document.createElement('span');
     span.classList.add('glyph');
-    span.style.color = displayMetadata.color;
-    span.style.borderColor = displayMetadata.color;
-    span.textContent = displayMetadata.glyph ?? '';
+
+    if(displayMetadata?.color){
+      span.style.color = displayMetadata.color;
+      span.style.borderColor = displayMetadata.color;
+    }
+    span.textContent = displayMetadata?.glyph ?? '';
     node.appendChild(span);
-    const span2 = document.createElement('span');
-    span2.classList.add('name');
-    span2.textContent = displayMetadata.name;
-    node.appendChild(span2);
+
+    if(displayMetadata?.name){
+      const span2 = document.createElement('span');
+      span2.classList.add('name');
+      span2.textContent = displayMetadata.name;
+      node.appendChild(span2);
+    }
+    
     list.appendChild(node);
     node.addEventListener('click', () => messageClickedChannel(id));
-
 
     if (id === selected) {
       node.setAttribute("aria-selected", "true");
@@ -35,40 +38,69 @@ function fillChannels(data: ChannelDetails[], selected: string | null, messageCl
 
 window.addEventListener("load", () => {
   const parent = window.parent;
-  const logo = document.getElementById("logo")!!
+  const logo = document.getElementById("logo")!;
 
   const mc = new MessageChannel();
-  const myPort = mc.port1
-  myPort.start()
+  const myPort = mc.port1;
+  myPort.start();
+  myPort.onmessage = ({data}) => {
+    console.debug("Received message: ", data);
+    switch(data.type){
+      case "iframeHandshake": {
+        collapse();
+        break;
+      }
+      case "iframeChannels": {
+        const {userChannels, selected} = data.payload as IframeChannelsPayload;
+        fillChannels(userChannels, selected, (channelStr) => {
+          myPort.postMessage({
+            type: "iframeChannelSelected",
+            payload: {
+              selected: channelStr || null
+            }
+          })
+        });
+        const selectedChannel = userChannels.find((c) => c.id === selected);
+        logo.style.fill = selectedChannel?.displayMetadata?.color ?? "white";
+        break;
+      }
+    }
+  };
 
-  parent.postMessage({ type: "SelectorMessageInitialize" }, "*", [mc.port2]);
+  parent.postMessage({
+    type: "iframeHello"
+  }, "*", [mc.port2]);
 
-  function changeSize(expanded: boolean) {
-    document.body.setAttribute("data-expanded", "" + expanded);
-    myPort.postMessage({ type: "SelectorMessageResize", expanded })
+  const expand = () => {
+    document.body.setAttribute("data-expanded", "true");
+    myPort.postMessage({
+      type: "iframeRestyle",
+      payload: {
+        updatedCSS: {
+          width: `200px`,
+          height: `400px`,
+          right: "2px",
+          bottom: "2px"
+        }
+      }
+    });
   }
 
-  myPort.addEventListener("message", (e: MessageEvent) => {
-    if (e.data.type == 'SelectorMessageChannels') {
-      const details = e.data as SelectorMessageChannels
-      // console.log(JSON.stringify("CHANNEL DETAILS: " + JSON.stringify(details)))
-      channels = details.channels
-      channelId = details.selected
+  const collapse = () => {
+    document.body.setAttribute("data-expanded", "false");
+    myPort.postMessage({
+      type: "iframeRestyle",
+      payload: {
+        updatedCSS: {
+          width: `${8*4}px`,
+          height: `${8*5}px`,
+          right: "2px",
+          bottom: "2px"
+        }
+      }
+    });
+  }
 
-      const selectedColor = (channelId ? (channels.find(c => c.id == channelId)?.displayMetadata?.color) : null) ?? 'black'
-      logo.style.fill = selectedColor
-    }
-  })
+  logo.addEventListener("click", expand);
 
-  logo.addEventListener("click", () => {
-    fillChannels(channels, channelId, (id) => {
-      changeSize(false)
-      myPort.postMessage({ type: "SelectorMessageChoice", channelId: id })
-    })
-
-    // ask the parent container to increase the window size
-    changeSize(true)
-  })
-
-
-})
+});
