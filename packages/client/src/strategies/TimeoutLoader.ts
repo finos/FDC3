@@ -1,5 +1,4 @@
-import { DesktopAgent } from "@kite9/fdc3-core";
-import { GetAgentParams } from "@kite9/fdc3-common";
+import { DesktopAgent, GetAgentParams } from "@kite9/fdc3-core";
 import { Loader } from "./Loader";
 
 
@@ -29,7 +28,7 @@ export class TimeoutLoader implements Loader {
 
     get(params: GetAgentParams): Promise<DesktopAgent | void> {
         return new Promise<DesktopAgent | void>((resolve, reject) => {
-            const endPollTime = Date.now() + params.timeout
+            const endPollTime = Date.now() + params.timeout!!
             this.poll(endPollTime, resolve, reject)
         });
     }

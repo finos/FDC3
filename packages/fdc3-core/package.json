@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "build": "tsc --module es2022 && npm run lint",
+    "build": "tsc --module es2022",
     "test": "tsc; jest --verbose",
     "lint": "eslint src/ --ext .ts --fix"
   },

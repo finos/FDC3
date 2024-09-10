@@ -5,7 +5,7 @@ import { DefaultDesktopAgentIntentResolver } from "../ui/DefaultDesktopAgentInte
 import { DefaultDesktopAgentChannelSelector } from "../ui/DefaultDesktopAgentChannelSelector";
 import { NullIntentResolver } from "../ui/NullIIntentResolver";
 import { NullChannelSelector } from "../ui/NullChannelSelector";
-import { ChannelSelector } from "@kite9/fdc3-common";
+import { ChannelSelector } from "@kite9/fdc3-core";
 
 /**
  * Given a message port, constructs a desktop agent to communicate via that.

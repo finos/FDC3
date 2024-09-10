@@ -1,4 +1,4 @@
-import { RaiseIntentRequest, RaiseIntentResponse } from "@kite9/fdc3-common";
+import { RaiseIntentRequest, RaiseIntentResponse } from "@kite9/fdc3-core";
 import { TestServerContext } from "../TestServerContext";
 import { InstanceID } from "@kite9/da-server";
 import { AutomaticResponse } from "./AutomaticResponses";
