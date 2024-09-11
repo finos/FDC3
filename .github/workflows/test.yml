@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x] # Specify the Node.js versions you want to test against
+        node-version: [18.x]
 
     steps:
     - name: Checkout repository
