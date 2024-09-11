@@ -1,5 +1,8 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { GetAppMetadataRequest, GetAppMetadataResponse } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest
+type GetAppMetadataResponse = BrowserTypes.GetAppMetadataResponse
 
 export class GetAppMetadata implements AutomaticResponse {
 

@@ -1,8 +1,9 @@
 import { Given } from '@cucumber/cucumber'
 import { CustomWorld } from '../world/index';
 import { handleResolve } from '@kite9/testing';
-import { IntentEvent } from '@kite9/fdc3-standard';
+import { BrowserTypes } from '@kite9/fdc3-schema';
 import { Context, ContextMetadata } from '@kite9/fdc3';
+type IntentEvent = BrowserTypes.IntentEvent
 
 Given("app {string}", function (this: CustomWorld, appStr: string) {
     const [appId, instanceId] = appStr.split("/")

@@ -20,6 +20,9 @@
     },
     {
       "path": "../testing"
+    },
+    {
+      "path": "../fdc3-context"
     }
   ]
 }

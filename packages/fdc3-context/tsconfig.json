@@ -2,23 +2,18 @@
     "extends": "../../tsconfig.root.json",
     "compilerOptions": {
         "rootDirs": [
-            "src"
+            "src",
+            "generated"
         ],
         "outDir": "dist",
     },
     "include": [
-        "src",
+        "src/**/*.ts",
+        "generated/**/*.ts",
+        "schemas/**/*.json"
     ],
     "exclude": [
-        "test/**",
         "dist/**"
     ],
-    "references": [
-        {
-            "path": "../fdc3-schema"
-        },
-        {
-            "path": "../fdc3-context"
-        }
-    ]
+    "references": []
 }

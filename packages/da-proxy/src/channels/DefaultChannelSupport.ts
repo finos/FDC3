@@ -1,22 +1,26 @@
-import { Channel, ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3-standard";
+import { Channel, ContextHandler, Listener, PrivateChannel, ChannelSelector } from "@kite9/fdc3-standard";
 import { Messaging } from "../Messaging";
 import { ChannelSupport } from "./ChannelSupport";
 import { DefaultPrivateChannel } from "./DefaultPrivateChannel";
 import { DefaultChannel } from "./DefaultChannel";
 import { DefaultContextListener } from "../listeners/DefaultContextListener";
-import {
-    Channel as ChannelDetail,
-} from '@kite9/fdc3-schema';
-import {
-    ChannelSelector,
-    GetUserChannelsRequest, GetUserChannelsResponse,
-    GetOrCreateChannelResponse, GetOrCreateChannelRequest,
-    CreatePrivateChannelRequest, CreatePrivateChannelResponse,
-    JoinUserChannelResponse, JoinUserChannelRequest,
-    GetCurrentChannelResponse, GetCurrentChannelRequest,
-    LeaveCurrentChannelRequest, LeaveCurrentChannelResponse,
-} from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
 import { FollowingContextListener } from "../listeners/FollowingContextListener";
+
+type ChannelDetail = BrowserTypes.Channel
+type GetUserChannelsRequest = BrowserTypes.GetUserChannelsRequest
+type GetUserChannelsResponse = BrowserTypes.GetUserChannelsResponse
+type GetOrCreateChannelResponse = BrowserTypes.GetOrCreateChannelResponse
+type GetOrCreateChannelRequest = BrowserTypes.GetOrCreateChannelRequest
+type CreatePrivateChannelRequest = BrowserTypes.CreatePrivateChannelRequest
+type CreatePrivateChannelResponse = BrowserTypes.CreatePrivateChannelResponse
+type JoinUserChannelResponse = BrowserTypes.JoinUserChannelResponse
+type JoinUserChannelRequest = BrowserTypes.JoinUserChannelRequest
+type GetCurrentChannelResponse = BrowserTypes.GetCurrentChannelResponse
+type GetCurrentChannelRequest = BrowserTypes.GetCurrentChannelRequest
+type LeaveCurrentChannelRequest = BrowserTypes.LeaveCurrentChannelRequest
+type LeaveCurrentChannelResponse = BrowserTypes.LeaveCurrentChannelResponse
+
 
 
 export class DefaultChannelSupport implements ChannelSupport {

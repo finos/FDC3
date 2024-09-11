@@ -1,8 +1,10 @@
 import { ContextHandler, Channel } from "@kite9/fdc3-standard";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
-import { BroadcastEvent } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
 import { FollowingContextListener } from "./FollowingContextListener";
+
+type BroadcastEvent = BrowserTypes.BroadcastEvent
 
 export class DefaultContextListener extends AbstractListener<ContextHandler> implements FollowingContextListener {
 

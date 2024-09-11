@@ -8,7 +8,7 @@ import { Channel } from './Channel';
 import { ContextHandler, IntentHandler } from './Types';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
-import { Context } from '@kite9/fdc3-schema';
+import { Context } from '@kite9/fdc3-context';
 import { ImplementationMetadata } from './ImplementationMetadata';
 import { PrivateChannel } from './PrivateChannel';
 import { AppIdentifier } from './AppIdentifier';
