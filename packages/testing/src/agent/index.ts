@@ -1,5 +1,6 @@
-import { AppIntent, Channel, Context, IntentResult } from "@kite9/fdc3-core";
-import { IntentResolver, IntentResolutionChoice, ChannelSelector } from "@kite9/fdc3-core";
+import { AppIntent, Channel, IntentResult } from "@kite9/fdc3-standard";
+import { Context } from "@kite9/fdc3-context";
+import { IntentResolver, IntentResolutionChoice, ChannelSelector } from "@kite9/fdc3-standard";
 import { PropsWorld } from "../world";
 
 /**
