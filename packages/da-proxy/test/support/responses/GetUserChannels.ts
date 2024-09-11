@@ -26,7 +26,7 @@ export class GetUserChannels implements AutomaticResponse {
                     color: "red",
                     glyph: "triangle",
                 }
-            }
+            } as any
         })
 
         return {
