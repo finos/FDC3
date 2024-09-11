@@ -1,5 +1,5 @@
 {
-    "extends": "../../tsconfig.root.json",
+    "extends": "../../../tsconfig.root.json",
     "compilerOptions": {
         "rootDirs": [
             "src",
@@ -18,10 +18,10 @@
     ],
     "references": [
         {
-            "path": "../fdc3-core"
+            "path": "../../../packages/fdc3-core"
         },
         {
-            "path": "../testing"
+            "path": "../../../packages/testing"
         }
     ]
 }

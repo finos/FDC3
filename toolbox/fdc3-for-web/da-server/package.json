@@ -8,7 +8,7 @@
   "types": "dist/src/index.d.ts",
   "scripts": {
     "clean": "rimraf dist; rimraf generated; rimraf node_modules; rimraf coverage; rimraf .nyc_output; rimraf cucumber-report.html",
-    "directory-openapi": "npx openapi-typescript ../fdc3-core/src/app-directory/specification/appd.schema.json --output generated/directory-schema.ts",
+    "directory-openapi": "npx openapi-typescript ../../../packages/fdc3-core/src/app-directory/specification/appd.schema.json --output generated/directory-schema.ts",
     "test": "npm run directory-openapi; tsc; nyc --reporter=lcov --reporter=text cucumber-js",
     "build": "npm run directory-openapi && tsc --module es2022"
   },

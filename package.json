@@ -22,9 +22,9 @@
     "packages/fdc3-core",
     "packages/testing",
     "packages/da-proxy",
-    "packages/da-server",
+    "toolbox/fdc3-for-web/da-server",
     "packages/client",
-    "packages/demo",
+    "toolbox/fdc3-for-web/demo",
     "toolbox/fdc3-workbench"
   ],
   "scripts": {

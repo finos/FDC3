@@ -23,10 +23,10 @@
   ],
   "references": [
     {
-      "path": "../fdc3-core"
+      "path": "../../../packages/fdc3-core"
     },
     {
-      "path": "../client"
+      "path": "../../../packages/client"
     },
     {
       "path": "../da-server"

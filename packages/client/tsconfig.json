@@ -21,7 +21,7 @@
             "path": "../testing"
         },
         {
-            "path": "../da-server"
+            "path": "../../toolbox/fdc3-for-web/da-server"
         }
     ]
 }
