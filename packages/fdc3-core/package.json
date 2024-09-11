@@ -21,7 +21,7 @@
     "build": "tsc --module es2022",
     "test": "tsc; jest --verbose",
     "lint": "eslint src/ --ext .ts --fix"
-  }
+  },
   "prettier": {
     "semi": true,
     "singleQuote": true,
