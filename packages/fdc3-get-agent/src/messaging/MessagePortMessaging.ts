@@ -1,5 +1,5 @@
 import { AbstractWebMessaging } from './AbstractWebMessaging'
-import { RegisterableListener } from "@kite9/da-proxy"
+import { RegisterableListener } from "@kite9/fdc3-agent-proxy"
 import { GetAgentParams } from "@kite9/fdc3-standard"
 import { v4 as uuidv4 } from "uuid"
 import { BrowserTypes } from "@kite9/fdc3-schema";

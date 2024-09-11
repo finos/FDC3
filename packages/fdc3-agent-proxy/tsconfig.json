@@ -19,6 +19,12 @@
       "path": "../fdc3-standard"
     },
     {
+      "path": "../fdc3-schema"
+    },
+    {
+      "path": "../fdc3-context"
+    },
+    {
       "path": "../testing"
     },
     {

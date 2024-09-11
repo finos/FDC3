@@ -12,13 +12,19 @@
     ],
     "references": [
         {
-            "path": "../da-proxy"
+            "path": "../fdc3-agent-proxy"
         },
         {
             "path": "../fdc3-standard"
         },
         {
             "path": "../testing"
+        },
+        {
+            "path": "../fdc3-schema"
+        },
+        {
+            "path": "../fdc3-context"
         },
         {
             "path": "../../toolbox/fdc3-for-web/da-server"

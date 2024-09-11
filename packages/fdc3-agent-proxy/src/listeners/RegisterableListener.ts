@@ -2,7 +2,7 @@ import { Listener } from "@kite9/fdc3-standard";
 
 /**
  * Extends the basic concept of FDC3 listeners to include lifecycle methods.
- * All da-proxy listners implement this interface and should be initialised
+ * All fdc3-agent-proxy listners implement this interface and should be initialised
  * with the register() method before use.
  */
 export interface RegisterableListener extends Listener {

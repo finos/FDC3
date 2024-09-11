@@ -1,5 +1,5 @@
 {
-  "name": "@kite9/da-proxy",
+  "name": "@kite9/fdc3-agent-proxy",
   "version": "2.2.0-beta.6",
   "files": [
     "dist"
