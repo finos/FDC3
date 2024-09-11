@@ -1,6 +1,9 @@
 import { ServerContext } from "../ServerContext";
-import { AgentResponseMessage, AppIdentifier, AppRequestMessage } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+import { AppIdentifier } from "@kite9/fdc3-standard";
 
+type AppRequestMessage = BrowserTypes.AppRequestMessage
+type AgentResponseMessage = BrowserTypes.AgentResponseMessage
 
 export function successResponse(sc: ServerContext<any>, request: AppRequestMessage, to: AppIdentifier, payload: any, type: string) {
     return successResponseId(sc, request.meta.requestUuid, to, payload, type);

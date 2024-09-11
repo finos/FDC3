@@ -3,15 +3,16 @@ import { CustomWorld } from "../world";
 import { DirectoryApp } from "../../src/directory/DirectoryInterface";
 import { APP_FIELD, contextMap, createMeta } from "./generic.steps";
 import { handleResolve } from "@kite9/testing";
-import {
-    FindIntentRequest,
-    FindIntentsByContextRequest,
-    AddIntentListenerRequest,
-    IntentListenerUnsubscribeRequest,
-    RaiseIntentRequest,
-    RaiseIntentForContextRequest,
-    IntentResultRequest
-} from "@kite9/fdc3-standard";
+import { BrowserTypes } from '@kite9/fdc3-schema';
+
+
+type FindIntentRequest = BrowserTypes.FindIntentRequest
+type FindIntentsByContextRequest = BrowserTypes.FindIntentsByContextRequest
+type AddIntentListenerRequest = BrowserTypes.AddIntentListenerRequest
+type IntentListenerUnsubscribeRequest = BrowserTypes.IntentListenerUnsubscribeRequest
+type RaiseIntentRequest = BrowserTypes.RaiseIntentRequest
+type RaiseIntentForContextRequest = BrowserTypes.RaiseIntentForContextRequest
+type IntentResultRequest = BrowserTypes.IntentResultRequest
 
 type ListensFor = {
     [key: string]: {

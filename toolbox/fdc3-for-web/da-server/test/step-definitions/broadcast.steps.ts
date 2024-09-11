@@ -1,9 +1,15 @@
 import { When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { createMeta } from './generic.steps';
-import { AddContextListenerRequest, ContextListenerUnsubscribeRequest, BroadcastRequest, GetCurrentContextRequest } from '@kite9/fdc3-standard';
+import { } from '@kite9/fdc3-standard';
 import { handleResolve } from "@kite9/testing";
 import { contextMap } from './generic.steps';
+import { BrowserTypes } from '@kite9/fdc3-schema';
+
+type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest
+type ContextListenerUnsubscribeRequest = BrowserTypes.ContextListenerUnsubscribeRequest
+type BroadcastRequest = BrowserTypes.BroadcastRequest
+type GetCurrentContextRequest = BrowserTypes.GetCurrentContextRequest
 
 When('{string} adds a context listener on {string} with type {string}', function (this: CustomWorld, app: string, channelId: string, contextType: string) {
   const meta = createMeta(this, app)

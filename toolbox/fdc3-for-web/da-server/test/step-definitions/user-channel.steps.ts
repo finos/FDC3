@@ -1,14 +1,14 @@
 import { When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { createMeta } from './generic.steps';
-import {
-    GetUserChannelsRequest,
-    GetCurrentChannelRequest,
-    JoinUserChannelRequest,
-    LeaveCurrentChannelRequest,
-    GetCurrentContextRequest
-} from '@kite9/fdc3-standard'
+import { BrowserTypes } from '@kite9/fdc3-schema';
 import { handleResolve } from "@kite9/testing";
+
+type GetUserChannelsRequest = BrowserTypes.GetUserChannelsRequest
+type GetCurrentChannelRequest = BrowserTypes.GetCurrentChannelRequest
+type JoinUserChannelRequest = BrowserTypes.JoinUserChannelRequest
+type LeaveCurrentChannelRequest = BrowserTypes.LeaveCurrentChannelRequest
+type GetCurrentContextRequest = BrowserTypes.GetCurrentContextRequest
 
 
 When('{string} gets the list of user channels', function (this: CustomWorld, app: string) {

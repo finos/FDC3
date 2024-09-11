@@ -1,19 +1,23 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { InstanceID, ServerContext } from "../ServerContext";
 import { Directory, DirectoryApp } from "../directory/DirectoryInterface";
+import { ContextElement } from "@kite9/fdc3-context";
 import {
-    ContextElement, OpenError, ResolveError,
-    AddContextListenerRequest,
+    OpenError, ResolveError,
     AppIdentifier, AppMetadata,
-    BroadcastEvent,
-    FindInstancesRequest,
-    GetAppMetadataRequest,
-    OpenRequest,
-    WebConnectionProtocol4ValidateAppIdentity,
-    WebConnectionProtocol5ValidateAppIdentityFailedResponse,
-    WebConnectionProtocol5ValidateAppIdentitySuccessResponse
 } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
 import { errorResponse, successResponse } from './support'
+
+
+type BroadcastEvent = BrowserTypes.BroadcastEvent
+type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest
+type FindInstancesRequest = BrowserTypes.FindInstancesRequest
+type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest
+type OpenRequest = BrowserTypes.OpenRequest
+type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity
+type WebConnectionProtocol5ValidateAppIdentityFailedResponse = BrowserTypes.WebConnectionProtocol5ValidateAppIdentityFailedResponse
+type WebConnectionProtocol5ValidateAppIdentitySuccessResponse = BrowserTypes.WebConnectionProtocol5ValidateAppIdentitySuccessResponse
 
 enum AppState { Opening, DeliveringContext, Done }
 
