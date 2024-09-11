@@ -1,5 +1,5 @@
 {
-  "name": "@kite9/client",
+  "name": "@kite9/fdc3-get-agent",
   "version": "2.2.0-beta.6",
   "files": [
     "dist"
