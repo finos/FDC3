@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist && rimraf generated",
-    "mkdirs": "mkdirp generated/context && mkdirp generated/api && mkdirp generated/bridging",
+    "mkdirs": "mkdirp generated/api && mkdirp generated/bridging",
     "generate": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run lint",
     "build": "npm run generate && tsc --module es2022",
     "test": "npm run generate && tsc",
