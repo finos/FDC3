@@ -1319,7 +1319,9 @@ export interface Image {
  *
  * Unique identifier for an event message sent from a Desktop Agent to an app.
  *
- * Unique identifier for a for an attempt to connect to a Desktop Agent
+ * Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID
+ * should be used in the first (WCP1Hello) message and should be quoted in all subsequent
+ * messages to link them to the same connection attempt.
  *
  * Should be set if the raiseIntent request returned an error.
  */
@@ -2544,6 +2546,11 @@ export interface IntentEventPayload {
      * Details of the application instance that raised the intent
      */
     originatingApp?: AppIdentifier;
+    /**
+     * The requestUuid value of the raiseIntentRequest that the intentEvent being sent relates
+     * to.
+     */
+    raiseIntentRequestUuid: string;
 }
 
 /**
@@ -2643,8 +2650,12 @@ export interface IntentResultRequestPayload {
     /**
      * The eventUuid value of the intentEvent that the result being sent relates to.
      */
-    intentEventUuid?: string;
-    intentResult:     IntentResult;
+    intentEventUuid: string;
+    intentResult:    IntentResult;
+    /**
+     * The requestUuid value of the raiseIntentRequest that the result being sent relates to.
+     */
+    raiseIntentRequestUuid: string;
 }
 
 export interface IntentResult {
@@ -5196,6 +5207,7 @@ const typeMap: any = {
         { json: "context", js: "context", typ: r("Context") },
         { json: "intent", js: "intent", typ: "" },
         { json: "originatingApp", js: "originatingApp", typ: u(undefined, r("AppIdentifier")) },
+        { json: "raiseIntentRequestUuid", js: "raiseIntentRequestUuid", typ: "" },
     ], false),
     "IntentListenerUnsubscribeRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
@@ -5216,8 +5228,9 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("IntentResultRequestType") },
     ], false),
     "IntentResultRequestPayload": o([
-        { json: "intentEventUuid", js: "intentEventUuid", typ: u(undefined, "") },
+        { json: "intentEventUuid", js: "intentEventUuid", typ: "" },
         { json: "intentResult", js: "intentResult", typ: r("IntentResult") },
+        { json: "raiseIntentRequestUuid", js: "raiseIntentRequestUuid", typ: "" },
     ], false),
     "IntentResult": o([
         { json: "context", js: "context", typ: u(undefined, r("Context")) },
