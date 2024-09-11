@@ -1,4 +1,4 @@
-import { getAgent } from '@kite9/client'
+import { getAgent } from '@kite9/fdc3-get-agent'
 
 function createContext(i: number) {
     return {
