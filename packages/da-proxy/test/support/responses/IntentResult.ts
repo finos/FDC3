@@ -1,5 +1,8 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { IntentResultRequest, IntentResultResponse } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type IntentResultRequest = BrowserTypes.IntentResultRequest
+type IntentResultResponse = BrowserTypes.IntentResultResponse
 
 export class IntentResult implements AutomaticResponse {
 

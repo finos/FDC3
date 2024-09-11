@@ -1,6 +1,10 @@
 import { AutomaticResponse, IntentDetail, intentDetailMatches, TestMessaging } from "../TestMessaging";
-import { RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentResultResponse } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
 import { ResolveError } from "@kite9/fdc3-standard"
+
+type RaiseIntentForContextRequest = BrowserTypes.RaiseIntentForContextRequest
+type RaiseIntentForContextResponse = BrowserTypes.RaiseIntentForContextResponse
+type RaiseIntentResultResponse = BrowserTypes.RaiseIntentResultResponse
 
 export class RaiseIntentForContext implements AutomaticResponse {
 

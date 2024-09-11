@@ -1,8 +1,14 @@
-import { AppIdentifier, AppMetadata, Context } from "@kite9/fdc3-standard";
+import { AppIdentifier, AppMetadata } from "@kite9/fdc3-standard";
+import { Context } from "@kite9/fdc3-context";
 import { AppSupport } from "./AppSupport";
 import { Messaging } from "../Messaging";
-import { FindInstancesRequest, GetAppMetadataResponse, FindInstancesResponse, GetAppMetadataRequest, OpenRequest } from "@kite9/fdc3-standard"
+import { BrowserTypes } from "@kite9/fdc3-schema"
 
+type FindInstancesRequest = BrowserTypes.FindInstancesRequest
+type GetAppMetadataResponse = BrowserTypes.GetAppMetadataResponse
+type FindInstancesResponse = BrowserTypes.FindInstancesResponse
+type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest
+type OpenRequest = BrowserTypes.OpenRequest
 
 export class DefaultAppSupport implements AppSupport {
 

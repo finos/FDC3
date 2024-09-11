@@ -1,5 +1,5 @@
-import { AppIdentifier, Context, Channel } from "@kite9/fdc3-standard";
-import { AppRequestMessage, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-standard";
+import { AppIdentifier, Channel } from "@kite9/fdc3-standard";
+import { Context } from "@kite9/fdc3-context";
 import { v4 as uuidv4 } from 'uuid'
 import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";
 import { RegisterableListener } from "../../src/listeners/RegisterableListener";
@@ -20,6 +20,10 @@ import { CreatePrivateChannel } from "./responses/CreatePrivateChannel";
 import { DisconnectPrivateChannel } from "./responses/DisconnectPrivateChannel";
 import { IntentResult } from "./responses/IntentResult";
 import { RaiseIntentForContext } from "./responses/RaiseIntentForContext";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type AppRequestMessage = BrowserTypes.AppRequestMessage
+type WebConnectionProtocol5ValidateAppIdentitySuccessResponse = BrowserTypes.WebConnectionProtocol5ValidateAppIdentitySuccessResponse
 
 export interface IntentDetail {
     app?: AppIdentifier,

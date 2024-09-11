@@ -1,7 +1,14 @@
-import { Context, ContextHandler, DisplayMetadata, Listener, Channel } from "@kite9/fdc3-standard"
+import { ContextHandler, DisplayMetadata, Listener, Channel } from "@kite9/fdc3-standard"
+import { Context } from "@kite9/fdc3-context";
+
 import { Messaging } from "../Messaging"
 import { DefaultContextListener } from "../listeners/DefaultContextListener"
-import { BroadcastRequest, BroadcastResponse, GetCurrentContextResponse, GetCurrentContextRequest } from '@kite9/fdc3-standard'
+import { BrowserTypes } from "@kite9/fdc3-schema"
+
+type BroadcastRequest = BrowserTypes.BroadcastRequest
+type BroadcastResponse = BrowserTypes.BroadcastResponse
+type GetCurrentContextResponse = BrowserTypes.GetCurrentContextResponse
+type GetCurrentContextRequest = BrowserTypes.GetCurrentContextRequest
 
 export class DefaultChannel implements Channel {
 

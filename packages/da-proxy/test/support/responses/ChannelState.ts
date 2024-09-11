@@ -1,14 +1,24 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import {
-    JoinUserChannelRequest, JoinUserChannelResponse,
-    LeaveCurrentChannelResponse, LeaveCurrentChannelRequest,
-    GetCurrentChannelRequest, GetCurrentChannelResponse,
-    AddContextListenerRequest, AddContextListenerResponse,
-    ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse,
-    GetCurrentContextRequest, GetCurrentContextResponse,
-    BroadcastRequest, BroadcastResponse,
-    AgentResponseMessage, Context
-} from "@kite9/fdc3-standard";
+import { Context } from "@kite9/fdc3-context";
+
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type JoinUserChannelRequest = BrowserTypes.JoinUserChannelRequest
+type JoinUserChannelResponse = BrowserTypes.JoinUserChannelResponse
+type LeaveCurrentChannelResponse = BrowserTypes.LeaveCurrentChannelResponse
+type LeaveCurrentChannelRequest = BrowserTypes.LeaveCurrentChannelRequest
+type GetCurrentChannelRequest = BrowserTypes.GetCurrentChannelRequest
+type GetCurrentChannelResponse = BrowserTypes.GetCurrentChannelResponse
+type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest
+type AddContextListenerResponse = BrowserTypes.AddContextListenerResponse
+type ContextListenerUnsubscribeRequest = BrowserTypes.ContextListenerUnsubscribeRequest
+type ContextListenerUnsubscribeResponse = BrowserTypes.ContextListenerUnsubscribeResponse
+type GetCurrentContextRequest = BrowserTypes.GetCurrentContextRequest
+type GetCurrentContextResponse = BrowserTypes.GetCurrentContextResponse
+type BroadcastRequest = BrowserTypes.BroadcastRequest
+type BroadcastResponse = BrowserTypes.BroadcastResponse
+type AgentResponseMessage = BrowserTypes.AgentResponseMessage
+
 import { createResponseMeta } from "./support";
 import { v4 as uuidv4 } from 'uuid'
 

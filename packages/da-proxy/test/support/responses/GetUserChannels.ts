@@ -1,6 +1,10 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { GetUserChannelsRequest, GetUserChannelsResponse, Channel } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
 import { createResponseMeta } from "./support";
+
+type GetUserChannelsRequest = BrowserTypes.GetUserChannelsRequest
+type GetUserChannelsResponse = BrowserTypes.GetUserChannelsResponse
+type Channel = BrowserTypes.Channel
 
 export class GetUserChannels implements AutomaticResponse {
 

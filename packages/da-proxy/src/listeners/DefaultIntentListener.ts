@@ -1,8 +1,14 @@
-import { IntentHandler, IntentResult, AppIdentifier, Context } from "@kite9/fdc3-standard";
+import { IntentHandler, IntentResult, AppIdentifier } from "@kite9/fdc3-standard";
+import { Context } from "@kite9/fdc3-context";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
-import { RaiseIntentResponse, IntentResultResponse, FluffyIntentResult as BridgeIntentResult, IntentEvent, IntentResultRequest } from "@kite9/fdc3-standard"
+import { BrowserTypes } from "@kite9/fdc3-schema";
 
+type RaiseIntentResponse = BrowserTypes.RaiseIntentResponse
+type IntentResultResponse = BrowserTypes.IntentResultResponse
+type BridgeIntentResult = BrowserTypes.FluffyIntentResult
+type IntentEvent = BrowserTypes.IntentEvent
+type IntentResultRequest = BrowserTypes.IntentResultRequest
 
 export class DefaultIntentListener extends AbstractListener<IntentHandler> {
 

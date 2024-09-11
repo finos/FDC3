@@ -1,7 +1,10 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { CreatePrivateChannelRequest, CreatePrivateChannelResponse } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
 import { createResponseMeta } from "./support";
 import { v4 as uuidv4 } from 'uuid'
+
+type CreatePrivateChannelRequest = BrowserTypes.CreatePrivateChannelRequest
+type CreatePrivateChannelResponse = BrowserTypes.CreatePrivateChannelResponse
 
 export class CreatePrivateChannel implements AutomaticResponse {
 

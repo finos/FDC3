@@ -1,9 +1,11 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
 import { ChannelError } from "@kite9/fdc3-standard";
-import { GetOrCreateChannelRequest, GetOrCreateChannelResponse } from "@kite9/fdc3-standard"
+import { BrowserTypes } from "@kite9/fdc3-schema";
 import { createResponseMeta } from "./support";
 
 type ChannelType = { [channelId: string]: 'user' | 'app' | 'private' }
+type GetOrCreateChannelRequest = BrowserTypes.GetOrCreateChannelRequest
+type GetOrCreateChannelResponse = BrowserTypes.GetOrCreateChannelResponse
 
 export class GetOrCreateChannel implements AutomaticResponse {
 

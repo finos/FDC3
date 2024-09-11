@@ -1,5 +1,9 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { FindInstancesRequest, FindInstancesResponse } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type FindInstancesRequest = BrowserTypes.FindInstancesRequest
+type FindInstancesResponse = BrowserTypes.FindInstancesResponse
+
 
 export class FindInstances implements AutomaticResponse {
 

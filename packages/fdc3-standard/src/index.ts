@@ -5,34 +5,34 @@
 
 import { DesktopAgent } from './api/DesktopAgent';
 
-export * from '@kite9/fdc3-schema'
 
+//explicit overwrite of conflicting & equivalent export from ContextTypes
 export { AppIdentifier } from './api/AppIdentifier';
-export { AppIntent } from './api/AppIntent';
-export { AppMetadata } from './api/AppMetadata';
+export * from './api/AppIntent';
+export * from './api/AppMetadata';
+export * from './api/Channel';
 export * from './api/ContextMetadata';
 export * from './api/DesktopAgent';
-export { DisplayMetadata } from './api/DisplayMetadata';
+export * from './api/DisplayMetadata';
 export * from './api/Errors';
-export { Icon } from './api/Icon';
-export { Image } from './api/Image';
-export { ImplementationMetadata } from './api/ImplementationMetadata';
-export { IntentMetadata } from './api/IntentMetadata';
-export { IntentResolution } from './api/IntentResolution';
+export * from './api/Icon';
+export * from './api/Image';
+export * from './api/ImplementationMetadata';
+export * from './api/IntentMetadata';
+export * from './api/IntentResolution';
 export * from './api/Listener';
 export * from './api/Methods';
 export * from './api/PrivateChannel';
 export * from './api/RecommendedChannels';
-export { ContextHandler, IntentHandler, IntentResult } from './api/Types';
+export * from './api/Types';
 export * from './context/ContextType';
 export * from './intents/Intents';
+export * from './api/Events';
 export * from './api/GetAgent';
-export { EventHandler, FDC3ChannelChangedEvent, FDC3Event, FDC3EventType } from './api/Events'
-export * from './ui/ChannelSelector'
-export * from './ui/IntentResolver'
-export * from './ui/Connectable'
-export { Channel } from './api/Channel';
 
+export { IntentResolver, IntentResolutionChoice } from './ui/IntentResolver';
+export { ChannelSelector } from './ui/ChannelSelector';
+export { Connectable } from './ui/Connectable'
 
 declare global {
   interface Window {

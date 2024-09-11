@@ -1,5 +1,8 @@
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from "../TestMessaging";
-import { FindIntentRequest, FindIntentResponse } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type FindIntentRequest = BrowserTypes.FindIntentRequest
+type FindIntentResponse = BrowserTypes.FindIntentResponse
 
 export class FindIntent implements AutomaticResponse {
 

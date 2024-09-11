@@ -1,5 +1,8 @@
 import { AutomaticResponse, IntentDetail, TestMessaging } from "../TestMessaging";
-import { OpenRequest, OpenResponse } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type OpenRequest = BrowserTypes.OpenRequest
+type OpenResponse = BrowserTypes.OpenResponse
 
 export class Open implements AutomaticResponse {
 
