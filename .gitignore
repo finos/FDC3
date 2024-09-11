@@ -20,5 +20,5 @@ website/.docusaurus/**
 *.iml
 website/.yarn
 .nyc_output
-generated/
+toolbox/fdc3-for-web/fdc3-web-impl/generated/
 cucumber-report.html
