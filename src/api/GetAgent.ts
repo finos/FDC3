@@ -92,30 +92,6 @@ type GetAgentParams = {
   failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent> 
 }; 
 
-/** 
- * Contains constants representing the errors that can be encountered when  
- * trying to connect to a web-based Desktop Agent with the getAgent function. 
- */ 
-export enum AgentError { 
-  /** Returned if no Desktop Agent was found by any means available or 
-   * if the Agent previously connected to is not contactable on a  
-   * subsequent connection attempt.*/
-  AgentNotFound = "AgentNotFound",
-
-  /** Returned if validation of the app identity by the Desktop Agent 
-   * Failed or the app is not being allowed to connect to the Desktop Agent 
-   * for another reason. */ 
-  AccessDenied = "AccessDenied",
-
-  /** Returned if an error or exception occurs while trying to set  
-   * up communication with a Desktop Agent. */ 
-  ErrorOnConnect = "ErrorOnConnect",
-
-  /** Returned if either the failover function itself, or what it returned,  
-   * was not the right type. */ 
-  InvalidFailover = "InvalidFailover" 
-};
-
 /** Type representing data on the Desktop Agent that an app 
  *  connected to that is persisted by the getAgent function 
  *  to be used when re-connecting (after a navigation or  
