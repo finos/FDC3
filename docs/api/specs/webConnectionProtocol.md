@@ -10,11 +10,11 @@ The FDC3 Web Connection Protocol (WCP) is an experimental feature added to FDC3 
 
 :::
 
-The FDC3 Web Connection Protocol (WCP) defines the procedure for a web-application to connect to an FDC3 Desktop Agent. The WCP is used to implement a [`getAgent()`](../ref/GetAgent) function in the [@finos/fdc3 npm module](https://www.npmjs.com/package/@finos/fdc3), which is the recommended way for web applications to connect to a Desktop Agent. This specification details how it retrieves and provides the FDC3 `DesktopAgent` interface object and requirements that Desktop Agents must implement in order to support discovery and connection via `getAgent()`. Please see the [`getAgent` reference document](../ref/GetAgent.md) for its TypeScript definition and related types.
+The FDC3 Web Connection Protocol (WCP) defines the procedure for a web-application to connect to an FDC3 Desktop Agent. The WCP is used to implement a [`getAgent()`](../ref/GetAgent) function in the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3), which is the recommended way for web applications to connect to a Desktop Agent. This specification details how it retrieves and provides the FDC3 `DesktopAgent` interface object and requirements that Desktop Agents must implement in order to support discovery and connection via `getAgent()`. Please see the [`getAgent` reference document](../ref/GetAgent.md) for its TypeScript definition and related types.
 
 :::tip
 
-The [@finos/fdc3 npm module](https://www.npmjs.com/package/@finos/fdc3) provides a `getAgent()` implementation which app can use to connect to a Desktop Agent without having to interact with or understand the WCP directly. See [Support Platforms](../supported-platforms) and the [`getAgent()`](../ref/GetAgent) reference page for more details on using `getAgent()` in an application.
+The [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3) provides a `getAgent()` implementation which app can use to connect to a Desktop Agent without having to interact with or understand the WCP directly. See [Support Platforms](../supported-platforms) and the [`getAgent()`](../ref/GetAgent) reference page for more details on using `getAgent()` in an application.
 
 :::
 
@@ -308,7 +308,7 @@ flowchart TD
 
 Users of FDC3 Desktop Agents often need access to UI controls that allow them to select user channels or to resolve intents that have multiple resolution options. Whilst apps can implement these UIs on their own via data and API calls provided by the `DesktopAgent` API, Desktop Agents typically provide these interfaces themselves.
 
-However, Browser Resident Desktop Agents may have difficulty displaying user interfaces over applications for a variety of reasons (inability to inject code, lack of permissions to display popups etc.), or may not (e.g. because they render applications in iframes within windows they control and can therefore display content over the iframe). The Web Connection Protocol and the `getAgent()` implementation based on it and incorporated into apps via the [@finos/fdc3 npm module](https://www.npmjs.com/package/@finos/fdc3), is intended to help Desktop Agents deliver these UIs where necessary.
+However, Browser Resident Desktop Agents may have difficulty displaying user interfaces over applications for a variety of reasons (inability to inject code, lack of permissions to display popups etc.), or may not (e.g. because they render applications in iframes within windows they control and can therefore display content over the iframe). The Web Connection Protocol and the `getAgent()` implementation based on it and incorporated into apps via the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3), is intended to help Desktop Agents deliver these UIs where necessary.
 
 The WCP allows applications to indicate to the `getAgent()` implementation whether they need the UIs (they may not need one or the other based on their usage of the FDC3 API, or because they implement UIs themselves) and for Desktop Agents to provide custom implementations of them, or defer to reference implementations provided by the FDC3 Standard. This is achieved via: 
 

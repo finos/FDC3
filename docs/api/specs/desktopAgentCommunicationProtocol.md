@@ -12,75 +12,79 @@ The Desktop Agent Communication Protocol (DACP) is an experimental feature added
 
 :::
 
-DACP constitutes a set of messages that are used by the `@finos/fdc3` library to communicate with Browser-Resident DAs. Each message takes the form of a Flux Standard Action (FSA). Communications are bidirectional and occur over HTML standard MessagePorts. All messages are query/response. Responses may contain requested data or may simply be acknowledgement of receipt.
-
-:::note
-
-We refer to "the library" to mean the code imported from `@finos/fdc3` and initiated from a call to `getAgent()`.
-
-:::
-
-Type definitions for all DACP messages can be found here: [bcp.ts](TODO).
+The Desktop Agent Communication Protocol (DACP) constitutes a set of standardized JSON messages or 'wire protocol' that can be used to implement an interface to a Desktop Agent, encompassing all API calls events defined in the [Desktop Agent API](../ref/DesktopAgent.md). For example, the DACP is used by the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3) to communicate with Browser-Resident Desktop Agents or a connection setup via the [FDC3 Web Connection Protocol](./webConnectionProtocol).
 
 ## Protocol conventions
 
-The protocol is divided into groups of messages:
+DACP messages are defined in [JSON Schema](https://json-schema.org/) in the [FDC3 github repository](https://github.com/finos/FDC3/tree/fdc3-for-web/schemas/api).
 
-1) Messages sent from the library to the DA. These typically have a 1:1 correspondence with function calls on `DesktopAgent` and `Channel`, and ancillary functionality such as unsubscribing.
+:::tip
 
-2) Response messages, sent from the DA to the library. Every message sent from the library to the DA will receive a response. In most cases, the type will simply have "Response" appended. For instance, the response message for `getInfo` is `getInfoResponse`. For all other cases the `DACPAck` message will be the response. Every response's payload will contain an error string if an error occurred, otherwise it will contain the expected data.
+TypeScript types representing all DACP and WCP messages are generated from the JSON Schema source and can be imported from the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3):
 
-3) Asynchronous "inbound" messages, sent from the DA to the library. These messages are due to actions in other apps, such as an inbound context resulting from another app's broadcast. These messages have the name of the originating message appended with `Inbound`. For example, if another app called `broadcast` then this app would receive a message called `broadcastInbound`.
+```ts
+import {BrowserTypes} from '@finos.fdc3';
+```
 
-Every message has a `meta.messageId`. Initiating messages must set this to be a unique string. Response messages must use the string from their corresponding initiating message. The `messageId` can be used by library and DA to match incoming message responses with their initial requests.
+:::
 
-## Multiplexing
+The protocol is composed of several different classes of message, each governed by a message schema:
 
-For any given contextType or intent, the library should only ever send `DACPAddContextListener` or `DACPAddIntentListener` one time. The DA is only responsible for sending any given Context or Intent _once_ to an app. The DA may ignore duplicate listener registrations.
+1) **App Request Messages** ([schema](https://fdc3.finos.org/schemas/next/api/appRequest.schema.json)):
+    - Messages sent by an application representing an API call, such as [`DesktopAgent.broadcast`](../ref/DesktopAgent#broadcast), [`Channel.addContextListener`](../ref/Channel#addcontextlistener), or [`Listener.unsubscribe`](../ref/Types#listener).
+    - Message names all end in 'Request'.
+    - Each instance of a request message sent is uniquely identified by a `meta.requestUuid` field.
 
-If the app has registered multiple listeners for these types then it is the responsibility of the _library_ to multiplex the delivered Context, or to choose a specific intent listener.
+2) **Agent Response Messages** ([schema](https://fdc3.finos.org/schemas/next/api/agentResponse.schema.json)):
+    - Response messages sent from the DA to the application, each relating to a corresponding _App Request Message_.
+    - Message names all end in 'Response'.
+    - Each instance of an Agent Response Message is uniquely identified by a `meta.responseUuid` field.
+    - Each instance of an Agent Response Message quotes the `meta.requestUuid` value of the message it is responding to.
 
-When the API calls the unsubscriber for a listener then `DACPRemoveContextListener` or `DACPRemoveIntentListener` should be sent to the DA.
+3) **Agent Event Messages** ([schema](https://fdc3.finos.org/schemas/next/api/agentEvent.schema.json)):
+    - Messages sent from the DA to the application that are due to actions in other applications, such as an inbound context resulting from another app's broadcast.
+    - Message names all end in 'Event'.
+    - Each instance of an Agent Response Message is uniquely identified by a `meta.eventUuid` field.
 
-## Intents
+Each individual message is also governed by a message schema, which is composed with the schema for the message type.
 
-Refer [Private Channel examples](../ref/PrivateChannel.md#server-side-example) to understand how intent transactions work.
+:::info
 
-When an app ("client") calls `raiseIntent()` or `raiseIntentByContext()`, the library MUST send the corresponding `DACPRaiseIntent` or `DACPRaiseIntentByContext` message to the DA.
+In rare cases, the payload of a request or event message may quote the `requestUuid` or `eventUuid` of another message that it represents a response to, e.g. `intentResultRequest` quotes the `eventUuid` of the `intentEvent` that delivered the intent and context to the app, as well as the `requestUuid` of the `raiseIntentRequest` message that originally raised the intent.
 
-The DA will resolve the intent and then deliver a `DACPIntentInbound` message to the library in the resolved app ("server"). This message will contain a `responseId` that has been generated by the DA.
+:::
 
-After the message has been sent, the DA will respond back to the "client" app's library with a `DACPRaiseIntentResponse` message containing that `responseId`.
+All messages defined in the DACP follow a common structure:
 
-If the "client" app then calls `getResult()`, then the library will wait until a `DACPIntentResult` message is received with a corresponding `responseId`. It will resolve the `getResult()` call with either a Context or PrivateChannel depending on the contents of the result.
+```json
+{
+    "type": "string", // string identifying the message type
+    "payload": {
+        //message payload fields defined for each message type 
+    },
+    "meta": {
+        "timestamp": "2024-09-17T10:15:39+00:00"
+        //other meta fields determined by each 'class' of message
+        //  these include requestUuid, responseUuid and eventUuid
+        //  and a source field identifying an app where appropriate
+    }
+}
+```
 
-Meanwhile, if the "server" app's intent handler resolves to a Channel or Context then the library should send a `DACPIntentResult` with the `responseId` that was initially received from `DACPIntentInbound`.
+## Registering Listeners and Multiplexing
+
+//messages are sent to register and unregister listeners so that DAs can send only relevant messages to app for security
+
+//DAs only need to send one event message, even when there are multiple listeners, getAgent() should fire all relevant listeners.
+
+## Message Definitions
+
+### Desktop Agent and Channel API
+
+### PrivateChannels
+
+### User Interfaces
 
 
-## Intent Resolver
 
-The DA should send `DACPResolveIntent` if it requires an external UI for intent resolution. This MUST include the list of available apps which are capable of being launched to handle the intent, and it MUST include the list of open apps which are capable of handling the intent. The "@finos/fdc3" library will present UI to the end user, and then will respond with a `DACPResolveIntentResponse` containing the user's choice.
 
-DAs are free to provide their own intent resolution UIs if they have this capability.
-
-## Channels
-
-The DA should send `DACPInitializeChannelSelector` if it requires the app to provide UI for channel selection. The "@finos/fdc3" library will provide the UI when this message is received.
-
-Any message related to a channel contains a `channelId` field. It is the responsibility of each party (DA and library) to correlate `channelId` fields with the correct local objects.
-
-For instance, when the library receives a `DACPBroadcastInbound` message, it should look for the `channelId` field, and only deliver that message to listeners on the corresponding local `Channel` object.
-
-Likewise, when an app calls `channel.broadcast()` then the library should send the `DACPBroadcast` message with the `channelId` set accordingly.
-
-## Private Channels
-
-In general, private channels behave as channels. The DA MUST assign a unique `channelId` in response to `DACPCreatePrivateChannel` messages. `DACPBroadcast` and `DACPAddContextListener` messages can be transmitted with this `channelId`.
-
-See [Intents](#intents) for the process that is used to established a private channel.
-
-FDC3's `PrivateChannel` object has some specific functions, each of which has a corresponding DACP message. For instance, `PrivateChannel.onAddContextListener()` can be implemented using the `DACPPrivateChannelOnAddContextListener` message. Each of these types of messages contains a `channelId` which can be used to identify the channel.
-
-The DA should send `DACPPrivateChannelOnAddContextListener` and `DACPPrivateChannelOnUnsubscribe` messages whenever `DACPAddContextListener` or `DACPRemoveContextListener` is called on a private channel. These will be delivered to the library regardless of whether a client has actually called `onAddContextListener()` and `onUnsubscribe()`. It is the library's responsibility to track these calls and either deliver or discard the messages accordingly.
-
-Likewise, the DA should send `DACPPrivateChannelOnDisconnect` whenever the `DACPPrivateChannelDisconnect` message is received. It is the library's responsibility to deliver or discard this message.
