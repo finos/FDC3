@@ -1,6 +1,6 @@
 import { AbstractWebMessaging } from './AbstractWebMessaging'
 import { RegisterableListener } from "@kite9/da-proxy"
-import { GetAgentParams, WebConnectionProtocol3Handshake } from "@kite9/fdc3-common"
+import { GetAgentParams, WebConnectionProtocol3Handshake } from "@kite9/fdc3-core"
 import { v4 as uuidv4 } from "uuid"
 
 /**

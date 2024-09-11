@@ -1,19 +1,21 @@
-import { Channel, ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3";
+import { Channel, ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3-core";
 import { Messaging } from "../Messaging";
 import { ChannelSupport } from "./ChannelSupport";
 import { DefaultPrivateChannel } from "./DefaultPrivateChannel";
 import { DefaultChannel } from "./DefaultChannel";
 import { DefaultContextListener } from "../listeners/DefaultContextListener";
 import {
+    Channel as ChannelDetail,
+} from '@kite9/fdc3-schema';
+import {
     ChannelSelector,
     GetUserChannelsRequest, GetUserChannelsResponse,
     GetOrCreateChannelResponse, GetOrCreateChannelRequest,
     CreatePrivateChannelRequest, CreatePrivateChannelResponse,
-    Channel as ChannelDetail,
     JoinUserChannelResponse, JoinUserChannelRequest,
     GetCurrentChannelResponse, GetCurrentChannelRequest,
     LeaveCurrentChannelRequest, LeaveCurrentChannelResponse,
-} from "@kite9/fdc3-common";
+} from "@kite9/fdc3-core";
 import { FollowingContextListener } from "../listeners/FollowingContextListener";
 
 

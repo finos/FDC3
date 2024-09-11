@@ -6,7 +6,6 @@ import {
   AppIdentifier,
   AppIntent,
   Channel,
-  Context,
   ContextHandler,
   IntentHandler,
   IntentResolution,
@@ -23,6 +22,7 @@ import {
 } from '..';
 import { StandardContextsSet } from '../internal/contextConfiguration';
 import { StandardIntentsSet } from '../internal/intentConfiguration';
+import { Context } from '@kite9/fdc3-schema'
 
 const DEFAULT_TIMEOUT = 5000;
 

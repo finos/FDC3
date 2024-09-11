@@ -1,4 +1,4 @@
-import { IframeChannels } from "@kite9/fdc3-common";
+import { IframeChannels } from "@kite9/fdc3-core";
 
 var channels: any[] = []
 var channelId: string | null = null

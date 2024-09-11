@@ -1,12 +1,12 @@
-import { Context, AppIntent, AppIdentifier, IntentResolution, IntentHandler, Listener, ResolveError, IntentResult } from "@kite9/fdc3";
+import { Context, AppIntent, AppIdentifier, IntentResolution, IntentHandler, Listener, ResolveError, IntentResult } from "@kite9/fdc3-core";
 import { IntentSupport } from "./IntentSupport";
 import { Messaging } from "../Messaging";
 import { DefaultIntentResolution } from "./DefaultIntentResolution";
 import { DefaultIntentListener } from "../listeners/DefaultIntentListener";
-import { IntentResolutionChoice, IntentResolver, RaiseIntentForContextRequest, RaiseIntentForContextResponse } from "@kite9/fdc3-common";
+import { IntentResolutionChoice, IntentResolver, RaiseIntentForContextRequest, RaiseIntentForContextResponse } from "@kite9/fdc3-core";
 import { DefaultChannel } from "../channels/DefaultChannel";
 import { DefaultPrivateChannel } from "../channels/DefaultPrivateChannel";
-import { FindIntentRequest, FindIntentResponse, AddContextListenerRequestMeta, FindIntentsByContextRequest, FindIntentsByContextResponse, RaiseIntentRequest, RaiseIntentResultResponse, RaiseIntentResponse } from "@kite9/fdc3-common"
+import { FindIntentRequest, FindIntentResponse, AddContextListenerRequestMeta, FindIntentsByContextRequest, FindIntentsByContextResponse, RaiseIntentRequest, RaiseIntentResultResponse, RaiseIntentResponse } from "@kite9/fdc3-core"
 
 function convertIntentResult(m: RaiseIntentResultResponse, messaging: Messaging): Promise<IntentResult> {
     const result = m.payload.intentResult!!

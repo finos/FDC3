@@ -1,4 +1,6 @@
-import { AppIdentifier, AppIntent, Context } from "@kite9/fdc3";
+import { Context } from "@kite9/fdc3-schema";
+import { AppIdentifier } from "../api/AppIdentifier";
+import { AppIntent } from "../api/AppIntent";
 import { Connectable } from "./Connectable";
 
 

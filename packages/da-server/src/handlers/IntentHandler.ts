@@ -1,9 +1,8 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { InstanceID, ServerContext } from "../ServerContext";
 import { Directory } from "../directory/DirectoryInterface";
-import { AppIntent, ResolveError } from "@kite9/fdc3";
 import {
-    AddIntentListenerRequest,
+    AppIntent, ResolveError, AddIntentListenerRequest,
     FindIntentRequest, FindIntentsByContextRequest,
     IntentEvent,
     IntentListenerUnsubscribeRequest,
@@ -11,7 +10,7 @@ import {
     IntentResultRequest,
     AppIdentifier,
     Context
-} from "@kite9/fdc3-common";
+} from "@kite9/fdc3-core";
 import { errorResponse, errorResponseId, successResponse, successResponseId } from "./support";
 
 

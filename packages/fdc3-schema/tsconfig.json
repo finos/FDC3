@@ -3,25 +3,16 @@
     "compilerOptions": {
         "rootDirs": [
             "src",
-            "test",
             "generated"
         ],
         "outDir": "dist",
     },
     "include": [
-        "src",
-        "generated",
+        "src/**/*.ts",
+        "generated/**/*.ts",
     ],
     "exclude": [
-        "test/**",
         "dist/**"
     ],
-    "references": [
-        {
-            "path": "../fdc3-core"
-        },
-        {
-            "path": "../testing"
-        }
-    ]
+    "references": []
 }

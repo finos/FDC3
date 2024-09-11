@@ -1,5 +1,5 @@
 import { AutomaticResponse, IntentDetail, TestMessaging } from "../TestMessaging";
-import { OpenRequest, OpenResponse } from "@kite9/fdc3-common";
+import { OpenRequest, OpenResponse } from "@kite9/fdc3-core";
 
 export class Open implements AutomaticResponse {
 

@@ -1,4 +1,4 @@
-import { Convert, Contact } from '../src';
+import { Convert, Contact } from '@kite9/fdc3-schema';
 
 const json = '{ "type": "fdc3.contact", "id": { "email": "joe@mail.com" } }';
 const contact: Contact = {

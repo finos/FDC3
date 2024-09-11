@@ -1,5 +1,5 @@
 import { FDC3Server } from "@kite9/da-server"
-import { AppRequestMessage, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake } from "@kite9/fdc3-common"
+import { AppRequestMessage, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake } from "@kite9/fdc3-core"
 import { TestServerContext } from "./TestServerContext"
 import { MockWindow } from "./MockDocument"
 import { AutomaticResponse } from "./responses/AutomaticResponses"

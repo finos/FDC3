@@ -16,6 +16,8 @@ import { AppSupport } from "./apps/AppSupport";
 import { HandshakeSupport } from "./handshake/HandshakeSupport";
 import { DefaultHandshakeSupport } from "./handshake/DefaultHandshakeSupport";
 
+import { Connectable } from "@kite9/fdc3-core";
+
 export {
     type Messaging,
     AbstractMessaging,
@@ -29,5 +31,6 @@ export {
     DefaultIntentSupport,
     type HandshakeSupport,
     DefaultHandshakeSupport,
-    RegisterableListener
+    RegisterableListener,
+    Connectable,
 }

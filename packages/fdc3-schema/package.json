@@ -1,0 +1,44 @@
+{
+  "name": "@kite9/fdc3-schema",
+  "version": "2.2.0-beta.6",
+  "author": "Fintech Open Source Foundation (FINOS)",
+  "homepage": "https://fdc3.finos.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finos/FDC3.git"
+  },
+  "publishConfig": {
+    "tag": "latest"
+  },
+  "license": "Apache-2.0",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rimraf dist && rimraf generated/context/* && rimraf generated/api/* && rimraf generated/bridging/*",
+    "mkdirs": "mkdirp generated/context && mkdirp generated/api && mkdirp generated/bridging",
+    "prebuild": "npm run clean && npm run mkdirs && npm run typegen && npm run typegen-browser && npm run typegen-bridging && npm run lint",
+    "build": "npm run prebuild && tsc --module es2022",
+    "test": "npm run prebuild && tsc",
+    "lint": "eslint generated/ --ext .ts --fix",
+    "typegen": "cd schemas && node ../s2tQuicktypeUtil.js context ../generated/context/ContextTypes.ts",
+    "typegen-browser": "cd schemas && node ../s2tQuicktypeUtil.js api/api.schema.json api/common.schema.json context/context.schema.json api ../generated/api/BrowserTypes.ts",
+    "typegen-bridging": "cd schemas && node ../s2tQuicktypeUtil.js api/api.schema.json api/common.schema.json api/broadcastRequest.schema.json api/findInstancesRequest.schema.json api/findInstancesResponse.schema.json api/findIntentRequest.schema.json api/findIntentResponse.schema.json api/findIntentsByContextRequest.schema.json api/findIntentsByContextResponse.schema.json api/getAppMetadataRequest.schema.json api/getAppMetadataResponse.schema.json api/openRequest.schema.json api/openResponse.schema.json api/raiseIntentRequest.schema.json api/raiseIntentResponse.schema.json api/raiseIntentResultResponse.schema.json context/context.schema.json bridging ../generated/bridging/BridgingTypes.ts"
+  },
+  "devDependencies": {
+    "@types/jest": "29.5.12",
+    "@typescript-eslint/eslint-plugin": "7.1.1",
+    "@typescript-eslint/parser": "7.1.0",
+    "eslint": "8.57.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-jest": "27.9.0",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "quicktype": "23.0.78",
+    "rimraf": "^6.0.1",
+    "ts-jest": "29.1.2",
+    "tslib": "^2.0.1",
+    "typescript": "^5.3.2"
+  }
+}

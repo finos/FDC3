@@ -1,8 +1,8 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { InstanceID, ServerContext } from "../ServerContext";
 import { Directory, DirectoryApp } from "../directory/DirectoryInterface";
-import { ContextElement, OpenError, ResolveError } from "@kite9/fdc3";
 import {
+    ContextElement, OpenError, ResolveError,
     AddContextListenerRequest,
     AppIdentifier, AppMetadata,
     BroadcastEvent,
@@ -12,8 +12,8 @@ import {
     WebConnectionProtocol4ValidateAppIdentity,
     WebConnectionProtocol5ValidateAppIdentityFailedResponse,
     WebConnectionProtocol5ValidateAppIdentitySuccessResponse
-} from "@kite9/fdc3-common";
-import { errorResponse, successResponse } from "./support";
+} from "@kite9/fdc3-core";
+import { errorResponse, successResponse } from './support'
 
 enum AppState { Opening, DeliveringContext, Done }
 

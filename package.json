@@ -18,8 +18,8 @@
     "dist"
   ],
   "workspaces": [
+    "packages/fdc3-schema",
     "packages/fdc3-core",
-    "packages/fdc3-common",
     "packages/testing",
     "packages/da-proxy",
     "packages/da-server",
@@ -30,7 +30,6 @@
   "scripts": {
     "clean": "npm run clean --workspaces --if-present",
     "build": "npm run build --workspaces --if-present",
-    "prebuild": "npm run prebuild --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "syncpack": "npm exec syncpack fix-mismatches --types 'local'",
