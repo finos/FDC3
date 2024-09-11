@@ -315,8 +315,6 @@ export interface FDC3Event {
 /**
  * The type of a (non-context and non-intent) event that may be received via the FDC3 API's
  * addEventListener function.
- *
- * The type of the event to be listened to.
  */
 
 /**
@@ -350,9 +348,9 @@ export interface AddEventListenerRequest {
  */
 export interface AddEventListenerRequestPayload {
     /**
-     * The type of the event to be listened to.
+     * The type of the event to be listened to or `null` to listen to all event types.
      */
-    type: "USER_CHANNEL_CHANGED";
+    type: "USER_CHANNEL_CHANGED" | null;
 }
 
 /**
@@ -4737,7 +4735,7 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("AddEventListenerRequestType") },
     ], false),
     "AddEventListenerRequestPayload": o([
-        { json: "type", js: "type", typ: r("FDC3EventType") },
+        { json: "type", js: "type", typ: u(r("FDC3EventType"), null) },
     ], false),
     "AddEventListenerResponse": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
