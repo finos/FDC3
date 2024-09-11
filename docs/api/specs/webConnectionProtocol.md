@@ -249,43 +249,47 @@ title: "Web Connection Protocol Flowchart"
 flowchart TD
     A1([DesktopAgent launches app]) --> A2["`App calls **getAgent()**`"]
     A2 --> A3["`Check for **DesktopAgentDetails** in **SessionStorage**`"]
-    A3 --> P1{"`Does **window.fdc3** exist?`"}
-    P1 ---|yes|P2["`stop **timeout**`"]
-    P2 --> P21["`Save **DesktopAgentDetails** to **SessionStorage**`"]
+
+    subgraph "getAgent() imeplementation"
+      A3 --> P1{"`Does **window.fdc3** exist?`"}
+      P1 ---|yes|P2["`stop **timeout**`"]
+      P2 --> P21["`Save **DesktopAgentDetails** to **SessionStorage**`"]
+      P1 ---|No|P3["`Listen for **fdc3Ready**`"]
+      P3 --> P31["`**fdc3Ready event fires**`"]
+      P31 --> P32["`stop **timeout**`"]
+      P32 --> P33["`Save **DesktopAgentDetails** to **SessionStorage**`"]
+      
+      A3 --> B1{"`Do parent refs exist?`"}
+      B1 --> B11["`Send **WCP1Hello** to all candidates`"]
+      B11 --> B2["`Receive **WCP2LoadUrl**`"]
+      B2 --> B21["`stop **timeout**`"]
+      B21 --> B22["`Create hidden iframe with URL`"]
+      B22 --> B23["`Send **WCP1Hello** to iframe`"]
+      B23 --> B3["`Receive **WCP3Handshake** with **MessagePort**`"]
+      B3 --> B31["`stop **timeout**`"]
+      B11 --> B3
+      B31 --> B32["`Send **WCP4ValidateIdentity** on **MessagePort**`"]
+      B32 --> B321["`Receive **WCP5ValidateIdentityResponse**`"]
+      B321 --> B3211["`Create **DesktopAgentProxy** to process DACP messages`"]
+      B3211 --> B3212["`Save **DesktopAgentDetails** to **SessionStorage**`"]
+      B32 --> B322["`Receive **WCP5ValidateIdentityFailedResponse**`"]
+      
+      A3 --> T1["`Set **timeout**`"]
+      T1 --> T2["`**timeout** expires`"]
+      T2 --> T3{"`Was a **failover** fn provided`"}
+      T3 ---|yes|T31["`Run failover`"]
+      T31 --> T311{"`Check failover return type`"}
+      T311 ---|**WindowProxy**|T3111["`Send **WCP1Hello** via **WindowProxy**`"]
+      T311 ---|**DesktopAgent**|T3112["`Save **DesktopAgentDetails** to **SessionStorage**`"]
+      T3111 --> B3
+    end
     P21 -->P22(["`resolve with **window.fdc3**`"])
-    P1 ---|No|P3["`Listen for **fdc3Ready**`"]
-    P3 --> P31["`**fdc3Ready event fires**`"]
-    P31 --> P32["`stop **timeout**`"]
-    P32 --> P33["`Save **DesktopAgentDetails** to **SessionStorage**`"]
     P33 -->P34(["`resolve with **window.fdc3**`"])
-    
-    A3 --> B1{"`Do aprent refs exist?`"}
-    B1 --> B11["`Send **WCP1Hello** to all candidates`"]
-    B11 --> B2["`Receive **WCP2LoadUrl**`"]
-    B2 --> B21["`stop **timeout**`"]
-    B21 --> B22["`Create hidden iframe with URL`"]
-    B22 --> B23["`Send **WCP1Hello** to iframe`"]
-    B23 --> B3["`Receive **WCP3Handshake** with **MessagePort**`"]
-    B3 --> B31["`stop **timeout**`"]
-    B11 --> B3
-    B31 --> B32["`Send **WCP4ValidateIdentity** on **MessagePort**`"]
-    B32 --> B321["`Receive **WCP5ValidateIdentityResponse**`"]
-    B321 --> B3211["`Create **DesktopAgentProxy** to process DACP messages`"]
-    B3211 --> B3212["`Save **DesktopAgentDetails** to **SessionStorage**`"]
     B3212 --> B3213(["`resolve with **DesktopAgentProxy**`"])
-    B32 --> B322["`Receive **WCP5ValidateIdentityFailedResponse**`"]
     B322 --> B3221(["`reject with **AgentError.AccessDenied**`"])
-    
-    A3 --> T1["`Set **timeout**`"]
-    T1 --> T2["`**timeout** expires`"]
-    T2 --> T3{"`Was a **failover** fn provided`"}
-    T3 ---|yes|T31["`Run failover`"]
-    T31 --> T311{"`Check failover return type`"}
-    T311 ---|**DesktopAgent**|T3111["`Save **DesktopAgentDetails** to **SessionStorage**`"]
-    T3111 --> T3112(["`resolve with **DesktopAgent**`"])
-    T311 ---|**WindowProxy**|T3112["`Send **WCP1Hello** via **WindowProxy**`"]
-    T3112 --> B3
+    T3112 --> T31121(["`resolve with **DesktopAgent**`"])
     T3 ---|no|T32(["`reject with **AgentError.AgentNotFound**`"])
+    T311 ---|**Other**|T3113["`reject with **AgentError.ErrorOnConnect**`"]
 ```
 
 ## Providing Channel Selector and Intent Resolver UIs
