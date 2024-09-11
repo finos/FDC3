@@ -14,6 +14,8 @@
   "dependencies": {
     "@kite9/fdc3-standard": "2.2.0-beta.6",
     "@kite9/da-proxy": "2.2.0-beta.6",
+    "@kite9/fdc3-schema": "2.2.0-beta.6",
+    "@kite9/fdc3-context": "2.2.0-beta.6",
     "@types/uuid": "^10.0.0",
     "uuid": "^9.0.1"
   },
