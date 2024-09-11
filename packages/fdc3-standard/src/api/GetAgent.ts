@@ -31,12 +31,12 @@ import { DesktopAgent } from './DesktopAgent';
  * getAgent({ 
  *     identityUrl: "https://example.com/path?param=appName#example",  
  *     channelSelector: false,  
- *     intentresolver: false 
+ *     intentResolver: false 
  * }).then((fdc3) => { 
  *     //do FDC3 stuff here
  * }; 
  */
-export type getAgent = (
+export type GetAgentType = (
   params?: GetAgentParams,
 ) => Promise<DesktopAgent>;
 
@@ -53,7 +53,7 @@ export type getAgent = (
  * 
  * @property {number} timeout Number of milliseconds to allow for an fdc3  
  * implementation to be found before calling the failover function or 
- * rejecting (default 1000). Note that the timeout is cancelled as soon as a 
+ * rejecting (default 750). Note that the timeout is cancelled as soon as a 
  * Desktop Agent is detected. There may be additional set-up steps to perform 
  * which will happen outside the timeout. 
  * 
@@ -72,7 +72,7 @@ export type getAgent = (
  * @property {boolean} dontSetWindowFdc3 For backwards compatibility, `getAgent` 
  * will set a reference to the Desktop Agent implementation at `window.fdc3` 
  * if one does not already exist, and will fire the fdc3Ready event. Setting  
- * this flag to `false` will inhibit that behavior, leaving `window.fdc3` unset. 
+ * this flag to `true` will inhibit that behavior, leaving `window.fdc3` unset. 
  *  
  * @property {function} failover An optional function that provides a  
  * means of connecting to or starting a Desktop Agent, which will be called 

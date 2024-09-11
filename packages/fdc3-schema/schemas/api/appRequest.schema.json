@@ -25,6 +25,7 @@
         "getInfoRequest",
         "getOrCreateChannelRequest",
         "getUserChannelsRequest",
+        "heartbeatAcknowledgementRequest",
         "intentListenerUnsubscribeRequest",
         "intentResultRequest",
         "joinUserChannelRequest",

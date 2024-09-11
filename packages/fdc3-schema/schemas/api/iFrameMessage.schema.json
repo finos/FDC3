@@ -11,12 +11,12 @@
       "enum": [
         "iframeHello",
         "iframeHandshake",
+        "iframeRestyle",
+        "iframeDrag",
         "iframeResolve",
         "iframeResolveAction",
         "iframeChannels",
-        "iframeChannelSelected",
-        "iframeChannelResize",
-        "iframeChannelDrag"
+        "iframeChannelSelected"
       ],
       "description": "Identifies the type of the message to or from the iframe."
     },
