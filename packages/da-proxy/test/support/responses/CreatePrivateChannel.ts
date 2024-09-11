@@ -1,5 +1,5 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { CreatePrivateChannelRequest, CreatePrivateChannelResponse } from "@kite9/fdc3-common";
+import { CreatePrivateChannelRequest, CreatePrivateChannelResponse } from "@kite9/fdc3-core";
 import { createResponseMeta } from "./support";
 import { v4 as uuidv4 } from 'uuid'
 

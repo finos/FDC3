@@ -1,7 +1,7 @@
 import { TestServerContext } from "../TestServerContext";
 import { InstanceID } from "@kite9/da-server";
 import { AutomaticResponse } from "./AutomaticResponses";
-import { GetUserChannelsRequest, GetUserChannelsResponse } from "@kite9/fdc3-common";
+import { GetUserChannelsRequest, GetUserChannelsResponse } from "@kite9/fdc3-core";
 
 export const USER_CHANNELS = [
     {

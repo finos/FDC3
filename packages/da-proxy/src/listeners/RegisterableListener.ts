@@ -1,4 +1,4 @@
-import { Listener } from "@kite9/fdc3";
+import { Listener } from "@kite9/fdc3-core";
 
 /**
  * Extends the basic concept of FDC3 listeners to include lifecycle methods.

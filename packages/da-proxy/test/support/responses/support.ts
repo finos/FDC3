@@ -1,4 +1,4 @@
-import { AppRequestMessageMeta, AgentResponseMessageMeta } from '@kite9/fdc3-common'
+import { AppRequestMessageMeta, AgentResponseMessageMeta } from '@kite9/fdc3-core'
 import { v4 as uuidv4 } from 'uuid'
 
 export function createResponseMeta(m: AppRequestMessageMeta): AgentResponseMessageMeta {

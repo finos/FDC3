@@ -1,7 +1,7 @@
-import { AppIdentifier, AppMetadata, Context } from "@kite9/fdc3";
+import { AppIdentifier, AppMetadata, Context } from "@kite9/fdc3-core";
 import { AppSupport } from "./AppSupport";
 import { Messaging } from "../Messaging";
-import { FindInstancesRequest, GetAppMetadataResponse, FindInstancesResponse, GetAppMetadataRequest, OpenRequest } from "@kite9/fdc3-common"
+import { FindInstancesRequest, GetAppMetadataResponse, FindInstancesResponse, GetAppMetadataRequest, OpenRequest } from "@kite9/fdc3-core"
 
 
 export class DefaultAppSupport implements AppSupport {

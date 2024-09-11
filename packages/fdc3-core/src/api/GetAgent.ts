@@ -35,10 +35,10 @@ import { DesktopAgent } from './DesktopAgent';
  * }).then((fdc3) => { 
  *     //do FDC3 stuff here
  * }; 
- */ 
-export type getAgent = ( 
-  params?: GetAgentParams,  
-) => Promise<DesktopAgent>; 
+ */
+export type getAgent = (
+  params?: GetAgentParams,
+) => Promise<DesktopAgent>;
 
 /** 
  * @typedef {Object} GetAgentParams Type representing parameters passed to the 
@@ -82,21 +82,21 @@ export type getAgent = (
  * or an iframe's `contentWindow`) for a window or frame in which it has loaded 
  * a Desktop Agent or suitable proxy to one that works with FDC3 Web Connection 
  * and Desktop Agent Communication Protocols. 
- */ 
-type GetAgentParams = { 
-  timeout?: number, 
-  identityUrl?: string, 
-  channelSelector?: boolean, 
+ */
+export type GetAgentParams = {
+  timeout?: number,
+  identityUrl?: string,
+  channelSelector?: boolean,
   intentResolver?: boolean,
   dontSetWindowFdc3?: boolean,
-  failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent> 
-}; 
+  failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent>
+};
 
 /** 
  * Contains constants representing the errors that can be encountered when  
  * trying to connect to a web-based Desktop Agent with the getAgent function. 
- */ 
-export enum AgentError { 
+ */
+export enum AgentError {
   /** Returned if no Desktop Agent was found by any means available or 
    * if the Agent previously connected to is not contactable on a  
    * subsequent connection attempt.*/
@@ -104,49 +104,49 @@ export enum AgentError {
 
   /** Returned if validation of the app identity by the Desktop Agent 
    * Failed or the app is not being allowed to connect to the Desktop Agent 
-   * for another reason. */ 
+   * for another reason. */
   AccessDenied = "AccessDenied",
 
   /** Returned if an error or exception occurs while trying to set  
-   * up communication with a Desktop Agent. */ 
+   * up communication with a Desktop Agent. */
   ErrorOnConnect = "ErrorOnConnect",
 
   /** Returned if either the failover function itself, or what it returned,  
-   * was not the right type. */ 
-  InvalidFailover = "InvalidFailover" 
+   * was not the right type. */
+  InvalidFailover = "InvalidFailover"
 }
 
 /** Type representing data on the Desktop Agent that an app 
  *  connected to that is persisted by the getAgent function 
  *  to be used when re-connecting (after a navigation or  
  *  refresh event) and to ensure a consistent instanceId.  
- */ 
-export type DesktopAgentDetails = { 
+ */
+export type DesktopAgentDetails = {
   /** The type of Desktop Agent connected to. Used to  
-   *  prevent an inadvertent switch to a different agent.*/ 
+   *  prevent an inadvertent switch to a different agent.*/
   agentType: WebDesktopAgentType,
 
   /** The URL that was previously sent to the Desktop Agent 
-   * to establish the app's identity.*/ 
+   * to establish the app's identity.*/
   identityUrl?: string,
 
   /** The current URL at the time of the last connection to 
-   * a Desktop Agent.*/ 
+   * a Desktop Agent.*/
   actualUrl?: string,
 
   /** Optional URL field that should be used to store any 
    *  URL that was used to connect to a Desktop Agent. URLs 
    *  may have been provided by a parent window that has since 
    *  gone away and persisting may allow re-connection in such 
-   *  cases. */ 
+   *  cases. */
   agentUrl?: string,
 
   /** The appId that was identified for the application by the 
-   * Desktop Agent.*/ 
+   * Desktop Agent.*/
   appId: string,
 
   /** The instanceId that was issued to the app by the Desktop  
-   * Agent. */ 
+   * Agent. */
   instanceId: string,
 
   /** The instanceUuid that was issued to the app. This should be 
@@ -156,31 +156,31 @@ export type DesktopAgentDetails = {
    *  the same instanceId. The instanceUuid should never be shared 
    *  with other applications and is not available through the 
    *  FDC3 API, allowing it to be used as a shared secret with 
-   *  the Desktop Agent that issued the associated instanceId.*/ 
-  instanceUuid: string 
+   *  the Desktop Agent that issued the associated instanceId.*/
+  instanceUuid: string
 };
 
 /** Enumeration of values used to describe types of web-based 
 *  Desktop Agent. Each 'type' refers to the means by which 
 *  a connection to the agent is made and/or an interface to it 
-*  received. */ 
-export enum WebDesktopAgentType { 
+*  received. */
+export enum WebDesktopAgentType {
   /** Denotes Desktop Agents that inject the FDC3 interface  
-   *  at `window.fdc3`. */ 
+   *  at `window.fdc3`. */
   PRELOAD = "PRELOAD",
 
   /** Denotes Desktop Agents that run (or provide an interface) 
    *  within a parent window or frame, a reference to which  
    *  will be found at `window.opener`, `window.parent` or 
-   *  `window.parent.opener`. */ 
+   *  `window.parent.opener`. */
   PROXY_PARENT = "PROXY_PARENT",
 
   /** Denotes Desktop Agents that are connected to by loading 
    *  a URL into a iframe whose URL was returned by a parent 
-   * window or frame. */ 
+   * window or frame. */
   PROXY_URL = "PROXY_URL",
 
   /** Denotes a Desktop Agent that was returned by a failover 
-   * function that was passed by the application. */ 
-  FAILOVER = "FAILOVER" 
+   * function that was passed by the application. */
+  FAILOVER = "FAILOVER"
 }

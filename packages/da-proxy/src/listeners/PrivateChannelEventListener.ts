@@ -1,6 +1,6 @@
 import { Messaging } from "../Messaging"
 import { AbstractListener } from "./AbstractListener"
-import { BroadcastEvent } from "@kite9/fdc3-common"
+import { BroadcastEvent } from "@kite9/fdc3-core"
 
 type EVENT_TYPES_WITH_TYPE_HANDLER = "onAddContextListener" | "onUnsubscribe"
 export type EVENT_TYPES = EVENT_TYPES_WITH_TYPE_HANDLER | "onDisconnect"

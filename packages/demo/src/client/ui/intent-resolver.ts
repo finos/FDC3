@@ -1,4 +1,4 @@
-import { AppIdentifier, IframeResolveAction, IframeResolvePayload } from "@kite9/fdc3-common";
+import { AppIdentifier, IframeResolveAction, IframeResolvePayload } from "@kite9/fdc3-core";
 
 const DEFAULT_COLLAPSED_CSS = {
     position: "fixed",

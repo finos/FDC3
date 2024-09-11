@@ -3,7 +3,7 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { Context } from '../context/ContextTypes';
+import { Context } from '@kite9/fdc3-schema';
 import { ContextHandler } from './Types';
 import { DisplayMetadata } from './DisplayMetadata';
 import { Listener } from './Listener';

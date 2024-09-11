@@ -4,7 +4,7 @@ import { APP_GOODBYE, APP_HELLO, DA_HELLO, FDC3_APP_EVENT } from "../../message-
 import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
 import { DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/da-server";
-import { WebConnectionProtocol2LoadURL } from "@kite9/fdc3-common";
+import { WebConnectionProtocol2LoadURL } from "@kite9/fdc3-core";
 import { ChannelState, ChannelType } from "@kite9/da-server/src/handlers/BroadcastHandler";
 import { link } from "./util";
 

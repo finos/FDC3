@@ -1,11 +1,9 @@
-import { AppIdentifier, AppMetadata, Context, ContextHandler, DesktopAgent, EventHandler, FDC3EventType, ImplementationMetadata, IntentHandler, IntentResolution, Listener } from "@kite9/fdc3";
+import { AppIdentifier, AppMetadata, Context, ContextHandler, DesktopAgent, EventHandler, FDC3EventType, ImplementationMetadata, IntentHandler, IntentResolution, Listener } from "@kite9/fdc3-core";
 import { ChannelSupport } from "./channels/ChannelSupport";
 import { AppSupport } from "./apps/AppSupport";
 import { IntentSupport } from "./intents/IntentSupport";
 import { HandshakeSupport } from "./handshake/HandshakeSupport";
-import { Connectable } from "@kite9/fdc3-common";
-import { DesktopAgentDetails } from "@kite9/fdc3/dist/api/GetAgent";
-
+import { DesktopAgentDetails, Connectable } from "@kite9/fdc3-core"
 /**
  * This splits out the functionality of the desktop agent into 
  * app, channels and intents concerns.

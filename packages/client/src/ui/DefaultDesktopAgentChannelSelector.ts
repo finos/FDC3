@@ -1,5 +1,5 @@
-import { IframeChannels, IframeChannelSelected, ChannelSelector } from "@kite9/fdc3-common";
-import { Channel } from "@kite9/fdc3";
+import { Channel, IframeChannels, IframeChannelSelected } from "@kite9/fdc3-core";
+import { ChannelSelector } from "@kite9/fdc3-core"
 import { AbstractUIComponent } from "./AbstractUIComponent";
 
 

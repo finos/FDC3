@@ -1,7 +1,7 @@
-import { Context, ContextHandler, DisplayMetadata, Listener, Channel } from "@kite9/fdc3"
+import { Context, ContextHandler, DisplayMetadata, Listener, Channel } from "@kite9/fdc3-core"
 import { Messaging } from "../Messaging"
 import { DefaultContextListener } from "../listeners/DefaultContextListener"
-import { BroadcastRequest, BroadcastResponse, GetCurrentContextResponse, GetCurrentContextRequest } from '@kite9/fdc3-common'
+import { BroadcastRequest, BroadcastResponse, GetCurrentContextResponse, GetCurrentContextRequest } from '@kite9/fdc3-core'
 
 export class DefaultChannel implements Channel {
 

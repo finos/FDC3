@@ -1,7 +1,7 @@
 import { When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { createMeta } from './generic.steps';
-import { AddContextListenerRequest, ContextListenerUnsubscribeRequest, BroadcastRequest, GetCurrentContextRequest } from '@kite9/fdc3-common';
+import { AddContextListenerRequest, ContextListenerUnsubscribeRequest, BroadcastRequest, GetCurrentContextRequest } from '@kite9/fdc3-core';
 import { handleResolve } from "@kite9/testing";
 import { contextMap } from './generic.steps';
 
