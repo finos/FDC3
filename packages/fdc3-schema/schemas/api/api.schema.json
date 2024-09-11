@@ -468,6 +468,43 @@
                 "source"
             ]
         },
+        "IntentResult": {
+            "title": "IntentResult",
+            "anyOf": [
+                {
+                    "type": "object",
+                    "title": "IntentResult Context",
+                    "properties": {
+                        "context": {
+                            "$ref": "../context/context.schema.json"
+                        }
+                    },
+                    "required": [
+                        "context"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "title": "IntentResult Channel",
+                    "properties": {
+                        "channel": {
+                            "$ref": "#/definitions/Channel"
+                        }
+                    },
+                    "required": [
+                        "channel"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "title": "IntentResult Void",
+                    "properties": {},
+                    "additionalProperties": false
+                }
+            ]
+        },
         "FDC3EventType": {
             "title": "FDC3 Event Type",
             "description": "The type of a (non-context and non-intent) event that may be received via the FDC3 API's addEventListener function.",

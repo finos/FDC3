@@ -3,7 +3,7 @@
 	"$id": "https://fdc3.finos.org/schemas/next/api/raiseIntentResultResponse.schema.json",
 	"type": "object",
 	"title": "RaiseIntentResult Response",
-	"description": "A secondary response to a request to raise an intent used to deliver the intent result.",
+	"description": "A secondary response to a request to raise an intent used to deliver the intent result. This message should quote the original requestUuid of the raiseIntentRequest message in its `meta.requestUuid` field.",
 	"allOf": [
 		{
 			"$ref": "agentResponse.schema.json"
@@ -39,41 +39,7 @@
 			"type": "object",
 			"properties": {
 				"intentResult": {
-					"title": "IntentResult",
-					"anyOf": [
-						{
-							"type": "object",
-							"title": "IntentResult Context",
-							"properties": {
-								"context": {
-									"$ref": "../context/context.schema.json"
-								}
-							},
-							"required": [
-								"context"
-							],
-							"additionalProperties": false
-						},
-						{
-							"type": "object",
-							"title": "IntentResult Channel",
-							"properties": {
-								"channel": {
-									"$ref": "api.schema.json#/definitions/Channel"
-								}
-							},
-							"required": [
-								"channel"
-							],
-							"additionalProperties": false
-						},
-						{
-							"type": "object",
-							"title": "IntentResult Void",
-							"properties": {},
-							"additionalProperties": false
-						}
-					]
+					"$ref": "api.schema.json#/definitions/IntentResult"
 				}
 			},
 			"required": [

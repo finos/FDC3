@@ -5,6 +5,11 @@
 
 import { DesktopAgent } from './api/DesktopAgent';
 
+import * as BrowserTypes from './api/BrowserTypes';
+//import in order to create a local export that overwrites type exported via ContextTypes
+import * as AppIdentifier from './api/AppIdentifier';
+
+export * from './context/ContextTypes';
 
 //explicit overwrite of conflicting & equivalent export from ContextTypes
 export { AppIdentifier } from './api/AppIdentifier';
@@ -25,7 +30,10 @@ export * from './api/Methods';
 export * from './api/PrivateChannel';
 export * from './api/RecommendedChannels';
 export * from './api/Types';
+export * from './api/Events'
+
 export * from './context/ContextType';
+
 export * from './intents/Intents';
 export * from './api/Events';
 export * from './api/GetAgent';
@@ -33,6 +41,11 @@ export * from './api/GetAgent';
 export { IntentResolver, IntentResolutionChoice } from './ui/IntentResolver';
 export { ChannelSelector } from './ui/ChannelSelector';
 export { Connectable } from './ui/Connectable'
+
+/* Workaround for conflicts between bridging types, browser type and API types
+   and prettier issue with `export * as`. */
+export { BridgingTypes };
+export { BrowserTypes };
 
 declare global {
   interface Window {

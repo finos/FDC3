@@ -30,6 +30,12 @@
               "type": "string",
               "format": "uri"
             },
+            "actualUrl": {
+              "title": "Actual URL",
+              "description": "The current URL of the page attempting to connect. This may differ from the identityUrl, but the origins MUST match.",
+              "type": "string",
+              "format": "uri"
+            },
             "instanceId": {
               "title": "instanceId",
               "description": "If an application has previously connected to the desktop agent, it may specify its prior instance id and associated instance UUID to request the same same instance Id be assigned.",
@@ -43,7 +49,7 @@
           },
           "additionalProperties": false,
           "required": [
-            "identityUrl"
+            "identityUrl", "actualUrl"
           ]
         },
         "meta": true

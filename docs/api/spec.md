@@ -48,10 +48,9 @@ The FDC3 API specification consists of interfaces.  It is expected that each Des
 - [`Channel`](ref/Channel)
 - [`PrivateChannel`](ref/PrivateChannel)
 - [`Listener`](ref/Types#listener)
+- [Utility types](ref/Types#listener) and [Metadata Objects](ref/Metadata).
 
-Other interfaces defined in the spec are not critical to define as concrete types.  Rather, the Desktop Agent should expect to have objects of the interface shape passed into or out of their library.
-
-The means to access an API interface is defined separately for each language in which FDC3 is implemented. These definitions are important as they affect whether applicaitons can be written in a vendor agnostic format so that they run under any Standards-conformant implementation. For details of how to access an API interface in particular languages please see [Supported Platforms](supported-platforms).
+The means to access the main FDC3 API interface (a `DesktopAgent` implementation) is defined separately for each language in which FDC3 is implemented. These definitions are important as they affect whether applications can be written in a vendor agnostic format so that they run under any Standards-conformant implementation.
 
 ### Implementation language
 
@@ -59,7 +58,7 @@ FDC3 and the Desktop Agent API it defines are intended to be independent of part
 
 Specifically, the use of ['unions'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of primitive values in API type and metadata objects, or function parameters SHOULD be avoided as they often cannot be replicated in other languages. Unions of more complex types (such as specific [Context](ref/Context) Types) may be used where a suitable interface is available or can be created to allow the required polymorphism in languages other than TypeScript.
 
-For implementation details relating to particular languages, and how to access the API in those languages, please see [Supported Platforms](supported-platforms).
+For implementation details relating to particular languages and how to access the API in those languages please see [Supported Platforms](supported-platforms).
 
 ### Standards vs. Implementation
 
@@ -80,7 +79,7 @@ Are all areas of functionality that any feature-complete desktop agent would imp
 
 A goal of the FDC3 Standard is that applications running in different Desktop Agent contexts on the same desktop, or operated by the same user, would be able to interoperate and that one Desktop Agent context would be able to discover and launch an application in another Desktop Application context. As Desktop Agent interop is supported by common standards for APIs an app in one Desktop Agent context would not need to know a different syntax to launch or interact with an app in another Desktop Agent context.
 
-Inter-agent communication at the API layer may be achieved via the [Desktop Agent Bridging Part of the FDC3 Standard](../agent-bridging/spec) ([@experimental](../fdc3-compliance#experimental-features)), which defines an independent service that Desktop Agents may connect to, and a protocol for the exchange of messages relating to FDC3 API calls. Hence, by implementing support for Desktop Agent Bridging, a platform may extend interop across applications running in multiple Desktop Agent contexts.
+Inter-agent communication at the API layer may be achieved via the [Desktop Agent Bridging Part of the FDC3 Standard](../agent-bridging/spec) ([@experimental](../fdc3-compliance#experimental-features)), which defines an independent service that Desktop Agents may connect to (via the Bridge Connection Protocol or BCP), and a protocol for the exchange of messages relating to FDC3 API calls (the Bridge Messaging Protocol or BMP). Hence, by implementing support for Desktop Agent Bridging, a platform may extend interop across applications running in multiple Desktop Agent contexts.
 
 Desktop Agent Bridging provides message exchanges and a workflow for performing intent resolution across multiple agents. Hence, app discovery is supported across the agents connected to the bridge for intent-based workflows. Further, as channels are also supported by bridging, context sharing also works across multiple agents.
 
@@ -132,7 +131,6 @@ An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 - Make metadata about each context message or intent and context message received (including the app that originated the message) available to the receiving application.
 - Prevent external apps from listening or publishing on a [`PrivateChannel`](ref/PrivateChannel) that they did not request or provide.
 - Enforce compliance with the expected behavior of intents (where Intents specify a contract that is enforceable by schema, for example, return object types) and return an error if the interface is not met.
-- Implement [`validateAppIdentity()`](ref/DesktopAgent#validateappidentity).
 
 An FDC3 Standard compliant Desktop Agent implementation **MAY**:
 
