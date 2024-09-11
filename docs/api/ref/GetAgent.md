@@ -47,7 +47,7 @@ If no Desktop Agent is found, a failover function may be supplied by app allowin
 The definition of the `getAgent()` function is as follows:
 
 ```ts
-type getAgent = ( 
+type GetAgentType = ( 
   params?: GetAgentParams,  
 ) => Promise<DesktopAgent>; 
 ```

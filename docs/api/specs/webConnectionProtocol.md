@@ -10,18 +10,18 @@ The FDC3 Web Connection Protocol (WCP) is an experimental feature added to FDC3 
 
 :::
 
-The FDC3 Web Connection Protocol (WCP) defines the procedure for a web-application to connect to an FDC3 Desktop Agent. The WCP is used to implement a [`getAgent()`](../ref/GetAgent) function in the `@finos/fdc3` library, which is the recommended way for web applications to connect to a Desktop Agent. This specification details how it retrieves and provides the FDC3 `DesktopAgent` interface object and requirements that Desktop Agents must implement in order to support discovery and connection via `getAgent()`.
+The FDC3 Web Connection Protocol (WCP) defines the procedure for a web-application to connect to an FDC3 Desktop Agent. The WCP is used to implement a [`getAgent()`](../ref/GetAgent) function in the [@finos/fdc3 npm module](https://www.npmjs.com/package/@finos/fdc3), which is the recommended way for web applications to connect to a Desktop Agent. This specification details how it retrieves and provides the FDC3 `DesktopAgent` interface object and requirements that Desktop Agents must implement in order to support discovery and connection via `getAgent()`.
 
 :::tip
 
-The @finos/fdc3 npm module provides a `getAgent()` implementation which app can use to connect to a Desktop Agent without having to interact with or understand the WCP directly. See [Support Platforms](../supported-platforms) and the [`getAgent()`](../ref/GetAgent) reference page for more details on using `getAgent()` in an application.
+The [@finos/fdc3 npm module](https://www.npmjs.com/package/@finos/fdc3) provides a `getAgent()` implementation which app can use to connect to a Desktop Agent without having to interact with or understand the WCP directly. See [Support Platforms](../supported-platforms) and the [`getAgent()`](../ref/GetAgent) reference page for more details on using `getAgent()` in an application.
 
 :::
 
 The WCP supports both interfaces to web-based Desktop Agents defined in the FDC3 Standard:
 
 - **Desktop Agent Preload**: An 'injected' or 'preloaded' Desktop Agent API implementation, typically provided by an electron (or similar) container or browser extension, which is made available to web applications at `window.fdc3`.
-- **Desktop Agent Proxy**: An interface to a web-based Desktop Agent (implementation of the Desktop Agent API) that uses the Desktop Agent Communication protocol to communicate with a Desktop Agent implementation running in another frame or window, via the HTML Standard's Channel Messaging API ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API), [HTML Living Standard](https://html.spec.whatwg.org/multipage/web-messaging.html)).
+- **Desktop Agent Proxy**: An interface to a web-based Desktop Agent (implementation of the Desktop Agent API) that uses the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) to communicate with a Desktop Agent implementation running in another frame or window, via the HTML Standard's Channel Messaging API ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API), [HTML Living Standard](https://html.spec.whatwg.org/multipage/web-messaging.html)).
 
 The WCP allows FDC3-enabled application to detect which FDC3 web-interface is present and returns a `DesktopAgent` interface implementation that the application can use to communicate, without the import of proprietary libraries or code. Hence, the WCP enables FDC3-enabled applications to be run within the scope of any standards compliant Desktop Agent without modification, enabling their developers to Write Once Run Anywhere (WORA).
 
@@ -39,12 +39,13 @@ Further details for implementing Preload Desktop Agents (which use a Desktop Age
 
 ## Establishing Connectivity Using the Web Connection Protocol (WCP)
 
-The WCP algorithm (coordinated between the `getAgent()` implementation and Desktop Agent implementations) has four steps which must be completed within the window of the web application trying to connect. Each step may contain sub-steps.
+The WCP algorithm (coordinated between the `getAgent()` implementation and Desktop Agent implementations) has four steps which must be completed within the window of the web application trying to connect, followed by an optional disconnection step. Each step may contain sub-steps.
 
 1. Locate a Desktop Agent interface
 2. Validate app & instance identity
 3. Persist connection details to SessionStorage
 4. Return DesktopAgent interface
+5. Disconnect
 
 ### Step 1: Locate a Desktop Agent interface
 
@@ -229,15 +230,109 @@ SessionStorage is ephemeral, only existing for the duration of the window's life
 
 Resolve the `getAgent()` promise with an object containing either a `DesktopAgent` implementation (that was found at `window.fdc3` or returned by a `failover` function) or a 'Desktop Agent Proxy' implementation (a class implementing the `DesktopAgent` interface that uses the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) to communicate with a Desktop Agent over the `MessagePort`).
 
+### Step 5: Disconnection
+
+Desktop Agent Preload interfaces, as used in container-based Desktop Agent implementations, are usually able to track the lifecycle and current URL of windows that host web apps in their scope. Hence, this is currently no requirement nor means for an app to indicate that it is closing, rather it is the responsibility of the Desktop Agent to update its internal state when an app closes or changes identity.
+
+However, Browser Resident Desktop Agents working with a Desktop Agent Proxy interface may have more trouble tracking child windows and frames. Hence, a specific WCP message ([WCP6Goodbye](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json)) is provided for the `getAgent()` implementation to indicate that an app is disconnecting from the Desktop Agent and will not communicate further unless and until it reconnects via the WCP. The `getAgent()` implementation MUST listen for the `pagehide` event from the the HTML Standard's [Page Life Cycle API](https://wicg.github.io/page-lifecycle/spec.html) and send [WCP6Goodbye](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json) if it receives an event where the `persisted` property is `false`.
+
+As it is possible for a page to close without firing this event in some circumstances, other procedures for detecting disconnection must also be used, these are described in the [Disconnects section of the Browser Resident Desktop Agents specification](./browserResidentDesktopAgents#disconnects).
+
+### getAgent Workflow Defined by WCP
+
+The workflow defined in the Web Connection protocol for `getAgent()` is summarized in the below diagram:
+
+```mermaid
+---
+title: "Web Connection Protocol Flowchart" 
+---
+flowchart TD
+    A1([DesktopAgent launches app]) --> A2["`App calls **getAgent()**`"]
+    A2 --> A3["`Check for **DesktopAgentDetails** in **SessionStorage**`"]
+    A3 --> P1{"`Does **window.fdc3** exist?`"}
+    P1 ---|yes|P2["`stop **timeout**`"]
+    P2 --> P21["`Save **DesktopAgentDetails** to **SessionStorage**`"]
+    P21 -->P22(["`resolve with **window.fdc3**`"])
+    P1 ---|No|P3["`Listen for **fdc3Ready**`"]
+    P3 --> P31["`**fdc3Ready event fires**`"]
+    P31 --> P32["`stop **timeout**`"]
+    P32 --> P33["`Save **DesktopAgentDetails** to **SessionStorage**`"]
+    P33 -->P34(["`resolve with **window.fdc3**`"])
+    
+    A3 --> B1{"`Do **window.opener**, **window.parent**, **window.parent.opener** etc. exist?`"}
+    B1 --> B11["`Send **WCP1Hello** to all candidates`"]
+    B11 --> B2["`Receive **WCP2LoadUrl**`"]
+    B2 --> B21["`stop **timeout**`"]
+    B21 --> B22["`Create hidden iframe with URL`"]
+    B22 --> B23["`Send **WCP1Hello** to iframe`"]
+    B23 --> B3["`Receive **WCP3Handshake** with **MessagePort**`"]
+    B3 --> B31["`stop **timeout**`"]
+    B11 --> B3
+    B31 --> B32["`Send **WCP4ValidateIdentity** on **MessagePort**`"]
+    B32 --> B321["`Receive **WCP5ValidateIdentityResponse**`"]
+    B321 --> B3211["`Create **DesktopAgentProxy** to process DACP messages`"]
+    B3211 --> B3212["`Save **DesktopAgentDetails** to **SessionStorage**`"]
+    B3212 --> B3213(["`resolve with **DesktopAgentProxy**`"])
+    B32 --> B322["`Receive **WCP5ValidateIdentityFailedResponse**`"]
+    B322 --> B3221(["`reject with **AgentError.AccessDenied**`"])
+    
+    A3 --> T1["`Set **timeout**`"]
+    T1 --> T2["`**timeout** expires`"]
+    T2 --> T3{"`Was a **failover** fn provided`"}
+    T3 ---|yes|T31["`Run failover`"]
+    T31 --> T311{"`Check failover return type`"}
+    T311 ---|**DesktopAgent**|T3111["`Save **DesktopAgentDetails** to **SessionStorage**`"]
+    T3111 --> T3112(["`resolve with **DesktopAgent**`"])
+    T311 ---|**WindowProxy**|T3112["`Send **WCP1Hello** via **WindowProxy**`"]
+    T3112 --> B3
+    T3 ---|no|T32(["`reject with **AgentError.AgentNotFound**`"])
+```
+
 ## Providing Channel Selector and Intent Resolver UIs
 
-`getAgent()` MUST provide UI for channel selector and intent resolution. These can be OPTIONALLY utilized by the DA. The DA will send the `BCPInitializeChannelSelector` message if it does not have its own way to manage channel selection. It will send `BCPResolveIntent` if it does not have a way to present an intent resolver UI.
+Users of FDC3 Desktop Agents often need access to UI controls that allow them to select user channels or to resolve intents that have multiple resolution options. Whilst apps can implement these UIs on their own via data and API calls provided by the `DesktopAgent` API, Desktop Agents typically provide these interfaces themselves.
 
-`getAgent()` SHOULD implement UI within the app's DOM, for instance with an overlay for channel selector and a modal dialog for intent resolution.
+However, Browser Resident Desktop Agents may have difficulty displaying user interfaces over applications for a variety of reasons (inability to inject code, lack of permissions to display popups etc.), or may not (e.g. because they render applications in iframes within windows they control and can therefore display content over the iframe). The Web Connection Protocol and the `getAgent()` implementation based on it and incorporated into apps via the [@finos/fdc3 npm module](https://www.npmjs.com/package/@finos/fdc3), is intended to help Desktop Agents deliver these UIs where necessary.
 
+The WCP allows applications to indicate to the `getAgent()` implementation whether they need the UIs (they may not need one or the other based on their usage of the FDC3 API, or because they implement UIs themselves) and for Desktop Agents to provide custom implementations of them, or defer to reference implementations provided by the FDC3 Standard. This is achieved via: 
+
+- **[WCP1Hello](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json)**: Sent by an application and incorporating boolean `payload.intentResolver` and `payload.channelSelector` fields, which are set to false if either UI is not needed (defaults to true).
+- **[WCP3Handshake](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json)**: Response sent by the Desktop Agent and incorporating `payload.intentResolverUrl` and `payload.channelSelectorUrl` fields, which should be set to the URL for each UI implementation, which should be loaded into an iframe to provide the UI (defaults to URLs for reference UI implementations provided by the FDC3 project).
+
+When UI iframes are created, the user interfaces may use messages incorporated into the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) to communicate with the `getAgent()` implementation and through it the Desktop Agent.
+
+
+//TODO complete description once finalized.
+
+```mermaid
+flowchart LR
+    subgraph DA [Desktop Agent Window]
+      A[(Desktop Agent)]
+    end
+    A-->B["getAgent()"]
+    subgraph App [App Window]
+      B
+      subgraph iframe1 [iframe 1]
+        cs[Channel Selector]
+      end
+      subgraph iframe2 [iframe 2]
+        ir[Intent Resolver]
+      end
+    end
+    B-->cs
+    B-->ir
+```
 
 ## WCP Message Schemas and Types
 
+The WCP is used to implement the `getAgent()` function provided by the [@finos/fdc3 npm module](https://www.npmjs.com/package/@finos/fdc3). Please see the [`getAgent` reference document](../ref/GetAgent.md) for its TypeScript definition and related types.
 
+The messages defined by the Web Connection Protocol are:
 
-
+- [`WCP1Hello`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) 
+- [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json)
+- [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json)
+- [`WCP4ValidateAppIdentity`](/schemas/next/api/WCP4ValidateAppIdentity.schema.json)
+- [`WCP5ValidateAppIdentityFailedResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityFailedResponse.schema.json)
+- [`WCP5ValidateAppIdentityResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json)
+- [`WCP6Goodbye`](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json)
