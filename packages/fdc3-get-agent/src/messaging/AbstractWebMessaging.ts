@@ -1,5 +1,5 @@
 import { DesktopAgentDetails, WebDesktopAgentType, GetAgentParams, } from "@kite9/fdc3-standard";
-import { RegisterableListener, AbstractMessaging } from "@kite9/da-proxy";
+import { RegisterableListener, AbstractMessaging } from "@kite9/fdc3-agent-proxy";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 type WebConnectionProtocol5ValidateAppIdentitySuccessResponse = BrowserTypes.WebConnectionProtocol5ValidateAppIdentitySuccessResponse
 
