@@ -139,7 +139,9 @@ export function setupGenericSteps() {
         const f2 = fs
         const p = path
 
-        const abspath = p.join(__dirname, '../fdc3-schema/schemas/api')
+        const schemaDir = p.join(__dirname, '../../../../fdc3-schema/schemas')
+
+        const abspath = p.join(schemaDir, 'api')
 
         try {
             f2.readdirSync(abspath).forEach(file => {
@@ -155,7 +157,7 @@ export function setupGenericSteps() {
             console.log(error)
         }
 
-        const contextPath = p.join(__dirname, '../fdc3-schema/schemas/context.schema.json')
+        const contextPath = p.join(schemaDir, 'context/context.schema.json')
         const contents = fs.readFileSync(contextPath, 'utf8')
         const schema = JSON.parse(contents);
         ajv.addSchema(schema);
