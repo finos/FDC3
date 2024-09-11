@@ -36,12 +36,17 @@
 					"type": "string",
 					"description": "The eventUuid value of the intentEvent that the result being sent relates to."
 				},
+				"raiseIntentRequestUuid": {
+					"title": "raiseIntentRequest UUID",
+					"type": "string",
+					"description": "The requestUuid value of the raiseIntentRequest that the result being sent relates to."
+				},
 				"intentResult": {
 					"$ref": "api.schema.json#/definitions/IntentResult"
 				}
 			},
 			"required": [
-				"intentResult"
+				"intentEventUuid", "raiseIntentRequestUuid", "intentResult"
 			],
 			"additionalProperties": false
 		}
