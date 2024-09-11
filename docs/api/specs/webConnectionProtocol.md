@@ -10,7 +10,7 @@ The FDC3 Web Connection Protocol (WCP) is an experimental feature added to FDC3 
 
 :::
 
-The FDC3 Web Connection Protocol (WCP) defines the procedure for a web-application to connect to an FDC3 Desktop Agent. The WCP is used to implement a [`getAgent()`](../ref/GetAgent) function in the [@finos/fdc3 npm module](https://www.npmjs.com/package/@finos/fdc3), which is the recommended way for web applications to connect to a Desktop Agent. This specification details how it retrieves and provides the FDC3 `DesktopAgent` interface object and requirements that Desktop Agents must implement in order to support discovery and connection via `getAgent()`.
+The FDC3 Web Connection Protocol (WCP) defines the procedure for a web-application to connect to an FDC3 Desktop Agent. The WCP is used to implement a [`getAgent()`](../ref/GetAgent) function in the [@finos/fdc3 npm module](https://www.npmjs.com/package/@finos/fdc3), which is the recommended way for web applications to connect to a Desktop Agent. This specification details how it retrieves and provides the FDC3 `DesktopAgent` interface object and requirements that Desktop Agents must implement in order to support discovery and connection via `getAgent()`. Please see the [`getAgent` reference document](../ref/GetAgent.md) for its TypeScript definition and related types.
 
 :::tip
 
@@ -27,7 +27,7 @@ The WCP allows FDC3-enabled application to detect which FDC3 web-interface is pr
 
 :::tip
 
-See the FDC3 [Glossary](../../fdc3-glossary) and [References](../../references.md) pages for definitions of terms and links to external APIs used throughout this document. 
+See the FDC3 [Glossary](../../fdc3-glossary) and [References](../../references.md) pages for definitions of terms and links to external APIs used throughout this document.
 
 :::
 
@@ -36,6 +36,18 @@ See the FDC3 [Glossary](../../fdc3-glossary) and [References](../../references.m
 Further details for implementing Preload Desktop Agents (which use a Desktop Agent Preload interface) or a Browser Resident Desktop Agent (which use a Desktop Agent Proxy interface) are available in the [Preload Desktop Agent](./preloadDesktopAgents) or [Browser Resident Desktop Agent Specification](./browserResidentDesktopAgents), respectively.
 
 :::
+
+## WCP Message Schemas and Types
+
+There are a number of message formats defined as part of the Web Connection Protocol, which will be referenced later in this document, these are:
+
+- [`WCP1Hello`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) 
+- [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json)
+- [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json)
+- [`WCP4ValidateAppIdentity`](/schemas/next/api/WCP4ValidateAppIdentity.schema.json)
+- [`WCP5ValidateAppIdentityFailedResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityFailedResponse.schema.json)
+- [`WCP5ValidateAppIdentityResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json)
+- [`WCP6Goodbye`](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json)
 
 ## Establishing Connectivity Using the Web Connection Protocol (WCP)
 
@@ -238,7 +250,7 @@ However, Browser Resident Desktop Agents working with a Desktop Agent Proxy inte
 
 As it is possible for a page to close without firing this event in some circumstances, other procedures for detecting disconnection must also be used, these are described in the [Disconnects section of the Browser Resident Desktop Agents specification](./browserResidentDesktopAgents#disconnects).
 
-### getAgent Workflow Defined by WCP
+### `getAgent()` Workflow Diagram
 
 The workflow defined in the Web Connection protocol for `getAgent()` is summarized in the below diagram:
 
@@ -289,7 +301,7 @@ flowchart TD
     B322 --> B3221(["`reject with **AgentError.AccessDenied**`"])
     T3112 --> T31121(["`resolve with **DesktopAgent**`"])
     T3 ---|no|T32(["`reject with **AgentError.AgentNotFound**`"])
-    T311 ---|**Other**|T3113["`reject with **AgentError.ErrorOnConnect**`"]
+    T311 ---|**Other**|T3113["`reject with **AgentError.InvalidFailover**`"]
 ```
 
 ## Providing Channel Selector and Intent Resolver UIs
@@ -326,17 +338,3 @@ flowchart LR
     B-->cs
     B-->ir
 ```
-
-## WCP Message Schemas and Types
-
-The WCP is used to implement the `getAgent()` function provided by the [@finos/fdc3 npm module](https://www.npmjs.com/package/@finos/fdc3). Please see the [`getAgent` reference document](../ref/GetAgent.md) for its TypeScript definition and related types.
-
-The messages defined by the Web Connection Protocol are:
-
-- [`WCP1Hello`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) 
-- [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json)
-- [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json)
-- [`WCP4ValidateAppIdentity`](/schemas/next/api/WCP4ValidateAppIdentity.schema.json)
-- [`WCP5ValidateAppIdentityFailedResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityFailedResponse.schema.json)
-- [`WCP5ValidateAppIdentityResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json)
-- [`WCP6Goodbye`](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json)
