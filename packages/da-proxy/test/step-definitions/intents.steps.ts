@@ -1,7 +1,7 @@
 import { Given } from '@cucumber/cucumber'
 import { CustomWorld } from '../world/index';
 import { handleResolve } from '@kite9/testing';
-import { IntentEvent } from '@kite9/fdc3-core';
+import { IntentEvent } from '@kite9/fdc3-standard';
 import { Context, ContextMetadata } from '@kite9/fdc3';
 
 Given("app {string}", function (this: CustomWorld, appStr: string) {

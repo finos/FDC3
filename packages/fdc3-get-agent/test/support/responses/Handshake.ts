@@ -2,7 +2,7 @@ import { TestServerContext } from "../TestServerContext";
 import { InstanceID } from "@kite9/da-server";
 import { AutomaticResponse } from "./AutomaticResponses";
 
-import { WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-core";
+import { WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-standard";
 
 export const BAD_INSTANCE_ID = "BAD_INSTANCE"
 

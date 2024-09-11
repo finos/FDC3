@@ -1,4 +1,4 @@
-import { FindIntentRequest, FindIntentResponse } from "@kite9/fdc3-core";
+import { FindIntentRequest, FindIntentResponse } from "@kite9/fdc3-standard";
 import { TestServerContext } from "../TestServerContext";
 import { InstanceID } from "@kite9/da-server";
 import { AutomaticResponse } from "./AutomaticResponses";

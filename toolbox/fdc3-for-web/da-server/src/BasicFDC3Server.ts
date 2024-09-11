@@ -4,7 +4,7 @@ import { BroadcastHandler, ChannelState } from "./handlers/BroadcastHandler";
 import { IntentHandler } from "./handlers/IntentHandler";
 import { Directory } from "./directory/DirectoryInterface";
 import { OpenHandler } from "./handlers/OpenHandler";
-import { AppRequestMessage, WebConnectionProtocol4ValidateAppIdentity } from "@kite9/fdc3-core";
+import { AppRequestMessage, WebConnectionProtocol4ValidateAppIdentity } from "@kite9/fdc3-standard";
 
 
 export interface MessageHandler {

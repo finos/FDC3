@@ -1,4 +1,4 @@
-import { AppIdentifier, IntentResolution, IntentResult } from "@kite9/fdc3-core";
+import { AppIdentifier, IntentResolution, IntentResult } from "@kite9/fdc3-standard";
 import { Messaging } from "../Messaging";
 
 export class DefaultIntentResolution implements IntentResolution {

@@ -1,4 +1,4 @@
-import { DesktopAgent, GetAgentParams, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake } from '@kite9/fdc3-core'
+import { DesktopAgent, GetAgentParams, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake } from '@kite9/fdc3-standard'
 import { FDC3_VERSION } from '..';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { v4 as uuidv4 } from "uuid"

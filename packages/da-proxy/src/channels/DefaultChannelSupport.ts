@@ -1,4 +1,4 @@
-import { Channel, ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3-core";
+import { Channel, ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3-standard";
 import { Messaging } from "../Messaging";
 import { ChannelSupport } from "./ChannelSupport";
 import { DefaultPrivateChannel } from "./DefaultPrivateChannel";
@@ -15,7 +15,7 @@ import {
     JoinUserChannelResponse, JoinUserChannelRequest,
     GetCurrentChannelResponse, GetCurrentChannelRequest,
     LeaveCurrentChannelRequest, LeaveCurrentChannelResponse,
-} from "@kite9/fdc3-core";
+} from "@kite9/fdc3-standard";
 import { FollowingContextListener } from "../listeners/FollowingContextListener";
 
 

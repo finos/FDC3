@@ -11,7 +11,7 @@ import {
     RaiseIntentRequest,
     RaiseIntentForContextRequest,
     IntentResultRequest
-} from "@kite9/fdc3-core";
+} from "@kite9/fdc3-standard";
 
 type ListensFor = {
     [key: string]: {

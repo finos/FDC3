@@ -10,7 +10,7 @@ import {
     IntentResultRequest,
     AppIdentifier,
     Context
-} from "@kite9/fdc3-core";
+} from "@kite9/fdc3-standard";
 import { errorResponse, errorResponseId, successResponse, successResponseId } from "./support";
 
 

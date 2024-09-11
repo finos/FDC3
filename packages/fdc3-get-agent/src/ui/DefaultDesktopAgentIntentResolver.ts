@@ -1,5 +1,5 @@
-import { AppIntent, IframeResolveAction, Context, IframeResolve } from "@kite9/fdc3-core";
-import { IntentResolver, IntentResolutionChoice } from '@kite9/fdc3-core'
+import { AppIntent, IframeResolveAction, Context, IframeResolve } from "@kite9/fdc3-standard";
+import { IntentResolver, IntentResolutionChoice } from '@kite9/fdc3-standard'
 import { AbstractUIComponent } from "./AbstractUIComponent";
 
 /**

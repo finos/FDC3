@@ -1,7 +1,7 @@
-import { ContextHandler, Channel } from "@kite9/fdc3-core";
+import { ContextHandler, Channel } from "@kite9/fdc3-standard";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
-import { BroadcastEvent } from "@kite9/fdc3-core";
+import { BroadcastEvent } from "@kite9/fdc3-standard";
 import { FollowingContextListener } from "./FollowingContextListener";
 
 export class DefaultContextListener extends AbstractListener<ContextHandler> implements FollowingContextListener {

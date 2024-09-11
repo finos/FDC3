@@ -18,7 +18,7 @@
     ],
     "references": [
         {
-            "path": "../../../packages/fdc3-core"
+            "path": "../../../packages/fdc3-standard"
         },
         {
             "path": "../../../packages/testing"

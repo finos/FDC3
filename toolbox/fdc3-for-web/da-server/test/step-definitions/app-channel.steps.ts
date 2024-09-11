@@ -3,7 +3,7 @@ import { CustomWorld } from '../world';
 import { createMeta } from './generic.steps';
 import {
     GetOrCreateChannelRequest
-} from '@kite9/fdc3-core'
+} from '@kite9/fdc3-standard'
 import { handleResolve } from "@kite9/testing";
 
 When('{string} creates or gets an app channel called {string}', function (this: CustomWorld, app: string, channel: string) {

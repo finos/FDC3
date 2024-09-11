@@ -12,7 +12,7 @@ import {
     WebConnectionProtocol4ValidateAppIdentity,
     WebConnectionProtocol5ValidateAppIdentityFailedResponse,
     WebConnectionProtocol5ValidateAppIdentitySuccessResponse
-} from "@kite9/fdc3-core";
+} from "@kite9/fdc3-standard";
 import { errorResponse, successResponse } from './support'
 
 enum AppState { Opening, DeliveringContext, Done }

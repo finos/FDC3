@@ -6,7 +6,7 @@ import {
     PrivateChannelAddEventListenerRequest,
     PrivateChannelUnsubscribeEventListenerRequest,
     PrivateChannelDisconnectRequest
-} from '@kite9/fdc3-core'
+} from '@kite9/fdc3-standard'
 import { handleResolve } from "@kite9/testing";
 
 When('{string} creates a private channel', function (this: CustomWorld, app: string) {

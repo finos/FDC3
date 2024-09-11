@@ -1,4 +1,4 @@
-import { AppIdentifier, AppMetadata, Context } from "@kite9/fdc3-core";
+import { AppIdentifier, AppMetadata, Context } from "@kite9/fdc3-standard";
 
 
 export interface AppSupport {

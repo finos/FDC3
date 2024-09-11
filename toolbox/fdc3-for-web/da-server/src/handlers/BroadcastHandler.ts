@@ -1,6 +1,6 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { InstanceID, ServerContext } from "../ServerContext";
-import { AppIdentifier, ChannelError, Context } from "@kite9/fdc3-core";
+import { AppIdentifier, ChannelError, Context } from "@kite9/fdc3-standard";
 import { successResponse, errorResponse, onlyUnique } from "./support";
 import {
     PrivateChannelEventListenerTypes,
@@ -16,7 +16,7 @@ import {
     LeaveCurrentChannelRequest,
     JoinUserChannelRequest,
     GetCurrentChannelRequest, AgentEventMessage, CreatePrivateChannelRequest, DisplayMetadata
-} from "@kite9/fdc3-core";
+} from "@kite9/fdc3-standard";
 
 type ContextListenerRegistration = {
     appId: string,

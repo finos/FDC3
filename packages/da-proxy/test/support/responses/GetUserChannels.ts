@@ -1,5 +1,5 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { GetUserChannelsRequest, GetUserChannelsResponse, Channel } from "@kite9/fdc3-core";
+import { GetUserChannelsRequest, GetUserChannelsResponse, Channel } from "@kite9/fdc3-standard";
 import { createResponseMeta } from "./support";
 
 export class GetUserChannels implements AutomaticResponse {

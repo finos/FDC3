@@ -1,5 +1,5 @@
-import { AppIntent, Context } from "@kite9/fdc3-core";
-import { IntentResolver, IntentResolutionChoice } from "@kite9/fdc3-core";
+import { AppIntent, Context } from "@kite9/fdc3-standard";
+import { IntentResolver, IntentResolutionChoice } from "@kite9/fdc3-standard";
 
 
 export class NullIntentResolver implements IntentResolver {

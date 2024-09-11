@@ -2,7 +2,6 @@ name: Node.js CI Test
 
 # Controls when the workflow will run on any branch
 on:
-  push:
   pull_request:
 
 # Define the jobs for this workflow

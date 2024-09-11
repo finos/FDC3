@@ -8,7 +8,7 @@ import {
     GetCurrentContextRequest, GetCurrentContextResponse,
     BroadcastRequest, BroadcastResponse,
     AgentResponseMessage, Context
-} from "@kite9/fdc3-core";
+} from "@kite9/fdc3-standard";
 import { createResponseMeta } from "./support";
 import { v4 as uuidv4 } from 'uuid'
 

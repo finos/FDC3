@@ -1,4 +1,4 @@
-import { IframeHello, WebConnectionProtocol3Handshake } from "@kite9/fdc3-core"
+import { IframeHello, WebConnectionProtocol3Handshake } from "@kite9/fdc3-standard"
 import { CustomWorld } from "../world"
 import { MockWindow } from "./MockDocument"
 import { CHANNEL_SELECTOR_URL, EMBED_URL, INTENT_RESPOLVER_URL } from "./MockFDC3Server"

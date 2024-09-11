@@ -1,6 +1,6 @@
 import { AutomaticResponse, IntentDetail, intentDetailMatches, TestMessaging } from "../TestMessaging";
-import { RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentResultResponse } from "@kite9/fdc3-core";
-import { ResolveError } from "@kite9/fdc3-core"
+import { RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentResultResponse } from "@kite9/fdc3-standard";
+import { ResolveError } from "@kite9/fdc3-standard"
 
 export class RaiseIntentForContext implements AutomaticResponse {
 

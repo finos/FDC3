@@ -1,7 +1,7 @@
-import { IntentHandler, IntentResult, AppIdentifier, Context } from "@kite9/fdc3-core";
+import { IntentHandler, IntentResult, AppIdentifier, Context } from "@kite9/fdc3-standard";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
-import { RaiseIntentResponse, IntentResultResponse, FluffyIntentResult as BridgeIntentResult, IntentEvent, IntentResultRequest } from "@kite9/fdc3-core"
+import { RaiseIntentResponse, IntentResultResponse, FluffyIntentResult as BridgeIntentResult, IntentEvent, IntentResultRequest } from "@kite9/fdc3-standard"
 
 
 export class DefaultIntentListener extends AbstractListener<IntentHandler> {
