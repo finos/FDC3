@@ -1,5 +1,5 @@
-import { AppIntent, Context } from "@kite9/fdc3-standard";
-import { AppIdentifier } from "@kite9/fdc3-standard";
+import { AppIntent, AppIdentifier } from "@kite9/fdc3-standard";
+import { Context } from "@kite9/fdc3-context";
 
 
 /**

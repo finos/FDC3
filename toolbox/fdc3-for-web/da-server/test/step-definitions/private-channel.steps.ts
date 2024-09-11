@@ -1,13 +1,13 @@
 import { When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { createMeta } from './generic.steps';
-import {
-    CreatePrivateChannelRequest,
-    PrivateChannelAddEventListenerRequest,
-    PrivateChannelUnsubscribeEventListenerRequest,
-    PrivateChannelDisconnectRequest
-} from '@kite9/fdc3-standard'
+import { BrowserTypes } from '@kite9/fdc3-schema';
 import { handleResolve } from "@kite9/testing";
+
+type CreatePrivateChannelRequest = BrowserTypes.CreatePrivateChannelRequest
+type PrivateChannelAddEventListenerRequest = BrowserTypes.PrivateChannelAddEventListenerRequest
+type PrivateChannelUnsubscribeEventListenerRequest = BrowserTypes.PrivateChannelUnsubscribeEventListenerRequest
+type PrivateChannelDisconnectRequest = BrowserTypes.PrivateChannelDisconnectRequest
 
 When('{string} creates a private channel', function (this: CustomWorld, app: string) {
     const meta = createMeta(this, app)

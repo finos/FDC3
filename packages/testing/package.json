@@ -1,6 +1,7 @@
 {
   "name": "@kite9/testing",
   "version": "2.2.0-beta.6",
+  "private": true,
   "files": [
     "dist"
   ],

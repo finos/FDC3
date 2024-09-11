@@ -1,18 +1,19 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { InstanceID, ServerContext } from "../ServerContext";
 import { Directory } from "../directory/DirectoryInterface";
-import {
-    AppIntent, ResolveError, AddIntentListenerRequest,
-    FindIntentRequest, FindIntentsByContextRequest,
-    IntentEvent,
-    IntentListenerUnsubscribeRequest,
-    RaiseIntentRequest, RaiseIntentForContextRequest,
-    IntentResultRequest,
-    AppIdentifier,
-    Context
-} from "@kite9/fdc3-standard";
+import { Context } from "@kite9/fdc3-context";
+import { AppIntent, ResolveError, AppIdentifier, } from "@kite9/fdc3-standard";
 import { errorResponse, errorResponseId, successResponse, successResponseId } from "./support";
+import { BrowserTypes } from "@kite9/fdc3-schema";
 
+type AddIntentListenerRequest = BrowserTypes.AddIntentListenerRequest
+type FindIntentRequest = BrowserTypes.FindIntentRequest
+type FindIntentsByContextRequest = BrowserTypes.FindIntentsByContextRequest
+type IntentEvent = BrowserTypes.IntentEvent
+type IntentListenerUnsubscribeRequest = BrowserTypes.IntentListenerUnsubscribeRequest
+type RaiseIntentRequest = BrowserTypes.RaiseIntentRequest
+type RaiseIntentForContextRequest = BrowserTypes.RaiseIntentForContextRequest
+type IntentResultRequest = BrowserTypes.IntentResultRequest
 
 type ListenerRegistration = {
     appId: string | undefined,

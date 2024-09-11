@@ -1,22 +1,25 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { InstanceID, ServerContext } from "../ServerContext";
-import { AppIdentifier, ChannelError, Context } from "@kite9/fdc3-standard";
+import { Context } from "@kite9/fdc3-context";
+import { AppIdentifier, ChannelError, DisplayMetadata } from "@kite9/fdc3-standard";
 import { successResponse, errorResponse, onlyUnique } from "./support";
-import {
-    PrivateChannelEventListenerTypes,
-    GetCurrentContextRequest,
-    BroadcastRequest,
-    ContextListenerUnsubscribeRequest,
-    AddContextListenerRequest,
-    PrivateChannelDisconnectRequest,
-    PrivateChannelAddEventListenerRequest,
-    PrivateChannelUnsubscribeEventListenerRequest,
-    GetOrCreateChannelRequest,
-    GetUserChannelsRequest,
-    LeaveCurrentChannelRequest,
-    JoinUserChannelRequest,
-    GetCurrentChannelRequest, AgentEventMessage, CreatePrivateChannelRequest, DisplayMetadata
-} from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type PrivateChannelEventListenerTypes = BrowserTypes.PrivateChannelEventListenerTypes
+type GetCurrentContextRequest = BrowserTypes.GetCurrentContextRequest
+type BroadcastRequest = BrowserTypes.BroadcastRequest
+type ContextListenerUnsubscribeRequest = BrowserTypes.ContextListenerUnsubscribeRequest
+type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest
+type PrivateChannelDisconnectRequest = BrowserTypes.PrivateChannelDisconnectRequest
+type PrivateChannelAddEventListenerRequest = BrowserTypes.PrivateChannelAddEventListenerRequest
+type PrivateChannelUnsubscribeEventListenerRequest = BrowserTypes.PrivateChannelUnsubscribeEventListenerRequest
+type GetOrCreateChannelRequest = BrowserTypes.GetOrCreateChannelRequest
+type GetUserChannelsRequest = BrowserTypes.GetUserChannelsRequest
+type LeaveCurrentChannelRequest = BrowserTypes.LeaveCurrentChannelRequest
+type JoinUserChannelRequest = BrowserTypes.JoinUserChannelRequest
+type GetCurrentChannelRequest = BrowserTypes.GetCurrentChannelRequest
+type AgentEventMessage = BrowserTypes.AgentEventMessage
+type CreatePrivateChannelRequest = BrowserTypes.CreatePrivateChannelRequest
 
 type ContextListenerRegistration = {
     appId: string,
