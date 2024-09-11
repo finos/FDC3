@@ -1,8 +1,10 @@
-import { IframeHello, WebConnectionProtocol3Handshake } from "@kite9/fdc3-standard"
 import { CustomWorld } from "../world"
 import { MockWindow } from "./MockDocument"
 import { CHANNEL_SELECTOR_URL, EMBED_URL, INTENT_RESPOLVER_URL } from "./MockFDC3Server"
+import { BrowserTypes } from "@kite9/fdc3-schema"
 
+type IframeHello = BrowserTypes.IframeHello
+type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake
 
 /**
  * This handles the frame communications when we're using the embedded iframe approach

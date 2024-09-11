@@ -1,7 +1,9 @@
 import { AbstractWebMessaging } from './AbstractWebMessaging'
 import { RegisterableListener } from "@kite9/da-proxy"
-import { GetAgentParams, WebConnectionProtocol3Handshake } from "@kite9/fdc3-standard"
+import { GetAgentParams } from "@kite9/fdc3-standard"
 import { v4 as uuidv4 } from "uuid"
+import { BrowserTypes } from "@kite9/fdc3-schema";
+type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake
 
 /**
  * Details needed to set up the Messaging instance

@@ -1,7 +1,10 @@
-import { RaiseIntentRequest, RaiseIntentResponse } from "@kite9/fdc3-standard";
 import { TestServerContext } from "../TestServerContext";
 import { InstanceID } from "@kite9/da-server";
 import { AutomaticResponse } from "./AutomaticResponses";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type RaiseIntentRequest = BrowserTypes.RaiseIntentRequest
+type RaiseIntentResponse = BrowserTypes.RaiseIntentResponse
 
 
 export class RaiseIntent implements AutomaticResponse {

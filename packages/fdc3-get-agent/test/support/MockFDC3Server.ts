@@ -1,5 +1,4 @@
 import { FDC3Server } from "@kite9/da-server"
-import { AppRequestMessage, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake } from "@kite9/fdc3-standard"
 import { TestServerContext } from "./TestServerContext"
 import { MockWindow } from "./MockDocument"
 import { AutomaticResponse } from "./responses/AutomaticResponses"
@@ -8,6 +7,11 @@ import { RaiseIntent } from "./responses/RaiseIntent"
 import { Handshake } from "./responses/Handshake"
 import { UserChannels } from "./responses/UserChannels"
 import { CurrentChannel } from "./responses/CurrentChannel"
+import { BrowserTypes } from "@kite9/fdc3-schema"
+
+type AppRequestMessage = BrowserTypes.AppRequestMessage
+type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL
+type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake
 
 export const dummyInstanceId = { appId: "Test App Id", instanceId: "1" }
 
