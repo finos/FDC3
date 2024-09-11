@@ -1,4 +1,4 @@
-import { Directory, DirectoryApp, InstanceID, ServerContext } from '@kite9/da-server'
+import { Directory, DirectoryApp, InstanceID, ServerContext } from '@kite9/fdc3-web-impl'
 import { Socket } from 'socket.io-client';
 import { v4 as uuid } from 'uuid'
 import { FDC3_DA_EVENT } from '../../message-types';

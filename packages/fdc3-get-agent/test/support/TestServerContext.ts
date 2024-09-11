@@ -1,4 +1,4 @@
-import { ServerContext, InstanceID } from '@kite9/da-server'
+import { ServerContext, InstanceID } from '@kite9/fdc3-web-impl'
 import { CustomWorld } from '../world'
 import { OpenError, AppIdentifier, AppIntent, Context } from '@kite9/fdc3'
 

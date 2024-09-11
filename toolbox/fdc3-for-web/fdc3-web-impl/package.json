@@ -1,5 +1,5 @@
 {
-  "name": "@kite9/da-server",
+  "name": "@kite9/fdc3-web-impl",
   "version": "2.2.0-beta.6",
   "files": [
     "dist"
