@@ -259,7 +259,7 @@ flowchart TD
     P32 --> P33["`Save **DesktopAgentDetails** to **SessionStorage**`"]
     P33 -->P34(["`resolve with **window.fdc3**`"])
     
-    A3 --> B1{"`Do **window.opener**, **window.parent**, **window.parent.opener** etc. exist?`"}
+    A3 --> B1{"`Do aprent refs exist?`"}
     B1 --> B11["`Send **WCP1Hello** to all candidates`"]
     B11 --> B2["`Receive **WCP2LoadUrl**`"]
     B2 --> B21["`stop **timeout**`"]
