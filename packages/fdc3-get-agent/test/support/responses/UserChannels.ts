@@ -1,7 +1,10 @@
 import { TestServerContext } from "../TestServerContext";
 import { InstanceID } from "@kite9/da-server";
 import { AutomaticResponse } from "./AutomaticResponses";
-import { GetUserChannelsRequest, GetUserChannelsResponse } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type GetUserChannelsRequest = BrowserTypes.GetUserChannelsRequest
+type GetUserChannelsResponse = BrowserTypes.GetUserChannelsResponse
 
 export const USER_CHANNELS = [
     {

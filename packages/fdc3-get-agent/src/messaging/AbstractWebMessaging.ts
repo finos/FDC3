@@ -1,5 +1,7 @@
-import { DesktopAgentDetails, WebDesktopAgentType, GetAgentParams, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-standard";
+import { DesktopAgentDetails, WebDesktopAgentType, GetAgentParams, } from "@kite9/fdc3-standard";
 import { RegisterableListener, AbstractMessaging } from "@kite9/da-proxy";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+type WebConnectionProtocol5ValidateAppIdentitySuccessResponse = BrowserTypes.WebConnectionProtocol5ValidateAppIdentitySuccessResponse
 
 export const DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY = "fdc3-desktop-agent-details"
 

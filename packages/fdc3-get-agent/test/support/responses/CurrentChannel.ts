@@ -1,8 +1,9 @@
-import { GetCurrentChannelRequest, GetCurrentChannelResponse } from "@kite9/fdc3-standard";
 import { TestServerContext } from "../TestServerContext";
 import { InstanceID } from "@kite9/da-server";
 import { AutomaticResponse } from "./AutomaticResponses";
-
+import { BrowserTypes } from "@kite9/fdc3-schema";
+type GetCurrentChannelRequest = BrowserTypes.GetCurrentChannelRequest
+type GetCurrentChannelResponse = BrowserTypes.GetCurrentChannelResponse
 export class CurrentChannel implements AutomaticResponse {
 
     filter(t: string) {

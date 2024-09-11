@@ -1,8 +1,11 @@
 import { TestServerContext } from "../TestServerContext";
 import { InstanceID } from "@kite9/da-server";
 import { AutomaticResponse } from "./AutomaticResponses";
+import { BrowserTypes } from "@kite9/fdc3-schema";
 
-import { WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-standard";
+type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity
+type WebConnectionProtocol5ValidateAppIdentityFailedResponse = BrowserTypes.WebConnectionProtocol5ValidateAppIdentityFailedResponse
+type WebConnectionProtocol5ValidateAppIdentitySuccessResponse = BrowserTypes.WebConnectionProtocol5ValidateAppIdentitySuccessResponse
 
 export const BAD_INSTANCE_ID = "BAD_INSTANCE"
 

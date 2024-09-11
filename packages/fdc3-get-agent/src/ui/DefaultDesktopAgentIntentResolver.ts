@@ -1,6 +1,11 @@
-import { AppIntent, IframeResolveAction, Context, IframeResolve } from "@kite9/fdc3-standard";
+import { AppIntent } from "@kite9/fdc3-standard";
 import { IntentResolver, IntentResolutionChoice } from '@kite9/fdc3-standard'
 import { AbstractUIComponent } from "./AbstractUIComponent";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+import { Context } from "@kite9/fdc3-context";
+
+type IframeResolveAction = BrowserTypes.IframeResolveAction
+type IframeResolve = BrowserTypes.IframeResolve
 
 /**
  * Works with the desktop agent to provide a resolution to the intent choices.

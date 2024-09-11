@@ -1,7 +1,10 @@
-import { Channel, IframeChannels, IframeChannelSelected } from "@kite9/fdc3-standard";
+import { Channel } from "@kite9/fdc3-standard";
 import { ChannelSelector } from "@kite9/fdc3-standard"
 import { AbstractUIComponent } from "./AbstractUIComponent";
+import { BrowserTypes } from "@kite9/fdc3-schema";
 
+type IframeChannels = BrowserTypes.IframeChannels
+type IframeChannelSelected = BrowserTypes.IframeChannelSelected
 
 /**
  * Works with the desktop agent to provide a simple channel selector.

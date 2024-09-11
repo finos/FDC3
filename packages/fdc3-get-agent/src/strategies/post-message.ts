@@ -1,9 +1,14 @@
-import { DesktopAgent, GetAgentParams, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake } from '@kite9/fdc3-standard'
+import { DesktopAgent, GetAgentParams } from '@kite9/fdc3-standard'
 import { FDC3_VERSION } from '..';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { v4 as uuidv4 } from "uuid"
 import { ConnectionDetails } from '../messaging/MessagePortMessaging';
 import { Loader } from './Loader';
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type WebConnectionProtocol1Hello = BrowserTypes.WebConnectionProtocol1Hello
+type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL
+type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake
 
 function collectPossibleTargets(w: Window, found: Window[]) {
     if (w) {
