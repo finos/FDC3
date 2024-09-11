@@ -1,11 +1,11 @@
-import { DesktopAgent } from "@kite9/fdc3-core";
+import { DesktopAgent } from "@kite9/fdc3-standard";
 import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultHandshakeSupport, ChannelSupport } from "@kite9/da-proxy";
 import { ConnectionDetails, MessagePortMessaging } from "./MessagePortMessaging";
 import { DefaultDesktopAgentIntentResolver } from "../ui/DefaultDesktopAgentIntentResolver";
 import { DefaultDesktopAgentChannelSelector } from "../ui/DefaultDesktopAgentChannelSelector";
 import { NullIntentResolver } from "../ui/NullIIntentResolver";
 import { NullChannelSelector } from "../ui/NullChannelSelector";
-import { ChannelSelector } from "@kite9/fdc3-core";
+import { ChannelSelector } from "@kite9/fdc3-standard";
 
 /**
  * Given a message port, constructs a desktop agent to communicate via that.

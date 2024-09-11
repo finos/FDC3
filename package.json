@@ -19,7 +19,7 @@
   ],
   "workspaces": [
     "packages/fdc3-schema",
-    "packages/fdc3-core",
+    "packages/fdc3-standard",
     "packages/testing",
     "packages/da-proxy",
     "toolbox/fdc3-for-web/da-server",

@@ -1,5 +1,5 @@
 /**
- * Web Connection Protocol (WCP) is used to establish connectivity between "@kite9/fdc3-core" and Browser-Resident DAs.
+ * Web Connection Protocol (WCP) is used to establish connectivity between "@kite9/fdc3-standard" and Browser-Resident DAs.
  */
 
 import { AppMetadata } from "../api/AppMetadata";

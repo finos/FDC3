@@ -1,5 +1,5 @@
-import { DesktopAgent } from "@kite9/fdc3-core";
-import { GetAgentParams } from "@kite9/fdc3-core";
+import { DesktopAgent } from "@kite9/fdc3-standard";
+import { GetAgentParams } from "@kite9/fdc3-standard";
 import { Loader } from "./Loader";
 
 

@@ -2,7 +2,7 @@ import { DataTable, Then, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { contextMap, createMeta } from './generic.steps';
 import { matchData } from '@kite9/testing';
-import { OpenRequest, GetAppMetadataRequest, FindInstancesRequest, WebConnectionProtocol4ValidateAppIdentity } from '@kite9/fdc3-core';
+import { OpenRequest, GetAppMetadataRequest, FindInstancesRequest, WebConnectionProtocol4ValidateAppIdentity } from '@kite9/fdc3-standard';
 
 When('{string} is opened with connection id {string}', function (this: CustomWorld, app: string, uuid: string) {
   const meta = createMeta(this, app)

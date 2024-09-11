@@ -1,5 +1,5 @@
 import { ServerContext } from "../ServerContext";
-import { AgentResponseMessage, AppIdentifier, AppRequestMessage } from "@kite9/fdc3-core";
+import { AgentResponseMessage, AppIdentifier, AppRequestMessage } from "@kite9/fdc3-standard";
 
 
 export function successResponse(sc: ServerContext<any>, request: AppRequestMessage, to: AppIdentifier, payload: any, type: string) {

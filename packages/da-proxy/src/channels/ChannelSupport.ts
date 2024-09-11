@@ -1,4 +1,4 @@
-import { Channel, ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3-core"
+import { Channel, ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3-standard"
 
 export interface ChannelSupport {
 

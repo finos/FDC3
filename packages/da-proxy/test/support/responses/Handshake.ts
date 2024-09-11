@@ -1,5 +1,5 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-core";
+import { WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-standard";
 
 export class Handshake implements AutomaticResponse {
 

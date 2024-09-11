@@ -2,7 +2,7 @@ import { DataTable, Given, Then, When } from '@cucumber/cucumber'
 import { Context } from '@kite9/fdc3';
 import { handleResolve, matchData } from '@kite9/testing';
 import { CustomWorld } from '../world/index';
-import { BroadcastEvent, AgentResponseMessage, ResponseMessageType, PrivateChannelOnUnsubscribeEvent, PrivateChannelOnDisconnectEvent } from '@kite9/fdc3-core'
+import { BroadcastEvent, AgentResponseMessage, ResponseMessageType, PrivateChannelOnUnsubscribeEvent, PrivateChannelOnDisconnectEvent } from '@kite9/fdc3-standard'
 import { CHANNEL_STATE } from '@kite9/testing';
 
 const contextMap: Record<string, any> = {

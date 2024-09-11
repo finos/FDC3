@@ -1,7 +1,7 @@
-import { AppIdentifier, ImplementationMetadata } from "@kite9/fdc3-core";
+import { AppIdentifier, ImplementationMetadata } from "@kite9/fdc3-standard";
 import { Messaging } from "../Messaging";
 import { RegisterableListener } from "../listeners/RegisterableListener";
-import { GetAgentParams, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-core";
+import { GetAgentParams, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-standard";
 
 export abstract class AbstractMessaging implements Messaging {
 

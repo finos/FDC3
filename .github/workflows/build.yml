@@ -2,12 +2,11 @@ name: Node.js CI Build
 
 # Controls when the workflow will run on any branch
 on:
-  push:
   pull_request:
 
 # Define the jobs for this workflow
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     strategy:

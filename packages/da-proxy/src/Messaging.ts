@@ -1,4 +1,4 @@
-import { Connectable, AppIdentifier, ImplementationMetadata } from "@kite9/fdc3-core";
+import { Connectable, AppIdentifier, ImplementationMetadata } from "@kite9/fdc3-standard";
 import { RegisterableListener } from "./listeners/RegisterableListener";
 
 export interface Messaging extends Connectable {

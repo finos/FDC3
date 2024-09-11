@@ -1,9 +1,9 @@
-import { ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3-core";
+import { ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3-standard";
 import { DefaultChannel } from "./DefaultChannel";
 import { Messaging } from "../Messaging";
 import { PrivateChannelEventListenerType, PrivateChannelEventListenerVoid } from "../listeners/PrivateChannelEventListener";
 import { DefaultContextListener } from "../listeners/DefaultContextListener";
-import { PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse } from '@kite9/fdc3-core'
+import { PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse } from '@kite9/fdc3-standard'
 
 export class DefaultPrivateChannel extends DefaultChannel implements PrivateChannel {
 

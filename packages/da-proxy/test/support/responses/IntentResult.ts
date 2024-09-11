@@ -1,5 +1,5 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { IntentResultRequest, IntentResultResponse } from "@kite9/fdc3-core";
+import { IntentResultRequest, IntentResultResponse } from "@kite9/fdc3-standard";
 
 export class IntentResult implements AutomaticResponse {
 

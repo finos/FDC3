@@ -1,5 +1,5 @@
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from "../TestMessaging";
-import { FindIntentRequest, FindIntentResponse } from "@kite9/fdc3-core";
+import { FindIntentRequest, FindIntentResponse } from "@kite9/fdc3-standard";
 
 export class FindIntent implements AutomaticResponse {
 

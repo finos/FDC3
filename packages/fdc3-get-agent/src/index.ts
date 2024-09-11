@@ -1,4 +1,4 @@
-import { DesktopAgent, getAgent as getAgentType, GetAgentParams } from '@kite9/fdc3-core'
+import { DesktopAgent, getAgent as getAgentType, GetAgentParams } from '@kite9/fdc3-standard'
 import { ElectronEventLoader } from './strategies/ElectronEventLoader'
 import { handleWindowProxy, PostMessageLoader } from './strategies/PostMessageLoader'
 import { TimeoutLoader } from './strategies/TimeoutLoader'
