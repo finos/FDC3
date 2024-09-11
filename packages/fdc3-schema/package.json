@@ -17,11 +17,11 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rimraf dist && rimraf generated/context/* && rimraf generated/api/* && rimraf generated/bridging/*",
+    "clean": "rimraf dist && rimraf generated",
     "mkdirs": "mkdirp generated/context && mkdirp generated/api && mkdirp generated/bridging",
-    "prebuild": "npm run clean && npm run mkdirs && npm run typegen && npm run typegen-browser && npm run typegen-bridging && npm run lint",
-    "build": "npm run prebuild && tsc --module es2022",
-    "test": "npm run prebuild && tsc",
+    "generate": "npm run mkdirs && npm run typegen && npm run typegen-browser && npm run typegen-bridging && npm run lint",
+    "build": "npm run generate && tsc --module es2022",
+    "test": "npm run generate && tsc",
     "lint": "eslint generated/ --ext .ts --fix",
     "typegen": "cd schemas && node ../s2tQuicktypeUtil.js context ../generated/context/ContextTypes.ts",
     "typegen-browser": "cd schemas && node ../s2tQuicktypeUtil.js api/api.schema.json api/common.schema.json context/context.schema.json api ../generated/api/BrowserTypes.ts",
