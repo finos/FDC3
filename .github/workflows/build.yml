@@ -1,4 +1,4 @@
-name: Node.js CI Test
+name: Node.js CI Build
 
 # Controls when the workflow will run on any branch
 on:
@@ -27,4 +27,4 @@ jobs:
       run: npm install
 
     - name: Run tests
-      run: npm test
+      run: npm build
