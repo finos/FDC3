@@ -1,7 +1,15 @@
 // To parse this data:
 //
-//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerEvent, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IframeChannels, IframeChannelSelected, IframeDrag, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IframeRestyle, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage } from "./file";
+//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerEvent, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IframeChannelSelected, IframeChannels, IframeDrag, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IframeRestyle, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
 //
+//   const webConnectionProtocol1Hello = Convert.toWebConnectionProtocol1Hello(json);
+//   const webConnectionProtocol2LoadURL = Convert.toWebConnectionProtocol2LoadURL(json);
+//   const webConnectionProtocol3Handshake = Convert.toWebConnectionProtocol3Handshake(json);
+//   const webConnectionProtocol4ValidateAppIdentity = Convert.toWebConnectionProtocol4ValidateAppIdentity(json);
+//   const webConnectionProtocol5ValidateAppIdentityFailedResponse = Convert.toWebConnectionProtocol5ValidateAppIdentityFailedResponse(json);
+//   const webConnectionProtocol5ValidateAppIdentitySuccessResponse = Convert.toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json);
+//   const webConnectionProtocol6Goodbye = Convert.toWebConnectionProtocol6Goodbye(json);
+//   const webConnectionProtocolMessage = Convert.toWebConnectionProtocolMessage(json);
 //   const addContextListenerRequest = Convert.toAddContextListenerRequest(json);
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
 //   const addEventListenerEvent = Convert.toAddEventListenerEvent(json);
@@ -42,8 +50,8 @@
 //   const getUserChannelsResponse = Convert.toGetUserChannelsResponse(json);
 //   const heartbeatAcknowledgementRequest = Convert.toHeartbeatAcknowledgementRequest(json);
 //   const heartbeatEvent = Convert.toHeartbeatEvent(json);
-//   const iframeChannels = Convert.toIframeChannels(json);
 //   const iframeChannelSelected = Convert.toIframeChannelSelected(json);
+//   const iframeChannels = Convert.toIframeChannels(json);
 //   const iframeDrag = Convert.toIframeDrag(json);
 //   const iframeHandshake = Convert.toIframeHandshake(json);
 //   const iframeHello = Convert.toIframeHello(json);
@@ -104,13 +112,18 @@ export interface WebConnectionProtocol1Hello {
  */
 export interface ConnectionStepMetadata {
     connectionAttemptUuid: string;
-    timestamp: Date;
+    timestamp:             Date;
 }
 
 /**
  * The message payload, containing data pertaining to this connection step.
  */
 export interface WebConnectionProtocol1HelloPayload {
+    /**
+     * The current URL of the page attempting to connect. This may differ from the identityUrl,
+     * but the origins MUST match.
+     */
+    actualUrl: string;
     /**
      * A flag that may be used to indicate that a channel selector UI is or is not required. If
      * the app includes its own UI for displaying
@@ -129,7 +142,7 @@ export interface WebConnectionProtocol1HelloPayload {
      * A flag that may be used to indicate that an intent resolver is or is not required. Set to
      * false if no intents, or only targeted intents, are raised
      */
-    resolver?: boolean;
+    intentResolver?: boolean;
     [property: string]: any;
 }
 
@@ -202,7 +215,7 @@ export interface WebConnectionProtocol3HandshakePayload {
      * `true` to use the default or `false` to disable the channel selector (as the Desktop
      * Agent will handle another way)
      */
-    channelSelector: boolean | string;
+    channelSelectorUrl: boolean | string;
     /**
      * The version of FDC3 API that the Desktop Agent will provide support for.
      */
@@ -212,7 +225,7 @@ export interface WebConnectionProtocol3HandshakePayload {
      * `true` to use the default or `false` to disable the intent resolver (as the Desktop Agent
      * will handle another way)
      */
-    resolver: boolean | string;
+    intentResolverUrl: boolean | string;
 }
 
 /**
@@ -241,6 +254,11 @@ export interface WebConnectionProtocol4ValidateAppIdentity {
  * The message payload, containing data pertaining to this connection step.
  */
 export interface WebConnectionProtocol4ValidateAppIdentityPayload {
+    /**
+     * The current URL of the page attempting to connect. This may differ from the identityUrl,
+     * but the origins MUST match.
+     */
+    actualUrl: string;
     /**
      * URL to use for the identity of the application. Desktop Agents MUST validate that the
      * origin of the message matches the URL, but MAY implement custom comparison logic.
@@ -596,7 +614,7 @@ export interface AddContextListenerRequestMeta {
      * purposes but a Desktop Agent should make its own determination of the source of a message
      * to avoid spoofing.
      */
-    source?: AppIdentifier;
+    source?:   AppIdentifier;
     timestamp: Date;
 }
 
@@ -699,13 +717,13 @@ export interface AddContextListenerResponse {
  * Metadata for messages sent by a Desktop Agent to an App in response to an API call
  */
 export interface AddContextListenerResponseMeta {
-    requestUuid: string;
+    requestUuid:  string;
     responseUuid: string;
     /**
      * Field that represents the source application that the request being responded to was
      * received from, for debugging purposes.
      */
-    source?: AppIdentifier;
+    source?:   AppIdentifier;
     timestamp: Date;
 }
 
@@ -715,7 +733,7 @@ export interface AddContextListenerResponseMeta {
  * unsuccessful.
  */
 export interface AddContextListenerResponsePayload {
-    error?: PurpleError;
+    error?:        PurpleError;
     listenerUUID?: string;
 }
 
@@ -781,7 +799,7 @@ export interface FDC3Event {
      * event
      */
     details: { [key: string]: any };
-    type: "USER_CHANNEL_CHANGED";
+    type:    "USER_CHANNEL_CHANGED";
 }
 
 /**
@@ -862,7 +880,7 @@ export interface AddEventListenerResponse {
  * unsuccessful.
  */
 export interface AddEventListenerResponsePayload {
-    error?: ResponsePayloadError;
+    error?:        ResponsePayloadError;
     listenerUUID?: string;
 }
 
@@ -947,7 +965,7 @@ export interface AddIntentListenerResponse {
  * unsuccessful.
  */
 export interface AddIntentListenerResponsePayload {
-    error?: FluffyError;
+    error?:        FluffyError;
     listenerUUID?: string;
     [property: string]: any;
 }
@@ -1026,13 +1044,13 @@ export interface AgentResponseMessage {
  * Metadata for messages sent by a Desktop Agent to an App in response to an API call
  */
 export interface AgentResponseMessageMeta {
-    requestUuid: string;
+    requestUuid:  string;
     responseUuid: string;
     /**
      * Field that represents the source application that the request being responded to was
      * received from, for debugging purposes.
      */
-    source?: AppIdentifier;
+    source?:   AppIdentifier;
     timestamp: Date;
 }
 
@@ -1082,7 +1100,7 @@ export interface AppRequestMessageMeta {
      * purposes but a Desktop Agent should make its own determination of the source of a message
      * to avoid spoofing.
      */
-    source?: AppIdentifier;
+    source?:   AppIdentifier;
     timestamp: Date;
 }
 
@@ -1445,7 +1463,7 @@ export interface CreatePrivateChannelResponse {
  * unsuccessful.
  */
 export interface CreatePrivateChannelResponsePayload {
-    error?: PurpleError;
+    error?:          PurpleError;
     privateChannel?: Channel;
 }
 
@@ -1648,7 +1666,7 @@ export interface FindInstancesResponse {
  * resulted in an error and including a standardized error message.
  */
 export interface FindInstancesResponsePayload {
-    error?: FindInstancesErrors;
+    error?:          FindInstancesErrors;
     appIdentifiers?: AppMetadata[];
 }
 
@@ -1660,7 +1678,9 @@ export interface FindInstancesResponsePayload {
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
  *
- * Unique identifier for a for an attempt to connect to a Desktop Agent
+ * Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID
+ * should be used in the first (WCP1Hello) message and should be quoted in all subsequent
+ * messages to link them to the same connection attempt.
  *
  * Unique identifier for a request or event message. Required in all message types
  *
@@ -1672,10 +1692,6 @@ export interface FindInstancesResponsePayload {
  * listeners and used to identify it in messages (e.g. when unsubscribing).
  *
  * Unique identifier for an event message sent from a Desktop Agent to an app.
- *
- * Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID
- * should be used in the first (WCP1Hello) message and should be quoted in all subsequent
- * messages to link them to the same connection attempt.
  *
  * Should be set if the raiseIntent request returned an error.
  */
@@ -1711,8 +1727,8 @@ export interface FindIntentRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentRequestPayload {
-    context?: Context;
-    intent: string;
+    context?:    Context;
+    intent:      string;
     resultType?: string;
 }
 
@@ -1751,7 +1767,7 @@ export interface FindIntentResponse {
  * unsuccessful.
  */
 export interface FindIntentResponsePayload {
-    error?: FindInstancesErrors;
+    error?:     FindInstancesErrors;
     appIntent?: AppIntent;
 }
 
@@ -1819,7 +1835,7 @@ export interface FindIntentsByContextRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextRequestPayload {
-    context: Context;
+    context:     Context;
     resultType?: string;
 }
 
@@ -1858,7 +1874,7 @@ export interface FindIntentsByContextResponse {
  * unsuccessful.
  */
 export interface FindIntentsByContextResponsePayload {
-    error?: FindInstancesErrors;
+    error?:      FindInstancesErrors;
     appIntents?: AppIntent[];
 }
 
@@ -1930,7 +1946,7 @@ export interface GetAppMetadataResponse {
  * unsuccessful.
  */
 export interface GetAppMetadataResponsePayload {
-    error?: FindInstancesErrors;
+    error?:       FindInstancesErrors;
     appMetadata?: AppMetadata;
 }
 
@@ -2002,7 +2018,7 @@ export interface GetCurrentChannelResponse {
  * unsuccessful.
  */
 export interface GetCurrentChannelResponsePayload {
-    error?: ResponsePayloadError;
+    error?:   ResponsePayloadError;
     channel?: Channel | null;
 }
 
@@ -2160,7 +2176,7 @@ export interface GetInfoResponse {
  * unsuccessful.
  */
 export interface GetInfoResponsePayload {
-    error?: ResponsePayloadError;
+    error?:                  ResponsePayloadError;
     implementationMetadata?: ImplementationMetadata;
 }
 
@@ -2236,7 +2252,7 @@ export interface GetOrCreateChannelResponse {
  * unsuccessful.
  */
 export interface GetOrCreateChannelResponsePayload {
-    error?: PurpleError;
+    error?:   PurpleError;
     channel?: Channel;
 }
 
@@ -2307,7 +2323,7 @@ export interface GetUserChannelsResponse {
  * unsuccessful.
  */
 export interface GetUserChannelsResponsePayload {
-    error?: PurpleError;
+    error?:        PurpleError;
     userChannels?: Channel[];
 }
 
@@ -2392,6 +2408,40 @@ export interface HeartbeatEventPayload {
  */
 
 /**
+ * Message from the channel selector UI to the DA proxy sent when the channel selection
+ * changes.
+ *
+ * A message used to communicate with iframes injected by `getAgent()` for displaying UI
+ * elements such as the intent resolver or channel selector. Used for messages sent in
+ * either direction.
+ */
+export interface IframeChannelSelected {
+    /**
+     * The message payload
+     */
+    payload: IframeChannelSelectedPayload;
+    /**
+     * Identifies the type of the message to or from the iframe.
+     */
+    type: "iframeChannelSelected";
+}
+
+/**
+ * The message payload
+ */
+export interface IframeChannelSelectedPayload {
+    /**
+     * The id of the channel that should be currently selected, or `null` if none should be
+     * selected
+     */
+    selected: null | string;
+}
+
+/**
+ * Identifies the type of the message to or from the iframe.
+ */
+
+/**
  * Setup message sent by the DA proxy code in getAgent() to a channel selector UI in an
  * iframe with the channel definitions and current channel selection.
  *
@@ -2423,40 +2473,6 @@ export interface IframeChannelsPayload {
      * User Channel definitions
      */
     userChannels: Channel[];
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * Message from the channel selector UI to the DA proxy sent when the channel selection
- * changes.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeChannelSelected {
-    /**
-     * The message payload
-     */
-    payload: IframeChannelSelectedPayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeChannelSelected";
-}
-
-/**
- * The message payload
- */
-export interface IframeChannelSelectedPayload {
-    /**
-     * The id of the channel that should be currently selected, or `null` if none should be
-     * selected
-     */
-    selected: null | string;
 }
 
 /**
@@ -2674,7 +2690,7 @@ export interface IframeResolvePayload {
      * An array of AppIntent objects defining the resolution options.
      */
     appIntents: AppIntent[];
-    context: Context;
+    context:    Context;
 }
 
 /**
@@ -2947,7 +2963,7 @@ export interface IntentResultRequestPayload {
      * The eventUuid value of the intentEvent that the result being sent relates to.
      */
     intentEventUuid: string;
-    intentResult: IntentResult;
+    intentResult:    IntentResult;
     /**
      * The requestUuid value of the raiseIntentRequest that the result being sent relates to.
      */
@@ -3210,7 +3226,7 @@ export interface OpenResponse {
  * unsuccessful.
  */
 export interface OpenResponsePayload {
-    error?: OpenErrorResponsePayload;
+    error?:         OpenErrorResponsePayload;
     appIdentifier?: AppIdentifier;
 }
 
@@ -3564,7 +3580,7 @@ export interface PrivateChannelAddEventListenerResponse {
  * unsuccessful.
  */
 export interface PrivateChannelAddEventListenerResponsePayload {
-    error?: PurpleError;
+    error?:        PurpleError;
     listenerUUID?: string;
     [property: string]: any;
 }
@@ -3599,7 +3615,7 @@ export interface RaiseIntentForContextRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentForContextRequestPayload {
-    app?: AppIdentifier;
+    app?:    AppIdentifier;
     context: Context;
 }
 
@@ -3738,9 +3754,9 @@ export interface RaiseIntentRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentRequestPayload {
-    app?: AppIdentifier;
+    app?:    AppIdentifier;
     context: Context;
-    intent: string;
+    intent:  string;
 }
 
 /**
@@ -3843,7 +3859,7 @@ export interface RaiseIntentResultResponse {
  * unsuccessful.
  */
 export interface RaiseIntentResultResponsePayload {
-    error?: ResponsePayloadError;
+    error?:        ResponsePayloadError;
     intentResult?: IntentResult;
 }
 
@@ -3852,321 +3868,73 @@ export interface RaiseIntentResultResponsePayload {
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
 
-/**
- * Hello message sent by an application to a parent window or frame when attempting to
- * establish connectivity to a Desktop Agent
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol1Hello {
-    meta: ConnectionStepMetadata;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol1HelloPayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP1Hello";
-}
-
-/**
- * Metadata for this connection step message
- */
-export interface ConnectionStepMetadata {
-    connectionAttemptUuid: string;
-    timestamp: Date;
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol1HelloPayload {
-    /**
-     * The current URL of the page attempting to connect. This may differ from the identityUrl,
-     * but the origins MUST match.
-     */
-    actualUrl: string;
-    /**
-     * A flag that may be used to indicate that a channel selector UI is or is not required. If
-     * the app includes its own UI for displaying
-     */
-    channelSelector?: boolean;
-    /**
-     * The version of FDC3 API that the app supports.
-     */
-    fdc3Version: string;
-    /**
-     * URL to use for the identity of the application. Desktop Agents MUST validate that the
-     * origin of the message matches the URL, but MAY implement custom comparison logic.
-     */
-    identityUrl: string;
-    /**
-     * A flag that may be used to indicate that an intent resolver is or is not required. Set to
-     * false if no intents, or only targeted intents, are raised
-     */
-    intentResolver?: boolean;
-    [property: string]: any;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Response from a Desktop Agent to an application requesting access to it indicating that
- * it should load a specified URL into a hidden iframe in order to establish connectivity to
- * a Desktop Agent
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol2LoadURL {
-    meta: ConnectionStepMetadata;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol2LoadURLPayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP2LoadUrl";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol2LoadURLPayload {
-    /**
-     * A URL which can be used to establish communication with the Desktop Agent, via loading
-     * the URL into an iframe and restarting the Web Connection protocol with the iframe as the
-     * target
-     */
-    iframeUrl: string;
-    [property: string]: any;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Handshake message sent by the Desktop Agent to the app (with a MessagePort appended) that
- * should be used for subsequent communication steps.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol3Handshake {
-    meta: ConnectionStepMetadata;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol3HandshakePayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP3Handshake";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol3HandshakePayload {
-    /**
-     * Indicates whether a channel selector UI is required and the URL to use to do so. Set to
-     * `true` to use the default or `false` to disable the channel selector (as the Desktop
-     * Agent will handle another way)
-     */
-    channelSelectorUrl: boolean | string;
-    /**
-     * The version of FDC3 API that the Desktop Agent will provide support for.
-     */
-    fdc3Version: string;
-    /**
-     * Indicates whether an intent resolver UI is required and the URL to use to do so. Set to
-     * `true` to use the default or `false` to disable the intent resolver (as the Desktop Agent
-     * will handle another way)
-     */
-    intentResolverUrl: boolean | string;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Identity Validation request from an app attempting to connect to a Desktop Agent.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol4ValidateAppIdentity {
-    meta: ConnectionStepMetadata;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol4ValidateAppIdentityPayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP4ValidateAppIdentity";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol4ValidateAppIdentityPayload {
-    /**
-     * The current URL of the page attempting to connect. This may differ from the identityUrl,
-     * but the origins MUST match.
-     */
-    actualUrl: string;
-    /**
-     * URL to use for the identity of the application. Desktop Agents MUST validate that the
-     * origin of the message matches the URL, but MAY implement custom comparison logic.
-     */
-    identityUrl: string;
-    /**
-     * If an application has previously connected to the desktop agent, it may specify its prior
-     * instance id and associated instance UUID to request the same same instance Id be assigned.
-     */
-    instanceId?: string;
-    /**
-     * Instance UUID associated with the requested instanceId.
-     */
-    instanceUuid?: string;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Message sent by the Desktop Agent to an app if their identity validation fails.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol5ValidateAppIdentityFailedResponse {
-    meta: ConnectionStepMetadata;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP5ValidateAppIdentityFailedResponse";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload {
-    message?: string;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Message sent by the Desktop Agent to an app after successful identity validation
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
-    meta: ConnectionStepMetadata;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP5ValidateAppIdentityResponse";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload {
-    /**
-     * The appId that the app's identity was validated against
-     */
-    appId: string;
-    /**
-     * Implementation metadata for the Desktop Agent, which includes an appMetadata element
-     * containing a copy of the app's own metadata
-     */
-    implementationMetadata: ImplementationMetadata;
-    /**
-     * The instance Id granted to the application by the Desktop Agent.
-     */
-    instanceId: string;
-    /**
-     * Instance UUID associated with the instanceId granted, which may be used to retrieve the
-     * same instance Id if the app is reloaded or navigates.
-     */
-    instanceUuid: string;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Goodbye message to be sent to the Desktop Agent when disconnecting (e.g. when closing the
- * window or navigating). Desktop Agents should close the MessagePort after receiving this
- * message, but retain instance details in case the application reconnects (e.g. after a
- * navigation event).
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol6Goodbye {
-    meta: ConnectionStepMetadata;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: { [key: string]: any };
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP6Goodbye";
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocolMessage {
-    meta: ConnectionStepMetadata;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: { [key: string]: any };
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: ConnectionStepMessageType;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-export type ConnectionStepMessageType = "WCP1Hello" | "WCP2LoadUrl" | "WCP3Handshake" | "WCP4ValidateAppIdentity" | "WCP5ValidateAppIdentityFailedResponse" | "WCP5ValidateAppIdentityResponse" | "WCP6Goodbye";
-
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
+    public static toWebConnectionProtocol1Hello(json: string): WebConnectionProtocol1Hello {
+        return cast(JSON.parse(json), r("WebConnectionProtocol1Hello"));
+    }
+
+    public static webConnectionProtocol1HelloToJson(value: WebConnectionProtocol1Hello): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol1Hello")), null, 2);
+    }
+
+    public static toWebConnectionProtocol2LoadURL(json: string): WebConnectionProtocol2LoadURL {
+        return cast(JSON.parse(json), r("WebConnectionProtocol2LoadURL"));
+    }
+
+    public static webConnectionProtocol2LoadURLToJson(value: WebConnectionProtocol2LoadURL): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol2LoadURL")), null, 2);
+    }
+
+    public static toWebConnectionProtocol3Handshake(json: string): WebConnectionProtocol3Handshake {
+        return cast(JSON.parse(json), r("WebConnectionProtocol3Handshake"));
+    }
+
+    public static webConnectionProtocol3HandshakeToJson(value: WebConnectionProtocol3Handshake): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol3Handshake")), null, 2);
+    }
+
+    public static toWebConnectionProtocol4ValidateAppIdentity(json: string): WebConnectionProtocol4ValidateAppIdentity {
+        return cast(JSON.parse(json), r("WebConnectionProtocol4ValidateAppIdentity"));
+    }
+
+    public static webConnectionProtocol4ValidateAppIdentityToJson(value: WebConnectionProtocol4ValidateAppIdentity): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol4ValidateAppIdentity")), null, 2);
+    }
+
+    public static toWebConnectionProtocol5ValidateAppIdentityFailedResponse(json: string): WebConnectionProtocol5ValidateAppIdentityFailedResponse {
+        return cast(JSON.parse(json), r("WebConnectionProtocol5ValidateAppIdentityFailedResponse"));
+    }
+
+    public static webConnectionProtocol5ValidateAppIdentityFailedResponseToJson(value: WebConnectionProtocol5ValidateAppIdentityFailedResponse): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol5ValidateAppIdentityFailedResponse")), null, 2);
+    }
+
+    public static toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json: string): WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
+        return cast(JSON.parse(json), r("WebConnectionProtocol5ValidateAppIdentitySuccessResponse"));
+    }
+
+    public static webConnectionProtocol5ValidateAppIdentitySuccessResponseToJson(value: WebConnectionProtocol5ValidateAppIdentitySuccessResponse): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol5ValidateAppIdentitySuccessResponse")), null, 2);
+    }
+
+    public static toWebConnectionProtocol6Goodbye(json: string): WebConnectionProtocol6Goodbye {
+        return cast(JSON.parse(json), r("WebConnectionProtocol6Goodbye"));
+    }
+
+    public static webConnectionProtocol6GoodbyeToJson(value: WebConnectionProtocol6Goodbye): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol6Goodbye")), null, 2);
+    }
+
+    public static toWebConnectionProtocolMessage(json: string): WebConnectionProtocolMessage {
+        return cast(JSON.parse(json), r("WebConnectionProtocolMessage"));
+    }
+
+    public static webConnectionProtocolMessageToJson(value: WebConnectionProtocolMessage): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocolMessage")), null, 2);
+    }
+
     public static toAddContextListenerRequest(json: string): AddContextListenerRequest {
         return cast(JSON.parse(json), r("AddContextListenerRequest"));
     }
@@ -4487,20 +4255,20 @@ export class Convert {
         return JSON.stringify(uncast(value, r("HeartbeatEvent")), null, 2);
     }
 
-    public static toIframeChannels(json: string): IframeChannels {
-        return cast(JSON.parse(json), r("IframeChannels"));
-    }
-
-    public static iframeChannelsToJson(value: IframeChannels): string {
-        return JSON.stringify(uncast(value, r("IframeChannels")), null, 2);
-    }
-
     public static toIframeChannelSelected(json: string): IframeChannelSelected {
         return cast(JSON.parse(json), r("IframeChannelSelected"));
     }
 
     public static iframeChannelSelectedToJson(value: IframeChannelSelected): string {
         return JSON.stringify(uncast(value, r("IframeChannelSelected")), null, 2);
+    }
+
+    public static toIframeChannels(json: string): IframeChannels {
+        return cast(JSON.parse(json), r("IframeChannels"));
+    }
+
+    public static iframeChannelsToJson(value: IframeChannels): string {
+        return JSON.stringify(uncast(value, r("IframeChannels")), null, 2);
     }
 
     public static toIframeDrag(json: string): IframeDrag {
@@ -4812,7 +4580,7 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
             const typ = typs[i];
             try {
                 return transform(val, typ, getProps);
-            } catch (_) { }
+            } catch (_) {}
         }
         return invalidValue(typs, val, key, parent);
     }
@@ -4871,9 +4639,9 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
     if (Array.isArray(typ)) return transformEnum(typ, val);
     if (typeof typ === "object") {
         return typ.hasOwnProperty("unionMembers") ? transformUnion(typ.unionMembers, val)
-            : typ.hasOwnProperty("arrayItems") ? transformArray(typ.arrayItems, val)
-                : typ.hasOwnProperty("props") ? transformObject(getProps(typ), typ.additional, val)
-                    : invalidValue(typ, val, key, parent);
+            : typ.hasOwnProperty("arrayItems")    ? transformArray(typ.arrayItems, val)
+            : typ.hasOwnProperty("props")         ? transformObject(getProps(typ), typ.additional, val)
+            : invalidValue(typ, val, key, parent);
     }
     // Numbers can be parsed by Date but shouldn't be.
     if (typ === Date && typeof val !== "number") return transformDate(val);
@@ -4923,10 +4691,11 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "WebConnectionProtocol1HelloPayload": o([
+        { json: "actualUrl", js: "actualUrl", typ: "" },
         { json: "channelSelector", js: "channelSelector", typ: u(undefined, true) },
         { json: "fdc3Version", js: "fdc3Version", typ: "" },
         { json: "identityUrl", js: "identityUrl", typ: "" },
-        { json: "resolver", js: "resolver", typ: u(undefined, true) },
+        { json: "intentResolver", js: "intentResolver", typ: u(undefined, true) },
     ], "any"),
     "WebConnectionProtocol2LoadURL": o([
         { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
@@ -4942,9 +4711,9 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("WebConnectionProtocol3HandshakeType") },
     ], false),
     "WebConnectionProtocol3HandshakePayload": o([
-        { json: "channelSelector", js: "channelSelector", typ: u(true, "") },
+        { json: "channelSelectorUrl", js: "channelSelectorUrl", typ: u(true, "") },
         { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "resolver", js: "resolver", typ: u(true, "") },
+        { json: "intentResolverUrl", js: "intentResolverUrl", typ: u(true, "") },
     ], false),
     "WebConnectionProtocol4ValidateAppIdentity": o([
         { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
@@ -4952,6 +4721,7 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("WebConnectionProtocol4ValidateAppIdentityType") },
     ], false),
     "WebConnectionProtocol4ValidateAppIdentityPayload": o([
+        { json: "actualUrl", js: "actualUrl", typ: "" },
         { json: "identityUrl", js: "identityUrl", typ: "" },
         { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
         { json: "instanceUuid", js: "instanceUuid", typ: u(undefined, "") },
@@ -5409,6 +5179,13 @@ const typeMap: any = {
     "HeartbeatEventPayload": o([
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
+    "IframeChannelSelected": o([
+        { json: "payload", js: "payload", typ: r("IframeChannelSelectedPayload") },
+        { json: "type", js: "type", typ: r("IframeChannelSelectedType") },
+    ], false),
+    "IframeChannelSelectedPayload": o([
+        { json: "selected", js: "selected", typ: u(null, "") },
+    ], false),
     "IframeChannels": o([
         { json: "payload", js: "payload", typ: r("IframeChannelsPayload") },
         { json: "type", js: "type", typ: r("IframeChannelsType") },
@@ -5416,13 +5193,6 @@ const typeMap: any = {
     "IframeChannelsPayload": o([
         { json: "selected", js: "selected", typ: u(null, "") },
         { json: "userChannels", js: "userChannels", typ: a(r("Channel")) },
-    ], false),
-    "IframeChannelSelected": o([
-        { json: "payload", js: "payload", typ: r("IframeChannelSelectedPayload") },
-        { json: "type", js: "type", typ: r("IframeChannelSelectedType") },
-    ], false),
-    "IframeChannelSelectedPayload": o([
-        { json: "selected", js: "selected", typ: u(null, "") },
     ], false),
     "IframeDrag": o([
         { json: "payload", js: "payload", typ: r("IframeDragPayload") },
@@ -5719,80 +5489,36 @@ const typeMap: any = {
         { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
         { json: "intentResult", js: "intentResult", typ: u(undefined, r("IntentResult")) },
     ], false),
-    "WebConnectionProtocol1Hello": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol1HelloPayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol1HelloType") },
-    ], false),
-    "ConnectionStepMetadata": o([
-        { json: "connectionAttemptUuid", js: "connectionAttemptUuid", typ: "" },
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "WebConnectionProtocol1HelloPayload": o([
-        { json: "actualUrl", js: "actualUrl", typ: "" },
-        { json: "channelSelector", js: "channelSelector", typ: u(undefined, true) },
-        { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "identityUrl", js: "identityUrl", typ: "" },
-        { json: "intentResolver", js: "intentResolver", typ: u(undefined, true) },
-    ], "any"),
-    "WebConnectionProtocol2LoadURL": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol2LoadURLPayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol2LoadURLType") },
-    ], false),
-    "WebConnectionProtocol2LoadURLPayload": o([
-        { json: "iframeUrl", js: "iframeUrl", typ: "" },
-    ], "any"),
-    "WebConnectionProtocol3Handshake": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol3HandshakePayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol3HandshakeType") },
-    ], false),
-    "WebConnectionProtocol3HandshakePayload": o([
-        { json: "channelSelectorUrl", js: "channelSelectorUrl", typ: u(true, "") },
-        { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "intentResolverUrl", js: "intentResolverUrl", typ: u(true, "") },
-    ], false),
-    "WebConnectionProtocol4ValidateAppIdentity": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol4ValidateAppIdentityPayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol4ValidateAppIdentityType") },
-    ], false),
-    "WebConnectionProtocol4ValidateAppIdentityPayload": o([
-        { json: "actualUrl", js: "actualUrl", typ: "" },
-        { json: "identityUrl", js: "identityUrl", typ: "" },
-        { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
-        { json: "instanceUuid", js: "instanceUuid", typ: u(undefined, "") },
-    ], false),
-    "WebConnectionProtocol5ValidateAppIdentityFailedResponse": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol5ValidateAppIdentityFailedResponseType") },
-    ], false),
-    "WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload": o([
-        { json: "message", js: "message", typ: u(undefined, "") },
-    ], false),
-    "WebConnectionProtocol5ValidateAppIdentitySuccessResponse": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol5ValidateAppIdentitySuccessResponseType") },
-    ], false),
-    "WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload": o([
-        { json: "appId", js: "appId", typ: "" },
-        { json: "implementationMetadata", js: "implementationMetadata", typ: r("ImplementationMetadata") },
-        { json: "instanceId", js: "instanceId", typ: "" },
-        { json: "instanceUuid", js: "instanceUuid", typ: "" },
-    ], false),
-    "WebConnectionProtocol6Goodbye": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: m("any") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol6GoodbyeType") },
-    ], false),
-    "WebConnectionProtocolMessage": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: m("any") },
-        { json: "type", js: "type", typ: r("ConnectionStepMessageType") },
-    ], false),
+    "WebConnectionProtocol1HelloType": [
+        "WCP1Hello",
+    ],
+    "WebConnectionProtocol2LoadURLType": [
+        "WCP2LoadUrl",
+    ],
+    "WebConnectionProtocol3HandshakeType": [
+        "WCP3Handshake",
+    ],
+    "WebConnectionProtocol4ValidateAppIdentityType": [
+        "WCP4ValidateAppIdentity",
+    ],
+    "WebConnectionProtocol5ValidateAppIdentityFailedResponseType": [
+        "WCP5ValidateAppIdentityFailedResponse",
+    ],
+    "WebConnectionProtocol5ValidateAppIdentitySuccessResponseType": [
+        "WCP5ValidateAppIdentityResponse",
+    ],
+    "WebConnectionProtocol6GoodbyeType": [
+        "WCP6Goodbye",
+    ],
+    "ConnectionStepMessageType": [
+        "WCP1Hello",
+        "WCP2LoadUrl",
+        "WCP3Handshake",
+        "WCP4ValidateAppIdentity",
+        "WCP5ValidateAppIdentityFailedResponse",
+        "WCP5ValidateAppIdentityResponse",
+        "WCP6Goodbye",
+    ],
     "AddContextListenerRequestType": [
         "addContextListenerRequest",
     ],
@@ -6035,11 +5761,11 @@ const typeMap: any = {
     "HeartbeatEventType": [
         "heartbeatEvent",
     ],
-    "IframeChannelsType": [
-        "iframeChannels",
-    ],
     "IframeChannelSelectedType": [
         "iframeChannelSelected",
+    ],
+    "IframeChannelsType": [
+        "iframeChannels",
     ],
     "IframeDragType": [
         "iframeDrag",

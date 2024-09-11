@@ -23,8 +23,8 @@ export function handleEmbeddedIframeComms(value: string, parent: MockWindow, cw:
             },
             payload: {
                 fdc3Version: "2.2",
-                resolver: INTENT_RESPOLVER_URL,
-                channelSelector: CHANNEL_SELECTOR_URL,
+                intentResolverUrl: INTENT_RESPOLVER_URL,
+                channelSelectorUrl: CHANNEL_SELECTOR_URL,
             }
         } as WebConnectionProtocol3Handshake, EMBED_URL, [connection!!.externalPort])
     } catch (e) {

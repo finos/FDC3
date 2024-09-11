@@ -1,10 +1,10 @@
 import { DesktopAgent, GetAgentParams } from '@kite9/fdc3-standard'
-import { FDC3_VERSION } from '..';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { v4 as uuidv4 } from "uuid"
 import { ConnectionDetails } from '../messaging/MessagePortMessaging';
 import { Loader } from './Loader';
 import { BrowserTypes } from "@kite9/fdc3-schema";
+import { FDC3_VERSION } from '..';
 
 type WebConnectionProtocol1Hello = BrowserTypes.WebConnectionProtocol1Hello
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL
@@ -41,13 +41,13 @@ function sendWCP1Hello(w: MessageEventSource, options: GetAgentParams, connectio
             channelSelector: options.channelSelector,
             fdc3Version: FDC3_VERSION,
             resolver: options.intentResolver,
-            identityUrl: options.identityUrl!!
+            identityUrl: options.identityUrl!!,
+            actualUrl: globalThis.window.location.href
         }
     }
 
     w.postMessage(requestMessage, { targetOrigin: origin });
 }
-
 
 /**
  * The desktop agent requests that the client opens a URL in order to provide a message port.

@@ -13,7 +13,6 @@ import { ImplementationMetadata } from './ImplementationMetadata';
 import { PrivateChannel } from './PrivateChannel';
 import { AppIdentifier } from './AppIdentifier';
 import { AppMetadata } from './AppMetadata';
-import { DesktopAgentDetails } from './GetAgent';
 import { Intent } from '../intents/Intents';
 import { ContextType } from '../context/ContextType';
 import { EventHandler, FDC3EventType } from './Events';

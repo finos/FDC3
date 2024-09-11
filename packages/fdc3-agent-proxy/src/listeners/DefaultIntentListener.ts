@@ -6,7 +6,7 @@ import { BrowserTypes } from "@kite9/fdc3-schema";
 
 type RaiseIntentResponse = BrowserTypes.RaiseIntentResponse
 type IntentResultResponse = BrowserTypes.IntentResultResponse
-type BridgeIntentResult = BrowserTypes.FluffyIntentResult
+type BridgeIntentResult = BrowserTypes.IntentResult
 type IntentEvent = BrowserTypes.IntentEvent
 type IntentResultRequest = BrowserTypes.IntentResultRequest
 
@@ -64,7 +64,9 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
                 timestamp: new Date()
             },
             payload: {
-                intentResult: convertIntentResult(ir)
+                intentResult: convertIntentResult(ir),
+                intentEventUuid: m.meta.eventUuid,
+                raiseIntentRequestUuid: m.payload.raiseIntentRequestUuid
             }
         };
 
