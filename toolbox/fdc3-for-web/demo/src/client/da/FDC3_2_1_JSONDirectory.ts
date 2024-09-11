@@ -1,5 +1,5 @@
-import { BasicDirectory } from "@kite9/da-server/src/directory/BasicDirectory";
-import { DirectoryApp } from "@kite9/da-server/src/directory/DirectoryInterface";
+import { BasicDirectory } from "@kite9/fdc3-web-impl/src/directory/BasicDirectory";
+import { DirectoryApp } from "@kite9/fdc3-web-impl/src/directory/DirectoryInterface";
 
 function loadRemotely(u: string) {
     return fetch(u).then((response) => response.json());

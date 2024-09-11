@@ -3,9 +3,9 @@ import { v4 as uuid } from 'uuid'
 import { APP_GOODBYE, APP_HELLO, DA_HELLO, FDC3_APP_EVENT } from "../../message-types";
 import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
-import { DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/da-server";
+import { DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/fdc3-web-impl";
 import { WebConnectionProtocol2LoadURL } from "@kite9/fdc3-standard";
-import { ChannelState, ChannelType } from "@kite9/da-server/src/handlers/BroadcastHandler";
+import { ChannelState, ChannelType } from "@kite9/fdc3-web-impl/src/handlers/BroadcastHandler";
 import { link } from "./util";
 
 

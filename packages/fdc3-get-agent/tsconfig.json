@@ -27,7 +27,7 @@
             "path": "../fdc3-context"
         },
         {
-            "path": "../../toolbox/fdc3-for-web/da-server"
+            "path": "../../toolbox/fdc3-for-web/fdc3-web-impl"
         }
     ]
 }

@@ -1,5 +1,5 @@
 import { TestServerContext } from "../TestServerContext";
-import { InstanceID } from "@kite9/da-server";
+import { InstanceID } from "@kite9/fdc3-web-impl";
 import { AutomaticResponse } from "./AutomaticResponses";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 type GetCurrentChannelRequest = BrowserTypes.GetCurrentChannelRequest

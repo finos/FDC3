@@ -1,4 +1,4 @@
-import { FDC3Server } from "@kite9/da-server"
+import { FDC3Server } from "@kite9/fdc3-web-impl"
 import { TestServerContext } from "./TestServerContext"
 import { MockWindow } from "./MockDocument"
 import { AutomaticResponse } from "./responses/AutomaticResponses"

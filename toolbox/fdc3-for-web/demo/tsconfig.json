@@ -29,7 +29,7 @@
       "path": "../../../packages/fdc3-get-agent"
     },
     {
-      "path": "../da-server"
+      "path": "../fdc3-web-impl"
     }
   ]
 }
