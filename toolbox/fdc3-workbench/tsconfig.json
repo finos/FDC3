@@ -31,6 +31,9 @@
   "references": [
     {
       "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "../../packages/fdc3"
     }
   ]
 }

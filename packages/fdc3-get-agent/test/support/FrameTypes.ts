@@ -38,7 +38,12 @@ export function handleChannelSelectorComms(_value: string, parent: MockWindow, s
         parent.dispatchEvent({
             type: "message",
             data: {
-                type: "iframeHello"
+                type: "iframeHello",
+                payload: {
+                    initialCSS: {
+                        "width": "100px"
+                    }
+                }
             } as IframeHello,
             origin: CHANNEL_SELECTOR_URL,
             source,
@@ -74,7 +79,12 @@ export function handleIntentResolverComms(_value: string, parent: MockWindow, so
         parent.dispatchEvent({
             type: "message",
             data: {
-                type: "iframeHello"
+                type: "iframeHello",
+                payload: {
+                    initialCSS: {
+                        "width": "100px"
+                    }
+                }
             } as IframeHello,
             origin: INTENT_RESPOLVER_URL,
             source,
