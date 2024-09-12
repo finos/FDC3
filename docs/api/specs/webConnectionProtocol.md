@@ -161,7 +161,7 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
   ```
 
   Note that the `targetOrigin` is set to `*` as the origin of the Desktop Agent is not known at this point.
-  3. Accept the first correct response received from a candidate. Correct responses MUST correspond to either the [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) or [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message schemas and MUST quote the same `meta.connectionAttemptUuid` value provided in the original `WCP1Hello` message. Stop the timeout when a correct response is received.
+  3. Accept the first correct response received from a candidate. Correct responses MUST correspond to either the [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) or [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message schemas and MUST quote the same `meta.connectionAttemptUuid` value provided in the original `WCP1Hello` message. Stop the timeout when a correct response is received. If no response is received from any candidate, the `getAgent()` implementation MAY retry sending the `WCP1Hello` message periodically until the timeout is reached.
   4. If a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) was received in the previous step, skip this this step and move on to 5. However, If a [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) was received in the previous step:
       * Create a hidden iframe within the page, set its URL to the URL provided by the `payload.iframeUrl` field of the message and add a handler to run when the iframe has loaded:
           ```ts
@@ -177,7 +177,10 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
             return ifrm.contentWindow;
           }
           ```
-      * Once the frame has loaded (i.e. when the `loadedHandler` in the above example runs), repeat steps 1-3 above substituting the the iframe's `contentWindow` for the candidate window objects before proceeding to step 5. A new timeout should be used to limit the amount of time that the `getAgent()` implementation waits for a response. If the event that this subsequent timeout is exceeded, reject Error with the `ErrorOnConnect` message from the [`AgentError`](../ref/Errors#agenterror) enumeration.
+      * Once the frame has loaded (i.e. when the `loadedHandler` in the above example runs), repeat steps 1-3 above substituting the  iframe's `contentWindow` for the candidate window objects before proceeding to step 5. A new timeout should be used to limit the amount of time that the `getAgent()` implementation waits for a response. If the event that this subsequent timeout is exceeded, reject Error with the `ErrorOnConnect` message from the [`AgentError`](../ref/Errors#agenterror) enumeration.
+        :::tip
+        To ensure that the iframe is ready to receive the `WCP1Hello` message when the `load` event fires, implementations should call `window.addEventListener` for the `message` event synchronously and as early as possible.
+        :::
   5. At this stage, a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message should have be received from either a candidate parent or a hidden iframe created in 4 above. This message MUST have a `MessagePort` appended to it, which is used for further communication with the Desktop Agent.
 
   Add a listener (`port.addEventListener("message", (event) => {})`) to receive messages from the selected `candidate`, before moving on to the next stage.
@@ -188,6 +191,9 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
   If the failover function resolves to a `DesktopAgent` implementation it should be immediately returned in the same way as a `window.fdc3` reference was and handled as if it represents a Desktop Agent Preload interface.
 
   If the failover function resolves to a `WindowProxy` object, repeat steps 1-3 & 5 above substituting the `WindowProxy` for the candidate window objects before proceeding to the next step.
+    :::tip
+      Where possible, iframe failover functions should wait for the iframe or window represented by a `WindowProxy` object to be ready to receive messages before resolving. For an iframe this is a case of waiting for the `load` event to fire.  
+    :::
 
 ### Step 2: Validate app & instance identity
 
@@ -259,49 +265,50 @@ The workflow defined in the Web Connection protocol for `getAgent()` is summariz
 title: "Web Connection Protocol Flowchart" 
 ---
 flowchart TD
-    A1([DesktopAgent launches app]) --> A2["App calls **getAgent()**"]
-    A2 --> A3["Check for **DesktopAgentDetails** in **SessionStorage**"]
+    A1([DesktopAgent launches app]) --> A2["App calls getAgent()"]
+    A2 --> A3["Check for DesktopAgentDetails in SessionStorage"]
 
-    subgraph "getAgent() imeplementation"
-      A3 --> P1{"Does **window.fdc3** exist?"}
-      P1 ---|yes|P2["stop **timeout**"]
-      P2 --> P21["Save **DesktopAgentDetails** to **SessionStorage**"]
-      P1 ---|No|P3["Listen for **fdc3Ready**"]
-      P3 --> P31["**fdc3Ready event fires**"]
-      P31 --> P32["stop **timeout**"]
-      P32 --> P33["Save **DesktopAgentDetails** to **SessionStorage**"]
+    subgraph "getAgent() implementation"
+      A3 --> P1{"Does window.fdc3 exist?"}
+      P1 -->|yes|P2["stop timeout"]
+      P2 --> P21["Save DesktopAgentDetails to SessionStorage"]
+      P1 -->|No|P3["Listen for fdc3Ready"]
+      P3 --> P31["fdc3Ready event fires"]
+      P31 --> P32["stop timeout"]
+      P32 --> P33["Save DesktopAgentDetails to SessionStorage"]
       
       A3 --> B1{"Do parent refs exist?"}
-      B1 --> B11["Send **WCP1Hello** to all candidates"]
-      B11 --> B2["Receive **WCP2LoadUrl**"]
-      B2 --> B21["stop **timeout**"]
+      B1 -->|yes|B11["Send WCP1Hello to all candidates"]
+      B11 --> B2["Receive WCP2LoadUrl"]
+      B2 --> B21["stop timeout"]
       B21 --> B22["Create hidden iframe with URL"]
-      B22 --> B23["Send **WCP1Hello** to iframe"]
-      B23 --> B3["Receive **WCP3Handshake** with **MessagePort**"]
-      B3 --> B31["stop **timeout**"]
+      B22 --> B23["await iframe's load event"]
+      B23 --> B24["Send WCP1Hello to iframe"]
+      B24 --> B3["Receive WCP3Handshake with MessagePort"]
+      B3 --> B31["stop timeout"]
       B11 --> B3
-      B31 --> B32["Send **WCP4ValidateIdentity** on **MessagePort**"]
-      B32 --> B321["Receive **WCP5ValidateIdentityResponse**"]
-      B321 --> B3211["Create **DesktopAgentProxy** to process DACP messages"]
-      B3211 --> B3212["Save **DesktopAgentDetails** to **SessionStorage**"]
-      B32 --> B322["Receive **WCP5ValidateIdentityFailedResponse**"]
+      B31 --> B32["Send WCP4ValidateIdentity on MessagePort"]
+      B32 --> B321["Receive WCP5ValidateIdentityResponse"]
+      B321 --> B3211["Create DesktopAgentProxy to process DACP messages"]
+      B3211 --> B3212["Save DesktopAgentDetails to SessionStorage"]
+      B32 --> B322["Receive WCP5ValidateIdentityFailedResponse"]
       
-      A3 --> T1["Set **timeout**"]
-      T1 --> T2["**timeout** expires"]
-      T2 --> T3{"Was a **failover** fn provided"}
-      T3 ---|yes|T31["Run failover"]
+      A3 --> T1["Set timeout"]
+      T1 --> T2["timeout expires"]
+      T2 --> T3{"Was a failover fn provided"}
+      T3 -->|yes|T31["Run failover"]
       T31 --> T311{"Check failover return type"}
-      T311 ---|**WindowProxy**|T3111["Send **WCP1Hello** via **WindowProxy**"]
-      T311 ---|**DesktopAgent**|T3112["Save **DesktopAgentDetails** to **SessionStorage**"]
+      T311 -->|WindowProxy|T3111["Send WCP1Hello via WindowProxy"]
+      T311 -->|DesktopAgent|T3112["Save DesktopAgentDetails to SessionStorage"]
       T3111 --> B3
     end
-    P21 -->P22(["resolve with **window.fdc3**"])
-    P33 -->P34(["resolve with **window.fdc3**"])
-    B3212 --> B3213(["resolve with **DesktopAgentProxy**"])
-    B322 --> B3221(["reject with **AgentError.AccessDenied**"])
-    T3112 --> T31121(["resolve with **DesktopAgent**"])
-    T3 ---|no|T32(["reject with **AgentError.AgentNotFound**"])
-    T311 ---|**Other**|T3113["reject with **AgentError.InvalidFailover**"]
+    P21 -->P22(["resolve with window.fdc3"])
+    P33 -->P34(["resolve with window.fdc3"])
+    B3212 --> B3213(["resolve with DesktopAgentProxy"])
+    B322 --> B3221(["reject with AgentError.AccessDenied"])
+    T3112 --> T31121(["resolve with DesktopAgent"])
+    T3 -->|no|T32(["reject with AgentError.AgentNotFound"])
+    T311 -->|other|T3113["reject with AgentError.InvalidFailover"]
 ```
 
 ## Providing Channel Selector and Intent Resolver UIs
