@@ -26,16 +26,13 @@ export * from './api/PrivateChannel';
 export * from './api/RecommendedChannels';
 export * from './api/Types';
 export * from './api/Events'
-
-export * from './context/ContextType';
-
-export * from './intents/Intents';
 export * from './api/Events';
-export { AgentError, DesktopAgentDetails, GetAgentParams, GetAgentType, WebDesktopAgentType } from './api/GetAgent';
-
-export { IntentResolver, IntentResolutionChoice } from './ui/IntentResolver';
-export { ChannelSelector } from './ui/ChannelSelector';
-export { Connectable } from './ui/Connectable'
+export * from './api/GetAgent';
+export * from './context/ContextType';
+export * from './intents/Intents';
+export * from './ui/IntentResolver';
+export * from './ui/ChannelSelector';
+export * from './ui/Connectable'
 
 declare global {
   interface Window {
