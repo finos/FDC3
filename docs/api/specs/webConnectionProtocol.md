@@ -264,12 +264,12 @@ The workflow defined in the Web Connection protocol for `getAgent()` is summariz
 ---
 title: "Web Connection Protocol Flowchart" 
 ---
-flowchart TD
+flowchart TB
     A1([DesktopAgent launches app]) --> A2["App calls getAgent()"]
-    A2 --> A3["Check for DesktopAgentDetails in SessionStorage"]
+    A2 --> A3
 
-    subgraph "getAgent() implementation"
-      A3 --> P1{"Does window.fdc3 exist?"}
+    subgraph getAgent ["getAgent()"]
+      A3["Check for DesktopAgentDetails in SessionStorage"] --> P1{"Does window.fdc3 exist?"}
       P1 -->|yes|P2["stop timeout"]
       P2 --> P21["Save DesktopAgentDetails to SessionStorage"]
       P1 -->|No|P3["Listen for fdc3Ready"]
