@@ -213,8 +213,10 @@ module.exports={
     },
     "mermaid": {
       "options": {
+        "htmlLabels": false,
         "markdownAutoWrap": true,
         "wrap": true,
+          "wrappingWidth": 50,
         "flowchart": {
           "titleTopMargin": 30,
           "subGraphTitleMargin":  {
@@ -223,9 +225,10 @@ module.exports={
           },
           "nodeSpacing": 30,
           "rankSpacing": 50,
-          "wrappingWidth": 60,
           "diagramPadding": 5,
-          "useMaxWidth": true
+          "useMaxWidth": true,
+          "htmlLabels": false,
+          "wrappingWidth": 50
         }
       }
     }
