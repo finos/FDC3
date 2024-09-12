@@ -1,5 +1,7 @@
 import { IframeHello, IframeRestyle } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
-import { IframeChannels } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type IframeChannels = BrowserTypes.IframeChannels
 
 var channels: any[] = []
 var channelId: string | null = null
@@ -47,7 +49,7 @@ window.addEventListener("load", () => {
 
     function changeSize(expanded: boolean) {
         document.body.setAttribute("data-expanded", "" + expanded);
-        myPort.postMessage({ type: "iframeRestyle", payload: { css: expanded ? DEFAULT_EXPANDED_CSS : DEFAULT_COLLAPSED_CSS } })
+        myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: expanded ? DEFAULT_EXPANDED_CSS : DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
     }
 
     myPort.addEventListener("message", (e) => {
