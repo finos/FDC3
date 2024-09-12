@@ -1,3 +1,4 @@
+import { IframeHello } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { AppIdentifier, IframeResolveAction, IframeResolvePayload } from "@kite9/fdc3-standard";
 
 const DEFAULT_COLLAPSED_CSS = {
@@ -27,7 +28,14 @@ window.addEventListener("load", () => {
 
     const list = document.getElementById("intent-list")!!
 
-    parent.postMessage({ type: "iframeHello" }, "*", [mc.port2]);
+    // ISSUE: 1302
+    parent.postMessage({
+        type: "iframeHello",
+        payload: {
+            initialCSS: DEFAULT_COLLAPSED_CSS,
+            implementationDetails: "Demo Intent Resolver v1.0"
+        }
+    } as any as IframeHello, "*", [mc.port2]);
 
     function callback(intent: string | null, app: AppIdentifier | null) {
         myPort.postMessage({ type: "iframeRestyle", payload: { css: DEFAULT_COLLAPSED_CSS } })

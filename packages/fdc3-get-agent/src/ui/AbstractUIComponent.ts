@@ -1,3 +1,4 @@
+import { IframeHello } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { Connectable } from "@kite9/fdc3-standard";
 
 export interface CSSPositioning { [key: string]: string }
@@ -76,6 +77,10 @@ export abstract class AbstractUIComponent implements Connectable {
             const ml = (e: MessageEvent) => {
                 // console.log("Received UI Message: " + JSON.stringify(e.data))
                 if ((e.source == this.iframe?.contentWindow) && (e.data.type == 'iframeHello')) {
+                    const helloData = e.data as IframeHello
+                    if (helloData.payload.initialCSS) {
+                        this.themeContainer(helloData.payload.initialCSS)
+                    }
                     const port = e.ports[0]
                     port.start()
                     globalThis.window.removeEventListener("message", ml)
