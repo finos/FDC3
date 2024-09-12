@@ -3,6 +3,29 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
+/** 
+ * Contains constants representing the errors that can be encountered when trying to connect to a web-based Desktop Agent with the getAgent function. 
+ */ 
+export enum AgentError { 
+  /** Returned if no Desktop Agent was found by any means available or 
+   * if the Agent previously connected to is not contactable on a  
+   * subsequent connection attempt.*/
+  AgentNotFound = "AgentNotFound",
+
+  /** Returned if validation of the app identity by the Desktop Agent 
+   * Failed or the app is not being allowed to connect to the Desktop Agent 
+   * for another reason. */ 
+  AccessDenied = "AccessDenied",
+
+  /** Returned if an error or exception occurs while trying to set  
+   * up communication with a Desktop Agent. */ 
+  ErrorOnConnect = "ErrorOnConnect",
+
+  /** Returned if either the failover function itself, or what it returned,  
+   * was not the right type. */ 
+  InvalidFailover = "InvalidFailover" 
+};
+
 /** Constants representing the errors that can be encountered when calling the `open` method on the DesktopAgent object (`fdc3`). */
 export enum OpenError {
   /** Returned if the specified application is not found.*/

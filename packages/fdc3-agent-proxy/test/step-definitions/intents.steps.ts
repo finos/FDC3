@@ -143,7 +143,8 @@ Given('{string} is a intentEvent message with intent {string} and context {strin
                 desktopAgent: "some-desktop-agent"
             },
             context: handleResolve(context, this),
-            intent
+            intent,
+            raiseIntentRequestUuid: 'request-id'
         }
     }
 
