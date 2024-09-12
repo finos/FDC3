@@ -45,7 +45,7 @@
                 "maxHeight": {"type": "string", "title": "maxHeight", "description": "The maximum height to apply to the iframe"},
                 "maxWidth": {"type": "string", "title": "maxWidth", "description": "The maximum with to apply to the iframe"}
               },
-              "required": ["height", "width", "top", "left"]
+              "required": []
             }
           },
           "additionalProperties": false,
