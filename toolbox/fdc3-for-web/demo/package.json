@@ -1,7 +1,7 @@
 {
   "name": "@kite9/demo",
   "private": true,
-  "version": "2.2.0-beta.6",
+  "version": "2.2.0-beta.8",
   "scripts": {
     "dev": "nodemon -w src/server src/server/main.ts"
   },
@@ -13,9 +13,9 @@
     "vite": "^5.2.0"
   },
   "dependencies": {
-    "@kite9/fdc3-get-agent": "2.2.0-beta.6",
-    "@kite9/fdc3-web-impl": "2.2.0-beta.6",
-    "@kite9/fdc3-standard": "2.2.0-beta.6",
+    "@kite9/fdc3-get-agent": "2.2.0-beta.8",
+    "@kite9/fdc3-web-impl": "2.2.0-beta.8",
+    "@kite9/fdc3-standard": "2.2.0-beta.8",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.10",
     "express": "^4.18.3",

@@ -118,8 +118,8 @@ window.addEventListener("load", () => {
                             },
                             payload: {
                                 fdc3Version: "2.2",
-                                resolver: window.location.origin + "/static/da/intent-resolver.html",
-                                channelSelector: window.location.origin + "/static/da/channel-selector.html",
+                                intentResolverUrl: window.location.origin + "/static/da/intent-resolver.html",
+                                channelSelectorUrl: window.location.origin + "/static/da/channel-selector.html",
                             }
                         }, origin, [channel.port1])
                     }

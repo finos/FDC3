@@ -1,6 +1,6 @@
 {
   "name": "@kite9/fdc3",
-  "version": "2.2.0-beta.6",
+  "version": "2.2.0-beta.8",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -35,7 +35,7 @@
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "syncpack": "npm exec syncpack fix-mismatches --types 'local'",
-    "dev": "concurrently \"cd toolbox/fdc3-workbench && npm run dev\" \"cd packages/demo && npm run dev\""
+    "dev": "concurrently \"cd toolbox/fdc3-workbench && npm run dev\" \"cd toolbox/fdc3-for-web/demo && npm run dev\""
   },
   "prettier": {
     "semi": true,
