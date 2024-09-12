@@ -1,4 +1,4 @@
-import { IframeHello } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { IframeHello, InitialCSS, UpdatedCSS } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { Connectable } from "@kite9/fdc3-standard";
 
 export interface CSSPositioning { [key: string]: string }
@@ -61,7 +61,7 @@ export abstract class AbstractUIComponent implements Connectable {
             const data = e.data
             if (data.type == 'iframeRestyle') {
                 // console.log(`Restyling ${JSON.stringify(data.payload)}`)
-                const css = data.payload.css
+                const css = data.payload.updatedCSS
                 this.themeContainer(css)
             }
         })
@@ -105,14 +105,16 @@ export abstract class AbstractUIComponent implements Connectable {
         document.body.appendChild(this.container)
     }
 
-    themeContainer(css: CSSPositioning) {
-        for (let i = 0; i < ALLOWED_CSS_ELEMENTS.length; i++) {
-            const k = ALLOWED_CSS_ELEMENTS[i]
-            const value: string | undefined = css[(k as string)]
-            if (value != null) {
-                this.container?.style.setProperty(k, value)
-            } else {
-                this.container?.style.removeProperty(k)
+    themeContainer(css: UpdatedCSS | InitialCSS) {
+        if (css) {
+            for (let i = 0; i < ALLOWED_CSS_ELEMENTS.length; i++) {
+                const k = ALLOWED_CSS_ELEMENTS[i]
+                const value: string | undefined = css[(k as string)]
+                if (value != null) {
+                    this.container?.style.setProperty(k, value)
+                } else {
+                    this.container?.style.removeProperty(k)
+                }
             }
         }
     }

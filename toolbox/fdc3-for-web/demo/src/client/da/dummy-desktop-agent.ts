@@ -4,10 +4,11 @@ import { APP_GOODBYE, APP_HELLO, DA_HELLO, FDC3_APP_EVENT } from "../../message-
 import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
 import { DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/fdc3-web-impl";
-import { WebConnectionProtocol2LoadURL } from "@kite9/fdc3-standard";
 import { ChannelState, ChannelType } from "@kite9/fdc3-web-impl/src/handlers/BroadcastHandler";
 import { link } from "./util";
+import { BrowserTypes } from "@kite9/fdc3-schema";
 
+type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL
 
 function createAppStartButton(app: DirectoryApp, sc: ServerContext<any>): HTMLDivElement {
     const div = document.createElement("div") as HTMLDivElement
