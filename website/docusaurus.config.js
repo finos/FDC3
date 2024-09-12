@@ -213,7 +213,7 @@ module.exports={
     },
     "mermaid": {
       "options": {
-        "htmlLabels": false,
+        "htmlLabels": true,
         "markdownAutoWrap": true,
         "wrap": true,
           "wrappingWidth": 50,
@@ -227,7 +227,7 @@ module.exports={
           "rankSpacing": 50,
           "diagramPadding": 5,
           "useMaxWidth": true,
-          "htmlLabels": false,
+          "htmlLabels": true,
           "wrappingWidth": 50
         }
       }

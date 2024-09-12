@@ -37,9 +37,40 @@ Further details for implementing Preload Desktop Agents (which use a Desktop Age
 
 :::
 
-## WCP Message Schemas and Types
+## WCP Message Schemas
 
-There are a number of message formats defined as part of the Web Connection Protocol, which will be referenced later in this document, these are:
+There are a number of messages defined as part of the Web Connection Protocol. Definitions are provided in [JSON Schema](https://json-schema.org/) in the [FDC3 github repository](https://github.com/finos/FDC3/tree/fdc3-for-web/schemas/api).
+
+:::tip
+
+TypeScript types representing all DACP and WCP messages are generated from the JSON Schema source and can be imported from the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3):
+
+```ts
+import {BrowserTypes} from '@finos.fdc3';
+```
+
+:::
+
+WCP messages are derived from a base schema, [WCPConnectionStep](https://fdc3.finos.org/schemas/next/api/.schema.json), which defines a common structure for the messages:
+
+```json
+{
+    "type": "string", // string identifying the message type
+    "payload": {
+        //message payload fields defined for each message type 
+    },
+    "meta": {
+        "connectionAttemptUuid": "79be3ff9-7c05-4371-842a-cf08427c174d",
+        "timestamp": "2024-09-17T10:15:39+00:00"
+    }
+}
+```
+
+A value for `meta.connectionAttemptUuid` should be generated as a version 4 UUID according to [IETF RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122) at the start for the connection process and quoted in all subsequent messages, as described later in this document.
+
+`meta.timestamp` fields are formatted as strings, according to the format defined by [ISO 8601-1:2019](https://www.iso.org/standard/70907.html), which is produced in JavaScript via the `Date` class's `toISOString()` function, e.g. `(new Date()).toISOString()`.
+
+Messages defined as part of the Web Connection Protocol, which will be referenced later in this document, these are:
 
 - [`WCP1Hello`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) 
 - [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json)
