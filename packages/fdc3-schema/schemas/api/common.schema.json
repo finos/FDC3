@@ -8,7 +8,7 @@
     "ConnectionAttemptUuid": {
       "title": "Connection Attempt UUID",
       "type": "string",
-      "description": "Unique identifier for a for an attempt to connect to a Desktop Agent"
+      "description": "Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID should be used in the first (WCP1Hello) message and should be quoted in all subsequent messages to link them to the same connection attempt."
     },
     "RequestUuid": {
       "title": "Request UUID",

@@ -25,14 +25,14 @@ export * from './api/Methods';
 export * from './api/PrivateChannel';
 export * from './api/RecommendedChannels';
 export * from './api/Types';
-export * from './context/ContextType';
-export * from './intents/Intents';
+export * from './api/Events'
 export * from './api/Events';
 export * from './api/GetAgent';
-
-export { IntentResolver, IntentResolutionChoice } from './ui/IntentResolver';
-export { ChannelSelector } from './ui/ChannelSelector';
-export { Connectable } from './ui/Connectable'
+export * from './context/ContextType';
+export * from './intents/Intents';
+export * from './ui/IntentResolver';
+export * from './ui/ChannelSelector';
+export * from './ui/Connectable'
 
 declare global {
   interface Window {

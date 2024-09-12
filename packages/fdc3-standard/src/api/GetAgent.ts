@@ -31,12 +31,12 @@ import { DesktopAgent } from './DesktopAgent';
  * getAgent({ 
  *     identityUrl: "https://example.com/path?param=appName#example",  
  *     channelSelector: false,  
- *     intentresolver: false 
+ *     intentResolver: false 
  * }).then((fdc3) => { 
  *     //do FDC3 stuff here
  * }; 
  */
-export type getAgent = (
+export type GetAgentType = (
   params?: GetAgentParams,
 ) => Promise<DesktopAgent>;
 
@@ -53,7 +53,7 @@ export type getAgent = (
  * 
  * @property {number} timeout Number of milliseconds to allow for an fdc3  
  * implementation to be found before calling the failover function or 
- * rejecting (default 1000). Note that the timeout is cancelled as soon as a 
+ * rejecting (default 750). Note that the timeout is cancelled as soon as a 
  * Desktop Agent is detected. There may be additional set-up steps to perform 
  * which will happen outside the timeout. 
  * 
@@ -72,7 +72,7 @@ export type getAgent = (
  * @property {boolean} dontSetWindowFdc3 For backwards compatibility, `getAgent` 
  * will set a reference to the Desktop Agent implementation at `window.fdc3` 
  * if one does not already exist, and will fire the fdc3Ready event. Setting  
- * this flag to `false` will inhibit that behavior, leaving `window.fdc3` unset. 
+ * this flag to `true` will inhibit that behavior, leaving `window.fdc3` unset. 
  *  
  * @property {function} failover An optional function that provides a  
  * means of connecting to or starting a Desktop Agent, which will be called 
@@ -91,30 +91,6 @@ export type GetAgentParams = {
   dontSetWindowFdc3?: boolean,
   failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent>
 };
-
-/** 
- * Contains constants representing the errors that can be encountered when  
- * trying to connect to a web-based Desktop Agent with the getAgent function. 
- */
-export enum AgentError {
-  /** Returned if no Desktop Agent was found by any means available or 
-   * if the Agent previously connected to is not contactable on a  
-   * subsequent connection attempt.*/
-  AgentNotFound = "AgentNotFound",
-
-  /** Returned if validation of the app identity by the Desktop Agent 
-   * Failed or the app is not being allowed to connect to the Desktop Agent 
-   * for another reason. */
-  AccessDenied = "AccessDenied",
-
-  /** Returned if an error or exception occurs while trying to set  
-   * up communication with a Desktop Agent. */
-  ErrorOnConnect = "ErrorOnConnect",
-
-  /** Returned if either the failover function itself, or what it returned,  
-   * was not the right type. */
-  InvalidFailover = "InvalidFailover"
-}
 
 /** Type representing data on the Desktop Agent that an app 
  *  connected to that is persisted by the getAgent function 

@@ -43,7 +43,8 @@ async function forwardRequest(arg0: IntentRequest, to: AppIdentifier, sc: Server
             originatingApp: {
                 appId: arg0.from.appId,
                 instanceId: arg0.from.instanceId
-            }
+            },
+            raiseIntentRequestUuid: arg0.requestUuid
         },
         meta: {
             eventUuid: arg0.requestUuid,

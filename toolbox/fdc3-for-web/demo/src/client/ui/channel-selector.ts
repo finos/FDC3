@@ -1,4 +1,7 @@
-import { IframeChannels } from "@kite9/fdc3-standard";
+import { IframeHello, IframeRestyle } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type IframeChannels = BrowserTypes.IframeChannels
 
 var channels: any[] = []
 var channelId: string | null = null
@@ -34,18 +37,26 @@ window.addEventListener("load", () => {
     const myPort = mc.port1
     myPort.start()
 
-    parent.postMessage({ type: "iframeHello" }, "*", [mc.port2]);
+
+    // ISSUE: 1302
+    parent.postMessage({
+        type: "iframeHello",
+        payload: {
+            initialCSS: DEFAULT_COLLAPSED_CSS,
+            implementationDetails: "Demo Channel Selector v1.0"
+        }
+    } as any as IframeHello, "*", [mc.port2]);
 
     function changeSize(expanded: boolean) {
         document.body.setAttribute("data-expanded", "" + expanded);
-        myPort.postMessage({ type: "iframeRestyle", payload: { css: expanded ? DEFAULT_EXPANDED_CSS : DEFAULT_COLLAPSED_CSS } })
+        myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: expanded ? DEFAULT_EXPANDED_CSS : DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
     }
 
     myPort.addEventListener("message", (e) => {
         console.log(e.data.type)
         if (e.data.type == 'iframeHandshake') {
             // ok, port is ready, send the iframe position detials
-            myPort.postMessage({ type: "iframeRestyle", payload: { css: DEFAULT_COLLAPSED_CSS } })
+            myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
         } else if (e.data.type == 'iframeChannels') {
             const details = e.data as IframeChannels
             console.log(JSON.stringify("CHANNEL DETAILS: " + JSON.stringify(details)))

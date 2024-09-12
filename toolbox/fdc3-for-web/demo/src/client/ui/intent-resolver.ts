@@ -1,4 +1,9 @@
-import { AppIdentifier, IframeResolveAction, IframeResolvePayload } from "@kite9/fdc3-standard";
+import { IframeHello, IframeRestyle } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { AppIdentifier } from "@kite9/fdc3-standard";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+
+type IframeResolveAction = BrowserTypes.IframeResolveAction
+type IframeResolvePayload = BrowserTypes.IframeResolvePayload
 
 const DEFAULT_COLLAPSED_CSS = {
     position: "fixed",
@@ -27,10 +32,17 @@ window.addEventListener("load", () => {
 
     const list = document.getElementById("intent-list")!!
 
-    parent.postMessage({ type: "iframeHello" }, "*", [mc.port2]);
+    // ISSUE: 1302
+    parent.postMessage({
+        type: "iframeHello",
+        payload: {
+            initialCSS: DEFAULT_COLLAPSED_CSS,
+            implementationDetails: "Demo Intent Resolver v1.0"
+        }
+    } as any as IframeHello, "*", [mc.port2]);
 
     function callback(intent: string | null, app: AppIdentifier | null) {
-        myPort.postMessage({ type: "iframeRestyle", payload: { css: DEFAULT_COLLAPSED_CSS } })
+        myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
 
         if (intent && app) {
             myPort.postMessage({
@@ -53,9 +65,9 @@ window.addEventListener("load", () => {
 
     myPort.addEventListener("message", (e) => {
         if (e.data.type == 'iframeHandshake') {
-            myPort.postMessage({ type: "iframeRestyle", payload: { css: DEFAULT_COLLAPSED_CSS } })
+            myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
         } else if (e.data.type == 'iframeResolve') {
-            myPort.postMessage({ type: "iframeRestyle", payload: { css: DEFAULT_EXPANDED_CSS } })
+            myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: DEFAULT_EXPANDED_CSS } } as IframeRestyle)
 
             const details = e.data.payload as IframeResolvePayload
             details.appIntents.forEach(intent => {

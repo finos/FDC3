@@ -30,12 +30,18 @@
               "type": "string",
               "format": "uri"
             },
+            "actualUrl": {
+              "title": "Actual URL",
+              "description": "The current URL of the page attempting to connect. This may differ from the identityUrl, but the origins MUST match.",
+              "type": "string",
+              "format": "uri"
+            },
             "fdc3Version": {
               "title": "FDC3 version",
               "description": "The version of FDC3 API that the app supports.",
               "type": "string"
             },
-            "resolver": {
+            "intentResolver": {
               "title": "Intent Resolver Required",
               "description": "A flag that may be used to indicate that an intent resolver is or is not required. Set to false if no intents, or only targeted intents, are raised",
               "type": "boolean"
@@ -46,7 +52,7 @@
               "type": "boolean"
             }
           },
-          "required": ["identityUrl","fdc3Version"]
+          "required": ["identityUrl","actualUrl","fdc3Version"]
         },
         "meta": true
       },

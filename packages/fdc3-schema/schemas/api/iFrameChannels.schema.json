@@ -38,21 +38,6 @@
               "oneOf": [
                 {"type": "string"}, {"type": "null"}
               ]
-            },
-            "location": {
-              "title": "Location",
-              "description": "If the channel selector was previously displayed in this window its location may be restored by setting the location coordinates",
-              "type": "object",
-              "properties": {
-                "x": {
-                  "type": "integer"
-                },
-                "y": {
-                  "type": "integer"
-                }
-              },
-              "required": ["x", "y"],
-              "additionalProperties": false
             }
           },
           "additionalProperties": false,

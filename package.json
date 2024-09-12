@@ -1,6 +1,6 @@
 {
   "name": "@kite9/fdc3",
-  "version": "2.2.0-beta.6",
+  "version": "2.2.0-beta.16",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -26,8 +26,8 @@
     "toolbox/fdc3-for-web/fdc3-web-impl",
     "packages/fdc3-get-agent",
     "toolbox/fdc3-for-web/demo",
-    "toolbox/fdc3-workbench",
-    "package/fdc3"
+    "packages/fdc3",
+    "toolbox/fdc3-workbench"
   ],
   "scripts": {
     "clean": "npm run clean --workspaces --if-present",
@@ -35,7 +35,7 @@
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "syncpack": "npm exec syncpack fix-mismatches --types 'local'",
-    "dev": "concurrently \"cd toolbox/fdc3-workbench && npm run dev\" \"cd packages/demo && npm run dev\""
+    "dev": "concurrently \"cd toolbox/fdc3-workbench && npm run dev\" \"cd toolbox/fdc3-for-web/demo && npm run dev\""
   },
   "prettier": {
     "semi": true,

@@ -221,13 +221,15 @@ When('{string} sends a intentResultRequest with requestUuid {string} and context
     const message: IntentResultRequest = {
         type: 'intentResultRequest',
         meta: {
-            requestUuid,
+            requestUuid: meta.requestUuid,
             timestamp: new Date()
         },
         payload: {
             intentResult: {
-                context: contextMap[contextType]
-            }
+                context: contextMap[contextType],
+            },
+            intentEventUuid: 'event-uuid-1',
+            raiseIntentRequestUuid: requestUuid
         }
     }
     this.server.receive(message, uuid)
@@ -240,12 +242,14 @@ When('{string} sends a intentResultRequest with requestUuid {string} and void co
     const message: IntentResultRequest = {
         type: 'intentResultRequest',
         meta: {
-            requestUuid,
+            requestUuid: meta.requestUuid,
             timestamp: new Date()
         },
         payload: {
             intentResult: {
-            }
+            },
+            intentEventUuid: 'event-uuid-1',
+            raiseIntentRequestUuid: requestUuid
         }
     }
     this.server.receive(message, uuid)
@@ -258,7 +262,7 @@ When('{string} sends a intentResultRequest with requestUuid {string} and private
     const message: IntentResultRequest = {
         type: 'intentResultRequest',
         meta: {
-            requestUuid,
+            requestUuid: meta.requestUuid,
             timestamp: new Date()
         },
         payload: {
@@ -267,7 +271,9 @@ When('{string} sends a intentResultRequest with requestUuid {string} and private
                     type: 'private',
                     id: channelId
                 }
-            }
+            },
+            intentEventUuid: 'event-uuid-1',
+            raiseIntentRequestUuid: requestUuid
         }
     }
     this.server.receive(message, uuid)
@@ -279,7 +285,7 @@ When('{string} sends a intentResultRequest with requestUuid {string}', function 
     const message = {
         type: 'intentResultRequest',
         meta: {
-            requestUuid,
+            requestUuid: meta.requestUuid,
             responseUuid: this.sc.createUUID(),
             timestamp: new Date()
         },
@@ -289,7 +295,9 @@ When('{string} sends a intentResultRequest with requestUuid {string}', function 
                     "type": "fdc3.something",
                     "name": "Some Name"
                 }
-            }
+            },
+            intentEventUuid: 'event-uuid-1',
+            raiseIntentRequestUuid: requestUuid
         }
     } as IntentResultRequest
 

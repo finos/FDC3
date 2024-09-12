@@ -24,51 +24,12 @@ import { StandardContextsSet } from '../internal/contextConfiguration';
 import { StandardIntentsSet } from '../internal/intentConfiguration';
 import { Context } from '@kite9/fdc3-context'
 
-const DEFAULT_TIMEOUT = 5000;
-
 const UnavailableError = new Error('FDC3 DesktopAgent not available at `window.fdc3`.');
-const TimeoutError = new Error('Timed out waiting for `fdc3Ready` event.');
-const UnexpectedError = new Error('`fdc3Ready` event fired, but `window.fdc3` not set to DesktopAgent.');
 
 function rejectIfNoGlobal(f: () => Promise<any>) {
   return window.fdc3 ? f() : Promise.reject(UnavailableError);
 }
 
-/**
- * Utility function that returns a promise that will resolve immeadiately
- * if the desktop agent API is found at `window.fdc3`. If the API is found,
- * the promise will resolve when the `fdc3Ready` event is received or if it
- * is found at the end of the specified timeout. If the API is not found, it
- * will reject with an error.
- *
- * ```javascript
- * await fdc3Ready();
- * const intentListener = await addIntentListener("ViewChart", intentHandlerFn);
- * ```
- *
- * @param waitForMs The number of milliseconds to wait for the FDC3 API to be
- * ready. Defaults to 5 seconds.
- */
-export const fdc3Ready = async (waitForMs = DEFAULT_TIMEOUT): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    // if the global is already available resolve immediately
-    if (window.fdc3) {
-      resolve();
-    } else {
-      // if its not available setup a timeout to return a rejected promise
-      const timeout = setTimeout(() => (window.fdc3 ? resolve() : reject(TimeoutError)), waitForMs);
-      // listen for the fdc3Ready event
-      window.addEventListener(
-        'fdc3Ready',
-        () => {
-          clearTimeout(timeout);
-          window.fdc3 ? resolve() : reject(UnexpectedError);
-        },
-        { once: true }
-      );
-    }
-  });
-};
 
 function isString(app: AppIdentifier | string | undefined): app is string {
   return !!app && typeof app === 'string';
