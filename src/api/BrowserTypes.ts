@@ -2288,11 +2288,11 @@ export interface InitialCSS {
     /**
      * The initial height of the iframe
      */
-    height: string;
+    height?: string;
     /**
      * The initial left property to apply to the iframe
      */
-    left: string;
+    left?: string;
     /**
      * The maximum height to apply to the iframe
      */
@@ -2308,7 +2308,7 @@ export interface InitialCSS {
     /**
      * The initial top property to apply to the iframe
      */
-    top: string;
+    top?: string;
     /**
      * The transition property to apply to the iframe
      */
@@ -2316,7 +2316,7 @@ export interface InitialCSS {
     /**
      * The initial width of the iframe
      */
-    width: string;
+    width?: string;
     /**
      * The initial zindex to apply to the iframe
      */
@@ -5146,14 +5146,14 @@ const typeMap: any = {
     ], false),
     "InitialCSS": o([
         { json: "bottom", js: "bottom", typ: u(undefined, "") },
-        { json: "height", js: "height", typ: "" },
-        { json: "left", js: "left", typ: "" },
+        { json: "height", js: "height", typ: u(undefined, "") },
+        { json: "left", js: "left", typ: u(undefined, "") },
         { json: "maxHeight", js: "maxHeight", typ: u(undefined, "") },
         { json: "maxWidth", js: "maxWidth", typ: u(undefined, "") },
         { json: "right", js: "right", typ: u(undefined, "") },
-        { json: "top", js: "top", typ: "" },
+        { json: "top", js: "top", typ: u(undefined, "") },
         { json: "transition", js: "transition", typ: u(undefined, "") },
-        { json: "width", js: "width", typ: "" },
+        { json: "width", js: "width", typ: u(undefined, "") },
         { json: "zIndex", js: "zIndex", typ: u(undefined, "") },
     ], "any"),
     "IframeMessage": o([
