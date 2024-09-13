@@ -194,7 +194,7 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
   Note that the `targetOrigin` is set to `*` as the origin of the Desktop Agent is not known at this point.
   3. Accept the first correct response received from a candidate. Correct responses MUST correspond to either the [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) or [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message schemas and MUST quote the same `meta.connectionAttemptUuid` value provided in the original `WCP1Hello` message. Stop the timeout when a correct response is received. If no response is received from any candidate, the `getAgent()` implementation MAY retry sending the `WCP1Hello` message periodically until the timeout is reached.
   4. If a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) was received in the previous step, skip this this step and move on to 5. However, If a [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) was received in the previous step:
-      * Create a hidden iframe within the page, set its URL to the URL provided by the `payload.iframeUrl` field of the message and add a handler to run when the iframe has loaded:
+      - Create a hidden iframe within the page, set its URL to the URL provided by the `payload.iframeUrl` field of the message and add a handler to run when the iframe has loaded:
           ```ts
           const loadIframe = (url, loadedHandler): WindowProxy => {
             const ifrm = document.createElement("iframe");
@@ -208,10 +208,14 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
             return ifrm.contentWindow;
           }
           ```
-      * Once the frame has loaded (i.e. when the `loadedHandler` in the above example runs), repeat steps 1-3 above substituting the  iframe's `contentWindow` for the candidate window objects before proceeding to step 5. A new timeout should be used to limit the amount of time that the `getAgent()` implementation waits for a response. If the event that this subsequent timeout is exceeded, reject Error with the `ErrorOnConnect` message from the [`AgentError`](../ref/Errors#agenterror) enumeration.
+      - Once the frame has loaded (i.e. when the `loadedHandler` in the above example runs), repeat steps 1-3 above substituting the  iframe's `contentWindow` for the candidate window objects before proceeding to step 5. A new timeout should be used to limit the amount of time that the `getAgent()` implementation waits for a response. If the event that this subsequent timeout is exceeded, reject Error with the `ErrorOnConnect` message from the [`AgentError`](../ref/Errors#agenterror) enumeration.
+
         :::tip
+
         To ensure that the iframe is ready to receive the `WCP1Hello` message when the `load` event fires, implementations should call `window.addEventListener` for the `message` event synchronously and as early as possible.
+
         :::
+
   5. At this stage, a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message should have be received from either a candidate parent or a hidden iframe created in 4 above. This message MUST have a `MessagePort` appended to it, which is used for further communication with the Desktop Agent.
 
   Add a listener (`port.addEventListener("message", (event) => {})`) to receive messages from the selected `candidate`, before moving on to the next stage.
@@ -222,9 +226,12 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
   If the failover function resolves to a `DesktopAgent` implementation it should be immediately returned in the same way as a `window.fdc3` reference was and handled as if it represents a Desktop Agent Preload interface.
 
   If the failover function resolves to a `WindowProxy` object, repeat steps 1-3 & 5 above substituting the `WindowProxy` for the candidate window objects before proceeding to the next step.
-    :::tip
-      Where possible, iframe failover functions should wait for the iframe or window represented by a `WindowProxy` object to be ready to receive messages before resolving. For an iframe this is a case of waiting for the `load` event to fire.  
-    :::
+
+  :::tip
+
+  Where possible, iframe failover functions should wait for the iframe or window represented by a `WindowProxy` object to be ready to receive messages before resolving. For an iframe this is a case of waiting for the `load` event to fire.
+
+  :::
 
 ### Step 2: Validate app & instance identity
 
@@ -285,7 +292,7 @@ Desktop Agent Preload interfaces, as used in container-based Desktop Agent imple
 
 However, Browser Resident Desktop Agents working with a Desktop Agent Proxy interface may have more trouble tracking child windows and frames. Hence, a specific WCP message ([WCP6Goodbye](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json)) is provided for the `getAgent()` implementation to indicate that an app is disconnecting from the Desktop Agent and will not communicate further unless and until it reconnects via the WCP. The `getAgent()` implementation MUST listen for the `pagehide` event from the the HTML Standard's [Page Life Cycle API](https://wicg.github.io/page-lifecycle/spec.html) and send [WCP6Goodbye](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json) if it receives an event where the `persisted` property is `false`.
 
-As it is possible for a page to close without firing this event in some circumstances, other procedures for detecting disconnection must also be used, these are described in the [Disconnects section of the Browser Resident Desktop Agents specification](./browserResidentDesktopAgents#disconnects).
+As it is possible for a page to close without firing this event in some circumstances, other procedures for detecting disconnection may also be used, these are described in the [Browser Resident Desktop Agents specification](./browserResidentDesktopAgents#disconnects) and [Desktop Agent Communication Protocol](./desktopAgentCommunicationProtocol#checking-apps-are-alive).
 
 ### `getAgent()` Workflow Diagram
 
@@ -348,16 +355,6 @@ Users of FDC3 Desktop Agents often need access to UI controls that allow them to
 
 However, Browser Resident Desktop Agents may have difficulty displaying user interfaces over applications for a variety of reasons (inability to inject code, lack of permissions to display popups etc.), or may not (e.g. because they render applications in iframes within windows they control and can therefore display content over the iframe). The Web Connection Protocol and the `getAgent()` implementation based on it and incorporated into apps via the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3), is intended to help Desktop Agents deliver these UIs where necessary.
 
-The WCP allows applications to indicate to the `getAgent()` implementation whether they need the UIs (they may not need one or the other based on their usage of the FDC3 API, or because they implement UIs themselves) and for Desktop Agents to provide custom implementations of them, or defer to reference implementations provided by the FDC3 Standard. This is achieved via: 
-
-- **[WCP1Hello](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json)**: Sent by an application and incorporating boolean `payload.intentResolver` and `payload.channelSelector` fields, which are set to false if either UI is not needed (defaults to true).
-- **[WCP3Handshake](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json)**: Response sent by the Desktop Agent and incorporating `payload.intentResolverUrl` and `payload.channelSelectorUrl` fields, which should be set to the URL for each UI implementation, which should be loaded into an iframe to provide the UI (defaults to URLs for reference UI implementations provided by the FDC3 project).
-
-When UI iframes are created, the user interfaces may use messages incorporated into the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) to communicate with the `getAgent()` implementation and through it the Desktop Agent.
-
-
-//TODO complete description once finalized.
-
 ```mermaid
 flowchart LR
     subgraph DA [Desktop Agent Window]
@@ -376,3 +373,10 @@ flowchart LR
     B-->cs
     B-->ir
 ```
+
+The WCP allows applications to indicate to the `getAgent()` implementation whether they need the UIs (they may not need one or the other based on their usage of the FDC3 API, or because they implement UIs themselves) and for Desktop Agents to provide custom implementations of them, or defer to reference implementations provided by the FDC3 Standard. This is achieved via to following messages:
+
+- [`WCP1Hello`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json): Sent by an application and incorporating boolean `payload.intentResolver` and `payload.channelSelector` fields, which are set to `false` if either UI is not needed (defaults to `true`).
+- [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json): Response sent by the Desktop Agent and incorporating `payload.intentResolverUrl` and `payload.channelSelectorUrl` fields, which should be set to the URL for each UI implementation that should be loaded into an iframe to provide the UI (defaults to URLs for reference UI implementations provided by the FDC3 project), or set to `false` to indicate that the respective UI is not needed. Setting these fields to `true` will cause the `getAgent()` implementation to use its default URLs representing a reference implementation of each UI.
+
+When UI iframes are created, the user interfaces may use the 'iframe' messages incorporated into the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces) to communicate with the `getAgent()` implementation and through it the Desktop Agent.
