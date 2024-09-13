@@ -1,7 +1,7 @@
 ---
 id: browserDesktopAgents
 sidebar_label: Browser Desktop Agents
-title: Browser Desktop Agents (next)
+title: Browser-Resident Desktop Agents (next)
 ---
 
 :::info _[@experimental](../fdc3-compliance#experimental-features)_
