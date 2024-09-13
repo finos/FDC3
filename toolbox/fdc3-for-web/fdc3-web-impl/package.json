@@ -1,13 +1,23 @@
 {
   "name": "@kite9/fdc3-web-impl",
   "version": "2.2.0-beta.16",
+  "author": "Fintech Open Source Foundation (FINOS)",
+  "homepage": "https://fdc3.finos.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finos/FDC3.git"
+  },
+  "publishConfig": {
+    "tag": "latest"
+  },
+  "license": "Apache-2.0",
   "files": [
     "dist"
   ],
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "clean": "rimraf dist; rimraf generated; rimraf node_modules; rimraf coverage; rimraf .nyc_output; rimraf cucumber-report.html",
+    "clean": "rimraf dist && rimraf cucumber-report.html && rimraf coverage && rimraf .nyc_output && rimraf node_modules",
     "directory-openapi": "npx openapi-typescript ../../../packages/fdc3-standard/src/app-directory/specification/appd.schema.json --output generated/directory-schema.ts",
     "test": "npm run directory-openapi; tsc; nyc --reporter=lcov --reporter=text cucumber-js",
     "build": "npm run directory-openapi && tsc --module es2022"
