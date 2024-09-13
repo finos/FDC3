@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/api/iframeHandshake.schema.json",
   "title": "iframe Handshake",
-  "description": "Handshake message sent back to an iframe from the DA proxy code (setup by `getAgent()`) with a MessagePort appended over further communication is conducted.",
+  "description": "Handshake message sent back to an iframe from the DA proxy code (setup by `getAgent()`) over the `MessagePort` provide in the preceding iFrameHello message, confirming that it is listening to the `MessagePort` for further communication.",
   "type": "object",
   "allOf": [
     {
