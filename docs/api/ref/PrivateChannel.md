@@ -151,7 +151,7 @@ Although this interaction occurs entirely in frontend code, we refer to it as th
 
 ```ts
 try {
-    const resolution3 = await fdc3.raiseIntent("QuoteStream", { type: "fdc3.instrument", id : { symbol: "AAPL" } });
+    const resolution3 = await fdc3.raiseIntent("QuoteStream", { type: "fdc3.instrument", id : { ticker: "AAPL" } });
     try {
         const result = await resolution3.getResult();
         //check that we got a result and that it's a channel
