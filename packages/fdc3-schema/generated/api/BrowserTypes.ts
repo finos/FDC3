@@ -1,7 +1,15 @@
 // To parse this data:
 //
-//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IframeChannels, IframeChannelSelected, IframeDrag, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IframeRestyle, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage } from "./file";
+//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IframeChannelSelected, IframeChannels, IframeDrag, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IframeRestyle, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
 //
+//   const webConnectionProtocol1Hello = Convert.toWebConnectionProtocol1Hello(json);
+//   const webConnectionProtocol2LoadURL = Convert.toWebConnectionProtocol2LoadURL(json);
+//   const webConnectionProtocol3Handshake = Convert.toWebConnectionProtocol3Handshake(json);
+//   const webConnectionProtocol4ValidateAppIdentity = Convert.toWebConnectionProtocol4ValidateAppIdentity(json);
+//   const webConnectionProtocol5ValidateAppIdentityFailedResponse = Convert.toWebConnectionProtocol5ValidateAppIdentityFailedResponse(json);
+//   const webConnectionProtocol5ValidateAppIdentitySuccessResponse = Convert.toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json);
+//   const webConnectionProtocol6Goodbye = Convert.toWebConnectionProtocol6Goodbye(json);
+//   const webConnectionProtocolMessage = Convert.toWebConnectionProtocolMessage(json);
 //   const addContextListenerRequest = Convert.toAddContextListenerRequest(json);
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
 //   const addEventListenerRequest = Convert.toAddEventListenerRequest(json);
@@ -103,7 +111,7 @@ export interface WebConnectionProtocol1Hello {
  */
 export interface ConnectionStepMetadata {
     connectionAttemptUuid: string;
-    timestamp: Date;
+    timestamp:             Date;
 }
 
 /**
@@ -605,7 +613,7 @@ export interface AddContextListenerRequestMeta {
      * purposes but a Desktop Agent should make its own determination of the source of a message
      * to avoid spoofing.
      */
-    source?: AppIdentifier;
+    source?:   AppIdentifier;
     timestamp: Date;
 }
 
@@ -708,13 +716,13 @@ export interface AddContextListenerResponse {
  * Metadata for messages sent by a Desktop Agent to an App in response to an API call
  */
 export interface AddContextListenerResponseMeta {
-    requestUuid: string;
+    requestUuid:  string;
     responseUuid: string;
     /**
      * Field that represents the source application that the request being responded to was
      * received from, for debugging purposes.
      */
-    source?: AppIdentifier;
+    source?:   AppIdentifier;
     timestamp: Date;
 }
 
@@ -724,7 +732,7 @@ export interface AddContextListenerResponseMeta {
  * unsuccessful.
  */
 export interface AddContextListenerResponsePayload {
-    error?: PurpleError;
+    error?:        PurpleError;
     listenerUUID?: string;
 }
 
@@ -814,7 +822,7 @@ export interface AddEventListenerResponse {
  * unsuccessful.
  */
 export interface AddEventListenerResponsePayload {
-    error?: ResponsePayloadError;
+    error?:        ResponsePayloadError;
     listenerUUID?: string;
 }
 
@@ -899,7 +907,7 @@ export interface AddIntentListenerResponse {
  * unsuccessful.
  */
 export interface AddIntentListenerResponsePayload {
-    error?: FluffyError;
+    error?:        FluffyError;
     listenerUUID?: string;
     [property: string]: any;
 }
@@ -978,13 +986,13 @@ export interface AgentResponseMessage {
  * Metadata for messages sent by a Desktop Agent to an App in response to an API call
  */
 export interface AgentResponseMessageMeta {
-    requestUuid: string;
+    requestUuid:  string;
     responseUuid: string;
     /**
      * Field that represents the source application that the request being responded to was
      * received from, for debugging purposes.
      */
-    source?: AppIdentifier;
+    source?:   AppIdentifier;
     timestamp: Date;
 }
 
@@ -1034,7 +1042,7 @@ export interface AppRequestMessageMeta {
      * purposes but a Desktop Agent should make its own determination of the source of a message
      * to avoid spoofing.
      */
-    source?: AppIdentifier;
+    source?:   AppIdentifier;
     timestamp: Date;
 }
 
@@ -1405,7 +1413,7 @@ export interface CreatePrivateChannelResponse {
  * unsuccessful.
  */
 export interface CreatePrivateChannelResponsePayload {
-    error?: PurpleError;
+    error?:          PurpleError;
     privateChannel?: Channel;
 }
 
@@ -1608,7 +1616,7 @@ export interface FindInstancesResponse {
  * resulted in an error and including a standardized error message.
  */
 export interface FindInstancesResponsePayload {
-    error?: FindInstancesErrors;
+    error?:          FindInstancesErrors;
     appIdentifiers?: AppMetadata[];
 }
 
@@ -1669,8 +1677,8 @@ export interface FindIntentRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentRequestPayload {
-    context?: Context;
-    intent: string;
+    context?:    Context;
+    intent:      string;
     resultType?: string;
 }
 
@@ -1709,7 +1717,7 @@ export interface FindIntentResponse {
  * unsuccessful.
  */
 export interface FindIntentResponsePayload {
-    error?: FindInstancesErrors;
+    error?:     FindInstancesErrors;
     appIntent?: AppIntent;
 }
 
@@ -1777,7 +1785,7 @@ export interface FindIntentsByContextRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextRequestPayload {
-    context: Context;
+    context:     Context;
     resultType?: string;
 }
 
@@ -1816,7 +1824,7 @@ export interface FindIntentsByContextResponse {
  * unsuccessful.
  */
 export interface FindIntentsByContextResponsePayload {
-    error?: FindInstancesErrors;
+    error?:      FindInstancesErrors;
     appIntents?: AppIntent[];
 }
 
@@ -1888,7 +1896,7 @@ export interface GetAppMetadataResponse {
  * unsuccessful.
  */
 export interface GetAppMetadataResponsePayload {
-    error?: FindInstancesErrors;
+    error?:       FindInstancesErrors;
     appMetadata?: AppMetadata;
 }
 
@@ -1960,7 +1968,7 @@ export interface GetCurrentChannelResponse {
  * unsuccessful.
  */
 export interface GetCurrentChannelResponsePayload {
-    error?: ResponsePayloadError;
+    error?:   ResponsePayloadError;
     channel?: Channel | null;
 }
 
@@ -2118,7 +2126,7 @@ export interface GetInfoResponse {
  * unsuccessful.
  */
 export interface GetInfoResponsePayload {
-    error?: ResponsePayloadError;
+    error?:                  ResponsePayloadError;
     implementationMetadata?: ImplementationMetadata;
 }
 
@@ -2194,7 +2202,7 @@ export interface GetOrCreateChannelResponse {
  * unsuccessful.
  */
 export interface GetOrCreateChannelResponsePayload {
-    error?: PurpleError;
+    error?:   PurpleError;
     channel?: Channel;
 }
 
@@ -2265,7 +2273,7 @@ export interface GetUserChannelsResponse {
  * unsuccessful.
  */
 export interface GetUserChannelsResponsePayload {
-    error?: PurpleError;
+    error?:        PurpleError;
     userChannels?: Channel[];
 }
 
@@ -2634,7 +2642,7 @@ export interface IframeResolvePayload {
      * An array of AppIntent objects defining the resolution options.
      */
     appIntents: AppIntent[];
-    context: Context;
+    context:    Context;
 }
 
 /**
@@ -2907,7 +2915,7 @@ export interface IntentResultRequestPayload {
      * The eventUuid value of the intentEvent that the result being sent relates to.
      */
     intentEventUuid: string;
-    intentResult: IntentResult;
+    intentResult:    IntentResult;
     /**
      * The requestUuid value of the raiseIntentRequest that the result being sent relates to.
      */
@@ -3170,7 +3178,7 @@ export interface OpenResponse {
  * unsuccessful.
  */
 export interface OpenResponsePayload {
-    error?: OpenErrorResponsePayload;
+    error?:         OpenErrorResponsePayload;
     appIdentifier?: AppIdentifier;
 }
 
@@ -3524,7 +3532,7 @@ export interface PrivateChannelAddEventListenerResponse {
  * unsuccessful.
  */
 export interface PrivateChannelAddEventListenerResponsePayload {
-    error?: PurpleError;
+    error?:        PurpleError;
     listenerUUID?: string;
     [property: string]: any;
 }
@@ -3559,7 +3567,7 @@ export interface RaiseIntentForContextRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentForContextRequestPayload {
-    app?: AppIdentifier;
+    app?:    AppIdentifier;
     context: Context;
 }
 
@@ -3698,9 +3706,9 @@ export interface RaiseIntentRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentRequestPayload {
-    app?: AppIdentifier;
+    app?:    AppIdentifier;
     context: Context;
-    intent: string;
+    intent:  string;
 }
 
 /**
@@ -3803,7 +3811,7 @@ export interface RaiseIntentResultResponse {
  * unsuccessful.
  */
 export interface RaiseIntentResultResponsePayload {
-    error?: ResponsePayloadError;
+    error?:        ResponsePayloadError;
     intentResult?: IntentResult;
 }
 
@@ -4516,7 +4524,7 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
             const typ = typs[i];
             try {
                 return transform(val, typ, getProps);
-            } catch (_) { }
+            } catch (_) {}
         }
         return invalidValue(typs, val, key, parent);
     }
@@ -4575,9 +4583,9 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
     if (Array.isArray(typ)) return transformEnum(typ, val);
     if (typeof typ === "object") {
         return typ.hasOwnProperty("unionMembers") ? transformUnion(typ.unionMembers, val)
-            : typ.hasOwnProperty("arrayItems") ? transformArray(typ.arrayItems, val)
-                : typ.hasOwnProperty("props") ? transformObject(getProps(typ), typ.additional, val)
-                    : invalidValue(typ, val, key, parent);
+            : typ.hasOwnProperty("arrayItems")    ? transformArray(typ.arrayItems, val)
+            : typ.hasOwnProperty("props")         ? transformObject(getProps(typ), typ.additional, val)
+            : invalidValue(typ, val, key, parent);
     }
     // Numbers can be parsed by Date but shouldn't be.
     if (typ === Date && typeof val !== "number") return transformDate(val);
