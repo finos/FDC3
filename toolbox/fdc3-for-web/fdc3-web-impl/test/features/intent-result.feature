@@ -14,17 +14,17 @@ Feature: Intent Results Are Correctly Delivered
 ISSUE: 1303 prevents the use of matches_type
 
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "LibraryApp/l1" with requestUuid "ABC123"
-    When "LibraryApp/l1" sends a intentResultRequest with eventUuid "DEF123" and contextType "fdc3.book" and raiseIntentUuid "ABC123"
+    When "LibraryApp/l1" sends a intentResultRequest with eventUuid "uuid7" and contextType "fdc3.book" and raiseIntentUuid "ABC123"
     Then messaging will have outgoing posts
-      | msg.type                  | msg.meta.eventUuid | to.appId   | to.instanceId | msg.payload.raiseIntentRequestUuid | msg.payload.intentResolution.source.instanceId | msg.payload.intentResult.context.type |
-      | intentEvent               | uuid7              | LibraryApp | l1            | ABC123                             | {null}                                         | {null}                                |
-      | raiseIntentResponse       | {null}             | App1       | a1            | {null}                             | l1                                             | {null}                                |
-      | raiseIntentResultResponse | {null}             | App1       | a1            | {null}                             | {null}                                         | fdc3.book                             |
-      | intentResultResponse      | {null}             | LibraryApp | l1            | {null}                             | {null}                                         | {null}                                |
+      | msg.type                  | msg.meta.eventUuid | msg.meta.requestUuid | to.appId   | to.instanceId | msg.payload.raiseIntentRequestUuid | msg.payload.intentResolution.source.instanceId | msg.payload.intentResult.context.type |
+      | intentEvent               | uuid7              | {null}               | LibraryApp | l1            | ABC123                             | {null}                                         | {null}                                |
+      | raiseIntentResponse       | {null}             | ABC123               | App1       | a1            | {null}                             | l1                                             | {null}                                |
+      | raiseIntentResultResponse | {null}             | uuid9                | App1       | a1            | {null}                             | {null}                                         | fdc3.book                             |
+      | intentResultResponse      | {null}             | uuid9                | LibraryApp | l1            | {null}                             | {null}                                         | {null}                                |
 
   Scenario: App Returns An Intent Result
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "LibraryApp/l1" with requestUuid "ABC123"
-    When "LibraryApp/l1" sends a intentResultRequest with eventUuid "ABC123" and private channel "pc1"
+    When "LibraryApp/l1" sends a intentResultRequest with eventUuid "uuid7" and private channel "pc1" and raiseIntentUuid "ABC123"
     Then messaging will have outgoing posts
       | msg.type                  | msg.meta.eventUuid | to.appId   | to.instanceId | msg.payload.raiseIntentRequestUuid | msg.payload.intentResolution.source.instanceId | msg.payload.intentResult.channel.id |
       | intentEvent               | uuid7              | LibraryApp | l1            | ABC123                             | {null}                                         | {null}                              |
@@ -36,7 +36,7 @@ ISSUE: 1303 prevents the use of matches_type
   ISSUE: 1303 prevents the use of matches_type
 
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "LibraryApp/l1" with requestUuid "ABC123"
-    When "LibraryApp/l1" sends a intentResultRequest with eventUuid "ABC123" and void contents
+    When "LibraryApp/l1" sends a intentResultRequest with eventUuid "uuid7" and void contents and raiseIntentUuid "ABC123"
     Then messaging will have outgoing posts
       | msg.type                  | msg.meta.eventUuid | to.appId   | to.instanceId | msg.payload.raiseIntentRequestUuid | msg.payload.intentResolution.source.instanceId | msg.payload.intentResult.context.type |
       | intentEvent               | uuid7              | LibraryApp | l1            | ABC123                             | {null}                                         | {null}                                |

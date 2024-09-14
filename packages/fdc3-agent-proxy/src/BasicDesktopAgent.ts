@@ -1,9 +1,9 @@
-import { AppIdentifier, AppMetadata, ContextHandler, DesktopAgent, EventHandler, FDC3EventType, ImplementationMetadata, IntentHandler, IntentResolution, Listener } from "@kite9/fdc3-standard";
+import { AppIdentifier, AppMetadata, ContextHandler, DesktopAgent, EventHandler, FDC3EventTypes, ImplementationMetadata, IntentHandler, IntentResolution, Listener } from "@kite9/fdc3-standard";
 import { ChannelSupport } from "./channels/ChannelSupport";
 import { AppSupport } from "./apps/AppSupport";
 import { IntentSupport } from "./intents/IntentSupport";
 import { HandshakeSupport } from "./handshake/HandshakeSupport";
-import { DesktopAgentDetails, Connectable } from "@kite9/fdc3-standard";
+import { Connectable } from "@kite9/fdc3-standard";
 import { Context } from "@kite9/fdc3-context";
 
 /**
@@ -26,14 +26,9 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
         this.connectables = connectables
     }
 
-    addEventListener(_type: FDC3EventType | null, _handler: EventHandler): Promise<Listener> {
+    addEventListener(_type: FDC3EventTypes | null, _handler: EventHandler): Promise<Listener> {
         throw new Error("Method not implemented.");
     }
-
-    validateAppIdentity?({ }: { appId?: string; appDUrl?: string; instanceUuid?: string; }): Promise<DesktopAgentDetails> {
-        throw new Error("Method not implemented.");
-    }
-
 
     async getInfo(): Promise<ImplementationMetadata> {
         return this.handshake.getImplementationMetadata()
