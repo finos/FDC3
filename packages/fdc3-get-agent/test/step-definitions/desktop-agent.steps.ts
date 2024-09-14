@@ -6,7 +6,7 @@ import { getAgent } from '../../src';
 import { DesktopAgentDetails, GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-standard';
 import { dummyInstanceId, EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
 import { MockStorage } from '../support/MockStorage';
-import { DesktopAgent, ImplementationMetadata } from '@kite9/fdc3';
+import { DesktopAgent, fdc3Ready, ImplementationMetadata } from '@kite9/fdc3';
 import { DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY } from '../../src/messaging/AbstractWebMessaging';
 var wtf = require('wtfnode')
 
@@ -70,6 +70,14 @@ Given('`window.fdc3` is injected into the runtime with the value in {string}', a
 When('I call getAgentAPI for a promise result', function (this: CustomWorld) {
     try {
         this.props['result'] = getAgent()
+    } catch (error) {
+        this.props['result'] = error
+    }
+})
+
+When('I call fdc3Ready for a promise result', function (this: CustomWorld) {
+    try {
+        this.props['result'] = fdc3Ready()
     } catch (error) {
         this.props['result'] = error
     }

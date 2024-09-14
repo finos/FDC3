@@ -68,7 +68,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
     In this scenario, window.fdc3 is set by the electron container and returned by getAgentAPI
 
     Given A Dummy Desktop Agent in "dummy-api"
-    And I call getAgentAPI for a promise result
+    And I call fdc3Ready for a promise result
     And I refer to "{result}" as "theAPIPromise"
     And we wait for a period of "500" ms
     And `window.fdc3` is injected into the runtime with the value in "{dummy-api}"
@@ -135,3 +135,5 @@ Feature: Different Strategies for Accessing the Desktop Agent
     Then the promise "{theAPIPromise}" should resolve
     And "{result}" is an error with message "Invalid instance"
     Then I call "{document}" with "shutdown"
+
+  Scenario: Nothing works and we timeout
