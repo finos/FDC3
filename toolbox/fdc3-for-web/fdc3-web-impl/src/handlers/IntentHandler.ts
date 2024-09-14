@@ -47,7 +47,7 @@ async function forwardRequest(arg0: IntentRequest, to: AppIdentifier, sc: Server
             raiseIntentRequestUuid: arg0.requestUuid
         },
         meta: {
-            eventUuid: sc.createUUID(),
+            eventUuid: arg0.requestUuid,
             timestamp: new Date()
         }
     }
@@ -154,7 +154,7 @@ export class IntentHandler implements MessageHandler {
      * Called when target app handles an intent
      */
     intentResultRequest(arg0: IntentResultRequest, sc: ServerContext<any>, from: AppIdentifier): void | PromiseLike<void> {
-        const requestId = arg0.payload.raiseIntentRequestUuid
+        const requestId = arg0.meta.requestUuid
         const to = this.pendingResolutions.get(requestId)
         if (to) {
             // post the result to the app that raised the intent
