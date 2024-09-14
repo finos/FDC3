@@ -87,7 +87,7 @@ export class DefaultIntentSupport implements IntentSupport {
         if (appIntents.length == 0) {
             throw new Error(ResolveError.NoAppsFound)
         } else {
-            return appIntents as any /* ISSUE: 1295 */
+            return appIntents
         }
 
     }
@@ -148,7 +148,7 @@ export class DefaultIntentSupport implements IntentSupport {
                 context,
                 app: app
             },
-            meta: this.messaging.createMeta() as AddContextListenerRequestMeta /* ISSUE: #1275 */
+            meta: this.messaging.createMeta() as any /* ISSUE: #1275 */
         }
 
         const resultPromise = this.createResultPromise(messageOut)

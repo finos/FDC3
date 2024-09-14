@@ -6,8 +6,6 @@ export interface CSSPositioning { [key: string]: string }
 export const INITIAL_CONTAINER_CSS = {
     width: "0",
     height: "0",
-    right: "20px",
-    bottom: "20px",
     position: "fixed"
 }
 

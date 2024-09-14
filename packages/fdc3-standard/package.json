@@ -31,8 +31,8 @@
     "printWidth": 120
   },
   "dependencies": {
-    "@kite9/fdc3-schema": "2.2.0-beta.16",
-    "@kite9/fdc3-context": "2.2.0-beta.16"
+    "@kite9/fdc3-schema": "2.2.0-beta.14",
+    "@kite9/fdc3-context": "2.2.0-beta.14"
   },
   "devDependencies": {
     "@types/jest": "29.5.12",
