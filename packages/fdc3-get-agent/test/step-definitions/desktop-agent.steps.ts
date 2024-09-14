@@ -2,11 +2,11 @@ import { After, DataTable, Given, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { handleResolve, setupGenericSteps } from '@kite9/testing';
 import { MockDocument, MockWindow } from '../support/MockDocument';
-import { getAgent } from '../../src';
+import { fdc3Ready, getAgent } from '../../src';
 import { DesktopAgentDetails, GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-standard';
 import { dummyInstanceId, EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
 import { MockStorage } from '../support/MockStorage';
-import { DesktopAgent, fdc3Ready, ImplementationMetadata } from '@kite9/fdc3';
+import { DesktopAgent, ImplementationMetadata } from '@kite9/fdc3-standard';
 import { DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY } from '../../src/messaging/AbstractWebMessaging';
 var wtf = require('wtfnode')
 
