@@ -12,75 +12,438 @@ The Desktop Agent Communication Protocol (DACP) is an experimental feature added
 
 :::
 
-DACP constitutes a set of messages that are used by the `@finos/fdc3` library to communicate with Browser-Resident DAs. Each message takes the form of a Flux Standard Action (FSA). Communications are bidirectional and occur over HTML standard MessagePorts. All messages are query/response. Responses may contain requested data or may simply be acknowledgement of receipt.
-
-:::note
-
-We refer to "the library" to mean the code imported from `@finos/fdc3` and initiated from a call to `getAgent()`.
-
-:::
-
-Type definitions for all DACP messages can be found here: [bcp.ts](TODO).
+The Desktop Agent Communication Protocol (DACP) constitutes a set of standardized JSON messages or 'wire protocol' that can be used to implement an interface to a Desktop Agent, encompassing all API calls events defined in the [Desktop Agent API](../ref/DesktopAgent.md). For example, the DACP is used by the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3) to communicate with Browser-Resident Desktop Agents or a connection setup via the [FDC3 Web Connection Protocol](./webConnectionProtocol).
 
 ## Protocol conventions
 
-The protocol is divided into groups of messages:
+DACP messages are defined in [JSON Schema](https://json-schema.org/) in the [FDC3 github repository](https://github.com/finos/FDC3/tree/fdc3-for-web/schemas/api).
 
-1) Messages sent from the library to the DA. These typically have a 1:1 correspondence with function calls on `DesktopAgent` and `Channel`, and ancillary functionality such as unsubscribing.
+:::tip
 
-2) Response messages, sent from the DA to the library. Every message sent from the library to the DA will receive a response. In most cases, the type will simply have "Response" appended. For instance, the response message for `getInfo` is `getInfoResponse`. For all other cases the `DACPAck` message will be the response. Every response's payload will contain an error string if an error occurred, otherwise it will contain the expected data.
+TypeScript types representing all DACP and WCP messages are generated from the JSON Schema source and can be imported from the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3):
 
-3) Asynchronous "inbound" messages, sent from the DA to the library. These messages are due to actions in other apps, such as an inbound context resulting from another app's broadcast. These messages have the name of the originating message appended with `Inbound`. For example, if another app called `broadcast` then this app would receive a message called `broadcastInbound`.
+```ts
+import {BrowserTypes} from '@finos/fdc3';
+```
 
-Every message has a `meta.messageId`. Initiating messages must set this to be a unique string. Response messages must use the string from their corresponding initiating message. The `messageId` can be used by library and DA to match incoming message responses with their initial requests.
+:::
 
-## Multiplexing
+The protocol is composed of several different classes of message, each governed by a message schema:
 
-For any given contextType or intent, the library should only ever send `DACPAddContextListener` or `DACPAddIntentListener` one time. The DA is only responsible for sending any given Context or Intent _once_ to an app. The DA may ignore duplicate listener registrations.
+1. **App Request Messages** ([`AppRequest` schema](https://fdc3.finos.org/schemas/next/api/appRequest.schema.json)):
+    - Messages sent by an application representing an API call, such as [`DesktopAgent.broadcast`](../ref/DesktopAgent#broadcast), [`Channel.addContextListener`](../ref/Channel#addcontextlistener), or [`Listener.unsubscribe`](../ref/Types#listener).
+    - Message names all end in 'Request'.
+    - Each instance of a request message sent is uniquely identified by a `meta.requestUuid` field.
 
-If the app has registered multiple listeners for these types then it is the responsibility of the _library_ to multiplex the delivered Context, or to choose a specific intent listener.
+2. **Agent Response Messages** ([`AgentResponse` schema](https://fdc3.finos.org/schemas/next/api/agentResponse.schema.json)):
+    - Response messages sent from the DA to the application, each relating to a corresponding _App Request Message_.
+    - Message names all end in 'Response'.
+    - Each instance of an Agent Response Message is uniquely identified by a `meta.responseUuid` field.
+    - Each instance of an Agent Response Message quotes the `meta.requestUuid` value of the message it is responding to.
 
-When the API calls the unsubscriber for a listener then `DACPRemoveContextListener` or `DACPRemoveIntentListener` should be sent to the DA.
+3. **Agent Event Messages** ([`AgentEvent` schema](https://fdc3.finos.org/schemas/next/api/agentEvent.schema.json)):
+    - Messages sent from the DA to the application that are due to actions in other applications, such as an inbound context resulting from another app's broadcast.
+    - Message names all end in 'Event'.
+    - Each instance of an Agent Response Message is uniquely identified by a `meta.eventUuid` field.
 
-## Intents
+Each individual message is also governed by a message schema, which is composed with the schema for the message type.
 
-Refer [Private Channel examples](../ref/PrivateChannel.md#server-side-example) to understand how intent transactions work.
+:::info
 
-When an app ("client") calls `raiseIntent()` or `raiseIntentByContext()`, the library MUST send the corresponding `DACPRaiseIntent` or `DACPRaiseIntentByContext` message to the DA.
+In rare cases, the payload of a request or event message may quote the `requestUuid` or `eventUuid` of another message that it represents a response to, e.g. `intentResultRequest` quotes the `eventUuid` of the `intentEvent` that delivered the intent and context to the app, as well as the `requestUuid` of the `raiseIntentRequest` message that originally raised the intent.
 
-The DA will resolve the intent and then deliver a `DACPIntentInbound` message to the library in the resolved app ("server"). This message will contain a `responseId` that has been generated by the DA.
+:::
 
-After the message has been sent, the DA will respond back to the "client" app's library with a `DACPRaiseIntentResponse` message containing that `responseId`.
+All messages defined in the DACP follow a common structure:
 
-If the "client" app then calls `getResult()`, then the library will wait until a `DACPIntentResult` message is received with a corresponding `responseId`. It will resolve the `getResult()` call with either a Context or PrivateChannel depending on the contents of the result.
+```json
+{
+    "type": "string", // string identifying the message type
+    "payload": {
+        //message payload fields defined for each message type 
+    },
+    "meta": {
+        "timestamp": "2024-09-17T10:15:39+00:00"
+        //other meta fields determined by each 'class' of message
+        //  these include requestUuid, responseUuid and eventUuid
+        //  and a source field identifying an app where appropriate
+    }
+}
+```
 
-Meanwhile, if the "server" app's intent handler resolves to a Channel or Context then the library should send a `DACPIntentResult` with the `responseId` that was initially received from `DACPIntentInbound`.
+`meta.timestamp` fields are formatted as strings, according to the format defined by [ISO 8601-1:2019](https://www.iso.org/standard/70907.html), which is produced in JavaScript via the `Date` class's `toISOString()` function, e.g. `(new Date()).toISOString()`.
 
+### Routing, Registering Listeners & Multiplexing
 
-## Intent Resolver
+The design of the Desktop Agent Communication Protocol is guided by the following sentence from the introduction to the Desktop Agent overview:
 
-The DA should send `DACPResolveIntent` if it requires an external UI for intent resolution. This MUST include the list of available apps which are capable of being launched to handle the intent, and it MUST include the list of open apps which are capable of handling the intent. The "@finos/fdc3" library will present UI to the end user, and then will respond with a `DACPResolveIntentResponse` containing the user's choice.
+> A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain.
 
-DAs are free to provide their own intent resolution UIs if they have this capability.
+Hence, that design is based on the assumption that all messaging between applications passes through an entity that acts as the 'Desktop Agent' and routes those messages on to the appropriate recipients (for example a context message broadcast by an app to a channel is routed onto other apps that have added a listener to that channel, or an intent and context pair raised by an application is routed to another app chosen to resolve that intent). While implementations based on a shared bus are possible, they have not been specifically considered in the design of the DACP messages.
 
-## Channels
+Further, the design of the DACP is based on the assumption that applications will interact with an implementation of the [`DesktopAgent`](../ref/DesktopAgent) interface, with the DACP used behind the scenes to support communication between the implementation of that interface and an entity acting as the Desktop Agent which is running in another process or location, necessitating the use of a 'wire protocol' for communication. For example, [Browser-Resident Desktop Agent](./browserResidentDesktopAgents) implementations use the [FDC3 Web Communication Protocol (WCP)](./webConnectionProtocol.md) to connect a 'Desktop Agent Proxy', provided by the `getAgent()` implementation in the [`@finos/fdc3` npm module], and a Desktop Agent running in another frame or window which is communicated with via the DACP.
 
-The DA should send `DACPInitializeChannelSelector` if it requires the app to provide UI for channel selection. The "@finos/fdc3" library will provide the UI when this message is received.
+As a Desktop Agent is expected to act as a router for messages sent through the Desktop Agent API, the DACP provides message exchanges for the registration and unregistration of listeners for particular message types (e.g. events, contexts broadcast on user channels, contexts broadcast on other channel types, raised intents etc.). In most cases, apps can register multiple listeners for the same messages (often filtered for different context or event types). However, where multiple listeners are present, only a single DACP message should be sent representing the action taken in the FDC3 API (e.g. broadcasting a message to a channel) and any multiplexing to multiple listeners should be applied at the receiving end. For example, when working with the WCP, this should be handled by the Desktop Agent Proxy implementation provided by the `getAgent()` implementation.
 
-Any message related to a channel contains a `channelId` field. It is the responsibility of each party (DA and library) to correlate `channelId` fields with the correct local objects.
+## Message Definitions Supporting FDC3 API calls
 
-For instance, when the library receives a `DACPBroadcastInbound` message, it should look for the `channelId` field, and only deliver that message to listeners on the corresponding local `Channel` object.
+This section provides details of the messages defined in the DACP, grouped according to the FDC3 API functions that they support, and defined by JSON Schema files. Many of these message definitions make use of JSON versions of [metadata](../ref/Metadata) and other [types](../ref/Types) defined by the Desktop Agent API, the JSON versions of which can be found in [api.schema.json](https://fdc3.finos.org/schemas/next/api/api.schema.json), while a number of DACP specific object definitions that are reused through the messages can be found in [common.schema.json](https://fdc3.finos.org/schemas/next/api/common.schema.json).
 
-Likewise, when an app calls `channel.broadcast()` then the library should send the `DACPBroadcast` message with the `channelId` set accordingly.
+### `DesktopAgent`
 
-## Private Channels
+#### `addContextListener()`
 
-In general, private channels behave as channels. The DA MUST assign a unique `channelId` in response to `DACPCreatePrivateChannel` messages. `DACPBroadcast` and `DACPAddContextListener` messages can be transmitted with this `channelId`.
+Request and response used to implement the [`DesktopAgent.addContextListener()`](../ref/DesktopAgent#addcontextlistener) and [`Channel.addContextListener()`](../ref/Channel#addcontextlistener) API calls:
 
-See [Intents](#intents) for the process that is used to established a private channel.
+- [`addContextListenerRequest`](https://fdc3.finos.org/schemas/next/api/addContextListenerRequest.schema.json)
+- [`addContextListenerResponse`](https://fdc3.finos.org/schemas/next/api/addContextListenerResponse.schema.json)
 
-FDC3's `PrivateChannel` object has some specific functions, each of which has a corresponding DACP message. For instance, `PrivateChannel.onAddContextListener()` can be implemented using the `DACPPrivateChannelOnAddContextListener` message. Each of these types of messages contains a `channelId` which can be used to identify the channel.
+Event message used to deliver context objects that have been broadcast to listeners:
 
-The DA should send `DACPPrivateChannelOnAddContextListener` and `DACPPrivateChannelOnUnsubscribe` messages whenever `DACPAddContextListener` or `DACPRemoveContextListener` is called on a private channel. These will be delivered to the library regardless of whether a client has actually called `onAddContextListener()` and `onUnsubscribe()`. It is the library's responsibility to track these calls and either deliver or discard the messages accordingly.
+- [`broadcastEvent`](https://fdc3.finos.org/schemas/next/api/broadcastEvent.schema.json)
 
-Likewise, the DA should send `DACPPrivateChannelOnDisconnect` whenever the `DACPPrivateChannelDisconnect` message is received. It is the library's responsibility to deliver or discard this message.
+Request and response for removing the context listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
+
+- [`contextListenerUnsubscribeRequest`](https://fdc3.finos.org/schemas/next/api/contextListenerUnsubscribeRequest.schema.json)
+- [`contextListenerUnsubscribeResponse`](https://fdc3.finos.org/schemas/next/api/contextListenerUnsubscribeResponse.schema.json)
+
+#### `addEventListener()`
+
+Request and response used to implement the [`addEventListener()`](../ref/DesktopAgent#addeventlistener) API call:
+
+- [`addEventListenerRequest`](https://fdc3.finos.org/schemas/next/api/addEventListenerRequest.schema.json)
+- [`addEventListenerResponse`](https://fdc3.finos.org/schemas/next/api/addEventListenerResponse.schema.json)
+
+Event messages used to deliver events that have occurred:
+
+- [`channelChangedEvent`](https://fdc3.finos.org/schemas/next/api/channelChangedEvent.schema.json)
+
+Request and response for removing the event listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
+
+- [`eventListenerUnsubscribeRequest`](https://fdc3.finos.org/schemas/next/api/eventListenerUnsubscribeRequest.schema.json)
+- [`eventListenerUnsubscribeResponse`](https://fdc3.finos.org/schemas/next/api/eventListenerUnsubscribeResponse.schema.json)
+
+#### `addIntentListener()`
+
+Request and response used to implement the [`addIntentListener()`](../ref/DesktopAgent#addintentlistener) API call:
+
+- [`addIntentListenerRequest`](https://fdc3.finos.org/schemas/next/api/addIntentListenerRequest.schema.json)
+- [`addIntentListenerResponse`](https://fdc3.finos.org/schemas/next/api/addIntentListenerResponse.schema.json)
+
+Event message used to a raised intent and context object from another app to the listener:
+
+- [`intentEvent`](https://fdc3.finos.org/schemas/next/api/intentEvent.schema.json)
+
+An additional request and response used to deliver an [`IntentResult`](../ref/Types#intentresult) from the intent handler to the Desktop Agent, so that it can convey it back to the raising application:
+
+- [`intentResultRequest`](https://fdc3.finos.org/schemas/next/api/intentResultRequest.schema.json)
+- [`intentResultResponse`](https://fdc3.finos.org/schemas/next/api/intentResultResponse.schema.json)
+
+Please note this exchange (and the `IntentResolution.getResult()` API call) support `void` results from a raised intent and hence this message exchange should occur for all raised intents, including those that do not return a result. In such cases, the void intent result allows resolution of the `IntentResolution.getResult()` API call and indicates that the intent handler has finished running.
+
+Request and response for removing the intent listener ([`Listener.unsubscribe()`](../ref/Types#listener))::
+
+- [`intentListenerUnsubscribeRequest`](https://fdc3.finos.org/schemas/next/api/intentListenerUnsubscribeRequest.schema.json)
+- [`intentListenerUnsubscribeResponse`](https://fdc3.finos.org/schemas/next/api/intentListenerUnsubscribeResponse.schema.json)
+
+A typical exchange of messages between an app raising an intent, a Desktop agent and an app resolving an intent is:
+
+```mermaid
+sequenceDiagram
+    AppA ->> DesktopAgent: raiseIntentRequest
+    DesktopAgent ->> AppB: intentEvent
+    DesktopAgent ->> AppA: raiseIntentResponse
+    AppB ->> DesktopAgent: intentResultRequest
+    DesktopAgent ->> AppB: intentResultResponse
+    DesktopAgent ->> AppA: raiseIntentResultResponse
+```
+
+The above flow assumes that AppB has already been launched and added an intent listener. As apps can be launched to resolve an intent a typical message exchange (that includes registration of the intent listener) is:
+
+```mermaid
+sequenceDiagram
+    AppA ->> DesktopAgent: raiseIntentRequest
+    break intent resolution determines a new instance of AppB should be launched
+        DesktopAgent -->> AppB: Launch
+        AppB -->> DesktopAgent: Connect via WCP
+    end
+    AppB ->> DesktopAgent: addIntentListenerRequest
+    DesktopAgent ->> AppB: addIntentListenerResponse
+    DesktopAgent ->> AppB: intentEvent
+    DesktopAgent ->> AppA: raiseIntentResponse
+    AppB ->> DesktopAgent: intentResultRequest
+    DesktopAgent ->> AppB: intentResultResponse
+    DesktopAgent ->> AppA: raiseIntentResultResponse
+```
+
+:::tip
+
+See [`raiseIntent`](#raiseintent) below for further examples of message exchanges involved in raising intents and intent resolution.
+
+:::
+
+#### `broadcast()`
+
+Request and response used to implement the [`DesktopAgent.broadcast()`](../ref/DesktopAgent#broadcast) and [`Channel.broadcast()`](../ref/Channel#broadcast) API calls:
+
+- [`broadcastRequest`](https://fdc3.finos.org/schemas/next/api/broadcastRequest.schema.json)
+- [`broadcastResponse`](https://fdc3.finos.org/schemas/next/api/broadcastResponse.schema.json)
+
+See [`addContextListener()`](#addcontextlistener) above for the `broadcastEvent` used to deliver the broadcast to other apps.
+
+#### `createPrivateChannel()`
+
+Request and response used to implement the [`createPrivateChannel()`](../ref/DesktopAgent#createprivatechannel) API call:
+
+- [`createPrivateChannelRequest`](https://fdc3.finos.org/schemas/next/api/createPrivateChannelRequest.schema.json)
+- [`createPrivateChannelResponse`](https://fdc3.finos.org/schemas/next/api/createPrivateChannelResponse.schema.json)
+
+#### `findInstances()`
+
+Request and response used to implement the [`findInstances()`](../ref/DesktopAgent#findinstances) API call:
+
+- [`findInstancesRequest`](https://fdc3.finos.org/schemas/next/api/findInstancesRequest.schema.json)
+- [`findInstancesResponse`](https://fdc3.finos.org/schemas/next/api/findInstancesResponse.schema.json)
+
+#### `findIntent()`
+
+Request and response used to implement the [`findIntent()`](../ref/DesktopAgent#findintent) API call:
+
+- [`findIntentRequest`](https://fdc3.finos.org/schemas/next/api/findIntentRequest.schema.json)
+- [`findIntentResponse`](https://fdc3.finos.org/schemas/next/api/findIntentResponse.schema.json)
+
+#### `findIntentsByContext()`
+
+Request and response used to implement the [`findIntentsByContext()`](../ref/DesktopAgent#findintentsbycontext) API call:
+
+- [`findIntentsByContextRequest`](https://fdc3.finos.org/schemas/next/api/findIntentsByContextRequest.schema.json)
+- [`findIntentsByContextResponse`](https://fdc3.finos.org/schemas/next/api/findIntentsByContextResponse.schema.json)
+
+#### `getAppMetadata()`
+
+Request and response used to implement the [`getAppMetadata()`](../ref/DesktopAgent#getappmetadata) API call:
+
+- [`getAppMetadataRequest`](https://fdc3.finos.org/schemas/next/api/getAppMetadataRequest.schema.json)
+- [`getAppMetadataResponse`](https://fdc3.finos.org/schemas/next/api/getAppMetadataResponse.schema.json)
+
+#### `getCurrentChannel()`
+
+Request and response used to implement the [`getCurrentChannel()`](../ref/DesktopAgent#getcurrentchannel) API call:
+
+- [`getCurrentChannelRequest`](https://fdc3.finos.org/schemas/next/api/getCurrentChannelRequest.schema.json)
+- [`getCurrentChannelResponse`](https://fdc3.finos.org/schemas/next/api/getCurrentChannelResponse.schema.json)
+
+#### `getInfo()`
+
+Request and response used to implement the [`getInfo()`](../ref/DesktopAgent#getinfo) API call:
+
+- [`getInfoRequest`](https://fdc3.finos.org/schemas/next/api/getInfoRequest.schema.json)
+- [`getInfoResponse`](https://fdc3.finos.org/schemas/next/api/getInfoResponse.schema.json)
+
+#### `getOrCreateChannel()`
+
+Request and response used to implement the [`getOrCreateChannel()`](../ref/DesktopAgent#getorcreatechannel] API call:
+
+- [`getOrCreateChannelRequest`](https://fdc3.finos.org/schemas/next/api/getOrCreateChannelRequest.schema.json)
+- [`getOrCreateChannelResponse`](https://fdc3.finos.org/schemas/next/api/getOrCreateChannelResponse.schema.json)
+
+#### `getUserChannels()`
+
+Request and response used to implement the [`getUserChannels()`](../ref/DesktopAgent#getuserchannels) API call:
+
+- [`getUserChannelsRequest`](https://fdc3.finos.org/schemas/next/api/getUserChannelsRequest.schema.json)
+- [`getUserChannelsResponse`](https://fdc3.finos.org/schemas/next/api/getUserChannelsResponse.schema.json)
+
+#### `joinUserChannel()`
+
+Request and response used to implement the [`joinUserChannel()`](../ref/DesktopAgent#joinchannel) API call:
+
+- [`joinUserChannelRequest`](https://fdc3.finos.org/schemas/next/api/joinUserChannelRequest.schema.json)
+- [`joinUserChannelResponse`](https://fdc3.finos.org/schemas/next/api/joinUserChannelResponse.schema.json)
+
+#### `leaveCurrentChannel()`
+
+Request and response used to implement the [`leaveCurrentChannel()`](../ref/DesktopAgent#leavecurrentchannel) API call:
+
+- [`leaveCurrentChannelRequest`](https://fdc3.finos.org/schemas/next/api/leaveCurrentChannelRequest.schema.json)
+- [`leaveCurrentChannelResponse`](https://fdc3.finos.org/schemas/next/api/leaveCurrentChannelResponse.schema.json)
+
+#### `open()`
+
+Request and response used to implement the [`open()`](../ref/DesktopAgent#open) API call:
+
+- [`openRequest`](https://fdc3.finos.org/schemas/next/api/openRequest.schema.json)
+- [`openResponse`](https://fdc3.finos.org/schemas/next/api/openResponse.schema.json)
+
+Where a context object is passed (e.g. `fdc3.open(app, context)`) the `broadcastEvent` message described above in [`addContextListener`](#addcontextlistener) should be used to deliver it after the context listener has been added:
+
+```mermaid
+sequenceDiagram
+    AppA ->> DesktopAgent: openRequest<br>(with context)
+    break Desktop Agent launches AppB
+        DesktopAgent -->> AppB: Launch
+        AppB -->> DesktopAgent: Connect via WCP
+    end
+    AppB ->> DesktopAgent: addContextListenerRequest
+    DesktopAgent ->> AppB: addContextListenerResponse
+    DesktopAgent ->> AppB: broadcastEvent
+```
+
+#### `raiseIntent()`
+
+Request and response used to implement the [`raiseIntent()`](../ref/DesktopAgent#raiseintent) API call:
+
+- [`raiseIntentRequest`](https://fdc3.finos.org/schemas/next/api/raiseIntentRequest.schema.json)
+- [`raiseIntentResponse`](https://fdc3.finos.org/schemas/next/api/raiseIntentResponse.schema.json)
+
+An additional response message is provided for the delivery of an `IntentResult` from the resolving application to the raising application (which is collected via the [`IntentResolution.getResult()`](../ref/Metadata#intentresolution) API call), which should quote the `requestUuid` from the original `raiseIntentRequest`:
+
+- [`raiseIntentResultResponse`](https://fdc3.finos.org/schemas/next/api/raiseIntentResultResponse.schema.json)
+
+:::tip
+
+See [`addIntentListener`](#addintentlistener) above for details of the messages used for the resolving app to deliver the result to the Desktop Agent.
+
+:::
+
+Where there are multiple options for resolving a raised intents, there are two possible versions of the resulting message exchanges. Which to use depends on whether the Desktop Agent uses an intent resolver user interface (or other suitable mechanism) that it controls, or one injected into the application (for example an iframe injected by a `getAgent()` implementation into an application window) to perform resolution.
+
+When working with an injected interface, the Desktop Agent should respond with a `raiseIntentResponse` containing a `RaiseIntentNeedsResolutionResponsePayload`:
+
+```mermaid
+---
+title: Intent resolution with injected Intent Resolver iframe
+---
+sequenceDiagram
+    AppA ->> DesktopAgent: raiseIntentRequest
+    DesktopAgent ->> AppB: intentEvent
+    DesktopAgent ->> AppA: raiseIntentResponse
+    Note left of DesktopAgent: raiseIntentResponse includes a<br/> RaiseIntentNeedsResolutionResponsePayload<br/>containing an AppIntent
+    break when AppIntent return with multiple options
+        DesktopAgent --> AppA: getAgent displays IntentResolver
+        AppA --> DesktopAgent: User picks an option
+    end
+    AppA ->> DesktopAgent: raiseIntentRequest
+    Note left of DesktopAgent: New request includes a<br/>specific 'app' target<br/>and new requestUuid
+    DesktopAgent ->> AppB: intentEvent
+    DesktopAgent ->> AppA: raiseIntentResponse
+    AppB ->> DesktopAgent: intentResultRequest
+    DesktopAgent ->> AppB: intentResultResponse
+    DesktopAgent ->> AppA: raiseIntentResultResponse
+```
+
+Alternatively, if the Desktop Agent is able to provide its own user interface or another suitable means of resolving the intent, then it may do so and respond with a `raiseIntentResponse` containing a `RaiseIntentSuccessResponsePayload`:
+
+```mermaid
+---
+title: Intent resolution with Desktop Agent provided Intent Resolver
+---
+sequenceDiagram
+    AppA ->> DesktopAgent: raiseIntentRequest
+    DesktopAgent ->> AppB: intentEvent
+    break DA determines there are multiple options
+        DesktopAgent-->AppA: Desktop Agent displays an<br/>IntentResolver UI
+        AppA-->DesktopAgent: User picks an option
+    end
+    DesktopAgent ->> AppA: raiseIntentResponse
+    Note left of DesktopAgent: DesktopAgent responds<br/>to the original<br/>raiseIntentRequest message with<br/>a RaiseIntentSuccessResponsePayload
+    AppB ->> DesktopAgent: intentResultRequest
+    DesktopAgent ->> AppB: intentResultResponse
+    DesktopAgent ->> AppA: raiseIntentResultResponse
+```
+
+#### `raiseIntentForContext()`
+
+Request and response used to implement the [`raiseIntentForContext()`](../ref/DesktopAgent#raiseintentforcontext) API call:
+
+- [`raiseIntentForContextRequest`](https://fdc3.finos.org/schemas/next/api/raiseIntentForContextRequest.schema.json)
+- [`raiseIntentForContextResponse`](https://fdc3.finos.org/schemas/next/api/raiseIntentForContextResponse.schema.json)
+
+Message exchanges for handling `raiseIntentForContext()` are the same as for `raiseIntent`, except for the substitution of `raiseIntentForContextRequest` for `raiseIntentRequest` and `raiseIntentForContextResponse` for `raiseIntentResponse`. Hence, please see [`raiseIntent`](#raiseintent) and [`addIntentListener`](#addintentlistener) for further details.
+
+### `Channel`
+
+Owing to the significant overlap between the FDC3 [`DesktopAgent`](../ref/DesktopAgent) and [`Channel`](../ref/Channel) interfaces, which includes the ability to retrieve and work with User channels as App Channels, most of the messaging for the `Channel` API is shared with `DesktopAgent`. Specifically, all messages defined in the the [`broadcast`](#broadcast) and [`addContextListener`](#addcontextlistener) sections above are reused, with a few minor differences to note:
+
+- When working with a specific channel, the `channelId` property in `addContextListenerRequest` should be set to the ID of the channel, where it is set to `null` to work with the current user channel.
+- When receiving a `broadcastEvent` a `channelId` that is `null` indicates that the context was sent via a call to `fdc3.open` and does not relate to a channel.
+
+The following additional function is unique to the `Channel` interface:
+
+#### `getCurrentContext()`
+
+Request and response used to implement the [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext) API call:
+
+- [`getCurrentContextRequest`](https://fdc3.finos.org/schemas/next/api/getCurrentContextRequest.schema.json)
+- [`getCurrentContextResponse`](https://fdc3.finos.org/schemas/next/api/getCurrentContextResponse.schema.json)
+
+### `PrivateChannel`
+
+The [`PrivateChannel`](../ref/PrivateChannel) interface extends [`Channel`](../ref/Channel) with a number of additional functions that are supported by the following messages:
+
+#### `addEventListener()`
+
+Request and response used to implement the [`PrivateChannel.addEventListener`](../ref/PrivateChannel#addeventlistener) API call:
+
+- [`privateChanneladdEventListenerRequest`](https://fdc3.finos.org/schemas/next/api/privateChanneladdEventListenerRequest.schema.json)
+- [`privateChanneladdEventListenerResponse`](https://fdc3.finos.org/schemas/next/api/privateChanneladdEventListenerResponse.schema.json)
+
+Event messages used to deliver events that have occurred:
+
+- [`privateChannelOnAddContextListenerEvent`](https://fdc3.finos.org/schemas/next/api/privateChannelOnAddContextListenerEvent.schema.json)
+- [`privateChannelOnDisconnectEvent`](https://fdc3.finos.org/schemas/next/api/privateChannelOnDisconnectEvent.schema.json)
+- [`privateChannelOnUnsubscribeEvent`](https://fdc3.finos.org/schemas/next/api/privateChannelOnUnsubscribeEvent.schema.json)
+
+:::tip
+
+The above messages may also be used to implement the deprecated [`onAddContextListener()`](../ref/PrivateChannel#onaddcontextlistener), [`onUnsubscribe`](../ref/PrivateChannel#onunsubscribe) and [`onDisconnect`](../ref/PrivateChannel#ondisconnect) functions of the `PrivateChannel` interface.
+
+:::
+
+Message exchange for removing the event listener [`Listener.unsubscribe`](../ref/Types#listener):
+
+- [`privateChannelUnsubscribeEventListenerRequest`](https://fdc3.finos.org/schemas/next/api/privateChannelUnsubscribeEventListenerRequest.schema.json)
+- [`privateChannelUnsubscribeEventListenerResponse`](https://fdc3.finos.org/schemas/next/api/privateChannelUnsubscribeEventListenerResponse.schema.json)
+
+#### `disconnect()`
+
+Request and response used to implement the [`PrivateChannel.disconnect()`](../ref/PrivateChannel#disconnect) API call:
+
+- [`privateChannelDisconnectRequest`](https://fdc3.finos.org/schemas/next/api/privateChannelDisconnectRequest.schema.json)
+- [`privateChannelDisconnectResponse`](https://fdc3.finos.org/schemas/next/api/privateChannelDisconnectResponse.schema.json)
+
+### Checking apps are alive
+
+Depending on the connection over which the Desktop Agent and app are connected, it may be necessary for the Desktop Agent to check whether the application is still alive. This can be done, either periodically or on demand (for example to validate options that will be provided in an [`AppIntent`](../ref/Metadata#appintent) as part of a `findIntentResponse` or `raiseIntentResponse` and displayed in an intent resolver interface), using the following message exchange:
+
+- [`heartbeatEvent`](https://fdc3.finos.org/schemas/next/api/heartbeatEvent.schema.json)
+- [`heartbeatAcknowledgment`](https://fdc3.finos.org/schemas/next/api/heartbeatAcknowledgment.schema.json)
+
+As a Desktop Agent initiated exchange, it is initiated with an `AgentEvent` message and completed via an `AppRequest` message as an acknowledgement.
+
+:::tip
+
+Additional procedures are defined in the [Browser Resident Desktop Agents specification](./browserResidentDesktopAgents#disconnects) and [Web Connection Protocol](./webConnectionProtocol#step-5-disconnection) for the detection of app disconnection or closure. Implementations will often need to make use of multiple procedures to catch all forms of disconnection in a web browser.
+
+:::
+
+### Controlling injected User Interfaces
+
+Desktop Agent implementations, such as those based on the [Browser Resident Desktop Agents specification](./browserResidentDesktopAgents) and [Web Connection Protocol](./webConnectionProtocol), may either provide their own user interfaces (or other appropriate mechanisms) for the selection of User Channels or Intent Resolution, or they may work with implementations injected into the application (for example, as described in the [Web Connection Protocol](./webConnectionProtocol#providing-channel-selector-and-intent-resolver-uis) and implemented in [`getAgent()`](../ref/GetAgent)).
+
+Where injected user interfaces are used, standardized messaging is needed to communicate with those interfaces. This is provided in the DACP via the following 'iframe' messages, which are governed by the [`iFrameMessage`](https://fdc3.finos.org/schemas/next/api/iFrameMessage.schema.json) schema. The following messages are provided:
+
+- [`iFrameHello`](https://fdc3.finos.org/schemas/next/api/iFrameHello.schema.json): Sent by the iframe to its `window.parent` frame to initiate communication and to provide initial CSS to apply to the frame. This message should have a `MessagePort` appended over which further communication will be conducted.
+- [`iFrameHandshake`](https://fdc3.finos.org/schemas/next/api/iFrameHandshake.schema.json):  Response to the `iFrameHello` message sent by the application frame, which should be sent over the `MessagePort`. Includes details of the FDC3 version that the application is using.
+- [`iFrameDrag`](https://fdc3.finos.org/schemas/next/api/iFrameDrag.schema.json): Message sent by the iframe to indicate that it is being dragged to a new position and including offsets to indicate direction and distance.
+- [`iFrameRestyle`](https://fdc3.finos.org/schemas/next/api/iFrameRestyle.schema.json): Message sent by the iframe to indicate that its frame should have updated CSS applied to it, for example to support a channel selector interface that can be 'popped open' or an intent resolver that wishes to resize itself to show additional content.
+
+Messages are also provided that are specific to each interface type provided by a Desktop Agent. The following messages are specific to Channel Selector user interfaces:
+
+- [`iFrameChannels`](https://fdc3.finos.org/schemas/next/api/iFrameChannels.schema.json): Sent by the parent frame to initialize a Channel Selector user interface by providing metadata for the Desktop Agent's user channels and details of any channel that is already selected. This message will typically be sent by a `getAgent()` implementation immediately after the `iFrameHandshake` and before making the injected iframe visible.
+- [`iFrameChannelSelected`](https://fdc3.finos.org/schemas/next/api/iFrameChannelSelected.schema.json): Sent by the Channel Selector to indicate that a channel has been selected or deselected.
+
+Messages specific to Intent Resolver user interfaces:
+
+- [`iFrameResolve`](https://fdc3.finos.org/schemas/next/api/iFrameResolve.schema.json): Sent by the parent frame to initialize a Intent Resolver user interface to resolve a raised intent, before making it visible. The message includes the context object sent with the intent and an array of one or more [`AppIntent`](../ref/Metadata#appintent) objects representing the resolution options for the intent ([`raiseIntent`](../ref/DesktopAgent#raiseintent)) or context ([`raiseIntentForContext`](../ref/DesktopAgent#raiseintentforcontext)) that was raised.
+- [`iFrameResolveAction`](https://fdc3.finos.org/schemas/next/api/iFrameResolveAction.schema.json): Sent by the Intent Resolver to indicate actions taken by the user in the interface, including hovering over an option, clicking a cancel button, or selecting a resolution option. The Intent Resolver should be hidden by the `getAgent()` implementaiton after a resolution option is selected.
