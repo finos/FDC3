@@ -1,5 +1,5 @@
 import { DataTable, Given, Then, When } from '@cucumber/cucumber'
-import { Context } from '@kite9/fdc3';
+import { Context } from '@kite9/fdc3-context';
 import { handleResolve, matchData } from '@kite9/testing';
 import { CustomWorld } from '../world/index';
 import { BrowserTypes } from '@kite9/fdc3-schema';

@@ -5,10 +5,24 @@ Feature: Intent Results Are Correctly Delivered
     And "libraryApp" is an app with the following intents
       | Intent Name | Context Type | Result Type |
       | returnBook  | fdc3.book    | {empty}     |
+    And "App1/a1" is an app with the following intents
+      | Intent Name | Context Type    | Result Type |
+      | viewNews    | fdc3.instrument | {empty}     |
     And A newly instantiated FDC3 Server
     And "LibraryApp/l1" is opened with connection id "l1"
     And "App1/a1" is opened with connection id "a1"
     And "LibraryApp/l1" registers an intent listener for "returnBook"
+
+  Scenario: Waiting for an intent listener to be Added
+    When "LibraryApp/l1" raises an intent for "viewNews" with contextType "fdc3.instrument" on app "App1/a1" with requestUuid "ABC123"
+    And "App1/a1" registers an intent listener for "viewNews"
+    And "App1/a1" sends a intentResultRequest with eventUuid "uuid10" and void contents and raiseIntentUuid "ABC123"
+    Then messaging will have outgoing posts
+      | msg.type                  | msg.meta.eventUuid | to.appId   | to.instanceId | msg.payload.raiseIntentRequestUuid | msg.payload.intentResolution.source.instanceId | msg.payload.intentResult.context.type |
+      | intentEvent               | uuid10             | App1       | a1            | ABC123                             | {null}                                         | {null}                                |
+      | raiseIntentResponse       | {null}             | LibraryApp | l1            | {null}                             | a1                                             | {null}                                |
+      | raiseIntentResultResponse | {null}             | LibraryApp | l1            | {null}                             | {null}                                         | {null}                                |
+      | intentResultResponse      | {null}             | App1       | a1            | {null}                             | {null}                                         | {null}                                |
 
   Scenario: App Returns An Intent Response
 ISSUE: 1303 prevents the use of matches_type
