@@ -11,8 +11,7 @@ enum State { Pending, Connected }
 type AppRegistration = AppIdentifier & {
     window: Window,
     url: string,
-    state: State,
-    lastHeartbeat: number
+    state: State
 }
 
 
@@ -61,6 +60,13 @@ export class DemoServerContext implements ServerContext<AppRegistration> {
             theApp.state = State.Connected
         } else {
             throw new Error("No app found with id " + app.instanceId)
+        }
+    }
+
+    async setAppDisconnected(app: AppIdentifier): Promise<void> {
+        const idx = this.connections.findIndex(i => i.instanceId == app.instanceId)
+        if (idx != -1) {
+            this.connections.splice(idx, 1)
         }
     }
 
