@@ -26,6 +26,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
         this.cw = cw
     }
 
+
     async narrowIntents(appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
         return appIntents
     }
@@ -59,6 +60,13 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
 
     async setAppConnected(app: AppIdentifier): Promise<void> {
         this.instances.find(ca => (ca.instanceId == app.instanceId))!!.connected = true
+    }
+
+    async setAppDisconnected(app: AppIdentifier): Promise<void> {
+        const idx = this.instances.findIndex(ca => (ca.instanceId == app.instanceId))
+        if (idx != -1) {
+            this.instances.splice(idx, 1)
+        }
     }
 
     async getConnectedApps(): Promise<AppIdentifier[]> {

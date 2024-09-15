@@ -1,4 +1,4 @@
-import { Given } from '@cucumber/cucumber'
+import { Given, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { TestServerContext } from '../support/TestServerContext';
 import { DefaultFDC3Server } from '../../src/BasicFDC3Server';
@@ -45,25 +45,8 @@ export const contextMap: Record<string, any> = {
     }
 }
 
-
-export function createMeta(cw: CustomWorld, appStr: string) {
-    const [appId, instanceId] = appStr.split("/")
-    const app = { appId, instanceId }
-
-    return {
-        "requestUuid": cw.sc.createUUID(),
-        "timestamp": new Date(),
-        "source": app
-    }
-}
-
-Given('A newly instantiated FDC3 Server', function (this: CustomWorld) {
-    const apps = this.props[APP_FIELD] ?? []
-    const d = new BasicDirectory(apps)
-
-
-    this.sc = new TestServerContext(this)
-    this.server = new DefaultFDC3Server(this.sc, d, [
+function defaultChannels() {
+    return [
         {
             id: 'one',
             type: ChannelType.user,
@@ -91,6 +74,38 @@ Given('A newly instantiated FDC3 Server', function (this: CustomWorld) {
                 color: 'ochre'
             }
         }
-    ], 2000, 2000)
+    ]
+}
 
+export function createMeta(cw: CustomWorld, appStr: string) {
+    const [appId, instanceId] = appStr.split("/")
+    const app = { appId, instanceId }
+
+    return {
+        "requestUuid": cw.sc.createUUID(),
+        "timestamp": new Date(),
+        "source": app
+    }
+}
+
+Given('A newly instantiated FDC3 Server', function (this: CustomWorld) {
+    const apps = this.props[APP_FIELD] ?? []
+    const d = new BasicDirectory(apps)
+
+
+    this.sc = new TestServerContext(this)
+    this.server = new DefaultFDC3Server(this.sc, d, defaultChannels(), false, 2000, 2000)
 });
+
+Given('A newly instantiated FDC3 Server with heartbeat checking', function (this: CustomWorld) {
+    const apps = this.props[APP_FIELD] ?? []
+    const d = new BasicDirectory(apps)
+
+
+    this.sc = new TestServerContext(this)
+    this.server = new DefaultFDC3Server(this.sc, d, defaultChannels(), true, 2000, 2000)
+});
+
+When("I shutdown the server", function (this: CustomWorld) {
+    this.server.shutdown()
+})

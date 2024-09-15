@@ -12,7 +12,7 @@ const init = async () => {
         await fdc3.joinUserChannel(channels[0].id)
     }
 
-    const stx: any = window.stxx;
+    const stx: any = (window as any).stxx;
 
     // If the user changes the symbol, broadcast the new symbol
     stx.callbacks.symbolChange = () => {
@@ -26,12 +26,12 @@ const init = async () => {
 
     // Listen for changes to fdc3.instrument, and update the symbol
     fdc3.addContextListener("fdc3.instrument", (context) => {
-        stx.newChart(context.id.ticker);
+        stx.newChart(context.id?.ticker);
     });
 
     // Listen for ViewChart events
     fdc3.addIntentListener("ViewChart", (context) => {
-        stx.newChart(context.id.ticker);
+        stx.newChart(context.id?.ticker);
     })
 };
 

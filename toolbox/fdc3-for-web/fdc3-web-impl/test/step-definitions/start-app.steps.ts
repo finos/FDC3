@@ -33,7 +33,9 @@ When('{string} sends validate', function (this: CustomWorld, uuid: string) {
       timestamp: new Date()
     },
     payload: {
-    } as any /* ISSUE: 1301 */
+      actualUrl: "something",
+      identityUrl: "something"
+    }
   }
   this.sc.setAppConnected(identity!!)
   this.server.receive(message, uuid)

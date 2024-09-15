@@ -11,7 +11,8 @@ enum State { Pending, Connected }
 type AppRegistration = AppIdentifier & {
     window: Window,
     url: string,
-    state: State
+    state: State,
+    lastHeartbeat: number
 }
 
 
@@ -132,7 +133,8 @@ export class DemoServerContext implements ServerContext<AppRegistration> {
                 instanceId,
                 window,
                 url,
-                state: State.Pending
+                state: State.Pending,
+                lastHeartbeat: Date.now()
             }
 
             this.setInstanceDetails(instanceId, metadata)

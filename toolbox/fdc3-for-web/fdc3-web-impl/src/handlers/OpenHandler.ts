@@ -83,6 +83,9 @@ export class OpenHandler implements MessageHandler {
         this.timeoutMs = timeoutMs
     }
 
+    shutdown(): void {
+    }
+
     async accept(msg: any, sc: ServerContext<any>, uuid: InstanceID): Promise<void> {
         switch (msg.type as string) {
             case 'addContextListenerRequest': return this.handleAddContextListener(msg as AddContextListenerRequest, sc, uuid)
