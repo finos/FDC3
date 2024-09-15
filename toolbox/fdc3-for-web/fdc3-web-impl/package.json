@@ -1,6 +1,6 @@
 {
   "name": "@kite9/fdc3-web-impl",
-  "version": "2.2.0-beta.19",
+  "version": "2.2.0-beta.20",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -23,7 +23,7 @@
     "build": "npm run directory-openapi && tsc --module es2022"
   },
   "dependencies": {
-    "@kite9/fdc3-standard": "2.2.0-beta.19",
+    "@kite9/fdc3-standard": "2.2.0-beta.20",
     "@types/uuid": "^10.0.0",
     "uuid": "^9.0.1"
   },
@@ -32,7 +32,7 @@
     "@cucumber/html-formatter": "11.0.4",
     "@cucumber/pretty-formatter": "1.0.1",
     "@kite9/fdc3-common": "2.2.0-beta.6",
-    "@kite9/testing": "2.2.0-beta.19",
+    "@kite9/testing": "2.2.0-beta.20",
     "@types/expect": "24.3.0",
     "@types/lodash": "4.14.167",
     "@types/node": "^20.14.11",

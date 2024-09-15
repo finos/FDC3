@@ -50,7 +50,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
         return this.instances.find(ca => ca.url === url)
     }
 
-    async disconnectApp(app: AppIdentifier): Promise<void> {
+    async setAppDisconnected(app: AppIdentifier): Promise<void> {
         this.instances = this.instances.filter(ca => ca.instanceId !== app.instanceId)
     }
 

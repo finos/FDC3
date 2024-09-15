@@ -10,7 +10,7 @@ type IframeResolve = BrowserTypes.IframeResolve
 /**
  * Works with the desktop agent to provide a resolution to the intent choices.
  * This is the default implementation, but can be overridden by app implementers calling 
- * the getAgentApi() method
+ * the getAgent() method
  */
 export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent implements IntentResolver {
 

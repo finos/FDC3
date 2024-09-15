@@ -2,8 +2,6 @@ import { DesktopAgent } from "@kite9/fdc3-standard";
 import { GetAgentParams } from "@kite9/fdc3-standard";
 import { Loader } from "./Loader";
 
-
-
 /**
  * This approach will resolve the loader promise if the fdc3Ready event occurs.
  * This is done by electron implementations setting window.fdc3.
