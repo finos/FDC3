@@ -92,6 +92,7 @@ class PendingIntent {
         }, ih.timeoutMs)
     }
 
+
     async accept(arg0: ListenerRegistration): Promise<void> {
         if ((arg0.appId == this.expectingAppId) && (arg0.intentName == this.r.intent)) {
             this.complete = true
@@ -112,6 +113,9 @@ export class IntentHandler implements MessageHandler {
     constructor(d: Directory, timeoutMs: number) {
         this.directory = d
         this.timeoutMs = timeoutMs
+    }
+
+    shutdown(): void {
     }
 
     async narrowIntents(appIntents: AppIntent[], context: Context, sc: ServerContext<any>): Promise<AppIntent[]> {

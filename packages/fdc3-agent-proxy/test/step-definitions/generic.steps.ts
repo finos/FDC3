@@ -1,9 +1,11 @@
 import { TestMessaging } from '../support/TestMessaging';
-import { Given } from '@cucumber/cucumber'
+import { Given, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world/index';
 import { BasicDesktopAgent, DefaultAppSupport, DefaultChannelSupport, DefaultIntentSupport, DefaultHandshakeSupport } from '../../src';
 import { SimpleIntentResolver, setupGenericSteps } from '@kite9/testing';
 import { CHANNEL_STATE, SimpleChannelSelector } from '@kite9/testing/dist/src/agent';
+import { BrowserTypes } from '@kite9/fdc3-schema';
+
 
 Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
 
@@ -21,6 +23,18 @@ Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: s
 
     this.props[field] = da
     this.props['result'] = null
+})
+
+When('messaging receives a heartbeat event', function (this: CustomWorld) {
+
+    this.messaging?.receive({
+        type: 'heartbeatEvent',
+        meta: this.messaging.createEventMeta(),
+        payload: {
+            timestamp: new Date()
+        }
+    } as BrowserTypes.HeartbeatEvent)
+
 })
 
 setupGenericSteps()

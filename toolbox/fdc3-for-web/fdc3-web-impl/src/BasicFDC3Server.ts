@@ -5,6 +5,7 @@ import { IntentHandler } from "./handlers/IntentHandler";
 import { Directory } from "./directory/DirectoryInterface";
 import { OpenHandler } from "./handlers/OpenHandler";
 import { BrowserTypes } from "@kite9/fdc3-schema";
+import { HeartbeatHandler } from "./handlers/HeartbeatHandler";
 
 type AppRequestMessage = BrowserTypes.AppRequestMessage
 type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity
@@ -15,6 +16,8 @@ export interface MessageHandler {
      * Handles an AgentRequestMessage from the messaging source
      */
     accept(msg: any, sc: ServerContext<any>, from: InstanceID): void
+
+    shutdown(): void
 }
 
 /**
@@ -34,15 +37,25 @@ export class BasicFDC3Server implements FDC3Server {
         // this.sc.log(`MessageReceived: \n ${JSON.stringify(message, null, 2)}`)
         this.handlers.forEach(h => h.accept(message, this.sc, from))
     }
+
+    shutdown(): void {
+        this.handlers.forEach(h => h.shutdown())
+    }
 }
 
 export class DefaultFDC3Server extends BasicFDC3Server {
 
-    constructor(sc: ServerContext<any>, directory: Directory, userChannels: ChannelState[], intentTimeoutMs: number = 20000, openHandlerTimeoutMs: number = 3000) {
-        super([
+    constructor(sc: ServerContext<any>, directory: Directory, userChannels: ChannelState[], heartbeats: boolean, intentTimeoutMs: number = 20000, openHandlerTimeoutMs: number = 3000) {
+        const handlers: MessageHandler[] = [
             new BroadcastHandler(userChannels),
             new IntentHandler(directory, intentTimeoutMs),
-            new OpenHandler(directory, openHandlerTimeoutMs)
-        ], sc)
+            new OpenHandler(directory, openHandlerTimeoutMs),
+        ]
+
+        if (heartbeats) {
+            handlers.push(new HeartbeatHandler(openHandlerTimeoutMs / 4, openHandlerTimeoutMs / 2, openHandlerTimeoutMs))
+        }
+
+        super(handlers, sc)
     }
 }
