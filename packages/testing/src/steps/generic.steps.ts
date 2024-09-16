@@ -90,6 +90,13 @@ export function setupGenericSteps() {
         expect(handleResolve(field, this)).toBeDefined()
     })
 
+    Then('{string} is true', function (this: PropsWorld, field: string) {
+        expect(handleResolve(field, this)).toBeTruthy()
+    })
+
+    Then('{string} is false', function (this: PropsWorld, field: string) {
+        expect(handleResolve(field, this)).toBeFalsy()
+    })
 
     Then('{string} is undefined', function (this: PropsWorld, field: string) {
         expect(handleResolve(field, this)).toBeUndefined()
@@ -135,12 +142,14 @@ export function setupGenericSteps() {
         const ajv = new Ajv2019();
         ajv.addMetaSchema(draft7MetaSchema)
         addFormats(ajv);
-        //const schemaDir = '../../../schemas/api'
 
         const f2 = fs
         const p = path
 
-        const abspath = p.join(process.cwd(), '../fdc3-core/schemas/api')
+        const schemaDir = p.join(__dirname, '../../../../fdc3-schema/schemas')
+        const contextDir = p.join(__dirname, '../../../../fdc3-context/schemas')
+
+        const abspath = p.join(schemaDir, 'api')
 
         try {
             f2.readdirSync(abspath).forEach(file => {
@@ -156,7 +165,8 @@ export function setupGenericSteps() {
             console.log(error)
         }
 
-        const contents = fs.readFileSync('../fdc3-core/schemas/context/context.schema.json', 'utf8')
+        const contextPath = p.join(contextDir, 'context/context.schema.json')
+        const contents = fs.readFileSync(contextPath, 'utf8')
         const schema = JSON.parse(contents);
         ajv.addSchema(schema);
 

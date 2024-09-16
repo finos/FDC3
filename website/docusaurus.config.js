@@ -37,8 +37,9 @@ module.exports={
         "theme": {
           "customCss": "./src/css/customTheme.css"
         },
-        "googleAnalytics": {
-          "trackingID": "UA-89349362-8"
+        "gtag": {
+          "trackingID": "G-EY9BQJ55YQ",
+          "anonymizeIP": true,
         }
       }
     ]
@@ -208,6 +209,27 @@ module.exports={
         "alt": "FINOS Logo",
         "width": 50,
         "href": "https://finos.org"
+      }
+    },
+    "mermaid": {
+      "options": {
+        "htmlLabels": true,
+        "markdownAutoWrap": true,
+        "wrap": true,
+          "wrappingWidth": 50,
+        "flowchart": {
+          "titleTopMargin": 30,
+          "subGraphTitleMargin":  {
+            "top": 30,
+            "bottom": 30
+          },
+          "nodeSpacing": 30,
+          "rankSpacing": 50,
+          "diagramPadding": 5,
+          "useMaxWidth": true,
+          "htmlLabels": true,
+          "wrappingWidth": 50
+        }
       }
     }
   }

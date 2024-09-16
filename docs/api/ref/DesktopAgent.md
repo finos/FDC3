@@ -48,7 +48,7 @@ interface DesktopAgent {
   leaveCurrentChannel() : Promise<void>;
 
   // non-context events 
-  addEventListener(type: FDC3EventType  | null, handler: EventHandler): Promise<Listener>;
+  addEventListener(type: FDC3EventTypes  | null, handler: EventHandler): Promise<Listener>;
 
   //implementation info
   getInfo(): Promise<ImplementationMetadata>;
@@ -183,7 +183,7 @@ var contactListener = await _desktopAgent.AddContextListener<Contact>("fdc3.cont
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-addEventListener(type: FDC3EventType  | null, handler: EventHandler): Promise<Listener>;
+addEventListener(type: FDC3EventTypes  | null, handler: EventHandler): Promise<Listener>;
 ```
 
 </TabItem>
@@ -210,12 +210,11 @@ Whenever the handler function is called it will be passed an event object with d
 const listener = await fdc3.addEventListener(null, event => { ... });
 
 // listener for a specific event type that logs its details
-const userChannelChangedListener = await fdc3.addEventListener(FDC3EventType.USER_CHANNEL_CHANGED, event => { 
+const userChannelChangedListener = await fdc3.addEventListener("userChannelChanged ", event => { 
   console.log(`Received event ${event.type}\n\tDetails: ${event.details}`);
   //do something else with the event
 });
 ```
-
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
@@ -225,6 +224,12 @@ Not implemented
 
 </TabItem>
 </Tabs>
+
+**See also:**
+
+- [`FDC3EventTypes`](./Events#fdc3eventtypes)
+- [`FDC3Event`](./Events#fdc3event)
+- [`EventHandler`](./Events#eventhandler)
 
 ### `addIntentListener`
 
