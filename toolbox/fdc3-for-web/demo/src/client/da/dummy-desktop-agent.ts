@@ -55,8 +55,8 @@ window.addEventListener("load", () => {
         socket.emit(DA_HELLO, desktopAgentUUID)
 
         const directory = new FDC3_2_1_JSONDirectory()
-        //await directory.load("/static/da/appd.json")
-        await directory.load("/static/da/local-conformance-2_0.v2.json")
+        await directory.load("/static/da/appd.json")
+        //await directory.load("/static/da/local-conformance-2_0.v2.json")
         const sc = new DemoServerContext(socket, directory)
 
         const channelDetails: ChannelState[] = [
@@ -64,7 +64,7 @@ window.addEventListener("load", () => {
             { id: "two", type: ChannelType.user, context: [], displayMetadata: { name: "THE BLUE CHANNEL", color: "blue" } },
             { id: "three", type: ChannelType.user, context: [], displayMetadata: { name: "THE GREEN CHANNEL", color: "green" } }
         ]
-        const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails)
+        const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, true)
 
         socket.on(FDC3_APP_EVENT, (msg, from) => {
             fdc3Server.receive(msg, from)
@@ -127,26 +127,6 @@ window.addEventListener("load", () => {
                 }
             });
     })
-
-
-
-    // const channelSelector: ChannelSelectorDetails | null = (getUi() == UI.DEMO) ? {
-    //     uri: window.location.origin + "/static/da/channel-selector.html",
-    //     collapsedCss: {
-    //         width: "45px",
-    //         height: "45px",
-    //         right: "20px",
-    //         bottom: "20px",
-    //         position: "fixed"
-    //     },
-    //     expandedCss: {
-    //         width: "300px",
-    //         height: "300px",
-    //         right: "20px",
-    //         bottom: "20px",
-    //         position: "fixed"
-    //     }
-    // } : null
 
 
 

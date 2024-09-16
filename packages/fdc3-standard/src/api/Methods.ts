@@ -17,7 +17,7 @@ import {
   StandardContextType,
   StandardIntent,
   ContextType,
-  FDC3EventType,
+  FDC3EventTypes,
   EventHandler,
 } from '..';
 import { StandardContextsSet } from '../internal/contextConfiguration';
@@ -87,7 +87,7 @@ export function addContextListener(
   }
 }
 
-export function addEventListener(eventType: FDC3EventType, handler: EventHandler): Promise<Listener> {
+export function addEventListener(eventType: FDC3EventTypes, handler: EventHandler): Promise<Listener> {
   return rejectIfNoGlobal(() => window.fdc3.addEventListener(eventType, handler));
 }
 

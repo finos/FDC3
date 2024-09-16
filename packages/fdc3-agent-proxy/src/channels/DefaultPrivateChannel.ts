@@ -1,4 +1,4 @@
-import { ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3-standard";
+import { ContextHandler, EventHandler, Listener, PrivateChannel, PrivateChannelEventTypes } from "@kite9/fdc3-standard";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 import { DefaultChannel } from "./DefaultChannel";
 import { Messaging } from "../Messaging";
@@ -12,6 +12,10 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
 
     constructor(messaging: Messaging, id: string) {
         super(messaging, id, "private")
+    }
+
+    addEventListener(_type: PrivateChannelEventTypes | null, _handler: EventHandler): Promise<Listener> {
+        throw new Error("Method not implemented.");
     }
 
     onAddContextListener(handler: (contextType?: string | undefined) => void): Listener {

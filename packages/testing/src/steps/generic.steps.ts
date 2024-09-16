@@ -90,6 +90,13 @@ export function setupGenericSteps() {
         expect(handleResolve(field, this)).toBeDefined()
     })
 
+    Then('{string} is true', function (this: PropsWorld, field: string) {
+        expect(handleResolve(field, this)).toBeTruthy()
+    })
+
+    Then('{string} is false', function (this: PropsWorld, field: string) {
+        expect(handleResolve(field, this)).toBeFalsy()
+    })
 
     Then('{string} is undefined', function (this: PropsWorld, field: string) {
         expect(handleResolve(field, this)).toBeUndefined()

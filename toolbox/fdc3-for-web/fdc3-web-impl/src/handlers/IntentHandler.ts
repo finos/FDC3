@@ -92,6 +92,7 @@ class PendingIntent {
         }, ih.timeoutMs)
     }
 
+
     async accept(arg0: ListenerRegistration): Promise<void> {
         if ((arg0.appId == this.expectingAppId) && (arg0.intentName == this.r.intent)) {
             this.complete = true
@@ -112,6 +113,9 @@ export class IntentHandler implements MessageHandler {
     constructor(d: Directory, timeoutMs: number) {
         this.directory = d
         this.timeoutMs = timeoutMs
+    }
+
+    shutdown(): void {
     }
 
     async narrowIntents(appIntents: AppIntent[], context: Context, sc: ServerContext<any>): Promise<AppIntent[]> {
@@ -240,17 +244,13 @@ export class IntentHandler implements MessageHandler {
         const requestsWithListeners = arg0.filter(r => this.hasListener(target.instanceId!!, r.intent))
 
         if (requestsWithListeners.length == 0) {
-            // intent not handled (no listener registered)
-            return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.NoAppsFound, arg0[0].type)
-        }
-
-        if (requestsWithListeners.length == 1) {
+            // maybe listener hasn't been registered yet - create a pending intent
+            const pi = new PendingIntent(arg0[0], sc, this, target?.appId!!)
+            this.pendingIntents.add(pi)
+        } else {
             // ok, deliver to the current running app.
             return forwardRequest(requestsWithListeners[0], target, sc, this)
         }
-
-        // in this case, we are raisingIntentForContext, and there are multiple listeners on this instance 
-        return successResponseId(sc, arg0[0].requestUuid, arg0[0].from, { appIntents: this.createAppIntents(requestsWithListeners, [target]) }, arg0[0].type)
     }
 
     async raiseIntentRequestToSpecificAppId(arg0: IntentRequest[], sc: ServerContext<any>, target: AppIdentifier): Promise<void> {

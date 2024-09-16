@@ -60,6 +60,9 @@ export class BroadcastHandler implements MessageHandler {
         this.state = initialChannelState
     }
 
+    shutdown(): void {
+    }
+
     getCurrentChannel(from: AppIdentifier): ChannelState | null {
         return this.currentChannel[from.instanceId!!]
     }

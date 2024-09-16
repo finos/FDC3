@@ -2,12 +2,13 @@ import { After, DataTable, Given, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { handleResolve, setupGenericSteps } from '@kite9/testing';
 import { MockDocument, MockWindow } from '../support/MockDocument';
-import { getAgent } from '../../src';
+import { fdc3Ready, getAgent } from '../../src';
 import { DesktopAgentDetails, GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-standard';
 import { dummyInstanceId, EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
 import { MockStorage } from '../support/MockStorage';
-import { DesktopAgent, ImplementationMetadata } from '@kite9/fdc3';
+import { DesktopAgent, ImplementationMetadata } from '@kite9/fdc3-standard';
 import { DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY } from '../../src/messaging/AbstractWebMessaging';
+import { clearAgentPromise } from '../../src/strategies/getAgent';
 var wtf = require('wtfnode')
 
 setupGenericSteps()
@@ -67,7 +68,7 @@ Given('`window.fdc3` is injected into the runtime with the value in {string}', a
     window.dispatchEvent(new Event('fdc3.ready'))
 });
 
-When('I call getAgentAPI for a promise result', function (this: CustomWorld) {
+When('I call getAgent for a promise result', function (this: CustomWorld) {
     try {
         this.props['result'] = getAgent()
     } catch (error) {
@@ -75,15 +76,25 @@ When('I call getAgentAPI for a promise result', function (this: CustomWorld) {
     }
 })
 
+When('I call fdc3Ready for a promise result', function (this: CustomWorld) {
+    try {
+        this.props['result'] = fdc3Ready()
+    } catch (error) {
+        this.props['result'] = error
+    }
+})
+
 After(function (this: CustomWorld) {
     console.log("Cleaning up")
+    clearAgentPromise()
     setTimeout(() => {
         //console.log((process as any)._getActiveHandles())
         wtf.dump()
     }, 10000)
+
 })
 
-When('I call getAgentAPI for a promise result with the following options', function (this: CustomWorld, dt: DataTable) {
+When('I call getAgent for a promise result with the following options', function (this: CustomWorld, dt: DataTable) {
     try {
         const first = dt.hashes()[0]
         const toArgs = Object.fromEntries(Object.entries(first)

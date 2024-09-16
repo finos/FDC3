@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid"
 import { ConnectionDetails } from '../messaging/MessagePortMessaging';
 import { Loader } from './Loader';
 import { BrowserTypes } from "@kite9/fdc3-schema";
-import { FDC3_VERSION } from '..';
+import { FDC3_VERSION } from './getAgent';
 
 type WebConnectionProtocol1Hello = BrowserTypes.WebConnectionProtocol1Hello
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL
@@ -53,11 +53,23 @@ function sendWCP1Hello(w: MessageEventSource, options: GetAgentParams, connectio
  * The desktop agent requests that the client opens a URL in order to provide a message port.
  */
 function openFrame(url: string): Window {
+    const IFRAME_ID = "fdc3-communications-embedded-iframe"
+
+    // remove an old one if it's there
+    const existing = document.getElementById(IFRAME_ID)
+    if (existing) {
+        existing.remove()
+    }
+
+    // create a new one
     var ifrm = document.createElement("iframe")
     ifrm.setAttribute("src", url)
+    ifrm.setAttribute("id", IFRAME_ID)
     ifrm.setAttribute("name", "FDC3 Communications")
     ifrm.style.width = "0px"
     ifrm.style.height = "0px"
+    ifrm.style.border = "0"
+    ifrm.style.position = "fixed"
     document.body.appendChild(ifrm)
     return ifrm.contentWindow!!
 }

@@ -4,7 +4,6 @@ import { DirectoryApp } from "../../src/directory/DirectoryInterface";
 import { APP_FIELD, contextMap, createMeta } from "./generic.steps";
 import { handleResolve } from "@kite9/testing";
 import { BrowserTypes } from '@kite9/fdc3-schema';
-import { v4 as uuid } from 'uuid'
 
 type FindIntentRequest = BrowserTypes.FindIntentRequest
 type FindIntentsByContextRequest = BrowserTypes.FindIntentsByContextRequest
@@ -221,8 +220,7 @@ When('{string} sends a intentResultRequest with eventUuid {string} and contextTy
     const message: IntentResultRequest = {
         type: 'intentResultRequest',
         meta: {
-            requestUuid: uuid(),
-            timestamp: new Date()
+            ...meta
         },
         payload: {
             intentResult: {
@@ -236,34 +234,32 @@ When('{string} sends a intentResultRequest with eventUuid {string} and contextTy
 })
 
 
-When('{string} sends a intentResultRequest with eventUuid {string} and void contents', function (this: CustomWorld, appStr: string, requestUuid: string) {
+When('{string} sends a intentResultRequest with eventUuid {string} and void contents and raiseIntentUuid {string}', function (this: CustomWorld, appStr: string, eventUuid: string, raiseIntentUuid: string) {
     const meta = createMeta(this, appStr)
     const uuid = this.sc.getInstanceUUID(meta.source)!!
     const message: IntentResultRequest = {
         type: 'intentResultRequest',
         meta: {
-            requestUuid: meta.requestUuid,
-            timestamp: new Date()
+            ...meta
         },
         payload: {
             intentResult: {
             },
-            intentEventUuid: 'event-uuid-1',
-            raiseIntentRequestUuid: requestUuid
+            intentEventUuid: eventUuid,
+            raiseIntentRequestUuid: raiseIntentUuid
         }
     }
     this.server.receive(message, uuid)
 })
 
-When('{string} sends a intentResultRequest with eventUuid {string} and private channel {string}', function (this: CustomWorld, appStr: string, requestUuid: string, channelId: string) {
+When('{string} sends a intentResultRequest with eventUuid {string} and private channel {string} and raiseIntentUuid {string}', function (this: CustomWorld, appStr: string, eventUuid: string, channelId: string, raiseIntentUuid: string) {
     const meta = createMeta(this, appStr)
     const uuid = this.sc.getInstanceUUID(meta.source)!!
 
     const message: IntentResultRequest = {
         type: 'intentResultRequest',
         meta: {
-            requestUuid: meta.requestUuid,
-            timestamp: new Date()
+            ...meta
         },
         payload: {
             intentResult: {
@@ -272,34 +268,34 @@ When('{string} sends a intentResultRequest with eventUuid {string} and private c
                     id: channelId
                 }
             },
-            intentEventUuid: 'event-uuid-1',
-            raiseIntentRequestUuid: requestUuid
+            intentEventUuid: eventUuid,
+            raiseIntentRequestUuid: raiseIntentUuid
         }
     }
     this.server.receive(message, uuid)
 })
 
-When('{string} sends a intentResultRequest with eventUuid {string}', function (this: CustomWorld, appStr: string, requestUuid: string) {
-    const meta = createMeta(this, appStr)
-    const uuid = this.sc.getInstanceUUID(meta.source)!!
-    const message = {
-        type: 'intentResultRequest',
-        meta: {
-            requestUuid: meta.requestUuid,
-            responseUuid: this.sc.createUUID(),
-            timestamp: new Date()
-        },
-        payload: {
-            intentResult: {
-                context: {
-                    "type": "fdc3.something",
-                    "name": "Some Name"
-                }
-            },
-            intentEventUuid: 'event-uuid-1',
-            raiseIntentRequestUuid: requestUuid
-        }
-    } as IntentResultRequest
+// When('{string} sends a intentResultRequest with eventUuid {string}', function (this: CustomWorld, appStr: string, requestUuid: string) {
+//     const meta = createMeta(this, appStr)
+//     const uuid = this.sc.getInstanceUUID(meta.source)!!
+//     const message = {
+//         type: 'intentResultRequest',
+//         meta: {
+//             requestUuid: meta.requestUuid,
+//             responseUuid: this.sc.createUUID(),
+//             timestamp: new Date()
+//         },
+//         payload: {
+//             intentResult: {
+//                 context: {
+//                     "type": "fdc3.something",
+//                     "name": "Some Name"
+//                 }
+//             },
+//             intentEventUuid: 'event-uuid-1',
+//             raiseIntentRequestUuid: requestUuid
+//         }
+//     } as IntentResultRequest
 
-    this.server.receive(message, uuid)
-});
+//     this.server.receive(message, uuid)
+// });

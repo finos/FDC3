@@ -43,6 +43,8 @@ export class MockElement {
         this.children.splice(this.children.indexOf(child), 1)
     }
 
+    remove() {
+    }
 }
 
 
@@ -173,6 +175,10 @@ export class MockDocument {
         } else {
             return new MockElement(tag) as any
         }
+    }
+
+    getElementById(_id: string): HTMLElement | null {
+        return new MockElement("div") as any
     }
 
     body = new MockElement("body")

@@ -10,7 +10,7 @@ type IframeChannelSelected = BrowserTypes.IframeChannelSelected
  * Works with the desktop agent to provide a simple channel selector.
  * 
  * This is the default implementation, but can be overridden by app implementers calling 
- * the getAgentApi() method
+ * the getAgent() method
  */
 export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent implements ChannelSelector {
 

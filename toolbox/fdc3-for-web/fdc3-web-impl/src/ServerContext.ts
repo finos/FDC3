@@ -53,6 +53,11 @@ export interface ServerContext<X extends AppIdentifier> {
     setAppConnected(app: AppIdentifier): Promise<void>
 
     /**
+     * Unregisters the app as connected to the desktop agent.
+     */
+    setAppDisconnected(app: AppIdentifier): Promise<void>
+
+    /**
      * Returns the list of apps open and connected to FDC3 at the current time.
      * Note, it is the implementor's job to ensure this list is
      * up-to-date in the event of app crashes or disconnections.
