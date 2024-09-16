@@ -58,7 +58,8 @@ window.addEventListener("load", () => {
             payload: {
               selected: channelStr || null
             }
-          })
+          });
+          collapse();
         });
         const selectedChannel = userChannels.find((c) => c.id === selected);
         logo.style.fill = selectedChannel?.displayMetadata?.color ?? "white";
@@ -77,10 +78,11 @@ window.addEventListener("load", () => {
       type: "iframeRestyle",
       payload: {
         updatedCSS: {
-          width: `200px`,
-          height: `400px`,
+          width: `266px`,
+          height: `113px`,
           right: "2px",
-          bottom: "2px"
+          bottom: "2px",
+          zIndex: "1000",
         }
       }
     });
@@ -95,7 +97,8 @@ window.addEventListener("load", () => {
           width: `${8*4}px`,
           height: `${8*5}px`,
           right: "2px",
-          bottom: "2px"
+          bottom: "2px",
+          zIndex: "1000",
         }
       }
     });
