@@ -1,6 +1,7 @@
 ---
 title: ChatRoom
 sidebar_label: ChatRoom
+
 ---
 
 # ChatRoom

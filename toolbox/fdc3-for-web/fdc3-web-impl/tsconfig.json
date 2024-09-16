@@ -1,0 +1,33 @@
+{
+    "extends": "../../../tsconfig.root.json",
+    "compilerOptions": {
+        "rootDirs": [
+            "src",
+            "test",
+            "generated"
+        ],
+        "outDir": "dist",
+    },
+    "include": [
+        "src",
+        "generated",
+    ],
+    "exclude": [
+        "test/**",
+        "dist/**"
+    ],
+    "references": [
+        {
+            "path": "../../../packages/fdc3-standard"
+        },
+        {
+            "path": "../../../packages/testing"
+        },
+        {
+            "path": "../../../packages/fdc3-schema"
+        },
+        {
+            "path": "../../../packages/fdc3-context"
+        },
+    ]
+}
