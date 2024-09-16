@@ -31,16 +31,15 @@
 			"title": "heartbeatAcknowledgement Request Payload",
 			"type": "object",
 			"properties": {
-				"timestamp": {
-					"title": "Timestamp",
-					"description": "The timestamp of the heartbeatEvent that is being acknowledged.",
+				"heartbeatEventUuid": {
+					"title": "Heartbeat Event Uuid",
 					"type": "string",
-            		"format": "date-time"
+					"description": "The eventUuid value of the HeartbeatEvent that the acknowledgement being sent relates to."
 				}
 			},
 			"additionalProperties": false,
 			"required": [
-				"timestamp"
+				"heartbeatEventUuid"
 			]
 		}
 	}

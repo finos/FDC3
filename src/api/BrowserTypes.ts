@@ -1997,9 +1997,9 @@ export interface HeartbeatAcknowledgementRequest {
  */
 export interface HeartbeatAcknowledgementRequestPayload {
     /**
-     * The timestamp of the heartbeatEvent that is being acknowledged.
+     * The eventUuid value of the HeartbeatEvent that the acknowledgement being sent relates to.
      */
-    timestamp: Date;
+    heartbeatEventUuid: string;
 }
 
 /**
@@ -2034,10 +2034,6 @@ export interface HeartbeatEvent {
  * The message payload contains details of the event that the app is being notified about.
  */
 export interface HeartbeatEventPayload {
-    /**
-     * The time at which the heartbeat event was sent, which should be quoted in the response
-     */
-    timestamp: Date;
 }
 
 /**
@@ -5027,7 +5023,7 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("HeartbeatAcknowledgementRequestType") },
     ], false),
     "HeartbeatAcknowledgementRequestPayload": o([
-        { json: "timestamp", js: "timestamp", typ: Date },
+        { json: "heartbeatEventUuid", js: "heartbeatEventUuid", typ: "" },
     ], false),
     "HeartbeatEvent": o([
         { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
@@ -5035,7 +5031,6 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("HeartbeatEventType") },
     ], false),
     "HeartbeatEventPayload": o([
-        { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "IframeChannels": o([
         { json: "payload", js: "payload", typ: r("IframeChannelsPayload") },
