@@ -227,7 +227,7 @@ The hidden iframe url can be provided in two ways:
 
 ## Channel Selector and Intent Resolver User Interfaces
 
-Channel Selector and Intent Resolver user-interfaces are normally provided by Desktop Agents to applications. However, when running in a web browser a DA may not have the ability to present a channel selector in a window that has been opened with `window.open()` and it may be challenging to display a secondary window over the application when needed (due to pop-up blocking and user preferences).
+Channel Selector and Intent Resolver user-interfaces are normally provided by Desktop Agents to applications. However, when running in a web browser, a DA may not have the ability to present a channel selector in a window that has been opened with `window.open()`, and it may be challenging to display a secondary window over the application when needed (due to pop-up blocking and user preferences).
 
 The `getAgent()` implementation can facilitate the injection and management of iframes in an application window. An app may provide the optional `channelSelector` and `intentResolver` parameters to the `getAgent()` to indicate whether or not they need these interfaces. For example, the apps may not raise intents. Some apps may also resolve intents internally by leveraging the Desktop Agent's `findIntent` or `findIntentsForContext` API functions. In these situations, the apps won't need a DA-provided interface. Once an app calls `getAgent()`, the parameters that the app provides are forwarded onto the Desktop Agent in the `WCP1Hello` connection message.
 
