@@ -1,6 +1,7 @@
 import { ServerContext, InstanceID } from '@kite9/fdc3-web-impl'
 import { CustomWorld } from '../world'
-import { OpenError, AppIdentifier, AppIntent, Context } from '@kite9/fdc3'
+import { Context } from '@kite9/fdc3-context'
+import { OpenError, AppIdentifier, AppIntent } from '@kite9/fdc3-standard'
 
 type ConnectionDetails = AppIdentifier & {
     msg?: object
@@ -49,7 +50,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
         return this.instances.find(ca => ca.url === url)
     }
 
-    async disconnectApp(app: AppIdentifier): Promise<void> {
+    async setAppDisconnected(app: AppIdentifier): Promise<void> {
         this.instances = this.instances.filter(ca => ca.instanceId !== app.instanceId)
     }
 

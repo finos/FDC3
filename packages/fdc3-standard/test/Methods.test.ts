@@ -7,7 +7,6 @@ import {
   compareVersionNumbers,
   ContextHandler,
   DesktopAgent,
-  fdc3Ready,
   findIntent,
   findIntentsByContext,
   getCurrentChannel,
@@ -218,7 +217,7 @@ describe('test ES6 module', () => {
 
     test('addIntentListener should delegate to window.fdc3.addIntentListener', async () => {
       const intent = 'ViewChart';
-      const handler: ContextHandler = _ => {};
+      const handler: ContextHandler = _ => { };
 
       await addIntentListener(intent, handler);
 
@@ -228,8 +227,8 @@ describe('test ES6 module', () => {
 
     test('addContextListener should delegate to window.fdc3.addContextListener', async () => {
       const type = 'fdc3.instrument';
-      const handler1: ContextHandler = _ => {};
-      const handler2: ContextHandler = _ => {};
+      const handler1: ContextHandler = _ => { };
+      const handler2: ContextHandler = _ => { };
 
       await addContextListener(type, handler1);
       await addContextListener(handler2);
@@ -324,95 +323,7 @@ describe('test ES6 module', () => {
     });
   });
 
-  describe('fdc3Ready', () => {
-    let eventListeners: any;
 
-    beforeEach(() => {
-      jest.useFakeTimers({
-        legacyFakeTimers: true
-      });
-
-      eventListeners = {};
-
-      window.addEventListener = jest.fn((event, callback) => {
-        eventListeners[event] = callback;
-      });
-    });
-
-    afterEach(() => {
-      window.fdc3 = (undefined as unknown) as DesktopAgent;
-    });
-
-    afterAll(() => {
-      jest.useRealTimers();
-    })
-
-    test('resolves immediately if `window.fdc3` is already defined', async () => {
-      // set fdc3 object and call fdc3Ready
-      window.fdc3 = mock<DesktopAgent>();
-      const promise = fdc3Ready();
-
-      expect(setTimeout).not.toHaveBeenCalled();
-      expect(clearTimeout).not.toHaveBeenCalled();
-      expect(eventListeners).not.toHaveProperty('fdc3Ready');
-      await expect(promise).resolves.toBe(undefined);
-    });
-
-    test('waits for specified milliseconds', async () => {
-      const waitForMs = 1000;
-
-      const promise = fdc3Ready(waitForMs);
-
-      expect(setTimeout).toHaveBeenCalledTimes(1);
-      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), waitForMs);
-
-      jest.advanceTimersByTime(waitForMs);
-
-      await expect(promise).rejects.toEqual(TimeoutError);
-    });
-
-    test('waits for 5000 milliseconds by default', async () => {
-      const defaultWaitForMs = 5000;
-
-      const promise = fdc3Ready();
-
-      expect(setTimeout).toHaveBeenCalledTimes(1);
-      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), defaultWaitForMs);
-
-      jest.advanceTimersByTime(defaultWaitForMs);
-
-      await expect(promise).rejects.toEqual(TimeoutError);
-    });
-
-    test('`fdc3Ready` event cancels timeout and rejects if `window.fdc3` is not defined', () => {
-      const promise = fdc3Ready();
-
-      expect(setTimeout).toHaveBeenCalledTimes(1);
-      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 5000);
-      expect(eventListeners).toHaveProperty('fdc3Ready');
-
-      // trigger fdc3Ready event without setting fdc3 object
-      eventListeners['fdc3Ready']();
-
-      expect(clearTimeout).toHaveBeenCalledTimes(1);
-      return expect(promise).rejects.toEqual(UnexpectedError);
-    });
-
-    test('`fdc3Ready` event cancels timeout and resolves if `window.fdc3` is defined', async () => {
-      const promise = fdc3Ready();
-
-      expect(setTimeout).toHaveBeenCalledTimes(1);
-      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 5000);
-      expect(eventListeners).toHaveProperty('fdc3Ready');
-
-      // set fdc3 object and trigger fdc3 ready event
-      window.fdc3 = mock<DesktopAgent>();
-      eventListeners['fdc3Ready']();
-
-      expect(clearTimeout).toHaveBeenCalledTimes(1);
-      await expect(promise).resolves.toBe(undefined);
-    });
-  });
 });
 
 describe('test version comparison functions', () => {

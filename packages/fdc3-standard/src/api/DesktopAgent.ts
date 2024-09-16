@@ -15,7 +15,7 @@ import { AppIdentifier } from './AppIdentifier';
 import { AppMetadata } from './AppMetadata';
 import { Intent } from '../intents/Intents';
 import { ContextType } from '../context/ContextType';
-import { EventHandler, FDC3EventType } from './Events';
+import { EventHandler, FDC3EventTypes } from './Events';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -385,7 +385,7 @@ export interface DesktopAgent {
    * const listener = await fdc3.addEventListener(null, event => { ... });
    * 
    * // listener for a specific event type that logs its details
-   * const userChannelChangedListener = await fdc3.addEventListener(FDC3EventType.USER_CHANNEL_CHANGED, event => { 
+   * const userChannelChangedListener = await fdc3.addEventListener("userChannelChanged", event => { 
    * console.log(`Received event ${event.type}\n\tDetails: ${event.details}`);
    * //do something else with the event
    * });
@@ -395,7 +395,7 @@ export interface DesktopAgent {
    * @param {EventHandler} handler A function that events received will be passed to. 
    * 
    */
-  addEventListener(type: FDC3EventType | null, handler: EventHandler): Promise<Listener>;
+  addEventListener(type: FDC3EventTypes | null, handler: EventHandler): Promise<Listener>;
 
   /**
    * Retrieves a list of the User channels available for the app to join.

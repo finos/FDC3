@@ -63,6 +63,13 @@ export class DemoServerContext implements ServerContext<AppRegistration> {
         }
     }
 
+    async setAppDisconnected(app: AppIdentifier): Promise<void> {
+        const idx = this.connections.findIndex(i => i.instanceId == app.instanceId)
+        if (idx != -1) {
+            this.connections.splice(idx, 1)
+        }
+    }
+
     getOpener(): Opener {
         const cb = document.getElementById("opener") as HTMLInputElement;
         const val = cb.value
@@ -132,7 +139,8 @@ export class DemoServerContext implements ServerContext<AppRegistration> {
                 instanceId,
                 window,
                 url,
-                state: State.Pending
+                state: State.Pending,
+                lastHeartbeat: Date.now()
             }
 
             this.setInstanceDetails(instanceId, metadata)

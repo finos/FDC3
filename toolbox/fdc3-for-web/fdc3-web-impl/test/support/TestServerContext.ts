@@ -1,6 +1,7 @@
 import { ServerContext, InstanceID } from '../../src/ServerContext'
 import { CustomWorld } from '../world'
-import { OpenError, AppIdentifier, AppIntent, Context } from '@kite9/fdc3'
+import { Context } from '@kite9/fdc3-context'
+import { OpenError, AppIdentifier, AppIntent } from '@kite9/fdc3-standard'
 
 type ConnectionDetails = AppIdentifier & {
     msg?: object
@@ -24,6 +25,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     constructor(cw: CustomWorld) {
         this.cw = cw
     }
+
 
     async narrowIntents(appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
         return appIntents
@@ -58,6 +60,13 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
 
     async setAppConnected(app: AppIdentifier): Promise<void> {
         this.instances.find(ca => (ca.instanceId == app.instanceId))!!.connected = true
+    }
+
+    async setAppDisconnected(app: AppIdentifier): Promise<void> {
+        const idx = this.instances.findIndex(ca => (ca.instanceId == app.instanceId))
+        if (idx != -1) {
+            this.instances.splice(idx, 1)
+        }
     }
 
     async getConnectedApps(): Promise<AppIdentifier[]> {

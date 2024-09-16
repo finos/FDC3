@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/api/iframeHello.schema.json",
   "title": "iframe Hello",
-  "description": "Hello message sent by a UI iframe to the Desktop Agent proxy setup by `getAgent()` to indicate it is ready to communicate and containing initial CSS to set on the iframe.",
+  "description": "Hello message sent by a UI iframe to the Desktop Agent proxy setup by `getAgent()` to indicate it is ready to communicate, containing initial CSS to set on the iframe and including an appended `MessagePort` to be used for further communication.",
   "type": "object",
   "allOf": [
     {
@@ -45,7 +45,7 @@
                 "maxHeight": {"type": "string", "title": "maxHeight", "description": "The maximum height to apply to the iframe"},
                 "maxWidth": {"type": "string", "title": "maxWidth", "description": "The maximum with to apply to the iframe"}
               },
-              "required": ["height", "width", "top", "left"]
+              "required": []
             }
           },
           "additionalProperties": false,

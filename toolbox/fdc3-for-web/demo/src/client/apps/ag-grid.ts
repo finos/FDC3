@@ -118,7 +118,7 @@ const init = async () => {
       // Ignore anything else.
       if (context.type !== "fdc3.instrument") return;
 
-      const symbol = context.id.ticker;
+      const symbol = context.id?.ticker;
       // Show the symbol in the search box
       filterBox.value = symbol;
       // Apply a filter based on the symbol

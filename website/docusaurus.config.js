@@ -210,6 +210,27 @@ module.exports={
         "width": 50,
         "href": "https://finos.org"
       }
+    },
+    "mermaid": {
+      "options": {
+        "htmlLabels": true,
+        "markdownAutoWrap": true,
+        "wrap": true,
+          "wrappingWidth": 50,
+        "flowchart": {
+          "titleTopMargin": 30,
+          "subGraphTitleMargin":  {
+            "top": 30,
+            "bottom": 30
+          },
+          "nodeSpacing": 30,
+          "rankSpacing": 50,
+          "diagramPadding": 5,
+          "useMaxWidth": true,
+          "htmlLabels": true,
+          "wrappingWidth": 50
+        }
+      }
     }
   }
 }
