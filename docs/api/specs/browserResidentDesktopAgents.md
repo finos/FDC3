@@ -191,7 +191,7 @@ For more details on the connection process, please see the documentation for the
 
 ### Disconnects
 
-DAs are responsible for tracking when app windows close or navigates, which is necessary to provide accurate responses to the `findIntent`, `findIntentsByContext` & `findInstances` API calls, and to correctly resolve raised intents. 
+DAs are responsible for tracking when app windows close or navigates, which is necessary to provide accurate responses to the `findIntent`, `findIntentsByContext` & `findInstances` API calls, and to correctly resolve raised intents.
 
 :::info
 
@@ -205,7 +205,7 @@ Checking whether an application has closed may be achieved by a number of approa
   - However, it should be noted that the `closed` will be `false` if the window has navigated same-domain, but is no longer an FDC3 app or has become a different FDC3 app. Hence, checking the `closed` property will not catch all cases.
   - If an equivalent `WindowProxy` object (`WindowProxy` objects can be compared with `==` and will be equivalent if they represent the same window) is received from a different application the DA should consider the original application using that `WindowProxy` to have closed.
 - By receiving a `WCP6Goodbye` message from the application when it is closing. The `getAgent()` implementation automates the sending of this message via the HTML Standard's [Page Life Cycle API](https://wicg.github.io/page-lifecycle/spec.html). Specifically, the `getAgent()` implementation MUST attempt to detect windows closing by listening for the `pagehide` event and considering a window to be closed if the event's `persisted` property is `false`.
-  - Note that the pagehide event may not fire if the window's render thread crashes or is closed while 'frozen'.
+  - Note that the `pagehide` event may not fire if the window's render thread crashes or is closed while 'frozen'.
 - By polling the application for responses via the `heartbeatEvent` and `heartbeatAcknowledgement` messages provided in the [Desktop Agent Communication Protocol](./desktopAgentCommunicationProtocol#checking-apps-are-alive). These message may be used for both periodic and on-demand polling by DA implementations. On-demand polling could, for example, be used to check that all instances returned in a findIntent response or displayed in an intent resolver are still alive.
   - Desktop Agents MAY determine their own timeout, or support configuration, to be used for considering an application to have closed as this may be affected by the implementation details of app and DAs.
 
