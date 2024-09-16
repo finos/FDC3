@@ -180,7 +180,9 @@ window.addEventListener("load", () => {
       initialCSS: {
         width: "200px",
         height: "400px",
-        zIndex: "100",
+        zIndex: "1000",
+        "z-index": "1000",
+        position: "fixed",
         top: "0"
       }
     }
