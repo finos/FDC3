@@ -83,6 +83,8 @@ window.addEventListener("load", () => {
           right: "2px",
           bottom: "2px",
           zIndex: "1000",
+          "z-index": "1000",
+          position: "fixed"
         }
       }
     });
@@ -99,6 +101,8 @@ window.addEventListener("load", () => {
           right: "2px",
           bottom: "2px",
           zIndex: "1000",
+          "z-index": "1000",
+          position: "fixed"
         }
       }
     });
