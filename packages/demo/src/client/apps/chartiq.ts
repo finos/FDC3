@@ -26,12 +26,14 @@ const init = async () => {
 
     // Listen for changes to fdc3.instrument, and update the symbol
     fdc3.addContextListener("fdc3.instrument", (context) => {
-        stx.newChart(context.id.ticker);
+        if(context.id?.ticker !== stx.chart.symbol){
+            stx.newChart(context.id?.ticker);
+        }
     });
 
     // Listen for ViewChart events
     fdc3.addIntentListener("ViewChart", (context) => {
-        stx.newChart(context.id.ticker);
+        stx.newChart(context.id?.ticker);
     })
 };
 
