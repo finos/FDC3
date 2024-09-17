@@ -26,8 +26,12 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
         this.connectables = connectables
     }
 
-    addEventListener(_type: FDC3EventTypes | null, _handler: EventHandler): Promise<Listener> {
-        throw new Error("Method not implemented.");
+    async addEventListener(type: FDC3EventTypes | null, handler: EventHandler): Promise<Listener> {
+        switch (type) {
+            case "userChannelChanged": return this.channels.addChannelChangedEventHandler(handler);
+            default:
+                throw new Error("UnknownEventType")
+        }
     }
 
     async getInfo(): Promise<ImplementationMetadata> {

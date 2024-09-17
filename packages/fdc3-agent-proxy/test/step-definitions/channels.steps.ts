@@ -5,6 +5,7 @@ import { CustomWorld } from '../world/index';
 import { BrowserTypes } from '@kite9/fdc3-schema';
 import { CHANNEL_STATE } from '@kite9/testing';
 import { ApiEvent } from '@kite9/fdc3-standard';
+import { ChannelChangedEvent } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 type BroadcastEvent = BrowserTypes.BroadcastEvent
 type AgentResponseMessage = BrowserTypes.AgentResponseMessage
@@ -77,6 +78,21 @@ Given('{string} is a {string} message on channel {string} with listenerType as {
     },
     type
   }
+
+  this.props[field] = message;
+})
+
+Given('{string} is a channelChangedEvent message on channel {string}', function (this: CustomWorld, field: string, channel: string) {
+  const message = {
+    meta: {
+      eventUuid: this.messaging!!.createUUID(),
+      timestamp: new Date(),
+    },
+    payload: {
+      "newChannelId": handleResolve(channel, this),
+    },
+    type: "channelChangedEvent"
+  } as ChannelChangedEvent
 
   this.props[field] = message;
 })

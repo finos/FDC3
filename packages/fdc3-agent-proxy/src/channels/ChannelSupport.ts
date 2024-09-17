@@ -1,4 +1,4 @@
-import { Channel, ContextHandler, Listener, PrivateChannel } from "@kite9/fdc3-standard"
+import { Channel, ContextHandler, EventHandler, Listener, PrivateChannel } from "@kite9/fdc3-standard"
 
 export interface ChannelSupport {
 
@@ -16,4 +16,5 @@ export interface ChannelSupport {
 
     addContextListener(handler: ContextHandler, type: string | null): Promise<Listener>
 
+    addChannelChangedEventHandler(handler: EventHandler): Promise<Listener>
 }

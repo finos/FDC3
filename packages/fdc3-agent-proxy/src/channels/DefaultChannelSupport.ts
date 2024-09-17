@@ -1,4 +1,4 @@
-import { Channel, ContextHandler, Listener, PrivateChannel, ChannelSelector } from "@kite9/fdc3-standard";
+import { Channel, ContextHandler, Listener, PrivateChannel, ChannelSelector, EventHandler } from "@kite9/fdc3-standard";
 import { Messaging } from "../Messaging";
 import { ChannelSupport } from "./ChannelSupport";
 import { DefaultPrivateChannel } from "./DefaultPrivateChannel";
@@ -6,6 +6,7 @@ import { DefaultChannel } from "./DefaultChannel";
 import { DefaultContextListener } from "../listeners/DefaultContextListener";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 import { FollowingContextListener } from "../listeners/FollowingContextListener";
+import { EventListener } from "../listeners/EventListener";
 
 type ChannelDetail = BrowserTypes.Channel
 type GetUserChannelsRequest = BrowserTypes.GetUserChannelsRequest
@@ -20,8 +21,6 @@ type GetCurrentChannelResponse = BrowserTypes.GetCurrentChannelResponse
 type GetCurrentChannelRequest = BrowserTypes.GetCurrentChannelRequest
 type LeaveCurrentChannelRequest = BrowserTypes.LeaveCurrentChannelRequest
 type LeaveCurrentChannelResponse = BrowserTypes.LeaveCurrentChannelResponse
-
-
 
 export class DefaultChannelSupport implements ChannelSupport {
 
@@ -40,6 +39,16 @@ export class DefaultChannelSupport implements ChannelSupport {
                 this.joinUserChannel(channelId)
             }
         })
+
+        this.addChannelChangedEventHandler((e) => {
+            this.channelSelector.updateChannel(e.details.newChannelId, this.userChannels ?? [])
+        })
+    }
+
+    async addChannelChangedEventHandler(handler: EventHandler): Promise<Listener> {
+        const listener = new EventListener(this.messaging, "channelChangedEvent", handler)
+        await listener.register()
+        return listener
     }
 
     async getUserChannel(): Promise<Channel | null> {
