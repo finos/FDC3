@@ -1,4 +1,4 @@
-import { ContextHandler, EventHandler, Listener, PrivateChannel, PrivateChannelEventTypes } from "@kite9/fdc3-standard";
+import { ApiEvent, ContextHandler, EventHandler, Listener, PrivateChannel, PrivateChannelEventTypes } from "@kite9/fdc3-standard";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 import { DefaultChannel } from "./DefaultChannel";
 import { Messaging } from "../Messaging";
@@ -14,8 +14,43 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
         super(messaging, id, "private")
     }
 
-    addEventListener(_type: PrivateChannelEventTypes | null, _handler: EventHandler): Promise<Listener> {
-        throw new Error("Method not implemented.");
+    async addEventListener(type: PrivateChannelEventTypes | null, handler: EventHandler): Promise<Listener> {
+
+        function wrapEventHandlerString(): (m: string) => void {
+            return (m: string) => {
+                handler({
+                    type,
+                    details: m
+                } as ApiEvent)
+            }
+        }
+
+        function wrapEventHandlerVoid(): () => void {
+            return () => {
+                handler({
+                    type
+                } as ApiEvent)
+            }
+        }
+
+        if (type) {
+            switch (type) {
+                case "addContextListener":
+                    const a = new PrivateChannelEventListenerType(this.messaging, this.id, "onAddContextListener", wrapEventHandlerString());
+                    await a.register()
+                    return a;
+                case "unsubscribe":
+                    const u = new PrivateChannelEventListenerType(this.messaging, this.id, "onUnsubscribe", wrapEventHandlerString());
+                    await u.register()
+                    return u;
+                case "disconnect":
+                    const d = new PrivateChannelEventListenerVoid(this.messaging, this.id, wrapEventHandlerVoid());
+                    await d.register()
+                    return d;
+            }
+        }
+
+        throw new Error("Unsupported event type: " + type)
     }
 
     onAddContextListener(handler: (contextType?: string | undefined) => void): Listener {
