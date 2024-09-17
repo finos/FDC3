@@ -7,6 +7,8 @@ Feature: Basic User Channels Support
     Given "instrumentMessageOne" is a "broadcastEvent" message on channel "one" with context "fdc3.instrument"
     Given "countryMessageOne" is a "broadcastEvent" message on channel "one" with context "fdc3.country"
     Given "instrumentContext" is a "fdc3.instrument" context
+    Given "userChannelMessage1" is a channelChangedEvent message on channel "one"
+    Given "userChannelMessage2" is a channelChangedEvent message on channel "two"
 
   Scenario: List User Channels
         There should be a selection of user channels to choose from
@@ -184,3 +186,22 @@ Feature: Basic User Channels Support
     And messaging receives "{instrumentMessageOne}"
     And I call "{theChannel}" with "getCurrentContext" with parameter "fdc3.email"
     Then "{result}" is null
+
+  Scenario: User Channel Updated By Desktop Agent
+    When messaging receives "{userChannelMessage2}"
+    Then "{channelId}" is "two"
+
+  Scenario: Adding A User Channel Event Listener
+    Given "typesHandler" pipes events to "types"
+    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    And messaging receives "{userChannelMessage2}"
+    And messaging receives "{userChannelMessage1}"
+    Then "{types}" is an array of objects with the following contents
+      | newChannelId |
+      | two          |
+      | one          |
+
+  Scenario: Adding An Unknown Event Listener
+    Given "typesHandler" pipes events to "types"
+    When I call "{api}" with "addEventListener" with parameters "unknownEventType" and "{typesHandler}"
+    Then "{result}" is an error with message "UnknownEventType"

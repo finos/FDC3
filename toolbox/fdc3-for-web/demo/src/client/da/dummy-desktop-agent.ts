@@ -57,6 +57,7 @@ window.addEventListener("load", () => {
         const directory = new FDC3_2_1_JSONDirectory()
         await directory.load("/static/da/appd.json")
         //await directory.load("/static/da/local-conformance-2_0.v2.json")
+        //await directory.load("/static/da/training-appd.v2.json")
         const sc = new DemoServerContext(socket, directory)
 
         const channelDetails: ChannelState[] = [
@@ -64,7 +65,7 @@ window.addEventListener("load", () => {
             { id: "two", type: ChannelType.user, context: [], displayMetadata: { name: "THE BLUE CHANNEL", color: "blue" } },
             { id: "three", type: ChannelType.user, context: [], displayMetadata: { name: "THE GREEN CHANNEL", color: "green" } }
         ]
-        const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, true)
+        const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, true, 20000, 10000)
 
         socket.on(FDC3_APP_EVENT, (msg, from) => {
             fdc3Server.receive(msg, from)

@@ -119,7 +119,8 @@ export class IntentHandler implements MessageHandler {
     }
 
     async narrowIntents(appIntents: AppIntent[], context: Context, sc: ServerContext<any>): Promise<AppIntent[]> {
-        return sc.narrowIntents(appIntents, context)
+        const out = await sc.narrowIntents(appIntents, context)
+        return out
     }
 
     async accept(msg: any, sc: ServerContext<any>, uuid: InstanceID): Promise<void> {
@@ -269,7 +270,11 @@ export class IntentHandler implements MessageHandler {
                 // no running instance, single app
                 const appRecords = this.directory.retrieveAppsById(target.appId)
                 if (appRecords.length >= 1) {
-                    return this.startWithPendingIntent(arg0[0], sc, target)
+                    const ir: IntentRequest = {
+                        ...arg0[0],
+                        intent: narrowedAppIntents[0].intent.name
+                    }
+                    return this.startWithPendingIntent(ir, sc, target)
                 } else {
                     // app doesn't exist
                     return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.TargetAppUnavailable, arg0[0].type)
@@ -329,14 +334,15 @@ export class IntentHandler implements MessageHandler {
             const theAppIntent = narrowedAppIntents[0]
             if (this.oneAppOnly(theAppIntent)) {
                 const instanceCount = theAppIntent.apps.filter(a => a.instanceId).length
+                const ir: IntentRequest = {
+                    ...arg0[0],
+                    intent: narrowedAppIntents[0].intent.name
+                }
                 if (instanceCount == 1) {
                     // app is running
-                    return forwardRequest(arg0[0], theAppIntent.apps[0], sc, this)
+                    return forwardRequest(ir, theAppIntent.apps[0], sc, this)
                 } else if (instanceCount == 0) {
-                    return this.startWithPendingIntent({
-                        ...arg0[0],
-                        intent: theAppIntent.intent.name
-                    }, sc, theAppIntent.apps[0])
+                    return this.startWithPendingIntent(ir, sc, theAppIntent.apps[0])
                 }
             }
         }

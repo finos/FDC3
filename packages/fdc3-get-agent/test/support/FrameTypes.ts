@@ -1,5 +1,5 @@
 import { CustomWorld } from "../world"
-import { MockWindow } from "./MockDocument"
+import { MockWindow } from "./MockWindow"
 import { CHANNEL_SELECTOR_URL, EMBED_URL, INTENT_RESPOLVER_URL } from "./MockFDC3Server"
 import { BrowserTypes } from "@kite9/fdc3-schema"
 
