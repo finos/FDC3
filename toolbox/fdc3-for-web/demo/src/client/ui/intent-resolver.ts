@@ -7,7 +7,7 @@ type IframeResolvePayload = BrowserTypes.IframeResolvePayload
 
 const DEFAULT_COLLAPSED_CSS = {
     position: "fixed",
-    zIndex: "1000",
+    'z-index': 1000,
     right: "0",
     bottom: "0",
     width: "0",
@@ -16,7 +16,7 @@ const DEFAULT_COLLAPSED_CSS = {
 
 const DEFAULT_EXPANDED_CSS = {
     position: "fixed",
-    zIndex: "1000",
+    'z-index': 1000,
     left: "10%",
     top: "10%",
     right: "10%",
