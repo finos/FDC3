@@ -22,7 +22,8 @@ export const ALLOWED_CSS_ELEMENTS = [
     "transition",
     "maxHeight",
     "maxWidth",
-    "display"
+    "display",
+    "zIndex"
 ]
 
 export abstract class AbstractUIComponent implements Connectable {
