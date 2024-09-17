@@ -1,3 +1,4 @@
+import { WebConnectionProtocol6Goodbye } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { HeartbeatListener } from "../listeners/HeartbeatListener";
 import { Messaging } from "../Messaging";
 import { HandshakeSupport } from "./HandshakeSupport";
@@ -23,7 +24,16 @@ export class DefaultHandshakeSupport implements HandshakeSupport {
     }
 
     async disconnect(): Promise<void> {
-        this.heartbeatListener?.unsubscribe()
+        await this.heartbeatListener?.unsubscribe()
+        await this.messaging.post({
+            type: 'WCP6Goodbye',
+            meta: {
+                timestamp: new Date(),
+                connectionAttemptUuid: "na" // ISSUE: https://github.com/finos/FDC3/pull/1191/files#r1762619337
+            },
+            payload: {
+            }
+        } as WebConnectionProtocol6Goodbye)
         return this.messaging.disconnect()
     }
 
