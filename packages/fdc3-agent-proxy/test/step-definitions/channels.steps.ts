@@ -4,6 +4,7 @@ import { handleResolve, matchData } from '@kite9/testing';
 import { CustomWorld } from '../world/index';
 import { BrowserTypes } from '@kite9/fdc3-schema';
 import { CHANNEL_STATE } from '@kite9/testing';
+import { ApiEvent } from '@kite9/fdc3-standard';
 
 type BroadcastEvent = BrowserTypes.BroadcastEvent
 type AgentResponseMessage = BrowserTypes.AgentResponseMessage
@@ -97,6 +98,13 @@ Given('{string} pipes types to {string}', function (this: CustomWorld, typeHandl
   this.props[field] = []
   this.props[typeHandlerName] = (s?: string) => {
     this.props[field].push(s)
+  }
+})
+
+Given('{string} pipes events to {string}', function (this: CustomWorld, typeHandlerName: string, field: string) {
+  this.props[field] = []
+  this.props[typeHandlerName] = (s?: ApiEvent) => {
+    this.props[field].push(s?.details)
   }
 })
 
