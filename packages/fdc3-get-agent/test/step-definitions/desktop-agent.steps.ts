@@ -1,14 +1,16 @@
 import { After, DataTable, Given, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world';
 import { handleResolve, setupGenericSteps } from '@kite9/testing';
-import { MockDocument, MockWindow } from '../support/MockDocument';
+import { MockDocument } from '../support/MockDocument';
+import { MockWindow } from "../support/MockWindow";
 import { fdc3Ready, getAgent } from '../../src';
 import { DesktopAgentDetails, GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-standard';
 import { dummyInstanceId, EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
 import { MockStorage } from '../support/MockStorage';
 import { DesktopAgent, ImplementationMetadata } from '@kite9/fdc3-standard';
 import { DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY } from '../../src/messaging/AbstractWebMessaging';
-import { clearAgentPromise } from '../../src/strategies/getAgent';
+import { clearAgentPromise, getAgentPromise } from '../../src/strategies/getAgent';
+import expect from 'expect';
 var wtf = require('wtfnode')
 
 setupGenericSteps()
@@ -138,4 +140,13 @@ Given("the session identity is set to {string}", async function (this: CustomWor
     }
 
     globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY + "-mocky", JSON.stringify(details))
+})
+
+When("{string} pagehide occurs", async function (this: CustomWorld, field: string) {
+    const window: MockWindow = handleResolve(field, this)
+    window.dispatchEvent(new Event('pagehide'))
+})
+
+When("theAgentPromise is cleared", async function (this: CustomWorld) {
+    expect(getAgentPromise()).toBeNull()
 })
