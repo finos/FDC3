@@ -10,6 +10,7 @@
   "publishConfig": {
     "tag": "latest"
   },
+  "type": "module",
   "license": "Apache-2.0",
   "main": "index.js",
   "files": [
