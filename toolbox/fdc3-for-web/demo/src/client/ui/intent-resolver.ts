@@ -68,7 +68,7 @@ window.addEventListener("load", () => {
             myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
         } else if (e.data.type == 'iframeResolve') {
             myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: DEFAULT_EXPANDED_CSS } } as IframeRestyle)
-
+            Array.from(list.children).forEach(i => i.remove())
             const details = e.data.payload as IframeResolvePayload
             details.appIntents.forEach(intent => {
 
