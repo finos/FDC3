@@ -9,3 +9,10 @@ Feature: Heartbeats
     And messaging will have posts
       | matches_type             |
       | heartbeatAcknowledgement |
+
+  Scenario: Saying Goodbye
+    When I call "{api}" with "disconnect"
+    And we wait for a period of "100" ms
+    Then messaging will have posts
+      | matches_type |
+      | WCP6Goodbye  |

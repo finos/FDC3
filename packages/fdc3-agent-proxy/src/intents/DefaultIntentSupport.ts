@@ -114,18 +114,14 @@ export class DefaultIntentSupport implements IntentSupport {
             meta: meta as any /* ISSUE: #1275 */
         }
 
-        const resultPromise = this.createResultPromise(messageOut)
-        const response = await this.messaging.exchange(messageOut, "raiseIntentResponse", ResolveError.IntentDeliveryFailed) as RaiseIntentResponse
+        var resultPromise = this.createResultPromise(messageOut)
+        var response = await this.messaging.exchange(messageOut, "raiseIntentResponse", ResolveError.IntentDeliveryFailed) as RaiseIntentResponse
 
         if (response.payload.appIntent) {
             // we need to invoke the resolver
             const result: IntentResolutionChoice | void = await this.intentResolver.chooseIntent([response.payload.appIntent as any], context)
             if (result) {
-                return new DefaultIntentResolution(
-                    this.messaging,
-                    resultPromise,
-                    result.appId,
-                    result.intent)
+                return this.raiseIntent(intent, context, result.appId)
             } else {
                 throw new Error(ResolveError.UserCancelled)
             }
@@ -138,7 +134,7 @@ export class DefaultIntentSupport implements IntentSupport {
                 details.source,
                 details.intent
             )
-        }
+        } 
     }
 
     async raiseIntentForContext(context: Context, app?: AppIdentifier | undefined): Promise<IntentResolution> {
@@ -157,11 +153,7 @@ export class DefaultIntentSupport implements IntentSupport {
             // we need to invoke the resolver
             const result: IntentResolutionChoice | void = await this.intentResolver.chooseIntent(response.payload.appIntents as any[], context)
             if (result) {
-                return new DefaultIntentResolution(
-                    this.messaging,
-                    resultPromise,
-                    result.appId,
-                    result.intent)
+                return this.raiseIntent(result.intent, context, result.appId)
             } else {
                 throw new Error(ResolveError.UserCancelled)
             }

@@ -25,6 +25,7 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
         this.port = port
 
         this.port.addEventListener("message", (e) => {
+            console.log("Got resolve action")
             if (e.data.type == 'iframeResolveAction') {
                 const choice = e.data as IframeResolveAction
                 if ((choice.payload.action == 'click') && (this.pendingResolve)) {
