@@ -63,7 +63,11 @@
             "channelSelectorUrl"
           ]
         },
-        "meta": true
+        "meta": {
+          "title": "Connection Step Metadata",
+          "description": "Metadata for this connection step message",
+          "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
+        }
       },
       "required": [
         "type",
