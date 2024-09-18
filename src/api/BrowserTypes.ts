@@ -3512,7 +3512,10 @@ export interface RaiseIntentResultResponsePayload {
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol1Hello {
-    meta: ConnectionStepMetadata;
+    /**
+     * Metadata for this connection step message
+     */
+    meta: WebConnectionProtocol1HelloMeta;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -3525,8 +3528,10 @@ export interface WebConnectionProtocol1Hello {
 
 /**
  * Metadata for this connection step message
+ *
+ * Metadata for a disconnection step message
  */
-export interface ConnectionStepMetadata {
+export interface WebConnectionProtocol1HelloMeta {
     connectionAttemptUuid: string;
     timestamp:             Date;
 }
@@ -3575,7 +3580,10 @@ export interface WebConnectionProtocol1HelloPayload {
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol2LoadURL {
-    meta: ConnectionStepMetadata;
+    /**
+     * Metadata for this connection step message
+     */
+    meta: WebConnectionProtocol1HelloMeta;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -3611,7 +3619,10 @@ export interface WebConnectionProtocol2LoadURLPayload {
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol3Handshake {
-    meta: ConnectionStepMetadata;
+    /**
+     * Metadata for this connection step message
+     */
+    meta: WebConnectionProtocol1HelloMeta;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -3655,7 +3666,10 @@ export interface WebConnectionProtocol3HandshakePayload {
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol4ValidateAppIdentity {
-    meta: ConnectionStepMetadata;
+    /**
+     * Metadata for this connection step message
+     */
+    meta: WebConnectionProtocol1HelloMeta;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -3702,7 +3716,10 @@ export interface WebConnectionProtocol4ValidateAppIdentityPayload {
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol5ValidateAppIdentityFailedResponse {
-    meta: ConnectionStepMetadata;
+    /**
+     * Metadata for this connection step message
+     */
+    meta: WebConnectionProtocol1HelloMeta;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -3731,7 +3748,10 @@ export interface WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload 
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
-    meta: ConnectionStepMetadata;
+    /**
+     * Metadata for this connection step message
+     */
+    meta: WebConnectionProtocol1HelloMeta;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -3780,15 +3800,23 @@ export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol6Goodbye {
-    meta: ConnectionStepMetadata;
     /**
-     * The message payload, containing data pertaining to this connection step.
+     * Metadata for a disconnection step message
      */
-    payload: { [key: string]: any };
+    meta: WebConnectionProtocol6GoodbyeMeta;
     /**
      * Identifies the type of the connection step message.
      */
     type: "WCP6Goodbye";
+}
+
+/**
+ * Metadata for a disconnection step message
+ *
+ * Metadata for this connection step message
+ */
+export interface WebConnectionProtocol6GoodbyeMeta {
+    timestamp: Date;
 }
 
 /**
@@ -3800,15 +3828,25 @@ export interface WebConnectionProtocol6Goodbye {
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocolMessage {
-    meta: ConnectionStepMetadata;
+    meta: WebConnectionProtocolMessageMeta;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
-    payload: { [key: string]: any };
+    payload?: { [key: string]: any };
     /**
      * Identifies the type of the connection step message.
      */
     type: ConnectionStepMessageType;
+}
+
+/**
+ * Metadata for a disconnection step message
+ *
+ * Metadata for this connection step message
+ */
+export interface WebConnectionProtocolMessageMeta {
+    timestamp:              Date;
+    connectionAttemptUuid?: string;
 }
 
 /**
@@ -5343,11 +5381,11 @@ const typeMap: any = {
         { json: "intentResult", js: "intentResult", typ: u(undefined, r("IntentResult")) },
     ], false),
     "WebConnectionProtocol1Hello": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
         { json: "payload", js: "payload", typ: r("WebConnectionProtocol1HelloPayload") },
         { json: "type", js: "type", typ: r("WebConnectionProtocol1HelloType") },
     ], false),
-    "ConnectionStepMetadata": o([
+    "WebConnectionProtocol1HelloMeta": o([
         { json: "connectionAttemptUuid", js: "connectionAttemptUuid", typ: "" },
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
@@ -5359,7 +5397,7 @@ const typeMap: any = {
         { json: "intentResolver", js: "intentResolver", typ: u(undefined, true) },
     ], "any"),
     "WebConnectionProtocol2LoadURL": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
         { json: "payload", js: "payload", typ: r("WebConnectionProtocol2LoadURLPayload") },
         { json: "type", js: "type", typ: r("WebConnectionProtocol2LoadURLType") },
     ], false),
@@ -5367,7 +5405,7 @@ const typeMap: any = {
         { json: "iframeUrl", js: "iframeUrl", typ: "" },
     ], "any"),
     "WebConnectionProtocol3Handshake": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
         { json: "payload", js: "payload", typ: r("WebConnectionProtocol3HandshakePayload") },
         { json: "type", js: "type", typ: r("WebConnectionProtocol3HandshakeType") },
     ], false),
@@ -5377,7 +5415,7 @@ const typeMap: any = {
         { json: "intentResolverUrl", js: "intentResolverUrl", typ: u(true, "") },
     ], false),
     "WebConnectionProtocol4ValidateAppIdentity": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
         { json: "payload", js: "payload", typ: r("WebConnectionProtocol4ValidateAppIdentityPayload") },
         { json: "type", js: "type", typ: r("WebConnectionProtocol4ValidateAppIdentityType") },
     ], false),
@@ -5388,7 +5426,7 @@ const typeMap: any = {
         { json: "instanceUuid", js: "instanceUuid", typ: u(undefined, "") },
     ], false),
     "WebConnectionProtocol5ValidateAppIdentityFailedResponse": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
         { json: "payload", js: "payload", typ: r("WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload") },
         { json: "type", js: "type", typ: r("WebConnectionProtocol5ValidateAppIdentityFailedResponseType") },
     ], false),
@@ -5396,7 +5434,7 @@ const typeMap: any = {
         { json: "message", js: "message", typ: u(undefined, "") },
     ], false),
     "WebConnectionProtocol5ValidateAppIdentitySuccessResponse": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
         { json: "payload", js: "payload", typ: r("WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload") },
         { json: "type", js: "type", typ: r("WebConnectionProtocol5ValidateAppIdentitySuccessResponseType") },
     ], false),
@@ -5407,14 +5445,20 @@ const typeMap: any = {
         { json: "instanceUuid", js: "instanceUuid", typ: "" },
     ], false),
     "WebConnectionProtocol6Goodbye": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: m("any") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol6GoodbyeMeta") },
         { json: "type", js: "type", typ: r("WebConnectionProtocol6GoodbyeType") },
     ], false),
+    "WebConnectionProtocol6GoodbyeMeta": o([
+        { json: "timestamp", js: "timestamp", typ: Date },
+    ], false),
     "WebConnectionProtocolMessage": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: m("any") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocolMessageMeta") },
+        { json: "payload", js: "payload", typ: u(undefined, m("any")) },
         { json: "type", js: "type", typ: r("ConnectionStepMessageType") },
+    ], false),
+    "WebConnectionProtocolMessageMeta": o([
+        { json: "timestamp", js: "timestamp", typ: Date },
+        { json: "connectionAttemptUuid", js: "connectionAttemptUuid", typ: u(undefined, "") },
     ], false),
     "AddContextListenerRequestType": [
         "addContextListenerRequest",
