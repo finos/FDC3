@@ -50,9 +50,9 @@ When an app runs `getAgent()`, it checks for the existence of `window.parent`, `
 
 Hence, apps may be launched:
 
-1) By creating iframes in a DA Window
-2) By calling `window.open` from a DA Window
-3) By creating iframes in a window that was opened from a DA Window
+1. By creating iframes in a DA Window
+2. By calling `window.open` from a DA Window
+3. By creating iframes in a window that was opened from a DA Window
 
 and the Desktop Agent application will be found in a 'parent' of the application frame.
 
@@ -62,9 +62,9 @@ Browser Resident DAs MUST call `window.addEventListener("message",...)` to recei
 
 Upon receiving an incoming [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) the Desktop Agent MUST either:
 
-1) Respond with a [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) message (as defined in the [Web Connection Protocol](./webConnectionProtocol)).
+1. Respond with a [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) message (as defined in the [Web Connection Protocol](./webConnectionProtocol)).
     - This message indicates that `getAgent()` should create an iframe, load the provided URL (for an adaptor to the Desktop Agent) into it and then restart the connection process by sending [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) to the iframe.
-2) Create a [`MessageChannel`](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API) with two entangled `MessagePort` instances that will be used for further communication with the application.
+2. Create a [`MessageChannel`](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API) with two entangled `MessagePort` instances that will be used for further communication with the application.
     - Before returning one of `MessagePort` instances, the DA MUST set up event listeners to to receive and process a [`"WCP4ValidateAppIdentity"`](https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message from the application.
     - To deliver the `MessagePort`, the DA MUST respond to the event's `source` window by responding with a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message (as defined in the [Web Connection Protocol](./webConnectionProtocol)) and append `port2` from the `MessageChannel` to the message.
 
@@ -221,9 +221,8 @@ As described above, DA providers can leverage hidden iframes to establish a comm
 
 The hidden iframe url can be provided in two ways:
 
-1) By a Parent window - This allows DAs to redirect communications to via a hidden iframe that loads a known URL. The main benefit of this approach is that it can allow a system to continue to operate even if the parent window is closed.
-
-2) By a `failover` function - When no parent DA can be found (such as when a tab is opened directly by an end user) then a failover function can create a hidden iframe and return a reference to it (a `WindowProxy`) to initiate communication with via the WCP and DACP in the same way as we do with a parent window. Alternatively, a `DesktopAgent` implementation maybe loaded directly and returned from the failover function, which `getAgent()` will pass-through.
+1. By a Parent window - This allows DAs to redirect communications to via a hidden iframe that loads a known URL. The main benefit of this approach is that it can allow a system to continue to operate even if the parent window is closed.
+2. By a `failover` function - When no parent DA can be found (such as when a tab is opened directly by an end user) then a failover function can create a hidden iframe and return a reference to it (a `WindowProxy`) to initiate communication with via the WCP and DACP in the same way as we do with a parent window. Alternatively, a `DesktopAgent` implementation maybe loaded directly and returned from the failover function, which `getAgent()` will pass-through.
 
 ## Channel Selector and Intent Resolver User Interfaces
 

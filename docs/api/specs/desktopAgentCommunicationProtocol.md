@@ -316,7 +316,6 @@ title: Intent resolution with injected Intent Resolver iframe
 ---
 sequenceDiagram
     AppA ->> DesktopAgent: raiseIntentRequest
-    DesktopAgent ->> AppB: intentEvent
     DesktopAgent ->> AppA: raiseIntentResponse
     Note left of DesktopAgent: raiseIntentResponse includes a<br/> RaiseIntentNeedsResolutionResponsePayload<br/>containing an AppIntent
     break when AppIntent return with multiple options
@@ -340,11 +339,11 @@ title: Intent resolution with Desktop Agent provided Intent Resolver
 ---
 sequenceDiagram
     AppA ->> DesktopAgent: raiseIntentRequest
-    DesktopAgent ->> AppB: intentEvent
     break DA determines there are multiple options
         DesktopAgent-->AppA: Desktop Agent displays an<br/>IntentResolver UI
         AppA-->DesktopAgent: User picks an option
     end
+    DesktopAgent ->> AppB: intentEvent
     DesktopAgent ->> AppA: raiseIntentResponse
     Note left of DesktopAgent: DesktopAgent responds<br/>to the original<br/>raiseIntentRequest message with<br/>a RaiseIntentSuccessResponsePayload
     AppB ->> DesktopAgent: intentResultRequest
