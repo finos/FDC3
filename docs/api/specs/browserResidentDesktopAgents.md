@@ -242,7 +242,9 @@ User interface iframes are initially injected into the application window with C
 }
 ```
 
-Implementations of the UIs may then indicate a limited set of CSS to apply to their frame in the initial `iFrameHello` message, and later adjust that via `iFrameRestyle`. See the [Controlling injected User Interfaces section](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces-section) in the DACP specification for more details.
+and are always displayed with `position: "fixed"` so that they are not part of the document flow.
+
+Implementations of the UIs may then indicate a limited set of CSS to apply to their frame in the initial `iFrameHello` message (when the width and height will be removed if not explicitly set in that message), and later adjust that via `iFrameRestyle`. See the [Controlling injected User Interfaces section](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces-section) in the DACP specification for more details.
 
 Communication between the `DesktopAgentProxy` and the iframes it injects is achieved via a similar mechanism to that used for communication between an App and the Desktop Agent: a `MessageChannel` is established between the app and iframe, via a `postMessage` sent from the iframe (`iFrameHello`) and responded to by the `DesktopAgentProxy` in the app's window (`iFrameHandshake`), with a `MessagePort` from a `MessageChannel` appended.
 
