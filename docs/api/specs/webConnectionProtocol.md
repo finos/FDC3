@@ -72,7 +72,7 @@ A value for `meta.connectionAttemptUuid` should be generated as a version 4 UUID
 
 Messages defined as part of the Web Connection Protocol, which will be referenced later in this document, these are:
 
-- [`WCP1Hello`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) 
+- [`WCP1Hello`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json)
 - [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json)
 - [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json)
 - [`WCP4ValidateAppIdentity`](/schemas/next/api/WCP4ValidateAppIdentity.schema.json)
