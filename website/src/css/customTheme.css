@@ -1,10 +1,10 @@
 
 html[data-theme='light'] {
-    background-color: white;
+    background-color: #FFFFFF;
 }
 
 html[data-theme='dark'] {
-    background-color: black;
+    background-color: #1B1B1B;
 }
 
 @font-face {
