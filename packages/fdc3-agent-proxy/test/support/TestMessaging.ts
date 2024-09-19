@@ -5,7 +5,6 @@ import { AbstractMessaging } from "../../src/messaging/AbstractMessaging";
 import { RegisterableListener } from "../../src/listeners/RegisterableListener";
 import { FindIntent } from "./responses/FindIntent";
 import { FindIntentByContext } from "./responses/FindIntentByContext";
-import { ICreateLog } from "@cucumber/cucumber/lib/runtime/attachment_manager";
 import { RaiseIntent } from "./responses/RaiseIntent";
 import { GetAppMetadata } from "./responses/GetAppMetadata";
 import { FindInstances } from "./responses/FindInstances";
@@ -195,7 +194,7 @@ export class TestMessaging extends AbstractMessaging {
         }
     }
 
-    receive(m: any, log?: ICreateLog) {
+    receive(m: any, log?: (s: string) => void) {
         this.listeners.forEach((v, k) => {
             if (v.filter(m)) {
                 log ? log("Processing in " + k) : ""

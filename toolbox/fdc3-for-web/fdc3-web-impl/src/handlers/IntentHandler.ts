@@ -73,13 +73,13 @@ class PendingIntent {
 
     complete: boolean = false
     r: IntentRequest
-    expectingAppId: string
+    appId: AppIdentifier
     sc: ServerContext<any>
     ih: IntentHandler
 
-    constructor(r: IntentRequest, sc: ServerContext<any>, ih: IntentHandler, expectingAppId: string) {
+    constructor(r: IntentRequest, sc: ServerContext<any>, ih: IntentHandler, appId: AppIdentifier) {
         this.r = r
-        this.expectingAppId = expectingAppId
+        this.appId = appId
         this.sc = sc
         this.ih = ih
 
@@ -94,7 +94,9 @@ class PendingIntent {
 
 
     async accept(arg0: ListenerRegistration): Promise<void> {
-        if ((arg0.appId == this.expectingAppId) && (arg0.intentName == this.r.intent)) {
+        if ((arg0.appId == this.appId.appId) &&
+            (arg0.intentName == this.r.intent) &&
+            ((arg0.instanceId == this.appId.instanceId) || (this.appId.instanceId == undefined))) {
             this.complete = true
             this.ih.pendingIntents.delete(this)
             forwardRequest(this.r, { appId: arg0.appId, instanceId: arg0.instanceId }, this.sc, this.ih)
@@ -219,7 +221,7 @@ export class IntentHandler implements MessageHandler {
 
     async startWithPendingIntent(arg0: IntentRequest, sc: ServerContext<any>, target: AppIdentifier): Promise<void> {
         // app exists but needs starting
-        const pi = new PendingIntent(arg0, sc, this, target?.appId!!)
+        const pi = new PendingIntent(arg0, sc, this, target)
         this.pendingIntents.add(pi)
         sc.open(target?.appId!!).then(() => { return undefined })
     }
@@ -246,7 +248,7 @@ export class IntentHandler implements MessageHandler {
 
         if (requestsWithListeners.length == 0) {
             // maybe listener hasn't been registered yet - create a pending intent
-            const pi = new PendingIntent(arg0[0], sc, this, target?.appId!!)
+            const pi = new PendingIntent(arg0[0], sc, this, target)
             this.pendingIntents.add(pi)
         } else {
             // ok, deliver to the current running app.
@@ -348,6 +350,7 @@ export class IntentHandler implements MessageHandler {
         }
 
         if (arg0[0].type == 'raiseIntentResponse') {
+            // raise intent
             return successResponseId(sc, arg0[0].requestUuid, arg0[0].from, {
                 appIntent: narrowedAppIntents[0]
             }, arg0[0].type)
