@@ -17,7 +17,7 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
     private pendingResolve: ((x: IntentResolutionChoice | void) => void) | null = null
 
     constructor(url: string | null) {
-        super(url ?? "https://fdc3.finos.org/webui/channel_selector.html", "FDC3 Intent Resolver")
+        super(url ?? "https://fdc3.finos.org/webui/intent_resolver.html", "FDC3 Intent Resolver")
     }
 
     async setupMessagePort(port: MessagePort): Promise<void> {
