@@ -233,6 +233,18 @@ The `getAgent()` implementation can facilitate the injection and management of i
 
 Desktop Agents may implement their own user interfaces for channel selection and intent resolution. The URL for each interface may be returned in the `channelSelectorUrl` and `intentResolverUrl` properties of the payload of the `WCP3Handshake` message sent by the DA during the connection sequence. Alternatively, if the Desktop Agent is be able to provide these user interfaces by other means (for example DAs that render applications in iframes within a window they control may use other iframes to render these UIs) or if they app indicated that it did not need them then `channelSelectorUrl` and `intentResolverUrl` may be set to `false`. Finally, `channelSelectorUrl` and `intentResolverUrl` may be set to `true` to indicate that `getAgent()` should use the default reference implementations of these UIs provided via the <https://fdc3.finsos.org> website.
 
+User interface iframes are initially injected into the application window with CSS that prevents their display:
+
+```css
+{
+    width: "0";
+    height: "0";
+    position: "fixed";
+}
+```
+
+Implementations of the UIs may then indicate a limited set of CSS to apply to their frame in the initial `iFrameHello` message, and later adjust that via `iFrameRestyle`. See the [Controlling injected User Interfaces section](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces-section) in the DACP specification for more details.
+
 Communication between the `DesktopAgentProxy` and the iframes it injects is achieved via a similar mechanism to that used for communication between an App and the Desktop Agent: a `MessageChannel` is established between the app and iframe, via a `postMessage` sent from the iframe (`iFrameHello`) and responded to by the `DesktopAgentProxy` in the app's window (`iFrameHandshake`), with a `MessagePort` from a `MessageChannel` appended.
 
 A further set of messages are provided for working with the injected user interfaces over their `MessageChannel` as part of the DACP, these are: `iFrameRestyle`, `iFrameDrag`, `iFrameChannels`, `iFrameChannelSelected`, `iFrameResolve` and `iFrameResolveAction`.
