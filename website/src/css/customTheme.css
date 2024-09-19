@@ -1,4 +1,12 @@
 
+html[data-theme='light'] {
+    background-color: white;
+}
+
+html[data-theme='dark'] {
+    background-color: black;
+}
+
 @font-face {
     src: url("/fonts/Electrolize-Regular.ttf");
     font-family: 'Electrolize'
