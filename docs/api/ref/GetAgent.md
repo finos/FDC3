@@ -42,7 +42,7 @@ try {
 
 The  `getAgent()` function allows web applications to retrieve an FDC3 Desktop Agent API interface to work with, whether they are running in an environment that supports a Desktop Agent Preload (a container-injected API implementation) or a Desktop Agent Proxy (a Browser-based Desktop Agent running in another window or frame). The behavior of `getAgent()` is defined by the [FDC3 Web Connection Protocol (WCP)](../specs/webConnectionProtocol) and communication with a Desktop Agent Proxy in a web-browser is defined by the [Desktop Agent Communication Protocol (DACP)](../specs/desktopAgentCommunicationProtocol). Hence, it allows applications to be written that will work in either scenario without modification or the inclusion of vendor-specific libraries.
 
-If no Desktop Agent is found, a failover function may be supplied by app allowing it to start or otherwise connect to a Desktop Agent (e.g. by loading a proprietary adaptor that returns a `DesktopAgent` implementation or by creating a window or iframe of its own that will provide a Desktop Agent Proxy.
+If no Desktop Agent is found, a failover function may be supplied by app allowing it to start or otherwise connect to a Desktop Agent (e.g. by loading a proprietary adaptor that returns a `DesktopAgent` implementation or by creating a window or iframe of its own that will provide a Desktop Agent Proxy).
 
 The definition of the `getAgent()` function is as follows:
 
