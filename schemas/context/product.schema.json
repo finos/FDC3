@@ -27,7 +27,7 @@
 				"instrument": {
 					"$ref": "instrument.schema.json",
 					"title": "Product Instrument",
-					"description": " financial instrument that relates to the definition of this product"
+					"description": "A financial instrument that relates to the definition of this product"
 				}
 			},
 			"required": [
