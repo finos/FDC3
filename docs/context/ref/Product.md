@@ -52,7 +52,7 @@ A human-readable summary of the product.
 
 **type**: [Instrument](Instrument)
 
- financial instrument that relates to the definition of this product
+A financial instrument that relates to the definition of this product
 
 </details>
 

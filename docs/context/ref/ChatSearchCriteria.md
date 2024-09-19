@@ -26,18 +26,17 @@ A context type that represents a simple search criterion, based on a list of oth
 <details>
   <summary><code>Items</code></summary>
 
-**Any of:**
+  <summary><code>Search Criteria</code></summary>
 
-**type**: [Instrument](Instrument)
+**One of:**
 
+- **type**: [Instrument](Instrument)
+- **type**: [Organization](Organization)
+- **type**: [Contact](Contact)
+- **type**: `string`
 
-**type**: [Organization](Organization)
+An individual criteria against which to match chat messages, based on an FDC3 context or free-text string.
 
-
-**type**: [Contact](Contact)
-
-
-**type**: `string`
 
 
 

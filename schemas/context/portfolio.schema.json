@@ -18,6 +18,19 @@
           },
           "title": "Portfolio positions",
           "description": "The List of Positions which make up the Portfolio"
+        },
+        "id": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Portfolio Identifiers",
+          "description": "One or more identifiers that refer to the portfolio in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future."
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "An optional human-readable name for the portfolio"
         }
       },
       "required": [

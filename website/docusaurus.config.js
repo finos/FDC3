@@ -144,7 +144,7 @@ module.exports={
             },
             {
               "label": "Supported Platforms",
-              "to": "docs/api/supported-platforms"
+              "to": "/docs/next/api/supported-platforms"
             },
             {
               "label": "API Reference",

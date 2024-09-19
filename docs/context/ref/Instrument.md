@@ -116,6 +116,15 @@ If the identifier you want to share is not a ticker or one of the other standard
 </details>
 
 <details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable name for the instrument
+
+</details>
+
+<details>
   <summary><code>market</code></summary>
 
 **type**: `object`
