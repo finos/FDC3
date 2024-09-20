@@ -387,7 +387,7 @@ public static class ResultError
 ```ts
 enum BridgingError {
   /** @experimental Returned if a Desktop Agent did not return a response, via 
-   *  Desktop Agent Bridging, within the alloted timeout. */
+   *  Desktop Agent Bridging, within the allotted timeout. */
   ResponseTimedOut = 'ResponseToBridgeTimedOut',
   /** @experimental Returned if a Desktop Agent that has been targeted by a 
    *  particular request has been disconnected from the Bridge before a 
