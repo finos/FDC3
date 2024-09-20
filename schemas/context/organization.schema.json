@@ -33,6 +33,11 @@
               "description": "FactSet Permanent Identifier representing the organization"
             }
           }
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "An optional human-readable name of the organization"
         }
       },
       "required": [

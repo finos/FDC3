@@ -57,7 +57,7 @@ FDC3 and the Desktop Agent API it defines are intended to be independent of part
 
 Specifically, the use of ['unions'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of primitive values in API type and metadata objects, or function parameters SHOULD be avoided as they often cannot be replicated in other languages. Unions of more complex types (such as specific [Context](../context/spec#the-context-interface) Types) may be used where a suitable interface is available or can be created to allow the required polymorphism in languages other than TypeScript.
 
-For implementation details relating to particular languages, and how to access the API in those languages, please see [Supported Platforms](supported-platforms).
+For implementation details relating to particular languages, and how to access the API in those languages, please see [Supported Platforms](./supported-platforms).
 
 ### Standards vs. Implementation
 
@@ -90,8 +90,8 @@ There is currently no method of discovering all the apps supported by a Desktop 
 
 An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 
-- Provide the FDC3 API to web applications via a global accessible as [`window.fdc3`](support-platforms#web).
-- Provide a global [`fdc3Ready`](support-platforms#web) event to web applications that is fired when the API is ready for use.
+- Provide the FDC3 API to web applications via a global accessible as [`window.fdc3`](./supported-platforms#web).
+- Provide a global [`fdc3Ready`](./supported-platforms#web) event to web applications that is fired when the API is ready for use.
 - Provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to `raiseIntentForContext` that return multiple options), such as a resolver UI.
   - Intent resolution MUST take into account any specified input or return context types
   - Requests for resolution to apps returning a channel MUST include any apps that are registered as returning a channel with a specific type.

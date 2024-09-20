@@ -57,12 +57,8 @@ A map of string mime-type to string content
 
 **Any of:**
 
-**type**: [Action](Action)
-
-
-**type**: `object`
-
-
+- **type**: [Action](Action)
+- **type**: `object`
 
 </details>
 
