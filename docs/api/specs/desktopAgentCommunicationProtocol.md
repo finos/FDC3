@@ -141,7 +141,7 @@ An additional request and response used to deliver an [`IntentResult`](../ref/Ty
 
 Please note this exchange (and the `IntentResolution.getResult()` API call) support `void` results from a raised intent and hence this message exchange should occur for all raised intents, including those that do not return a result. In such cases, the void intent result allows resolution of the `IntentResolution.getResult()` API call and indicates that the intent handler has finished running.
 
-Request and response for removing the intent listener ([`Listener.unsubscribe()`](../ref/Types#listener))::
+Request and response for removing the intent listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
 
 - [`intentListenerUnsubscribeRequest`](https://fdc3.finos.org/schemas/next/api/intentListenerUnsubscribeRequest.schema.json)
 - [`intentListenerUnsubscribeResponse`](https://fdc3.finos.org/schemas/next/api/intentListenerUnsubscribeResponse.schema.json)
@@ -242,7 +242,7 @@ Request and response used to implement the [`getInfo()`](../ref/DesktopAgent#get
 
 #### `getOrCreateChannel()`
 
-Request and response used to implement the [`getOrCreateChannel()`](../ref/DesktopAgent#getorcreatechannel] API call:
+Request and response used to implement the [`getOrCreateChannel()`](../ref/DesktopAgent#getorcreatechannel) API call:
 
 - [`getOrCreateChannelRequest`](https://fdc3.finos.org/schemas/next/api/getOrCreateChannelRequest.schema.json)
 - [`getOrCreateChannelResponse`](https://fdc3.finos.org/schemas/next/api/getOrCreateChannelResponse.schema.json)
@@ -306,7 +306,7 @@ See [`addIntentListener`](#addintentlistener) above for details of the messages 
 
 :::
 
-Where there are multiple options for resolving a raised intents, there are two possible versions of the resulting message exchanges. Which to use depends on whether the Desktop Agent uses an intent resolver user interface (or other suitable mechanism) that it controls, or one injected into the application (for example an iframe injected by a `getAgent()` implementation into an application window) to perform resolution.
+Where there are multiple options for resolving a raised intent, there are two possible versions of the resulting message exchanges. Which to use depends on whether the Desktop Agent uses an intent resolver user interface (or other suitable mechanism) that it controls, or one injected into the application (for example an iframe injected by a `getAgent()` implementation into an application window) to perform resolution.
 
 When working with an injected interface, the Desktop Agent should respond with a `raiseIntentResponse` containing a `RaiseIntentNeedsResolutionResponsePayload`:
 
