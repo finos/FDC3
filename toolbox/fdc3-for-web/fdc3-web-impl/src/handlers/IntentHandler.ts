@@ -1,6 +1,6 @@
 import { MessageHandler } from "../BasicFDC3Server";
 import { InstanceID, ServerContext } from "../ServerContext";
-import { Directory } from "../directory/DirectoryInterface";
+import { Directory, DirectoryIntent } from "../directory/DirectoryInterface";
 import { Context } from "@kite9/fdc3-context";
 import { AppIntent, ResolveError, AppIdentifier, } from "@kite9/fdc3-standard";
 import { errorResponse, errorResponseId, successResponse, successResponseId } from "./support";
@@ -247,12 +247,24 @@ export class IntentHandler implements MessageHandler {
         const requestsWithListeners = arg0.filter(r => this.hasListener(target.instanceId!!, r.intent))
 
         if (requestsWithListeners.length == 0) {
-            // maybe listener hasn't been registered yet - create a pending intent
-            const pi = new PendingIntent(arg0[0], sc, this, target)
-            this.pendingIntents.add(pi)
+            this.createPendingIntentIfAllowed(arg0[0], sc, target)
         } else {
             // ok, deliver to the current running app.
             return forwardRequest(requestsWithListeners[0], target, sc, this)
+        }
+    }
+
+    async createPendingIntentIfAllowed(ir: IntentRequest, sc: ServerContext<any>, target: AppIdentifier) {
+        // if this app declares that it supports the intent, we'll create a pending intent
+        const matchingIntents: DirectoryIntent[] = this.directory.retrieveIntents(ir.context.type, ir.intent, undefined)
+        const declared = matchingIntents.find(i => i.appId == target.appId)
+
+        if (declared) {
+            // maybe listener hasn't been registered yet - create a pending intent
+            const pi = new PendingIntent(ir, sc, this, target)
+            this.pendingIntents.add(pi)
+        } else {
+            errorResponseId(sc, ir.requestUuid, ir.from, ResolveError.NoAppsFound, ir.type)
         }
     }
 
