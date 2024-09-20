@@ -4,7 +4,7 @@ const path = require('path');
 
 
 
-function processProperty(propertyName, propertyDetails, required, currentSchemaFilePath) {
+function processProperty(propertyName, propertyDetails, required, currentSchemaFilePath, wrapInDetails = true) {
     let markdownContent = '';
 
     if (propertyName === 'type') {
@@ -12,14 +12,14 @@ function processProperty(propertyName, propertyDetails, required, currentSchemaF
         return markdownContent;
     }   
     
-    markdownContent += "<details>\n";
+    if (wrapInDetails) { markdownContent += "<details>\n" };
     markdownContent += `  <summary><code>${propertyName}</code>${required ? " <strong>(required)</strong>" : ""}</summary>\n\n`;
     
     //Note this block doesn't support inline property definitions... only base types and references, 
     //  it will not render an object or array defined inline beyond stating that it is one
     if (propertyDetails.type) {
         //if enum doesn't exist, its ignored
-        markdownContent += renderType(propertyDetails.type, propertyDetails.enum);
+        markdownContent += renderType(propertyDetails.type, propertyDetails.enum) + "\n";
 
         if (propertyDetails.type == "object") {
             if (propertyDetails.properties && Object.entries(propertyDetails.properties).length > 0) {
@@ -42,7 +42,7 @@ function processProperty(propertyName, propertyDetails, required, currentSchemaF
             }
         }
     } else if (propertyDetails.$ref) {
-        markdownContent += renderRef(propertyDetails.$ref, currentSchemaFilePath);
+        markdownContent += renderRef(propertyDetails.$ref, currentSchemaFilePath) + "\n";
     } else if (propertyDetails.oneOf || propertyDetails.anyOf || propertyDetails.allOf) {
         //this block assumes composite properties are composed base types or references, doesn't support inline object or array definitions
         markdownContent += `${propertyDetails.oneOf ? "**One of:**" : propertyDetails.anyOf ? "**Any of:**" : propertyDetails.allOf ? "**All of:**" : ""}\n\n`;
@@ -50,13 +50,13 @@ function processProperty(propertyName, propertyDetails, required, currentSchemaF
         markdownContent += `${typeArr.map((item) => {
             if (item.type){
                 //if enum doesn't exist its ignored
-                return renderType(item.type, item.enum);
+                return "- " + renderType(item.type, item.enum);
             } else if (item.$ref) {
-                return renderRef(item.$ref, currentSchemaFilePath);
+                return "- " + renderRef(item.$ref, currentSchemaFilePath);
             } else {
                 console.warn(`    Failed to determine property type for composite property ${propertyName}, property details:\n${JSON.stringify(propertyDetails, null, 2)}`);
             }
-        }).join('\n')}\n\n`;
+        }).join('')}\n`;
     } else {
         console.warn(`    Failed to determine property type for ${propertyName}, property details:\n${JSON.stringify(propertyDetails, null, 2)}`);
     }
@@ -72,27 +72,29 @@ function processProperty(propertyName, propertyDetails, required, currentSchemaF
         });
     }
 
-    markdownContent += "</details>\n\n";
+    if (wrapInDetails) { markdownContent += "</details>" }
+    markdownContent += "\n\n";
     
     return markdownContent;
 }
 
 function renderType(type, optionalEnum) {
     if (optionalEnum) {
-        return `**type**: \`${type}\` with values:\n${optionalEnum.map((item) => `- \`${item}\``).join(',\n')}\n\n`;
+        return `**type**: \`${type}\` with values:\n${optionalEnum.map((item) => `- \`${item}\``).join(',\n')}\n`;
     } else {
-        return `**type**: \`${type}\`\n\n`;
+        return `**type**: \`${type}\`\n`;
     }
 }
 
 function renderEnum(ref) {
     // for each item in ref, wrap it in backticks and join with a comma
-    return `**possible values**:\n${ref.map((item) => `- \`${item}\``).join(',\n')}\n\n`;
+    return `**possible values**:\n${ref.map((item) => `- \`${item}\``).join(',\n')}\n`;
 }
 
 function renderRef(contextRef, currentSchemaFilePath) {
-    //There are two main types of refs to handle: 
-    // - refs to other context types
+    //There are three main types of refs to handle:
+    // - refs to internal definitions
+    // - refs to other context schemas
     // - refs to API types
     //References should be treated like URLs, they are either resolved absolutely, relatively or relative to the current doc's root
     //  most refs in current context docs are relative, but we can't assume they always will be
@@ -110,34 +112,43 @@ function renderRef(contextRef, currentSchemaFilePath) {
     if (!filePath && objectPath) {
         //its a path inside the current file
         schemaData = retrieveSchemaFile(currentSchemaFilePath);
+
+        //render the content as it won't have its own page
+        const referencedSchemaData = retrievePathInSchema(schemaData, objectPath);
+        const referencedTitle = referencedSchemaData.title ?? "";
+        
+        return processProperty(referencedTitle, referencedSchemaData, false, currentSchemaFilePath, false);
+
     } else {
         //its a ref to a different file
         schemaData = retrieveSchemaFile(filePath, currentSchemaFilePath);
 
         //determine if the reference is to a different section, e.g. to the API schemas
         standardPart = retrieveFolderName(filePath);
+
+        const title = retrieveTitleFromSchemaData(schemaData,objectPath);
+        const outputDocName = `${title.replace(/\s+/g, '')}`;
+
+        if (!standardPart) {
+            //its either in an unknown part or the current part of the Standard
+
+            //handle the generic Context type as it doesn't have a reference page
+            if (title == "Context"){
+                return `**type**: [Context](/docs/next/context/spec#the-context-interface)\n\n`;
+            } else {
+                return `**type**: [${title}](${outputDocName})\n`;
+            }
+        } else {
+            //custom handling for other standard parts...
+            return `**type**: ${standardPart}/${title}\n`;
+
+            //TODO handle API schema refs 
+            // - which are currently split across two different docs pages (Types and Metadata)
+            // - perhaps reunite these pages and just link to the resulting page.
+        }
     }
     
-    const title = retrieveTitleFromSchemaData(schemaData,objectPath);
-    const outputDocName = `${title.replace(/\s+/g, '')}`;
-
-    if (!standardPart) {
-        //its either in an unknown part or the current part of the Standard
-
-        //handle the generic Context type as it doesn't have a reference page
-        if (title == "Context"){
-            return `**type**: [Context](/docs/next/context/spec#the-context-interface)\n\n`;
-        } else {
-            return `**type**: [${title}](${outputDocName})\n\n`;
-        }
-    } else {
-        //custom handling for other standard parts...
-        return `**type**: ${standardPart}/${title}\n\n`;
-
-        //TODO handle API schema refs 
-        // - which are currently split across two different docs pages (Types and Metadata)
-        // - perhaps reunite these pages and just link to the resulting page.
-    }
+    
 }
 
 function hasAllOf(allOfArray) {
@@ -165,7 +176,7 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
 
     //If the schema has a top level enum (e.g. API error schemas) then it needs rendering here.
     if (schema.enum) {
-        markdownContent += renderEnum(schema.enum);
+        markdownContent += renderEnum(schema.enum) + "\n";
     }
 
     //if working on windows you may have the wrong slashes...
@@ -268,7 +279,7 @@ function processSchemaFile(schemaFile, schemaFolderName) {
  * @returns Contents of the referenced schema file
  */
 function retrieveSchemaFile (schemaFilePath, currentFilePath) {
-    let resolvedPath
+    let resolvedPath = schemaFilePath;
 
     if (currentFilePath) {
         //resolve the file path relative to the current file

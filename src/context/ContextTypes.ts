@@ -235,9 +235,12 @@ export interface InstrumentElement {
      * interoperability between disparate data sources. This is especially useful when using an
      * `id` field that is not globally unique.
      */
-    market?: OrganizationMarket;
-    type:    "fdc3.instrument";
-    name?:   string;
+    market?: SearchCriteriaMarket;
+    /**
+     * An optional human-readable name for the instrument
+     */
+    name?: string;
+    type:  "fdc3.instrument";
     [property: string]: any;
 }
 
@@ -301,7 +304,7 @@ export interface PurpleInstrumentIdentifiers {
  * interoperability between disparate data sources. This is especially useful when using an
  * `id` field that is not globally unique.
  */
-export interface OrganizationMarket {
+export interface SearchCriteriaMarket {
     /**
      * https://www.bloomberg.com/
      */
@@ -442,9 +445,16 @@ export interface ContactListObject {
      * An array of contact contexts that forms the list.
      */
     contacts: ContactElement[];
-    type:     "fdc3.contactList";
-    id?:      { [key: string]: any };
-    name?:    string;
+    /**
+     * One or more identifiers that refer to the contact list in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?: { [key: string]: string };
+    /**
+     * An optional human-readable summary of the contact list
+     */
+    name?: string;
+    type:  "fdc3.contactList";
     [property: string]: any;
 }
 
@@ -457,9 +467,12 @@ export interface ContactElement {
     /**
      * Identifiers that relate to the Contact represented by this context
      */
-    id:    PurpleContactIdentifiers;
-    type:  "fdc3.contact";
+    id: PurpleContactIdentifiers;
+    /**
+     * An optional human-readable name for the contact
+     */
     name?: string;
+    type:  "fdc3.contact";
     [property: string]: any;
 }
 
@@ -721,7 +734,7 @@ export interface ChatSearchCriteria {
      *
      * Empty search criteria can be supported to allow resetting of filters.
      */
-    criteria: Array<OrganizationObject | string>;
+    criteria: SearchCriteria[];
     type:     "fdc3.chat.searchCriteria";
     id?:      { [key: string]: any };
     name?:    string;
@@ -729,23 +742,26 @@ export interface ChatSearchCriteria {
 }
 
 /**
+ * An individual criteria against which to match chat messages, based on an FDC3 context or
+ * free-text string.
+ *
  * financial instrument that relates to the definition of this product
  *
  *
  *
  * A financial instrument from any asset class.
  *
+ * The contact that initiated the interaction
+ *
+ * A person contact that can be engaged with through email, calling, messaging, CMS, etc.
+ *
  * An entity that can be used when referencing private companies and other organizations
  * where a specific instrument is not available or desired e.g. CRM and News workflows.
  *
  * It is valid to include extra properties and metadata as part of the organization payload,
  * but the minimum requirement is for at least one specified identifier to be provided.
- *
- * The contact that initiated the interaction
- *
- * A person contact that can be engaged with through email, calling, messaging, CMS, etc.
  */
-export interface OrganizationObject {
+export interface SearchCriteria {
     /**
      * Any combination of instrument identifiers can be used together to resolve ambiguity, or
      * for a better match. Not all applications will use the same instrument identifiers, which
@@ -761,9 +777,9 @@ export interface OrganizationObject {
      * fields, define a property that makes it clear what the value represents. Doing so will
      * make interpretation easier for the developers of target applications.
      *
-     * Identifiers for the organization, at least one must be provided.
-     *
      * Identifiers that relate to the Contact represented by this context
+     *
+     * Identifiers for the organization, at least one must be provided.
      */
     id: Identifiers;
     /**
@@ -771,9 +787,16 @@ export interface OrganizationObject {
      * interoperability between disparate data sources. This is especially useful when using an
      * `id` field that is not globally unique.
      */
-    market?: OrganizationMarket;
-    type:    TentacledInteractionType;
-    name?:   string;
+    market?: SearchCriteriaMarket;
+    /**
+     * An optional human-readable name for the instrument
+     *
+     * An optional human-readable name for the contact
+     *
+     * An optional human-readable name of the organization
+     */
+    name?: string;
+    type:  SearchCriteriaType;
     [property: string]: any;
 }
 
@@ -792,9 +815,9 @@ export interface OrganizationObject {
  * fields, define a property that makes it clear what the value represents. Doing so will
  * make interpretation easier for the developers of target applications.
  *
- * Identifiers for the organization, at least one must be provided.
- *
  * Identifiers that relate to the Contact represented by this context
+ *
+ * Identifiers for the organization, at least one must be provided.
  */
 export interface Identifiers {
     /**
@@ -808,9 +831,9 @@ export interface Identifiers {
     /**
      * https://www.factset.com/
      *
-     * FactSet Permanent Identifier representing the organization
-     *
      * FactSet Permanent Identifier representing the contact
+     *
+     * FactSet Permanent Identifier representing the organization
      */
     FDS_ID?: string;
     /**
@@ -840,16 +863,16 @@ export interface Identifiers {
      */
     ticker?: string;
     /**
+     * The email address for the contact
+     */
+    email?: string;
+    /**
      * The Legal Entity Identifier (LEI) is a 20-character, alpha-numeric code based on the ISO
      * 17442 standard developed by the International Organization for Standardization (ISO). It
      * connects to key reference information that enables clear and unique identification of
      * legal entities participating in financial transactions.
      */
     LEI?: string;
-    /**
-     * The email address for the contact
-     */
-    email?: string;
     [property: string]: any;
 }
 
@@ -859,7 +882,7 @@ export interface Identifiers {
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
-export type TentacledInteractionType = "fdc3.instrument" | "fdc3.organization" | "fdc3.contact";
+export type SearchCriteriaType = "fdc3.instrument" | "fdc3.contact" | "fdc3.organization";
 
 /**
  * Free text to be used for a keyword search
@@ -875,9 +898,12 @@ export interface Contact {
     /**
      * Identifiers that relate to the Contact represented by this context
      */
-    id:    FluffyContactIdentifiers;
-    type:  "fdc3.contact";
+    id: FluffyContactIdentifiers;
+    /**
+     * An optional human-readable name for the contact
+     */
     name?: string;
+    type:  "fdc3.contact";
     [property: string]: any;
 }
 
@@ -908,9 +934,16 @@ export interface ContactList {
      * An array of contact contexts that forms the list.
      */
     contacts: ContactElement[];
-    type:     "fdc3.contactList";
-    id?:      { [key: string]: any };
-    name?:    string;
+    /**
+     * One or more identifiers that refer to the contact list in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?: { [key: string]: string };
+    /**
+     * An optional human-readable summary of the contact list
+     */
+    name?: string;
+    type:  "fdc3.contactList";
     [property: string]: any;
 }
 
@@ -986,9 +1019,12 @@ export interface Context {
  * applications.
  */
 export interface Country {
-    id:    CountryID;
-    type:  "fdc3.country";
+    id: CountryID;
+    /**
+     * An optional human-readable name for the country
+     */
     name?: string;
+    type:  "fdc3.country";
     [property: string]: any;
 }
 
@@ -1092,10 +1128,18 @@ export interface Email {
 export interface EmailRecipients {
     /**
      * Identifiers that relate to the Contact represented by this context
+     *
+     * One or more identifiers that refer to the contact list in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
      */
-    id?:   EmailRecipientsID;
-    type:  EmailRecipientsType;
+    id?: ContactTIdentifiers;
+    /**
+     * An optional human-readable name for the contact
+     *
+     * An optional human-readable summary of the contact list
+     */
     name?: string;
+    type:  EmailRecipientsType;
     /**
      * An array of contact contexts that forms the list.
      */
@@ -1105,8 +1149,11 @@ export interface EmailRecipients {
 
 /**
  * Identifiers that relate to the Contact represented by this context
+ *
+ * One or more identifiers that refer to the contact list in an OMS, EMS or related system.
+ * Specific key names for systems are expected to be standardized in future.
  */
-export interface EmailRecipientsID {
+export interface ContactTIdentifiers {
     /**
      * The email address for the contact
      */
@@ -1159,8 +1206,11 @@ export interface Instrument {
      * `id` field that is not globally unique.
      */
     market?: PurpleMarket;
-    type:    "fdc3.instrument";
-    name?:   string;
+    /**
+     * An optional human-readable name for the instrument
+     */
+    name?: string;
+    type:  "fdc3.instrument";
     [property: string]: any;
 }
 
@@ -1256,12 +1306,19 @@ export interface PurpleMarket {
  */
 export interface InstrumentList {
     /**
+     * One or more identifiers that refer to the instrument list in an OMS, EMS or related
+     * system. Specific key names for systems are expected to be standardized in future.
+     */
+    id?: { [key: string]: string };
+    /**
      * An array of instrument contexts that forms the list.
      */
     instruments: InstrumentElement[];
-    type:        "fdc3.instrumentList";
-    id?:         { [key: string]: any };
-    name?:       string;
+    /**
+     * An optional human-readable summary of the instrument list
+     */
+    name?: string;
+    type:  "fdc3.instrumentList";
     [property: string]: any;
 }
 
@@ -1561,12 +1618,19 @@ export interface ProductObject {
  */
 export interface OrderList {
     /**
+     * One or more identifiers that refer to the order list in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?: { [key: string]: string };
+    /**
+     * An optional human-readable summary of the order list
+     */
+    name?: string;
+    /**
      * An array of order contexts that forms the list.
      */
     orders: OrderElement[];
     type:   "fdc3.orderList";
-    id?:    { [key: string]: any };
-    name?:  string;
     [property: string]: any;
 }
 
@@ -1627,9 +1691,12 @@ export interface Organization {
     /**
      * Identifiers for the organization, at least one must be provided.
      */
-    id:    OrganizationIdentifiers;
-    type:  "fdc3.organization";
+    id: OrganizationIdentifiers;
+    /**
+     * An optional human-readable name of the organization
+     */
     name?: string;
+    type:  "fdc3.organization";
     [property: string]: any;
 }
 
@@ -1679,12 +1746,19 @@ export interface OrganizationIdentifiers {
  */
 export interface Portfolio {
     /**
+     * One or more identifiers that refer to the portfolio in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?: { [key: string]: string };
+    /**
+     * An optional human-readable name for the portfolio
+     */
+    name?: string;
+    /**
      * The List of Positions which make up the Portfolio
      */
     positions: PositionElement[];
     type:      "fdc3.portfolio";
-    id?:       { [key: string]: any };
-    name?:     string;
     [property: string]: any;
 }
 
@@ -1706,11 +1780,18 @@ export interface PositionElement {
     /**
      * The amount of the holding, e.g. a number of shares
      */
-    holding:    number;
+    holding: number;
+    /**
+     * One or more identifiers that refer to the position in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?:        { [key: string]: string };
     instrument: InstrumentElement;
-    type:       "fdc3.position";
-    id?:        { [key: string]: any };
-    name?:      string;
+    /**
+     * An optional human-readable name for the position
+     */
+    name?: string;
+    type:  "fdc3.position";
     [property: string]: any;
 }
 
@@ -1746,11 +1827,18 @@ export interface Position {
     /**
      * The amount of the holding, e.g. a number of shares
      */
-    holding:    number;
+    holding: number;
+    /**
+     * One or more identifiers that refer to the position in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?:        { [key: string]: string };
     instrument: InstrumentElement;
-    type:       "fdc3.position";
-    id?:        { [key: string]: any };
-    name?:      string;
+    /**
+     * An optional human-readable name for the position
+     */
+    name?: string;
+    type:  "fdc3.position";
     [property: string]: any;
 }
 
@@ -1880,12 +1968,19 @@ export interface Trade {
  */
 export interface TradeList {
     /**
+     * One or more identifiers that refer to the trade list in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?: { [key: string]: string };
+    /**
+     * An optional human-readable name for the trade list
+     */
+    name?: string;
+    /**
      * An array of trade contexts that forms the list.
      */
     trades: TradeElement[];
     type:   "fdc3.tradeList";
-    id?:    { [key: string]: any };
-    name?:  string;
     [property: string]: any;
 }
 
@@ -2415,9 +2510,9 @@ const typeMap: any = {
     ], "any"),
     "InstrumentElement": o([
         { json: "id", js: "id", typ: r("PurpleInstrumentIdentifiers") },
-        { json: "market", js: "market", typ: u(undefined, r("OrganizationMarket")) },
-        { json: "type", js: "type", typ: r("PurpleInteractionType") },
+        { json: "market", js: "market", typ: u(undefined, r("SearchCriteriaMarket")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("InstrumentType") },
     ], "any"),
     "PurpleInstrumentIdentifiers": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
@@ -2430,7 +2525,7 @@ const typeMap: any = {
         { json: "SEDOL", js: "SEDOL", typ: u(undefined, "") },
         { json: "ticker", js: "ticker", typ: u(undefined, "") },
     ], "any"),
-    "OrganizationMarket": o([
+    "SearchCriteriaMarket": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
         { json: "COUNTRY_ISOALPHA2", js: "COUNTRY_ISOALPHA2", typ: u(undefined, "") },
         { json: "MIC", js: "MIC", typ: u(undefined, "") },
@@ -2454,14 +2549,14 @@ const typeMap: any = {
     ], "any"),
     "ContactListObject": o([
         { json: "contacts", js: "contacts", typ: a(r("ContactElement")) },
-        { json: "type", js: "type", typ: r("ContactListType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
+        { json: "id", js: "id", typ: u(undefined, m("")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("ContactListType") },
     ], "any"),
     "ContactElement": o([
         { json: "id", js: "id", typ: r("PurpleContactIdentifiers") },
-        { json: "type", js: "type", typ: r("FluffyInteractionType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("ContactType") },
     ], "any"),
     "PurpleContactIdentifiers": o([
         { json: "email", js: "email", typ: u(undefined, "") },
@@ -2521,16 +2616,16 @@ const typeMap: any = {
         { json: "url", js: "url", typ: u(undefined, "") },
     ], "any"),
     "ChatSearchCriteria": o([
-        { json: "criteria", js: "criteria", typ: a(u(r("OrganizationObject"), "")) },
+        { json: "criteria", js: "criteria", typ: a(r("SearchCriteria")) },
         { json: "type", js: "type", typ: r("ChatSearchCriteriaType") },
         { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
-    "OrganizationObject": o([
+    "SearchCriteria": o([
         { json: "id", js: "id", typ: r("Identifiers") },
-        { json: "market", js: "market", typ: u(undefined, r("OrganizationMarket")) },
-        { json: "type", js: "type", typ: r("TentacledInteractionType") },
+        { json: "market", js: "market", typ: u(undefined, r("SearchCriteriaMarket")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("SearchCriteriaType") },
     ], "any"),
     "Identifiers": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
@@ -2542,13 +2637,13 @@ const typeMap: any = {
         { json: "RIC", js: "RIC", typ: u(undefined, "") },
         { json: "SEDOL", js: "SEDOL", typ: u(undefined, "") },
         { json: "ticker", js: "ticker", typ: u(undefined, "") },
-        { json: "LEI", js: "LEI", typ: u(undefined, "") },
         { json: "email", js: "email", typ: u(undefined, "") },
+        { json: "LEI", js: "LEI", typ: u(undefined, "") },
     ], "any"),
     "Contact": o([
         { json: "id", js: "id", typ: r("FluffyContactIdentifiers") },
-        { json: "type", js: "type", typ: r("FluffyInteractionType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("ContactType") },
     ], "any"),
     "FluffyContactIdentifiers": o([
         { json: "email", js: "email", typ: u(undefined, "") },
@@ -2556,9 +2651,9 @@ const typeMap: any = {
     ], "any"),
     "ContactList": o([
         { json: "contacts", js: "contacts", typ: a(r("ContactElement")) },
-        { json: "type", js: "type", typ: r("ContactListType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
+        { json: "id", js: "id", typ: u(undefined, m("")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("ContactListType") },
     ], "any"),
     "Context": o([
         { json: "id", js: "id", typ: u(undefined, m("any")) },
@@ -2567,8 +2662,8 @@ const typeMap: any = {
     ], "any"),
     "Country": o([
         { json: "id", js: "id", typ: r("CountryID") },
-        { json: "type", js: "type", typ: r("CountryType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("CountryType") },
     ], "any"),
     "CountryID": o([
         { json: "COUNTRY_ISOALPHA2", js: "COUNTRY_ISOALPHA2", typ: u(undefined, "") },
@@ -2593,20 +2688,20 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "EmailRecipients": o([
-        { json: "id", js: "id", typ: u(undefined, r("EmailRecipientsID")) },
-        { json: "type", js: "type", typ: r("EmailRecipientsType") },
+        { json: "id", js: "id", typ: u(undefined, r("ContactTIdentifiers")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("EmailRecipientsType") },
         { json: "contacts", js: "contacts", typ: u(undefined, a(r("ContactElement"))) },
     ], "any"),
-    "EmailRecipientsID": o([
+    "ContactTIdentifiers": o([
         { json: "email", js: "email", typ: u(undefined, "") },
         { json: "FDS_ID", js: "FDS_ID", typ: u(undefined, "") },
     ], "any"),
     "Instrument": o([
         { json: "id", js: "id", typ: r("FluffyInstrumentIdentifiers") },
         { json: "market", js: "market", typ: u(undefined, r("PurpleMarket")) },
-        { json: "type", js: "type", typ: r("PurpleInteractionType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("InstrumentType") },
     ], "any"),
     "FluffyInstrumentIdentifiers": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
@@ -2626,10 +2721,10 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "InstrumentList": o([
+        { json: "id", js: "id", typ: u(undefined, m("")) },
         { json: "instruments", js: "instruments", typ: a(r("InstrumentElement")) },
-        { json: "type", js: "type", typ: r("InstrumentListType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("InstrumentListType") },
     ], "any"),
     "Interaction": o([
         { json: "description", js: "description", typ: "" },
@@ -2693,10 +2788,10 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("ProductType") },
     ], "any"),
     "OrderList": o([
+        { json: "id", js: "id", typ: u(undefined, m("")) },
+        { json: "name", js: "name", typ: u(undefined, "") },
         { json: "orders", js: "orders", typ: a(r("OrderElement")) },
         { json: "type", js: "type", typ: r("OrderListType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
-        { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "OrderElement": o([
         { json: "details", js: "details", typ: u(undefined, r("FluffyOrderDetails")) },
@@ -2709,8 +2804,8 @@ const typeMap: any = {
     ], "any"),
     "Organization": o([
         { json: "id", js: "id", typ: r("OrganizationIdentifiers") },
-        { json: "type", js: "type", typ: r("StickyInteractionType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("OrganizationType") },
     ], "any"),
     "OrganizationIdentifiers": o([
         { json: "FDS_ID", js: "FDS_ID", typ: u(undefined, "") },
@@ -2718,24 +2813,24 @@ const typeMap: any = {
         { json: "PERMID", js: "PERMID", typ: u(undefined, "") },
     ], "any"),
     "Portfolio": o([
+        { json: "id", js: "id", typ: u(undefined, m("")) },
+        { json: "name", js: "name", typ: u(undefined, "") },
         { json: "positions", js: "positions", typ: a(r("PositionElement")) },
         { json: "type", js: "type", typ: r("PortfolioType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
-        { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "PositionElement": o([
         { json: "holding", js: "holding", typ: 3.14 },
+        { json: "id", js: "id", typ: u(undefined, m("")) },
         { json: "instrument", js: "instrument", typ: r("InstrumentElement") },
-        { json: "type", js: "type", typ: r("PositionType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("PositionType") },
     ], "any"),
     "Position": o([
         { json: "holding", js: "holding", typ: 3.14 },
+        { json: "id", js: "id", typ: u(undefined, m("")) },
         { json: "instrument", js: "instrument", typ: r("InstrumentElement") },
-        { json: "type", js: "type", typ: r("PositionType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("PositionType") },
     ], "any"),
     "Product": o([
         { json: "id", js: "id", typ: m("") },
@@ -2757,10 +2852,10 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("TradeType") },
     ], "any"),
     "TradeList": o([
+        { json: "id", js: "id", typ: u(undefined, m("")) },
+        { json: "name", js: "name", typ: u(undefined, "") },
         { json: "trades", js: "trades", typ: a(r("TradeElement")) },
         { json: "type", js: "type", typ: r("TradeListType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
-        { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "TradeElement": o([
         { json: "id", js: "id", typ: m("") },
@@ -2789,7 +2884,7 @@ const typeMap: any = {
     "ActionType": [
         "fdc3.action",
     ],
-    "PurpleInteractionType": [
+    "InstrumentType": [
         "fdc3.instrument",
     ],
     "TimeRangeType": [
@@ -2810,7 +2905,7 @@ const typeMap: any = {
     "ChartType": [
         "fdc3.chart",
     ],
-    "FluffyInteractionType": [
+    "ContactType": [
         "fdc3.contact",
     ],
     "ContactListType": [
@@ -2832,7 +2927,7 @@ const typeMap: any = {
     "ChatMessageType": [
         "fdc3.chat.message",
     ],
-    "TentacledInteractionType": [
+    "SearchCriteriaType": [
         "fdc3.contact",
         "fdc3.instrument",
         "fdc3.organization",
@@ -2871,7 +2966,7 @@ const typeMap: any = {
     "OrderListType": [
         "fdc3.orderList",
     ],
-    "StickyInteractionType": [
+    "OrganizationType": [
         "fdc3.organization",
     ],
     "PositionType": [

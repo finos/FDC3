@@ -12,12 +12,25 @@
           "const": "fdc3.tradeList"
         },
         "trades": {
+          "title": "List of Trades",
+          "description": "An array of trade contexts that forms the list.",
           "type": "array",
           "items": {
             "$ref": "trade.schema.json#"
-          },
-          "title": "List of Trades",
-          "description": "An array of trade contexts that forms the list."
+          }
+        },
+        "id": {
+          "title": "Trade List Identifiers",
+          "description": "One or more identifiers that refer to the trade list in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "An optional human-readable name for the trade list"
         }
       },
       "required": [

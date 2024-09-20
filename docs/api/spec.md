@@ -58,7 +58,7 @@ FDC3 and the Desktop Agent API it defines are intended to be independent of part
 
 Specifically, the use of ['unions'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of primitive values in API type and metadata objects, or function parameters SHOULD be avoided as they often cannot be replicated in other languages. Unions of more complex types (such as specific [Context](../context/spec#the-context-interface) Types) may be used where a suitable interface is available or can be created to allow the required polymorphism in languages other than TypeScript.
 
-For implementation details relating to particular languages and how to access the API in those languages please see [Supported Platforms](supported-platforms).
+For implementation details relating to particular languages, and how to access the API in those languages, please see [Supported Platforms](./supported-platforms).
 
 ### Standards vs. Implementation
 
