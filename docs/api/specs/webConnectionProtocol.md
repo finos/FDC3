@@ -46,7 +46,7 @@ There are a number of messages defined as part of the Web Connection Protocol. D
 TypeScript types representing all DACP and WCP messages are generated from the JSON Schema source and can be imported from the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3):
 
 ```ts
-import {BrowserTypes} from '@finos/fdc3';
+import { BrowserTypes } from '@finos/fdc3';
 ```
 
 :::
