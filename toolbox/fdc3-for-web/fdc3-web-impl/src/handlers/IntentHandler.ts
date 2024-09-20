@@ -165,7 +165,7 @@ export class IntentHandler implements MessageHandler {
         const to = this.pendingResolutions.get(requestId)
         if (to) {
             // post the result to the app that raised the intent
-            successResponse(sc, arg0, to!!, {
+            successResponseId(sc, requestId, to!!, {
                 intentResult: arg0.payload.intentResult
             }, 'raiseIntentResultResponse')
 
