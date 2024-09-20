@@ -74,19 +74,18 @@ A small number of arguments are accepted that can affect the behavior of `getAge
  * 
  * @property {boolean} channelSelector Flag indicating that the application  
  * needs access to a channel selector UI (i.e. because it supports User Channels 
- * and does not implement its own UI for selecting channels). If not set will 
- * default to true. MAY be ignored by Desktop Agent Preload (container)  
- * implementations. 
+ * and does not implement its own UI for selecting channels). Defaults to true. 
+ * MAY be ignored by Desktop Agent Preload (container) implementations. 
  * 
  * @property {boolean} intentResolver Flag indicating that the application  
- * needs access to an intent resolver UI (i.e. because it supports raising on or 
- * more intents and and does not implement its own UI for selecting target apps. 
- * If not set will default to true. MAY be ignored by Desktop Agent Preload  
- * (container) implementations. 
+ * needs access to an intent resolver UI (i.e. because it supports raising one
+ * or more intents and and does not implement its own UI for selecting target 
+ * apps. Default to `true`. MAY be ignored by Desktop Agent Preload (container) 
+ * implementations. 
  * 
  * @property {boolean} dontSetWindowFdc3 For backwards compatibility, `getAgent` 
  * will set a reference to the Desktop Agent implementation at `window.fdc3` 
- * if one does not already exist, and will fire the fdc3Ready event. Setting  
+ * if one does not already exist, and will fire the `fdc3Ready` event. Setting  
  * this flag to `true` will inhibit that behavior, leaving `window.fdc3` unset. 
  *  
  * @property {function} failover An optional function that provides a  
