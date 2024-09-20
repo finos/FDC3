@@ -45,6 +45,7 @@ Optional Intent to raise to perform the actions. Should reference an intent type
 
 **type**: [Context](/docs/next/context/spec#the-context-interface)
 
+
 A context object with which the action will be performed
 
 </details>
