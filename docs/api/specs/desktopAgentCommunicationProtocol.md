@@ -287,7 +287,16 @@ sequenceDiagram
     AppB ->> DesktopAgent: addContextListenerRequest
     DesktopAgent ->> AppB: addContextListenerResponse
     DesktopAgent ->> AppB: broadcastEvent
+    DesktopAgent ->> AppA: openResponse<br/>(with AppIdentifier)
 ```
+
+However, if the app opened doesn't add a context listener within a timeout (defined by the Desktop Agent) then the `openResponse` should be sent with `AppTimeout` error from the [`OpenError`](../ref/Errors#openerror) enumeration.
+
+:::tip
+
+Desktop Agents MUST allow at least 15 seconds for an app to add a context listener before timing out (see [Desktop Agent API Standard Compliance](https://fdc3.finos.org/docs/next/api/spec#desktop-agent-api-standard-compliance) for more detail) and applications SHOULD add their listeners as soon as possible to keep the delay short (see the [addContextListener reference doc](https://fdc3.finos.org/docs/next/api/ref/DesktopAgent#addcontextlistener)).
+
+:::
 
 #### `raiseIntent()`
 
