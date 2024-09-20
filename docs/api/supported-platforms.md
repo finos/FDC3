@@ -136,7 +136,7 @@ For a .NET application to be FDC3-enabled, it needs to run in the context of a p
 
 #### Usage
 
-FDC3 offers the [`Finos.Fdc3` NuGet package](https://www.nuget.org/packages/Finos.Fdc3) that can be used by .NET applications to target operations from the [API Specification](api/spec) in a consistent way. Each FDC3-compliant desktop agent that the application runs in, can then provide an implementation of the FDC3 API operations.
+FDC3 offers the [`Finos.Fdc3` NuGet package](https://www.nuget.org/packages/Finos.Fdc3) that can be used by .NET applications to target operations from the [API Specification](./spec) in a consistent way. Each FDC3-compliant desktop agent that the application runs in, can then provide an implementation of the FDC3 API operations.
 
 ## Hybrid
 

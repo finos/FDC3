@@ -16,7 +16,10 @@
       "id": { 
         "title": "Chat room id",
         "description": "Identifier(s) for the chat - currently unstandardized",
-        "type": "object"
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
       },
       "url": { 
         "title": "Chat URL",

@@ -40,6 +40,31 @@ The List of Positions which make up the Portfolio
 
 </details>
 
+<details>
+  <summary><code>id</code></summary>
+
+**type**: `object`
+
+<details>
+  <summary><code>Additional Properties</code></summary>
+
+**type**: `string`
+
+</details>
+
+One or more identifiers that refer to the portfolio in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
+
+</details>
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable name for the portfolio
+
+</details>
+
 ## Example
 
 ```json
