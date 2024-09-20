@@ -209,7 +209,7 @@ Checking whether an application has closed may be achieved by a number of approa
 - By polling the application for responses via the `heartbeatEvent` and `heartbeatAcknowledgement` messages provided in the [Desktop Agent Communication Protocol](./desktopAgentCommunicationProtocol#checking-apps-are-alive). These message may be used for both periodic and on-demand polling by DA implementations. On-demand polling could, for example, be used to check that all instances returned in a findIntent response or displayed in an intent resolver are still alive.
   - Desktop Agents MAY determine their own timeout, or support configuration, to be used for considering an application to have closed as this may be affected by the implementation details of app and DAs.
 
-Finally, Desktop Agents SHOULD retain instance details for applications that have closed as they may appear to close during navigation events, or may navigate away and then navigate back. By retaining the instance data (`instanceId`, `instanceUuid` and `WindowProxy`) the same instance identity can be maintained or reissued. There is no standard length of time that such details should be retained, hance, Desktop Agents MAY determine for themselves how long to retain instance details for closed instances.
+Finally, Desktop Agents SHOULD retain instance details for applications that have closed as they may appear to close during navigation events, or may navigate away and then navigate back. By retaining the instance data (`instanceId`, `instanceUuid` and `WindowProxy`) the same instance identity can be maintained or reissued. There is no standard length of time that such details should be retained, hence, Desktop Agents MAY determine for themselves how long to retain instance details for closed instances.
 
 ## Responding to app communications with Desktop Agent Communication Protocol (DACP)
 
@@ -217,12 +217,12 @@ After validating an application's identity and any instance identity to be reuse
 
 ## Implementing DAs in hidden iframes
 
-As described above, DA providers can leverage hidden iframes to establish a communication mechanism that is independent of a Parent window. This approach allows apps to connect to a DA even when they were not opened by that DA.
+As described above, DA providers can leverage hidden iframes to establish a communication mechanism that is independent of a parent window or frame. This approach allows apps to reconnect to a DA even when the parent window or frame has closed, or to connect a DA they've started themselves via a `failover` function.
 
-The hidden iframe url can be provided in two ways:
+The hidden iframe URL can be provided in two ways:
 
-1. By a Parent window - This allows DAs to redirect communications to via a hidden iframe that loads a known URL. The main benefit of this approach is that it can allow a system to continue to operate even if the parent window is closed.
-2. By a `failover` function - When no parent DA can be found (such as when a tab is opened directly by an end user) then a failover function can create a hidden iframe and return a reference to it (a `WindowProxy`) to initiate communication with via the WCP and DACP in the same way as we do with a parent window. Alternatively, a `DesktopAgent` implementation maybe loaded directly and returned from the failover function, which `getAgent()` will pass-through.
+1. By a Parent window or frame - This allows DAs to handle communication via a hidden iframe that loads a known URL. The main benefit of this approach is that it can allow a system to continue to operate even if the parent window or frame is closed.
+2. By a `failover` function - When no parent DA can be found (such as when a tab is opened directly by an end user) then a failover function can create a hidden iframe and return a reference to it (a `WindowProxy`) that is used to initiate communication via the WCP in the same way as we do with a parent window or frame. Alternatively, a `DesktopAgent` implementation may be loaded directly and returned from the `failover` function, which `getAgent()` will pass-through.
 
 ## Channel Selector and Intent Resolver User Interfaces
 
@@ -230,7 +230,7 @@ Channel Selector and Intent Resolver user-interfaces are normally provided by De
 
 The `getAgent()` implementation can facilitate the injection and management of iframes in an application window. An app may provide the optional `channelSelector` and `intentResolver` parameters to the `getAgent()` to indicate whether or not they need these interfaces. For example, the apps may not raise intents. Some apps may also resolve intents internally by leveraging the Desktop Agent's `findIntent` or `findIntentsForContext` API functions. In these situations, the apps won't need a DA-provided interface. Once an app calls `getAgent()`, the parameters that the app provides are forwarded onto the Desktop Agent in the `WCP1Hello` connection message.
 
-Desktop Agents may implement their own user interfaces for channel selection and intent resolution. The URL for each interface may be returned in the `channelSelectorUrl` and `intentResolverUrl` properties of the payload of the `WCP3Handshake` message sent by the DA during the connection sequence. Alternatively, if the Desktop Agent is be able to provide these user interfaces by other means (for example DAs that render applications in iframes within a window they control may use other iframes to render these UIs) or if they app indicated that it did not need them then `channelSelectorUrl` and `intentResolverUrl` may be set to `false`. Finally, `channelSelectorUrl` and `intentResolverUrl` may be set to `true` to indicate that `getAgent()` should use the default reference implementations of these UIs provided via the <https://fdc3.finsos.org> website.
+Desktop Agents may implement their own user interfaces for channel selection and intent resolution. The URL for each interface may be returned in the `channelSelectorUrl` and `intentResolverUrl` properties of the payload of the `WCP3Handshake` message sent by the DA during the connection sequence. Alternatively, if the Desktop Agent is able to provide these user interfaces by other means (for example DAs that render applications in iframes within a window they control may use other iframes to render these UIs) or if they app indicated that it did not need them then `channelSelectorUrl` and `intentResolverUrl` may be set to `false`. Finally, `channelSelectorUrl` and `intentResolverUrl` may be set to `true` to indicate that `getAgent()` should use the default reference implementations of these UIs provided via the <https://fdc3.finsos.org> website.
 
 User interface iframes are initially injected into the application window with CSS that prevents their display:
 
