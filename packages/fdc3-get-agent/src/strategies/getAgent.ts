@@ -1,4 +1,4 @@
-import { DesktopAgent, GetAgentType, GetAgentParams } from '@kite9/fdc3-standard'
+import { DesktopAgent, GetAgentType, GetAgentParams, AgentError } from '@kite9/fdc3-standard'
 import { ElectronEventLoader } from './ElectronEventLoader'
 import { handleWindowProxy, PostMessageLoader } from './PostMessageLoader'
 import { TimeoutLoader } from './TimeoutLoader'
@@ -17,7 +17,11 @@ export function clearAgentPromise() {
     theAgentPromise = null;
 }
 
-function getAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
+export function getAgentPromise(): Promise<DesktopAgent> | null {
+    return theAgentPromise;
+}
+
+function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
 
     const STRATEGIES = [
         new ElectronEventLoader(),
@@ -35,7 +39,7 @@ function getAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
             if (da) {
                 return da as DesktopAgent
             } else {
-                throw new Error("No DesktopAgent found")
+                throw new Error(AgentError.AgentNotFound)
             }
         })
         .catch(async (error) => {
@@ -75,11 +79,18 @@ export const getAgent: GetAgentType = (optionsOverride?: GetAgentParams) => {
             globalThis.window.dispatchEvent(new Event("fdc3Ready"));
         }
 
+        globalThis.window.addEventListener("pagehide", () => {
+            if ((da as any).disconnect) {
+                (da as any).disconnect()
+                theAgentPromise = null;
+            }
+        })
+
         return da;
     }
 
     if (!theAgentPromise) {
-        theAgentPromise = getAgentPromise(options).then(handleGenericOptions)
+        theAgentPromise = initAgentPromise(options).then(handleGenericOptions)
     }
 
     return theAgentPromise
@@ -92,10 +103,12 @@ export const getAgent: GetAgentType = (optionsOverride?: GetAgentParams) => {
  * @returns A DesktopAgent promise.
  */
 export function fdc3Ready(waitForMs = DEFAULT_WAIT_FOR_MS): Promise<DesktopAgent> {
-    return getAgent({
+    const agent = getAgent({
         timeout: waitForMs,
         dontSetWindowFdc3: false,
         channelSelector: true,
         intentResolver: true
     })
+
+    return agent
 }

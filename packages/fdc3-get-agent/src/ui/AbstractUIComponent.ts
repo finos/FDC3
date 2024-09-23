@@ -14,14 +14,14 @@ export const ALLOWED_CSS_ELEMENTS = [
     "width",
     "height",
     "position",
-    "zIndex",
+    "z-index",
     "left",
     "right",
     "top",
     "bottom",
     "transition",
-    "maxHeight",
-    "maxWidth",
+    "max-height",
+    "max-width",
     "display"
 ]
 

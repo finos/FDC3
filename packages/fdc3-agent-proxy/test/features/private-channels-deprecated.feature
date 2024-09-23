@@ -8,27 +8,9 @@ Feature: Basic Private Channels Support
     And I refer to "{result}" as "privateChannel"
     And "instrumentMessageOne" is a "broadcastEvent" message on channel "{privateChannel.id}" with context "fdc3.instrument"
 
-  Scenario: Adding and then unsubscribing a context listener will send a notification of each event to the agent
-    Given "contextHandler" pipes context to "context"
-    When I call "{privateChannel}" with "addContextListener" with parameters "fdc3.instrument" and "{contextHandler}"
-    And I refer to "{result}" as "theListener"
-    And I call "{theListener}" with "unsubscribe"
-    Then messaging will have posts
-      | type                              | payload.channelId   | payload.contextType | payload.listenerUUID | matches_type                      |
-      | addContextListenerRequest         | {privateChannel.id} | fdc3.instrument     | {null}               | addContextListenerRequest         |
-      | contextListenerUnsubscribeRequest | {null}              | {null}              | {theListener.id}     | contextListenerUnsubscribeRequest |
-
-  Scenario: Adding a Context Listener on a given Private Channel to receive a notification
-    Given "resultHandler" pipes context to "contexts"
-    When I call "{privateChannel}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
-    And messaging receives "{instrumentMessageOne}"
-    Then "{contexts}" is an array of objects with the following contents
-      | id.ticker | type            | name  |
-      | AAPL      | fdc3.instrument | Apple |
-
   Scenario: Adding and then unsubscribing an "onAddContextListener" listener will send a notification of each event to the agent
-    Given "typesHandler" pipes events to "types"
-    When I call "{privateChannel}" with "addEventListener" with parameters "addContextListener" and "{typesHandler}"
+    Given "typesHandler" pipes types to "types"
+    When I call "{privateChannel}" with "onAddContextListener" with parameter "{typesHandler}"
     And I refer to "{result}" as "theListener"
     And we wait for a period of "100" ms
     And I call "{theListener}" with "unsubscribe"
@@ -39,8 +21,8 @@ Feature: Basic Private Channels Support
 
   Scenario: Adding an "onAddContextListener" on a given Private Channel to receive a notification
     Given "onAddContextListenerMessage" is a "privateChannelOnAddContextListenerEvent" message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
-    And "typesHandler" pipes events to "types"
-    When I call "{privateChannel}" with "addEventListener" with parameters "addContextListener" and "{typesHandler}"
+    And "typesHandler" pipes types to "types"
+    When I call "{privateChannel}" with "onAddContextListener" with parameter "{typesHandler}"
     And we wait for a period of "100" ms
     And messaging receives "{onAddContextListenerMessage}"
     Then "{types}" is an array of strings with the following values
@@ -48,8 +30,8 @@ Feature: Basic Private Channels Support
       | fdc3.instrument |
 
   Scenario: Adding and then unsubscribing an "onUnsubscribe" listener will send a notification of each event to the agent
-    Given "typesHandler" pipes events to "types"
-    When I call "{privateChannel}" with "addEventListener" with parameters "unsubscribe" and "{typesHandler}"
+    Given "typesHandler" pipes types to "types"
+    When I call "{privateChannel}" with "onUnsubscribe" with parameter "{typesHandler}"
     And we wait for a period of "100" ms
     And I refer to "{result}" as "theListener"
     And I call "{theListener}" with "unsubscribe"
@@ -60,8 +42,8 @@ Feature: Basic Private Channels Support
 
   Scenario: Adding an "onUnsubscribe" on a given Private Channel to receive a notification
     Given "onUnsubscribeListenerMessage" is a "privateChannelOnUnsubscribeEvent" message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
-    And "typesHandler" pipes events to "types"
-    When I call "{privateChannel}" with "addEventListener" with parameters "unsubscribe" and "{typesHandler}"
+    And "typesHandler" pipes types to "types"
+    When I call "{privateChannel}" with "onUnsubscribe" with parameter "{typesHandler}"
     And we wait for a period of "100" ms
     And messaging receives "{onUnsubscribeListenerMessage}"
     Then "{types}" is an array of strings with the following values
@@ -70,7 +52,7 @@ Feature: Basic Private Channels Support
 
   Scenario: Adding and then unsubscribing an "onDisconnect" listener will send a notification of each event to the agent
     Given "voidHandler" is a invocation counter into "count"
-    When I call "{privateChannel}" with "addEventListener" with parameters "disconnect" and "{voidHandler}"
+    When I call "{privateChannel}" with "onDisconnect" with parameter "{voidHandler}"
     And I refer to "{result}" as "theListener"
     And we wait for a period of "100" ms
     And I call "{theListener}" with "unsubscribe"
@@ -82,21 +64,7 @@ Feature: Basic Private Channels Support
   Scenario: Adding an "onDisconnect" on a given Private Channel to receive a notification
     Given "onDisconnectListenerMessage" is a "privateChannelOnDisconnectEvent" message on channel "{privateChannel.id}"
     And "voidHandler" is a invocation counter into "count"
-    When I call "{privateChannel}" with "addEventListener" with parameters "disconnect" and "{voidHandler}"
+    When I call "{privateChannel}" with "onDisconnect" with parameter "{voidHandler}"
     And we wait for a period of "100" ms
     And messaging receives "{onDisconnectListenerMessage}"
     Then "{count}" is "1"
-
-  Scenario: I can broadcast context on a private channel
-    Given "instrumentContext" is a "fdc3.instrument" context
-    When I call "{privateChannel}" with "broadcast" with parameter "{instrumentContext}"
-    Then messaging will have posts
-      | type             | payload.channelId   | payload.context.type | payload.context.name | matches_type     |
-      | broadcastRequest | {privateChannel.id} | fdc3.instrument      | Apple                | broadcastRequest |
-
-  Scenario: I disconnect from a private channel
-    And I call "{privateChannel}" with "disconnect"
-    And messaging will have posts
-      | payload.channelId   | matches_type                    |
-      | {null}              | createPrivateChannelRequest     |
-      | {privateChannel.id} | privateChannelDisconnectRequest |

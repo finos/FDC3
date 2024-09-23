@@ -23,8 +23,9 @@ Feature: Basic Intents Support
       | source.appId | source.instanceId |
       | chipShop     | c1                |
     And messaging will have posts
-      | payload.intent | payload.context.type | payload.context.id.ticker | matches_type       |
-      | OrderFood      | fdc3.instrument      | AAPL                      | raiseIntentRequest |
+      | payload.intent | payload.context.type | payload.context.id.ticker | payload.app.instanceId | matches_type       |
+      | OrderFood      | fdc3.instrument      | AAPL                      | {null}                 | raiseIntentRequest |
+      | OrderFood      | fdc3.instrument      | AAPL                      | c1                     | raiseIntentRequest |
 
   Scenario: Raising an intent and invoking the intent resolver, but the user cancels it.
     When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{cancelContext}"
@@ -51,8 +52,9 @@ Feature: Basic Intents Support
       | source.appId | source.instanceId |
       | chipShop     | c1                |
     And messaging will have posts
-      | payload.context.type | payload.context.id.ticker | matches_type                 |
-      | fdc3.instrument      | AAPL                      | raiseIntentForContextRequest |
+      | payload.context.type | payload.context.id.ticker | payload.app.instanceId | matches_type                 |
+      | fdc3.instrument      | AAPL                      | {null}                 | raiseIntentForContextRequest |
+      | fdc3.instrument      | AAPL                      | c1                     | raiseIntentRequest           |
 
   Scenario: Raising Intent By Context exactly right, so the resolver isn't required
     When I call "{api}" with "raiseIntentForContext" with parameters "{countryContext}" and "{t1}"
