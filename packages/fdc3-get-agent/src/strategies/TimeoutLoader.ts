@@ -1,4 +1,4 @@
-import { DesktopAgent, GetAgentParams } from "@kite9/fdc3-standard";
+import { AgentError, DesktopAgent, GetAgentParams } from "@kite9/fdc3-standard";
 import { Loader } from "./Loader";
 
 
@@ -16,7 +16,7 @@ export class TimeoutLoader implements Loader {
         if ((timeRemaining > 0) && (this.done == false)) {
             setTimeout(() => this.poll(endTime, resolve, reject), 100);
         } else if (this.done == false) {
-            reject(new Error('timeout'));
+            reject(new Error(AgentError.AgentNotFound));
         } else {
             resolve();
         }

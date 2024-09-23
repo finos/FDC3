@@ -1,6 +1,6 @@
 import { FDC3Server } from "@kite9/fdc3-web-impl"
 import { TestServerContext } from "./TestServerContext"
-import { MockWindow } from "./MockDocument"
+import { MockWindow } from "./MockWindow"
 import { AutomaticResponse } from "./responses/AutomaticResponses"
 import { FindIntent } from "./responses/FindIntent"
 import { RaiseIntent } from "./responses/RaiseIntent"

@@ -7,7 +7,7 @@ type IframeResolvePayload = BrowserTypes.IframeResolvePayload
 
 const DEFAULT_COLLAPSED_CSS = {
     position: "fixed",
-    zIndex: "1000",
+    'z-index': 1000,
     right: "0",
     bottom: "0",
     width: "0",
@@ -16,7 +16,7 @@ const DEFAULT_COLLAPSED_CSS = {
 
 const DEFAULT_EXPANDED_CSS = {
     position: "fixed",
-    zIndex: "1000",
+    'z-index': 1000,
     left: "10%",
     top: "10%",
     right: "10%",
@@ -68,7 +68,7 @@ window.addEventListener("load", () => {
             myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
         } else if (e.data.type == 'iframeResolve') {
             myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: DEFAULT_EXPANDED_CSS } } as IframeRestyle)
-
+            Array.from(list.children).forEach(i => i.remove())
             const details = e.data.payload as IframeResolvePayload
             details.appIntents.forEach(intent => {
 

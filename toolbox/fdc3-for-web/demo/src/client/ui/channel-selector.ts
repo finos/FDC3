@@ -9,7 +9,7 @@ var channelId: string | null = null
 
 const DEFAULT_COLLAPSED_CSS = {
     position: "fixed",
-    zIndex: "1000",
+    'z-index': 1000,
     right: "10px",
     bottom: "10px",
     width: "50px",
@@ -18,11 +18,11 @@ const DEFAULT_COLLAPSED_CSS = {
 
 const DEFAULT_EXPANDED_CSS = {
     position: "fixed",
-    zIndex: "1000",
+    'z-index': 1000,
     right: "10px",
     bottom: "10px",
     width: "450px",
-    maxHeight: "600px",
+    'max-height': "600px",
     transition: "all 0.5s ease-out allow-discrete"
 }
 

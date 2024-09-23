@@ -137,6 +137,12 @@ Feature: Different Strategies for Accessing the Desktop Agent
     Then I call "{document}" with "shutdown"
 
   Scenario: Nothing works and we timeout
+    When I call getAgent for a promise result with the following options
+      | dontSetWindowFdc3 | timeout | intentResolver | channelSelector |
+      | true              |    1000 | false          | false           |
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve
+    And "{result}" is an error with message "AgentNotFound"
 
   Scenario: Someone calls getAgent twice
     Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
