@@ -69,7 +69,19 @@ window.addEventListener("load", () => {
   };
 
   parent.postMessage({
-    type: "iframeHello"
+    type: "iframeHello",
+    payload: {
+      initialCSS: {
+        width: `${8*4}px`,
+        height: `${8*5}px`,
+        right: "2px",
+        bottom: "2px",
+        zIndex: "1000",
+        "z-index": "1000",
+        position: "fixed"
+
+      }
+    }
   }, "*", [mc.port2]);
 
   const expand = () => {
