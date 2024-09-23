@@ -32,7 +32,10 @@
   "scripts": {
     "clean": "npm run clean --workspaces --if-present",
     "build": "npm run build --workspaces --if-present",
-    "test": "npm run test --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present && nyc merge .nyc_output ",
+    "merge": " nyc merge packages/fdc3-agent-proxy/.nyc_output coverage/1.json && nyc merge packages/fdc3-get-agent/.nyc_output coverage/2.json && nyc merge toolbox/fdc3-for-web/fdc3-web-impl/.nyc_output  coverage/3.json",
+    "merge2": "istanbul-merge --out coverage/complete.json coverage/1.json coverage/2.json coverage/3.json",
+    "report": "nyc report --reporter html --reporter text -t coverage --report-dir coverage/summary",
     "lint": "npm run lint --workspaces --if-present",
     "syncpack": "npm exec syncpack fix-mismatches --types 'local'",
     "dev": "concurrently \"cd toolbox/fdc3-workbench && npm run dev\" \"cd toolbox/fdc3-for-web/demo && npm run dev\""
@@ -49,6 +52,7 @@
     "syncpack": "^12.4.0"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "istanbul-merge": "^2.0.0"
   }
 }
