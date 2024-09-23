@@ -29,11 +29,11 @@ jobs:
       run: npm test
 
     - name: Merge Results 1
-      run: npm merge
+      run: npm run merge
       if: always()
 
     - name: Merge Results 2
-      run: npm merge2
+      run: npm run merge2
       if: always()
 
     - name: Report NYC coverage
