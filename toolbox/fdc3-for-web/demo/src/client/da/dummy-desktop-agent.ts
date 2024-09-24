@@ -68,6 +68,7 @@ window.addEventListener("load", () => {
         const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, false, 20000, 10000)
 
         socket.on(FDC3_APP_EVENT, (msg, from) => {
+            console.log(`App Event ${JSON.stringify(msg, null, 2)} from ${from}`)
             fdc3Server.receive(msg, from)
         })
 

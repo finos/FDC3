@@ -19,6 +19,6 @@ Given('{string} sends a heartbeat response', function (this: CustomWorld, appStr
 });
 
 Then('I test the liveness of {string}', async function (this: CustomWorld, appStr: string) {
-    const out = await this.sc.isAppConnected(createMeta(this, appStr).source)
+    const out = await this.sc.isAppConnected(createMeta(this, appStr).source.instanceId)
     this.props["result"] = out
 })

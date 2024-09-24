@@ -1,5 +1,5 @@
 import { MessageHandler } from "../BasicFDC3Server";
-import { InstanceID, ServerContext } from "../ServerContext";
+import { InstanceID, ServerContext, State } from "../ServerContext";
 import { Directory, DirectoryApp } from "../directory/DirectoryInterface";
 import { ContextElement } from "@kite9/fdc3-context";
 import {
@@ -44,7 +44,7 @@ class PendingApp {
     }
 
     private onSuccess() {
-        this.sc.setAppConnected(this.openedApp!!)
+        this.sc.setAppState(this.openedApp?.instanceId!!, State.Connected)
         successResponse(this.sc, this.msg, this.source, {
             appIdentifier: {
                 appId: this.openedApp!!.appId,
@@ -176,7 +176,12 @@ export class OpenHandler implements MessageHandler {
     async findInstances(arg0: FindInstancesRequest, sc: ServerContext<any>, from: AppIdentifier): Promise<void> {
         const appId = arg0.payload.app.appId
         const openApps = await sc.getConnectedApps()
-        const matching = openApps.filter(a => a.appId == appId)
+        const matching = openApps.filter(a => a.appId == appId).map(a => {
+            return {
+                appId: a.appId,
+                instanceId: a.instanceId
+            }
+        })
         successResponse(sc, arg0, from, {
             appIdentifiers: matching
         }, 'findInstancesResponse')

@@ -62,7 +62,7 @@ io.on('connection', (socket: Socket) => {
 
   socket.on(FDC3_APP_EVENT, function (data, from): void {
     // message from app to da
-    //  console.log(JSON.stringify(data))
+    console.log(`APP Sent ${JSON.stringify(data, null, 2)}`)
 
     if ((myInstance == null) && (data.type == 'intentResolutionChoice')) {
       // message from app's intent resolver
@@ -83,7 +83,10 @@ io.on('connection', (socket: Socket) => {
     // send message to app
     const destSocket = myInstance?.apps.get(to)
     if (destSocket) {
+      console.log(`DA Sent ${JSON.stringify(data, null, 2)} to ${to}`)
       destSocket.emit(FDC3_DA_EVENT, data, to)
+    } else {
+      console.log("Failed to send message to app " + to)
     }
   })
 
