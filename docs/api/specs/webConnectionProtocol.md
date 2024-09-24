@@ -286,6 +286,8 @@ SessionStorage is ephemeral, only existing for the duration of the window's life
 
 Resolve the `getAgent()` promise with an object containing either a `DesktopAgent` implementation (that was found at `window.fdc3` or returned by a `failover` function) or a 'Desktop Agent Proxy' implementation (a class implementing the `DesktopAgent` interface that uses the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) to communicate with a Desktop Agent over the `MessagePort`).
 
+Where a `DesktopAgent` or 'Desktop Agent Proxy' implementation was successfully returned, any subsequent calls to `getAgent()` that are not preceded by a navigation or refresh event, should resolve to the same instance.
+
 ### Step 5: Disconnection
 
 Desktop Agent Preload interfaces, as used in container-based Desktop Agent implementations, are usually able to track the lifecycle and current URL of windows that host web apps in their scope. Hence, this is currently no requirement nor means for an app to indicate that it is closing, rather it is the responsibility of the Desktop Agent to update its internal state when an app closes or changes identity.
