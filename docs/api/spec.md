@@ -184,10 +184,10 @@ Since version 1.2 of the FDC3 Standard it may do so via the [`fdc3.getInfo()`](r
 ```ts
 import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
 
-if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), '1.2')) {
+if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
   await fdc3.raiseIntentForContext(context);
 } else {
-  await fdc3.raiseIntent('ViewChart', context);
+  await fdc3.raiseIntent("ViewChart", context);
 }
 ```
 
@@ -381,7 +381,7 @@ For example, to raise a specific intent:
 
 ```ts
 try {
-  const resolution = await fdc3.raiseIntent('StageOrder', context);
+  const resolution = await fdc3.raiseIntent("StageOrder", context);
 }
 catch (err){ ... }
 ```
@@ -440,7 +440,7 @@ Use metadata about the resolving app instance to target a further intent
 
 ```ts
 try {
-  const resolution = await fdc3.raiseIntent('StageOrder', context);
+  const resolution = await fdc3.raiseIntent("StageOrder", context);
   ...
 
   //some time later
@@ -606,7 +606,7 @@ To find a User channel, one calls:
 ```ts
 // returns an array of channels
 const allChannels = await fdc3.getUserChannels();
-const redChannel = allChannels.find(c => c.id === 'red');
+const redChannel = allChannels.find(c => c.id === "red");
 ```
 
 </TabItem>
@@ -656,75 +656,75 @@ Future versions of the FDC3 Standard may support connections between desktop age
 ```ts
 const recommendedChannels = [
   {
-    id: 'fdc3.channel.1',
-    type: 'user',
+    id: "fdc3.channel.1",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 1',
-      color: 'red',
-      glyph: '1',
+      name: "Channel 1",
+      color: "red",
+      glyph: "1",
     },
   },
   {
-    id: 'fdc3.channel.2',
-    type: 'user',
+    id: "fdc3.channel.2",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 2',
-      color: 'orange',
-      glyph: '2',
+      name: "Channel 2",
+      color: "orange",
+      glyph: "2",
     },
   },
   {
-    id: 'fdc3.channel.3',
-    type: 'user',
+    id: "fdc3.channel.3",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 3',
-      color: 'yellow',
-      glyph: '3',
+      name: "Channel 3",
+      color: "yellow",
+      glyph: "3",
     },
   },
   {
-    id: 'fdc3.channel.4',
-    type: 'user',
+    id: "fdc3.channel.4",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 4',
-      color: 'green',
-      glyph: '4',
+      name: "Channel 4",
+      color: "green",
+      glyph: "4",
     },
   },
   {
-    id: 'fdc3.channel.5',
-    type: 'user',
+    id: "fdc3.channel.5",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 5',
-      color: 'cyan',
-      glyph: '5',
+      name: "Channel 5",
+      color: "cyan",
+      glyph: "5",
     },
   },
   {
-    id: 'fdc3.channel.6',
-    type: 'user',
+    id: "fdc3.channel.6",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 6',
-      color: 'blue',
-      glyph: '6',
+      name: "Channel 6",
+      color: "blue",
+      glyph: "6",
     },
   },
   {
-    id: 'fdc3.channel.7',
-    type: 'user',
+    id: "fdc3.channel.7",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 7',
-      color: 'magenta',
-      glyph: '7',
+      name: "Channel 7",
+      color: "magenta",
+      glyph: "7",
     },
   },
   {
-    id: 'fdc3.channel.8',
-    type: 'user',
+    id: "fdc3.channel.8",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 8',
-      color: 'purple',
-      glyph: '8',
+      name: "Channel 8",
+      color: "purple",
+      glyph: "8",
     },
   },
 ];
@@ -744,7 +744,7 @@ To get (or create) a [`Channel`](ref/Channel) reference, then interact with it:
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-const appChannel = await fdc3.getOrCreateChannel('my_custom_channel');
+const appChannel = await fdc3.getOrCreateChannel("my_custom_channel");
 // get the current context of the channel
 const current = await appChannel.getCurrentContext();
 // add a listener
@@ -783,7 +783,7 @@ let joinedChannel = await fdc3.getCurrentChannel()
 const listener = await fdc3.addContextListener(null, context => { ... });
 
 //retrieve an App channel and add a listener that is specific to that channel
-const myChannel = await fdc3.getOrCreateChannel('my_custom_channel');
+const myChannel = await fdc3.getOrCreateChannel("my_custom_channel");
 const myChannelListener = await myChannel.addContextListener(null, context => { ... });
 
 fdc3.joinChannel('blue')
