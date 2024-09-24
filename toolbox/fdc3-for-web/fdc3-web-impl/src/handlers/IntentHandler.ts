@@ -1,5 +1,5 @@
 import { MessageHandler } from "../BasicFDC3Server";
-import { InstanceID, ServerContext } from "../ServerContext";
+import { AppRegistration, InstanceID, ServerContext } from "../ServerContext";
 import { Directory, DirectoryIntent } from "../directory/DirectoryInterface";
 import { Context } from "@kite9/fdc3-context";
 import { AppIntent, ResolveError, AppIdentifier, } from "@kite9/fdc3-standard";
@@ -34,7 +34,7 @@ type IntentRequest = {
 /**
  * Re-writes the request to forward it on to the target application
  */
-async function forwardRequest(arg0: IntentRequest, to: AppIdentifier, sc: ServerContext<any>, ih: IntentHandler): Promise<void> {
+async function forwardRequest(arg0: IntentRequest, to: AppIdentifier, sc: ServerContext<AppRegistration>, ih: IntentHandler): Promise<void> {
     const out: IntentEvent = {
         type: 'intentEvent',
         payload: {
@@ -74,10 +74,10 @@ class PendingIntent {
     complete: boolean = false
     r: IntentRequest
     appId: AppIdentifier
-    sc: ServerContext<any>
+    sc: ServerContext<AppRegistration>
     ih: IntentHandler
 
-    constructor(r: IntentRequest, sc: ServerContext<any>, ih: IntentHandler, appId: AppIdentifier) {
+    constructor(r: IntentRequest, sc: ServerContext<AppRegistration>, ih: IntentHandler, appId: AppIdentifier) {
         this.r = r
         this.appId = appId
         this.sc = sc
@@ -120,12 +120,12 @@ export class IntentHandler implements MessageHandler {
     shutdown(): void {
     }
 
-    async narrowIntents(appIntents: AppIntent[], context: Context, sc: ServerContext<any>): Promise<AppIntent[]> {
+    async narrowIntents(appIntents: AppIntent[], context: Context, sc: ServerContext<AppRegistration>): Promise<AppIntent[]> {
         const out = await sc.narrowIntents(appIntents, context)
         return out
     }
 
-    async accept(msg: any, sc: ServerContext<any>, uuid: InstanceID): Promise<void> {
+    async accept(msg: any, sc: ServerContext<AppRegistration>, uuid: InstanceID): Promise<void> {
         const from = sc.getInstanceDetails(uuid)
 
         if (from == null) {
@@ -160,7 +160,7 @@ export class IntentHandler implements MessageHandler {
     /**
      * Called when target app handles an intent
      */
-    intentResultRequest(arg0: IntentResultRequest, sc: ServerContext<any>, from: AppIdentifier): void | PromiseLike<void> {
+    intentResultRequest(arg0: IntentResultRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier): void | PromiseLike<void> {
         const requestId = arg0.payload.raiseIntentRequestUuid
         const to = this.pendingResolutions.get(requestId)
         if (to) {
@@ -178,7 +178,7 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    onUnsubscribe(arg0: IntentListenerUnsubscribeRequest, sc: ServerContext<any>, from: AppIdentifier): void {
+    onUnsubscribe(arg0: IntentListenerUnsubscribeRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier): void {
         const id = arg0.payload.listenerUUID
         const fi = this.regs.findIndex((e) => e.listenerUUID == id)
         if (fi > -1) {
@@ -189,7 +189,7 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    onAddIntentListener(arg0: AddIntentListenerRequest, sc: ServerContext<any>, from: AppIdentifier): void {
+    onAddIntentListener(arg0: AddIntentListenerRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier): void {
         const lr = {
             appId: from.appId,
             instanceId: from.instanceId,
@@ -215,11 +215,11 @@ export class IntentHandler implements MessageHandler {
         return this.regs.find(r => (r.instanceId == instanceId) && (r.intentName == intentName)) != null
     }
 
-    async getRunningApps(appId: string, sc: ServerContext<any>): Promise<AppIdentifier[]> {
+    async getRunningApps(appId: string, sc: ServerContext<AppRegistration>): Promise<AppIdentifier[]> {
         return (await sc.getConnectedApps()).filter(a => a.appId == appId)
     }
 
-    async startWithPendingIntent(arg0: IntentRequest, sc: ServerContext<any>, target: AppIdentifier): Promise<void> {
+    async startWithPendingIntent(arg0: IntentRequest, sc: ServerContext<AppRegistration>, target: AppIdentifier): Promise<void> {
         // app exists but needs starting
         const pi = new PendingIntent(arg0, sc, this, target)
         this.pendingIntents.add(pi)
@@ -238,7 +238,7 @@ export class IntentHandler implements MessageHandler {
         })
     }
 
-    async raiseIntentRequestToSpecificInstance(arg0: IntentRequest[], sc: ServerContext<any>, target: AppIdentifier): Promise<void> {
+    async raiseIntentRequestToSpecificInstance(arg0: IntentRequest[], sc: ServerContext<AppRegistration>, target: AppIdentifier): Promise<void> {
         if (!(await sc.isAppConnected(target.instanceId!!))) {
             // instance doesn't exist
             return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.TargetInstanceUnavailable, arg0[0].type)
@@ -254,7 +254,7 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    async createPendingIntentIfAllowed(ir: IntentRequest, sc: ServerContext<any>, target: AppIdentifier) {
+    async createPendingIntentIfAllowed(ir: IntentRequest, sc: ServerContext<AppRegistration>, target: AppIdentifier) {
         // if this app declares that it supports the intent, we'll create a pending intent
         const matchingIntents: DirectoryIntent[] = this.directory.retrieveIntents(ir.context.type, ir.intent, undefined)
         const declared = matchingIntents.find(i => i.appId == target.appId)
@@ -268,7 +268,7 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    async raiseIntentRequestToSpecificAppId(arg0: IntentRequest[], sc: ServerContext<any>, target: AppIdentifier): Promise<void> {
+    async raiseIntentRequestToSpecificAppId(arg0: IntentRequest[], sc: ServerContext<AppRegistration>, target: AppIdentifier): Promise<void> {
         // dealing with a specific app, which may or may not be open
         const runningApps = await this.getRunningApps(target.appId, sc)
 
@@ -316,7 +316,7 @@ export class IntentHandler implements MessageHandler {
         return (uniqueApps == 1)
     }
 
-    async raiseIntentToAnyApp(arg0: IntentRequest[], sc: ServerContext<any>): Promise<void> {
+    async raiseIntentToAnyApp(arg0: IntentRequest[], sc: ServerContext<AppRegistration>): Promise<void> {
         const connectedApps = await sc.getConnectedApps()
         const matchingIntents = arg0.flatMap(i => this.directory.retrieveIntents(i.context.type, i.intent, undefined))
         const uniqueIntentNames = matchingIntents.map(i => i.intentName).filter((v, i, a) => a.indexOf(v) === i)
@@ -373,7 +373,7 @@ export class IntentHandler implements MessageHandler {
 
     }
 
-    async raiseIntentRequest(arg0: RaiseIntentRequest, sc: ServerContext<any>, from: AppIdentifier): Promise<void> {
+    async raiseIntentRequest(arg0: RaiseIntentRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier): Promise<void> {
         const intentRequest: IntentRequest = {
             context: arg0.payload.context,
             from,
@@ -392,7 +392,7 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    async raiseIntentForContextRequest(arg0: RaiseIntentForContextRequest, sc: ServerContext<any>, from: AppIdentifier): Promise<void> {
+    async raiseIntentForContextRequest(arg0: RaiseIntentForContextRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier): Promise<void> {
         // dealing with a specific instance of an app
         const mappedIntents = this.directory.retrieveIntents(arg0.payload.context.type, undefined, undefined)
         const uniqueIntentNames = mappedIntents.filter((v, i, a) => a.findIndex(v2 => v2.intentName == v.intentName) == i)
@@ -420,7 +420,7 @@ export class IntentHandler implements MessageHandler {
         }
     }
 
-    async findIntentsByContextRequest(r: FindIntentsByContextRequest, sc: ServerContext<any>, from: AppIdentifier): Promise<void> {
+    async findIntentsByContextRequest(r: FindIntentsByContextRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier): Promise<void> {
 
         // TODO: Add result type
         const { context } = r.payload
@@ -454,7 +454,7 @@ export class IntentHandler implements MessageHandler {
     }
 
 
-    async findIntentRequest(r: FindIntentRequest, sc: ServerContext<any>, from: AppIdentifier): Promise<void> {
+    async findIntentRequest(r: FindIntentRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier): Promise<void> {
         const { intent, context, resultType } = r.payload
 
         // listeners for connected applications
@@ -494,7 +494,7 @@ export class IntentHandler implements MessageHandler {
         }, 'findIntentResponse')
     }
 
-    async retrieveListeners(intentName: string | undefined, sc: ServerContext<any>): Promise<ListenerRegistration[]> {
+    async retrieveListeners(intentName: string | undefined, sc: ServerContext<AppRegistration>): Promise<ListenerRegistration[]> {
         const activeApps = await sc.getConnectedApps()
         const matching = this.regs.filter(r => r.intentName == intentName)
 

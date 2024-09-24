@@ -1,19 +1,19 @@
-import { ServerContext } from "../ServerContext";
+import { AppRegistration, ServerContext } from "../ServerContext";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 import { AppIdentifier } from "@kite9/fdc3-standard";
 
 type AppRequestMessage = BrowserTypes.AppRequestMessage
 type AgentResponseMessage = BrowserTypes.AgentResponseMessage
 
-export function successResponse(sc: ServerContext<any>, request: AppRequestMessage, to: AppIdentifier, payload: any, type: string) {
+export function successResponse(sc: ServerContext<AppRegistration>, request: AppRequestMessage, to: AppIdentifier, payload: any, type: string) {
     return successResponseId(sc, request.meta.requestUuid, to, payload, type);
 }
 
-export function errorResponse(sc: ServerContext<any>, request: AppRequestMessage, to: AppIdentifier, error: string, type: string) {
+export function errorResponse(sc: ServerContext<AppRegistration>, request: AppRequestMessage, to: AppIdentifier, error: string, type: string) {
     return errorResponseId(sc, request.meta.requestUuid, to, error, type);
 }
 
-export function successResponseId(sc: ServerContext<any>, requestId: string, to: AppIdentifier, payload: any, type: string) {
+export function successResponseId(sc: ServerContext<AppRegistration>, requestId: string, to: AppIdentifier, payload: any, type: string) {
     sc.post({
         meta: {
             responseUuid: sc.createUUID(),
@@ -25,7 +25,7 @@ export function successResponseId(sc: ServerContext<any>, requestId: string, to:
     } as AgentResponseMessage, to.instanceId!!)
 }
 
-export function errorResponseId(sc: ServerContext<any>, requestId: string, to: AppIdentifier, error: string, type: string) {
+export function errorResponseId(sc: ServerContext<AppRegistration>, requestId: string, to: AppIdentifier, error: string, type: string) {
     sc.post({
         meta: {
             responseUuid: sc.createUUID(),

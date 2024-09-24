@@ -1,4 +1,4 @@
-import { AppIntent, AppIdentifier } from "@kite9/fdc3-standard";
+import { AppIntent } from "@kite9/fdc3-standard";
 import { Context } from "@kite9/fdc3-context";
 
 export enum State {
@@ -8,8 +8,10 @@ export enum State {
     Terminated /* App has sent a termination message */
 }
 
-export type AppRegistration = AppIdentifier & {
-    state: State
+export type AppRegistration = {
+    state: State,
+    appId: string;
+    instanceId: InstanceID
 }
 
 /**

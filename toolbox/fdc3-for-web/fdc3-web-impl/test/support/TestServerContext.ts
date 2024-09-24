@@ -121,7 +121,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     getInstanceUUID(appId: AppIdentifier): InstanceID {
         this.setInstanceDetails(appId.instanceId!!, {
             appId: appId.appId,
-            instanceId: appId.instanceId,
+            instanceId: appId.instanceId!!,
             state: State.Connected
         })
         return appId.instanceId!!

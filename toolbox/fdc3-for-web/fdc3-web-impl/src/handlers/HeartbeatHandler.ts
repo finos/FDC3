@@ -10,17 +10,15 @@ export class HeartbeatHandler implements MessageHandler {
 
     private readonly contexts: ServerContext<AppRegistration>[] = []
     private readonly lastHeartbeats: Map<InstanceID, number> = new Map()
-    private readonly warnings: Set<InstanceID> = new Set()
     private readonly timerFunction: NodeJS.Timeout
 
-    constructor(pingInterval: number = 1000, warnAfter: number = 5000, deadAfter: number = 10000) {
+    constructor(pingInterval: number = 1000, disconnectedAfter: number = 5000, deadAfter: number = 10000) {
 
         this.timerFunction = setInterval(() => {
+            console.log(`Contexts: ${this.contexts.length} Last Heartbeats: `, this.heartbeatTimes())
+
             this.contexts.forEach(async (sc) => {
                 const allAops = await sc.getAllApps()
-
-                console.log(`Last Heartbeats: `, this.heartbeatTimes())
-
                 allAops
                     .filter(app => (app.state == State.Connected) || (app.state == State.NotResponding))
                     .forEach(app => {
@@ -33,14 +31,14 @@ export class HeartbeatHandler implements MessageHandler {
                         if (lastHeartbeat != undefined) {
                             const timeSinceLastHeartbeat = now - lastHeartbeat
 
-                            if (timeSinceLastHeartbeat < warnAfter) {
-                                this.warnings.delete(app.instanceId!!)
-                            } else if ((timeSinceLastHeartbeat > warnAfter) && (!this.warnings.has(app.instanceId!!))) {
-                                console.warn(`No heartbeat from ${app.instanceId} for ${timeSinceLastHeartbeat}ms`)
-                                this.warnings.add(app.instanceId!!)
-                            } else if (timeSinceLastHeartbeat > deadAfter) {
+                            if (timeSinceLastHeartbeat < disconnectedAfter) {
+                                sc.setAppState(app.instanceId!!, State.Connected)
+                            } else if ((timeSinceLastHeartbeat > disconnectedAfter) && (!this.warnings.has(app.instanceId!!))) {
                                 console.error(`No heartbeat from ${app.instanceId} for ${timeSinceLastHeartbeat}ms. App is considered not responding.`)
                                 sc.setAppState(app.instanceId!!, State.NotResponding)
+                            } else if (timeSinceLastHeartbeat > deadAfter) {
+                                console.error(`No heartbeat from ${app.instanceId} for ${timeSinceLastHeartbeat}ms. App is considered terminated.`)
+                                sc.setAppState(app.instanceId!!, State.Terminated)
                             } else {
                                 // no action
                             }
@@ -81,6 +79,7 @@ export class HeartbeatHandler implements MessageHandler {
             const app = sc.getInstanceDetails(from)
             if (app) {
                 sc.setAppState(from, State.Terminated)
+                this
             }
         }
     }

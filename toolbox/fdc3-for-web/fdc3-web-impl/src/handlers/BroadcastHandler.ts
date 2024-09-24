@@ -1,5 +1,5 @@
 import { MessageHandler } from "../BasicFDC3Server";
-import { InstanceID, ServerContext } from "../ServerContext";
+import { AppRegistration, InstanceID, ServerContext } from "../ServerContext";
 import { Context } from "@kite9/fdc3-context";
 import { AppIdentifier, ChannelError, DisplayMetadata } from "@kite9/fdc3-standard";
 import { successResponse, errorResponse, onlyUnique } from "./support";
@@ -102,7 +102,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    accept(msg: any, sc: ServerContext<any>, uuid: InstanceID) {
+    accept(msg: any, sc: ServerContext<AppRegistration>, uuid: InstanceID) {
         const from = sc.getInstanceDetails(uuid)
 
         if (from == null) {
@@ -146,7 +146,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    handleCreatePrivateChannelRequest(arg0: CreatePrivateChannelRequest, sc: ServerContext<any>, from: AppIdentifier) {
+    handleCreatePrivateChannelRequest(arg0: CreatePrivateChannelRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier) {
         const id = sc.createUUID()
         this.state.push({
             id,
@@ -159,7 +159,7 @@ export class BroadcastHandler implements MessageHandler {
         successResponse(sc, arg0, from, { privateChannel: { id, type: this.convertChannelTypeToString(ChannelType.private) } }, 'createPrivateChannelResponse')
     }
 
-    handleGetCurrentContextRequest(arg0: GetCurrentContextRequest, sc: ServerContext<any>, from: AppIdentifier) {
+    handleGetCurrentContextRequest(arg0: GetCurrentContextRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier) {
         const channel = this.getChannelById(arg0.payload.channelId)
         const type = arg0.payload.contextType
 
@@ -171,7 +171,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    handlePrivateChannelUnsubscribeEventListenerRequest(arg0: PrivateChannelUnsubscribeEventListenerRequest, sc: ServerContext<any>, from: AppIdentifier) {
+    handlePrivateChannelUnsubscribeEventListenerRequest(arg0: PrivateChannelUnsubscribeEventListenerRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier) {
         const i = this.eventListeners.findIndex(r => r.listenerUuid == arg0.payload.listenerUUID)
         if (i > -1) {
             this.eventListeners.splice(i, 1)
@@ -181,7 +181,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    handlePrivateChannelDisconnectRequest(arg0: PrivateChannelDisconnectRequest, sc: ServerContext<any>, from: AppIdentifier) {
+    handlePrivateChannelDisconnectRequest(arg0: PrivateChannelDisconnectRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier) {
         const toUnsubscribe = this.contextListeners
             .filter(r => (r.appId == from.appId) && (r.instanceId == from.instanceId))
             .filter(r => r.channelId == arg0.payload.channelId)
@@ -195,7 +195,7 @@ export class BroadcastHandler implements MessageHandler {
         successResponse(sc, arg0, from, {}, 'privateChannelDisconnectResponse')
     }
 
-    handleContextListenerUnsubscribeRequest(arg0: ContextListenerUnsubscribeRequest, sc: ServerContext<any>, from: AppIdentifier) {
+    handleContextListenerUnsubscribeRequest(arg0: ContextListenerUnsubscribeRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier) {
         const i = this.contextListeners
             .findIndex(r => (r.listenerUuid == arg0.payload.listenerUUID) && (r.instanceId == from.instanceId))
 
@@ -210,7 +210,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    handleAddContextListenerRequest(arg0: AddContextListenerRequest, sc: ServerContext<any>, from: AppIdentifier) {
+    handleAddContextListenerRequest(arg0: AddContextListenerRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier) {
         var channelId = null
         var channelType = ChannelType.user
 
@@ -241,7 +241,7 @@ export class BroadcastHandler implements MessageHandler {
 
     }
 
-    handleBroadcastRequest(arg0: BroadcastRequest, sc: ServerContext<any>, from: AppIdentifier) {
+    handleBroadcastRequest(arg0: BroadcastRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier) {
         const matchingListeners = this.contextListeners
             .filter(r => r.channelId == arg0.payload.channelId)
             .filter(r => r.contextType == null || r.contextType == arg0.payload.context.type)
@@ -268,7 +268,7 @@ export class BroadcastHandler implements MessageHandler {
         successResponse(sc, arg0, from, {}, 'broadcastResponse')
     }
 
-    handleGetCurrentChannelRequest(arg0: GetCurrentChannelRequest, sc: ServerContext<any>, from: AppIdentifier) {
+    handleGetCurrentChannelRequest(arg0: GetCurrentChannelRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier) {
         const currentChannel = this.getCurrentChannel(from)
         if (currentChannel) {
             successResponse(sc, arg0, from, {
@@ -283,7 +283,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    handleJoinUserChannelRequest(arg0: JoinUserChannelRequest, sc: ServerContext<any>, from: AppIdentifier) {
+    handleJoinUserChannelRequest(arg0: JoinUserChannelRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier) {
         // check it's a user channel
         const newChannel = this.getChannelById(arg0.payload.channelId)
         if ((newChannel == null) || (newChannel.type != ChannelType.user)) {
@@ -297,7 +297,7 @@ export class BroadcastHandler implements MessageHandler {
         successResponse(sc, arg0, from, {}, 'joinUserChannelResponse')
     }
 
-    handleLeaveCurrentChannelRequest(arg0: LeaveCurrentChannelRequest, sc: ServerContext<any>, from: AppIdentifier) {
+    handleLeaveCurrentChannelRequest(arg0: LeaveCurrentChannelRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier) {
         const instanceId = from.instanceId ?? 'no-instance-id'
         const currentChannel = this.currentChannel[instanceId]
         if (currentChannel) {
@@ -307,7 +307,7 @@ export class BroadcastHandler implements MessageHandler {
         successResponse(sc, arg0, from, {}, 'leaveCurrentChannelResponse')
     }
 
-    handleGetOrCreateRequest(arg0: GetOrCreateChannelRequest, sc: ServerContext<any>, from: AppIdentifier) {
+    handleGetOrCreateRequest(arg0: GetOrCreateChannelRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier) {
         const id = arg0.payload.channelId
         var channel = this.getChannelById(id)
         if (channel) {
@@ -328,12 +328,12 @@ export class BroadcastHandler implements MessageHandler {
     }
 
 
-    handleGetUserChannelsRequest(arg0: GetUserChannelsRequest, sc: ServerContext<any>, from: AppIdentifier) {
+    handleGetUserChannelsRequest(arg0: GetUserChannelsRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier) {
         const userChannels = this.state.filter(c => c.type == ChannelType.user)
         successResponse(sc, arg0, from, { userChannels: userChannels.map(c => ({ id: c.id, type: this.convertChannelTypeToString(c.type), displayMetadata: c.displayMetadata })) }, 'getUserChannelsResponse')
     }
 
-    handlePrivateChannelAddEventListenerRequest(arg0: PrivateChannelAddEventListenerRequest, from: AppIdentifier, sc: ServerContext<any>) {
+    handlePrivateChannelAddEventListenerRequest(arg0: PrivateChannelAddEventListenerRequest, from: AppIdentifier, sc: ServerContext<AppRegistration>) {
         const channel = this.getChannelById(arg0.payload.privateChannelId)
 
         if ((channel == null) || (channel.type != ChannelType.private)) {
@@ -351,7 +351,7 @@ export class BroadcastHandler implements MessageHandler {
         }
     }
 
-    invokeEventListeners(privateChannelId: string | null, eventType: PrivateChannelEventListenerTypes, messageType: NotificationAgentEventMessage, sc: ServerContext<any>, contextType?: string) {
+    invokeEventListeners(privateChannelId: string | null, eventType: PrivateChannelEventListenerTypes, messageType: NotificationAgentEventMessage, sc: ServerContext<AppRegistration>, contextType?: string) {
         if (privateChannelId) {
             const msg = {
                 type: messageType,
