@@ -239,7 +239,7 @@ export class IntentHandler implements MessageHandler {
     }
 
     async raiseIntentRequestToSpecificInstance(arg0: IntentRequest[], sc: ServerContext<any>, target: AppIdentifier): Promise<void> {
-        if (!(await sc.isAppConnected(target))) {
+        if (!(await sc.isAppConnected(target.instanceId!!))) {
             // instance doesn't exist
             return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.TargetInstanceUnavailable, arg0[0].type)
         }
