@@ -196,17 +196,17 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
   4. If a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) was received in the previous step, skip this this step and move on to 5. However, If a [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) was received in the previous step:
       - Create a hidden iframe within the page, set its URL to the URL provided by the `payload.iframeUrl` field of the message and add a handler to run when the iframe has loaded:
           ```ts
-          const loadIframe = (url, loadedHandler): WindowProxy => {
+          const loadIframe = (url: string, loadedHandler: () => void): WindowProxy => {
             const ifrm = document.createElement("iframe");
             iframe.onload = loadedHandler;
             ifrm.src = url;
             ifrm.style.width = "0";
             ifrm.style.height = "0";
             ifrm.style.visibility = "0";
-            ifrm.ariaHidden="true";
+            ifrm.ariaHidden = "true";
             document.body.appendChild(ifrm);
             return ifrm.contentWindow;
-          }
+          };
           ```
       - Once the frame has loaded (i.e. when the `loadedHandler` in the above example runs), repeat steps 1-3 above substituting the  iframe's `contentWindow` for the candidate window objects before proceeding to step 5. A new timeout should be used to limit the amount of time that the `getAgent()` implementation waits for a response. If the event that this subsequent timeout is exceeded, reject Error with the `ErrorOnConnect` message from the [`AgentError`](../ref/Errors#agenterror) enumeration.
 
