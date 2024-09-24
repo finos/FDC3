@@ -178,8 +178,8 @@ window.addEventListener("load", () => {
     type: "iframeHello",
     payload: {
       initialCSS: {
-        width: "200px",
-        height: "400px",
+        width: "330px",
+        height: "455px",
         zIndex: "1000",
         "z-index": "1000",
         position: "fixed",
