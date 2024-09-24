@@ -58,7 +58,7 @@ and the Desktop Agent application will be found in a 'parent' of the application
 
 ## Responding to app instance connections - Web Connection Protocol (WCP)
 
-Browser Resident DAs MUST call `window.addEventListener("message",...)` to receive incoming connection requests from apps, in the form of [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) messages defined in the [Web Connection Protocol](./webConnectionProtocol).
+Browser Resident DAs MUST call `window.addEventListener("message", ...)` to receive incoming connection requests from apps, in the form of [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) messages defined in the [Web Connection Protocol](./webConnectionProtocol).
 
 Upon receiving an incoming [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) the Desktop Agent MUST either:
 
