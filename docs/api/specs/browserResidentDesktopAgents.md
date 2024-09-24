@@ -6,15 +6,15 @@ title: Browser-Resident Desktop Agents (next)
 
 :::info _[@experimental](../fdc3-compliance#experimental-features)_
 
-Browser Resident Desktop Agents are an experimental feature added to FDC3 in 2.2. Limited aspects of their design may change in future versions and they are exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
+Browser Resident Desktop Agents (DAs) are an experimental feature added to FDC3 in 2.2. Limited aspects of their design may change in future versions and they are exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
 
 :::
 
-This document specifies the required behavior for Browser-Resident Desktop Agents (DA). Such agents allow FDC3 applications running directly in a browser to participate in FDC3 interop by way of a `getAgent()` function that is provided by the [`@finos.fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3) and a standardized communication protocol. This approach is in contrast to "Preload DAs" which run on technology that allows the FDC3 interface to be injected (such as Electron, WebView2 or a browser-extension based implementation).
+This document specifies the required behavior for Browser-Resident Desktop Agents (DA). Such agents allow FDC3 applications running directly in a browser to participate in FDC3 interop by way of a `getAgent()` function that is provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3) and a standardized communication protocol. This approach is in contrast to "Preload DAs" which run on technology that allows the FDC3 interface to be injected (such as Electron, WebView2 or a browser-extension based implementation).
 
 This specification only applies to apps running in a browser and therefore assumes use of JavaScript/TypeScript and HTML APIs. Implementations in other languages such as .NET are not covered.
 
-Along with this specification, a new general connection strategy has been established for FDC3 compliant web-applications: FDC3 compliant apps SHOULD make use of `getAgent()` function provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3) to retrieve their FDC3 interface (an instance of an implementation of the [`DesktopAgent`](../ref/DesktopAgent) interface). Apps that follow these guidelines will be able to interop through either Browser-Resident DAs or [Preload DAs](./preloadDesktopAgents) without code modification. We refer to this concept as Write Once Run Anywhere (WORA).
+Along with this specification, a new general connection strategy has been established for FDC3 compliant web-applications: FDC3 compliant apps SHOULD make use of `getAgent()` function provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3) to retrieve their FDC3 interface (an instance of an implementation of the [`DesktopAgent`](../ref/DesktopAgent) interface). Apps that follow these guidelines will be able to interop through either Browser-Resident DAs or [Preload DAs](./preloadDesktopAgents) without the inclusion of code or libraries specific to a particular Desktop Agent vendor or implementation. We refer to this concept as Write Once Run Anywhere (WORA).
 
 :::info
 
@@ -24,21 +24,21 @@ Prior to FDC3 2.2, only [Preload Desktop Agents](./preloadDesktopAgents) were su
 
 :::note
 
-This document only covers the requirements for _implementors of Browser-Resident DAs_. The `getAgent()` function that applications use to gain access to an fdc3 interface is provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3). Many behavioral details of `getAgent()` are purposefully omitted from this document in order to reduce the required scope of understanding. Please refer to the [getAgent() specification in the FDC3 Web Connection Protocol](webConnectionProtocol.md) for information on how the client side operates.
+This document covers the requirements for _implementors of Browser-Resident Desktop Agents_. The `getAgent()` function that applications use to gain access to an fdc3 interface is provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3). Many behavioral details of `getAgent()` are purposefully omitted from this document in order to reduce the required scope of understanding. Please refer to the [getAgent() specification in the FDC3 Web Connection Protocol](webConnectionProtocol.md) for information on how the client side operates or [supported platforms](../supported-platforms) for details of how to access the Desktop Agent API in an application.
 
 :::
 
 :::tip
 
-When referencing "DA" in this document we will hereafter always mean a "Browser-Resident Desktop Agent" - code that runs in a browser page (iframe or window) and which conforms to this specification.
+When referencing "DA" in the subsequent sections of this document we will hereafter always mean a "Browser-Resident Desktop Agent" - code that runs in a browser page (iframe or window) and which conforms to this specification.
 
 :::
 
 ## Launching apps
 
-As a prerequisite for running FDC3 in the browser, a DA must first exist as running code in a browser window (See failover functions for an exception to this rule), although that code MAY also connect to or rely on remotely hosted services. We will refer to this window as the "DA Window".
+As a prerequisite for launching an app via FDC3 in the browser, a DA must first exist as running code in a browser window (See failover functions for an exception to this rule), although that code MAY also connect to or rely on remotely hosted services. We will refer to this window as the "DA Window".
 
-As the DA typically acts as a launcher for applications, it will often be the case that the DA window is related to the application window(s) in that it may have create the application window with `window.open()` or by creating an iframe and loading the application URL into it. Hence, the DA window may be referred to as a 'parent' (window or frame) of the application frame and the relationship may be used to implement communication between the frames.
+As the DA typically acts as a launcher for applications, it will often be the case that the DA window is related to the application window(s) in that it may have created the application window with `window.open()` or have created an iframe and loaded the application URL into it. Hence, the DA window may be referred to as a 'parent' (window or frame) of the application frame and the relationship may be used to implement communication between the frames.
 
 :::note
 
@@ -46,7 +46,7 @@ It is possible to have multiple DA Windows. For instance, a DA may propagate its
 
 :::
 
-When an app runs `getAgent()`, it checks for the existence of `window.parent`, `window.opener` and `window.parent.opener` (and will continue up the chain of parent frames, e.g. `window.parent.parent`, `window.parent.parent.opener` until the reference to the next parent is equal to the current one (e.g. `window.parent.parent === window.parent` indicating that the frame does not have a parent). `getAgent()` will then send a standardized `WCP1Hello` message to each parent window or frame reference via [`postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) in to discover a DA.
+When an app runs `getAgent()`, it checks for the existence of `window.parent`, `window.opener` and `window.parent.opener` (and will continue up the chain of parent frames, e.g. `window.parent.parent`, `window.parent.parent.opener` until the reference to the next parent is equal to the current one (e.g. `window.parent.parent === window.parent` indicating that the frame does not have a parent). `getAgent()` will then send a standardized `WCP1Hello` message to each parent window or frame reference via [`postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) in order to discover a DA.
 
 Hence, apps may be launched:
 
