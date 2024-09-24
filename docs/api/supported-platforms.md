@@ -99,8 +99,8 @@ Simply use the interface you've retrieved and address the API directly:
 ```js
 async function sendData(fdc3: DesktopAgent) {
   await fdc3.broadcast({
-    type: 'fdc3.instrument',
-    id: { ticker: 'AAPL' }
+    type: "fdc3.instrument",
+    id: { ticker: "AAPL" }
   })
 }
 
@@ -113,11 +113,11 @@ await sendData(fdc3);
 The npm package provides a wrapper around FDC3, allowing you to use it with ES6 import syntax:
 
 ```javascript
-import { raiseIntent } from '@finos/fdc3';
+import { raiseIntent } from "@finos/fdc3";
 
-await raiseIntent('ViewAnalysis', {
-    type: 'fdc3.instrument',
-    id: { ticker: 'AAPL' }
+await raiseIntent("ViewAnalysis", {
+    type: "fdc3.instrument",
+    id: { ticker: "AAPL" }
 });
 ```
 

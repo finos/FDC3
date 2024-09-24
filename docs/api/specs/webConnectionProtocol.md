@@ -122,24 +122,24 @@ const discoverPreloadDA = async (timeout): Promise<DesktopAgent> => {
           clearTimeout(timeout);
           resolve(window.fdc3);
         } else {
-          reject('The `fdc3Ready` event fired, but `window.fdc3` Was not set!');
+          reject("The `fdc3Ready` event fired, but `window.fdc3` Was not set!");
         }
       };
       // Setup a timeout to return a rejected promise
       const timeout = setTimeout(
         () => {
           //clear the event listener to ignore a late event
-          window.removeEventListener('fdc3Ready', listener);
+          window.removeEventListener("fdc3Ready", listener);
           if (window.fdc3){ 
             resolve(window.fdc3);
           } else {
-            reject('Desktop Agent Preload not found ');
+            reject("Desktop Agent Preload not found!");
           }
         }, 
         timeout
       );
       // listen for the fdc3Ready event
-      window.addEventListener('fdc3Ready', listener, { once: true });
+      window.addEventListener("fdc3Ready", listener, { once: true });
     }
   });
 };
