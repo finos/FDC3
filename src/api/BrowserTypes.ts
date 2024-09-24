@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IframeChannels, IframeChannelSelected, IframeDrag, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IframeRestyle, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage } from "./file";
+//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannels, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage } from "./file";
 //
 //   const addContextListenerRequest = Convert.toAddContextListenerRequest(json);
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
@@ -21,6 +21,15 @@
 //   const createPrivateChannelResponse = Convert.toCreatePrivateChannelResponse(json);
 //   const eventListenerUnsubscribeRequest = Convert.toEventListenerUnsubscribeRequest(json);
 //   const eventListenerUnsubscribeResponse = Convert.toEventListenerUnsubscribeResponse(json);
+//   const fdc3UserInterfaceChannels = Convert.toFdc3UserInterfaceChannels(json);
+//   const fdc3UserInterfaceChannelSelected = Convert.toFdc3UserInterfaceChannelSelected(json);
+//   const fdc3UserInterfaceDrag = Convert.toFdc3UserInterfaceDrag(json);
+//   const fdc3UserInterfaceHandshake = Convert.toFdc3UserInterfaceHandshake(json);
+//   const fdc3UserInterfaceHello = Convert.toFdc3UserInterfaceHello(json);
+//   const fdc3UserInterfaceMessage = Convert.toFdc3UserInterfaceMessage(json);
+//   const fdc3UserInterfaceResolve = Convert.toFdc3UserInterfaceResolve(json);
+//   const fdc3UserInterfaceResolveAction = Convert.toFdc3UserInterfaceResolveAction(json);
+//   const fdc3UserInterfaceRestyle = Convert.toFdc3UserInterfaceRestyle(json);
 //   const findInstancesRequest = Convert.toFindInstancesRequest(json);
 //   const findInstancesResponse = Convert.toFindInstancesResponse(json);
 //   const findIntentRequest = Convert.toFindIntentRequest(json);
@@ -41,15 +50,6 @@
 //   const getUserChannelsResponse = Convert.toGetUserChannelsResponse(json);
 //   const heartbeatAcknowledgementRequest = Convert.toHeartbeatAcknowledgementRequest(json);
 //   const heartbeatEvent = Convert.toHeartbeatEvent(json);
-//   const iframeChannels = Convert.toIframeChannels(json);
-//   const iframeChannelSelected = Convert.toIframeChannelSelected(json);
-//   const iframeDrag = Convert.toIframeDrag(json);
-//   const iframeHandshake = Convert.toIframeHandshake(json);
-//   const iframeHello = Convert.toIframeHello(json);
-//   const iframeMessage = Convert.toIframeMessage(json);
-//   const iframeResolve = Convert.toIframeResolve(json);
-//   const iframeResolveAction = Convert.toIframeResolveAction(json);
-//   const iframeRestyle = Convert.toIframeRestyle(json);
 //   const intentEvent = Convert.toIntentEvent(json);
 //   const intentListenerUnsubscribeRequest = Convert.toIntentListenerUnsubscribeRequest(json);
 //   const intentListenerUnsubscribeResponse = Convert.toIntentListenerUnsubscribeResponse(json);
@@ -1060,74 +1060,307 @@ export interface EventListenerUnsubscribeResponse {
  */
 
 /**
- * A request for details of instances of a particular app.
+ * Setup message sent by the DA proxy code in getAgent() to a channel selector UI in an
+ * iframe with the channel definitions and current channel selection.
  *
- * A request message from an FDC3-enabled app to a Desktop Agent.
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
  */
-export interface FindInstancesRequest {
+export interface Fdc3UserInterfaceChannels {
     /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+     * The message payload
      */
-    meta: AddContextListenerRequestMeta;
+    payload: Fdc3UserInterfaceChannelsPayload;
     /**
-     * The message payload typically contains the arguments to FDC3 API functions.
+     * Identifies the type of the message to or from the user interface frame.
      */
-    payload: FindInstancesRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "findInstancesRequest";
+    type: "Fdc3UserInterfaceChannels";
 }
 
 /**
- * The message payload typically contains the arguments to FDC3 API functions.
+ * The message payload
  */
-export interface FindInstancesRequestPayload {
-    app: AppIdentifier;
+export interface Fdc3UserInterfaceChannelsPayload {
+    /**
+     * The id of the channel that should be currently selected, or `null` if none should be
+     * selected
+     */
+    selected: null | string;
+    /**
+     * User Channel definitions
+     */
+    userChannels: Channel[];
 }
 
 /**
- * Identifies the type of the message and it is typically set to the FDC3 function name that
- * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ * Identifies the type of the message to or from the user interface frame.
  */
 
 /**
- * A response to a findInstances request.
+ * Message from a channel selector UI to the DA proxy sent when the channel selection
+ * changes.
  *
- * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
- * payload contains an `error` property, the request was unsuccessful.
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
  */
-export interface FindInstancesResponse {
+export interface Fdc3UserInterfaceChannelSelected {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * The message payload
      */
-    meta: AddContextListenerResponseMeta;
+    payload: Fdc3UserInterfaceChannelSelectedPayload;
     /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
+     * Identifies the type of the message to or from the user interface frame.
      */
-    payload: FindInstancesResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "findInstancesResponse";
+    type: "Fdc3UserInterfaceChannelSelected";
 }
 
 /**
- * A payload for a response to an API call that will contain any return values or an `error`
- * property containing a standardized error message indicating that the request was
- * unsuccessful.
- *
- * The message payload contains a flag indicating whether the API call was successful, plus
- * any return values for the FDC3 API function called, or indicating that the request
- * resulted in an error and including a standardized error message.
+ * The message payload
  */
-export interface FindInstancesResponsePayload {
-    error?:          FindInstancesErrors;
-    appIdentifiers?: AppMetadata[];
+export interface Fdc3UserInterfaceChannelSelectedPayload {
+    /**
+     * The id of the channel that should be currently selected, or `null` if none should be
+     * selected
+     */
+    selected: null | string;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * Message from a UI iframe to the DA proxy (setup by `getAgent()`) indicating that the user
+ * is dragging the UI to a new location and providing the offset to apply to the location.
+ * The DA proxy implementation should limit the location to the current bounds of the
+ * window's viewport
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceDrag {
+    /**
+     * The message payload
+     */
+    payload: Fdc3UserInterfaceDragPayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceDrag";
+}
+
+/**
+ * The message payload
+ */
+export interface Fdc3UserInterfaceDragPayload {
+    /**
+     * The offset to move the frame by
+     */
+    mouseOffsets: MouseOffsets;
+}
+
+/**
+ * The offset to move the frame by
+ */
+export interface MouseOffsets {
+    x: number;
+    y: number;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * Handshake message sent back to a user interface from the DA proxy code (setup by
+ * `getAgent()`) over the `MessagePort` provide in the preceding iFrameHello message,
+ * confirming that it is listening to the `MessagePort` for further communication.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceHandshake {
+    /**
+     * The message payload
+     */
+    payload: Fdc3UserInterfaceHandshakePayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceHandshake";
+}
+
+/**
+ * The message payload
+ */
+export interface Fdc3UserInterfaceHandshakePayload {
+    /**
+     * The version of FDC3 API that the Desktop Agent will provide support for.
+     */
+    fdc3Version: string;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * Hello message sent by a UI to the Desktop Agent proxy setup by `getAgent()` to indicate
+ * it is ready to communicate, containing initial CSS to set on the iframe, and including an
+ * appended `MessagePort` to be used for further communication.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceHello {
+    /**
+     * The message payload
+     */
+    payload: Fdc3UserInterfaceHelloPayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceHello";
+}
+
+/**
+ * The message payload
+ */
+export interface Fdc3UserInterfaceHelloPayload {
+    /**
+     * Details about the UI implementation, such as vendor and version, for logging purposes.
+     */
+    implementationDetails: string;
+    /**
+     * A constrained set of styling properties that should be set on the user interface before
+     * it is displayed. Note `position` cannot be specified and should always be set to `fixed`.
+     */
+    initialCSS: InitialCSS;
+}
+
+/**
+ * A constrained set of styling properties that should be set on the user interface before
+ * it is displayed. Note `position` cannot be specified and should always be set to `fixed`.
+ */
+export interface InitialCSS {
+    /**
+     * The initial bottom property to apply to the iframe
+     */
+    bottom?: string;
+    /**
+     * The initial height of the iframe
+     */
+    height?: string;
+    /**
+     * The initial left property to apply to the iframe
+     */
+    left?: string;
+    /**
+     * The maximum height to apply to the iframe
+     */
+    maxHeight?: string;
+    /**
+     * The maximum with to apply to the iframe
+     */
+    maxWidth?: string;
+    /**
+     * The initial right property to apply to the iframe
+     */
+    right?: string;
+    /**
+     * The initial top property to apply to the iframe
+     */
+    top?: string;
+    /**
+     * The transition property to apply to the iframe
+     */
+    transition?: string;
+    /**
+     * The initial width of the iframe
+     */
+    width?: string;
+    /**
+     * The initial zindex to apply to the iframe
+     */
+    zIndex?: string;
+    [property: string]: any;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceMessage {
+    /**
+     * The message payload
+     */
+    payload?: { [key: string]: any };
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: Fdc3UserInterfaceMessageType;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+export type Fdc3UserInterfaceMessageType = "Fdc3UserInterfaceHello" | "Fdc3UserInterfaceHandshake" | "Fdc3UserInterfaceRestyle" | "Fdc3UserInterfaceDrag" | "Fdc3UserInterfaceResolve" | "Fdc3UserInterfaceResolveAction" | "Fdc3UserInterfaceChannels" | "Fdc3UserInterfaceChannelSelected";
+
+/**
+ * Setup message sent by the DA proxy code in getAgent() to an intent resolver UI with the
+ * resolver data to setup the UI.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceResolve {
+    /**
+     * The message payload
+     */
+    payload: Fdc3UserInterfaceResolvePayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceResolve";
+}
+
+/**
+ * The message payload
+ */
+export interface Fdc3UserInterfaceResolvePayload {
+    /**
+     * An array of AppIntent objects defining the resolution options.
+     */
+    appIntents: AppIntent[];
+    context:    Context;
+}
+
+/**
+ * An interface that relates an intent to apps
+ *
+ * Used if a raiseIntent request requires additional resolution (e.g. by showing an intent
+ * resolver) before it can be handled.
+ */
+export interface AppIntent {
+    /**
+     * Details of applications that can resolve the intent.
+     */
+    apps: AppMetadata[];
+    /**
+     * Details of the intent whose relationship to resolving applications is being described.
+     */
+    intent: IntentMetadata;
 }
 
 /**
@@ -1251,6 +1484,220 @@ export interface Image {
 }
 
 /**
+ * Details of the intent whose relationship to resolving applications is being described.
+ *
+ * Intent descriptor
+ */
+export interface IntentMetadata {
+    /**
+     * Display name for the intent.
+     */
+    displayName?: string;
+    /**
+     * The unique name of the intent that can be invoked by the raiseIntent call
+     */
+    name: string;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * Message from an intent resolver UI to DA proxy code in getAgent() reporting a user
+ * action.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceResolveAction {
+    /**
+     * The message payload
+     */
+    payload: Fdc3UserInterfaceResolveActionPayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceResolveAction";
+}
+
+/**
+ * The message payload
+ */
+export interface Fdc3UserInterfaceResolveActionPayload {
+    action: Action;
+    /**
+     * The App resolution option chosen
+     */
+    appIdentifier?: AppIdentifier;
+    /**
+     * The intent resolved
+     */
+    intent?: string;
+}
+
+export type Action = "hover" | "click" | "cancel";
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * Message from a UI frame to the DA proxy code (setup by `getAgent()`) with updated styling
+ * information to apply to it. Can be used to implement a pop-open or close interaction or
+ * other transition needed by a UI implementation.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceRestyle {
+    /**
+     * The message payload
+     */
+    payload: Fdc3UserInterfaceRestylePayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceRestyle";
+}
+
+/**
+ * The message payload
+ */
+export interface Fdc3UserInterfaceRestylePayload {
+    /**
+     * A constrained set of styling properties that should be applied to the frame. Note
+     * `position` cannot be set, and should always be `fixed`.
+     */
+    updatedCSS: UpdatedCSS;
+}
+
+/**
+ * A constrained set of styling properties that should be applied to the frame. Note
+ * `position` cannot be set, and should always be `fixed`.
+ */
+export interface UpdatedCSS {
+    /**
+     * The initial bottom property to apply to the iframe
+     */
+    bottom?: string;
+    /**
+     * The updated height of the iframe
+     */
+    height?: string;
+    /**
+     * The initial left property to apply to the iframe
+     */
+    left?: string;
+    /**
+     * The updated maximum height to apply to the iframe
+     */
+    maxHeight?: string;
+    /**
+     * The updated maximum with to apply to the iframe
+     */
+    maxWidth?: string;
+    /**
+     * The initial right property to apply to the iframe
+     */
+    right?: string;
+    /**
+     * The initial top property to apply to the iframe
+     */
+    top?: string;
+    /**
+     * The updated transition property to apply to the iframe
+     */
+    transition?: string;
+    /**
+     * The updated width of the iframe
+     */
+    width?: string;
+    /**
+     * The updated zindex to apply to the iframe
+     */
+    zIndex?: string;
+    [property: string]: any;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * A request for details of instances of a particular app.
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface FindInstancesRequest {
+    /**
+     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+     */
+    meta: AddContextListenerRequestMeta;
+    /**
+     * The message payload typically contains the arguments to FDC3 API functions.
+     */
+    payload: FindInstancesRequestPayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Request' appended.
+     */
+    type: "findInstancesRequest";
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface FindInstancesRequestPayload {
+    app: AppIdentifier;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+
+/**
+ * A response to a findInstances request.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
+ * payload contains an `error` property, the request was unsuccessful.
+ */
+export interface FindInstancesResponse {
+    /**
+     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     */
+    meta: AddContextListenerResponseMeta;
+    /**
+     * A payload for a response to an API call that will contain any return values or an `error`
+     * property containing a standardized error message indicating that the request was
+     * unsuccessful.
+     */
+    payload: FindInstancesResponsePayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Response' appended.
+     */
+    type: "findInstancesResponse";
+}
+
+/**
+ * A payload for a response to an API call that will contain any return values or an `error`
+ * property containing a standardized error message indicating that the request was
+ * unsuccessful.
+ *
+ * The message payload contains a flag indicating whether the API call was successful, plus
+ * any return values for the FDC3 API function called, or indicating that the request
+ * resulted in an error and including a standardized error message.
+ */
+export interface FindInstancesResponsePayload {
+    error?:          FindInstancesErrors;
+    appIdentifiers?: AppMetadata[];
+}
+
+/**
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  *
@@ -1349,39 +1796,6 @@ export interface FindIntentResponse {
 export interface FindIntentResponsePayload {
     error?:     FindInstancesErrors;
     appIntent?: AppIntent;
-}
-
-/**
- * An interface that relates an intent to apps
- *
- * Used if a raiseIntent request requires additional resolution (e.g. by showing an intent
- * resolver) before it can be handled.
- */
-export interface AppIntent {
-    /**
-     * Details of applications that can resolve the intent.
-     */
-    apps: AppMetadata[];
-    /**
-     * Details of the intent whose relationship to resolving applications is being described.
-     */
-    intent: IntentMetadata;
-}
-
-/**
- * Details of the intent whose relationship to resolving applications is being described.
- *
- * Intent descriptor
- */
-export interface IntentMetadata {
-    /**
-     * Display name for the intent.
-     */
-    displayName?: string;
-    /**
-     * The unique name of the intent that can be invoked by the raiseIntent call
-     */
-    name: string;
 }
 
 /**
@@ -2039,421 +2453,6 @@ export interface HeartbeatEventPayload {
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
- */
-
-/**
- * Setup message sent by the DA proxy code in getAgent() to a channel selector UI in an
- * iframe with the channel definitions and current channel selection.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeChannels {
-    /**
-     * The message payload
-     */
-    payload: IframeChannelsPayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeChannels";
-}
-
-/**
- * The message payload
- */
-export interface IframeChannelsPayload {
-    /**
-     * The id of the channel that should be currently selected, or `null` if none should be
-     * selected
-     */
-    selected: null | string;
-    /**
-     * User Channel definitions
-     */
-    userChannels: Channel[];
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * Message from the channel selector UI to the DA proxy sent when the channel selection
- * changes.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeChannelSelected {
-    /**
-     * The message payload
-     */
-    payload: IframeChannelSelectedPayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeChannelSelected";
-}
-
-/**
- * The message payload
- */
-export interface IframeChannelSelectedPayload {
-    /**
-     * The id of the channel that should be currently selected, or `null` if none should be
-     * selected
-     */
-    selected: null | string;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * Message from a UI iframe to the DA proxy (setup by `getAgent()`) indicating that the user
- * is dragging the UI to a new location and providing the offset to apply to the location.
- * The DA proxy implementation should limit the location to the current bounds of the
- * window's viewport
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeDrag {
-    /**
-     * The message payload
-     */
-    payload: IframeDragPayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeDrag";
-}
-
-/**
- * The message payload
- */
-export interface IframeDragPayload {
-    /**
-     * The offset to move the frame by
-     */
-    mouseOffsets: MouseOffsets;
-}
-
-/**
- * The offset to move the frame by
- */
-export interface MouseOffsets {
-    x: number;
-    y: number;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * Handshake message sent back to an iframe from the DA proxy code (setup by `getAgent()`)
- * over the `MessagePort` provide in the preceding iFrameHello message, confirming that it
- * is listening to the `MessagePort` for further communication.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeHandshake {
-    /**
-     * The message payload
-     */
-    payload: IframeHandshakePayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeHandshake";
-}
-
-/**
- * The message payload
- */
-export interface IframeHandshakePayload {
-    /**
-     * The version of FDC3 API that the Desktop Agent will provide support for.
-     */
-    fdc3Version: string;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * Hello message sent by a UI iframe to the Desktop Agent proxy setup by `getAgent()` to
- * indicate it is ready to communicate, containing initial CSS to set on the iframe and
- * including an appended `MessagePort` to be used for further communication.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeHello {
-    /**
-     * The message payload
-     */
-    payload: IframeHelloPayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeHello";
-}
-
-/**
- * The message payload
- */
-export interface IframeHelloPayload {
-    /**
-     * Details about the UI implementation in the iframe, such as vendor and version, for
-     * logging purposes.
-     */
-    implementationDetails: string;
-    /**
-     * A constrained set of CSS properties that should be set on the iframe before it is
-     * displayed. Note `position` cannot be specified and should always be set to `fixed`.
-     */
-    initialCSS: InitialCSS;
-}
-
-/**
- * A constrained set of CSS properties that should be set on the iframe before it is
- * displayed. Note `position` cannot be specified and should always be set to `fixed`.
- */
-export interface InitialCSS {
-    /**
-     * The initial bottom property to apply to the iframe
-     */
-    bottom?: string;
-    /**
-     * The initial height of the iframe
-     */
-    height?: string;
-    /**
-     * The initial left property to apply to the iframe
-     */
-    left?: string;
-    /**
-     * The maximum height to apply to the iframe
-     */
-    maxHeight?: string;
-    /**
-     * The maximum with to apply to the iframe
-     */
-    maxWidth?: string;
-    /**
-     * The initial right property to apply to the iframe
-     */
-    right?: string;
-    /**
-     * The initial top property to apply to the iframe
-     */
-    top?: string;
-    /**
-     * The transition property to apply to the iframe
-     */
-    transition?: string;
-    /**
-     * The initial width of the iframe
-     */
-    width?: string;
-    /**
-     * The initial zindex to apply to the iframe
-     */
-    zIndex?: string;
-    [property: string]: any;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeMessage {
-    /**
-     * The message payload
-     */
-    payload?: { [key: string]: any };
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: IframeMessageType;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-export type IframeMessageType = "iframeHello" | "iframeHandshake" | "iframeRestyle" | "iframeDrag" | "iframeResolve" | "iframeResolveAction" | "iframeChannels" | "iframeChannelSelected";
-
-/**
- * Setup message sent by the DA proxy code in getAgent() to an intent resolver UI in an
- * iframe with the resolver data to setup the UI.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeResolve {
-    /**
-     * The message payload
-     */
-    payload: IframeResolvePayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeResolve";
-}
-
-/**
- * The message payload
- */
-export interface IframeResolvePayload {
-    /**
-     * An array of AppIntent objects defining the resolution options.
-     */
-    appIntents: AppIntent[];
-    context:    Context;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * Message from an intent resolver UI in an iframe to DA proxy code in getAgent() reporting
- * a user action.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeResolveAction {
-    /**
-     * The message payload
-     */
-    payload: IframeResolveActionPayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeResolveAction";
-}
-
-/**
- * The message payload
- */
-export interface IframeResolveActionPayload {
-    action: Action;
-    /**
-     * The App resolution option chosen
-     */
-    appIdentifier?: AppIdentifier;
-    /**
-     * The intent resolved
-     */
-    intent?: string;
-}
-
-export type Action = "hover" | "click" | "cancel";
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * Message from a UI iframe to the DA proxy code (setup by `getAgent()`) with updated
- * styling information to apply to the iframe. Can be used to implement a pop-open or close
- * interaction or other transition needed by a UI implementation.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeRestyle {
-    /**
-     * The message payload
-     */
-    payload: IframeRestylePayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeRestyle";
-}
-
-/**
- * The message payload
- */
-export interface IframeRestylePayload {
-    /**
-     * A constrained set of CSS properties that should be applied to the iframe. Note `position`
-     * cannot be set, and should always be `fixed`.
-     */
-    updatedCSS: UpdatedCSS;
-}
-
-/**
- * A constrained set of CSS properties that should be applied to the iframe. Note `position`
- * cannot be set, and should always be `fixed`.
- */
-export interface UpdatedCSS {
-    /**
-     * The initial bottom property to apply to the iframe
-     */
-    bottom?: string;
-    /**
-     * The updated height of the iframe
-     */
-    height?: string;
-    /**
-     * The initial left property to apply to the iframe
-     */
-    left?: string;
-    /**
-     * The updated maximum height to apply to the iframe
-     */
-    maxHeight?: string;
-    /**
-     * The updated maximum with to apply to the iframe
-     */
-    maxWidth?: string;
-    /**
-     * The initial right property to apply to the iframe
-     */
-    right?: string;
-    /**
-     * The initial top property to apply to the iframe
-     */
-    top?: string;
-    /**
-     * The updated transition property to apply to the iframe
-     */
-    transition?: string;
-    /**
-     * The updated width of the iframe
-     */
-    width?: string;
-    /**
-     * The updated zindex to apply to the iframe
-     */
-    zIndex?: string;
-    [property: string]: any;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
  */
 
 /**
@@ -4009,6 +4008,78 @@ export class Convert {
         return JSON.stringify(uncast(value, r("EventListenerUnsubscribeResponse")), null, 2);
     }
 
+    public static toFdc3UserInterfaceChannels(json: string): Fdc3UserInterfaceChannels {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceChannels"));
+    }
+
+    public static fdc3UserInterfaceChannelsToJson(value: Fdc3UserInterfaceChannels): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceChannels")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceChannelSelected(json: string): Fdc3UserInterfaceChannelSelected {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceChannelSelected"));
+    }
+
+    public static fdc3UserInterfaceChannelSelectedToJson(value: Fdc3UserInterfaceChannelSelected): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceChannelSelected")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceDrag(json: string): Fdc3UserInterfaceDrag {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceDrag"));
+    }
+
+    public static fdc3UserInterfaceDragToJson(value: Fdc3UserInterfaceDrag): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceDrag")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceHandshake(json: string): Fdc3UserInterfaceHandshake {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceHandshake"));
+    }
+
+    public static fdc3UserInterfaceHandshakeToJson(value: Fdc3UserInterfaceHandshake): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceHandshake")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceHello(json: string): Fdc3UserInterfaceHello {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceHello"));
+    }
+
+    public static fdc3UserInterfaceHelloToJson(value: Fdc3UserInterfaceHello): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceHello")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceMessage(json: string): Fdc3UserInterfaceMessage {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceMessage"));
+    }
+
+    public static fdc3UserInterfaceMessageToJson(value: Fdc3UserInterfaceMessage): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceMessage")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceResolve(json: string): Fdc3UserInterfaceResolve {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceResolve"));
+    }
+
+    public static fdc3UserInterfaceResolveToJson(value: Fdc3UserInterfaceResolve): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceResolve")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceResolveAction(json: string): Fdc3UserInterfaceResolveAction {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceResolveAction"));
+    }
+
+    public static fdc3UserInterfaceResolveActionToJson(value: Fdc3UserInterfaceResolveAction): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceResolveAction")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceRestyle(json: string): Fdc3UserInterfaceRestyle {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceRestyle"));
+    }
+
+    public static fdc3UserInterfaceRestyleToJson(value: Fdc3UserInterfaceRestyle): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceRestyle")), null, 2);
+    }
+
     public static toFindInstancesRequest(json: string): FindInstancesRequest {
         return cast(JSON.parse(json), r("FindInstancesRequest"));
     }
@@ -4167,78 +4238,6 @@ export class Convert {
 
     public static heartbeatEventToJson(value: HeartbeatEvent): string {
         return JSON.stringify(uncast(value, r("HeartbeatEvent")), null, 2);
-    }
-
-    public static toIframeChannels(json: string): IframeChannels {
-        return cast(JSON.parse(json), r("IframeChannels"));
-    }
-
-    public static iframeChannelsToJson(value: IframeChannels): string {
-        return JSON.stringify(uncast(value, r("IframeChannels")), null, 2);
-    }
-
-    public static toIframeChannelSelected(json: string): IframeChannelSelected {
-        return cast(JSON.parse(json), r("IframeChannelSelected"));
-    }
-
-    public static iframeChannelSelectedToJson(value: IframeChannelSelected): string {
-        return JSON.stringify(uncast(value, r("IframeChannelSelected")), null, 2);
-    }
-
-    public static toIframeDrag(json: string): IframeDrag {
-        return cast(JSON.parse(json), r("IframeDrag"));
-    }
-
-    public static iframeDragToJson(value: IframeDrag): string {
-        return JSON.stringify(uncast(value, r("IframeDrag")), null, 2);
-    }
-
-    public static toIframeHandshake(json: string): IframeHandshake {
-        return cast(JSON.parse(json), r("IframeHandshake"));
-    }
-
-    public static iframeHandshakeToJson(value: IframeHandshake): string {
-        return JSON.stringify(uncast(value, r("IframeHandshake")), null, 2);
-    }
-
-    public static toIframeHello(json: string): IframeHello {
-        return cast(JSON.parse(json), r("IframeHello"));
-    }
-
-    public static iframeHelloToJson(value: IframeHello): string {
-        return JSON.stringify(uncast(value, r("IframeHello")), null, 2);
-    }
-
-    public static toIframeMessage(json: string): IframeMessage {
-        return cast(JSON.parse(json), r("IframeMessage"));
-    }
-
-    public static iframeMessageToJson(value: IframeMessage): string {
-        return JSON.stringify(uncast(value, r("IframeMessage")), null, 2);
-    }
-
-    public static toIframeResolve(json: string): IframeResolve {
-        return cast(JSON.parse(json), r("IframeResolve"));
-    }
-
-    public static iframeResolveToJson(value: IframeResolve): string {
-        return JSON.stringify(uncast(value, r("IframeResolve")), null, 2);
-    }
-
-    public static toIframeResolveAction(json: string): IframeResolveAction {
-        return cast(JSON.parse(json), r("IframeResolveAction"));
-    }
-
-    public static iframeResolveActionToJson(value: IframeResolveAction): string {
-        return JSON.stringify(uncast(value, r("IframeResolveAction")), null, 2);
-    }
-
-    public static toIframeRestyle(json: string): IframeRestyle {
-        return cast(JSON.parse(json), r("IframeRestyle"));
-    }
-
-    public static iframeRestyleToJson(value: IframeRestyle): string {
-        return JSON.stringify(uncast(value, r("IframeRestyle")), null, 2);
     }
 
     public static toIntentEvent(json: string): IntentEvent {
@@ -4856,22 +4855,74 @@ const typeMap: any = {
         { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
         { json: "type", js: "type", typ: r("EventListenerUnsubscribeResponseType") },
     ], false),
-    "FindInstancesRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("FindInstancesRequestPayload") },
-        { json: "type", js: "type", typ: r("FindInstancesRequestType") },
+    "Fdc3UserInterfaceChannels": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceChannelsPayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceChannelsType") },
     ], false),
-    "FindInstancesRequestPayload": o([
-        { json: "app", js: "app", typ: r("AppIdentifier") },
+    "Fdc3UserInterfaceChannelsPayload": o([
+        { json: "selected", js: "selected", typ: u(null, "") },
+        { json: "userChannels", js: "userChannels", typ: a(r("Channel")) },
     ], false),
-    "FindInstancesResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("FindInstancesResponsePayload") },
-        { json: "type", js: "type", typ: r("FindInstancesResponseType") },
+    "Fdc3UserInterfaceChannelSelected": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceChannelSelectedPayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceChannelSelectedType") },
     ], false),
-    "FindInstancesResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
-        { json: "appIdentifiers", js: "appIdentifiers", typ: u(undefined, a(r("AppMetadata"))) },
+    "Fdc3UserInterfaceChannelSelectedPayload": o([
+        { json: "selected", js: "selected", typ: u(null, "") },
+    ], false),
+    "Fdc3UserInterfaceDrag": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceDragPayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceDragType") },
+    ], false),
+    "Fdc3UserInterfaceDragPayload": o([
+        { json: "mouseOffsets", js: "mouseOffsets", typ: r("MouseOffsets") },
+    ], false),
+    "MouseOffsets": o([
+        { json: "x", js: "x", typ: 0 },
+        { json: "y", js: "y", typ: 0 },
+    ], false),
+    "Fdc3UserInterfaceHandshake": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceHandshakePayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceHandshakeType") },
+    ], false),
+    "Fdc3UserInterfaceHandshakePayload": o([
+        { json: "fdc3Version", js: "fdc3Version", typ: "" },
+    ], false),
+    "Fdc3UserInterfaceHello": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceHelloPayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceHelloType") },
+    ], false),
+    "Fdc3UserInterfaceHelloPayload": o([
+        { json: "implementationDetails", js: "implementationDetails", typ: "" },
+        { json: "initialCSS", js: "initialCSS", typ: r("InitialCSS") },
+    ], false),
+    "InitialCSS": o([
+        { json: "bottom", js: "bottom", typ: u(undefined, "") },
+        { json: "height", js: "height", typ: u(undefined, "") },
+        { json: "left", js: "left", typ: u(undefined, "") },
+        { json: "maxHeight", js: "maxHeight", typ: u(undefined, "") },
+        { json: "maxWidth", js: "maxWidth", typ: u(undefined, "") },
+        { json: "right", js: "right", typ: u(undefined, "") },
+        { json: "top", js: "top", typ: u(undefined, "") },
+        { json: "transition", js: "transition", typ: u(undefined, "") },
+        { json: "width", js: "width", typ: u(undefined, "") },
+        { json: "zIndex", js: "zIndex", typ: u(undefined, "") },
+    ], "any"),
+    "Fdc3UserInterfaceMessage": o([
+        { json: "payload", js: "payload", typ: u(undefined, m("any")) },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceMessageType") },
+    ], false),
+    "Fdc3UserInterfaceResolve": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceResolvePayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceResolveType") },
+    ], false),
+    "Fdc3UserInterfaceResolvePayload": o([
+        { json: "appIntents", js: "appIntents", typ: a(r("AppIntent")) },
+        { json: "context", js: "context", typ: r("Context") },
+    ], false),
+    "AppIntent": o([
+        { json: "apps", js: "apps", typ: a(r("AppMetadata")) },
+        { json: "intent", js: "intent", typ: r("IntentMetadata") },
     ], false),
     "AppMetadata": o([
         { json: "appId", js: "appId", typ: "" },
@@ -4898,6 +4949,55 @@ const typeMap: any = {
         { json: "src", js: "src", typ: "" },
         { json: "type", js: "type", typ: u(undefined, "") },
     ], false),
+    "IntentMetadata": o([
+        { json: "displayName", js: "displayName", typ: u(undefined, "") },
+        { json: "name", js: "name", typ: "" },
+    ], false),
+    "Fdc3UserInterfaceResolveAction": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceResolveActionPayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceResolveActionType") },
+    ], false),
+    "Fdc3UserInterfaceResolveActionPayload": o([
+        { json: "action", js: "action", typ: r("Action") },
+        { json: "appIdentifier", js: "appIdentifier", typ: u(undefined, r("AppIdentifier")) },
+        { json: "intent", js: "intent", typ: u(undefined, "") },
+    ], false),
+    "Fdc3UserInterfaceRestyle": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceRestylePayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceRestyleType") },
+    ], false),
+    "Fdc3UserInterfaceRestylePayload": o([
+        { json: "updatedCSS", js: "updatedCSS", typ: r("UpdatedCSS") },
+    ], false),
+    "UpdatedCSS": o([
+        { json: "bottom", js: "bottom", typ: u(undefined, "") },
+        { json: "height", js: "height", typ: u(undefined, "") },
+        { json: "left", js: "left", typ: u(undefined, "") },
+        { json: "maxHeight", js: "maxHeight", typ: u(undefined, "") },
+        { json: "maxWidth", js: "maxWidth", typ: u(undefined, "") },
+        { json: "right", js: "right", typ: u(undefined, "") },
+        { json: "top", js: "top", typ: u(undefined, "") },
+        { json: "transition", js: "transition", typ: u(undefined, "") },
+        { json: "width", js: "width", typ: u(undefined, "") },
+        { json: "zIndex", js: "zIndex", typ: u(undefined, "") },
+    ], "any"),
+    "FindInstancesRequest": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
+        { json: "payload", js: "payload", typ: r("FindInstancesRequestPayload") },
+        { json: "type", js: "type", typ: r("FindInstancesRequestType") },
+    ], false),
+    "FindInstancesRequestPayload": o([
+        { json: "app", js: "app", typ: r("AppIdentifier") },
+    ], false),
+    "FindInstancesResponse": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
+        { json: "payload", js: "payload", typ: r("FindInstancesResponsePayload") },
+        { json: "type", js: "type", typ: r("FindInstancesResponseType") },
+    ], false),
+    "FindInstancesResponsePayload": o([
+        { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
+        { json: "appIdentifiers", js: "appIdentifiers", typ: u(undefined, a(r("AppMetadata"))) },
+    ], false),
     "FindIntentRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
         { json: "payload", js: "payload", typ: r("FindIntentRequestPayload") },
@@ -4916,14 +5016,6 @@ const typeMap: any = {
     "FindIntentResponsePayload": o([
         { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
         { json: "appIntent", js: "appIntent", typ: u(undefined, r("AppIntent")) },
-    ], false),
-    "AppIntent": o([
-        { json: "apps", js: "apps", typ: a(r("AppMetadata")) },
-        { json: "intent", js: "intent", typ: r("IntentMetadata") },
-    ], false),
-    "IntentMetadata": o([
-        { json: "displayName", js: "displayName", typ: u(undefined, "") },
-        { json: "name", js: "name", typ: "" },
     ], false),
     "FindIntentsByContextRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
@@ -5070,99 +5162,6 @@ const typeMap: any = {
     ], false),
     "HeartbeatEventPayload": o([
     ], false),
-    "IframeChannels": o([
-        { json: "payload", js: "payload", typ: r("IframeChannelsPayload") },
-        { json: "type", js: "type", typ: r("IframeChannelsType") },
-    ], false),
-    "IframeChannelsPayload": o([
-        { json: "selected", js: "selected", typ: u(null, "") },
-        { json: "userChannels", js: "userChannels", typ: a(r("Channel")) },
-    ], false),
-    "IframeChannelSelected": o([
-        { json: "payload", js: "payload", typ: r("IframeChannelSelectedPayload") },
-        { json: "type", js: "type", typ: r("IframeChannelSelectedType") },
-    ], false),
-    "IframeChannelSelectedPayload": o([
-        { json: "selected", js: "selected", typ: u(null, "") },
-    ], false),
-    "IframeDrag": o([
-        { json: "payload", js: "payload", typ: r("IframeDragPayload") },
-        { json: "type", js: "type", typ: r("IframeDragType") },
-    ], false),
-    "IframeDragPayload": o([
-        { json: "mouseOffsets", js: "mouseOffsets", typ: r("MouseOffsets") },
-    ], false),
-    "MouseOffsets": o([
-        { json: "x", js: "x", typ: 0 },
-        { json: "y", js: "y", typ: 0 },
-    ], false),
-    "IframeHandshake": o([
-        { json: "payload", js: "payload", typ: r("IframeHandshakePayload") },
-        { json: "type", js: "type", typ: r("IframeHandshakeType") },
-    ], false),
-    "IframeHandshakePayload": o([
-        { json: "fdc3Version", js: "fdc3Version", typ: "" },
-    ], false),
-    "IframeHello": o([
-        { json: "payload", js: "payload", typ: r("IframeHelloPayload") },
-        { json: "type", js: "type", typ: r("IframeHelloType") },
-    ], false),
-    "IframeHelloPayload": o([
-        { json: "implementationDetails", js: "implementationDetails", typ: "" },
-        { json: "initialCSS", js: "initialCSS", typ: r("InitialCSS") },
-    ], false),
-    "InitialCSS": o([
-        { json: "bottom", js: "bottom", typ: u(undefined, "") },
-        { json: "height", js: "height", typ: u(undefined, "") },
-        { json: "left", js: "left", typ: u(undefined, "") },
-        { json: "maxHeight", js: "maxHeight", typ: u(undefined, "") },
-        { json: "maxWidth", js: "maxWidth", typ: u(undefined, "") },
-        { json: "right", js: "right", typ: u(undefined, "") },
-        { json: "top", js: "top", typ: u(undefined, "") },
-        { json: "transition", js: "transition", typ: u(undefined, "") },
-        { json: "width", js: "width", typ: u(undefined, "") },
-        { json: "zIndex", js: "zIndex", typ: u(undefined, "") },
-    ], "any"),
-    "IframeMessage": o([
-        { json: "payload", js: "payload", typ: u(undefined, m("any")) },
-        { json: "type", js: "type", typ: r("IframeMessageType") },
-    ], false),
-    "IframeResolve": o([
-        { json: "payload", js: "payload", typ: r("IframeResolvePayload") },
-        { json: "type", js: "type", typ: r("IframeResolveType") },
-    ], false),
-    "IframeResolvePayload": o([
-        { json: "appIntents", js: "appIntents", typ: a(r("AppIntent")) },
-        { json: "context", js: "context", typ: r("Context") },
-    ], false),
-    "IframeResolveAction": o([
-        { json: "payload", js: "payload", typ: r("IframeResolveActionPayload") },
-        { json: "type", js: "type", typ: r("IframeResolveActionType") },
-    ], false),
-    "IframeResolveActionPayload": o([
-        { json: "action", js: "action", typ: r("Action") },
-        { json: "appIdentifier", js: "appIdentifier", typ: u(undefined, r("AppIdentifier")) },
-        { json: "intent", js: "intent", typ: u(undefined, "") },
-    ], false),
-    "IframeRestyle": o([
-        { json: "payload", js: "payload", typ: r("IframeRestylePayload") },
-        { json: "type", js: "type", typ: r("IframeRestyleType") },
-    ], false),
-    "IframeRestylePayload": o([
-        { json: "updatedCSS", js: "updatedCSS", typ: r("UpdatedCSS") },
-    ], false),
-    "UpdatedCSS": o([
-        { json: "bottom", js: "bottom", typ: u(undefined, "") },
-        { json: "height", js: "height", typ: u(undefined, "") },
-        { json: "left", js: "left", typ: u(undefined, "") },
-        { json: "maxHeight", js: "maxHeight", typ: u(undefined, "") },
-        { json: "maxWidth", js: "maxWidth", typ: u(undefined, "") },
-        { json: "right", js: "right", typ: u(undefined, "") },
-        { json: "top", js: "top", typ: u(undefined, "") },
-        { json: "transition", js: "transition", typ: u(undefined, "") },
-        { json: "width", js: "width", typ: u(undefined, "") },
-        { json: "zIndex", js: "zIndex", typ: u(undefined, "") },
-    ], "any"),
     "IntentEvent": o([
         { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
         { json: "payload", js: "payload", typ: r("IntentEventPayload") },
@@ -5624,6 +5623,45 @@ const typeMap: any = {
     "EventListenerUnsubscribeResponseType": [
         "eventListenerUnsubscribeResponse",
     ],
+    "Fdc3UserInterfaceChannelsType": [
+        "Fdc3UserInterfaceChannels",
+    ],
+    "Fdc3UserInterfaceChannelSelectedType": [
+        "Fdc3UserInterfaceChannelSelected",
+    ],
+    "Fdc3UserInterfaceDragType": [
+        "Fdc3UserInterfaceDrag",
+    ],
+    "Fdc3UserInterfaceHandshakeType": [
+        "Fdc3UserInterfaceHandshake",
+    ],
+    "Fdc3UserInterfaceHelloType": [
+        "Fdc3UserInterfaceHello",
+    ],
+    "Fdc3UserInterfaceMessageType": [
+        "Fdc3UserInterfaceChannelSelected",
+        "Fdc3UserInterfaceChannels",
+        "Fdc3UserInterfaceDrag",
+        "Fdc3UserInterfaceHandshake",
+        "Fdc3UserInterfaceHello",
+        "Fdc3UserInterfaceResolve",
+        "Fdc3UserInterfaceResolveAction",
+        "Fdc3UserInterfaceRestyle",
+    ],
+    "Fdc3UserInterfaceResolveType": [
+        "Fdc3UserInterfaceResolve",
+    ],
+    "Action": [
+        "cancel",
+        "click",
+        "hover",
+    ],
+    "Fdc3UserInterfaceResolveActionType": [
+        "Fdc3UserInterfaceResolveAction",
+    ],
+    "Fdc3UserInterfaceRestyleType": [
+        "Fdc3UserInterfaceRestyle",
+    ],
     "FindInstancesRequestType": [
         "findInstancesRequest",
     ],
@@ -5698,45 +5736,6 @@ const typeMap: any = {
     ],
     "HeartbeatEventType": [
         "heartbeatEvent",
-    ],
-    "IframeChannelsType": [
-        "iframeChannels",
-    ],
-    "IframeChannelSelectedType": [
-        "iframeChannelSelected",
-    ],
-    "IframeDragType": [
-        "iframeDrag",
-    ],
-    "IframeHandshakeType": [
-        "iframeHandshake",
-    ],
-    "IframeHelloType": [
-        "iframeHello",
-    ],
-    "IframeMessageType": [
-        "iframeChannelSelected",
-        "iframeChannels",
-        "iframeDrag",
-        "iframeHandshake",
-        "iframeHello",
-        "iframeResolve",
-        "iframeResolveAction",
-        "iframeRestyle",
-    ],
-    "IframeResolveType": [
-        "iframeResolve",
-    ],
-    "Action": [
-        "cancel",
-        "click",
-        "hover",
-    ],
-    "IframeResolveActionType": [
-        "iframeResolveAction",
-    ],
-    "IframeRestyleType": [
-        "iframeRestyle",
     ],
     "IntentEventType": [
         "intentEvent",
