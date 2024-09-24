@@ -175,18 +175,18 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
 
   ```ts
   const hello = {
-      type: "WCP1Hello",
-      payload: {
-          identityUrl: identityUrl,
-          actualUrl: actualUrl,
-          fdc3Version: "2.2",
-          intentResolver: true
-          channelSelector: true
-      },
-      meta: {
-          connectionAttemptUuid: "bc96f1db-9b2b-465f-aab3-3870dc07b072"
-          timestamp: "2024-09-09T11:44:39+00:00"
-      }
+    type: "WCP1Hello",
+    payload: {
+      identityUrl: identityUrl,
+      actualUrl: actualUrl,
+      fdc3Version: "2.2",
+      intentResolver: true,
+      channelSelector: true
+    },
+    meta: {
+      connectionAttemptUuid: "bc96f1db-9b2b-465f-aab3-3870dc07b072",
+      timestamp: "2024-09-09T11:44:39+00:00"
+    }
   };
   candidate.postMessage(hello, { targetOrigin: "*" });
   ```
