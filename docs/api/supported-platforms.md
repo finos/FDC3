@@ -19,7 +19,7 @@ import { DesktopAgent, getAgent } from "@finos/fdc3";
 //...
 
 try {
-    const fdc3: DesktopAgent = await getAgent();
+    const desktopAgent: DesktopAgent = await getAgent();
     //do FDC3 things here
 } catch (e: AgentError) {
     //connection failed
@@ -27,7 +27,7 @@ try {
 
 //OR
 
-getAgent().then((fdc3: DesktopAgent) => {
+getAgent().then((desktopAgent: DesktopAgent) => {
     //do FDC3 things here
 }).catch((e: AgentError) => {
     //connection failed
@@ -97,15 +97,15 @@ Once you've retrieved a `DesktopAgent` interface, there are two main ways FDC3 c
 Simply use the interface you've retrieved and address the API directly:
 
 ```js
-async function sendData(fdc3: DesktopAgent) {
-  await fdc3.broadcast({
+async function sendData(desktopAgent: DesktopAgent) {
+  await desktopAgent.broadcast({
     type: "fdc3.instrument",
     id: { ticker: "AAPL" }
   })
 }
 
-const fdc3: DesktopAgent = await getAgent();
-await sendData(fdc3);
+const desktopAgent: DesktopAgent = await getAgent();
+await sendData(desktopAgent);
 ```
 
 #### 2. es6-style Function Wrappers
