@@ -1,5 +1,5 @@
 import { FDC3Server } from "./FDC3Server";
-import { InstanceID, ServerContext } from "./ServerContext";
+import { AppRegistration, InstanceID, ServerContext } from "./ServerContext";
 import { BroadcastHandler, ChannelState } from "./handlers/BroadcastHandler";
 import { IntentHandler } from "./handlers/IntentHandler";
 import { Directory } from "./directory/DirectoryInterface";
@@ -15,7 +15,7 @@ export interface MessageHandler {
     /**
      * Handles an AgentRequestMessage from the messaging source
      */
-    accept(msg: any, sc: ServerContext<any>, from: InstanceID): void
+    accept(msg: any, sc: ServerContext<AppRegistration>, from: InstanceID): void
 
     shutdown(): void
 }
@@ -26,9 +26,9 @@ export interface MessageHandler {
 export class BasicFDC3Server implements FDC3Server {
 
     private handlers: MessageHandler[]
-    private sc: ServerContext<any>
+    private sc: ServerContext<AppRegistration>
 
-    constructor(handlers: MessageHandler[], sc: ServerContext<any>) {
+    constructor(handlers: MessageHandler[], sc: ServerContext<AppRegistration>) {
         this.handlers = handlers
         this.sc = sc;
     }
@@ -45,7 +45,7 @@ export class BasicFDC3Server implements FDC3Server {
 
 export class DefaultFDC3Server extends BasicFDC3Server {
 
-    constructor(sc: ServerContext<any>, directory: Directory, userChannels: ChannelState[], heartbeats: boolean, intentTimeoutMs: number = 20000, openHandlerTimeoutMs: number = 3000) {
+    constructor(sc: ServerContext<AppRegistration>, directory: Directory, userChannels: ChannelState[], heartbeats: boolean, intentTimeoutMs: number = 20000, openHandlerTimeoutMs: number = 3000) {
         const handlers: MessageHandler[] = [
             new BroadcastHandler(userChannels),
             new IntentHandler(directory, intentTimeoutMs),
