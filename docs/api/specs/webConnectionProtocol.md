@@ -155,7 +155,7 @@ const discoverProxyCandidates = (): WindowProxy[] => {
 
   //parent frames
   let currentWin = window;
-  while (currentWin.parent !== currentWin){
+  while (currentWin.parent !== currentWin) {
     candidates.push(currentWin.parent);
     currentWin = currentWin.parent;
   }
@@ -357,21 +357,21 @@ However, Browser Resident Desktop Agents may have difficulty displaying user int
 
 ```mermaid
 flowchart LR
-    subgraph DA [Desktop Agent Window]
-      A[(Desktop Agent)]
+  subgraph DA [Desktop Agent Window]
+    A[(Desktop Agent)]
+  end
+  A-->B["getAgent()"]
+  subgraph App [App Window]
+    B
+    subgraph iframe1 [iframe 1]
+      cs[Channel Selector]
     end
-    A-->B["getAgent()"]
-    subgraph App [App Window]
-      B
-      subgraph iframe1 [iframe 1]
-        cs[Channel Selector]
-      end
-      subgraph iframe2 [iframe 2]
-        ir[Intent Resolver]
-      end
+    subgraph iframe2 [iframe 2]
+      ir[Intent Resolver]
     end
-    B-->cs
-    B-->ir
+  end
+  B-->cs
+  B-->ir
 ```
 
 The WCP allows applications to indicate to the `getAgent()` implementation whether they need the UIs (they may not need one or the other based on their usage of the FDC3 API, or because they implement UIs themselves) and for Desktop Agents to provide custom implementations of them, or defer to reference implementations provided by the FDC3 Standard. This is achieved via to following messages:
