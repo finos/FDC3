@@ -3545,8 +3545,9 @@ export interface WebConnectionProtocol1HelloPayload {
      */
     actualUrl: string;
     /**
-     * A flag that may be used to indicate that a channel selector UI is or is not required. If
-     * the app includes its own UI for displaying
+     * A flag that may be used to indicate that a channel selector user interface is or is not
+     * required. Set to `false` if the app includes its own interface for selecting channels or
+     * does not work with user channels.
      */
     channelSelector?: boolean;
     /**
@@ -3560,7 +3561,7 @@ export interface WebConnectionProtocol1HelloPayload {
     identityUrl: string;
     /**
      * A flag that may be used to indicate that an intent resolver is or is not required. Set to
-     * false if no intents, or only targeted intents, are raised
+     * `false` if no intents, or only targeted intents, are raised.
      */
     intentResolver?: boolean;
     [property: string]: any;
@@ -3637,9 +3638,9 @@ export interface WebConnectionProtocol3Handshake {
  */
 export interface WebConnectionProtocol3HandshakePayload {
     /**
-     * Indicates whether a channel selector UI is required and the URL to use to do so. Set to
-     * `true` to use the default or `false` to disable the channel selector (as the Desktop
-     * Agent will handle another way)
+     * Indicates whether a channel selector user interface is required and the URL to use to do
+     * so. Set to `true` to use the default or `false` to disable the channel selector (as the
+     * Desktop Agent will handle it another way).
      */
     channelSelectorUrl: boolean | string;
     /**
@@ -3647,9 +3648,9 @@ export interface WebConnectionProtocol3HandshakePayload {
      */
     fdc3Version: string;
     /**
-     * Indicates whether an intent resolver UI is required and the URL to use to do so. Set to
-     * `true` to use the default or `false` to disable the intent resolver (as the Desktop Agent
-     * will handle another way)
+     * Indicates whether an intent resolver user interface is required and the URL to use to do
+     * so. Set to `true` to use the default or `false` to disable the intent resolver (as the
+     * Desktop Agent will handle it another way).
      */
     intentResolverUrl: boolean | string;
 }
