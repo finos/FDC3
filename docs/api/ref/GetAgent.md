@@ -16,7 +16,7 @@ The `getAgent()` function is the recommended way for **web applications** to con
 import { getAgent, DesktopAgent } from "@finos/fdc3";
 
 try {
-    const fdc3: DesktopAgent = await getAgent();
+    const desktopAgent: DesktopAgent = await getAgent();
     //do FDC3 things here
 } catch (e: AgentError) {
     // Failed to connect
@@ -30,7 +30,7 @@ try {
 import { getAgent } from "@finos/fdc3";
 
 try {
-    const fdc3 = await getAgent();
+    const desktopAgent = await getAgent();
     //do FDC3 things here
 } catch (e) {
     // Failed to connect
@@ -122,8 +122,8 @@ Desktop Agent retrieval can time out, for instance if the DA doesn't exist or is
 Example: Decreasing the timeout and providing a failover function
 
 ```js
-    const fdc3 = await getAgent({
-        appId: “myApp@yourorg.org”,
+    const desktopAgent = await getAgent({
+        appId: "myApp@yourorg.org",
         timeout: 250,
         failover: async (params: GetAgentParams) => {
             // return WindowProxy | DesktopAgent
