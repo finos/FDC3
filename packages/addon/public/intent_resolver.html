@@ -9,10 +9,11 @@
         display: flex;
         flex-direction: column;
         gap: 2px;
-        height: 235px;
+        height: fit-content;
         overflow-y: auto;
         scrollbar-width: thin;
         scrollbar-color: #ace;
+        border-radius: 8px;
 
         & > div {
           font-size: 18px;
@@ -105,31 +106,38 @@
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         font-family: sans-serif;
       }
+
+      dialog {
+        border: none;
+        background: transparent;
+      }
     </style>
   </head>
 
   <body data-visible="false">
-    <div class="container">
-      <h1>Intent Resolver</h1>
-
-      <div class="frontmatter">
-        Resolve intent for:
-        <select id="displayIntent"></select
-        ><br />
+    <dialog>
+      <div class="container">
+        <h1>Intent Resolver</h1>
+  
+        <div class="frontmatter">
+          Resolve intent for:
+          <select id="displayIntent"></select
+          ><br />
+        </div>
+  
+        <div class="tablist" role="tablist">
+          <div role="tab" tabindex="0" aria-selected="true" data-list-ref="new-list">New Apps</div>
+          <div role="tab" tabindex="0" aria-selected="false" data-list-ref="open-list">Open Apps</div>
+        </div>
+  
+        <div id="new-list" class="list" data-visible="true"></div>
+  
+        <div id="open-list" class="list" data-visible="false"></div>
+  
+        <div class="button-row">
+          <button id="cancel">Cancel</button>
+        </div>
       </div>
-
-      <div class="tablist" role="tablist">
-        <div role="tab" tabindex="0" aria-selected="true" data-list-ref="new-list">New Apps</div>
-        <div role="tab" tabindex="0" aria-selected="false" data-list-ref="open-list">Open Apps</div>
-      </div>
-
-      <div id="new-list" class="list" data-visible="true"></div>
-
-      <div id="open-list" class="list" data-visible="false"></div>
-
-      <div class="button-row">
-        <button id="cancel">Cancel</button>
-      </div>
-    </div>
+    </dialog>
   </body>
 </html>
