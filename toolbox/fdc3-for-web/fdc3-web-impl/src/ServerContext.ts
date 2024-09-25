@@ -1,4 +1,4 @@
-import { AppIntent } from "@kite9/fdc3-standard";
+import { AppIdentifier, AppIntent } from "@kite9/fdc3-standard";
 import { Context } from "@kite9/fdc3-context";
 
 export enum State {
@@ -106,5 +106,5 @@ export interface ServerContext<X extends AppRegistration> {
      * an opportunity for the server to either present an intent resolver 
      * or otherwise mess with the availble intents, or do nothing.
      */
-    narrowIntents(appIntents: AppIntent[], context: Context): Promise<AppIntent[]>
+    narrowIntents(raiser: AppIdentifier, IappIntents: AppIntent[], context: Context): Promise<AppIntent[]>
 }
