@@ -307,6 +307,8 @@ An additional response message is provided for the delivery of an `IntentResult`
 
 - [`raiseIntentResultResponse`](https://fdc3.finos.org/schemas/next/api/raiseIntentResultResponse.schema.json)
 
+There is no request message to indicate a call to the `resolution.getResult()` function of `IntentResolution`. Hence, Desktop Agents should always send this additional response message to indicate the status of the intent handling functino and to deliver its result (or void if none was returned).
+
 :::tip
 
 See [`addIntentListener`](#addintentlistener) above for details of the messages used for the resolving app to deliver the result to the Desktop Agent.

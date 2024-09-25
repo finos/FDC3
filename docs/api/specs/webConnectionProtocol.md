@@ -82,7 +82,7 @@ Messages defined as part of the Web Connection Protocol, which will be reference
 
 ## Establishing Connectivity Using the Web Connection Protocol (WCP)
 
-The WCP algorithm (coordinated between the `getAgent()` implementation and Desktop Agent implementations) has four steps which must be completed within the window of the web application trying to connect, followed by an optional disconnection step. Each step may contain sub-steps.
+The WCP algorithm (coordinated between the `getAgent()` implementation and Desktop Agent implementations) has four steps, followed by an optional disconnection step. Each step may contain sub-steps.
 
 1. Locate a Desktop Agent interface
 2. Validate app & instance identity
@@ -98,7 +98,7 @@ Check the SessionStorage key `FDC3-Desktop-Agent-Details` for a `DesktopAgentDet
 
 Any data stored under the `FDC3-Desktop-Agent-Details` must conform to the [DesktopAgentDetails](../ref/GetAgent#persisted-connection-data) type.
 
-Existing `DesktopAgentDetails` records MUST be used to limit discovery actions (in the next step) to the same mechanism as previously used or to skip the discovery step entirely if a `agentUrl` exists, indicating that the connection should be establish by loading the URL into a hidden iframe and initiating communication with that instead.
+Existing `DesktopAgentDetails` records MUST be used to limit discovery actions (in the next step) to the same mechanism as previously used or to skip the discovery step entirely if a `agentUrl` exists, indicating that the connection should be established by loading the URL into a hidden iframe and initiating communication with that instead.
 
 If use of the persisted data fails to establish a connection to the DA then `getAgent()` should reject its promise with `AgentNotFound` error from the [`AgentError`](../ref/Errors#agenterror) enumeration.
 
@@ -109,22 +109,12 @@ Next, attempt to discover whether Desktop Agent Preload or Desktop Agent Proxy i
 To discover a Desktop Agent Preload interface, check for the presence of an `fdc3` object in the global scope (i.e. `window.fdc3`). If it exists return it immediately. If it does not exist then add a listener for the global `fdc3Ready` event with the the specified timeout, e.g.:
 
 ```ts
-const discoverPreloadDA = async (timeout): Promise<DesktopAgent> => {
+const discoverPreloadDA = async (timeoutMs: number): Promise<DesktopAgent> => {
   return new Promise((resolve, reject) => {
     // if the global is already available resolve immediately
     if (window.fdc3) {
       resolve(window.fdc3);
     } else {
-      //`fdc3Ready` event listener function
-      const listener = () => {
-        clearTimeout(timeout);
-        if (window.fdc3) {
-          clearTimeout(timeout);
-          resolve(window.fdc3);
-        } else {
-          reject("The `fdc3Ready` event fired, but `window.fdc3` Was not set!");
-        }
-      };
       // Setup a timeout to return a rejected promise
       const timeout = setTimeout(
         () => {
@@ -136,8 +126,18 @@ const discoverPreloadDA = async (timeout): Promise<DesktopAgent> => {
             reject("Desktop Agent Preload not found!");
           }
         }, 
-        timeout
+        timeoutMs
       );
+      //`fdc3Ready` event listener function
+      const listener = () => {
+        clearTimeout(timeout);
+        if (window.fdc3) {
+          resolve(window.fdc3);
+        } else {
+          reject("The `fdc3Ready` event fired, but `window.fdc3` Was not set!");
+        }
+      };
+      
       // listen for the fdc3Ready event
       window.addEventListener("fdc3Ready", listener, { once: true });
     }
@@ -149,7 +149,7 @@ To discover a Desktop Agent Proxy interface, locate all candidates for a `parent
 
 ```ts
 const discoverProxyCandidates = (): WindowProxy[] => {
-  const candidates = [];
+  const candidates: WindowProxy[] = [];
   //parent window
   if (!!window.opener) { candidates.push(window.opener); }
 
