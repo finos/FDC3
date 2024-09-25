@@ -1,12 +1,12 @@
 ---
 id: webConnectionProtocol
 sidebar_label: Web Connection Protocol
-title: FDC3 Web Connection Protocol (next)
+title: Web Connection Protocol (next)
 ---
 
 :::info _[@experimental](../fdc3-compliance#experimental-features)_
 
-The FDC3 Web Connection Protocol (WCP) is an experimental feature added to FDC3 in 2.2. Limited aspects of its  design may change in future versions and it is exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
+FDC3's Web Connection Protocol (WCP) is an experimental feature added to FDC3 in 2.2. Limited aspects of its  design may change in future versions and it is exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
 
 :::
 
@@ -14,13 +14,13 @@ The FDC3 Web Connection Protocol (WCP) defines the procedure for a web-applicati
 
 :::tip
 
-The [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3) provides a `getAgent()` implementation which app can use to connect to a Desktop Agent without having to interact with or understand the WCP directly. See [Support Platforms](../supported-platforms) and the [`getAgent()`](../ref/GetAgent) reference page for more details on using `getAgent()` in an application.
+The [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3) provides a `getAgent()` implementation which app can use to connect to a Desktop Agent without having to interact with or understand the WCP directly. See [Supported Platforms](../supported-platforms) and the [`getAgent()`](../ref/GetAgent) reference page for more details on using `getAgent()` in an application.
 
 :::
 
 The WCP supports both interfaces to web-based Desktop Agents defined in the FDC3 Standard:
 
-- **Desktop Agent Preload**: An 'injected' or 'preloaded' Desktop Agent API implementation, typically provided by an electron (or similar) container or browser extension, which is made available to web applications at `window.fdc3`.
+- **Desktop Agent Preload**: An 'injected' or 'preloaded' Desktop Agent API implementation, typically provided by an [Electron](https://www.electronjs.org/) (or similar) container or browser extension, which is made available to web applications at `window.fdc3`.
 - **Desktop Agent Proxy**: An interface to a web-based Desktop Agent (implementation of the Desktop Agent API) that uses the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) to communicate with a Desktop Agent implementation running in another frame or window, via the HTML Standard's Channel Messaging API ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API), [HTML Living Standard](https://html.spec.whatwg.org/multipage/web-messaging.html)).
 
 The WCP allows FDC3-enabled application to detect which FDC3 web-interface is present and returns a `DesktopAgent` interface implementation that the application can use to communicate, without the import of proprietary libraries or code. Hence, the WCP enables FDC3-enabled applications to be run within the scope of any standards compliant Desktop Agent without modification, enabling their developers to Write Once Run Anywhere (WORA).
@@ -285,6 +285,8 @@ SessionStorage is ephemeral, only existing for the duration of the window's life
 ### Step 4: Resolve promise with DesktopAgent interface (step 4)
 
 Resolve the `getAgent()` promise with an object containing either a `DesktopAgent` implementation (that was found at `window.fdc3` or returned by a `failover` function) or a 'Desktop Agent Proxy' implementation (a class implementing the `DesktopAgent` interface that uses the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) to communicate with a Desktop Agent over the `MessagePort`).
+
+Where a `DesktopAgent` or 'Desktop Agent Proxy' implementation was successfully returned, any subsequent calls to `getAgent()` that are not preceded by a navigation or refresh event, should resolve to the same instance.
 
 ### Step 5: Disconnection
 

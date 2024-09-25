@@ -1,27 +1,27 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/api/iframeHandshake.schema.json",
-  "title": "iframe Handshake",
-  "description": "Handshake message sent back to an iframe from the DA proxy code (setup by `getAgent()`) over the `MessagePort` provide in the preceding iFrameHello message, confirming that it is listening to the `MessagePort` for further communication.",
+  "$id": "https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceHandshake.schema.json",
+  "title": "Fdc3 UserInterface Handshake",
+  "description": "Handshake message sent back to a user interface from the DA proxy code (setup by `getAgent()`) over the `MessagePort` provide in the preceding iFrameHello message, confirming that it is listening to the `MessagePort` for further communication.",
   "type": "object",
   "allOf": [
     {
-      "$ref": "#/$defs/IframeHandshakeBase"
+      "$ref": "#/$defs/Fdc3UserInterfaceHandshakeBase"
     },
     {
-      "$ref": "iFrameMessage.schema.json"
+      "$ref": "fdc3UserInterfaceMessage.schema.json"
     }
   ],
   "$defs": {
-    "IframeHandshakeBase": {
+    "Fdc3UserInterfaceHandshakeBase": {
       "type": "object",
       "properties": {
         "type": {
-          "title": "iframeHandshake Message Type",
-          "const": "iframeHandshake"
+          "title": "Fdc3 UserInterface Handshake Message Type",
+          "const": "Fdc3UserInterfaceHandshake"
         },
         "payload": {
-          "title": "iframeHandshake Payload",
+          "title": "Fdc3 UserInterface Handshake Payload",
           "type": "object",
           "properties": {
             "fdc3Version": {

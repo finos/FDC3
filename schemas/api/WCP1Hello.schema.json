@@ -43,12 +43,12 @@
             },
             "intentResolver": {
               "title": "Intent Resolver Required",
-              "description": "A flag that may be used to indicate that an intent resolver is or is not required. Set to false if no intents, or only targeted intents, are raised",
+              "description": "A flag that may be used to indicate that an intent resolver is or is not required. Set to `false` if no intents, or only targeted intents, are raised.",
               "type": "boolean"
             },
             "channelSelector": {
               "title": "Channel Selector Required",
-              "description": "A flag that may be used to indicate that a channel selector UI is or is not required. If the app includes its own UI for displaying ",
+              "description": "A flag that may be used to indicate that a channel selector user interface is or is not required. Set to `false` if the app includes its own interface for selecting channels or does not work with user channels.",
               "type": "boolean"
             }
           },
