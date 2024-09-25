@@ -5,12 +5,11 @@ title: Errors
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-FDC3 API operations may sometimes result in an error, which must be returned to the caller. Errors should be returned by rejecting the promise returned by the API with a JavaScript `Error` object (or equivalent for the language of the implementation). The `Error` Object's message should be chosen from the appropriate Error enumeration below.
+FDC3 API operations may sometimes result in an error that is returned to the caller. Errors MUST be returned by rejecting the promise returned by the API with a JavaScript `Error` object (or equivalent for the language of the implementation). The `Error` Object's message should be chosen from the appropriate Error enumeration below.
 
 ## `AgentError`
 
-Contains constants representing the errors that can be encountered when calling the [`getAgent`](getAgent) function to establish connectivity to a Desktop Agent. Primarily used with web applications, but may also be used in other language
-implementations.
+Contains constants representing the errors that can be encountered when calling the [`getAgent`](getAgent) function to establish connectivity to a Desktop Agent. Primarily used with web applications, but may also be used in other language implementations.
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -400,7 +399,7 @@ enum BridgingError {
    *  (e.g. raiseIntent with an app on a remote DesktopAgent targeted), 
    *  when the local Desktop Agent is not connected to a bridge. */
   NotConnectedToBridge = "NotConnectedToBridge",
-  
+
   /** @experimental Returned if a message to a Bridge deviates from the schema
    *  for that message sufficiently that it could not be processed.
    */
