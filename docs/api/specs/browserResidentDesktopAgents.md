@@ -81,7 +81,7 @@ As web applications may vary their URL during use, or serve multiple application
 - `identityUrl`: the URL to match to the app directory record.
 - `actualUrl`: the current URL of the application, which MUST be captured automatically by the `getAgent()` implementation.
 
-Applications _may_ specify the `identityUrl` value as an argument to `getAgent()`. If not specified, the `getAgent()` implementation MUST use the current URL of the application. The Desktop Agent must validate that the origin of the `identityUrl` is the same as the origin of _both_ the `actualUrl` and the `WCPValidateAppIdentity` message sent over the `MessagePort`. The Desktop Agent MUST then match the URL to that of applications known to the Desktop Agent.
+Applications _may_ specify the `identityUrl` value as an argument to `getAgent()`. If not specified, the `getAgent()` implementation MUST use the current URL of the application. The Desktop Agent MUST validate that the origin of the `identityUrl` is the same as the origin of _both_ the `actualUrl` and the `WCPValidateAppIdentity` message sent over the `MessagePort`. The Desktop Agent MUST then match the URL to that of applications known to the Desktop Agent.
 
 The `actualUrl` field may be used for logging and debug purposes by the Desktop Agent and it differing from the `identityUrl` indicates that the application provided an override via `getAgent()`.
 
@@ -90,9 +90,9 @@ Owing to the fact that the different parts of a URL (origin, path, search parame
 For example, given an identity URL `url`, and an array of App Directory records `appDRecords`, a Desktop Agent MAY implement matching as follows:
 
 ```js
-/** Return the AppD record whose URL best matches the input URL or `null` if no match is found.
- *  To be considered a match all elements of the AppD URL (origin, path, searchParams and hash)
- *  must be found in the input URL.
+/** Return the AppD record whose URL best matches the input URL or `null` if no
+ *  match is found. To be considered a match all elements of the AppD URL 
+ *  (origin, path, searchParams and hash) MUST be found in the input URL.
  *  The best match is the AppD URL that contains the most elements from the
  *  input URL.
  */  
@@ -114,8 +114,8 @@ let matchUrlToAppD = (url, appDRecords) => {
     const matchScores = [];
 
     //score appD records based on the match of their URL to the input URL
-    // if any component of the appD record URL is missing from input URL, score 0
-    // otherwise count the number of input elements matched 
+    // if any component of the appD record URL is missing from input URL, 
+    // score 0 otherwise count the number of input elements matched.
     appDRecords.map((record) => {
         //record must contain a URL
         if (!record.details?.url) { return; }

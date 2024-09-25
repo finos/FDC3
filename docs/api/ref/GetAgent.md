@@ -119,13 +119,13 @@ Finally, if there is still no Desktop Agent available, or an issue prevent conne
 
 ## Failover function
 
-Desktop Agent retrieval can time out, for instance if the DA doesn't exist or is unresponsive. The default timeout of 750 milliseconds can be overridden by setting the `timeout` field. An application may also provide a failover function which will be called if an interface cannot be retrieved or times out.
+Desktop Agent retrieval can time out, for instance if the DA doesn't exist or is unresponsive. The default timeout of 750 milliseconds can be overridden by setting the `timeoutMs` parameter. An application may also provide a failover function which will be called if an interface cannot be retrieved or times out.
 
 Example: Decreasing the timeout and providing a failover function
 
 ```js
     const desktopAgent = await getAgent({
-        timeout: 250,
+        timeoutMs: 250,
         failover: async (params: GetAgentParams) => {
             // return WindowProxy | DesktopAgent
         }

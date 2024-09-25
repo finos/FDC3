@@ -104,7 +104,7 @@ If use of the persisted data fails to establish a connection to the DA then `get
 
 #### 1.2 Desktop Agent Discovery
 
-Next, attempt to discover whether Desktop Agent Preload or Desktop Agent Proxy interfaces are available, within a specified timeout. The optional `params.timeout` argument to `getAgent()` allows an application to specify the timeout that should be used, with a default value of 750ms. Discovery of Desktop Agent Preload or Desktop Agent Proxy interfaces should be conducted in parallel where possible and the timeout cancelled as soon as an interface is discovered. If a `DesktopAgentDetails` record was found in the previous step, limit discovery to the interface specified, or, if an `agentUrl` property was specified in the `DesktopAgentDetails` record, skip the discovery step entirely and proceed to the next step.
+Next, attempt to discover whether Desktop Agent Preload or Desktop Agent Proxy interfaces are available, within a specified timeout. The optional `params.timeoutMs` argument to `getAgent()` allows an application to specify the timeout that should be used, with a default value of 750ms. Discovery of Desktop Agent Preload or Desktop Agent Proxy interfaces should be conducted in parallel where possible and the timeout cancelled as soon as an interface is discovered. If a `DesktopAgentDetails` record was found in the previous step, limit discovery to the interface specified, or, if an `agentUrl` property was specified in the `DesktopAgentDetails` record, skip the discovery step entirely and proceed to the next step.
 
 To discover a Desktop Agent Preload interface, check for the presence of an `fdc3` object in the global scope (i.e. `window.fdc3`). If it exists return it immediately. If it does not exist then add a listener for the global `fdc3Ready` event with the the specified timeout, e.g.:
 
@@ -116,7 +116,7 @@ const discoverPreloadDA = async (timeoutMs: number): Promise<DesktopAgent> => {
       resolve(window.fdc3);
     } else {
       // Setup a timeout to return a rejected promise
-      const timeout = setTimeout(
+      const timeoutId = setTimeout(
         () => {
           //clear the event listener to ignore a late event
           window.removeEventListener("fdc3Ready", listener);
@@ -130,7 +130,7 @@ const discoverPreloadDA = async (timeoutMs: number): Promise<DesktopAgent> => {
       );
       //`fdc3Ready` event listener function
       const listener = () => {
-        clearTimeout(timeout);
+        clearTimeout(timeoutId);
         if (window.fdc3) {
           resolve(window.fdc3);
         } else {
@@ -355,7 +355,7 @@ flowchart TB
 
 Users of FDC3 Desktop Agents often need access to UI controls that allow them to select user channels or to resolve intents that have multiple resolution options. Whilst apps can implement these UIs on their own via data and API calls provided by the `DesktopAgent` API, Desktop Agents typically provide these interfaces themselves.
 
-However, Browser Resident Desktop Agents may have difficulty displaying user interfaces over applications for a variety of reasons (inability to inject code, lack of permissions to display popups etc.), or may not (e.g. because they render applications in iframes within windows they control and can therefore display content over the iframe). The Web Connection Protocol and the `getAgent()` implementation based on it and incorporated into apps via the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3), is intended to help Desktop Agents deliver these UIs where necessary.
+However, Browser Resident Desktop Agents may have difficulty displaying user interfaces over applications for a variety of reasons (inability to inject code, lack of permissions to display popups, user gestures not following cross-origin comms, etc.), or may not (e.g. because they render applications in iframes within windows they control and can therefore display content over the iframe). The Web Connection Protocol and the `getAgent()` implementation based on it and incorporated into apps via the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3), is intended to help Desktop Agents deliver these UIs where necessary.
 
 ```mermaid
 flowchart LR
@@ -376,9 +376,9 @@ flowchart LR
   B-->ir
 ```
 
-The WCP allows applications to indicate to the `getAgent()` implementation whether they need the UIs (they may not need one or the other based on their usage of the FDC3 API, or because they implement UIs themselves) and for Desktop Agents to provide custom implementations of them, or defer to reference implementations provided by the FDC3 Standard. This is achieved via to following messages:
+The WCP allows applications to indicate to the `getAgent()` implementation whether they need the UIs (they may not need one or the other based on their usage of the FDC3 API, or because they implement UIs themselves) and for Desktop Agents to provide custom implementations of them, or defer to reference implementations provided by the FDC3 Standard. This is achieved via the following messages:
 
 - [`WCP1Hello`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json): Sent by an application and incorporating boolean `payload.intentResolver` and `payload.channelSelector` fields, which are set to `false` if either UI is not needed (defaults to `true`).
 - [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json): Response sent by the Desktop Agent and incorporating `payload.intentResolverUrl` and `payload.channelSelectorUrl` fields, which should be set to the URL for each UI implementation that should be loaded into an iframe to provide the UI (defaults to URLs for reference UI implementations provided by the FDC3 project), or set to `false` to indicate that the respective UI is not needed. Setting these fields to `true` will cause the `getAgent()` implementation to use its default URLs representing a reference implementation of each UI.
 
-When UI iframes are created, the user interfaces may use the 'iframe' messages incorporated into the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces) to communicate with the `getAgent()` implementation and through it the Desktop Agent.
+When UI iframes are created, the user interfaces may use the `Fdc3UserInterface` messages incorporated into the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces) to communicate with the `getAgent()` implementation and through it the Desktop Agent.
