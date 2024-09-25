@@ -310,22 +310,22 @@ flowchart TB
 
     subgraph getAgent ["getAgent()"]
       A3["Check for DesktopAgentDetails in SessionStorage"] --> P1{"Does window.fdc3 exist?"}
-      P1 -->|yes|P2["stop timeout"]
+      P1 -->|yes|P2["Stop timeout"]
       P2 --> P21["Save DesktopAgentDetails to SessionStorage"]
       P1 -->|No|P3["Listen for fdc3Ready"]
       P3 --> P31["fdc3Ready event fires"]
-      P31 --> P32["stop timeout"]
+      P31 --> P32["Stop timeout"]
       P32 --> P33["Save DesktopAgentDetails to SessionStorage"]
       
       A3 --> B1{"Do parent refs exist?"}
       B1 -->|yes|B11["Send WCP1Hello to all candidates"]
       B11 --> B2["Receive WCP2LoadUrl"]
-      B2 --> B21["stop timeout"]
+      B2 --> B21["Stop timeout"]
       B21 --> B22["Create hidden iframe with URL"]
-      B22 --> B23["await iframe's load event"]
+      B22 --> B23["Await iframe's load event"]
       B23 --> B24["Send WCP1Hello to iframe"]
       B24 --> B3["Receive WCP3Handshake with MessagePort"]
-      B3 --> B31["stop timeout"]
+      B3 --> B31["Stop timeout"]
       B11 --> B3
       B31 --> B32["Send WCP4ValidateIdentity on MessagePort"]
       B32 --> B321["Receive WCP5ValidateIdentityResponse"]
@@ -334,7 +334,7 @@ flowchart TB
       B32 --> B322["Receive WCP5ValidateIdentityFailedResponse"]
       
       A3 --> T1["Set timeout"]
-      T1 --> T2["timeout expires"]
+      T1 --> T2["Timeout expires"]
       T2 --> T3{"Was a failover fn provided"}
       T3 -->|yes|T31["Run failover"]
       T31 --> T311{"Check failover return type"}
@@ -342,13 +342,13 @@ flowchart TB
       T311 -->|DesktopAgent|T3112["Save DesktopAgentDetails to SessionStorage"]
       T3111 --> B3
     end
-    P21 -->P22(["resolve with window.fdc3"])
-    P33 -->P34(["resolve with window.fdc3"])
-    B3212 --> B3213(["resolve with DesktopAgentProxy"])
-    B322 --> B3221(["reject with AgentError.AccessDenied"])
-    T3112 --> T31121(["resolve with DesktopAgent"])
-    T3 -->|no|T32(["reject with AgentError.AgentNotFound"])
-    T311 -->|other|T3113["reject with AgentError.InvalidFailover"]
+    P21 -->P22(["Resolve with window.fdc3"])
+    P33 -->P34(["Resolve with window.fdc3"])
+    B3212 --> B3213(["Resolve with DesktopAgentProxy"])
+    B322 --> B3221(["Reject with AgentError.AccessDenied"])
+    T3112 --> T31121(["Resolve with DesktopAgent"])
+    T3 -->|no|T32(["Reject with AgentError.AgentNotFound"])
+    T311 -->|other|T3113["Reject with AgentError.InvalidFailover"]
 ```
 
 ## Providing Channel Selector and Intent Resolver UIs
