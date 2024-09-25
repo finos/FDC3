@@ -1,9 +1,9 @@
-import { ServerContext, InstanceID, State, AppRegistration } from "./ServerContext"
+import { ServerContext, InstanceID, State, AppRegistration, } from "./ServerContext"
 import { BasicFDC3Server, DefaultFDC3Server } from "./BasicFDC3Server"
 import { FDC3Server } from "./FDC3Server"
-import { Directory, DirectoryApp, DirectoryIntent } from "./directory/DirectoryInterface"
+import { Directory, DirectoryApp, DirectoryIntent, WebAppDetails } from "./directory/DirectoryInterface"
 import { BasicDirectory } from "./directory/BasicDirectory"
-import { BroadcastHandler, ChannelState } from "./handlers/BroadcastHandler"
+import { BroadcastHandler, ChannelState, ChannelType } from "./handlers/BroadcastHandler"
 import { IntentHandler } from "./handlers/IntentHandler"
 import { OpenHandler } from "./handlers/OpenHandler"
 
@@ -22,5 +22,7 @@ export {
     BroadcastHandler,
     ChannelState,
     IntentHandler,
-    OpenHandler
+    OpenHandler,
+    ChannelType,
+    type WebAppDetails
 }
