@@ -4,6 +4,9 @@ import { IframeResolveActionPayload, IframeResolvePayload } from "@kite9/fdc3-co
 
 const setup = (data: IframeResolvePayload, callback: (s: IframeResolveActionPayload) => void) => {
   document.body.setAttribute("data-visible", "true");
+  document.querySelector("dialog")?.showModal();
+
+  console.log("setup data:", data);
 
   const intentSelect = document.getElementById("displayIntent") as HTMLSelectElement
 
@@ -72,13 +75,13 @@ const fillList = (ai: AppIntent[], intent: string, callback: (s: IframeResolveAc
   const newList = document.getElementById('new-list') as HTMLDivElement;
 
   newList.innerHTML = '';
-  newApps.forEach(({ appId, title, icons }) => {
+  newApps.forEach(({ appId, title, name, icons }) => {
     const node = document.createElement('div');
     node.setAttribute('tabIndex', '0');
     node.setAttribute("data-appId", appId);
 
     const span = document.createElement("span");
-    span.textContent = title ?? appId;
+    span.textContent = title ?? name ?? appId;
 
     const img = createIcon(icons)
 
@@ -164,11 +167,36 @@ window.addEventListener("load", () => {
         break;
       }
       case "iframeResolve": {
+        myPort.postMessage({
+          type: "iframeRestyle",
+          payload: {
+            updatedCSS: {
+              width: "100%",
+              height: "100%",
+              top: "0",
+              left: "0",
+              position: "fixed"
+            }
+          }
+        });
+
         setup(data.payload, (s) => {
+          document.querySelector("dialog")?.close();
           myPort.postMessage({
             type: "iframeResolveAction",
             payload: s
-          })
+          });
+
+          myPort.postMessage({
+            type: "iframeRestyle",
+            payload: {
+              updatedCSS: {
+                width: "0",
+                height: "0"
+              }
+            }
+          });
+
         })
       }
     }
@@ -178,12 +206,8 @@ window.addEventListener("load", () => {
     type: "iframeHello",
     payload: {
       initialCSS: {
-        width: "330px",
-        height: "455px",
-        zIndex: "1000",
-        "z-index": "1000",
-        position: "fixed",
-        top: "0"
+        width: "0",
+        height: "0"
       }
     }
   }, "*", [mc.port2]);
