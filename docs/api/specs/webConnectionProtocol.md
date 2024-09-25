@@ -23,7 +23,7 @@ The WCP supports both interfaces to web-based Desktop Agents defined in the FDC3
 - **Desktop Agent Preload**: An 'injected' or 'preloaded' Desktop Agent API implementation, typically provided by an [Electron](https://www.electronjs.org/) (or similar) container or browser extension, which is made available to web applications at `window.fdc3`.
 - **Desktop Agent Proxy**: An interface to a web-based Desktop Agent (implementation of the Desktop Agent API) that uses the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) to communicate with a Desktop Agent implementation running in another frame or window, via the HTML Standard's Channel Messaging API ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API), [HTML Living Standard](https://html.spec.whatwg.org/multipage/web-messaging.html)).
 
-The WCP allows FDC3-enabled application to detect which FDC3 web-interface is present and returns a `DesktopAgent` interface implementation that the application can use to communicate, without the import of proprietary libraries or code. Hence, the WCP enables FDC3-enabled applications to be run within the scope of any standards compliant Desktop Agent without modification, enabling their developers to Write Once Run Anywhere (WORA).
+The WCP allows FDC3-enabled applications to detect which FDC3 web-interface is present at runtime and returns a `DesktopAgent` interface implementation that the application can use to communicate, without the import of proprietary libraries or code. Hence, the WCP enables FDC3-enabled applications to be run within the scope of any standards compliant Desktop Agent without modification, enabling their developers to Write Once Run Anywhere (WORA).
 
 :::tip
 
@@ -46,7 +46,7 @@ There are a number of messages defined as part of the Web Connection Protocol. D
 TypeScript types representing all DACP and WCP messages are generated from the JSON Schema source and can be imported from the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3):
 
 ```ts
-import { BrowserTypes } from '@finos/fdc3';
+import { BrowserTypes } from "@finos/fdc3";
 ```
 
 :::
@@ -75,7 +75,7 @@ Messages defined as part of the Web Connection Protocol, which will be reference
 - [`WCP1Hello`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json)
 - [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json)
 - [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json)
-- [`WCP4ValidateAppIdentity`](/schemas/next/api/WCP4ValidateAppIdentity.schema.json)
+- [`WCP4ValidateAppIdentity`](https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json)
 - [`WCP5ValidateAppIdentityFailedResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityFailedResponse.schema.json)
 - [`WCP5ValidateAppIdentityResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json)
 - [`WCP6Goodbye`](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json)
