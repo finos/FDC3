@@ -11,10 +11,10 @@ There are two main categories of platform: web and native, both of which are des
 
 :::tip
 
-The recommended way to get access to the FDC3 Desktop Agent API in an application is to to import and call the `getAgent` function from the FDC3 NPM module, which supports all standard's compliant Desktop Agents for web applications:
+The recommended way to get access to the FDC3 Desktop Agent API in an application is to to import and call the `getAgent` function from the FDC3 NPM module, which supports all FDC3 Standard conformant Desktop Agents for web applications:
 
 ```ts
-import { DesktopAgent, getAgent } from "@finos/fdc3";
+import { DesktopAgent, getAgent, AgentError } from "@finos/fdc3";
 
 //...
 
@@ -97,18 +97,20 @@ Once you've retrieved a `DesktopAgent` interface, there are two main ways FDC3 c
 Simply use the interface you've retrieved and address the API directly:
 
 ```js
+import { DesktopAgent, getAgent } from "@finos/fdc3";
+
 async function sendData(desktopAgent: DesktopAgent) {
   await desktopAgent.broadcast({
     type: "fdc3.instrument",
     id: { ticker: "AAPL" }
-  })
+  });
 }
 
 const desktopAgent: DesktopAgent = await getAgent();
 await sendData(desktopAgent);
 ```
 
-#### 2. es6-style Function Wrappers
+#### 2. ES6-style Function Wrappers
 
 The npm package provides a wrapper around FDC3, allowing you to use it with ES6 import syntax:
 
@@ -120,6 +122,12 @@ await raiseIntent("ViewAnalysis", {
     id: { ticker: "AAPL" }
 });
 ```
+
+:::tip
+
+Please note that the wrapper functions will not work with the `dontSetWindowFdc3` parameter to `getAgent()` set to `true` as they rely on finding the `DesktopAgent` reference at `window.fdc3`.
+
+:::
 
 ## Native
 

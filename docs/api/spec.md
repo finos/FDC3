@@ -182,7 +182,7 @@ Since version 1.2 of the FDC3 Standard it may do so via the [`fdc3.getInfo()`](r
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
+import { compareVersionNumbers, versionIsAtLeast } from "@finos/fdc3";
 
 if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
   await fdc3.raiseIntentForContext(context);
@@ -207,8 +207,8 @@ The [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object retur
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-let implementationMetadata = await fdc3.getInfo();
-let {appId, instanceId} = implementationMetadata.appMetadata;
+const implementationMetadata = await fdc3.getInfo();
+const { appId, instanceId } = implementationMetadata.appMetadata;
 
 ```
 
@@ -274,26 +274,34 @@ await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 const appIntent = await fdc3.findIntent("ViewContact", context, "fdc3.contact");
 try {
   const resolution = await fdc3.raiseIntent(appIntent.intent, context, appIntent.apps[0].name);
-  const result = await resolution.getResult();
-  console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
-} catch(error) {
-  console.error(`${resolution.source} returned a result error: ${error}`);
+  try {
+    const result = await resolution.getResult();
+    console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+  } catch(resultError: ResultError) {
+    console.error(`${resolution.source} returned an error: ${resultError.message}`);
+  }
+} catch(resolveError: ResolveError) {
+  console.error(`${JSON.stringify(appIntent.apps[0])} returned an error: ${resolveError.message}`);
 }
 
 //Find apps to resolve an intent and return a channel
 const appIntent = await fdc3.findIntent("QuoteStream", context, "channel");
 try {
   const resolution = await fdc3.raiseIntent(appIntent.intent, context, appIntent.apps[0].name);
-  const result = await resolution.getResult();
-  if (result && result.addContextListener) {
-    result.addContextListener(null, (context) => { 
-      console.log(`received context: ${JSON.stringify(context)}`); 
-    });
-  } else {
-    console.log(`${resolution.source} didn't return a channel! Result: ${JSON.stringify(result)}`);
+  try {
+    const result = await resolution.getResult();
+    if (result && result.addContextListener) {
+      result.addContextListener(null, (context) => { 
+        console.log(`received context: ${JSON.stringify(context)}`); 
+      });
+    } else {
+      console.log(`${resolution.source} didn't return a channel! Result: ${JSON.stringify(result)}`);
+    }
+  } catch(resultError: ResultError) {
+    console.error(`${resolution.source} returned an error: ${resultError.message}`);
   }
-} catch(error) {
-  console.error(`${resolution.source} returned a result error: ${error}`);
+} catch (resolveError: ResolveError) {
+  console.error(`${JSON.stringify(appIntent.apps[0])} returned an error: ${resolveError.message}`);
 }
 
 //Find apps that can perform any intent with the specified context
@@ -383,7 +391,7 @@ For example, to raise a specific intent:
 try {
   const resolution = await fdc3.raiseIntent("StageOrder", context);
 }
-catch (err){ ... }
+catch (err: ResolveError) { ... }
 ```
 
 </TabItem>
@@ -411,8 +419,7 @@ try {
   if (resolution.data) {
     const orderId = resolution.data.id;
   }
-}
-catch (err){ ... }
+} catch (err: ResolveError) { ... }
 ```
 
 </TabItem>
@@ -446,7 +453,7 @@ try {
   //some time later
   await agent.raiseIntent("UpdateOrder", context, resolution.source);
 }
-catch (err) { ... }
+catch (err: ResolveError) { ... }
 ```
 
 </TabItem>
@@ -478,13 +485,13 @@ try {
   /* Detect whether the result is Context or a Channel by checking for properties unique to Channels. */
   if (result && result.broadcast) { 
     console.log(`${resolution.source} returned a channel with id ${result.id}`);
-  } else if (result){
+  } else if (result) {
     console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);
   } else {
     console.error(`${resolution.source} didn't return anything`);
   }
-} catch(error) {
-  console.error(`${resolution.source} returned a data error: ${error}`);
+} catch(err: ResultError) {
+  console.error(`${resolution.source} returned a data error: ${err.message}`);
 }
 ```
 

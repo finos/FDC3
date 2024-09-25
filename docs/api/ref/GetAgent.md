@@ -13,7 +13,7 @@ The `getAgent()` function is the recommended way for **web applications** to con
 <TabItem value="ts" label="TypeScript">
 
 ```ts
-import { getAgent, DesktopAgent } from "@finos/fdc3";
+import { getAgent, DesktopAgent, AgentError } from "@finos/fdc3";
 
 try {
     const desktopAgent: DesktopAgent = await getAgent();
@@ -42,7 +42,7 @@ try {
 
 The  `getAgent()` function allows web applications to retrieve an FDC3 Desktop Agent API interface to work with, whether they are running in an environment that supports a Desktop Agent Preload (a container-injected API implementation) or a Desktop Agent Proxy (a Browser-based Desktop Agent running in another window or frame). The behavior of `getAgent()` is defined by the [FDC3 Web Connection Protocol (WCP)](../specs/webConnectionProtocol) and communication with a Desktop Agent Proxy in a web-browser is defined by the [Desktop Agent Communication Protocol (DACP)](../specs/desktopAgentCommunicationProtocol). Hence, it allows applications to be written that will work in either scenario without modification or the inclusion of vendor-specific libraries.
 
-If no Desktop Agent is found, a failover function may be supplied by app allowing it to start or otherwise connect to a Desktop Agent (e.g. by loading a proprietary adaptor that returns a `DesktopAgent` implementation or by creating a window or iframe of its own that will provide a Desktop Agent Proxy).
+To handle situations where no Desktop Agent is found, a failover function may be supplied by app allowing it to start or otherwise connect to a Desktop Agent (e.g. by loading a proprietary adaptor that returns a `DesktopAgent` implementation or by creating a window or iframe of its own that will provide a Desktop Agent Proxy).
 
 The definition of the `getAgent()` function is as follows:
 
@@ -59,46 +59,48 @@ A small number of arguments are accepted that can affect the behavior of `getAge
  * @typedef {Object} GetAgentParams Type representing parameters passed to the 
  * getAgent function. 
  * 
- * @property {string} identityUrl The app's current URL is normally sent to 
- * a web-based desktop agent to help establish its identity. This property 
- * may be used to override the URL sent (to handle situations where an app's 
- * URL is not sufficiently stable to use for identity purposes). The URL set 
- * MUST match the origin of the application (scheme, hostname, and port) or  
- * it will be ignored. If not specified, the app's current URL will be used.  
+ * @property {number} timeoutMs Number of milliseconds to allow for an FDC3
+ * implementation to be found before calling the failover function or
+ * rejecting (default 750). Note that the timeout is cancelled as soon as a
+ * Desktop Agent is detected. There may be additional set-up steps to perform
+ * which will happen outside the timeout.
  * 
- * @property {number} timeout Number of milliseconds to allow for an fdc3  
- * implementation to be found before calling the failover function or 
- * rejecting (default 750). Note that the timeout is cancelled as soon as a 
- * Desktop Agent is detected. There may be additional set-up steps to perform 
- * which will happen outside the timeout. 
+ * @property {string} identityUrl The app's current URL is normally sent to
+ * a web-based desktop agent to help establish its identity. This property
+ * may be used to override the URL sent (to handle situations where an app's
+ * URL is not sufficiently stable to use for identity purposes,  e.g. due to
+ * client-side route changes when navigating within the app). The URL set MUST
+ * match the origin of the application (scheme, hostname, and port) or it will
+ * be ignored. If not specified, the app's current URL will be used.
  * 
- * @property {boolean} channelSelector Flag indicating that the application  
- * needs access to a channel selector UI (i.e. because it supports User Channels 
- * and does not implement its own UI for selecting channels). Defaults to true. 
- * MAY be ignored by Desktop Agent Preload (container) implementations. 
+ * @property {boolean} channelSelector Flag indicating that the application
+ * needs access to a channel selector UI (i.e. because it supports User Channels
+ * and does not implement its own UI for selecting channels). Defaults to 
+ * `true`. MAY be ignored by Desktop Agent Preload (container) implementations.
  * 
- * @property {boolean} intentResolver Flag indicating that the application  
+ * @property {boolean} intentResolver Flag indicating that the application
  * needs access to an intent resolver UI (i.e. because it supports raising one
- * or more intents and and does not implement its own UI for selecting target 
- * apps. Default to `true`. MAY be ignored by Desktop Agent Preload (container) 
+ * or more intents and and does not implement its own UI for selecting target
+ * apps). Defaults to `true`. MAY be ignored by Desktop Agent Preload (container)
  * implementations. 
  * 
- * @property {boolean} dontSetWindowFdc3 For backwards compatibility, `getAgent` 
- * will set a reference to the Desktop Agent implementation at `window.fdc3` 
- * if one does not already exist, and will fire the `fdc3Ready` event. Setting  
- * this flag to `true` will inhibit that behavior, leaving `window.fdc3` unset. 
- *  
- * @property {function} failover An optional function that provides a  
- * means of connecting to or starting a Desktop Agent, which will be called 
- * if no Desktop Agent is detected. Must return either a Desktop Agent  
- * implementation directly (e.g. by using a proprietary adaptor) or a  
- * WindowProxy (e.g a reference to another window returned by `window.open`  
- * or an iframe's `contentWindow`) for a window or frame in which it has loaded 
- * a Desktop Agent or suitable proxy to one that works with FDC3 Web Connection 
- * and Desktop Agent Communication Protocols. 
+ * @property {boolean} dontSetWindowFdc3 For backwards compatibility, `getAgent`
+ * will set a reference to the Desktop Agent implementation at `window.fdc3`
+ * if one does not already exist, and will fire the fdc3Ready event. Defaults to
+ * `false`. Setting this flag to `true` will inhibit that behavior, leaving 
+ * `window.fdc3` unset.
+ * 
+ * @property {function} failover An optional function that provides a
+ * means of connecting to or starting a Desktop Agent, which will be called
+ * if no Desktop Agent is detected. Must return either a Desktop Agent
+ * implementation directly (e.g. by using a proprietary adaptor) or a
+ * WindowProxy (e.g a reference to another window returned by `window.open`
+ * or an iframe's `contentWindow`) for a window or frame in which it has loaded
+ * a Desktop Agent or suitable proxy to one that works with FDC3 Web Connection
+ * and Desktop Agent Communication Protocols.
  */ 
 type GetAgentParams = { 
-    timeout?: number, 
+    timeoutMs?: number, 
     identityUrl?: string, 
     channelSelector?: boolean, 
     intentResolver?: boolean,
@@ -123,7 +125,6 @@ Example: Decreasing the timeout and providing a failover function
 
 ```js
     const desktopAgent = await getAgent({
-        appId: "myApp@yourorg.org",
         timeout: 250,
         failover: async (params: GetAgentParams) => {
             // return WindowProxy | DesktopAgent
@@ -135,7 +136,7 @@ The failover function allows an application to provide a backup mechanism for co
 
 :::note
 
-If you wish to _completely override FDC3s standard mechanisms_, then do not use a failover function. Instead, simply skip the `getAgent()` call and provide your own DesktopAgent object.
+If you wish to _completely override FDC3's standard discovery mechanisms_, then do not use a failover function. Instead, simply skip the `getAgent()` call and provide your own DesktopAgent object.
 
 :::
 
@@ -208,13 +209,13 @@ enum WebDesktopAgentType {
 
     /** Denotes Desktop Agents that run (or provide an interface) 
      *  within a parent window or frame, a reference to which  
-     *  will be found at `window.opener`, `window.parent` or 
-     *  `window.parent.opener`. */ 
+     *  will be found at `window.opener`, `window.parent`, 
+     * `window.parent.opener` etc. */ 
     PROXY_PARENT = "PROXY_PARENT",
 
-    /** Denotes Desktop Agents that are connected to by loading 
-     *  a URL into a iframe whose URL was returned by a parent 
-     * window or frame. */ 
+    /** Denotes Desktop Agents that are connected to by loading a URL 
+     *  into a hidden iframe whose URL was returned by a parent window
+     * or frame. */ 
     PROXY_URL = "PROXY_URL",
 
     /** Denotes a Desktop Agent that was returned by a failover 
