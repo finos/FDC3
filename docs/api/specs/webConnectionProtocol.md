@@ -10,7 +10,7 @@ FDC3's Web Connection Protocol (WCP) is an experimental feature added to FDC3 in
 
 :::
 
-The FDC3 Web Connection Protocol (WCP) defines the procedure for a web-application to connect to an FDC3 Desktop Agent. The WCP is used to implement a [`getAgent()`](../ref/GetAgent) function in the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3), which is the recommended way for web applications to connect to a Desktop Agent. This specification details how it retrieves and provides the FDC3 `DesktopAgent` interface object and requirements that Desktop Agents must implement in order to support discovery and connection via `getAgent()`. Please see the [`getAgent` reference document](../ref/GetAgent.md) for its TypeScript definition and related types.
+The FDC3 Web Connection Protocol (WCP) defines the procedure for a web-application to connect to an FDC3 Desktop Agent. The WCP is used to implement a [`getAgent()`](../ref/GetAgent) function in the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3), which is the recommended way for web applications to connect to a Desktop Agent. This specification details how it retrieves and provides the FDC3 `DesktopAgent` interface object and requirements that Desktop Agents MUST implement in order to support discovery and connection via `getAgent()`. Please see the [`getAgent` reference document](../ref/GetAgent.md) for its TypeScript definition and related types.
 
 :::tip
 
@@ -96,7 +96,7 @@ The WCP algorithm (coordinated between the `getAgent()` implementation and Deskt
 
 Check the SessionStorage key `FDC3-Desktop-Agent-Details` for a `DesktopAgentDetails` record. If it exists, then a navigation or refresh event may have occurred and the stored data MUST be sent when attempting to establish a connection to the DA. This ensures that the window can maintain a consistent `instanceId` between navigation or refresh events within an app. If it doesn't exist then proceed to step (2).
 
-Any data stored under the `FDC3-Desktop-Agent-Details` must conform to the [DesktopAgentDetails](../ref/GetAgent#persisted-connection-data) type.
+Any data stored under the `FDC3-Desktop-Agent-Details` MUST conform to the [DesktopAgentDetails](../ref/GetAgent#persisted-connection-data) type.
 
 Existing `DesktopAgentDetails` records MUST be used to limit discovery actions (in the next step) to the same mechanism as previously used or to skip the discovery step entirely if a `agentUrl` exists, indicating that the connection should be established by loading the URL into a hidden iframe and initiating communication with that instead.
 
@@ -216,7 +216,7 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
 
         :::
 
-  5. At this stage, a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message should have been received from either a candidate parent or a hidden iframe created in 4 above. This message MUST have a `MessagePort` appended to it, which is used for further communication with the Desktop Agent.
+  5. At this stage, a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message should have been received from either a candidate parent or a hidden iframe created in step 4 above. This message MUST have a `MessagePort` appended to it, which is used for further communication with the Desktop Agent.
 
   Add a listener (`port.addEventListener("message", (event) => {})`) to receive messages from the selected `candidate`, before moving on to the next stage.
   6. If no candidates were found or no [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) has been received by the time that the timeout expires, then neither a Desktop Agent Preload or Desktop Agent Proxy interface has been discovered. If this occurs, the `getAgent()` implementation will run any `failover` function provided as a parameter to `getAgent()`, allowing the application to provide an alternative means of connecting to or starting up a Desktop Agent.
@@ -235,7 +235,7 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
 
 ### Step 2: Validate app & instance identity
 
-Apps and instance of them must identify themselves so that DAs can positively associate them with their corresponding AppD records and any existing instance identity.
+Apps and instances of them identify themselves so that DAs can positively associate them with their corresponding AppD records and any existing instance identity.
 
 In the current FDC3 version, no identity validation procedures are provided for Desktop Agent Preload interfaces. Hence, it is the responsibility of such implementations to validate the identity of apps within their scope and to ensure that they update their own record of the identity if it changes during the life of the window hosting the application (i.e. due to a navigation event). It is expected that FDC3 will adopt identity validation procedures for Desktop Agent Preload interfaces in future.
 
@@ -253,17 +253,17 @@ If the app identity is recognized the Desktop Agent will assign the appropriate 
 
 If this instance of the application has connected to a Desktop Agent before and is reconnecting (due to a navigation or refresh event) then the optional `instanceId` and `instanceUuid` should be set in the [`WCP4ValidateAppIdentity`](/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message. The Desktop Agent MUST use these values to determine if it recognizes the app instance identity and that it was previously applied to application with the same `appId`.
 
-An `instanceUuid` is used to validate instance identity because `instanceId` of an application is available to other apps through the FDC3 API and might be used to 'spoof' an identity. On the other hand, `instanceUuid` is only issued through the WCP to the specific app instance and is used as a shared secret to enable identity validation. However, as `SessionStorage` data maybe cloned when new windows are opened via `window.open()`, Desktop Agents MUST also compare the `WindowProxy` object (via the `==` operator) that the original `WCP1Hello` messages were received on to determine if they represent the same window.
+An `instanceUuid` is used to validate instance identity because `instanceId` of an application is available to other apps through the FDC3 API and might be used to 'spoof' an identity. On the other hand, `instanceUuid` is only issued through the WCP to the specific app instance and is used as a shared secret to enable identity validation. However, as `SessionStorage` data may be cloned when new windows on the same origin are opened via `window.open()`, Desktop Agents MUST also compare the `WindowProxy` object (via the `==` operator) that the original `WCP1Hello` messages were received on to determine if they represent the same window.
 
 See the [Browser-Resident Desktop Agent Specification](./browserResidentDesktopAgents#validating-instance-identity) for further details of how instance identity is assigned.
 
 If no existing instance identity (`instanceId` and `instanceUuid`) is provided, or instance identity validation fails (as the `instanceUuid` is not known, or either the `appId` or `WindowProxy` objects don't match the previous connection), then the Desktop Agent MUST assign new `instanceId` and `instanceUuid` values.
 
-The Desktop Agent MUST then respond with a [WCP5ValidateAppIdentityResponse](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json) message containing the assigned `appId`, `instanceId` and `instanceUuid` values and the [`ImplementationMetadata`](../ref/Metadata#implementationmetadata) Object for the Desktop Agent. This message indicates that the Desktop Agent will accept the application and we can begin processing [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) messages relating to FDC3 API calls over the `MessagePort`.
+The Desktop Agent MUST then respond with a [WCP5ValidateAppIdentityResponse](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json) message containing the assigned `appId`, `instanceId` and `instanceUuid` values and the [`ImplementationMetadata`](../ref/Metadata#implementationmetadata) object for the Desktop Agent. This message indicates that the Desktop Agent will accept the application and we can begin processing [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) messages relating to FDC3 API calls over the `MessagePort`.
 
 ### Step 3: Persist DesktopAgentDetails to SessionStorage
 
-Once a connection is established, and the app and instance identity determined, a `DesktopAgentDetails` record must be stored in SessionStorage under the `FDC3-Desktop-Agent-Details` key by the `getAgent()` implementation. This record includes:
+Once a connection is established, and the app and instance identity determined, a `DesktopAgentDetails` record MUST be stored in SessionStorage under the `FDC3-Desktop-Agent-Details` key by the `getAgent()` implementation. This record includes:
 
 - The `identityUrl` and `actualUrl` passed to `getAgent()`.
 - The `appId`, `instanceId`, and `instanceUuid` assigned by the DA.
@@ -290,7 +290,7 @@ Where a `DesktopAgent` or 'Desktop Agent Proxy' implementation was successfully 
 
 ### Step 5: Disconnection
 
-Desktop Agent Preload interfaces, as used in container-based Desktop Agent implementations, are usually able to track the lifecycle and current URL of windows that host web apps in their scope. Hence, this is currently no requirement nor means for an app to indicate that it is closing, rather it is the responsibility of the Desktop Agent to update its internal state when an app closes or changes identity.
+Desktop Agent Preload interfaces, as used in container-based Desktop Agent implementations, are usually able to track the lifecycle and current URL of windows that host web apps in their scope. Hence, there is currently no requirement nor means for an app to indicate that it is closing, rather it is the responsibility of the Desktop Agent to update its internal state when an app closes or changes identity.
 
 However, Browser Resident Desktop Agents working with a Desktop Agent Proxy interface may have more trouble tracking child windows and frames. Hence, a specific WCP message ([WCP6Goodbye](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json)) is provided for the `getAgent()` implementation to indicate that an app is disconnecting from the Desktop Agent and will not communicate further unless and until it reconnects via the WCP. The `getAgent()` implementation MUST listen for the `pagehide` event from the HTML Standard's [Page Life Cycle API](https://html.spec.whatwg.org/multipage/document-lifecycle.html#document-lifecycle) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/pagehide_event), [Chrome for Developers](https://developer.chrome.com/docs/web-platform/page-lifecycle-api#developer-recommendations-for-each-state)) and send [WCP6Goodbye](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json) if it receives an event where the `persisted` property is `false`.
 
