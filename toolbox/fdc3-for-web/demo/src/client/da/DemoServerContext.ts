@@ -7,17 +7,17 @@ import { AppIntent, Context, OpenError } from '@kite9/fdc3';
 enum Opener { Tab, Frame, Nested }
 
 
-type SailRegistration = AppRegistration & {
+type DemoRegistration = AppRegistration & {
     window: Window,
     url: string,
 }
 
 
-export class DemoServerContext implements ServerContext<SailRegistration> {
+export class DemoServerContext implements ServerContext<DemoRegistration> {
 
     private readonly socket: Socket
     private readonly directory: Directory
-    private connections: SailRegistration[] = []
+    private connections: DemoRegistration[] = []
 
     constructor(socket: Socket, directory: Directory) {
         this.socket = socket
@@ -32,15 +32,17 @@ export class DemoServerContext implements ServerContext<SailRegistration> {
     /**
      * Sets the appId and instanceId for a given connection UUID
      */
-    setInstanceDetails(uuid: InstanceID, meta: SailRegistration): void {
+    setInstanceDetails(uuid: InstanceID, meta: DemoRegistration): void {
         console.log(`Setting ${uuid} to ${meta.appId}`)
+        this.connections = this.connections.filter(ca => ca.instanceId !== uuid)
+
         this.connections.push({
             ...meta,
             instanceId: uuid
         })
     }
 
-    getInstanceForWindow(window: Window): SailRegistration | undefined {
+    getInstanceForWindow(window: Window): DemoRegistration | undefined {
         return this.connections.find(i => i.window == window)
     }
 
@@ -114,7 +116,6 @@ export class DemoServerContext implements ServerContext<SailRegistration> {
                 window,
                 url,
                 state: State.Pending,
-                lastHeartbeat: Date.now()
             }
 
             this.setInstanceDetails(instanceId, metadata)
@@ -150,7 +151,7 @@ export class DemoServerContext implements ServerContext<SailRegistration> {
         })
     }
 
-    getInstanceDetails(uuid: InstanceID): SailRegistration | undefined {
+    getInstanceDetails(uuid: InstanceID): DemoRegistration | undefined {
         return this.connections.find(i => i.instanceId == uuid)
     }
 

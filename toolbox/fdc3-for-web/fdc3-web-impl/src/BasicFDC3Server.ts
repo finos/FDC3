@@ -45,7 +45,7 @@ export class BasicFDC3Server implements FDC3Server {
 
 export class DefaultFDC3Server extends BasicFDC3Server {
 
-    constructor(sc: ServerContext<AppRegistration>, directory: Directory, userChannels: ChannelState[], heartbeats: boolean, intentTimeoutMs: number = 20000, openHandlerTimeoutMs: number = 3000) {
+    constructor(sc: ServerContext<AppRegistration>, directory: Directory, userChannels: ChannelState[], heartbeats: boolean, intentTimeoutMs: number = 20000, openHandlerTimeoutMs: number = 10000) {
         const handlers: MessageHandler[] = [
             new BroadcastHandler(userChannels),
             new IntentHandler(directory, intentTimeoutMs),
@@ -53,7 +53,7 @@ export class DefaultFDC3Server extends BasicFDC3Server {
         ]
 
         if (heartbeats) {
-            handlers.push(new HeartbeatHandler(openHandlerTimeoutMs / 4, openHandlerTimeoutMs / 2, openHandlerTimeoutMs))
+            handlers.push(new HeartbeatHandler(openHandlerTimeoutMs / 10, openHandlerTimeoutMs / 2, openHandlerTimeoutMs))
         }
 
         super(handlers, sc)
