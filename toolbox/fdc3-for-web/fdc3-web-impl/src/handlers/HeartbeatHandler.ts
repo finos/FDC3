@@ -82,7 +82,7 @@ export class HeartbeatHandler implements MessageHandler {
             const app = sc.getInstanceDetails(from)
             if (app) {
                 sc.setAppState(from, State.Terminated)
-                this
+                this.lastHeartbeats.delete(from)
             }
         }
     }
