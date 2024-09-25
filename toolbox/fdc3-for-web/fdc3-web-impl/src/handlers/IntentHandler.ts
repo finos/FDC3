@@ -120,8 +120,8 @@ export class IntentHandler implements MessageHandler {
     shutdown(): void {
     }
 
-    async narrowIntents(appIntents: AppIntent[], context: Context, sc: ServerContext<AppRegistration>): Promise<AppIntent[]> {
-        const out = await sc.narrowIntents(appIntents, context)
+    async narrowIntents(raiser: AppIdentifier, appIntents: AppIntent[], context: Context, sc: ServerContext<AppRegistration>): Promise<AppIntent[]> {
+        const out = await sc.narrowIntents(raiser, appIntents, context)
         return out
     }
 
@@ -274,7 +274,7 @@ export class IntentHandler implements MessageHandler {
 
         const appIntents = this.createAppIntents(arg0, [...runningApps, { appId: target.appId }])
 
-        const narrowedAppIntents = await this.narrowIntents(appIntents, arg0[0].context, sc)
+        const narrowedAppIntents = await this.narrowIntents(arg0[0].from, appIntents, arg0[0].context, sc)
 
         if (narrowedAppIntents.length == 1) {
             if ((narrowedAppIntents[0].apps.length == 2) && (narrowedAppIntents[0].apps[0].instanceId)) {
@@ -337,7 +337,7 @@ export class IntentHandler implements MessageHandler {
             }
         })
 
-        const narrowedAppIntents = await this.narrowIntents(appIntents, arg0[0].context, sc)
+        const narrowedAppIntents = await this.narrowIntents(arg0[0].from, appIntents, arg0[0].context, sc)
 
         if (narrowedAppIntents.length == 0) {
             // nothing can resolve the intent, fail
