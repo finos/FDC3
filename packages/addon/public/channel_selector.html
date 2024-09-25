@@ -16,11 +16,16 @@
       
       #list {
         background-color: white;
-        border: 1px solid lightgrey;
-        border-radius: 3px;
-        padding: 10px;
+        margin: 10px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         font-family: sans-serif;
         display: none;
+        position: fixed;
+        bottom: 4px;
+        right: 4px;
+
         & > div {
           font-size: 18px;
           height: 24px;
@@ -41,10 +46,12 @@
       }
       #tokens {
         display: none;
+        cursor: pointer;
       }
 
       body[data-expanded="true"] #list {
         display: block;
+      }
       
       body[data-expanded="false"] #tokens {
         display: block;
