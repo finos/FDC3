@@ -1,6 +1,6 @@
 {
   "name": "@kite9/fdc3-standard",
-  "version": "2.2.0-beta.26",
+  "version": "2.2.0-beta.27",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -31,8 +31,8 @@
     "printWidth": 120
   },
   "dependencies": {
-    "@kite9/fdc3-schema": "2.2.0-beta.26",
-    "@kite9/fdc3-context": "2.2.0-beta.26"
+    "@kite9/fdc3-schema": "2.2.0-beta.27",
+    "@kite9/fdc3-context": "2.2.0-beta.27"
   },
   "devDependencies": {
     "@types/jest": "29.5.12",
