@@ -1,6 +1,6 @@
 {
   "name": "@kite9/fdc3",
-  "version": "2.2.0-beta.26",
+  "version": "2.2.0-beta.27",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -25,8 +25,8 @@
     "packages/fdc3-agent-proxy",
     "toolbox/fdc3-for-web/fdc3-web-impl",
     "packages/fdc3-get-agent",
-    "toolbox/fdc3-for-web/demo",
     "packages/fdc3",
+    "toolbox/fdc3-for-web/demo",
     "toolbox/fdc3-workbench"
   ],
   "scripts": {
