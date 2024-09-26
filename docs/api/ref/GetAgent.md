@@ -117,6 +117,16 @@ As web applications can navigate to or be navigated by users to different URLs a
 
 Finally, if there is still no Desktop Agent available, or an issue prevent connection to it, the `getAgent()` function will reject its promise with a message from the [`AgentError`](./Errors#agenterror) enumeration.
 
+## Injected iframes for adaptors and user interfaces
+
+The `getAgent()` function may try to create hidden iframes within an application window in order to load either an adaptor to a Desktop Agent, or Intent Resolver and Channel Selector user interfaces when needed. The iframes are used in order to sandbox the relevant software, and are communicated with securely via the HTML Standard's Channel Messaging API ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API), [HTML Living Standard](https://html.spec.whatwg.org/multipage/web-messaging.html)).
+
+:::warning
+
+The [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) directives [frame-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-src), [child-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/child-src) and [default-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src) can prevent iframes injected into an application from loading content. Where these are used, please ensure that they allow the loading of content from the domains of Desktop Agents and UI implementations that you wish to work with (including [fdc3.finos.org](https://fdc3.finos.org/) where the reference Intent Resolver and Channel Selector UIs may be laoded from).
+
+:::
+
 ## Failover function
 
 Desktop Agent retrieval can time out, for instance if the DA doesn't exist or is unresponsive. The default timeout of 750 milliseconds can be overridden by setting the `timeoutMs` parameter. An application may also provide a failover function which will be called if an interface cannot be retrieved or times out.

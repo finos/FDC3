@@ -64,6 +64,12 @@ Upon receiving an incoming [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/a
 
 1. Respond with a [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) message (as defined in the [Web Connection Protocol](./webConnectionProtocol)).
     - This message indicates that `getAgent()` should create an iframe, load the provided URL (for an adaptor to the Desktop Agent) into it and then restart the connection process by sending [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) to the iframe.
+
+    :::warning
+
+    The [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) directives [frame-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-src), [child-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/child-src) and [default-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src) can prevent iframes injected into an application from loading content. Where these are used in app implementations, please advise app implementors to include domains from which the adaptor content is served.
+
+    :::
 2. Create a [`MessageChannel`](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API) with two entangled `MessagePort` instances that will be used for further communication with the application.
     - Before returning one of `MessagePort` instances, the DA MUST set up event listeners to to receive and process a [`"WCP4ValidateAppIdentity"`](https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message from the application.
     - To deliver the `MessagePort`, the DA MUST respond to the event's `source` window by responding with a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message (as defined in the [Web Connection Protocol](./webConnectionProtocol)) and append `port2` from the `MessageChannel` to the message.
@@ -231,6 +237,12 @@ Channel Selector and Intent Resolver user-interfaces are normally provided by De
 The `getAgent()` implementation can facilitate the injection and management of iframes in an application window. An app may provide the optional `channelSelector` and `intentResolver` parameters to the `getAgent()` to indicate whether or not they need these interfaces. For example, the apps may not raise intents. Some apps may also resolve intents internally by leveraging the Desktop Agent's `findIntent` or `findIntentsForContext` API functions. In these situations, the apps won't need a DA-provided interface. Once an app calls `getAgent()`, the parameters that the app provides are forwarded onto the Desktop Agent in the `WCP1Hello` connection message.
 
 Desktop Agents may implement their own user interfaces for channel selection and intent resolution. The URL for each interface may be returned in the `channelSelectorUrl` and `intentResolverUrl` properties of the payload of the `WCP3Handshake` message sent by the DA during the connection sequence. Alternatively, if the Desktop Agent is able to provide these user interfaces by other means (for example DAs that render applications in iframes within a window they control may use other iframes to render these UIs) or if they app indicated that it did not need them then `channelSelectorUrl` and `intentResolverUrl` may be set to `false`. Finally, `channelSelectorUrl` and `intentResolverUrl` may be set to `true` to indicate that `getAgent()` should use the default reference implementations of these UIs provided via the <https://fdc3.finsos.org> website.
+
+:::warning
+
+The [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) directives [frame-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-src), [child-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/child-src) and [default-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src) can prevent iframes injected into an application from loading content. Where these are used in app implementations, please advise app implementors to include domains from which the UI implementations are served (including [fdc3.finos.org](https://fdc3.finos.org/) if you are working with the reference Intent Resolver and Channel Selector UIs).
+
+:::
 
 User interface iframes are initially injected into the application window with CSS that prevents their display:
 
