@@ -142,20 +142,20 @@ export type DesktopAgentDetails = {
 export enum WebDesktopAgentType {
   /** Denotes Desktop Agents that inject the FDC3 interface
    *  at `window.fdc3`. */
-  PRELOAD = 'PRELOAD',
+  Preload = 'PRELOAD',
 
   /** Denotes Desktop Agents that run (or provide an interface)
    *  within a parent window or frame, a reference to which
    *  will be found at `window.opener`, `window.parent`,
    *  `window.parent.opener` etc. */
-  PROXY_PARENT = 'PROXY_PARENT',
+  ProxyParent = 'PROXY_PARENT',
 
   /** Denotes Desktop Agents that are connected to by loading a URL
    *  into a hidden iframe whose URL was returned by a parent window
    *  or frame. */
-  PROXY_URL = 'PROXY_URL',
+  ProxyUrl = 'PROXY_URL',
 
   /** Denotes a Desktop Agent that was returned by a failover
    *  function that was passed by the application. */
-  FAILOVER = 'FAILOVER',
+  Failover = 'FAILOVER',
 }
