@@ -10,6 +10,10 @@
       "properties": {
         "type": {
           "const": "fdc3.nothing"
+        },
+        "subtype": {
+          "type": "string",
+          "description": "A subtype of the context type. This can be used to provide a specific context which should be cleared, if ommitted, all contexts will be cleared"
         }
       }
     },
@@ -17,7 +21,8 @@
   ],
   "examples": [
     {
-      "type": "fdc3.nothing"
+      "type": "fdc3.nothing",
+      "subtype": "fdc3.timeRange"
     }
   ]
 }

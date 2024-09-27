@@ -74,6 +74,15 @@ export interface Channel {
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 
   /**
+   * Provides the ability to clear context from the channel. Subsequent connection to this channel or calls to get current context will not return anything (accounting for contextType if specified). 
+   * 
+   * If a `contextType` is provided, only contexts of that type will be cleared. 
+   * 
+   * If no `contextType` is provided, all contexts will be cleared.
+   */
+  clearContext(contextType?: string): Promise<void>;
+
+  /**
    * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
    */
   addContextListener(handler: ContextHandler): Promise<Listener>;
