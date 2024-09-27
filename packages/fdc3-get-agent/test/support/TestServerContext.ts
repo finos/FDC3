@@ -2,10 +2,10 @@ import { ServerContext, InstanceID } from '@kite9/fdc3-web-impl'
 import { CustomWorld } from '../world'
 import { Context } from '@kite9/fdc3-context'
 import { OpenError, AppIdentifier, AppIntent } from '@kite9/fdc3-standard'
+import { AppRegistration, State } from '@kite9/fdc3-web-impl'
 
-type ConnectionDetails = AppIdentifier & {
+type ConnectionDetails = AppRegistration & {
     msg?: object
-    connected: boolean,
     connectionId: string,
     externalPort: MessagePort,
     internalPort: MessagePort,
@@ -30,7 +30,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
         this.cw = cw
     }
 
-    async narrowIntents(appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
+    async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
         return appIntents
     }
 
@@ -48,10 +48,6 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
 
     getMatchingInstance(url: string): ConnectionDetails | undefined {
         return this.instances.find(ca => ca.url === url)
-    }
-
-    async setAppDisconnected(app: AppIdentifier): Promise<void> {
-        this.instances = this.instances.filter(ca => ca.instanceId !== app.instanceId)
     }
 
     async shutdown(): Promise<void> {
@@ -80,7 +76,8 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
                 connectionId: "uuid-" + ni,
                 externalPort,
                 internalPort,
-                url: "https://dummyOrigin.test/path"
+                url: "https://dummyOrigin.test/path",
+                state: State.Pending
             }
 
             this.instances.push(connectionDetails)
@@ -93,22 +90,29 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
         }
     }
 
-    async setAppConnected(app: AppIdentifier): Promise<void> {
-        this.instances.find(ca => (ca.instanceId == app.instanceId))!!.connected = true
+    async getConnectedApps(): Promise<AppRegistration[]> {
+        return (await this.getAllApps()).filter(ca => ca.state == State.Connected)
     }
 
-    async getConnectedApps(): Promise<AppIdentifier[]> {
-        return this.instances.filter(ca => ca.connected).map(x => {
+    async isAppConnected(app: InstanceID): Promise<boolean> {
+        const found = this.instances.find(a => (a.instanceId == app) && (a.state == State.Connected))
+        return found != null
+    }
+
+    async setAppState(app: InstanceID, state: State): Promise<void> {
+        const found = this.instances.find(a => (a.instanceId == app))
+        if (found) {
+            found.state = state
+        }
+    }
+    async getAllApps(): Promise<AppRegistration[]> {
+        return this.instances.map(x => {
             return {
                 appId: x.appId,
-                instanceId: x.instanceId
+                instanceId: x.instanceId,
+                state: x.state
             }
         })
-    }
-
-    async isAppConnected(app: AppIdentifier): Promise<boolean> {
-        const found = this.instances.find(a => (a.appId == app.appId) && (a.instanceId == app.instanceId) && (a.connected))
-        return found != null
     }
 
     provider(): string {
@@ -129,7 +133,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
      * USED FOR TESTING
      */
     getInstanceUUID(appId: AppIdentifier): InstanceID | undefined {
-        return this.instances.find(ca => (ca.appId == appId.appId) && (ca.instanceId == appId.instanceId) && (ca.connected))?.instanceId
+        return this.instances.find(ca => (ca.appId == appId.appId) && (ca.instanceId == appId.instanceId) && (ca.state == State.Connected))?.instanceId
     }
 
     /**

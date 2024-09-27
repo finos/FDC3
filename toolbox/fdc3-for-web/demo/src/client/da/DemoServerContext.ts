@@ -1,4 +1,4 @@
-import { Directory, DirectoryApp, InstanceID, ServerContext } from '@kite9/fdc3-web-impl'
+import { AppRegistration, Directory, DirectoryApp, InstanceID, ServerContext, State } from '@kite9/fdc3-web-impl'
 import { Socket } from 'socket.io-client';
 import { v4 as uuid } from 'uuid'
 import { FDC3_DA_EVENT } from '../../message-types';
@@ -6,27 +6,25 @@ import { AppIdentifier, AppIntent, Context, OpenError } from '@kite9/fdc3';
 
 enum Opener { Tab, Frame, Nested }
 
-enum State { Pending, Connected }
 
-type AppRegistration = AppIdentifier & {
+type DemoRegistration = AppRegistration & {
     window: Window,
     url: string,
-    state: State
 }
 
 
-export class DemoServerContext implements ServerContext<AppRegistration> {
+export class DemoServerContext implements ServerContext<DemoRegistration> {
 
     private readonly socket: Socket
     private readonly directory: Directory
-    private connections: AppRegistration[] = []
+    private connections: DemoRegistration[] = []
 
     constructor(socket: Socket, directory: Directory) {
         this.socket = socket
         this.directory = directory
     }
 
-    async narrowIntents(appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
+    async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
         console.log("Narrow intents - not doing anything")
         return appIntents
     }
@@ -34,40 +32,18 @@ export class DemoServerContext implements ServerContext<AppRegistration> {
     /**
      * Sets the appId and instanceId for a given connection UUID
      */
-    setInstanceDetails(uuid: InstanceID, meta: AppRegistration): void {
+    setInstanceDetails(uuid: InstanceID, meta: DemoRegistration): void {
         console.log(`Setting ${uuid} to ${meta.appId}`)
+        this.connections = this.connections.filter(ca => ca.instanceId !== uuid)
+
         this.connections.push({
             ...meta,
             instanceId: uuid
         })
     }
 
-    getInstanceForWindow(window: Window): AppRegistration | undefined {
+    getInstanceForWindow(window: Window): DemoRegistration | undefined {
         return this.connections.find(i => i.window == window)
-    }
-
-    /**
-     * Returns the UUID for a particular instance of an app.
-     * This is used in situations where an app is reconnecting to the same desktop agent.
-     */
-    getInstanceDetails(uuid: InstanceID): AppRegistration | undefined {
-        return this.connections.find(i => i.instanceId == uuid)
-    }
-
-    async setAppConnected(app: AppIdentifier): Promise<void> {
-        const theApp = this.connections.find(i => i.instanceId == app.instanceId)
-        if (theApp) {
-            theApp.state = State.Connected
-        } else {
-            throw new Error("No app found with id " + app.instanceId)
-        }
-    }
-
-    async setAppDisconnected(app: AppIdentifier): Promise<void> {
-        const idx = this.connections.findIndex(i => i.instanceId == app.instanceId)
-        if (idx != -1) {
-            this.connections.splice(idx, 1)
-        }
     }
 
     getOpener(): Opener {
@@ -140,7 +116,6 @@ export class DemoServerContext implements ServerContext<AppRegistration> {
                 window,
                 url,
                 state: State.Pending,
-                lastHeartbeat: Date.now()
             }
 
             this.setInstanceDetails(instanceId, metadata)
@@ -150,21 +125,34 @@ export class DemoServerContext implements ServerContext<AppRegistration> {
         throw new Error(OpenError.AppNotFound)
     }
 
-    async getConnectedApps(): Promise<AppIdentifier[]> {
-        return this.connections.map(c => {
+    async getConnectedApps(): Promise<AppRegistration[]> {
+        return (await this.getAllApps()).filter(ca => ca.state == State.Connected)
+    }
+
+    async isAppConnected(app: InstanceID): Promise<boolean> {
+        const found = this.connections.find(a => (a.instanceId == app) && (a.state == State.Connected))
+        return found != null
+    }
+
+    async setAppState(app: InstanceID, state: State): Promise<void> {
+        const found = this.connections.find(a => (a.instanceId == app))
+        if (found) {
+            found.state = state
+        }
+    }
+
+    async getAllApps(): Promise<AppRegistration[]> {
+        return this.connections.map(x => {
             return {
-                appId: c.appId,
-                instanceId: c.instanceId
+                appId: x.appId,
+                instanceId: x.instanceId,
+                state: x.state
             }
         })
     }
 
-    async isAppConnected(app: AppIdentifier): Promise<boolean> {
-        const out = (await this.getConnectedApps()).filter(ai =>
-            (ai.appId == app.appId) && (ai.instanceId == app.instanceId)).length > 0
-
-        console.log(`Checking ${app.instanceId} = ${out}`)
-        return out
+    getInstanceDetails(uuid: InstanceID): DemoRegistration | undefined {
+        return this.connections.find(i => i.instanceId == uuid)
     }
 
     log(message: string): void {

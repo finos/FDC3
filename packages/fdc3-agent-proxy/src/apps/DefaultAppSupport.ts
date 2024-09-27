@@ -1,4 +1,4 @@
-import { AppIdentifier, AppMetadata } from "@kite9/fdc3-standard";
+import { AppIdentifier, AppMetadata, OpenError } from "@kite9/fdc3-standard";
 import { Context } from "@kite9/fdc3-context";
 import { AppSupport } from "./AppSupport";
 import { Messaging } from "../Messaging";
@@ -59,7 +59,7 @@ export class DefaultAppSupport implements AppSupport {
             meta: this.messaging.createMeta() as any
         } as OpenRequest
 
-        const out = await this.messaging.exchange<any>(request, "openResponse")
+        const out = await this.messaging.exchange<any>(request, "openResponse", OpenError.AppTimeout)
         return out.payload.appIdentifier
     }
 

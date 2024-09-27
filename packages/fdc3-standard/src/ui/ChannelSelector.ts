@@ -15,6 +15,6 @@ export interface ChannelSelector extends Connectable {
      * Called on initialisation.  The channel selector will invoke the callback after the 
      * channel is changed.
      */
-    setChannelChangeCallback(callback: (channelId: string) => void): void
+    setChannelChangeCallback(callback: (channelId: string | null) => void): void
 
 }

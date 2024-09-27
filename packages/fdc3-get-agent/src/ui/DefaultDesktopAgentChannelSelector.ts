@@ -14,7 +14,7 @@ type IframeChannelSelected = BrowserTypes.IframeChannelSelected
  */
 export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent implements ChannelSelector {
 
-    private callback: ((channelId: string) => void) | null = null
+    private callback: ((channelId: string | null) => void) | null = null
 
     constructor(url: string | null) {
         super(url ?? "https://fdc3.finos.org/webui/channel_selector.html", "FDC3 Channel Selector")
@@ -27,7 +27,7 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
         port.addEventListener("message", (e) => {
             if (e.data.type == 'iframeChannelSelected') {
                 const choice = e.data as IframeChannelSelected
-                if ((choice.payload.selected) && (this.callback)) {
+                if (this.callback) {
                     this.callback(choice.payload.selected)
                 }
             }
@@ -51,7 +51,7 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
         } as IframeChannels)
     }
 
-    setChannelChangeCallback(callback: (channelId: string) => void): void {
+    setChannelChangeCallback(callback: (channelId: string | null) => void): void {
         this.callback = callback
     }
 

@@ -1,5 +1,5 @@
 import { MessageHandler } from "../BasicFDC3Server";
-import { InstanceID, ServerContext } from "../ServerContext";
+import { AppRegistration, InstanceID, ServerContext, State } from "../ServerContext";
 import { Directory, DirectoryApp } from "../directory/DirectoryInterface";
 import { ContextElement } from "@kite9/fdc3-context";
 import {
@@ -23,14 +23,14 @@ enum AppState { Opening, DeliveringContext, Done }
 
 class PendingApp {
 
-    private readonly sc: ServerContext<any>
+    private readonly sc: ServerContext<AppRegistration>
     private readonly msg: OpenRequest
     readonly context: ContextElement | undefined
     readonly source: AppMetadata
     state: AppState = AppState.Opening
     private openedApp: AppIdentifier | undefined = undefined
 
-    constructor(sc: ServerContext<any>, msg: OpenRequest, context: ContextElement | undefined, source: AppIdentifier, timeoutMs: number) {
+    constructor(sc: ServerContext<AppRegistration>, msg: OpenRequest, context: ContextElement | undefined, source: AppIdentifier, timeoutMs: number) {
         this.context = context
         this.source = source
         this.sc = sc
@@ -44,7 +44,7 @@ class PendingApp {
     }
 
     private onSuccess() {
-        this.sc.setAppConnected(this.openedApp!!)
+        this.sc.setAppState(this.openedApp?.instanceId!!, State.Connected)
         successResponse(this.sc, this.msg, this.source, {
             appIdentifier: {
                 appId: this.openedApp!!.appId,
@@ -86,7 +86,7 @@ export class OpenHandler implements MessageHandler {
     shutdown(): void {
     }
 
-    async accept(msg: any, sc: ServerContext<any>, uuid: InstanceID): Promise<void> {
+    async accept(msg: any, sc: ServerContext<AppRegistration>, uuid: InstanceID): Promise<void> {
         switch (msg.type as string) {
             case 'addContextListenerRequest': return this.handleAddContextListener(msg as AddContextListenerRequest, sc, uuid)
             case 'WCP4ValidateAppIdentity': return this.handleValidate(msg as WebConnectionProtocol4ValidateAppIdentity, sc, uuid)
@@ -103,7 +103,7 @@ export class OpenHandler implements MessageHandler {
             }
         } catch (e: any) {
             const responseType = msg.type.replace(new RegExp("Request$"), 'Response')
-            errorResponse(sc, msg, from, e.message ?? e, responseType)
+            errorResponse(sc, msg, from!!, e.message ?? e, responseType)
         }
 
     }
@@ -111,7 +111,7 @@ export class OpenHandler implements MessageHandler {
     /**
      * This deals with sending pending context to listeners of newly-opened apps.
      */
-    handleAddContextListener(arg0: AddContextListenerRequest, sc: ServerContext<any>, from: InstanceID): void {
+    handleAddContextListener(arg0: AddContextListenerRequest, sc: ServerContext<AppRegistration>, from: InstanceID): void {
         const pendingOpen = this.pending.get(from)
 
         if (pendingOpen) {
@@ -160,7 +160,7 @@ export class OpenHandler implements MessageHandler {
         }
     }
 
-    getAppMetadata(arg0: GetAppMetadataRequest, sc: ServerContext<any>, from: AppIdentifier): void {
+    getAppMetadata(arg0: GetAppMetadataRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier): void {
         const appID = arg0.payload.app
         const details = this.directory.retrieveAppsById(appID.appId)
         if (details.length > 0) {
@@ -173,16 +173,21 @@ export class OpenHandler implements MessageHandler {
     }
 
 
-    async findInstances(arg0: FindInstancesRequest, sc: ServerContext<any>, from: AppIdentifier): Promise<void> {
+    async findInstances(arg0: FindInstancesRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier): Promise<void> {
         const appId = arg0.payload.app.appId
         const openApps = await sc.getConnectedApps()
-        const matching = openApps.filter(a => a.appId == appId)
+        const matching = openApps.filter(a => a.appId == appId).map(a => {
+            return {
+                appId: a.appId,
+                instanceId: a.instanceId
+            }
+        })
         successResponse(sc, arg0, from, {
             appIdentifiers: matching
         }, 'findInstancesResponse')
     }
 
-    async open(arg0: OpenRequest, sc: ServerContext<any>, from: AppIdentifier): Promise<void> {
+    async open(arg0: OpenRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier): Promise<void> {
 
         const source = arg0.payload.app
         const context = arg0.payload.context
@@ -195,7 +200,7 @@ export class OpenHandler implements MessageHandler {
         }
     }
 
-    async handleValidate(arg0: WebConnectionProtocol4ValidateAppIdentity, sc: ServerContext<any>, from: InstanceID): Promise<void> {
+    async handleValidate(arg0: WebConnectionProtocol4ValidateAppIdentity, sc: ServerContext<AppRegistration>, from: InstanceID): Promise<void> {
         const _this = this
 
         const responseMeta = {
@@ -245,6 +250,7 @@ export class OpenHandler implements MessageHandler {
                 // in this case, the app is reconnecting, so let's just re-assign the 
                 // identity
                 sc.setInstanceDetails(from, appIdentity)
+                sc.setAppState(from, State.Connected)
                 return returnSuccess(appIdentity)
             }
         }
@@ -252,6 +258,7 @@ export class OpenHandler implements MessageHandler {
         // we need to assign an identity to this app
         const appIdentity = sc.getInstanceDetails(from)
         if (appIdentity) {
+            sc.setAppState(appIdentity.instanceId, State.Connected)
             returnSuccess(appIdentity)
 
             // make sure if the opener is listening for this app to open gets informed
