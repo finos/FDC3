@@ -3,6 +3,29 @@ import { MessageHandler } from "../BasicFDC3Server";
 import { AppRegistration, InstanceID, ServerContext, State } from "../ServerContext";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 
+type HeartbeatDetails = {
+    instanceId: string,
+    time: number,
+    state: string
+}
+
+function convertToText(s?: State): string {
+    if (s == undefined) {
+        return "Unknown"
+    } else {
+        switch (s) {
+            case State.Pending:
+                return "Pending"
+            case State.Connected:
+                return "Connected"
+            case State.NotResponding:
+                return "Not Responding"
+            case State.Terminated:
+                return "Terminated"
+        }
+    }
+}
+
 /*
  * Handles heartbeat pings and responses
  */
@@ -15,7 +38,7 @@ export class HeartbeatHandler implements MessageHandler {
     constructor(pingInterval: number = 1000, disconnectedAfter: number = 5000, deadAfter: number = 20000) {
 
         this.timerFunction = setInterval(() => {
-            console.log(`Contexts: ${this.contexts.length} Last Heartbeats: `, this.heartbeatTimes())
+            //console.log(`Contexts: ${this.contexts.length} Last Heartbeats: `, this.heartbeatTimes())
 
             this.contexts.forEach(async (sc) => {
                 const apps = await sc.getAllApps()
@@ -41,7 +64,6 @@ export class HeartbeatHandler implements MessageHandler {
                             } else if ((timeSinceLastHeartbeat > deadAfter) && (currentState == State.NotResponding)) {
                                 console.error(`No heartbeat from ${app.instanceId} for ${timeSinceLastHeartbeat}ms. App is considered terminated.`)
                                 sc.setAppState(app.instanceId!!, State.Terminated)
-                                this.lastHeartbeats.delete(app.instanceId)
                             } else {
                                 // no action
                             }
@@ -55,11 +77,13 @@ export class HeartbeatHandler implements MessageHandler {
         }, pingInterval)
     }
 
-    heartbeatTimes(): any {
+    heartbeatTimes(): HeartbeatDetails[] {
         const now = new Date().getTime()
         return Array.from(this.lastHeartbeats).map(e => {
-            return [e[0], now - e[1], this.contexts.map(sc => sc.getInstanceDetails(e[0])).reduce((a, b) => a || b)?.state]
-        })
+            return {
+                instanceId: e[0], time: now - e[1], state: convertToText(this.contexts.map(sc => sc.getInstanceDetails(e[0])).reduce((a, b) => a || b)?.state)
+            } as HeartbeatDetails
+        }).filter(e => e.state != "Terminated")
     }
 
     shutdown(): void {
@@ -82,7 +106,6 @@ export class HeartbeatHandler implements MessageHandler {
             const app = sc.getInstanceDetails(from)
             if (app) {
                 sc.setAppState(from, State.Terminated)
-                this.lastHeartbeats.delete(from)
             }
         }
     }
