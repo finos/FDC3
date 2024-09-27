@@ -25,7 +25,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
         this.cw = cw
     }
 
-    async narrowIntents(appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
+    async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
         return appIntents
     }
 
@@ -57,7 +57,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     }
 
     async setAppState(app: InstanceID, state: State): Promise<void> {
-        const found = this.instances.find(a => (a.instanceId == app) && (a.state == State.Connected))
+        const found = this.instances.find(a => a.instanceId == app)
         if (found) {
             found.state = state
         }

@@ -25,7 +25,7 @@ export interface MessageHandler {
  */
 export class BasicFDC3Server implements FDC3Server {
 
-    private handlers: MessageHandler[]
+    readonly handlers: MessageHandler[]
     private sc: ServerContext<AppRegistration>
 
     constructor(handlers: MessageHandler[], sc: ServerContext<AppRegistration>) {
