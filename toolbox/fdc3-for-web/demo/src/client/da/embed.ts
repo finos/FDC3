@@ -56,8 +56,8 @@ window.addEventListener("load", () => {
             },
             payload: {
                 fdc3Version: "2.2",
-                intentResolverUrl: window.location.origin + "/static/da/intent-resolver.html",
-                channelSelectorUrl: window.location.origin + "/static/da/channel-selector.html",
+                intentResolverUrl: "http://localhost:4000/public/intent_resolver.html",
+                channelSelectorUrl: "http://localhost:4000/public/channel_selector.html"
             }
         }, "*", [channel.port1])
 

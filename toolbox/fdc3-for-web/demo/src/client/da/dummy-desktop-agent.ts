@@ -55,8 +55,8 @@ window.addEventListener("load", () => {
         socket.emit(DA_HELLO, desktopAgentUUID)
 
         const directory = new FDC3_2_1_JSONDirectory()
-        //await directory.load("/static/da/appd.json")
-        await directory.load("/static/da/local-conformance-2_0.v2.json")
+        await directory.load("/static/da/appd.json")
+        //await directory.load("/static/da/local-conformance-2_0.v2.json")
         //await directory.load("/static/da/training-appd.v2.json")
         const sc = new DemoServerContext(socket, directory)
 
@@ -121,8 +121,8 @@ window.addEventListener("load", () => {
                             },
                             payload: {
                                 fdc3Version: "2.2",
-                                intentResolverUrl: window.location.origin + "/static/da/intent-resolver.html",
-                                channelSelectorUrl: window.location.origin + "/static/da/channel-selector.html",
+                                intentResolverUrl: "http://localhost:4000/public/intent_resolver.html",
+                                channelSelectorUrl: "http://localhost:4000/public/channel_selector.html"
                             }
                         }, origin, [channel.port1])
                     }
