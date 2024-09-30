@@ -1,23 +1,27 @@
 import { Icon } from "@kite9/fdc3";
 import { AppIntent } from "@kite9/fdc3";
-import { ResolverIntents, ResolverMessageChoice, SingleAppIntent } from "@kite9/fdc3-common";
+import { IframeResolveActionPayload, IframeResolvePayload } from "@kite9/fdc3-common";
 
-const setup = (data: ResolverIntents, callback: (s: SingleAppIntent | null) => void) => {
+const setup = (data: IframeResolvePayload, callback: (s: IframeResolveActionPayload) => void) => {
   document.body.setAttribute("data-visible", "true");
+  document.querySelector("dialog")?.showModal();
+
+  console.log("setup data:", data);
 
   const intentSelect = document.getElementById("displayIntent") as HTMLSelectElement
 
-  const justIntents = data.appIntents.map(ai => ai.intent)
+  const justIntents = data.appIntents.map(({intent}) => intent)
   const doneIntents = new Set()
 
   justIntents.forEach(({ name, displayName }) => {
-    if (!doneIntents.has(name)) {
-      doneIntents.add(name);
-      const option = document.createElement("option");
-      option.textContent = displayName as string;
-      option.value = name;
-      intentSelect.appendChild(option);
+    if (doneIntents.has(name)) {
+      return;
     }
+    doneIntents.add(name);
+    const option = document.createElement("option");
+    option.textContent = displayName as string;
+    option.value = name;
+    intentSelect.appendChild(option);
   });
 
   intentSelect.addEventListener("change", (e: any) => fillList(data.appIntents.filter(ai => ai.intent.name == e?.target?.value), e?.target?.value, callback));
@@ -42,9 +46,13 @@ const setup = (data: ResolverIntents, callback: (s: SingleAppIntent | null) => v
     });
   });
 
-  document.getElementById("cancel")!!.addEventListener("click", () => {
-    callback(null);
-  })
+  document.getElementById("cancel")?.addEventListener("click", () => {
+    callback({
+      action: "cancel"
+    });
+  });
+
+  console.log(document.body);
 }
 
 function createIcon(icons: Icon[] | undefined): HTMLElement {
@@ -58,22 +66,22 @@ function createIcon(icons: Icon[] | undefined): HTMLElement {
   return img
 }
 
-const fillList = (ai: AppIntent[], intent: string, callback: (s: SingleAppIntent) => void) => {
+const fillList = (ai: AppIntent[], intent: string, callback: (s: IframeResolveActionPayload) => void) => {
   const allApps = ai.flatMap(a => a.apps)
   const openApps = allApps.filter(a => a.instanceId)
   const newApps = allApps.filter(a => !a.instanceId)
 
   // first, populate the "New Apps" tab
-  const newList = document.getElementById('new-list')!!
+  const newList = document.getElementById('new-list') as HTMLDivElement;
 
   newList.innerHTML = '';
-  newApps.forEach(({ appId, title, icons }) => {
+  newApps.forEach(({ appId, title, name, icons }) => {
     const node = document.createElement('div');
     node.setAttribute('tabIndex', '0');
     node.setAttribute("data-appId", appId);
 
     const span = document.createElement("span");
-    span.textContent = title ?? appId;
+    span.textContent = title ?? name ?? appId;
 
     const img = createIcon(icons)
 
@@ -82,11 +90,19 @@ const fillList = (ai: AppIntent[], intent: string, callback: (s: SingleAppIntent
 
     node.addEventListener('click', () => {
       callback({
-        intent: {
-          name: intent,
-          displayName: "Whatever"
-        },
-        chosenApp: {
+        action: "click",
+        intent,
+        appIdentifier: {
+          appId
+        }
+      })
+    });
+
+    node.addEventListener('hover', () => {
+      callback({
+        action: "hover",
+        intent,
+        appIdentifier: {
           appId
         }
       })
@@ -115,13 +131,20 @@ const fillList = (ai: AppIntent[], intent: string, callback: (s: SingleAppIntent
 
     node.addEventListener('click', () => {
       callback({
-        intent: {
-          name: intent,
-          displayName: "Whatever"
-        },
-        chosenApp: {
-          appId,
-          instanceId
+        action: "click",
+        intent,
+        appIdentifier: {
+          appId
+        }
+      })
+    });
+
+    node.addEventListener('hover', () => {
+      callback({
+        action: "hover",
+        intent,
+        appIdentifier: {
+          appId
         }
       })
     });
@@ -132,34 +155,61 @@ const fillList = (ai: AppIntent[], intent: string, callback: (s: SingleAppIntent
 };
 
 window.addEventListener("load", () => {
-
   const parent = window.parent;
 
   const mc = new MessageChannel();
-  const myPort = mc.port1
-  myPort.start()
+  const myPort = mc.port1;
+  myPort.start();
+  myPort.onmessage = ({data}) => {
+    console.debug("Received message: ", data);
+    switch(data.type){
+      case "iframeHandshake": {
+        break;
+      }
+      case "iframeResolve": {
+        myPort.postMessage({
+          type: "iframeRestyle",
+          payload: {
+            updatedCSS: {
+              width: "100%",
+              height: "100%",
+              top: "0",
+              left: "0",
+              position: "fixed"
+            }
+          }
+        });
 
-  parent.postMessage({ type: "SelectorMessageInitialize" }, "*", [mc.port2]);
+        setup(data.payload, (s) => {
+          document.querySelector("dialog")?.close();
+          myPort.postMessage({
+            type: "iframeResolveAction",
+            payload: s
+          });
 
-  function callback(si: SingleAppIntent | null) {
-    myPort.postMessage({
-      type: "ResolverMessageChoice",
-      payload: si
-    } as ResolverMessageChoice)
-  }
+          myPort.postMessage({
+            type: "iframeRestyle",
+            payload: {
+              updatedCSS: {
+                width: "0",
+                height: "0"
+              }
+            }
+          });
 
-  myPort.addEventListener("message", (e) => {
-    if (e.data.type == 'ResolverIntents') {
-      const details = e.data as ResolverIntents
-      // console.log(JSON.stringify("INTENT DETAILS: " + JSON.stringify(details)))
-
-      setup(details, callback)
+        })
+      }
     }
-  })
+  };
 
-  document.getElementById("cancel")!!.addEventListener("click", () => {
-    callback(null);
-  })
+  parent.postMessage({
+    type: "iframeHello",
+    payload: {
+      initialCSS: {
+        width: "0",
+        height: "0"
+      }
+    }
+  }, "*", [mc.port2]);
 
-
-})
+});
