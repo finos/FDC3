@@ -6,7 +6,7 @@ title: Web Connection Protocol (next)
 
 :::info _[@experimental](../fdc3-compliance#experimental-features)_
 
-FDC3's Web Connection Protocol (WCP) is an experimental feature added to FDC3 in 2.2. Limited aspects of its  design may change in future versions and it is exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
+FDC3's Web Connection Protocol (WCP) is an experimental feature added to FDC3 in 2.2. Limited aspects of its design may change in future versions and it is exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
 
 :::
 
@@ -98,7 +98,7 @@ Check the SessionStorage key `FDC3-Desktop-Agent-Details` for a `DesktopAgentDet
 
 Any data stored under the `FDC3-Desktop-Agent-Details` MUST conform to the [DesktopAgentDetails](../ref/GetAgent#persisted-connection-data) type.
 
-Existing `DesktopAgentDetails` records MUST be used to limit discovery actions (in the next step) to the same mechanism as previously used or to skip the discovery step entirely if a `agentUrl` exists, indicating that the connection should be established by loading the URL into a hidden iframe and initiating communication with that instead.
+Existing `DesktopAgentDetails` records MUST be used to limit discovery actions (in the next step) to the same mechanism as previously used or to skip the discovery step entirely if an `agentUrl` exists, indicating that the connection should be established by loading the URL into a hidden iframe and initiating communication with that instead.
 
 If use of the persisted data fails to establish a connection to the DA then `getAgent()` should reject its promise with `AgentNotFound` error from the [`AgentError`](../ref/Errors#agenterror) enumeration.
 
@@ -193,7 +193,7 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
 
   Note that the `targetOrigin` is set to `*` as the origin of the Desktop Agent is not known at this point.
   3. Accept the first correct response received from a candidate. Correct responses MUST correspond to either the [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) or [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message schemas and MUST quote the same `meta.connectionAttemptUuid` value provided in the original `WCP1Hello` message. Stop the timeout when a correct response is received. If no response is received from any candidate, the `getAgent()` implementation MAY retry sending the `WCP1Hello` message periodically until the timeout is reached.
-  4. If a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) was received in the previous step, skip this this step and move on to step 5. However, If a [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) was received in the previous step:
+  4. If a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) was received in the previous step, skip this step and move on to step 5. However, If a [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) was received in the previous step:
       - Create a hidden iframe within the page, set its URL to the URL provided by the `payload.iframeUrl` field of the message and add a handler to run when the iframe has loaded:
           ```ts
           const loadIframe = (url: string, loadedHandler: () => void): WindowProxy => {
