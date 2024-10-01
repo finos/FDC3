@@ -42,7 +42,7 @@ try {
 
 The  `getAgent()` function allows web applications to retrieve an FDC3 Desktop Agent API interface to work with, whether they are running in an environment that supports a Desktop Agent Preload (a container-injected API implementation) or a Desktop Agent Proxy (a Browser-based Desktop Agent running in another window or frame). The behavior of `getAgent()` is defined by the [FDC3 Web Connection Protocol (WCP)](../specs/webConnectionProtocol) and communication with a Desktop Agent Proxy in a web-browser is defined by the [Desktop Agent Communication Protocol (DACP)](../specs/desktopAgentCommunicationProtocol). Hence, it allows applications to be written that will work in either scenario without modification or the inclusion of vendor-specific libraries.
 
-To handle situations where no Desktop Agent is found, a failover function may be supplied by app allowing it to start or otherwise connect to a Desktop Agent (e.g. by loading a proprietary adaptor that returns a `DesktopAgent` implementation or by creating a window or iframe of its own that will provide a Desktop Agent Proxy).
+To handle situations where no Desktop Agent is found, a failover function may be supplied by an app allowing it to start or otherwise connect to a Desktop Agent (e.g. by loading a proprietary adaptor that returns a `DesktopAgent` implementation or by creating a window or iframe of its own that will provide a Desktop Agent Proxy).
 
 The definition of the `getAgent()` function is as follows:
 
@@ -52,7 +52,7 @@ type GetAgentType = (
 ) => Promise<DesktopAgent>; 
 ```
 
-A small number of arguments are accepted that can affect the behavior of `getAgent` and to provide a fallback in case a Desktop Agent is not found, allowing the application to start its own agent or use another mechanism (such a proprietary adaptor) to connect to one.
+A small number of arguments are accepted that can affect the behavior of `getAgent` and to provide a fallback in case a Desktop Agent is not found, allowing the application to start its own agent or use another mechanism (such as a proprietary adaptor) to connect to one.
 
 ```ts
 /** 
@@ -111,7 +111,7 @@ type GetAgentParams = {
 
 :::note
 
-As web applications can navigate to or be navigated by users to different URLs and become different applications, validation of apps identity is often necessary. The web application's current URL is passed to web browser-based Desktop Agents to allow them to establish the app's identity - usually connecting it with an App Directory record already known to the Desktop Agent. For more details on identity validation see the identity validation section of the  [Web Connection Protocol (WCP)](specs/webConnectionProtocol).
+As web applications can navigate to or be navigated by users to different URLs and become different applications, validation of an app's identity is necessary. The web application's current URL is passed to web browser-based Desktop Agents to allow them to establish the app's identity - usually connecting it with an App Directory record already known to the Desktop Agent. For more details on identity validation see the identity validation section of the  [Web Connection Protocol (WCP)](specs/webConnectionProtocol).
 
 :::
 
@@ -123,7 +123,7 @@ The `getAgent()` function may try to create hidden iframes within an application
 
 :::warning
 
-The [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) directives [frame-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-src), [child-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/child-src) and [default-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src) can prevent iframes injected into an application from loading content. Where these are used, please ensure that they allow the loading of content from the domains of Desktop Agents and UI implementations that you wish to work with (including [fdc3.finos.org](https://fdc3.finos.org/) where the reference Intent Resolver and Channel Selector UIs may be laoded from).
+The [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) directives [frame-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-src), [child-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/child-src) and [default-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src) can prevent iframes injected into an application from loading content. Where these are used, please ensure that they allow the loading of content from the domains of Desktop Agents and UI implementations that you wish to work with (including [fdc3.finos.org](https://fdc3.finos.org/) where the reference Intent Resolver and Channel Selector UIs may be loaded from).
 
 :::
 

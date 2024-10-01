@@ -6,7 +6,7 @@ title: Browser-Resident Desktop Agents (next)
 
 :::info _[@experimental](../fdc3-compliance#experimental-features)_
 
-Browser Resident Desktop Agents (DAs) are an experimental feature added to FDC3 in 2.2. Limited aspects of their design may change in future versions and they are exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
+Browser Resident Desktop Agents (DAs) are an experimental feature added to FDC3 in 2.2. Limited aspects of their design may change in future versions and they are exempted from the FDC3 Standard's normal versioning and deprecation policies in order to facilitate any necessary change.
 
 :::
 
@@ -24,7 +24,7 @@ Prior to FDC3 2.2, only [Preload Desktop Agents](./preloadDesktopAgents) were su
 
 :::note
 
-This document covers the requirements for _implementors of Browser-Resident Desktop Agents_. The `getAgent()` function that applications use to gain access to an fdc3 interface is provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3). Many behavioral details of `getAgent()` are purposefully omitted from this document in order to reduce the required scope of understanding. Please refer to the [getAgent() specification in the FDC3 Web Connection Protocol](webConnectionProtocol.md) for information on how the client side operates or [supported platforms](../supported-platforms) for details of how to access the Desktop Agent API in an application.
+This document covers the requirements for _implementors of Browser-Resident Desktop Agents_. The `getAgent()` function that applications use to gain access to an FDC3 interface is provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3). Many behavioral details of `getAgent()` are purposefully omitted from this document in order to reduce the required scope of understanding. Please refer to the [getAgent() specification in the FDC3 Web Connection Protocol](webConnectionProtocol.md) for information on how the client side operates or [supported platforms](../supported-platforms) for details of how to access the Desktop Agent API in an application.
 
 :::
 
@@ -71,7 +71,7 @@ Upon receiving an incoming [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/a
 
     :::
 2. Create a [`MessageChannel`](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API) with two entangled `MessagePort` instances that will be used for further communication with the application.
-    - Before returning one of `MessagePort` instances, the DA MUST set up event listeners to to receive and process a [`"WCP4ValidateAppIdentity"`](https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message from the application.
+    - Before returning one of `MessagePort` instances, the DA MUST set up event listeners to receive and process a [`"WCP4ValidateAppIdentity"`](https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message from the application.
     - To deliver the `MessagePort`, the DA MUST respond to the event's `source` window by responding with a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message (as defined in the [Web Connection Protocol](./webConnectionProtocol)) and append `port2` from the `MessageChannel` to the message.
 
 All further communication is conducted over the `MessageChannel`. The Desktop Agent should consider the newly created port to be inactive until a [`"WCP4ValidateAppIdentity"`](https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message is received via the `MessagePort` and successfully processed.

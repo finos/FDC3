@@ -38,7 +38,7 @@ getAgent().then((desktopAgent: DesktopAgent) => {
 
 :::
 
-For a web application to use the FDC3 API it needs to retrieve a copy of the `DesktopAgent` API interface, which it will use to communicate with the Desktop Agent (this interface is often referred to as the `fdc3` object or the "FDC3 API"). FDC3 offers the [`@finos/fdc3` npm package](https://www.npmjs.com/package/@finos/fdc3) that can by used by web applications to retrieve a `DesktopAgent` interface and to provide typing. Each FDC3-compliant Desktop Agent that the application runs in, can then provide an implementation of the FDC3 API operations.
+For a web application to use the FDC3 API it needs to retrieve a copy of the `DesktopAgent` API interface, which it will use to communicate with the Desktop Agent (this interface is often referred to as the `fdc3` object or the "FDC3 API"). FDC3 offers the [`@finos/fdc3` npm package](https://www.npmjs.com/package/@finos/fdc3) that can be used by web applications to retrieve a `DesktopAgent` interface and to provide typing. Each FDC3-compliant Desktop Agent that the application runs in, can then provide an implementation of the FDC3 API operations.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

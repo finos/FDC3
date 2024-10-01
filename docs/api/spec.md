@@ -48,7 +48,7 @@ The FDC3 API specification consists of interfaces.  It is expected that each Des
 - [`Channel`](ref/Channel)
 - [`PrivateChannel`](ref/PrivateChannel)
 - [`Listener`](ref/Types#listener)
-- [Utility types](ref/Types#listener) and [Metadata Objects](ref/Metadata).
+- [Utility types](ref/Types) and [Metadata Objects](ref/Metadata).
 
 The means to access the main FDC3 API interface (a `DesktopAgent` implementation) is defined separately for each language in which FDC3 is implemented. These definitions are important as they affect whether applications can be written in a vendor agnostic format so that they run under any Standards-conformant implementation.
 

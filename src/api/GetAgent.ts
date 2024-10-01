@@ -9,7 +9,7 @@ import { DesktopAgent } from './DesktopAgent';
  * supports the discovery of a Desktop Agent Preload (a container-injected
  * API implementation) or a Desktop Agent Proxy (a Browser-based Desktop Agent
  * running in another window or frame). Finally, if no Desktop Agent is found,
- * a failover function may be supplied by app allowing it to start or otherwise
+ * a failover function may be supplied by an app allowing it to start or otherwise
  * connect to a Desktop Agent (e.g. by loading a proprietary adaptor that
  * returns a `DesktopAgent` implementation or by creating a window or iframe of
  * its own that will provide a Desktop Agent Proxy.

@@ -39,8 +39,8 @@
                 "zIndex": {"type": "string", "title": "zIndex", "description": "The initial zindex to apply to the iframe"},
                 "left": {"type": "string", "title": "left", "description": "The initial left property to apply to the iframe"},
                 "top": {"type": "string", "title": "top", "description": "The initial top property to apply to the iframe"},
-                "bottom": {"type": "string", "title": "left", "description": "The initial bottom property to apply to the iframe"},
-                "right": {"type": "string", "title": "top", "description": "The initial right property to apply to the iframe"},
+                "bottom": {"type": "string", "title": "bottom", "description": "The initial bottom property to apply to the iframe"},
+                "right": {"type": "string", "title": "right", "description": "The initial right property to apply to the iframe"},
                 "transition": {"type": "string", "title": "transition", "description": "The transition property to apply to the iframe"},
                 "maxHeight": {"type": "string", "title": "maxHeight", "description": "The maximum height to apply to the iframe"},
                 "maxWidth": {"type": "string", "title": "maxWidth", "description": "The maximum with to apply to the iframe"}

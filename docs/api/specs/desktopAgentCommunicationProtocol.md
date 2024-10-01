@@ -307,7 +307,7 @@ An additional response message is provided for the delivery of an `IntentResult`
 
 - [`raiseIntentResultResponse`](https://fdc3.finos.org/schemas/next/api/raiseIntentResultResponse.schema.json)
 
-There is no request message to indicate a call to the `resolution.getResult()` function of `IntentResolution`. Hence, Desktop Agents should always send this additional response message to indicate the status of the intent handling functino and to deliver its result (or void if none was returned).
+There is no request message to indicate a call to the `resolution.getResult()` function of `IntentResolution`. Hence, Desktop Agents should always send this additional response message to indicate the status of the intent handling function and to deliver its result (or void if none was returned).
 
 :::tip
 
@@ -453,5 +453,5 @@ Messages are also provided that are specific to each user interface type provide
 
 Messages specific to Intent Resolver user interfaces:
 
-- [`Fdc3UserInterfaceResolve`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceResolve.schema.json): Sent by the parent frame to initialize a Intent Resolver user interface to resolve a raised intent, before making the iframe visible. The message includes the context object sent with the intent and an array of one or more [`AppIntent`](../ref/Metadata#appintent) objects representing the resolution options for the intent ([`raiseIntent`](../ref/DesktopAgent#raiseintent)) or context ([`raiseIntentForContext`](../ref/DesktopAgent#raiseintentforcontext)) that was raised.
+- [`Fdc3UserInterfaceResolve`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceResolve.schema.json): Sent by the parent frame to initialize an Intent Resolver user interface to resolve a raised intent, before making the iframe visible. The message includes the context object sent with the intent and an array of one or more [`AppIntent`](../ref/Metadata#appintent) objects representing the resolution options for the intent ([`raiseIntent`](../ref/DesktopAgent#raiseintent)) or context ([`raiseIntentForContext`](../ref/DesktopAgent#raiseintentforcontext)) that was raised.
 - [`Fdc3UserInterfaceResolveAction`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceResolveAction.schema.json): Sent by the Intent Resolver to indicate actions taken by the user in the interface, including hovering over an option, clicking a cancel button, or selecting a resolution option. The Intent Resolver should be hidden by the `getAgent()` implementation after a resolution option is selected to ensure that it does not interfere with user's ongoing interaction with the app's user interface.
