@@ -13,6 +13,7 @@ import { ImplementationMetadata } from './ImplementationMetadata';
 import { PrivateChannel } from './PrivateChannel';
 import { AppIdentifier } from './AppIdentifier';
 import { AppMetadata } from './AppMetadata';
+import { DesktopAgentDetails } from './GetAgent';
 import { Intent } from '../intents/Intents';
 import { ContextType } from '../context/ContextType';
 import { EventHandler, FDC3EventTypes } from './Events';
@@ -548,7 +549,7 @@ export interface DesktopAgent {
   getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
 
   //---------------------------------------------------------------------------------------------
-  //Deprecated function signatures
+  // Deprecated function signatures
   //---------------------------------------------------------------------------------------------
 
   /**
