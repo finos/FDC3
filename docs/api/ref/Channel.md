@@ -452,8 +452,8 @@ Task ClearContext(string? contextType);
 </TabItem>
 </Tabs>
 
-Used to clear the specified context type if provided, otherwise, clear all contexts. Desktop Agent MUST update internal context. Any future calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners on that channel (through [`joinUserChannel`](DesktopAgent#joinUserChannel) or [`addContextListener`](DesktopAgent#addContextListener)) will not receive anything for specified context type or all contexts accordingly. 
-Desktop Agent MUST update all channel listeners subscribed to the  [`fdc3.nothing`](../../context/ref/Nothing.md/#nothing) type. If `contextType` is provided, then `subType` will be specified, otherwise, it is ommitted. 
+Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. The Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinUserChannel) or [`addContextListener`](DesktopAgent#addContextListener)) will not receive anything for either specified context type or the most recent context until new context has been broadcast to the channel. 
+Desktop Agents MUST also immediately broadcast the  [`fdc3.nothing`](../../context/ref/Nothing.md/#nothing) type, which applications may listen to to be notified of the cleared context. If a `contextType` parameter was provided, then the `contextType` field will be set to that type, otherwise, it is omitted. 
 
 
 **Examples:**
