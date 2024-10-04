@@ -11,9 +11,9 @@
         "type": {
           "const": "fdc3.nothing"
         },
-        "subtype": {
-          "type": "string",
-          "description": "A subtype of the context type. This can be used to provide a specific context which should be cleared, if ommitted, all contexts will be cleared"
+        "contextType": {
+          "type": "Context Type",
+          "description": "A referenced context type name. Used to indicate that a specific context type was cleared, if omitted, all contexts were cleared"
         }
       }
     },
@@ -22,7 +22,7 @@
   "examples": [
     {
       "type": "fdc3.nothing",
-      "subtype": "fdc3.timeRange"
+      "contextType": "fdc3.timeRange"
     }
   ]
 }
