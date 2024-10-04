@@ -12,12 +12,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added requirement that Standard versions SHOULD avoid the use unions in context and API definitions wherever possible as these can be hard to replicate and MUST avoid unions of primitive types as these can be impossible to replicate in other languages. ([#120](https://github.com/finos/FDC3/pull/1200))
 * Added `addEventListener` to the `DesktopAgent` API to provide support for event listener for non-context and non-intent events, including a `userChannelChanged` event ([#1207](https://github.com/finos/FDC3/pull/1207))
 * Added an `async` `addEventListener` function to the `PrivateChannel` API to replace the deprecated, synchronous `onAddContextListener`, `onUnsubscribe` and `onDisconnect` functions and to keep consistency with the DesktopAgent API. ([#1305](https://github.com/finos/FDC3/pull/1305))
+* Added `clearContext` function to the `Channel` API, to be able to clear specific or all context types from the channel. ([#1379](https://github.com/finos/FDC3/pull/1379))
 
 ### Changed
 
 * `Listener.unsubscribe()` was made async (the return type was changed from `void` to `Promise<void>`) for consistency with the rest of the API. ([#1305](https://github.com/finos/FDC3/pull/1305))
 * Added reference materials and supported platforms information for FDC3 in .NET via the [finos/fdc3-dotnet](https://github.com/finos/fdc3-dotnet) project. ([#1108](https://github.com/finos/FDC3/pull/1108))
 * The supported platforms page in the FDC3 documentation was moved into the API section as the information it provides all relates to FDC3 Desktop Agent API implementations. ([#1108](https://github.com/finos/FDC3/pull/1108))
+* Enhanced `fdc3.nothing` context type to support optional `contextType` field, refrencing the specific cleared context type. ([#1379](https://github.com/finos/FDC3/pull/1379))
 
 ### Deprecated
 
