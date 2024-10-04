@@ -74,6 +74,15 @@ export interface Channel {
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 
   /**
+   * Clears context from the channel, and broadcasts an `fdc3.nothing` context to notify existing listeners that the context was cleared. Listeners added to the channel and calls to [`getCurrentContext`](#getcurrentcontext) will not receive any existing context until new context is broadcast to the channel. 
+   * 
+   * If a `contextType` is provided, only contexts of that type will be cleared and the `contextType` of the `fdc3.nothing` context will be set to that type name. 
+   * 
+   * If no `contextType` is provided, all contexts will be cleared and the `contextType` of the `fdc3.nothing` context will be omitted.
+   */
+  clearContext(contextType?: string): Promise<void>;
+
+  /**
    * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
    */
   addContextListener(handler: ContextHandler): Promise<Listener>;
