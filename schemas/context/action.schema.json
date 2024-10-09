@@ -9,7 +9,7 @@
         "type": { "const": "fdc3.action" },
         "action": {
           "title": "Action Type",
-          "description": "The **action** field indicates the type of action:\n- **raiseIntent** :  If no action or `raiseIntent` is specified, then the current default behaviour will be used with `fdc3.raiseIntent` / `fdc3.raiseIntentForContext`\n- **broadcast** : If `broadcast` action is specified, it will call `fdc3.getOrCreateChannel(channelId)`to retrieve the channel, then broadcast the context to that channel with `channel.broadcast(context)`. If no, channel has been specified, it will try to broadcast to the current channel (`fdc3.getCurrentChannel()`)",
+          "description": "The **action** field indicates the type of action:\n- **raiseIntent** :  If no action or `raiseIntent` is specified, then the current default behaviour will be used with `fdc3.raiseIntent` / `fdc3.raiseIntentForContext`\n- **broadcast** : If `broadcast` action is specified, it will call `fdc3.getOrCreateChannel(channelId)`to retrieve the channel, then broadcast the context to that channel with `channel.broadcast(context)`. If no channel has been specified, it will try to broadcast to the current channel (`fdc3.getCurrentChannel()`)",
           "type": "string",
           "enum": [
             "broadcast",
