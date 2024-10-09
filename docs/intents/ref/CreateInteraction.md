@@ -18,12 +18,12 @@ Create a record documenting an interaction (calls, meetings, etc.) between a lis
 
 ## Possible Contexts
 
-* [ContactList](../../context/ref/ContactList)
-* [Interaction](../../context/ref/Interaction)
+- [ContactList](../../context/ref/ContactList)
+- [Interaction](../../context/ref/Interaction)
 
 SHOULD return context as a result:
 
-* [TransactionResult](../../context/ref/TransactionResult)
+- [TransactionResult](../../context/ref/TransactionResult)
 
 ## Example
 
