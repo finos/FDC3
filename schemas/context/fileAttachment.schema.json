@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/context/attachment.schema.json",
+  "$id": "https://fdc3.finos.org/schemas/next/context/fileAttachment.schema.json",
   "type": "object",
   "title": "File Attachment",
   "description": "A File attachment encoded in the form of a data URI. Can be added to a Message.",
