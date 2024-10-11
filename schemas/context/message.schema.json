@@ -33,7 +33,7 @@
           "title": "Message entities",
           "description": "A map of string IDs to entities that should be attached to the message, such as an action to perform, a file attachment, or other FDC3 context object.",
           "additionalProperties": {
-            "anyOf": [
+            "oneOf": [
               {
                 "$ref": "action.schema.json#"
               },
