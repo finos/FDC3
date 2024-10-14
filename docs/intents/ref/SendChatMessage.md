@@ -18,7 +18,7 @@ Send a message to an existing chat room.
 
 ## Possible Contexts
 
-* [ChatMessage](../../context/ref/ChatMessage)
+- [ChatMessage](../../context/ref/ChatMessage)
 
 ## Example
 
@@ -59,6 +59,6 @@ Context
 - [ChatRoom](../../context/ref/ChatRoom)
 
 Intents
-* [StartChat](StartChat)
-* [StartCall](StartCall)
-* [StartEmail](StartEmail)
+- [StartChat](StartChat)
+- [StartCall](StartCall)
+- [StartEmail](StartEmail)
