@@ -38,18 +38,37 @@
  * A representation of an FDC3 Action (specified via a Context or Context & Intent) that can
  * be inserted inside another object, for example a chat message.
  *
- * The action may be completed by calling `fdc3.raiseIntent()` with the specified Intent and
- * Context, or, if only a context is specified, by calling `fdc3.raiseIntentForContext()`
- * (which the Desktop Agent will resolve by presenting the user with a list of available
- * Intents for the Context).
+ * The action may be completed by calling:
+ * - `fdc3.raiseIntent()` with the specified Intent and Context
+ * - `fdc3.raiseIntentForContext()` if only a context is specified, (which the Desktop Agent
+ * will resolve by presenting the user with a list of available Intents for the Context).
+ * - `channel.broadcast()` with the specified Context, if the `broadcast` action has been
+ * defined.
  *
  * Accepts an optional `app` parameter in order to specify a specific app.
  */
 export interface Action {
     /**
-     * An optional target application identifier that should perform the action
+     * The **action** field indicates the type of action:
+     * - **raiseIntent** :  If no action or `raiseIntent` is specified, then `fdc3.raiseIntent`
+     * or `fdc3.raiseIntentForContext` will be called with the specified context (and intent if
+     * given).
+     * - **broadcast** : If `broadcast` and a `channelId` are specified then
+     * `fdc3.getOrCreateChannel(channelId)` is called to retrieve the channel and broadcast the
+     * context to it with `channel.broadcast(context)`. If no `channelId` has been specified,
+     * the context should be broadcast to the current channel (`fdc3.broadcast()`)
+     */
+    action?: ActionType;
+    /**
+     * An optional target application identifier that should perform the action. The `app`
+     * property is ignored unless the action is raiseIntent.
      */
     app?: AppIdentifier;
+    /**
+     * Optional channel on which to broadcast the context. The `channelId` property is ignored
+     * unless the `action` is broadcast.
+     */
+    channelId?: string;
     /**
      * A context object with which the action will be performed
      */
@@ -72,7 +91,20 @@ export interface Action {
 }
 
 /**
- * An optional target application identifier that should perform the action
+ * The **action** field indicates the type of action:
+ * - **raiseIntent** :  If no action or `raiseIntent` is specified, then `fdc3.raiseIntent`
+ * or `fdc3.raiseIntentForContext` will be called with the specified context (and intent if
+ * given).
+ * - **broadcast** : If `broadcast` and a `channelId` are specified then
+ * `fdc3.getOrCreateChannel(channelId)` is called to retrieve the channel and broadcast the
+ * context to it with `channel.broadcast(context)`. If no `channelId` has been specified,
+ * the context should be broadcast to the current channel (`fdc3.broadcast()`)
+ */
+export type ActionType = "broadcast" | "raiseIntent";
+
+/**
+ * An optional target application identifier that should perform the action. The `app`
+ * property is ignored unless the action is raiseIntent.
  *
  * Identifies an application, or instance of an application, and is used to target FDC3 API
  * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
@@ -207,7 +239,7 @@ export interface Chart {
 }
 
 /**
- * financial instrument that relates to the definition of this product
+ * A financial instrument that relates to the definition of this product
  *
  *
  *
@@ -235,7 +267,7 @@ export interface InstrumentElement {
      * interoperability between disparate data sources. This is especially useful when using an
      * `id` field that is not globally unique.
      */
-    market?: SearchCriteriaMarket;
+    market?: OrganizationMarket;
     /**
      * An optional human-readable name for the instrument
      */
@@ -304,7 +336,7 @@ export interface PurpleInstrumentIdentifiers {
  * interoperability between disparate data sources. This is especially useful when using an
  * `id` field that is not globally unique.
  */
-export interface SearchCriteriaMarket {
+export interface OrganizationMarket {
     /**
      * https://www.bloomberg.com/
      */
@@ -531,10 +563,12 @@ export interface MessageObject {
  * A representation of an FDC3 Action (specified via a Context or Context & Intent) that can
  * be inserted inside another object, for example a chat message.
  *
- * The action may be completed by calling `fdc3.raiseIntent()` with the specified Intent and
- * Context, or, if only a context is specified, by calling `fdc3.raiseIntentForContext()`
- * (which the Desktop Agent will resolve by presenting the user with a list of available
- * Intents for the Context).
+ * The action may be completed by calling:
+ * - `fdc3.raiseIntent()` with the specified Intent and Context
+ * - `fdc3.raiseIntentForContext()` if only a context is specified, (which the Desktop Agent
+ * will resolve by presenting the user with a list of available Intents for the Context).
+ * - `channel.broadcast()` with the specified Context, if the `broadcast` action has been
+ * defined.
  *
  * Accepts an optional `app` parameter in order to specify a specific app.
  *
@@ -542,9 +576,26 @@ export interface MessageObject {
  */
 export interface PurpleAction {
     /**
-     * An optional target application identifier that should perform the action
+     * The **action** field indicates the type of action:
+     * - **raiseIntent** :  If no action or `raiseIntent` is specified, then `fdc3.raiseIntent`
+     * or `fdc3.raiseIntentForContext` will be called with the specified context (and intent if
+     * given).
+     * - **broadcast** : If `broadcast` and a `channelId` are specified then
+     * `fdc3.getOrCreateChannel(channelId)` is called to retrieve the channel and broadcast the
+     * context to it with `channel.broadcast(context)`. If no `channelId` has been specified,
+     * the context should be broadcast to the current channel (`fdc3.broadcast()`)
+     */
+    action?: ActionType;
+    /**
+     * An optional target application identifier that should perform the action. The `app`
+     * property is ignored unless the action is raiseIntent.
      */
     app?: AppIdentifier;
+    /**
+     * Optional channel on which to broadcast the context. The `channelId` property is ignored
+     * unless the `action` is broadcast.
+     */
+    channelId?: string;
     /**
      * A context object with which the action will be performed
      */
@@ -663,7 +714,7 @@ export interface ChatRoomObject {
     /**
      * Identifier(s) for the chat - currently unstandardized
      */
-    id: { [key: string]: any };
+    id: { [key: string]: string };
     /**
      * Display name for the chat room
      */
@@ -702,7 +753,7 @@ export interface ChatRoom {
     /**
      * Identifier(s) for the chat - currently unstandardized
      */
-    id: { [key: string]: any };
+    id: { [key: string]: string };
     /**
      * Display name for the chat room
      */
@@ -734,7 +785,7 @@ export interface ChatSearchCriteria {
      *
      * Empty search criteria can be supported to allow resetting of filters.
      */
-    criteria: SearchCriteria[];
+    criteria: Array<OrganizationObject | string>;
     type:     "fdc3.chat.searchCriteria";
     id?:      { [key: string]: any };
     name?:    string;
@@ -742,26 +793,23 @@ export interface ChatSearchCriteria {
 }
 
 /**
- * An individual criteria against which to match chat messages, based on an FDC3 context or
- * free-text string.
- *
- * financial instrument that relates to the definition of this product
+ * A financial instrument that relates to the definition of this product
  *
  *
  *
  * A financial instrument from any asset class.
- *
- * The contact that initiated the interaction
- *
- * A person contact that can be engaged with through email, calling, messaging, CMS, etc.
  *
  * An entity that can be used when referencing private companies and other organizations
  * where a specific instrument is not available or desired e.g. CRM and News workflows.
  *
  * It is valid to include extra properties and metadata as part of the organization payload,
  * but the minimum requirement is for at least one specified identifier to be provided.
+ *
+ * The contact that initiated the interaction
+ *
+ * A person contact that can be engaged with through email, calling, messaging, CMS, etc.
  */
-export interface SearchCriteria {
+export interface OrganizationObject {
     /**
      * Any combination of instrument identifiers can be used together to resolve ambiguity, or
      * for a better match. Not all applications will use the same instrument identifiers, which
@@ -777,9 +825,9 @@ export interface SearchCriteria {
      * fields, define a property that makes it clear what the value represents. Doing so will
      * make interpretation easier for the developers of target applications.
      *
-     * Identifiers that relate to the Contact represented by this context
-     *
      * Identifiers for the organization, at least one must be provided.
+     *
+     * Identifiers that relate to the Contact represented by this context
      */
     id: Identifiers;
     /**
@@ -787,16 +835,16 @@ export interface SearchCriteria {
      * interoperability between disparate data sources. This is especially useful when using an
      * `id` field that is not globally unique.
      */
-    market?: SearchCriteriaMarket;
+    market?: OrganizationMarket;
     /**
      * An optional human-readable name for the instrument
      *
-     * An optional human-readable name for the contact
-     *
      * An optional human-readable name of the organization
+     *
+     * An optional human-readable name for the contact
      */
     name?: string;
-    type:  SearchCriteriaType;
+    type:  TentacledInteractionType;
     [property: string]: any;
 }
 
@@ -815,9 +863,9 @@ export interface SearchCriteria {
  * fields, define a property that makes it clear what the value represents. Doing so will
  * make interpretation easier for the developers of target applications.
  *
- * Identifiers that relate to the Contact represented by this context
- *
  * Identifiers for the organization, at least one must be provided.
+ *
+ * Identifiers that relate to the Contact represented by this context
  */
 export interface Identifiers {
     /**
@@ -831,9 +879,9 @@ export interface Identifiers {
     /**
      * https://www.factset.com/
      *
-     * FactSet Permanent Identifier representing the contact
-     *
      * FactSet Permanent Identifier representing the organization
+     *
+     * FactSet Permanent Identifier representing the contact
      */
     FDS_ID?: string;
     /**
@@ -863,16 +911,16 @@ export interface Identifiers {
      */
     ticker?: string;
     /**
-     * The email address for the contact
-     */
-    email?: string;
-    /**
      * The Legal Entity Identifier (LEI) is a 20-character, alpha-numeric code based on the ISO
      * 17442 standard developed by the International Organization for Standardization (ISO). It
      * connects to key reference information that enables clear and unique identification of
      * legal entities participating in financial transactions.
      */
     LEI?: string;
+    /**
+     * The email address for the contact
+     */
+    email?: string;
     [property: string]: any;
 }
 
@@ -882,7 +930,7 @@ export interface Identifiers {
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
-export type SearchCriteriaType = "fdc3.instrument" | "fdc3.contact" | "fdc3.organization";
+export type TentacledInteractionType = "fdc3.instrument" | "fdc3.organization" | "fdc3.contact";
 
 /**
  * Free text to be used for a keyword search
@@ -1433,10 +1481,12 @@ export interface Message {
  * A representation of an FDC3 Action (specified via a Context or Context & Intent) that can
  * be inserted inside another object, for example a chat message.
  *
- * The action may be completed by calling `fdc3.raiseIntent()` with the specified Intent and
- * Context, or, if only a context is specified, by calling `fdc3.raiseIntentForContext()`
- * (which the Desktop Agent will resolve by presenting the user with a list of available
- * Intents for the Context).
+ * The action may be completed by calling:
+ * - `fdc3.raiseIntent()` with the specified Intent and Context
+ * - `fdc3.raiseIntentForContext()` if only a context is specified, (which the Desktop Agent
+ * will resolve by presenting the user with a list of available Intents for the Context).
+ * - `channel.broadcast()` with the specified Context, if the `broadcast` action has been
+ * defined.
  *
  * Accepts an optional `app` parameter in order to specify a specific app.
  *
@@ -1444,9 +1494,26 @@ export interface Message {
  */
 export interface FluffyAction {
     /**
-     * An optional target application identifier that should perform the action
+     * The **action** field indicates the type of action:
+     * - **raiseIntent** :  If no action or `raiseIntent` is specified, then `fdc3.raiseIntent`
+     * or `fdc3.raiseIntentForContext` will be called with the specified context (and intent if
+     * given).
+     * - **broadcast** : If `broadcast` and a `channelId` are specified then
+     * `fdc3.getOrCreateChannel(channelId)` is called to retrieve the channel and broadcast the
+     * context to it with `channel.broadcast(context)`. If no `channelId` has been specified,
+     * the context should be broadcast to the current channel (`fdc3.broadcast()`)
+     */
+    action?: ActionType;
+    /**
+     * An optional target application identifier that should perform the action. The `app`
+     * property is ignored unless the action is raiseIntent.
      */
     app?: AppIdentifier;
+    /**
+     * Optional channel on which to broadcast the context. The `channelId` property is ignored
+     * unless the `action` is broadcast.
+     */
+    channelId?: string;
     /**
      * A context object with which the action will be performed
      */
@@ -1583,7 +1650,7 @@ export interface ProductObject {
      */
     id: { [key: string]: string };
     /**
-     * financial instrument that relates to the definition of this product
+     * A financial instrument that relates to the definition of this product
      */
     instrument?: InstrumentElement;
     /**
@@ -1860,7 +1927,7 @@ export interface Product {
      */
     id: { [key: string]: string };
     /**
-     * financial instrument that relates to the definition of this product
+     * A financial instrument that relates to the definition of this product
      */
     instrument?: InstrumentElement;
     /**
@@ -2481,11 +2548,13 @@ function r(name: string) {
 
 const typeMap: any = {
     "Action": o([
+        { json: "action", js: "action", typ: u(undefined, r("ActionType")) },
         { json: "app", js: "app", typ: u(undefined, r("AppIdentifier")) },
+        { json: "channelId", js: "channelId", typ: u(undefined, "") },
         { json: "context", js: "context", typ: r("ContextElement") },
         { json: "intent", js: "intent", typ: u(undefined, "") },
         { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: r("ActionType") },
+        { json: "type", js: "type", typ: r("ActionTypeEnum") },
         { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
@@ -2510,9 +2579,9 @@ const typeMap: any = {
     ], "any"),
     "InstrumentElement": o([
         { json: "id", js: "id", typ: r("PurpleInstrumentIdentifiers") },
-        { json: "market", js: "market", typ: u(undefined, r("SearchCriteriaMarket")) },
+        { json: "market", js: "market", typ: u(undefined, r("OrganizationMarket")) },
         { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "type", js: "type", typ: r("InstrumentType") },
+        { json: "type", js: "type", typ: r("PurpleInteractionType") },
     ], "any"),
     "PurpleInstrumentIdentifiers": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
@@ -2525,7 +2594,7 @@ const typeMap: any = {
         { json: "SEDOL", js: "SEDOL", typ: u(undefined, "") },
         { json: "ticker", js: "ticker", typ: u(undefined, "") },
     ], "any"),
-    "SearchCriteriaMarket": o([
+    "OrganizationMarket": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
         { json: "COUNTRY_ISOALPHA2", js: "COUNTRY_ISOALPHA2", typ: u(undefined, "") },
         { json: "MIC", js: "MIC", typ: u(undefined, "") },
@@ -2556,7 +2625,7 @@ const typeMap: any = {
     "ContactElement": o([
         { json: "id", js: "id", typ: r("PurpleContactIdentifiers") },
         { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "type", js: "type", typ: r("ContactType") },
+        { json: "type", js: "type", typ: r("FluffyInteractionType") },
     ], "any"),
     "PurpleContactIdentifiers": o([
         { json: "email", js: "email", typ: u(undefined, "") },
@@ -2570,7 +2639,9 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "PurpleAction": o([
+        { json: "action", js: "action", typ: u(undefined, r("ActionType")) },
         { json: "app", js: "app", typ: u(undefined, r("AppIdentifier")) },
+        { json: "channelId", js: "channelId", typ: u(undefined, "") },
         { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
         { json: "intent", js: "intent", typ: u(undefined, "") },
         { json: "title", js: "title", typ: u(undefined, "") },
@@ -2602,30 +2673,30 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "ChatRoomObject": o([
-        { json: "id", js: "id", typ: m("any") },
+        { json: "id", js: "id", typ: m("") },
         { json: "name", js: "name", typ: u(undefined, "") },
         { json: "providerName", js: "providerName", typ: "" },
         { json: "type", js: "type", typ: r("ChatRoomType") },
         { json: "url", js: "url", typ: u(undefined, "") },
     ], "any"),
     "ChatRoom": o([
-        { json: "id", js: "id", typ: m("any") },
+        { json: "id", js: "id", typ: m("") },
         { json: "name", js: "name", typ: u(undefined, "") },
         { json: "providerName", js: "providerName", typ: "" },
         { json: "type", js: "type", typ: r("ChatRoomType") },
         { json: "url", js: "url", typ: u(undefined, "") },
     ], "any"),
     "ChatSearchCriteria": o([
-        { json: "criteria", js: "criteria", typ: a(r("SearchCriteria")) },
+        { json: "criteria", js: "criteria", typ: a(u(r("OrganizationObject"), "")) },
         { json: "type", js: "type", typ: r("ChatSearchCriteriaType") },
         { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
-    "SearchCriteria": o([
+    "OrganizationObject": o([
         { json: "id", js: "id", typ: r("Identifiers") },
-        { json: "market", js: "market", typ: u(undefined, r("SearchCriteriaMarket")) },
+        { json: "market", js: "market", typ: u(undefined, r("OrganizationMarket")) },
         { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "type", js: "type", typ: r("SearchCriteriaType") },
+        { json: "type", js: "type", typ: r("TentacledInteractionType") },
     ], "any"),
     "Identifiers": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
@@ -2637,13 +2708,13 @@ const typeMap: any = {
         { json: "RIC", js: "RIC", typ: u(undefined, "") },
         { json: "SEDOL", js: "SEDOL", typ: u(undefined, "") },
         { json: "ticker", js: "ticker", typ: u(undefined, "") },
-        { json: "email", js: "email", typ: u(undefined, "") },
         { json: "LEI", js: "LEI", typ: u(undefined, "") },
+        { json: "email", js: "email", typ: u(undefined, "") },
     ], "any"),
     "Contact": o([
         { json: "id", js: "id", typ: r("FluffyContactIdentifiers") },
         { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "type", js: "type", typ: r("ContactType") },
+        { json: "type", js: "type", typ: r("FluffyInteractionType") },
     ], "any"),
     "FluffyContactIdentifiers": o([
         { json: "email", js: "email", typ: u(undefined, "") },
@@ -2701,7 +2772,7 @@ const typeMap: any = {
         { json: "id", js: "id", typ: r("FluffyInstrumentIdentifiers") },
         { json: "market", js: "market", typ: u(undefined, r("PurpleMarket")) },
         { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "type", js: "type", typ: r("InstrumentType") },
+        { json: "type", js: "type", typ: r("PurpleInteractionType") },
     ], "any"),
     "FluffyInstrumentIdentifiers": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
@@ -2750,7 +2821,9 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "FluffyAction": o([
+        { json: "action", js: "action", typ: u(undefined, r("ActionType")) },
         { json: "app", js: "app", typ: u(undefined, r("AppIdentifier")) },
+        { json: "channelId", js: "channelId", typ: u(undefined, "") },
         { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
         { json: "intent", js: "intent", typ: u(undefined, "") },
         { json: "title", js: "title", typ: u(undefined, "") },
@@ -2805,7 +2878,7 @@ const typeMap: any = {
     "Organization": o([
         { json: "id", js: "id", typ: r("OrganizationIdentifiers") },
         { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "type", js: "type", typ: r("OrganizationType") },
+        { json: "type", js: "type", typ: r("StickyInteractionType") },
     ], "any"),
     "OrganizationIdentifiers": o([
         { json: "FDS_ID", js: "FDS_ID", typ: u(undefined, "") },
@@ -2882,9 +2955,13 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "ActionType": [
+        "broadcast",
+        "raiseIntent",
+    ],
+    "ActionTypeEnum": [
         "fdc3.action",
     ],
-    "InstrumentType": [
+    "PurpleInteractionType": [
         "fdc3.instrument",
     ],
     "TimeRangeType": [
@@ -2905,7 +2982,7 @@ const typeMap: any = {
     "ChartType": [
         "fdc3.chart",
     ],
-    "ContactType": [
+    "FluffyInteractionType": [
         "fdc3.contact",
     ],
     "ContactListType": [
@@ -2927,7 +3004,7 @@ const typeMap: any = {
     "ChatMessageType": [
         "fdc3.chat.message",
     ],
-    "SearchCriteriaType": [
+    "TentacledInteractionType": [
         "fdc3.contact",
         "fdc3.instrument",
         "fdc3.organization",
@@ -2966,7 +3043,7 @@ const typeMap: any = {
     "OrderListType": [
         "fdc3.orderList",
     ],
-    "OrganizationType": [
+    "StickyInteractionType": [
         "fdc3.organization",
     ],
     "PositionType": [

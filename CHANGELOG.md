@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Typescript definitions for getAgent() and related types
 * Typescript definitions for Browser Communication Protocol (BCP). These constitute the internal "wire protocol" that the "@finos/fdc3" library uses to communicate with Browser-Resident DAs.
 * Typescript definitions for Web Connection Protocol (WCP). These constitute the messages used to establish connectivity between "@finos/fdc3" and a Browser-Resident DA.
+* Added support for broadcast actions to the `fdc3.action` context type, allowing an Action to represent the broadcast of a specified context to an app or user channel. ([#1368](https://github.com/finos/FDC3/pull/1368))
 
 ### Changed
 
