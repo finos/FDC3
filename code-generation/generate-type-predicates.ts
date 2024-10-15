@@ -30,11 +30,15 @@ const matchedInterfaces = convertFunctions.map(func => {
 // write a type predicate for each matched interface
 matchedInterfaces.forEach(matched => writePredicate(matched.matchingInterface, matched.func));
 
+writeUnionType("RequestMessage", interfaces, "Request");
+writeUnionType("ResponseMessage", interfaces, "Response");
+writeUnionType("EventMessage", interfaces, "Event");
 
 function writePredicate(matchingInterface: InterfaceDeclaration, func: MethodDeclaration): void{
     const predicateName = `is${matchingInterface.getName()}`;
 
-    sourceFile.addStatements(`export function ${predicateName}(value: any): value is ${matchingInterface.getName()} {
+    sourceFile.addStatements(`
+export function ${predicateName}(value: any): value is ${matchingInterface.getName()} {
     try{
         Convert.${func.getName()}(value);
         return true;
@@ -42,7 +46,17 @@ function writePredicate(matchingInterface: InterfaceDeclaration, func: MethodDec
         return false; 
     }
 }`);
+}
 
+
+
+function writeUnionType(unionName: string, interfaces: InterfaceDeclaration[], nameEndsWith: string): void{
+    const matchingInterfaces =  interfaces
+        .map(currentInterface => currentInterface.getName())
+        .filter(interfaceName => interfaceName.length > nameEndsWith.length && interfaceName.indexOf(nameEndsWith) === interfaceName.length - nameEndsWith.length);
+
+    sourceFile.addStatements(`
+export type ${unionName} = ${matchingInterfaces.join(" | ")};`);
 }
 
 sourceFile.formatText();
