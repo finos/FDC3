@@ -42,6 +42,6 @@ export { BrowserTypes };
 
 declare global {
   interface Window {
-    fdc3: DesktopAgent;
+    fdc3?: DesktopAgent;
   }
 }
