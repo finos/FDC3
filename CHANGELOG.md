@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+* `window.fdc3` is now an optional property and may or may not be defined.
 * `Listener.unsubscribe()` was made async (the return type was changed from `void` to `Promise<void>`) for consistency with the rest of the API. ([#1305](https://github.com/finos/FDC3/pull/1305))
 * Added reference materials and supported platforms information for FDC3 in .NET via the [finos/fdc3-dotnet](https://github.com/finos/fdc3-dotnet) project. ([#1108](https://github.com/finos/FDC3/pull/1108))
 * The supported platforms page in the FDC3 documentation was moved into the API section as the information it provides all relates to FDC3 Desktop Agent API implementations. ([#1108](https://github.com/finos/FDC3/pull/1108))
