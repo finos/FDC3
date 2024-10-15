@@ -78,5 +78,5 @@ export const intentTypes: Array<{ title: string; value: string }> = [
 	{
 		title: "ViewResearch",
 		value: "ViewResearch",
-	}
+	},
 ];
