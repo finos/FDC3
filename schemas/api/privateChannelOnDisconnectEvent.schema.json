@@ -1,0 +1,46 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/privateChannelOnDisconnectEvent.schema.json",
+	"type": "object",
+	"title": "privateChannelOnDisconnect Event",
+	"description": "An event message from the Desktop Agent to an app indicating that another app has disconnected from a specific PrivateChannel and will no longer interact with it.",
+	"allOf": [
+		{
+			"$ref": "agentEvent.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/PrivateChannelOnDisconnectEventType"
+				},
+				"payload": {
+					"$ref": "#/$defs/PrivateChannelOnDisconnectEventPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"PrivateChannelOnDisconnectEventType": {
+			"title": "PrivateChannelOnDisconnect Event Message Type",
+			"const": "privateChannelOnDisconnectEvent"
+		},
+		"PrivateChannelOnDisconnectEventPayload": {
+			"title": "privateChannelOnDisconnect Event Payload",
+			"type": "object",
+			"properties": {
+				"privateChannelId": {
+					"type": "string",
+					"title": "Private Channel Id",
+					"description": "The Id of the PrivateChannel that the app has disconnected from."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"privateChannelId"
+			]
+		}
+	}
+}

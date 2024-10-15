@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "https://fdc3.finos.org/schemas/next/api/api.schema.json",
-    "title": "FDC3 Desktop Agent API Schema",
+    "title": "FDC3 Desktop Agent API Schemas",
     "definitions": {
         "AppIdentifier": {
             "description": "Identifies an application, or instance of an application, and is used to target FDC3 API calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application instances.\n\nWill always include at least an `appId` field, which uniquely identifies a specific app.\n\nIf the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.",
@@ -104,7 +104,7 @@
                 "instanceMetadata": {
                     "description": "An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set.",
                     "type": "object",
-                    "additionalProperties": {},
+                    "additionalProperties": true,
                     "title": "instanceMetadata"
                 },
                 "title": {
@@ -467,6 +467,69 @@
                 "intent",
                 "source"
             ]
+        },
+        "IntentResult": {
+            "title": "IntentResult",
+            "anyOf": [
+                {
+                    "type": "object",
+                    "title": "IntentResult Context",
+                    "properties": {
+                        "context": {
+                            "$ref": "../context/context.schema.json"
+                        }
+                    },
+                    "required": [
+                        "context"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "title": "IntentResult Channel",
+                    "properties": {
+                        "channel": {
+                            "$ref": "#/definitions/Channel"
+                        }
+                    },
+                    "required": [
+                        "channel"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "title": "IntentResult Void",
+                    "properties": {},
+                    "additionalProperties": false
+                }
+            ]
+        },
+        "FDC3EventType": {
+            "title": "FDC3 Event Type",
+            "description": "The type of a (non-context and non-intent) event that may be received via the FDC3 API's addEventListener function.",
+            "type": "string",
+            "enum": [
+                "USER_CHANNEL_CHANGED"
+            ]
+        },
+        "FDC3Event": {
+            "title": "FDC3 Event",
+            "description": "An event object received via the FDC3 API's addEventListener function. Will always include both type and details, which describe type of the event and any additional details respectively.",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/FDC3EventType"
+                },
+                "details": {
+                    "title": "Event details",
+                    "description": "Additional details of the event, such as the `currentChannelId` for a CHANNEL_CHANGED event",
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            },
+            "required":["type","details"],
+            "additionalProperties": false
         }
     }
 }
