@@ -19,6 +19,7 @@ export * from './api/ContextMetadata';
 export * from './api/DesktopAgent';
 export * from './api/DisplayMetadata';
 export * from './api/Errors';
+export * from './api/GetAgent';
 export * from './api/Icon';
 export * from './api/Image';
 export * from './api/ImplementationMetadata';
