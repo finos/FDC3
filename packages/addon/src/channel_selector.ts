@@ -57,7 +57,7 @@ window.addEventListener("load", () => {
         const {userChannels, selected} = data.payload as IframeChannelsPayload;
         fillChannels(userChannels, selected, (channelStr) => {
           myPort.postMessage({
-            type: "iframeChannelSelected",
+            type: "fdc3UserInterfaceSelected",
             payload: {
               selected: channelStr || null
             }
