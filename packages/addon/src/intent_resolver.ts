@@ -188,7 +188,7 @@ window.addEventListener("load", () => {
           });
 
           myPort.postMessage({
-            type: "iframeRestyle",
+            type: "fdc3UserInterfaceRestyle",
             payload: {
               updatedCSS: {
                 width: "0",
