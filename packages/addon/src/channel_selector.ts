@@ -52,7 +52,7 @@ window.addEventListener("load", () => {
         collapse();
         break;
       }
-      case "iframeChannels": {
+      case "fdc3UserInterfaceChannels": {
         logo.removeEventListener("click", expand);
         const {userChannels, selected} = data.payload as IframeChannelsPayload;
         fillChannels(userChannels, selected, (channelStr) => {
