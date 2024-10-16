@@ -163,7 +163,7 @@ window.addEventListener("load", () => {
   myPort.onmessage = ({data}) => {
     console.debug("Received message: ", data);
     switch(data.type){
-      case "iframeHandshake": {
+      case Fdc3UserInterfaceHandshake": {
         break;
       }
       case "iframeResolve": {
@@ -188,7 +188,7 @@ window.addEventListener("load", () => {
           });
 
           myPort.postMessage({
-            type: "iframeRestyle",
+            type: "fdc3UserInterfaceRestyle",
             payload: {
               updatedCSS: {
                 width: "0",
@@ -203,7 +203,7 @@ window.addEventListener("load", () => {
   };
 
   parent.postMessage({
-    type: "iframeHello",
+    type: "fdc3UserInterfaceHello",
     payload: {
       initialCSS: {
         width: "0",
