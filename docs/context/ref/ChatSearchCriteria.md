@@ -1,64 +1,77 @@
 ---
-id: ChatSearchCriteria
-sidebar_label: ChatSearchCriteria
 title: ChatSearchCriteria
-hide_title: true
+sidebar_label: ChatSearchCriteria
+
 ---
-# `ChatSearchCriteria`
+
+# ChatSearchCriteria
 
 A context type that represents a simple search criterion, based on a list of other context objects, that can be used to search or filter messages in a chat application.
+
+## Schema
+
+<https://fdc3.finos.org/schemas/next/context/chatSearchCriteria.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/chatSearchCriteria.schema.json))
 
 ## Type
 
 `fdc3.chat.searchCriteria`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/chatSearchCriteria.schema.json>
+<details>
+  <summary><code>criteria</code> <strong>(required)</strong></summary>
 
-## Details
+**type**: `array`
 
-| Property         | Type            | Required | Example Value        |
-|------------------|-----------------|----------|----------------------|
-| `type`           | string          | Yes      | `'fdc3.chat.searchCriteria'`     |
-| `criteria` | (Instrument &#124;<br/>Contact &#124;<br/>Organization &#124;<br/>string)[] | Yes | <pre>[<br/>&emsp;&emsp;{<br/>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.instrument",<br/>&emsp;&emsp;&emsp;&emsp;"id": {<br/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"ticker": "AAPL"<br/>&emsp;&emsp;&emsp;&emsp;}<br/>&emsp;&emsp;},<br/>&emsp;&emsp;{<br/>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.contact",<br/>&emsp;&emsp;&emsp;&emsp;"name":"Jane Doe",<br/>&emsp;&emsp;&emsp;&emsp;"id": {<br/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"email": "jane.doe@mail.com"<br/>&emsp;&emsp;&emsp;&emsp;}<br/>&emsp;&emsp;},<br/>&emsp;&emsp;{<br/>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.organization",<br/>&emsp;&emsp;&emsp;&emsp;"name":"Symphony",<br/>&emsp;&emsp;},<br/>&emsp;&emsp;"#OrderID45788422",<br/>]</pre> |
+<details>
+  <summary><code>Items</code></summary>
+
+  <summary><code>Search Criteria</code></summary>
+
+**One of:**
+
+- **type**: [Instrument](Instrument)
+- **type**: [Organization](Organization)
+- **type**: [Contact](Contact)
+- **type**: `string`
+
+An individual criteria against which to match chat messages, based on an FDC3 context or free-text string.
+
+
+
+
+</details>
+
+An array of criteria that should match chats returned from by a search.
 
 ⚠️ Operators (and/or/not) are not defined in `fdc3.chat.searchCriteria`. It is up to the application that processes the FDC3 Intent to choose and apply the operators between the criteria.
 
 Empty search criteria can be supported to allow resetting of filters.
 
+</details>
+
 ## Example
 
-```js
-const searchCriteria = {
-    type: "fdc3.chat.searchCriteria",
-    criteria: [
-        {
-            type: "fdc3.instrument",
-            id: {
-                ticker: "AAPL"
-            }
-        },
-        {
-            type: "fdc3.contact",
-            name: "Jane Doe",
-            id: {
-                email: "jane.doe@mail.com"
-            }
-        },
-        {
-            type: "fdc3.organization",
-            name: "Symphony"
-        },
-        "#OrderID45788422"
-    ]
+```json
+{
+  "type": "fdc3.chat.searchCriteria",
+  "criteria": [
+    {
+      "type": "fdc3.contact",
+      "name": "Jane Doe",
+      "id": {
+        "email": "jane.doe@mail.com"
+      }
+    },
+    {
+      "type": "fdc3.instrument",
+      "id": {
+        "ticker": "TSLA"
+      },
+      "name": "Tesla, inc."
+    },
+    "annual return"
+  ]
 }
-
-fdc3.raiseIntent('ViewMessages', searchCriteria);
 ```
 
-## See Also
-
-Intents
-
-* [ViewMessages](../../intents/ref/ViewMessages)

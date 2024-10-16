@@ -166,7 +166,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 								<tr>
 									<th scope="row">FDC3 Version</th>
 									{appInfo?.fdc3Version ? (
-										chosenVersion === appInfo.fdc3Version ? (
+										((chosenVersion === appInfo.fdc3Version) || (chosenVersion === "2.0" && appInfo.fdc3Version === "2.1")) ? (
 											<td>{appInfo.fdc3Version}</td>
 										) : (
 											<td className={classes.warningText}>
