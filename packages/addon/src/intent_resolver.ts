@@ -203,7 +203,7 @@ window.addEventListener("load", () => {
   };
 
   parent.postMessage({
-    type: "iframeHello",
+    type: "fdc3UserInterfaceHello",
     payload: {
       initialCSS: {
         width: "0",
