@@ -91,7 +91,7 @@ window.addEventListener("load", () => {
   const expand = () => {
     document.body.setAttribute("data-expanded", "true");
     myPort.postMessage({
-      type: "iframeRestyle",
+      type: "fdc3UserInterfaceRestyle",
       payload: {
         updatedCSS: {
           width: `100%`,
