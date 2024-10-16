@@ -73,7 +73,7 @@ window.addEventListener("load", () => {
   };
 
   parent.postMessage({
-    type: "iframeHello",
+    type: "fdc3UserInterfaceHello",
     payload: {
       initialCSS: {
         width: `${8*4}px`,
