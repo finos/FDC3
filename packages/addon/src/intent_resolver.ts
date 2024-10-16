@@ -163,7 +163,7 @@ window.addEventListener("load", () => {
   myPort.onmessage = ({data}) => {
     console.debug("Received message: ", data);
     switch(data.type){
-      case "iframeHandshake": {
+      case Fdc3UserInterfaceHandshake": {
         break;
       }
       case "iframeResolve": {
