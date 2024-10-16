@@ -108,7 +108,7 @@ window.addEventListener("load", () => {
 
   const collapse = () => {
     myPort.postMessage({
-      type: "iframeRestyle",
+      type: "fdc3UserInterfaceRestyle",
       payload: {
         updatedCSS: {
           width: `${8*4}px`,
