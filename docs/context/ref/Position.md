@@ -1,76 +1,84 @@
 ---
-id: Position
-sidebar_label: Position
 title: Position
-hide_title: true
----
-# `Position`
+sidebar_label: Position
 
-A financial position made up of an instrument and a holding in that instrument. This type is a good
-example of how new context types can be composed from existing types.
+---
+
+# Position
+
+A financial position made up of an instrument and a holding in that instrument. This type is a good example of how new context types can be composed from existing types.
 
 In this case, the instrument and the holding amount for that instrument are required values.
 
-The [Position](Position) type goes hand-in-hand with the [Portfolio](Portfolio) type, which represents
-multiple holdings in a combination of instruments.
+The [Position](Position) type goes hand-in-hand with the [Portfolio](Portfolio) type, which represents multiple holdings in a combination of instruments.
 
-Notes:
+The position schema does not explicitly include identifiers in the `id` section, as there is not a common standard for such identifiers. Applications can, however, populate this part of the contract with custom identifiers if so desired.
 
-- Like all other FDC3 context types, extra properties for the position can be added, the schema just
-specifies the minimum contract.
+## Schema
 
-- The position schema does not explicitly include identifiers in the `id` section, as there
-is not a common standard for such identifiers. Applications can, however, populate
-this part of the contract with custom identifiers if so desired.
+<https://fdc3.finos.org/schemas/next/context/position.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/position.schema.json))
 
 ## Type
 
 `fdc3.position`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/position.schema.json>
+<details>
+  <summary><code>instrument</code> <strong>(required)</strong></summary>
 
-## Details
+**type**: [Instrument](Instrument)
 
-| Property     | Type       | Required | Example Value                      |
-|--------------|------------|----------|------------------------------------|
-| `type`       | string     | Yes      | `'fdc3.position'`                  |
-| `id`         | object     | No       | `{ positionId: '6475' }`           |
-| `name`       | string     | No       | `'My Apple shares'`                |
-| `holding`    | number     | Yes      | `2000000`                          |
-| `instrument` | Instrument | Yes      | `{ type: 'fdc3.instrument', ... }` |
+
+
+</details>
+
+<details>
+  <summary><code>holding</code> <strong>(required)</strong></summary>
+
+**type**: `number`
+
+The amount of the holding, e.g. a number of shares
+
+</details>
+
+<details>
+  <summary><code>id</code></summary>
+
+**type**: `object`
+
+<details>
+  <summary><code>Additional Properties</code></summary>
+
+**type**: `string`
+
+</details>
+
+One or more identifiers that refer to the position in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
+
+</details>
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable name for the position
+
+</details>
 
 ## Example
 
-```js
-const position = {
-    type: "fdc3.position",
-    instrument: {
-        type: "fdc3.instrument",
-        id: {
-            ticker: "AAPL"
-        }
-    },
-    holding: 2000000
+```json
+{
+  "type": "fdc3.position",
+  "instrument": {
+    "type": "fdc3.instrument",
+    "id": {
+      "ticker": "AAPL"
+    }
+  },
+  "holding": 2000000
 }
-
-fdc3.raiseIntent("ViewChart", position)
 ```
 
-## See Also
-
-Other Types
-
-- [Instrument](Instrument)
-- [Portfolio](Portfolio)
-
-Intents
-
-- [ViewAnalysis](../../intents/ref/ViewAnalysis)
-- [ViewChart](../../intents/ref/ViewChart)
-- [ViewNews](../../intents/ref/ViewNews)
-
-FINOS Financial Objects
-
-- [Position](https://fo.finos.org/docs/objects/position)

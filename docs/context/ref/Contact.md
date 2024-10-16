@@ -1,61 +1,70 @@
 ---
-id: Contact
-sidebar_label: Contact
 title: Contact
-hide_title: true
+sidebar_label: Contact
+
 ---
-# `Contact`
+
+# Contact
 
 A person contact that can be engaged with through email, calling, messaging, CMS, etc.
+
+## Schema
+
+<https://fdc3.finos.org/schemas/next/context/contact.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/contact.schema.json))
 
 ## Type
 
 `fdc3.contact`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/contact.schema.json>
+<details>
+  <summary><code>id</code> <strong>(required)</strong></summary>
 
-## Details
+**type**: `object`
 
-| Property    | Type    | Required | Example Value     |
-|-------------|---------|----------|-------------------|
-| `type`      | string  | Yes      | `'fdc3.contact'`  |
-| `name`      | string  | No       | `'Jane Doe'`      |
-| `id.email`  | string  | No       | `'jane@mail.com'` |
-| `id.FDS_ID` | string  | No       | `'ABC123-E'`      |
+**Subproperties:**
+
+<details>
+  <summary><code>email</code></summary>
+
+**type**: `string`
+
+The email address for the contact
+
+</details>
+
+<details>
+  <summary><code>FDS_ID</code></summary>
+
+**type**: `string`
+
+FactSet Permanent Identifier representing the contact
+
+</details>
+
+Identifiers that relate to the Contact represented by this context
+
+</details>
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable name for the contact
+
+</details>
 
 ## Example
 
-```js
-const contact = {
-    type: "fdc3.contact",
-    name: "Jane Doe",
-    id: {
-        email: "jane.doe@mail.com"
-    }
+```json
+{
+  "type": "fdc3.contact",
+  "name": "Jane Doe",
+  "id": {
+    "email": "jane.doe@mail.com"
+  }
 }
-
-
-fdc3.broadcast(contact)
 ```
 
-## See Also
-
-Other Types
-
-- [ContactList](ContactList)
-
-Intents
-
-- [CreateInteraction](../../intents/ref/CreateInteraction)
-- [StartChat](../../intents/ref/StartChat)
-- [StartCall](../../intents/ref/StartCall)
-- [ViewProfile](../../intents/ref/ViewProfile)
-- [ViewResearch](../../intents/ref/ViewResearch)
-- [ViewInteractions](../../intents/ref/ViewInteractions)
-- [ViewOrders](../../intents/ref/ViewOrders)
-
-FINOS Financial Objects
-
-- [Contact](https://fo.finos.org/docs/objects/contact)

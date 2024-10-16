@@ -19,42 +19,42 @@
             "BBG": {
               "type": "string",
               "title": "Bloomberg security",
-              "description": "<https://www.bloomberg.com/>"
+              "description": "https://www.bloomberg.com/"
             },
             "CUSIP": {
               "type": "string",
               "title": "CUSIP",
-              "description": "<https://www.cusip.com/>"
+              "description": "https://www.cusip.com/"
             },
             "FDS_ID": {
               "type": "string",
               "title": "FactSet Permanent Security Identifier",
-              "description": "<https://www.factset.com/>"
+              "description": "https://www.factset.com/"
             },
             "FIGI": {
               "type": "string",
               "title": "Open FIGI",
-              "description": "<https://www.openfigi.com/>"
+              "description": "https://www.openfigi.com/"
             },
             "ISIN": {
               "type": "string",
               "title": "ISIN",
-              "description": "<https://www.isin.org/>"
+              "description": "https://www.isin.org/"
             },
             "PERMID": {
               "type": "string",
               "title": "Refinitiv PERMID",
-              "description": "<https://permid.org/>"
+              "description": "https://permid.org/"
             },
             "RIC": {
               "type": "string",
               "title": "Refinitiv Identification Code",
-              "description": " <https://www.refinitiv.com/>"
+              "description": "https://www.refinitiv.com/"
             },
             "SEDOL": {
               "type": "string",
               "title": "SEDOL",
-              "description": "<https://www.lseg.com/sedol>"
+              "description": "https://www.lseg.com/sedol"
             },
             "ticker": {
               "type": "string",
@@ -63,6 +63,11 @@
             }
           }
         },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "An optional human-readable name for the instrument"
+        },
         "market": {
           "description": "The `market` map can be used to further specify the instrument and help achieve interoperability between disparate data sources. This is especially useful when using an `id` field that is not globally unique.",
           "type": "object",
@@ -70,7 +75,7 @@
             "MIC": {
               "type": "string",
               "title": "Market Identifier Code",
-              "description": "<https://en.wikipedia.org/wiki/Market_Identifier_Code>"
+              "description": "https://en.wikipedia.org/wiki/Market_Identifier_Code"
             },
             "name": {
               "type": "string",
@@ -80,12 +85,12 @@
             "COUNTRY_ISOALPHA2": {
               "type": "string",
               "title": "Country ISO Code",
-              "description": "<https://www.iso.org/iso-3166-country-codes.html>"
+              "description": "https://www.iso.org/iso-3166-country-codes.html"
             },
             "BBG": {
               "type": "string",
               "title": "Bloomberg Market Identifier",
-              "description": "<https://www.bloomberg.com/>"
+              "description": "https://www.bloomberg.com/"
             }
           },
           "unevaluatedProperties": {
